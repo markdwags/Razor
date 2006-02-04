@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<counters>
+	<counter>
+		<name>Bandages</name>
+		<format>aids</format>
+		<itemid>3617</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Black Pearl</name>
+		<format>bp</format>
+		<itemid>3962</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Blood Moss</name>
+		<format>bm</format>
+		<itemid>3963</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Cure Potions</name>
+		<format>cure</format>
+		<itemid>3847</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Garlic</name>
+		<format>gl</format>
+		<itemid>3972</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Ginseng</name>
+		<format>gs</format>
+		<itemid>3973</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Heal Potions</name>
+		<format>heal</format>
+		<itemid>3852</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Mandrake Root</name>
+		<format>mr</format>
+		<itemid>3974</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Nightshade</name>
+		<format>ns</format>
+		<itemid>3976</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Spider's Silk</name>
+		<format>ss</format>
+		<itemid>3981</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Sulfurous Ash</name>
+		<format>sa</format>
+		<itemid>3980</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Batwing</name>
+		<format>bw</format>
+		<itemid>3960</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Nox Crystal</name>
+		<format>nc</format>
+		<itemid>3982</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Grave Dust</name>
+		<format>gd</format>
+		<itemid>3983</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Daemon Blood</name>
+		<format>db</format>
+		<itemid>3965</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Pig Iron</name>
+		<format>pi</format>
+		<itemid>3978</itemid>
+		<hue>0</hue>
+	</counter>
+	<counter>
+		<name>Arrows</name>
+		<format>arw</format>
+		<itemid>3903</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Bolts</name>
+		<format>blt</format>
+		<itemid>7163</itemid>
+		<hue>-1</hue>
+	</counter>
+</counters>

@@ -1,0 +1,26 @@
+LIBRARY	Crypt
+
+EXPORTS
+	InstallLibrary
+	Shutdown
+	FindUOWindow
+	GetSharedAddress
+	GetPacketLength
+	IsDynLength
+	GetUOProcId
+	InitializeLibrary
+	GetCommMutex
+	TotalIn
+	TotalOut
+	CaptureScreen
+	WaitForWindow
+	SetDataPath
+	SetDeathMsg
+	CalibratePosition
+	IsCalibrated
+	GetPosition
+	BringToFront
+	DoFeatures
+	AllowBit
+	AddProperty
+	

@@ -1,0 +1,88 @@
+Razor Software License Agreement
+
+
+This Agreement sets forth the terms and conditions under which
+the software known as Razor(tm) will be licensed by the author(s)
+("The Razor Author") to you ("Licensee"), and by which Derivative 
+Works (as hereafter defined) of Razor will be licensed by you
+to The Razor Author.
+
+Definitions:
+
+ "Derivative Work(s)" shall mean any revision, enhancement,
+ modification, translation, abridgement, condensation or
+ expansion created by Licensee or The Razor Author that is based upon the
+ Software or a portion thereof that would be a copyright
+ infringement if prepared without the authorization of the
+ copyright owners of the Software or portion thereof.
+
+ "Standard Version" shall mean Razor, as originally created by
+ The Razor Author.
+
+ "Software" shall mean Razor and the Derivative Works created
+ by Licensee and the collection of files distributed by the
+ Licensee with The Razor Author, and the collection of files created
+ through textual modifications.
+
+ "Copyright Holder" is whoever is named in the copyright or
+ copyrights for the Derivative Works.
+
+ "Licensee" is you, only if you agree to be bound by the terms
+ and conditions set forth in this Agreement.
+
+ "Freely Available" means that no fee is charged for the item
+ It also means that recipients of the item may not redistribute
+ it in any way shape or form.
+
+1. The Razor Author maintains all rights, title and interest in and to
+Razor, including all applicable copyrights, trade secrets,
+patents and other intellectual rights therein.  Licensee hereby
+grants to The Razor Author all right, title and interest into the compilation
+of Razor. 
+
+2. The Razor Author hereby grants to Licensee a royalty free, worldwide right
+and license to use, Razor in accordance with the terms and conditions
+of this Agreement.
+
+3. Licensee hereby grants to The Razor Author a royalty free, worldwide right
+and license to use, copy, distribute and make Derivative Works of
+Derivative Works created by Licensee and sublicensing rights of
+any of the foregoing.
+
+4. The data and images supplied as input to or produced as output
+from the Software do not automatically fall under the copyright
+of this Software, but belong to whomever generated them, and may
+be sold commercially, but may not be aggregated with this Software.
+
+5. The Razor Author makes no representation about the suitability of Razor
+for any purposes.  The Razor Author shall have no duty or requirement to
+include any Derivative Works into Razor.
+
+6. THIS PACKAGE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY
+KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING (BUT NOT LIMITED TO)
+ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, AND
+WITHOUT ANY WARRANTIES AS TO NONINFRINGEMENT.
+
+7. IN NO EVENT SHALL COPYRIGHT HOLDER BE LIABLE FOR ANY DIRECT,
+SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES WHATSOEVER RESULTING
+FROM LOSS OF USE OF DATA OR PROFITS, WHETHER IN AN ACTION OF
+CONTRACT, NEGLIGENCE OR OTHER TORTIOUS CONDUCT, ARISING OUT OF OR
+IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS PACKAGE.
+
+8. Without limitation of the foregoing, You agree to commit no
+act which, directly or indirectly, would violate any U.S. law,
+regulation, or treaty, or any other international treaty or
+agreement to which the United States adheres or with which the
+United States complies, relating to the export or re-export of
+any commodities, software, or technical data.
+
+9. At no time shall anyone affiliated with Electronic Arts download
+or use this software.  This software is provided soley for end-users
+who have purchased Ultima Online for use in non-profit ways.
+
+10. In addition to local, federal, and international laws 
+prohibiting reverse engineering, the Licensee herby agrees to at no 
+time make any attempts to decompile Razor or associated libraries 
+or alter them in any way other without express written consent 
+from the author.
+
