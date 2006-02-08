@@ -381,7 +381,7 @@ namespace Assistant
 
 		private void OnVendorSell( PacketReader pvSrc, PacketHandlerEventArgs args )
 		{
-			if ( !m_Enabled || ClientCommunication.AllowBit( FeatureBit.SellAgent ) || ( m_Items.Count == 0 && m_HotBag == Serial.Zero ) )
+			if ( !m_Enabled || !ClientCommunication.AllowBit( FeatureBit.SellAgent ) || ( m_Items.Count == 0 && m_HotBag == Serial.Zero ) )
 				return;
 
 			Item hb = null;

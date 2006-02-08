@@ -110,7 +110,7 @@ namespace Assistant
 		private static void ClientDoubleClick( PacketReader p, PacketHandlerEventArgs args )
 		{
 			Serial ser = p.ReadUInt32();
-			if ( ser == World.Player.Serial && World.Player.Warmode && World.Player.GetItemOnLayer( Layer.Mount ) != null && Config.GetBool( "BlockDismount" ) )
+			if ( Config.GetBool( "BlockDismount" ) && World.Player != null && ser == World.Player.Serial && World.Player.Warmode && World.Player.GetItemOnLayer( Layer.Mount ) != null )
 			{ // mount layer = 0x19
 				World.Player.SendMessage( LocString.DismountBlocked );
 				args.Block = true;
