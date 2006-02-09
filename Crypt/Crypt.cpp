@@ -971,8 +971,11 @@ void FlushSendData()
 				{
 					if ( AllowNegotiate && ServerNegotiated )
 					{
-						memcpy( buff + 1 + 4 + 30 + 1, AuthBits, 8 );
-						memcpy( buff + 1 + 4 + 30 + 1 + 8, "\x9\x11\x83+\x4\x17\x83\x5\x24\x85\x7\x17\x87\x9\x18\x78\x6\x19\x88", 20 );
+						// the first 2 bytes are 0
+						// the next 4 bytes are "flags" which say the user's client type (lbr,t2a,aos,etc)
+						// the rest are ignored, so we can use them for auth
+						memcpy( buff + 1 + 4 + 30 + 2 + 4, AuthBits, 8 );
+						memcpy( buff + 1 + 4 + 30 + 2 + 4 + 8, "\x9\x11\x83+\x4\x17\x83\x5\x24\x85\x7\x17\x87\x6\x19\x88", 16 );
 					}
 
 					InGame = true;
