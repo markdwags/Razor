@@ -906,26 +906,48 @@ namespace Assistant
 				if ( GetPosition( null, null, &z ) )
 					return z;
 			}
-
-			if ( World.Player != null && /* PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 30 ) < DateTime.Now && */ ( x != 0 || y != 0 || z != 0 ) )
-				CalibratePosition( x, y, z );
 				
 			return Map.ZTop( World.Player.Map, x, y, z );
 		}
 
-		public static bool CheckClientPos( Point3D p )
+		private static void CalibrateNow()
 		{
-			if ( !IsCalibrated() )
+			m_CalTimer = null;
+
+			if ( World.Player == null )
+				return;
+
+			PlayerData.ExternalZ = false;
+
+			Point3D pos = World.Player.Position;
+
+			if ( pos != Point3D.Zero && m_CalPos == pos )
 			{
-				if ( World.Player != null && PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 0.5 ) < DateTime.Now )
-					CalibratePosition( p.X, p.Y, p.Z );
-				return false;
+				CalibratePosition( pos.X, pos.Y, pos.Z );
+				System.Threading.Thread.Sleep( TimeSpan.FromSeconds( 0.25 ) );
 			}
-			else
-			{
-				int x, y, z;
-				return GetPosition( &x, &y, &z ) && p.X == x && p.Y == y;
-			}
+
+			m_CalPos = Point2D.Zero;
+
+			PlayerData.ExternalZ = true;
+		}
+
+		public static Timer m_CalTimer = null;
+		private static TimerCallback m_CalibrateNow = new TimerCallback( CalibrateNow );
+		private static Point2D m_CalPos = Point2D.Zero;
+
+		public static void BeginCalibratePosition()
+		{
+			if ( World.Player == null || IsCalibrated() )
+				return;
+
+			if ( m_CalTimer != null )
+				m_CalTimer.Stop();
+
+			m_CalPos = new Point2D( World.Player.Position );
+			
+			m_CalTimer = Timer.DelayedCallback( TimeSpan.FromSeconds( 0.5 ), m_CalibrateNow );
+			m_CalTimer.Start();
 		}
 
 		private static void FatalInit( InitError error )

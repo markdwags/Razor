@@ -318,16 +318,24 @@ namespace Assistant.Macros
 				if ( m_Wait != null )
 				{
 					TimeSpan waitLen = DateTime.Now - m_Wait.StartTime;
-					if ( !( m_Wait is PauseAction ) && waitLen >= m_Wait.Timeout && Loop )
+					if ( !( m_Wait is PauseAction ) && waitLen >= m_Wait.Timeout )
 					{
-						if ( Engine.MainWindow.WaitDisplay != null )
-							Engine.MainWindow.WaitDisplay.Text = "";
-						m_CurrentAction = -1;
-						m_IfStatus.Clear();
-						PauseB4Loop.Perform();
-						PauseB4Loop.Parent = this;
-						m_Wait = PauseB4Loop;
-						return true;
+						if ( Loop )
+						{
+							if ( Engine.MainWindow.WaitDisplay != null )
+								Engine.MainWindow.WaitDisplay.Text = "";
+							m_CurrentAction = -1;
+							m_IfStatus.Clear();
+							PauseB4Loop.Perform();
+							PauseB4Loop.Parent = this;
+							m_Wait = PauseB4Loop;
+							return true;
+						}
+						else
+						{
+							Stop();
+							return false;
+						}
 					}
 					else 
 					{

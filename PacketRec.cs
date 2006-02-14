@@ -595,6 +595,7 @@ namespace Assistant
 			}
 
 			PlayerData.ExternalZ = false;
+
 			while ( m_Elapsed < target && !m_GZIn.EndOfFile )
 			{
 				// peek ahead 1 byte... and no, BinaryReader doesnt have a peek function.
@@ -638,7 +639,7 @@ namespace Assistant
 				}
 			}
 
-			PlayerData.ExternalZ = true;
+			ClientCommunication.BeginCalibratePosition();
 		}
 
 		public static void Open( string filename )
@@ -935,7 +936,8 @@ namespace Assistant
 			ClientCommunication.ForceSendToClient( new MobileIncoming( player ) );
 
 			PacketHandlers.PlayCharTime = DateTime.Now;
-			PlayerData.ExternalZ = true;
+			
+			ClientCommunication.BeginCalibratePosition();
 		}
 
 		private class ScrollTimer : Timer

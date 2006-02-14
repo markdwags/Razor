@@ -776,6 +776,8 @@ namespace Assistant
 			World.AddMobile( World.Player = m );
 			Config.LoadProfileFor( World.Player );
 
+			PlayerData.ExternalZ = false;
+
 			p.ReadUInt32(); // always 0?
 			m.Body = p.ReadUInt16();
 			m.Position = new Point3D( p.ReadUInt16(), p.ReadUInt16(), p.ReadInt16() );
@@ -784,8 +786,6 @@ namespace Assistant
 
 			//ClientCommunication.SendToServer( new SkillsQuery( m ) );
 			//ClientCommunication.SendToServer( new StatusQuery( m ) );
-
-			PlayerData.ExternalZ = true;
 			
 			ClientCommunication.RequestTitlebarUpdate();
 			ClientCommunication.PostLogin( (int)serial.Value );
@@ -802,6 +802,8 @@ namespace Assistant
 
 			Stream.Fill();
 			*/
+
+			ClientCommunication.BeginCalibratePosition();
 		}
 		
 		private static void MobileMoving( Packet p, PacketHandlerEventArgs args )
@@ -837,6 +839,8 @@ namespace Assistant
 
 				if ( m == World.Player )
 				{
+					ClientCommunication.BeginCalibratePosition();
+
 					if ( wasPoisoned != m.Poisoned || ( oldNoto != m.Notoriety && Config.GetBool( "ShowNotoHue" ) ) )
 						ClientCommunication.RequestTitlebarUpdate();
 				}
@@ -1042,6 +1046,8 @@ namespace Assistant
 
 			if ( m == World.Player )
 			{
+				ClientCommunication.BeginCalibratePosition();
+
 				World.Player.Resync();
 
 				if ( !wasHidden && !m.Visible )
@@ -1076,7 +1082,7 @@ namespace Assistant
 			ushort body =  p.ReadUInt16();
 			Point3D position = new Point3D( p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte() );
 
-			if ( !Utility.InRange( World.Player.Position, position, World.Player.VisRange ) )
+			if ( World.Player.Position != Point3D.Zero && !Utility.InRange( World.Player.Position, position, World.Player.VisRange ) )
 				return;
 
 			Mobile m = World.FindMobile( serial );
@@ -1115,6 +1121,8 @@ namespace Assistant
 			
 			if ( m == World.Player )
 			{
+				ClientCommunication.BeginCalibratePosition();
+
 				if ( !wasHidden && !m.Visible )
 				{
 					if ( Config.GetBool( "AlwaysStealth" ) )
@@ -1174,6 +1182,7 @@ namespace Assistant
 					PlayerData.DoubleClick( item );
 				}
 			}
+
 			Item.UpdateContainers();
 		}
 
@@ -1870,13 +1879,7 @@ namespace Assistant
 		private static void MovementDemand( PacketReader p, PacketHandlerEventArgs args )
 		{
 			if ( PacketPlayer.Playing )
-			{
-				bool ez = PlayerData.ExternalZ;
-				if ( !ClientCommunication.CheckClientPos( World.Player.Position ) )
-					PlayerData.ExternalZ = false;
 				ClientCommunication.ForceSendToClient( new MobileUpdate( World.Player ) );
-				PlayerData.ExternalZ = ez;
-			}
 
 			World.Player.ProcessMove( (Direction)p.ReadByte() );
 		}

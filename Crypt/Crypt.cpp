@@ -1072,6 +1072,7 @@ int PASCAL HookCloseSocket( SOCKET sock )
 
 		WaitForSingleObject( CommMutex, INFINITE );
 		OutRecv->Length = InRecv->Length = OutSend->Length = InSend->Length = 0;
+		memset( Position, 0, 4*3 );
 		*TotalSend = *TotalRecv = 0;
 		*forceDisconn = false;
 		ReleaseMutex( CommMutex );
@@ -2131,7 +2132,7 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			WaitForSingleObject( CommMutex, INFINITE );
 			if ( Position[0] >= -255 && Position[0] <= 255 && Position[1] >= 0 && Position[1] <= 8192 && Position[2] >= 0 && Position[2] <= 8192 )
 			{
-				Position[2] = (int)MemFinder::Find( Position, sizeof(int)*3, 0x00500000, 0x00A00000 );
+				Position[2] = (int)MemFinder::Find( Position, sizeof(int)*3, 0x00500000, 0x00C00000 );
 				if ( Position[2] )
 				{
 					Position[0] = 0xFFFFFFFF;
@@ -2141,10 +2142,6 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 				{
 					memset( Position, 0, sizeof(int)*3 );
 				}
-			}
-			else
-			{
-				memset( Position, 0, sizeof(int)*3 );
 			}
 			ReleaseMutex( CommMutex );
 			break;
