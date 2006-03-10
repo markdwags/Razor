@@ -78,9 +78,11 @@ namespace Assistant
 			{
 				buttons[i].Visible = false;
 				buttons[i].Text = "";
+				Engine.MainWindow.UnlockControl( buttons[i] );
 			}
 			grp.Visible = false;
 			subList.Visible = false;
+			Engine.MainWindow.UnlockControl( subList );
 
 			Agent a = null;
 			if ( idx >= 0 && idx < m_List.Count )
@@ -183,6 +185,13 @@ namespace Assistant
 				m_SubList.Items.Add( m_Items[i] );
 			}
 			m_SubList.EndUpdate();
+
+			if ( !ClientCommunication.AllowBit( FeatureBit.UseOnceAgent ) && Engine.MainWindow != null )
+			{
+				for (int i=0;i<buttons.Length;i++)
+					Engine.MainWindow.LockControl( buttons[i] );
+				Engine.MainWindow.LockControl( subList );
+			}
 		}
 		
 		public override void OnButtonPress( int num )
@@ -468,6 +477,13 @@ namespace Assistant
 			for (int i=0;i<m_Items.Count;i++)
 				m_SubList.Items.Add( (ItemID)((ushort)m_Items[i]) );
 			m_SubList.EndUpdate();
+
+			if ( !ClientCommunication.AllowBit( FeatureBit.SellAgent ) && Engine.MainWindow != null )
+			{
+				for (int i=0;i<buttons.Length;i++)
+					Engine.MainWindow.LockControl( buttons[i] );
+				Engine.MainWindow.LockControl( subList );
+			}
 		}
 		
 		public override void OnButtonPress( int num )
@@ -1487,6 +1503,13 @@ namespace Assistant
 			for (int i=0;i<m_Items.Count;i++)
 				m_SubList.Items.Add( m_Items[i] );
 			m_SubList.EndUpdate();
+
+			if ( !ClientCommunication.AllowBit( FeatureBit.BuyAgent ) && Engine.MainWindow != null )
+			{
+				for (int i=0;i<buttons.Length;i++)
+					Engine.MainWindow.LockControl( buttons[i] );
+				Engine.MainWindow.LockControl( subList );
+			}
 		}
 		
 		public override void OnButtonPress( int num )
@@ -1645,6 +1668,13 @@ namespace Assistant
 			for(int i=0;i<m_Items.Count;i++)
 				subList.Items.Add( m_Items[i] );
 			subList.EndUpdate();
+
+			if ( !ClientCommunication.AllowBit( FeatureBit.RestockAgent ) && Engine.MainWindow != null )
+			{
+				for (int i=0;i<buttons.Length;i++)
+					Engine.MainWindow.LockControl( buttons[i] );
+				Engine.MainWindow.LockControl( subList );
+			}
 		}
 
 		public override void OnButtonPress( int num )

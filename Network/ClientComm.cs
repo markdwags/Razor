@@ -28,6 +28,8 @@ namespace Assistant
 		BuyAgent,
 		PotionHotkeys,
 		RandomTargets,
+
+		MaxBit
 	}
 
 	public unsafe sealed class ClientCommunication
@@ -665,6 +667,9 @@ namespace Assistant
 			if ( UseEncy )
 				flags |= 0x02;
 
+			if ( Config.GetBool( "Negotiate" ) )
+				flags |= 0x04;
+
 			//ClientProc.WaitForInputIdle();
 			WaitForWindow( ClientProc.Id );
 
@@ -688,7 +693,11 @@ namespace Assistant
 
 			try
 			{
-				SetDataPath( (string)Ultima.Client.Directories[0] );
+				string path = Ultima.Client.GetFilePath( "art.mul" );
+				if ( path != null && path != string.Empty )
+					SetDataPath( Path.GetDirectoryName( path ) );
+				else
+					SetDataPath( Path.GetDirectoryName( (string)Ultima.Client.Directories[0] ) );
 			}
 			catch
 			{
@@ -697,8 +706,6 @@ namespace Assistant
 
 			if ( Config.GetBool( "OldStatBar" ) )
 				ClientCommunication.RequestStatbarPatch( true );
-
-			SetNegotiate( Config.GetBool( "Negotiate" ) );
 
 			return true;
 		}
@@ -924,7 +931,7 @@ namespace Assistant
 			if ( pos != Point3D.Zero && m_CalPos == pos )
 			{
 				CalibratePosition( pos.X, pos.Y, pos.Z );
-				System.Threading.Thread.Sleep( TimeSpan.FromSeconds( 0.25 ) );
+				System.Threading.Thread.Sleep( TimeSpan.FromSeconds( 0.1 ) );
 			}
 
 			m_CalPos = Point2D.Zero;

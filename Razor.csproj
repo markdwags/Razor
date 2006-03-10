@@ -417,6 +417,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Lock.ico"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "UI\MacroInsertIf.cs"
                     SubType = "Form"
                     BuildAction = "Compile"

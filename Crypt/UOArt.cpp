@@ -20,7 +20,7 @@ unsigned short *GetHue( int index )
 		FILE *huesMul = NULL;
 
 		WaitForSingleObject( CommMutex, INFINITE );
-		sprintf( str, "%s\\hues.mul", DataPath );
+		sprintf( str, "%s/hues.mul", DataPath );
 		ReleaseMutex( CommMutex );
 		
 		huesMul = fopen( str, "rb" );
@@ -93,7 +93,7 @@ UOItem *ReadUOItem( int item, int bh )
 	memset( &header, 0, sizeof(ArtHeader) );
 
 	WaitForSingleObject( CommMutex, INFINITE );
-	sprintf( str, "%s\\artidx.mul", DataPath );
+	sprintf( str, "%s/artidx.mul", DataPath );
 	ReleaseMutex( CommMutex );
 	
 	idxMul = fopen( str, "rb" );
@@ -106,7 +106,7 @@ UOItem *ReadUOItem( int item, int bh )
 		return NULL;
 
 	WaitForSingleObject( CommMutex, INFINITE );
-	sprintf( str, "%s\\art.mul", DataPath );
+	sprintf( str, "%s/art.mul", DataPath );
 	ReleaseMutex( CommMutex );
 
 	artMul = fopen( str, "rb" );

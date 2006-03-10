@@ -6,6 +6,7 @@ using System.Threading;
 namespace Assistant
 {
 	public delegate void TimerCallback();
+	public delegate void TimerCallbackState( object state );
 
 	public abstract class Timer
 	{
@@ -227,9 +228,34 @@ namespace Assistant
 			}
 		}
 
+		private class OneTimeTimerState : Timer
+		{
+			private TimerCallbackState m_Call;
+			private object m_State;
+
+			public OneTimeTimerState( TimeSpan d, TimerCallbackState call, object state ) : base( d )
+			{
+				m_Call = call;
+				m_State = state;
+			}
+
+			protected override void OnTick()
+			{
+				m_Call( m_State );
+				Stop();
+			}
+		}
+
 		public static Timer DelayedCallback( TimeSpan delay, TimerCallback call )
 		{
 			Timer t = new OneTimeTimer( delay, call );
+			//t.Start();
+			return t;
+		}
+
+		public static Timer DelayedCallbackState( TimeSpan delay, TimerCallbackState call, object state )
+		{
+			Timer t = new OneTimeTimerState( delay, call, state );
 			//t.Start();
 			return t;
 		}

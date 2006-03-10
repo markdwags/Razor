@@ -1,3 +1,5 @@
+//#define LOG_CONTROL_TEXT
+
 using System;
 using System.Text;
 using System.IO;
@@ -319,6 +321,16 @@ namespace Assistant
 		AttackLastTarg,
 		EditTimeout,
 		NoHold,
+		NotAllowed,
+		Allowed,
+		// 1400 to 1465 reserved for negotiation features
+		NegotiateTitle = 1400,
+		AllFeaturesEnabled,
+		FeatureDescBase,
+
+		NextCliloc = 1466,
+		FeatureDisabled = NextCliloc,
+		FeatureDisabledText,
 
 		__End,
 	}
@@ -584,7 +596,9 @@ namespace Assistant
 
 		public static void LoadControlNames( System.Windows.Forms.Form form )
 		{
-			//DumpControls( form );
+#if LOG_CONTROL_TEXT
+			DumpControls( form );
+#endif
 
 			LoadControls( form.Name, form.Controls );
 			string text = m_Controls[String.Format( "{0}::Text", form.Name )] as string;
@@ -592,7 +606,7 @@ namespace Assistant
 				form.Text = text;
 		}
 
-#if DEBUG
+#if LOG_CONTROL_TEXT
 		public static void DumpControls( System.Windows.Forms.Form form )
 		{
 			using ( StreamWriter w = new StreamWriter( form.Name+".controls.txt" ) )

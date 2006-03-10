@@ -351,6 +351,7 @@ namespace Assistant
 
 		private class LoginCFG_SE : ServerEntry
 		{
+			public string RealAddress;
 			public LoginCFG_SE() : base( "Use Last (Don't change Login.cfg)", 0 )
 			{
 				try 
@@ -385,13 +386,16 @@ namespace Assistant
 					}
 
 					if ( server != null )
-						Address = server;
+					{
+						Address = "(Use Last: "+server+")";
+						RealAddress = server;
+					}
 					if ( port != null )
 						Port = Utility.ToInt32( port, 0 );
 				}
 				catch
 				{
-					Address = "Use Last (Don't change login.cfg)";
+					RealAddress = Address = "Use Last (Don't change login.cfg)";
 					Port = 0;
 				}
 			}
@@ -517,34 +521,48 @@ namespace Assistant
 			}
 			
 			LoginCFG_SE lse;
-			UOGamers_SE r, h, d;
+			UOGamers_SE uog;
+
+			serverList.BeginUpdate();
 
 			serverList.Items.Add( lse=new LoginCFG_SE() );
-			serverList.SelectedIndex = 0;
+			serverList.SelectedItem = lse;
 			for (int i=1; ;i++)
 			{
+				ServerEntry se;
 				string sval = String.Format( "Server{0}", i );
 				string serv = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, sval );
 				if ( serv == null )
 					break;
 				string pval = String.Format( "Port{0}", i );
-				int port = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, pval ), 2593 );
-				serverList.Items.Add( new ServerEntry( serv, port ) );
+				int port = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, pval ), 0 );
+				serverList.Items.Add( se=new ServerEntry( serv, port ) );
+				if ( serv == lse.RealAddress && port == lse.Port )
+					serverList.SelectedItem = se;
 				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, sval );
 				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, pval );
 			}
 
-			serverList.Items.Add( r=new UOGamers_SE( "UOGamers: Rebirth (PreT2A/PreUOR)", "login.uorebirth.com" ) );
-			serverList.Items.Add( h=new UOGamers_SE( "UOGamers: Hybrid (UOR)", "login.uogamers.com" ) );
-			serverList.Items.Add( d=new UOGamers_SE( "UOGamers: Demise (AOS/SE)", "login.uodemise.com" ) );
-			//serverList.Items.Add( new UOGamers_SE( "UOGamers: Aftermath (TC)", "tc.runuo.com" ) );
+			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Rebirth (PreT2A)", "login.uorebirth.com" ) );
+			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
+				serverList.SelectedItem = uog;
+			
+			if ( DateTime.Now.Month > 3 || (DateTime.Now.Month == 3 && DateTime.Now.Day >= 15 ) || DateTime.Now.Year > 2006 )
+			{
+				serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Divinity (T2A)", "login.uodivinity.com" ) );
+				if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
+					serverList.SelectedItem = uog;
+			}
 
-			if ( lse.Address == r.RealAddress )
-				serverList.SelectedItem = r;
-			else if ( lse.Address == h.RealAddress )
-				serverList.SelectedItem = h;
-			else if ( lse.Address == d.RealAddress )
-				serverList.SelectedItem = d;
+			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Hybrid (UOR)", "login.uogamers.com" ) );
+			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
+				serverList.SelectedItem = uog;
+
+			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Demise (SE/ML)", "login.uodemise.com" ) );
+			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
+				serverList.SelectedItem = uog;
+
+			serverList.EndUpdate();
 
 			serverList.Refresh();
 		}
@@ -569,7 +587,7 @@ namespace Assistant
 
 		private void serverList_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			port.Enabled = !( serverList.SelectedItem is UOGamers_SE );
+			port.Enabled = !( serverList.SelectedItem is UOGamers_SE || serverList.SelectedItem is LoginCFG_SE );
 
 			if ( serverList.SelectedItem != null )
 			{
@@ -580,12 +598,29 @@ namespace Assistant
 			}
 		}
 
+		private void serverList_TextChanged(object sender, System.EventArgs e)
+		{
+			string txt = serverList.Text;
+			if ( ( serverList.SelectedItem is UOGamers_SE || serverList.SelectedItem is LoginCFG_SE ) && txt != (serverList.SelectedItem).ToString() ) 
+			{
+				port.Text = "";
+				serverList.BeginUpdate();
+				serverList.SelectedIndex = -1;
+				serverList.Text = txt;
+				serverList.Select( txt.Length, 0 );
+				serverList.EndUpdate();
+			}
+		}
+		
 		private void port_TextChanged(object sender, System.EventArgs e)
 		{
-			if ( ( serverList.SelectedItem is LoginCFG_SE && ((ServerEntry)serverList.SelectedItem).Port == 0 ) || serverList.SelectedItem is UOGamers_SE )
-				port.Text = "";
-			else if ( serverList.SelectedItem != null )
-				((ServerEntry)serverList.SelectedItem).Port = Utility.ToInt32( serverList.Text, 2593 );
+			if ( port.Text != "" )
+			{
+				if ( ( serverList.SelectedItem is LoginCFG_SE && ((ServerEntry)serverList.SelectedItem).Port == 0 ) || serverList.SelectedItem is UOGamers_SE )
+					port.Text = "";
+				else if ( serverList.SelectedItem != null )
+					((ServerEntry)serverList.SelectedItem).Port = Utility.ToInt32( port.Text, 0 );
+			}
 		}
 
 		private void okay_Click(object sender, System.EventArgs e)
@@ -612,22 +647,23 @@ namespace Assistant
 				else if ( !(serverList.SelectedItem is LoginCFG_SE) )
 				{
 					se = (ServerEntry)serverList.SelectedItem;
-					if ( port.Text.Trim() == "" )
+					se.Port = Utility.ToInt32( port.Text.Trim(), 0 );
+					if ( se.Port <= 0 || se.Port > 65535 )
 					{
 						MessageBox.Show( this, Language.GetString( LocString.NeedPort ), "Need Port", MessageBoxButtons.OK, MessageBoxIcon.Information );
 						return;
 					}
-					se.Port = Utility.ToInt32( port.Text.Trim(), se.Port );
 				}
 			}
 			else if ( serverList.Text != "" )
 			{
-				if ( port.Text == "" )
+				int thePort = Utility.ToInt32( port.Text.Trim(), 0 );
+				if ( thePort <= 0 || thePort > 65535 )
 				{
 					MessageBox.Show( this, Language.GetString( LocString.NeedPort ), "Need Port", MessageBoxButtons.OK, MessageBoxIcon.Information );
 					return;
 				}
-				se = new ServerEntry( serverList.Text.Trim(), Utility.ToInt32( port.Text.Trim(), 2593 ) );
+				se = new ServerEntry( serverList.Text.Trim(), thePort );
 			}
 
 			if ( se != null )
@@ -820,12 +856,6 @@ namespace Assistant
 
 		private void dataDir_TextChanged(object sender, System.EventArgs e)
 		{
-		}
-
-		private void serverList_TextChanged(object sender, System.EventArgs e)
-		{
-			if ( serverList.SelectedItem is UOGamers_SE && serverList.Text != ((UOGamers_SE)serverList.SelectedItem).ToString() )
-				serverList.SelectedIndex = -1;
 		}
 	}
 }

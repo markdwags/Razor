@@ -6,7 +6,14 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
+(This is a release to fix small problems with Beta 31, not a lot of "new" content in this version.)
 
 Changes/Fixes:
 -Fixed some problems with macro wait timeouts.
 -RPV recording and playback Z issues should now be fixed.  Some old RPVs may still be broken (especially when fast forwarding), but ones recorded with Beta 32 should work properly.
+-The Explosion Potion hotkey will no longer automatically unequip/reequip weapons
+-Buy Agent (and other agents) should no longer freeze the client when requesting input.
+-The welcome screen server list should be functioning flawlessly now
+-Character name and Online time will now also be tracked when you create a character.
+-Several other small crashes have been fixed.
+-Fixed problems with images not displaying correctly in titlebar

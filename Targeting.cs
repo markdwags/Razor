@@ -576,16 +576,23 @@ namespace Assistant
 			m_QueueTarget = null;
 		}
 
-		private static void OneTimeResponse( TargetInfo info )
+		private static TimerCallbackState m_OneTimeRespCallback = new TimerCallbackState( OneTimeResponse );
+
+		private static void OneTimeResponse( object state )
 		{
-			if ( ( info.X == 0xFFFF && info.X == 0xFFFF ) && ( info.Serial == 0 || info.Serial >= 0x80000000 ) )
+			TargetInfo info = state as TargetInfo;
+
+			if ( info != null )
 			{
-				if ( m_OnCancel != null )
-					m_OnCancel();
-			}
-			else
-			{	
-				m_OnTarget( info.Type == 1 ? true : false, info.Serial, new Point3D( info.X, info.Y, info.Z ), info.Gfx );
+				if ( ( info.X == 0xFFFF && info.X == 0xFFFF ) && ( info.Serial == 0 || info.Serial >= 0x80000000 ) )
+				{
+					if ( m_OnCancel != null )
+						m_OnCancel();
+				}
+				else
+				{	
+					m_OnTarget( info.Type == 1 ? true : false, info.Serial, new Point3D( info.X, info.Y, info.Z ), info.Gfx );
+				}
 			}
 
 			EndIntercept();
@@ -858,8 +865,13 @@ namespace Assistant
 			if ( m_Intercept )
 			{
 				if ( info.TargID == LocalTargID )
-					OneTimeResponse( info );
-				EndIntercept();
+				{
+					Timer.DelayedCallbackState( TimeSpan.Zero, m_OneTimeRespCallback, info ).Start();
+				}
+				else
+				{
+					EndIntercept();
+				}
 				if ( info.TargID == LocalTargID )
 				{
 					m_HasTarget = false;

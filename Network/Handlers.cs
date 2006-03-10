@@ -14,6 +14,7 @@ namespace Assistant
 		public static void Initialize()
 		{
 			//Client -> Server handlers
+			PacketHandler.RegisterClientToServerViewer( 0x00, new PacketViewerCallback( CreateCharacter ) );
 			PacketHandler.RegisterClientToServerViewer( 0x02, new PacketViewerCallback( MovementRequest ) );
 			PacketHandler.RegisterClientToServerViewer( 0x06, new PacketViewerCallback( ClientDoubleClick ) );
 			PacketHandler.RegisterClientToServerViewer( 0x07, new PacketViewerCallback( LiftRequest ) );
@@ -283,12 +284,26 @@ namespace Assistant
 
 		public static DateTime PlayCharTime = DateTime.MinValue;
 
+		private static void CreateCharacter( PacketReader p, PacketHandlerEventArgs args )
+		{
+			p.Seek( 1+4+4+1, SeekOrigin.Begin ); // skip begining crap
+			World.OrigPlayerName = p.ReadStringSafe( 30 );
+
+			PlayCharTime = DateTime.Now;
+
+			if ( Engine.MainWindow != null )
+				Engine.MainWindow.OnLogin();
+		}
+
 		private static void PlayCharacter( PacketReader p, PacketHandlerEventArgs args )
 		{
 			p.ReadUInt32(); //0xedededed
 			World.OrigPlayerName = p.ReadStringSafe( 30 );
 
 			PlayCharTime = DateTime.Now;
+
+			if ( Engine.MainWindow != null )
+				Engine.MainWindow.OnLogin();
 		}
 
 		private static void ServerList( PacketReader p, PacketHandlerEventArgs args )

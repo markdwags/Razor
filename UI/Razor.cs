@@ -118,9 +118,6 @@ namespace Assistant
 		private System.Windows.Forms.CheckBox dispTime;
 		private System.Windows.Forms.Button agentB5;
 		private System.Windows.Forms.Button agentB6;
-		private System.Windows.Forms.Button visitForums;
-		private System.Windows.Forms.Button visitGuide;
-		private System.Windows.Forms.Button visitHome;
 		private System.Windows.Forms.CheckBox undressConflicts;
 		private System.Windows.Forms.CheckBox titlebarImages;
 		private System.Windows.Forms.CheckBox showWelcome;
@@ -211,7 +208,6 @@ namespace Assistant
 		private bool m_ProfileConfirmLoad;
 		private System.Windows.Forms.CheckBox spellUnequip;
 		private System.Windows.Forms.CheckBox autoFriend;
-		private System.Windows.Forms.Button rebirth;
 		private System.Windows.Forms.CheckBox alwaysStealth;
 		private System.Windows.Forms.CheckBox autoOpenDoors;
 		private System.Windows.Forms.Label label17;
@@ -228,6 +224,11 @@ namespace Assistant
 		private System.Windows.Forms.CheckBox warnCount;
 		private System.Windows.Forms.CheckBox blockHealPoison;
 		private System.Windows.Forms.CheckBox negotiate;
+		private System.Windows.Forms.LinkLabel userGuideLink;
+		private System.Windows.Forms.LinkLabel homeLink;
+		private System.Windows.Forms.LinkLabel forumsLink;
+		private System.Windows.Forms.TextBox features;
+		private System.Windows.Forms.PictureBox lockBox;
 
 		private bool m_CanClose = true;
 
@@ -292,6 +293,7 @@ namespace Assistant
 			this.m_NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.tabs = new System.Windows.Forms.TabControl();
 			this.generalTab = new System.Windows.Forms.TabPage();
+			this.lockBox = new System.Windows.Forms.PictureBox();
 			this.checkUpdate = new System.Windows.Forms.ComboBox();
 			this.label10 = new System.Windows.Forms.Label();
 			this.systray = new System.Windows.Forms.RadioButton();
@@ -403,22 +405,6 @@ namespace Assistant
 			this.addDress = new System.Windows.Forms.Button();
 			this.dressList = new System.Windows.Forms.ListBox();
 			this.undressConflicts = new System.Windows.Forms.CheckBox();
-			this.skillsTab = new System.Windows.Forms.TabPage();
-			this.dispDelta = new System.Windows.Forms.CheckBox();
-			this.skillCopyAll = new System.Windows.Forms.Button();
-			this.skillCopySel = new System.Windows.Forms.Button();
-			this.baseTotal = new System.Windows.Forms.TextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.locks = new System.Windows.Forms.ComboBox();
-			this.setlocks = new System.Windows.Forms.Button();
-			this.resetDelta = new System.Windows.Forms.Button();
-			this.skillList = new System.Windows.Forms.ListView();
-			this.skillHDRName = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRvalue = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRbase = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRdelta = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRcap = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRlock = new System.Windows.Forms.ColumnHeader();
 			this.agentsTab = new System.Windows.Forms.TabPage();
 			this.agentB6 = new System.Windows.Forms.Button();
 			this.agentB5 = new System.Windows.Forms.Button();
@@ -452,18 +438,6 @@ namespace Assistant
 			this.actionList = new System.Windows.Forms.ListBox();
 			this.delMacro = new System.Windows.Forms.Button();
 			this.newMacro = new System.Windows.Forms.Button();
-			this.screenshotTab = new System.Windows.Forms.TabPage();
-			this.imgFmt = new System.Windows.Forms.ComboBox();
-			this.label12 = new System.Windows.Forms.Label();
-			this.capNow = new System.Windows.Forms.Button();
-			this.screenPath = new System.Windows.Forms.TextBox();
-			this.radioUO = new System.Windows.Forms.RadioButton();
-			this.radioFull = new System.Windows.Forms.RadioButton();
-			this.screenAutoCap = new System.Windows.Forms.CheckBox();
-			this.setScnPath = new System.Windows.Forms.Button();
-			this.screensList = new System.Windows.Forms.ListBox();
-			this.screenPrev = new System.Windows.Forms.PictureBox();
-			this.dispTime = new System.Windows.Forms.CheckBox();
 			this.videoTab = new System.Windows.Forms.TabPage();
 			this.txtRecFolder = new System.Windows.Forms.TextBox();
 			this.recFolder = new System.Windows.Forms.Button();
@@ -488,13 +462,41 @@ namespace Assistant
 			this.vidPlay = new System.Windows.Forms.Button();
 			this.vidPlayInfo = new System.Windows.Forms.Label();
 			this.vidOpen = new System.Windows.Forms.Button();
+			this.screenshotTab = new System.Windows.Forms.TabPage();
+			this.imgFmt = new System.Windows.Forms.ComboBox();
+			this.label12 = new System.Windows.Forms.Label();
+			this.capNow = new System.Windows.Forms.Button();
+			this.screenPath = new System.Windows.Forms.TextBox();
+			this.radioUO = new System.Windows.Forms.RadioButton();
+			this.radioFull = new System.Windows.Forms.RadioButton();
+			this.screenAutoCap = new System.Windows.Forms.CheckBox();
+			this.setScnPath = new System.Windows.Forms.Button();
+			this.screensList = new System.Windows.Forms.ListBox();
+			this.screenPrev = new System.Windows.Forms.PictureBox();
+			this.dispTime = new System.Windows.Forms.CheckBox();
 			this.statusTab = new System.Windows.Forms.TabPage();
-			this.rebirth = new System.Windows.Forms.Button();
+			this.features = new System.Windows.Forms.TextBox();
+			this.forumsLink = new System.Windows.Forms.LinkLabel();
+			this.homeLink = new System.Windows.Forms.LinkLabel();
+			this.userGuideLink = new System.Windows.Forms.LinkLabel();
 			this.donate = new System.Windows.Forms.Button();
-			this.visitForums = new System.Windows.Forms.Button();
-			this.visitHome = new System.Windows.Forms.Button();
-			this.visitGuide = new System.Windows.Forms.Button();
 			this.statCol1 = new System.Windows.Forms.Label();
+			this.skillsTab = new System.Windows.Forms.TabPage();
+			this.dispDelta = new System.Windows.Forms.CheckBox();
+			this.skillCopyAll = new System.Windows.Forms.Button();
+			this.skillCopySel = new System.Windows.Forms.Button();
+			this.baseTotal = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.locks = new System.Windows.Forms.ComboBox();
+			this.setlocks = new System.Windows.Forms.Button();
+			this.resetDelta = new System.Windows.Forms.Button();
+			this.skillList = new System.Windows.Forms.ListView();
+			this.skillHDRName = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRvalue = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRbase = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRdelta = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRcap = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRlock = new System.Windows.Forms.ColumnHeader();
 			this.timerTimer = new System.Windows.Forms.Timer(this.components);
 			this.tabs.SuspendLayout();
 			this.generalTab.SuspendLayout();
@@ -509,20 +511,20 @@ namespace Assistant
 			this.dressTab.SuspendLayout();
 			this.groupBox6.SuspendLayout();
 			this.groupBox5.SuspendLayout();
-			this.skillsTab.SuspendLayout();
 			this.agentsTab.SuspendLayout();
 			this.agentGroup.SuspendLayout();
 			this.hotkeysTab.SuspendLayout();
 			this.groupBox8.SuspendLayout();
 			this.macrosTab.SuspendLayout();
 			this.macroActGroup.SuspendLayout();
-			this.screenshotTab.SuspendLayout();
 			this.videoTab.SuspendLayout();
 			this.groupBox7.SuspendLayout();
 			this.groupBox10.SuspendLayout();
 			this.groupBox9.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.playPos)).BeginInit();
+			this.screenshotTab.SuspendLayout();
 			this.statusTab.SuspendLayout();
+			this.skillsTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// m_NotifyIcon
@@ -538,13 +540,13 @@ namespace Assistant
 			this.tabs.Controls.Add(this.moreMoreOptTab);
 			this.tabs.Controls.Add(this.displayTab);
 			this.tabs.Controls.Add(this.dressTab);
-			this.tabs.Controls.Add(this.skillsTab);
 			this.tabs.Controls.Add(this.agentsTab);
 			this.tabs.Controls.Add(this.hotkeysTab);
 			this.tabs.Controls.Add(this.macrosTab);
-			this.tabs.Controls.Add(this.screenshotTab);
 			this.tabs.Controls.Add(this.videoTab);
+			this.tabs.Controls.Add(this.screenshotTab);
 			this.tabs.Controls.Add(this.statusTab);
+			this.tabs.Controls.Add(this.skillsTab);
 			this.tabs.Location = new System.Drawing.Point(0, 0);
 			this.tabs.Multiline = true;
 			this.tabs.Name = "tabs";
@@ -557,6 +559,7 @@ namespace Assistant
 			// 
 			// generalTab
 			// 
+			this.generalTab.Controls.Add(this.lockBox);
 			this.generalTab.Controls.Add(this.checkUpdate);
 			this.generalTab.Controls.Add(this.label10);
 			this.generalTab.Controls.Add(this.systray);
@@ -576,6 +579,19 @@ namespace Assistant
 			this.generalTab.Size = new System.Drawing.Size(416, 191);
 			this.generalTab.TabIndex = 0;
 			this.generalTab.Text = "General";
+			// 
+			// lockBox
+			// 
+			this.lockBox.Cursor = System.Windows.Forms.Cursors.Help;
+			this.lockBox.Image = ((System.Drawing.Image)(resources.GetObject("lockBox.Image")));
+			this.lockBox.Location = new System.Drawing.Point(396, 58);
+			this.lockBox.Name = "lockBox";
+			this.lockBox.Size = new System.Drawing.Size(16, 16);
+			this.lockBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+			this.lockBox.TabIndex = 56;
+			this.lockBox.TabStop = false;
+			this.lockBox.Visible = false;
+			this.lockBox.Click += new System.EventHandler(this.lockBox_Click);
 			// 
 			// checkUpdate
 			// 
@@ -785,9 +801,9 @@ namespace Assistant
 			this.moreOptTab.Controls.Add(this.chkForceSpellHue);
 			this.moreOptTab.Controls.Add(this.chkForceSpeechHue);
 			this.moreOptTab.Controls.Add(this.label3);
-			this.moreOptTab.Location = new System.Drawing.Point(4, 40);
+			this.moreOptTab.Location = new System.Drawing.Point(4, 22);
 			this.moreOptTab.Name = "moreOptTab";
-			this.moreOptTab.Size = new System.Drawing.Size(416, 191);
+			this.moreOptTab.Size = new System.Drawing.Size(416, 209);
 			this.moreOptTab.TabIndex = 5;
 			this.moreOptTab.Text = "Options";
 			// 
@@ -1095,9 +1111,9 @@ namespace Assistant
 			this.moreMoreOptTab.Controls.Add(this.label18);
 			this.moreMoreOptTab.Controls.Add(this.gameSize);
 			this.moreMoreOptTab.Controls.Add(this.smartLT);
-			this.moreMoreOptTab.Location = new System.Drawing.Point(4, 40);
+			this.moreMoreOptTab.Location = new System.Drawing.Point(4, 22);
 			this.moreMoreOptTab.Name = "moreMoreOptTab";
-			this.moreMoreOptTab.Size = new System.Drawing.Size(416, 191);
+			this.moreMoreOptTab.Size = new System.Drawing.Size(416, 209);
 			this.moreMoreOptTab.TabIndex = 10;
 			this.moreMoreOptTab.Text = "More Options";
 			// 
@@ -1369,9 +1385,9 @@ namespace Assistant
 			this.displayTab.Controls.Add(this.checkNewConts);
 			this.displayTab.Controls.Add(this.groupBox3);
 			this.displayTab.Controls.Add(this.groupBox2);
-			this.displayTab.Location = new System.Drawing.Point(4, 40);
+			this.displayTab.Location = new System.Drawing.Point(4, 22);
 			this.displayTab.Name = "displayTab";
-			this.displayTab.Size = new System.Drawing.Size(416, 191);
+			this.displayTab.Size = new System.Drawing.Size(416, 209);
 			this.displayTab.TabIndex = 1;
 			this.displayTab.Text = "Display/Counters";
 			// 
@@ -1531,9 +1547,9 @@ namespace Assistant
 			// 
 			this.dressTab.Controls.Add(this.groupBox6);
 			this.dressTab.Controls.Add(this.groupBox5);
-			this.dressTab.Location = new System.Drawing.Point(4, 40);
+			this.dressTab.Location = new System.Drawing.Point(4, 22);
 			this.dressTab.Name = "dressTab";
-			this.dressTab.Size = new System.Drawing.Size(416, 191);
+			this.dressTab.Size = new System.Drawing.Size(416, 209);
 			this.dressTab.TabIndex = 3;
 			this.dressTab.Text = "Arm/Dress";
 			// 
@@ -1676,146 +1692,6 @@ namespace Assistant
 			this.undressConflicts.Text = "Automatically move conflicting items";
 			this.undressConflicts.CheckedChanged += new System.EventHandler(this.undressConflicts_CheckedChanged);
 			// 
-			// skillsTab
-			// 
-			this.skillsTab.Controls.Add(this.dispDelta);
-			this.skillsTab.Controls.Add(this.skillCopyAll);
-			this.skillsTab.Controls.Add(this.skillCopySel);
-			this.skillsTab.Controls.Add(this.baseTotal);
-			this.skillsTab.Controls.Add(this.label1);
-			this.skillsTab.Controls.Add(this.locks);
-			this.skillsTab.Controls.Add(this.setlocks);
-			this.skillsTab.Controls.Add(this.resetDelta);
-			this.skillsTab.Controls.Add(this.skillList);
-			this.skillsTab.Location = new System.Drawing.Point(4, 40);
-			this.skillsTab.Name = "skillsTab";
-			this.skillsTab.Size = new System.Drawing.Size(416, 191);
-			this.skillsTab.TabIndex = 2;
-			this.skillsTab.Text = "Skills";
-			// 
-			// dispDelta
-			// 
-			this.dispDelta.Location = new System.Drawing.Point(296, 124);
-			this.dispDelta.Name = "dispDelta";
-			this.dispDelta.Size = new System.Drawing.Size(112, 32);
-			this.dispDelta.TabIndex = 11;
-			this.dispDelta.Text = "Display skill and stat changes";
-			this.dispDelta.CheckedChanged += new System.EventHandler(this.dispDelta_CheckedChanged);
-			// 
-			// skillCopyAll
-			// 
-			this.skillCopyAll.Location = new System.Drawing.Point(296, 92);
-			this.skillCopyAll.Name = "skillCopyAll";
-			this.skillCopyAll.Size = new System.Drawing.Size(112, 20);
-			this.skillCopyAll.TabIndex = 9;
-			this.skillCopyAll.Text = "Copy All";
-			this.skillCopyAll.Click += new System.EventHandler(this.skillCopyAll_Click);
-			// 
-			// skillCopySel
-			// 
-			this.skillCopySel.Location = new System.Drawing.Point(296, 68);
-			this.skillCopySel.Name = "skillCopySel";
-			this.skillCopySel.Size = new System.Drawing.Size(112, 20);
-			this.skillCopySel.TabIndex = 8;
-			this.skillCopySel.Text = "Copy Selected";
-			this.skillCopySel.Click += new System.EventHandler(this.skillCopySel_Click);
-			// 
-			// baseTotal
-			// 
-			this.baseTotal.Location = new System.Drawing.Point(364, 164);
-			this.baseTotal.Name = "baseTotal";
-			this.baseTotal.ReadOnly = true;
-			this.baseTotal.Size = new System.Drawing.Size(44, 20);
-			this.baseTotal.TabIndex = 7;
-			this.baseTotal.Text = "";
-			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(296, 168);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(65, 15);
-			this.label1.TabIndex = 6;
-			this.label1.Text = "Base Total:";
-			// 
-			// locks
-			// 
-			this.locks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.locks.Items.AddRange(new object[] {
-													   "Up",
-													   "Down",
-													   "Locked"});
-			this.locks.Location = new System.Drawing.Point(372, 32);
-			this.locks.Name = "locks";
-			this.locks.Size = new System.Drawing.Size(36, 21);
-			this.locks.TabIndex = 5;
-			// 
-			// setlocks
-			// 
-			this.setlocks.Location = new System.Drawing.Point(296, 32);
-			this.setlocks.Name = "setlocks";
-			this.setlocks.Size = new System.Drawing.Size(76, 21);
-			this.setlocks.TabIndex = 4;
-			this.setlocks.Text = "Set all locks:";
-			this.setlocks.Click += new System.EventHandler(this.OnSetSkillLocks);
-			// 
-			// resetDelta
-			// 
-			this.resetDelta.Location = new System.Drawing.Point(296, 5);
-			this.resetDelta.Name = "resetDelta";
-			this.resetDelta.Size = new System.Drawing.Size(112, 20);
-			this.resetDelta.TabIndex = 3;
-			this.resetDelta.Text = "Reset  +/-";
-			this.resetDelta.Click += new System.EventHandler(this.OnResetSkillDelta);
-			// 
-			// skillList
-			// 
-			this.skillList.AutoArrange = false;
-			this.skillList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																						this.skillHDRName,
-																						this.skillHDRvalue,
-																						this.skillHDRbase,
-																						this.skillHDRdelta,
-																						this.skillHDRcap,
-																						this.skillHDRlock});
-			this.skillList.FullRowSelect = true;
-			this.skillList.Location = new System.Drawing.Point(0, 0);
-			this.skillList.Name = "skillList";
-			this.skillList.Size = new System.Drawing.Size(288, 184);
-			this.skillList.TabIndex = 1;
-			this.skillList.View = System.Windows.Forms.View.Details;
-			this.skillList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.skillList_MouseDown);
-			this.skillList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.OnSkillColClick);
-			// 
-			// skillHDRName
-			// 
-			this.skillHDRName.Text = "Skill Name";
-			this.skillHDRName.Width = 82;
-			// 
-			// skillHDRvalue
-			// 
-			this.skillHDRvalue.Text = "Value";
-			this.skillHDRvalue.Width = 40;
-			// 
-			// skillHDRbase
-			// 
-			this.skillHDRbase.Text = "Base";
-			this.skillHDRbase.Width = 40;
-			// 
-			// skillHDRdelta
-			// 
-			this.skillHDRdelta.Text = "+/-";
-			this.skillHDRdelta.Width = 40;
-			// 
-			// skillHDRcap
-			// 
-			this.skillHDRcap.Text = "Cap";
-			this.skillHDRcap.Width = 40;
-			// 
-			// skillHDRlock
-			// 
-			this.skillHDRlock.Text = "Lock";
-			this.skillHDRlock.Width = 25;
-			// 
 			// agentsTab
 			// 
 			this.agentsTab.Controls.Add(this.agentB6);
@@ -1826,9 +1702,9 @@ namespace Assistant
 			this.agentsTab.Controls.Add(this.agentB1);
 			this.agentsTab.Controls.Add(this.agentB2);
 			this.agentsTab.Controls.Add(this.agentB3);
-			this.agentsTab.Location = new System.Drawing.Point(4, 40);
+			this.agentsTab.Location = new System.Drawing.Point(4, 22);
 			this.agentsTab.Name = "agentsTab";
-			this.agentsTab.Size = new System.Drawing.Size(416, 191);
+			this.agentsTab.Size = new System.Drawing.Size(416, 209);
 			this.agentsTab.TabIndex = 6;
 			this.agentsTab.Text = "Agents";
 			// 
@@ -2139,136 +2015,6 @@ namespace Assistant
 			this.newMacro.Text = "New...";
 			this.newMacro.Click += new System.EventHandler(this.newMacro_Click);
 			// 
-			// screenshotTab
-			// 
-			this.screenshotTab.Controls.Add(this.imgFmt);
-			this.screenshotTab.Controls.Add(this.label12);
-			this.screenshotTab.Controls.Add(this.capNow);
-			this.screenshotTab.Controls.Add(this.screenPath);
-			this.screenshotTab.Controls.Add(this.radioUO);
-			this.screenshotTab.Controls.Add(this.radioFull);
-			this.screenshotTab.Controls.Add(this.screenAutoCap);
-			this.screenshotTab.Controls.Add(this.setScnPath);
-			this.screenshotTab.Controls.Add(this.screensList);
-			this.screenshotTab.Controls.Add(this.screenPrev);
-			this.screenshotTab.Controls.Add(this.dispTime);
-			this.screenshotTab.Location = new System.Drawing.Point(4, 40);
-			this.screenshotTab.Name = "screenshotTab";
-			this.screenshotTab.Size = new System.Drawing.Size(416, 191);
-			this.screenshotTab.TabIndex = 8;
-			this.screenshotTab.Text = "Screen Shots";
-			// 
-			// imgFmt
-			// 
-			this.imgFmt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.imgFmt.Items.AddRange(new object[] {
-														"jpg",
-														"png",
-														"bmp",
-														"gif",
-														"tif",
-														"wmf",
-														"exif",
-														"emf"});
-			this.imgFmt.Location = new System.Drawing.Point(84, 104);
-			this.imgFmt.Name = "imgFmt";
-			this.imgFmt.Size = new System.Drawing.Size(72, 21);
-			this.imgFmt.TabIndex = 11;
-			this.imgFmt.SelectedIndexChanged += new System.EventHandler(this.imgFmt_SelectedIndexChanged);
-			// 
-			// label12
-			// 
-			this.label12.Location = new System.Drawing.Point(4, 108);
-			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(80, 20);
-			this.label12.TabIndex = 10;
-			this.label12.Text = "Image Format:";
-			// 
-			// capNow
-			// 
-			this.capNow.Location = new System.Drawing.Point(200, 4);
-			this.capNow.Name = "capNow";
-			this.capNow.Size = new System.Drawing.Size(208, 20);
-			this.capNow.TabIndex = 8;
-			this.capNow.Text = "Take Screen Shot Now";
-			this.capNow.Click += new System.EventHandler(this.capNow_Click);
-			// 
-			// screenPath
-			// 
-			this.screenPath.Location = new System.Drawing.Point(4, 4);
-			this.screenPath.Name = "screenPath";
-			this.screenPath.Size = new System.Drawing.Size(164, 20);
-			this.screenPath.TabIndex = 7;
-			this.screenPath.Text = "";
-			this.screenPath.TextChanged += new System.EventHandler(this.screenPath_TextChanged);
-			// 
-			// radioUO
-			// 
-			this.radioUO.Location = new System.Drawing.Point(4, 132);
-			this.radioUO.Name = "radioUO";
-			this.radioUO.Size = new System.Drawing.Size(88, 16);
-			this.radioUO.TabIndex = 6;
-			this.radioUO.Text = "UO Only";
-			this.radioUO.CheckedChanged += new System.EventHandler(this.radioUO_CheckedChanged);
-			// 
-			// radioFull
-			// 
-			this.radioFull.Location = new System.Drawing.Point(96, 132);
-			this.radioFull.Name = "radioFull";
-			this.radioFull.Size = new System.Drawing.Size(88, 16);
-			this.radioFull.TabIndex = 5;
-			this.radioFull.Text = "Full Screen";
-			this.radioFull.CheckedChanged += new System.EventHandler(this.radioFull_CheckedChanged);
-			// 
-			// screenAutoCap
-			// 
-			this.screenAutoCap.Location = new System.Drawing.Point(4, 168);
-			this.screenAutoCap.Name = "screenAutoCap";
-			this.screenAutoCap.Size = new System.Drawing.Size(180, 16);
-			this.screenAutoCap.TabIndex = 4;
-			this.screenAutoCap.Text = "Auto Death Screen Capture";
-			this.screenAutoCap.CheckedChanged += new System.EventHandler(this.screenAutoCap_CheckedChanged);
-			// 
-			// setScnPath
-			// 
-			this.setScnPath.Location = new System.Drawing.Point(168, 8);
-			this.setScnPath.Name = "setScnPath";
-			this.setScnPath.Size = new System.Drawing.Size(22, 16);
-			this.setScnPath.TabIndex = 3;
-			this.setScnPath.Text = "...";
-			this.setScnPath.Click += new System.EventHandler(this.setScnPath_Click);
-			// 
-			// screensList
-			// 
-			this.screensList.IntegralHeight = false;
-			this.screensList.Location = new System.Drawing.Point(4, 28);
-			this.screensList.Name = "screensList";
-			this.screensList.Size = new System.Drawing.Size(188, 72);
-			this.screensList.Sorted = true;
-			this.screensList.TabIndex = 1;
-			this.screensList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.screensList_MouseDown);
-			this.screensList.SelectedIndexChanged += new System.EventHandler(this.screensList_SelectedIndexChanged);
-			// 
-			// screenPrev
-			// 
-			this.screenPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.screenPrev.Location = new System.Drawing.Point(200, 28);
-			this.screenPrev.Name = "screenPrev";
-			this.screenPrev.Size = new System.Drawing.Size(208, 156);
-			this.screenPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.screenPrev.TabIndex = 0;
-			this.screenPrev.TabStop = false;
-			this.screenPrev.Click += new System.EventHandler(this.screenPrev_Click);
-			// 
-			// dispTime
-			// 
-			this.dispTime.Location = new System.Drawing.Point(4, 152);
-			this.dispTime.Name = "dispTime";
-			this.dispTime.Size = new System.Drawing.Size(180, 16);
-			this.dispTime.TabIndex = 9;
-			this.dispTime.Text = "Include Timestamp on images";
-			this.dispTime.CheckedChanged += new System.EventHandler(this.dispTime_CheckedChanged);
-			// 
 			// videoTab
 			// 
 			this.videoTab.Controls.Add(this.txtRecFolder);
@@ -2517,13 +2263,143 @@ namespace Assistant
 			this.vidOpen.Text = "Open...";
 			this.vidOpen.Click += new System.EventHandler(this.vidOpen_Click);
 			// 
+			// screenshotTab
+			// 
+			this.screenshotTab.Controls.Add(this.imgFmt);
+			this.screenshotTab.Controls.Add(this.label12);
+			this.screenshotTab.Controls.Add(this.capNow);
+			this.screenshotTab.Controls.Add(this.screenPath);
+			this.screenshotTab.Controls.Add(this.radioUO);
+			this.screenshotTab.Controls.Add(this.radioFull);
+			this.screenshotTab.Controls.Add(this.screenAutoCap);
+			this.screenshotTab.Controls.Add(this.setScnPath);
+			this.screenshotTab.Controls.Add(this.screensList);
+			this.screenshotTab.Controls.Add(this.screenPrev);
+			this.screenshotTab.Controls.Add(this.dispTime);
+			this.screenshotTab.Location = new System.Drawing.Point(4, 40);
+			this.screenshotTab.Name = "screenshotTab";
+			this.screenshotTab.Size = new System.Drawing.Size(416, 191);
+			this.screenshotTab.TabIndex = 8;
+			this.screenshotTab.Text = "Screen Shots";
+			// 
+			// imgFmt
+			// 
+			this.imgFmt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.imgFmt.Items.AddRange(new object[] {
+														"jpg",
+														"png",
+														"bmp",
+														"gif",
+														"tif",
+														"wmf",
+														"exif",
+														"emf"});
+			this.imgFmt.Location = new System.Drawing.Point(84, 104);
+			this.imgFmt.Name = "imgFmt";
+			this.imgFmt.Size = new System.Drawing.Size(72, 21);
+			this.imgFmt.TabIndex = 11;
+			this.imgFmt.SelectedIndexChanged += new System.EventHandler(this.imgFmt_SelectedIndexChanged);
+			// 
+			// label12
+			// 
+			this.label12.Location = new System.Drawing.Point(4, 108);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(80, 20);
+			this.label12.TabIndex = 10;
+			this.label12.Text = "Image Format:";
+			// 
+			// capNow
+			// 
+			this.capNow.Location = new System.Drawing.Point(200, 4);
+			this.capNow.Name = "capNow";
+			this.capNow.Size = new System.Drawing.Size(208, 20);
+			this.capNow.TabIndex = 8;
+			this.capNow.Text = "Take Screen Shot Now";
+			this.capNow.Click += new System.EventHandler(this.capNow_Click);
+			// 
+			// screenPath
+			// 
+			this.screenPath.Location = new System.Drawing.Point(4, 4);
+			this.screenPath.Name = "screenPath";
+			this.screenPath.Size = new System.Drawing.Size(164, 20);
+			this.screenPath.TabIndex = 7;
+			this.screenPath.Text = "";
+			this.screenPath.TextChanged += new System.EventHandler(this.screenPath_TextChanged);
+			// 
+			// radioUO
+			// 
+			this.radioUO.Location = new System.Drawing.Point(4, 132);
+			this.radioUO.Name = "radioUO";
+			this.radioUO.Size = new System.Drawing.Size(88, 16);
+			this.radioUO.TabIndex = 6;
+			this.radioUO.Text = "UO Only";
+			this.radioUO.CheckedChanged += new System.EventHandler(this.radioUO_CheckedChanged);
+			// 
+			// radioFull
+			// 
+			this.radioFull.Location = new System.Drawing.Point(96, 132);
+			this.radioFull.Name = "radioFull";
+			this.radioFull.Size = new System.Drawing.Size(88, 16);
+			this.radioFull.TabIndex = 5;
+			this.radioFull.Text = "Full Screen";
+			this.radioFull.CheckedChanged += new System.EventHandler(this.radioFull_CheckedChanged);
+			// 
+			// screenAutoCap
+			// 
+			this.screenAutoCap.Location = new System.Drawing.Point(4, 168);
+			this.screenAutoCap.Name = "screenAutoCap";
+			this.screenAutoCap.Size = new System.Drawing.Size(180, 16);
+			this.screenAutoCap.TabIndex = 4;
+			this.screenAutoCap.Text = "Auto Death Screen Capture";
+			this.screenAutoCap.CheckedChanged += new System.EventHandler(this.screenAutoCap_CheckedChanged);
+			// 
+			// setScnPath
+			// 
+			this.setScnPath.Location = new System.Drawing.Point(168, 8);
+			this.setScnPath.Name = "setScnPath";
+			this.setScnPath.Size = new System.Drawing.Size(22, 16);
+			this.setScnPath.TabIndex = 3;
+			this.setScnPath.Text = "...";
+			this.setScnPath.Click += new System.EventHandler(this.setScnPath_Click);
+			// 
+			// screensList
+			// 
+			this.screensList.IntegralHeight = false;
+			this.screensList.Location = new System.Drawing.Point(4, 28);
+			this.screensList.Name = "screensList";
+			this.screensList.Size = new System.Drawing.Size(188, 72);
+			this.screensList.Sorted = true;
+			this.screensList.TabIndex = 1;
+			this.screensList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.screensList_MouseDown);
+			this.screensList.SelectedIndexChanged += new System.EventHandler(this.screensList_SelectedIndexChanged);
+			// 
+			// screenPrev
+			// 
+			this.screenPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.screenPrev.Location = new System.Drawing.Point(200, 28);
+			this.screenPrev.Name = "screenPrev";
+			this.screenPrev.Size = new System.Drawing.Size(208, 156);
+			this.screenPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.screenPrev.TabIndex = 0;
+			this.screenPrev.TabStop = false;
+			this.screenPrev.Click += new System.EventHandler(this.screenPrev_Click);
+			// 
+			// dispTime
+			// 
+			this.dispTime.Location = new System.Drawing.Point(4, 152);
+			this.dispTime.Name = "dispTime";
+			this.dispTime.Size = new System.Drawing.Size(180, 16);
+			this.dispTime.TabIndex = 9;
+			this.dispTime.Text = "Include Timestamp on images";
+			this.dispTime.CheckedChanged += new System.EventHandler(this.dispTime_CheckedChanged);
+			// 
 			// statusTab
 			// 
-			this.statusTab.Controls.Add(this.rebirth);
+			this.statusTab.Controls.Add(this.features);
+			this.statusTab.Controls.Add(this.forumsLink);
+			this.statusTab.Controls.Add(this.homeLink);
+			this.statusTab.Controls.Add(this.userGuideLink);
 			this.statusTab.Controls.Add(this.donate);
-			this.statusTab.Controls.Add(this.visitForums);
-			this.statusTab.Controls.Add(this.visitHome);
-			this.statusTab.Controls.Add(this.visitGuide);
 			this.statusTab.Controls.Add(this.statCol1);
 			this.statusTab.Location = new System.Drawing.Point(4, 40);
 			this.statusTab.Name = "statusTab";
@@ -2531,55 +2407,65 @@ namespace Assistant
 			this.statusTab.TabIndex = 9;
 			this.statusTab.Text = "Help && Status";
 			// 
-			// rebirth
+			// features
 			// 
-			this.rebirth.Location = new System.Drawing.Point(252, 92);
-			this.rebirth.Name = "rebirth";
-			this.rebirth.Size = new System.Drawing.Size(156, 20);
-			this.rebirth.TabIndex = 5;
-			this.rebirth.Text = "The ONLY PreT2A Shard";
-			this.rebirth.Click += new System.EventHandler(this.rebirth_Click);
+			this.features.AutoSize = false;
+			this.features.Cursor = System.Windows.Forms.Cursors.No;
+			this.features.Location = new System.Drawing.Point(248, 92);
+			this.features.Multiline = true;
+			this.features.Name = "features";
+			this.features.ReadOnly = true;
+			this.features.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.features.Size = new System.Drawing.Size(164, 92);
+			this.features.TabIndex = 9;
+			this.features.Text = "";
+			this.features.Visible = false;
+			// 
+			// forumsLink
+			// 
+			this.forumsLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+			this.forumsLink.Location = new System.Drawing.Point(252, 72);
+			this.forumsLink.Name = "forumsLink";
+			this.forumsLink.Size = new System.Drawing.Size(160, 16);
+			this.forumsLink.TabIndex = 8;
+			this.forumsLink.TabStop = true;
+			this.forumsLink.Text = "Razor Discussion Forum";
+			this.forumsLink.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.forumsLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.forumsLink_LinkClicked);
+			// 
+			// homeLink
+			// 
+			this.homeLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+			this.homeLink.Location = new System.Drawing.Point(252, 56);
+			this.homeLink.Name = "homeLink";
+			this.homeLink.Size = new System.Drawing.Size(160, 16);
+			this.homeLink.TabIndex = 7;
+			this.homeLink.TabStop = true;
+			this.homeLink.Text = "Razor Homepage";
+			this.homeLink.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.homeLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.homeLink_LinkClicked);
+			// 
+			// userGuideLink
+			// 
+			this.userGuideLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+			this.userGuideLink.Location = new System.Drawing.Point(252, 40);
+			this.userGuideLink.Name = "userGuideLink";
+			this.userGuideLink.Size = new System.Drawing.Size(160, 16);
+			this.userGuideLink.TabIndex = 6;
+			this.userGuideLink.TabStop = true;
+			this.userGuideLink.Text = "Razor User Guide";
+			this.userGuideLink.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.userGuideLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.userGuideLink_LinkClicked);
 			// 
 			// donate
 			// 
+			this.donate.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("donate.BackgroundImage")));
 			this.donate.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.donate.Image = ((System.Drawing.Image)(resources.GetObject("donate.Image")));
-			this.donate.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-			this.donate.Location = new System.Drawing.Point(292, 132);
+			this.donate.Location = new System.Drawing.Point(296, 4);
 			this.donate.Name = "donate";
-			this.donate.Size = new System.Drawing.Size(74, 42);
+			this.donate.Size = new System.Drawing.Size(64, 32);
 			this.donate.TabIndex = 4;
 			this.donate.Click += new System.EventHandler(this.donate_Click);
-			// 
-			// visitForums
-			// 
-			this.visitForums.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.visitForums.Location = new System.Drawing.Point(252, 64);
-			this.visitForums.Name = "visitForums";
-			this.visitForums.Size = new System.Drawing.Size(156, 20);
-			this.visitForums.TabIndex = 3;
-			this.visitForums.Text = "Help && Support Forums";
-			this.visitForums.Click += new System.EventHandler(this.visitForums_Click);
-			// 
-			// visitHome
-			// 
-			this.visitHome.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.visitHome.Location = new System.Drawing.Point(252, 36);
-			this.visitHome.Name = "visitHome";
-			this.visitHome.Size = new System.Drawing.Size(156, 20);
-			this.visitHome.TabIndex = 2;
-			this.visitHome.Text = "Razor Homepage";
-			this.visitHome.Click += new System.EventHandler(this.visitHome_Click);
-			// 
-			// visitGuide
-			// 
-			this.visitGuide.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.visitGuide.Location = new System.Drawing.Point(252, 8);
-			this.visitGuide.Name = "visitGuide";
-			this.visitGuide.Size = new System.Drawing.Size(156, 20);
-			this.visitGuide.TabIndex = 1;
-			this.visitGuide.Text = "Razor User Guide";
-			this.visitGuide.Click += new System.EventHandler(this.guide_Click);
 			// 
 			// statCol1
 			// 
@@ -2587,6 +2473,146 @@ namespace Assistant
 			this.statCol1.Name = "statCol1";
 			this.statCol1.Size = new System.Drawing.Size(240, 176);
 			this.statCol1.TabIndex = 0;
+			// 
+			// skillsTab
+			// 
+			this.skillsTab.Controls.Add(this.dispDelta);
+			this.skillsTab.Controls.Add(this.skillCopyAll);
+			this.skillsTab.Controls.Add(this.skillCopySel);
+			this.skillsTab.Controls.Add(this.baseTotal);
+			this.skillsTab.Controls.Add(this.label1);
+			this.skillsTab.Controls.Add(this.locks);
+			this.skillsTab.Controls.Add(this.setlocks);
+			this.skillsTab.Controls.Add(this.resetDelta);
+			this.skillsTab.Controls.Add(this.skillList);
+			this.skillsTab.Location = new System.Drawing.Point(4, 22);
+			this.skillsTab.Name = "skillsTab";
+			this.skillsTab.Size = new System.Drawing.Size(416, 209);
+			this.skillsTab.TabIndex = 2;
+			this.skillsTab.Text = "Skills";
+			// 
+			// dispDelta
+			// 
+			this.dispDelta.Location = new System.Drawing.Point(296, 124);
+			this.dispDelta.Name = "dispDelta";
+			this.dispDelta.Size = new System.Drawing.Size(112, 32);
+			this.dispDelta.TabIndex = 11;
+			this.dispDelta.Text = "Display skill and stat changes";
+			this.dispDelta.CheckedChanged += new System.EventHandler(this.dispDelta_CheckedChanged);
+			// 
+			// skillCopyAll
+			// 
+			this.skillCopyAll.Location = new System.Drawing.Point(296, 92);
+			this.skillCopyAll.Name = "skillCopyAll";
+			this.skillCopyAll.Size = new System.Drawing.Size(112, 20);
+			this.skillCopyAll.TabIndex = 9;
+			this.skillCopyAll.Text = "Copy All";
+			this.skillCopyAll.Click += new System.EventHandler(this.skillCopyAll_Click);
+			// 
+			// skillCopySel
+			// 
+			this.skillCopySel.Location = new System.Drawing.Point(296, 68);
+			this.skillCopySel.Name = "skillCopySel";
+			this.skillCopySel.Size = new System.Drawing.Size(112, 20);
+			this.skillCopySel.TabIndex = 8;
+			this.skillCopySel.Text = "Copy Selected";
+			this.skillCopySel.Click += new System.EventHandler(this.skillCopySel_Click);
+			// 
+			// baseTotal
+			// 
+			this.baseTotal.Location = new System.Drawing.Point(364, 164);
+			this.baseTotal.Name = "baseTotal";
+			this.baseTotal.ReadOnly = true;
+			this.baseTotal.Size = new System.Drawing.Size(44, 20);
+			this.baseTotal.TabIndex = 7;
+			this.baseTotal.Text = "";
+			// 
+			// label1
+			// 
+			this.label1.Location = new System.Drawing.Point(296, 168);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(65, 15);
+			this.label1.TabIndex = 6;
+			this.label1.Text = "Base Total:";
+			// 
+			// locks
+			// 
+			this.locks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.locks.Items.AddRange(new object[] {
+													   "Up",
+													   "Down",
+													   "Locked"});
+			this.locks.Location = new System.Drawing.Point(372, 32);
+			this.locks.Name = "locks";
+			this.locks.Size = new System.Drawing.Size(36, 21);
+			this.locks.TabIndex = 5;
+			// 
+			// setlocks
+			// 
+			this.setlocks.Location = new System.Drawing.Point(296, 32);
+			this.setlocks.Name = "setlocks";
+			this.setlocks.Size = new System.Drawing.Size(76, 21);
+			this.setlocks.TabIndex = 4;
+			this.setlocks.Text = "Set all locks:";
+			this.setlocks.Click += new System.EventHandler(this.OnSetSkillLocks);
+			// 
+			// resetDelta
+			// 
+			this.resetDelta.Location = new System.Drawing.Point(296, 5);
+			this.resetDelta.Name = "resetDelta";
+			this.resetDelta.Size = new System.Drawing.Size(112, 20);
+			this.resetDelta.TabIndex = 3;
+			this.resetDelta.Text = "Reset  +/-";
+			this.resetDelta.Click += new System.EventHandler(this.OnResetSkillDelta);
+			// 
+			// skillList
+			// 
+			this.skillList.AutoArrange = false;
+			this.skillList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																						this.skillHDRName,
+																						this.skillHDRvalue,
+																						this.skillHDRbase,
+																						this.skillHDRdelta,
+																						this.skillHDRcap,
+																						this.skillHDRlock});
+			this.skillList.FullRowSelect = true;
+			this.skillList.Location = new System.Drawing.Point(0, 0);
+			this.skillList.Name = "skillList";
+			this.skillList.Size = new System.Drawing.Size(288, 184);
+			this.skillList.TabIndex = 1;
+			this.skillList.View = System.Windows.Forms.View.Details;
+			this.skillList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.skillList_MouseDown);
+			this.skillList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.OnSkillColClick);
+			// 
+			// skillHDRName
+			// 
+			this.skillHDRName.Text = "Skill Name";
+			this.skillHDRName.Width = 82;
+			// 
+			// skillHDRvalue
+			// 
+			this.skillHDRvalue.Text = "Value";
+			this.skillHDRvalue.Width = 40;
+			// 
+			// skillHDRbase
+			// 
+			this.skillHDRbase.Text = "Base";
+			this.skillHDRbase.Width = 40;
+			// 
+			// skillHDRdelta
+			// 
+			this.skillHDRdelta.Text = "+/-";
+			this.skillHDRdelta.Width = 40;
+			// 
+			// skillHDRcap
+			// 
+			this.skillHDRcap.Text = "Cap";
+			this.skillHDRcap.Width = 40;
+			// 
+			// skillHDRlock
+			// 
+			this.skillHDRlock.Text = "Lock";
+			this.skillHDRlock.Width = 25;
 			// 
 			// timerTimer
 			// 
@@ -2625,20 +2651,20 @@ namespace Assistant
 			this.dressTab.ResumeLayout(false);
 			this.groupBox6.ResumeLayout(false);
 			this.groupBox5.ResumeLayout(false);
-			this.skillsTab.ResumeLayout(false);
 			this.agentsTab.ResumeLayout(false);
 			this.agentGroup.ResumeLayout(false);
 			this.hotkeysTab.ResumeLayout(false);
 			this.groupBox8.ResumeLayout(false);
 			this.macrosTab.ResumeLayout(false);
 			this.macroActGroup.ResumeLayout(false);
-			this.screenshotTab.ResumeLayout(false);
 			this.videoTab.ResumeLayout(false);
 			this.groupBox7.ResumeLayout(false);
 			this.groupBox10.ResumeLayout(false);
 			this.groupBox9.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.playPos)).EndInit();
+			this.screenshotTab.ResumeLayout(false);
 			this.statusTab.ResumeLayout(false);
+			this.skillsTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -2971,6 +2997,39 @@ namespace Assistant
 				( World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0 ),
 				World.Items.Count,
 				World.Mobiles.Count );
+
+			if ( PacketHandlers.PlayCharTime < DateTime.Now && PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 30 ) > DateTime.Now )
+			{
+				if ( !features.Visible && Config.GetBool( "Negotiate" ) )
+				{
+					bool allAllowed = true;
+					StringBuilder text = new StringBuilder();
+
+					text.Append( Language.GetString( LocString.NegotiateTitle ) );
+					text.Append( "\r\n" );
+
+					for (int i=0;i<(int)FeatureBit.MaxBit;i++)
+					{
+						if ( !ClientCommunication.AllowBit( (FeatureBit)i ) )
+						{
+							allAllowed = false;
+
+							text.Append( Language.GetString( (LocString)( ((int)LocString.FeatureDescBase) + i ) ) );
+							text.Append( ' ' );
+							text.Append( Language.GetString( LocString.NotAllowed ) );
+							text.Append( "\r\n" );
+						}
+					}
+
+					if ( allAllowed )
+						text.Append( Language.GetString( LocString.AllFeaturesEnabled ) );
+
+					text.Append( "\r\n" );
+
+					features.Visible = true;
+					features.Text = text.ToString();
+				}
+			}
 		}
 
 		public void UpdateSkill( Skill skill )
@@ -3758,6 +3817,20 @@ namespace Assistant
 			chkAlt.Checked = (hk.Mod&ModKeys.Alt) != 0;
 			chkShift.Checked = (hk.Mod&ModKeys.Shift)!= 0;
 			chkPass.Checked = hk.SendToUO;
+
+			if ( ( hk.LocName >= (int)LocString.DrinkHeal && hk.LocName <= (int)LocString.DrinkAg && !ClientCommunication.AllowBit( FeatureBit.PotionHotkeys ) ) || 
+				( (( hk.LocName >= (int)LocString.TargRed && hk.LocName <= (int)LocString.TargNFriend ) ||
+				( hk.LocName >= (int)LocString.TargEnemyHuman && hk.LocName <= (int)LocString.TargCriminal)) && !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) ) )
+			{
+				LockControl( chkCtrl );
+				LockControl( chkAlt );
+				LockControl( chkShift );
+				LockControl( chkPass );
+				LockControl( key );
+				LockControl( unsetHK );
+				LockControl( setHK );
+				LockControl( dohotkey );
+			}
 		}
 
 		private KeyData GetSelectedHK()
@@ -3776,6 +3849,15 @@ namespace Assistant
 			chkAlt.Checked = false;
 			chkShift.Checked = false;
 			chkPass.Checked = false;
+
+			UnlockControl( chkCtrl );
+			UnlockControl( chkAlt );
+			UnlockControl( chkShift );
+			UnlockControl( chkPass );
+			UnlockControl( key );
+			UnlockControl( unsetHK );
+			UnlockControl( setHK );
+			UnlockControl( dohotkey );
 		}
 
 		private void setHK_Click(object sender, System.EventArgs e)
@@ -4014,7 +4096,13 @@ namespace Assistant
 
 		private void agentList_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			Agent.Select( agentList.SelectedIndex, agentList, agentSubList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6 );
+			try
+			{
+				Agent.Select( agentList.SelectedIndex, agentList, agentSubList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6 );
+			}
+			catch
+			{
+			}
 		}
 
 		private void Agent_Button( int b )
@@ -5024,21 +5112,6 @@ namespace Assistant
 			}
 		}
 
-		private void guide_Click(object sender, System.EventArgs e)
-		{
-			LaunchBrowser( "http://www.runuo.com/razor/guide.php" );
-		}
-
-		private void visitHome_Click(object sender, System.EventArgs e)
-		{
-			LaunchBrowser( "http://www.runuo.com/razor/" );
-		}
-
-		private void visitForums_Click(object sender, System.EventArgs e)
-		{
-			LaunchBrowser( "http://www.runuo.com/forum/forumdisplay.php?f=44" );
-		}
-
 		private void donate_Click(object sender, System.EventArgs e)
 		{
 			LaunchBrowser( "https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD" );
@@ -5546,6 +5619,130 @@ namespace Assistant
 		{
 			Config.SetProperty( "Negotiate", negotiate.Checked );
 			ClientCommunication.SetNegotiate( negotiate.Checked );
+		}
+
+		private void userGuideLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			LaunchBrowser( "http://www.runuo.com/razor/guide.php" );
+		}
+
+		private void homeLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			LaunchBrowser( "http://www.runuo.com/razor/" );
+		}
+
+		private void forumsLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			LaunchBrowser( "http://www.runuo.com/forum/forumdisplay.php?f=44" );
+		}
+
+		private void lockBox_Click(object sender, System.EventArgs e)
+		{
+			MessageBox.Show( this, Language.GetString( LocString.FeatureDisabledText ), Language.GetString( LocString.FeatureDisabled ), MessageBoxButtons.OK, MessageBoxIcon.Stop );
+		}
+
+		private ArrayList m_LockBoxes = new ArrayList();
+
+		public void LockControl( Control locked )
+		{
+			if ( locked != null && locked.Visible )
+			{
+				if ( locked.Parent != null && locked.Parent.Controls != null )
+				{
+					try
+					{
+						int y_off = (locked.Size.Height - 16) / 2;
+						int x_off = 0;
+						System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MainForm));
+						PictureBox newLockBox = new PictureBox();
+
+						if ( locked is TextBox )
+							x_off += 5;
+						else if ( !(locked is CheckBox || locked is RadioButton) )
+							x_off = (locked.Size.Width - 16) / 2;
+
+						newLockBox.Cursor = System.Windows.Forms.Cursors.Help;
+						newLockBox.Image = ((System.Drawing.Image)(resources.GetObject("lockBox.Image")));
+						newLockBox.Size = new System.Drawing.Size(16, 16);
+						newLockBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+						newLockBox.Click += new System.EventHandler(this.lockBox_Click);
+
+						newLockBox.TabIndex = locked.TabIndex;
+						newLockBox.TabStop = locked.TabStop;
+						newLockBox.Location = new System.Drawing.Point( locked.Location.X + x_off, locked.Location.Y + y_off );
+						newLockBox.Name = locked.Name + "LockBox";
+						newLockBox.Tag = locked;
+
+						locked.Parent.Controls.Add ( newLockBox );
+						locked.Parent.Controls.SetChildIndex( newLockBox, 0 );
+						m_LockBoxes.Add( newLockBox );
+					}
+					catch
+					{
+					}
+				}
+
+				locked.Enabled = false;
+			}
+		}
+
+		public void UnlockControl( Control unlock )
+		{
+			if ( unlock != null )
+			{
+				for (int i=0;i<m_LockBoxes.Count;i++)
+				{
+					PictureBox box = m_LockBoxes[i] as PictureBox;
+					if ( box == null )
+						continue;
+
+					if ( box.Tag == unlock )
+					{
+						unlock.Enabled = true;
+						if ( box.Parent != null && box.Parent.Controls != null )
+							box.Parent.Controls.Remove( box );
+
+						m_LockBoxes.RemoveAt( i );
+						break;
+					}
+				}
+			}
+		}
+
+		public void OnLogin()
+		{
+			for (int i=0;i<m_LockBoxes.Count;i++)
+			{
+				PictureBox box = m_LockBoxes[i] as PictureBox;
+				if ( box == null )
+					continue;
+
+				box.Parent.Controls.Remove( box );
+				if ( box.Tag is Control )
+					((Control)box.Tag).Enabled = true;
+			}
+			m_LockBoxes.Clear();
+				
+			if ( ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
+				LockControl( this.smartLT );
+
+			if ( !ClientCommunication.AllowBit( FeatureBit.RangeCheckLT ) )
+				LockControl( this.rangeCheckLT );
+			
+			if ( !ClientCommunication.AllowBit( FeatureBit.AutoOpenDoors ) )
+				LockControl( this.autoOpenDoors );
+		
+			if ( !ClientCommunication.AllowBit( FeatureBit.UnequipBeforeCast ) )
+				LockControl( this.spellUnequip );
+		
+			if ( !ClientCommunication.AllowBit( FeatureBit.AutoPotionEquip ) )
+				LockControl( this.potionEquip );
+
+			if ( !ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+				LockControl( this.blockHealPoison );
+
+			if ( !ClientCommunication.AllowBit( FeatureBit.LoopingMacros ) )
+				LockControl( this.loopMacro );
 		}
 	}
 }

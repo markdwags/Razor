@@ -907,7 +907,7 @@ namespace Assistant
 				if ( s.IsItem && pack != null && Config.GetBool( "PotionEquip" ) && ClientCommunication.AllowBit( FeatureBit.AutoPotionEquip ) )
 				{
 					Item i = World.FindItem( s );
-					if ( i != null && i.IsPotion )
+					if ( i != null && i.IsPotion && i.ItemID != 3853 ) // dont unequip for exploison potions
 					{
 						// dont worry about uneqipping RuneBooks or SpellBooks
 						Item left = World.Player.GetItemOnLayer( Layer.LeftHand );

@@ -757,46 +757,45 @@ int RecvData()
 			if ( !InGame && AllowNegotiate && !ServerNegotiated && AuthBits )
 			{
 				int pos = InRecv->Start;
-				unsigned char *buff = &InRecv->Buff[pos];
+				unsigned char *p_buff = &InRecv->Buff[pos];
 
 				while ( pos < InRecv->Length )
 				{
 					int left = InRecv->Length - pos;
-					int len = GetPacketLength( buff, left );
-					if ( *buff == 0xA9 && len >= 1+2+1+30+30 && len < left )
+					int p_len = GetPacketLength( p_buff, left );
+
+					if ( *p_buff == 0xA9 && p_len >= 1+2+1+30+30 && p_len <= left )
 					{
 						unsigned char hash[16], test[16];
-						memcpy( AuthBits, buff + 1+2+1+30+1, 8 );
-						memset( buff + 1+2+1+30+1, 0, 8 );
 
-						if ( buff[3] > 1 )
-							memcpy( hash, buff + 1+2+1+30+30+30+1, 16 );
+						memcpy( AuthBits, p_buff + 1+2+1+30+1, 8 );
+						
+						if ( p_buff[3] > 1 )
+							memcpy( hash, p_buff + 1+2+1+30+30+30+1, 16 );
 						else
-							memcpy( hash, buff + 1+2+1+30+1+8, 16 );
+							memcpy( hash, p_buff + 1+2+1+30+1+8, 16 );
+
+						for ( int i = 0; i < p_buff[3]; i++ )
+							memset( p_buff + 1+2+1+ 30 + 60*i, 0, 30 );
 
 						if ( memcmp( hash, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 16 ) != 0 )
 						{
-							for ( int i = 0; i < buff[3]; i++ )
-								memset( buff + 1+2+1+ 30 + 60*i, 0, 30 );
-
-							OSIEncryption::MD5( buff, len, test );
+							OSIEncryption::MD5( p_buff, p_len, test );
 
 							ServerNegotiated = memcmp( hash, test, 16 ) == 0;
 						}
 
 						break;
 					}
-					else 
+					
+					if ( p_len <= 0 )
 					{
-						if ( len <= 0 )
-						{
-							break;
-						}
-						else
-						{
-							pos += len;
-							buff += len;
-						}
+						break;
+					}
+					else
+					{
+						pos += p_len;
+						p_buff += p_len;
 					}
 				}
 			}
@@ -946,70 +945,87 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 	return ackLen;
 }
 
+#define RAZOR_ID_KEY "\x9\x11\x83+\x4\x17\x83\x5\x24\x85\x7\x17\x87\x6\x19\x88"
+#define RAZOR_ID_KEY_LEN 16
+
 void FlushSendData()
 {
 	WaitForSingleObject( CommMutex, INFINITE );
 	if ( OutSend->Length > 0 && CurrentConnection )
 	{
 		int ackLen = 0;
-		int len = OutSend->Length;
+		int outLen = OutSend->Length;
 
-		if ( tempBuff == NULL )
-			tempBuff = new char[SHARED_BUFF_SIZE];
-		memcpy( tempBuff, &OutSend->Buff[OutSend->Start], len );
-
-		if ( !InGame )
+		if ( !InGame && !LoginServer )
 		{
 			int pos = OutSend->Start;
 			unsigned char *buff = &OutSend->Buff[pos];
 
-			while ( pos < OutSend->Length )
+			while ( pos < outLen )
 			{
-				int len = GetPacketLength( buff, OutSend->Length - pos );
+				int left = OutSend->Length - pos;
+				int len = GetPacketLength( buff, left );
 
-				if ( *buff == 0x5D && pos + len <= OutSend->Length )
+				if ( *buff == 0x5D && len >= 1+4+30+30 && len <= left )
 				{
+					// play character
 					if ( AllowNegotiate && ServerNegotiated )
 					{
 						// the first 2 bytes are 0
 						// the next 4 bytes are "flags" which say the user's client type (lbr,t2a,aos,etc)
 						// the rest are ignored, so we can use them for auth
 						memcpy( buff + 1 + 4 + 30 + 2 + 4, AuthBits, 8 );
-						memcpy( buff + 1 + 4 + 30 + 2 + 4 + 8, "\x9\x11\x83+\x4\x17\x83\x5\x24\x85\x7\x17\x87\x6\x19\x88", 16 );
+						memcpy( buff + 1 + 4 + 30 + 2 + 4 + 8, RAZOR_ID_KEY, RAZOR_ID_KEY_LEN );
 					}
 
 					InGame = true;
 
 					if ( *IsHaxed )
 						memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
+					break;
+				}
+				else if ( *buff == 0x00 && len >= 1+4+4+1+30+30 && len <= left )
+				{
+					// char creation
+					if ( AllowNegotiate && ServerNegotiated )
+					{
+						memcpy( buff + 1 + 4 + 4 + 1 + 30 + 15, AuthBits, 8 );
+						memcpy( buff + 1 + 4 + 4 + 1 + 30 + 15 + 8, RAZOR_ID_KEY, min( 7, RAZOR_ID_KEY_LEN ) );
+					}
 
-					buff += len;
+					InGame = true;
+
+					if ( *IsHaxed )
+						memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
+					break;
+				}
+				
+				if ( len <= 0 )
+				{
 					break;
 				}
 				else
 				{
-					if ( len <= 0 || len+pos >= OutSend->Length )
-					{
-						break;
-					}
-					else
-					{
-						pos += len;
-						buff += len;
-					}
+					pos += len;
+					buff += len;
 				}
-			}
-		}
+			} // END while
+		} // END if ( !InGame && !LoginServer
+		
+		if ( tempBuff == NULL )
+			tempBuff = new char[SHARED_BUFF_SIZE];
+
+		memcpy( tempBuff, &OutSend->Buff[OutSend->Start], outLen );
 
 		if ( OSICryptEnabled )
 		{
 			if ( LoginServer )
-				ServerLogin->Encrypt( (BYTE*)tempBuff, (BYTE*)tempBuff, len );
+				ServerLogin->Encrypt( (BYTE*)tempBuff, (BYTE*)tempBuff, outLen );
 			else
-				ServerCrypt->EncryptForServer( (BYTE*)tempBuff, (BYTE*)tempBuff, len );
+				ServerCrypt->EncryptForServer( (BYTE*)tempBuff, (BYTE*)tempBuff, outLen );
 		}
 
-		ackLen = (*(NetIOFunc)OldSend)(CurrentConnection,(char*)tempBuff,len,0);
+		ackLen = (*(NetIOFunc)OldSend)(CurrentConnection,(char*)tempBuff,outLen,0);
 
 		if ( ackLen == SOCKET_ERROR )
 		{
