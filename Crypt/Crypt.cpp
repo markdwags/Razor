@@ -513,10 +513,10 @@ DLLFUNCTION void DoFeatures( int features )
 DLLFUNCTION bool AllowBit( unsigned int bit )
 {
 	bit &= 0x000000FF;
-	if ( bit >= 64 || !AuthBits || !ServerNegotiated )
+	if ( bit >= 64 || !AuthBits )
 		return true;
 	else
-		return !( AuthBits[7-(bit/8)] & (1<<(bit%8)) );
+		return ( AuthBits[7-(bit/8)] & (1<<(bit%8)) ) == 0;
 }		
 
 DLLFUNCTION void AddProperty( const char *propName )
@@ -785,6 +785,9 @@ int RecvData()
 							ServerNegotiated = memcmp( hash, test, 16 ) == 0;
 						}
 
+						if ( !ServerNegotiated )
+							memset( AuthBits, 0, 8 );
+
 						break;
 					}
 					
@@ -984,7 +987,7 @@ void FlushSendData()
 						memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
 					break;
 				}
-				else if ( *buff == 0x00 && len >= 1+4+4+1+30+30 && len <= left )
+				else if ( *buff == 0x00 && (*((DWORD*)&buff[1])) == 0xEDEDEDED && len >= 1+4+4+1+30+30 && len <= left )
 				{
 					// char creation
 					if ( AllowNegotiate && ServerNegotiated )
@@ -1061,10 +1064,6 @@ int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 		FirstRecv = true;
 		FirstSend = true;
 
-		ServerNegotiated = false;
-		InGame = false;
-		memset( AuthBits, 0, 8 );
-
 		WaitForSingleObject( CommMutex, INFINITE );
 		CurrentConnection = sock;
 		OutRecv->Length = InRecv->Length = OutSend->Length = InSend->Length = 0;
@@ -1092,6 +1091,11 @@ int PASCAL HookCloseSocket( SOCKET sock )
 		*TotalSend = *TotalRecv = 0;
 		*forceDisconn = false;
 		ReleaseMutex( CommMutex );
+		
+		ServerNegotiated = false;
+		InGame = false;
+		if ( AuthBits )
+			memset( AuthBits, 0, 8 );
 
 		PostMessage( hPostWnd, WM_UONETEVENT, DISCONNECT, 0 );
 	}
@@ -1288,19 +1292,6 @@ bool FindFunction( const char *Dll, const char *FuncName, int Ordinal, unsigned 
 
 	return false;
 }
-
-/*
-DWORD FindInMemory( DWORD StartAddr, const void *search, int length, DWORD StopAddr )
-{
-for( ; StartAddr < StopAddr && !IsBadReadPtr( (void*)StartAddr, length ) ; StartAddr++ )
-{
-if ( memcmp( (const void*)StartAddr, search, length ) == 0 )
-return StartAddr;
-}
-
-return 0;
-}
-*/
 
 DWORD GumpOutV28( DWORD OutFuncAddr, int esiOff, char TwoFourOff, DWORD CurAddr, int x, int y )
 {

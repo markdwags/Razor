@@ -11,25 +11,25 @@ using Microsoft.Win32;
 
 namespace Assistant
 {
-	public enum FeatureBit : int
+	public class FeatureBit
 	{
-		WeatherFilter = 0,
-		LightFilter,
-		SmartLT,
-		RangeCheckLT,
-		AutoOpenDoors,
-		UnequipBeforeCast,
-		AutoPotionEquip,
-		BlockHealPoisoned,
-		LoopingMacros, // includes fors and macros running macros
-		UseOnceAgent,
-		RestockAgent,
-		SellAgent,
-		BuyAgent,
-		PotionHotkeys,
-		RandomTargets,
+		public static readonly uint WeatherFilter	=  0;
+		public static readonly uint LightFilter		=  1;
+		public static readonly uint SmartLT			=  2;	
+		public static readonly uint RangeCheckLT	=  3;
+		public static readonly uint AutoOpenDoors	=  4;
+		public static readonly uint UnequipBeforeCast= 5;
+		public static readonly uint AutoPotionEquip	=  6;
+		public static readonly uint BlockHealPoisoned= 7;
+		public static readonly uint LoopingMacros	=  8; // includes fors and macros running macros
+		public static readonly uint UseOnceAgent	=  9;
+		public static readonly uint RestockAgent	= 10;
+		public static readonly uint SellAgent		= 11;
+		public static readonly uint BuyAgent		= 12;
+		public static readonly uint PotionHotkeys	= 13;
+		public static readonly uint RandomTargets	= 14;
 
-		MaxBit
+		public static readonly uint MaxBit			= 15;
 	}
 
 	public unsafe sealed class ClientCommunication
@@ -483,7 +483,7 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void DoFeatures( int features );
 		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern bool AllowBit( FeatureBit bit );
+		internal static unsafe extern bool AllowBit( uint bit );
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void AddProperty( string prop );
 
@@ -990,10 +990,10 @@ namespace Assistant
 			World.Items.Clear();
 			World.Mobiles.Clear();
 			Macros.MacroManager.Stop();
-			Engine.MainWindow.OnMacroStop();
 			ActionQueue.Stop();
 			Counter.Reset();
 			StealthSteps.Unhide();
+			Engine.MainWindow.OnLogout();
 		}
 
 		private static DateTime m_LastActivate;

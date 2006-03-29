@@ -540,13 +540,13 @@ namespace Assistant
 			this.tabs.Controls.Add(this.moreMoreOptTab);
 			this.tabs.Controls.Add(this.displayTab);
 			this.tabs.Controls.Add(this.dressTab);
+			this.tabs.Controls.Add(this.skillsTab);
 			this.tabs.Controls.Add(this.agentsTab);
 			this.tabs.Controls.Add(this.hotkeysTab);
 			this.tabs.Controls.Add(this.macrosTab);
 			this.tabs.Controls.Add(this.videoTab);
 			this.tabs.Controls.Add(this.screenshotTab);
 			this.tabs.Controls.Add(this.statusTab);
-			this.tabs.Controls.Add(this.skillsTab);
 			this.tabs.Location = new System.Drawing.Point(0, 0);
 			this.tabs.Multiline = true;
 			this.tabs.Name = "tabs";
@@ -3008,9 +3008,9 @@ namespace Assistant
 					text.Append( Language.GetString( LocString.NegotiateTitle ) );
 					text.Append( "\r\n" );
 
-					for (int i=0;i<(int)FeatureBit.MaxBit;i++)
+					for (uint i=0;i<FeatureBit.MaxBit;i++)
 					{
-						if ( !ClientCommunication.AllowBit( (FeatureBit)i ) )
+						if ( !ClientCommunication.AllowBit( i ) )
 						{
 							allAllowed = false;
 
@@ -5645,7 +5645,7 @@ namespace Assistant
 
 		public void LockControl( Control locked )
 		{
-			if ( locked != null && locked.Visible )
+			if ( locked != null )
 			{
 				if ( locked.Parent != null && locked.Parent.Controls != null )
 				{
@@ -5672,6 +5672,7 @@ namespace Assistant
 						newLockBox.Location = new System.Drawing.Point( locked.Location.X + x_off, locked.Location.Y + y_off );
 						newLockBox.Name = locked.Name + "LockBox";
 						newLockBox.Tag = locked;
+						newLockBox.Visible = true;
 
 						locked.Parent.Controls.Add ( newLockBox );
 						locked.Parent.Controls.SetChildIndex( newLockBox, 0 );
@@ -5709,6 +5710,25 @@ namespace Assistant
 			}
 		}
 
+		public void OnLogout()
+		{
+			OnMacroStop();
+
+			features.Visible = false;
+
+			for (int i=0;i<m_LockBoxes.Count;i++)
+			{
+				PictureBox box = m_LockBoxes[i] as PictureBox;
+				if ( box == null )
+					continue;
+
+				box.Parent.Controls.Remove( box );
+				if ( box.Tag is Control )
+					((Control)box.Tag).Enabled = true;
+			}
+			m_LockBoxes.Clear();
+		}
+
 		public void OnLogin()
 		{
 			for (int i=0;i<m_LockBoxes.Count;i++)
@@ -5723,7 +5743,7 @@ namespace Assistant
 			}
 			m_LockBoxes.Clear();
 				
-			if ( ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
+			if ( !ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
 				LockControl( this.smartLT );
 
 			if ( !ClientCommunication.AllowBit( FeatureBit.RangeCheckLT ) )
