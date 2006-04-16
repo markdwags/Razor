@@ -331,6 +331,7 @@ namespace Assistant
 		NextCliloc = 1466,
 		FeatureDisabled = NextCliloc,
 		FeatureDisabledText,
+		InsComment,
 
 		__End,
 	}
@@ -560,6 +561,14 @@ namespace Assistant
 					MessageBox.Show( Engine.ActiveWindow, "Razor was unable to locate and load a suitable UO cliloc file.\nSome text may not be displayed.", "No CliLoc", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 				}
 			}
+		}
+
+		public static string GetCliloc( int num )
+		{
+			if ( m_CliLoc != null )
+				return m_CliLoc.Format( num );
+			else
+				return string.Empty;
 		}
 
 		public static string ClilocFormat( int num, string argstr )

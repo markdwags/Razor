@@ -554,3 +554,4 @@ MacroInsertIf::insert=&Insert
 // 1417 to 1465 reserved
 1466=Feature Disallowed by Server
 1467=This feature is not allowed by the current game server.\nYou may choose to ignore the server's allowed features on the "Options" tab.\n\nTo see a list of disallowed features, check the "Help & Status" tab.
+1468=Insert Comment

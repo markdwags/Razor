@@ -1420,7 +1420,7 @@ namespace Assistant
 			string name = p.ReadStringSafe( 30 );
 			string text = p.ReadStringSafe();
 
-			if (  World.Player != null && serial == Serial.Zero && body == 0 && type == MessageType.Regular && hue == 0xFFFF && font == 0xFFFF && name == "SYSTEM" )
+			if ( World.Player != null && serial == Serial.Zero && body == 0 && type == MessageType.Regular && hue == 0xFFFF && font == 0xFFFF && name == "SYSTEM" )
 			{
 				args.Block = true;
 
@@ -1447,6 +1447,9 @@ namespace Assistant
 			else
 			{
 				HandleSpeech( p, args, serial, body, type, hue, font, "A", name, text );
+
+				if ( !serial.IsValid )
+					BandageTimer.OnAsciiMessage( text );
 			}
 		}
 
@@ -1486,6 +1489,8 @@ namespace Assistant
 			{
 				type = MessageType.Spell;
 			}
+
+			BandageTimer.OnLocalizedMessage( num );
 
 			try
 			{

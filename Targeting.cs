@@ -36,6 +36,10 @@ namespace Assistant
 		private static uint m_CurrentID;
 		private static byte m_CurFlags;
 
+		private static uint m_PreviousID;
+		private static bool m_PreviousGround;
+		private static byte m_PrevFlags;
+
 		private static Serial m_LastCombatant;
 
 		private delegate bool QueueTarget();
@@ -124,10 +128,19 @@ namespace Assistant
 		internal static void OneTimeTarget( bool ground, TargetResponseCallback onTarget, CancelTargetCallback onCancel )
 		{
 			if ( m_Intercept && m_OnCancel != null )
+			{
 				m_OnCancel();
+				CancelOneTimeTarget();
+			}
 
-			if ( m_ClientTarget )
-				ClientCommunication.SendToServer( new TargetCancelResponse( m_CurrentID ) );
+			if ( m_HasTarget && m_CurrentID != 0 )
+			{
+				m_PreviousID = m_CurrentID;
+				m_PreviousGround = m_AllowGround;
+				m_PrevFlags = m_CurFlags;
+
+				m_FilterCancel.Add( m_PreviousID );
+			}
 
 			m_Intercept = true;
 			m_CurrentID = LocalTargID;
@@ -844,6 +857,20 @@ namespace Assistant
 				}
 			}
 		}
+
+		private static void SendPreviousTarget()
+		{	
+			if ( m_PreviousID != 0 )
+			{
+				m_CurrentID = m_PreviousID;
+				m_AllowGround = m_PreviousGround;
+				m_CurFlags = m_PrevFlags;
+
+				m_PreviousID = 0;
+
+				ResendTarget();
+			}
+		}
 		
 		private static void TargetResponse( PacketReader p, PacketHandlerEventArgs args )
 		{
@@ -867,16 +894,16 @@ namespace Assistant
 				if ( info.TargID == LocalTargID )
 				{
 					Timer.DelayedCallbackState( TimeSpan.Zero, m_OneTimeRespCallback, info ).Start();
+
+					m_HasTarget = false;
+					args.Block = true;
+
+					SendPreviousTarget();
+					return;
 				}
 				else
 				{
 					EndIntercept();
-				}
-				if ( info.TargID == LocalTargID )
-				{
-					m_HasTarget = false;
-					args.Block = true;
-					return;
 				}
 			}
 

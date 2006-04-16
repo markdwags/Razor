@@ -349,6 +349,7 @@ namespace Assistant
 		{
 			if ( item == null )
 				return;
+
 			IntPtr pos = (IntPtr)((int)((item.Position.X&0xFFFF)|((item.Position.Y&0xFFFF)<<16)));
 
 			if ( pos == IntPtr.Zero )
@@ -365,6 +366,9 @@ namespace Assistant
 		public static void PostAddMulti( ItemID iid, Point3D Position )
 		{
 			IntPtr pos = (IntPtr)((int)((Position.X&0xFFFF)|((Position.Y&0xFFFF)<<16)));
+
+			if ( pos == IntPtr.Zero )
+				return;
 
 			for(int i=0;i<m_WndReg.Count;i++)
 			{
@@ -1304,15 +1308,61 @@ namespace Assistant
 				{
 					// yes it should be this way
 					case PacketPath.ClientToServer:
+					{
 						blocked = !PacketPlayer.ClientPacket( p );
 						if ( !blocked )
 							blocked = PacketHandler.OnClientPacket( buff[0], pr, p );
 						break;
+					}
 					case PacketPath.ServerToClient:
-						blocked = PacketPlayer.Playing || PacketHandler.OnServerPacket( buff[0], pr, p );
+					{
+						if ( !PacketPlayer.Playing )
+						{
+							blocked = PacketHandler.OnServerPacket( buff[0], pr, p );
+						}
+						else
+						{
+							blocked = true;
+							if ( p != null && p.PacketID == 0x1C )
+							{
+								// 0, 1, 2
+								Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
+								ushort body = p.ReadUInt16(); // 7, 8
+								MessageType type = (MessageType)p.ReadByte(); // 9
+								ushort hue = p.ReadUInt16(); // 10, 11
+								ushort font = p.ReadUInt16();
+								string name = p.ReadStringSafe( 30 );
+								string text = p.ReadStringSafe();
+
+								if ( World.Player != null && serial == Serial.Zero && body == 0 && type == MessageType.Regular && hue == 0xFFFF && font == 0xFFFF && name == "SYSTEM" )
+								{
+									p.Seek( 3, SeekOrigin.Begin );
+									p.WriteAsciiFixed( "", (int)p.Length-3 );
+
+									// CHEAT UO.exe 1 251--
+									int features = 0;
+									if ( (World.Player.Features & 0x8000) == 0 )
+									{
+										if ( (World.Player.Features & 1) != 0 )
+											features = 2;
+										if ( (World.Player.Features & 2) != 0 )
+											features |= 8;
+										features &= 0xFFFF;
+									}
+									else
+									{
+										features = World.Player.Features & 0x7FFF;
+									}
+
+									ClientCommunication.DoFeatures( features );
+								}
+							}
+						}
+
 						if ( !blocked )
 							blocked = !PacketPlayer.ServerPacket( p );
 						break;
+					}
 				}
 
 				if ( filter )

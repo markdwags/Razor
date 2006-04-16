@@ -501,7 +501,7 @@ namespace Assistant
 		public void RemoveRequest()
 		{
 			if ( m_RemoveTimer == null )
-				m_RemoveTimer = Timer.DelayedCallback( TimeSpan.FromSeconds( 0.2 ), new TimerCallback( Remove ) );
+				m_RemoveTimer = Timer.DelayedCallback( TimeSpan.FromSeconds( 0.25 ), new TimerCallback( Remove ) );
 			else if ( m_RemoveTimer.Running )
 				m_RemoveTimer.Stop();
 
@@ -544,7 +544,7 @@ namespace Assistant
 
 		public override void OnPositionChanging( Point3D newPos )
 		{
-			if ( IsMulti )
+			if ( IsMulti && this.Position != Point3D.Zero && newPos != Point3D.Zero && this.Position != newPos )
 			{
 				ClientCommunication.PostRemoveMulti( this );
 				ClientCommunication.PostAddMulti( m_ItemID, newPos );

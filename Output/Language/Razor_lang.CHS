@@ -1,14 +1,14 @@
 // Razor Simplified Chinese/CHS Language Pack
 // Razor简体中文语言包
-// Last modified $Date: 2006/01/25 $
-// 最后更新日期: 2006/01/25
+// Last modified $Date: 2006/04/02 $
+// 最后更新日期: 2006/04/02
 // Based on English language file.
 // 该文档基于原始英文文档进行翻译.
-// Translated by Cloud, mailto:linhongjun@hotmail.com
-// 简体中文翻译: 林鸿钧 E-mail&WLM ID: linhongjun@hotmail.com QQ: 644765
-// Contact me by E-mail, WLM, or QQ for any problems.
+// Translated by C|0ud, mailto: |1nh0ngjun@h07m41|.c0m
+// 简体中文翻译: 林鸿钧 E-mail&WLM ID: |1nh0ngjun@h07m41|.c0m QQ: 644765
+// Contact me by E-mail, WLM, or QQ for any problem.
 // 如有问题,请发送邮件或者直接联系.
-// If Razor can not load skillnames with this language file, please replace "Cliloc.chs" with "Cliloc.enu" in UO installation directory. Becuase there's no corresponding entry in localization file of simplified chinese. Make sure you have made a copy of original file.
+// If Razor can not load skillnames with this language file, please replace "Cliloc.chs" with "Cliloc.enu" in UO installation directory. Becuase there's no corresponding entry in localization file of simplified chinese. Make sure you have made a copy of original file before doing this.
 // 为确保技能名称可以正确显示,请用"Cliloc.enu"替换UO安装目录下的"Cliloc.chs",也就是说删掉原始的"Cliloc.chs"文件,然后更名"Cliloc.enu"为"Cliloc.chs".前提是你的系统必须为简体中文.另外如果繁体中文版本的"Cliloc.cht"如果完整的话也可以进行类似替换,里面的汉化完成度很高.如果排除这个方面的因素影响,强烈推荐使用.替换前请务必要备份原始文件.
 // Special words such as LastTarget, LastObject will not be translated in order to match with UO.
 // 对于LastTarget,LastObject这类指令将不会进行翻译,尽量保持其与UO设置中的一致性.
@@ -49,8 +49,32 @@ MainForm::showWelcome=显示欢迎界面(会影响所有用户)
 MainForm::alwaysTop=启用智能顶部显示
 MainForm::groupBox1=过滤
 MainForm::opacityLabel=透明度: 100%
+MainForm::moreMoreOptTab=更多选项
+MainForm::blockHealPoison=阻止在目标中毒时进行治疗
+MainForm::potionEquip=使用药水时自动解除/重新装备
+MainForm::label17=Razor信息显示:
+MainForm::QueueActions=自动队列化目标延时动作
+MainForm::spellUnequip=施法时自动解除双手装备
+MainForm::autoOpenDoors=自动开门(有时不便)
+MainForm::alwaysStealth=总是显示潜行步数
+MainForm::autoFriend=将团队成员视为朋友
+MainForm::chkStealth=计算潜行步数
+MainForm::rememberPwds=记住密码(不推荐)
+MainForm::showtargtext=单击时显示目标状态
+MainForm::preAOSstatbar=使用Pre-AOS状态窗口
+MainForm::logPackets=启用数据包记录(不推荐)
+MainForm::rangeCheckLT=LastTarget指令距离检测于
+MainForm::actionStatusMsg=显示动作队列状态信息
+MainForm::label5=目标动作延迟:
+MainForm::label9=默认游戏优先级:
+MainForm::label8=步内
+MainForm::label6=ms
+MainForm::label18=x
+MainForm::gameSize=强制游戏窗口大小:
+MainForm::smartLT=启用智能化LastTarget指令
 MainForm::moreOptTab=选项
 MainForm::smoothWalk=平滑行走
+MainForm::negotiate=与服务器协商游戏特性
 MainForm::setLTHilight=设置
 MainForm::lthilight=高亮显示LastTarget
 MainForm::filterSnoop=过滤偷窥信息
@@ -79,29 +103,7 @@ MainForm::blockDis=战争模式中阻止下马
 MainForm::chkForceSpellHue=强制魔法咒语颜色:
 MainForm::chkForceSpeechHue=强制言语文本颜色
 MainForm::label3=咒语格式:
-MainForm::moreMoreOptTab=更多选项
-MainForm::blockHealPoison=阻止在目标中毒时进行治疗
-MainForm::potionEquip=使用药水时自动解除/重新装备
-MainForm::label17=Razor信息显示:
-MainForm::QueueActions=自动队列化目标延时动作
-MainForm::spellUnequip=施法时自动解除双手装备
-MainForm::autoOpenDoors=自动开门(有时不便)
-MainForm::alwaysStealth=总是显示潜行步数
-MainForm::autoFriend=将团队成员视为朋友
-MainForm::chkStealth=计算潜行步数
-MainForm::rememberPwds=记住密码(不推荐)
-MainForm::showtargtext=单击时显示目标状态
-MainForm::preAOSstatbar=使用Pre-AOS状态窗口
-MainForm::logPackets=启用数据包记录(不推荐)
-MainForm::rangeCheckLT=LastTarget指令距离检测于
-MainForm::actionStatusMsg=显示动作队列状态信息
-MainForm::label5=目标动作延迟:
-MainForm::label9=默认游戏优先级:
-MainForm::label8=步内
-MainForm::label6=ms
-MainForm::label18=x
-MainForm::gameSize=强制游戏窗口大小:
-MainForm::smartLT=启用智能化LastTarget指令
+
 MainForm::displayTab=显示/计数
 MainForm::warnCount=当计数器低于如下数值时警告:
 MainForm::excludePouches=永远不自动搜索小包
@@ -121,7 +123,7 @@ MainForm::dressDelSel=移除
 MainForm::undressBag=更改衣物存放包
 MainForm::undressList=脱去衣物
 MainForm::dressUseCur=添加当前穿着
-MainForm::targItem=添加 (目标)
+MainForm::targItem=添加(目标)
 MainForm::dressNow=装备
 MainForm::groupBox5=装备/衣物选择
 MainForm::removeDress=移除
@@ -179,10 +181,9 @@ MainForm::vidPlayStop=停止
 MainForm::vidPlay=播放
 MainForm::vidOpen=打开...
 MainForm::statusTab=帮助与状态
-MainForm::rebirth=访问The ONLY PreT2A Shard
-MainForm::visitForums=访问帮助与支持论坛
-MainForm::visitHome=访问Razor主页
-MainForm::visitGuide=访问Razor用户指南
+MainForm::forumsLink=Razor讨论区
+MainForm::homeLink=Razor主页
+MainForm::userGuideLink=Razor用户手册
 
 HueEntry::Text=选择颜色
 HueEntry::cancel=取消
@@ -193,7 +194,7 @@ HueEntry::label1=颜色代码:
 
 AddCounter::Text=添加一个计数器
 AddCounter::delete=删除
-AddCounter::target=目标 
+AddCounter::target=目标
 AddCounter::cancel=取消
 AddCounter::Add=确定(&O)
 AddCounter::label4=颜色(任何:-1):
@@ -325,7 +326,7 @@ MacroInsertIf::insert=插入(&I)
 1106=选择你想使用的颜色.
 1107=立即截图
 1108=可用参数或值:\n{char} - 角色名\n{shard} - 站名\n{str}/{hp}/{hpmax} - 健康状态\n{dex}/{stam}/{stammax} - 敏捷状态\n{int}/{mana}/{manamax} - 智力状态\n{weight}/{maxweight} - 负重信息\n{gold} - 金钱\n{AR} - 装甲/ 物力抵抗\n{tithe} - 赋税状态\n{followers}/{followersmax} - 随从数量最大值\n{bandage} - 绷带计时\n{statbar}/{mediumstatbar}/{largestatbar} - 状态栏(小/中/大)\n{crimtime} - 成为罪犯时间\n{stealthsteps} - 潜行步数计数器\n{physresist} - 物理抵抗\n{coldresist} - 冰冷抗性\n{fireresist} - 火炎抗性\n{energyresist} - 能量抗性\n{poisonresist} - 毒抗性\n{luck} - 幸运值\n{damage} - 伤害值 Min-Max(最小值-最大值)\n颜色 - HTML16进制代码:'~#rrggbb'(输入'~#~'结束颜色代码)\n或者从计数器列表中使用{Format}格式
-1109=程序版本: {0}\n内存使用: {1}\n发送数据: {2} ({3}/s)\n接收数据: {4} ({5}/s)\n连接时间: {6}\n玩家序号: 0x{7:X8}\n背包序号: 0x{8:X8}\n跟踪物品: {9}\n跟踪生物: {10}\n\n简体中文: Cloud,linhongjun@hotmail.com\n更新时间: 2006/01/25\n注意事项: 如某些信息出现错误或无法显示(如魔法名,技能名),请用文本编辑软件打开Razor\Language\下的Razor_lang.chs文件阅读详细说明.
+1109=程序版本: {0}\n内存使用: {1}\n发送数据: {2} ({3}/s)\n接收数据: {4} ({5}/s)\n连接时间: {6}\n玩家序号: 0x{7:X8}\n背包序号: 0x{8:X8}\n跟踪物品: {9}\n跟踪生物: {10}\n\n简体中文: C|0ud,|1nh0ngjun@h07m41|.c0m\n更新时间: 2006/04/02\n注意事项: 如某些信息出现错误或无法显示(如魔法名,技能名),请用文本编辑软件打开Razor\Language\下的Razor_lang.chs文件阅读详细说明.
 1110=设定技能锁:上升
 1111=设定技能锁:下降
 1112=设定技能锁:锁定
@@ -333,8 +334,8 @@ MacroInsertIf::insert=插入(&I)
 1114=现在加载个人配置文件"{0}"?
 1115=读取个人配置文件时发生错误.
 1116=你不可以删除默认的个人配置文件.
-1117=输入新的个人配置文件的名称: 
-1118=无法创建新的个人配置文件!\n 原因: 该个人配置文件已存在.\n\n你想现在就加载该个人配置文件吗?
+1117=输入新的个人配置文件的名称:
+1118=无法创建新的个人配置文件!\n原因: 该个人配置文件已存在.\n\n你想现在就加载该个人配置文件吗?
 1119=输入新的衣物列表的名称:
 1120=删除该衣物列表吗?
 1121={0:X}(物品超出范围)
@@ -344,9 +345,9 @@ MacroInsertIf::insert=插入(&I)
 1125=物品未找到,或选择了无效物品.
 1126=按键组合已经存在于'{0}'.\n需要更改为'{1}'?
 1127=数据成功保存.
-1128=警告!\n记录数据包可能会降低Razor的性能.记录文件会逐渐增大,但是Razor不会自动移除它.\n\nRazor的数据记录文件可能会包含个人信息例如密码, 并且这些文件不应该给任何你不信任的人.\n\n你确认要启用数据包记录吗?\n(这个不会保存于你的个人配置文件中)
+1128=警告!\n记录数据包可能会降低Razor的性能.记录文件会逐渐增大,但是Razor不会自动移除它.\n\nRazor的数据记录文件可能会包含个人信息例如密码,并且这些文件不应该给任何你不信任的人.\n\n你确认要启用数据包记录吗?\n(这个不会保存于你的个人配置文件中)
 1129=将选择的目标转换为类型
-1130=输入新的宏的名称: 
+1130=输入新的宏的名称:
 1131=该名称包含无效字符.
 1132=同名宏已存在.
 1133=该宏在记录前将会被清空.\n你确认要将记录覆盖到该宏吗?
@@ -364,7 +365,7 @@ MacroInsertIf::insert=插入(&I)
 1145=启用该选项将会导致Razor保存你的密码于个人配置文件中.\n尽管密码已经被加密,但其他人仍然有可能获取.\n你确认要启用该功能吗?
 1146=你必须指定一个有效的端口.
 1147=忽略动作请求(已经处于队列中).
-1148=队列动作请求{0}... {1}剩余.
+1148=队列动作请求{0}...{1}剩余.
 1149=完成{0}个队列动作于{1:F1}秒.
 1150=UseOnce代理
 1151=添加(目标)...
@@ -393,7 +394,7 @@ MacroInsertIf::insert=插入(&I)
 1174=现在整理
 1175=容器未设置.
 1176=Razor无法找到你的背包.
-1177=整理代理发现{0}个物品需要移动. (这需要一些时间)
+1177=整理代理发现{0}个物品需要移动.(这需要一些时间)
 1178=整理代理无法找到任何可以移动的物品.
 1179=该物品已处于列表中.
 1180=自动搜索解除
@@ -407,7 +408,7 @@ MacroInsertIf::insert=插入(&I)
 1188={0}个物品处于队列中将被卸下.
 1189={0}个物品处于队列中将被装备.
 1190={0}个物品已装备.
-1191={0}个物品未发现. (超出范围)
+1191={0}个物品未发现.(超出范围)
 1192=警告: Spells.def文件未找到,魔法咒语格式文本将不会显示.
 1193=潜行步数: {0}
 1194=现在记录潜行步数.
@@ -517,7 +518,7 @@ MacroInsertIf::insert=插入(&I)
 1365=插入"For Loop"
 1366=插入"End For"
 1367=输入重复次数:
-1368=清空缓存
+1368=清空清道夫的缓存
 1369=LastSpell(最后魔法咒语)
 1370=LastSkill(最后技能)
 1371=LastObject(最后目标)
@@ -545,3 +546,27 @@ MacroInsertIf::insert=插入(&I)
 1393=设置补给包
 1394=添加到UseOnce
 1395=攻击LastTarget
+1396=编辑超时...
+1397=你当前未持有任何物品.
+1398=不允许
+1399=允许
+1400=与服务器协商的特性:
+1401=所有特性被允许.
+1402=天气过滤
+1403=光源级别过滤
+1404=智能LastTarget
+1405=范围内检测LastTarget
+1406=自动开门
+1407=施法时卸除装备
+1408=自动使用药水,装备
+1409=中毒时阻止治疗
+1410=循环宏命令
+1411=使用Once代理
+1412=补给代理
+1413=销售代理
+1414=购买代理
+1415=药水热键
+1416=随机目标
+// 1417 to 1465 reserved
+1466=特性不被服务器允许
+1467=该特性被当前游戏服务器禁用.\n你可以选择忽略服务器所允许的特性,可以在选项标签下进行设置.\n\n查看被禁止的特性列表,请在帮助与状态标签下设置.

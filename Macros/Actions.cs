@@ -96,6 +96,69 @@ namespace Assistant.Macros
 		}
 	}
 
+	public class MacroComment : MacroAction
+	{
+		private string m_Comment;
+
+		public MacroComment( string comment )
+		{
+			if ( comment == null )
+				comment = "";
+
+			m_Comment = comment.Trim();
+		}
+
+		public override bool Perform()
+		{
+			return true;
+		}
+
+		public override string Serialize()
+		{
+			return ToString();
+		}
+
+		public string Comment { get { return m_Comment; } set { m_Comment = value; } }
+
+		public override string ToString()
+		{
+			if ( m_Comment == null )
+				m_Comment = "";
+
+			return String.Format( "// {0}", m_Comment );
+		}
+
+		private MenuItem[] m_MenuItems;
+		public override MenuItem[] GetContextMenuItems()
+		{
+			if ( m_MenuItems == null )
+			{
+				m_MenuItems = new MacroMenuItem[]
+				{
+					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
+				};
+			}
+			
+			return m_MenuItems;
+		}
+
+		private void Edit( object[] args )
+		{
+			if ( InputBox.Show( Language.GetString( LocString.InsComment ), Language.GetString( LocString.InputReq ), m_Comment ) )
+			{
+				if ( m_Comment == null )
+					m_Comment = "";
+
+				m_Comment = InputBox.GetString();
+
+				if ( m_Comment == null )
+					m_Comment = "";
+
+				m_Parent.Update();
+			}
+		}
+	}
+
 	public class DoubleClickAction : MacroAction
 	{
 		private Serial m_Serial;
@@ -1458,8 +1521,13 @@ namespace Assistant.Macros
 			if ( args.Length > 1 )
 				m_MenuID = Convert.ToUInt32( args[1] );
 
-			if ( args.Length > 2 )
+			try
+			{
 				m_Timeout = TimeSpan.FromSeconds( Convert.ToDouble( args[2] ) );
+			}
+			catch
+			{
+			}
 		}
 
 		public override bool Perform()
@@ -1546,8 +1614,13 @@ namespace Assistant.Macros
 				m_Strict = false;
 			}
 
-			if ( args.Length > 3 )
+			try
+			{
 				m_Timeout = TimeSpan.FromSeconds( Convert.ToDouble( args[3] ) );
+			}
+			catch
+			{
+			}
 		}
 
 		public override bool Perform()
@@ -1757,10 +1830,14 @@ namespace Assistant.Macros
 			m_Direction = Convert.ToByte( args[2] );
 			m_Value = Convert.ToInt32( args[3] );
 
-			if ( args.Length > 4 )
+			try
+			{
 				m_Timeout = TimeSpan.FromSeconds( Convert.ToDouble( args[4] ) );
-			else
+			}
+			catch
+			{
 				m_Timeout = TimeSpan.FromMinutes( 60.0 );
+			}
 		}
 
 		public WaitForStatAction( IfAction.IfVarType stat, byte dir, int val )

@@ -744,6 +744,7 @@ namespace Assistant
 
 			if ( Config.GetBool( "AutoSearch" ) && Backpack != null )
 				PlayerData.DoubleClick( Backpack ) ;
+
 			ClientCommunication.PostMapChange( cur );
 		}
 
@@ -901,7 +902,7 @@ namespace Assistant
 			else
 				s = Serial.Zero;
 
-			if ( s != 0 )
+			if ( s != Serial.Zero )
 			{
 				Item free = null, pack = World.Player.Backpack;
 				if ( s.IsItem && pack != null && Config.GetBool( "PotionEquip" ) && ClientCommunication.AllowBit( FeatureBit.AutoPotionEquip ) )
@@ -919,20 +920,14 @@ namespace Assistant
 							free = right;
 
 						if ( free != null )
-						{
-							DragDropManager.Drag( free, free.Amount );
-							DragDropManager.Drop( free, pack );
-						}
+							DragDropManager.DragDrop( free, pack );
 					}
 				}
 
 				ActionQueue.DoubleClick( silent, s );
 
 				if ( free != null )
-				{
-					DragDropManager.Drag( free, free.Amount );
-					DragDropManager.Drop( free, World.Player, free.Layer );
-				}
+					DragDropManager.DragDrop( free, World.Player, free.Layer );
 
 				if ( s.IsItem )
 					World.Player.m_LastObj = s;

@@ -6,22 +6,61 @@ namespace Assistant
 	{
 		private static int m_Count;
 		private static Timer m_Timer;
+
+		private static int[] m_ClilocNums = new int[]
+			{
+				500955,
+				500962,
+				500963,
+				500964,
+				500965,
+				500966,
+				500967,
+				500968,
+				500969,
+				503252,
+				503253,
+				503254,
+				503255,
+				503256,
+				503257,
+				503258,
+				503259,
+				503260,
+				503261,
+				1010058,
+				1010648,
+				1010650,
+				1060088,
+				1060167,
+			};
 		
 		static BandageTimer()
 		{
 			m_Timer = new InternalTimer();
-			PacketHandler.RegisterServerToClientViewer( 0xC1, new PacketViewerCallback( OnLocalizedMessage ) );
 		}
 
-		private static void OnLocalizedMessage( PacketReader pvSrc, PacketHandlerEventArgs args )
+		public static void OnLocalizedMessage( int num )
 		{
 			if ( Running )
 			{
-				pvSrc.Seek( 1 + 2 + 4 + 2 + 1 + 2 + 2, System.IO.SeekOrigin.Begin );
-				int num = pvSrc.ReadInt32(); // number
-
 				if ( num == 500955 || ( num >= 500962 && num <= 500969 ) || ( num >= 503252 && num <= 503261 ) || num == 1010058 || num == 1010648 || num == 1010650 || num == 1060088 || num == 1060167 )
 					Stop();
+			}
+		}
+
+		public static void OnAsciiMessage( string msg )
+		{
+			if ( Running )
+			{
+				for (int i=0;i<m_ClilocNums.Length;i++)
+				{
+					if ( Language.GetCliloc( m_ClilocNums[i] ) == msg )
+					{
+						Stop();
+						break;
+					}
+				}
 			}
 		}
 

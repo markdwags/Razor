@@ -210,12 +210,23 @@ namespace Assistant.Macros
 				string line;
 				while ( (line=reader.ReadLine()) != null )
 				{
-					if ( line == "" || line[0] == '#' )
+					if ( line.Length <= 2 )
 						continue;
 
 					if ( line == "!Loop" )
 					{
 						m_Loop = true;
+						continue;
+					}
+
+					if ( line[0] == '#' )
+					{
+						m_Actions.Add( new MacroComment( line.Substring( 1 ) ) );
+						continue;
+					}
+					else if ( line[0] == '/' && line[1] == '/' )
+					{
+						m_Actions.Add( new MacroComment( line.Substring( 2 ) ) );
 						continue;
 					}
 
