@@ -33,7 +33,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
-				OutputFile="$(OutDir)/Crypt.dll"
+				OutputFile="../Output//Crypt.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="Crypt.def"
 				GenerateDebugInformation="TRUE"
@@ -70,21 +70,24 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
+				FavorSizeOrSpeed="0"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;CRYPT_EXPORTS"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="0"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
-				OutputFile="$(OutDir)/Crypt.dll"
+				OutputFile="../Output//Crypt.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="Crypt.def"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -160,6 +163,9 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath=".\Checksum.h">
+			</File>
 			<File
 				RelativePath=".\Crypt.h">
 			</File>

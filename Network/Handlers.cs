@@ -65,6 +65,7 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0xA2, new PacketViewerCallback( ManaUpdate ) );	
 			PacketHandler.RegisterServerToClientViewer( 0xA3, new PacketViewerCallback( StamUpdate ) );					
 			PacketHandler.RegisterServerToClientViewer( 0xA8, new PacketViewerCallback( ServerList ) );
+			PacketHandler.RegisterServerToClientViewer( 0xAB, new PacketViewerCallback( DisplayStringQuery ) );
 			PacketHandler.RegisterServerToClientViewer( 0xAF, new PacketViewerCallback( DeathAnimation ) );
 			PacketHandler.RegisterServerToClientFilter( 0xAE, new PacketFilterCallback( UnicodeSpeech ) );
 			PacketHandler.RegisterServerToClientViewer( 0xB0, new PacketViewerCallback( SendGump ) );
@@ -77,6 +78,19 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0xD6, new PacketViewerCallback( EncodedPacket ) );//0xD6 "encoded" packets
 			PacketHandler.RegisterServerToClientViewer( 0xD8, new PacketViewerCallback( CustomHouseInfo ) );
 			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
+		}
+
+		private static void DisplayStringQuery( PacketReader p, PacketHandlerEventArgs args )
+		{
+			// See also Packets.cs: StringQueryResponse
+			/*if ( MacroManager.AcceptActions )
+			{
+				int serial = p.ReadInt32();
+				byte type = p.ReadByte();
+				byte index = p.ReadByte();
+
+				MacroManager.Action( new WaitForTextEntryAction( serial, type, index ) );
+			}*/
 		}
 
 		private static void SetUpdateRange( Packet p, PacketHandlerEventArgs args )
@@ -946,7 +960,7 @@ namespace Assistant
 			bool wasPoisoned = m.Poisoned;
 			m.Poisoned = ( poison != 0 );
 
-			if ( m == World.Player && wasPoisoned != m.Poisoned )// || ( oldNoto != m.Notoriety && Config.GetBool( "ShowNotoHue" ) ) )
+			if ( m == World.Player && wasPoisoned != m.Poisoned )
 				ClientCommunication.RequestTitlebarUpdate();
 		}
 

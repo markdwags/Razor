@@ -5,6 +5,7 @@
 #include "OSIEncryption.h"
 #include "LoginEncryption.h"
 #include "MemFinder.h"
+#include "Checksum.h"
 
 //*************************************************************************************
 //**************************************Varaibles**************************************
@@ -567,6 +568,16 @@ DLLFUNCTION void AddProperty( const char *propName )
 		pShared->IsHaxed = true;
 }
 
+DLLFUNCTION void SetAllowDisconn( bool newVal )
+{
+	if ( pShared && CommMutex )
+	{
+		WaitForSingleObject( CommMutex, INFINITE );
+		pShared->AllowDisconn = newVal;
+		ReleaseMutex( CommMutex );
+	}
+}
+
 bool CreateSharedMemory()
 {
 	char name[512];
@@ -765,7 +776,7 @@ int PASCAL HookRecv( SOCKET sock, char *buff, int len, int flags )
 	if ( sock == CurrentConnection && CurrentConnection )
 	{
 		WaitForSingleObject( CommMutex, INFINITE );
-		if ( pShared->ForceDisconn && pShared->OutRecv.Length <= 0 )
+		if ( pShared->ForceDisconn && pShared->AllowDisconn && pShared->OutRecv.Length <= 0 )
 		{
 			ReleaseMutex( CommMutex );
 			WSASetLastError( WSAECONNRESET );
@@ -817,13 +828,21 @@ int PASCAL HookRecv( SOCKET sock, char *buff, int len, int flags )
 		Maintenance( pShared->OutRecv );
 
 		ReleaseMutex( CommMutex );
+
+		if ( ackLen == 0 )
+		{
+			WSASetLastError( WSAEWOULDBLOCK );
+			return -1;
+		}
+		else
+		{
+			return ackLen;
+		}
 	}
 	else
 	{
-		ackLen = (*(NetIOFunc)OldRecv)(sock,buff,len,flags);
+		return (*(NetIOFunc)OldRecv)(sock,buff,len,flags);
 	}
-
-	return ackLen;
 }
 
 int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
@@ -1054,6 +1073,9 @@ int PASCAL HookSelect( int ndfs, fd_set *readfd, fd_set *writefd, fd_set *except
 {
 	bool checkRecv = false;
 	bool checkErr = false;
+	bool modified = false;
+	int realRet = 0;
+	int myRet = 0;
 
 	if ( CurrentConnection )
 	{
@@ -1086,7 +1108,7 @@ int PASCAL HookSelect( int ndfs, fd_set *readfd, fd_set *writefd, fd_set *except
 		}
 	}
 
-	int retVal = (*(SelectFunc)OldSelect)( ndfs, readfd, writefd, exceptfd, timeout );
+	realRet = (*(SelectFunc)OldSelect)( ndfs, readfd, writefd, exceptfd, timeout );
 
 	if ( SmartCPU )
 		QueryPerformanceCounter( &Counter );
@@ -1097,14 +1119,14 @@ int PASCAL HookSelect( int ndfs, fd_set *readfd, fd_set *writefd, fd_set *except
 		{
 			FD_CLR( CurrentConnection, readfd );
 			RecvData();
-			retVal--;
+			realRet--;
 		}
 
 		WaitForSingleObject( CommMutex, INFINITE );
 		if ( pShared->OutRecv.Length > 0 || ( pShared->ForceDisconn && pShared->AllowDisconn ) )
 		{
 			FD_SET( CurrentConnection, readfd );
-			retVal++;
+			myRet++;
 		}
 		ReleaseMutex( CommMutex );
 	}
@@ -1115,12 +1137,19 @@ int PASCAL HookSelect( int ndfs, fd_set *readfd, fd_set *writefd, fd_set *except
 		if ( pShared->ForceDisconn && pShared->AllowDisconn && pShared->OutRecv.Length <= 0 )
 		{
 			FD_SET( CurrentConnection, exceptfd );
-			retVal++;
+			myRet++;
 		}
 		ReleaseMutex( CommMutex );
 	}
 
-	return retVal;
+	if ( realRet < 0 )
+	{
+		return myRet;
+	}
+	else
+	{
+		return realRet + myRet;
+	}
 }
 
 bool HookFunction( const char *Dll, const char *FuncName, int Ordinal, unsigned long NewAddr,

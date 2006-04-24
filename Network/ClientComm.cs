@@ -490,6 +490,8 @@ namespace Assistant
 		internal static unsafe extern bool AllowBit( uint bit );
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void AddProperty( string prop );
+		[DllImport( "Crypt.dll" )]
+		internal static unsafe extern void SetAllowDisconn( bool allowed );
 
 		[DllImport( "msvcrt.dll" )]
 		public static unsafe extern void memcpy( void *to, void *from, int len );

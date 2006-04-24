@@ -8,8 +8,8 @@
 ;General
 
   ;Name and file
-  Name "Razor v0.1.32 (Beta)"
-  OutFile "RazorB32_Inst.exe"
+  Name "Razor"
+  OutFile "RazorB33_Inst.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\Razor"

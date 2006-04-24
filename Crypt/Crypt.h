@@ -1,8 +1,7 @@
 #pragma once
 #pragma pack(1)
 
-#define DLL_VERSION "0.1.32"
-#define CHECKSUM "\x30\xB9\xE0\x6A\x9E\x8B\x2B\xEC\xEB\x92\xC2\xD2\x4E\x32\xDD\xDD"
+#define DLL_VERSION "0.1.33"
 
 #define DLLFUNCTION __declspec(dllexport)
 #define DLLVAR DLLFUNCTION

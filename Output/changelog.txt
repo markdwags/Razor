@@ -18,3 +18,4 @@ Changes/Fixes:
 -Fixed serious network communications bug.  All users are strongly recommended to upgrade.
 -Fixed some small and unlikely RPV playback bugs.
 -Fixed some bugs which caused Drag/Drop to get stuck sometimes
+-If you are disconnected while watching an RPV, the RPV will now continue playing normally.

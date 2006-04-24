@@ -1184,6 +1184,24 @@ namespace Assistant
 		}
 	}
 
+	public sealed class StringQueryResponse : Packet
+	{
+		public StringQueryResponse( int serial, byte type, byte index, bool ok, string resp ) : base( 0xAC )
+		{
+			if ( resp == null )
+				resp = String.Empty;
+
+			this.EnsureCapacity( 1 + 2 + 4 + 1 + 1 + 1 + 2 + resp.Length + 1 );
+
+			Write( (int)serial );
+			Write( (byte)type );
+			Write( (byte)index );
+			Write( (bool)ok );
+			Write( (short)(resp.Length+1) );
+			WriteAsciiNull( resp );
+		}
+	}
+
 	public class DesignStateDetailed : Packet
 	{
 		public const int MaxItemsPerStairBuffer = 750;

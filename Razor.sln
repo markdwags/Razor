@@ -5,6 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor", "Razor.csproj", "{B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Crypt", "Crypt\Crypt.vcproj", "{B32A4D9E-3AF1-4C75-989D-D62C4E8F08B1}"
 	ProjectSection(ProjectDependencies) = postProject
+		{B24E4FB1-4936-4544-9E88-F3FF9B04FDBA} = {B24E4FB1-4936-4544-9E88-F3FF9B04FDBA}
 	EndProjectSection
 EndProject
 Global

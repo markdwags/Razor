@@ -87,7 +87,7 @@ namespace Assistant
 				btnRec.Text = "Record PacketVideo";
 				btnPlay.Enabled = btnStop.Enabled = true;
 			}
-			else if ( m_Playing )
+			else if ( Playing )
 			{
 				ClientCommunication.SetDeathMsg( Language.GetString( LocString.PacketPlayerStop + Utility.Random( 10 ) ) ); 
 				ClientCommunication.ForceSendToClient( new DeathStatus( true ) );
@@ -110,7 +110,7 @@ namespace Assistant
 
 		public static void Record()
 		{
-			if ( m_Recording || m_Playing || World.Player == null )
+			if ( m_Recording || Playing || World.Player == null )
 				return;
 
 			btnRec.Text = "Stop Recording (PV)";
@@ -223,7 +223,7 @@ namespace Assistant
 
 		public static bool ServerPacket( Packet p )
 		{
-			if ( m_Playing )
+			if ( Playing )
 			{
 				return false; // dont allow the client to recv server packets.
 			}
@@ -335,7 +335,7 @@ namespace Assistant
 
 		public static bool ClientPacket( Packet p )
 		{
-			if ( m_Playing )
+			if ( Playing )
 			{
 				if ( p == null || World.Player == null )
 					return false;
@@ -524,7 +524,7 @@ namespace Assistant
 
 		private static void SendNextPacket()
 		{
-			if ( !m_Playing )
+			if ( !Playing )
 				return;
 
 			if ( World.Player == null )
@@ -578,7 +578,7 @@ namespace Assistant
 
 			try
 			{
-				if ( !m_Playing )
+				if ( !Playing )
 				{
 					tbPos.Value = 0;
 					return;
@@ -726,7 +726,7 @@ namespace Assistant
 
 		public static void Close()
 		{
-			if ( m_Playing )
+			if ( Playing )
 				return;
 
 			btnClose.Enabled = btnPlay.Enabled = btnStop.Enabled = false;
@@ -740,7 +740,7 @@ namespace Assistant
 
 		public static void Play()
 		{
-			if ( m_Recording || m_Playing || m_GZIn == null )
+			if ( m_Recording || Playing || m_GZIn == null )
 				return;
 
 			if ( World.Player == null )
@@ -759,6 +759,7 @@ namespace Assistant
 			//m_InStream = new BinaryReader( new FileStream( fileName, FileMode.Open, FileAccess.Read, FileShare.Read ) );
 
 			m_Playing = true;
+			ClientCommunication.SetAllowDisconn( false );
 
 			ClientCommunication.BringToFront( ClientCommunication.FindUOWindow() );
 
@@ -810,7 +811,7 @@ namespace Assistant
 
 		public static void Pause()
 		{
-			if ( !m_Playing )
+			if ( !Playing )
 				return;
 
 			if ( !m_PlayTimer.Running )
@@ -847,8 +848,10 @@ namespace Assistant
 		private static void EndPlayback()
 		{
 			m_PlayTimer = null;
-
+			
 			m_Playing = false;
+			ClientCommunication.SetAllowDisconn( true );
+			ClientCommunication.SetDeathMsg( "You are dead." );
 
 			PlayerData player;
 			using ( BinaryReader reader = new BinaryReader( m_TempWriter.BaseStream ) )
@@ -862,8 +865,7 @@ namespace Assistant
 			World.AddMobile( player );
 
 			DoLogin( player );
-			
-			ClientCommunication.SetDeathMsg( "You are dead." );
+
 			tbPos.Enabled = btnClose.Enabled = btnPlay.Enabled = btnStop.Enabled = btnRec.Enabled = true;
 			tbPos.Value = 0;
 			
