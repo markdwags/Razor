@@ -46,7 +46,9 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				Description="Generate Razor.exe checksum"
+				CommandLine="$(ProjectDir)/GenerateRazorChecksumH.exe"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -98,7 +100,9 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				Description="Generate Razor.exe checksum"
+				CommandLine="$(ProjectDir)/GenerateRazorChecksumH.exe"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
