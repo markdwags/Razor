@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UOArt.h"
+#include "Crypt.h"
 
 UOItem *ArtCache = NULL;
 unsigned short **Hues = NULL;
@@ -15,12 +16,15 @@ unsigned short *GetHue( int index )
 {
 	if ( Hues == NULL )
 	{
+		if ( !pShared )
+			return NULL;
+
 		char str[512];
 		int length, blockCount, index;
 		FILE *huesMul = NULL;
 
 		WaitForSingleObject( CommMutex, INFINITE );
-		sprintf( str, "%s/hues.mul", DataPath );
+		sprintf( str, "%s/hues.mul", pShared->DataPath );
 		ReleaseMutex( CommMutex );
 		
 		huesMul = fopen( str, "rb" );
@@ -80,7 +84,7 @@ unsigned short ApplyHueToPixel( unsigned short *hue, unsigned short pix )
 
 UOItem *ReadUOItem( int item, int bh )
 {
-	if ( item == 0 || item >= 0xFFFF )
+	if ( item == 0 || item >= 0xFFFF || !pShared )
 		return NULL;
 
 	char str[512];
@@ -93,7 +97,7 @@ UOItem *ReadUOItem( int item, int bh )
 	memset( &header, 0, sizeof(ArtHeader) );
 
 	WaitForSingleObject( CommMutex, INFINITE );
-	sprintf( str, "%s/artidx.mul", DataPath );
+	sprintf( str, "%s/artidx.mul", pShared->DataPath );
 	ReleaseMutex( CommMutex );
 	
 	idxMul = fopen( str, "rb" );
@@ -106,7 +110,7 @@ UOItem *ReadUOItem( int item, int bh )
 		return NULL;
 
 	WaitForSingleObject( CommMutex, INFINITE );
-	sprintf( str, "%s/art.mul", DataPath );
+	sprintf( str, "%s/art.mul", pShared->DataPath );
 	ReleaseMutex( CommMutex );
 
 	artMul = fopen( str, "rb" );

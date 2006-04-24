@@ -36,5 +36,3 @@ struct ArtHeader
 	//followed by short LookupTable
 };
 
-extern char *DataPath;
-extern HANDLE CommMutex;

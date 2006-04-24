@@ -2,7 +2,7 @@
 #pragma pack(1)
 
 #define DLL_VERSION "0.1.32"
-#define CHECKSUM "\x94\xF0\x49\xEB\x7E\xC1\x71\x45\x84\x3D\x86\x27\x6A\x2D\xDE\x45"
+#define CHECKSUM "\x30\xB9\xE0\x6A\x9E\x8B\x2B\xEC\xEB\x92\xC2\xD2\x4E\x32\xDD\xDD"
 
 #define DLLFUNCTION __declspec(dllexport)
 #define DLLVAR DLLFUNCTION
@@ -69,6 +69,28 @@ struct Buffer
 	BYTE Buff[SHARED_BUFF_SIZE];
 };
 
+struct SharedMemory
+{
+	// these must be at the top in this order
+	Buffer InRecv;
+	Buffer OutRecv;
+	Buffer InSend;
+	Buffer OutSend;
+
+	char TitleBar[1024];
+	bool ForceDisconn;
+	bool AllowDisconn;
+	unsigned int TotalSend;
+	unsigned int TotalRecv;
+	unsigned short PacketTable[256];
+	char DataPath[256];
+	char DeathMsg[16];
+	int Position[3];
+	unsigned char CheatKey[16];
+	unsigned char AuthBits[8];
+	bool IsHaxed;
+};
+
 class PatchInfo
 {
 public:
@@ -101,6 +123,8 @@ public:
 
 extern HWND hWatchWnd;
 extern HINSTANCE hInstance;
+extern SharedMemory *pShared;
+extern HANDLE CommMutex;
 
 LRESULT CALLBACK UOAWndProc( HWND, UINT, WPARAM, LPARAM );
 void Log( const char *format, ... );

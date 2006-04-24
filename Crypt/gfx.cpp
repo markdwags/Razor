@@ -4,9 +4,6 @@
 #include <uxtheme.h>
 #include <Tmschema.h>
 
-extern HANDLE CommMutex;
-extern char* TitleBar;
-
 int DrawUOItem( HDC, RECT, int, int );
 
 typedef HTHEME (__stdcall *OPENTHEMEDATA)( HWND, LPCWSTR );
@@ -307,19 +304,19 @@ void DrawColorTitleBar( HTHEME hTheme, HWND hWnd, HDC hOutDC, bool active, bool 
 
 void RedrawTitleBar( HWND hWnd, bool active )
 {
-	if ( TitleBar == NULL )
+	if ( !pShared )
 		return;
 
 	WaitForSingleObject( CommMutex, INFINITE );
-	if ( TitleBar[0] == 0 )
+	if ( pShared->TitleBar[0] == 0 )
 	{
 		ReleaseMutex( CommMutex );
 		return;
 	}
 
-	int len = (int)strlen( TitleBar );
-	if ( len >= 512 )
-		len = 511;
+	int len = (int)strlen( pShared->TitleBar );
+	if ( len >= 1024 )
+		len = 1023;
 
 	WINDOWPLACEMENT place;
 	RECT rect;
@@ -339,13 +336,13 @@ void RedrawTitleBar( HWND hWnd, bool active )
 	if ( hThemes )
 	{
 		HTHEME hTheme = zOpenThemeData( hWnd, L"WINDOW" );
-		DrawColorTitleBar( hTheme, hWnd, hDC, active, place.showCmd == SW_MAXIMIZE, TitleBar, len, rect );
+		DrawColorTitleBar( hTheme, hWnd, hDC, active, place.showCmd == SW_MAXIMIZE, pShared->TitleBar, len, rect );
 		zCloseThemeData( hTheme );
 	}
 	else
 	{
 		rect.left += GetSystemMetrics(SM_CXFRAME);
-		DrawColorTitleBar( NULL, hWnd, hDC, active, place.showCmd == SW_MAXIMIZE, TitleBar, len, rect );
+		DrawColorTitleBar( NULL, hWnd, hDC, active, place.showCmd == SW_MAXIMIZE, pShared->TitleBar, len, rect );
 	}
 
 	ReleaseDC( hWnd, hDC );

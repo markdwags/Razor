@@ -999,17 +999,16 @@ namespace Assistant
 
 			if ( args.Block )
 			{
-				if ( m_Intercept && prevClientTarget )
+				if ( prevClientTarget )
 				{
 					m_AllowGround = prevAllowGround;
 					m_CurrentID = prevID;
 					m_CurFlags = prevFlags;
 
-					m_HasTarget = m_ClientTarget = true;
-				}
-				else
-				{
-					CancelClientTarget();
+					m_ClientTarget = true;
+
+					if ( !m_Intercept )
+						CancelClientTarget();
 				}
 			}
 			else

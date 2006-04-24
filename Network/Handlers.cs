@@ -337,15 +337,16 @@ namespace Assistant
 
 			Item item = World.FindItem( serial );
 			ushort iid = 0;
+			
 			if ( item != null )
-			{
 				iid = item.ItemID.Value;
 
-				if ( Config.GetBool( "QueueActions" ) )
-				{
-					DragDropManager.Drag( item, amount, true );
-					args.Block = true;
-				}
+			if ( Config.GetBool( "QueueActions" ) )
+			{
+				if ( item == null )
+					World.AddItem( item = new Item( serial ) );
+				DragDropManager.Drag( item, amount, true );
+				args.Block = true;
 			}
 
 			if ( Macros.MacroManager.AcceptActions )
@@ -398,10 +399,7 @@ namespace Assistant
 				return;
 
 			if ( Config.GetBool( "QueueActions" ) )
-			{
-				DragDropManager.Drop( item, m, layer );
-				args.Block = true;
-			}
+				args.Block = DragDropManager.Drop( item, m, layer );
 		}
 
 		private static void DropRequest( PacketReader p, PacketHandlerEventArgs args )
@@ -425,10 +423,7 @@ namespace Assistant
                 i.IsNew = true;
 
 			if ( Config.GetBool( "QueueActions" ) )
-			{
-				DragDropManager.Drop( i, dser, newPos );
-				args.Block = true;
-			}
+				args.Block = DragDropManager.Drop( i, dser, newPos );
 		}
 
 		private static void MovementRej( PacketReader p, PacketHandlerEventArgs args )
@@ -779,6 +774,8 @@ namespace Assistant
 			World.Items.Clear();
 			World.Mobiles.Clear();
 
+			UseNewStatus = false;
+
 			Serial serial = p.ReadUInt32();
 
 			PlayerData m = new PlayerData( serial );
@@ -929,12 +926,16 @@ namespace Assistant
 			ClientCommunication.PostManaUpdate();
 		}
 
+		public static bool UseNewStatus = false;
+
 		private static void NewMobileStatus( PacketReader p, PacketHandlerEventArgs args )
 		{
 			Mobile m = World.FindMobile( (Serial)p.ReadUInt32() );
 
 			if ( m == null )
 				return;
+
+			UseNewStatus = true;
 
 			// 00 01 00 01
 			p.ReadUInt16();

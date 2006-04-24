@@ -324,8 +324,10 @@ namespace Assistant
 
 		public void ProcessPacketFlags( byte flags )
 		{
-			m_Female = (flags&0x02) != 0;
-			m_Poisoned = (flags&0x04) != 0;
+			if ( PacketHandlers.UseNewStatus )
+				m_Poisoned = (flags&0x04) != 0;
+			
+			m_Female  = (flags&0x02) != 0;	
 			m_Blessed = (flags&0x08) != 0;
 			m_Warmode = (flags&0x40) != 0;
 			m_Visible = (flags&0x80) == 0;

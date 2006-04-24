@@ -864,7 +864,10 @@ namespace Assistant
 
 		public static bool IsExempt( Item item )
 		{
-			return m_Instance == null ? false : m_Instance.CheckExempt( item );
+			if ( item == null || item.IsBagOfSending )
+				return true;
+			else
+				return m_Instance == null ? false : m_Instance.CheckExempt( item );
 		}
 
 		public static bool Contains( Item item )

@@ -159,6 +159,8 @@ namespace Assistant
 			Log( "Queuing Drag request for {0} ({1})", i, amount );
 
 			LiftReq lr = new LiftReq( i.Serial, amount, fromClient );
+			if ( m_Back >= m_LiftReqs.Length )
+				m_Back = 0;
 			m_LiftReqs[m_Back++] = lr;
 			ActionQueue.SignalLift( !fromClient );
 			return lr.Id;
@@ -169,7 +171,7 @@ namespace Assistant
 			return Drag( i, amount, false );
 		}
 
-		public static void Drop( Item i, Mobile to, Layer layer )
+		public static bool Drop( Item i, Mobile to, Layer layer )
 		{
 			if ( m_Pending == i.Serial )
 			{
@@ -177,6 +179,7 @@ namespace Assistant
 				ClientCommunication.SendToServer( new EquipRequest( i.Serial, to, layer ) );
 				m_Pending = Serial.Zero;
 				m_Lifted = DateTime.MinValue;
+				return true;
 			}
 			else
 			{
@@ -199,15 +202,17 @@ namespace Assistant
 					if ( q == null )
 						m_DropReqs[i.Serial] = q = new Queue();
 					q.Enqueue( new DropReq( to == null ? Serial.Zero : to.Serial, layer ) );
+					return true;
 				}
 				else
 				{
 					Log( "Drop/Equip for {0} (to {1} (@{2})) not found, skipped", i, to == null ? Serial.Zero : to.Serial, layer );
+					return false;
 				}
 			}
 		}
 
-		public static void Drop( Item i, Serial dest, Point3D pt )
+		public static bool Drop( Item i, Serial dest, Point3D pt )
 		{
 			if ( m_Pending == i.Serial )
 			{
@@ -216,6 +221,7 @@ namespace Assistant
 				ClientCommunication.SendToServer( new DropRequest( i.Serial, pt, dest ) );
 				m_Pending = Serial.Zero;
 				m_Lifted = DateTime.MinValue;
+				return true;
 			}
 			else
 			{
@@ -238,22 +244,24 @@ namespace Assistant
 					if ( q == null )
 						m_DropReqs[i.Serial] = q = new Queue();
 					q.Enqueue( new DropReq( dest, pt ) );
+					return true;
 				}
 				else
 				{
 					Log( "Drop for {0} (to {1} (@{2})) not found, skipped", i, dest, pt );
+					return false;
 				}
 			}
 		}
 
-		public static void Drop( Item i, Item to, Point3D pt )
+		public static bool Drop( Item i, Item to, Point3D pt )
 		{
-			Drop( i, to == null ? Serial.MinusOne : to.Serial, pt );
+			return Drop( i, to == null ? Serial.MinusOne : to.Serial, pt );
 		}
 
-		public static void Drop( Item i, Item to )
+		public static bool Drop( Item i, Item to )
 		{
-			Drop( i, to.Serial, Point3D.MinusOne );
+			return Drop( i, to.Serial, Point3D.MinusOne );
 		}
 
 		public static bool LiftReject()
@@ -420,7 +428,7 @@ namespace Assistant
 		{
 			m_Queue.Enqueue( Serial.Zero );
 			m_Total++;
-			if ( m_Queue.Count == 1 && !m_Timer.Running )
+			if ( /*m_Queue.Count == 1 &&*/ !m_Timer.Running )
 				m_Timer.StartMe();
 			else if ( !silent && m_Total > 1 )
 				World.Player.SendMessage( LocString.LiftQueued, m_Queue.Count, TimeLeft );

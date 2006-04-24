@@ -3,13 +3,11 @@
 
 #include "PacketInfo.h"
 
-unsigned short *PacketTable = NULL;
-
 DLLFUNCTION int GetPacketLength( unsigned char *packet, int len )
 {
-	if ( PacketTable != NULL )
+	if ( pShared != NULL )
 	{
-		int packetLen = PacketTable[(unsigned char)packet[0]];
+		int packetLen = pShared->PacketTable[(unsigned char)packet[0]];
 		if ( packetLen >= 0x8000 )
 		{
 			if ( len < 3 )
@@ -35,8 +33,8 @@ DLLFUNCTION int GetPacketLength( unsigned char *packet, int len )
 
 DLLFUNCTION bool IsDynLength( BYTE packet )
 {
-	if ( PacketTable != NULL )
-		return PacketTable[packet] >= 0x8000;
+	if ( pShared != NULL )
+		return pShared->PacketTable[packet] >= 0x8000;
 	else
 		return true;
 }

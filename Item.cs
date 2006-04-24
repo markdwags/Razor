@@ -566,6 +566,14 @@ namespace Assistant
 			}
 		}
 
+		public bool IsBagOfSending
+		{
+			get
+			{
+				return Hue >= 0x0400 && m_ItemID.Value == 0xE76;
+			}
+		}
+
 		public bool IsInBank
 		{
 			get 

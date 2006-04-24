@@ -6,9 +6,10 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
--Comments (on their own line, using prefixed by # or //) will not be saved inside of macros and displayed on the macro tab.
+-Comments (on their own line, using prefixed by # or //) will now be saved inside of macros and displayed on the macro tab.
 -Added Exorcism to spell definitions.
 -An internal Razor target will now save the previous target the client had and resend it after a choice is made. (Example: You have a spell target up, you press your "Set Last Target" hotkey. You target a person (thus setting them as your last target).  Instead of canceling the spell target, Razor will now resend that spell Target to the client.)
+-Bags of sending will (in most cases) now be automatically ignored by the Auto-Search feature. (Note that Razor will asume any "bag" with a non-dyable hue is a bag of sending)
 
 Changes/Fixes:
 -Several other small crashes have been fixed.
@@ -16,3 +17,4 @@ Changes/Fixes:
 -Fixed a problem with UOAM not properly logging houses
 -Fixed serious network communications bug.  All users are strongly recommended to upgrade.
 -Fixed some small and unlikely RPV playback bugs.
+-Fixed some bugs which caused Drag/Drop to get stuck sometimes

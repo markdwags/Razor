@@ -3549,14 +3549,20 @@ namespace Assistant
 			for (int i=0;i<skillList.SelectedItems.Count;i++)
 			{
 				ListViewItem vi = skillList.SelectedItems[i];
-				if ( vi.SubItems.Count > 4 )
+				if ( vi != null && vi.SubItems != null && vi.SubItems.Count > 4 )
+				{
+					string name = vi.SubItems[0].Text;
+					if ( name != null && name.Length > 20 )
+						name = name.Substring( 0, 16 ) + "...";
+					
 					sb.AppendFormat( "{0,-20} {1,5:F1} {2,5:F1} {4:F1} {5,5:F1}\n", 
-						vi.SubItems[0].Text, 
+						name, 
 						vi.SubItems[1].Text, 
 						vi.SubItems[2].Text, 
 						Utility.ToInt32( vi.SubItems[3].Text, 0 ) < 0 ? "" : "+", 
 						vi.SubItems[3].Text, 
 						vi.SubItems[4].Text );
+				}
 			}
 
 			if ( sb.Length > 0 )

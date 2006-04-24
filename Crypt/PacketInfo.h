@@ -9,8 +9,6 @@ struct ClientPacketInfo // 12 bytes
 	short Unk0000;
 };
 
-extern unsigned short *PacketTable;
-
 const unsigned short StaticPacketTable[] =
 {
 	0x0068, // 0x00

@@ -748,6 +748,19 @@ namespace Assistant
 			ClientCommunication.PostMapChange( cur );
 		}
 
+		/*public override void OnMapChange( byte old, byte cur )
+		{
+			World.Mobiles.Clear();
+			World.Items.Clear();
+			Counter.Reset();
+
+			Contains.Clear();
+			
+			World.AddMobile( this );
+
+			ClientCommunication.PostMapChange( cur );
+		}*/
+
 		protected override void OnNotoChange( byte old, byte cur )
 		{
 			if ( ( old == 3 || old == 4 ) && ( cur != 3 && cur != 4 ) )
