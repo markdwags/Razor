@@ -79,16 +79,16 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0xD8, new PacketViewerCallback( CustomHouseInfo ) );
 			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
 		}
-
+		
 		private static void DisplayStringQuery( PacketReader p, PacketHandlerEventArgs args )
 		{
-			// See also Packets.cs: StringQueryResponse
+			// See also Packets.cs: StringQueryResponse 
 			/*if ( MacroManager.AcceptActions )
 			{
 				int serial = p.ReadInt32();
 				byte type = p.ReadByte();
 				byte index = p.ReadByte();
-
+				
 				MacroManager.Action( new WaitForTextEntryAction( serial, type, index ) );
 			}*/
 		}

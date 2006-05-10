@@ -543,16 +543,13 @@ namespace Assistant
 				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, pval );
 			}
 
-			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Rebirth (PreT2A)", "login.uorebirth.com" ) );
+			/*serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Rebirth (PreT2A)", "login.uorebirth.com" ) );
+			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
+				serverList.SelectedItem = uog;*/
+			
+			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Divinity (T2A)", "login.uodivinity.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
 				serverList.SelectedItem = uog;
-			
-			if ( DateTime.Now.Month > 3 || (DateTime.Now.Month == 3 && DateTime.Now.Day >= 15 ) || DateTime.Now.Year > 2006 )
-			{
-				serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Divinity (T2A)", "login.uodivinity.com" ) );
-				if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
-					serverList.SelectedItem = uog;
-			}
 
 			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Hybrid (UOR)", "login.uogamers.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )

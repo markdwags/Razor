@@ -27,6 +27,29 @@ namespace Assistant
 			}
 		}
 
+		public static int Parse( string name )
+		{
+			if ( name == null || name == "" )
+				return 0;
+
+			name = name.ToLower();
+
+			if ( name == "felucca" )
+				return 0;
+			else if ( name == "trammel" )
+				return 1;
+			else if ( name == "ilshenar" )
+				return 2;
+			else if ( name == "malas" )
+				return 3;
+			else if ( name == "samurai" || name == "tonoko" )
+				return 4;
+			else if ( name == "imbus" )
+				return 5;
+			else
+				return 0;
+		}
+
 		public static HuedTile GetTileNear( int mapNum, int x, int y, int z )
 		{
 			try

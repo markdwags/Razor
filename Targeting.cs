@@ -857,20 +857,6 @@ namespace Assistant
 				}
 			}
 		}
-
-		private static void SendPreviousTarget()
-		{	
-			if ( m_PreviousID != 0 )
-			{
-				m_CurrentID = m_PreviousID;
-				m_AllowGround = m_PreviousGround;
-				m_CurFlags = m_PrevFlags;
-
-				m_PreviousID = 0;
-
-				ResendTarget();
-			}
-		}
 		
 		private static void TargetResponse( PacketReader p, PacketHandlerEventArgs args )
 		{
@@ -897,8 +883,20 @@ namespace Assistant
 
 					m_HasTarget = false;
 					args.Block = true;
+					
+					if ( m_PreviousID != 0 )
+					{
+						m_CurrentID = m_PreviousID;
+						m_AllowGround = m_PreviousGround;
+						m_CurFlags = m_PrevFlags;
 
-					SendPreviousTarget();
+						m_PreviousID = 0;
+
+						ResendTarget();
+					}
+
+					m_FilterCancel.Clear();
+					
 					return;
 				}
 				else

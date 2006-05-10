@@ -1,6 +1,4 @@
-#if DEBUG
-#define STUFF
-#endif
+//#define STUFF
 
 using System;
 using System.Text;
@@ -10,6 +8,8 @@ namespace Assistant
 	public class FindData
 	{
 #if STUFF
+#warning Extra special leet stuff is enabled.  Don't release this build.
+
 		public static void Initialize()
 		{
 			Command.Register( "ResetFind", new CommandCallback( ResetFind ) );
@@ -25,21 +25,23 @@ namespace Assistant
 
 			try
 			{
-				range = Convert.ToInt32( args[1] );
+				range = Convert.ToInt32( args[0] );
 			}
 			catch
 			{
 				range = 18;
 			}
 
+			World.Player.VisRange = range;
 			ClientCommunication.SendToClient( new SetUpdateRange( range ) );
 			World.Player.SendMessage( "Set VisRange to {0}", range );
 		}
 
 		public static void ResetFind( string[] args )
 		{
+			uint wParam = ((uint)ClientCommunication.UONetMessage.FindData)|0xFFFF0000;
 			World.Player.SendMessage( MsgLevel.Force, "Clearing addr list." );
-			ClientCommunication.PostMessage( ClientCommunication.FindUOWindow(), ClientCommunication.WM_UONETEVENT, (IntPtr)(((uint)ClientCommunication.UONetMessage.FindData)|0xFFFF0000), IntPtr.Zero );
+			ClientCommunication.PostMessage( ClientCommunication.FindUOWindow(), ClientCommunication.WM_UONETEVENT, (IntPtr)wParam, IntPtr.Zero );
 		}
 
 		public static void Walk( string[] args )
@@ -105,7 +107,7 @@ namespace Assistant
 				World.Player.SendMessage( MsgLevel.Force, "Usage: Find <hex value> [size = 4]" );
 			}
 		}
-
+#endif
 		public static void Message( uint c, int a )
 		{
 			if ( World.Player != null )
@@ -116,11 +118,6 @@ namespace Assistant
 					World.Player.SendMessage( MsgLevel.Force, "{0} @ {1:X8}", c, a );
 			}
 		}
-#else
-		public static void Message( uint c, int a )
-		{
-		}
-#endif
 	}
 
 #if STUFF

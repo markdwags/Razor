@@ -4531,7 +4531,7 @@ namespace Assistant
 				return;
 			}
 
-			TreeNode newNode = new TreeNode( Path.GetFileName( path ) );
+			TreeNode newNode = new TreeNode( String.Format( "[{0}]", Path.GetFileName( path ) ) );
 			newNode.Tag = path;
 			if ( node == null )
 				macroTree.Nodes.Add( newNode );

@@ -192,7 +192,7 @@ namespace Assistant.Macros
 					{
 						if ( nodes != null )
 						{
-							TreeNode node = new TreeNode( Path.GetFileName( dirs[i] ) );
+							TreeNode node = new TreeNode( String.Format( "[{0}]", Path.GetFileName( dirs[i] ) ) );
 							node.Tag = dirs[i];
 							nodes.Add( node );
 							Recurse( node.Nodes, dirs[i] );

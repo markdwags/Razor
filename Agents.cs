@@ -1195,9 +1195,9 @@ namespace Assistant
 				return;
 
 			if ( m_Cache == null )
-				m_Cache = new ArrayList( 500 );
-			else if ( m_Cache.Count >= 450 )
-				m_Cache.RemoveRange( 0, 100 );
+				m_Cache = new ArrayList( 200 );
+			else if ( m_Cache.Count >= 190 )
+				m_Cache.RemoveRange( 0, 50 );
 			
 			if ( m_Cache.Contains( item.Serial ) )
 				return;
@@ -1964,17 +1964,23 @@ namespace Assistant
 
 		private ListBox m_SubList;
 		private ArrayList m_Chars;
+		private Hashtable m_Names;
 		private bool m_Enabled;
 		private Button m_EnableBTN;
 
 		public FriendsAgent()
 		{
 			m_Chars = new ArrayList();
+			m_Names = new Hashtable();
+
+			HotKey.Add( HKCategory.Targets, LocString.AddFriend, new HotKeyCallback( AddToFriendsList ) );
+			HotKey.Add( HKCategory.Targets, LocString.RemoveFriend, new HotKeyCallback( RemoveFromFriendsList ) );
 		}
 
 		public override void Clear()
 		{
 			m_Chars.Clear();
+			m_Names.Clear();
 		}
 
 		public bool IsFriend( Serial ser )
@@ -2006,22 +2012,20 @@ namespace Assistant
 			subList.BeginUpdate();
 			subList.Items.Clear();
 			for(int i=0;i<m_Chars.Count;i++)
-			{
-				Mobile m = World.FindMobile( (Serial)m_Chars[i] );
-				string name = null;
-				if ( m != null )
-				{
-					if ( m.Name != null && m.Name != "" )
-						name = m.Name;
-					else
-						name = "Name Unknown";
-				}
-				if ( name != null )
-					subList.Items.Add( String.Format( "\"{0}\" {1}", name, m_Chars[i] ) );
-				else
-					subList.Items.Add( String.Format( "{1} (Not on screen)", name, m_Chars[i] ) );
-			}
+				Add2List( (Serial)m_Chars[i] );
 			subList.EndUpdate();
+		}
+
+		public void AddToFriendsList()
+		{
+			World.Player.SendMessage( MsgLevel.Force, LocString.TargFriendAdd );
+			Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnAddTarget ) );
+		}
+
+		public void RemoveFromFriendsList()
+		{
+			World.Player.SendMessage( MsgLevel.Force, LocString.TargFriendRem );
+			Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnRemoveTarget ) );
 		}
 
 		public override void OnButtonPress( int num )
@@ -2030,14 +2034,20 @@ namespace Assistant
 			{
 				case 1:
 				{
-					World.Player.SendMessage( MsgLevel.Force, LocString.TargFriendAdd );
-					Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnAddTarget ) );
+					AddToFriendsList();
 					break;
 				}
 				case 2:
-				{
+				{		
 					if ( m_SubList.SelectedIndex >= 0 && m_SubList.SelectedIndex <  m_Chars.Count )
 					{
+						try
+						{
+							m_Names.Remove( m_Chars[m_SubList.SelectedIndex] );
+						}
+						catch
+						{
+						}
 						m_Chars.RemoveAt( m_SubList.SelectedIndex );
 						m_SubList.Items.RemoveAt( m_SubList.SelectedIndex );
 					}
@@ -2045,8 +2055,7 @@ namespace Assistant
 				}
 				case 3:
 				{
-					World.Player.SendMessage( MsgLevel.Force, LocString.TargFriendRem );
-					Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnRemoveTarget ) );
+					RemoveFromFriendsList();
 					break;
 				}
 				case 4:
@@ -2070,23 +2079,42 @@ namespace Assistant
 
 			if ( !location && serial.IsMobile && serial != World.Player.Serial )
 			{
-				m_Chars.Add( serial );
-
-				Mobile m = World.FindMobile( serial );
-				string name = null;
-				if ( m != null )
-				{
-					if ( m.Name != null && m.Name != "" )
-						name = m.Name;
-					else
-						name = "Name Unknown";
-				}
-				if ( name != null )
-					m_SubList.Items.Add( String.Format( "\"{0}\" {1}", name, serial ) );
-				else
-					m_SubList.Items.Add( String.Format( "{1} (Not on screen)", name, serial ) );
 				World.Player.SendMessage( MsgLevel.Force, LocString.FriendAdded );
+				if ( !m_Chars.Contains( serial ) )
+				{
+					m_Chars.Add( serial );
+
+					Add2List( serial );
+				}
 			}
+		}
+
+		private void Add2List( Serial s )
+		{
+			Mobile m = World.FindMobile( s );
+			string name = null;
+			if ( m != null )
+			{
+				if ( m.Name != null && m.Name != "" )
+				{
+					name = m.Name;
+					m_Names[s] = m.Name;
+				}
+				else
+				{
+					if ( m_Names.ContainsKey( s ) )
+						name = m_Names[s] as string;
+				}
+			}
+			else if ( m_Names.ContainsKey( s ) )
+			{
+				name = m_Names[s] as string;
+			}
+
+			if ( name == null )
+				name = "(Name Unknown)";
+
+			m_SubList.Items.Add( String.Format( "\"{0}\" {1}", name, s ) );
 		}
 
 		private void OnRemoveTarget( bool location, Serial serial, Point3D loc, ushort gfx )
@@ -2096,26 +2124,14 @@ namespace Assistant
 			if ( !location && serial.IsMobile && serial != World.Player.Serial )
 			{
 				m_Chars.Remove( serial );
+				m_Names.Remove( serial );
+
 				World.Player.SendMessage( MsgLevel.Force, LocString.FriendRemoved );
 
 				m_SubList.BeginUpdate();
 				m_SubList.Items.Clear();
 				for(int i=0;i<m_Chars.Count;i++)
-				{
-					Mobile m = World.FindMobile( (Serial)m_Chars[i] );
-					string name = null;
-					if ( m != null )
-					{
-						if ( m.Name != null && m.Name != "" )
-							name = m.Name;
-						else
-							name = "Name Unknown";
-					}
-					if ( name != null )
-						m_SubList.Items.Add( String.Format( "\"{0}\" {1}", name, m_Chars[i] ) );
-					else
-						m_SubList.Items.Add( String.Format( "{1} (Not on screen)", name, m_Chars[i] ) );
-				}
+					Add2List( (Serial)m_Chars[i] );
 				m_SubList.EndUpdate();
 			}
 		}
@@ -2127,6 +2143,14 @@ namespace Assistant
 			{
 				xml.WriteStartElement( "friend" );
 				xml.WriteAttributeString( "serial", m_Chars[i].ToString() );
+				try
+				{
+					if ( m_Names.ContainsKey( (Serial)m_Chars[i] ) )
+						xml.WriteAttributeString( "name", m_Names[(Serial)m_Chars[i]].ToString() );
+				}
+				catch
+				{
+				}
 				xml.WriteEndElement();
 			}
 		}
@@ -2145,7 +2169,14 @@ namespace Assistant
 			{
 				try
 				{
-					m_Chars.Add( Serial.Parse( el.GetAttribute( "serial" ) ) );
+					Serial toAdd = Serial.Parse( el.GetAttribute( "serial" ) );
+
+					if ( !m_Chars.Contains( toAdd ) )
+						m_Chars.Add( toAdd );
+
+					string name = el.GetAttribute( "name" );
+					if ( name != null && name != "" )
+						m_Names.Add( toAdd, name.Trim() );
 				}
 				catch
 				{

@@ -270,6 +270,23 @@ namespace Assistant.Macros
 						if ( i.ItemID == m_Gfx && i.RootContainer == null )
 							list.Add( i );
 					}
+					if ( list.Count == 0 )
+					{
+						foreach ( Item i in World.Items.Values )
+						{
+							if ( i.ItemID == m_Gfx )
+							{
+								object root = i.RootContainer;
+
+								if ( root == null || root is Item || root == World.Player )
+								{
+									if ( !i.IsInBank )
+										list.Add( i );
+								}
+							}
+						}
+					}
+
 					if ( list.Count > 0 )
 						click = ((Item)list[ Utility.Random( list.Count ) ]).Serial;
 				}

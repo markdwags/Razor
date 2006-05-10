@@ -647,10 +647,10 @@ namespace Assistant
 
 		public static void Load( XmlElement xml )
 		{
-			ClearAll();
-
 			if ( xml == null )
 				return;
+
+			ClearAll();
 
 			foreach( XmlElement el in xml.GetElementsByTagName( "key" ) )
 			{

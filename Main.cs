@@ -337,6 +337,9 @@ namespace Assistant
 			try
 			{
 				string str = Config.GetRegString( Microsoft.Win32.Registry.LocalMachine, "UId" );
+				if ( str == null || str.Length <= 0 )
+					str = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UId" );
+
 				if ( str != null && str.Length > 0 )
 					uid = Convert.ToInt32( str, 16 );
 			}
@@ -351,7 +354,10 @@ namespace Assistant
 				{
 					uid = Utility.Random( int.MaxValue - 1 );
 					if ( !Config.SetRegString( Microsoft.Win32.Registry.LocalMachine, "UId", String.Format( "{0:x}", uid ) ) )
-						uid = 0;
+					{
+						if ( !Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "UId", String.Format( "{0:x}", uid ) ) )
+							uid = 0;
+					}
 				}
 				catch
 				{

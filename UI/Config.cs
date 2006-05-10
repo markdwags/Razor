@@ -637,7 +637,7 @@ namespace Assistant
 			{
 				RegistryKey key = hkey.OpenSubKey( RazorRegPath, true );
 				if ( key == null )
-					key = Registry.LocalMachine.CreateSubKey( RazorRegPath );
+					key = hkey.CreateSubKey( RazorRegPath );
 
 				key.SetValue( vname, value );
 

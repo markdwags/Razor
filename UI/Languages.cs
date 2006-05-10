@@ -332,8 +332,11 @@ namespace Assistant
 		FeatureDisabled = NextCliloc,
 		FeatureDisabledText,
 		InsComment,
+		AddFriend,
+		RemoveFriend,
+		MiniHealOrCureSelf,
 
-		__End,
+		__End
 	}
 	#endregion
 

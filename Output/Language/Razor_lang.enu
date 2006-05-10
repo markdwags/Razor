@@ -555,3 +555,6 @@ MacroInsertIf::insert=&Insert
 1466=Feature Disallowed by Server
 1467=This feature is not allowed by the current game server.\nYou may choose to ignore the server's allowed features on the "Options" tab.\n\nTo see a list of disallowed features, check the "Help & Status" tab.
 1468=Insert Comment
+1469=Add Friend
+1470=Remove Friend
+1471=>Mini-Heal/Cure Self

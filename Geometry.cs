@@ -284,4 +284,287 @@ namespace Assistant
 			return new Point3D( l.m_X-r.m_X, l.m_Y-r.m_Y, l.m_Z-r.m_Z );
 		}
 	}
+
+	public struct Line2D
+	{
+		private Point2D m_Start, m_End;
+
+		public Line2D( IPoint2D start, IPoint2D end )
+		{
+			m_Start = new Point2D( start );
+			m_End = new Point2D( end );
+			Fix();
+		}
+
+		public void Fix()
+		{
+			if ( m_Start > m_End )
+			{
+				Point2D temp = m_Start;
+				m_Start = m_End;
+				m_End = temp;
+			}
+		}
+
+		public Point2D Start
+		{
+			get
+			{
+				return m_Start;
+			}
+			set
+			{
+				m_Start = value;
+				Fix();
+			}
+		}
+
+		public Point2D End
+		{
+			get
+			{
+				return m_End;
+			}
+			set
+			{
+				m_End = value;
+				Fix();
+			}
+		}
+
+		public double Length
+		{
+			get 
+			{ 
+				int run = m_End.X - m_Start.X;
+				int rise = m_End.Y - m_Start.Y;
+
+				return Math.Sqrt( run * run + rise * rise );
+			}
+		}
+
+		public override string ToString()
+		{
+			return String.Format( "--{0}->{1}--", m_Start, m_End );
+		}
+
+		public override bool Equals( object o )
+		{
+			if ( o == null || !(o is Line2D) ) return false;
+
+			Line2D ln = (Line2D)o;
+
+			return m_Start == ln.m_Start && m_End == ln.m_End;
+		}
+
+		public override int GetHashCode()
+		{
+			return m_Start.GetHashCode() ^ (~m_End.GetHashCode());
+		}
+
+		public static bool operator == ( Line2D l, Line2D r )
+		{
+			return l.m_Start == r.m_Start && l.m_End == r.m_End;
+		}
+
+		public static bool operator != ( Line2D l, Line2D r )
+		{
+			return l.m_Start != r.m_Start || l.m_End != r.m_End;
+		}
+
+		public static bool operator > ( Line2D l, Line2D r )
+		{
+			return l.m_Start > r.m_Start && l.m_End > r.m_End;
+		}
+
+		public static bool operator < ( Line2D l, Line2D r )
+		{
+			return l.m_Start < r.m_Start && l.m_End < r.m_End;
+		}
+
+		public static bool operator >= ( Line2D l, Line2D r )
+		{
+			return l.m_Start >= r.m_Start && l.m_End >= r.m_End;
+		}
+
+		public static bool operator <= ( Line2D l, Line2D r )
+		{
+			return l.m_Start <= r.m_Start && l.m_End <= r.m_End;
+		}
+	}
+
+	public struct Rectangle2D
+	{
+		private Point2D m_Start;
+		private Point2D m_End;
+
+		public Rectangle2D( IPoint2D start, IPoint2D end )
+		{
+			m_Start = new Point2D( start );
+			m_End = new Point2D( end );
+		}
+
+		public Rectangle2D( int x, int y, int width, int height )
+		{
+			m_Start = new Point2D( x, y );
+			m_End = new Point2D( x + width, y + height );
+		}
+
+		public void Set( int x, int y, int width, int height )
+		{
+			m_Start = new Point2D( x, y );
+			m_End = new Point2D( x + width, y + height );
+		}
+
+		public static Rectangle2D Parse( string value )
+		{
+			int start = value.IndexOf( '(' );
+			int end = value.IndexOf( ',', start + 1 );
+
+			string param1 = value.Substring( start + 1, end - (start + 1) ).Trim();
+
+			start = end;
+			end = value.IndexOf( ',', start + 1 );
+
+			string param2 = value.Substring( start + 1, end - (start + 1) ).Trim();
+
+			start = end;
+			end = value.IndexOf( ',', start + 1 );
+
+			string param3 = value.Substring( start + 1, end - (start + 1) ).Trim();
+
+			start = end;
+			end = value.IndexOf( ')', start + 1 );
+
+			string param4 = value.Substring( start + 1, end - (start + 1) ).Trim();
+
+			return new Rectangle2D( Convert.ToInt32( param1 ), Convert.ToInt32( param2 ), Convert.ToInt32( param3 ), Convert.ToInt32( param4 ) );
+		}
+
+		public Point2D Start
+		{
+			get
+			{
+				return m_Start;
+			}
+			set
+			{
+				m_Start = value;
+			}
+		}
+
+		public Point2D End
+		{
+			get
+			{
+				return m_End;
+			}
+			set
+			{
+				m_End = value;
+			}
+		}
+
+		public int X
+		{
+			get
+			{
+				return m_Start.m_X;
+			}
+			set
+			{
+				m_Start.m_X = value;
+			}
+		}
+
+		public int Y
+		{
+			get
+			{
+				return m_Start.m_Y;
+			}
+			set
+			{
+				m_Start.m_Y = value;
+			}
+		}
+
+		public int Width
+		{
+			get
+			{
+				return m_End.m_X - m_Start.m_X;
+			}
+			set
+			{
+				m_End.m_X = m_Start.m_X + value;
+			}
+		}
+
+		public int Height
+		{
+			get
+			{
+				return m_End.m_Y - m_Start.m_Y;
+			}
+			set
+			{
+				m_End.m_Y = m_Start.m_Y + value;
+			}
+		}
+
+		public void MakeHold( Rectangle2D r )
+		{
+			if ( r.m_Start.m_X < m_Start.m_X )
+				m_Start.m_X = r.m_Start.m_X;
+
+			if ( r.m_Start.m_Y < m_Start.m_Y )
+				m_Start.m_Y = r.m_Start.m_Y;
+
+			if ( r.m_End.m_X > m_End.m_X )
+				m_End.m_X = r.m_End.m_X;
+
+			if ( r.m_End.m_Y > m_End.m_Y )
+				m_End.m_Y = r.m_End.m_Y;
+		}
+
+		// "test" must be smaller than this rectangle!
+		public bool Insersects( Rectangle2D test )
+		{
+			Point2D e1 = new Point2D( test.Start.X + test.Width, test.Start.Y );
+			Point2D e2 = new Point2D( test.Start.X, test.Start.Y + test.Width );
+
+			return Contains( test.Start ) || Contains( test.End ) || Contains( e1 ) || Contains( e2 );
+		}
+
+		public bool Contains( Rectangle2D test )
+		{
+			Point2D e1 = new Point2D( test.Start.X + test.Width, test.Start.Y );
+			Point2D e2 = new Point2D( test.Start.X, test.Start.Y + test.Width );
+
+			return Contains( test.Start ) && Contains( test.End ) && Contains( e1 ) && Contains( e2 );
+		}
+
+		public bool Contains( Point3D p )
+		{
+			return ( m_Start.m_X <= p.m_X && m_Start.m_Y <= p.m_Y && m_End.m_X > p.m_X && m_End.m_Y > p.m_Y );
+			//return ( m_Start <= p && m_End > p );
+		}
+
+		public bool Contains( Point2D p )
+		{
+			return ( m_Start.m_X <= p.m_X && m_Start.m_Y <= p.m_Y && m_End.m_X > p.m_X && m_End.m_Y > p.m_Y );
+			//return ( m_Start <= p && m_End > p );
+		}
+
+		public bool Contains( IPoint2D p )
+		{
+			return ( m_Start <= p && m_End > p );
+		}
+
+		public override string ToString()
+		{
+			return String.Format( "({0}, {1})+({2}, {3})", X, Y, Width, Height );
+		}
+	}
 }

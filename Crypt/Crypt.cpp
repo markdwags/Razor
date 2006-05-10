@@ -31,6 +31,8 @@ LARGE_INTEGER PerfFreq, Counter;
 DWORD DeathMsgAddr = 0xFFFFFFFF;
 HWND hUOAWnd = NULL;
 
+SIZE DesiredSize = {800,600};
+
 unsigned long OldRecv, OldSend, OldConnect, OldCloseSocket, OldSelect;
 unsigned long RecvAddress, SendAddress, ConnectAddress, CloseSocketAddress, SelectAddress;
 
@@ -83,6 +85,9 @@ typedef int (PASCAL *NetIOFunc)(SOCKET, char *, int, int);
 typedef int (PASCAL *ConnFunc)(SOCKET, const sockaddr *, int);
 typedef int (PASCAL *CLSFunc)(SOCKET);
 typedef int (PASCAL *SelectFunc)( int, fd_set*, fd_set*, fd_set*, const struct timeval* );
+
+
+
 
 BOOL APIENTRY DllMain( HANDLE hModule, DWORD dwReason, LPVOID )
 {
@@ -1860,6 +1865,8 @@ void (*RedrawGameEdge)() = NULL;
 
 SIZE *SizePtr = NULL;
 
+
+
 bool CopyClientMemory()
 {
 	int count = 0;
@@ -1870,6 +1877,7 @@ bool CopyClientMemory()
 	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
 
 	mf.AddEntry( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16, 0x00500000 );
+	mf.AddEntry( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 ); // resize screen function
 	mf.AddEntry( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 );
 	mf.AddEntry( CRYPT_KEY_STR, CRYPT_KEY_LEN );
 	mf.AddEntry( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
@@ -1889,6 +1897,27 @@ bool CopyClientMemory()
 			addr += 5;
 			RedrawUOScreen = (void (*)())(addr + 4 + *((int*)addr));
 		}
+	}
+
+	addr = mf.GetAddress( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 );
+	if ( addr )
+	{
+		DWORD oldProt, origAddr = addr;
+
+		VirtualProtect( (void*)origAddr, 0x50, PAGE_EXECUTE_READWRITE, &oldProt );
+		addr += 0x11; // skip to jnz
+		addr += *((BYTE*)addr)+1; // skip to target
+		memset( (void*)addr, 0x90, 0x14 ); // nop
+		*((BYTE*)addr) = 0xBB; *((DWORD*)(addr+1)) = (DWORD)(&DesiredSize.cx); // mov ebx, offset DesiredSize.cx
+		addr += 5;
+		*((BYTE*)addr) = 0xB8; *((DWORD*)(addr+1)) = (DWORD)(&DesiredSize.cy); // mov eax, offset DesiredSize.cy
+		addr += 5;
+		*((BYTE*)addr) = 0x8B; *((BYTE*)(addr+1)) = 0x13;  // mov edx, [ebx]
+		addr += 2;
+		*((BYTE*)addr) = 0x8B; *((BYTE*)(addr+1)) = 0x08;  // mov ecx, [eax]
+		addr += 2;
+		*((BYTE*)(addr+6)) = 0xEB; // change jnz to jmp
+		VirtualProtect( (void*)origAddr, 0x50, oldProt, &oldProt );
 	}
 
 	if ( OSICryptEnabled )
@@ -2059,10 +2088,9 @@ void FindList( DWORD val, unsigned short size )
 }
 
 
-SIZE DesiredSize = {800,600};
 void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg )
 {
-	if ( SizePtr && ( SizePtr->cx != DesiredSize.cx || SizePtr->cy != DesiredSize.cy ) && ( SizePtr->cx != 640 || SizePtr->cy != 480 ) ) 
+	/*if ( SizePtr && ( SizePtr->cx != DesiredSize.cx || SizePtr->cy != DesiredSize.cy ) )// && ( SizePtr->cx != 640 || SizePtr->cy != 480 ) )
 	{
 		SizePtr->cx = DesiredSize.cx;
 		SizePtr->cy = DesiredSize.cy;
@@ -2072,7 +2100,7 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			RedrawGameEdge();
 			RedrawUOScreen();
 		}
-	}
+	}*/
 
 	HWND hFore;
 
@@ -2136,11 +2164,8 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			break;
 
 		case SETWNDSIZE:
-			if ( SizePtr != NULL )
-			{
-				DesiredSize.cx = LOWORD(lParam);
-				DesiredSize.cy = HIWORD(lParam);
-			}
+			DesiredSize.cx = LOWORD(lParam);
+			DesiredSize.cy = HIWORD(lParam);
 			break;
 
 		case FINDDATA:
