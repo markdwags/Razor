@@ -1883,8 +1883,30 @@ bool CopyClientMemory()
 	mf.AddEntry( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
 	mf.AddEntry( PACKET_TBL_STR, PACKET_TS_LEN );
 	mf.AddEntry( CHEATPROC_STR, CHEATPROC_LEN );
+	mf.AddEntry( "Electronic Arts Inc.", 20, 0x00500000 );
+	mf.AddEntry( "\x00\x68\x88\x13\x00\x00\x56x\xE8", 8 ); // splash screen call
 
 	mf.Execute();
+
+	addr = mf.GetAddress( "\x00\x68\x88\x13\x00\x00\x56x\xE8", 8 );
+	if ( addr )
+	{
+		DWORD oldProt;
+		addr += 2;
+		VirtualProtect( (void*)addr, 4, PAGE_EXECUTE_READWRITE, &oldProt );
+		*((DWORD*)addr) = 1; // change push 5000 to push 1
+		VirtualProtect( (void*)addr, 4, oldProt, &oldProt );
+	}
+
+	addr = mf.GetAddress( "Electronic Arts Inc.", 20 );
+	if ( addr )
+	{
+		DWORD oldProt;
+		addr -= 7;
+		VirtualProtect( (void*)addr, 52, PAGE_EXECUTE_READWRITE, &oldProt );
+		strncpy( (char*)(addr), "[Powered by Razor - The cutting edge UO Assistant]", 51 );
+		VirtualProtect( (void*)addr, 52, oldProt, &oldProt );
+	}
 
 	SizePtr = (SIZE*)mf.GetAddress( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16 );
 	if ( SizePtr )
