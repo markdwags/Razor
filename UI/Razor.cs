@@ -3104,7 +3104,7 @@ namespace Assistant
 		private ContextMenu m_SkillMenu ;
 		private void skillList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			if ( e.Button == MouseButtons.Right && e.Clicks == 1 )
+			if ( e.Button == MouseButtons.Right )
 			{
 				ListView.SelectedListViewItemCollection items = skillList.SelectedItems;
 				if ( items.Count <= 0 )
