@@ -47,7 +47,8 @@ bool ServerNegotiated = false;
 bool AllowNegotiate = false;
 bool InGame = false;
 
-bool OSICryptEnabled = false;
+bool ClientEncrypted = false;
+bool ServerEncrypted = false;
 
 //**************************************OSI Only Stuff*********************************
 OSIEncryption *ClientCrypt = NULL;
@@ -85,6 +86,7 @@ typedef int (PASCAL *NetIOFunc)(SOCKET, char *, int, int);
 typedef int (PASCAL *ConnFunc)(SOCKET, const sockaddr *, int);
 typedef int (PASCAL *CLSFunc)(SOCKET);
 typedef int (PASCAL *SelectFunc)( int, fd_set*, fd_set*, fd_set*, const struct timeval* );
+
 
 
 
@@ -306,9 +308,10 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 	if ( hUOAWnd )
 		ShowWindow( hUOAWnd, FALSE );
 
-	OSICryptEnabled = (flags&0x2) != 0;
+	ServerEncrypted = (flags&0x10) != 0;
+	ClientEncrypted = (flags&0x08) != 0;
 
-	PostMessage( hWatchWnd, WM_PROCREADY, flags, (LPARAM)hPostWnd );
+	PostMessage( hWatchWnd, WM_PROCREADY, (WPARAM)flags, (LPARAM)hPostWnd );
 	return SUCCESS;
 }
 
@@ -635,19 +638,34 @@ void CloseSharedMemory()
 	FreeArt();
 
 	delete ClientCrypt;
-	delete ServerCrypt;
 	delete ClientLogin;
+	delete ServerCrypt;
 	delete ServerLogin;
+
+	ClientCrypt = NULL;
+	ClientLogin = NULL;
+	ServerCrypt = NULL;
+	ServerLogin = NULL;
 }
 
-bool CreateEncryption()
+void CreateEncryption()
 {
-	ClientCrypt = new OSIEncryption();
-	ServerCrypt = new OSIEncryption();
-	ClientLogin = new LoginEncryption();
-	ServerLogin = new LoginEncryption();
+	delete ClientCrypt;
+	delete ClientLogin;
+	delete ServerCrypt;
+	delete ServerLogin;
 
-	return true;
+	if ( ClientEncrypted )
+	{
+		ClientCrypt = new OSIEncryption();
+		ClientLogin = new LoginEncryption();
+	}
+
+	if ( ServerEncrypted )
+	{
+		ServerCrypt = new OSIEncryption();
+		ServerLogin = new LoginEncryption();
+	}
 }
 
 void Maintenance( Buffer &buff )
@@ -706,7 +724,7 @@ int RecvData()
 		}
 		else
 		{
-			if ( OSICryptEnabled )
+			if ( ServerEncrypted )
 				ServerCrypt->DecryptFromServer( (BYTE*)buff, (BYTE*)buff, ackLen );
 
 			if ( tempBuff == NULL )
@@ -825,7 +843,7 @@ int PASCAL HookRecv( SOCKET sock, char *buff, int len, int flags )
 				ackLen += Compression::Compress( &buff[ackLen], tempBuff, blen );
 			}
 
-			if ( OSICryptEnabled && ackLen > 0 )
+			if ( ClientEncrypted && ackLen > 0 )
 				ClientCrypt->EncryptForClient( (BYTE*)buff, (BYTE*)buff, ackLen );
 		}
 
@@ -860,12 +878,19 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 		{
 			Seeded = true;
 
-			if ( OSICryptEnabled && len >= 4 )
+			if ( len >= 4 )
 			{
-				ClientCrypt->Initialize( *((DWORD*)buff) );
-				ServerCrypt->Initialize( *((DWORD*)buff) );
-				ClientLogin->Initialize( (BYTE*)buff );
-				ServerLogin->Initialize( (BYTE*)buff );
+				if ( ServerEncrypted )
+				{
+					ServerCrypt->Initialize( *((DWORD*)buff) );
+					ServerLogin->Initialize( (BYTE*)buff );
+				}
+
+				if ( ClientEncrypted )
+				{
+					ClientCrypt->Initialize( *((DWORD*)buff) );
+					ClientLogin->Initialize( (BYTE*)buff );
+				}
 
 				Compression::Reset();
 			}
@@ -879,7 +904,7 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 			{
 				FirstSend = false;
 
-				if ( OSICryptEnabled )
+				if ( ClientEncrypted )
 					LoginServer = ClientLogin->Test( (BYTE)buff[0] ) == ((BYTE)0x80);
 				else
 					LoginServer = ((BYTE)buff[0]) == ((BYTE)0x80);
@@ -889,7 +914,7 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 
 			memcpy( &pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length], buff, len );
 
-			if ( OSICryptEnabled )
+			if ( ClientEncrypted )
 			{
 				if ( LoginServer )
 					ClientLogin->Decrypt( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
@@ -991,7 +1016,7 @@ void FlushSendData()
 
 		memcpy( tempBuff, &pShared->OutSend.Buff[pShared->OutSend.Start], outLen );
 
-		if ( OSICryptEnabled )
+		if ( ServerEncrypted )
 		{
 			if ( LoginServer )
 				ServerLogin->Encrypt( (BYTE*)tempBuff, (BYTE*)tempBuff, outLen );
@@ -1027,8 +1052,7 @@ int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 	{
 		Log( "Connecting to %i", sock );
 
-		if ( OSICryptEnabled )
-			CreateEncryption();
+		CreateEncryption();
 
 		Seeded = false;
 		LoginServer = false;
@@ -1942,7 +1966,7 @@ bool CopyClientMemory()
 		VirtualProtect( (void*)origAddr, 0x50, oldProt, &oldProt );
 	}
 
-	if ( OSICryptEnabled )
+	if ( ClientEncrypted || ServerEncrypted )
 	{
 		addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
 		if ( !addr )
@@ -2133,8 +2157,9 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		hPostWnd = (HWND)lParam;
 		UOProcId = GetCurrentProcessId();
 		hWatchWnd = hWnd;
-		OSICryptEnabled = (wParam & 0x2) != 0;
-		AllowNegotiate = (wParam & 0x4) != 0;
+		AllowNegotiate = (wParam & 0x04) != 0;
+		ClientEncrypted = (wParam & 0x08) != 0;
+		ServerEncrypted = (wParam & 0x10) != 0;
 
 		InitThemes();
 

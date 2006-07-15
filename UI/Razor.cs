@@ -229,6 +229,7 @@ namespace Assistant
 		private System.Windows.Forms.LinkLabel forumsLink;
 		private System.Windows.Forms.TextBox features;
 		private System.Windows.Forms.PictureBox lockBox;
+		private System.Windows.Forms.Button btnMap;
 
 		private bool m_CanClose = true;
 
@@ -405,6 +406,22 @@ namespace Assistant
 			this.addDress = new System.Windows.Forms.Button();
 			this.dressList = new System.Windows.Forms.ListBox();
 			this.undressConflicts = new System.Windows.Forms.CheckBox();
+			this.skillsTab = new System.Windows.Forms.TabPage();
+			this.dispDelta = new System.Windows.Forms.CheckBox();
+			this.skillCopyAll = new System.Windows.Forms.Button();
+			this.skillCopySel = new System.Windows.Forms.Button();
+			this.baseTotal = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.locks = new System.Windows.Forms.ComboBox();
+			this.setlocks = new System.Windows.Forms.Button();
+			this.resetDelta = new System.Windows.Forms.Button();
+			this.skillList = new System.Windows.Forms.ListView();
+			this.skillHDRName = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRvalue = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRbase = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRdelta = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRcap = new System.Windows.Forms.ColumnHeader();
+			this.skillHDRlock = new System.Windows.Forms.ColumnHeader();
 			this.agentsTab = new System.Windows.Forms.TabPage();
 			this.agentB6 = new System.Windows.Forms.Button();
 			this.agentB5 = new System.Windows.Forms.Button();
@@ -481,23 +498,8 @@ namespace Assistant
 			this.userGuideLink = new System.Windows.Forms.LinkLabel();
 			this.donate = new System.Windows.Forms.Button();
 			this.statCol1 = new System.Windows.Forms.Label();
-			this.skillsTab = new System.Windows.Forms.TabPage();
-			this.dispDelta = new System.Windows.Forms.CheckBox();
-			this.skillCopyAll = new System.Windows.Forms.Button();
-			this.skillCopySel = new System.Windows.Forms.Button();
-			this.baseTotal = new System.Windows.Forms.TextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.locks = new System.Windows.Forms.ComboBox();
-			this.setlocks = new System.Windows.Forms.Button();
-			this.resetDelta = new System.Windows.Forms.Button();
-			this.skillList = new System.Windows.Forms.ListView();
-			this.skillHDRName = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRvalue = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRbase = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRdelta = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRcap = new System.Windows.Forms.ColumnHeader();
-			this.skillHDRlock = new System.Windows.Forms.ColumnHeader();
 			this.timerTimer = new System.Windows.Forms.Timer(this.components);
+			this.btnMap = new System.Windows.Forms.Button();
 			this.tabs.SuspendLayout();
 			this.generalTab.SuspendLayout();
 			this.groupBox4.SuspendLayout();
@@ -511,6 +513,7 @@ namespace Assistant
 			this.dressTab.SuspendLayout();
 			this.groupBox6.SuspendLayout();
 			this.groupBox5.SuspendLayout();
+			this.skillsTab.SuspendLayout();
 			this.agentsTab.SuspendLayout();
 			this.agentGroup.SuspendLayout();
 			this.hotkeysTab.SuspendLayout();
@@ -524,7 +527,6 @@ namespace Assistant
 			((System.ComponentModel.ISupportInitialize)(this.playPos)).BeginInit();
 			this.screenshotTab.SuspendLayout();
 			this.statusTab.SuspendLayout();
-			this.skillsTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// m_NotifyIcon
@@ -559,6 +561,7 @@ namespace Assistant
 			// 
 			// generalTab
 			// 
+			this.generalTab.Controls.Add(this.btnMap);
 			this.generalTab.Controls.Add(this.lockBox);
 			this.generalTab.Controls.Add(this.checkUpdate);
 			this.generalTab.Controls.Add(this.label10);
@@ -801,9 +804,9 @@ namespace Assistant
 			this.moreOptTab.Controls.Add(this.chkForceSpellHue);
 			this.moreOptTab.Controls.Add(this.chkForceSpeechHue);
 			this.moreOptTab.Controls.Add(this.label3);
-			this.moreOptTab.Location = new System.Drawing.Point(4, 22);
+			this.moreOptTab.Location = new System.Drawing.Point(4, 40);
 			this.moreOptTab.Name = "moreOptTab";
-			this.moreOptTab.Size = new System.Drawing.Size(416, 209);
+			this.moreOptTab.Size = new System.Drawing.Size(416, 191);
 			this.moreOptTab.TabIndex = 5;
 			this.moreOptTab.Text = "Options";
 			// 
@@ -1111,9 +1114,9 @@ namespace Assistant
 			this.moreMoreOptTab.Controls.Add(this.label18);
 			this.moreMoreOptTab.Controls.Add(this.gameSize);
 			this.moreMoreOptTab.Controls.Add(this.smartLT);
-			this.moreMoreOptTab.Location = new System.Drawing.Point(4, 22);
+			this.moreMoreOptTab.Location = new System.Drawing.Point(4, 40);
 			this.moreMoreOptTab.Name = "moreMoreOptTab";
-			this.moreMoreOptTab.Size = new System.Drawing.Size(416, 209);
+			this.moreMoreOptTab.Size = new System.Drawing.Size(416, 191);
 			this.moreMoreOptTab.TabIndex = 10;
 			this.moreMoreOptTab.Text = "More Options";
 			// 
@@ -1385,9 +1388,9 @@ namespace Assistant
 			this.displayTab.Controls.Add(this.checkNewConts);
 			this.displayTab.Controls.Add(this.groupBox3);
 			this.displayTab.Controls.Add(this.groupBox2);
-			this.displayTab.Location = new System.Drawing.Point(4, 22);
+			this.displayTab.Location = new System.Drawing.Point(4, 40);
 			this.displayTab.Name = "displayTab";
-			this.displayTab.Size = new System.Drawing.Size(416, 209);
+			this.displayTab.Size = new System.Drawing.Size(416, 191);
 			this.displayTab.TabIndex = 1;
 			this.displayTab.Text = "Display/Counters";
 			// 
@@ -1547,9 +1550,9 @@ namespace Assistant
 			// 
 			this.dressTab.Controls.Add(this.groupBox6);
 			this.dressTab.Controls.Add(this.groupBox5);
-			this.dressTab.Location = new System.Drawing.Point(4, 22);
+			this.dressTab.Location = new System.Drawing.Point(4, 40);
 			this.dressTab.Name = "dressTab";
-			this.dressTab.Size = new System.Drawing.Size(416, 209);
+			this.dressTab.Size = new System.Drawing.Size(416, 191);
 			this.dressTab.TabIndex = 3;
 			this.dressTab.Text = "Arm/Dress";
 			// 
@@ -1692,6 +1695,146 @@ namespace Assistant
 			this.undressConflicts.Text = "Automatically move conflicting items";
 			this.undressConflicts.CheckedChanged += new System.EventHandler(this.undressConflicts_CheckedChanged);
 			// 
+			// skillsTab
+			// 
+			this.skillsTab.Controls.Add(this.dispDelta);
+			this.skillsTab.Controls.Add(this.skillCopyAll);
+			this.skillsTab.Controls.Add(this.skillCopySel);
+			this.skillsTab.Controls.Add(this.baseTotal);
+			this.skillsTab.Controls.Add(this.label1);
+			this.skillsTab.Controls.Add(this.locks);
+			this.skillsTab.Controls.Add(this.setlocks);
+			this.skillsTab.Controls.Add(this.resetDelta);
+			this.skillsTab.Controls.Add(this.skillList);
+			this.skillsTab.Location = new System.Drawing.Point(4, 40);
+			this.skillsTab.Name = "skillsTab";
+			this.skillsTab.Size = new System.Drawing.Size(416, 191);
+			this.skillsTab.TabIndex = 2;
+			this.skillsTab.Text = "Skills";
+			// 
+			// dispDelta
+			// 
+			this.dispDelta.Location = new System.Drawing.Point(296, 124);
+			this.dispDelta.Name = "dispDelta";
+			this.dispDelta.Size = new System.Drawing.Size(112, 32);
+			this.dispDelta.TabIndex = 11;
+			this.dispDelta.Text = "Display skill and stat changes";
+			this.dispDelta.CheckedChanged += new System.EventHandler(this.dispDelta_CheckedChanged);
+			// 
+			// skillCopyAll
+			// 
+			this.skillCopyAll.Location = new System.Drawing.Point(296, 92);
+			this.skillCopyAll.Name = "skillCopyAll";
+			this.skillCopyAll.Size = new System.Drawing.Size(112, 20);
+			this.skillCopyAll.TabIndex = 9;
+			this.skillCopyAll.Text = "Copy All";
+			this.skillCopyAll.Click += new System.EventHandler(this.skillCopyAll_Click);
+			// 
+			// skillCopySel
+			// 
+			this.skillCopySel.Location = new System.Drawing.Point(296, 68);
+			this.skillCopySel.Name = "skillCopySel";
+			this.skillCopySel.Size = new System.Drawing.Size(112, 20);
+			this.skillCopySel.TabIndex = 8;
+			this.skillCopySel.Text = "Copy Selected";
+			this.skillCopySel.Click += new System.EventHandler(this.skillCopySel_Click);
+			// 
+			// baseTotal
+			// 
+			this.baseTotal.Location = new System.Drawing.Point(364, 164);
+			this.baseTotal.Name = "baseTotal";
+			this.baseTotal.ReadOnly = true;
+			this.baseTotal.Size = new System.Drawing.Size(44, 20);
+			this.baseTotal.TabIndex = 7;
+			this.baseTotal.Text = "";
+			// 
+			// label1
+			// 
+			this.label1.Location = new System.Drawing.Point(296, 168);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(65, 15);
+			this.label1.TabIndex = 6;
+			this.label1.Text = "Base Total:";
+			// 
+			// locks
+			// 
+			this.locks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.locks.Items.AddRange(new object[] {
+													   "Up",
+													   "Down",
+													   "Locked"});
+			this.locks.Location = new System.Drawing.Point(372, 32);
+			this.locks.Name = "locks";
+			this.locks.Size = new System.Drawing.Size(36, 21);
+			this.locks.TabIndex = 5;
+			// 
+			// setlocks
+			// 
+			this.setlocks.Location = new System.Drawing.Point(296, 32);
+			this.setlocks.Name = "setlocks";
+			this.setlocks.Size = new System.Drawing.Size(76, 21);
+			this.setlocks.TabIndex = 4;
+			this.setlocks.Text = "Set all locks:";
+			this.setlocks.Click += new System.EventHandler(this.OnSetSkillLocks);
+			// 
+			// resetDelta
+			// 
+			this.resetDelta.Location = new System.Drawing.Point(296, 5);
+			this.resetDelta.Name = "resetDelta";
+			this.resetDelta.Size = new System.Drawing.Size(112, 20);
+			this.resetDelta.TabIndex = 3;
+			this.resetDelta.Text = "Reset  +/-";
+			this.resetDelta.Click += new System.EventHandler(this.OnResetSkillDelta);
+			// 
+			// skillList
+			// 
+			this.skillList.AutoArrange = false;
+			this.skillList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																						this.skillHDRName,
+																						this.skillHDRvalue,
+																						this.skillHDRbase,
+																						this.skillHDRdelta,
+																						this.skillHDRcap,
+																						this.skillHDRlock});
+			this.skillList.FullRowSelect = true;
+			this.skillList.Location = new System.Drawing.Point(0, 0);
+			this.skillList.Name = "skillList";
+			this.skillList.Size = new System.Drawing.Size(288, 184);
+			this.skillList.TabIndex = 1;
+			this.skillList.View = System.Windows.Forms.View.Details;
+			this.skillList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.skillList_MouseDown);
+			this.skillList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.OnSkillColClick);
+			// 
+			// skillHDRName
+			// 
+			this.skillHDRName.Text = "Skill Name";
+			this.skillHDRName.Width = 82;
+			// 
+			// skillHDRvalue
+			// 
+			this.skillHDRvalue.Text = "Value";
+			this.skillHDRvalue.Width = 40;
+			// 
+			// skillHDRbase
+			// 
+			this.skillHDRbase.Text = "Base";
+			this.skillHDRbase.Width = 40;
+			// 
+			// skillHDRdelta
+			// 
+			this.skillHDRdelta.Text = "+/-";
+			this.skillHDRdelta.Width = 40;
+			// 
+			// skillHDRcap
+			// 
+			this.skillHDRcap.Text = "Cap";
+			this.skillHDRcap.Width = 40;
+			// 
+			// skillHDRlock
+			// 
+			this.skillHDRlock.Text = "Lock";
+			this.skillHDRlock.Width = 25;
+			// 
 			// agentsTab
 			// 
 			this.agentsTab.Controls.Add(this.agentB6);
@@ -1702,9 +1845,9 @@ namespace Assistant
 			this.agentsTab.Controls.Add(this.agentB1);
 			this.agentsTab.Controls.Add(this.agentB2);
 			this.agentsTab.Controls.Add(this.agentB3);
-			this.agentsTab.Location = new System.Drawing.Point(4, 22);
+			this.agentsTab.Location = new System.Drawing.Point(4, 40);
 			this.agentsTab.Name = "agentsTab";
-			this.agentsTab.Size = new System.Drawing.Size(416, 209);
+			this.agentsTab.Size = new System.Drawing.Size(416, 191);
 			this.agentsTab.TabIndex = 6;
 			this.agentsTab.Text = "Agents";
 			// 
@@ -2474,151 +2617,20 @@ namespace Assistant
 			this.statCol1.Size = new System.Drawing.Size(240, 176);
 			this.statCol1.TabIndex = 0;
 			// 
-			// skillsTab
-			// 
-			this.skillsTab.Controls.Add(this.dispDelta);
-			this.skillsTab.Controls.Add(this.skillCopyAll);
-			this.skillsTab.Controls.Add(this.skillCopySel);
-			this.skillsTab.Controls.Add(this.baseTotal);
-			this.skillsTab.Controls.Add(this.label1);
-			this.skillsTab.Controls.Add(this.locks);
-			this.skillsTab.Controls.Add(this.setlocks);
-			this.skillsTab.Controls.Add(this.resetDelta);
-			this.skillsTab.Controls.Add(this.skillList);
-			this.skillsTab.Location = new System.Drawing.Point(4, 22);
-			this.skillsTab.Name = "skillsTab";
-			this.skillsTab.Size = new System.Drawing.Size(416, 209);
-			this.skillsTab.TabIndex = 2;
-			this.skillsTab.Text = "Skills";
-			// 
-			// dispDelta
-			// 
-			this.dispDelta.Location = new System.Drawing.Point(296, 124);
-			this.dispDelta.Name = "dispDelta";
-			this.dispDelta.Size = new System.Drawing.Size(112, 32);
-			this.dispDelta.TabIndex = 11;
-			this.dispDelta.Text = "Display skill and stat changes";
-			this.dispDelta.CheckedChanged += new System.EventHandler(this.dispDelta_CheckedChanged);
-			// 
-			// skillCopyAll
-			// 
-			this.skillCopyAll.Location = new System.Drawing.Point(296, 92);
-			this.skillCopyAll.Name = "skillCopyAll";
-			this.skillCopyAll.Size = new System.Drawing.Size(112, 20);
-			this.skillCopyAll.TabIndex = 9;
-			this.skillCopyAll.Text = "Copy All";
-			this.skillCopyAll.Click += new System.EventHandler(this.skillCopyAll_Click);
-			// 
-			// skillCopySel
-			// 
-			this.skillCopySel.Location = new System.Drawing.Point(296, 68);
-			this.skillCopySel.Name = "skillCopySel";
-			this.skillCopySel.Size = new System.Drawing.Size(112, 20);
-			this.skillCopySel.TabIndex = 8;
-			this.skillCopySel.Text = "Copy Selected";
-			this.skillCopySel.Click += new System.EventHandler(this.skillCopySel_Click);
-			// 
-			// baseTotal
-			// 
-			this.baseTotal.Location = new System.Drawing.Point(364, 164);
-			this.baseTotal.Name = "baseTotal";
-			this.baseTotal.ReadOnly = true;
-			this.baseTotal.Size = new System.Drawing.Size(44, 20);
-			this.baseTotal.TabIndex = 7;
-			this.baseTotal.Text = "";
-			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(296, 168);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(65, 15);
-			this.label1.TabIndex = 6;
-			this.label1.Text = "Base Total:";
-			// 
-			// locks
-			// 
-			this.locks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.locks.Items.AddRange(new object[] {
-													   "Up",
-													   "Down",
-													   "Locked"});
-			this.locks.Location = new System.Drawing.Point(372, 32);
-			this.locks.Name = "locks";
-			this.locks.Size = new System.Drawing.Size(36, 21);
-			this.locks.TabIndex = 5;
-			// 
-			// setlocks
-			// 
-			this.setlocks.Location = new System.Drawing.Point(296, 32);
-			this.setlocks.Name = "setlocks";
-			this.setlocks.Size = new System.Drawing.Size(76, 21);
-			this.setlocks.TabIndex = 4;
-			this.setlocks.Text = "Set all locks:";
-			this.setlocks.Click += new System.EventHandler(this.OnSetSkillLocks);
-			// 
-			// resetDelta
-			// 
-			this.resetDelta.Location = new System.Drawing.Point(296, 5);
-			this.resetDelta.Name = "resetDelta";
-			this.resetDelta.Size = new System.Drawing.Size(112, 20);
-			this.resetDelta.TabIndex = 3;
-			this.resetDelta.Text = "Reset  +/-";
-			this.resetDelta.Click += new System.EventHandler(this.OnResetSkillDelta);
-			// 
-			// skillList
-			// 
-			this.skillList.AutoArrange = false;
-			this.skillList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																						this.skillHDRName,
-																						this.skillHDRvalue,
-																						this.skillHDRbase,
-																						this.skillHDRdelta,
-																						this.skillHDRcap,
-																						this.skillHDRlock});
-			this.skillList.FullRowSelect = true;
-			this.skillList.Location = new System.Drawing.Point(0, 0);
-			this.skillList.Name = "skillList";
-			this.skillList.Size = new System.Drawing.Size(288, 184);
-			this.skillList.TabIndex = 1;
-			this.skillList.View = System.Windows.Forms.View.Details;
-			this.skillList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.skillList_MouseDown);
-			this.skillList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.OnSkillColClick);
-			// 
-			// skillHDRName
-			// 
-			this.skillHDRName.Text = "Skill Name";
-			this.skillHDRName.Width = 82;
-			// 
-			// skillHDRvalue
-			// 
-			this.skillHDRvalue.Text = "Value";
-			this.skillHDRvalue.Width = 40;
-			// 
-			// skillHDRbase
-			// 
-			this.skillHDRbase.Text = "Base";
-			this.skillHDRbase.Width = 40;
-			// 
-			// skillHDRdelta
-			// 
-			this.skillHDRdelta.Text = "+/-";
-			this.skillHDRdelta.Width = 40;
-			// 
-			// skillHDRcap
-			// 
-			this.skillHDRcap.Text = "Cap";
-			this.skillHDRcap.Width = 40;
-			// 
-			// skillHDRlock
-			// 
-			this.skillHDRlock.Text = "Lock";
-			this.skillHDRlock.Width = 25;
-			// 
 			// timerTimer
 			// 
 			this.timerTimer.Enabled = true;
 			this.timerTimer.Interval = 5;
 			this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
+			// 
+			// btnMap
+			// 
+			this.btnMap.Location = new System.Drawing.Point(288, 102);
+			this.btnMap.Name = "btnMap";
+			this.btnMap.Size = new System.Drawing.Size(92, 20);
+			this.btnMap.TabIndex = 57;
+			this.btnMap.Text = "LEET MAP";
+			this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
 			// 
 			// MainForm
 			// 
@@ -2651,6 +2663,7 @@ namespace Assistant
 			this.dressTab.ResumeLayout(false);
 			this.groupBox6.ResumeLayout(false);
 			this.groupBox5.ResumeLayout(false);
+			this.skillsTab.ResumeLayout(false);
 			this.agentsTab.ResumeLayout(false);
 			this.agentGroup.ResumeLayout(false);
 			this.hotkeysTab.ResumeLayout(false);
@@ -2664,7 +2677,6 @@ namespace Assistant
 			((System.ComponentModel.ISupportInitialize)(this.playPos)).EndInit();
 			this.screenshotTab.ResumeLayout(false);
 			this.statusTab.ResumeLayout(false);
-			this.skillsTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -5787,6 +5799,20 @@ namespace Assistant
 
 			if ( !ClientCommunication.AllowBit( FeatureBit.LoopingMacros ) )
 				LockControl( this.loopMacro );
+		}
+
+		public Assistant.MapUO.MapWindow MapWindow;
+
+		[System.Runtime.InteropServices.DllImport( "user32.dll" )]
+		private static extern IntPtr SetParent( IntPtr child, IntPtr newParent );
+
+		private void btnMap_Click(object sender, System.EventArgs e)
+		{
+			if ( MapWindow == null )
+				MapWindow = new Assistant.MapUO.MapWindow();
+			//SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
+			//MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
+			MapWindow.Show();
 		}
 	}
 }

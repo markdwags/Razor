@@ -330,6 +330,41 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Map\MapWindow.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Map\MapWindow.resx"
+                    DependentUpon = "MapWindow.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Map\Region.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Map\UOMapControl.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Map\UOMapControl.resx"
+                    DependentUpon = "UOMapControl.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Map\UOMapRuneButton.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Map\User.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Network\ClientComm.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

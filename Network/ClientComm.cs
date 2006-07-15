@@ -662,19 +662,25 @@ namespace Assistant
 			return UOGLite2.Resume() != 0;
 		}
 
-		private static bool m_UseEncy = false;
-		internal static bool UseEncy { get { return m_UseEncy; } set { m_UseEncy = value; } }
+		private static bool m_ClientEnc = false;
+		internal static bool ClientEncrypted { get { return m_ClientEnc; } set { m_ClientEnc = value; } }
+
+		private static bool m_ServerEnc = false;
+		internal static bool ServerEncrypted { get { return m_ServerEnc; } set { m_ServerEnc = value; } }
 
 		internal static bool InstallHooks( IntPtr mainWindow )
 		{
 			InitError error;
 			int flags = 0;
 
-			if ( UseEncy )
-				flags |= 0x02;
-
 			if ( Config.GetBool( "Negotiate" ) )
 				flags |= 0x04;
+
+			if ( ClientEncrypted )
+				flags |= 0x08;
+
+			if ( ServerEncrypted )
+				flags |= 0x10;
 
 			//ClientProc.WaitForInputIdle();
 			WaitForWindow( ClientProc.Id );

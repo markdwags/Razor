@@ -85,22 +85,59 @@ namespace Assistant
 			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 )
 				throw new InvalidOperationException( "This Razor installation is corrupted." );
 
-			bool patch = true;
-			bool clPatch = false;
-			bool showWelcome = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWelcome" ), 1 ) == 1;
+			bool patch = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy" ), 1 ) != 0;
+			bool showWelcome = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWelcome" ), 1 ) != 0;
 			ClientLaunch launch = ClientLaunch.TwoD;
 			int attPID = -1;
-			string dataDir = null;
+			string dataDir;
 
+			ClientCommunication.ClientEncrypted = false;
+
+			// check if the new ServerEncryption option is in the registry yet
+			dataDir = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc" );
+			if ( dataDir == null )
+			{
+				// if not, add it (copied from UseOSIEnc)
+				dataDir = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UseOSIEnc" );
+				if ( dataDir == "1" )
+				{
+					ClientCommunication.ServerEncrypted = true;
+					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc", "1" );
+				}
+				else
+				{
+					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc", "0" );
+					ClientCommunication.ServerEncrypted = false;
+				}
+
+				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy", "1" ); // reset the patch encryption option to TRUE
+				patch = true;
+
+				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, "UseOSIEnc" ); // delete the old value
+			}
+			else
+			{
+				ClientCommunication.ServerEncrypted = Utility.ToInt32( dataDir, 0 ) != 0;
+			}
+			dataDir = null;
+			
 			for (int i=0;i<Args.Length;i++)
 			{
 				string arg = Args[i].ToLower();
 				if ( arg == "--nopatch" )
 				{
 					patch = false;
-					clPatch = true;
 				}
-				if ( arg == "--welcome" )
+				else if ( arg == "--clientenc" )
+				{
+					ClientCommunication.ClientEncrypted = true;
+					patch = false;
+				}
+				else if ( arg == "--serverenc" )
+				{
+					ClientCommunication.ServerEncrypted = true;
+				}
+				else if ( arg == "--welcome" )
 				{
 					showWelcome = true;
 				}
@@ -108,16 +145,14 @@ namespace Assistant
 				{
 					i++;
 					patch = false;
-					clPatch = true;
 					attPID = Utility.ToInt32( Args[i], 0 );
 				}
 				else if ( arg.Substring( 0, 5 ) == "--pid" && arg.Length > 5 ) //support for uog 1.8 (damn you fixit)
 				{
 					patch = false;
-					clPatch = true;
 					attPID = Utility.ToInt32( arg.Substring(5), 0 );
 				}
-				else if ( arg == "-uodata" && i+1 < Args.Length )
+				else if ( arg == "--uodata" && i+1 < Args.Length )
 				{
 					i++;
 					dataDir = Args[i];
@@ -153,9 +188,6 @@ namespace Assistant
 					{
 						launch = (ClientLaunch)cli;
 					}
-
-					if ( !clPatch )
-						patch = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy" ), 1 ) == 1;
 				}
 
 				if ( showWelcome )
@@ -169,7 +201,7 @@ namespace Assistant
 					dataDir = welcome.DataDirectory;
 					if ( launch == ClientLaunch.Custom )
 						clientPath = welcome.ClientPath;
-				}
+				}			
 			}
 
 			if ( dataDir != null && Directory.Exists( dataDir ) )

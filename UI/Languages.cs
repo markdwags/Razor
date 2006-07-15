@@ -335,6 +335,8 @@ namespace Assistant
 		AddFriend,
 		RemoveFriend,
 		MiniHealOrCureSelf,
+		NoPatchWarning,
+		Dismount,
 
 		__End
 	}

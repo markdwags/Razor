@@ -687,6 +687,9 @@ namespace Assistant
 			set
 			{
 				base.Position = value;
+
+				if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
+					Engine.MainWindow.MapWindow.PlayerMoved();
 			}
 		}
 
@@ -746,6 +749,9 @@ namespace Assistant
 				PlayerData.DoubleClick( Backpack ) ;
 
 			ClientCommunication.PostMapChange( cur );
+			
+			if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
+				Engine.MainWindow.MapWindow.PlayerMoved();
 		}
 
 		/*public override void OnMapChange( byte old, byte cur )

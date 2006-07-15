@@ -73,7 +73,11 @@ namespace Assistant.Macros
 
 		private static void HotKeyPlay( ref object state )
 		{
-			Macro m = state as Macro;
+			HotKeyPlay( state as Macro );
+		}
+
+		public static void HotKeyPlay( Macro m )
+		{
 			if ( m != null )
 			{
 				Play( m );

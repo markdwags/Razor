@@ -509,16 +509,7 @@ namespace Assistant
 			}
 
 			patchEncy.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy" ), 1 ) != 0;
-
-			if ( !patchEncy.Checked )
-			{
-				useEnc.Enabled = true;
-				useEnc.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UseOSIEnc" ), 0 ) != 0;
-			}
-			else
-			{
-				useEnc.Enabled = useEnc.Checked = false;
-			}
+			useEnc.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc" ), 0 ) != 0;
 			
 			LoginCFG_SE lse;
 			UOGamers_SE uog;
@@ -578,7 +569,7 @@ namespace Assistant
 		{
 			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "DefClient", ( clientList.SelectedIndex >= 0 ? clientList.SelectedIndex : 0 ).ToString() );
 			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy", patchEncy.Checked ? "1" : "0" );
-			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "UseOSIEnc", useEnc.Checked && useEnc.Enabled && !patchEncy.Checked ? "1" : "0" );
+			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc", useEnc.Checked ? "1" : "0" );
 			MessageBox.Show( this, Language.GetString( LocString.SaveOK ), "Done", MessageBoxButtons.OK, MessageBoxIcon.Information );
 		}
 
@@ -819,15 +810,16 @@ namespace Assistant
 
 		private void patchEncy_CheckedChanged(object sender, System.EventArgs e)
 		{
-			if ( patchEncy.Checked )
-				useEnc.Enabled = useEnc.Checked = false;
-			else
-				useEnc.Enabled = true;
+			if ( !patchEncy.Checked )
+			{
+				if ( MessageBox.Show( this, Language.GetString( LocString.NoPatchWarning ), Language.GetString( LocString.Confirm ), MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.No )
+					patchEncy.Checked = true;
+			}
 		}
 
 		private void useEnc_CheckedChanged(object sender, System.EventArgs e)
 		{
-			ClientCommunication.UseEncy = useEnc.Checked;
+			ClientCommunication.ServerEncrypted = useEnc.Checked;
 		}
 
 		private void dataBrowse_Click(object sender, System.EventArgs e)

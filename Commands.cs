@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections;
+using Assistant.Macros;
 
 namespace Assistant
 {
@@ -18,6 +19,7 @@ namespace Assistant
 			Command.Register( "Echo", new CommandCallback( Echo ) );
 			Command.Register( "GetSerial", new CommandCallback( GetSerial ) );
 			Command.Register( "RPVInfo", new CommandCallback( GetRPVInfo ) );
+			Command.Register( "macro", new CommandCallback( MacroCmd ) );
 		}
 
 		private static void GetRPVInfo( string[] param )
@@ -123,6 +125,24 @@ namespace Assistant
 			if ( param.Length > 0 )
 				count = Utility.ToInt32( param[0], 5 );
 			Assistant.Ping.StartPing( count );
+		}
+
+		private static void MacroCmd( string[] param )
+		{
+			if ( param.Length <= 0 )
+			{
+				World.Player.SendMessage( "You must enter a macro name." );
+				return;
+			}
+
+			foreach ( Macro m in MacroManager.List )
+			{
+				if ( m.ToString() == param[0] )
+				{
+					MacroManager.HotKeyPlay( m );
+					break;
+				}
+			}
 		}
 	}
 

@@ -1,4 +1,4 @@
-Razor (v1.0.0.*) Changelog:
+Razor (v1.0.1.*) Changelog:
 
 Razor is a FREE program.  Unlike competing programs like UOAssist, Razor does not charge any money at all and provides even more features.  Razor is now available on the regular OSI servers for unlimited accounts absolutely free.  But Razor needs your help!  Razor is now accepting donations over PayPal.  UOAssist (a similar program, but for OSI servers only) costs $15 PER ACCOUNT while Razor is FREE for UNLIMITED ACCOUNTS.  Your donation of $5 or $10 (or any amount!) is LESS than you would pay for a similar program!  Donations are greatly appreciated and will help ensure that the developers continue to improve and maintain this fine product.
 Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD
@@ -6,23 +6,11 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
--Comments (on their own line, prefixed by # or //) will now be saved inside of macros and displayed on the macro tab.
--Added Exorcism to spell definitions.
--An internal Razor target will now save the previous target the client had and resend it after a choice is made. (Example: You have a spell target up, you press your "Set Last Target" hotkey. You target a person (thus setting them as your last target).  Instead of canceling the spell target, Razor will now resend that spell Target to the client.)  Note this ONLY works on internal Razor targets, not targets sent from the server.
--Bags of sending will (in most cases) now be automatically ignored by the Auto-Search feature. (Note that Razor will never search a bag with a special hue)
--Added Hotkeys to Add/Remove people to/from the Friends agent
--Double Click by Type will now also use items in your hand if no others are available.
--The friends agent will start remembering names 
--There is now a "Mini-Heal/Cure Self" hotkey (under the spells category) which, when pressed, will cast  cure if you are poisoned otherwise it will cast 1st circle heal. Unlike "Heal/Cure Self" this hotkey will never cast Greater Heal.
+-Connect UO compatability
+-Added a "-macro <name>" command to play a macro from inside of the client.
+-A dismount hotkey (in the "Misc" category)
 
 Changes/Fixes:
--Fixed serious network communications bug.  All users are strongly recommended to upgrade.
--Several small crashes/annoyances have been fixed.
--Fixed problems with images not displaying correctly in titlebar
--Fixed a problem with UOAM not properly logging houses.
--Fixed some RPV playback bugs (You will no longer freeze if you get disconnected while watching one).
--If you are disconnected while watching an RPV, the RPV will now continue playing normally.
--Fixed some bugs which caused Drag/Drop to get stuck sometimes.
--Fixed problem with force screen res and circle trans.  This option should fit seemlessly with the client now.
--People will no longer be listed multiple times in the Friends agent.
--The "Heal/Cure Self" hotkey will now cast the heal spell even if you are not damaged (and give you a target cursor instead of queuing "Target Self").
+-Several performance enhancements to the network code.  Especially on encrypted (OSI) servers.
+-Changed the way the welcome screen handles OSI encryption.  You should now always check the "patch encryption" box unless you are using a special client (like one created by UORice).  If you are confused, then always check the "Patch Encryption" box, even when connecting to OSI.
+

@@ -17,6 +17,7 @@ namespace Assistant.HotKeys
 			HotKey.Add( HKCategory.Misc, LocString.LastSkill, new HotKeyCallback( LastSkill ) );
 			HotKey.Add( HKCategory.Misc, LocString.LastObj, new HotKeyCallback( LastObj ) );
 			HotKey.Add( HKCategory.Misc, LocString.AllNames, new HotKeyCallback( AllNames ) );
+			HotKey.Add( HKCategory.Misc, LocString.Dismount, new HotKeyCallback( Dismount ) );
 			
 			HotKey.Add( HKCategory.Items, LocString.BandageSelf, new HotKeyCallback( BandageSelf ) );
 			HotKey.Add( HKCategory.Items, LocString.BandageLT, new HotKeyCallback( BandageLastTarg ) );
@@ -31,6 +32,14 @@ namespace Assistant.HotKeys
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkExp,		call, (ushort)3853 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkStr,		call, (ushort)3849 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkAg,		call, (ushort)3848 );
+		}
+
+		private static void Dismount()
+		{
+			if ( World.Player.GetItemOnLayer( Layer.Mount ) != null )
+				ActionQueue.DoubleClick( true, World.Player.Serial );
+			else
+				World.Player.SendMessage( "You are not mounted." );
 		}
 
 		private static void AllNames()
