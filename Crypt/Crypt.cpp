@@ -7,6 +7,8 @@
 #include "MemFinder.h"
 #include "Checksum.h"
 
+#define NO_CHECKSUM_VERSION
+
 //*************************************************************************************
 //**************************************Varaibles**************************************
 //*************************************************************************************
@@ -137,7 +139,7 @@ BOOL APIENTRY DllMain( HANDLE hModule, DWORD dwReason, LPVOID )
 DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 {
 	char fileName[256];
-	//TODO: addition hack protection?
+	
 	if ( !strcmp( exeVer, DLL_VERSION ) )
 	{
 		GetModuleFileName( NULL, fileName, 256 );
@@ -157,23 +159,18 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 		for(int i=0;i<16;i++)
 			data[i] ^= data[0x1717+i];
 
-#ifdef _DEBUG
-		file = fopen( "razor_checksum.txt", "w" );
-		for(int i=0;i<16;i++)
-			fprintf( file, "\\x%x", (int)data[i] );
-		fprintf( file, "\n" );
-		fclose( file );
-
-		Disabled = false;
-#else
 		Disabled = memcmp( data, CHECKSUM, 16 ) != 0;
-#endif
+
 		delete[] data;
 	}
 	else
 	{
 		Disabled = true;
 	}
+
+#ifdef NO_CHECKSUM_VERSION
+		Disabled = false;
+#endif
 
 	return !Disabled;
 }
@@ -977,10 +974,12 @@ void FlushSendData()
 					}
 
 					InGame = true;
-
+#ifdef NO_CHECKSUM_VERSION
+					memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
+#else
 					if ( pShared->IsHaxed )
 						memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
-
+#endif
 					break;
 				}
 				else if ( *buff == 0x00 && (*((DWORD*)&buff[1])) == 0xEDEDEDED && len >= 1+4+4+1+30+30 && len <= left )
@@ -993,9 +992,12 @@ void FlushSendData()
 					}
 
 					InGame = true;
-
+#ifdef NO_CHECKSUM_VERSION
+					memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
+#else
 					if ( pShared->IsHaxed )
 						memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
+#endif
 					break;
 				}
 				

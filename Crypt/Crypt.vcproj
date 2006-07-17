@@ -72,11 +72,16 @@
 			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
-				FavorSizeOrSpeed="0"
+				Optimization="3"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="2"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="TRUE"
 				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;CRYPT_EXPORTS"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="0"
+				BufferSecurityCheck="FALSE"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -92,7 +97,8 @@
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				EnableCOMDATFolding="0"
+				OptimizeForWindows98="0"
 				ImportLibrary="$(OutDir)/Crypt.lib"
 				TargetMachine="1"/>
 			<Tool

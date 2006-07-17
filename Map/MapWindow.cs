@@ -37,7 +37,6 @@ namespace Assistant.MapUO
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-			this.Map.Active = true;
 		}
 
 		/// <summary>
@@ -68,7 +67,7 @@ namespace Assistant.MapUO
 			// 
 			// Map
 			// 
-			this.Map.Active = false;
+			this.Map.Active = true;
 			this.Map.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.Map.FocusUser = null;
 			this.Map.Location = new System.Drawing.Point(0, 0);
