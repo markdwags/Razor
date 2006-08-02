@@ -18,6 +18,16 @@ namespace Assistant
 		Special = 0x20,
 	}
 
+	public sealed class QueryPartyLocs : Packet
+	{
+		public QueryPartyLocs() : base( 0xF0, 4 )
+		{
+			Write( (byte) 0x00 );
+			Write( (byte) 0x04 );
+			Write( (byte) 0x00 );
+		}
+	}
+
 	public sealed class ContainerItem : Packet
 	{
 		public ContainerItem( Item item ) : base( 0x25, 20 )

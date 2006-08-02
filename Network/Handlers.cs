@@ -78,6 +78,66 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0xD6, new PacketViewerCallback( EncodedPacket ) );//0xD6 "encoded" packets
 			PacketHandler.RegisterServerToClientViewer( 0xD8, new PacketViewerCallback( CustomHouseInfo ) );
 			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
+			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( CustomParty ) ); // KUOC special party stuff
+		}
+		
+		private static void CustomParty(PacketReader p, PacketHandlerEventArgs args)
+		{
+			args.Block = true;
+			switch (p.ReadByte())
+			{
+
+				case 0:
+				{
+					//not used
+					return;
+				}
+				case 1:
+				{
+
+					Serial serial;
+					ArrayList serialArray = new ArrayList();
+					while ((serial = p.ReadUInt32()) > 0)
+					{
+
+						Mobile mobile = World.FindMobile(serial);
+
+						short x = p.ReadInt16();
+						short y = p.ReadInt16();
+						byte z = p.ReadByte();
+
+
+						if (mobile == null)
+						{
+							World.Player.SendMessage(MsgLevel.Warning, "Mob not found");
+							Mobile mob = new Mobile(serial);
+							mob.Name = "not seen";
+							mob.Position = new Point3D(x, y, z);
+							World.AddMobile(mob);
+							mobile = mob;
+
+						}
+						else
+						{
+							mobile.Position = new Point3D(x, y, z);
+
+						}
+						if (mobile.Name.Length > 0)
+						{
+							if (Engine.MainWindow.MapWindow != null)
+								Engine.MainWindow.MapWindow.UpdateUser(serial.Value, x, y, mobile.Name);
+						}
+						else
+						{
+							World.Player.SendMessage(MsgLevel.Warning, "Player name null");
+						}
+
+
+					}
+
+					return;
+				}
+			}
 		}
 		
 		private static void DisplayStringQuery( PacketReader p, PacketHandlerEventArgs args )
@@ -840,6 +900,9 @@ namespace Assistant
 			{
 				m.Body = p.ReadUInt16();
 				m.Position = new Point3D( p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte() );
+
+				if (Engine.MainWindow.MapWindow != null)
+					Engine.MainWindow.MapWindow.CheckLocalUpdate( m );
 				
 				if ( !Utility.InRange( World.Player.Position, m.Position, World.Player.VisRange ) )
 				{
@@ -1730,6 +1793,10 @@ namespace Assistant
 						if ( World.Player == null || s != World.Player.Serial )
 							m_Party.Add( s );
 					}
+					
+					if (Engine.MainWindow.MapWindow != null)
+						Engine.MainWindow.MapWindow.UpdateList(m_Party);
+
 					break;
 				}
 				case 0x02: // Remove Member/Re-list
@@ -1743,6 +1810,10 @@ namespace Assistant
 						if ( World.Player == null || s != World.Player.Serial )
 							m_Party.Add( s );
 					}
+					
+					if (Engine.MainWindow.MapWindow != null)
+						Engine.MainWindow.MapWindow.UpdateList(m_Party);
+					
 					break;
 				}
 				/*case 0x03: // text message

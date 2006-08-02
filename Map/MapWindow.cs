@@ -4,7 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-
+using System.Threading;
 namespace Assistant.MapUO
 {
 	/// <summary>
@@ -12,9 +12,15 @@ namespace Assistant.MapUO
 	/// </summary>
 	public class MapWindow : System.Windows.Forms.Form
 	{
+        private DateTime m_OldTime;
+        private Thread thrdPartyLocs;
+        private bool StopThread;
 		public const int WM_NCLBUTTONDOWN = 0xA1;
 		private Assistant.MapUO.UOMapControl Map;
+		private int ButtonRows;
 		public const int HT_CAPTION = 0x2;
+
+
 
 		[DllImport("user32.dll")]
 		public static extern int SendMessage(IntPtr hWnd,
@@ -29,21 +35,72 @@ namespace Assistant.MapUO
 
 		public MapWindow()
 		{
+        
 			//
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-
+            this.BackColor = Color.Black;
+            this.Map.UserList.Add(new User(World.Player.Serial, "**You**"));
+            this.Map.FocusUser = (User)this.Map.UserList[0];
+            StopThread = false;
+            HotKey.Add(HKCategory.None, HKSubCat.None, "Send Packet", new HotKeyCallback(TogglePartyLocThread));
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
+            m_OldTime = DateTime.Now;
+            if(Assistant.PacketHandlers.Party != null)
+            this.UpdateList(Assistant.PacketHandlers.Party);
 		}
 
+        public void TogglePartyLocThread()
+        {
+            if (this.Map.UserList.Count > 1)
+            {
+                if (thrdPartyLocs != null)
+                {
+                    if (!thrdPartyLocs.IsAlive)
+                    {
+                        StopThread = false;
+                        thrdPartyLocs = new Thread(new ThreadStart(RequestPartyLocations));
+                        thrdPartyLocs.Start();
+                    }
+                }
+                else
+                {
+                    StopThread = false;
+                    thrdPartyLocs = new Thread(new ThreadStart(RequestPartyLocations));
+                    thrdPartyLocs.Start();
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Need to be in a party");
+            }
+        }
+        private void RequestPartyLocations()
+        {
+            while (!(StopThread))
+            {
+                if (World.Player == null || this.Map.UserList.Count <= 1)
+                {
+                    this.StopThread = true;
+                    break;
+                }
+                
+                ClientCommunication.SendToServer(new QueryPartyLocs());
+                Thread.Sleep(200);
+           }
+        }
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
+            StopThread = true;
+            if (thrdPartyLocs != null)
+                thrdPartyLocs.Abort();
 			if( disposing )
 			{
 				if(components != null)
@@ -102,20 +159,160 @@ namespace Assistant.MapUO
 		}
 		#endregion
 
-		private void MapWindow_Resize(object sender, System.EventArgs e)
+        public void UpdateUser(uint Serial, short x, short y, string name)
+        {
+            bool found = false;
+            foreach (User usr in this.Map.UserList)
+            {
+                if (usr.Serial == Serial)
+                {
+                    found = true;
+                    usr.X = x;
+                    usr.Y = y;
+                    usr.Name = name;
+                    
+                }
+            }
+            if (!found)
+            {
+                User usr = new User(Serial, name);
+                usr.X = x;
+                usr.Y = y;
+                this.Map.UserList.Add(usr);
+            }
+            this.Refresh();
+        }
+        public void CheckLocalUpdate(Mobile mob)
+        {
+
+            TimeSpan tSpan = DateTime.Now - m_OldTime;
+            if (tSpan.TotalMilliseconds >= 100)
+            {
+                m_OldTime = DateTime.Now;
+                if (this.Map.UserList != null)
+                {
+                    foreach (User usr in this.Map.UserList)
+                    {
+                        if (usr.Serial == mob.Serial.Value)
+                        {
+                            this.Map.Refresh();
+                            break;
+
+                        }
+
+                    }
+                }
+            }
+
+        }
+        public void UpdateList(ArrayList pList)
+        {
+            if (pList.Count > 0)
+            {
+
+                this.Map.UserList.Clear();
+                this.UpdateUser(World.Player.Serial.Value, System.Convert.ToInt16(World.Player.Position.X), Convert.ToInt16(World.Player.Position.Y), "**You**");
+                this.Map.FocusUser = (User)this.Map.UserList[0];
+                foreach (Serial srl in pList)
+                {
+                    Mobile mobile = World.FindMobile(srl);
+
+                    if (mobile == null)
+                    {
+                        World.Player.SendMessage(MsgLevel.Warning, "Players not found");
+                        Mobile mob = new Mobile(srl);
+                        mob.Name = "Not Seen";
+                        mob.Position = new Point3D(0, 0, 0);
+                        World.AddMobile(mob);
+                        mobile = mob;
+                    }
+                    if (mobile.Name.Length > 0)
+                    {
+                        this.UpdateUser(srl.Value, System.Convert.ToInt16(mobile.Position.X), Convert.ToInt16(mobile.Position.Y), mobile.Name);
+                    }
+                }
+                TogglePartyLocThread();
+            }
+            else
+            {
+                this.Map.UserList.Clear();
+                this.UpdateUser(World.Player.Serial.Value, System.Convert.ToInt16(World.Player.Position.X), Convert.ToInt16(World.Player.Position.Y), "**You**");
+                this.Map.FocusUser = (User)this.Map.UserList[0];
+            }
+            this.Refresh();
+        }
+        public void ClearUsers()
+        {
+            this.Map.UserList.Clear();
+        }
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			if (this.Map.UserList.Count > 1)
+			{
+				//75x15
+				int xcount = 0;
+				int ycount = 0;
+				Point org = new Point(0, this.Height - 50 - (ButtonRows * 15));
+				if (this.FormBorderStyle == FormBorderStyle.None)
+				{
+					org = new Point(0, this.Height - 50 - (ButtonRows * 15) + 32);
+				}
+				Font fnt = new Font("Courier New", 8, FontStyle.Regular);
+				foreach (User usr in this.Map.UserList)
+				{
+					if (((75 * (xcount+1)) - this.Width) > 0)
+					{
+						xcount = 0;
+						ycount++;
+					}
+                    Mobile mob = World.FindMobile(usr.Serial);
+                    string name = mob.Name;
+					if (name.Length > 8)
+					{
+						name = name.Substring(0, 8);
+						name += "...";
+
+					}
+                    else if (name.Length < 1)
+                    {
+                        name = "Not seen";
+                    }
+
+					Point drawPoint = new Point(org.X + (75 * xcount), org.Y + (15*ycount));
+					usr.ButtonPoint = drawPoint;
+					e.Graphics.FillRectangle(Brushes.Black, new Rectangle(drawPoint, new Size(75, 15)));
+					e.Graphics.DrawRectangle(new Pen(Brushes.Gray), new Rectangle(drawPoint, new Size(75, 15)));
+					e.Graphics.DrawString(name, fnt, Brushes.White, drawPoint);
+					xcount++;
+				}
+				if(ycount > 0)
+					ButtonRows = ycount;
+			}
+			base.OnPaint(e);
+		}
+		 private void MapWindow_Resize(object sender, System.EventArgs e)
 		{
 			this.lstUsers.Location = new System.Drawing.Point(this.Width-this.lstUsers.Width-20, 4);
 			this.lstUsers.Height = this.Height;
 
 			//Display party list?
-			if(this.lstUsers.Visible)
-				this.Map.Width = this.Width - 120;
+			if (this.Map.UserList.Count > 1)
+			{
+				if (this.FormBorderStyle == FormBorderStyle.None)
+				{
+					this.Map.Height = this.Height - 50 - (ButtonRows * 15) + 32;
+				}
+				else
+				{
+					this.Map.Height = this.Height - 50 - (ButtonRows * 15);
+				}
+			}
 			else
-				this.Map.Width = this.Width;
+				this.Map.Height = this.Height;
 
-			this.Map.Height = this.Height;
+			this.Map.Width = this.Width;
+			this.Refresh();
 		}
-
 		private void MapWindow_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			if (e.Clicks == 2)
@@ -136,6 +333,18 @@ namespace Assistant.MapUO
 			{
 				ReleaseCapture();
 				SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                Rectangle pointRec = new Rectangle(e.X, e.Y, 1, 1);
+                foreach (User usr in this.Map.UserList)
+                {       
+                    Rectangle rec = new Rectangle(usr.ButtonPoint, new Size(75, 15));
+                    if (pointRec.IntersectsWith(rec))
+                    {
+                        this.Map.FocusUser = usr;
+                        this.Map.Refresh();
+                        
+                    }
+
+                }
 			}
 			this.Map.MapClick(e);
 		}

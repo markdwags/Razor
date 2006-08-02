@@ -1006,6 +1006,8 @@ namespace Assistant
 			Counter.Reset();
 			StealthSteps.Unhide();
 			Engine.MainWindow.OnLogout();
+			if( Engine.MainWindow.MapWindow != null )
+				Engine.MainWindow.MapWindow.Close();
 		}
 
 		private static DateTime m_LastActivate;

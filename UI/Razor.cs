@@ -5808,11 +5808,14 @@ namespace Assistant
 
 		private void btnMap_Click(object sender, System.EventArgs e)
 		{
-			if ( MapWindow == null )
-				MapWindow = new Assistant.MapUO.MapWindow();
-			//SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
-			//MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
-			MapWindow.Show();
+			if ( World.Player != null )
+			{
+				if ( MapWindow == null )
+					MapWindow = new Assistant.MapUO.MapWindow();
+				//SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
+				//MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
+				MapWindow.Show();
+			}
 		}
 	}
 }

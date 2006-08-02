@@ -1,17 +1,24 @@
 using System;
-
+using System.Drawing;
 namespace Assistant.MapUO
 {
     public class User
     {
+		public Point ButtonPoint;
         private short m_X;
         private short m_Y;
         private string m_Name;
-        public User(string name)
+        private uint m_Serial;
+        public User(uint serial, string name)
         {
+            this.m_Serial = serial;
             this.m_Name = name;
         }
-
+        public uint Serial
+        {
+            get { return m_Serial; }
+            set { m_Serial = value; }
+        }
         public string Name
         {
             get { return m_Name; }
