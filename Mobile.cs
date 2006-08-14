@@ -261,15 +261,28 @@ namespace Assistant
 
 		public override void Remove()
 		{
-			ArrayList rem = new ArrayList( m_Items );
-			m_Items.Clear();
-			for (int i=0;i<rem.Count;i++)
-				((Item)rem[i]).Remove();
+            if (!this.InParty())
+            {
+                ArrayList rem = new ArrayList(m_Items);
+                m_Items.Clear();
+                for (int i = 0; i < rem.Count; i++)
+                    ((Item)rem[i]).Remove();
 
-			World.RemoveMobile( this );
-			base.Remove();
+                World.RemoveMobile(this);
+                base.Remove();
+            }
 		}
-
+        public bool InParty()
+        {
+            foreach (Serial serial in Assistant.PacketHandlers.Party)
+            {
+                if (serial == this.Serial)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 		public Item GetItemOnLayer( Layer layer )
 		{
 			for(int i=0;i<m_Items.Count;i++)
@@ -366,4 +379,5 @@ namespace Assistant
 		}
 	}
 }
+
 

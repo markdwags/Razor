@@ -44,7 +44,7 @@ namespace Assistant.MapUO
             this.Map.UserList.Add(new User(World.Player.Serial, "**You**"));
             this.Map.FocusUser = (User)this.Map.UserList[0];
             StopThread = false;
-            HotKey.Add(HKCategory.None, HKSubCat.None, "Send Packet", new HotKeyCallback(TogglePartyLocThread));
+           
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
