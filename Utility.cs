@@ -27,6 +27,14 @@ namespace Assistant
 				&& ( to.Y <= (from.Y + range) );
 		}
 
+		public static int Distance( int fx, int fy, int tx, int ty )
+		{
+			int xDelta = Math.Abs( fx - tx );
+			int yDelta = Math.Abs( fy - ty );
+
+			return ( xDelta > yDelta ? xDelta : yDelta );
+		}
+
 		public static int Distance( IPoint2D from, IPoint2D to )
 		{
 			int xDelta = Math.Abs( from.X - to.X );

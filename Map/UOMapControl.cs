@@ -17,9 +17,10 @@ namespace Assistant.MapUO
 		private bool m_Active;
 		private Region[] m_Regions;
 		private ArrayList m_MapButtons;
-		private Image m_Image;
 		private Point prevPoint;
 		private Mobile m_Focus;
+
+		private Bitmap m_Background;
 
 		public Mobile FocusMobile
 		{
@@ -45,6 +46,156 @@ namespace Assistant.MapUO
 			this.m_MapButtons = new ArrayList();
 			m_Regions = Assistant.MapUO.Region.Load("guardlines.def");
 			m_MapButtons = UOMapRuneButton.Load("test.xml");
+		}
+
+		private static Font m_BoldFont = new Font( "Courier New", 8, FontStyle.Bold );
+		private static Font m_SmallFont = new Font( "Arial", 6 );
+		private static Font m_RegFont = new Font( "Arial", 8 );
+
+		public void FullUpdate()
+		{
+			if ( !Active )
+				return;
+
+			if ( m_Background != null )
+				m_Background.Dispose();
+			m_Background = new Bitmap( this.Width, this.Height );
+
+			int xLong = 0, yLat = 0;
+			int xMins = 0, yMins = 0;
+			bool xEast = false, ySouth = false;
+
+			int w = (this.Width) >> 3;
+			int h = (this.Height) >> 3;
+			int xtrans = this.Width / 2;
+			int ytrans = this.Height / 2;
+			Point3D focus = this.FocusMobile.Position;
+			Point offset = new Point(focus.X & 7, focus.Y & 7);
+			Point mapOrigin = new Point((focus.X >> 3) - (w / 2), (focus.Y >> 3) - (h / 2));
+			Point pntPlayer = new Point((focus.X) - (mapOrigin.X << 3) - offset.X, (focus.Y) - (mapOrigin.Y << 3) - offset.Y);
+
+			Graphics gfx = Graphics.FromImage(m_Background);
+
+			gfx.FillRectangle( Brushes.Black, 0, 0, this.Width, this.Height );
+			
+			gfx.TranslateTransform( -xtrans, -ytrans, MatrixOrder.Append );
+			gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			gfx.PageUnit = GraphicsUnit.Pixel;
+			gfx.ScaleTransform( 1.5f, 1.5f, MatrixOrder.Append );
+			gfx.RotateTransform( 45, MatrixOrder.Append );
+			gfx.TranslateTransform( xtrans, ytrans, MatrixOrder.Append );
+
+			Ultima.Map map = Map.GetMap( this.FocusMobile.Map );
+			if ( map == null )
+				map = Ultima.Map.Felucca;
+
+			gfx.DrawImage( map.GetImage( mapOrigin.X, mapOrigin.Y, w + offset.X, h + offset.Y, true ), -offset.X, -offset.Y );
+			
+			gfx.ScaleTransform( 1.0f, 1.0f, MatrixOrder.Append );
+
+			ArrayList regions = new ArrayList();
+			ArrayList mButtons = new ArrayList();
+			if (this.Width > this.Height)
+			{
+				regions = RegionList(focus.X, focus.Y, this.Width);
+				mButtons = ButtonList(focus.X, focus.Y, this.Width);
+			}
+			else
+			{
+				regions = RegionList(focus.X, focus.Y, this.Height);
+				mButtons = ButtonList(focus.X, focus.Y, this.Height);
+			}
+
+			foreach ( Assistant.MapUO.Region region in regions )
+				gfx.DrawRectangle( Pens.Green, (region.X) - ((mapOrigin.X << 3) + offset.X), (region.Y) - ((mapOrigin.Y << 3) + offset.Y), region.Width, region.Length );
+			
+			gfx.DrawLine( Pens.Silver, pntPlayer.X-2, pntPlayer.Y-2, pntPlayer.X+2, pntPlayer.Y+2 );
+			gfx.DrawLine( Pens.Silver, pntPlayer.X-2, pntPlayer.Y+2, pntPlayer.X+2, pntPlayer.Y-2 );
+			gfx.FillRectangle( Brushes.Red, pntPlayer.X, pntPlayer.Y, 1, 1 );
+			//gfx.DrawEllipse( Pens.Silver, pntPlayer.X - 2, pntPlayer.Y - 2, 4, 4 );
+			
+			gfx.DrawString("W", m_BoldFont, Brushes.Red, pntPlayer.X - 35, pntPlayer.Y - 5);
+			gfx.DrawString("E", m_BoldFont, Brushes.Red, pntPlayer.X + 25, pntPlayer.Y - 5);
+			gfx.DrawString("N", m_BoldFont, Brushes.Red, pntPlayer.X - 5, pntPlayer.Y - 35);
+			gfx.DrawString("S", m_BoldFont, Brushes.Red, pntPlayer.X - 5, pntPlayer.Y + 25);
+
+			gfx.ResetTransform();
+
+			if (Format(new Point(focus.X, focus.Y), Ultima.Map.Felucca, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+			{
+				string locString = String.Format("{0}°{1}'{2} {3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+				SizeF size = gfx.MeasureString( locString, m_RegFont );
+				gfx.FillRectangle( Brushes.Wheat, 0, 0, size.Width + 2, size.Height + 2 );
+				gfx.DrawRectangle( Pens.Black, 0, 0, size.Width + 2, size.Height + 2 );
+				gfx.DrawString( locString, m_RegFont, Brushes.Black, 1, 1 );
+			}
+
+			gfx.Dispose();
+
+			this.Refresh();
+		}
+
+		protected override void OnPaint(PaintEventArgs pe)
+		{
+			try
+			{
+				if (Active)
+				{
+					pe.Graphics.DrawImage( m_Background, 0, 0 );
+
+					int w = (this.Width) >> 3;
+					int h = (this.Height) >> 3;
+					int xtrans = this.Width / 2;
+					int ytrans = this.Height / 2;
+					Point3D focus = this.FocusMobile.Position;
+					Point offset = new Point(focus.X & 7, focus.Y & 7);
+					Point mapOrigin = new Point((focus.X >> 3) - (w / 2), (focus.Y >> 3) - (h / 2));
+
+					pe.Graphics.TranslateTransform( -xtrans, -ytrans, MatrixOrder.Append );
+					pe.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Bilinear;
+					pe.Graphics.PageUnit = GraphicsUnit.Pixel;
+					pe.Graphics.ScaleTransform( 1.5f, 1.5f, MatrixOrder.Append );
+					pe.Graphics.RotateTransform( 45, MatrixOrder.Append );
+					pe.Graphics.TranslateTransform( xtrans, ytrans, MatrixOrder.Append );
+
+					foreach ( Serial s in PacketHandlers.Party )
+					{
+						Mobile mob = World.FindMobile( s );
+						if ( mob == null )
+							continue;
+						
+						pe.Graphics.FillRectangle( Brushes.Gold, (mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y, 2, 2 );
+					}
+
+					pe.Graphics.ScaleTransform( 1.0f, 1.0f, MatrixOrder.Append );
+
+					foreach ( Serial s in PacketHandlers.Party )
+					{
+						Mobile mob = World.FindMobile( s );
+						if ( mob == null )
+							continue;
+						
+						string name = mob.Name;
+						if ( name == null || name.Length < 1 )
+							name = "(Not Seen)";
+						
+						pe.Graphics.DrawString( name, m_SmallFont, Brushes.White, (mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y );
+					}
+
+					/*Point pntTest2 = new Point((3251) - (mapOrigin.X << 3) - offset.X, (305) - (mapOrigin.Y << 3) - offset.Y);
+					pe.Graphics.FillRectangle(Brushes.Blue, pntTest2.X, pntTest2.Y, 2, 2);
+
+					// pntTest2 = RotatePoint(new Point(pntTest2.X-pntPlayer.X,pntTest2.Y-pntPlayer.Y), 45, 0);
+					// pntTest2 = new Point(pntTest2.X + m_FocusUser.X, pntTest2.Y + m_FocusUser.Y);
+					//pntTest2 = new Point((pntTest2.X) - (mapOrigin.X << 3) - offset.X, (pntTest2.Y) - (mapOrigin.Y << 3) - offset.Y);
+					//Point mapOrigin2 = new Point((pntTest2.X >> 3) - (w / 2), (pntTest2.Y >> 3) - (h / 2));
+					// pntTest2 = new Point((3224) - (mapOrigin.X << 3) - offset.X, (293) - (mapOrigin.Y << 3) - offset.Y);
+					pe.Graphics.FillRectangle(Brushes.Pink, pntTest2.X, pntTest2.Y, 2, 2 );
+					pe.Graphics.DrawString("Jenova", m_RegFont, Brushes.Wheat, pntTest2);*/
+				}
+			}
+			catch { }
+			base.OnPaint(pe);
 		}
 
 		public void MapClick(System.Windows.Forms.MouseEventArgs e)
@@ -95,163 +246,15 @@ namespace Assistant.MapUO
 
 		protected override void Dispose(bool disposing)
 		{
-			this.m_Image.Dispose();
+			m_Background.Dispose();
+			m_Background = null;
 			base.Dispose(disposing);
-		}
-
-		private static Font m_BoldFont = new Font( "Courier New", 8, FontStyle.Bold );
-		private static Font m_SmallFont = new Font( "Courier New", 6 );
-		private static Font m_RegFont = new Font( "Courier New", 8 );
-
-		protected override void OnPaint(PaintEventArgs pe)
-		{
-			try
-			{
-				if (Active)
-				{
-					CreateMap();
-
-					Bitmap map = DrawLocals();
-					pe.Graphics.FillRectangle(Brushes.Black, new Rectangle(0, 0, this.Width, this.Height));
-					int xtrans = this.Width / 2;
-					int ytrans = this.Height / 2;
-
-					pe.Graphics.TranslateTransform(-xtrans, -ytrans, MatrixOrder.Append);
-					pe.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-					pe.Graphics.PageUnit = GraphicsUnit.Pixel;
-					pe.Graphics.ScaleTransform(1.5F, 1.5F, MatrixOrder.Append);
-					pe.Graphics.RotateTransform(45, MatrixOrder.Append);
-					pe.Graphics.TranslateTransform(xtrans, ytrans, MatrixOrder.Append);
-
-
-					Point3D focus = this.FocusMobile.Position;
-					Point offset = new Point(focus.X & 7, focus.Y & 7);
-					if (this.m_Image != null)
-					{
-						pe.Graphics.DrawImage(this.m_Image, 0 - offset.X, 0 - offset.Y);
-						pe.Graphics.DrawImage(map, 0 - offset.X, 0 - offset.Y);
-					}
-					pe.Graphics.ScaleTransform(1F, 1F, MatrixOrder.Append);
-					//1218 738
-					//create compass
-                    
-					int w = (this.Width) >> 3;
-					int h = (this.Height) >> 3;
-					Point mapOrigin = new Point((focus.X >> 3) - (w / 2), (focus.Y >> 3) - (h / 2));
-					Point pntPlayer = new Point((focus.X) - (mapOrigin.X << 3) - offset.X, (focus.Y) - (mapOrigin.Y << 3) - offset.Y);
-					Brush compass = Brushes.Red;
-
-					pe.Graphics.DrawString("W", m_BoldFont, compass, pntPlayer.X - 35, pntPlayer.Y - 5);
-					pe.Graphics.DrawString("E", m_BoldFont, compass, pntPlayer.X + 25, pntPlayer.Y - 5);
-					pe.Graphics.DrawString("N", m_BoldFont, compass, pntPlayer.X - 5, pntPlayer.Y - 35);
-					pe.Graphics.DrawString("S", m_BoldFont, compass, pntPlayer.X - 5, pntPlayer.Y + 25);
-
-					foreach ( Serial s in PacketHandlers.Party )
-					{
-						Mobile mob = World.FindMobile( s );
-						if ( mob == null )
-							continue;
-
-						if ( mob != this.FocusMobile )
-						{
-							string name = mob.Name;
-							if ( name.Length < 1 )
-								name = "(Not Seen)";
-						
-							Point pntTest = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
-							pe.Graphics.FillRectangle(Brushes.Gold, pntTest.X, pntTest.Y, 2, 2);
-							pe.Graphics.DrawString(name, m_SmallFont, Brushes.Wheat, pntTest);
-						}
-					}
-
-					int xLong = 0, yLat = 0;
-					int xMins = 0, yMins = 0;
-					bool xEast = false, ySouth = false;
-
-					/*Point pntTest2 = new Point((3251) - (mapOrigin.X << 3) - offset.X, (305) - (mapOrigin.Y << 3) - offset.Y);
-					pe.Graphics.FillRectangle(Brushes.Blue, pntTest2.X, pntTest2.Y, 2, 2);
-
-
-					// pntTest2 = RotatePoint(new Point(pntTest2.X-pntPlayer.X,pntTest2.Y-pntPlayer.Y), 45, 0);
-					// pntTest2 = new Point(pntTest2.X + m_FocusUser.X, pntTest2.Y + m_FocusUser.Y);
-					//pntTest2 = new Point((pntTest2.X) - (mapOrigin.X << 3) - offset.X, (pntTest2.Y) - (mapOrigin.Y << 3) - offset.Y);
-					//Point mapOrigin2 = new Point((pntTest2.X >> 3) - (w / 2), (pntTest2.Y >> 3) - (h / 2));
-					// pntTest2 = new Point((3224) - (mapOrigin.X << 3) - offset.X, (293) - (mapOrigin.Y << 3) - offset.Y);
-					pe.Graphics.FillRectangle(Brushes.Pink, pntTest2.X, pntTest2.Y, 2, 2 );
-					pe.Graphics.DrawString("Jenova", m_RegFont, Brushes.Wheat, pntTest2);*/
-
-					if (Format(new Point(focus.X, focus.Y), Ultima.Map.Felucca, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
-					{
-						string locString = String.Format("{0}°{1}'{2} {3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
-						pe.Graphics.ResetTransform();
-						pe.Graphics.FillRectangle(Brushes.Wheat, 0, 0, locString.Length * 7, 12);
-						pe.Graphics.DrawRectangle(Pens.Black, 0, 0, locString.Length * 7, 12);
-						pe.Graphics.DrawString(locString, m_RegFont, Brushes.Black, 0, 0 );
-					}
-				}
-			}
-			catch { }
-			base.OnPaint(pe);
-		}
-		
-		private void CreateMap()
-		{
-			int w = (this.Width) >> 3;
-			int h = (this.Height) >> 3;
-			Point pnt = new Point((this.FocusMobile.Position.X >> 3) - (w / 2), (this.FocusMobile.Position.Y >> 3) - (h / 2));
-
-			if (pnt != this.prevPoint)
-			{
-				this.prevPoint = pnt;
-				Bitmap bmp = new Bitmap(this.Width, this.Height);
-				Graphics pe = Graphics.FromImage(bmp);
-				int xtrans = this.Width / 2;
-				int ytrans = this.Height / 2;
-				pe.DrawImage(Ultima.Map.Felucca.GetImage(pnt.X, pnt.Y, w + (this.Width & 7), h + (this.Height & 7), true), new Point(0, 0));
-				this.m_Image = bmp;
-				pe.Dispose();
-			}
-		}
-
-		private Bitmap DrawLocals()
-		{
-			Point3D focus = this.FocusMobile.Position;
-
-			int w = (this.Width) >> 3;
-			int h = (this.Height) >> 3;
-			Bitmap bmp = new Bitmap(this.m_Image.Width, this.m_Image.Height);
-			Graphics gf = Graphics.FromImage(bmp);
-			//Region Display and buttons
-			ArrayList regions = new ArrayList();
-			ArrayList mButtons = new ArrayList();
-			if (this.Width > this.Height)
-			{
-				regions = RegionList(focus.X, focus.Y, this.Width);
-				mButtons = ButtonList(focus.X, focus.Y, this.Width);
-			}
-			else
-			{
-				regions = RegionList(focus.X, focus.Y, this.Height);
-				mButtons = ButtonList(focus.X, focus.Y, this.Height);
-			}
-			Point mapOrigin = new Point((focus.X >> 3) - (w / 2), (focus.Y >> 3) - (h / 2));
-
-			//Player point
-			Point pntPlayer = new Point((focus.X) - (mapOrigin.X << 3), (focus.Y) - (mapOrigin.Y << 3));
-			gf.FillRectangle(Brushes.Red, pntPlayer.X, pntPlayer.Y, 1, 1);
-			gf.DrawEllipse(Pens.Silver, pntPlayer.X - 2, pntPlayer.Y - 2, 4, 4);
-			foreach (Assistant.MapUO.Region region in regions)
-			{
-				gf.DrawRectangle(Pens.LimeGreen, (region.X) - ((mapOrigin.X << 3) + (0)), (region.Y) - ((mapOrigin.Y << 3) + (0)), region.Width, region.Length);
-			}
-			gf.Dispose();
-			return bmp;
 		}
 
 		protected override void OnResize(EventArgs e)
 		{
-			this.Refresh();
 			base.OnResize(e);
+			FullUpdate();
 		}
 
 		public void UpdateMap()
@@ -381,7 +384,7 @@ namespace Assistant.MapUO
 		public bool Active
 		{
 			get { return m_Active; }
-			set { m_Active = value; if ( value ) { this.Refresh(); } }
+			set { m_Active = value; if ( value ) { FullUpdate(); } }
 		}
 
 		public ArrayList MapButtons

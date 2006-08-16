@@ -1778,11 +1778,11 @@ namespace Assistant
 				{
 					m_Party.Clear();
 					int count = p.ReadByte();
-					Serial remove = p.ReadUInt32(); // the serial of who was removed
+					Serial remSerial = p.ReadUInt32(); // the serial of who was removed
 					
 					if ( World.Player != null )
 					{
-						Mobile rem = World.FindMobile( remove );
+						Mobile rem = World.FindMobile( remSerial );
 						if ( rem != null && !Utility.InRange( World.Player.Position, rem.Position, World.Player.VisRange ) )
 							rem.Remove();
 					}
@@ -1794,7 +1794,7 @@ namespace Assistant
 							m_Party.Add( s );
 					}
 					
-					if (Engine.MainWindow.MapWindow != null)
+					if ( Engine.MainWindow.MapWindow != null )
 						Engine.MainWindow.MapWindow.UpdateMap();
 					
 					break;

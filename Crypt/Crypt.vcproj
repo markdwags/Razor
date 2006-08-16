@@ -87,7 +87,8 @@
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="0"/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCCustomBuildTool"
+				Outputs="Checksum.h"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
@@ -107,7 +108,7 @@
 				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Generating Razor Checksum..."
+				Description="Generating Checksum.h..."
 				CommandLine="$(ProjectDir)/GenerateRazorChecksumH.exe"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>

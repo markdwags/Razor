@@ -46,7 +46,7 @@ namespace Assistant.HotKeys
 		{
 			bool textFlags = Config.GetBool( "LastTargTextFlags" );
 
-			foreach ( Mobile m in World.Mobiles.Values )
+			foreach ( Mobile m in World.MobilesInRange() )
 			{
 				if ( m != World.Player )
 					ClientCommunication.SendToServer( new SingleClick( m ) );

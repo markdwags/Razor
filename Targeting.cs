@@ -300,7 +300,7 @@ namespace Assistant
 				return;
 
 			ArrayList list = new ArrayList();
-			foreach ( Mobile m in World.Mobiles.Values )
+			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
 				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
 					!m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
@@ -332,7 +332,7 @@ namespace Assistant
 				return;
 
 			ArrayList list = new ArrayList();
-			foreach ( Mobile m in World.Mobiles.Values )
+			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
 				if ( m.Body < 0x0190 || m.Body > 0x0193 )
 					continue;
@@ -786,7 +786,7 @@ namespace Assistant
 		private static int m_NextTargIdx = 0;
 		public static void NextTarget()
 		{
-			ArrayList list = new ArrayList( World.Mobiles.Values );
+			ArrayList list = World.MobilesInRange( 12 );
 			TargetInfo targ = new TargetInfo();
 			Mobile m = null, old = World.FindMobile( m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial );
 

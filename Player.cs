@@ -701,11 +701,10 @@ namespace Assistant
 				Mobile m = (Mobile)list[i];
 				if ( m != this )
 				{
-					if ( Utility.InRange( m.Position, newPos, VisRange ) )
+					if ( !Utility.InRange( m.Position, newPos, VisRange ) )
                         m.Remove();
 					else
                         Targeting.CheckLastTargetRange(m);
-						
 				}
 			}
 

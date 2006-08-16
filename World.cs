@@ -33,6 +33,30 @@ namespace Assistant
 			return m_Mobiles[serial] as Mobile;
 		}
 
+		internal static ArrayList MobilesInRange( int range )
+		{
+			ArrayList list = new ArrayList();
+
+			if ( World.Player == null )
+				return list;
+
+			foreach ( Mobile m in World.Mobiles.Values )
+			{
+				if ( Utility.InRange( World.Player.Position, m.Position, World.Player.VisRange ) )
+					list.Add( m );
+			}
+
+			return list;
+		}
+
+		internal static ArrayList MobilesInRange()
+		{
+			if ( Player == null )
+				return MobilesInRange( 18 );
+			else
+				return MobilesInRange( Player.VisRange );
+		}
+
 		internal static void AddItem( Item item )
 		{
 			m_Items[item.Serial] = item;

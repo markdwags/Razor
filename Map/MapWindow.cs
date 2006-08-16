@@ -16,7 +16,6 @@ namespace Assistant.MapUO
 		public const int HT_CAPTION = 0x2;
 
 		private Assistant.MapUO.UOMapControl Map;
-		private int ButtonRows;
 
 		[DllImport("user32.dll")]
 		private static extern int SendMessage( IntPtr hWnd, int Msg, int wParam, int lParam );
@@ -41,7 +40,7 @@ namespace Assistant.MapUO
 			// TODO: Add any constructor code after InitializeComponent call
 			//
             
-			UpdateMap();
+			this.Map.FullUpdate();
 		}
 
 		public static void Initialize()
@@ -128,14 +127,14 @@ namespace Assistant.MapUO
 		}
 		#endregion
 
-		public void CheckLocalUpdate(Mobile mob)
+		public void CheckLocalUpdate( Mobile mob )
 		{
 			if ( mob.InParty )
 				this.Map.Refresh();
 		}
 
 		/*private static Font m_RegFont = new Font( "Courier New", 8 );
-
+		private int ButtonRows;
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if ( PacketHandlers.Party.Count > 0 )
@@ -250,7 +249,7 @@ namespace Assistant.MapUO
 		public void PlayerMoved()
 		{
 			if ( this.Visible && this.Map != null )
-				this.Map.UpdateMap();
+				this.Map.FullUpdate();
 		}
 	}
 }

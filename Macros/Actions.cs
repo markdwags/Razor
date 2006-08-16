@@ -298,7 +298,7 @@ namespace Assistant.Macros
 			else
 			{
 				ArrayList list = new ArrayList();
-				foreach ( Mobile m in World.Mobiles.Values )
+				foreach ( Mobile m in World.MobilesInRange() )
 				{
 					if ( m.Body == m_Gfx )
 						list.Add( m );
@@ -846,7 +846,7 @@ namespace Assistant.Macros
 			ArrayList list = new ArrayList();
 			if ( m_Mobile )
 			{
-				foreach ( Mobile find in World.Mobiles.Values )
+				foreach ( Mobile find in World.MobilesInRange() )
 				{
 					if ( find.Body == m_Gfx )
 						list.Add( find );
