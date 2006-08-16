@@ -360,11 +360,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Map\User.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Network\ClientComm.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

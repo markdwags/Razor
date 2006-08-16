@@ -261,28 +261,26 @@ namespace Assistant
 
 		public override void Remove()
 		{
-            if (!this.InParty())
-            {
-                ArrayList rem = new ArrayList(m_Items);
-                m_Items.Clear();
-                for (int i = 0; i < rem.Count; i++)
-                    ((Item)rem[i]).Remove();
+			ArrayList rem = new ArrayList(m_Items);
+			m_Items.Clear();
+			for (int i = 0; i < rem.Count; i++)
+				((Item)rem[i]).Remove();
 
-                World.RemoveMobile(this);
+            if ( !InParty )
+            {
+                World.RemoveMobile( this );
                 base.Remove();
             }
 		}
-        public bool InParty()
-        {
-            foreach (Serial serial in Assistant.PacketHandlers.Party)
-            {
-                if (serial == this.Serial)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+
+		public bool InParty
+		{
+			get 
+			{
+				return PacketHandlers.Party.Contains( this.Serial );
+			}
+		}
+
 		public Item GetItemOnLayer( Layer layer )
 		{
 			for(int i=0;i<m_Items.Count;i++)
@@ -311,6 +309,14 @@ namespace Assistant
 					return item;
 			}
 			return null;
+		}
+
+		public override void OnPositionChanging(Point3D newPos)
+		{
+			if ( this != World.Player && Engine.MainWindow.MapWindow != null )
+				Engine.MainWindow.MapWindow.CheckLocalUpdate( this );
+
+			base.OnPositionChanging (newPos);
 		}
 		
 		public int GetPacketFlags()
@@ -376,6 +382,13 @@ namespace Assistant
 		internal void OverheadMessage( LocString str, params object[] args )
 		{
 			OverheadMessage( Language.Format( str, args ) );
+		}
+
+		private Point2D m_ButtonPoint = Point2D.Zero;
+		internal Point2D ButtonPoint
+		{
+			get { return m_ButtonPoint; }
+			set { m_ButtonPoint = value; }
 		}
 	}
 }

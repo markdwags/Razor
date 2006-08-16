@@ -1008,6 +1008,8 @@ namespace Assistant
 			Engine.MainWindow.OnLogout();
 			if( Engine.MainWindow.MapWindow != null )
 				Engine.MainWindow.MapWindow.Close();
+			PacketHandlers.Party.Clear();
+			PacketHandlers.IgnoreGumps.Clear();
 		}
 
 		private static DateTime m_LastActivate;

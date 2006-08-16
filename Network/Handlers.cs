@@ -86,56 +86,34 @@ namespace Assistant
 			args.Block = true;
 			switch (p.ReadByte())
 			{
-
 				case 0:
 				{
 					//not used
-					return;
+					break;
 				}
 				case 1:
 				{
-
 					Serial serial;
-					ArrayList serialArray = new ArrayList();
 					while ((serial = p.ReadUInt32()) > 0)
 					{
-
 						Mobile mobile = World.FindMobile(serial);
+
+						if (mobile == null)
+							World.AddMobile( mobile = new Mobile(serial) );
 
 						short x = p.ReadInt16();
 						short y = p.ReadInt16();
 						byte z = p.ReadByte();
+						
+						mobile.Position = new Point3D(x, y, z);
 
+						if ( mobile.Name == null || mobile.Name.Length <= 0 )
+							mobile.Name = "(Not Seen)";
 
-						if (mobile == null)
-						{
-							World.Player.SendMessage(MsgLevel.Warning, "Mob not found");
-							Mobile mob = new Mobile(serial);
-							mob.Name = "not seen";
-							mob.Position = new Point3D(x, y, z);
-							World.AddMobile(mob);
-							mobile = mob;
-
-						}
-						else
-						{
-							mobile.Position = new Point3D(x, y, z);
-
-						}
-						if (mobile.Name.Length > 0)
-						{
-							if (Engine.MainWindow.MapWindow != null)
-								Engine.MainWindow.MapWindow.UpdateUser(serial.Value, x, y, mobile.Name);
-						}
-						else
-						{
-							World.Player.SendMessage(MsgLevel.Warning, "Player name null");
-						}
-
-
+						if (Engine.MainWindow.MapWindow != null)
+							Engine.MainWindow.MapWindow.UpdateMap();
 					}
-
-					return;
+					break;
 				}
 			}
 		}
@@ -900,9 +878,6 @@ namespace Assistant
 			{
 				m.Body = p.ReadUInt16();
 				m.Position = new Point3D( p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte() );
-
-				if (Engine.MainWindow.MapWindow != null)
-					Engine.MainWindow.MapWindow.CheckLocalUpdate( m );
 				
 				if ( !Utility.InRange( World.Player.Position, m.Position, World.Player.VisRange ) )
 				{
@@ -1444,7 +1419,7 @@ namespace Assistant
 			else if ( ser.IsMobile && type == MessageType.Label )
 			{
 				Mobile m = World.FindMobile( ser );
-				if ( m != null /*&& ( m.Name == null || m.Name == "" )*/ && m != World.Player && !( text.StartsWith( "(" )  && text.EndsWith( ")" ) ) )
+				if ( m != null /*&& ( m.Name == null || m.Name == "" || m.Name == "(Not Seen)" )*/&& m.Name.IndexOf( text ) != 5 && m != World.Player && !( text.StartsWith( "(" )  && text.EndsWith( ")" ) ) )
 					m.Name = text;
 			}
 			/*else if ( Spell.Get( text.Trim() ) != null )
@@ -1795,7 +1770,7 @@ namespace Assistant
 					}
 					
 					if (Engine.MainWindow.MapWindow != null)
-						Engine.MainWindow.MapWindow.UpdateList(m_Party);
+						Engine.MainWindow.MapWindow.UpdateMap();
 
 					break;
 				}
@@ -1803,7 +1778,15 @@ namespace Assistant
 				{
 					m_Party.Clear();
 					int count = p.ReadByte();
-					p.ReadUInt32(); // the serial of who was removed
+					Serial remove = p.ReadUInt32(); // the serial of who was removed
+					
+					if ( World.Player != null )
+					{
+						Mobile rem = World.FindMobile( remove );
+						if ( rem != null && !Utility.InRange( World.Player.Position, rem.Position, World.Player.VisRange ) )
+							rem.Remove();
+					}
+
 					for(int i=0;i<count;i++)
 					{
 						Serial s = p.ReadUInt32();
@@ -1812,7 +1795,7 @@ namespace Assistant
 					}
 					
 					if (Engine.MainWindow.MapWindow != null)
-						Engine.MainWindow.MapWindow.UpdateList(m_Party);
+						Engine.MainWindow.MapWindow.UpdateMap();
 					
 					break;
 				}
