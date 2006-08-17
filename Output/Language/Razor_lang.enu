@@ -560,3 +560,4 @@ MacroInsertIf::insert=&Insert
 1471=>Mini-Heal/Cure Self
 1472=You should only disable the "Patch Encryption" option if you are using a client that already has encryption disabled.  This option should remain enabled even on servers which use client encryption (such as OSI/EA official servers).\nIf you are not sure what to do, do NOT uncheck this box.\n\nAre you sure you want to turn off client-side encryption patching?
 1473=Dismount
+1474=Show/Hide Map Window

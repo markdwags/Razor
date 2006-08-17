@@ -294,6 +294,7 @@ namespace Assistant
 			this.m_NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.tabs = new System.Windows.Forms.TabControl();
 			this.generalTab = new System.Windows.Forms.TabPage();
+			this.btnMap = new System.Windows.Forms.Button();
 			this.lockBox = new System.Windows.Forms.PictureBox();
 			this.checkUpdate = new System.Windows.Forms.ComboBox();
 			this.label10 = new System.Windows.Forms.Label();
@@ -499,7 +500,6 @@ namespace Assistant
 			this.donate = new System.Windows.Forms.Button();
 			this.statCol1 = new System.Windows.Forms.Label();
 			this.timerTimer = new System.Windows.Forms.Timer(this.components);
-			this.btnMap = new System.Windows.Forms.Button();
 			this.tabs.SuspendLayout();
 			this.generalTab.SuspendLayout();
 			this.groupBox4.SuspendLayout();
@@ -582,6 +582,15 @@ namespace Assistant
 			this.generalTab.Size = new System.Drawing.Size(416, 191);
 			this.generalTab.TabIndex = 0;
 			this.generalTab.Text = "General";
+			// 
+			// btnMap
+			// 
+			this.btnMap.Location = new System.Drawing.Point(2, 164);
+			this.btnMap.Name = "btnMap";
+			this.btnMap.Size = new System.Drawing.Size(162, 22);
+			this.btnMap.TabIndex = 58;
+			this.btnMap.Text = "Open UO Positioning System";
+			this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
 			// 
 			// lockBox
 			// 
@@ -748,7 +757,7 @@ namespace Assistant
 			this.groupBox1.Controls.Add(this.filters);
 			this.groupBox1.Location = new System.Drawing.Point(0, 0);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(165, 186);
+			this.groupBox1.Size = new System.Drawing.Size(165, 160);
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Filters";
@@ -757,9 +766,9 @@ namespace Assistant
 			// 
 			this.filters.CheckOnClick = true;
 			this.filters.IntegralHeight = false;
-			this.filters.Location = new System.Drawing.Point(5, 15);
+			this.filters.Location = new System.Drawing.Point(6, 16);
 			this.filters.Name = "filters";
-			this.filters.Size = new System.Drawing.Size(155, 165);
+			this.filters.Size = new System.Drawing.Size(155, 140);
 			this.filters.TabIndex = 0;
 			this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
 			// 
@@ -2622,15 +2631,6 @@ namespace Assistant
 			this.timerTimer.Enabled = true;
 			this.timerTimer.Interval = 5;
 			this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-			// 
-			// btnMap
-			// 
-			this.btnMap.Location = new System.Drawing.Point(288, 102);
-			this.btnMap.Name = "btnMap";
-			this.btnMap.Size = new System.Drawing.Size(92, 20);
-			this.btnMap.TabIndex = 57;
-			this.btnMap.Text = "Show Map!";
-			this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
 			// 
 			// MainForm
 			// 
@@ -5815,6 +5815,7 @@ namespace Assistant
 				//SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
 				//MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
 				MapWindow.Show();
+				MapWindow.BringToFront();
 			}
 		}
 	}

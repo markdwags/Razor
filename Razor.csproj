@@ -501,6 +501,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "UI\UOPS.ico"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "UI\WelcomeForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"

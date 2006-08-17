@@ -337,6 +337,7 @@ namespace Assistant
 		MiniHealOrCureSelf,
 		NoPatchWarning,
 		Dismount,
+		ToggleMap,
 
 		__End
 	}

@@ -47,6 +47,27 @@ namespace Assistant.MapUO
 		public static void Initialize()
 		{
 			new ReqPartyLocTimer().Start();
+
+			HotKey.Add( HKCategory.Misc, LocString.ToggleMap, new HotKeyCallback( ToggleMap ) );
+		}
+
+		public static void ToggleMap()
+		{
+			if ( World.Player != null && Engine.MainWindow != null )
+			{
+				if ( Engine.MainWindow.MapWindow == null )
+				{
+					Engine.MainWindow.MapWindow = new Assistant.MapUO.MapWindow();
+					Engine.MainWindow.MapWindow.Show();
+				}
+				else
+				{
+					if ( Engine.MainWindow.MapWindow.Visible )
+						Engine.MainWindow.MapWindow.Hide();
+					else
+						Engine.MainWindow.MapWindow.Show();
+				}
+			}
 		}
 
 		/// <summary>
@@ -71,6 +92,7 @@ namespace Assistant.MapUO
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MapWindow));
 			this.Map = new Assistant.MapUO.UOMapControl();
 			this.SuspendLayout();
 			// 
@@ -92,6 +114,7 @@ namespace Assistant.MapUO
 			this.ClientSize = new System.Drawing.Size(292, 266);
 			this.Controls.Add(this.Map);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "MapWindow";
 			this.ShowInTaskbar = false;
@@ -196,7 +219,6 @@ namespace Assistant.MapUO
 				ClientCommunication.SendToServer(new QueryPartyLocs());
 		}
 
-
 		public void UpdateMap()
 		{
 			this.Map.UpdateMap();
@@ -208,6 +230,8 @@ namespace Assistant.MapUO
 			{
 				e.Cancel = true;
 				this.Hide();
+				ClientCommunication.BringToFront( ClientCommunication.FindUOWindow() );
+				Engine.MainWindow.BringToFront();
 			}
 		}
 
@@ -226,19 +250,13 @@ namespace Assistant.MapUO
 
 		private void MapWindow_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			/*if (e.Clicks == 2)
+			if (e.Clicks == 2)
 			{
-				if (this.FormBorderStyle == FormBorderStyle.None)
-				{
+				if ( this.FormBorderStyle == FormBorderStyle.None )
 					this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-					this.TopMost = false;
-				}
 				else
-				{
 					this.FormBorderStyle = FormBorderStyle.None;
-					this.TopMost = true;
-				}
-			}*/
+			}
 
 			if (e.Button == MouseButtons.Left)
 			{
