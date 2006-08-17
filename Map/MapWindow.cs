@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
+
 namespace Assistant.MapUO
 {
 	/// <summary>
@@ -48,32 +49,6 @@ namespace Assistant.MapUO
 			new ReqPartyLocTimer().Start();
 		}
 
-		private class ReqPartyLocTimer : Timer
-		{
-			public ReqPartyLocTimer() : base( TimeSpan.FromSeconds( 1.0 ), TimeSpan.FromSeconds( 0.25 ) )
-			{
-			}
-
-			protected override void OnTick()
-			{
-				if ( World.Player != null && PacketHandlers.Party.Count > 0 )
-				{
-					this.Interval = TimeSpan.FromSeconds( 0.25 );
-					ClientCommunication.SendToServer(new QueryPartyLocs());
-				}
-				else
-				{
-					this.Interval = TimeSpan.FromSeconds( 1.0 );
-				}
-			}
-		}
-
-		private void RequestPartyLocations()
-		{
-			if ( World.Player != null && PacketHandlers.Party.Count > 0 )
-				ClientCommunication.SendToServer(new QueryPartyLocs());
-		}
-
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
@@ -103,12 +78,13 @@ namespace Assistant.MapUO
 			// 
 			this.Map.Active = true;
 			this.Map.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.Map.FocusMobile = null;
 			this.Map.Location = new System.Drawing.Point(0, 0);
 			this.Map.Name = "Map";
 			this.Map.Size = new System.Drawing.Size(296, 272);
 			this.Map.TabIndex = 0;
 			this.Map.TabStop = false;
-			this.Map.MouseDown += new System.Windows.Forms.MouseEventHandler(this.map_MouseDown);
+			this.Map.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Map_MouseDown);
 			// 
 			// MapWindow
 			// 
@@ -118,7 +94,10 @@ namespace Assistant.MapUO
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MaximizeBox = false;
 			this.Name = "MapWindow";
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "UO Positioning System";
+			this.TopMost = true;
 			this.Resize += new System.EventHandler(this.MapWindow_Resize);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapWindow_MouseDown);
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MapWindow_Closing);
@@ -183,6 +162,61 @@ namespace Assistant.MapUO
 			base.OnPaint(e);
 		}*/
 
+		private class ReqPartyLocTimer : Timer
+		{
+			public ReqPartyLocTimer() : base( TimeSpan.FromSeconds( 1.0 ), TimeSpan.FromSeconds( 1.0 ) )
+			{
+			}
+
+			protected override void OnTick()
+			{
+				// never send this packet to encrypted servers (could lead to OSI detecting razor)
+				if ( ClientCommunication.ServerEncrypted )
+					return;
+
+				if ( World.Player != null && PacketHandlers.Party.Count > 0 )
+				{
+					if ( !PacketHandlers.TriedSpecialParty || PacketHandlers.SpecialPartySupport )
+					{
+						this.Interval = TimeSpan.FromSeconds( 0.25 );
+						ClientCommunication.SendToServer(new QueryPartyLocs());
+						PacketHandlers.TriedSpecialParty = true;
+					}
+				}
+				else
+				{
+					this.Interval = TimeSpan.FromSeconds( 1.0 );
+				}
+			}
+		}
+
+		private void RequestPartyLocations()
+		{
+			if ( World.Player != null && PacketHandlers.Party.Count > 0 )
+				ClientCommunication.SendToServer(new QueryPartyLocs());
+		}
+
+
+		public void UpdateMap()
+		{
+			this.Map.UpdateMap();
+		}
+
+		private void MapWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if ( Assistant.Engine.Running )
+			{
+				e.Cancel = true;
+				this.Hide();
+			}
+		}
+
+		public void PlayerMoved()
+		{
+			if ( this.Visible && this.Map != null )
+				this.Map.FullUpdate();
+		}
+
 		private void MapWindow_Resize(object sender, System.EventArgs e)
 		{
 			this.Map.Height = this.Height;
@@ -192,7 +226,7 @@ namespace Assistant.MapUO
 
 		private void MapWindow_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			if (e.Clicks == 2)
+			/*if (e.Clicks == 2)
 			{
 				if (this.FormBorderStyle == FormBorderStyle.None)
 				{
@@ -204,8 +238,7 @@ namespace Assistant.MapUO
 					this.FormBorderStyle = FormBorderStyle.None;
 					this.TopMost = true;
 				}
-
-			}
+			}*/
 
 			if (e.Button == MouseButtons.Left)
 			{
@@ -226,30 +259,10 @@ namespace Assistant.MapUO
 			}
 			this.Map.MapClick(e);
 		}
-
-		public void UpdateMap()
+		
+		private void Map_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			this.Map.UpdateMap();
-		}
-
-		private void map_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			MapWindow_MouseDown(sender, (System.Windows.Forms.MouseEventArgs)e);
-		}
-
-		private void MapWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if ( Assistant.Engine.Running )
-			{
-				e.Cancel = true;
-				this.Hide();
-			}
-		}
-
-		public void PlayerMoved()
-		{
-			if ( this.Visible && this.Map != null )
-				this.Map.FullUpdate();
+			MapWindow_MouseDown(sender, e);
 		}
 	}
 }

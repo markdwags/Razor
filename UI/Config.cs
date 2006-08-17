@@ -37,7 +37,7 @@ namespace Assistant
 			AddProperty( "CounterWarnAmount", (int)5 );
 			AddProperty( "CounterWarn", true );
 			AddProperty( "ObjectDelay", (int)600 );
-			AddProperty( "AlwaysOnTop", false );
+			AddProperty( "AlwaysOnTop", true );
 			AddProperty( "SortCounters", true );
 			AddProperty( "QueueActions", true );
 			AddProperty( "QueueTargets", true );

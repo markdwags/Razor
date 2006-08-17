@@ -78,44 +78,7 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0xD6, new PacketViewerCallback( EncodedPacket ) );//0xD6 "encoded" packets
 			PacketHandler.RegisterServerToClientViewer( 0xD8, new PacketViewerCallback( CustomHouseInfo ) );
 			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
-			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( CustomParty ) ); // KUOC special party stuff
-		}
-		
-		private static void CustomParty(PacketReader p, PacketHandlerEventArgs args)
-		{
-			args.Block = true;
-			switch (p.ReadByte())
-			{
-				case 0:
-				{
-					//not used
-					break;
-				}
-				case 1:
-				{
-					Serial serial;
-					while ((serial = p.ReadUInt32()) > 0)
-					{
-						Mobile mobile = World.FindMobile(serial);
-
-						if (mobile == null)
-							World.AddMobile( mobile = new Mobile(serial) );
-
-						short x = p.ReadInt16();
-						short y = p.ReadInt16();
-						byte z = p.ReadByte();
-						
-						mobile.Position = new Point3D(x, y, z);
-
-						if ( mobile.Name == null || mobile.Name.Length <= 0 )
-							mobile.Name = "(Not Seen)";
-
-						if (Engine.MainWindow.MapWindow != null)
-							Engine.MainWindow.MapWindow.UpdateMap();
-					}
-					break;
-				}
-			}
+			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) ); // Special RunUO protocol extentions (for KUOC/Razor)
 		}
 		
 		private static void DisplayStringQuery( PacketReader p, PacketHandlerEventArgs args )
@@ -1751,8 +1714,54 @@ namespace Assistant
 			}
 		}
 
+		public static bool TriedSpecialParty = false;
+		public static bool SpecialPartySupport = false;
+
+		private static void RunUOProtocolExtention(PacketReader p, PacketHandlerEventArgs args)
+		{
+			args.Block = true;
+			switch (p.ReadByte())
+			{
+				case 1: // Custom Party information
+				{
+					Serial serial;
+
+					SpecialPartySupport = true;
+
+					while ((serial = p.ReadUInt32()) > 0)
+					{
+						Mobile mobile = World.FindMobile(serial);
+						
+						short x = p.ReadInt16();
+						short y = p.ReadInt16();
+						byte map = p.ReadByte();
+
+						if (mobile == null)
+							World.AddMobile( mobile = new Mobile(serial) );
+
+						if ( mobile.Name == null || mobile.Name.Length <= 0 )
+							mobile.Name = "(Not Seen)";
+
+						if ( !m_Party.Contains( serial ) )
+							m_Party.Add( serial );
+						
+						if ( map == World.Player.Map )
+							mobile.Position = new Point3D(x, y, mobile.Position.Z);
+						else
+							mobile.Position = Point3D.Zero;
+					}
+
+					if (Engine.MainWindow.MapWindow != null)
+						Engine.MainWindow.MapWindow.UpdateMap();
+
+					break;
+				}
+			}
+		}
+		
 		private static ArrayList m_Party = new ArrayList();
 		public static ArrayList Party { get { return m_Party; } }
+
 		private static void OnPartyMessage( PacketReader p, PacketHandlerEventArgs args )
 		{
 			switch ( p.ReadByte() )

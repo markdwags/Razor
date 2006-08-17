@@ -141,7 +141,7 @@ namespace Assistant.MapUO
 			{
 				if (Active)
 				{
-					pe.Graphics.DrawImage( m_Background, 0, 0 );
+					pe.Graphics.DrawImageUnscaled( m_Background, 0, 0 );
 
 					int w = (this.Width) >> 3;
 					int h = (this.Height) >> 3;
@@ -158,6 +158,7 @@ namespace Assistant.MapUO
 					pe.Graphics.RotateTransform( 45, MatrixOrder.Append );
 					pe.Graphics.TranslateTransform( xtrans, ytrans, MatrixOrder.Append );
 
+					// draw the dot scaled
 					foreach ( Serial s in PacketHandlers.Party )
 					{
 						Mobile mob = World.FindMobile( s );
@@ -167,6 +168,7 @@ namespace Assistant.MapUO
 						pe.Graphics.FillRectangle( Brushes.Gold, (mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y, 2, 2 );
 					}
 
+					// but draw the font unscaled (its ugly scaled)
 					pe.Graphics.ScaleTransform( 1.0f, 1.0f, MatrixOrder.Append );
 
 					foreach ( Serial s in PacketHandlers.Party )

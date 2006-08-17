@@ -1012,7 +1012,7 @@ namespace Assistant
 			PacketHandlers.IgnoreGumps.Clear();
 		}
 
-		private static DateTime m_LastActivate;
+		//private static DateTime m_LastActivate;
 		internal static bool OnMessage( MainForm razor, uint wParam, int lParam )
 		{
 			bool retVal = true;
@@ -1102,7 +1102,7 @@ namespace Assistant
 					
 					// Activation Tracking
 				case UONetMessage.Activate:
-					if ( Config.GetBool( "AlwaysOnTop" ) )
+					/*if ( Config.GetBool( "AlwaysOnTop" ) )
 					{
 						if ( (lParam&0x0000FFFF) == 0 && (lParam&0xFFFF0000) != 0 && razor.WindowState != FormWindowState.Minimized && razor.Visible )
 						{// if uo is deactivating and minimized and we are not minimized
@@ -1122,7 +1122,7 @@ namespace Assistant
 							}
 							m_LastActivate = DateTime.Now;
 						}
-					}
+					}*/
 					break;
 
 				case UONetMessage.Focus:
@@ -1131,11 +1131,33 @@ namespace Assistant
 						if ( lParam != 0 && !razor.TopMost )
 						{
 							razor.TopMost = true;
+							if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
+								Engine.MainWindow.MapWindow.TopMost = true;
 						}
 						else if ( lParam == 0 && razor.TopMost )
 						{
 							razor.TopMost = false;
 							razor.SendToBack();
+							if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
+							{
+								Engine.MainWindow.MapWindow.TopMost = false;
+								Engine.MainWindow.MapWindow.SendToBack();
+							}
+						}
+					}
+
+					// always use smartness for the map window
+					if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
+					{
+						if ( lParam != 0 && !Engine.MainWindow.MapWindow.TopMost )
+						{
+							Engine.MainWindow.MapWindow.TopMost = true;
+						}
+						else if ( lParam == 0 && Engine.MainWindow.MapWindow.TopMost )
+						{
+						
+							Engine.MainWindow.MapWindow.TopMost = false;
+							Engine.MainWindow.MapWindow.SendToBack();
 						}
 					}
 					break;

@@ -20,10 +20,9 @@ namespace Assistant
 
 	public sealed class QueryPartyLocs : Packet
 	{
-		public QueryPartyLocs() : base( 0xF0, 4 )
+		public QueryPartyLocs() : base( 0xF0 )
 		{
-			Write( (byte) 0x00 );
-			Write( (byte) 0x04 );
+			EnsureCapacity( 4 );
 			Write( (byte) 0x00 );
 		}
 	}

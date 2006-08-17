@@ -9,8 +9,9 @@ Additions:
 -Connect UO compatability
 -Added a "-macro <name>" command to play a macro from inside of the client.
 -A dismount hotkey (in the "Misc" category)
+-The "UO Positioning system!"  This is ment to provide similar functionality to UOAutomap and the built-in client Radar display.  On some RunUO servers this display will show members of your party and their names.
 
 Changes/Fixes:
 -Several performance enhancements to the network code.  Especially on encrypted (OSI) servers.
--Changed the way the welcome screen handles OSI encryption.  You should now always check the "patch encryption" box unless you are using a special client (like one created by UORice).  If you are confused, then always check the "Patch Encryption" box, even when connecting to OSI.
-
+-Changed the way the welcome screen handles OSI encryption.  You should now always (even when connecting to OSI!) check the "patch encryption" box unless you are using a special client (like one created by UORice).  If you are confused, then always check the "Patch Encryption" box, even when connecting to OSI.
+-Random targets and next target will now ignore mobiles which are more than 12 tiles away.

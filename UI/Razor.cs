@@ -2629,7 +2629,7 @@ namespace Assistant
 			this.btnMap.Name = "btnMap";
 			this.btnMap.Size = new System.Drawing.Size(92, 20);
 			this.btnMap.TabIndex = 57;
-			this.btnMap.Text = "LEET MAP";
+			this.btnMap.Text = "Show Map!";
 			this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
 			// 
 			// MainForm
