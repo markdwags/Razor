@@ -555,7 +555,7 @@ namespace Assistant
 				
 				if ( !m_GZIn.EndOfFile )
 					totalDelay += delay = m_GZIn.Compressed.ReadInt32();
-			} while ( totalDelay*SpeedScalar() <= 5 && !m_GZIn.EndOfFile );
+			} while ( totalDelay*SpeedScalar() < 1 && !m_GZIn.EndOfFile );
 
 			m_Elapsed += TimeSpan.FromMilliseconds( totalDelay );
 			//tbPos.Value = (int)m_Elapsed.TotalSeconds;

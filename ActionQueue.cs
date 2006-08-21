@@ -497,7 +497,7 @@ namespace Assistant
 
 				if ( m_Queue != null && m_Queue.Count > 0 )
 				{
-					HardSetInterval( TimeSpan.FromMilliseconds( Config.GetInt( "ObjectDelay" ) ) );
+					this.Interval = TimeSpan.FromMilliseconds( Config.GetInt( "ObjectDelay" ) );
 
 					while ( m_Queue.Count > 0 )
 					{
@@ -507,7 +507,6 @@ namespace Assistant
 							int r = DragDropManager.ProcessNext();
 							if ( r == -1 ) // keep waiting...
 							{
-								//HardSetInterval( TimeSpan.FromMilliseconds( Math.Min( 50, Config.GetInt( "ObjectDelay" ) ) ) );
 								if ( requeue == null )
 									requeue = new ArrayList( 1 );
 								requeue.Add( s );

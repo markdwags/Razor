@@ -125,6 +125,11 @@ namespace Assistant
 
 			AddProperty( "Negotiate", true );
 
+			AddProperty( "MapX", 200 );
+			AddProperty( "MapY", 200 );
+			AddProperty( "MapW", 250 );
+			AddProperty( "MapH", 250 );
+
 			Counter.Default();
 			Filter.DisableAll();
 			DressList.ClearAll();

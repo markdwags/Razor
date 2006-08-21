@@ -35,8 +35,17 @@ namespace Assistant.MapUO
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-			this.BackColor = Color.Black;
-           
+			this.Location = new Point( Config.GetInt( "MapX" ), Config.GetInt( "MapY" ) );
+			this.ClientSize = new Size( Config.GetInt( "MapW" ), Config.GetInt( "MapH" ) );
+
+			if ( this.Location.X < -10 || this.Location.Y < -10 )
+				this.Location = Point.Empty;
+
+			if ( this.Width < 50 )
+				this.Width = 50;
+			if ( this.Height < 50 )
+				this.Height = 50;
+
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
@@ -59,13 +68,21 @@ namespace Assistant.MapUO
 				{
 					Engine.MainWindow.MapWindow = new Assistant.MapUO.MapWindow();
 					Engine.MainWindow.MapWindow.Show();
+					Engine.MainWindow.MapWindow.BringToFront();
 				}
 				else
 				{
 					if ( Engine.MainWindow.MapWindow.Visible )
+					{
 						Engine.MainWindow.MapWindow.Hide();
+						Engine.MainWindow.BringToFront();
+						ClientCommunication.BringToFront( ClientCommunication.FindUOWindow() );
+					}
 					else
+					{
 						Engine.MainWindow.MapWindow.Show();
+						Engine.MainWindow.MapWindow.BringToFront();
+					}
 				}
 			}
 		}
@@ -111,6 +128,7 @@ namespace Assistant.MapUO
 			// MapWindow
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+			this.BackColor = System.Drawing.Color.Black;
 			this.ClientSize = new System.Drawing.Size(292, 266);
 			this.Controls.Add(this.Map);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -124,6 +142,7 @@ namespace Assistant.MapUO
 			this.Resize += new System.EventHandler(this.MapWindow_Resize);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapWindow_MouseDown);
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MapWindow_Closing);
+			this.Move += new System.EventHandler(this.MapWindow_Move);
 			this.ResumeLayout(false);
 
 		}
@@ -230,8 +249,8 @@ namespace Assistant.MapUO
 			{
 				e.Cancel = true;
 				this.Hide();
-				ClientCommunication.BringToFront( ClientCommunication.FindUOWindow() );
 				Engine.MainWindow.BringToFront();
+				ClientCommunication.BringToFront( ClientCommunication.FindUOWindow() );
 			}
 		}
 
@@ -245,7 +264,18 @@ namespace Assistant.MapUO
 		{
 			this.Map.Height = this.Height;
 			this.Map.Width = this.Width;
+
+			if ( this.Width < 50 )
+				this.Width = 50;
+			if ( this.Height < 50 )
+				this.Height = 50;
+			
 			this.Refresh();
+
+			Config.SetProperty( "MapX", this.Location.X );
+			Config.SetProperty( "MapY", this.Location.Y );
+			Config.SetProperty( "MapW", this.ClientSize.Width );
+			Config.SetProperty( "MapH", this.ClientSize.Height );
 		}
 
 		private void MapWindow_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -281,6 +311,14 @@ namespace Assistant.MapUO
 		private void Map_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			MapWindow_MouseDown(sender, e);
+		}
+
+		private void MapWindow_Move(object sender, System.EventArgs e)
+		{
+			Config.SetProperty( "MapX", this.Location.X );
+			Config.SetProperty( "MapY", this.Location.Y );
+			Config.SetProperty( "MapW", this.ClientSize.Width );
+			Config.SetProperty( "MapH", this.ClientSize.Height );
 		}
 	}
 }

@@ -61,7 +61,7 @@ namespace Assistant
 
 		private static MainForm m_MainWnd;
 		private static Form m_ActiveWnd;
-		private static Thread m_TimerThread;
+		//private static Thread m_TimerThread;
 		private static bool m_Running;
 		private static string m_BaseDir;
 		private static string m_Version;
@@ -236,8 +236,8 @@ namespace Assistant
 
 			SplashScreen.Message = "Initializing...";
 
-			m_TimerThread = new Thread( new ThreadStart( Timer.TimerThread.TimerMain ) );
-			m_TimerThread.Name = "Razor Timers";
+			//m_TimerThread = new Thread( new ThreadStart( Timer.TimerThread.TimerMain ) );
+			//m_TimerThread.Name = "Razor Timers";
 
 			Initialize( typeof( Assistant.Engine ).Assembly ); //Assembly.GetExecutingAssembly()
 
@@ -318,7 +318,7 @@ namespace Assistant
 
 			m_MainWnd = new MainForm();
 			//SplashScreen.End();
-			m_TimerThread.Start();
+			//m_TimerThread.Start();
 			Application.Run( m_MainWnd );
 			
 			m_Running = false;
@@ -327,14 +327,14 @@ namespace Assistant
 			Macros.MacroManager.Save();
 			Config.Save();
 
-			try
+			/*try
 			{
 				if ( m_TimerThread.IsAlive )
 					m_TimerThread.Abort();
 			}
 			catch
 			{
-			}
+			}*/
 		}
 
 		public static string GetDirectory( string relPath )

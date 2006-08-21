@@ -2703,6 +2703,10 @@ namespace Assistant
 		{
 			//ClientCommunication.SetCustomNotoHue( 0x2 );
 
+			Timer.Control = timerTimer;
+
+			new StatsTimer( this ).Start();
+
 			this.Hide();
 			Language.LoadControlNames( this );
 
@@ -2761,6 +2765,20 @@ namespace Assistant
 			this.TopMost = alwaysTop.Checked = Config.GetBool( "AlwaysOnTop" );
 			this.Location = new System.Drawing.Point( Config.GetInt( "WindowX" ), Config.GetInt( "WindowY" ) );
 			this.TopLevel = true;
+
+			bool onScreen = false;
+			foreach ( Screen s in Screen.AllScreens )
+			{
+				if ( s.Bounds.Contains( this.Location.X + this.Width, this.Location.Y+this.Height ) ||
+					s.Bounds.Contains( this.Location.X-this.Width, this.Location.Y-this.Height ) )
+				{
+					onScreen = true;
+					break;
+				}
+			}
+
+			if ( !onScreen )
+				this.Location = Point.Empty;
 
 			spellUnequip.Checked = Config.GetBool( "SpellUnequip" );
 			ltRange.Enabled = rangeCheckLT.Checked = Config.GetBool( "RangeCheckLT" );
@@ -2985,8 +3003,25 @@ namespace Assistant
 		private uint m_OutPrev;
 		private uint m_InPrev;
 
+		private class StatsTimer : Timer
+		{
+			MainForm m_Form;
+			public StatsTimer( MainForm form ) : base( TimeSpan.FromSeconds( 0.5 ), TimeSpan.FromSeconds( 0.5 ) )
+			{
+				m_Form = form;
+			}
+
+			protected override void OnTick()
+			{
+				m_Form.UpdateRazorStatus();
+			}
+		}
+
 		private void UpdateRazorStatus()
 		{
+			if ( !ClientCommunication.ClientRunning )
+				Close();
+
 			uint ps = m_OutPrev;
 			uint pr = m_InPrev;
 			m_OutPrev = ClientCommunication.TotalOut();
@@ -3366,21 +3401,10 @@ namespace Assistant
 			warnNum.Enabled = warnCount.Checked;
 		}
 
-		private DateTime m_NextStatus = DateTime.MinValue;
 		private void timerTimer_Tick(object sender, System.EventArgs e)
 		{
+			Timer.Control = timerTimer;
 			Timer.Slice();
-			if ( !ClientCommunication.ClientRunning )
-			{
-				PacketPlayer.Stop();
-				Close();
-			}
-			
-			if ( m_NextStatus <= DateTime.Now )
-			{
-				UpdateRazorStatus();
-				m_NextStatus = DateTime.Now.AddSeconds( 1 );
-			}
 		}
 
 		private void warnNum_TextChanged(object sender, System.EventArgs e)
