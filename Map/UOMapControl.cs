@@ -356,11 +356,11 @@ namespace Assistant.MapUO
 
 			if (map == Ultima.Map.Trammel || map == Ultima.Map.Felucca)
 			{
-				if (x >= 0 && y >= 0 && x < 5120 && y < 4096)
+				if (x >= 0 && y >= 0 && x < 5120 && y < map.Height)
 				{
 					xCenter = 1323; yCenter = 1624;
 				}
-				else if (x >= 5120 && y >= 2304 && x < 6144 && y < 4096)
+				else if (x >= 5120 && y >= 2304 && x < 6144 && y < map.Height)
 				{
 					xCenter = 5936; yCenter = 3112;
 				}
@@ -370,13 +370,13 @@ namespace Assistant.MapUO
 					return false;
 				}
 			}
-			else if (x >= 0 && y >= 0 /*&& x < map.Width && y < map.Height*/)
+			else if ( x >= 0 && y >= 0 && x < map.Width && y < map.Height )
 			{
 				xCenter = 1323; yCenter = 1624;
 			}
 			else
 			{
-				xCenter = 0; yCenter = 0;
+				xCenter = map.Width / 2; yCenter = map.Height / 2;
 				return false;
 			}
 
