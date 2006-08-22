@@ -104,7 +104,7 @@ namespace Assistant
 					mapStr = "Malas";
 					break;
 				case 4:
-					mapStr = "Samurai Empire";
+					mapStr = "Tokuno";
 					break;
 				case 0x7F:
 					mapStr = "Internal";

@@ -21,7 +21,7 @@ namespace Assistant
 				case 1: return Ultima.Map.Trammel; 
 				case 2: return Ultima.Map.Ilshenar;
 				case 3: return Ultima.Map.Malas; 
-				case 4: return Ultima.Map.Samurai;
+				case 4: return Ultima.Map.Tokuno;
 				case 0: 
 				default:return Ultima.Map.Felucca;
 			}
@@ -42,10 +42,8 @@ namespace Assistant
 				return 2;
 			else if ( name == "malas" )
 				return 3;
-			else if ( name == "samurai" || name == "tonoko" )
+			else if ( name == "samurai" || name == "tokuno" )
 				return 4;
-			else if ( name == "imbus" )
-				return 5;
 			else
 				return 0;
 		}
