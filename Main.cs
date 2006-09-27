@@ -120,6 +120,8 @@ namespace Assistant
 				ClientCommunication.ServerEncrypted = Utility.ToInt32( dataDir, 0 ) != 0;
 			}
 			dataDir = null;
+
+			bool advCmdLine = false;
 			
 			for (int i=0;i<Args.Length;i++)
 			{
@@ -131,11 +133,13 @@ namespace Assistant
 				else if ( arg == "--clientenc" )
 				{
 					ClientCommunication.ClientEncrypted = true;
+					advCmdLine = true;
 					patch = false;
 				}
 				else if ( arg == "--serverenc" )
 				{
 					ClientCommunication.ServerEncrypted = true;
+					advCmdLine = true;
 				}
 				else if ( arg == "--welcome" )
 				{
@@ -157,6 +161,17 @@ namespace Assistant
 					i++;
 					dataDir = Args[i];
 				}
+				else if ( arg == "--debug" )
+				{
+					ScavengerAgent.Debug = true;
+					DragDropManager.Debug = true;
+				}
+			}
+
+			if ( attPID > 0 && !advCmdLine )
+			{
+				ClientCommunication.ServerEncrypted = false;
+				ClientCommunication.ClientEncrypted = false;
 			}
 
 			if ( !Language.Load( "ENU" ) )

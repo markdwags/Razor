@@ -1131,33 +1131,26 @@ namespace Assistant
 						if ( lParam != 0 && !razor.TopMost )
 						{
 							razor.TopMost = true;
-							if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
-								Engine.MainWindow.MapWindow.TopMost = true;
 						}
 						else if ( lParam == 0 && razor.TopMost )
 						{
 							razor.TopMost = false;
 							razor.SendToBack();
-							if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
-							{
-								Engine.MainWindow.MapWindow.TopMost = false;
-								Engine.MainWindow.MapWindow.SendToBack();
-							}
 						}
 					}
 
 					// always use smartness for the map window
-					if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
+					if ( razor.MapWindow != null )
 					{
-						if ( lParam != 0 && !Engine.MainWindow.MapWindow.TopMost )
+						if ( lParam != 0 && !razor.MapWindow.TopMost )
 						{
-							Engine.MainWindow.MapWindow.TopMost = true;
+							razor.MapWindow.TopMost = true;
+							razor.MapWindow.BringToFront();
 						}
-						else if ( lParam == 0 && Engine.MainWindow.MapWindow.TopMost )
+						else if ( lParam == 0 && razor.MapWindow.TopMost )
 						{
-						
-							Engine.MainWindow.MapWindow.TopMost = false;
-							Engine.MainWindow.MapWindow.SendToBack();
+							razor.MapWindow.TopMost = false;
+							razor.MapWindow.SendToBack();
 						}
 					}
 					break;
@@ -1533,6 +1526,13 @@ namespace Assistant
 			CommMutex.WaitOne();
 			fixed ( byte *ptr = buff )
 			{
+				while ( m_OutRecv->Start + m_OutRecv->Length + buff.Length >= SHARED_BUFF_SIZE )
+				{
+					CommMutex.ReleaseMutex();
+					System.Threading.Thread.Sleep( 1 );
+					CommMutex.WaitOne();
+				}
+
 				Packet.Log( PacketPath.PacketVideo, ptr, buff.Length );
 				CopyToBuffer( m_OutRecv, ptr, buff.Length );
 			}

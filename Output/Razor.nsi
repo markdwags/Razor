@@ -92,6 +92,7 @@ foundFramework:
   File "C:\UO\Razor\Output\License.txt"
   File "C:\UO\Razor\Output\License_CHS.txt"
   File "C:\UO\Razor\Output\changelog.txt"
+  File "C:\UO\Razor\Output\Guardlines.def"
 
   SetOverwrite ifnewer
   File "C:\UO\Razor\Output\Spells.def"
@@ -142,6 +143,7 @@ Section "Uninstall"
   Delete "$INSTDIR\UOReport0.log"
   Delete "$INSTDIR\Crash.log"
   Delete "$INSTDIR\changelog.txt"
+  Delete "$INSTDIR\Guardlines.def"
   RMDir /r "$INSTDIR\Language"
 
   MessageBox MB_YESNO|MB_ICONQUESTION "Do you want to save your razor profiles and macros?  (Selecting no will delete them)" IDYES AfterProfiles

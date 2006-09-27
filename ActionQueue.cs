@@ -1,4 +1,4 @@
-//#define LOGGING
+#define LOGGING
 
 using System;
 using System.Collections;
@@ -10,29 +10,26 @@ namespace Assistant
 
 	public class DragDropManager
 	{
-#if LOGGING
-		public static void Log( string str )
-		{
-			try
-			{
-			using ( StreamWriter txt = new StreamWriter( "DragDrop.log", true ) )
-			{
-				txt.AutoFlush = true;
+		public static bool Debug = false;
 
-				txt.WriteLine( "{0}: {1}", DateTime.Now.ToString( "HH:mm:ss.ff" ), str );
-			}
-			}
-			catch
-			{
-			}
-		}
-#endif
-
-		public static void Log( string str, params object[] args )
+		private static void Log( string str, params object[] args )
 		{
-#if LOGGING
-			Log( String.Format( str, args ) );
-#endif
+			if ( Debug )
+			{
+				try
+				{
+					using ( StreamWriter w = new StreamWriter( "DragDrop.log", true ) )
+					{
+						w.Write( DateTime.Now.ToString( "HH:mm:ss.fff" ) );
+						w.Write( ":: " );
+						w.WriteLine( str, args );
+						w.Flush();
+					}
+				}
+				catch
+				{
+				}
+			}
 		}
 
 		private class LiftReq
@@ -113,7 +110,7 @@ namespace Assistant
 
 		public static void Clear()
 		{
-			//Log( "Clearing...." );
+			Log( "Clearing...." );
 
 			m_DropReqs.Clear();
 			for(int i=0;i<256;i++)

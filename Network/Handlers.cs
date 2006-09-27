@@ -377,6 +377,8 @@ namespace Assistant
 			if ( ActionQueue.FilterLiftReject() )
 				args.Block = true;
 			*/
+			int reason = p.ReadByte();
+
 			if ( !DragDropManager.LiftReject() )
 				args.Block = true;
 			//MacroManager.PlayError( MacroError.LiftRej );

@@ -1059,6 +1059,8 @@ namespace Assistant
 		private static ScavengerAgent m_Instance = new ScavengerAgent();
 		public static ScavengerAgent Instance{ get{ return m_Instance; } }
 
+		public static bool Debug = false;
+
 		public static void Initialize()	
 		{ 
 			Agent.Add( m_Instance ); 
@@ -1120,6 +1122,7 @@ namespace Assistant
 		
 		public override void OnButtonPress( int num )
 		{
+			DebugLog( "User pressed button {0}", num );
 			switch ( num )
 			{
 				case 1:
@@ -1153,6 +1156,7 @@ namespace Assistant
 
 		private void ClearCache()
 		{
+			DebugLog( "Clearing Cache of {0} items", m_Cache == null ? -1 : m_Cache.Count );
 			if ( m_Cache != null )
 				m_Cache.Clear();
 			if ( World.Player != null )
@@ -1172,6 +1176,8 @@ namespace Assistant
 
 			m_Items.Add( item.ItemID );
 			m_SubList.Items.Add( item.ItemID );
+
+			DebugLog( "Added item {0}", item );
 				
 			World.Player.SendMessage( MsgLevel.Force, LocString.ItemAdded );
 		}
@@ -1185,14 +1191,19 @@ namespace Assistant
 
 			m_Bag = serial;
 			m_BagRef = World.FindItem( m_Bag );
+			DebugLog( "Set bag to {0}", m_Bag );
 
 			World.Player.SendMessage( MsgLevel.Force, LocString.ContSet, m_Bag );
 		}
 		
 		public void Scavenge( Item item )
 		{
+			DebugLog( "Checking WorldItem {0} ...", item );
 			if ( !m_Enabled || !m_Items.Contains( item.ItemID ) || World.Player.Backpack == null || World.Player.IsGhost || World.Player.Weight >= World.Player.MaxWeight )
+			{
+				DebugLog( "... skipped." );
 				return;
+			}
 
 			if ( m_Cache == null )
 				m_Cache = new ArrayList( 200 );
@@ -1200,16 +1211,34 @@ namespace Assistant
 				m_Cache.RemoveRange( 0, 50 );
 			
 			if ( m_Cache.Contains( item.Serial ) )
+			{
+				DebugLog( "Item was cached." );
 				return;
+			}
 
 			Item bag = m_BagRef;
-			if ( bag == null )
+			if ( bag == null || bag.Deleted )
 				bag = m_BagRef = World.FindItem( m_Bag );
 			if ( bag == null || bag.Deleted || !bag.IsChildOf( World.Player.Backpack ) )
 				bag = World.Player.Backpack;
 
 			m_Cache.Add( item.Serial );
 			DragDropManager.DragDrop( item, bag );
+			DebugLog( "Dragging to {0}!", bag );
+		}
+
+		private static void DebugLog( string str, params object[] args )
+		{
+			if ( Debug )
+			{
+				using ( System.IO.StreamWriter w = new System.IO.StreamWriter( "Scavenger.log", true ) )
+				{
+					w.Write( DateTime.Now.ToString( "HH:mm:ss.fff" ) );
+					w.Write( ":: " );
+					w.WriteLine( str, args );
+					w.Flush();
+				}
+			}
 		}
 
 		public override void Save( XmlTextWriter xml )

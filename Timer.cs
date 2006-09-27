@@ -180,7 +180,7 @@ namespace Assistant
 				m_Next = DateTime.Now + m_Delay;
 				m_Running = true;
 				m_Heap.Add( this );
-				ChangedNextTick();
+				ChangedNextTick( true );
 			}
 		}
 
@@ -190,7 +190,7 @@ namespace Assistant
 			{
 				m_Running = false;
 				m_Heap.Remove( this );
-				ChangedNextTick();
+				//ChangedNextTick();
 			}
 		}
 
@@ -241,6 +241,11 @@ namespace Assistant
 
 		private static void ChangedNextTick()
 		{
+			ChangedNextTick( false );
+		}
+
+		private static void ChangedNextTick( bool allowImmediate )
+		{
 			if ( m_Ctrl == null )
 				return;
 
@@ -249,10 +254,18 @@ namespace Assistant
 			if ( !m_Heap.IsEmpty )
 			{
 				int interval = (int)Math.Ceiling( ((Timer)m_Heap.Peek()).TimeUntilTick.TotalMilliseconds );
-				if ( interval <= 0 )
-					interval = 1;
-				m_Ctrl.Interval = interval;
-				m_Ctrl.Start();
+				if ( allowImmediate && interval <= 0 )
+				{
+					Slice();
+				}
+				else
+				{
+					if ( interval <= 0 )
+						interval = 1;
+				
+					m_Ctrl.Interval = interval;
+					m_Ctrl.Start();
+				}
 			}
 		}
 

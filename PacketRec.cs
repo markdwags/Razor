@@ -531,7 +531,7 @@ namespace Assistant
 			{
 				btnPlay.Text = "Play";
 				tbPos.Enabled = btnClose.Enabled = btnPlay.Enabled = btnStop.Enabled = btnRec.Enabled = true;
-				tbPos.Value = 0;
+				tbPos.Value = tbPos.Minimum;
 
 				if ( m_PlayTimer != null && m_PlayTimer.Running )
 					m_PlayTimer.Stop();
@@ -555,14 +555,14 @@ namespace Assistant
 				
 				if ( !m_GZIn.EndOfFile )
 					totalDelay += delay = m_GZIn.Compressed.ReadInt32();
-			} while ( totalDelay*SpeedScalar() < 1 && !m_GZIn.EndOfFile );
+			} while ( totalDelay*SpeedScalar() <= 1 && !m_GZIn.EndOfFile );
 
 			m_Elapsed += TimeSpan.FromMilliseconds( totalDelay );
 			//tbPos.Value = (int)m_Elapsed.TotalSeconds;
 
 			if ( !m_GZIn.EndOfFile )
 			{
-				m_PlayTimer = Timer.DelayedCallback( TimeSpan.FromMilliseconds( delay*SpeedScalar() ), m_SendNext );
+				m_PlayTimer = Timer.DelayedCallback( TimeSpan.FromMilliseconds( delay*SpeedScalar() * 0.75  ), m_SendNext );
 				m_PlayTimer.Start();
 			}
 			else
@@ -580,12 +580,18 @@ namespace Assistant
 			{
 				if ( !Playing )
 				{
-					tbPos.Value = 0;
+					tbPos.Value = tbPos.Minimum;
 					return;
 				}
 				else if ( target <= m_Elapsed )
 				{
-					tbPos.Value = (int)m_Elapsed.TotalSeconds;
+					try
+					{
+						tbPos.Value = (int)m_Elapsed.TotalSeconds;
+					}
+					catch
+					{
+					}
 					return;
 				}
 			}
@@ -596,6 +602,7 @@ namespace Assistant
 
 			PlayerData.ExternalZ = false;
 
+			int sleepCount = 0;
 			while ( m_Elapsed < target && !m_GZIn.EndOfFile )
 			{
 				// peek ahead 1 byte... and no, BinaryReader doesnt have a peek function.
@@ -610,7 +617,9 @@ namespace Assistant
 				{
 					delay = TimeSpan.FromMilliseconds( m_GZIn.Compressed.ReadInt32() );
 					m_Elapsed += delay;
-					System.Threading.Thread.Sleep( TimeSpan.FromMilliseconds( 1 ) );
+
+					if ( ((++sleepCount) % 5) == 0 )
+						System.Threading.Thread.Sleep( TimeSpan.FromMilliseconds( 1 ) );
 				}
 			}
 
@@ -733,7 +742,7 @@ namespace Assistant
 			if ( m_GZIn != null )
 				m_GZIn.Close();
 			m_GZIn = null;
-			tbPos.Value = 0;
+			tbPos.Value = tbPos.Minimum;
 			lblPlay.Text = "";
 			m_RPVInfo = null;
 		}
@@ -774,7 +783,7 @@ namespace Assistant
 			
 			m_PlayTimer = Timer.DelayedCallback( FadeDelay, m_BeginPlay );
 			m_PlayTimer.Start();
-			tbPos.Value = 0;
+			tbPos.Value = tbPos.Minimum;
 			m_Elapsed = TimeSpan.Zero;
 
 			ClientCommunication.RequestTitlebarUpdate();
@@ -867,7 +876,7 @@ namespace Assistant
 			DoLogin( player );
 
 			tbPos.Enabled = btnClose.Enabled = btnPlay.Enabled = btnStop.Enabled = btnRec.Enabled = true;
-			tbPos.Value = 0;
+			tbPos.Value = tbPos.Minimum;
 			
 			ClientCommunication.SendToClient( new MoveReject( World.Player.WalkSequence, World.Player ) );
 			ClientCommunication.SendToServer( new ResyncReq() );
@@ -956,6 +965,9 @@ namespace Assistant
 					int val = (int)m_Elapsed.TotalSeconds + (int)(m_PlayTimer.Delay - m_PlayTimer.TimeUntilTick).TotalSeconds;
 					if ( val > tbPos.Maximum )
 						val = tbPos.Maximum;
+					else if ( val < tbPos.Minimum )
+						val = tbPos.Minimum;
+					
 					tbPos.Value = val;
 
 					if ( (DateTime.Now-m_LastPing) >= TimeSpan.FromMinutes( 1 ) )
