@@ -226,17 +226,34 @@ namespace Assistant.MapUO
 						this.Interval = TimeSpan.FromSeconds( 10.0 );
 						return;
 					}
-					else
+
+					bool send = false;
+					foreach ( Serial s in PacketHandlers.Party )
+					{
+						Mobile m = World.FindMobile( s );
+
+						if ( m == null || Utility.Distance( World.Player.Position, m.Position ) > World.Player.VisRange )
+						{
+							send = true;
+							break;
+						}
+					}
+
+					if ( send )
 					{
 						// first packet sent in a while, wait an extra half second (for high pings)
 						if ( PacketHandlers.SpecialPartySent == 0 )
 							this.Interval = TimeSpan.FromSeconds( 1.0 );
 						else
 							this.Interval = TimeSpan.FromSeconds( 0.5 );
-					}
 
-					PacketHandlers.SpecialPartySent++;
-					ClientCommunication.SendToServer(new QueryPartyLocs());
+						PacketHandlers.SpecialPartySent++;
+						ClientCommunication.SendToServer(new QueryPartyLocs());
+					}
+					else
+					{
+						this.Interval = TimeSpan.FromSeconds( 1.0 );
+					}
 				}
 				else
 				{
