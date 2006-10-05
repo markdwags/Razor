@@ -218,12 +218,25 @@ namespace Assistant.MapUO
 
 				if ( World.Player != null && PacketHandlers.Party.Count > 0 )
 				{
-					if ( !PacketHandlers.TriedSpecialParty || PacketHandlers.SpecialPartySupport )
+					if ( PacketHandlers.SpecialPartySent > PacketHandlers.SpecialPartyReceived )
 					{
-						this.Interval = TimeSpan.FromSeconds( 0.25 );
-						ClientCommunication.SendToServer(new QueryPartyLocs());
-						PacketHandlers.TriedSpecialParty = true;
+						// If we sent more than we received then the server stopped responding
+						// in that case, wait a long while before trying again
+						PacketHandlers.SpecialPartySent = PacketHandlers.SpecialPartyReceived = 0;
+						this.Interval = TimeSpan.FromSeconds( 10.0 );
+						return;
 					}
+					else
+					{
+						// first packet sent in a while, wait an extra half second (for high pings)
+						if ( PacketHandlers.SpecialPartySent == 0 )
+							this.Interval = TimeSpan.FromSeconds( 1.0 );
+						else
+							this.Interval = TimeSpan.FromSeconds( 0.5 );
+					}
+
+					PacketHandlers.SpecialPartySent++;
+					ClientCommunication.SendToServer(new QueryPartyLocs());
 				}
 				else
 				{

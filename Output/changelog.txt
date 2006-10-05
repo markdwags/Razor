@@ -9,7 +9,7 @@ Additions:
 -Connect UO compatability
 -Added a "-macro <name>" command to play a macro from inside of the client.
 -A dismount hotkey (in the "Misc" category)
--The "UO Positioning system!"  This is ment to provide similar functionality to UOAutomap and the built-in client Radar display.  On most RunUO servers this display will show members of your party and their names.
+-The "UO Positioning system!" - This is ment to provide similar functionality to UOAutomap and the built-in client Radar display.  On most RunUO servers this display will show members of your party and their names.
 
 Changes/Fixes:
 -Several performance enhancements to the network code.  Especially on encrypted (OSI) servers.

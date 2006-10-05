@@ -1716,8 +1716,8 @@ namespace Assistant
 			}
 		}
 
-		public static bool TriedSpecialParty = false;
-		public static bool SpecialPartySupport = false;
+		public static int SpecialPartySent = 0;
+		public static int SpecialPartyReceived = 0;
 
 		private static void RunUOProtocolExtention(PacketReader p, PacketHandlerEventArgs args)
 		{
@@ -1728,7 +1728,7 @@ namespace Assistant
 				{
 					Serial serial;
 
-					SpecialPartySupport = true;
+					PacketHandlers.SpecialPartyReceived++;
 
 					while ((serial = p.ReadUInt32()) > 0)
 					{
