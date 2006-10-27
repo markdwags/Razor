@@ -35,7 +35,7 @@ namespace Assistant
 		private static Timer m_PlayTimer, m_ScrollTimer;
 		private static int m_StartPos;
 		private static TimeSpan m_Elapsed;
-		private static int m_PlaySpeed = 2;
+		private static int m_PlaySpeed = 0;
 		private static byte m_Version;
 
 		private static string m_RPVInfo;
@@ -554,8 +554,8 @@ namespace Assistant
 				ClientCommunication.ProcessPlaybackData( m_GZIn.Compressed );
 				
 				if ( !m_GZIn.EndOfFile )
-					totalDelay += delay = m_GZIn.Compressed.ReadInt32();
-			} while ( totalDelay*SpeedScalar() <= 1 && !m_GZIn.EndOfFile );
+					totalDelay += (delay = m_GZIn.Compressed.ReadInt32());
+			} while ( ( totalDelay*SpeedScalar() < 2 || delay*SpeedScalar() < 2 ) && !m_GZIn.EndOfFile );
 
 			m_Elapsed += TimeSpan.FromMilliseconds( totalDelay );
 			//tbPos.Value = (int)m_Elapsed.TotalSeconds;
@@ -573,6 +573,7 @@ namespace Assistant
 
 		public static void OnScroll()
 		{
+			bool wasRunning = m_PlayTimer.Running;
 			TimeSpan delay = TimeSpan.Zero;
 			TimeSpan target = TimeSpan.FromSeconds( tbPos.Value );
 
@@ -585,13 +586,7 @@ namespace Assistant
 				}
 				else if ( target <= m_Elapsed )
 				{
-					try
-					{
-						tbPos.Value = (int)m_Elapsed.TotalSeconds;
-					}
-					catch
-					{
-					}
+					tbPos.Value = (int)m_Elapsed.TotalSeconds;
 					return;
 				}
 			}
@@ -599,6 +594,9 @@ namespace Assistant
 			{
 				return;
 			}
+
+			if ( wasRunning )
+				m_PlayTimer.Stop();
 
 			PlayerData.ExternalZ = false;
 
@@ -619,7 +617,11 @@ namespace Assistant
 					m_Elapsed += delay;
 
 					if ( ((++sleepCount) % 5) == 0 )
+					{
+						tbPos.Value = (int)m_Elapsed.TotalSeconds;
+						Application.DoEvents();
 						System.Threading.Thread.Sleep( TimeSpan.FromMilliseconds( 1 ) );
+					}
 				}
 			}
 
@@ -634,9 +636,8 @@ namespace Assistant
 			ClientCommunication.ForceSendToClient( new MobileUpdate( World.Player ) );
 			ClientCommunication.ForceSendToClient( new MobileIncoming( World.Player ) );
 
-			if ( m_PlayTimer.Running ) // paused?
+			if ( wasRunning ) // paused?
 			{
-				m_PlayTimer.Stop();
 				if ( !m_GZIn.EndOfFile )
 				{
 					m_PlayTimer = Timer.DelayedCallback( delay, m_SendNext );

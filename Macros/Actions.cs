@@ -2067,7 +2067,10 @@ namespace Assistant.Macros
 
 				case IfVarType.Poisoned:
 				{
-					return World.Player.Poisoned;
+					if ( ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+						return World.Player.Poisoned;
+					else
+						return false;
 				}
 
 				case IfVarType.SysMessage:
