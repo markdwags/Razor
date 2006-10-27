@@ -581,7 +581,7 @@ namespace Assistant
 
 				foreach ( Item i in World.Items.Values )
 				{
-					if ( i.Position.X == x && i.Position.Y == y && i.IsDoor && i.Position.Z - 15 <= z && i.Position.Z + 15 >= z && ( m_LastDoor != i.Serial || m_LastDoorTime+TimeSpan.FromSeconds( 2 ) < DateTime.Now ) )
+					if ( i.Position.X == x && i.Position.Y == y && i.IsDoor && i.Position.Z - 15 <= z && i.Position.Z + 15 >= z && ( m_LastDoor != i.Serial || m_LastDoorTime+TimeSpan.FromSeconds( 1 ) < DateTime.Now ) )
 					{
 						m_LastDoor = i.Serial;
 						m_LastDoorTime = DateTime.Now;
@@ -946,7 +946,7 @@ namespace Assistant
 				ActionQueue.DoubleClick( silent, s );
 
 				if ( free != null )
-					DragDropManager.DragDrop( free, World.Player, free.Layer );
+					DragDropManager.DragDrop( free, World.Player, free.Layer, true );
 
 				if ( s.IsItem )
 					World.Player.m_LastObj = s;

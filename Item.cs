@@ -560,9 +560,9 @@ namespace Assistant
 			get
 			{
 				ushort iid = m_ItemID.Value;
-				return ( iid >= 0x9A8 && iid <= 0x9AC ) || ( iid >= 0x9B0 && iid <= 0x9B2 ) || ( iid >= 0xA2C && iid <= 0xA53 ) || 
-					( iid >= 0xA97 && iid <= 0xA9E ) || ( iid >= 0xE3C && iid <= 0xE43 ) || ( iid >= 0xE75 && iid <= 0xE80 && iid != 0xE7B ) ||
-					iid == 0x1E80 || iid == 0x1E81 || iid == 0x232A || iid == 0x232B ;
+				return ( m_Items.Count > 0 && !IsCorpse ) || ( iid >= 0x9A8 && iid <= 0x9AC ) || ( iid >= 0x9B0 && iid <= 0x9B2 ) || 
+					( iid >= 0xA2C && iid <= 0xA53 ) || ( iid >= 0xA97 && iid <= 0xA9E ) || ( iid >= 0xE3C && iid <= 0xE43 ) || 
+					( iid >= 0xE75 && iid <= 0xE80 && iid != 0xE7B ) || iid == 0x1E80 || iid == 0x1E81 || iid == 0x232A || iid == 0x232B ;
 			}
 		}
 

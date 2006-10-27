@@ -1831,15 +1831,22 @@ namespace Assistant
 				return;
 			}
 
-			if ( m_Cont.IsContainer && m_Cont.Layer != Layer.Bank )
+			if ( Utility.Distance( World.Player.Position, m_Cont.GetWorldPosition() ) > 3 )
 			{
-				PlayerData.DoubleClick( m_Cont );
-				Timer.DelayedCallback( TimeSpan.FromMilliseconds( Config.GetInt( "ObjectDelay" ) + 200 ), new TimerCallback( DoRestock ) ).Start();
-				World.Player.SendMessage( LocString.RestockQueued );
+				World.Player.SendMessage( MsgLevel.Error, LocString.TooFar );
 			}
 			else
 			{
-				DoRestock();
+				if ( m_Cont.IsContainer && m_Cont.Layer != Layer.Bank )
+				{
+					PlayerData.DoubleClick( m_Cont );
+					Timer.DelayedCallback( TimeSpan.FromMilliseconds( Config.GetInt( "ObjectDelay" ) + 200 ), new TimerCallback( DoRestock ) ).Start();
+					World.Player.SendMessage( LocString.RestockQueued );
+				}
+				else
+				{
+					DoRestock();
+				}
 			}
 		}
 

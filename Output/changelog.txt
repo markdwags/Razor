@@ -1,4 +1,4 @@
-Razor (v1.0.1.*) Changelog:
+Razor (v1.0.2.*) Changelog:
 
 Razor is a FREE program.  Unlike competing programs like UOAssist, Razor does not charge any money at all and provides even more features.  Razor is now available on the regular OSI servers for unlimited accounts absolutely free.  But Razor needs your help!  Razor is now accepting donations over PayPal.  UOAssist (a similar program, but for OSI servers only) costs $15 PER ACCOUNT while Razor is FREE for UNLIMITED ACCOUNTS.  Your donation of $5 or $10 (or any amount!) is LESS than you would pay for a similar program!  Donations are greatly appreciated and will help ensure that the developers continue to improve and maintain this fine product.
 Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD
@@ -6,17 +6,14 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
--Connect UO compatability
--Added a "-macro <name>" command to play a macro from inside of the client.
--A dismount hotkey (in the "Misc" category)
--The "UO Positioning system!" - This is ment to provide similar functionality to UOAutomap and the built-in client Radar display.  On most RunUO servers this display will show members of your party and their names.
 
 Changes/Fixes:
--Several performance enhancements to the network code.  Especially on encrypted (OSI) servers.
--Changed the way the welcome screen handles OSI encryption.  You should now always (even when connecting to OSI!) check the "patch encryption" box unless you are using a special client (like one created by UORice).  If you are confused, then always check the "Patch Encryption" box, even when connecting to OSI.
--Random targets and next target will now ignore mobiles which are more than 12 tiles away.
--Internal targets (such as the Restock agent) now work from inside of macros
--Razor internal timers have been revamped.  As a result Razor should overall use less resources now and certain things should be more responsive.
--As a result of the internal timer changes, Razor Packet Video (RPV) playback should be smoother now, especially when a lot of things are going on at once on-screen.
--The "Smart Always on Top" feature has been re-vamped and now works bug-free.  It is HIGHLY recommended for everyone.  As a reminder: This feature keeps Razor and the UOPS window "always on top" of the UO window, but they will never be "always on top" of other windows.
--Several small annoyances have been fixed.
+-The UOPS window will now correctly display (and update) the positions of party members under all circumstances.
+-RPV Playback has become a good deal smoother (especially when theres a lot going on on screen).  Playback at Normal speed should now look proper.
+-RPV Seeking is once again working.
+-Un/Re-Equip hands when using potions will now correctly wait to re-equip your hands until all other pending potion requests have been completed.
+-Screen shots should always be correctly centered now.
+-Stun and Disarm hotkeys now have a slight 'spam' delay (0.5 sec) to prevent them from being accidentally toggled quickly by holding the key down for too long.
+-If a macro which drags an item is stopped before the item is dropped the item will now be placed in your backpack instead of on the ground.
+-Last Target can no longer be the ground or a piece of the map.  Only dynamic items and characters can be set to the last target now.
+-Attempting to use the restock agent on something that is too far away will now give you an error (instead of just blindly doing it anyway).

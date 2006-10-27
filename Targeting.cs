@@ -133,7 +133,7 @@ namespace Assistant
 				CancelOneTimeTarget();
 			}
 
-			if ( m_HasTarget && m_CurrentID != 0 )
+			if ( m_HasTarget && m_CurrentID != 0 && m_CurrentID != LocalTargID )
 			{
 				m_PreviousID = m_CurrentID;
 				m_PreviousGround = m_AllowGround;
@@ -546,6 +546,7 @@ namespace Assistant
 				else
 				{
 					pos = Point3D.Zero;
+					targ.X = targ.Y = targ.Z = 0;
 				}
 			}
 			else
@@ -794,7 +795,7 @@ namespace Assistant
 			TargetInfo targ = new TargetInfo();
 			Mobile m = null, old = World.FindMobile( m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial );
 
-			if ( list.Count <= 1 )
+			if ( list.Count <= 0 )
 			{
 				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
 				return;
@@ -814,6 +815,9 @@ namespace Assistant
 				else
 					m = null;
 			}
+
+			if ( m == null )
+				m = old;
 
 			if ( m == null )
 			{
@@ -860,6 +864,22 @@ namespace Assistant
 					}
 				}
 			}
+		}
+		
+		private static bool CheckHealPoisonTarg( uint targID, Serial ser )
+		{
+			if ( targID == m_SpellTargID && ser.IsMobile && ( World.Player.LastSpell == Spell.ToID( 1, 4 ) || World.Player.LastSpell == Spell.ToID( 4, 5 ) ) && Config.GetBool( "BlockHealPoison" ) && ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
+			{
+				Mobile m = World.FindMobile( ser );
+
+				if ( m != null && m.Poisoned )
+				{
+					World.Player.SendMessage( MsgLevel.Warning, LocString.HealPoisonBlocked );
+					return true;
+				}
+			}
+
+			return false;
 		}
 		
 		private static void TargetResponse( PacketReader p, PacketHandlerEventArgs args )
@@ -921,13 +941,18 @@ namespace Assistant
 				
 				if ( info.Serial != World.Player.Serial )
 				{
-					m_LastTarget = info;
-					if ( info.Flags == 1 )
-						m_LastHarmTarg = info;
-					else if ( info.Flags == 2 )
-						m_LastBeneTarg = info;
+					if ( info.Serial.IsValid )
+					{
+						// don't allow last target to be the ground or anything
 
-					LastTargetChanged();
+						m_LastTarget = info;
+						if ( info.Flags == 1 )
+							m_LastHarmTarg = info;
+						else if ( info.Flags == 2 )
+							m_LastBeneTarg = info;
+
+						LastTargetChanged();
+					}
 
 					if ( Macros.MacroManager.AcceptActions )
 						MacroManager.Action( new AbsoluteTargetAction( info ) );
@@ -953,22 +978,6 @@ namespace Assistant
 			}
 
 			m_FilterCancel.Clear();
-		}
-
-		private static bool CheckHealPoisonTarg( uint targID, Serial ser )
-		{
-			if ( targID == m_SpellTargID && ser.IsMobile && ( World.Player.LastSpell == Spell.ToID( 1, 4 ) || World.Player.LastSpell == Spell.ToID( 4, 5 ) ) && Config.GetBool( "BlockHealPoison" ) && ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
-			{
-				Mobile m = World.FindMobile( ser );
-
-				if ( m != null && m.Poisoned )
-				{
-					World.Player.SendMessage( MsgLevel.Warning, LocString.HealPoisonBlocked );
-					return true;
-				}
-			}
-
-			return false;
 		}
 
 		private static void NewTarget( PacketReader p, PacketHandlerEventArgs args )

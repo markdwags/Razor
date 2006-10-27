@@ -36,11 +36,12 @@ namespace Assistant
 		{
 			private static int NextID = 1;
 
-			public LiftReq( Serial s, int a, bool cli )
+			public LiftReq( Serial s, int a, bool cli, bool last )
 			{
 				Serial = s; 
 				Amount = a; 
 				FromClient = cli;
+				DoLast = last;
 				Id = NextID++;
 			}
 
@@ -48,6 +49,7 @@ namespace Assistant
 			public int Amount;
 			public int Id;
 			public bool FromClient;
+			public bool DoLast;
 		}
 
 		private class DropReq
@@ -145,27 +147,69 @@ namespace Assistant
 			Drop( i, to.Serial, Point3D.MinusOne );
 		}
 
+		public static void DragDrop( Item i, Mobile to, Layer layer, bool doLast )
+		{
+			Drag( i, i.Amount, false, doLast );
+			Drop( i, to, layer );
+		}
+
 		public static void DragDrop( Item i, Mobile to, Layer layer )
 		{
-			Drag( i, i.Amount );
+			Drag( i, i.Amount, false );
 			Drop( i, to, layer );
 		}
 
 		public static int Drag( Item i, int amount, bool fromClient )
 		{
-			Log( "Queuing Drag request for {0} ({1})", i, amount );
-
-			LiftReq lr = new LiftReq( i.Serial, amount, fromClient );
-			if ( m_Back >= m_LiftReqs.Length )
-				m_Back = 0;
-			m_LiftReqs[m_Back++] = lr;
-			ActionQueue.SignalLift( !fromClient );
-			return lr.Id;
+			return Drag( i, amount, fromClient, false );
 		}
 
 		public static int Drag( Item i, int amount )
 		{
-			return Drag( i, amount, false );
+			return Drag( i, amount, false, false );
+		}
+
+		public static int Drag( Item i, int amount, bool fromClient, bool doLast )
+		{
+			LiftReq lr = new LiftReq( i.Serial, amount, fromClient, doLast );
+			LiftReq prev = null;
+
+			if ( m_Back+1 == m_Front )
+			{
+				World.Player.SendMessage( MsgLevel.Error, LocString.DragDropQueueFull );
+				if ( fromClient )
+				{
+					ClientCommunication.SendToClient( new LiftRej() );
+					return;
+				}
+			}
+
+			Log( "Queuing Drag request for {0} ({1})", i, amount );
+
+			if ( m_Back >= m_LiftReqs.Length )
+				m_Back = 0;
+
+			if ( m_Back <= 0 )
+				prev = m_LiftReqs[m_LiftReqs.Length-1];
+			else if ( m_Back <= m_LiftReqs.Length )
+				prev = m_LiftReqs[m_Back-1];
+			
+			// if the current last req must stay last, then insert this one in its place
+			if ( prev != null && prev.DoLast )
+			{
+				if ( m_Back <= 0 )
+					m_LiftReqs[m_LiftReqs.Length-1] = lr;
+				else if ( m_Back <= m_LiftReqs.Length )
+					m_LiftReqs[m_Back-1] = lr;
+
+				// and then re-insert it at the end
+				lr = prev;
+			}
+
+			m_LiftReqs[m_Back++] = lr;
+			
+			ActionQueue.SignalLift( !fromClient );
+			return lr.Id;
 		}
 
 		public static bool Drop( Item i, Mobile to, Layer layer )

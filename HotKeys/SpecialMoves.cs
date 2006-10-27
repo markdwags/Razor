@@ -51,6 +51,8 @@ namespace Assistant
 			}
 		}
 
+		private static DateTime m_LastToggle = DateTime.MinValue;
+
 		private static int[] HatchetID = new int[]{ 0xF43, 0xF44 };
 		private static int[] LongSwordID = new int[]{ 0xF60, 0xF61 };
 		private static int[] BroadswordID = new int[]{ 0xF5E, 0xF5F };
@@ -152,12 +154,20 @@ namespace Assistant
 
 		private static void OnStun()
 		{
-			ClientCommunication.SendToServer( new StunRequest() );
+			if ( m_LastToggle+TimeSpan.FromSeconds( 0.5 ) < DateTime.Now )
+			{
+				m_LastToggle = DateTime.Now;
+				ClientCommunication.SendToServer( new StunRequest() );
+			}
 		}
 
 		private static void OnDisarm()
 		{
-			ClientCommunication.SendToServer( new DisarmRequest() );
+			if ( m_LastToggle+TimeSpan.FromSeconds( 0.5 ) < DateTime.Now )
+			{
+				m_LastToggle = DateTime.Now;
+				ClientCommunication.SendToServer( new DisarmRequest() );
+			}
 		}
 
 		private static AOSAbility GetAbility( int item, AbilityInfo[] list )

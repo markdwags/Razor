@@ -361,6 +361,7 @@ namespace Assistant
 				if ( item == null )
 					World.AddItem( item = new Item( serial ) );
 				DragDropManager.Drag( item, amount, true );
+				ClientCommunication.SendToClient( new RemoveObject( serial ) ); // remove the object from the client view
 				args.Block = true;
 			}
 
@@ -1401,7 +1402,7 @@ namespace Assistant
 						args.Block = true;
 						return;
 					}
-					else if ( text.IndexOf( "You've committed a criminal act!" ) != -1 || text.IndexOf( "You are now a criminal" ) != -1 )
+					else if ( text.StartsWith( "You've committed a criminal act" ) || text.StartsWith( "You are now a criminal" ) )
 					{
 						World.Player.ResetCriminalTimer();
 					}

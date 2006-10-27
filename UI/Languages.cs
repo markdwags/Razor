@@ -338,6 +338,8 @@ namespace Assistant
 		NoPatchWarning,
 		Dismount,
 		ToggleMap,
+		TooFar,
+		DragDropQueueFull,
 
 		__End
 	}

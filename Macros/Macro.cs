@@ -118,9 +118,8 @@ namespace Assistant.Macros
 			if ( m_Recording )
 				Save();
 			if ( m_Playing && World.Player != null && DragDropManager.Holding != null && DragDropManager.Holding == LiftAction.LastLift )
-				ClientCommunication.SendToServer( new DropRequest( DragDropManager.Holding, World.Player.Position, Serial.Zero ) );
-			//if ( m_Playing && m_CurrentAction < m_Actions.Count && m_CurrentAction >= 0 && LiftAction.LastLift != null )
-			//	ActionQueue.Enqueue( new DropRequest( LiftAction.LastLift, World.Player.Position, Serial.MinusOne ) );
+				ClientCommunication.SendToServer( new DropRequest( DragDropManager.Holding, World.Player.Serial ) );
+
 			m_Recording = m_Playing = false;
 			m_Wait = null;
 			m_IfStatus.Clear();

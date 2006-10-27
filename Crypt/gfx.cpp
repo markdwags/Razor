@@ -383,7 +383,7 @@ DLLFUNCTION HBITMAP CaptureScreen( BOOL full, const char *msg )
 	HBITMAP hBMP = CreateCompatibleBitmap( hScreen, destWidth, destHeight );
 	SelectObject( hCap, hBMP );
 
-	BitBlt( hCap, 0, 0, destWidth, destHeight, hScreen, rect.left, rect.top, SRCCOPY );
+	BitBlt( hCap, 0, 0, destWidth, destHeight, hScreen, 0, 0, SRCCOPY );
 	//StretchBlt( hCap, 0, 0, destWidth, destHeight, hScreen, rect.left, rect.top, srcWidth, srcHeight, SRCCOPY );
 
 	if ( !hRazorIcon )

@@ -368,6 +368,10 @@ namespace Assistant
 
 	public sealed class LiftRej : Packet
 	{
+		public LiftRej() : this( 5 ) // reason = Inspecific
+		{
+		}
+
 		public LiftRej( byte reason ) : base( 0x27, 2 )
 		{
 			Write( reason );

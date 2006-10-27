@@ -227,6 +227,9 @@ namespace Assistant
 
 			text = text.Trim();
 
+			if ( text.Length > 0 && text[0] != '-' )
+				Macros.MacroManager.Action( new Macros.SpeechAction( type, hue, font, lang, keys, text ) );
+
 			if ( text.Length <= 1 || text.Length > 128 )
 				return;
 
@@ -244,10 +247,6 @@ namespace Assistant
 
 					args.Block = true;
 				}
-			}
-			else
-			{
-				Macros.MacroManager.Action( new Macros.SpeechAction( type, hue, font, lang, keys, text ) );
 			}
 		}
 	}
