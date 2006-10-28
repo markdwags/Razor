@@ -164,8 +164,19 @@ namespace Assistant.MapUO
 						Mobile mob = World.FindMobile( s );
 						if ( mob == null )
 							continue;
-						
-						pe.Graphics.FillRectangle( Brushes.Gold, (mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y, 2, 2 );
+                        if (mob == this.FocusMobile)
+                            continue;
+                        Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
+
+                        if (drawPoint.X < 0)
+                            drawPoint.X = 0;
+                        if (drawPoint.X > this.Width)
+                            drawPoint.X = this.Width;
+                        if (drawPoint.Y < 0)
+                            drawPoint.Y = 0;
+                        if (drawPoint.Y > this.Height)
+                            drawPoint.Y = this.Height;
+                        pe.Graphics.FillRectangle(Brushes.Gold, drawPoint.X, drawPoint.Y, 2, 2);
 					}
 
 					// but draw the font unscaled (its ugly scaled)
@@ -176,14 +187,46 @@ namespace Assistant.MapUO
 						Mobile mob = World.FindMobile( s );
 						if ( mob == null )
 							continue;
+
+                        if (mob == this.FocusMobile)
+                            continue;
 						
 						string name = mob.Name;
 						if ( name == null || name.Length < 1 )
 							name = "(Not Seen)";
-						
-						pe.Graphics.DrawString( name, m_SmallFont, Brushes.White, (mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y );
+                        if (name != null && name.Length > 8)
+                            name = name.Substring(0, 8);
+                        Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y );
+                        if (drawPoint.X < 0)
+                            drawPoint.X = 0;
+                        if (drawPoint.X > this.Width)
+                            drawPoint.X = this.Width;
+                        if (drawPoint.Y < 0)
+                            drawPoint.Y = 0;
+                        if (drawPoint.Y > this.Height)
+                            drawPoint.Y = this.Height;
+
+                        
+                        pe.Graphics.DrawString(name, m_SmallFont, Brushes.White, drawPoint.X, drawPoint.Y);
 					}
 
+                    if (World.Player != null)
+                    {
+                        if (World.Player != this.FocusMobile)
+                        {
+                            Mobile mob = World.Player;
+                            Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
+                            pe.Graphics.FillRectangle(Brushes.Gold, drawPoint.X, drawPoint.Y, 2, 2);
+                            drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
+
+                            string name = mob.Name;
+                            if (name != null && name.Length > 8)
+                                name = name.Substring(0, 8);
+                            pe.Graphics.DrawString(name, m_SmallFont, Brushes.White, drawPoint.X, drawPoint.Y);
+
+
+                        }
+                    }
 					/*Point pntTest2 = new Point((3251) - (mapOrigin.X << 3) - offset.X, (305) - (mapOrigin.Y << 3) - offset.Y);
 					pe.Graphics.FillRectangle(Brushes.Blue, pntTest2.X, pntTest2.Y, 2, 2);
 
@@ -199,7 +242,6 @@ namespace Assistant.MapUO
 			catch { }
 			base.OnPaint(pe);
 		}
-
 		public void MapClick(System.Windows.Forms.MouseEventArgs e)
 		{
 			if (Active)

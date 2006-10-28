@@ -105,9 +105,9 @@ namespace Assistant
 			string path = Config.GetString( "CapPath" );
 			Engine.EnsureDirectory( path );
 
+			//list.BeginUpdate();
 			list.Items.Clear();
 
-			list.BeginUpdate();
 			AddFiles( list, path, "jpeg" );
 			AddFiles( list, path, "jpg" );
 			AddFiles( list, path, "png" );
@@ -118,10 +118,7 @@ namespace Assistant
 			AddFiles( list, path, "wmf" );
 			AddFiles( list, path, "exif" );
 			AddFiles( list, path, "emf" );
-			list.EndUpdate();
-
-			list.Refresh();
-			list.Update();
+			//list.EndUpdate();
 		}
 
 		public static void AddFiles( ListBox list, string path, string ext )

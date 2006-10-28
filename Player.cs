@@ -939,7 +939,12 @@ namespace Assistant
 							free = right;
 
 						if ( free != null )
-							DragDropManager.DragDrop( free, pack );
+						{
+							if ( DragDropManager.HasDragFor( free.Serial ) )
+								free = null;
+							else
+								DragDropManager.DragDrop( free, pack );
+						}
 					}
 				}
 

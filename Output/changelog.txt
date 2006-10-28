@@ -17,3 +17,4 @@ Changes/Fixes:
 -If a macro which drags an item is stopped before the item is dropped the item will now be placed in your backpack instead of on the ground.
 -Last Target can no longer be the ground or a piece of the map.  Only dynamic items and characters can be set to the last target now.
 -Attempting to use the restock agent on something that is too far away will now give you an error (instead of just blindly doing it anyway).
+-Screenshot list will now correctly update when a first screen shot is taken.

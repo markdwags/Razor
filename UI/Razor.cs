@@ -2918,6 +2918,8 @@ namespace Assistant
 			blockHealPoison.Checked = Config.GetBool( "BlockHealPoison" );
 
 			negotiate.Checked = Config.GetBool( "Negotiate" );
+
+			logPackets.Checked = Config.GetBool( "LogPacketsByDefault" );
 			
 			if ( smartCPU.Checked )
 				ClientCommunication.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal;
@@ -4282,7 +4284,7 @@ namespace Assistant
 		{
 			if ( logPackets.Checked )
 			{
-				if ( MessageBox.Show( this, Language.GetString( LocString.PacketLogWarn ), "Caution!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning ) == DialogResult.Yes )
+				if ( m_Initializing || MessageBox.Show( this, Language.GetString( LocString.PacketLogWarn ), "Caution!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning ) == DialogResult.Yes )
 					Packet.Logging = true;
 				else
 					logPackets.Checked = false;
@@ -4291,14 +4293,6 @@ namespace Assistant
 			{
 				Packet.Logging = false;
 			}
-
-			/*
-			if ( logPackets.Checked )
-			{
-				MessageBox.Show( this, "Sorry, this feature has been disabled for security reasons.", "Disabled", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-				logPackets.Checked = false;
-			}
-			*/
 		}
 
 		private void showNotoHue_CheckedChanged(object sender, System.EventArgs e)
@@ -5065,7 +5059,7 @@ namespace Assistant
 			if ( screensList.SelectedIndex == -1 )
 				return;
 
-			string file = Path.Combine( Config.GetString( "CapPath" ), (string)screensList.SelectedItem );
+			string file = Path.Combine( Config.GetString( "CapPath" ), screensList.SelectedItem.ToString() );
 			if ( !File.Exists( file ) )
 			{
 				MessageBox.Show( this, Language.Format( LocString.FileNotFoundA1, file ), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning );

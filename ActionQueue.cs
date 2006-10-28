@@ -10,6 +10,14 @@ namespace Assistant
 
 	public class DragDropManager
 	{
+		public enum ProcStatus
+		{
+			Nothing,
+			Success,
+			KeepWaiting,
+			ReQueue,
+		}
+
 		public static bool Debug = false;
 
 		private static void Log( string str, params object[] args )
@@ -50,6 +58,12 @@ namespace Assistant
 			public int Id;
 			public bool FromClient;
 			public bool DoLast;
+
+			public override string ToString()
+			{
+				return String.Format( "{2}({0},{1},{3},{4})", Serial, Amount, Id, FromClient, DoLast );
+			}
+
 		}
 
 		private class DropReq
@@ -180,11 +194,11 @@ namespace Assistant
 				if ( fromClient )
 				{
 					ClientCommunication.SendToClient( new LiftRej() );
-					return;
+					return 0;
 				}
 			}
 
-			Log( "Queuing Drag request for {0} ({1})", i, amount );
+			Log( "Queuing Drag request {0}", lr );
 
 			if ( m_Back >= m_LiftReqs.Length )
 				m_Back = 0;
@@ -197,6 +211,7 @@ namespace Assistant
 			// if the current last req must stay last, then insert this one in its place
 			if ( prev != null && prev.DoLast )
 			{
+				Log( "Back-Queuing {0}", prev );
 				if ( m_Back <= 0 )
 					m_LiftReqs[m_LiftReqs.Length-1] = lr;
 				else if ( m_Back <= m_LiftReqs.Length )
@@ -317,6 +332,17 @@ namespace Assistant
 			return m_ClientLiftReq;
 		}
 
+		public static bool HasDragFor( Serial s )
+		{
+			for(byte j=m_Front;j!=m_Back;j++)
+			{
+				if ( m_LiftReqs[j] != null && m_LiftReqs[j].Serial == s )
+					return true;
+			}
+
+			return false;
+		}
+
 		public static bool EndHolding( Serial s )
 		{
 			if ( m_Pending == s )
@@ -358,7 +384,7 @@ namespace Assistant
 			}
 		}
 
-		public static int ProcessNext()
+		public static ProcStatus ProcessNext( int numPending )
 		{
 			if ( m_Pending != Serial.Zero )
 			{
@@ -384,22 +410,26 @@ namespace Assistant
 				}
 				else
 				{
-					return -1; // keep waiting
+					return ProcStatus.KeepWaiting;
 				}
 			}
 
 			if ( m_Front == m_Back )
 			{
 				m_Front = m_Back = 0;
-				return 0; // go to next action
+				return ProcStatus.Nothing;
 			}
 
 			LiftReq lr = m_LiftReqs[m_Front];
+			
+			if ( numPending > 0 && lr != null && lr.DoLast )
+				return ProcStatus.ReQueue;
+
 			m_LiftReqs[m_Front] = null;
 			m_Front++;
 			if ( lr != null )
 			{
-				Log( "Lifting {0} ({1})", lr.Serial, lr.Amount );
+				Log( "Lifting {0}", lr );
 
 				ClientCommunication.SendToServer( new LiftRequest( lr.Serial, lr.Amount ) );
 
@@ -414,7 +444,7 @@ namespace Assistant
 					m_Pending = Serial.Zero;
 					m_Lifted = DateTime.MinValue;
 
-					Log( "Dropping {0} to {1}", lr.Serial, dr.Serial );
+					Log( "Dropping {0} to {1}", lr, dr.Serial );
 
 					if ( dr.Serial.IsMobile && dr.Layer > Layer.Invalid && dr.Layer <= Layer.LastUserValid )
 						ClientCommunication.SendToServer( new EquipRequest( lr.Serial, dr.Serial, dr.Layer ) );
@@ -427,12 +457,12 @@ namespace Assistant
 					m_Lifted = DateTime.Now;
 				}
 				
-				return 1; // action ok
+				return ProcStatus.Success;
 			}
 			else
 			{
 				Log( "No lift to be done?!" );
-				return 0; // go to next action
+				return ProcStatus.Nothing;
 			}
 		}
 	}
@@ -542,22 +572,24 @@ namespace Assistant
 
 					while ( m_Queue.Count > 0 )
 					{
-						Serial s = (Serial)m_Queue.Dequeue();
+						Serial s = (Serial)m_Queue.Peek();
 						if ( s == Serial.Zero ) // dragdrop action
 						{
-							int r = DragDropManager.ProcessNext();
-							if ( r == -1 ) // keep waiting...
+							DragDropManager.ProcStatus status = DragDropManager.ProcessNext( m_Queue.Count - 1 );
+							if ( status != DragDropManager.ProcStatus.KeepWaiting )
 							{
-								if ( requeue == null )
-									requeue = new ArrayList( 1 );
-								requeue.Add( s );
+								m_Queue.Dequeue(); // if not waiting then dequeue it
+
+								if ( status == DragDropManager.ProcStatus.ReQueue )
+									m_Queue.Enqueue( s );
 							}
 
-							if ( r == 1 ) // action executed
-								break;
+							if ( status == DragDropManager.ProcStatus.KeepWaiting || status == DragDropManager.ProcStatus.Success )
+								break; // don't process more if we're waiting or we jsut processed something
 						}
 						else
 						{
+							m_Queue.Dequeue();
 							ClientCommunication.SendToServer( new DoubleClick( s ) );
 							break;
 						}

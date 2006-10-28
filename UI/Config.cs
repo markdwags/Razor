@@ -130,6 +130,8 @@ namespace Assistant
 			AddProperty( "MapW", 250 );
 			AddProperty( "MapH", 250 );
 
+			AddProperty( "LogPacketsByDefault", false );
+
 			Counter.Default();
 			Filter.DisableAll();
 			DressList.ClearAll();
