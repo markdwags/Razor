@@ -1,7 +1,7 @@
 #pragma once
 #pragma pack(1)
 
-#define DLL_VERSION "1.0.1"
+#define DLL_VERSION "1.0.2"
 
 #define DLLFUNCTION __declspec(dllexport)
 #define DLLVAR DLLFUNCTION
@@ -57,6 +57,7 @@ enum UONET_MESSAGE
 
 	SMART_CPU = 21,
 	NEGOTIATE = 22,
+	SET_MAP_HWND,
 };
 
 //#define SHARED_BUFF_SIZE 0x80000 // Client's buffers are 500k

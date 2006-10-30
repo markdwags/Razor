@@ -16,6 +16,7 @@ HHOOK hWndProcRetHook = NULL;
 HHOOK hGetMsgHook = NULL;
 HWND hWatchWnd = NULL;
 HWND hPostWnd = NULL;
+HWND hMapWnd = NULL;
 DWORD UOProcId = 0;
 
 HANDLE hFileMap = NULL;
@@ -2228,6 +2229,10 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		case NEGOTIATE:
 			AllowNegotiate = lParam;
 			break;
+
+		case SET_MAP_HWND:
+			hMapWnd = (HWND)lParam;
+			break;
 		}
 		break;
 
@@ -2281,8 +2286,11 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		break;
 	case WM_KILLFOCUS:
 		hFore = GetForegroundWindow();
-		if ( ((HWND)wParam) != hPostWnd && hFore != hPostWnd && !CheckParent( hFore, hPostWnd ) )
+		if ( ((HWND)wParam) != hPostWnd && hFore != hPostWnd && ((HWND)wParam) != hMapWnd && hFore != hMapWnd 
+			&& !CheckParent( hFore, hPostWnd ) )
+		{
 			PostMessage( hPostWnd, WM_UONETEVENT, FOCUS, FALSE );
+		}
 		break;
 	case WM_SETFOCUS:
 		PostMessage( hPostWnd, WM_UONETEVENT, FOCUS, TRUE );

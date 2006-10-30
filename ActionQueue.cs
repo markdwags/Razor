@@ -431,6 +431,17 @@ namespace Assistant
 			{
 				Log( "Lifting {0}", lr );
 
+				Item item = World.FindItem( lr.Serial );
+				if ( item != null && item.Container == null )
+				{ // if the item is on the ground and out of range then dont grab it
+					if ( Utility.Distance( item.GetWorldPosition(), World.Player.Position ) > 2 )
+					{
+						Log( "Item is too far away... uncaching." );
+						ScavengerAgent.Instance.Uncache( item.Serial );
+						return ProcStatus.Nothing;
+					}
+				}
+
 				ClientCommunication.SendToServer( new LiftRequest( lr.Serial, lr.Amount ) );
 
 				m_LastID = lr.Id;
@@ -585,7 +596,7 @@ namespace Assistant
 							}
 
 							if ( status == DragDropManager.ProcStatus.KeepWaiting || status == DragDropManager.ProcStatus.Success )
-								break; // don't process more if we're waiting or we jsut processed something
+								break; // don't process more if we're waiting or we just processed something
 						}
 						else
 						{
@@ -615,3 +626,4 @@ namespace Assistant
 		}
 	}
 }
+

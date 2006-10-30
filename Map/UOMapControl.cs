@@ -188,7 +188,7 @@ namespace Assistant.MapUO
 						if ( mob == null )
 							continue;
 
-                        if (mob == this.FocusMobile)
+                        if (mob == this.FocusMobile && mob == World.Player)
                             continue;
 						
 						string name = mob.Name;

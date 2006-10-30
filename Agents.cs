@@ -1195,6 +1195,12 @@ namespace Assistant
 
 			World.Player.SendMessage( MsgLevel.Force, LocString.ContSet, m_Bag );
 		}
+
+		public void Uncache( Serial s )
+		{
+			if ( m_Cache != null )
+				m_Cache.Remove( s );
+		}
 		
 		public void Scavenge( Item item )
 		{

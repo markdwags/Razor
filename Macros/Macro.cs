@@ -225,7 +225,9 @@ namespace Assistant.Macros
 					}
 					else if ( line[0] == '/' && line[1] == '/' )
 					{
-						m_Actions.Add( new MacroComment( line.Substring( 2 ) ) );
+						MacroAction a = new MacroComment( line.Substring( 2 ) ); 
+						a.Parent = this;
+						m_Actions.Add( a );
 						continue;
 					}
 

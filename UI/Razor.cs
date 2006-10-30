@@ -3508,8 +3508,11 @@ namespace Assistant
 			if ( InputBox.Show( this, Language.GetString( LocString.ProfName ), "Profile Name" ) )
 			{
 				string str = InputBox.GetString();
-				if ( str == null || str == "" )
+				if ( str == null || str == "" || str.IndexOfAny( Path.InvalidPathChars ) != -1 || str.IndexOfAny( m_InvalidNameChars ) != -1 )
+				{
+					MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), "Invalid Name", MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
+				}
 
 				m_ProfileConfirmLoad = false;
 				int sel = profiles.Items.Count;
@@ -4356,12 +4359,13 @@ namespace Assistant
 			}
 		}
 
+		private static char[] m_InvalidNameChars = new char[]{ '/', '\\', ';', '?', ':', '*' };
 		private void newMacro_Click(object sender, System.EventArgs e)
 		{
 			if ( InputBox.Show( this, Language.GetString( LocString.NewMacro ), "Enter a Name" ) )
 			{
 				string name = InputBox.GetString();
-				if ( name == null || name == "" || name.IndexOfAny( Path.InvalidPathChars ) != -1 )
+				if ( name == null || name == "" || name.IndexOfAny( Path.InvalidPathChars ) != -1 || name.IndexOfAny( m_InvalidNameChars ) != -1 )
 				{
 					MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), "Invalid Name", MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
@@ -4542,8 +4546,11 @@ namespace Assistant
 				return;
 
 			string path = InputBox.GetString();
-			if ( path == null || path.Length <= 0 )
+			if ( path == null || path == "" || path.IndexOfAny( Path.InvalidPathChars ) != -1 || path.IndexOfAny( m_InvalidNameChars ) != -1 )
+			{
+				MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				return;
+			}
 
 			TreeNode node = GetMacroDirNode();
 

@@ -6,6 +6,7 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
+-A context menu has been added to the UOPS window.  This will allow you to change the "Point of View" of the map to someone else in your party.
 
 Changes/Fixes:
 -The UOPS window will now correctly display (and update) the positions of party members under all circumstances.
@@ -18,3 +19,8 @@ Changes/Fixes:
 -Last Target can no longer be the ground or a piece of the map.  Only dynamic items and characters can be set to the last target now.
 -Attempting to use the restock agent on something that is too far away will now give you an error (instead of just blindly doing it anyway).
 -Screenshot list will now correctly update when a first screen shot is taken.
+-The macro manager will now show an error when attempting to create a profile, macro category, or new macro with invalid characters in the name.
+-Editing macro Comments will no longer crash Razor.
+-Scavenger Agent will no longer attempt to pick up items which are too far away, and these items will be automatically removed from the cache in case you pass them again.  This should result in better scavenger performance over all.
+-Context menu macro actions done on yourself will now be recorded as "self" instead of a specific player.  This will allow the same macro to be used on multiple characters without editing.
+-The UOPS window will now correctly stay on top of the UO window at all times.

@@ -56,6 +56,7 @@ namespace Assistant
 			FindData = 20,
 			SmartCPU = 21,
 			Negotiate = 22,
+			SetMapHWnd = 23,
 		}
 
 		public const int WM_USER = 0x400;
@@ -570,6 +571,11 @@ namespace Assistant
 			m_SendQueue = new Queue();
 			m_RecvQueue = new Queue();
 			m_WndReg = new ArrayList();
+		}
+		
+		public static void SetMapWndHandle( Form mapWnd )
+		{
+			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetMapHWnd, mapWnd.Handle );
 		}
 
 		public static void RequestStatbarPatch( bool preAOS )
@@ -1140,7 +1146,7 @@ namespace Assistant
 					}
 
 					// always use smartness for the map window
-					if ( razor.MapWindow != null )
+					if ( razor.MapWindow != null && razor.MapWindow.Visible )
 					{
 						if ( lParam != 0 && !razor.MapWindow.TopMost )
 						{
@@ -1153,6 +1159,10 @@ namespace Assistant
 							razor.MapWindow.SendToBack();
 						}
 					}
+#if DEBUG
+					if ( World.Player != null )
+						World.Player.SendMessage( "Setting Razor.TopMost = {0}, MapWindow.TopMost = {1}", razor.TopMost, razor.MapWindow != null ? razor.MapWindow.TopMost.ToString() : "-null-" );
+#endif
 					break;
 
 				case UONetMessage.DLL_Error:

@@ -154,7 +154,8 @@ namespace Assistant.Macros
 				if ( m_Comment == null )
 					m_Comment = "";
 
-				m_Parent.Update();
+				if ( m_Parent != null )
+					m_Parent.Update();
 			}
 		}
 	}
@@ -209,7 +210,7 @@ namespace Assistant.Macros
 
 		private void ConvertToByType( object[] args )
 		{
-			if ( m_Gfx != 0 && m_Serial.IsItem )
+			if ( m_Gfx != 0 && m_Serial.IsItem && m_Parent != null )
 				m_Parent.Convert( this, new DoubleClickTypeAction( m_Gfx, m_Serial.IsItem ) );
 		}
 
@@ -228,7 +229,9 @@ namespace Assistant.Macros
 			}
 
 			Engine.MainWindow.ShowMe();
-			m_Parent.Update();
+
+			if ( m_Parent != null )
+				m_Parent.Update();
 		}
 	}
 
@@ -351,7 +354,8 @@ namespace Assistant.Macros
 			m_Item = serial.IsItem;
 
 			Engine.MainWindow.ShowMe();
-			m_Parent.Update();
+			if ( m_Parent != null )
+				m_Parent.Update();
 		}
 	}
 
@@ -427,7 +431,7 @@ namespace Assistant.Macros
 
 		private void ConvertToByType( object[] args )
 		{
-			if ( m_Gfx != 0 )
+			if ( m_Gfx != 0 && m_Parent != null )
 				m_Parent.Convert( this, new LiftTypeAction( m_Gfx, m_Amount ) );
 		}
 	}
@@ -590,7 +594,7 @@ namespace Assistant.Macros
 
 		private void ConvertToRelLoc( object[] args )
 		{
-			if ( !m_To.IsValid )
+			if ( !m_To.IsValid && m_Parent != null )
 				m_Parent.Convert( this, new DropRelLocAction( (sbyte)(m_At.X - World.Player.Position.X), (sbyte)(m_At.Y - World.Player.Position.Y), (sbyte)(m_At.Z - World.Player.Position.Z) ) );
 		}
 	}
@@ -805,22 +809,26 @@ namespace Assistant.Macros
 			m_Info.Z = pt.Z;
 
 			Engine.MainWindow.ShowMe();
-			m_Parent.Update();
+			if ( m_Parent != null )
+				m_Parent.Update();
 		}
 
 		private void ConvertToLastTarget( object[] args )
 		{
-			m_Parent.Convert( this, new LastTargetAction() );
+			if ( m_Parent != null )
+				m_Parent.Convert( this, new LastTargetAction() );
 		}
 
 		private void ConvertToByType( object[] args )
 		{
-			m_Parent.Convert( this, new TargetTypeAction( m_Info.Serial.IsMobile, m_Info.Gfx ) );
+			if ( m_Parent != null )
+				m_Parent.Convert( this, new TargetTypeAction( m_Info.Serial.IsMobile, m_Info.Gfx ) );
 		}
 
 		private void ConvertToRelLoc( object[] args )
 		{
-			m_Parent.Convert( this, new TargetRelLocAction( (sbyte)(m_Info.X - World.Player.Position.X), (sbyte)(m_Info.Y - World.Player.Position.Y) ) );//, (sbyte)(m_Info.Z - World.Player.Position.Z) ) );
+			if ( m_Parent != null )
+				m_Parent.Convert( this, new TargetRelLocAction( (sbyte)(m_Info.X - World.Player.Position.X), (sbyte)(m_Info.Y - World.Player.Position.Y) ) );//, (sbyte)(m_Info.Z - World.Player.Position.Z) ) );
 		}
 	}
 
@@ -911,12 +919,14 @@ namespace Assistant.Macros
 				m_Gfx = gfx;
 			}
 			Engine.MainWindow.ShowMe();
-			m_Parent.Update();
+			if ( m_Parent != null )
+				m_Parent.Update();
 		}
 
 		private void ConvertToLastTarget( object[] args )
 		{
-			m_Parent.Convert( this, new LastTargetAction() );
+			if ( m_Parent != null )
+				m_Parent.Convert( this, new LastTargetAction() );
 		}
 	}
 
@@ -990,7 +1000,8 @@ namespace Assistant.Macros
 			m_X = (sbyte)(pt.X - World.Player.Position.X);
 			m_Y = (sbyte)(pt.Y - World.Player.Position.Y);
 			// m_Z = (sbyte)(pt.Z - World.Player.Position.Z);
-			m_Parent.Update();
+			if ( m_Parent != null )
+				m_Parent.Update();
 		}
 	}
 
@@ -1704,7 +1715,8 @@ namespace Assistant.Macros
 		private void ToggleStrict( object[] args )
 		{
 			m_Strict = !m_Strict;
-			m_Parent.Update();
+			if ( m_Parent != null )
+				m_Parent.Update();
 		}
 	}
 
@@ -2307,8 +2319,8 @@ namespace Assistant.Macros
 
 		private void Edit( object[] args )
 		{
-			if ( InputBox.Show( Language.GetString( LocString.NumIter ) ) )
-				m_Max = InputBox.GetInt( 1 );
+			if ( InputBox.Show( Language.GetString( LocString.NumIter ), "Input Box", m_Max.ToString() ) )
+				m_Max = InputBox.GetInt( m_Max );
 			if ( Parent != null )
 				Parent.Update();
 		}
@@ -2340,6 +2352,10 @@ namespace Assistant.Macros
 		public ContextMenuAction( UOEntity ent, ushort idx, ushort ctxName )
 		{
 			m_Entity = ent != null ? ent.Serial : Serial.MinusOne;
+
+			if ( World.Player != null && World.Player.Serial == m_Entity )
+				m_Entity = Serial.Zero;
+
 			m_Idx = idx;
 			m_CtxName = ctxName;
 		}
@@ -2359,8 +2375,13 @@ namespace Assistant.Macros
 
 		public override bool Perform()
 		{
-			ClientCommunication.SendToServer( new ContextMenuRequest( m_Entity ) );
-			ClientCommunication.SendToServer( new ContextMenuResponse( m_Entity, m_Idx ) );
+			Serial s = m_Entity;
+
+			if ( s == Serial.Zero && World.Player != null )
+				s = World.Player.Serial;
+
+			ClientCommunication.SendToServer( new ContextMenuRequest( s ) );
+			ClientCommunication.SendToServer( new ContextMenuResponse( s, m_Idx ) );
 			return true;
 		}
 
@@ -2371,7 +2392,13 @@ namespace Assistant.Macros
 
 		public override string ToString()
 		{
-			return String.Format( "ContextMenu: {1} ({0})", m_Entity, m_Idx );
+			string ent;
+
+			if ( m_Entity == Serial.Zero )
+				ent = "(self)";
+			else
+				ent = m_Entity.ToString();
+			return String.Format( "ContextMenu: {1} ({0})", ent, m_Idx );
 		}
 	}
 }

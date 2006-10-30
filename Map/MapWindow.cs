@@ -15,7 +15,6 @@ namespace Assistant.MapUO
 	{
 		public const int WM_NCLBUTTONDOWN = 0xA1;
 		public const int HT_CAPTION = 0x2;
-
 		private Assistant.MapUO.UOMapControl Map;
 
 		[DllImport("user32.dll")]
@@ -30,11 +29,13 @@ namespace Assistant.MapUO
 
 		public MapWindow()
 		{
-        
+
 			//
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
+			this.ContextMenu =  new ContextMenu();
+			this.ContextMenu.Popup += new EventHandler(ContextMenu_Popup);
 			this.Location = new Point( Config.GetInt( "MapX" ), Config.GetInt( "MapY" ) );
 			this.ClientSize = new Size( Config.GetInt( "MapW" ), Config.GetInt( "MapH" ) );
 
@@ -49,10 +50,61 @@ namespace Assistant.MapUO
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-            
+
 			this.Map.FullUpdate();
+			ClientCommunication.SetMapWndHandle( this );
 		}
 
+		public class MapMenuItem : MenuItem
+		{
+			public object Tag;
+
+			public MapMenuItem ( System.String text , System.EventHandler onClick ) : base( text, onClick )
+			{
+				Tag = null;
+			}
+		}
+
+		void ContextMenu_Popup(object sender, EventArgs e)
+		{
+			ContextMenu cm = this.ContextMenu;
+			cm.MenuItems.Clear();
+			if (World.Player != null && PacketHandlers.Party.Count > 0)
+			{
+				MapMenuItem mi  = new MapMenuItem("You", new EventHandler(FocusChange));
+				mi.Tag = World.Player.Serial;
+				cm.MenuItems.Add(mi);
+				foreach (Serial s in PacketHandlers.Party)
+				{
+					Mobile m = World.FindMobile(s);
+					if (m.Name != null)
+					{
+						mi = new MapMenuItem(m.Name, new EventHandler(FocusChange));
+						mi.Tag = s;
+						if ( this.Map.FocusMobile == m )
+							mi.Checked = true;
+						cm.MenuItems.Add(mi);
+					}
+				}
+			}
+			this.ContextMenu = cm;
+		}
+
+		private void FocusChange(object sender, System.EventArgs e)
+		{
+			if (sender != null)
+			{
+				MapMenuItem mItem = sender as MapMenuItem;
+
+				if ( mItem != null )
+				{
+					Serial s = (Serial)mItem.Tag;
+					Mobile m = World.FindMobile(s);
+					this.Map.FocusMobile = m;
+					this.Map.Refresh();
+				}
+			}
+		}
 		public static void Initialize()
 		{
 			new ReqPartyLocTimer().Start();
@@ -82,6 +134,8 @@ namespace Assistant.MapUO
 					{
 						Engine.MainWindow.MapWindow.Show();
 						Engine.MainWindow.MapWindow.BringToFront();
+						Engine.MainWindow.MapWindow.TopMost = true;
+						ClientCommunication.SetMapWndHandle( Engine.MainWindow.MapWindow );
 					}
 				}
 			}
@@ -143,6 +197,7 @@ namespace Assistant.MapUO
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapWindow_MouseDown);
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MapWindow_Closing);
 			this.Move += new System.EventHandler(this.MapWindow_Move);
+			this.Deactivate += new System.EventHandler(this.MapWindow_Deactivate);
 			this.ResumeLayout(false);
 
 		}
@@ -154,54 +209,55 @@ namespace Assistant.MapUO
 				this.Map.Refresh();
 		}
 
-		/*private static Font m_RegFont = new Font( "Courier New", 8 );
-		private int ButtonRows;
+		private static Font m_RegFont = new Font( "Courier New", 8 );
+		/*private   int ButtonRows;
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if ( PacketHandlers.Party.Count > 0 )
-			{
-				//75x15
-				int xcount = 0;
-				int ycount = 0;
-				Point org = new Point(0, this.Height - 50 - (ButtonRows * 15));
-				if (this.FormBorderStyle == FormBorderStyle.None)
-				{
-					org = new Point(0, this.Height - 50 - (ButtonRows * 15) + 32);
-				}
-				
-				foreach ( Serial s in PacketHandlers.Party )
-				{
-					Mobile mob = World.FindMobile( s );
-					if ( mob == null )
-						continue;
+		base.OnPaint(e);
+		if ( PacketHandlers.Party.Count > 0 )
+		{
+		//75x15
+		int xcount = 0;
+		int ycount = 0;
+		Point org = new Point(0, (ButtonRows * 15));
+		if (this.FormBorderStyle == FormBorderStyle.None)
+		{
+		org = new Point(0,  (ButtonRows * 15) + 32);
+		}
 
-					if (((75 * (xcount+1)) - this.Width) > 0)
-					{
-						xcount = 0;
-						ycount++;
-					}
-					string name = mob.Name;
-					if ( name != null && name.Length > 8)
-					{
-						name = name.Substring(0, 8);
-						name += "...";
-					}
-					else if ( name == null || name.Length < 1 )
-					{
-						name = "(Not Seen)";
-					}
+		foreach ( Serial s in PacketHandlers.Party )
+		{
+		Mobile mob = World.FindMobile( s );
+		if ( mob == null )
+			continue;
 
-					Point drawPoint = new Point(org.X + (75 * xcount), org.Y + (15*ycount));
-					mob.ButtonPoint = new Point2D( drawPoint.X, drawPoint.Y );
-					e.Graphics.FillRectangle( Brushes.Black, drawPoint.X, drawPoint.Y, 75, 15 );
-					e.Graphics.DrawRectangle(Pens.Gray, drawPoint.X, drawPoint.Y, 75, 15 );
-					e.Graphics.DrawString(name, m_RegFont, Brushes.White, drawPoint);
-					xcount++;
-				}
-				if(ycount > 0)
-					ButtonRows = ycount;
-			}
-			base.OnPaint(e);
+		if (((75 * (xcount+1)) - this.Width) > 0)
+		{
+			xcount = 0;
+			ycount++;
+		}
+		string name = mob.Name;
+		if ( name != null && name.Length > 8)
+		{
+			name = name.Substring(0, 8);
+			name += "...";
+		}
+		else if ( name == null || name.Length < 1 )
+		{
+			name = "(Not Seen)";
+		}
+
+		Point drawPoint = new Point(org.X + (75 * xcount), org.Y + (15*ycount));
+		mob.ButtonPoint = new Point2D( drawPoint.X, drawPoint.Y );
+		e.Graphics.FillRectangle( Brushes.Black, drawPoint.X, drawPoint.Y, 75, 15 );
+		e.Graphics.DrawRectangle(Pens.Gray, drawPoint.X, drawPoint.Y, 75, 15 );
+		e.Graphics.DrawString(name, m_RegFont, Brushes.White, drawPoint);
+		xcount++;
+		}
+		if(ycount > 0)
+		ButtonRows = ycount;
+		}
+
 		}*/
 
 		private class ReqPartyLocTimer : Timer
@@ -214,7 +270,13 @@ namespace Assistant.MapUO
 			{
 				// never send this packet to encrypted servers (could lead to OSI detecting razor)
 				if ( ClientCommunication.ServerEncrypted )
+				{
+					Stop();
 					return;
+				}
+
+				if ( Engine.MainWindow == null || Engine.MainWindow.MapWindow == null || !Engine.MainWindow.MapWindow.Visible )
+					return; // don't bother when the map window isnt visible
 
 				if ( World.Player != null && PacketHandlers.Party.Count > 0 )
 				{
@@ -270,6 +332,7 @@ namespace Assistant.MapUO
 
 		public void UpdateMap()
 		{
+			ClientCommunication.SetMapWndHandle( this );
 			this.Map.UpdateMap();
 		}
 
@@ -299,7 +362,7 @@ namespace Assistant.MapUO
 				this.Width = 50;
 			if ( this.Height < 50 )
 				this.Height = 50;
-			
+
 			this.Refresh();
 
 			Config.SetProperty( "MapX", this.Location.X );
@@ -324,20 +387,20 @@ namespace Assistant.MapUO
 				SendMessage( Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0 );
 				/*foreach ( Serial s in PacketHandlers.Party )
 				{       
-					Mobile m = World.FindMobile( s );
-					if ( m == null )
-						continue;
-					Rectangle rec = new Rectangle( m.ButtonPoint.X, m.ButtonPoint.Y, 75, 15 );
-					if ( rec.Contains( e.X, e.Y ) )
-					{
-						this.Map.FocusMobile = m;
-						this.Map.Refresh();
-					}
+				Mobile m = World.FindMobile( s );
+				if ( m == null )
+					continue;
+				Rectangle rec = new Rectangle( m.ButtonPoint.X, m.ButtonPoint.Y, 75, 15 );
+				if ( rec.Contains( e.X, e.Y ) )
+				{
+					this.Map.FocusMobile = m;
+					this.Map.Refresh();
+				}
 				}*/
 			}
 			this.Map.MapClick(e);
 		}
-		
+
 		private void Map_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			MapWindow_MouseDown(sender, e);
@@ -349,6 +412,12 @@ namespace Assistant.MapUO
 			Config.SetProperty( "MapY", this.Location.Y );
 			Config.SetProperty( "MapW", this.ClientSize.Width );
 			Config.SetProperty( "MapH", this.ClientSize.Height );
+		}
+
+		private void MapWindow_Deactivate(object sender, System.EventArgs e)
+		{
+			if ( this.TopMost )
+				this.TopMost = false;
 		}
 	}
 }
