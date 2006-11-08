@@ -68,6 +68,9 @@ foundFramework:
   WriteRegStr HKLM "Software\Razor" "InstallDir" $INSTDIR
   WriteRegStr HKLM "Software\Razor" "UId" "0"
 
+  ; For tugsoft plugins to function just make sure the tugsoft key exists... put in a dummy value
+  WriteRegStr HKCU "Software\Tugsoft\UOAssist\ThirdParty" "Owner" "Razor"
+
   WriteRegStr HKCR ".rpv" "" "Razor.PacketVideo"
   WriteRegStr HKCR "Razor.PacketVideo\DefaultIcon" "" "$INSTDIR\RPVOpenStub.exe,0"
   WriteRegStr HKCR "Razor.PacketVideo\shell\open\command" "" '"$INSTDIR\RPVOpenStub.exe" %1'
@@ -92,9 +95,9 @@ foundFramework:
   File "C:\UO\Razor\Output\License.txt"
   File "C:\UO\Razor\Output\License_CHS.txt"
   File "C:\UO\Razor\Output\changelog.txt"
-  File "C:\UO\Razor\Output\Guardlines.def"
 
   SetOverwrite ifnewer
+  File "C:\UO\Razor\Output\Guardlines.def"
   File "C:\UO\Razor\Output\Spells.def"
   File "C:\UO\Razor\Output\Counters.xml"
   SetOverwrite on
