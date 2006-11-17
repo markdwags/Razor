@@ -73,10 +73,10 @@ namespace Assistant
 			HotKey.Add( HKCategory.Targets, LocString.TargEnemy, new HotKeyCallback( TargetEnemy ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargCriminal, new HotKeyCallback( TargetCriminal ) );
 
-			HotKey.Add( HKCategory.Targets, LocString.TargEnemyHuman, new HotKeyCallback( TargetEnemyHuman ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargGreyHuman, new HotKeyCallback( TargetGreyHuman ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargInnocentHuman, new HotKeyCallback( TargetInnocentHuman ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargCriminalHuman, new HotKeyCallback( TargetCriminalHuman ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargEnemyHuman, new HotKeyCallback( TargetEnemyHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargGreyHuman, new HotKeyCallback( TargetGreyHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargInnocentHuman, new HotKeyCallback( TargetInnocentHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCriminalHuman, new HotKeyCallback( TargetCriminalHumanoid ) );
 
 			HotKey.Add( HKCategory.Targets, LocString.AttackLastComb, new HotKeyCallback( AttackLastComb ) );
 			HotKey.Add( HKCategory.Targets, LocString.AttackLastTarg, new HotKeyCallback( AttackLastTarg ) );
@@ -249,9 +249,9 @@ namespace Assistant
 			RandomTarget( 5 );
 		}
 
-		public static void TargetEnemyHuman()
+		public static void TargetEnemyHumanoid()
 		{
-			RandomHumanTarget( 5 );
+			RandomHumanoidTarget( 5 );
 		}
 
 		public static void TargetRed()
@@ -264,9 +264,9 @@ namespace Assistant
 			RandomTarget( 3, 4 );
 		}
 
-		public static void TargetGreyHuman()
+		public static void TargetGreyHumanoid()
 		{
-			RandomHumanTarget( 3, 4 );
+			RandomHumanoidTarget( 3, 4 );
 		}
 
 		public static void TargetCriminal()
@@ -274,9 +274,9 @@ namespace Assistant
 			RandomTarget( 4 );
 		}
 
-		public static void TargetCriminalHuman()
+		public static void TargetCriminalHumanoid()
 		{
-			RandomHumanTarget( 4 );
+			RandomHumanoidTarget( 4 );
 		}
 
 		public static void TargetInnocent()
@@ -284,9 +284,9 @@ namespace Assistant
 			RandomTarget( 1 );
 		}
 
-		public static void TargetInnocentHuman()
+		public static void TargetInnocentHumanoid()
 		{
-			RandomHumanTarget( 1 );
+			RandomHumanoidTarget( 1 );
 		}
 
 		public static void TargetAnyone()
@@ -326,7 +326,7 @@ namespace Assistant
 				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
 		}
 
-		public static void RandomHumanTarget( params int[] noto )
+		public static void RandomHumanoidTarget( params int[] noto )
 		{
 			if ( !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) )
 				return;
@@ -334,11 +334,11 @@ namespace Assistant
 			ArrayList list = new ArrayList();
 			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
-				if ( m.Body < 0x0190 || m.Body > 0x0193 )
+				if ( m.Body != 0x0190 && m.Body != 0x0191 && m.Body != 0x025D && m.Body != 0x025E )
 					continue;
 
 				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
-					!m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+					!m.Blessed && m.Serial != World.Player.Serial &&
 					Utility.InRange( World.Player.Position, m.Position, Config.GetInt( "LTRange" ) ) )
 				{
 					for(int i=0;i<noto.Length;i++)
@@ -619,8 +619,7 @@ namespace Assistant
 		private static void CancelTarget()
 		{
 			OnClearQueue();
-			if ( m_ClientTarget )
-				CancelClientTarget();
+			CancelClientTarget();
 			
 			if ( m_HasTarget )
 			{

@@ -488,7 +488,7 @@ namespace Assistant
 			clientList.SelectedIndex = sel;
 
 			dataDir.Items.Add( "(Auto Detect)" );
-			for( int i=1; ;i++)
+			for ( int i=1; ;i++)
 			{
 				string val = String.Format( "Dir{0}", i );
 				string dir = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, val );
@@ -534,10 +534,11 @@ namespace Assistant
 				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, pval );
 			}
 
-			/*serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Rebirth (PreT2A)", "login.uorebirth.com" ) );
+			/*
+			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Rebirth (PreT2A)", "login.uorebirth.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
-				serverList.SelectedItem = uog;*/
-			
+				serverList.SelectedItem = uog;
+			*/
 			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Divinity (T2A)", "login.uodivinity.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
 				serverList.SelectedItem = uog;
@@ -548,6 +549,10 @@ namespace Assistant
 
 			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Demise (SE/ML)", "login.uodemise.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
+				serverList.SelectedItem = uog;
+
+			serverList.Items.Add( uog=new UOGamers_SE( "Electronic Arts/Origin Servers", "login.owo.com" ) );
+			if ( lse.RealAddress == uog.RealAddress && lse.Port == 7776 )
 				serverList.SelectedItem = uog;
 
 			serverList.EndUpdate();
@@ -630,7 +635,15 @@ namespace Assistant
 			{
 				if ( serverList.SelectedItem is UOGamers_SE )
 				{
-					se = new ServerEntry( ((UOGamers_SE)serverList.SelectedItem).RealAddress, 2593 );
+					int port = 2593;
+					string addr = ((UOGamers_SE)serverList.SelectedItem).RealAddress;
+					if ( addr == "login.owo.com" )
+					{
+						port = 7776;
+						ClientCommunication.ServerEncrypted = true;
+					}
+
+					se = new ServerEntry( addr, port );
 				}
 				else if ( !(serverList.SelectedItem is LoginCFG_SE) )
 				{
@@ -679,7 +692,7 @@ namespace Assistant
 
 		private void SaveData()
 		{
-			for(int i=1;i<serverList.Items.Count;i++)
+			for (int i=1;i<serverList.Items.Count;i++)
 			{
 				for (int j=i+1;j<serverList.Items.Count;j++)
 				{

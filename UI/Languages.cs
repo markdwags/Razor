@@ -340,6 +340,7 @@ namespace Assistant
 		ToggleMap,
 		TooFar,
 		DragDropQueueFull,
+		ToggleWarPeace,
 
 		__End
 	}
@@ -357,6 +358,15 @@ namespace Assistant
 		public static bool Loaded { get{ return m_Loaded; } }
 		public static string Current { get{ return m_Current; } }
 		public static string CliLocName { get{ return m_CliLocName; } }
+
+		public static string GetControlText( string name )
+		{
+			name = String.Format( "{0}::Text", name );
+			if ( m_Controls.ContainsKey( name ) )
+				return m_Controls[name] as string;
+			else
+				return null;
+		}
 
 		static Language()
 		{
@@ -621,6 +631,9 @@ namespace Assistant
 			string text = m_Controls[String.Format( "{0}::Text", form.Name )] as string;
 			if ( text != null )
 				form.Text = text;
+
+			if ( form is MainForm )
+				((MainForm)form).UpdateTitle();
 		}
 
 #if LOG_CONTROL_TEXT

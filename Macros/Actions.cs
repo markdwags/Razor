@@ -423,10 +423,22 @@ namespace Assistant.Macros
 				m_MenuItems = new MacroMenuItem[]
 				{
 					new MacroMenuItem( LocString.ConvLiftByType, new MacroMenuCallback( ConvertToByType ) ),
+					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) ),
 				};
 			}
 			
 			return m_MenuItems;
+		}
+
+		private void EditAmount( object[] args )
+		{
+			if ( InputBox.Show( Engine.MainWindow,  Language.GetString( LocString.EnterAmount ), Language.GetString( LocString.InputReq ), m_Amount.ToString() ) )
+			{
+				m_Amount = (ushort)InputBox.GetInt( m_Amount );
+
+				if ( m_Parent != null )
+					m_Parent.Update();
+			}
 		}
 
 		private void ConvertToByType( object[] args )
@@ -497,6 +509,31 @@ namespace Assistant.Macros
 		public override string Serialize()
 		{
 			return DoSerialize( m_Gfx, m_Amount );
+		}
+
+		private MenuItem[] m_MenuItems;
+		public override MenuItem[] GetContextMenuItems()
+		{
+			if ( m_MenuItems == null )
+			{
+				m_MenuItems = new MacroMenuItem[]
+				{
+					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) ),
+				};
+			}
+			
+			return m_MenuItems;
+		}
+
+		private void EditAmount( object[] args )
+		{
+			if ( InputBox.Show( Engine.MainWindow,  Language.GetString( LocString.EnterAmount ), Language.GetString( LocString.InputReq ), m_Amount.ToString() ) )
+			{
+				m_Amount = (ushort)InputBox.GetInt( m_Amount );
+
+				if ( m_Parent != null )
+					m_Parent.Update();
+			}
 		}
 
 		public override string ToString()

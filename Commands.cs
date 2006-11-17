@@ -19,7 +19,9 @@ namespace Assistant
 			Command.Register( "Echo", new CommandCallback( Echo ) );
 			Command.Register( "GetSerial", new CommandCallback( GetSerial ) );
 			Command.Register( "RPVInfo", new CommandCallback( GetRPVInfo ) );
-			Command.Register( "macro", new CommandCallback( MacroCmd ) );
+			Command.Register( "Macro", new CommandCallback( MacroCmd ) );
+
+			Command.Register( "Setup-T", new CommandCallback( TranslateSetup ) );
 		}
 
 		private static void GetRPVInfo( string[] param )
@@ -144,6 +146,23 @@ namespace Assistant
 				}
 			}
 		}
+
+		private static void TranslateSetup( string[] param )
+		{
+			//System.Threading.Thread t = new System.Threading.Thread( new System.Threading.ThreadStart( ClientCommunication.TranslateSetup ) );
+			//t.Start();
+			ClientCommunication.TranslateSetup();
+			World.Player.SendMessage( "Loading translator plugin configuration... (Use '-disable-t' to disable)" );
+			Command.Register( "Disable-T", new CommandCallback( TranslateDisable ) );
+		}
+
+		private static void TranslateDisable( string[] param )
+		{
+			ClientCommunication.TranslateEnabled = false;
+			World.Player.SendMessage( "Translator disabled... use '-setup-t' to re-enable." );
+
+			Command.RemoveCommand( "Disable-T" );
+		}
 	}
 
 	public delegate void CommandCallback( string[] param );
@@ -154,7 +173,7 @@ namespace Assistant
 		static Command()
 		{
 			m_List = new Hashtable( 16, 1.0f, CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default );			
-			PacketHandler.RegisterClientToServerViewer( 0xAD, new PacketViewerCallback( OnSpeech ) );
+			PacketHandler.RegisterClientToServerFilter( 0xAD, new PacketFilterCallback( OnSpeech ) );
 		}
 
 		public static void ListCommands( string[] param )
@@ -186,7 +205,7 @@ namespace Assistant
 
 		public static Hashtable List { get{ return m_List; } }
 
-		public static void OnSpeech( PacketReader pvSrc, PacketHandlerEventArgs args )
+		public static void OnSpeech( Packet pvSrc, PacketHandlerEventArgs args )
 		{
 			MessageType type = (MessageType)pvSrc.ReadByte();
 			ushort hue = pvSrc.ReadUInt16();
@@ -194,6 +213,7 @@ namespace Assistant
 			string lang = pvSrc.ReadString( 4 );
 			string text = "";
 			ArrayList keys = null;
+			long txtOffset = 0;
 
 			World.Player.SpeechHue = hue;
 
@@ -217,35 +237,55 @@ namespace Assistant
 					}
 				}
 
+				txtOffset = pvSrc.Position;
 				text = pvSrc.ReadUTF8StringSafe();
 				type &= ~MessageType.Encoded;
 			}
 			else
 			{
+				txtOffset = pvSrc.Position;
 				text = pvSrc.ReadUnicodeStringSafe();
 			}
 
 			text = text.Trim();
 
-			if ( text.Length > 0 && text[0] != '-' )
-				Macros.MacroManager.Action( new Macros.SpeechAction( type, hue, font, lang, keys, text ) );
-
-			if ( text.Length <= 1 || text.Length > 128 )
-				return;
-
-			if ( text[0] == '-' )
+			if ( text.Length > 0 )
 			{
-				text = text.Substring( 1 );
-				string[] split = text.Split( ' ', '\t' );
-				CommandCallback call = (CommandCallback)m_List[split[0]];
-				if ( call != null )
+				if ( text[0] != '-' )
 				{
-					string[] param = new String[split.Length-1];
-					for(int i=0;i<param.Length;i++)
-						param[i] = split[i+1];
-					call( param );
+					if ( ClientCommunication.TranslateEnabled && text[0] != '[' && text[0] != ']' )
+					{
+						StringBuilder sb = new StringBuilder( 512 );
+						uint outLen = 512;
 
-					args.Block = true;
+						ClientCommunication.TranslateDo( text, sb, ref outLen );
+
+						text = sb.ToString();
+
+						pvSrc.Seek( txtOffset, System.IO.SeekOrigin.Begin );
+						if ( keys != null && keys.Count > 0 )
+							pvSrc.WriteUTF8Null( text );
+						else
+							pvSrc.WriteBigUniNull( text );
+						pvSrc.UnderlyingStream.SetLength( pvSrc.Position );
+					}
+
+					Macros.MacroManager.Action( new Macros.SpeechAction( type, hue, font, lang, keys, text ) );
+				}
+				else
+				{
+					text = text.Substring( 1 );
+					string[] split = text.Split( ' ', '\t' );
+					CommandCallback call = (CommandCallback)m_List[split[0]];
+					if ( call != null )
+					{
+						string[] param = new String[split.Length-1];
+						for(int i=0;i<param.Length;i++)
+							param[i] = split[i+1];
+						call( param );
+
+						args.Block = true;
+					}
 				}
 			}
 		}

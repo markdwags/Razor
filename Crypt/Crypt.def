@@ -24,3 +24,6 @@ EXPORTS
 	AllowBit
 	AddProperty
 	SetAllowDisconn
+	TranslateSetup
+	TranslateLogin
+	TranslateDo

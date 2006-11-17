@@ -462,9 +462,8 @@ namespace Assistant
 					}
 					case 0xAD: // speech
 					{
-						PacketReader pvSrc = new PacketReader( p.Compile(), true );
-						pvSrc.MoveToData();
-						Command.OnSpeech( pvSrc, new PacketHandlerEventArgs() );
+						p.MoveToData();
+						Command.OnSpeech( p, new PacketHandlerEventArgs() );
 						break;
 					}
 					case 0xBF: // Extended Packet

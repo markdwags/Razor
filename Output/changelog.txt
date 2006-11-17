@@ -6,7 +6,17 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
+-Razor now supports UOAssist "Translation" plugins (like this one: http://uo.stratics.com/xena/UOATranslator/UOATranslator.shtml).  These are supported in full accordance with the API document at: http://www.tugsoft.com/uoassist/thirdpartydev.asp
+--When using a translation plugin, it will not be enabled until you type "-setup-t" (without the quotes) in the game window.  Once the plugin is enabled, it can be disabled by logging out or by using the "-disable-t" command.  Once the plugin is disabled, you will need to type "-setup-t" to initialize the plugin again.
+--Apparently the installer provided on stratics for this plugin is broken and does not properly set up the registry.  You may need to manually add a string value named "TranslationLocation" with the full path to the Translator.dll under HKEY_CURRENT_USER\Software\Tugsoft\UOAssist\ThirdParty.  Alternately, you can install the translator directly to your Razor directory.
+--Note: Text which begins with "[" or "]" will never be translated.  This is to avoid translating game commands on most servers.  Also this prevents staff chat ([s) and guild chat ([g) from being translated.
 -A context menu has been added to the UOPS window.  This will allow you to change the "Point of View" of the map to someone else in your party.
+-German/DEU translation (thanks to "Darkness")
+-Target Random Human has changed to Target Random Humanoid, and it now will target elves as well as regular people.
+-Ninja belt will now trigger automatic Un/Reequip hands (Just like a potion does) when double clicked if you have the potion option enabled.
+-Items in Quivers are now counted by Counters.
+-Electronic Arts/Origin Servers have been added to the Welcome Screen.  Selecting this option will automatically configure razor's Encryption options and connect you to the EA/Origin login server.
+-There is now a Toggle war/peace hot key
 
 Changes/Fixes:
 -The UOPS window will now correctly display (and update) the positions of party members under all circumstances.
@@ -24,3 +34,5 @@ Changes/Fixes:
 -Scavenger Agent will no longer attempt to pick up items which are too far away, and these items will be automatically removed from the cache in case you pass them again.  This should result in better scavenger performance over all.
 -Context menu macro actions done on yourself will now be recorded as "self" instead of a specific player.  This will allow the same macro to be used on multiple characters without editing.
 -The UOPS window will now correctly stay on top of the UO window at all times.
+-There are now 10 Organizer agents per profile. (used to be 5)
+-Macro Lift actions have gained a context menu to edit their amount.

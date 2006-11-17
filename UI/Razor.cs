@@ -5207,10 +5207,15 @@ namespace Assistant
 
 		public void UpdateTitle()
 		{
+			string str = Language.GetControlText( this.Name );
+			if ( str == null || str == "" )
+				str = "Razor v{0}";
+
+			str = String.Format( str, Engine.Version );
 			if ( World.Player != null )
-				this.Text = String.Format( "Razor (v{0}) - {1} ({2})", Engine.Version, World.Player.Name, World.ShardName );
+				this.Text = String.Format( "{0} - {1} ({2})", str, World.Player.Name, World.ShardName );
 			else
-				this.Text = String.Format( "Razor (v{0})", Engine.Version );
+				this.Text = str;
 
 			UpdateSystray();
 		}

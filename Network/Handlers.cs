@@ -163,7 +163,7 @@ namespace Assistant
 			if ( Config.GetBool( "AutoCap" ) )
 			{
 				Mobile m = World.FindMobile( killed );
-				if ( m != null && m.Body >= 0x0190 && m.Body <= 0x0193 && Utility.Distance( World.Player.Position, m.Position ) <= 12 )
+				if ( m != null && ( ( m.Body >= 0x0190 && m.Body <= 0x0193 ) || ( m.Body >= 0x025D && m.Body <= 0x0260 ) ) && Utility.Distance( World.Player.Position, m.Position ) <= 12 )
 					ScreenCapManager.DeathCapture();
 			}
 		}
@@ -319,6 +319,8 @@ namespace Assistant
 
 			if ( Engine.MainWindow != null )
 				Engine.MainWindow.OnLogin();
+
+			ClientCommunication.TranslateLogin( World.OrigPlayerName, World.ShardName );
 		}
 
 		private static void ServerList( PacketReader p, PacketHandlerEventArgs args )
@@ -437,7 +439,7 @@ namespace Assistant
 				return;
 
 			Item dest = World.FindItem( dser );
-			if ( dest != null && dest.IsContainer && World.Player != null && World.Player.Backpack != null && dest.IsChildOf( World.Player.Backpack ) )
+			if ( dest != null && dest.IsContainer && World.Player != null && ( dest.IsChildOf( World.Player.Backpack ) || dest.IsChildOf( World.Player.Quiver ) ) )
                 i.IsNew = true;
 
 			if ( Config.GetBool( "QueueActions" ) )
@@ -540,7 +542,7 @@ namespace Assistant
 			i.Container = cser;
 			if ( i.IsNew )
 				Item.UpdateContainers();
-			if ( !SearchExemptionAgent.IsExempt( i ) && i.IsChildOf( World.Player.Backpack ) )
+			if ( !SearchExemptionAgent.IsExempt( i ) && ( i.IsChildOf( World.Player.Backpack ) || i.IsChildOf( World.Player.Quiver ) ) )
 				Counter.Count( i );
 		}
 
@@ -603,7 +605,7 @@ namespace Assistant
 				}
 
 				item.Container = cont; // must be done after hue is set (for counters)
-				if ( !SearchExemptionAgent.IsExempt( item ) && item.IsChildOf( World.Player.Backpack ) )
+				if ( !SearchExemptionAgent.IsExempt( item ) && ( item.IsChildOf( World.Player.Backpack ) || item.IsChildOf( World.Player.Quiver ) ) )
 					Counter.Count( item );
 			}
 			Item.UpdateContainers();
@@ -2010,7 +2012,32 @@ namespace Assistant
 				World.Player.CurrentGumpS = p.ReadUInt32();
 				World.Player.CurrentGumpI = p.ReadUInt32();
 
-				
+				int x = p.ReadInt32(), y = p.ReadInt32();
+
+				string layout = p.GetCompressedReader().ReadString();
+
+				int numStrings = p.ReadInt32();
+				if ( numStrings < 0 )
+					numStrings = 0;
+				ArrayList strings = new ArrayList( numStrings );
+				PacketReader pComp = p.GetCompressedReader();
+				int len = 0;
+				while ( !pComp.AtEnd && (len=pComp.ReadInt16()) > 0 )
+					strings.Add( pComp.ReadUnicodeString( len ) );
+
+#if DEBUG
+				using ( StreamWriter w = new StreamWriter( "gumps.log", true ) )
+				{
+					w.WriteLine( "" );
+					w.WriteLine( "{0}/{1} @ {2}", World.Player.CurrentGumpS, World.Player.CurrentGumpI, DateTime.Now );
+					w.WriteLine( layout );
+					int i = 0;
+					foreach ( string s in strings )
+						w.WriteLine( "{0} - {1}", i++, s );
+					w.WriteLine( "" );
+				}
+#endif
+
 				if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
 					args.Block = true;
 			}

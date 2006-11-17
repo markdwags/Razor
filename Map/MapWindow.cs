@@ -285,7 +285,7 @@ namespace Assistant.MapUO
 						// If we sent more than we received then the server stopped responding
 						// in that case, wait a long while before trying again
 						PacketHandlers.SpecialPartySent = PacketHandlers.SpecialPartyReceived = 0;
-						this.Interval = TimeSpan.FromSeconds( 10.0 );
+						this.Interval = TimeSpan.FromSeconds( 5.0 );
 						return;
 					}
 
@@ -293,6 +293,9 @@ namespace Assistant.MapUO
 					foreach ( Serial s in PacketHandlers.Party )
 					{
 						Mobile m = World.FindMobile( s );
+
+						if ( m == World.Player )
+							continue;
 
 						if ( m == null || Utility.Distance( World.Player.Position, m.Position ) > World.Player.VisRange )
 						{
@@ -303,14 +306,14 @@ namespace Assistant.MapUO
 
 					if ( send )
 					{
-						// first packet sent in a while, wait an extra half second (for high pings)
+						// first packet sent in a while, wait extra (for high pings)
 						if ( PacketHandlers.SpecialPartySent == 0 )
-							this.Interval = TimeSpan.FromSeconds( 1.0 );
+							this.Interval = TimeSpan.FromSeconds( 1.5 );
 						else
-							this.Interval = TimeSpan.FromSeconds( 0.5 );
+							this.Interval = TimeSpan.FromSeconds( 0.75 );
 
 						PacketHandlers.SpecialPartySent++;
-						ClientCommunication.SendToServer(new QueryPartyLocs());
+						ClientCommunication.SendToServer( new QueryPartyLocs() );
 					}
 					else
 					{

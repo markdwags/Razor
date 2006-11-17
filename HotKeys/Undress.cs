@@ -29,9 +29,8 @@ namespace Assistant.HotKeys
 			if ( item == null )
 			{
 				if ( m_Right != null )
-				{
 					m_Right = World.FindItem( m_Right.Serial );
-				}
+
 				if ( m_Right != null && m_Right.IsChildOf( World.Player.Backpack ) )
 				{
 					// try to also undress conflicting hand(s)
@@ -52,12 +51,10 @@ namespace Assistant.HotKeys
 			}
 			else
 			{
-				m_Right = item;
 				Item ub = DressList.FindUndressBag( item );
 				if ( ub != null )
-				{
-					DragDropManager.DragDrop( m_Right, ub );
-				}
+					DragDropManager.DragDrop( item, ub );
+				m_Right = item;
 			}
 		}
 
@@ -79,9 +76,7 @@ namespace Assistant.HotKeys
 					{
 						Item ub = DressList.FindUndressBag( conflict );
 						if ( ub != null )
-						{
 							DragDropManager.DragDrop( conflict, ub );
-						}
 					}
 					
 					DragDropManager.DragDrop( m_Left, World.Player, DressList.GetLayerFor(m_Left) );
@@ -93,12 +88,10 @@ namespace Assistant.HotKeys
 			}
 			else
 			{
-				m_Left = item;
 				Item ub = DressList.FindUndressBag( item );
 				if ( ub != null )
-				{
-					DragDropManager.DragDrop( m_Left, ub );
-				}
+					DragDropManager.DragDrop( item, ub );
+				m_Left = item;
 			}
 		}
 

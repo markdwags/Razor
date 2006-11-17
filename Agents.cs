@@ -616,8 +616,8 @@ namespace Assistant
 	{
 		public static void Initialize()
 		{
-			for(int i=0;i<5;i++)
-				Agent.Add( new OrganizerAgent( i+1 ) );
+			for(int i=1;i<=10;i++)
+				Agent.Add( new OrganizerAgent( i ) );
 		}
 		
 		private ListBox m_SubList;

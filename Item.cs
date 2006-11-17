@@ -301,7 +301,7 @@ namespace Assistant
 				else if ( m_Parent is Item )
 					((Item)m_Parent).RemoveItem( this );
 
-				if ( World.Player != null && IsChildOf( World.Player.Backpack ) )
+				if ( World.Player != null && ( IsChildOf( World.Player.Backpack ) || IsChildOf( World.Player.Quiver ) ) )
 					Counter.Uncount( this );
 
 				if ( value is Mobile )
@@ -338,7 +338,7 @@ namespace Assistant
 			else if ( m_Parent is Mobile )
 				((Mobile)m_Parent).AddItem( this );
 
-			if ( IsChildOf( World.Player.Backpack ) )
+			if ( IsChildOf( World.Player.Backpack ) || IsChildOf( World.Player.Quiver ) )
 			{
 				bool exempt = SearchExemptionAgent.IsExempt( this );
 				if ( !exempt )
@@ -562,7 +562,8 @@ namespace Assistant
 				ushort iid = m_ItemID.Value;
 				return ( m_Items.Count > 0 && !IsCorpse ) || ( iid >= 0x9A8 && iid <= 0x9AC ) || ( iid >= 0x9B0 && iid <= 0x9B2 ) || 
 					( iid >= 0xA2C && iid <= 0xA53 ) || ( iid >= 0xA97 && iid <= 0xA9E ) || ( iid >= 0xE3C && iid <= 0xE43 ) || 
-					( iid >= 0xE75 && iid <= 0xE80 && iid != 0xE7B ) || iid == 0x1E80 || iid == 0x1E81 || iid == 0x232A || iid == 0x232B ;
+					( iid >= 0xE75 && iid <= 0xE80 && iid != 0xE7B ) || iid == 0x1E80 || iid == 0x1E81 || iid == 0x232A || iid == 0x232B ||
+					iid == 0x2B02 || iid == 0x2B03 || iid == 0x2FB7 || iid == 0x3171 ;
 			}
 		}
 
@@ -642,7 +643,8 @@ namespace Assistant
 		{
 			get
 			{
-				return m_ItemID.Value >= 0x0F06 && m_ItemID.Value <= 0x0F0D;
+				return ( m_ItemID.Value >= 0x0F06 && m_ItemID.Value <= 0x0F0D ) ||
+					m_ItemID.Value == 0x2790 || m_ItemID.Value == 0x27DB; // Ninja belt (works like a potion)
 			}
 		}
 

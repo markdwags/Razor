@@ -840,17 +840,47 @@ namespace Assistant
 		public byte[] CopyBytes( int offset, int count )
 		{
 			byte[] read = new byte[count];
-			for(m_Pos = offset;m_Pos<offset+count && m_Pos<=m_Length;)
+			for( m_Pos = offset; m_Pos<offset+count && m_Pos<m_Length; m_Pos++ )
+				read[m_Pos-offset] = m_Data[m_Pos];
+			return read;
+		}
+
+		public PacketReader GetCompressedReader()
+		{
+			int fullLen = ReadInt32();
+			int destLen = 0;
+			byte []buff;
+			
+			if ( fullLen >= 4 )
 			{
-				try
+				int packLen = ReadInt32();
+				destLen = packLen;
+
+				if ( destLen < 0 )
+					destLen = 0;
+
+				buff = new byte[destLen];
+
+				if ( fullLen > 4 && destLen > 0 )
 				{
-					read[m_Pos-offset] = ReadByte();
+					if ( ZLib.uncompress( buff, ref destLen, CopyBytes( this.Position, fullLen - 4 ), fullLen - 4 ) != ZLibError.Z_OK )
+					{
+						destLen = 0;
+						buff = new byte[1];
+					}
 				}
-				catch
+				else
 				{
+					destLen = 0;
+					buff = new byte[1];
 				}
 			}
-			return read;
+			else
+			{
+				buff = new byte[1];
+			}
+
+			return new PacketReader( buff, false );
 		}
 
 		public byte ReadByte()
@@ -1130,7 +1160,6 @@ namespace Assistant
 		public byte PacketID { get{ return *m_Data; } }
 		public int Position{ get{ return m_Pos; } set{ m_Pos = value; } }
 
-		
+		public bool AtEnd { get { return m_Pos >= m_Length; } }
 	}
 }
-

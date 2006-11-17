@@ -143,6 +143,8 @@ namespace Assistant
 
 		public static void Initialize()
 		{
+			HotKey.Add( HKCategory.Misc, HKSubCat.None, LocString.ToggleWarPeace, new HotKeyCallback( ToggleWarPeace ) );
+
 			HotKey.Add( HKCategory.Misc, HKSubCat.SpecialMoves, LocString.ClearAbility, new HotKeyCallback( ClearAbilities ) );
 
 			HotKey.Add( HKCategory.Misc, HKSubCat.SpecialMoves, LocString.SetPrimAb, new HotKeyCallback( SetPrimaryAbility ) );
@@ -150,6 +152,11 @@ namespace Assistant
 
 			HotKey.Add( HKCategory.Misc, HKSubCat.SpecialMoves, LocString.ToggleStun, new HotKeyCallback( OnStun ) );
 			HotKey.Add( HKCategory.Misc, HKSubCat.SpecialMoves, LocString.ToggleDisarm, new HotKeyCallback( OnDisarm ) );
+		}
+
+		private static void ToggleWarPeace()
+		{
+			ClientCommunication.SendToServer( new SetWarMode( World.Player.Warmode ) );
 		}
 
 		private static void OnStun()

@@ -157,6 +157,8 @@ namespace Assistant
 			{
 				return m_Body == 402
 					|| m_Body == 403
+					|| m_Body == 607
+					|| m_Body == 608
 					|| m_Body == 970;
 			}
 		}
@@ -298,6 +300,19 @@ namespace Assistant
 			get
 			{
 				return GetItemOnLayer( Layer.Backpack );
+			}
+		}
+
+		public Item Quiver
+		{
+			get
+			{
+				Item item = GetItemOnLayer( Layer.Cloak );
+
+				if ( item != null && item.IsContainer )
+					return item;
+				else
+					return null;
 			}
 		}
 

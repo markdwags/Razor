@@ -516,6 +516,9 @@ namespace Assistant
 			Item pack = World.Player == null ? null : World.Player.Backpack;
 			if ( pack != null )
 				Count( pack );
+			pack = World.Player == null ? null : World.Player.Quiver;
+			if ( pack != null )
+				Count( pack );
 			SupressWarnings = false;
 		}
 
@@ -523,14 +526,28 @@ namespace Assistant
 		{
 			Reset();
 
-			if ( World.Player != null && World.Player.Backpack != null )
+			if ( World.Player != null )
 			{
 				SupressWarnings = true;
-				while ( World.Player.Backpack.Contains.Count > 0 )
-					((Item)World.Player.Backpack.Contains[0]).Remove();
 
-				PacketHandlers.IgnoreGumps.Add( World.Player.Backpack );
-				PlayerData.DoubleClick( World.Player.Backpack );
+				if ( World.Player.Backpack != null )
+				{
+					while ( World.Player.Backpack.Contains.Count > 0 )
+						((Item)World.Player.Backpack.Contains[0]).Remove();
+				
+					PacketHandlers.IgnoreGumps.Add( World.Player.Backpack );
+					PlayerData.DoubleClick( World.Player.Backpack );
+				}
+
+				if ( World.Player.Quiver != null )
+				{
+					while ( World.Player.Quiver.Contains.Count > 0 )
+						((Item)World.Player.Quiver.Contains[0]).Remove();
+					
+					PacketHandlers.IgnoreGumps.Add( World.Player.Quiver );
+					PlayerData.DoubleClick( World.Player.Quiver );
+				}
+
 				if ( !Config.GetBool( "AutoSearch" ) )
 					World.Player.SendMessage( MsgLevel.Info, LocString.NoAutoCount );
 				SupressWarnings = false;
