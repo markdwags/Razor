@@ -17,9 +17,11 @@ Additions:
 -Items in Quivers are now counted by Counters.
 -Electronic Arts/Origin Servers have been added to the Welcome Screen.  Selecting this option will automatically configure razor's Encryption options and connect you to the EA/Origin login server.
 -There is now a Toggle war/peace hot key
+-Time elapsed/Total time added to RPV playback (Displayed on the Video tab and in the UO titlebar)
 
 Changes/Fixes:
 -The UOPS window will now correctly display (and update) the positions of party members under all circumstances.
+-Numerous other UOPS fixes and tweaks to make your UOPS experience much happier.
 -RPV Playback has become a good deal smoother (especially when theres a lot going on on screen).  Playback at Normal speed should now look proper.
 -RPV Seeking is once again working.
 -Un/Re-Equip hands when using potions will now correctly wait to re-equip your hands until all other pending potion requests have been completed.
@@ -37,3 +39,5 @@ Changes/Fixes:
 -There are now 10 Organizer agents per profile. (used to be 5)
 -Macro Lift actions have gained a context menu to edit their amount.
 -Closing UO while an AVI file is recording will no longer corrupt the file.
+
+(Continued special thanks to "Rick" aka "RhY" for his work on UOPS. He is a valuable addition to the Razor development team.)

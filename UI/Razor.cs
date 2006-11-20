@@ -230,6 +230,7 @@ namespace Assistant
 		private System.Windows.Forms.TextBox features;
 		private System.Windows.Forms.PictureBox lockBox;
 		private System.Windows.Forms.Button btnMap;
+		private System.Windows.Forms.Label rpvTime;
 
 		private bool m_CanClose = true;
 
@@ -500,6 +501,7 @@ namespace Assistant
 			this.donate = new System.Windows.Forms.Button();
 			this.statCol1 = new System.Windows.Forms.Label();
 			this.timerTimer = new System.Windows.Forms.Timer(this.components);
+			this.rpvTime = new System.Windows.Forms.Label();
 			this.tabs.SuspendLayout();
 			this.generalTab.SuspendLayout();
 			this.groupBox4.SuspendLayout();
@@ -2319,6 +2321,7 @@ namespace Assistant
 			// 
 			// groupBox9
 			// 
+			this.groupBox9.Controls.Add(this.rpvTime);
 			this.groupBox9.Controls.Add(this.playSpeed);
 			this.groupBox9.Controls.Add(this.label14);
 			this.groupBox9.Controls.Add(this.vidClose);
@@ -2373,7 +2376,7 @@ namespace Assistant
 			this.playPos.Location = new System.Drawing.Point(4, 62);
 			this.playPos.Maximum = 1;
 			this.playPos.Name = "playPos";
-			this.playPos.Size = new System.Drawing.Size(194, 20);
+			this.playPos.Size = new System.Drawing.Size(132, 20);
 			this.playPos.TabIndex = 4;
 			this.playPos.TickFrequency = 5;
 			this.playPos.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -2632,6 +2635,14 @@ namespace Assistant
 			this.timerTimer.Interval = 5;
 			this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
 			// 
+			// rpvTime
+			// 
+			this.rpvTime.Location = new System.Drawing.Point(132, 62);
+			this.rpvTime.Name = "rpvTime";
+			this.rpvTime.Size = new System.Drawing.Size(276, 20);
+			this.rpvTime.TabIndex = 8;
+			this.rpvTime.Text = "00:00/00:00";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -2847,7 +2858,7 @@ namespace Assistant
 				Config.SetProperty( "ImageFormat", "jpg" );
 			}
 
-			PacketPlayer.SetControls( vidPlayInfo, vidRec, vidPlay, vidPlayStop, vidClose, playPos );
+			PacketPlayer.SetControls( vidPlayInfo, vidRec, vidPlay, vidPlayStop, vidClose, playPos, rpvTime );
 			txtRecFolder.Text = Config.GetString( "RecFolder" );
 			aviFPS.Text = Config.GetInt( "AviFPS" ).ToString();
 			aviRes.SelectedIndex = Config.GetInt( "AviRes" );

@@ -905,7 +905,7 @@ namespace Assistant
 			{
 				if ( PacketPlayer.Playing )
 				{
-					SetTitleStr( "UO - Razor \"Video\" Playback in Progress..." );
+					SetTitleStr( String.Format( "UO - Razor \"Video\" Playback in Progress... ({0})", PacketPlayer.ElapsedString ) );
 					return;
 				}
 
@@ -913,7 +913,7 @@ namespace Assistant
 				m_TBBuilder.Remove( 0, m_TBBuilder.Length );
 				m_TBBuilder.Insert( 0, Config.GetString( "TitleBarText" ) );
 				StringBuilder sb = m_TBBuilder;
-				//StringBuilder sb = new StringBuilder( Config.GetString( "TitleBarText" ) );//, m_TitleCapacity );
+				//StringBuilder sb = new StringBuilder( Config.GetString( "TitleBarText" ) ); // m_TitleCapacity 
 				
 				PlayerData p = World.Player;
 

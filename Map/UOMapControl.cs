@@ -19,10 +19,10 @@ namespace Assistant.MapUO
 		private ArrayList m_MapButtons;
 		private Point prevPoint;
 		private Mobile m_Focus;
-	    private double RotateAngle = Math.PI / 4 + Math.PI;
-		private static double m_Angle = 0.78539816339744830961566084581988;
+	    private const double RotateAngle = Math.PI / 4 + Math.PI;
 		private Bitmap m_Background;
         private DateTime LastRefresh;
+
 		public Mobile FocusMobile
 		{
 			get 

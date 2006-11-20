@@ -28,7 +28,7 @@ namespace Assistant
 		private static TimeSpan FadeDelay = TimeSpan.FromSeconds( 3.0 );
 		private const byte PlayerVersion = 4;
 
-		private static Label lblPlay;
+		private static Label lblPlay, lblTime;
 		private static TrackBar tbPos;
 		private static Button btnRec, btnPlay, btnStop, btnClose;
 
@@ -38,12 +38,15 @@ namespace Assistant
 		private static int m_PlaySpeed = 0;
 		private static byte m_Version;
 
+		private static TimeSpan m_CurLength = TimeSpan.Zero;
+
 		private static string m_RPVInfo;
 		public static string CurrentOpenedInfo { get { return m_RPVInfo; } }
 
-		public static void SetControls( Label play, Button bRec, Button bPlay, Button stop, Button close, TrackBar pos )
+		public static void SetControls( Label play, Button bRec, Button bPlay, Button stop, Button close, TrackBar pos, Label time )
 		{
 			lblPlay = play;
+			lblTime = time;
 			btnRec = bRec;
 			btnPlay = bPlay;
 			btnStop = stop;
@@ -102,7 +105,7 @@ namespace Assistant
 
 				m_PlayTimer = Timer.DelayedCallback( FadeDelay, m_EndPlay );
 				m_PlayTimer.Start();
-				
+
 				btnPlay.Text = "Play";
 				btnClose.Enabled = tbPos.Enabled = btnPlay.Enabled = btnStop.Enabled = false;
 			}
@@ -557,6 +560,7 @@ namespace Assistant
 			} while ( ( totalDelay*SpeedScalar() < 2 || delay*SpeedScalar() < 2 ) && !m_GZIn.EndOfFile );
 
 			m_Elapsed += TimeSpan.FromMilliseconds( totalDelay );
+			UpdateTimeText();
 			//tbPos.Value = (int)m_Elapsed.TotalSeconds;
 
 			if ( !m_GZIn.EndOfFile )
@@ -631,6 +635,8 @@ namespace Assistant
 			catch
 			{
 			}
+
+			UpdateTimeText();
 
 			ClientCommunication.ForceSendToClient( new MobileUpdate( World.Player ) );
 			ClientCommunication.ForceSendToClient( new MobileIncoming( World.Player ) );
@@ -711,6 +717,11 @@ namespace Assistant
 				}
 				m_GZIn.RawStream.Seek( rawPos, SeekOrigin.Begin );
 
+				m_CurLength = len;
+				m_Elapsed = TimeSpan.Zero;
+
+				UpdateTimeText();
+
 				m_RPVInfo = lblPlay.Text = String.Format( "File: {0}\nLength: {1} ({2})\nDate: {3}\nRecorded by \"{4}\" on \"{5}\" ({6})\n", Path.GetFileName( filename ), Utility.FormatTime( (int)len.TotalSeconds ), Utility.FormatSize( m_GZIn.RawStream.Length ), created.ToString( "M-dd-yy @ h:mmtt" ), player, shard, ip );
 				btnClose.Enabled = btnPlay.Enabled = btnStop.Enabled = true;
 				tbPos.Maximum = (int)len.TotalSeconds;
@@ -745,6 +756,8 @@ namespace Assistant
 			tbPos.Value = tbPos.Minimum;
 			lblPlay.Text = "";
 			m_RPVInfo = null;
+			m_Elapsed = m_CurLength = TimeSpan.Zero;
+			UpdateTimeText();
 		}
 
 		public static void Play()
@@ -784,7 +797,9 @@ namespace Assistant
 			m_PlayTimer = Timer.DelayedCallback( FadeDelay, m_BeginPlay );
 			m_PlayTimer.Start();
 			tbPos.Value = tbPos.Minimum;
+			
 			m_Elapsed = TimeSpan.Zero;
+			UpdateTimeText();
 
 			ClientCommunication.RequestTitlebarUpdate();
 		}
@@ -850,6 +865,7 @@ namespace Assistant
 			m_ScrollTimer.Start();
 			m_StartTime = DateTime.Now;
 			m_Elapsed = delay;
+			UpdateTimeText();
 
 			btnPlay.Enabled = btnStop.Enabled = true;
 		}
@@ -877,6 +893,9 @@ namespace Assistant
 
 			tbPos.Enabled = btnClose.Enabled = btnPlay.Enabled = btnStop.Enabled = btnRec.Enabled = true;
 			tbPos.Value = tbPos.Minimum;
+
+			m_Elapsed = TimeSpan.Zero;
+			UpdateTimeText();
 			
 			ClientCommunication.SendToClient( new MoveReject( World.Player.WalkSequence, World.Player ) );
 			ClientCommunication.SendToServer( new ResyncReq() );
@@ -951,6 +970,20 @@ namespace Assistant
 			ClientCommunication.BeginCalibratePosition();
 		}
 
+		public static string ElapsedString
+		{
+			get 
+			{
+				return String.Format( "{0:00}:{1:00}/{2:00}:{3:00}", (int)m_Elapsed.TotalMinutes, ((int)m_Elapsed.TotalSeconds)%60, (int)m_CurLength.TotalMinutes, ((int)m_CurLength.TotalSeconds)%60 );
+			}
+		}
+
+		private static void UpdateTimeText()
+		{
+			lblTime.Text = ElapsedString;
+			ClientCommunication.RequestTitlebarUpdate();
+		}
+
 		private class ScrollTimer : Timer
 		{
 			private DateTime m_LastPing;
@@ -967,6 +1000,8 @@ namespace Assistant
 						val = tbPos.Maximum;
 					else if ( val < tbPos.Minimum )
 						val = tbPos.Minimum;
+
+					UpdateTimeText();
 					
 					tbPos.Value = val;
 
