@@ -36,3 +36,4 @@ Changes/Fixes:
 -The UOPS window will now correctly stay on top of the UO window at all times.
 -There are now 10 Organizer agents per profile. (used to be 5)
 -Macro Lift actions have gained a context menu to edit their amount.
+-Closing UO while an AVI file is recording will no longer corrupt the file.

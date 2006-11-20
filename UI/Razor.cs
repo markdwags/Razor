@@ -3576,6 +3576,7 @@ namespace Assistant
 			else
 			{
 				PacketPlayer.Stop();
+				AVIRec.Stop();
 			}
 			//if ( Engine.NoPatch )
 			//	e.Cancel = MessageBox.Show( this, "Are you sure you want to close Razor?\n(This will not close the UO client.)", "Close Razor?", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.No;
@@ -5272,6 +5273,7 @@ namespace Assistant
 		{
 			m_CanClose = true;
 			PacketPlayer.Stop();
+			AVIRec.Stop();
 			this.Close();
 		}
 

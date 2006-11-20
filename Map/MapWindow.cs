@@ -84,11 +84,13 @@ namespace Assistant.MapUO
 						if ( this.Map.FocusMobile == m )
 							mi.Checked = true;
 						cm.MenuItems.Add(mi);
+
 					}
 				}
 			}
 			this.ContextMenu = cm;
 		}
+
 
 		private void FocusChange(object sender, System.EventArgs e)
 		{
@@ -101,7 +103,7 @@ namespace Assistant.MapUO
 					Serial s = (Serial)mItem.Tag;
 					Mobile m = World.FindMobile(s);
 					this.Map.FocusMobile = m;
-					this.Map.Refresh();
+                    this.Map.FullUpdate();
 				}
 			}
 		}
@@ -206,7 +208,7 @@ namespace Assistant.MapUO
 		public void CheckLocalUpdate( Mobile mob )
 		{
 			if ( mob.InParty )
-				this.Map.Refresh();
+                this.Map.FullUpdate();
 		}
 
 		private static Font m_RegFont = new Font( "Courier New", 8 );

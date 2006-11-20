@@ -19,9 +19,10 @@ namespace Assistant.MapUO
 		private ArrayList m_MapButtons;
 		private Point prevPoint;
 		private Mobile m_Focus;
-
+	    private double RotateAngle = Math.PI / 4 + Math.PI;
+		private static double m_Angle = 0.78539816339744830961566084581988;
 		private Bitmap m_Background;
-
+        private DateTime LastRefresh;
 		public Mobile FocusMobile
 		{
 			get 
@@ -51,7 +52,52 @@ namespace Assistant.MapUO
 		private static Font m_BoldFont = new Font( "Courier New", 8, FontStyle.Bold );
 		private static Font m_SmallFont = new Font( "Arial", 6 );
 		private static Font m_RegFont = new Font( "Arial", 8 );
+        public override void Refresh()
+        {
+            TimeSpan now =  DateTime.Now - LastRefresh;
+            if (now.TotalMilliseconds <= 100)
+                return;
+            LastRefresh = DateTime.Now;
+            base.Refresh();
+        }
+        private PointF AdjustPoint(PointF center, PointF pos)
+        {
+            PointF newp = new PointF(center.X - pos.X, center.Y - pos.Y);
+            float dis = (float)Distance(center, pos);
+            dis += dis * 0.50f;
+            float slope = 0;
+            if (newp.X != 0)
+                slope = (float)newp.Y / (float)newp.X;
+            else
+                return new PointF(0 + center.X, -1f * (newp.Y + (newp.Y * 0.25f)) + center.Y);
+            slope *= -1;
+            //Both of these algorithms oddly produce the same results.
+           //float x = dis / (float)(Math.Sqrt(1f + Math.Pow(slope, 2)));
+            float x = newp.X + (newp.X * 0.5f);
+           // if (newp.X > 0)
+                x *= -1;
+            float y = (-1) * slope * x;
 
+            PointF def = new PointF(x + center.X, y + center.Y);
+
+            return def;
+        }
+		public double Distance(PointF center, PointF pos)
+		{
+
+			PointF newp = new PointF(center.X - pos.X, center.Y - pos.Y);
+			double distX = Math.Pow(newp.X,2);
+			double distY = Math.Pow(newp.Y, 2);
+			return Math.Sqrt(distX + distY);
+		}
+		private PointF RotatePoint(PointF center, PointF pos)
+		{
+			PointF newp = new PointF(center.X - pos.X, center.Y - pos.Y);
+			double x = newp.X * Math.Cos(RotateAngle ) - newp.Y * Math.Sin(RotateAngle);
+			double y = newp.X * Math.Sin(RotateAngle ) + newp.Y * Math.Sin(RotateAngle);
+            return AdjustPoint(center, new PointF((float)(x) + center.X, (float)(y) + center.Y));
+		}
+		
 		public void FullUpdate()
 		{
 			if ( !Active )
@@ -107,7 +153,7 @@ namespace Assistant.MapUO
 			}
 
 			foreach ( Assistant.MapUO.Region region in regions )
-				gfx.DrawRectangle( Pens.Green, (region.X) - ((mapOrigin.X << 3) + offset.X), (region.Y) - ((mapOrigin.Y << 3) + offset.Y), region.Width, region.Length );
+				gfx.DrawRectangle( Pens.LimeGreen, (region.X) - ((mapOrigin.X << 3) + offset.X), (region.Y) - ((mapOrigin.Y << 3) + offset.Y), region.Width, region.Length );
 			
 			gfx.DrawLine( Pens.Silver, pntPlayer.X-2, pntPlayer.Y-2, pntPlayer.X+2, pntPlayer.Y+2 );
 			gfx.DrawLine( Pens.Silver, pntPlayer.X-2, pntPlayer.Y+2, pntPlayer.X+2, pntPlayer.Y-2 );
@@ -119,17 +165,92 @@ namespace Assistant.MapUO
 			gfx.DrawString("N", m_BoldFont, Brushes.Red, pntPlayer.X - 5, pntPlayer.Y - 35);
 			gfx.DrawString("S", m_BoldFont, Brushes.Red, pntPlayer.X - 5, pntPlayer.Y + 25);
 
+		
+
 			gfx.ResetTransform();
+            //Point pntTest2 = new Point((3256) - (mapOrigin.X << 3) - offset.X, (326) - (mapOrigin.Y << 3) - offset.Y);
+            //PointF pntTest2F = RotatePoint(new Point(xtrans, ytrans), pntTest2);
+            //gfx.FillRectangle(Brushes.LimeGreen, pntTest2F.X, pntTest2F.Y, 4, 4);
+			/*foreach ( Serial s in PacketHandlers.Party )
+			{
+				Mobile mob = World.FindMobile( s );
+				if ( mob == null )
+					continue;
+				if (mob == this.FocusMobile)
+					continue;
+				Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
+
+				if (drawPoint.X < 0)
+					drawPoint.X = 0;
+				if (drawPoint.X > this.Width)
+					drawPoint.X = this.Width;
+				if (drawPoint.Y < 0)
+					drawPoint.Y = 0;
+				if (drawPoint.Y > this.Height)
+					drawPoint.Y = this.Height;
+				PointF drawPointF = RotatePoint(new Point(xtrans,ytrans),drawPoint);
+				//gfx.FillRectangle(Brushes.Gold, drawPointF.X, drawPointF.Y, 2f, 2f);
+			}*/
+			foreach ( Serial s in PacketHandlers.Party )
+			{
+				Mobile mob = World.FindMobile( s );
+				if ( mob == null )
+					continue;
+
+				if (mob == this.FocusMobile && mob == World.Player)
+					continue;
+						
+				string name = mob.Name;
+				if ( name == null || name.Length < 1 )
+					name = "(Not Seen)";
+				if (name != null && name.Length > 8)
+					name = name.Substring(0, 8);
+				Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y );
+				if (drawPoint.X < 0)
+					drawPoint.X = 0;
+				if (drawPoint.X > this.Width)
+					drawPoint.X = this.Width;
+				if (drawPoint.Y < 0)
+					drawPoint.Y = 0;
+				if (drawPoint.Y > this.Height)
+					drawPoint.Y = this.Height;
+
+                PointF drawPointF = RotatePoint(new Point(xtrans,ytrans),drawPoint);
+                gfx.FillRectangle(Brushes.Gold, drawPointF.X, drawPointF.Y, 2f, 2f);
+                gfx.DrawString(name, m_RegFont, Brushes.White, drawPointF.X, drawPointF.Y);
+			}
+			if (World.Player != null)
+			{
+				if (World.Player != this.FocusMobile)
+				{
+					Mobile mob = World.Player;
+					Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
+                    PointF drawPointF = RotatePoint(new Point(xtrans, ytrans), drawPoint);
+                    gfx.FillRectangle(Brushes.Gold, drawPointF.X, drawPointF.Y, 2, 2);
+					drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
+                    drawPointF = RotatePoint(new Point(xtrans, ytrans), drawPoint);
+					string name = mob.Name;
+					if (name != null && name.Length > 8)
+						name = name.Substring(0, 8);
+
+
+                    gfx.DrawString(name, m_RegFont, Brushes.White, drawPointF.X, drawPointF.Y);
+
+
+				}
+			}
 
 			if (Format(new Point(focus.X, focus.Y), Ultima.Map.Felucca, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
 			{
 				string locString = String.Format("{0}°{1}'{2} {3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+				locString += " | " +World.Player.Position.X + " : " + World.Player.Position.Y;
 				SizeF size = gfx.MeasureString( locString, m_RegFont );
 				gfx.FillRectangle( Brushes.Wheat, 0, 0, size.Width + 2, size.Height + 2 );
 				gfx.DrawRectangle( Pens.Black, 0, 0, size.Width + 2, size.Height + 2 );
 				gfx.DrawString( locString, m_RegFont, Brushes.Black, 1, 1 );
 			}
-
+			
+			gfx.ResetTransform();
 			gfx.Dispose();
 
 			this.Refresh();
@@ -159,84 +280,13 @@ namespace Assistant.MapUO
 					pe.Graphics.TranslateTransform( xtrans, ytrans, MatrixOrder.Append );
 
 					// draw the dot scaled
-					foreach ( Serial s in PacketHandlers.Party )
-					{
-						Mobile mob = World.FindMobile( s );
-						if ( mob == null )
-							continue;
-                        if (mob == this.FocusMobile)
-                            continue;
-                        Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
-
-                        if (drawPoint.X < 0)
-                            drawPoint.X = 0;
-                        if (drawPoint.X > this.Width)
-                            drawPoint.X = this.Width;
-                        if (drawPoint.Y < 0)
-                            drawPoint.Y = 0;
-                        if (drawPoint.Y > this.Height)
-                            drawPoint.Y = this.Height;
-                        pe.Graphics.FillRectangle(Brushes.Gold, drawPoint.X, drawPoint.Y, 2, 2);
-					}
+					
 
 					// but draw the font unscaled (its ugly scaled)
 					pe.Graphics.ScaleTransform( 1.0f, 1.0f, MatrixOrder.Append );
 
-					foreach ( Serial s in PacketHandlers.Party )
-					{
-						Mobile mob = World.FindMobile( s );
-						if ( mob == null )
-							continue;
-
-                        if (mob == this.FocusMobile && mob == World.Player)
-                            continue;
-						
-						string name = mob.Name;
-						if ( name == null || name.Length < 1 )
-							name = "(Not Seen)";
-                        if (name != null && name.Length > 8)
-                            name = name.Substring(0, 8);
-                        Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y );
-                        if (drawPoint.X < 0)
-                            drawPoint.X = 0;
-                        if (drawPoint.X > this.Width)
-                            drawPoint.X = this.Width;
-                        if (drawPoint.Y < 0)
-                            drawPoint.Y = 0;
-                        if (drawPoint.Y > this.Height)
-                            drawPoint.Y = this.Height;
-
-                        
-                        pe.Graphics.DrawString(name, m_SmallFont, Brushes.White, drawPoint.X, drawPoint.Y);
-					}
-
-                    if (World.Player != null)
-                    {
-                        if (World.Player != this.FocusMobile)
-                        {
-                            Mobile mob = World.Player;
-                            Point drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
-                            pe.Graphics.FillRectangle(Brushes.Gold, drawPoint.X, drawPoint.Y, 2, 2);
-                            drawPoint = new Point((mob.Position.X) - (mapOrigin.X << 3) - offset.X, (mob.Position.Y) - (mapOrigin.Y << 3) - offset.Y);
-
-                            string name = mob.Name;
-                            if (name != null && name.Length > 8)
-                                name = name.Substring(0, 8);
-                            pe.Graphics.DrawString(name, m_SmallFont, Brushes.White, drawPoint.X, drawPoint.Y);
-
-
-                        }
-                    }
-					/*Point pntTest2 = new Point((3251) - (mapOrigin.X << 3) - offset.X, (305) - (mapOrigin.Y << 3) - offset.Y);
-					pe.Graphics.FillRectangle(Brushes.Blue, pntTest2.X, pntTest2.Y, 2, 2);
-
-					// pntTest2 = RotatePoint(new Point(pntTest2.X-pntPlayer.X,pntTest2.Y-pntPlayer.Y), 45, 0);
-					// pntTest2 = new Point(pntTest2.X + m_FocusUser.X, pntTest2.Y + m_FocusUser.Y);
-					//pntTest2 = new Point((pntTest2.X) - (mapOrigin.X << 3) - offset.X, (pntTest2.Y) - (mapOrigin.Y << 3) - offset.Y);
-					//Point mapOrigin2 = new Point((pntTest2.X >> 3) - (w / 2), (pntTest2.Y >> 3) - (h / 2));
-					// pntTest2 = new Point((3224) - (mapOrigin.X << 3) - offset.X, (293) - (mapOrigin.Y << 3) - offset.Y);
-					pe.Graphics.FillRectangle(Brushes.Pink, pntTest2.X, pntTest2.Y, 2, 2 );
-					pe.Graphics.DrawString("Jenova", m_RegFont, Brushes.Wheat, pntTest2);*/
+					
+                    
 				}
 			}
 			catch { }
@@ -317,7 +367,6 @@ namespace Assistant.MapUO
 			}
 			catch { }
 		}
-
 		private ArrayList RegionList(int x, int y, int maxDist)
 		{
 

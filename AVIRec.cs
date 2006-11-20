@@ -73,10 +73,12 @@ namespace Assistant
 
 		public static void Stop()
 		{
-			m_RecTimer.Stop();
+			if ( m_RecTimer != null )
+				m_RecTimer.Stop();
 			m_RecTimer = null;
 
-			m_Avi.Close();
+			if ( m_Avi != null )
+				m_Avi.Close();
 			m_Avi = null;
 		}
 

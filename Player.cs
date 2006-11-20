@@ -167,6 +167,7 @@ namespace Assistant
 		}
 
 		public int VisRange = 18;
+		public int MultiVisRange { get { return VisRange + 5; } }
 
 		private int m_MaxWeight = -1;
 
@@ -717,7 +718,7 @@ namespace Assistant
 					continue;
 
 				int dist = Utility.Distance( item.GetWorldPosition(), newPos );
-				if ( item != DragDropManager.Holding && dist > VisRange )
+				if ( item != DragDropManager.Holding && ( dist > MultiVisRange || ( !item.IsMulti && dist > VisRange ) ) )
 					item.Remove();
 				else if ( !IsGhost && Visible && dist <= 2 && s.Enabled && item.Movable )
 					s.Scavenge( item );
