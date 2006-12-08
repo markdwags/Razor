@@ -376,11 +376,19 @@ namespace Assistant
 			return m_Props[name];
 		}
 
+		private Timer m_SaveTimer = null;
+
 		public void SetProperty( string name, object val )
 		{
 			if ( !m_Props.ContainsKey( name ) )
 				throw new Exception( Language.Format( LocString.NoProp, name ) );
 			m_Props[name] = val;
+
+			if ( m_SaveTimer == null )
+				m_SaveTimer = Timer.DelayedCallback( TimeSpan.FromMinutes( 1.0 ), new TimerCallback( Save ) );
+			if ( m_SaveTimer.Running )
+				m_SaveTimer.Stop();
+			m_SaveTimer.Start();
 		}
 
 		public void AddProperty( string name, object val )

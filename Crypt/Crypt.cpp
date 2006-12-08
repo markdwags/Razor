@@ -1901,22 +1901,15 @@ void SetCustomNotoHue( int hue )
 #define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
 #define PACKET_TS_LEN 24
 
-//search disassembly for
-//FC A5 13 2E C1 E2 1F D1 E8 D1 E9 0B C6 0B CA 35 FD A5 13 2E 81 F1 7F 52 1D A2 4D
-//static key1 -- -- -- -- -- -- -- -- -- -- -- -- static key2 -- -- dynamic key --   
-#define CRYPT_KEY_STR "\xC1\xE2\x1F\xD1\xE8\xD1\xE9\x0B\xC6\x0B\xCA\x35"
-#define CRYPT_KEY_LEN 12
-
 void (*RedrawUOScreen)() = NULL;
 void (*RedrawGameEdge)() = NULL;
 
 SIZE *SizePtr = NULL;
 
-
-
 bool CopyClientMemory()
 {
 	int count = 0;
+	bool failed = false;
 	DWORD addr = 0, Seek = 0;
 	ClientPacketInfo packet;
 	MemFinder mf;
@@ -1928,6 +1921,7 @@ bool CopyClientMemory()
 	mf.AddEntry( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 );
 	mf.AddEntry( CRYPT_KEY_STR, CRYPT_KEY_LEN );
 	mf.AddEntry( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
+	mf.AddEntry( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
 	mf.AddEntry( PACKET_TBL_STR, PACKET_TS_LEN );
 	mf.AddEntry( CHEATPROC_STR, CHEATPROC_LEN );
 	mf.AddEntry( "Electronic Arts Inc.", 20, 0x00500000 );
@@ -1989,60 +1983,6 @@ bool CopyClientMemory()
 		VirtualProtect( (void*)origAddr, 0x50, oldProt, &oldProt );
 	}
 
-	if ( ClientEncrypted || ServerEncrypted )
-	{
-		addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
-		if ( !addr )
-		{
-			addr = mf.GetAddress( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
-			if ( !addr )
-				return false;
-			else
-				LoginEncryption::SetKeys( (const BYTE*)(addr - 4), (const BYTE*)(addr + CRYPT_KEY_3D_LEN), (const BYTE*)(addr + CRYPT_KEY_3D_LEN + 19) );
-		}
-		else
-		{
-			LoginEncryption::SetKeys( (const BYTE*)(addr - 4), (const BYTE*)(addr + CRYPT_KEY_LEN), (const BYTE*)(addr + CRYPT_KEY_LEN + 6) );
-		}
-	}
-
-	addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN );
-	if ( !addr )
-		return false;
-
-	addr += PACKET_TS_LEN;
-
-	// these appear at unpredictable offsets from the search string, so we have to seek for them.
-	// we use the first packet (0x00 with length 0x68) to find a place in the table to start from.
-	while ( Seek != 0x68 && count < 512 )
-	{
-		addr ++;
-		count ++;
-
-		if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
-			break;
-		memcpy( &Seek, (const void*)addr, 2 );
-	}
-
-	if ( Seek != 0x68 )
-		return false;
-
-	addr += 4;
-
-	memset( pShared->PacketTable, 0xFF, 512 );
-	pShared->PacketTable[0] = 0x68;
-	count = 0;
-	do {
-		if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
-			break;
-
-		memcpy( &packet, (const void*)addr, sizeof(ClientPacketInfo) );
-		addr += sizeof(ClientPacketInfo);
-		if ( pShared->PacketTable[(BYTE)packet.Id] == 0xFFFF )
-			pShared->PacketTable[(BYTE)packet.Id] = packet.Length;
-		count ++;
-	} while ( packet.Id != 0xFFFFFFFF && (BYTE)packet.Id == packet.Id && count < 256 );
-
 	memset( pShared->CheatKey, 0, 16 );
 
 	DWORD cheatKey = mf.GetAddress( CHEATPROC_STR, CHEATPROC_LEN );
@@ -2062,7 +2002,85 @@ bool CopyClientMemory()
 		}
 	}
 
-	return true;
+	addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN );
+	if ( addr )
+	{
+		addr += PACKET_TS_LEN;
+
+		// these appear at unpredictable offsets from the search string, so we have to seek for them.
+		// we use the first packet (0x00 with length 0x68) to find a place in the table to start from.
+		while ( Seek != 0x68 && count < 512 )
+		{
+			addr ++;
+			count ++;
+
+			if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
+				break;
+			memcpy( &Seek, (const void*)addr, 2 );
+		}
+
+		if ( Seek == 0x68 )
+		{
+			addr += 4;
+
+			memset( pShared->PacketTable, 0xFF, 512 );
+			pShared->PacketTable[0] = 0x68;
+			count = 0;
+			do {
+				if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
+					break;
+
+				memcpy( &packet, (const void*)addr, sizeof(ClientPacketInfo) );
+				addr += sizeof(ClientPacketInfo);
+				if ( pShared->PacketTable[(BYTE)packet.Id] == 0xFFFF )
+					pShared->PacketTable[(BYTE)packet.Id] = packet.Length;
+				count ++;
+			} while ( packet.Id != 0xFFFFFFFF && (BYTE)packet.Id == packet.Id && count < 256 );
+		}
+		else
+		{
+			failed = true;
+		}
+	}
+	else
+	{
+		failed = true;
+	}
+	
+	if ( ClientEncrypted || ServerEncrypted )
+	{
+		addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
+		if ( !addr )
+		{
+			addr = mf.GetAddress( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
+
+			if ( !addr )
+			{
+				addr = mf.GetAddress( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
+				if ( addr )
+					LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_3D_LEN), (const DWORD*)(addr + CRYPT_KEY_3D_LEN + 19) );
+				else
+					failed = true;
+			}
+			else
+			{
+				addr += CRYPT_KEY_NEW_LEN;
+
+				const DWORD *pKey1 = *((DWORD**)addr);
+				const DWORD *pKey2 = pKey1 - 1;
+				if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
+					failed = true;
+				else
+					LoginEncryption::SetKeys( pKey1, pKey2 );
+			}
+		}
+		else
+		{
+			LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_LEN), (const DWORD*)(addr + CRYPT_KEY_LEN + 6) );
+		}
+	}
+
+	return !failed;
 }
 
 bool PatchMemory( void )

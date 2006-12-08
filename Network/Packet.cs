@@ -885,7 +885,7 @@ namespace Assistant
 
 		public byte ReadByte()
 		{
-			if ( m_Pos+1 > m_Length )
+			if ( m_Pos+1 > m_Length || m_Data == null )
 				return 0;
 			return m_Data[m_Pos++];
 		}

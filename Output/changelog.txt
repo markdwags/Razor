@@ -1,4 +1,4 @@
-Razor (v1.0.2.*) Changelog:
+Razor (v1.0.3.*) Changelog:
 
 Razor is a FREE program.  Unlike competing programs like UOAssist, Razor does not charge any money at all and provides even more features.  Razor is now available on the regular OSI servers for unlimited accounts absolutely free.  But Razor needs your help!  Razor is now accepting donations over PayPal.  UOAssist (a similar program, but for OSI servers only) costs $15 PER ACCOUNT while Razor is FREE for UNLIMITED ACCOUNTS.  Your donation of $5 or $10 (or any amount!) is LESS than you would pay for a similar program!  Donations are greatly appreciated and will help ensure that the developers continue to improve and maintain this fine product.
 Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD
@@ -6,38 +6,9 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
--Razor now supports UOAssist "Translation" plugins (like this one: http://uo.stratics.com/xena/UOATranslator/UOATranslator.shtml).  These are supported in full accordance with the API document at: http://www.tugsoft.com/uoassist/thirdpartydev.asp
---When using a translation plugin, it will not be enabled until you type "-setup-t" (without the quotes) in the game window.  Once the plugin is enabled, it can be disabled by logging out or by using the "-disable-t" command.  Once the plugin is disabled, you will need to type "-setup-t" to initialize the plugin again.
---Apparently the installer provided on stratics for this plugin is broken and does not properly set up the registry.  You may need to manually add a string value named "TranslationLocation" with the full path to the Translator.dll under HKEY_CURRENT_USER\Software\Tugsoft\UOAssist\ThirdParty.  Alternately, you can install the translator directly to your Razor directory.
---Note: Text which begins with "[" or "]" will never be translated.  This is to avoid translating game commands on most servers.  Also this prevents staff chat ([s) and guild chat ([g) from being translated.
--A context menu has been added to the UOPS window.  This will allow you to change the "Point of View" of the map to someone else in your party.
--German/DEU translation (thanks to "Darkness")
--Target Random Human has changed to Target Random Humanoid, and it now will target elves as well as regular people.
--Ninja belt will now trigger automatic Un/Reequip hands (Just like a potion does) when double clicked if you have the potion option enabled.
--Items in Quivers are now counted by Counters.
--Electronic Arts/Origin Servers have been added to the Welcome Screen.  Selecting this option will automatically configure razor's Encryption options and connect you to the EA/Origin login server.
--There is now a Toggle war/peace hot key
--Time elapsed/Total time added to RPV playback (Displayed on the Video tab and in the UO titlebar)
+-None.  This is a small release to address an encryption change made in the latest client release.
 
 Changes/Fixes:
--The UOPS window will now correctly display (and update) the positions of party members under all circumstances.
--Numerous other UOPS fixes and tweaks to make your UOPS experience much happier.
--RPV Playback has become a good deal smoother (especially when theres a lot going on on screen).  Playback at Normal speed should now look proper.
--RPV Seeking is once again working.
--Un/Re-Equip hands when using potions will now correctly wait to re-equip your hands until all other pending potion requests have been completed.
--Screen shots should always be correctly centered now.
--Stun and Disarm hotkeys now have a slight 'spam' delay (0.5 sec) to prevent them from being accidentally toggled quickly by holding the key down for too long.
--If a macro which drags an item is stopped before the item is dropped the item will now be placed in your backpack instead of on the ground.
--Last Target can no longer be the ground or a piece of the map.  Only dynamic items and characters can be set to the last target now.
--Attempting to use the restock agent on something that is too far away will now give you an error (instead of just blindly doing it anyway).
--Screenshot list will now correctly update when a first screen shot is taken.
--The macro manager will now show an error when attempting to create a profile, macro category, or new macro with invalid characters in the name.
--Editing macro Comments will no longer crash Razor.
--Scavenger Agent will no longer attempt to pick up items which are too far away, and these items will be automatically removed from the cache in case you pass them again.  This should result in better scavenger performance over all.
--Context menu macro actions done on yourself will now be recorded as "self" instead of a specific player.  This will allow the same macro to be used on multiple characters without editing.
--The UOPS window will now correctly stay on top of the UO window at all times.
--There are now 10 Organizer agents per profile. (used to be 5)
--Macro Lift actions have gained a context menu to edit their amount.
--Closing UO while an AVI file is recording will no longer corrupt the file.
-
-(Continued special thanks to "Rick" aka "RhY" for his work on UOPS. He is a valuable addition to the Razor development team.)
+-A problem with Lift By Type never lifting anything has been fixed.
+-Razor no longer uses uog.dll to handle encryption, all encryption is now handled internally by Razor itself.
+-This version of Razor works with client 5.0.6-5 and previous.  If you are using client 5.0.6-5 you must use this version of Razor or any later version.

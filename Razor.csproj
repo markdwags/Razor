@@ -385,11 +385,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Network\UOGLite2.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Output\spells.def"
                     BuildAction = "None"
                 />

@@ -183,12 +183,15 @@ namespace Assistant
 			return Drag( i, amount, false, false );
 		}
 
+		public static bool Empty { get { return m_Back == m_Front; } }
+		public static bool Full { get { return ((byte)(m_Back+1)) == m_Front; } }
+
 		public static int Drag( Item i, int amount, bool fromClient, bool doLast )
 		{
 			LiftReq lr = new LiftReq( i.Serial, amount, fromClient, doLast );
 			LiftReq prev = null;
 
-			if ( m_Back+1 == m_Front )
+			if ( Full )
 			{
 				World.Player.SendMessage( MsgLevel.Error, LocString.DragDropQueueFull );
 				if ( fromClient )

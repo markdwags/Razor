@@ -469,19 +469,19 @@ namespace Assistant.Macros
 		public override bool Perform()
 		{
 			Item item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID( m_Gfx ) : null;
-			if ( item == null )
+			/*if ( item == null )
 			{
 				ArrayList list = new ArrayList();
 
 				foreach ( Item i in World.Items.Values )
 				{
-					if ( i.ItemID == m_Gfx && !i.IsInBank )
+					if ( i.ItemID == m_Gfx && ( i.RootContainer == null || i.IsChildOf( World.Player.Quiver ) ) )
 						list.Add( i );
 				}
 
 				if ( list.Count > 0 )
 					item = (Item)list[ Utility.Random( list.Count ) ];
-			}
+			}*/
 
 			if ( item != null )
 			{
@@ -503,7 +503,7 @@ namespace Assistant.Macros
 
 		public override bool PerformWait()
 		{
-			return DragDropManager.LastIDLifted < m_Id;
+			return DragDropManager.LastIDLifted < m_Id && !DragDropManager.Empty;
 		}
 
 		public override string Serialize()

@@ -29,6 +29,7 @@ namespace Assistant
 		private static bool m_HasTarget;
 		private static bool m_ClientTarget;
 		private static TargetInfo m_LastTarget;
+		private static TargetInfo m_LastGroundTarg;
 		private static TargetInfo m_LastBeneTarg;
 		private static TargetInfo m_LastHarmTarg;
 
@@ -497,7 +498,9 @@ namespace Assistant
 			TargetInfo targ;
 			if ( Config.GetBool( "SmartLastTarget" ) && ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
 			{
-				if ( m_CurFlags == 1 )
+				if ( m_AllowGround && m_LastGroundTarg != null )
+					targ = m_LastGroundTarg;
+				else if ( m_CurFlags == 1 )
 					targ = m_LastHarmTarg;
 				else if ( m_CurFlags == 2 )
 					targ = m_LastBeneTarg;
@@ -509,7 +512,10 @@ namespace Assistant
 			}
 			else
 			{
-				targ = m_LastTarget;
+				if ( m_AllowGround && m_LastGroundTarg != null )
+					targ = m_LastGroundTarg;
+				else
+					targ = m_LastTarget;
 			}
 
 			if ( targ == null )
@@ -950,7 +956,13 @@ namespace Assistant
 						else if ( info.Flags == 2 )
 							m_LastBeneTarg = info;
 
+						m_LastGroundTarg = null;
+
 						LastTargetChanged();
+					}
+					else
+					{
+						m_LastGroundTarg = info;
 					}
 
 					if ( Macros.MacroManager.AcceptActions )

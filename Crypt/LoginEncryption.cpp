@@ -9,20 +9,21 @@
     LL |= ((unsigned int)(*((C)++))) << 8, \
     LL |= ((unsigned int)(*((C)++)))
 
-DWORD LoginEncryption::StaticKey1 = 0;
-DWORD LoginEncryption::StaticKey2 = 0;
-DWORD LoginEncryption::DynamicKey1 = 0;
+DWORD zero = 0;
+
+const DWORD *LoginEncryption::Key1 = &zero;
+const DWORD *LoginEncryption::Key2 = &zero;
 
 LoginEncryption::LoginEncryption()
 {
 	m_Table[0] = m_Table[1] = 0;
 }
 
-void LoginEncryption::SetKeys( const BYTE *sk1, const BYTE *sk2, const BYTE *dk1 )
+void LoginEncryption::SetKeys( const DWORD *k1, const DWORD *k2 )
 {
-	LoginEncryption::StaticKey1  = *((DWORD*)sk1);
-	LoginEncryption::StaticKey2  = *((DWORD*)sk2);
-	LoginEncryption::DynamicKey1 = *((DWORD*)dk1);
+	//LoginEncryption::StaticKey1  = *((DWORD*)sk1);
+	LoginEncryption::Key1 = k1;
+	LoginEncryption::Key2 = k2;
 }
 
 void LoginEncryption::Initialize( const BYTE *pSeed )
@@ -52,10 +53,18 @@ BYTE LoginEncryption::Crypt( BYTE in )
 	//m_Table[0] = ((pt0 >> 1) | (pt1 << 31)) ^ LOGIN_KEY_2;
 	
 	BYTE out = in ^ ((unsigned char)m_Table[0]);
+
+	if ( out == 0x80 )
+	{
+		char blah[256];
+
+		sprintf( blah, "KEYS= %p->%08x || %p->%08x", Key1, *Key1, Key2, *Key2 );
+		MessageBox( NULL, blah, "ARG", 0 );
+	}
 	
 	DWORD OldT1 = m_Table[1];
-	m_Table[1] = ((((m_Table[1] >> 1) | (m_Table[0] << 31)) ^ StaticKey1) >> 1 | (m_Table[0] << 31)) ^ StaticKey2;
-	m_Table[0] = ((m_Table[0]>>1) | (OldT1<<31)) ^ DynamicKey1;
+	m_Table[1] = ((((m_Table[1] >> 1) | (m_Table[0] << 31)) ^ ((*Key1)-1)) >> 1 | (m_Table[0] << 31)) ^ (*Key1);
+	m_Table[0] = ((m_Table[0]>>1) | (OldT1<<31)) ^ (*Key2);
 	
 	return out;
 }

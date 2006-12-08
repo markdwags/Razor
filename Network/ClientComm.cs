@@ -707,71 +707,40 @@ namespace Assistant
 			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x&0xFFFF)|((y&0xFFFF)<<16)) );
 		}
 
-		public static bool LaunchClient( UOGLite2.ClientType client )
-		{
-			int id =  UOGLite2.Launch( (int)client );
-			try
-			{
-				if ( id != 0 )
-				{
-					ClientProc = Process.GetProcessById( id );
-
-					try
-					{
-						if ( !Config.GetBool( "SmartCPU" ) )
-							ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );
-					}
-					catch
-					{
-					}
-				}
-			}
-			catch
-			{
-				return false;
-			}
-			return ClientProc != null;
-		}
-
 		public static bool LaunchClient( string client )
 		{
-			// fucking 3d client.
 			string dir = Directory.GetCurrentDirectory();
 			Directory.SetCurrentDirectory( Path.GetDirectoryName( client ) );
-			int id =  UOGLite2.Launch( client );
 			Directory.SetCurrentDirectory( dir );
 
 			try
 			{
-				if ( id != 0 )
-				{
-					ClientProc = Process.GetProcessById( id );
-					try
-					{
-						if ( !Config.GetBool( "SmartCPU" ) )
-							ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );
-					}
-					catch
-					{
-					}
-				}
+				ProcessStartInfo psi = new ProcessStartInfo( client );
+				psi.WorkingDirectory = Path.GetDirectoryName( client );
+
+				ClientProc = Process.Start( psi );
+
+				if ( ClientProc != null && !Config.GetBool( "SmartCPU" ) )
+					ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );
 			}
 			catch
 			{
-				return false;
 			}
+
 			return ClientProc != null;
 		}
 		
 		public static bool PatchEncryption()
 		{
-			return UOGLite2.Patch() != 0;
+			ClientEncrypted = true;
+			ServerEncrypted = false;
+
+			return true;
 		}
 
 		public static bool ResumeClient()
 		{
-			//PatchStartup( ClientProc.Id );
-			return UOGLite2.Resume() != 0;
+			return true;
 		}
 
 		private static bool m_ClientEnc = false;
@@ -852,7 +821,6 @@ namespace Assistant
 		public static void Close()
 		{
 			Shutdown( true );
-			UOGLite2.Terminate();
 			if ( ClientProc != null && !ClientProc.HasExited )
 				ClientProc.CloseMainWindow();
 			ClientProc = null;
@@ -1202,6 +1170,8 @@ namespace Assistant
 					break;
 				case UONetMessage.Close:
 					ClientProc = null;
+					try { PacketPlayer.Stop(); }  catch {}
+					try { AVIRec.Stop(); } catch {}
 					Engine.MainWindow.CanClose = true;
 					Engine.MainWindow.Close();
 					break;

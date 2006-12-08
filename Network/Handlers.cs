@@ -2012,6 +2012,7 @@ namespace Assistant
 				World.Player.CurrentGumpS = p.ReadUInt32();
 				World.Player.CurrentGumpI = p.ReadUInt32();
 
+#if DEBUG
 				int x = p.ReadInt32(), y = p.ReadInt32();
 
 				string layout = p.GetCompressedReader().ReadString();
@@ -2025,7 +2026,7 @@ namespace Assistant
 				while ( !pComp.AtEnd && (len=pComp.ReadInt16()) > 0 )
 					strings.Add( pComp.ReadUnicodeString( len ) );
 
-#if DEBUG
+
 				using ( StreamWriter w = new StreamWriter( "gumps.log", true ) )
 				{
 					w.WriteLine( "" );

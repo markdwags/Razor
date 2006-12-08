@@ -7,17 +7,16 @@ public:
 
 	void Initialize( const BYTE *pSeed );
 
-	static void SetKeys( const BYTE *sk1, const BYTE *sk2, const BYTE *dk1 );
+	static void SetKeys( const DWORD *k1, const DWORD *k2 );
 
 	void Encrypt( const BYTE *in, BYTE *out, int len );
 	void Decrypt( const BYTE *in, BYTE *out, int len );
 
 	BYTE Test( BYTE );
 
-	static DWORD StaticKey1, StaticKey2;
-	static DWORD DynamicKey1;
-
 private:
+	static const DWORD *Key1, *Key2;
+
 	BYTE Crypt( BYTE );
 
 	DWORD m_Table[2];

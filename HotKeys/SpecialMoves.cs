@@ -156,7 +156,7 @@ namespace Assistant
 
 		private static void ToggleWarPeace()
 		{
-			ClientCommunication.SendToServer( new SetWarMode( World.Player.Warmode ) );
+			ClientCommunication.SendToServer( new SetWarMode( !World.Player.Warmode ) );
 		}
 
 		private static void OnStun()

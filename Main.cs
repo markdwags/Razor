@@ -265,44 +265,27 @@ namespace Assistant
 			{
 				SplashScreen.Message = "Loading client...";
 				bool result = false;
-				// both clients are POS, wont launch if current directory is not its home dir...   work around here
+				
 				if ( launch == ClientLaunch.TwoD )
-				{
-					//result = ClientCommunication.LaunchClient( UOGLite2.ClientType.Regular );
-					if ( !result )
-						clientPath = Ultima.Client.GetFilePath( "client.exe" );
-				}
+					clientPath = Ultima.Client.GetFilePath( "client.exe" );
 				else if ( launch == ClientLaunch.ThirdDawn )
+					clientPath = Ultima.Client.GetFilePath( "uotd.exe" );
+
+				if ( patch )
 				{
-					//result = ClientCommunication.LaunchClient( UOGLite2.ClientType.ThirdDawn );
-					if ( !result )
-						clientPath = Ultima.Client.GetFilePath( "uotd.exe" );
+					ClientCommunication.ClientEncrypted = true;
+					ClientCommunication.ServerEncrypted = false;
 				}
 
-				if ( !result && clientPath != null && File.Exists( clientPath ) )
+				if ( clientPath != null && File.Exists( clientPath ) )
 					result = ClientCommunication.LaunchClient( clientPath );
 
 				if ( !result )
 				{
-					MessageBox.Show( SplashScreen.Instance, String.Format( "Razor.exe/UOG.dll: Unable to find the client specified.\n{0}: \"{1}\"", launch.ToString(), clientPath != null ? clientPath : "-null-" ), "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop );
+					MessageBox.Show( SplashScreen.Instance, String.Format( "Unable to find the client specified.\n{0}: \"{1}\"", launch.ToString(), clientPath != null ? clientPath : "-null-" ), "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop );
 					SplashScreen.End();
 					return;
 				}
-
-				if ( patch )
-				{
-					SplashScreen.Message = "Patching encryption...";
-					if ( !ClientCommunication.PatchEncryption() )
-					{
-						MessageBox.Show( SplashScreen.Instance, "Razor.exe/UOG.dll: Unable to patch the client's encryption.\nYour client may not be compatible with this version of Razor(UOG.dll).\nConsult the documentation for more info.", "Can't Patch Client", MessageBoxButtons.OK, MessageBoxIcon.Stop );
-						SplashScreen.End();
-						return;
-					}
-				}
-
-				//ClientCommunication.PreLaunchPatch();
-
-				ClientCommunication.ResumeClient();
 			}
 			else
 			{
@@ -326,30 +309,23 @@ namespace Assistant
 				}
 			}
 
-			if ( Utility.Random(2) == 0 )
+			if ( Utility.Random(4) != 0 )
 				SplashScreen.Message = "Waiting for client to start...";
 			else
 				SplashScreen.Message = "Don't forget to Donate!!";
 
 			m_MainWnd = new MainForm();
-			//SplashScreen.End();
-			//m_TimerThread.Start();
 			Application.Run( m_MainWnd );
 			
 			m_Running = false;
+
+			try { PacketPlayer.Stop(); } catch {}
+			try { AVIRec.Stop(); } catch {}
+
 			ClientCommunication.Close();
 			Counter.Save();
 			Macros.MacroManager.Save();
 			Config.Save();
-
-			/*try
-			{
-				if ( m_TimerThread.IsAlive )
-					m_TimerThread.Abort();
-			}
-			catch
-			{
-			}*/
 		}
 
 		public static string GetDirectory( string relPath )

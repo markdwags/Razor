@@ -5283,8 +5283,6 @@ namespace Assistant
 		private void OnClose(object sender, System.EventArgs e)
 		{
 			m_CanClose = true;
-			PacketPlayer.Stop();
-			AVIRec.Stop();
 			this.Close();
 		}
 
