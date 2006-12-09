@@ -271,11 +271,8 @@ namespace Assistant
 				else if ( launch == ClientLaunch.ThirdDawn )
 					clientPath = Ultima.Client.GetFilePath( "uotd.exe" );
 
-				if ( patch )
-				{
-					ClientCommunication.ClientEncrypted = true;
-					ClientCommunication.ServerEncrypted = false;
-				}
+				if ( !advCmdLine )
+					ClientCommunication.ClientEncrypted = patch;
 
 				if ( clientPath != null && File.Exists( clientPath ) )
 					result = ClientCommunication.LaunchClient( clientPath );

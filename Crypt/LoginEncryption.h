@@ -14,6 +14,8 @@ public:
 
 	BYTE Test( BYTE );
 
+	static DWORD GenerateBadSeed( DWORD oldSeed );
+
 private:
 	static const DWORD *Key1, *Key2;
 

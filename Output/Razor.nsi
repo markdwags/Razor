@@ -9,7 +9,7 @@
 
   ;Name and file
   Name "Razor"
-  OutFile "Razor103_Inst.exe"
+  OutFile "Razor104_Inst.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\Razor"
@@ -89,6 +89,7 @@ foundFramework:
   File "C:\UO\Razor\Output\RPVOpenStub.exe"
   File "C:\UO\Razor\Output\RPVEditor.exe"
   File "C:\UO\Razor\Output\Crypt.dll"
+  File "C:\UO\Razor\Output\Loader.dll"
   File "C:\UO\Razor\Output\Ultima.dll"
   File "C:\UO\Razor\Output\zlib.dll"
   File "C:\UO\Razor\Output\License.txt"

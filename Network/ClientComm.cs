@@ -500,6 +500,23 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void TranslateDo( IntPtr translateFunc, string inText, StringBuilder outText, ref uint outLen );
 		
+		private enum Loader_Error
+		{
+			SUCCESS = 0,
+			NO_OPEN_EXE,
+			NO_READ_EXE_DATA,
+
+			NO_RUN_EXE,
+			NO_ALLOC_MEM,
+
+			NO_WRITE,
+			NO_VPROTECT,
+			NO_READ,
+		};
+
+		[DllImport( "Loader.dll" )]
+		private static unsafe extern uint Load( string exe, string dll, string func, void *dllData, int dataLen, out int pid );
+
 		[DllImport( "msvcrt.dll" )]
 		public static unsafe extern void memcpy( void *to, void *from, int len );
 
@@ -709,7 +726,7 @@ namespace Assistant
 
 		public static bool LaunchClient( string client )
 		{
-			string dir = Directory.GetCurrentDirectory();
+			/*string dir = Directory.GetCurrentDirectory();
 			Directory.SetCurrentDirectory( Path.GetDirectoryName( client ) );
 			Directory.SetCurrentDirectory( dir );
 
@@ -725,22 +742,29 @@ namespace Assistant
 			}
 			catch
 			{
+			}*/
+
+			string dll = Path.Combine( Engine.BaseDirectory, "Crypt.dll" );
+			int pid = 0;
+
+			Loader_Error err = (Loader_Error)Load( client, dll, "OnAttach", null, 0, out pid );
+
+			if ( err == Loader_Error.SUCCESS && pid > 0 )
+			{
+				try
+				{
+					ClientProc = Process.GetProcessById( pid );
+
+					if ( ClientProc != null && !Config.GetBool( "SmartCPU" ) )
+						ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );
+				}
+				catch
+				{
+					return false;
+				}
 			}
 
 			return ClientProc != null;
-		}
-		
-		public static bool PatchEncryption()
-		{
-			ClientEncrypted = true;
-			ServerEncrypted = false;
-
-			return true;
-		}
-
-		public static bool ResumeClient()
-		{
-			return true;
 		}
 
 		private static bool m_ClientEnc = false;

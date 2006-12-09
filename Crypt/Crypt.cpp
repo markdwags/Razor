@@ -49,11 +49,15 @@ bool SmartCPU = false;
 bool ServerNegotiated = false;
 bool AllowNegotiate = false;
 bool InGame = false;
+bool CopyFailed = true;
+bool Forwarding = false;
+bool Forwarded = false;
 
 bool ClientEncrypted = false;
 bool ServerEncrypted = false;
 
 //**************************************OSI Only Stuff*********************************
+DWORD CryptSeed = 0x7f000001;
 OSIEncryption *ClientCrypt = NULL;
 OSIEncryption *ServerCrypt = NULL;
 LoginEncryption *ClientLogin = NULL;
@@ -89,10 +93,6 @@ typedef int (PASCAL *NetIOFunc)(SOCKET, char *, int, int);
 typedef int (PASCAL *ConnFunc)(SOCKET, const sockaddr *, int);
 typedef int (PASCAL *CLSFunc)(SOCKET);
 typedef int (PASCAL *SelectFunc)( int, fd_set*, fd_set*, fd_set*, const struct timeval* );
-
-
-
-
 
 BOOL APIENTRY DllMain( HANDLE hModule, DWORD dwReason, LPVOID )
 {
@@ -604,9 +604,234 @@ DLLFUNCTION void TranslateDo( void (__stdcall *TransFunc)( char *, char *, DWORD
 		TransFunc( in, out, outLen );
 }
 
+#define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
+#define PACKET_TS_LEN 24
+
+void (*RedrawUOScreen)() = NULL;
+void (*RedrawGameEdge)() = NULL;
+
+SIZE *SizePtr = NULL;
+
+DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
+{
+	int count = 0;
+	DWORD addr = 0, Seek = 0, oldProt;
+	ClientPacketInfo packet;
+	MemFinder mf;
+
+	UOProcId = GetCurrentProcessId();
+
+	if ( !CreateSharedMemory() )
+		return;
+
+	memset( pShared, 0, sizeof(SharedMemory) );
+	pShared->AllowDisconn = true;
+
+	CopyFailed = false;
+	
+	mf.AddEntry( "UoClientApp", 12, 0x00500000 );
+	mf.AddEntry( "report\0", 8, 0x00500000 );
+	mf.AddEntry( "Another copy of ", 16, 0x00500000 );
+	mf.AddEntry( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 ); // (end of a push offset), push 5000, push esi
+	mf.AddEntry( "Electronic Arts Inc.", 20 );
+
+	mf.AddEntry( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16, 0x00500000 );
+	mf.AddEntry( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 ); // resize screen function
+	mf.AddEntry( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 );
+	mf.AddEntry( PACKET_TBL_STR, PACKET_TS_LEN );
+	mf.AddEntry( CRYPT_KEY_STR, CRYPT_KEY_LEN );
+	mf.AddEntry( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
+	mf.AddEntry( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
+	mf.AddEntry( CHEATPROC_STR, CHEATPROC_LEN );
+
+	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
+
+	mf.Execute();
+
+	SizePtr = (SIZE*)mf.GetAddress( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16 );
+	if ( SizePtr )
+	{
+		addr = mf.GetAddress( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 );
+		if ( addr && *((unsigned char*)(addr-0x13)) == 0xE8 &&  *((unsigned char*)(addr-0x13+5)) == 0xE8 )
+		{
+			addr -= 0x12;
+			RedrawGameEdge = (void (*)())(addr + 4 + *((int*)addr));
+			addr += 5;
+			RedrawUOScreen = (void (*)())(addr + 4 + *((int*)addr));
+		}
+	}
+
+	addr = mf.GetAddress( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 );
+	if ( addr )
+	{
+		DWORD origAddr = addr;
+
+		VirtualProtect( (void*)origAddr, 0x50, PAGE_EXECUTE_READWRITE, &oldProt );
+		addr += 0x11; // skip to jnz
+		addr += *((BYTE*)addr)+1; // skip to target
+		memset( (void*)addr, 0x90, 0x14 ); // nop
+		*((BYTE*)addr) = 0xBB; *((DWORD*)(addr+1)) = (DWORD)(&DesiredSize.cx); // mov ebx, offset DesiredSize.cx
+		addr += 5;
+		*((BYTE*)addr) = 0xB8; *((DWORD*)(addr+1)) = (DWORD)(&DesiredSize.cy); // mov eax, offset DesiredSize.cy
+		addr += 5;
+		*((BYTE*)addr) = 0x8B; *((BYTE*)(addr+1)) = 0x13;  // mov edx, [ebx]
+		addr += 2;
+		*((BYTE*)addr) = 0x8B; *((BYTE*)(addr+1)) = 0x08;  // mov ecx, [eax]
+		addr += 2;
+		*((BYTE*)(addr+6)) = 0xEB; // change jnz to jmp
+		VirtualProtect( (void*)origAddr, 0x50, oldProt, &oldProt );
+	}
+
+	addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN );
+	if ( addr )
+	{
+		addr += PACKET_TS_LEN;
+
+		// these appear at unpredictable offsets from the search string, so we have to seek for them.
+		// we use the first packet (0x00 with length 0x68) to find a place in the table to start from.
+		while ( Seek != 0x68 && count < 512 )
+		{
+			addr ++;
+			count ++;
+
+			if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
+				break;
+			memcpy( &Seek, (const void*)addr, 2 );
+		}
+
+		if ( Seek == 0x68 )
+		{
+			addr += 4;
+
+			memset( pShared->PacketTable, 0xFF, 512 );
+			pShared->PacketTable[0] = 0x68;
+			count = 0;
+			do {
+				if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
+					break;
+
+				memcpy( &packet, (const void*)addr, sizeof(ClientPacketInfo) );
+				addr += sizeof(ClientPacketInfo);
+				if ( pShared->PacketTable[(BYTE)packet.Id] == 0xFFFF )
+					pShared->PacketTable[(BYTE)packet.Id] = packet.Length;
+				count ++;
+			} while ( packet.Id != 0xFFFFFFFF && (BYTE)packet.Id == packet.Id && count < 256 );
+		}
+		else
+		{
+			CopyFailed = true;
+		}
+	}
+	else
+	{
+		CopyFailed = true;
+	}
+	
+	addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
+	if ( !addr )
+	{
+		addr = mf.GetAddress( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
+
+		if ( !addr )
+		{
+			addr = mf.GetAddress( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
+			if ( addr )
+				LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_3D_LEN), (const DWORD*)(addr + CRYPT_KEY_3D_LEN + 19) );
+			else
+				CopyFailed = true;
+		}
+		else
+		{
+			addr += CRYPT_KEY_NEW_LEN;
+
+			const DWORD *pKey1 = *((DWORD**)addr);
+			const DWORD *pKey2 = pKey1 - 1;
+			if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
+				CopyFailed = true;
+			else
+				LoginEncryption::SetKeys( pKey1, pKey2 );
+		}
+	}
+	else
+	{
+		LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_LEN), (const DWORD*)(addr + CRYPT_KEY_LEN + 6) );
+	}
+
+	addr = mf.GetAddress( CHEATPROC_STR, CHEATPROC_LEN );
+	if ( addr )
+	{
+		addr = MemFinder::Find( "\x8A\x91", 2, addr, addr + 0x80 );
+		if ( addr )
+		{
+			addr += 2;
+
+			if ( !IsBadReadPtr( (void*)(*((DWORD*)addr)), 16 ) )
+				memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
+		}
+	}
+	
+	// Multi UO
+	addr = mf.GetAddress( "UoClientApp", 12 );
+	if ( addr )
+	{
+		VirtualProtect( (void*)addr, 12, PAGE_READWRITE, &oldProt );
+		_snprintf( (char*)addr, 12, "UoApp%d", UOProcId );
+		VirtualProtect( (void*)addr, 12, oldProt, &oldProt );
+	}
+
+	addr = mf.GetAddress( "Another copy of ", 16 );
+	if ( addr )
+	{
+		char buff[5];
+		
+		buff[0] = 0x68; // push
+		*((DWORD*)(&buff[1])) = addr;
+
+		addr = 0x00400000;
+		do {
+			addr = MemFinder::Find( buff, 5, addr, 0x00600000 );
+			if ( addr )
+			{
+				if ( (*((unsigned char*)(addr - 5))) == 0x74 ) // jz?
+					MemoryPatch( addr-5, 0xEB, 1 ); // change to jmp
+				addr += 5; // skip ahead to find the next instance
+			}
+		} while ( addr > 0 && addr < 0x00600000 );
+	}
+
+	addr = mf.GetAddress( "report\0", 8 );
+	if ( addr )
+	{
+		VirtualProtect( (void*)addr, 12, PAGE_READWRITE, &oldProt );
+		_snprintf( (char*)addr, 8, "r%d", UOProcId );
+		VirtualProtect( (void*)addr, 12, oldProt, &oldProt );
+	}
+
+	// Splash screen crap:
+	addr = mf.GetAddress( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 );
+	if ( addr )
+		MemoryPatch( addr+2, 0x00000005 ); // change 5000ms to 5ms
+
+	addr = mf.GetAddress( "Electronic Arts Inc.", 20 );
+	if ( addr )
+	{
+		addr -= 7;
+		VirtualProtect( (void*)addr, 52, PAGE_EXECUTE_READWRITE, &oldProt );
+		strncpy( (char*)addr, "[Powered by Razor - The cutting edge UO Assistant]", 51 );
+		VirtualProtect( (void*)addr, 52, oldProt, &oldProt );
+	}
+
+	//HookFunction( "kernel32.dll", "CreateFileA", 0, (unsigned long)CreateFileAHook, &OldCreateFileA, &CreateFileAAddress );
+}
+
 bool CreateSharedMemory()
 {
 	char name[512];
+
+	CommMutex = NULL;
+	hFileMap = NULL;
+	pShared = NULL;
+
 	Log( "Creating shared mem, proc: %x", UOProcId );
 
 	sprintf( name, "UONetSharedCOMM_%x", UOProcId );
@@ -623,9 +848,7 @@ bool CreateSharedMemory()
 	if ( !pShared )
 		return false;
 
-	memset( pShared, 0, sizeof(SharedMemory) );
-
-	pShared->AllowDisconn = true;
+	//memset( pShared, 0, sizeof(SharedMemory) );
 
 	return true;
 }
@@ -831,8 +1054,11 @@ int PASCAL HookRecv( SOCKET sock, char *buff, int len, int flags )
 				ackLen = pShared->OutRecv.Length;
 				memcpy( buff, &pShared->OutRecv.Buff[pShared->OutRecv.Start], ackLen );
 
-				if ( ((BYTE)buff[0]) == ((BYTE)0x8C) )
+				if ( buff[0] == 0x8C )
 					LoginServer = false;
+
+				if ( Forwarding )
+					Seeded = Forwarded = true;
 
 				pShared->OutRecv.Start += ackLen;
 				pShared->OutRecv.Length -= ackLen;
@@ -898,16 +1124,18 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 
 			if ( len >= 4 )
 			{
+				CryptSeed = *((DWORD*)buff);
+
 				if ( ServerEncrypted )
 				{
-					ServerCrypt->Initialize( *((DWORD*)buff) );
-					ServerLogin->Initialize( (BYTE*)buff );
+					ServerCrypt->Initialize( CryptSeed );
+					ServerLogin->Initialize( (BYTE*)&CryptSeed );
 				}
 
 				if ( ClientEncrypted )
 				{
-					ClientCrypt->Initialize( *((DWORD*)buff) );
-					ClientLogin->Initialize( (BYTE*)buff );
+					ClientCrypt->Initialize( CryptSeed );
+					ClientLogin->Initialize( (BYTE*)&CryptSeed );
 				}
 
 				Compression::Reset();
@@ -934,10 +1162,33 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 
 			if ( ClientEncrypted )
 			{
-				if ( LoginServer )
-					ClientLogin->Decrypt( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
-				else
+				if ( Forwarded )
+				{
+					CryptSeed = LoginEncryption::GenerateBadSeed( CryptSeed );
+
+					ClientCrypt->Initialize( CryptSeed );
+
 					ClientCrypt->DecryptFromClient( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
+					ClientLogin->Decrypt( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
+
+					LoginServer = false;
+					Forwarding = false;
+					Forwarded = false;
+				}
+				else
+				{
+					if ( LoginServer )
+					{
+						ClientLogin->Decrypt( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
+
+						if ( pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length] == 0xA0 )
+							Forwarding = true;
+					}
+					else
+					{
+						ClientCrypt->DecryptFromClient( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
+					}
+				}
 			}
 
 			pShared->InSend.Length += len;
@@ -1081,6 +1332,7 @@ int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 		LoginServer = false;
 		FirstRecv = true;
 		FirstSend = true;
+		Forwarding = Forwarded = false;
 
 		WaitForSingleObject( CommMutex, INFINITE );
 		CurrentConnection = sock;
@@ -1898,191 +2150,6 @@ void SetCustomNotoHue( int hue )
 		*((int*)(NotoLoc + 8*4)) = hue;
 }
 
-#define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
-#define PACKET_TS_LEN 24
-
-void (*RedrawUOScreen)() = NULL;
-void (*RedrawGameEdge)() = NULL;
-
-SIZE *SizePtr = NULL;
-
-bool CopyClientMemory()
-{
-	int count = 0;
-	bool failed = false;
-	DWORD addr = 0, Seek = 0;
-	ClientPacketInfo packet;
-	MemFinder mf;
-
-	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
-
-	mf.AddEntry( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16, 0x00500000 );
-	mf.AddEntry( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 ); // resize screen function
-	mf.AddEntry( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 );
-	mf.AddEntry( CRYPT_KEY_STR, CRYPT_KEY_LEN );
-	mf.AddEntry( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
-	mf.AddEntry( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
-	mf.AddEntry( PACKET_TBL_STR, PACKET_TS_LEN );
-	mf.AddEntry( CHEATPROC_STR, CHEATPROC_LEN );
-	mf.AddEntry( "Electronic Arts Inc.", 20, 0x00500000 );
-	mf.AddEntry( "\x00\x68\x88\x13\x00\x00\x56x\xE8", 8 ); // splash screen call
-
-	mf.Execute();
-
-	addr = mf.GetAddress( "\x00\x68\x88\x13\x00\x00\x56x\xE8", 8 );
-	if ( addr )
-	{
-		DWORD oldProt;
-		addr += 2;
-		VirtualProtect( (void*)addr, 4, PAGE_EXECUTE_READWRITE, &oldProt );
-		*((DWORD*)addr) = 1; // change push 5000 to push 1
-		VirtualProtect( (void*)addr, 4, oldProt, &oldProt );
-	}
-
-	addr = mf.GetAddress( "Electronic Arts Inc.", 20 );
-	if ( addr )
-	{
-		DWORD oldProt;
-		addr -= 7;
-		VirtualProtect( (void*)addr, 52, PAGE_EXECUTE_READWRITE, &oldProt );
-		strncpy( (char*)(addr), "[Powered by Razor - The cutting edge UO Assistant]", 51 );
-		VirtualProtect( (void*)addr, 52, oldProt, &oldProt );
-	}
-
-	SizePtr = (SIZE*)mf.GetAddress( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16 );
-	if ( SizePtr )
-	{
-		addr = mf.GetAddress( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 );
-		if ( addr && *((unsigned char*)(addr-0x13)) == 0xE8 &&  *((unsigned char*)(addr-0x13+5)) == 0xE8 )
-		{
-			addr -= 0x12;
-			RedrawGameEdge = (void (*)())(addr + 4 + *((int*)addr));
-			addr += 5;
-			RedrawUOScreen = (void (*)())(addr + 4 + *((int*)addr));
-		}
-	}
-
-	addr = mf.GetAddress( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 );
-	if ( addr )
-	{
-		DWORD oldProt, origAddr = addr;
-
-		VirtualProtect( (void*)origAddr, 0x50, PAGE_EXECUTE_READWRITE, &oldProt );
-		addr += 0x11; // skip to jnz
-		addr += *((BYTE*)addr)+1; // skip to target
-		memset( (void*)addr, 0x90, 0x14 ); // nop
-		*((BYTE*)addr) = 0xBB; *((DWORD*)(addr+1)) = (DWORD)(&DesiredSize.cx); // mov ebx, offset DesiredSize.cx
-		addr += 5;
-		*((BYTE*)addr) = 0xB8; *((DWORD*)(addr+1)) = (DWORD)(&DesiredSize.cy); // mov eax, offset DesiredSize.cy
-		addr += 5;
-		*((BYTE*)addr) = 0x8B; *((BYTE*)(addr+1)) = 0x13;  // mov edx, [ebx]
-		addr += 2;
-		*((BYTE*)addr) = 0x8B; *((BYTE*)(addr+1)) = 0x08;  // mov ecx, [eax]
-		addr += 2;
-		*((BYTE*)(addr+6)) = 0xEB; // change jnz to jmp
-		VirtualProtect( (void*)origAddr, 0x50, oldProt, &oldProt );
-	}
-
-	memset( pShared->CheatKey, 0, 16 );
-
-	DWORD cheatKey = mf.GetAddress( CHEATPROC_STR, CHEATPROC_LEN );
-	if ( cheatKey )
-	{
-		cheatKey = MemFinder::Find( "\x8A\x91", 2, cheatKey, cheatKey + 0x80 );
-		if ( cheatKey )
-		{
-			cheatKey += 2;
-
-			/*char msg[256];
-			sprintf( msg, "p: %X", (void*)(*((DWORD*)cheatKey)) );
-			MessageBox( NULL, msg, "ptr", 0 );*/
-
-			if ( !IsBadReadPtr( (void*)(*((DWORD*)cheatKey)), 16 ) )
-				memcpy( pShared->CheatKey, (void*)(*((DWORD*)cheatKey)), 16 );
-		}
-	}
-
-	addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN );
-	if ( addr )
-	{
-		addr += PACKET_TS_LEN;
-
-		// these appear at unpredictable offsets from the search string, so we have to seek for them.
-		// we use the first packet (0x00 with length 0x68) to find a place in the table to start from.
-		while ( Seek != 0x68 && count < 512 )
-		{
-			addr ++;
-			count ++;
-
-			if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
-				break;
-			memcpy( &Seek, (const void*)addr, 2 );
-		}
-
-		if ( Seek == 0x68 )
-		{
-			addr += 4;
-
-			memset( pShared->PacketTable, 0xFF, 512 );
-			pShared->PacketTable[0] = 0x68;
-			count = 0;
-			do {
-				if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
-					break;
-
-				memcpy( &packet, (const void*)addr, sizeof(ClientPacketInfo) );
-				addr += sizeof(ClientPacketInfo);
-				if ( pShared->PacketTable[(BYTE)packet.Id] == 0xFFFF )
-					pShared->PacketTable[(BYTE)packet.Id] = packet.Length;
-				count ++;
-			} while ( packet.Id != 0xFFFFFFFF && (BYTE)packet.Id == packet.Id && count < 256 );
-		}
-		else
-		{
-			failed = true;
-		}
-	}
-	else
-	{
-		failed = true;
-	}
-	
-	if ( ClientEncrypted || ServerEncrypted )
-	{
-		addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
-		if ( !addr )
-		{
-			addr = mf.GetAddress( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
-
-			if ( !addr )
-			{
-				addr = mf.GetAddress( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
-				if ( addr )
-					LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_3D_LEN), (const DWORD*)(addr + CRYPT_KEY_3D_LEN + 19) );
-				else
-					failed = true;
-			}
-			else
-			{
-				addr += CRYPT_KEY_NEW_LEN;
-
-				const DWORD *pKey1 = *((DWORD**)addr);
-				const DWORD *pKey2 = pKey1 - 1;
-				if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
-					failed = true;
-				else
-					LoginEncryption::SetKeys( pKey1, pKey2 );
-			}
-		}
-		else
-		{
-			LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_LEN), (const DWORD*)(addr + CRYPT_KEY_LEN + 6) );
-		}
-	}
-
-	return !failed;
-}
-
 bool PatchMemory( void )
 {
 	Log( "Patching client functions." );
@@ -2174,7 +2241,6 @@ void FindList( DWORD val, unsigned short size )
 		PostMessage( hPostWnd, WM_UONETEVENT, MAKELONG(FINDDATA,i+1), addrList[i] );
 }
 
-
 void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg )
 {
 	/*if ( SizePtr && ( SizePtr->cx != DesiredSize.cx || SizePtr->cy != DesiredSize.cy ) )// && ( SizePtr->cx != 640 || SizePtr->cy != 480 ) )
@@ -2204,12 +2270,15 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 
 		InitThemes();
 
-		if ( !CreateSharedMemory() )
+		if ( !pShared ) // If this failed the first time or was not run at all, try it once more before panicing
+			OnAttach( NULL, 0 );
+
+		if ( !pShared )
 			PostMessage( hPostWnd, WM_UONETEVENT, NOT_READY, NO_SHAREMEM );
+		else if ( CopyFailed )
+			PostMessage( hPostWnd, WM_UONETEVENT, NOT_READY, NO_COPY );
 		else if ( !PatchMemory() )
 			PostMessage( hPostWnd, WM_UONETEVENT, NOT_READY, NO_PATCH );
-		else if ( !CopyClientMemory() )
-			PostMessage( hPostWnd, WM_UONETEVENT, READY, NO_COPY );
 		else
 			PostMessage( hPostWnd, WM_UONETEVENT, READY, SUCCESS );
 		break;

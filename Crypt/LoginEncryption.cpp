@@ -54,14 +54,6 @@ BYTE LoginEncryption::Crypt( BYTE in )
 	
 	BYTE out = in ^ ((unsigned char)m_Table[0]);
 
-	if ( out == 0x80 )
-	{
-		char blah[256];
-
-		sprintf( blah, "KEYS= %p->%08x || %p->%08x", Key1, *Key1, Key2, *Key2 );
-		MessageBox( NULL, blah, "ARG", 0 );
-	}
-	
 	DWORD OldT1 = m_Table[1];
 	m_Table[1] = ((((m_Table[1] >> 1) | (m_Table[0] << 31)) ^ ((*Key1)-1)) >> 1 | (m_Table[0] << 31)) ^ (*Key1);
 	m_Table[0] = ((m_Table[0]>>1) | (OldT1<<31)) ^ (*Key2);
@@ -74,4 +66,10 @@ BYTE LoginEncryption::Test( BYTE in )
 	return in ^ ((unsigned char)m_Table[0]);
 }
 
+DWORD LoginEncryption::GenerateBadSeed( DWORD oldSeed )
+{
+	DWORD newSeed = (*Key1) ^ (*Key2);
+	newSeed = ((newSeed >> 24) & 0xFF) | ((newSeed >> 8) & 0xFF00) | ((newSeed << 8) & 0xFF0000) | ((newSeed << 24) & 0xFF000000);
+	return htonl( newSeed ^ htonl( oldSeed ) );
+}
 

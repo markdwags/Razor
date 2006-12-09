@@ -27,3 +27,4 @@ EXPORTS
 	TranslateSetup
 	TranslateLogin
 	TranslateDo
+	OnAttach

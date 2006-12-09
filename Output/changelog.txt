@@ -1,4 +1,4 @@
-Razor (v1.0.3.*) Changelog:
+Razor (v1.0.4.*) Changelog:
 
 Razor is a FREE program.  Unlike competing programs like UOAssist, Razor does not charge any money at all and provides even more features.  Razor is now available on the regular OSI servers for unlimited accounts absolutely free.  But Razor needs your help!  Razor is now accepting donations over PayPal.  UOAssist (a similar program, but for OSI servers only) costs $15 PER ACCOUNT while Razor is FREE for UNLIMITED ACCOUNTS.  Your donation of $5 or $10 (or any amount!) is LESS than you would pay for a similar program!  Donations are greatly appreciated and will help ensure that the developers continue to improve and maintain this fine product.
 Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD
@@ -6,9 +6,16 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
--None.  This is a small release to address an encryption change made in the latest client release.
+-This is a small release to reflect changes that have been made since OSI patch 5.0.6.5.  Several issues cropped up as a result of changes made to support a slight change in encryption.  As a result of several sets of changes, I've decided to move Razor to 1.0.4 to help make it easier to see that everyone has the latest version (instead of having multiple versions of 1.0.3 floating around).
+-The splash screen should no longer be visible when the 2D client is first started.  this should greatly speed up the time it takes for the client to start.
 
 Changes/Fixes:
 -A problem with Lift By Type never lifting anything has been fixed.
 -Razor no longer uses uog.dll to handle encryption, all encryption is now handled internally by Razor itself.
 -This version of Razor works with client 5.0.6-5 and previous.  If you are using client 5.0.6-5 you must use this version of Razor or any later version.
+-Several other small improvements in client start-up speed.
+-Multi-UO is once again working.
+-Multi-UO is also working under the 3D client.
+-This version of Razor will work on OSI/EA servers.
+-This version of Razor will work with UOGateway and ConnectUO.
+-This version will allow you to connect to a shard that is running on locahost/127.0.0.1
