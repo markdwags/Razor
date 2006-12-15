@@ -284,6 +284,9 @@ namespace Assistant
 			string profileDir = Engine.GetDirectory( "Profiles" );
 			string file = Path.Combine( profileDir, String.Format( "{0}.xml", m_Name ) );
 
+			if ( m_SaveTimer != null )
+				m_SaveTimer.Stop();
+
 			XmlTextWriter xml;
 			try
 			{
@@ -384,11 +387,11 @@ namespace Assistant
 				throw new Exception( Language.Format( LocString.NoProp, name ) );
 			m_Props[name] = val;
 
-			if ( m_SaveTimer == null )
+			/*if ( m_SaveTimer == null )
 				m_SaveTimer = Timer.DelayedCallback( TimeSpan.FromMinutes( 1.0 ), new TimerCallback( Save ) );
 			if ( m_SaveTimer.Running )
 				m_SaveTimer.Stop();
-			m_SaveTimer.Start();
+			m_SaveTimer.Start();*/
 		}
 
 		public void AddProperty( string name, object val )
