@@ -89,6 +89,8 @@ struct SharedMemory
 	unsigned char CheatKey[16];
 	unsigned char AuthBits[8];
 	bool IsHaxed;
+	unsigned int ServerIP;
+	unsigned short ServerPort;
 };
 
 class PatchInfo

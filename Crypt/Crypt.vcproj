@@ -29,7 +29,10 @@
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCCustomBuildTool"
+				CommandLine="$(ProjectDir)/GenerateRazorChecksumH.exe"
+				AdditionalDependencies="Razor.exe"
+				Outputs="Checksum.h"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
@@ -46,8 +49,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"
-				CommandLine="$(ProjectDir)/GenerateRazorChecksumH.exe"/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -87,8 +89,7 @@
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="0"/>
 			<Tool
-				Name="VCCustomBuildTool"
-				Outputs="Checksum.h"/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
@@ -109,7 +110,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Generating Checksum.h..."
-				CommandLine="$(ProjectDir)/GenerateRazorChecksumH.exe"/>
+				CommandLine="$(ProjectDir)GenerateRazorChecksumH.exe"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool

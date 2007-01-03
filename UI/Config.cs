@@ -273,6 +273,12 @@ namespace Assistant
 				}
 			}
 
+			if ( m_SaveTimer != null )
+			{
+				if ( m_SaveTimer.Running )
+					m_SaveTimer.Stop();
+			}
+
 			//if ( !Language.Load( GetString( "Language" ) ) )
 			//	MessageBox.Show( Engine.ActiveWindow, "Warning: Could not load language from profile, using current language instead.", "Language Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 
@@ -388,7 +394,7 @@ namespace Assistant
 			m_Props[name] = val;
 
 			/*if ( m_SaveTimer == null )
-				m_SaveTimer = Timer.DelayedCallback( TimeSpan.FromMinutes( 1.0 ), new TimerCallback( Save ) );
+				m_SaveTimer = Timer.DelayedCallback( TimeSpan.FromSeconds( 10.0 ), new TimerCallback( Save ) );
 			if ( m_SaveTimer.Running )
 				m_SaveTimer.Stop();
 			m_SaveTimer.Start();*/

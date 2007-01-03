@@ -8,6 +8,9 @@ namespace Assistant
 {
 	public class ScreenCapManager
 	{
+		[System.Runtime.InteropServices.DllImport( "Gdi32.dll" )]
+		private static extern IntPtr DeleteObject( IntPtr hGdiObj );
+
 		private static TimerCallback m_DoCaptureCall = new TimerCallback( CaptureNow );
 		public static void Initialize()
 		{
@@ -68,7 +71,7 @@ namespace Assistant
 				IntPtr hBmp = ClientCommunication.CaptureScreen( Config.GetBool( "CapFullScreen" ), timestamp );
 				using ( Image img = Image.FromHbitmap( hBmp ) )
 					img.Save( filename, GetFormat( type ) );
-				ClientCommunication.DeleteObject( hBmp );
+				DeleteObject( hBmp );
 			}
 			catch
 			{

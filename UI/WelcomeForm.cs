@@ -4,6 +4,7 @@ using System.Collections;
 using System.IO;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Net;
 using Microsoft.Win32;
 
 namespace Assistant
@@ -36,8 +37,6 @@ namespace Assistant
 		private System.Windows.Forms.Button browse;
 		private System.Windows.Forms.Button makeDef;
 		
-		private bool m_PatchEncy;
-		private string m_ClientPath;
 		private System.Windows.Forms.CheckBox showAtStart;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.ComboBox langSel;
@@ -45,14 +44,16 @@ namespace Assistant
 		private System.Windows.Forms.Button dataBrowse;
 		private System.Windows.Forms.ComboBox dataDir;
 		private System.Windows.Forms.GroupBox groupBox3;
-		private ClientLaunch m_Launch;
 
 		public string ClientPath{ get{ return m_ClientPath; } }
 		public ClientLaunch Client{ get{ return m_Launch; } } 
 		public bool PatchEncryption{ get{ return m_PatchEncy; } }
 		public string DataDirectory{ get{ if ( m_DataDir == "" || m_DataDir == "(Auto Detect)" ) m_DataDir = null; return m_DataDir; } }
 
-		private string m_DataDir;
+		private bool m_PatchEncy = false;
+		private string m_ClientPath = "";
+		private ClientLaunch m_Launch = ClientLaunch.Custom;
+		private string m_DataDir = "";
 
 		public WelcomeForm()
 		{
@@ -352,51 +353,60 @@ namespace Assistant
 		private class LoginCFG_SE : ServerEntry
 		{
 			public string RealAddress;
-			public LoginCFG_SE() : base( "Use Last (Don't change Login.cfg)", 0 )
+			public LoginCFG_SE() : base( "Use Last", 0 )
 			{
-				try 
+				RealAddress = Config.GetRegString( Registry.CurrentUser, "LastServer" );
+				Port = Utility.ToInt32( Config.GetRegString( Registry.CurrentUser, "LastPort" ), 0 );
+
+				if ( RealAddress == null || RealAddress == "" || Port == 0 )
 				{
-					string fileName = Ultima.Client.GetFilePath( "Login.cfg" );
-					if ( fileName == null || fileName == "" )
-						return;
-					string server = null, port = null;
-
-					if ( File.Exists( fileName ) )
+					RealAddress = "";
+					Port = 0;
+				
+					try 
 					{
-						using ( FileStream file = new FileStream( fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
-						using ( StreamReader cfg = new StreamReader( file ) )
-						{
-							string line;
-							while ( (line = cfg.ReadLine()) != null )
-							{
-								line = line.Trim();
-								if ( line != "" && Char.ToUpper( line[0] ) == 'L' && line.Length > 12 )
-								{
-									int comma = line.IndexOf( ',' );
-									if ( comma > 12 )
-									{
-										server = line.Substring( 12, comma-12 );
-										port = line.Substring( comma+1 );
+						string fileName = Ultima.Client.GetFilePath( "Login.cfg" );
+						if ( fileName == null || fileName == "" )
+							return;
+						string server = null, port = null;
 
-										break;
+						if ( File.Exists( fileName ) )
+						{
+							using ( FileStream file = new FileStream( fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
+							using ( StreamReader cfg = new StreamReader( file ) )
+							{
+								string line;
+								while ( (line = cfg.ReadLine()) != null )
+								{
+									line = line.Trim();
+									if ( line != "" && Char.ToUpper( line[0] ) == 'L' && line.Length > 12 )
+									{
+										int comma = line.IndexOf( ',' );
+										if ( comma > 12 )
+										{
+											server = line.Substring( 12, comma-12 );
+											port = line.Substring( comma+1 );
+
+											break;
+										}
 									}
 								}
 							}
 						}
-					}
 
-					if ( server != null )
-					{
-						Address = "(Use Last: "+server+")";
-						RealAddress = server;
+						if ( server != null )
+						{
+							Address = "(Use Last: "+server+")";
+							RealAddress = server;
+						}
+						if ( port != null )
+							Port = Utility.ToInt32( port, 0 );
 					}
-					if ( port != null )
-						Port = Utility.ToInt32( port, 0 );
-				}
-				catch
-				{
-					RealAddress = Address = "Use Last (Don't change login.cfg)";
-					Port = 0;
+					catch
+					{
+						RealAddress = Address = "Use Last";
+						Port = 0;
+					}
 				}
 			}
 		}
@@ -511,13 +521,14 @@ namespace Assistant
 			patchEncy.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy" ), 1 ) != 0;
 			useEnc.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc" ), 0 ) != 0;
 			
-			LoginCFG_SE lse;
+			LoginCFG_SE lse = new LoginCFG_SE();
 			UOGamers_SE uog;
 
 			serverList.BeginUpdate();
 
-			serverList.Items.Add( lse=new LoginCFG_SE() );
-			serverList.SelectedItem = lse;
+			//serverList.Items.Add( lse=new LoginCFG_SE() );
+			//serverList.SelectedItem = lse;
+
 			for (int i=1; ;i++)
 			{
 				ServerEntry se;
@@ -552,8 +563,11 @@ namespace Assistant
 				serverList.SelectedItem = uog;
 
 			serverList.Items.Add( uog=new UOGamers_SE( "Electronic Arts/Origin Servers", "login.owo.com" ) );
-			if ( lse.RealAddress == uog.RealAddress && lse.Port == 7776 )
+			if ( lse.RealAddress == uog.RealAddress && ( lse.Port >= 7775 && lse.Port <= 7778 ) )
 				serverList.SelectedItem = uog;
+
+			if ( serverList.SelectedIndex == -1 )
+				serverList.SelectedIndex = 0;
 
 			serverList.EndUpdate();
 
@@ -667,7 +681,7 @@ namespace Assistant
 				se = new ServerEntry( serverList.Text.Trim(), thePort );
 			}
 
-			if ( se != null )
+			if ( se != null && se.Address != null )
 			{
 				if ( !( serverList.SelectedItem is UOGamers_SE ) )
 				{
@@ -675,8 +689,11 @@ namespace Assistant
 					serverList.Items.Insert( 1, se );
 				}
 
-				if ( se.Address != "" )
-					WriteLoginCFG( se.Address, se.Port );
+				//if ( se.Address != "" )
+				//	WriteLoginCFG( se.Address, se.Port );
+
+				Config.SetRegString( Registry.CurrentUser, "LastServer", se.Address );
+				Config.SetRegString( Registry.CurrentUser, "LastPort", se.Port.ToString() );
 			}
 
 			SaveData();
@@ -692,7 +709,7 @@ namespace Assistant
 
 		private void SaveData()
 		{
-			for (int i=1;i<serverList.Items.Count;i++)
+			for (int i=0;i<serverList.Items.Count;i++)
 			{
 				for (int j=i+1;j<serverList.Items.Count;j++)
 				{
@@ -704,7 +721,7 @@ namespace Assistant
 			}
 		
 			int num = 1;
-			for (int i=1;i<serverList.Items.Count;i++)
+			for (int i=0;i<serverList.Items.Count;i++)
 			{
 				ServerEntry se = (ServerEntry)serverList.Items[i];
 				if ( se is UOGamers_SE || se is LoginCFG_SE )
@@ -755,7 +772,7 @@ namespace Assistant
 				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, String.Format( "Dir{0}", num++ ), (string)dataDir.Items[i] );
 		}
 
-		private const string RazorLine = "; Razor Generated Entry";
+		/*private const string RazorLine = "; Razor Generated Entry";
 		private void WriteLoginCFG( string addr, int port )
 		{
 			string fileName = Ultima.Client.GetFilePath( "Login.cfg" );
@@ -795,7 +812,7 @@ namespace Assistant
 				cfg.WriteLine( RazorLine );
 				cfg.WriteLine( "LoginServer={0},{1}", addr.Trim(), port );
 			}
-		}
+		}*/
 
 		private void showAtStart_CheckedChanged(object sender, System.EventArgs e)
 		{

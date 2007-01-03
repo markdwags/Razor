@@ -141,7 +141,7 @@ namespace Assistant
 
 		private static uint m_NextCmdID = WM_USER+401;
 
-		public static int OnUOAMessage( MainForm razor, int Msg, int wParam, int lParam )//, int Msg, int wParam, int lParam )
+		public static int OnUOAMessage( MainForm razor, int Msg, int wParam, int lParam )
 		{
 			switch ( (UOAMessage)Msg )
 			{
@@ -499,7 +499,9 @@ namespace Assistant
 		private static unsafe extern void TranslateLogin( IntPtr loginFunc, string name, string shard );
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void TranslateDo( IntPtr translateFunc, string inText, StringBuilder outText, ref uint outLen );
-		
+		[DllImport( "Crypt.dll" )]
+		private static unsafe extern void SetServer( uint ip, ushort port );
+
 		private enum Loader_Error
 		{
 			SUCCESS = 0,
@@ -524,9 +526,6 @@ namespace Assistant
 		internal static extern uint PostMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
 		[DllImport( "user32.dll" )]
 		internal static extern bool SetForegroundWindow( IntPtr hWnd );
-
-		[DllImport( "Gdi32.dll" )]
-		public static extern IntPtr DeleteObject( IntPtr hGdiObj );
 
 		[DllImport( "kernel32.dll" )]
 		private static extern ushort GlobalAddAtom( string str );
@@ -724,7 +723,7 @@ namespace Assistant
 			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x&0xFFFF)|((y&0xFFFF)<<16)) );
 		}
 
-		public static bool LaunchClient( string client )
+		public static int LaunchClient( string client )
 		{
 			/*string dir = Directory.GetCurrentDirectory();
 			Directory.SetCurrentDirectory( Path.GetDirectoryName( client ) );
@@ -760,11 +759,15 @@ namespace Assistant
 				}
 				catch
 				{
-					return false;
 				}
 			}
 
-			return ClientProc != null;
+			if ( err != Loader_Error.SUCCESS )
+				return -(int)err;
+			else if ( ClientProc == null )
+				return -99;
+			else
+				return pid;
 		}
 
 		private static bool m_ClientEnc = false;
@@ -805,6 +808,8 @@ namespace Assistant
 			m_OutSend = (Buffer*)(baseAddr+sizeof(Buffer)*3);
 			m_TitleStr = (byte*)(baseAddr+sizeof(Buffer)*4);
 
+			SetServer( m_ServerIP, m_ServerPort );
+
 			CommMutex = new Mutex();
 			CommMutex.Handle = GetCommMutex();
 
@@ -826,7 +831,16 @@ namespace Assistant
 
 			return true;
 		}
-
+		
+		private static uint m_ServerIP;
+		private static ushort m_ServerPort;
+		
+		internal static void SetConnectionInfo( IPAddress addr, int port )
+		{
+			m_ServerIP = (uint)addr.Address;
+			m_ServerPort = (ushort)port;
+		}
+		
 		public static void SetNegotiate( bool negotiate )
 		{
 			IntPtr wnd = FindUOWindow();
@@ -1194,8 +1208,10 @@ namespace Assistant
 					break;
 				case UONetMessage.Close:
 					ClientProc = null;
-					try { PacketPlayer.Stop(); }  catch {}
-					try { AVIRec.Stop(); } catch {}
+					try { PacketPlayer.Stop(); }  
+					catch {}
+					try { AVIRec.Stop(); } 
+					catch {}
 					Engine.MainWindow.CanClose = true;
 					Engine.MainWindow.Close();
 					break;
@@ -1283,7 +1299,7 @@ namespace Assistant
 					FindData.Message( (wParam&0xFFFF0000)>>16, lParam );
 					break;
 
-				// Unknown
+					// Unknown
 				default:
 					MessageBox.Show( Engine.ActiveWindow, "Unknown message from uo client\n" + ((int)wParam).ToString(), "Error?" );
 					break;
@@ -1443,7 +1459,7 @@ namespace Assistant
 				bool blocked = false;
 				switch ( path )
 				{
-					// yes it should be this way
+						// yes it should be this way
 					case PacketPath.ClientToServer:
 					{
 						blocked = !PacketPlayer.ClientPacket( p );

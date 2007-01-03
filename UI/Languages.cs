@@ -341,6 +341,14 @@ namespace Assistant
 		TooFar,
 		DragDropQueueFull,
 		ToggleWarPeace,
+		VetRewardGump,
+		ForceSizeBad,
+		ScavengerHB,
+		RestockHBA1,
+		UseOnceHBA1,
+		SellHB,
+		OrganizerHBA1,
+		BadServerAddr,
 
 		__End
 	}

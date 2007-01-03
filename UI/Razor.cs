@@ -5653,9 +5653,19 @@ namespace Assistant
 			forceSizeX.Enabled = forceSizeY.Enabled = gameSize.Checked;
 
 			if ( gameSize.Checked )
-				ClientCommunication.SetGameSize( Utility.ToInt32( forceSizeX.Text, 800 ), Utility.ToInt32( forceSizeY.Text, 600 ) );
+			{
+				int x = Utility.ToInt32( forceSizeX.Text, 800 );
+				int y = Utility.ToInt32( forceSizeY.Text, 600 );
+
+				if ( x < 100 || y < 100 || x > 2000 || y > 2000 )
+					MessageBox.Show( this, Language.GetString( LocString.ForceSizeBad ), "Bad Size", MessageBoxButtons.OK, MessageBoxIcon.Stop );
+				else
+					ClientCommunication.SetGameSize( x, y );
+			}
 			else
+			{
 				ClientCommunication.SetGameSize( 800, 600 );
+			}
 
 			if ( !m_Initializing )
 				MessageBox.Show( this, Language.GetString( LocString.RelogRequired ), "Relog Required", MessageBoxButtons.OK, MessageBoxIcon.Information );
@@ -5664,21 +5674,40 @@ namespace Assistant
 
 		private void forceSizeX_TextChanged(object sender, System.EventArgs e)
 		{
-			Config.SetProperty( "ForceSizeX", Utility.ToInt32( forceSizeX.Text, 800 ) );
+			int x = Utility.ToInt32( forceSizeX.Text, 600 );
+			if ( x >= 100 && x <= 2000 )
+				Config.SetProperty( "ForceSizeX", x );
 			if ( !m_Initializing )
 			{
-				m_ResizeTimer.Stop();
-				m_ResizeTimer.Start();
+				if ( x < 100 || x > 2000 )
+				{
+					MessageBox.Show( this, Language.GetString( LocString.ForceSizeBad ), "Bad Size", MessageBoxButtons.OK, MessageBoxIcon.Stop );
+				}
+				else
+				{
+					m_ResizeTimer.Stop();
+					m_ResizeTimer.Start();
+				}
 			}
 		}
 
 		private void forceSizeY_TextChanged(object sender, System.EventArgs e)
 		{
-			Config.SetProperty( "ForceSizeY", Utility.ToInt32( forceSizeY.Text, 600 ) );
+			int y = Utility.ToInt32( forceSizeY.Text, 600 );
+			if ( y >= 100 && y <= 2000 )
+				Config.SetProperty( "ForceSizeY", y );
+
 			if ( !m_Initializing )
 			{
-				m_ResizeTimer.Stop();
-				m_ResizeTimer.Start();
+				if ( y < 100 || y > 2000 )
+				{
+					MessageBox.Show( this, Language.GetString( LocString.ForceSizeBad ), "Bad Size", MessageBoxButtons.OK, MessageBoxIcon.Stop );
+				}
+				else
+				{
+					m_ResizeTimer.Stop();
+					m_ResizeTimer.Start();
+				}
 			}
 		}
 

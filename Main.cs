@@ -145,6 +145,10 @@ namespace Assistant
 				{
 					showWelcome = true;
 				}
+				else if ( arg == "--nowelcome" )
+				{
+					showWelcome = false;
+				}
 				else if ( arg == "--pid" && i+1 < Args.Length )
 				{
 					i++;
@@ -160,6 +164,18 @@ namespace Assistant
 				{
 					i++;
 					dataDir = Args[i];
+				}
+				else if ( arg == "--server" && i+1 < Args.Length )
+				{
+					i++;
+					string[] split = Args[i].Split( ',', ':', ';', ' ' );
+					if ( split.Length >= 2 )
+					{
+						Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "LastServer", split[0] );
+						Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "LastPort", split[1] );
+
+						showWelcome = false;
+					}
 				}
 				else if ( arg == "--debug" )
 				{
@@ -216,7 +232,7 @@ namespace Assistant
 					dataDir = welcome.DataDirectory;
 					if ( launch == ClientLaunch.Custom )
 						clientPath = welcome.ClientPath;
-				}			
+				}
 			}
 
 			if ( dataDir != null && Directory.Exists( dataDir ) )
@@ -264,7 +280,7 @@ namespace Assistant
 			if ( attPID == -1 )
 			{
 				SplashScreen.Message = "Loading client...";
-				bool result = false;
+				int result = 0;
 				
 				if ( launch == ClientLaunch.TwoD )
 					clientPath = Ultima.Client.GetFilePath( "client.exe" );
@@ -277,11 +293,28 @@ namespace Assistant
 				if ( clientPath != null && File.Exists( clientPath ) )
 					result = ClientCommunication.LaunchClient( clientPath );
 
-				if ( !result )
+				if ( result <= 0 )
 				{
-					MessageBox.Show( SplashScreen.Instance, String.Format( "Unable to find the client specified.\n{0}: \"{1}\"", launch.ToString(), clientPath != null ? clientPath : "-null-" ), "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop );
+					MessageBox.Show( SplashScreen.Instance, String.Format( "Unable to find the client specified. (Error: {2})\n{0}: \"{1}\"", launch.ToString(), clientPath != null ? clientPath : "-null-", result ), "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop );
 					SplashScreen.End();
 					return;
+				}
+
+				string addr = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "LastServer" );
+				int port = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "LastPort" ), 0 );
+
+				// if these are null then the registry entry does not exist (old razor version)
+				if ( addr != null )
+				{
+					IPAddress ip = Resolve( addr );
+					if ( ip == IPAddress.None || port == 0 )
+					{
+						MessageBox.Show( SplashScreen.Instance, Language.GetString( LocString.BadServerAddr ), "Bad Server Address", MessageBoxButtons.OK, MessageBoxIcon.Stop );
+						SplashScreen.End();
+						return;
+					}
+
+					ClientCommunication.SetConnectionInfo( ip, port );
 				}
 			}
 			else
@@ -349,6 +382,34 @@ namespace Assistant
 				if ( init != null )
 					init.Invoke( null, null );
 			}
+		}
+
+		private static IPAddress Resolve( string addr )
+		{
+			IPAddress ipAddr = IPAddress.None;
+
+			if ( addr == null || addr == string.Empty )
+				return ipAddr;
+
+			try
+			{
+				ipAddr = IPAddress.Parse( addr );
+			}
+			catch
+			{
+				try
+				{
+					IPHostEntry iphe = Dns.Resolve( addr );
+
+					if ( iphe.AddressList.Length > 0 )
+						ipAddr = iphe.AddressList[iphe.AddressList.Length - 1];
+				}
+				catch
+				{
+				}
+			}
+
+			return ipAddr;
 		}
 
 		private static void CheckVersion()

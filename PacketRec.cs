@@ -901,6 +901,14 @@ namespace Assistant
 			ClientCommunication.SendToServer( new ResyncReq() );
 			World.Player.Resync();
 			ClientCommunication.RequestTitlebarUpdate();
+
+			if ( ClientCommunication.AllowBit( FeatureBit.LightFilter ) && World.Player != null )
+			{
+				World.Player.LocalLightLevel = 0;
+
+				ClientCommunication.SendToClient( new GlobalLightLevel( 0 ) );
+				ClientCommunication.SendToClient( new PersonalLightLevel( World.Player ) );
+			}
 		}
 
 		private static void RemoveAll()

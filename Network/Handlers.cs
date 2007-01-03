@@ -361,9 +361,13 @@ namespace Assistant
 			if ( Config.GetBool( "QueueActions" ) )
 			{
 				if ( item == null )
+				{
 					World.AddItem( item = new Item( serial ) );
+					item.Amount = amount;
+				}
+
 				DragDropManager.Drag( item, amount, true );
-				ClientCommunication.SendToClient( new RemoveObject( serial ) ); // remove the object from the client view
+				//ClientCommunication.SendToClient( new RemoveObject( serial ) ); // remove the object from the client view
 				args.Block = true;
 			}
 
@@ -1966,7 +1970,7 @@ namespace Assistant
 
 		private static void PersonalLight( PacketReader p, PacketHandlerEventArgs args )
 		{
-			if ( World.Player != null )
+			if ( World.Player != null && !args.Block )
 			{
 				p.ReadUInt32(); // serial
 				World.Player.LocalLightLevel = p.ReadSByte();
@@ -1975,7 +1979,7 @@ namespace Assistant
 
 		private static void GlobalLight( PacketReader p, PacketHandlerEventArgs args )
 		{
-			if ( World.Player != null )
+			if ( World.Player != null && !args.Block )
 				World.Player.GlobalLightLevel = p.ReadByte();
 		}
 

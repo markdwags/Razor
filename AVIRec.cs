@@ -9,6 +9,9 @@ namespace Assistant
 {
 	public class AVIRec
 	{
+		[System.Runtime.InteropServices.DllImport( "Gdi32.dll" )]
+		private static extern IntPtr DeleteObject( IntPtr hGdiObj );
+
 		public static bool Recording { get { return m_RecTimer != null && m_RecTimer.Running; } }
 		private static AVIFile m_Avi;
 		private static Timer m_RecTimer;
@@ -38,7 +41,7 @@ namespace Assistant
 				m_ResX = (int)(bmp.Width * sizeFactor);
 				m_ResY = (int)(bmp.Height * sizeFactor);
 			}
-			ClientCommunication.DeleteObject( hBmp );
+			DeleteObject( hBmp );
 
 			string filename;
 			string name = "Unknown";
@@ -135,7 +138,7 @@ namespace Assistant
 							ok = m_Avi.AddFrame( bmp );
 						}
 					}
-					ClientCommunication.DeleteObject( hBmp );
+					DeleteObject( hBmp );
 				}
 				catch
 				{

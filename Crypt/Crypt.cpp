@@ -635,9 +635,9 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	mf.AddEntry( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 ); // (end of a push offset), push 5000, push esi
 	mf.AddEntry( "Electronic Arts Inc.", 20 );
 
-	mf.AddEntry( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16, 0x00500000 );
+	mf.AddEntry( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16, 0x00500000 ); // current screen size
 	mf.AddEntry( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 ); // resize screen function
-	mf.AddEntry( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 );
+	mf.AddEntry( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 ); // redraw screen/edge function
 	mf.AddEntry( PACKET_TBL_STR, PACKET_TS_LEN );
 	mf.AddEntry( CRYPT_KEY_STR, CRYPT_KEY_LEN );
 	mf.AddEntry( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
@@ -651,7 +651,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	SizePtr = (SIZE*)mf.GetAddress( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16 );
 	if ( SizePtr )
 	{
-		addr = mf.GetAddress( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 );
+		addr = mf.GetAddress( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 ); 
 		if ( addr && *((unsigned char*)(addr-0x13)) == 0xE8 &&  *((unsigned char*)(addr-0x13+5)) == 0xE8 )
 		{
 			addr -= 0x12;
@@ -824,6 +824,15 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	//HookFunction( "kernel32.dll", "CreateFileA", 0, (unsigned long)CreateFileAHook, &OldCreateFileA, &CreateFileAAddress );
 }
 
+DLLFUNCTION void SetServer( unsigned int addr, unsigned short port )
+{
+	if ( pShared )
+	{
+		pShared->ServerIP = addr;
+		pShared->ServerPort = port;
+	}
+}
+
 bool CreateSharedMemory()
 {
 	char name[512];
@@ -987,6 +996,8 @@ int RecvData()
 
 					if ( *p_buff == 0xA9 && p_len >= 1+2+1+30+30 && p_len <= left )
 					{
+						// character list
+
 						unsigned char hash[16], test[16];
 
 						memcpy( pShared->AuthBits, p_buff + 1+2+1+30+1, 8 );
@@ -1008,6 +1019,8 @@ int RecvData()
 
 						if ( !ServerNegotiated )
 							memset( pShared->AuthBits, 0, 8 );
+
+						Forwarding = Forwarded = false;
 
 						break;
 					}
@@ -1154,6 +1167,9 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 					LoginServer = ClientLogin->Test( (BYTE)buff[0] ) == ((BYTE)0x80);
 				else
 					LoginServer = ((BYTE)buff[0]) == ((BYTE)0x80);
+
+				if ( LoginServer )
+					Forwarding = Forwarded = false;
 			}
 
 			WaitForSingleObject( CommMutex, INFINITE );
@@ -1173,7 +1189,7 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 
 					LoginServer = false;
 					Forwarding = false;
-					Forwarded = false;
+					//Forwarded = false;
 				}
 				else
 				{
@@ -1320,27 +1336,47 @@ void FlushSendData()
 
 int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 {
-	int retVal = (*(ConnFunc)OldConnect)( sock, addr, addrlen );
+	int retVal;
 
-	if ( retVal != SOCKET_ERROR )
+	if ( addr && addrlen >= sizeof(sockaddr_in) )
 	{
-		Log( "Connecting to %i", sock );
+		const sockaddr_in *old_addr = (const sockaddr_in *)addr;
+		sockaddr_in useAddr;
 
-		CreateEncryption();
+		memcpy( &useAddr, old_addr, sizeof(sockaddr_in) );
 
-		Seeded = false;
-		LoginServer = false;
-		FirstRecv = true;
-		FirstSend = true;
-		Forwarding = Forwarded = false;
+		if ( pShared->ServerIP != 0 )
+		{
+			useAddr.sin_addr.S_un.S_addr = pShared->ServerIP;
+			useAddr.sin_port = htons( pShared->ServerPort );
+		}
+		
+		retVal = (*(ConnFunc)OldConnect)( sock, (sockaddr*)&useAddr, sizeof(sockaddr_in) );
 
-		WaitForSingleObject( CommMutex, INFINITE );
-		CurrentConnection = sock;
-		pShared->OutRecv.Length = pShared->InRecv.Length = pShared->OutSend.Length = pShared->InSend.Length = 0;
-		pShared->ForceDisconn = false;
-		ReleaseMutex( CommMutex );
+		if ( retVal != SOCKET_ERROR )
+		{
+			Log( "Connecting to %i", sock );
 
-		PostMessage( hPostWnd, WM_UONETEVENT, CONNECT, ((sockaddr_in*)addr)->sin_addr.S_un.S_addr );
+			CreateEncryption();
+
+			Seeded = false;
+			LoginServer = false;
+			FirstRecv = true;
+			FirstSend = true;
+			Forwarding = Forwarded = false;
+
+			WaitForSingleObject( CommMutex, INFINITE );
+			CurrentConnection = sock;
+			pShared->OutRecv.Length = pShared->InRecv.Length = pShared->OutSend.Length = pShared->InSend.Length = 0;
+			pShared->ForceDisconn = false;
+			ReleaseMutex( CommMutex );
+
+			PostMessage( hPostWnd, WM_UONETEVENT, CONNECT, useAddr.sin_addr.S_un.S_addr );
+		}
+	}
+	else
+	{
+		retVal = (*(ConnFunc)OldConnect)( sock, addr, addrlen );
 	}
 
 	return retVal;

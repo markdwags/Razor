@@ -152,7 +152,7 @@ namespace Assistant
 
 				if ( item.Serial == serial )
 				{
-					ClientCommunication.SendToClient( new UnicodeMessage( item.Serial, item.ItemID, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", String.Format( "(UseOnce Agent #{0})", i+1 ) ) );
+					ClientCommunication.SendToClient( new UnicodeMessage( item.Serial, item.ItemID, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.Format( LocString.UseOnceHBA1, i+1 ) ) );
 					break;
 				}
 			}
@@ -381,6 +381,20 @@ namespace Assistant
 		{
 			m_Items = new ArrayList();
 			PacketHandler.RegisterServerToClientViewer( 0x9E, new PacketViewerCallback( OnVendorSell ) );
+			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
+		}
+
+		private void OnSingleClick( PacketReader pvSrc, PacketHandlerEventArgs args )
+		{
+			Serial serial = pvSrc.ReadUInt32();
+			if ( m_HotBag == serial )
+			{
+				ushort gfx = 0;
+				Item c = World.FindItem( m_HotBag );
+				if ( c != null )
+					gfx = c.ItemID.Value;
+				ClientCommunication.SendToClient( new UnicodeMessage( m_HotBag, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.GetString( LocString.SellHB ) ) );
+			}
 		}
 
 		public override void Clear()
@@ -631,7 +645,7 @@ namespace Assistant
 		{
 			m_Items = new ArrayList();
 			m_Num = num;
-			HotKey.Add( HKCategory.Agents, HKSubCat.None, String.Format( "{0} {1}", Language.GetString( LocString.OrganizerAgent ), m_Num ), new HotKeyCallback( Organize ) );
+			HotKey.Add( HKCategory.Agents, HKSubCat.None, String.Format( "{0}-{1}", Language.GetString( LocString.OrganizerAgent ), m_Num ), new HotKeyCallback( Organize ) );
 			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
 		}
 
@@ -644,11 +658,12 @@ namespace Assistant
 				Item c = World.FindItem( m_Cont );
 				if ( c != null )
 					gfx = c.ItemID.Value;
-				ClientCommunication.SendToClient( new UnicodeMessage( m_Cont, gfx, Assistant.MessageType.Label, 0x3B2, 3, "ENU", "", "(Organizer Bag)" ) );
+				ClientCommunication.SendToClient( new UnicodeMessage( m_Cont, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.Format( LocString.OrganizerHBA1, m_Num ) ) );
 			}
 		}
 
 		public override string Name{ get{ return String.Format( "{0}-{1}", Language.GetString( LocString.Organizer ), m_Num ); } }
+
 		public override void OnSelected( ListBox subList, params Button[] buttons )
 		{
 			m_SubList = subList;
@@ -1080,6 +1095,20 @@ namespace Assistant
 			m_Items = new ArrayList();
 
 			HotKey.Add( HKCategory.Agents, LocString.ClearScavCache, new HotKeyCallback( ClearCache ) );
+			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
+		}
+
+		private void OnSingleClick( PacketReader pvSrc, PacketHandlerEventArgs args )
+		{
+			Serial serial = pvSrc.ReadUInt32();
+			if ( m_Bag == serial )
+			{
+				ushort gfx = 0;
+				Item c = World.FindItem( m_Bag );
+				if ( c != null )
+					gfx = c.ItemID.Value;
+				ClientCommunication.SendToClient( new UnicodeMessage( m_Bag, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.GetString( LocString.ScavengerHB ) ) );
+			}
 		}
 
 		public override void Clear()
@@ -1374,7 +1403,7 @@ namespace Assistant
 			Serial serial = p.ReadUInt32();
 			ushort gump = p.ReadUInt16();
 
-			if ( gump != 0x30 || !serial.IsMobile || !ClientCommunication.AllowBit( FeatureBit.BuyAgent ) )
+			if ( gump != 0x30 || !serial.IsMobile || !ClientCommunication.AllowBit( FeatureBit.BuyAgent ) || World.Player == null )
 				return;
 
 			Mobile vendor = World.FindMobile( serial );
@@ -1382,7 +1411,7 @@ namespace Assistant
 				return;
 
 			Item pack = vendor.GetItemOnLayer( Layer.ShopBuy );
-			if ( pack == null || pack.Contains.Count <= 0 )
+			if ( pack == null || pack.Contains == null || pack.Contains.Count <= 0 )
 				return;
 
 			pack.Contains.Sort( ItemXYComparer.Instance );
@@ -1395,15 +1424,19 @@ namespace Assistant
 			for (int i=0;i<pack.Contains.Count;i++)
 			{
 				Item item = (Item)pack.Contains[i];
+				if ( item == null )
+					continue;
 
 				foreach ( BuyAgent ba in m_Instances )
 				{
-					if ( !ba.m_Enabled )
+					if ( ba == null || ba.m_Items == null || !ba.m_Enabled )
 						continue;
 
 					for(int a=0;a<ba.m_Items.Count;a++)
 					{
 						BuyEntry b = (BuyEntry)ba.m_Items[a];
+						if ( b == null )
+							continue;
 
 						bool dupe = false;
 						foreach ( VendorBuyItem vbi in buyList )
@@ -1662,19 +1695,38 @@ namespace Assistant
 	{
 		public static void Initialize()	
 		{ 
-			Agent.Add( new RestockAgent() ); 
+			for (int i=1;i<=5;i++)
+				Agent.Add( new RestockAgent( i ) ); 
 		}
 
 		private ListBox m_SubList;
 		private ArrayList m_Items;
 		private Button m_HotBTN;
 		private Serial m_HotBag;
+		private int m_Num;
 		
-		public RestockAgent()
+		public RestockAgent( int num )
 		{
+			m_Num = num;
+
 			m_Items = new ArrayList();
-			HotKey.Add( HKCategory.Agents, LocString.RestockAgent, new HotKeyCallback( OnHotKey ) );
-			HotKey.Add( HKCategory.Agents, LocString.SetRestockHB, new HotKeyCallback( SetHB ) );
+			
+			HotKey.Add( HKCategory.Agents, HKSubCat.None, String.Format( "{0}-{1}", Language.GetString( LocString.RestockAgent ), m_Num ), new HotKeyCallback( OnHotKey ) );
+			HotKey.Add( HKCategory.Agents, HKSubCat.None, String.Format( "{0}-{1}", Language.GetString( LocString.SetRestockHB ), m_Num ), new HotKeyCallback( SetHB ) );
+			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
+		}
+
+		private void OnSingleClick( PacketReader pvSrc, PacketHandlerEventArgs args )
+		{
+			Serial serial = pvSrc.ReadUInt32();
+			if ( m_HotBag == serial )
+			{
+				ushort gfx = 0;
+				Item c = World.FindItem( m_HotBag );
+				if ( c != null )
+					gfx = c.ItemID.Value;
+				ClientCommunication.SendToClient( new UnicodeMessage( m_HotBag, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.Format( LocString.RestockHBA1, m_Num ) ) );
+			}
 		}
 
 		public override void Clear()
@@ -1682,7 +1734,7 @@ namespace Assistant
 			m_Items.Clear();
 		}
 
-		public override string Name{ get{ return Language.GetString( LocString.Restock ); } }
+		public override string Name{ get{ return String.Format( "{0}-{1}", Language.GetString( LocString.Restock ), m_Num ); } }
 
 		public override void OnSelected( ListBox subList, params Button[] buttons )
 		{
