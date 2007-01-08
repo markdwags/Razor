@@ -14,3 +14,4 @@ Additions:
 Changes/Fixes:
 -Profile overwriting problems have been fixed.
 -The values entered for Game Window size are now (somewhat) bounds checked.
+-Removed some redundant logic from the Network code of Razor.  This may greatly improve Razor's speed on some systems.

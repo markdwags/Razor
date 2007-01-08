@@ -974,11 +974,7 @@ int RecvData()
 			if ( ServerEncrypted )
 				ServerCrypt->DecryptFromServer( (BYTE*)buff, (BYTE*)buff, ackLen );
 
-			if ( tempBuff == NULL )
-				tempBuff = new char[SHARED_BUFF_SIZE];
-
-			int blen = Compression::Decompress( tempBuff, buff, ackLen );
-			memcpy( &pShared->InRecv.Buff[pShared->InRecv.Start+pShared->InRecv.Length], tempBuff, blen );
+			int blen = Compression::Decompress( (char*)&pShared->InRecv.Buff[pShared->InRecv.Start+pShared->InRecv.Length], buff, ackLen );
 			pShared->InRecv.Length += blen;
 
 			if ( !InGame && AllowNegotiate && !ServerNegotiated && pShared )
@@ -1088,13 +1084,10 @@ int PASCAL HookRecv( SOCKET sock, char *buff, int len, int flags )
 				if ( blen <= 0 || blen > pShared->OutRecv.Length || ackLen+blen > len )
 					break;
 
-				if ( tempBuff == NULL )
-					tempBuff = new char[SHARED_BUFF_SIZE];
-				memcpy( tempBuff, &pShared->OutRecv.Buff[pShared->OutRecv.Start], blen );
+				ackLen += Compression::Compress( &buff[ackLen], (char*)&pShared->OutRecv.Buff[pShared->OutRecv.Start], blen );
+				
 				pShared->OutRecv.Start += blen;
 				pShared->OutRecv.Length -= blen;
-
-				ackLen += Compression::Compress( &buff[ackLen], tempBuff, blen );
 			}
 
 			if ( ClientEncrypted && ackLen > 0 )
@@ -1298,20 +1291,22 @@ void FlushSendData()
 			} // END while
 		} // END if ( !InGame && !LoginServer
 		
-		if ( tempBuff == NULL )
-			tempBuff = new char[SHARED_BUFF_SIZE];
-
-		memcpy( tempBuff, &pShared->OutSend.Buff[pShared->OutSend.Start], outLen );
-
 		if ( ServerEncrypted )
 		{
-			if ( LoginServer )
-				ServerLogin->Encrypt( (BYTE*)tempBuff, (BYTE*)tempBuff, outLen );
-			else
-				ServerCrypt->EncryptForServer( (BYTE*)tempBuff, (BYTE*)tempBuff, outLen );
-		}
+			if ( tempBuff == NULL )
+				tempBuff = new char[SHARED_BUFF_SIZE];
 
-		ackLen = (*(NetIOFunc)OldSend)(CurrentConnection,(char*)tempBuff,outLen,0);
+			if ( LoginServer )
+				ServerLogin->Encrypt( (BYTE*)tempBuff, (BYTE*)&pShared->OutSend.Buff[pShared->OutSend.Start], outLen );
+			else
+				ServerCrypt->EncryptForServer( (BYTE*)tempBuff, (BYTE*)&pShared->OutSend.Buff[pShared->OutSend.Start], outLen );
+			
+			ackLen = (*(NetIOFunc)OldSend)(CurrentConnection,(char*)tempBuff,outLen,0);
+		}
+		else
+		{
+			ackLen = (*(NetIOFunc)OldSend)(CurrentConnection,(char*)&pShared->OutSend.Buff[pShared->OutSend.Start],outLen,0);
+		}
 
 		if ( ackLen == SOCKET_ERROR )
 		{
