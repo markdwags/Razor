@@ -128,8 +128,6 @@ extern HINSTANCE hInstance;
 extern SharedMemory *pShared;
 extern HANDLE CommMutex;
 
-LRESULT CALLBACK UOAWndProc( HWND, UINT, WPARAM, LPARAM );
-void Log( const char *format, ... );
 DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pId );
 DLLFUNCTION void Shutdown( bool closeClient );
 DLLFUNCTION HWND FindUOWindow();
@@ -140,6 +138,15 @@ DLLFUNCTION int GetUOProcId();
 DLLFUNCTION DWORD InitializeLibrary( const char * );
 DLLFUNCTION HANDLE GetCommMutex();
 
+LRESULT CALLBACK UOAWndProc( HWND, UINT, WPARAM, LPARAM );
+void Log( const char *format, ... );
+void MemoryPatch( unsigned long, unsigned long );
+void MemoryPatch( unsigned long, int, int );
+void MemoryPatch( unsigned long, const void *, int );
+void RedrawTitleBar( HWND, bool );
+void FreeArt();
+void InitThemes();
+bool PatchStatusBar( BOOL preAOS );
 
 #define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
 #define PACKET_TS_LEN 24

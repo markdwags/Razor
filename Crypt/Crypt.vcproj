@@ -30,7 +30,8 @@
 				DebugInformationFormat="4"/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="$(ProjectDir)/GenerateRazorChecksumH.exe"
+				CommandLine="$(ProjectDir)/GenerateRazorChecksumH.exe
+"
 				AdditionalDependencies="Razor.exe"
 				Outputs="Checksum.h"/>
 			<Tool
@@ -145,6 +146,9 @@
 			</File>
 			<File
 				RelativePath=".\MemFinder.cpp">
+			</File>
+			<File
+				RelativePath=".\OldStatusBar.cpp">
 			</File>
 			<File
 				RelativePath=".\OSIEncryption.cpp">

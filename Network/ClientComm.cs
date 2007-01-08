@@ -1128,6 +1128,7 @@ namespace Assistant
 				Engine.MainWindow.MapWindow.Close();
 			PacketHandlers.Party.Clear();
 			PacketHandlers.IgnoreGumps.Clear();
+			Config.Save();
 
 			TranslateEnabled = false;
 		}
@@ -1207,11 +1208,10 @@ namespace Assistant
 					OnLogout( false );
 					break;
 				case UONetMessage.Close:
+					OnLogout();
 					ClientProc = null;
-					try { PacketPlayer.Stop(); }  
-					catch {}
-					try { AVIRec.Stop(); } 
-					catch {}
+					try { PacketPlayer.Stop(); } catch {}
+					try { AVIRec.Stop(); } catch {}
 					Engine.MainWindow.CanClose = true;
 					Engine.MainWindow.Close();
 					break;
