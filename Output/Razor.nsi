@@ -9,7 +9,7 @@
 
   ;Name and file
   Name "Razor"
-  OutFile "Razor104_Inst.exe"
+  OutFile "Razor105_Inst.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\Razor"
