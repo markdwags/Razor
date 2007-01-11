@@ -152,7 +152,7 @@ namespace Assistant
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "SplashScreen";
-			this.TopMost = true;
+			this.TopMost = false;
 			this.Load += new System.EventHandler(this.SplashScreen_Load);
 			this.ResumeLayout(false);
 

@@ -502,10 +502,11 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetServer( uint ip, ushort port );
 
-		private enum Loader_Error
+		public enum Loader_Error
 		{
 			SUCCESS = 0,
 			NO_OPEN_EXE,
+			NO_MAP_EXE,
 			NO_READ_EXE_DATA,
 
 			NO_RUN_EXE,
@@ -514,10 +515,12 @@ namespace Assistant
 			NO_WRITE,
 			NO_VPROTECT,
 			NO_READ,
+
+			UNKNOWN_ERROR = 99
 		};
 
 		[DllImport( "Loader.dll" )]
-		private static unsafe extern uint Load( string exe, string dll, string func, void *dllData, int dataLen, out int pid );
+		private static unsafe extern uint Load( string exe, string dll, string func, void *dllData, int dataLen, out uint pid );
 
 		[DllImport( "msvcrt.dll" )]
 		public static unsafe extern void memcpy( void *to, void *from, int len );
@@ -723,7 +726,7 @@ namespace Assistant
 			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x&0xFFFF)|((y&0xFFFF)<<16)) );
 		}
 
-		public static int LaunchClient( string client )
+		public static Loader_Error LaunchClient( string client )
 		{
 			/*string dir = Directory.GetCurrentDirectory();
 			Directory.SetCurrentDirectory( Path.GetDirectoryName( client ) );
@@ -744,16 +747,14 @@ namespace Assistant
 			}*/
 
 			string dll = Path.Combine( Engine.BaseDirectory, "Crypt.dll" );
-			int pid = 0;
-
+			uint pid = 0;
 			Loader_Error err = (Loader_Error)Load( client, dll, "OnAttach", null, 0, out pid );
 
-			if ( err == Loader_Error.SUCCESS && pid > 0 )
+			if ( err == Loader_Error.SUCCESS )
 			{
 				try
 				{
-					ClientProc = Process.GetProcessById( pid );
-
+					ClientProc = Process.GetProcessById( (int)pid );
 					if ( ClientProc != null && !Config.GetBool( "SmartCPU" ) )
 						ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );
 				}
@@ -762,12 +763,10 @@ namespace Assistant
 				}
 			}
 
-			if ( err != Loader_Error.SUCCESS )
-				return -(int)err;
-			else if ( ClientProc == null )
-				return -99;
+			if ( ClientProc == null )
+				return Loader_Error.UNKNOWN_ERROR;
 			else
-				return pid;
+				return err;
 		}
 
 		private static bool m_ClientEnc = false;
@@ -1492,22 +1491,11 @@ namespace Assistant
 									p.Seek( 3, SeekOrigin.Begin );
 									p.WriteAsciiFixed( "", (int)p.Length-3 );
 
-									// CHEAT UO.exe 1 251--
-									int features = 0;
-									if ( (World.Player.Features & 0x8000) == 0 )
-									{
-										if ( (World.Player.Features & 1) != 0 )
-											features = 2;
-										if ( (World.Player.Features & 2) != 0 )
-											features |= 8;
-										features &= 0xFFFF;
-									}
-									else
-									{
-										features = World.Player.Features & 0x7FFF;
-									}
-
-									ClientCommunication.DoFeatures( features );
+									// CHEAT UO.exe 1/2 251--
+									// 1 = 2d
+									// 2 = 3d!
+									
+									ClientCommunication.DoFeatures( World.Player.Features );
 								}
 							}
 						}

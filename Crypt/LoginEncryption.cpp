@@ -72,4 +72,3 @@ DWORD LoginEncryption::GenerateBadSeed( DWORD oldSeed )
 	newSeed = ((newSeed >> 24) & 0xFF) | ((newSeed >> 8) & 0xFF00) | ((newSeed << 8) & 0xFF0000) | ((newSeed << 24) & 0xFF000000);
 	return htonl( newSeed ^ htonl( oldSeed ) );
 }
-

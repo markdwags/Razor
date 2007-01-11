@@ -14,4 +14,6 @@ Additions:
 Changes/Fixes:
 -Profile overwriting problems have been fixed.
 -The values entered for Game Window size are now (somewhat) bounds checked.
--Removed some redundant logic from the Network code of Razor.  This may greatly improve Razor's speed on some systems.
+-Removed some redundant logic from the network code.  This may greatly improve Razor's speed on some systems.
+-Fixed compatabilities issues with Windows 95/98/ME.  Razor should once again work on these Operating Systems.
+

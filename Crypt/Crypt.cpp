@@ -56,6 +56,9 @@ bool Forwarded = false;
 bool ClientEncrypted = false;
 bool ServerEncrypted = false;
 
+enum CLIENT_TYPE { TWOD = 1, THREED = 2 };
+CLIENT_TYPE ClientType = TWOD;
+
 //**************************************OSI Only Stuff*********************************
 DWORD CryptSeed = 0x7f000001;
 OSIEncryption *ClientCrypt = NULL;
@@ -461,12 +464,27 @@ DLLFUNCTION void BringToFront( HWND hWnd )
 #define CHEATPROC_STR "jTjAjHjC"
 #define CHEATPROC_LEN 8
 
-DLLFUNCTION void DoFeatures( int features )
+DLLFUNCTION void DoFeatures( int realFeatures )
 {
 	char ch;
 	int i, size = 9;
 	char pkt[256];
 	char *str = &pkt[8];
+
+	int features = 0;
+	if ( (realFeatures & 0x8000) == 0 )
+	{
+		if ( (realFeatures & 1) != 0 )
+			features = 2;
+		if ( (realFeatures & 2) != 0 )
+			features |= 8;
+		features &= 0xFFFF;
+	}
+	else
+	{
+		features = realFeatures & 0x7FFF;
+	}
+
 	//(byte)MessageType.Special, 0x02B2, 0x0003, sb
 	pkt[0] = 0x03;
 
@@ -478,7 +496,12 @@ DLLFUNCTION void DoFeatures( int features )
 	pkt[6] = 0x00;
 	pkt[7] = 0x03;
 
-	size += sprintf( str, "%c%cE%c%c %s 1 %i--\x00", 'C', 'H', 'A', 'T', "UO.exe", features );
+	
+	// CHEAT UO.exe 1 251--
+	// 1 = 2d
+	// 2 = 3d!
+
+	size += sprintf( str, "%c%cE%c%c %s %d %d--\x00", 'C', 'H', 'A', 'T', "UO.exe", ClientType, features );
 
 	pkt[1] = (size>>8)&0xFF;
 	pkt[2] = size&0xFF;
@@ -640,8 +663,12 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	mf.AddEntry( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
 	mf.AddEntry( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
 	mf.AddEntry( CHEATPROC_STR, CHEATPROC_LEN );
+	mf.AddEntry( "CHEAT %s", 8, 0x00500000 );
 
 	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
+
+	const BYTE defaultCheatKey[] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
+	memcpy( pShared->CheatKey, defaultCheatKey, 16 );
 
 	mf.Execute();
 
@@ -733,9 +760,14 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 		{
 			addr = mf.GetAddress( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
 			if ( addr )
+			{
 				LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_3D_LEN), (const DWORD*)(addr + CRYPT_KEY_3D_LEN + 19) );
+				ClientType = THREED;
+			}
 			else
+			{
 				CopyFailed = true;
+			}
 		}
 		else
 		{
@@ -764,6 +796,17 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 
 			if ( !IsBadReadPtr( (void*)(*((DWORD*)addr)), 16 ) )
 				memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
+		}
+	}
+	else
+	{
+		addr = mf.GetAddress( "CHEAT %s", 8 );
+		if ( addr )
+		{
+			addr -= 16;
+			if ( !IsBadReadPtr( (void*)(*((DWORD*)addr)), 16 ) )
+				memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
+			ClientType = THREED;
 		}
 	}
 	
@@ -1060,7 +1103,7 @@ int PASCAL HookRecv( SOCKET sock, char *buff, int len, int flags )
 				ackLen = pShared->OutRecv.Length;
 				memcpy( buff, &pShared->OutRecv.Buff[pShared->OutRecv.Start], ackLen );
 
-				if ( buff[0] == 0x8C )
+				if ( ((BYTE)buff[0]) == 0x8C )
 					LoginServer = false;
 
 				if ( Forwarding )
@@ -1187,7 +1230,7 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 					{
 						ClientLogin->Decrypt( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
 
-						if ( pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length] == 0xA0 )
+						if ( ((BYTE)pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]) == 0xA0 )
 							Forwarding = true;
 					}
 					else

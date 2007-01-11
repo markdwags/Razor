@@ -279,8 +279,9 @@ namespace Assistant
 
 			if ( attPID == -1 )
 			{
+				ClientCommunication.Loader_Error result = ClientCommunication.Loader_Error.UNKNOWN_ERROR;
+
 				SplashScreen.Message = "Loading client...";
-				int result = 0;
 				
 				if ( launch == ClientLaunch.TwoD )
 					clientPath = Ultima.Client.GetFilePath( "client.exe" );
@@ -293,7 +294,7 @@ namespace Assistant
 				if ( clientPath != null && File.Exists( clientPath ) )
 					result = ClientCommunication.LaunchClient( clientPath );
 
-				if ( result <= 0 )
+				if ( result != ClientCommunication.Loader_Error.SUCCESS )
 				{
 					MessageBox.Show( SplashScreen.Instance, String.Format( "Unable to find the client specified. (Error: {2})\n{0}: \"{1}\"", launch.ToString(), clientPath != null ? clientPath : "-null-", result ), "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop );
 					SplashScreen.End();

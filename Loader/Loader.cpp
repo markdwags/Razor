@@ -26,54 +26,51 @@ enum ERROR_TYPE
 	NO_WRITE,
 	NO_VPROTECT,
 	NO_READ,
+
+	UNKNOWN_ERROR = 99
 };
 
 __declspec(dllexport) DWORD __stdcall Load( const char *exe, const char *dll, const char *func, const void *dllData, int dataLen, DWORD *pid )
 {
-	IMAGE_OPTIONAL_HEADER32 *ioh;
-	IMAGE_DOS_HEADER *idh;
-	STARTUPINFO StartInfo;
-	PROCESS_INFORMATION ProcInfo;
-	HANDLE hFile, hMap;
-	LPVOID Entry;
 	SIZE_T Num;
 	char buff[MAX_PATH];
+	LPVOID Entry;
+	STARTUPINFO StartInfo;
+	PROCESS_INFORMATION ProcInfo;
+	IMAGE_DOS_HEADER idh;
+	IMAGE_OPTIONAL_HEADER32 ioh;
 
-	// first lets read the desired info from the exe file...
-	hFile = CreateFile( exe, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
-	if ( !hFile )
+	FILE *pExe = fopen( exe, "rb" );
+	if ( !pExe )
 	{
 		buff[0] = 0;
 		if ( GetShortPathName( exe, buff, MAX_PATH ) >= MAX_PATH )
 			buff[0] = 0;
-		hFile = CreateFile( buff, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
-		if ( !hFile )
+
+		pExe = fopen( buff, "rb" );
+		if ( !pExe )
 			return NO_OPEN_EXE;
 	}
 
-	hMap = CreateFileMapping( hFile, NULL, PAGE_READONLY|SEC_COMMIT, 0, 0, NULL );
-	if ( !hMap )
+	if ( fread( &idh, 1, sizeof(IMAGE_DOS_HEADER), pExe ) != sizeof(IMAGE_DOS_HEADER) )
 	{
-		CloseHandle( hFile );
-		return NO_MAP_EXE;
-	}
-
-	idh = (IMAGE_DOS_HEADER *)MapViewOfFile( hMap, FILE_MAP_READ, 0, 0, 0 );
-	if ( !idh )
-	{
-		CloseHandle( hMap );
-		CloseHandle( hFile );
+		fclose( pExe );
 		return NO_READ_EXE_DATA;
 	}
 
-    ioh = (IMAGE_OPTIONAL_HEADER32 *)(__int64(idh) + idh->e_lfanew + 4 + sizeof(IMAGE_FILE_HEADER));
-    
-	Entry = (LPVOID)(ioh->ImageBase + ioh->AddressOfEntryPoint); // ok we got the exe's entry point (first thing called, before main or WinMain)
+	fseek( pExe, idh.e_lfanew + 4 + sizeof(IMAGE_FILE_HEADER), SEEK_SET );
+	if ( fread( &ioh, 1, sizeof(IMAGE_OPTIONAL_HEADER32), pExe ) != sizeof(IMAGE_OPTIONAL_HEADER32) )
+	{
+		fclose( pExe );
+		return NO_READ_EXE_DATA;
+	}
 
-	// close the exe file
-	UnmapViewOfFile( idh );
-	CloseHandle( hMap );
-	CloseHandle( hFile );
+	Entry = (LPVOID)(ioh.ImageBase + ioh.AddressOfEntryPoint);
+	
+	//sprintf( buff, "magic: %X\nlfanew: %X\nimg_base: %X\naoep: %X\nmagic2: %X", idh.e_magic, idh.e_lfanew, ioh.ImageBase, ioh.AddressOfEntryPoint, ioh.Magic );
+	//MessageBox( NULL, buff, "Error", MB_OK );
+
+	fclose( pExe );
 
 	// find the exe's working directory
 	strcpy( buff, exe );
@@ -99,11 +96,17 @@ __declspec(dllexport) DWORD __stdcall Load( const char *exe, const char *dll, co
 	SIZE_T allocSize = dllNameLen + funcNameLen + dataLen + LoadAsmSize;
 
 	// allocate some space in the exe for our memory
-	DWORD ProcMem = (DWORD)VirtualAllocEx( ProcInfo.hProcess, NULL, allocSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE );
+	DWORD ProcMem = 0;
+	
+	ProcMem = (DWORD)VirtualAllocEx( ProcInfo.hProcess, NULL, allocSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE );
 	if ( !ProcMem )
 	{
-		TerminateProcess( ProcInfo.hProcess, 0 );
-		return NO_ALLOC_MEM;
+		ProcMem = 0x00700000;
+		if ( !VirtualProtectEx( ProcInfo.hProcess, (LPVOID)ProcMem, allocSize, PAGE_EXECUTE_READWRITE, (PDWORD)&Num ) )
+		{
+			TerminateProcess( ProcInfo.hProcess, 0 );
+			return NO_ALLOC_MEM;
+		}
 	}
 
 	char *toWrite = new char[allocSize];
@@ -116,9 +119,6 @@ __declspec(dllexport) DWORD __stdcall Load( const char *exe, const char *dll, co
 	// change protection to allow us to read/write the entry point (note: the old protection is not restored (so that we can change this space again later...))
 	if ( !VirtualProtectEx( ProcInfo.hProcess, Entry, 8, PAGE_EXECUTE_READWRITE, (PDWORD)&Num ) )
 	{
-		char temp[256];
-		sprintf( temp, "Entry = %llx, GetLastError() = %d", (__int64)Entry, GetLastError() );
-		MessageBox( NULL, temp, "ERROR!", 0 );
 		TerminateProcess( ProcInfo.hProcess, 0 );
 		return NO_VPROTECT;
 	}

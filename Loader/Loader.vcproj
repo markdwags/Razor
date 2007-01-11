@@ -82,6 +82,7 @@
 				Name="VCLinkerTool"
 				OutputFile="../Output/Loader.dll"
 				LinkIncremental="1"
+				ModuleDefinitionFile="Loader.def"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -140,9 +141,6 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath=".\Loader.h">
-			</File>
 			<File
 				RelativePath=".\stdafx.h">
 			</File>

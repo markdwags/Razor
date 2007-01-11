@@ -3534,8 +3534,8 @@ namespace Assistant
 					{
 						if ( MessageBox.Show( this, Language.GetString( LocString.ProfExists ), "Load Profile?", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
 						{
-							profiles.SelectedIndex = i;
 							Config.Save();
+							profiles.SelectedIndex = i;
 							if ( !Config.LoadProfile( str ) )
 							{
 								MessageBox.Show( this, Language.GetString( LocString.ProfLoadE ), "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
@@ -3554,10 +3554,10 @@ namespace Assistant
 					}
 				}
 
+				Config.Save();
 				Config.NewProfile( str );
 				profiles.Items.Add( str );
 				profiles.SelectedIndex = sel;
-				Config.Save();
 				InitConfig();
 				if ( World.Player != null )
 					Config.SetProfileFor( World.Player );
