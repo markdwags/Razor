@@ -208,25 +208,91 @@ namespace Assistant
 
 		private static Serial m_OldLT = Serial.Zero;
 
+		private static void RemoveTextFlags( UOEntity m )
+		{
+			if ( m != null )
+			{
+				bool oplchanged = false;
+
+				oplchanged |= m.ObjPropList.Remove( Language.GetString( LocString.LastTarget ) );
+				oplchanged |= m.ObjPropList.Remove( Language.GetString( LocString.HarmfulTarget ) );
+				oplchanged |= m.ObjPropList.Remove( Language.GetString( LocString.BeneficialTarget ) );
+
+				if ( oplchanged )
+					ClientCommunication.SendToClient( m.ObjPropList.BuildPacket() );
+			}
+		}
+
+		private static void AddTextFlags( UOEntity m )
+		{
+			if ( m != null )
+			{
+				bool oplchanged = false;
+
+				if ( Config.GetBool( "SmartLastTarget" ) )
+				{
+					if ( m_LastHarmTarg != null && m_LastHarmTarg.Serial == m.Serial )
+					{
+						oplchanged = true; 
+						m.ObjPropList.Add( Language.GetString( LocString.HarmfulTarget ) );
+					}
+
+					if ( m_LastBeneTarg != null && m_LastBeneTarg.Serial == m.Serial )
+					{
+						oplchanged = true; 
+						m.ObjPropList.Add( Language.GetString( LocString.BeneficialTarget ) );
+					}
+				}
+
+				if ( !oplchanged && m_LastTarget != null && m_LastTarget.Serial == m.Serial )
+				{
+					oplchanged = true; 
+					m.ObjPropList.Add( Language.GetString( LocString.LastTarget ) );
+				}
+
+				if ( oplchanged )
+					ClientCommunication.SendToClient( m.ObjPropList.BuildPacket() );
+			}
+		}
+
 		private static void LastTargetChanged()
 		{
 			if ( m_LastTarget != null )
 			{
 				bool lth = Config.GetInt( "LTHilight" ) != 0;
-				Mobile m = World.FindMobile( m_LastTarget.Serial );
-
-				if ( m != null )
+				
+				if ( m_OldLT.IsItem )
 				{
-					if ( IsLastTarget( m ) && lth )
-						ClientCommunication.SendToClient( new MobileIncoming( m ) );
-					CheckLastTargetRange( m );
+					RemoveTextFlags( World.FindItem( m_OldLT ) );
+				}
+				else
+				{
+					Mobile m = World.FindMobile( m_OldLT );
+					if ( m != null )
+					{
+						if ( lth )
+							ClientCommunication.SendToClient( new MobileIncoming( m ) );
+
+						RemoveTextFlags( m );
+					}
 				}
 
-				if ( lth )
+				if ( m_LastTarget.Serial.IsItem )
 				{
-					m = World.FindMobile( m_OldLT );
+					AddTextFlags( World.FindItem( m_LastTarget.Serial ) );
+				}
+				else
+				{
+					Mobile m = World.FindMobile( m_LastTarget.Serial );
 					if ( m != null )
-						ClientCommunication.SendToClient( new MobileIncoming( m ) );
+					{
+						if ( IsLastTarget( m ) && lth )
+							ClientCommunication.SendToClient( new MobileIncoming( m ) );
+					
+						CheckLastTargetRange( m );
+
+						AddTextFlags( m );
+					}
 				}
 
 				m_OldLT = m_LastTarget.Serial;

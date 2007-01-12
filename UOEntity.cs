@@ -11,6 +11,9 @@ namespace Assistant
 		private ushort m_Hue;
 		private bool m_Deleted;
 		private Hashtable m_ContextMenu = new Hashtable();
+		protected ObjectPropertyList m_ObjPropList = null;
+
+		public ObjectPropertyList ObjPropList { get { return m_ObjPropList; } }
 
 		public virtual void SaveState( BinaryWriter writer )
 		{
@@ -27,6 +30,8 @@ namespace Assistant
 			m_Pos = new Point3D( reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32() );
 			m_Hue = reader.ReadUInt16();
 			m_Deleted = false;
+
+			m_ObjPropList = new ObjectPropertyList( this );
 		}
 
 		public virtual void AfterLoad()
@@ -35,6 +40,8 @@ namespace Assistant
 
 		public UOEntity( Serial ser )
 		{
+			m_ObjPropList = new ObjectPropertyList( this );
+
 			m_Serial = ser;
 			m_Deleted = false;
 		}
@@ -85,6 +92,29 @@ namespace Assistant
 		public override int GetHashCode()
 		{
 			return m_Serial.GetHashCode();
+		}
+
+		public int OPLHash
+		{ 
+			get
+			{
+				if ( m_ObjPropList != null )
+					return m_ObjPropList.Hash;
+				else
+					return 0;
+			}
+		}
+
+		public bool ModifiedOPL { get { return m_ObjPropList.Customized; } }
+		
+		public void ReadPropertyList( PacketReader p )
+		{
+			m_ObjPropList.Read( p );
+		}
+
+		public Packet BuildOPLPacket()
+		{ 
+			return m_ObjPropList.BuildPacket();
 		}
 	}
 }

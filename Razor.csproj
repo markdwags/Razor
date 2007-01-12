@@ -175,6 +175,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ObjectPropertyList.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "PacketRec.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -295,6 +300,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "HotKeys\Misc.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "HotKeys\Skills.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -306,11 +316,6 @@
                 />
                 <File
                     RelPath = "HotKeys\Undress.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "HotKeys\Use.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -349,6 +349,11 @@ namespace Assistant
 		SellHB,
 		OrganizerHBA1,
 		BadServerAddr,
+		PartyAccept,
+		PartyDecline,
+		HarmfulTarget,
+		BeneficialTarget,
+		RazorFriend,
 
 		__End
 	}

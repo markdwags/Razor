@@ -99,6 +99,9 @@ namespace Assistant
 			m_Items	= new ArrayList();
 			m_Map =	World.Player ==	null ? (byte)0 : World.Player.Map;
 			m_Visible =	true;
+
+			if ( FriendsAgent.IsFriend( this ) )
+				ObjPropList.Add( Language.GetString( LocString.RazorFriend ) );
 		}
 
 		public string Name
@@ -273,6 +276,10 @@ namespace Assistant
 			{
 				base.Remove();
 				World.RemoveMobile(	this );
+			}
+			else
+			{
+				Visible = false;
 			}
 		}
 

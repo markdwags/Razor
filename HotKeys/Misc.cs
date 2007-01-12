@@ -22,6 +22,9 @@ namespace Assistant.HotKeys
 			HotKey.Add( HKCategory.Items, LocString.BandageSelf, new HotKeyCallback( BandageSelf ) );
 			HotKey.Add( HKCategory.Items, LocString.BandageLT, new HotKeyCallback( BandageLastTarg ) );
 			HotKey.Add( HKCategory.Items, LocString.UseHand, new HotKeyCallback( UseItemInHand ) );
+
+			HotKey.Add( HKCategory.Misc, LocString.PartyAccept, new HotKeyCallback( PartyAccept ) );
+			HotKey.Add( HKCategory.Misc, LocString.PartyDecline, new HotKeyCallback( PartyDecline ) );
 			
 			HotKeyCallbackState call = new HotKeyCallbackState( OnUseItem );
 			HotKey.Add( HKCategory.Items,					LocString.UseBandage,	call, (ushort)3617 );
@@ -32,6 +35,24 @@ namespace Assistant.HotKeys
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkExp,		call, (ushort)3853 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkStr,		call, (ushort)3849 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkAg,		call, (ushort)3848 );
+		}
+
+		private static void PartyAccept()
+		{
+			if ( PacketHandlers.PartyLeader != Serial.Zero )
+			{
+				ClientCommunication.SendToServer( new AcceptParty( PacketHandlers.PartyLeader ) );
+				PacketHandlers.PartyLeader = Serial.Zero;
+			}
+		}
+
+		private static void PartyDecline()
+		{
+			if ( PacketHandlers.PartyLeader != Serial.Zero )
+			{
+				ClientCommunication.SendToServer( new DeclineParty( PacketHandlers.PartyLeader ) );
+				PacketHandlers.PartyLeader = Serial.Zero;
+			}
 		}
 
 		private static void Dismount()

@@ -27,6 +27,30 @@ namespace Assistant
 		}
 	}
 
+	public sealed class AcceptParty : Packet
+	{
+		public AcceptParty( Serial leader ) : base( 0xBF )
+		{
+			EnsureCapacity( 1 + 2 + 2 + 1 + 4 );
+
+			Write( (ushort)0x06 ); // party command
+			Write( (byte)0x08 ); // accept
+			Write( (uint)leader );
+		}
+	}
+
+	public sealed class DeclineParty : Packet
+	{
+		public DeclineParty( Serial leader ) : base( 0xBF )
+		{
+			EnsureCapacity( 1 + 2 + 2 + 1 + 4 );
+
+			Write( (ushort)0x06 ); // party command
+			Write( (byte)0x09 ); // decline
+			Write( (uint)leader );
+		}
+	}
+
 	public sealed class ContainerItem : Packet
 	{
 		public ContainerItem( Item item ) : base( 0x25, 20 )

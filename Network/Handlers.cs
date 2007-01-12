@@ -32,6 +32,7 @@ namespace Assistant
 			PacketHandler.RegisterClientToServerViewer( 0xA0, new PacketViewerCallback( PlayServer ) );
 			PacketHandler.RegisterClientToServerViewer( 0xB1, new PacketViewerCallback( ClientGumpResponse ) );
 			PacketHandler.RegisterClientToServerFilter( 0xBF, new PacketFilterCallback( ExtendedClientCommand ) );
+			//PacketHandler.RegisterClientToServerViewer( 0xD6, new PacketViewerCallback( BatchQueryProperties ) );
 			PacketHandler.RegisterClientToServerViewer( 0xD7, new PacketViewerCallback( ClientEncodedPacket ) );
 			
 			//Server -> Client handlers
@@ -77,6 +78,7 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientFilter( 0xCC, new PacketFilterCallback( OnLocalizedMessageAffix ) );
 			PacketHandler.RegisterServerToClientViewer( 0xD6, new PacketViewerCallback( EncodedPacket ) );//0xD6 "encoded" packets
 			PacketHandler.RegisterServerToClientViewer( 0xD8, new PacketViewerCallback( CustomHouseInfo ) );
+			PacketHandler.RegisterServerToClientFilter( 0xDC, new PacketFilterCallback( ServOPLHash ) );
 			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
 			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) ); // Special RunUO protocol extentions (for KUOC/Razor)
 		}
@@ -107,8 +109,58 @@ namespace Assistant
 			switch ( id )
 			{
 				case 1: // object property list
+					Serial s = p.ReadUInt32();
+
+					if ( s.IsItem )
+					{
+						Item item = World.FindItem( s );
+						if ( item != null )
+							item.ReadPropertyList( p );
+						if ( item.ModifiedOPL )
+						{
+							args.Block = true;
+							ClientCommunication.SendToClient( item.BuildOPLPacket() );
+						}
+					}
+					else if ( s.IsMobile )
+					{
+						Mobile m = World.FindMobile( s );
+						if ( m != null )
+							m.ReadPropertyList( p );
+
+						if ( m.ModifiedOPL )
+						{
+							args.Block = true;
+							ClientCommunication.SendToClient( m.BuildOPLPacket() );
+						}
+					}
 					//ObjectPropertyList.Read( p );
 					break;
+			}
+		}
+
+		private static void ServOPLHash( Packet p, PacketHandlerEventArgs args )
+		{
+			Serial s = p.ReadUInt32();
+			uint hash = p.ReadUInt32();
+
+			if ( s.IsItem )
+			{
+				Item item = World.FindItem( s );
+				if ( item != null && item.OPLHash != 0 )
+				{
+					p.Seek( -4, SeekOrigin.Current );
+					p.Write( (uint)item.OPLHash );
+				}
+			}
+			else if ( s.IsMobile )
+			{
+				Mobile m = World.FindMobile( s );
+				if ( m != null && m.OPLHash != 0 )
+				{
+					p.Seek( -4, SeekOrigin.Current );
+					p.Write( (uint)m.OPLHash );
+				}
 			}
 		}
 
@@ -173,6 +225,10 @@ namespace Assistant
 			ushort ext = p.ReadUInt16();
 			switch ( ext )
 			{
+				case 0x10: // query object properties
+				{
+					break;
+				}
 				case 0x15: // context menu response
 				{
 					UOEntity ent = null;
@@ -1637,8 +1693,27 @@ namespace Assistant
 				}				
 				case 0x10: // object property list info
 				{
-					//args.Block = true;
-					//ClientCommunication.SendToServer( new OPLInfoPacket( p.ReadUInt32(), p.ReadInt32() ) );
+					Serial s = p.ReadUInt32();
+					uint hash = p.ReadUInt32();
+
+					if ( s.IsItem )
+					{
+						Item item = World.FindItem( s );
+						if ( item != null && item.OPLHash != 0 && item.OPLHash != hash )
+						{
+							args.Block = true;
+							ClientCommunication.SendToClient( new OPLInfoOld( s, item.OPLHash ) );
+						}
+					}
+					else if ( s.IsMobile )
+					{
+						Mobile m = World.FindMobile( s );
+						if ( m != null && m.OPLHash != 0 && m.OPLHash != hash )
+						{
+							args.Block = true;
+							ClientCommunication.SendToClient( new OPLInfoOld( s, m.OPLHash ) );
+						}
+					}
 					break;
 				}
 				case 0x14: // context menu
@@ -1746,7 +1821,10 @@ namespace Assistant
 						byte map = p.ReadByte();
 
 						if (mobile == null)
+						{
 							World.AddMobile( mobile = new Mobile(serial) );
+							mobile.Visible = false;
+						}
 
 						if ( mobile.Name == null || mobile.Name.Length <= 0 )
 							mobile.Name = "(Not Seen)";
@@ -1770,6 +1848,8 @@ namespace Assistant
 		
 		private static ArrayList m_Party = new ArrayList();
 		public static ArrayList Party { get { return m_Party; } }
+		private static Timer m_PartyDeclineTimer = null;
+		public static Serial PartyLeader = Serial.Zero;
 
 		private static void OnPartyMessage( PacketReader p, PacketHandlerEventArgs args )
 		{
@@ -1786,7 +1866,7 @@ namespace Assistant
 						if ( World.Player == null || s != World.Player.Serial )
 							m_Party.Add( s );
 					}
-					
+
 					if (Engine.MainWindow.MapWindow != null)
 						Engine.MainWindow.MapWindow.UpdateMap();
 
@@ -1797,7 +1877,7 @@ namespace Assistant
 					m_Party.Clear();
 					int count = p.ReadByte();
 					Serial remSerial = p.ReadUInt32(); // the serial of who was removed
-					
+
 					if ( World.Player != null )
 					{
 						Mobile rem = World.FindMobile( remSerial );
@@ -1817,7 +1897,7 @@ namespace Assistant
 					
 					break;
 				}
-				/*case 0x03: // text message
+				case 0x03: // text message
 				case 0x04: // 3 = private, 4 = public
 				{
 					Serial from = p.ReadUInt32();
@@ -1826,10 +1906,19 @@ namespace Assistant
 				}
 				case 0x07: // party invite
 				{
-					Serial leader = p.ReadUInt32();
+					//Serial leader = p.ReadUInt32();
+					PartyLeader = p.ReadUInt32();
+					if ( m_PartyDeclineTimer == null )
+						m_PartyDeclineTimer = Timer.DelayedCallback( TimeSpan.FromSeconds( 10.0 ), new TimerCallback( PartyAutoDecline ) );
+					m_PartyDeclineTimer.Start();
 					break;
-				}*/
+				}
 			}
+		}
+
+		private static void PartyAutoDecline()
+		{
+			PartyLeader = Serial.Zero;
 		}
 
 		private static void PingResponse( PacketReader p, PacketHandlerEventArgs args )

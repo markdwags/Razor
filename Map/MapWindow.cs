@@ -290,6 +290,10 @@ namespace Assistant.MapUO
 						this.Interval = TimeSpan.FromSeconds( 5.0 );
 						return;
 					}
+					else
+					{
+						this.Interval = TimeSpan.FromSeconds( 1.0 );
+					}
 
 					bool send = false;
 					foreach ( Serial s in PacketHandlers.Party )
@@ -299,7 +303,7 @@ namespace Assistant.MapUO
 						if ( m == World.Player )
 							continue;
 
-						if ( m == null || Utility.Distance( World.Player.Position, m.Position ) > World.Player.VisRange )
+						if ( m == null || Utility.Distance( World.Player.Position, m.Position ) > World.Player.VisRange || !m.Visible )
 						{
 							send = true;
 							break;
@@ -308,18 +312,8 @@ namespace Assistant.MapUO
 
 					if ( send )
 					{
-						// first packet sent in a while, wait extra (for high pings)
-						if ( PacketHandlers.SpecialPartySent == 0 )
-							this.Interval = TimeSpan.FromSeconds( 1.5 );
-						else
-							this.Interval = TimeSpan.FromSeconds( 0.75 );
-
 						PacketHandlers.SpecialPartySent++;
 						ClientCommunication.SendToServer( new QueryPartyLocs() );
-					}
-					else
-					{
-						this.Interval = TimeSpan.FromSeconds( 1.0 );
 					}
 				}
 				else

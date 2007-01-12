@@ -10,10 +10,12 @@ Additions:
 -There are now 5 Restock agents.
 -Hot Bags for all of the agents will now display the agent they are associated with when you single click them in game.
 -Razor no longer modifies your Login.cfg file when you use the Welcome Screen. Along with this, Razor now has a "--server address,port" command line option.  Passing this option to Razor will cause the welcome screen not to show.
+-Party Accept and Decline hotkeys
 
 Changes/Fixes:
 -Profile overwriting problems have been fixed.
 -The values entered for Game Window size are now (somewhat) bounds checked.
 -Removed some redundant logic from the network code.  This may greatly improve Razor's speed on some systems.
 -Fixed compatabilities issues with Windows 95/98/ME.  Razor should once again work on these Operating Systems.
-
+-This version of Razor will allow you to connect to UOGamers: Demise using the 3D client.
+-Party locations should properly update on the map when players in your party are hidden/stealthed.

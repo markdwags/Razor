@@ -628,12 +628,25 @@ namespace Assistant
 
 	public class OrganizerAgent : Agent
 	{
+		private static OrganizerAgent[] m_Agents = new OrganizerAgent[10];
 		public static void Initialize()
 		{
 			for(int i=1;i<=10;i++)
-				Agent.Add( new OrganizerAgent( i ) );
+				Agent.Add( m_Agents[i-1] = new OrganizerAgent( i ) );
 		}
-		
+
+		public static void CheckOPL( Item item )
+		{
+			for (int i=0;i<10;i++)
+			{
+				if ( m_Agents[i] != null && m_Agents[i].m_Cont == item.Serial )
+				{
+					item.ObjPropList.Add( Language.Format( LocString.OrganizerHBA1, i+1 ) );
+					break;
+				}
+			}
+		}
+
 		private ListBox m_SubList;
 		private Button m_BagBTN;
 		private Button m_ArrBTN;
@@ -715,11 +728,20 @@ namespace Assistant
 					}
 					break;
 				case 5:
+				{
+					Item bag = World.FindItem( m_Cont );
+					if ( bag != null )
+					{
+						bag.ObjPropList.Remove( Language.Format( LocString.OrganizerHBA1, m_Num ) );
+						ClientCommunication.SendToClient( bag.BuildOPLPacket() );
+					}
+
 					m_SubList.Items.Clear();
 					m_Items.Clear();
 					m_Cont = 0;
 					m_BagBTN.Text = Language.GetString( LocString.SetHB );
 					break;
+				}
 				case 6:
 					DragDropManager.GracefulStop();
 					break;
@@ -814,9 +836,23 @@ namespace Assistant
 			Engine.MainWindow.ShowMe();
 			if ( !location && serial > 0 && serial <= 0x7FFFFF00 )
 			{
+				Item bag = World.FindItem( m_Cont );
+				if ( bag != null )
+				{
+					bag.ObjPropList.Remove( Language.Format( LocString.OrganizerHBA1, m_Num ) );
+					ClientCommunication.SendToClient( bag.BuildOPLPacket() );
+				}
+
 				m_Cont = serial;
 				m_BagBTN.Text = Language.GetString( LocString.ClearHB );
 				World.Player.SendMessage( MsgLevel.Force, LocString.ContSet );
+
+				bag = World.FindItem( m_Cont );
+				if ( bag != null )
+				{
+					bag.ObjPropList.Add( Language.Format( LocString.OrganizerHBA1, m_Num ) );
+					ClientCommunication.SendToClient( bag.BuildOPLPacket() );
+				}
 			}
 		}
 		
@@ -1693,10 +1729,23 @@ namespace Assistant
 
 	public class RestockAgent : Agent
 	{
+		private static RestockAgent[] m_Agents = new RestockAgent[5];
 		public static void Initialize()	
 		{ 
 			for (int i=1;i<=5;i++)
-				Agent.Add( new RestockAgent( i ) ); 
+				Agent.Add( m_Agents[i-1] = new RestockAgent( i ) ); 
+		}
+
+		public static void CheckOPL( Item item )
+		{
+			for (int i=0;i<10;i++)
+			{
+				if ( m_Agents[i] != null && m_Agents[i].m_HotBag == item.Serial )
+				{
+					item.ObjPropList.Add( Language.Format( LocString.RestockHBA1, i+1 ) );
+					break;
+				}
+			}
 		}
 
 		private ListBox m_SubList;
@@ -2154,6 +2203,15 @@ namespace Assistant
 				}
 				case 4:
 				{
+					foreach ( Serial s in m_Chars )
+					{
+						Mobile m = World.FindMobile( s );
+						if ( m != null )
+						{
+							if ( m.ObjPropList.Remove( Language.GetString( LocString.RazorFriend ) ) )
+								ClientCommunication.SendToClient( m.BuildOPLPacket() );
+						}
+					}
 					m_Chars.Clear();
 					m_SubList.Items.Clear();
 					break;
@@ -2179,6 +2237,13 @@ namespace Assistant
 					m_Chars.Add( serial );
 
 					Add2List( serial );
+
+					Mobile m = World.FindMobile( serial );
+					if ( m != null )
+					{
+						m.ObjPropList.Add( Language.GetString( LocString.RazorFriend ) );
+						ClientCommunication.SendToClient( m.BuildOPLPacket() );
+					}
 				}
 			}
 		}
@@ -2227,6 +2292,13 @@ namespace Assistant
 				for(int i=0;i<m_Chars.Count;i++)
 					Add2List( (Serial)m_Chars[i] );
 				m_SubList.EndUpdate();
+
+				Mobile m = World.FindMobile( serial );
+				if ( m != null )
+				{
+					if ( m.ObjPropList.Remove( Language.GetString( LocString.RazorFriend ) ) )
+						ClientCommunication.SendToClient( m.BuildOPLPacket() );
+				}
 			}
 		}
 

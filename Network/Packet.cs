@@ -1132,6 +1132,29 @@ namespace Assistant
 			return sb.ToString();
 		}
 
+		public string ReadUnicodeStringBE( int fixedLength )
+		{
+			int bound = m_Pos + (fixedLength << 1);
+			int end   = bound;
+
+			if ( bound > m_Length )
+				bound = m_Length;
+
+			StringBuilder sb = new StringBuilder();
+
+			int c;
+
+			while ( (m_Pos + 1) < bound )
+			{
+				c = (ushort)(ReadByte() | (ReadByte()<<8));
+				sb.Append( (char)c );
+			}
+
+			Seek( end, SeekOrigin.Begin );
+
+			return sb.ToString();
+		}
+
 		public string ReadStringSafe( int fixedLength )
 		{
 			return ReadString( fixedLength );
