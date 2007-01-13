@@ -1508,22 +1508,7 @@ namespace Assistant
 				p.Seek( 3, SeekOrigin.Begin );
 				p.WriteAsciiFixed( "", (int)p.Length-3 );
 
-				// CHEAT UO.exe 1 251--
-				int features = 0;
-				if ( (World.Player.Features & 0x8000) == 0 )
-				{
-					if ( (World.Player.Features & 1) != 0 )
-						features = 2;
-					if ( (World.Player.Features & 2) != 0 )
-						features |= 8;
-					features &= 0xFFFF;
-				}
-				else
-				{
-					features = World.Player.Features & 0x7FFF;
-				}
-
-				ClientCommunication.DoFeatures( features ) ;
+				ClientCommunication.DoFeatures( World.Player.Features ) ;
 			}
 			else
 			{

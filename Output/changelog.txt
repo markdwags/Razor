@@ -9,6 +9,7 @@ Additions:
 -The "Veteran Rewards" gump can now be filtered out by the "Rewards Gump" filter in the filters list on the general tab.
 -There are now 5 Restock agents.
 -Hot Bags for all of the agents will now display the agent they are associated with when you single click them in game.
+-All Agents now display information on Mouse Over property lists for items/mobiles in game (for AOS/ML sevrers which use object property lists).
 -Razor no longer modifies your Login.cfg file when you use the Welcome Screen. Along with this, Razor now has a "--server address,port" command line option.  Passing this option to Razor will cause the welcome screen not to show.
 -Party Accept and Decline hotkeys
 

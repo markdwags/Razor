@@ -9,8 +9,24 @@ namespace Assistant
 	public abstract class Agent
 	{
 		private static ArrayList m_List = new ArrayList();
-
 		public static ArrayList List { get{ return m_List; } }
+
+		public delegate void ItemCreatedEventHandler( Item item );
+		public delegate void MobileCreatedEventHandler( Mobile m );
+		public static event ItemCreatedEventHandler OnItemCreated;
+		public static event MobileCreatedEventHandler OnMobileCreated;
+
+		public static void InvokeMobileCreated( Mobile m )
+		{
+			if ( OnMobileCreated != null )
+				OnMobileCreated( m );
+		}
+
+		public static void InvokeItemCreated( Item i )
+		{
+			if ( OnItemCreated != null )
+				OnItemCreated( i );
+		}
 
 		public static void Add( Agent a )
 		{
@@ -126,11 +142,29 @@ namespace Assistant
 			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
 			HotKey.Add( HKCategory.Agents, LocString.UseOnceAgent, new HotKeyCallback( OnHotKey ) );
 			HotKey.Add( HKCategory.Agents, LocString.AddUseOnce, new HotKeyCallback( OnAdd ) );
-		}
 
+			Agent.OnItemCreated += new ItemCreatedEventHandler( CheckItemOPL );
+		}
+		
 		public override void Clear()
 		{
 			m_Items.Clear();
+		}
+
+		private void CheckItemOPL( Item newItem )
+		{
+			for(int i=0;i<m_Items.Count;i++)
+			{
+				if ( m_Items[i] is Serial )
+				{
+					if ( newItem.Serial == (Serial)m_Items[i] )
+					{
+						m_Items[i] = newItem;
+						newItem.ObjPropList.Add( Language.GetString( LocString.UseOnce ) );
+						break;
+					}
+				}
+			}
 		}
 
 		private void OnSingleClick( PacketReader pvSrc, PacketHandlerEventArgs args )
@@ -210,6 +244,17 @@ namespace Assistant
 					Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnTargetRemove ) );
 					break;
 				case 4:
+					for (int i = 0; i < m_Items.Count; i++)
+					{
+						if ( m_Items[i] is Item )
+						{
+							Item item = (Item)m_Items[i];
+
+							item.ObjPropList.Remove( Language.GetString( LocString.UseOnce ) );
+							ClientCommunication.SendToClient( item.BuildOPLPacket() );
+						}
+					}
+
 					m_SubList.Items.Clear();
 					m_Items.Clear();
 					break;
@@ -234,6 +279,9 @@ namespace Assistant
 					return;
 				}
 
+				item.ObjPropList.Add( Language.GetString( LocString.UseOnce ) );
+				ClientCommunication.SendToClient( item.BuildOPLPacket() );
+
 				m_Items.Add( item );
 				if ( m_SubList != null )
 					m_SubList.Items.Add( item );
@@ -253,7 +301,12 @@ namespace Assistant
 					if ( m_Items[i] is Item )
 					{
 						if ( ((Item)m_Items[i]).Serial == serial )
+						{
+							((Item)m_Items[i]).ObjPropList.Remove( Language.GetString( LocString.UseOnce ) );
+							ClientCommunication.SendToClient( ((Item)m_Items[i]).BuildOPLPacket() );
+
 							rem = true;
+						}
 					}
 					else if ( m_Items[i] is Serial )
 					{
@@ -284,8 +337,15 @@ namespace Assistant
 				{
 					for ( int ci=0;ci<i.Contains.Count;ci++ )
 					{
-						m_Items.Add( i.Contains[ci] );
-						m_SubList.Items.Add( i.Contains[ci] );
+						Item toAdd = i.Contains[ci] as Item;
+
+						if ( toAdd != null )
+						{
+							toAdd.ObjPropList.Add( Language.GetString( LocString.UseOnce ) );
+							ClientCommunication.SendToClient( toAdd.BuildOPLPacket() );
+							m_Items.Add( toAdd );
+							m_SubList.Items.Add( toAdd );
+						}
 					}
 
 					World.Player.SendMessage( MsgLevel.Force, LocString.ItemsAdded, i.Contains.Count );
@@ -350,6 +410,9 @@ namespace Assistant
 
 				if ( item != null )
 				{
+					item.ObjPropList.Remove( Language.GetString( LocString.UseOnce ) );
+					ClientCommunication.SendToClient( item.BuildOPLPacket() );
+
 					World.Player.SendMessage( LocString.UseOnceStatus, item, m_Items.Count );
 					PlayerData.DoubleClick( item );
 				}
@@ -382,6 +445,14 @@ namespace Assistant
 			m_Items = new ArrayList();
 			PacketHandler.RegisterServerToClientViewer( 0x9E, new PacketViewerCallback( OnVendorSell ) );
 			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
+
+			Agent.OnItemCreated += new ItemCreatedEventHandler( CheckHBOPL );
+		}
+
+		private void CheckHBOPL( Item item )
+		{
+			if ( item.Serial == m_HotBag )
+				item.ObjPropList.Add( Language.GetString( LocString.SellHB ) );
 		}
 
 		private void OnSingleClick( PacketReader pvSrc, PacketHandlerEventArgs args )
@@ -524,6 +595,12 @@ namespace Assistant
 					}
 					else
 					{
+						Item hb = World.FindItem( m_HotBag );
+						if ( hb != null )
+						{
+							if ( hb.ObjPropList.Remove( Language.GetString( LocString.SellHB ) ) )
+								ClientCommunication.SendToClient( hb.BuildOPLPacket() );
+						}
 						m_HotBag = Serial.Zero;
 						SetHBText();
 					}
@@ -567,6 +644,13 @@ namespace Assistant
 			{
 				m_HotBag = serial;
 				SetHBText();
+
+				Item hb = World.FindItem( m_HotBag );
+				if ( hb != null )
+				{
+					hb.ObjPropList.Add( Language.GetString( LocString.SellHB ) );
+					ClientCommunication.SendToClient( hb.BuildOPLPacket() );
+				}
 			}
 		}
 
@@ -628,23 +712,10 @@ namespace Assistant
 
 	public class OrganizerAgent : Agent
 	{
-		private static OrganizerAgent[] m_Agents = new OrganizerAgent[10];
 		public static void Initialize()
 		{
 			for(int i=1;i<=10;i++)
-				Agent.Add( m_Agents[i-1] = new OrganizerAgent( i ) );
-		}
-
-		public static void CheckOPL( Item item )
-		{
-			for (int i=0;i<10;i++)
-			{
-				if ( m_Agents[i] != null && m_Agents[i].m_Cont == item.Serial )
-				{
-					item.ObjPropList.Add( Language.Format( LocString.OrganizerHBA1, i+1 ) );
-					break;
-				}
-			}
+				Agent.Add( new OrganizerAgent( i ) );
 		}
 
 		private ListBox m_SubList;
@@ -660,6 +731,14 @@ namespace Assistant
 			m_Num = num;
 			HotKey.Add( HKCategory.Agents, HKSubCat.None, String.Format( "{0}-{1}", Language.GetString( LocString.OrganizerAgent ), m_Num ), new HotKeyCallback( Organize ) );
 			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
+
+			Agent.OnItemCreated += new ItemCreatedEventHandler( CheckContOPL );
+		}
+
+		public void CheckContOPL( Item item )
+		{
+			if ( item.Serial == m_Cont )
+				item.ObjPropList.Add( Language.Format( LocString.OrganizerHBA1, m_Num ) );
 		}
 
 		private void OnSingleClick( PacketReader pvSrc, PacketHandlerEventArgs args )
@@ -1132,6 +1211,14 @@ namespace Assistant
 
 			HotKey.Add( HKCategory.Agents, LocString.ClearScavCache, new HotKeyCallback( ClearCache ) );
 			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
+
+			Agent.OnItemCreated += new ItemCreatedEventHandler( CheckBagOPL );
+		}
+
+		private void CheckBagOPL( Item item )
+		{
+			if ( item.Serial == m_Bag )
+				item.ObjPropList.Add( Language.GetString( LocString.ScavengerHB ) );
 		}
 
 		private void OnSingleClick( PacketReader pvSrc, PacketHandlerEventArgs args )
@@ -1254,9 +1341,22 @@ namespace Assistant
 			if ( location || !serial.IsItem )
 				return;
 
+			if ( m_BagRef == null )
+				m_BagRef = World.FindItem( m_Bag );
+			if ( m_BagRef != null )
+			{
+				m_BagRef.ObjPropList.Remove( Language.GetString( LocString.ScavengerHB ) );
+				ClientCommunication.SendToClient( m_BagRef.BuildOPLPacket() );
+			}
+
+			DebugLog( "Set bag to {0}", serial );
 			m_Bag = serial;
 			m_BagRef = World.FindItem( m_Bag );
-			DebugLog( "Set bag to {0}", m_Bag );
+			if ( m_BagRef != null )
+			{
+				m_BagRef.ObjPropList.Add( Language.GetString( LocString.ScavengerHB ) );
+				ClientCommunication.SendToClient( m_BagRef.BuildOPLPacket() );
+			}
 
 			World.Player.SendMessage( MsgLevel.Force, LocString.ContSet, m_Bag );
 		}
@@ -1729,23 +1829,10 @@ namespace Assistant
 
 	public class RestockAgent : Agent
 	{
-		private static RestockAgent[] m_Agents = new RestockAgent[5];
 		public static void Initialize()	
 		{ 
 			for (int i=1;i<=5;i++)
-				Agent.Add( m_Agents[i-1] = new RestockAgent( i ) ); 
-		}
-
-		public static void CheckOPL( Item item )
-		{
-			for (int i=0;i<10;i++)
-			{
-				if ( m_Agents[i] != null && m_Agents[i].m_HotBag == item.Serial )
-				{
-					item.ObjPropList.Add( Language.Format( LocString.RestockHBA1, i+1 ) );
-					break;
-				}
-			}
+				Agent.Add( new RestockAgent( i ) ); 
 		}
 
 		private ListBox m_SubList;
@@ -1763,6 +1850,14 @@ namespace Assistant
 			HotKey.Add( HKCategory.Agents, HKSubCat.None, String.Format( "{0}-{1}", Language.GetString( LocString.RestockAgent ), m_Num ), new HotKeyCallback( OnHotKey ) );
 			HotKey.Add( HKCategory.Agents, HKSubCat.None, String.Format( "{0}-{1}", Language.GetString( LocString.SetRestockHB ), m_Num ), new HotKeyCallback( SetHB ) );
 			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
+
+			Agent.OnItemCreated += new ItemCreatedEventHandler( CheckHBOPL );
+		}
+
+		public void CheckHBOPL( Item item )
+		{
+			if ( item.Serial == m_HotBag )
+				item.ObjPropList.Add( Language.Format( LocString.RestockHBA1, m_Num ) );
 		}
 
 		private void OnSingleClick( PacketReader pvSrc, PacketHandlerEventArgs args )
@@ -1898,10 +1993,25 @@ namespace Assistant
 		{
 			Engine.MainWindow.ShowMe();
 
+			Item hb = World.FindItem( m_HotBag );
+			if ( hb != null )
+			{
+				if ( hb.ObjPropList.Remove( Language.Format( LocString.RestockHBA1, m_Num ) ) )
+					ClientCommunication.SendToClient( hb.BuildOPLPacket() );
+			}
+
 			if ( !location && serial.IsItem )
 				m_HotBag = serial;
 			else
 				m_HotBag = Serial.Zero;
+
+			hb = World.FindItem( m_HotBag );
+			if ( hb != null )
+			{
+				hb.ObjPropList.Add( Language.Format( LocString.RestockHBA1, m_Num ) );
+				ClientCommunication.SendToClient( hb.BuildOPLPacket() );
+			}
+
 			SetHBText();
 		}
 
@@ -2118,6 +2228,8 @@ namespace Assistant
 
 			HotKey.Add( HKCategory.Targets, LocString.AddFriend, new HotKeyCallback( AddToFriendsList ) );
 			HotKey.Add( HKCategory.Targets, LocString.RemoveFriend, new HotKeyCallback( RemoveFromFriendsList ) );
+
+			Agent.OnMobileCreated += new MobileCreatedEventHandler( OPLCheckFriend );
 		}
 
 		public override void Clear()
@@ -2223,6 +2335,12 @@ namespace Assistant
 					break;
 				}
 			}
+		}
+
+		private void OPLCheckFriend( Mobile m )
+		{
+			if ( IsFriend( m ) )
+				m.ObjPropList.Add( Language.GetString( LocString.RazorFriend ) );
 		}
 
 		private void OnAddTarget( bool location, Serial serial, Point3D loc, ushort gfx )

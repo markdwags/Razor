@@ -100,8 +100,7 @@ namespace Assistant
 			m_Map =	World.Player ==	null ? (byte)0 : World.Player.Map;
 			m_Visible =	true;
 
-			if ( FriendsAgent.IsFriend( this ) )
-				ObjPropList.Add( Language.GetString( LocString.RazorFriend ) );
+			Agent.InvokeMobileCreated( this );
 		}
 
 		public string Name
