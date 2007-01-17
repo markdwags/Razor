@@ -12,6 +12,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Loader", "Loader\Loader.vcp
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{8AB99CD3-9582-4E68-BDEC-23F189A222B2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -30,6 +34,10 @@ Global
 		{F308E8D5-2B4F-40AD-9BF7-9A8F5DDA420D}.Debug.Build.0 = Release|Win32
 		{F308E8D5-2B4F-40AD-9BF7-9A8F5DDA420D}.Release.ActiveCfg = Release|Win32
 		{F308E8D5-2B4F-40AD-9BF7-9A8F5DDA420D}.Release.Build.0 = Release|Win32
+		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Debug.ActiveCfg = Debug|.NET
+		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Debug.Build.0 = Debug|.NET
+		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Release.ActiveCfg = Release|.NET
+		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

@@ -17,7 +17,7 @@
                 DelaySign = "false"
                 OutputType = "WinExe"
                 PreBuildEvent = ""
-                PostBuildEvent = ""
+                PostBuildEvent = "$(ProjectDir)Crypt\GenerateRazorChecksumH.exe"
                 RootNamespace = "Assistant"
                 RunPostBuildEvent = "OnOutputUpdated"
                 StartupObject = "Assistant.Engine"

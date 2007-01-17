@@ -1,4 +1,4 @@
-Razor (v1.0.5.*) Changelog:
+Razor (v1.0.6.*) Changelog:
 
 Razor is a FREE program.  Unlike competing programs like UOAssist, Razor does not charge any money at all and provides even more features.  Razor is now available on the regular OSI servers for unlimited accounts absolutely free.  But Razor needs your help!  Razor is now accepting donations over PayPal.  UOAssist (a similar program, but for OSI servers only) costs $15 PER ACCOUNT while Razor is FREE for UNLIMITED ACCOUNTS.  Your donation of $5 or $10 (or any amount!) is LESS than you would pay for a similar program!  Donations are greatly appreciated and will help ensure that the developers continue to improve and maintain this fine product.
 Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD
@@ -6,17 +6,9 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
--The "Veteran Rewards" gump can now be filtered out by the "Rewards Gump" filter in the filters list on the general tab.
--There are now 5 Restock agents.
--Hot Bags for all of the agents will now display the agent they are associated with when you single click them in game.
--All Agents now display information on Mouse Over property lists for items/mobiles in game (for AOS/ML servers which use object property lists).
--Razor no longer modifies your Login.cfg file when you use the Welcome Screen. Along with this, Razor now has a "--server address,port" command line option.  Passing this option to Razor will cause the welcome screen not to show.
--Party Accept and Decline hotkeys
+-Razor now contains an Automatic Update utility.  This is long over due, and will allow me to provide bug fixes and incremental updates more immediately and easily.  Razor will check for updates when it is started (before the welcome screen is shown).
 
 Changes/Fixes:
--Profile overwriting problems have been fixed.
--The values entered for Game Window size are now (somewhat) bounds checked.
--Removed some redundant logic from the network code.  This may greatly improve Razor's speed on some systems.
--Fixed compatibility issues with Windows 95/98/ME.  Razor should once again work on these Operating Systems.
--This version of Razor will allow you to connect to UOGamers: Demise using the 3D client.
--Party locations should properly update on the map when players in your party are hidden/stealthed.
+-Bug causing item names/properties to be overwritten on AOS servers has been fixed.
+-Bug causing random client freezes as been fixed.
+-Object Property Lists on AOS servers now update correctly when the information changes.

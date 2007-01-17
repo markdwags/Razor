@@ -94,7 +94,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
-				OutputFile="../Output//Crypt.dll"
+				OutputFile="../Output/Crypt.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="Crypt.def"
 				GenerateDebugInformation="FALSE"
@@ -111,7 +111,8 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Generating Checksum.h..."
-				CommandLine="$(ProjectDir)GenerateRazorChecksumH.exe"/>
+				CommandLine="$(ProjectDir)GenerateRazorChecksumH.exe"
+				ExcludedFromBuild="TRUE"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -181,6 +182,14 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath=".\Checksum.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Performing Custom Build Step"
+						CommandLine=""
+						Outputs=""/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Crypt.h">

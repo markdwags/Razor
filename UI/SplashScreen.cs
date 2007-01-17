@@ -13,11 +13,14 @@ namespace Assistant
 		public static SplashScreen Instance{ get{ return m_Screen; } }
 		public static void Start()
 		{
-			Thread t = new Thread( new ThreadStart( ThreadMain ) );
-			t.Name = "Razor Splash Screen";
-			t.Start();
-			while ( m_Screen == null )
-				Thread.Sleep( 10 );
+			if ( m_Screen == null )
+			{
+				Thread t = new Thread( new ThreadStart( ThreadMain ) );
+				t.Name = "Razor Splash Screen";
+				t.Start();
+				while ( m_Screen == null )
+					Thread.Sleep( 10 );
+			}
 		}
 
 		public static void End()
@@ -152,7 +155,7 @@ namespace Assistant
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "SplashScreen";
-			this.TopMost = false;
+			this.TopMost = true;
 			this.Load += new System.EventHandler(this.SplashScreen_Load);
 			this.ResumeLayout(false);
 
@@ -161,6 +164,9 @@ namespace Assistant
 
 		private void SplashScreen_Load(object sender, System.EventArgs e)
 		{
+			this.Activate();
+			this.BringToFront();
+			this.Focus();
 		}
 
 		private void donate_Click(object sender, System.EventArgs e)

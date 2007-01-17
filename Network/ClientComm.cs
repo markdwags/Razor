@@ -1335,7 +1335,7 @@ namespace Assistant
 
 		internal static void SendToClient( Packet p )
 		{
-			if ( !m_Ready || PacketPlayer.Playing )
+			if ( !m_Ready || PacketPlayer.Playing || p.Length <= 0 )
 				return;
 
 			if ( !m_QueueRecv )

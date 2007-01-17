@@ -472,6 +472,8 @@ namespace Assistant
 		{
 			Language.LoadControlNames( this );
 
+			this.BringToFront();
+
 			langSel.Items.AddRange( Language.GetPackNames() );
 			langSel.SelectedItem = Language.Current;
 
@@ -566,12 +568,24 @@ namespace Assistant
 			if ( lse.RealAddress == uog.RealAddress && ( lse.Port >= 7775 && lse.Port <= 7778 ) )
 				serverList.SelectedItem = uog;
 
-			if ( serverList.SelectedIndex == -1 )
-				serverList.SelectedIndex = 0;
-
 			serverList.EndUpdate();
 
 			serverList.Refresh();
+
+			WindowState = FormWindowState.Normal;
+			this.BringToFront();
+			this.TopMost = true;
+
+			System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
+			t.Interval = 500;
+			t.Enabled = true;
+			t.Tick += new EventHandler(timer_Tick);
+		}
+		
+		private void timer_Tick(object sender, EventArgs e)
+		{
+			this.TopMost = false;
+			this.BringToFront();
 		}
 
 		private void browse_Click(object sender, System.EventArgs e)

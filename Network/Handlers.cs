@@ -109,13 +109,16 @@ namespace Assistant
 			switch ( id )
 			{
 				case 1: // object property list
+				{
 					Serial s = p.ReadUInt32();
 
 					if ( s.IsItem )
 					{
 						Item item = World.FindItem( s );
-						if ( item != null )
-							item.ReadPropertyList( p );
+						if ( item == null )
+							World.AddItem( item=new Item( s ) );
+						
+						item.ReadPropertyList( p );
 						if ( item.ModifiedOPL )
 						{
 							args.Block = true;
@@ -125,30 +128,32 @@ namespace Assistant
 					else if ( s.IsMobile )
 					{
 						Mobile m = World.FindMobile( s );
-						if ( m != null )
-							m.ReadPropertyList( p );
-
+						if ( m == null )
+							World.AddMobile( m=new Mobile( s ) );
+						
+						m.ReadPropertyList( p );
 						if ( m.ModifiedOPL )
 						{
 							args.Block = true;
 							ClientCommunication.SendToClient( m.BuildOPLPacket() );
 						}
 					}
-					//ObjectPropertyList.Read( p );
 					break;
+				}
 			}
 		}
 
 		private static void ServOPLHash( Packet p, PacketHandlerEventArgs args )
 		{
 			Serial s = p.ReadUInt32();
-			uint hash = p.ReadUInt32();
+			int hash = p.ReadInt32();
 
 			if ( s.IsItem )
 			{
 				Item item = World.FindItem( s );
-				if ( item != null && item.OPLHash != 0 )
+				if ( item != null && item.OPLHash != 0 && item.OPLHash != hash )
 				{
+					item.OPLHash = hash;
 					p.Seek( -4, SeekOrigin.Current );
 					p.Write( (uint)item.OPLHash );
 				}
@@ -156,8 +161,9 @@ namespace Assistant
 			else if ( s.IsMobile )
 			{
 				Mobile m = World.FindMobile( s );
-				if ( m != null && m.OPLHash != 0 )
+				if ( m != null && m.OPLHash != 0 && m.OPLHash != hash )
 				{
+					m.OPLHash = hash;
 					p.Seek( -4, SeekOrigin.Current );
 					p.Write( (uint)m.OPLHash );
 				}
@@ -1676,31 +1682,6 @@ namespace Assistant
 						World.Player.Map = p.ReadByte();
 					break;
 				}				
-				case 0x10: // object property list info
-				{
-					Serial s = p.ReadUInt32();
-					uint hash = p.ReadUInt32();
-
-					if ( s.IsItem )
-					{
-						Item item = World.FindItem( s );
-						if ( item != null && item.OPLHash != 0 && item.OPLHash != hash )
-						{
-							args.Block = true;
-							ClientCommunication.SendToClient( new OPLInfoOld( s, item.OPLHash ) );
-						}
-					}
-					else if ( s.IsMobile )
-					{
-						Mobile m = World.FindMobile( s );
-						if ( m != null && m.OPLHash != 0 && m.OPLHash != hash )
-						{
-							args.Block = true;
-							ClientCommunication.SendToClient( new OPLInfoOld( s, m.OPLHash ) );
-						}
-					}
-					break;
-				}
 				case 0x14: // context menu
 				{
 					p.ReadInt16(); // 0x01
@@ -2089,37 +2070,29 @@ namespace Assistant
 			{
 				World.Player.CurrentGumpS = p.ReadUInt32();
 				World.Player.CurrentGumpI = p.ReadUInt32();
+			}
 
-#if DEBUG
+			/*try
+			{
 				int x = p.ReadInt32(), y = p.ReadInt32();
 
 				string layout = p.GetCompressedReader().ReadString();
 
 				int numStrings = p.ReadInt32();
-				if ( numStrings < 0 )
+				if ( numStrings < 0 || numStrings > 256 )
 					numStrings = 0;
 				ArrayList strings = new ArrayList( numStrings );
 				PacketReader pComp = p.GetCompressedReader();
 				int len = 0;
 				while ( !pComp.AtEnd && (len=pComp.ReadInt16()) > 0 )
 					strings.Add( pComp.ReadUnicodeString( len ) );
-
-
-				using ( StreamWriter w = new StreamWriter( "gumps.log", true ) )
-				{
-					w.WriteLine( "" );
-					w.WriteLine( "{0}/{1} @ {2}", World.Player.CurrentGumpS, World.Player.CurrentGumpI, DateTime.Now );
-					w.WriteLine( layout );
-					int i = 0;
-					foreach ( string s in strings )
-						w.WriteLine( "{0} - {1}", i++, s );
-					w.WriteLine( "" );
-				}
-#endif
-
-				if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
-					args.Block = true;
 			}
+			catch
+			{
+			}*/
+			
+			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
+				args.Block = true;
 		}
 /*
 				int serial  = pvSrc.ReadInt32(), dialog  = pvSrc.ReadInt32();

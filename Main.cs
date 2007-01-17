@@ -85,6 +85,35 @@ namespace Assistant
 			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 )
 				throw new InvalidOperationException( "This Razor installation is corrupted." );
 
+			if ( File.Exists( Path.Combine( BaseDirectory, "New_Updater.exe" ) ) )
+			{
+				try { File.Delete( Path.Combine( BaseDirectory, "Updater.exe.old" ) ); } catch {}
+				try { File.Move( Path.Combine( BaseDirectory, "Updater.exe" ), Path.Combine( BaseDirectory, "Updater.exe.old" ) ); } catch { }
+				
+				File.Move( Path.Combine( BaseDirectory, "New_Updater.exe" ), Path.Combine( BaseDirectory, "Updater.exe" ) );
+			}
+
+			if ( File.Exists( Path.Combine( BaseDirectory, "New_UnRar.dll" ) ) )
+			{
+				try { File.Delete( Path.Combine( BaseDirectory, "UnRar.dll.old" ) ); } 
+				catch {}
+				try { File.Move( Path.Combine( BaseDirectory, "UnRar.dll" ), Path.Combine( BaseDirectory, "UnRar.dll.old" ) ); } 
+				catch { }
+				
+				File.Move( Path.Combine( BaseDirectory, "New_UnRar.dll" ), Path.Combine( BaseDirectory, "UnRar.dll" ) );
+			}
+
+			DateTime lastCheck = DateTime.MinValue;
+			try { lastCheck = DateTime.FromFileTime( Convert.ToInt64( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck" ), 16 ) ); } catch { }
+			if ( lastCheck + TimeSpan.FromHours( 3.0 ) < DateTime.Now )
+			{
+				SplashScreen.Start();
+				m_ActiveWnd = SplashScreen.Instance;
+				
+				CheckForUpdates();
+				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck", String.Format( "{0:X16}", DateTime.Now.ToFileTime() ) );
+			}
+
 			bool patch = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy" ), 1 ) != 0;
 			bool showWelcome = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWelcome" ), 1 ) != 0;
 			ClientLaunch launch = ClientLaunch.TwoD;
@@ -192,6 +221,7 @@ namespace Assistant
 
 			if ( !Language.Load( "ENU" ) )
 			{
+				SplashScreen.End();
 				MessageBox.Show( "Fatal Error: Unable to load required file Language/Razor_lang.enu\nRazor cannot continue.", "No Language Pack", MessageBoxButtons.OK, MessageBoxIcon.Stop );
 				return;
 			}
@@ -223,6 +253,8 @@ namespace Assistant
 
 				if ( showWelcome )
 				{
+					SplashScreen.End();
+
 					WelcomeForm welcome = new WelcomeForm();
 					m_ActiveWnd = welcome;
 					if ( welcome.ShowDialog() == DialogResult.Cancel )
@@ -232,6 +264,9 @@ namespace Assistant
 					dataDir = welcome.DataDirectory;
 					if ( launch == ClientLaunch.Custom )
 						clientPath = welcome.ClientPath;
+
+					SplashScreen.Start();
+					m_ActiveWnd = SplashScreen.Instance;
 				}
 			}
 
@@ -239,31 +274,6 @@ namespace Assistant
 				Ultima.Client.Directories.Insert( 0, dataDir );
 
 			Language.LoadCliLoc();
-			
-			SplashScreen.Start();
-			m_ActiveWnd = SplashScreen.Instance;
-
-			string update = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck" );
-			if ( update != "N" )
-			{
-				bool doit = false;
-				if ( update != "E" )
-				{
-					string now = DateTime.Now.ToString( "M/dd/yy" );
-					if ( update != now )
-					{
-						doit = true;
-						Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck", now );
-					}
-				}
-				else
-				{
-					doit = true;
-				}
-
-				if ( doit )
-					new Thread( new ThreadStart( CheckVersion ) ).Start();
-			}
 
 			SplashScreen.Message = "Initializing...";
 
@@ -338,6 +348,8 @@ namespace Assistant
 					SplashScreen.End();
 					return;
 				}
+
+				ClientCommunication.SetConnectionInfo( new IPAddress( 0 ), 0 );
 			}
 
 			if ( Utility.Random(4) != 0 )
@@ -413,8 +425,10 @@ namespace Assistant
 			return ipAddr;
 		}
 
-		private static void CheckVersion()
+		private static void CheckForUpdates()
 		{
+			SplashScreen.Message = "Checking for Razor Updates...";
+
 			int uid = 0;
 			try
 			{
@@ -457,22 +471,16 @@ namespace Assistant
 					Version v = Assembly.GetCallingAssembly().GetName().Version;
 					if ( v.CompareTo( newVer ) < 0 ) // v < newVer
 					{
-						if ( MessageBox.Show( Language.GetString( LocString.NewerVersion ), "New Razor Version", MessageBoxButtons.YesNo, MessageBoxIcon.Information ) == DialogResult.Yes )
-						{
-							/*
-							string args = String.Format( "{0} Razor.exe", v.ToString() );//, Process.GetCurrentProcess().ProcessName );
-							Process.Start( "Patcher.exe", args );
-							Process.GetCurrentProcess().Kill();
-							*/
-							MainForm.LaunchBrowser( "http://www.runuo.com/razor/" );
-						}
+						Process.Start( Path.Combine( BaseDirectory, "Updater.exe" ) );
+						Process.GetCurrentProcess().Kill();
 					}
 				}
 			}
-			catch //( Exception e )
+			catch
 			{
-				//LogCrash( e );
 			}
+
+			SplashScreen.Message = "Initializing...";
 		}
 	}
 }

@@ -20,8 +20,8 @@ namespace Assistant.Filters
 			DisableAll();
 
 			if ( xml == null )
-				return;
-
+				return; 
+ 
 			foreach( XmlElement el in xml.GetElementsByTagName( "filter" ) )
 			{
 				try

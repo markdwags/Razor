@@ -174,8 +174,6 @@ namespace Assistant
 		private System.Windows.Forms.Button setLTHilight;
 		private System.Windows.Forms.CheckBox lthilight;
 		private System.Windows.Forms.CheckBox rememberPwds;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.ComboBox checkUpdate;
 		private System.Windows.Forms.CheckBox blockDis;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.ComboBox imgFmt;
@@ -297,8 +295,6 @@ namespace Assistant
 			this.generalTab = new System.Windows.Forms.TabPage();
 			this.btnMap = new System.Windows.Forms.Button();
 			this.lockBox = new System.Windows.Forms.PictureBox();
-			this.checkUpdate = new System.Windows.Forms.ComboBox();
-			this.label10 = new System.Windows.Forms.Label();
 			this.systray = new System.Windows.Forms.RadioButton();
 			this.taskbar = new System.Windows.Forms.RadioButton();
 			this.smartCPU = new System.Windows.Forms.CheckBox();
@@ -473,6 +469,7 @@ namespace Assistant
 			this.label15 = new System.Windows.Forms.Label();
 			this.label19 = new System.Windows.Forms.Label();
 			this.groupBox9 = new System.Windows.Forms.GroupBox();
+			this.rpvTime = new System.Windows.Forms.Label();
 			this.playSpeed = new System.Windows.Forms.ComboBox();
 			this.label14 = new System.Windows.Forms.Label();
 			this.vidClose = new System.Windows.Forms.Button();
@@ -501,7 +498,6 @@ namespace Assistant
 			this.donate = new System.Windows.Forms.Button();
 			this.statCol1 = new System.Windows.Forms.Label();
 			this.timerTimer = new System.Windows.Forms.Timer(this.components);
-			this.rpvTime = new System.Windows.Forms.Label();
 			this.tabs.SuspendLayout();
 			this.generalTab.SuspendLayout();
 			this.groupBox4.SuspendLayout();
@@ -565,8 +561,6 @@ namespace Assistant
 			// 
 			this.generalTab.Controls.Add(this.btnMap);
 			this.generalTab.Controls.Add(this.lockBox);
-			this.generalTab.Controls.Add(this.checkUpdate);
-			this.generalTab.Controls.Add(this.label10);
 			this.generalTab.Controls.Add(this.systray);
 			this.generalTab.Controls.Add(this.taskbar);
 			this.generalTab.Controls.Add(this.smartCPU);
@@ -606,27 +600,6 @@ namespace Assistant
 			this.lockBox.TabStop = false;
 			this.lockBox.Visible = false;
 			this.lockBox.Click += new System.EventHandler(this.lockBox_Click);
-			// 
-			// checkUpdate
-			// 
-			this.checkUpdate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.checkUpdate.Items.AddRange(new object[] {
-															 "Every Time",
-															 "Once Per Day",
-															 "Never"});
-			this.checkUpdate.Location = new System.Drawing.Point(278, 76);
-			this.checkUpdate.Name = "checkUpdate";
-			this.checkUpdate.Size = new System.Drawing.Size(112, 21);
-			this.checkUpdate.TabIndex = 55;
-			this.checkUpdate.SelectedIndexChanged += new System.EventHandler(this.checkUpdate_SelectedIndexChanged);
-			// 
-			// label10
-			// 
-			this.label10.Location = new System.Drawing.Point(170, 80);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(110, 18);
-			this.label10.TabIndex = 54;
-			this.label10.Text = "Check for updates:";
 			// 
 			// systray
 			// 
@@ -2337,6 +2310,14 @@ namespace Assistant
 			this.groupBox9.TabStop = false;
 			this.groupBox9.Text = "PacketVideo Playback";
 			// 
+			// rpvTime
+			// 
+			this.rpvTime.Location = new System.Drawing.Point(132, 62);
+			this.rpvTime.Name = "rpvTime";
+			this.rpvTime.Size = new System.Drawing.Size(276, 20);
+			this.rpvTime.TabIndex = 8;
+			this.rpvTime.Text = "00:00/00:00";
+			// 
 			// playSpeed
 			// 
 			this.playSpeed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -2635,14 +2616,6 @@ namespace Assistant
 			this.timerTimer.Interval = 5;
 			this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
 			// 
-			// rpvTime
-			// 
-			this.rpvTime.Location = new System.Drawing.Point(132, 62);
-			this.rpvTime.Name = "rpvTime";
-			this.rpvTime.Size = new System.Drawing.Size(276, 20);
-			this.rpvTime.TabIndex = 8;
-			this.rpvTime.Text = "00:00/00:00";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -2863,14 +2836,6 @@ namespace Assistant
 			aviFPS.Text = Config.GetInt( "AviFPS" ).ToString();
 			aviRes.SelectedIndex = Config.GetInt( "AviRes" );
 			playSpeed.SelectedIndex = 2;
-
-			string val = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck" );
-			if ( val == "N" )
-				checkUpdate.SelectedIndex = 2;
-			else if ( val == "E" )
-				checkUpdate.SelectedIndex = 0;
-			else
-				checkUpdate.SelectedIndex = 1;
 
 			InitPreviewHue( lblExHue, "ExemptColor" );
 			InitPreviewHue( lblMsgHue, "SysColor" );
@@ -5445,17 +5410,6 @@ namespace Assistant
 					}
 				}
 			}
-		}
-
-		private void checkUpdate_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			string val = "N";
-			if ( checkUpdate.SelectedIndex == 0 )
-				val = "E"; // every day
-			else if ( checkUpdate.SelectedIndex == 1 )
-				val = DateTime.Now.ToString( "M/dd/yy" );
-			
-			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck", val );
 		}
 
 		private void blockDis_CheckedChanged(object sender, System.EventArgs e)

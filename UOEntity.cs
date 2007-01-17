@@ -103,6 +103,11 @@ namespace Assistant
 				else
 					return 0;
 			}
+			set
+			{
+				if ( m_ObjPropList != null )
+					m_ObjPropList.Hash = value;
+			}
 		}
 
 		public bool ModifiedOPL { get { return m_ObjPropList.Customized; } }

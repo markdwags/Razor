@@ -320,7 +320,7 @@ DLLFUNCTION void WaitForWindow( DWORD pid )
 
 	do
 	{
-		Sleep( 25 );
+		Sleep( 10 );
 		HWND hWnd = FindWindow( "Ultima Online", NULL );
 		while ( hWnd != NULL )
 		{
@@ -1207,7 +1207,7 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 
 			WaitForSingleObject( CommMutex, INFINITE );
 
-			memcpy( &pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length], buff, len );
+			//memcpy( &pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length], buff, len );
 
 			if ( ClientEncrypted )
 			{
@@ -1217,25 +1217,24 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 
 					ClientCrypt->Initialize( CryptSeed );
 
-					ClientCrypt->DecryptFromClient( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
+					ClientCrypt->DecryptFromClient( (BYTE*)buff, (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
 					ClientLogin->Decrypt( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
 
-					LoginServer = false;
-					Forwarding = false;
+					LoginServer = Forwarding = false;
 					//Forwarded = false;
 				}
 				else
 				{
 					if ( LoginServer )
 					{
-						ClientLogin->Decrypt( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
+						ClientLogin->Decrypt( (BYTE*)(buff), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
 
 						if ( ((BYTE)pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]) == 0xA0 )
 							Forwarding = true;
 					}
 					else
 					{
-						ClientCrypt->DecryptFromClient( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
+						ClientCrypt->DecryptFromClient( (BYTE*)(buff), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
 					}
 				}
 			}
@@ -1340,11 +1339,11 @@ void FlushSendData()
 				tempBuff = new char[SHARED_BUFF_SIZE];
 
 			if ( LoginServer )
-				ServerLogin->Encrypt( (BYTE*)tempBuff, (BYTE*)&pShared->OutSend.Buff[pShared->OutSend.Start], outLen );
+				ServerLogin->Encrypt( (BYTE*)&pShared->OutSend.Buff[pShared->OutSend.Start], (BYTE*)tempBuff, outLen );
 			else
-				ServerCrypt->EncryptForServer( (BYTE*)tempBuff, (BYTE*)&pShared->OutSend.Buff[pShared->OutSend.Start], outLen );
+				ServerCrypt->EncryptForServer( (BYTE*)&pShared->OutSend.Buff[pShared->OutSend.Start], (BYTE*)tempBuff, outLen );
 			
-			ackLen = (*(NetIOFunc)OldSend)(CurrentConnection,(char*)tempBuff,outLen,0);
+			ackLen = (*(NetIOFunc)OldSend)(CurrentConnection,tempBuff,outLen,0);
 		}
 		else
 		{
@@ -1380,7 +1379,7 @@ int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 
 		memcpy( &useAddr, old_addr, sizeof(sockaddr_in) );
 
-		if ( pShared->ServerIP != 0 )
+		if ( !Forwarded && pShared->ServerIP != 0 )
 		{
 			useAddr.sin_addr.S_un.S_addr = pShared->ServerIP;
 			useAddr.sin_port = htons( pShared->ServerPort );
