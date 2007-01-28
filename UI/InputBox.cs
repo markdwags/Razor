@@ -116,7 +116,7 @@ namespace Assistant
 			if( disposing )
 			{
 				if(components != null)
-				{
+				{ 
 					components.Dispose();
 				}
 			}
@@ -187,6 +187,7 @@ namespace Assistant
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Input";
+			this.Load += new System.EventHandler(this.InputBox_Load);
 			this.ResumeLayout(false);
 
 		}
@@ -203,6 +204,34 @@ namespace Assistant
 		{
 			this.DialogResult = DialogResult.Cancel;
 			this.Close();
+		}
+
+		private void InputBox_Load(object sender, System.EventArgs e)
+		{
+			if ( this.Location.X <= 0 || this.Location.Y <= 0 )
+				this.Location = new System.Drawing.Point( Config.GetInt( "WindowX" ), Config.GetInt( "WindowY" ) );
+			
+			this.WindowState = FormWindowState.Normal;
+			this.BringToFront();
+			this.TopMost = true;
+
+			_ShowTimer = new System.Windows.Forms.Timer();
+			_ShowTimer.Interval = 250;
+			_ShowTimer.Enabled = true;
+			_ShowTimer.Tick += new EventHandler(timer_Tick);
+		}
+		
+		private System.Windows.Forms.Timer _ShowTimer;
+		private void timer_Tick(object sender, EventArgs e)
+		{
+			this.TopMost = false;
+			this.BringToFront();
+			this.Activate();
+
+			Prompt.Focus();
+
+			if ( _ShowTimer != null )
+				_ShowTimer.Stop();
 		}
 	}
 }

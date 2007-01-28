@@ -730,6 +730,7 @@ namespace Assistant
 			m_Items = new ArrayList();
 			m_Num = num;
 			HotKey.Add( HKCategory.Agents, HKSubCat.None, String.Format( "{0}-{1}", Language.GetString( LocString.OrganizerAgent ), m_Num ), new HotKeyCallback( Organize ) );
+			HotKey.Add( HKCategory.Agents, HKSubCat.None, String.Format( "{0}-{1}: {2}", Language.GetString( LocString.OrganizerAgent ), m_Num, Language.GetString( LocString.SetHB ) ), new HotKeyCallback( SetHotBag ) );
 			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
 
 			Agent.OnItemCreated += new ItemCreatedEventHandler( CheckContOPL );
@@ -783,6 +784,12 @@ namespace Assistant
 				m_SubList.Items.Add( (ItemID)((ushort)m_Items[i]) );
 			m_SubList.EndUpdate();
 		}
+
+		public void SetHotBag()
+		{
+			World.Player.SendMessage( MsgLevel.Force, LocString.TargCont );
+			Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnTargetBag ) );
+		}
 		
 		public override void OnButtonPress( int num )
 		{
@@ -793,8 +800,7 @@ namespace Assistant
 					Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnTarget ) );
 					break;
 				case 2:
-					World.Player.SendMessage( MsgLevel.Force, LocString.TargCont );
-					Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnTargetBag ) );
+					SetHotBag();
 					break;
 				case 3:
 					Organize();

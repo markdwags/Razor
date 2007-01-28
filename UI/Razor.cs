@@ -4700,6 +4700,7 @@ namespace Assistant
 				if ( a != null )
 				{
 					int pos = actionList.SelectedIndex;
+
 					menu.MenuItems.Add( "-" );
 					if ( actionList.Items.Count > 1 )
 					{
@@ -4714,6 +4715,7 @@ namespace Assistant
 					menu.MenuItems.Add( Language.GetString( LocString.RemAct ), new EventHandler( onMacroActionDelete ) );
 					menu.MenuItems.Add( "-" );
 					menu.MenuItems.Add( Language.GetString( LocString.BeginRec ), new EventHandler( onMacroBegRecHere ) );
+					menu.MenuItems.Add( Language.GetString( LocString.PlayFromHere ), new EventHandler( onMacroPlayHere ) );
 
 					MenuItem[] aMenus = a.GetContextMenuItems();
 					if ( aMenus != null && aMenus.Length > 0 )
@@ -4740,6 +4742,23 @@ namespace Assistant
 
 				menu.Show( actionList, new Point( e.X, e.Y ) );
 			}
+		}
+
+		private void onMacroPlayHere(object sender, EventArgs e)
+		{
+			Macro m = GetMacroSel();;
+			if ( m == null )
+				return;
+
+			int sel = actionList.SelectedIndex+1;
+			if ( sel < 0 || sel > m.Actions.Count )
+				sel = m.Actions.Count;
+
+			MacroManager.PlayAt( m, sel );
+			playMacro.Text = "Stop";
+			recMacro.Enabled = false;
+
+			OnMacroStart( m );
 		}
 
 		private void onMacroInsertComment(object sender, System.EventArgs e)

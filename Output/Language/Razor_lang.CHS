@@ -1,12 +1,11 @@
 // Razor Simplified Chinese/CHS Language Pack
-// Last modified $Date: 2006-12-20 22:10 $
+// Last modified Date: 2007-01-20
 // Based on English language file.
 // Translated by Cloud, E-mail: linhongjun@hotmail.com, Blog: http://blog.plaync.jp/linhongjun
-// Contact me by E-mail, WLM, or QQ for any problem in translation.
 // Special thanks to: haojz(TLF Forum), DontdroptheSOAD(RunUO Forum),Thraxus(RunUO Forum).
 // If Razor can not load skillnames with this language file, please replace "Cliloc.chs" with "Cliloc.enu" in UO installation directory. Becuase there's no corresponding entry in localization file of simplified chinese. Make sure you have made a copy of original file before doing this.
-// 为确保技能名称可以正确显示,请用"Cliloc.enu"替换UO安装目录下的"Cliloc.chs",也就是说删掉原始的"Cliloc.chs"文件,然后更名"Cliloc.enu"为"Cliloc.chs".前提是你的系统必须为简体中文.另外如果繁体中文版本的"Cliloc.cht"如果完整的话也可以进行类似替换,里面的汉化完成度很高.如果排除这个方面的因素影响,强烈推荐使用.替换前请务必要备份原始文件.
-// Special words such as LastTarget, LastObject will not be translated in order to match with UO.
+// 为确保技能名称可以正确显示,请用"Cliloc.enu"替换UO安装目录下的"Cliloc.chs",也就是说删掉原始的"Cliloc.chs"文件,然后更名"Cliloc.enu"为"Cliloc.chs".前提是你的系统必须为简体中文.另外对于繁体中文版本的"Cliloc.cht",如果完整的话也可以进行类似替换,里面的汉化完成度很高.如果排除这个方面的因素影响,强烈推荐使用.替换前请务必要备份原始文件.
+// Special string used in the game such as LastTarget, LastObject will not be translated in order to match with UO.
 // 对于LastTarget,LastObject这类指令将不会进行翻译,尽量保持其与UO设置中的一致性.
 // UseOnce仅仅表示一次性的代理,无特别意义,暂时不作翻译考虑.
 // 以上为文档说明,以下为语言文件内容:
@@ -14,7 +13,7 @@
 ::CliLoc=CHS
 
 [controls]
-WelcomeForm::Text=欢迎使用Razor - UO玩家的必备工具!
+WelcomeForm::Text=欢迎使用Razor - UO玩家的利刃!
 WelcomeForm::groupBox3=UO安装路径(默认为自动侦测)
 WelcomeForm::dataBrowse=浏览...
 WelcomeForm::label5=语言:
@@ -34,9 +33,9 @@ WelcomeForm::okay=启动(&O)
 MainForm::Text=Razor v{0}
 MainForm::generalTab=一般
 MainForm::label10=检查更新:
-MainForm::systray=系统托盘区
+MainForm::systray=系统通知区域
 MainForm::taskbar=任务栏
-MainForm::smartCPU=启用智能CPU消耗
+MainForm::smartCPU=启用智能化CPU使用
 MainForm::label7=语言:
 MainForm::label11=显示于:
 MainForm::groupBox4=个人配置文件(保存于Profiles目录下)
@@ -306,7 +305,7 @@ MacroInsertIf::insert=插入(&I)
 1089=描述:无法找到客户端进程ID\n可能原因:客户端未正常初始化.
 1090=描述:无法创建系统挂钩.\n可能原因:内部错误.
 1091=描述:无法创建或读取Razor共享内存.\n可能原因:系统错误或无效许可.
-1092=描述:Crypt.dll已被自己禁用.\n可能原因:版本不符.
+1092=描述:Crypt.dll已被禁用.\n可能原因:版本不符.
 1093=描述:无法破解Winsock功能.\n可能原因:内部错误,系统错误,兼容性问题.
 1094=描述:无效参数被传送.\n可能原因:不匹配的DLL文件版本.
 1095=警告:无法从客户端复制包长度或加密信息.\nRazor可以不使用这些信息而运行,一些功能将无法正常运作.你仍想继续启动Razor吗?\n\n可能原因:你的客户端版本与Razor版本不兼容.
@@ -323,7 +322,7 @@ MacroInsertIf::insert=插入(&I)
 1106=选择你想使用的颜色.
 1107=立即截图
 1108=可用参数或值:\n{char} - 角色名\n{shard} - 站名\n{str}/{hp}/{hpmax} - 健康状态\n{dex}/{stam}/{stammax} - 敏捷状态\n{int}/{mana}/{manamax} - 智力状态\n{weight}/{maxweight} - 负重信息\n{gold} - 金钱\n{AR} - 装甲/ 物力抵抗\n{tithe} - 赋税状态\n{followers}/{followersmax} - 随从数量最大值\n{bandage} - 绷带计时\n{statbar}/{mediumstatbar}/{largestatbar} - 状态栏(小/中/大)\n{crimtime} - 成为罪犯时间\n{stealthsteps} - 潜行步数计数器\n{physresist} - 物理抵抗\n{coldresist} - 冰冷抗性\n{fireresist} - 火炎抗性\n{energyresist} - 能量抗性\n{poisonresist} - 毒抗性\n{luck} - 幸运值\n{damage} - 伤害值 Min-Max(最小值-最大值)\n颜色 - HTML16进制代码:'~#rrggbb'(输入'~#~'结束颜色代码)\n或者从计数器列表中使用{Format}格式
-1109=程序版本: {0}\n内存使用: {1}\n发送数据: {2} ({3}/s)\n接收数据: {4} ({5}/s)\n连接时间: {6}\n玩家序号: 0x{7:X8}\n背包序号: 0x{8:X8}\n跟踪物品: {9}\n跟踪生物: {10}\n\n简体中文: C|0ud,|1nh0ngjun@h07m41|.c0m\n更新时间: 2006/04/25\n注意事项: 如某些信息出现错误或无法显示(如魔法名,技能名),请用文本编辑软件打开Razor\Language\下的Razor_lang.chs文件阅读详细说明.
+1109=程序版本:{0}\n内存使用:{1}\n发送数据:{2} ({3}/s)\n接收数据:{4} ({5}/s)\n连接时间:{6}\n玩家序号:0x{7:X8}\n背包序号:0x{8:X8}\n跟踪物品:{9}\n跟踪生物:{10}\n\n语言翻译:Cloud (linhongjun@hotmail.com)\n更新时间:2007/01/20\n注意事项:如某些信息出现错误或无法显示(如魔法名,技能名),请用文本编辑软件打开Razor\Language\下的Razor_lang.chs文件阅读详细说明.
 1110=设定技能锁:上升
 1111=设定技能锁:下降
 1112=设定技能锁:锁定
@@ -332,7 +331,7 @@ MacroInsertIf::insert=插入(&I)
 1115=读取个人配置文件时发生错误.
 1116=你不可以删除默认的个人配置文件.
 1117=输入新的个人配置文件的名称:
-1118=无法创建新的个人配置文件!\n原因: 该个人配置文件已存在.\n\n你想现在就加载该个人配置文件吗?
+1118=无法创建新的个人配置文件!\n原因:该个人配置文件已存在.\n\n你想现在就加载该个人配置文件吗?
 1119=输入新的衣物列表的名称:
 1120=删除该衣物列表吗?
 1121={0:X}(物品超出范围)
@@ -378,7 +377,7 @@ MacroInsertIf::insert=插入(&I)
 1161=UseOnce队列已空!
 1162=使用'{0}'.({1}个物品遗留于UseOnce队列中)
 1163=你的某个UseOnce物品中存在问题,尝试下一个.
-1164=贩卖代理:自动贩卖{0}个物品以价格{1}gp.
+1164=贩卖代理:自动以价格{1}gp贩卖{0}个物品.
 1165=移除
 1166=容器设置成功.
 1167=清空
@@ -395,19 +394,19 @@ MacroInsertIf::insert=插入(&I)
 1178=整理代理无法找到任何可以移动的物品.
 1179=该物品已处于列表中.
 1180=自动搜索解除
-1181=购买代理购买{0}个物品以价格{1}gp.
+1181=购买代理以价格{1}gp购买{0}个物品.
 1182=购买代理无法购买你的列表中的一些物品,因为你没有足够的金钱.
 1183=输入数量:
 1184=客户端程序优先级设置为{0}
 1185=当前时间是:{0}
-1186=你所处位置当前坐标{0}位于'{1}'
+1186=你所处位置当前坐标{0},位于'{1}'
 1187=卸下包未发现或超出范围,使用背包代替.
 1188={0}个物品处于队列中将被卸下.
 1189={0}个物品处于队列中将被装备.
 1190={0}个物品已装备.
 1191={0}个物品未发现.(超出范围)
-1192=警告: Spells.def文件未找到,魔法咒语格式文本将不会显示.
-1193=潜行步数: {0}
+1192=警告:Spells.def文件未找到,魔法咒语格式文本将不会显示.
+1193=潜行步数:{0}
 1194=现在记录潜行步数.
 1195=清除目标队列
 1196=攻击最后参加战斗者
@@ -482,7 +481,7 @@ MacroInsertIf::insert=插入(&I)
 1333=程序侦测到软件的新版本.\n\n你想访问Razor网站并下载新版程序吗?
 1334=重新加载
 1335=保存
-1336=警告: 当前目标不允许你将目标指向地面.LastTarget指令将不会生效.
+1336=警告:当前目标不允许你将目标指向地面.LastTarget指令将不会生效.
 1337=重新同步客户端
 1338=下马被阻止.
 1339=开始Razor的"PacketVideo"录制
@@ -571,9 +570,22 @@ MacroInsertIf::insert=插入(&I)
 1469=添加好友
 1470=移除好友
 1471=>迷你治愈/治疗自己
-1472=如果你正在使用已解密的客户端,你应该禁用"加密"功能.该功能仅限于使用在需要客户端加密的服务器中(例如 OSI/EA 官方服务器).\n如果你不确定该如何做,请不要选择该项.\n\n你确定要关闭客户端解密吗?
+1472=如果你正在使用已解密的客户端,你应该禁用"加密"功能.该功能仅限于使用在需要客户端加密的服务器中(例如OSI/EA官方服务器).\n如果你不确定该如何做,请不要选择该项.\n\n你确定要关闭客户端解密吗?
 1473=下马
 1474=显示/隐藏地图窗口
 1475=距离太远.
 1476=拖放队列已满!请稍后.
 1477=切换战斗/和平模式
+1478=奖赏对话框
+1479=指定游戏窗口大小无效,请重新尝试.
+1480=(清道夫包)
+1481=(补给代理包 {0})
+1482=(UseOnce代理 #{0})
+1483=(贩卖代理包)
+1484=(整理代理 {0} 包)
+1485=你指定的服务器地址无法解析,请确认地址输入是否正确.
+1486=团队:接受邀请
+1487=团队:拒绝邀请
+1488=友善目标
+1489=敌对目标
+1490=(Razor好友)

@@ -71,6 +71,33 @@ namespace Assistant.Macros
 			m_Current.Record();
 		}
 
+		public static void PlayAt( Macro m, int at )
+		{
+			if ( m_Current != null )
+			{
+				if ( m_Current.Playing && m_Current.Loop && !m.Loop )
+					m_PrevPlay = m_Current;
+				else
+					m_PrevPlay = null;
+
+				m_Current.Stop();
+			}
+			else
+			{
+				m_PrevPlay = null;
+			}
+
+			LiftAction.LastLift = null;
+			m_Current = m;
+			m_Current.PlayAt( at );
+
+			m_Timer.Macro = m_Current;
+			m_Timer.Start();
+
+			if ( Engine.MainWindow.WaitDisplay != null )
+				Engine.MainWindow.WaitDisplay.Text = "";
+		}
+
 		private static void HotKeyPlay( ref object state )
 		{
 			HotKeyPlay( state as Macro );

@@ -112,7 +112,7 @@
 				Name="VCPreBuildEventTool"
 				Description="Generating Checksum.h..."
 				CommandLine="$(ProjectDir)GenerateRazorChecksumH.exe"
-				ExcludedFromBuild="TRUE"/>
+				ExcludedFromBuild="FALSE"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool

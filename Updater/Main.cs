@@ -35,11 +35,11 @@ namespace Updater
 				return;
 			}
 
-			Process[] processes = Process.GetProcessesByName( "Razor.exe" );
-			while( processes.Length > 0 )
+			for ( Process[] processes = Process.GetProcessesByName( "Razor.exe" ); 
+				processes.Length > 0; 
+				processes = Process.GetProcessesByName( "Razor.exe" ) )
 			{
 				Thread.Sleep( 50 );
-				processes = Process.GetProcessesByName( "Razor.exe" );
 			}
 
 			Directory.SetCurrentDirectory( UpdaterMain.BaseDirectory );

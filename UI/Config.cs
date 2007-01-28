@@ -403,10 +403,7 @@ namespace Assistant
 		public void AddProperty( string name, object val )
 		{
 			if ( !m_Props.Contains( name ) )
-			{
 				m_Props.Add( name, val );
-				ClientCommunication.AddProperty( name );
-			}
 		}
 	}
 

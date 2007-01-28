@@ -221,6 +221,38 @@ namespace Updater
 					else if ( rar.CurrentFile.FileName == "UnRar.dll" )
 						rar.CurrentFile.FileName = "New_UnRar.dll";
 
+					while ( File.Exists( rar.CurrentFile.FileName ) )
+					{
+						try 
+						{
+							File.Delete( rar.CurrentFile.FileName );
+						}
+						catch ( Exception e )
+						{
+							DialogResult res = MessageBox.Show( String.Format(
+								"Unable to delete file \"{0}\" (Error: {1})\nMake sure all instances of Razor are closed.\nRazor may be unusable until the update completes successfully.", 
+								rar.CurrentFile.FileName, e.Message ),
+								"Access Denied",
+								MessageBoxButtons.AbortRetryIgnore,
+								MessageBoxIcon.Warning );
+
+							if ( res == DialogResult.Abort )
+							{
+								UpdateStatus( "Update ABORTED!" );
+								UpdateFailed();
+								return;
+							}
+							else if ( res == DialogResult.Ignore )
+							{
+								break; // just blindly try anyways
+							}
+							else
+							{
+								continue; // retry
+							}
+						}
+					}
+
 					rar.Extract();
 				}
 

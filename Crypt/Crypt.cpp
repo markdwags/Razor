@@ -52,7 +52,7 @@ bool InGame = false;
 bool CopyFailed = true;
 bool Forwarding = false;
 bool Forwarded = false;
-
+bool UltimaDLLHaxed = false;
 bool ClientEncrypted = false;
 bool ServerEncrypted = false;
 
@@ -136,30 +136,74 @@ BOOL APIENTRY DllMain( HANDLE hModule, DWORD dwReason, LPVOID )
 
 DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 {
+	int len;
+	BYTE *data = NULL;
+	FILE *file = NULL;
 	char fileName[256];
+	char *namePtr = NULL;
 	
 	if ( !strcmp( exeVer, DLL_VERSION ) )
 	{
 		GetModuleFileName( NULL, fileName, 256 );
 
-		FILE *file = fopen( fileName, "rb" );
+		file = fopen( fileName, "rb" );
+		if ( file )
+		{
+			fseek( file, 0, SEEK_END );
+			len = ftell( file );
+			fseek( file, 0, SEEK_SET );
 
-		fseek( file, 0, SEEK_END );
-		int len = ftell( file );
-		fseek( file, 0, SEEK_SET );
+			data = new BYTE[len];
+			fread( data, len, 1, file );
+			fclose( file );
 
-		BYTE *data = new BYTE[len];
-		fread( data, len, 1, file );
-		fclose( file );
+			OSIEncryption::MD5( data, len, data );
 
-		OSIEncryption::MD5( data, len, data );
+			for(int i=0;i<16;i++)
+				data[i] ^= data[0x1717+i];
 
-		for(int i=0;i<16;i++)
-			data[i] ^= data[0x1717+i];
+			Disabled = memcmp( data, RAZOR_CHECKSUM, 16 ) != 0;
 
-		Disabled = memcmp( data, CHECKSUM, 16 ) != 0;
+			delete[] data;
+		}
 
-		delete[] data;
+        namePtr = strrchr( fileName, '\\' );
+		if ( namePtr )
+			namePtr ++; // AFTER the slash
+		else
+			namePtr = fileName;
+		*namePtr++ = 'U'; *namePtr = 0;
+		*namePtr++ = 'l'; *namePtr = 0;
+		*namePtr++ = 't'; *namePtr = 0;
+		*namePtr++ = 'i'; *namePtr = 0;
+		*namePtr++ = 'm'; *namePtr = 0;
+		*namePtr++ = 'a'; *namePtr = 0;
+		*namePtr++ = '.'; *namePtr = 0;
+		*namePtr++ = 'd'; *namePtr = 0;
+		*namePtr++ = 'l'; *namePtr = 0;
+		*namePtr++ = 'l'; *namePtr = 0;
+		*namePtr++ = 000; *namePtr = 0;
+		
+		file = fopen( fileName, "rb" );
+		if ( file )
+		{
+			fseek( file, 0, SEEK_END );
+			len = ftell( file );
+			fseek( file, 0, SEEK_SET );
+
+			data = new BYTE[len];
+			fread( data, len, 1, file );
+			fclose( file );
+
+			OSIEncryption::MD5( data, len, data );
+
+			for(int i=0;i<16;i++)
+				data[i] ^= data[0x1717+i];
+
+			UltimaDLLHaxed = memcmp( data, ULTIMA_CHECKSUM, 16 ) != 0;
+
+			delete[] data;
+		}
 	}
 	else
 	{
@@ -167,7 +211,7 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 	}
 
 #ifdef NO_CHECKSUM_VERSION
-		Disabled = false;
+	Disabled = false;
 #endif
 
 	return !Disabled;
@@ -276,6 +320,8 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 
 	if ( !CreateSharedMemory() )
 		return NO_SHAREMEM;
+
+	pShared->IsHaxed = UltimaDLLHaxed;
 
 	hWndProcRetHook = SetWindowsHookEx( WH_CALLWNDPROCRET, WndProcRetHookFunc, hInstance, UOTId );
 	if ( !hWndProcRetHook )
@@ -528,70 +574,6 @@ DLLFUNCTION bool AllowBit( unsigned int bit )
 		return true;
 	else
 		return ( pShared->AuthBits[7-(bit/8)] & (1<<(bit%8)) ) == 0;
-}
-
-DLLFUNCTION void AddProperty( const char *propName )
-{
-	size_t len = strlen( propName );
-	int mode = 0;
-
-	// basically search for "IDOC" in the property name to catch Razor hackers
-	for(size_t i=0;i<len;i++)
-	{
-		switch ( propName[i] )
-		{
-		case 0x17:
-			mode ^= 0x04;
-			break;
-
-		case 'C':
-			if ( mode == 7 )
-				mode -= 5;
-			else
-				mode = 0;
-			break;
-
-		case 'D':
-			if ( mode == 3 )
-				mode -= 6; 
-			else
-				mode = 0;
-			break;
-
-		default:
-			if ( mode != 2 && mode != 35 && mode != 83 && mode != 87 )
-			{
-				mode ^= 0x41783;
-				mode ^= 0x91183;
-				mode ^= 0x41783;
-				mode ^= 0x91183;
-
-				mode *= 0;
-			}
-			break;
-
-		case 'I':
-			if ( mode == 0 )
-				mode += 3;
-			else
-				mode = 0;
-			break;
-
-		case 'O':
-			if ( mode == -3 )
-				mode += 10;
-			else
-				mode = 0;
-			break;
-
-		case 0x04:
-			mode ^= 0x17;
-			break;
-		}
-	}
-
-	if ( mode == -1 || mode == 2 || mode == 87 || mode == 0x04171983 )
-		pShared->IsHaxed = true;
 }
 
 DLLFUNCTION void SetAllowDisconn( bool newVal )

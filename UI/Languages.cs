@@ -354,6 +354,7 @@ namespace Assistant
 		HarmfulTarget,
 		BeneficialTarget,
 		RazorFriend,
+		PlayFromHere,
 
 		__End
 	}

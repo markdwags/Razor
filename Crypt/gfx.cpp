@@ -354,6 +354,7 @@ void GetRazorFont()
 	if ( !hRazorFont )
 		hRazorFont = CreateFont( -10, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DRAFT_QUALITY, FIXED_PITCH, "Comic Sans MS" );
 }
+
 DLLFUNCTION HBITMAP CaptureScreen( BOOL full, const char *msg )
 {
 	HDC hScreen = NULL;

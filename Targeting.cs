@@ -831,13 +831,13 @@ namespace Assistant
 				bool harm = m_LastHarmTarg != null && m_LastHarmTarg.Serial == m.Serial;
 				bool bene = m_LastBeneTarg != null && m_LastBeneTarg.Serial == m.Serial;
 				if ( harm )
-					m.OverheadMessage( 0x90, "[Harmful Target]" );
+					m.OverheadMessage( 0x90, String.Format( "[{0}]", Language.GetString( LocString.HarmfulTarget ) ) );
 				if ( bene )
-					m.OverheadMessage( 0x3F, "[Beneficial Target]" );
+					m.OverheadMessage( 0x3F, String.Format( "[{0}]", Language.GetString( LocString.BeneficialTarget ) ) );
 			}
 
 			if ( m_LastTarget != null && m_LastTarget.Serial == m.Serial )
-				m.OverheadMessage( 0x3B2, "[Current Target]" );
+				m.OverheadMessage( 0x3B2, String.Format( "[{0}]", Language.GetString( LocString.LastTarget ) ) );
 		}
 
 		public static bool IsLastTarget( Mobile m )

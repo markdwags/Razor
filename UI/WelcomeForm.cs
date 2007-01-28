@@ -576,16 +576,20 @@ namespace Assistant
 			this.BringToFront();
 			this.TopMost = true;
 
-			System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
-			t.Interval = 500;
-			t.Enabled = true;
-			t.Tick += new EventHandler(timer_Tick);
+			_ShowTimer = new System.Windows.Forms.Timer();
+			_ShowTimer.Interval = 250;
+			_ShowTimer.Enabled = true;
+			_ShowTimer.Tick += new EventHandler(timer_Tick);
 		}
 		
+		private System.Windows.Forms.Timer _ShowTimer;
 		private void timer_Tick(object sender, EventArgs e)
 		{
 			this.TopMost = false;
 			this.BringToFront();
+
+			if ( _ShowTimer != null )
+				_ShowTimer.Stop();
 		}
 
 		private void browse_Click(object sender, System.EventArgs e)

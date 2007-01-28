@@ -1695,7 +1695,7 @@ namespace Assistant
 					if ( ent != null )
 					{
 						byte count = p.ReadByte();
-
+ 
 						try
 						{
 							ent.ContextMenu.Clear();
@@ -1833,9 +1833,6 @@ namespace Assistant
 							m_Party.Add( s );
 					}
 
-					if (Engine.MainWindow.MapWindow != null)
-						Engine.MainWindow.MapWindow.UpdateMap();
-
 					break;
 				}
 				case 0x02: // Remove Member/Re-list
@@ -1858,9 +1855,6 @@ namespace Assistant
 							m_Party.Add( s );
 					}
 					
-					if ( Engine.MainWindow.MapWindow != null )
-						Engine.MainWindow.MapWindow.UpdateMap();
-					
 					break;
 				}
 				case 0x03: // text message
@@ -1880,6 +1874,10 @@ namespace Assistant
 					break;
 				}
 			}
+
+			
+			if (Engine.MainWindow.MapWindow != null)
+				Engine.MainWindow.MapWindow.UpdateMap();
 		}
 
 		private static void PartyAutoDecline()

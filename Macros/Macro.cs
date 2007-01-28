@@ -113,6 +113,24 @@ namespace Assistant.Macros
 			}
 		}
 
+		public void PlayAt( int at )
+		{
+			Stop();
+			if ( !m_Loaded )
+				Load();
+			else
+				Save();
+
+			if ( m_Actions.Count > 0 )
+			{
+				m_IfStatus.Clear();
+				m_Playing = true;
+				m_CurrentAction = at-1;
+				if ( m_CurrentAction >= 0 )
+					m_CurrentAction--;
+			}
+		}
+
 		public void Stop()
 		{
 			if ( m_Recording )

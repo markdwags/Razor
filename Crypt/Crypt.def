@@ -22,7 +22,6 @@ EXPORTS
 	BringToFront
 	DoFeatures
 	AllowBit
-	AddProperty
 	SetAllowDisconn
 	TranslateSetup
 	TranslateLogin
