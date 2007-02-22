@@ -617,7 +617,7 @@ SIZE *SizePtr = NULL;
 DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 {
 	int count = 0;
-	DWORD addr = 0, Seek = 0, oldProt;
+	DWORD addr = 0, oldProt;
 	ClientPacketInfo packet;
 	MemFinder mf;
 
@@ -691,19 +691,20 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN );
 	if ( addr )
 	{
+		DWORD Seek = 0;
+
 		addr += PACKET_TS_LEN;
 
 		// these appear at unpredictable offsets from the search string, so we have to seek for them.
 		// we use the first packet (0x00 with length 0x68) to find a place in the table to start from.
-		while ( Seek != 0x68 && count < 512 )
-		{
+		do {
 			addr ++;
 			count ++;
 
 			if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
 				break;
-			memcpy( &Seek, (const void*)addr, 2 );
-		}
+			memcpy( &Seek, (const void*)addr, 4 );
+		} while ( Seek != 0x68 && count < 512 );
 
 		if ( Seek == 0x68 )
 		{

@@ -147,6 +147,23 @@
 			</File>
 			<File
 				RelativePath=".\MemFinder.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						GlobalOptimizations="TRUE"
+						InlineFunctionExpansion="2"
+						FavorSizeOrSpeed="1"
+						OmitFramePointers="TRUE"
+						OptimizeForProcessor="3"
+						MinimalRebuild="FALSE"
+						ExceptionHandling="FALSE"
+						BasicRuntimeChecks="0"
+						RuntimeLibrary="0"
+						BufferSecurityCheck="FALSE"
+						DebugInformationFormat="0"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OldStatusBar.cpp">

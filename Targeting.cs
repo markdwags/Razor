@@ -219,7 +219,7 @@ namespace Assistant
 				oplchanged |= m.ObjPropList.Remove( Language.GetString( LocString.BeneficialTarget ) );
 
 				if ( oplchanged )
-					ClientCommunication.SendToClient( m.ObjPropList.BuildPacket() );
+					m.OPLChanged();
 			}
 		}
 
@@ -251,7 +251,7 @@ namespace Assistant
 				}
 
 				if ( oplchanged )
-					ClientCommunication.SendToClient( m.ObjPropList.BuildPacket() );
+					m.OPLChanged();
 			}
 		}
 

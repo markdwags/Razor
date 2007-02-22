@@ -117,9 +117,15 @@ namespace Assistant
 			m_ObjPropList.Read( p );
 		}
 
-		public Packet BuildOPLPacket()
+		/*public Packet BuildOPLPacket()
 		{ 
 			return m_ObjPropList.BuildPacket();
+		}*/
+
+		public void OPLChanged()
+		{
+			//ClientCommunication.SendToClient( m_ObjPropList.BuildPacket() );
+			ClientCommunication.SendToClient( new OPLInfo( Serial, OPLHash ) );
 		}
 	}
 }

@@ -8,7 +8,7 @@ DLLFUNCTION int GetPacketLength( unsigned char *packet, int len )
 	if ( pShared != NULL )
 	{
 		int packetLen = pShared->PacketTable[(unsigned char)packet[0]];
-		if ( packetLen >= 0x8000 )
+		if ( packetLen >= 0x4000 )
 		{
 			if ( len < 3 )
 				return 0;

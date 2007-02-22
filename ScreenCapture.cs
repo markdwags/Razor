@@ -19,7 +19,8 @@ namespace Assistant
 
 		public static void DeathCapture()
 		{
-			Timer.DelayedCallback( TimeSpan.FromSeconds( 0.5 ), m_DoCaptureCall ).Start();
+			if ( !PacketPlayer.Playing ) // dont take SS of RPV deaths
+				Timer.DelayedCallback( TimeSpan.FromSeconds( 0.5 ), m_DoCaptureCall ).Start();
 		}
 
 		public static void CaptureNow()

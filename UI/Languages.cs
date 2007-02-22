@@ -554,7 +554,6 @@ namespace Assistant
 				}//while
 			}//using
 
-			m_CliLoc = new Ultima.StringList( m_CliLocName.ToLower() );
 			if ( errors.Count > 0 )
 			{
 				StringBuilder sb = new StringBuilder();
@@ -566,8 +565,7 @@ namespace Assistant
 				new MessageDialog( "Language Pack Load Errors", true, sb.ToString() ).Show();
 			}
 
-			if ( m_CliLoc != null && ( m_CliLoc.Entries == null || m_CliLoc.Entries.Length < 10 ) )
-				m_CliLoc = null;
+			LoadCliLoc();
 
 			m_Loaded = true;
 			return true;
@@ -578,7 +576,15 @@ namespace Assistant
 			if ( m_CliLocName == null || m_CliLocName.Length <= 0 )
 				m_CliLocName = "enu";
             
-			m_CliLoc = new Ultima.StringList( m_CliLocName.ToLower() );
+			try
+			{
+				m_CliLoc = new Ultima.StringList( m_CliLocName.ToLower() );
+			}
+			catch ( Exception e )
+			{
+				new MessageDialog( "Error loading CliLoc", true, "There was an exception while attempting to load '{0}':\n{1}", Ultima.Client.GetFilePath( String.Format( "cliloc.{0}", m_CliLocName ) ), e );
+			}
+
 			if ( m_CliLoc.Entries == null || m_CliLoc.Entries.Length < 10 )	
 			{
 				m_CliLoc = null;

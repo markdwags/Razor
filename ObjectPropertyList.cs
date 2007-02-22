@@ -38,6 +38,8 @@ namespace Assistant
 			set { m_Hash = value; }
 		}
 
+		public int ServerHash { get { return m_Hash; } }
+
 		public bool Customized { get { return m_CustomHash != 0; } }
 
 		public ObjectPropertyList( UOEntity owner )

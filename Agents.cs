@@ -251,7 +251,7 @@ namespace Assistant
 							Item item = (Item)m_Items[i];
 
 							item.ObjPropList.Remove( Language.GetString( LocString.UseOnce ) );
-							ClientCommunication.SendToClient( item.BuildOPLPacket() );
+							item.OPLChanged();
 						}
 					}
 
@@ -280,7 +280,7 @@ namespace Assistant
 				}
 
 				item.ObjPropList.Add( Language.GetString( LocString.UseOnce ) );
-				ClientCommunication.SendToClient( item.BuildOPLPacket() );
+				item.OPLChanged();
 
 				m_Items.Add( item );
 				if ( m_SubList != null )
@@ -303,7 +303,7 @@ namespace Assistant
 						if ( ((Item)m_Items[i]).Serial == serial )
 						{
 							((Item)m_Items[i]).ObjPropList.Remove( Language.GetString( LocString.UseOnce ) );
-							ClientCommunication.SendToClient( ((Item)m_Items[i]).BuildOPLPacket() );
+							((Item)m_Items[i]).OPLChanged();
 
 							rem = true;
 						}
@@ -342,7 +342,7 @@ namespace Assistant
 						if ( toAdd != null )
 						{
 							toAdd.ObjPropList.Add( Language.GetString( LocString.UseOnce ) );
-							ClientCommunication.SendToClient( toAdd.BuildOPLPacket() );
+							toAdd.OPLChanged();
 							m_Items.Add( toAdd );
 							m_SubList.Items.Add( toAdd );
 						}
@@ -411,7 +411,7 @@ namespace Assistant
 				if ( item != null )
 				{
 					item.ObjPropList.Remove( Language.GetString( LocString.UseOnce ) );
-					ClientCommunication.SendToClient( item.BuildOPLPacket() );
+					item.OPLChanged();
 
 					World.Player.SendMessage( LocString.UseOnceStatus, item, m_Items.Count );
 					PlayerData.DoubleClick( item );
@@ -599,7 +599,7 @@ namespace Assistant
 						if ( hb != null )
 						{
 							if ( hb.ObjPropList.Remove( Language.GetString( LocString.SellHB ) ) )
-								ClientCommunication.SendToClient( hb.BuildOPLPacket() );
+								hb.OPLChanged();
 						}
 						m_HotBag = Serial.Zero;
 						SetHBText();
@@ -649,7 +649,7 @@ namespace Assistant
 				if ( hb != null )
 				{
 					hb.ObjPropList.Add( Language.GetString( LocString.SellHB ) );
-					ClientCommunication.SendToClient( hb.BuildOPLPacket() );
+					hb.OPLChanged();
 				}
 			}
 		}
@@ -818,7 +818,7 @@ namespace Assistant
 					if ( bag != null )
 					{
 						bag.ObjPropList.Remove( Language.Format( LocString.OrganizerHBA1, m_Num ) );
-						ClientCommunication.SendToClient( bag.BuildOPLPacket() );
+						bag.OPLChanged();
 					}
 
 					m_SubList.Items.Clear();
@@ -925,7 +925,7 @@ namespace Assistant
 				if ( bag != null )
 				{
 					bag.ObjPropList.Remove( Language.Format( LocString.OrganizerHBA1, m_Num ) );
-					ClientCommunication.SendToClient( bag.BuildOPLPacket() );
+					bag.OPLChanged();
 				}
 
 				m_Cont = serial;
@@ -936,7 +936,7 @@ namespace Assistant
 				if ( bag != null )
 				{
 					bag.ObjPropList.Add( Language.Format( LocString.OrganizerHBA1, m_Num ) );
-					ClientCommunication.SendToClient( bag.BuildOPLPacket() );
+					bag.OPLChanged();
 				}
 			}
 		}
@@ -1352,7 +1352,7 @@ namespace Assistant
 			if ( m_BagRef != null )
 			{
 				m_BagRef.ObjPropList.Remove( Language.GetString( LocString.ScavengerHB ) );
-				ClientCommunication.SendToClient( m_BagRef.BuildOPLPacket() );
+				m_BagRef.OPLChanged();
 			}
 
 			DebugLog( "Set bag to {0}", serial );
@@ -1361,7 +1361,7 @@ namespace Assistant
 			if ( m_BagRef != null )
 			{
 				m_BagRef.ObjPropList.Add( Language.GetString( LocString.ScavengerHB ) );
-				ClientCommunication.SendToClient( m_BagRef.BuildOPLPacket() );
+				m_BagRef.OPLChanged();
 			}
 
 			World.Player.SendMessage( MsgLevel.Force, LocString.ContSet, m_Bag );
@@ -2003,7 +2003,7 @@ namespace Assistant
 			if ( hb != null )
 			{
 				if ( hb.ObjPropList.Remove( Language.Format( LocString.RestockHBA1, m_Num ) ) )
-					ClientCommunication.SendToClient( hb.BuildOPLPacket() );
+					hb.OPLChanged();
 			}
 
 			if ( !location && serial.IsItem )
@@ -2015,7 +2015,7 @@ namespace Assistant
 			if ( hb != null )
 			{
 				hb.ObjPropList.Add( Language.Format( LocString.RestockHBA1, m_Num ) );
-				ClientCommunication.SendToClient( hb.BuildOPLPacket() );
+				hb.OPLChanged();
 			}
 
 			SetHBText();
@@ -2327,7 +2327,7 @@ namespace Assistant
 						if ( m != null )
 						{
 							if ( m.ObjPropList.Remove( Language.GetString( LocString.RazorFriend ) ) )
-								ClientCommunication.SendToClient( m.BuildOPLPacket() );
+								m.OPLChanged();
 						}
 					}
 					m_Chars.Clear();
@@ -2366,7 +2366,7 @@ namespace Assistant
 					if ( m != null )
 					{
 						m.ObjPropList.Add( Language.GetString( LocString.RazorFriend ) );
-						ClientCommunication.SendToClient( m.BuildOPLPacket() );
+						m.OPLChanged();
 					}
 				}
 			}
@@ -2376,28 +2376,20 @@ namespace Assistant
 		{
 			Mobile m = World.FindMobile( s );
 			string name = null;
-			if ( m != null )
-			{
-				if ( m.Name != null && m.Name != "" )
-				{
-					name = m.Name;
-					m_Names[s] = m.Name;
-				}
-				else
-				{
-					if ( m_Names.ContainsKey( s ) )
-						name = m_Names[s] as string;
-				}
-			}
-			else if ( m_Names.ContainsKey( s ) )
-			{
+
+			if ( m_Names.ContainsKey( s ) )
 				name = m_Names[s] as string;
-			}
+
+			if ( m != null && m.Name != null && m.Name != "" )
+				name = m.Name;
 
 			if ( name == null )
 				name = "(Name Unknown)";
 
-			m_SubList.Items.Add( String.Format( "\"{0}\" {1}", name, s ) );
+			m_Names[s] = name;
+
+			if ( m_SubList != null )
+				m_SubList.Items.Add( String.Format( "\"{0}\" {1}", name, s ) );
 		}
 
 		private void OnRemoveTarget( bool location, Serial serial, Point3D loc, ushort gfx )
@@ -2421,7 +2413,7 @@ namespace Assistant
 				if ( m != null )
 				{
 					if ( m.ObjPropList.Remove( Language.GetString( LocString.RazorFriend ) ) )
-						ClientCommunication.SendToClient( m.BuildOPLPacket() );
+						m.OPLChanged();
 				}
 			}
 		}

@@ -122,7 +122,7 @@ namespace Assistant
 						if ( item.ModifiedOPL )
 						{
 							args.Block = true;
-							ClientCommunication.SendToClient( item.BuildOPLPacket() );
+							ClientCommunication.SendToClient( item.ObjPropList.BuildPacket() );
 						}
 					}
 					else if ( s.IsMobile )
@@ -135,7 +135,7 @@ namespace Assistant
 						if ( m.ModifiedOPL )
 						{
 							args.Block = true;
-							ClientCommunication.SendToClient( m.BuildOPLPacket() );
+							ClientCommunication.SendToClient( m.ObjPropList.BuildPacket() );
 						}
 					}
 					break;
@@ -151,7 +151,7 @@ namespace Assistant
 			if ( s.IsItem )
 			{
 				Item item = World.FindItem( s );
-				if ( item != null && item.OPLHash != 0 && item.OPLHash != hash )
+				if ( item != null && item.OPLHash != hash )
 				{
 					item.OPLHash = hash;
 					p.Seek( -4, SeekOrigin.Current );
@@ -161,7 +161,7 @@ namespace Assistant
 			else if ( s.IsMobile )
 			{
 				Mobile m = World.FindMobile( s );
-				if ( m != null && m.OPLHash != 0 && m.OPLHash != hash )
+				if ( m != null && m.OPLHash != hash )
 				{
 					m.OPLHash = hash;
 					p.Seek( -4, SeekOrigin.Current );
