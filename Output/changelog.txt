@@ -6,7 +6,13 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
--There is now a HotKey to set the Hot Bag for each of the 10 organizer agents
+-Razor now contains an Automatic Update utility.  This is long over due, and will allow me to provide bug fixes and incremental updates more immediately and easily.  Razor will check for updates when it is started (before the welcome screen is shown).
 
 Changes/Fixes:
--Made some optimizations and fixes to how the UOPS window updates itself.
+-Bug causing item names/properties to be overwritten on AOS servers has been fixed.
+-Object Property Lists on AOS servers now update correctly when the information changes. (For real)
+-Bug causing random client freezes as been fixed.
+-The Input Box should now always appear in front of UO when it needs information from you (like amounts in Agents).
+-Fixed compatability issues with some older clients
+-Other small fixes (Including some potential Vista compatability fixes)
+-Some small language file updates (more to come)
