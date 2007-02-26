@@ -582,10 +582,17 @@ namespace Assistant
 			}
 			catch ( Exception e )
 			{
-				new MessageDialog( "Error loading CliLoc", true, "There was an exception while attempting to load '{0}':\n{1}", Ultima.Client.GetFilePath( String.Format( "cliloc.{0}", m_CliLocName ) ), e );
+				string fileName = "[CliLoc]";
+				try
+				{
+					fileName = Ultima.Client.GetFilePath( String.Format( "cliloc.{0}", m_CliLocName ) );
+				}
+				catch{}
+
+				new MessageDialog( "Error loading CliLoc", true, "There was an exception while attempting to load '{0}':\n{1}", fileName, e ).ShowDialog( Engine.ActiveWindow );
 			}
 
-			if ( m_CliLoc.Entries == null || m_CliLoc.Entries.Length < 10 )	
+			if ( m_CliLoc == null || m_CliLoc.Entries == null || m_CliLoc.Entries.Length < 10 )	
 			{
 				m_CliLoc = null;
 				if ( m_CliLocName != "enu" )

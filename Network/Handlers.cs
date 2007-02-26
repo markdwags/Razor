@@ -1365,7 +1365,7 @@ namespace Assistant
 
 			short z = p.ReadSByte();
 
-			item.Position = new Point3D( x&0x3FFF, y&0x3FFF, z );
+			item.Position = new Point3D( x&0x7FFF, y&0x3FFF, z );
 
 			if ( ( y & 0x8000 ) != 0 )
 				item.Hue = p.ReadUInt16();

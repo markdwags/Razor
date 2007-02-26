@@ -306,7 +306,10 @@ namespace Assistant
 
 				if ( result != ClientCommunication.Loader_Error.SUCCESS )
 				{
-					MessageBox.Show( SplashScreen.Instance, String.Format( "Unable to find the client specified. (Error: {2})\n{0}: \"{1}\"", launch.ToString(), clientPath != null ? clientPath : "-null-", result ), "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop );
+					if ( clientPath == null && File.Exists( clientPath ) )
+						MessageBox.Show( SplashScreen.Instance, String.Format( "Unable to find the client specified.\n{0}: \"{1}\"", launch.ToString(), clientPath != null ? clientPath : "-null-" ), "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop );
+					else
+						MessageBox.Show( SplashScreen.Instance, String.Format( "Unable to launch the client specified. (Error: {2})\n{0}: \"{1}\"", launch.ToString(), clientPath != null ? clientPath : "-null-", result ), "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop );
 					SplashScreen.End();
 					return;
 				}

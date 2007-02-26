@@ -513,9 +513,9 @@ DLLFUNCTION void BringToFront( HWND hWnd )
 DLLFUNCTION void DoFeatures( int realFeatures )
 {
 	char ch;
-	int i, size = 9;
+	int i, size = 8;
 	char pkt[256];
-	char *str = &pkt[8];
+	char *str = NULL;
 
 	int features = 0;
 	if ( (realFeatures & 0x8000) == 0 )
@@ -531,26 +531,22 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 		features = realFeatures & 0x7FFF;
 	}
 
-	//(byte)MessageType.Special, 0x02B2, 0x0003, sb
 	pkt[0] = 0x03;
 
-	pkt[3] = 0x20;
+	pkt[1] = pkt[2] = 0; // size = 0 (filled in later)
 
-	pkt[4] = 0x02;
+	pkt[3] = 0x20; // MessageType.Special
+
+	pkt[4] = 0x02; // hue = 0x2b2
 	pkt[5] = 0xB2;
 
-	pkt[6] = 0x00;
+	pkt[6] = 0x00; // font = 3
 	pkt[7] = 0x03;
 
+	str = &pkt[8];
 	
 	// CHEAT UO.exe 1 251--
-	// 1 = 2d
-	// 2 = 3d!
-
-	size += sprintf( str, "%c%cE%c%c %s %d %d--\x00", 'C', 'H', 'A', 'T', "UO.exe", ClientType, features );
-
-	pkt[1] = (size>>8)&0xFF;
-	pkt[2] = size&0xFF;
+	sprintf( str, "%c%cE%c%c %s %d %d--", 'C', 'H', 'A', 'T', "UO.exe", ClientType, features );
 
 	i = 0;
 	do
@@ -559,6 +555,18 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 		str[i] = ch ^ pShared->CheatKey[i & 0xF];
 		i++;
 	} while ( ch != 0 );
+
+	size = 8+i;
+
+	if ( !ServerEncrypted )
+	{
+		*((unsigned int*)&str[i]) = ~((unsigned int)time(NULL) ^ 0x54494D45);
+		size += 4;
+	}
+
+	// fill in size
+	pkt[1] = (size>>8)&0xFF;
+	pkt[2] = size&0xFF;
 
 	WaitForSingleObject( CommMutex, 50 );
 	memcpy( pShared->OutSend.Buff + pShared->OutSend.Start + pShared->OutSend.Length, pkt, size );

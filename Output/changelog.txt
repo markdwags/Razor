@@ -16,3 +16,7 @@ Changes/Fixes:
 -Fixed compatability issues with some older clients
 -Other small fixes (Including some potential Vista compatability fixes)
 -Some small language file updates (more to come)
+
+-Another potential fix for cliloc loading problems and Vista compatability.
+-Fix fora problem with weird map sizes
+-Better error message when failing to find client
