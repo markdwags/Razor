@@ -1,4 +1,4 @@
-Razor (v1.0.6.*) Changelog:
+Razor (v1.0.7.*) Changelog:
 
 Razor is a FREE program.  Unlike competing programs like UOAssist, Razor does not charge any money at all and provides even more features.  Razor is now available on the regular OSI servers for unlimited accounts absolutely free.  But Razor needs your help!  Razor is now accepting donations over PayPal.  UOAssist (a similar program, but for OSI servers only) costs $15 PER ACCOUNT while Razor is FREE for UNLIMITED ACCOUNTS.  Your donation of $5 or $10 (or any amount!) is LESS than you would pay for a similar program!  Donations are greatly appreciated and will help ensure that the developers continue to improve and maintain this fine product.
 Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD
@@ -6,20 +6,13 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
--Razor now contains an Automatic Update utility.  This is long over due, and will allow me to provide bug fixes and incremental updates more immediately and easily.  Razor will check for updates when it is started (before the welcome screen is shown).
+-None
 
 Changes/Fixes:
--Bug causing item names/properties to be overwritten on AOS servers has been fixed.
--Object Property Lists on AOS servers now update correctly when the information changes. (For real)
--Bug causing random client freezes as been fixed.
--The Input Box should now always appear in front of UO when it needs information from you (like amounts in Agents).
--Fixed compatability issues with some older clients
--Other small fixes (Including some potential Vista compatability fixes)
--Some small language file updates (more to come)
-
 -Another potential fix for cliloc loading problems and Vista compatability.
 -Fix for a problem with weird map sizes
 -Better error message when failing to find client
 -Possible fix for Logitech Keyboards performing a hotkey action twice in certain situations
 -Last target should now work correctly with a target which allows the ground to be targeted.
+-A small crash fix
 -After this update, your client will show up as Razor 1.0.7.
