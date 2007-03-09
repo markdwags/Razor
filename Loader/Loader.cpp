@@ -98,7 +98,7 @@ __declspec(dllexport) DWORD __stdcall Load( const char *exe, const char *dll, co
 	// allocate some space in the exe for our memory
 	DWORD ProcMem = 0;
 	
-	ProcMem = (DWORD)VirtualAllocEx( ProcInfo.hProcess, NULL, allocSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE );
+	ProcMem = (DWORD)VirtualAllocEx( ProcInfo.hProcess, NULL, allocSize, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE );
 	if ( !ProcMem )
 	{
 		ProcMem = 0x00700000;
@@ -116,7 +116,7 @@ __declspec(dllexport) DWORD __stdcall Load( const char *exe, const char *dll, co
 		return NO_ALLOC_MEM;
 	}
 
-	// change protection to allow us to read/write the entry point (note: the old protection is not restored (so that we can change this space again later...))
+	// change protection to allow us to read/write the entry point (note: the old protection is not restored (so that we can change this space again later...)
 	if ( !VirtualProtectEx( ProcInfo.hProcess, Entry, 8, PAGE_EXECUTE_READWRITE, (PDWORD)&Num ) )
 	{
 		TerminateProcess( ProcInfo.hProcess, 0 );

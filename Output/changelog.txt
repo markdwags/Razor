@@ -18,5 +18,8 @@ Changes/Fixes:
 -Some small language file updates (more to come)
 
 -Another potential fix for cliloc loading problems and Vista compatability.
--Fix fora problem with weird map sizes
+-Fix for a problem with weird map sizes
 -Better error message when failing to find client
+-Possible fix for Logitech Keyboards performing a hotkey action twice in certain situations
+-Last target should now work correctly with a target which allows the ground to be targeted.
+-After this update, your client will show up as Razor 1.0.7.

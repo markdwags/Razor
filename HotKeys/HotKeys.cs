@@ -66,6 +66,7 @@ namespace Assistant
 		private ModKeys m_Mod;
 		private TreeNode m_Node;
 		private object m_State;
+		private DateTime m_LastTriggerTime = DateTime.MinValue;
 
 		public string DispName{ get{ return m_Name != 0 ? Language.GetString( m_Name ) : m_SName; } }
 		public int LocName{ get{ return m_Name; } }
@@ -112,10 +113,16 @@ namespace Assistant
 
 		public void Callback()
 		{
-			if ( m_Callback != null )
-				m_Callback();
-			else if ( m_CallbackState != null )
-				m_CallbackState( ref m_State );
+			// protect again weird keyboard oddities which "double press" the keys when the user only wanted to do an action once
+			if ( m_LastTriggerTime+TimeSpan.FromMilliseconds( 20 ) <= DateTime.Now )
+			{
+				m_LastTriggerTime = DateTime.Now;
+
+				if ( m_Callback != null )
+					m_Callback();
+				else if ( m_CallbackState != null )
+					m_CallbackState( ref m_State );
+			}
 		}
 
 		public void Remove()

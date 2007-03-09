@@ -1014,7 +1014,7 @@ namespace Assistant
 				{
 					if ( info.Serial.IsValid )
 					{
-						// don't allow last target to be the ground or anything
+						// only let lasttarget be a non-ground target
 
 						m_LastTarget = info;
 						if ( info.Flags == 1 )
@@ -1022,14 +1022,10 @@ namespace Assistant
 						else if ( info.Flags == 2 )
 							m_LastBeneTarg = info;
 
-						m_LastGroundTarg = null;
-
 						LastTargetChanged();
 					}
-					else
-					{
-						m_LastGroundTarg = info;
-					}
+
+					m_LastGroundTarg = info; // ground target is the true last target
 
 					if ( Macros.MacroManager.AcceptActions )
 						MacroManager.Action( new AbsoluteTargetAction( info ) );

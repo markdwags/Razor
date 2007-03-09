@@ -22,6 +22,7 @@ DWORD UOProcId = 0;
 HANDLE hFileMap = NULL;
 HMODULE hInstance = NULL;
 SOCKET CurrentConnection = 0;
+int ConnectedIP = 0;
 
 HANDLE CommMutex = NULL;
 
@@ -166,6 +167,8 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 
 			delete[] data;
 		}
+
+		//MessageBox( NULL, "Debug me!", "Now", MB_OK );
 
         namePtr = strrchr( fileName, '\\' );
 		if ( namePtr )
@@ -560,7 +563,12 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 
 	if ( !ServerEncrypted )
 	{
-		*((unsigned int*)&str[i]) = ~((unsigned int)time(NULL) ^ 0x54494D45);
+		time_t now = time(NULL);
+
+		*((unsigned int*)&str[size]) = ~((unsigned int)now ^ 0x54494D45);
+		size += 4;
+
+		*((unsigned int*)&str[size]) = ~(ConnectedIP ^ (int)now);
 		size += 4;
 	}
 
@@ -1377,6 +1385,8 @@ int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 		}
 		
 		retVal = (*(ConnFunc)OldConnect)( sock, (sockaddr*)&useAddr, sizeof(sockaddr_in) );
+
+		ConnectedIP = useAddr.sin_addr.S_un.S_addr;
 
 		if ( retVal != SOCKET_ERROR )
 		{

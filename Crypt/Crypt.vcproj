@@ -50,7 +50,9 @@
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCPreBuildEventTool"
+				Description="Generating Checksum.h..."
+				CommandLine="$(ProjectDir)GenerateRazorChecksumH.exe"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool

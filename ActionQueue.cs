@@ -1,5 +1,3 @@
-#define LOGGING
-
 using System;
 using System.Collections;
 using System.IO;
