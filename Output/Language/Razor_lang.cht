@@ -1,14 +1,14 @@
 // Razor Traditional Chinese/CHT Language Pack
-// Last modified Date: 2007-01-20
+// Last modified Date: 2007-3-11
 // Based on Simplified Chinese language file.
-// Translated by Cloud, E-mail: linhongjun@hotmail.com, Blog: http://blog.plaync.jp/linhongjun
+// Translated by Cloud, E-mail: linhongjun@hotmail.com, Blog: http://blog.plaync.jp/linhongjun/55934
 // If Razor can not load skillnames with this language file, please replace "Cliloc.chs" with "Cliloc.enu" in UO installation directory. Becuase there's no corresponding entry in localization file of simplified chinese. Make sure you have made a copy of original file before doing this.
 // 為確保技能名稱可以正確顯示,請用"Cliloc.enu"替換UO安裝目錄下的"Cliloc.chs",也就是說刪掉原始的"Cliloc.chs"文件,然後更名"Cliloc.enu"為"Cliloc.chs".前提是你的作業系統必須為簡體中文.另外對於繁體中文版本的"Cliloc.cht",如果完整的話也可以進行類似替換,裡面的漢化完成度很高.如果排除這個方面的因素影響,強烈推薦使用.替換前請務必要備份原始文件.
 // Special string used in the game such as LastTarget, LastObject will not be translated in order to match with UO.
 // 對於LastTarget,LastObject這類指令將不會進行翻譯,盡量保持其與UO設定中的一致性.
 // UseOnce僅僅表示一次性的代理,無特別意義,暫時不作翻譯考慮.
 // This CHT language pack is converted by tool. Please contact me for any problem or suggestion.
-// 該繁體語言文件通過工具轉換然後進行詞彙校對而成,如有語言風格上的不同或問題請聯繫我,以便更正.
+// 該繁體語言文件通過工具轉換然後進行詞語校對而成,如有語言風格上的不同或問題請聯絡我,以便更正.
 // 以上為文檔說明,以下為語言文件內容:
 ::Encoding=BIG5
 ::CliLoc=CHT
@@ -21,7 +21,7 @@ WelcomeForm::label5=語言:
 WelcomeForm::groupBox2=伺服器
 WelcomeForm::label3=伺服器:
 WelcomeForm::label4=埠口:
-WelcomeForm::groupBox1=客戶端選項(預設為自動偵測)
+WelcomeForm::groupBox1=客戶端設定(預設為自動偵測)
 WelcomeForm::useEnc=使用OSI加密
 WelcomeForm::makeDef=保存當前值為預設配置
 WelcomeForm::browse=瀏覽...
@@ -33,6 +33,7 @@ WelcomeForm::okay=啟動(&O)
 
 MainForm::Text=Razor v{0}
 MainForm::generalTab=一般
+MainForm::btnMap=開啟UO定位系統
 MainForm::label10=檢查更新:
 MainForm::systray=系統通知區域
 MainForm::taskbar=任務欄
@@ -46,7 +47,7 @@ MainForm::showWelcome=顯示歡迎界面(會影響所有用戶)
 MainForm::alwaysTop=開啟智能頂部顯示
 MainForm::groupBox1=過濾
 MainForm::opacityLabel=透明度: 100%
-MainForm::moreMoreOptTab=更多選項
+MainForm::moreMoreOptTab=更多設定
 MainForm::blockHealPoison=阻止在目標中毒時進行治療
 MainForm::potionEquip=使用藥水時自動解除/重新裝備
 MainForm::label17=Razor訊息顯示:
@@ -69,7 +70,7 @@ MainForm::label6=ms
 MainForm::label18=x
 MainForm::gameSize=強制遊戲視窗大小:
 MainForm::smartLT=開啟智能化LastTarget指令
-MainForm::moreOptTab=選項
+MainForm::moreOptTab=設定
 MainForm::smoothWalk=平滑行走
 MainForm::negotiate=與伺服器協商遊戲特性
 MainForm::setLTHilight=設定
@@ -172,6 +173,7 @@ MainForm::label16=解析度:
 MainForm::label15=FPS:
 MainForm::label19=翻轉:
 MainForm::groupBox9=PacketVideo回放
+MainForm::rpvTime=00:00/00:00
 MainForm::label14=速度:
 MainForm::vidClose=關閉
 MainForm::vidPlayStop=停止
@@ -318,12 +320,12 @@ MacroInsertIf::insert=插入(&I)
 1101=加載'{0}'錯誤!\n該個人配置文件已經損壞並且無法使用.
 1102=屬性{0}在該個人配置文件中無法找到.
 1103=你的counters.xml文件已經損壞並且無法使用.
-1104=因為你的自動容器搜索選項處於關閉狀態,你現在必須重新打開所有的包以便計數器可以更新.
+1104=因為你的自動容器搜索設定處於關閉狀態,你現在必須重新打開所有的包以便計數器可以更新.
 1105=警告:{0}數量現在是{1}!
 1106=選擇你想使用的顏色.
 1107=立即抓圖
 1108=可用參數或值:\n{char} - 角色名\n{shard} - 站名\n{str}/{hp}/{hpmax} - 健康狀態\n{dex}/{stam}/{stammax} - 敏捷狀態\n{int}/{mana}/{manamax} - 智力狀態\n{weight}/{maxweight} - 負重訊息\n{gold} - 金錢\n{AR} - 裝甲/ 物力抵抗\n{tithe} - 賦稅狀態\n{followers}/{followersmax} - 隨從數量最大值\n{bandage} - 繃帶計時\n{statbar}/{mediumstatbar}/{largestatbar} - 狀態欄(小/中/大)\n{crimtime} - 成為罪犯時間\n{stealthsteps} - 潛行步數計數器\n{physresist} - 物理抵抗\n{coldresist} - 冰冷抗性\n{fireresist} - 火炎抗性\n{energyresist} - 能量抗性\n{poisonresist} - 毒抗性\n{luck} - 幸運值\n{damage} - 傷害值 Min-Max(最小值-最大值)\n顏色 - HTML16進制代碼:'~#rrggbb'(輸入'~#~'結束顏色代碼)\n或者從計數器列表中使用{Format}格式
-1109=程式版本:{0}\n內存使用:{1}\n發送數據:{2} ({3}/s)\n接收數據:{4} ({5}/s)\n連接時間:{6}\n玩家序號:0x{7:X8}\n背包序號:0x{8:X8}\n跟蹤物品:{9}\n跟蹤生物:{10}\n\n語言翻譯:Cloud (linhongjun@hotmail.com)\n更新時間:2007/01/20\n注意事項:如某些訊息出現錯誤或無法顯示(如魔法名,技能名),請用文本編輯軟件打開Razor\Language\下的Razor_lang.chs文件閱讀詳細說明.
+1109=程式版本:{0}\n內存使用:{1}\n發送數據:{2} ({3}/s)\n接收數據:{4} ({5}/s)\n連接時間:{6}\n玩家序號:0x{7:X8}\n背包序號:0x{8:X8}\n跟蹤物品:{9}\n跟蹤生物:{10}\n\n繁體中文:Cloud (linhongjun@hotmail.com)\n更新時間:2007/03/11\n注意事項:如某些訊息出現錯誤或無法顯示(如魔法名,技能名),請用文本編輯軟件打開Razor\Language\下的Razor_lang.chs文件閱讀詳細說明.
 1110=設定技能鎖:上升
 1111=設定技能鎖:下降
 1112=設定技能鎖:鎖定
@@ -359,7 +361,7 @@ MacroInsertIf::insert=插入(&I)
 1142=你確認嗎?
 1143=警告:以下{0}文件{1}無法被刪除:\n{2}
 1144=更改將會在下次啟動Razor時生效.
-1145=開啟該選項將會導致Razor保存你的密碼於個人配置文件中.\n儘管密碼已經被加密,但其他人仍然有可能獲取.\n你確認要開啟該功能嗎?
+1145=開啟該設定將會導致Razor保存你的密碼於個人配置文件中.\n儘管密碼已經被加密,但其他人仍然有可能獲取.\n你確認要開啟該功能嗎?
 1146=你必須指定一個有效的埠口.
 1147=忽略動作請求(已經處於隊列中).
 1148=隊列動作請求{0}...{1}剩餘.
@@ -566,7 +568,7 @@ MacroInsertIf::insert=插入(&I)
 1416=隨機目標
 // 1417 to 1465 reserved
 1466=特性不被伺服器允許
-1467=該特性被當前遊戲伺服器禁用.\n你可以選擇忽略伺服器所允許的特性,可以在選項標籤下進行設定.\n\n查看被禁止的特性列表,請在幫助與狀態標籤下設定.
+1467=該特性被當前遊戲伺服器禁用.\n你可以選擇忽略伺服器所允許的特性,可以在設定標籤下進行設定.\n\n查看被禁止的特性列表,請在幫助與狀態標籤下設定.
 1468=插入註釋
 1469=添加好友
 1470=移除好友
@@ -590,3 +592,4 @@ MacroInsertIf::insert=插入(&I)
 1488=友善目標
 1489=敵對目標
 1490=(Razor好友)
+1491=從此處進行
