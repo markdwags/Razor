@@ -89,7 +89,7 @@ namespace Assistant.Filters
 		private bool m_Enabled;
 		private PacketViewerCallback m_Callback;
 
-		public Filter()
+		protected Filter()
 		{
 			m_Enabled = false;
 			m_Callback = new PacketViewerCallback( this.OnFilter );

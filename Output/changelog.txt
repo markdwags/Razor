@@ -16,3 +16,7 @@ Changes/Fixes:
 -Last target should now work correctly with a target which allows the ground to be targeted.
 -A small crash fix
 -After this update, your client will show up as Razor 1.0.7.
+-Updated/Extended localization for a lot of stuff.  Nearly everything is localized now.
+-Fixed an annoying problem when canceling targets with "Range check last target" checked.
+-Fixed an annoying confusion with Targets which allow you to target the ground.
+-Fixed a major bug that caused items to disappear when picking them up from over 2 tiles away.

@@ -10,7 +10,7 @@ namespace Assistant.Filters
 			Filter.Register( new WeatherFilter() );
 		}
 
-		public WeatherFilter()
+		private WeatherFilter()
 		{
 		}
 

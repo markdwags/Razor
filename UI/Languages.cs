@@ -370,6 +370,7 @@ namespace Assistant
 		ChangeTimeout,
 		EnterAName,
 		Invalid,
+		StaffOnlyItems,
 
 		__End
 	}

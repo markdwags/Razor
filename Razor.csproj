@@ -280,6 +280,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\StaffItems.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\VetRewardGump.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

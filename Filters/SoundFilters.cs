@@ -31,7 +31,7 @@ namespace Assistant.Filters
 		private LocString m_Name;
 		private ushort[] m_Sounds;
 
-		public SoundFilter( LocString name, params ushort[] blockSounds )
+		private SoundFilter( LocString name, params ushort[] blockSounds )
 		{
 			m_Name = name;
 			m_Sounds = blockSounds;

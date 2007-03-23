@@ -323,6 +323,7 @@ namespace Assistant
 
 		public static bool LiftReject()
 		{
+			Log( "Server rejected lift for item {0}", m_Holding );
 			if ( m_Holding == Serial.Zero )
 				return true;
 

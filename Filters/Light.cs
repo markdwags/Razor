@@ -10,7 +10,7 @@ namespace Assistant.Filters
 			Filter.Register( new LightFilter() );
 		}
 
-		public LightFilter()
+		private LightFilter()
 		{
 		}
 

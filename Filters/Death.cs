@@ -10,7 +10,7 @@ namespace Assistant.Filters
 			Filter.Register( new DeathFilter() );
 		}
 
-		public DeathFilter()
+		private DeathFilter()
 		{
 		}
 

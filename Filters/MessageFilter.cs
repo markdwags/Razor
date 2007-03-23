@@ -10,7 +10,7 @@ namespace Assistant.Filters
 		private string[] m_Strings;
 		private MessageType m_Type;
 
-		public AsciiMessageFilter( LocString name, MessageType type, string []msgs )
+		private AsciiMessageFilter( LocString name, MessageType type, string []msgs )
 		{
 			m_Name = name;
 			m_Strings = msgs;
@@ -59,7 +59,7 @@ namespace Assistant.Filters
 		private int[] m_Nums;
 		private MessageType m_Type;
 
-		public LocMessageFilter( LocString name, MessageType type, int []msgs )
+		private LocMessageFilter( LocString name, MessageType type, int []msgs )
 		{
 			m_Name = name;
 			m_Nums = msgs;
