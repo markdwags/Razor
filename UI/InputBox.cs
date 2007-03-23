@@ -208,6 +208,8 @@ namespace Assistant
 
 		private void InputBox_Load(object sender, System.EventArgs e)
 		{
+			Language.LoadControlNames( this );
+
 			if ( this.Location.X <= 0 || this.Location.Y <= 0 )
 				this.Location = new System.Drawing.Point( Config.GetInt( "WindowX" ), Config.GetInt( "WindowY" ) );
 			

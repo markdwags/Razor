@@ -186,7 +186,7 @@ namespace Assistant
 				return;
 			}
 
-			m_LastBeneTarg = m_LastHarmTarg = m_LastTarget = new TargetInfo();
+			m_LastBeneTarg = m_LastHarmTarg = m_LastGroundTarg = m_LastTarget = new TargetInfo();
 			m_LastTarget.Flags = 0;
 			m_LastTarget.Gfx = gfxid;
 			m_LastTarget.Serial = serial;
@@ -436,7 +436,7 @@ namespace Assistant
 		public static void SetLastTargetTo( Mobile m, byte flagType )
 		{
 			TargetInfo targ = new TargetInfo();
-			m_LastTarget = targ;
+			m_LastGroundTarg = m_LastTarget = targ;
 
 			if ( ( m_HasTarget && m_CurFlags == 1 ) || flagType == 1 )
 				m_LastHarmTarg = targ;
@@ -720,7 +720,7 @@ namespace Assistant
 			else
 			{
 				info.TargID = m_CurrentID;
-				m_LastTarget = info;
+				m_LastGroundTarg = m_LastTarget = info;
 				ClientCommunication.SendToServer( new TargetResponse( info ) );
 			}
 		}
@@ -896,7 +896,7 @@ namespace Assistant
 				return;
 			}
 
-			m_LastTarget = targ;
+			m_LastGroundTarg = m_LastTarget = targ;
 
 			m_LastHarmTarg = m_LastBeneTarg = targ;
 
@@ -967,8 +967,38 @@ namespace Assistant
 
 			m_ClientTarget = false;
 
-			//if ( !Config.GetBool( "SmartLastTarget" ) || m_LastTarget == null || ( info.Flags != 0 && info.Flags == m_LastTarget.Flags ) )
-				ClearQueue();
+			// check for cancel
+			if ( info.X == 0xFFFF && info.X == 0xFFFF && ( info.Serial <= 0 || info.Serial >= 0x80000000 ) )
+			{
+				m_HasTarget = false;
+
+				if ( m_Intercept )
+				{
+					args.Block = true;
+					Timer.DelayedCallbackState( TimeSpan.Zero, m_OneTimeRespCallback, info ).Start();
+					EndIntercept();
+
+					if ( m_PreviousID != 0 )
+					{
+						m_CurrentID = m_PreviousID;
+						m_AllowGround = m_PreviousGround;
+						m_CurFlags = m_PrevFlags;
+
+						m_PreviousID = 0;
+
+						ResendTarget();
+					}
+				}
+				else if ( m_FilterCancel.Contains( (uint)info.TargID ) || info.TargID == LocalTargID )
+				{
+					args.Block = true;
+				}
+
+				m_FilterCancel.Clear();
+				return;
+			}
+
+			ClearQueue();
 
 			if ( m_Intercept )
 			{
@@ -1000,54 +1030,44 @@ namespace Assistant
 				}
 			}
 
-			if ( info.X != 0xFFFF || info.X != 0xFFFF || info.Serial.IsValid ) 
+			m_HasTarget = false;
+
+			if ( CheckHealPoisonTarg( m_CurrentID, info.Serial ) )
 			{
-				m_HasTarget = false;
-
-				if ( CheckHealPoisonTarg( m_CurrentID, info.Serial ) )
-				{
-					ResendTarget();
-					args.Block = true;
-				}
+				ResendTarget();
+				args.Block = true;
+			}
 				
-				if ( info.Serial != World.Player.Serial )
+			if ( info.Serial != World.Player.Serial )
+			{
+				if ( info.Serial.IsValid )
 				{
-					if ( info.Serial.IsValid )
-					{
-						// only let lasttarget be a non-ground target
+					// only let lasttarget be a non-ground target
 
-						m_LastTarget = info;
-						if ( info.Flags == 1 )
-							m_LastHarmTarg = info;
-						else if ( info.Flags == 2 )
-							m_LastBeneTarg = info;
+					m_LastTarget = info;
+					if ( info.Flags == 1 )
+						m_LastHarmTarg = info;
+					else if ( info.Flags == 2 )
+						m_LastBeneTarg = info;
 
-						LastTargetChanged();
-					}
+					LastTargetChanged();
+				}
 
-					m_LastGroundTarg = info; // ground target is the true last target
+				m_LastGroundTarg = info; // ground target is the true last target
 
-					if ( Macros.MacroManager.AcceptActions )
+				if ( Macros.MacroManager.AcceptActions )
+					MacroManager.Action( new AbsoluteTargetAction( info ) );
+			}
+			else 
+			{
+				if ( Macros.MacroManager.AcceptActions )
+				{
+					KeyData hk = HotKey.Get( (int)LocString.TargetSelf );
+					if ( hk != null )
+						MacroManager.Action( new HotKeyAction( hk ) );
+					else
 						MacroManager.Action( new AbsoluteTargetAction( info ) );
 				}
-				else 
-				{
-					if ( Macros.MacroManager.AcceptActions )
-					{
-						KeyData hk = HotKey.Get( (int)LocString.TargetSelf );
-						if ( hk != null )
-							MacroManager.Action( new HotKeyAction( hk ) );
-						else
-							MacroManager.Action( new AbsoluteTargetAction( info ) );
-					}
-				}
-			}
-			else
-			{
-				if ( m_FilterCancel.Contains( (uint)info.TargID ) || info.TargID == LocalTargID )
-					args.Block = true;
-				else
-					m_ClientTarget = m_HasTarget = false;
 			}
 
 			m_FilterCancel.Clear();
@@ -1064,6 +1084,19 @@ namespace Assistant
 			m_CurrentID = p.ReadUInt32(); // target uid
 			m_CurFlags = p.ReadByte(); // flags
 			// the rest of the packet is 0s
+
+			// check for a server cancel command
+			if ( !m_AllowGround && m_CurrentID == 0 && m_CurFlags == 3 )
+			{ 
+				m_HasTarget = false;
+				m_ClientTarget = false;
+				if ( m_Intercept )
+				{
+					EndIntercept();
+					World.Player.SendMessage( MsgLevel.Error, LocString.OTTCancel );
+				}
+				return;
+			}
 
 			if ( Spell.LastCastTime + TimeSpan.FromSeconds( 3.0 ) > DateTime.Now && Spell.LastCastTime + TimeSpan.FromSeconds( 0.5 ) <= DateTime.Now && m_SpellTargID == 0 )
 				m_SpellTargID = m_CurrentID;

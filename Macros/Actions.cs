@@ -86,7 +86,7 @@ namespace Assistant.Macros
 
 		private void EditTimeout( object[] args )
 		{
-			if ( InputBox.Show( "Enter new timeout value for this action (in seconds):", "Change Timeout", ((int)(m_Timeout.TotalSeconds)).ToString() ) )
+			if ( InputBox.Show( Language.GetString( LocString.NewTimeout ), Language.GetString( LocString.ChangeTimeout ), ((int)(m_Timeout.TotalSeconds)).ToString() ) )
 				m_Timeout = TimeSpan.FromSeconds( InputBox.GetInt( 60 ) );
 		}
 

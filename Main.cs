@@ -275,14 +275,14 @@ namespace Assistant
 
 			Language.LoadCliLoc();
 
-			SplashScreen.Message = "Initializing...";
+			SplashScreen.Message = LocString.Initializing;
 
 			//m_TimerThread = new Thread( new ThreadStart( Timer.TimerThread.TimerMain ) );
 			//m_TimerThread.Name = "Razor Timers";
 
 			Initialize( typeof( Assistant.Engine ).Assembly ); //Assembly.GetExecutingAssembly()
 
-			SplashScreen.Message = "Loading last used profile...";
+			SplashScreen.Message = LocString.LoadingLastProfile;
 			Config.LoadCharList();
 			if ( !Config.LoadLastProfile() )
 				MessageBox.Show( SplashScreen.Instance, "The selected profile could not be loaded, using default instead.", "Profile Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
@@ -291,7 +291,7 @@ namespace Assistant
 			{
 				ClientCommunication.Loader_Error result = ClientCommunication.Loader_Error.UNKNOWN_ERROR;
 
-				SplashScreen.Message = "Loading client...";
+				SplashScreen.Message = LocString.LoadingClient;
 				
 				if ( launch == ClientLaunch.TwoD )
 					clientPath = Ultima.Client.GetFilePath( "client.exe" );
@@ -356,9 +356,9 @@ namespace Assistant
 			}
 
 			if ( Utility.Random(4) != 0 )
-				SplashScreen.Message = "Waiting for client to start...";
+				SplashScreen.Message = LocString.WaitingForClient;
 			else
-				SplashScreen.Message = "Don't forget to Donate!!";
+				SplashScreen.Message = LocString.RememberDonate;
 
 			m_MainWnd = new MainForm();
 			Application.Run( m_MainWnd );
@@ -430,7 +430,7 @@ namespace Assistant
 
 		private static void CheckForUpdates()
 		{
-			SplashScreen.Message = "Checking for Razor Updates...";
+			SplashScreen.MessageStr = "Checking for Razor Updates...";
 
 			int uid = 0;
 			try
@@ -483,7 +483,7 @@ namespace Assistant
 			{
 			}
 
-			SplashScreen.Message = "Initializing...";
+			SplashScreen.Message = LocString.Initializing;
 		}
 	}
 }

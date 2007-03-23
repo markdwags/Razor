@@ -131,7 +131,7 @@ namespace Assistant
 		ProfLoadQ,
 		ProfLoadE,
 		NoDelete,
-		ProfName,
+		EnterProfileName,
 		ProfExists,
 		DressName,
 		DelDressQ,
@@ -355,6 +355,21 @@ namespace Assistant
 		BeneficialTarget,
 		RazorFriend,
 		PlayFromHere,
+		Initializing,
+		LoadingLastProfile,
+		LoadingClient,
+		WaitingForClient,
+		RememberDonate,
+		Welcome,
+		Auto2D,
+		Auto3D,
+		AutoDetect, // 1500
+		OpacityA1,
+		NewTimeout,
+		NotAssigned,
+		ChangeTimeout,
+		EnterAName,
+		Invalid,
 
 		__End
 	}
@@ -644,6 +659,17 @@ namespace Assistant
 				if ( str != null )
 					controls[i].Text = str;
 
+				if ( controls[i] is ListView )
+				{
+					foreach ( ColumnHeader ch in ((ListView)controls[i]).Columns )
+					{
+						find = String.Format( "{0}::{1}::{2}", name, controls[i].Name, ch.Index );
+						str = m_Controls[find] as string;
+						if ( str != null )
+							ch.Text = str;
+					}
+				}
+
 				LoadControls( name, controls[i].Controls );
 			}
 		}
@@ -677,8 +703,17 @@ namespace Assistant
 		{
 			for(int i=0;ctrls != null && i<ctrls.Count;i++)
 			{
-				if ( !(ctrls[i] is System.Windows.Forms.TextBox) && !(ctrls[i] is System.Windows.Forms.ComboBox) && ctrls[i].Text.Length > 0 )
-					w.WriteLine( "{0}::{1}={2}", name, ctrls[i].Name, ctrls[i].Text );
+				if ( !(ctrls[i] is System.Windows.Forms.TextBox) && !(ctrls[i] is System.Windows.Forms.ComboBox) )
+				{
+					if ( ctrls[i].Text.Length > 0 )
+						w.WriteLine( "{0}::{1}={2}", name, ctrls[i].Name, ctrls[i].Text );
+					if ( ctrls[i] is ListView )
+					{
+						foreach ( ColumnHeader ch in ((ListView)ctrls[i]).Columns )
+							w.WriteLine( "{0}::{1}::{2}={3}", name, ctrls[i].Name, ch.Index, ch.Text );
+					}
+				}
+
 				Dump( name, ctrls[i].Controls, w );
 			}
 		}

@@ -2710,7 +2710,7 @@ namespace Assistant
 				return;
 			}
 
-			SplashScreen.Message = "Welcome to Razor....";
+			SplashScreen.Message = LocString.Welcome;
 			InitConfig();
 
 			this.Show();
@@ -2744,7 +2744,7 @@ namespace Assistant
 
 			opacity.Value = Config.GetInt( "Opacity" );
 			this.Opacity = ((float)opacity.Value) / 100.0;
-			opacityLabel.Text = String.Format( "Opacity: {0}%", opacity.Value );
+			opacityLabel.Text = Language.Format( LocString.OpacityA1, opacity.Value );
 
 			this.TopMost = alwaysTop.Checked = Config.GetBool( "AlwaysOnTop" );
 			this.Location = new System.Drawing.Point( Config.GetInt( "WindowX" ), Config.GetInt( "WindowY" ) );
@@ -3481,12 +3481,12 @@ namespace Assistant
 
 		private void newProfile_Click(object sender, System.EventArgs e)
 		{
-			if ( InputBox.Show( this, Language.GetString( LocString.ProfName ), "Profile Name" ) )
+			if ( InputBox.Show( this, Language.GetString( LocString.EnterProfileName ), Language.GetString( LocString.EnterAName ) ) )
 			{
 				string str = InputBox.GetString();
 				if ( str == null || str == "" || str.IndexOfAny( Path.InvalidPathChars ) != -1 || str.IndexOfAny( m_InvalidNameChars ) != -1 )
 				{
-					MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), "Invalid Name", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), Language.GetString( LocString.Invalid ), MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
 				}
 
@@ -3605,7 +3605,7 @@ namespace Assistant
 
 		private void addDress_Click(object sender, System.EventArgs e)
 		{
-			if ( InputBox.Show( this, Language.GetString( LocString.DressName ), "Enter a Name" ) )
+			if ( InputBox.Show( this, Language.GetString( LocString.DressName ), Language.GetString( LocString.EnterAName ) ) )
 			{
 				string str = InputBox.GetString();
 				if ( str == null || str == "" )
@@ -4339,12 +4339,12 @@ namespace Assistant
 		private static char[] m_InvalidNameChars = new char[]{ '/', '\\', ';', '?', ':', '*' };
 		private void newMacro_Click(object sender, System.EventArgs e)
 		{
-			if ( InputBox.Show( this, Language.GetString( LocString.NewMacro ), "Enter a Name" ) )
+			if ( InputBox.Show( this, Language.GetString( LocString.NewMacro ), Language.GetString( LocString.EnterAName ) ) )
 			{
 				string name = InputBox.GetString();
 				if ( name == null || name == "" || name.IndexOfAny( Path.InvalidPathChars ) != -1 || name.IndexOfAny( m_InvalidNameChars ) != -1 )
 				{
-					MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), "Invalid Name", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), Language.GetString( LocString.Invalid ), MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
 				}
 
@@ -4353,7 +4353,7 @@ namespace Assistant
 				path = Path.Combine( path, name+".macro" );
 				if ( File.Exists( path ) )
 				{
-					MessageBox.Show( this, Language.GetString( LocString.MacroExists ), "Name Taken", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					MessageBox.Show( this, Language.GetString( LocString.MacroExists ), Language.GetString( LocString.Invalid ), MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
 				}
 

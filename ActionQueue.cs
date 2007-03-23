@@ -435,7 +435,7 @@ namespace Assistant
 				Item item = World.FindItem( lr.Serial );
 				if ( item != null && item.Container == null )
 				{ // if the item is on the ground and out of range then dont grab it
-					if ( Utility.Distance( item.GetWorldPosition(), World.Player.Position ) > 2 )
+					if ( Utility.Distance( item.GetWorldPosition(), World.Player.Position ) > 3 )
 					{
 						Log( "Item is too far away... uncaching." );
 						ScavengerAgent.Instance.Uncache( item.Serial );
@@ -627,4 +627,3 @@ namespace Assistant
 		}
 	}
 }
-

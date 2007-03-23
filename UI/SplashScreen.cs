@@ -29,7 +29,8 @@ namespace Assistant
 				m_Screen.Close();
 		}
 
-		public static string Message{ set{ if ( m_Screen != null ) m_Screen.message.Text = value; } }
+		public static string MessageStr{ set{ if ( m_Screen != null ) m_Screen.message.Text = value; } }
+		public static LocString Message{ set{ if ( m_Screen != null ) m_Screen.message.Text = Language.GetString( value ); } }
 		
 		public static void ThreadMain()
 		{

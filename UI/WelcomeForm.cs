@@ -479,8 +479,8 @@ namespace Assistant
 
 			showAtStart.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWindow" ), 1 ) == 1;
 
-			clientList.Items.Add( "2D Client (Auto-Detect)" );
-			clientList.Items.Add( "3D Client (Auto-Detect)" );
+			clientList.Items.Add( Language.GetString( LocString.Auto2D ) );
+			clientList.Items.Add( Language.GetString( LocString.Auto3D ) );
 			for (int i=1; ;i++)
 			{
 				string val = String.Format( "Client{0}", i );
@@ -499,7 +499,7 @@ namespace Assistant
 			}
 			clientList.SelectedIndex = sel;
 
-			dataDir.Items.Add( "(Auto Detect)" );
+			dataDir.Items.Add( Language.GetString( LocString.AutoDetect ) );
 			for ( int i=1; ;i++)
 			{
 				string val = String.Format( "Dir{0}", i );
@@ -852,6 +852,10 @@ namespace Assistant
 				{
 					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "DefaultLanguage", Language.Current );
 					Language.LoadControlNames( this );
+
+					clientList.Items[0] = Language.GetString( LocString.Auto2D );
+					clientList.Items[1] = Language.GetString( LocString.Auto2D );
+					dataDir.Items[0] = Language.GetString( LocString.AutoDetect );
 				}
 			}
 		}

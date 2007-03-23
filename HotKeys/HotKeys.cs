@@ -237,7 +237,7 @@ namespace Assistant
 			if ( Key != 0 )
 				return String.Format( "{0} ({1})", this.DispName, KeyString() );
 			else
-				return String.Format( "{0} (not assigned)", this.DispName );
+				return String.Format( "{0} ({1})", this.DispName, Language.GetString( LocString.NotAssigned ) );
 		}
 	}
 
