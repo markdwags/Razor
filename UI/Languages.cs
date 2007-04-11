@@ -371,6 +371,7 @@ namespace Assistant
 		EnterAName,
 		Invalid,
 		StaffOnlyItems,
+		sHealthA1,
 
 		__End
 	}

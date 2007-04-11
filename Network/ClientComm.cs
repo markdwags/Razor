@@ -28,6 +28,7 @@ namespace Assistant
 		public static readonly uint BuyAgent		= 12;
 		public static readonly uint PotionHotkeys	= 13;
 		public static readonly uint RandomTargets	= 14;
+		public static readonly uint OverheadHealth	= 15;
 
 		public static readonly uint MaxBit			= 15;
 	}

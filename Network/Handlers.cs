@@ -913,7 +913,7 @@ namespace Assistant
 				m.Body = p.ReadUInt16();
 				m.Position = new Point3D( p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte() );
 				
-				if ( !Utility.InRange( World.Player.Position, m.Position, World.Player.VisRange ) )
+				if ( World.Player != null && !Utility.InRange( World.Player.Position, m.Position, World.Player.VisRange ) )
 				{
 					m.Remove();
 					return;
@@ -945,6 +945,8 @@ namespace Assistant
 			}
 		}
 
+		private static readonly int[] HealthHues = new int[]{ 428, 333, 37, 44, 49, 53, 158, 263, 368, 473, 578 };
+
 		private static void HitsUpdate( PacketReader p, PacketHandlerEventArgs args )
 		{
 			Mobile m = World.FindMobile( p.ReadUInt32() );
@@ -958,6 +960,25 @@ namespace Assistant
 				{
 					ClientCommunication.RequestTitlebarUpdate();
 					ClientCommunication.PostHitsUpdate();
+				}
+
+				if ( ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) && Config.GetBool( "ShowHealth" ) )
+				{
+					// Limit to people who are on screen
+					if ( World.Player != null && Utility.Distance( World.Player.Position, m.Position ) <= 12 )
+					{
+						int percent = (int)(m.Hits*100 / m.HitsMax);
+
+						try 
+						{
+							m.OverheadMessageFrom( HealthHues[(percent+5)/10], 
+								Language.Format( LocString.sHealthA1, m.Name ), 
+								Config.GetString( "HealthFmt" ), percent );
+						}
+						catch
+						{
+						}
+					}
 				}
 			}
 		}
@@ -1319,7 +1340,8 @@ namespace Assistant
 
 		private static void ServerChange( PacketReader p, PacketHandlerEventArgs args )
 		{
-			World.Player.Position = new Point3D( p.ReadUInt16(), p.ReadUInt16(), p.ReadInt16() );
+			if ( World.Player != null )
+				World.Player.Position = new Point3D( p.ReadUInt16(), p.ReadUInt16(), p.ReadInt16() );
 		}
 
 		private static void WorldItem( PacketReader p, PacketHandlerEventArgs args )
@@ -1610,6 +1632,9 @@ namespace Assistant
 
 		private static void SendGump( PacketReader p, PacketHandlerEventArgs args )
 		{ 
+			if ( World.Player == null )
+				return;
+			
 			World.Player.CurrentGumpS = p.ReadUInt32();
 			World.Player.CurrentGumpI = p.ReadUInt32();
 			World.Player.HasGump = true;
@@ -1621,6 +1646,9 @@ namespace Assistant
 
 		private static void ClientGumpResponse( PacketReader p, PacketHandlerEventArgs args )
 		{
+			if ( World.Player == null )
+				return;
+			
 			Serial ser = p.ReadUInt32();
 			uint tid = p.ReadUInt32();
 			int bid = p.ReadInt32();
@@ -1953,6 +1981,9 @@ namespace Assistant
 
 		private static void MenuResponse( PacketReader pvSrc, PacketHandlerEventArgs args )
 		{
+			if ( World.Player == null )
+				return;
+			
 			uint serial = pvSrc.ReadUInt32();
 			ushort menuID = pvSrc.ReadUInt16();
 			ushort index  = pvSrc.ReadUInt16();
@@ -1966,6 +1997,9 @@ namespace Assistant
 
 		private static void SendMenu( PacketReader p, PacketHandlerEventArgs args )
 		{
+			if ( World.Player == null )
+				return;
+			
 			World.Player.CurrentMenuS = p.ReadUInt32();
 			World.Player.CurrentMenuI = p.ReadUInt16();
 			World.Player.HasMenu = true;

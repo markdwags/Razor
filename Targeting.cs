@@ -405,7 +405,7 @@ namespace Assistant
 					continue;
 
 				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
-					!m.Blessed && m.Serial != World.Player.Serial &&
+					!m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
 					Utility.InRange( World.Player.Position, m.Position, Config.GetInt( "LTRange" ) ) )
 				{
 					for(int i=0;i<noto.Length;i++)
@@ -712,17 +712,19 @@ namespace Assistant
 
 		public static void Target( TargetInfo info )
 		{
-			m_HasTarget = false;
 			if ( m_Intercept )
 			{
 				OneTimeResponse( info );
 			}
-			else
+			else if ( m_HasTarget )
 			{
 				info.TargID = m_CurrentID;
 				m_LastGroundTarg = m_LastTarget = info;
 				ClientCommunication.SendToServer( new TargetResponse( info ) );
 			}
+
+			CancelClientTarget();
+			m_HasTarget = false;
 		}
 
 		public static void Target( Point3D pt )
@@ -924,6 +926,9 @@ namespace Assistant
 
 		public static void CheckLastTargetRange( Mobile m )
 		{
+			if ( World.Player == null )
+				return;
+
 			if ( m_HasTarget && m != null && m_LastTarget != null && m.Serial == m_LastTarget.Serial && m_QueueTarget == LastTargetAction )
 			{
 				if ( Config.GetBool( "RangeCheckLT" ) && ClientCommunication.AllowBit( FeatureBit.RangeCheckLT ) )
@@ -939,6 +944,9 @@ namespace Assistant
 		
 		private static bool CheckHealPoisonTarg( uint targID, Serial ser )
 		{
+			if ( World.Player == null )
+				return false;
+
 			if ( targID == m_SpellTargID && ser.IsMobile && ( World.Player.LastSpell == Spell.ToID( 1, 4 ) || World.Player.LastSpell == Spell.ToID( 4, 5 ) ) && Config.GetBool( "BlockHealPoison" ) && ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
 			{
 				Mobile m = World.FindMobile( ser );
@@ -1037,7 +1045,7 @@ namespace Assistant
 				ResendTarget();
 				args.Block = true;
 			}
-				
+			
 			if ( info.Serial != World.Player.Serial )
 			{
 				if ( info.Serial.IsValid )

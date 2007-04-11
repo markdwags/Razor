@@ -132,6 +132,9 @@ namespace Assistant
 
 			AddProperty( "LogPacketsByDefault", false );
 
+			AddProperty( "ShowHealth", false );
+			AddProperty( "HealthFmt", "[{0}%]" );
+
 			Counter.Default();
 			Filter.DisableAll();
 			DressList.ClearAll();

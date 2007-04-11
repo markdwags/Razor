@@ -376,6 +376,16 @@ namespace Assistant
 
 		public ArrayList Contains{ get{	return m_Items;	} }
 
+		internal void OverheadMessageFrom( int hue, string from, string format, params object[] args )
+		{
+			OverheadMessageFrom( hue, from, String.Format( format, args ) );
+		}
+
+		internal void OverheadMessageFrom( int hue, string from, string text )
+		{
+			ClientCommunication.SendToClient( new UnicodeMessage( Serial, m_Body, MessageType.Regular, hue,	3, Language.CliLocName,	from, text ) );
+		}
+
 		internal void OverheadMessage( string text )
 		{
 			OverheadMessage( Config.GetInt(	"SysColor" ), text );
@@ -393,7 +403,7 @@ namespace Assistant
 
 		internal void OverheadMessage( int hue,	string text	)
 		{
-			ClientCommunication.SendToClient( new UnicodeMessage( Serial, m_Body, MessageType.Regular, hue,	3, Language.CliLocName,	"Razor", text )	);
+			OverheadMessageFrom( hue, "Razor", text );
 		}
 
 		internal void OverheadMessage( LocString str )
