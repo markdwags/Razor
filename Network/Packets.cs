@@ -1209,7 +1209,17 @@ namespace Assistant
 		}
 	}
 
-	public class DesignStateGeneral : Packet
+	public sealed class RazorNegotiateResponse : Packet
+	{
+		public RazorNegotiateResponse() : base( 0xF0 )
+		{
+			EnsureCapacity( 1+2+1 );
+
+			Write( (byte)0xFF );
+		}
+	}
+
+	public sealed class DesignStateGeneral : Packet
 	{
 		public DesignStateGeneral( Item house ) : base( 0xBF )
 		{

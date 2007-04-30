@@ -247,7 +247,7 @@ namespace Assistant
 				else if ( m_Items[i] is ItemID )
 					item = World.Player.FindItemByID( (ItemID)m_Items[i] );
 				
-				if ( item == null || item.Container != World.Player )
+				if ( item == null || DragDropManager.CancelDragFor( item.Serial ) || item.Container != World.Player )
 				{
 					continue;
 				}
@@ -276,6 +276,7 @@ namespace Assistant
 				return;
 
 			int skipped = 0, gone = 0, done = 0;
+			ArrayList list = new ArrayList();
 			bool remConflicts = Config.GetBool( "UndressConflicts" );
 
 			if ( World.Player.Backpack == null )
@@ -294,26 +295,33 @@ namespace Assistant
 				{
 					item = World.FindItem( (Serial)m_Items[i] );
 					if ( item == null )
-					{
 						gone++;
-						continue;
-					}
+					else
+						list.Add( item );
 				}
 				else if ( m_Items[i] is ItemID )
 				{
 					ItemID id = (ItemID)m_Items[i];
-					item = World.Player.Backpack.FindItemByID( id );
-					if ( item == null )
+
+					// search to make sure they are not already wearing this...
+					item = World.Player.FindItemByID( id );
+					if ( item != null )
 					{
-						//World.Player.SendMessage( LocString.NoItemOfType, id );
-						continue;
+						skipped++;
+					}
+					else
+					{
+						item = World.Player.Backpack.FindItemByID( id );
+						if ( item == null )
+							gone++;
+						else
+							list.Add( item );
 					}
 				}
-				else
-				{
-					continue;
-				}
+			}
 
+			foreach ( Item item in list )
+			{
 				if ( item.Container == World.Player )
 				{
 					skipped ++;

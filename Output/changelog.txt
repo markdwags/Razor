@@ -1,4 +1,4 @@
-Razor (v1.0.7.*) Changelog:
+Razor (v1.0.8.*) Changelog:
 
 Razor is a FREE program.  Unlike competing programs like UOAssist, Razor does not charge any money at all and provides even more features.  Razor is now available on the regular OSI servers for unlimited accounts absolutely free.  But Razor needs your help!  Razor is now accepting donations over PayPal.  UOAssist (a similar program, but for OSI servers only) costs $15 PER ACCOUNT while Razor is FREE for UNLIMITED ACCOUNTS.  Your donation of $5 or $10 (or any amount!) is LESS than you would pay for a similar program!  Donations are greatly appreciated and will help ensure that the developers continue to improve and maintain this fine product.
 Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD
@@ -6,17 +6,12 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Additions:
--None
+-Overhead Health messages! This options allows Razor to shows People and Creature's health (as a percentage) over their head whenever their health changes.  The numbers are also shown in color (from blue-green at 100% to yellow at 50% purple-red at 0%).  The format of these numbers can also be changed (default is "[NN%]").
+-Overhead Status messages (mana / stamina) for party members.  Works the same as overhead health.  You can change the format of the message by editing the "PartyStatFmt" value in your profile.xml file.  (Sorry, there was not room for another textbox on the More Options tab)
+-Staff Only Item filter - (On the General tab, in the Filters list.) When enabled, this filter will hide all hidden items as well as Blockers and LOS Blockers.
 
 Changes/Fixes:
--Another potential fix for cliloc loading problems and Vista compatability.
--Fix for a problem with weird map sizes
--Better error message when failing to find client
--Possible fix for Logitech Keyboards performing a hotkey action twice in certain situations
--Last target should now work correctly with a target which allows the ground to be targeted.
--A small crash fix
--After this update, your client will show up as Razor 1.0.7.
--Updated/Extended localization for a lot of stuff.  Nearly everything is localized now.
--Fixed an annoying problem when canceling targets with "Range check last target" checked.
--Fixed an annoying confusion with Targets which allow you to target the ground.
--Fixed a major bug that caused items to disappear when picking them up from over 2 tiles away.
+-Misc Packet Handler crash fixes.
+-Fix for RandomTargets targeting dead people.
+-Shuffled around some options and tabs to make room for the new overhead messages.
+-Fixed battle axe special moves

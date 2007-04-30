@@ -63,6 +63,8 @@ namespace Assistant
 		public const int WM_USER = 0x400;
 		public enum UOAMessage
 		{
+			First = REGISTER,
+
 			//in comming:
 			REGISTER = WM_USER+200,
 			COUNT_RESOURCES,
@@ -76,6 +78,7 @@ namespace Assistant
 			ADD_CMD,
 			GET_UID,
 			GET_SHARDNAME,
+			ADD_USER_2_PARTY,
 			GET_UO_HWND,
 			GET_POISON,
 			SET_SKILL_LOCK,
@@ -96,6 +99,8 @@ namespace Assistant
 			REM_MULTI,
 			MAP_INFO,
 			POWERHOUR,
+
+			Last = POWERHOUR
 		}
 
 		private class WndCmd
@@ -289,6 +294,10 @@ namespace Assistant
 					else
 						return 0;
 				}
+				case UOAMessage.ADD_USER_2_PARTY:
+				{
+					return 1; // not supported, return error
+				}
 				case UOAMessage.GET_UO_HWND:
 				{
 					return FindUOWindow().ToInt32();
@@ -306,6 +315,7 @@ namespace Assistant
 				}
 				case UOAMessage.GET_ACCT_ID:
 				{
+					// free shards don't use account ids... so just return the player's serial number
 					return World.Player == null ? 0 : (int)World.Player.Serial.Value;
 				}
 				default:
@@ -500,6 +510,8 @@ namespace Assistant
 		private static unsafe extern void TranslateDo( IntPtr translateFunc, string inText, StringBuilder outText, ref uint outLen );
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetServer( uint ip, ushort port );
+		[DllImport( "Crypt.dll" )]
+		internal static unsafe extern void HandleNegotiate( ulong features );
 
 		public enum Loader_Error
 		{
@@ -1494,7 +1506,7 @@ namespace Assistant
 									// 1 = 2d
 									// 2 = 3d!
 									
-									ClientCommunication.DoFeatures( World.Player.Features );
+									DoFeatures( World.Player.Features );
 								}
 							}
 						}

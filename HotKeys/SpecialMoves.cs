@@ -110,7 +110,7 @@ namespace Assistant
 		private static AbilityInfo[] m_Primary = new AbilityInfo[]
 		{
 			new AbilityInfo( AOSAbility.ArmorIgnore, HatchetID, LongSwordID, BladedStaffID, HammerPickID, WarAxeID, KryssID, SpearID, CompositeBowID ),
-			new AbilityInfo( AOSAbility.BleedAttack,  CleaverID, LargeBattleAxeID, ExecAxeID, CutlassID, ScytheID, PitchforkID, WarForkID ),
+			new AbilityInfo( AOSAbility.BleedAttack,  CleaverID, BattleAxeID, ExecAxeID, CutlassID, ScytheID, PitchforkID, WarForkID ),
 			new AbilityInfo( AOSAbility.ConcussionBlow, MaceID, GnarledStaffID, CrossbowID ),
 			new AbilityInfo( AOSAbility.CrushingBlow, VikingSwordID, AxeID, BroadswordID, ShepherdsCrookID, SmithsHammerID, MaulID, WarMaceID, ScepterID, SledgeHammerID ),
 			new AbilityInfo( AOSAbility.Disarm, FistsID ), 
@@ -126,8 +126,8 @@ namespace Assistant
 
 		private static AbilityInfo[] m_Secondary = new AbilityInfo[]
 		{
-			new AbilityInfo( AOSAbility.ArmorIgnore, BroadswordID, KatanaID ),
-			new AbilityInfo( AOSAbility.BleedAttack, BattleAxeID, WarMaceID, WarAxeID ),
+			new AbilityInfo( AOSAbility.ArmorIgnore, LargeBattleAxeID, BroadswordID, KatanaID ),
+			new AbilityInfo( AOSAbility.BleedAttack, WarMaceID, WarAxeID ),
 			new AbilityInfo( AOSAbility.ConcussionBlow, LongSwordID, BattleAxeID, HalberdID, MaulID, QuarterStaffID, LanceID ),
 			new AbilityInfo( AOSAbility.CrushingBlow, WarHammerID ),
 			new AbilityInfo( AOSAbility.Disarm, ButcherKnifeID, PickaxeID, SkinningKnifeID, HatchetID, WandID, ShepherdsCrookID, MaceID, WarForkID ), 

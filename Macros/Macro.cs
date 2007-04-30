@@ -131,31 +131,25 @@ namespace Assistant.Macros
 			}
 		}
 
-		public void Stop()
+		public void Reset()
 		{
-			if ( m_Recording )
-				Save();
 			if ( m_Playing && World.Player != null && DragDropManager.Holding != null && DragDropManager.Holding == LiftAction.LastLift )
 				ClientCommunication.SendToServer( new DropRequest( DragDropManager.Holding, World.Player.Serial ) );
 
-			m_Recording = m_Playing = false;
 			m_Wait = null;
+
 			m_IfStatus.Clear();
-			
+
 			bool resync = false;
 			foreach ( MacroAction a in m_Actions )
 			{
-				if ( World.Player != null && a is WalkAction )
-				{
+				if ( a is WalkAction )
 					resync = true;
-				}
 				else if ( a is ForAction )
-				{
 					((ForAction)a).Count = 0;
-				}
 			}
 
-			if ( resync )
+			if ( resync && World.Player != null )
 			{
 				// resync if the macro walked for us
 				//ClientCommunication.SendToClient( new MoveReject( World.Player.WalkSequence, World.Player ) );
@@ -164,6 +158,15 @@ namespace Assistant.Macros
 				ClientCommunication.SendToServer( new ResyncReq() );
 				World.Player.Resync();
 			}
+		}
+
+		public void Stop()
+		{
+			if ( m_Recording )
+				Save();
+			
+			m_Recording = m_Playing = false;
+			Reset();
 		}
 
 		// returns true if the were waiting for this action
@@ -553,7 +556,8 @@ namespace Assistant.Macros
 					if ( Loop )
 					{
 						m_CurrentAction = -1;
-						m_IfStatus.Clear();
+
+						Reset();
 
 						PauseB4Loop.Perform();
 						PauseB4Loop.Parent = this;

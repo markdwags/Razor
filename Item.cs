@@ -410,8 +410,9 @@ namespace Assistant
 		{
 			get
 			{
+				int die = 100;
 				object cont = this.Container;
-				while ( cont != null && cont is Item && ((Item)cont).Container != null )
+				while ( cont != null && cont is Item && die-- > 0 )
 					cont = ((Item)cont).Container;
 
 				return cont;
@@ -429,7 +430,8 @@ namespace Assistant
 				return false;
 
 			object check = this;
-			while ( check != null && check is Item )
+			int die = 100;
+			while ( check != null && check is Item && die-- > 0 )
 			{
 				if ( ((Item)check).Serial == parentSerial )
 					return true;
@@ -442,7 +444,10 @@ namespace Assistant
 
 		public Point3D GetWorldPosition()
 		{
-			object root = this.RootContainer;
+			int die = 100;
+			object root = this.Container;
+			while ( root != null && root is Item && ((Item)root).Container != null && die-- > 0 )
+				root = ((Item)root).Container;
 
 			if ( root is Item )
 				return ((Item)root).Position;

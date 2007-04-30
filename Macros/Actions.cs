@@ -279,13 +279,8 @@ namespace Assistant.Macros
 						{
 							if ( i.ItemID == m_Gfx )
 							{
-								object root = i.RootContainer;
-
-								if ( root == null || root is Item || root == World.Player )
-								{
-									if ( !i.IsInBank )
-										list.Add( i );
-								}
+								if ( !i.IsInBank )
+									list.Add( i );
 							}
 						}
 					}

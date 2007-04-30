@@ -193,10 +193,8 @@ namespace Assistant
 			{
 				World.Player.SendMessage( MsgLevel.Error, LocString.DragDropQueueFull );
 				if ( fromClient )
-				{
 					ClientCommunication.SendToClient( new LiftRej() );
-					return 0;
-				}
+				return 0;
 			}
 
 			Log( "Queuing Drag request {0}", lr );
@@ -343,6 +341,44 @@ namespace Assistant
 			}
 
 			return false;
+		}
+
+		public static bool CancelDragFor( Serial s )
+		{
+			if ( Empty )
+				return false;
+
+			int skip = 0;
+			for(byte j=m_Front;j!=m_Back;j++)
+			{
+				if ( skip == 0 && m_LiftReqs[j] != null && m_LiftReqs[j].Serial == s )
+				{
+					m_LiftReqs[j] = null;
+					skip++;
+					if ( j == m_Front )
+					{
+						m_Front++;
+						break;
+					}
+					else
+					{
+						m_Back--;
+					}
+				}
+
+				if ( skip > 0 )
+					m_LiftReqs[j] = m_LiftReqs[(byte)(j+skip)];
+			}
+
+			if ( skip > 0 )
+			{
+				m_LiftReqs[m_Back] = null;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public static bool EndHolding( Serial s )

@@ -899,17 +899,21 @@ namespace Assistant
 		
 		private void OnTarget( bool location, Serial serial, Point3D loc, ushort gfx )
 		{
-			Engine.MainWindow.ShowMe();
-			if ( !location && serial.IsItem )
+			if ( Engine.MainWindow != null )
+				Engine.MainWindow.ShowMe();
+			if ( !location && serial.IsItem && World.Player != null )
 			{
-				if ( m_Items.Contains( gfx ) )
+				if ( m_Items != null && m_Items.Contains( gfx ) )
 				{
 					World.Player.SendMessage( MsgLevel.Force, LocString.ItemExists );
 				}
 				else
 				{
-					m_Items.Add( gfx );
-					m_SubList.Items.Add( (ItemID)gfx );
+					if ( m_Items != null )
+						m_Items.Add( gfx );
+
+					if ( m_SubList != null )
+						m_SubList.Items.Add( (ItemID)gfx );
 
 					World.Player.SendMessage( MsgLevel.Force, LocString.ItemAdded );
 				}
@@ -918,22 +922,25 @@ namespace Assistant
 
 		private void OnTargetBag( bool location, Serial serial, Point3D loc, ushort gfx )
 		{
-			Engine.MainWindow.ShowMe();
+			if ( Engine.MainWindow != null )
+				Engine.MainWindow.ShowMe();
 			if ( !location && serial > 0 && serial <= 0x7FFFFF00 )
 			{
 				Item bag = World.FindItem( m_Cont );
-				if ( bag != null )
+				if ( bag != null && bag.ObjPropList != null )
 				{
 					bag.ObjPropList.Remove( Language.Format( LocString.OrganizerHBA1, m_Num ) );
 					bag.OPLChanged();
 				}
 
 				m_Cont = serial;
-				m_BagBTN.Text = Language.GetString( LocString.ClearHB );
-				World.Player.SendMessage( MsgLevel.Force, LocString.ContSet );
+				if ( m_BagBTN != null )
+					m_BagBTN.Text = Language.GetString( LocString.ClearHB );
+				if ( World.Player != null )
+					World.Player.SendMessage( MsgLevel.Force, LocString.ContSet );
 
 				bag = World.FindItem( m_Cont );
-				if ( bag != null )
+				if ( bag != null && bag.ObjPropList != null )
 				{
 					bag.ObjPropList.Add( Language.Format( LocString.OrganizerHBA1, m_Num ) );
 					bag.OPLChanged();
@@ -2043,7 +2050,7 @@ namespace Assistant
 				if ( m_Cont != null )
 				{
 					object root = m_Cont.RootContainer ;
-					if ( root != null && root is Mobile && root != World.Player )
+					if ( root is Mobile && root != World.Player )
 						m_Cont = null;
 				}
 			}

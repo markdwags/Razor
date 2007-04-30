@@ -134,6 +134,8 @@ namespace Assistant
 
 			AddProperty( "ShowHealth", false );
 			AddProperty( "HealthFmt", "[{0}%]" );
+			AddProperty( "ShowPartyStats", false );
+			AddProperty( "PartyStatFmt", "[{0}% / {1}%]" );
 
 			Counter.Default();
 			Filter.DisableAll();

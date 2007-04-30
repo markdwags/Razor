@@ -31,6 +31,10 @@ void LoginEncryption::Initialize( const BYTE *pSeed )
 	DWORD seed;
     N2L(pSeed, seed);
 
+	/*char temp[256];
+	sprintf( temp, "Key1 = %08x, Key2 = %08x", *Key1, *Key2 );
+	MessageBox( NULL, temp, "Keys", MB_OK );*/
+
     m_Table[0] = (((~seed) ^ 0x00001357) << 16) | ((seed ^ 0xffffaaaa) & 0x0000ffff);
     m_Table[1] = ((seed ^ 0x43210000) >> 16) | (((~seed) ^ 0xabcdffff) & 0xffff0000);
 }

@@ -622,6 +622,12 @@ DLLFUNCTION void TranslateDo( void (__stdcall *TransFunc)( char *, char *, DWORD
 		TransFunc( in, out, outLen );
 }
 
+DLLFUNCTION void HandleNegotiate( __int64 features )
+{
+	if ( pShared && pShared->AuthBits )
+		memcpy( pShared->AuthBits, &features, 8 );
+}
+
 #define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
 #define PACKET_TS_LEN 24
 

@@ -36,6 +36,7 @@ namespace Assistant
 		private	bool m_Warmode;
 
 		private	ushort m_HitsMax, m_Hits;
+		protected ushort m_StamMax, m_Stam, m_ManaMax, m_Mana;
 
 		private	ArrayList m_Items;
 
@@ -235,6 +236,31 @@ namespace Assistant
 			get{ return	m_Hits;	}
 			set{ m_Hits	= value; }
 		}
+		
+		public ushort Stam
+		{
+			get{ return m_Stam; }
+			set{ m_Stam = value; }
+		}
+
+		public ushort StamMax
+		{
+			get{ return m_StamMax; }
+			set{ m_StamMax = value; }
+		}
+
+		public ushort Mana
+		{
+			get{ return m_Mana; }
+			set{ m_Mana = value; }
+		}
+
+		public ushort ManaMax
+		{
+			get{ return m_ManaMax; }
+			set{ m_ManaMax = value; }
+		}
+
 
 		public byte	Map
 		{

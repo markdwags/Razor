@@ -28,3 +28,5 @@ EXPORTS
 	TranslateDo
 	OnAttach
 	SetServer
+	HandleNegotiate
+	

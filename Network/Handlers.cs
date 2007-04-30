@@ -104,7 +104,7 @@ namespace Assistant
 
 		private static void EncodedPacket( PacketReader p, PacketHandlerEventArgs args )
 		{
-			ushort id = p.ReadUInt16();
+			/*ushort id = p.ReadUInt16();
 
 			switch ( id )
 			{
@@ -140,12 +140,12 @@ namespace Assistant
 					}
 					break;
 				}
-			}
+			}*/
 		}
 
 		private static void ServOPLHash( Packet p, PacketHandlerEventArgs args )
 		{
-			Serial s = p.ReadUInt32();
+			/*Serial s = p.ReadUInt32();
 			int hash = p.ReadInt32();
 
 			if ( s.IsItem )
@@ -167,7 +167,7 @@ namespace Assistant
 					p.Seek( -4, SeekOrigin.Current );
 					p.Write( (uint)m.OPLHash );
 				}
-			}
+			}*/
 		}
 
 		private static void ClientSingleClick( PacketReader p, PacketHandlerEventArgs args )
@@ -953,6 +953,8 @@ namespace Assistant
 
 			if ( m != null )
 			{
+				int oldPercent = (int)(m.Hits*100 / (m.HitsMax == 0 ? (ushort)1 : m.HitsMax));
+
 				m.HitsMax = p.ReadUInt16();
 				m.Hits = p.ReadUInt16();
 
@@ -964,15 +966,15 @@ namespace Assistant
 
 				if ( ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) && Config.GetBool( "ShowHealth" ) )
 				{
-					// Limit to people who are on screen
-					if ( World.Player != null && Utility.Distance( World.Player.Position, m.Position ) <= 12 )
-					{
-						int percent = (int)(m.Hits*100 / m.HitsMax);
+					int percent = (int)(m.Hits*100 / (m.HitsMax == 0 ? (ushort)1 : m.HitsMax));
 
+					// Limit to people who are on screen and check the previous value so we dont get spammed.
+					if ( oldPercent != percent && World.Player != null && Utility.Distance( World.Player.Position, m.Position ) <= 12 )
+					{
 						try 
 						{
-							m.OverheadMessageFrom( HealthHues[(percent+5)/10], 
-								Language.Format( LocString.sHealthA1, m.Name ), 
+							m.OverheadMessageFrom( HealthHues[((percent+5)/10)%HealthHues.Length], 
+								Language.Format( LocString.sStatsA1, m.Name ), 
 								Config.GetString( "HealthFmt" ), percent );
 						}
 						catch
@@ -987,13 +989,38 @@ namespace Assistant
 		{
 			Mobile m = World.FindMobile( p.ReadUInt32() );
 
-			if ( m != null && m == World.Player )
+			if ( m != null )
 			{
-				World.Player.StamMax = p.ReadUInt16();
-				World.Player.Stam = p.ReadUInt16();
+				int oldPercent = (int)(m.Stam*100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
 
-				ClientCommunication.RequestTitlebarUpdate();
-				ClientCommunication.PostStamUpdate();
+				m.StamMax = p.ReadUInt16();
+				m.Stam = p.ReadUInt16();
+
+				if ( m == World.Player )
+				{
+					ClientCommunication.RequestTitlebarUpdate();
+					ClientCommunication.PostStamUpdate();
+				}
+
+				if ( m != World.Player && ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) && Config.GetBool( "ShowPartyStats" ) )
+				{
+					int stamPercent = (int)(m.Stam*100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
+					int manaPercent = (int)(m.Mana*100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
+
+					// Limit to people who are on screen and check the previous value so we dont get spammed.
+					if ( oldPercent != stamPercent && World.Player != null && Utility.Distance( World.Player.Position, m.Position ) <= 12 )
+					{
+						try 
+						{
+							m.OverheadMessageFrom( 0x63, 
+								Language.Format( LocString.sStatsA1, m.Name ), 
+								Config.GetString( "PartyStatFmt" ), manaPercent, stamPercent );
+						}
+						catch
+						{
+						}
+					}
+				}
 			}
 		}
 
@@ -1001,36 +1028,64 @@ namespace Assistant
 		{
 			Mobile m = World.FindMobile( p.ReadUInt32() );
 
-			if ( m != null && m == World.Player )
+			if ( m != null )
 			{
-				World.Player.ManaMax = p.ReadUInt16();
-				World.Player.Mana = p.ReadUInt16();
+				int oldPercent = (int)(m.Mana*100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
 
-				ClientCommunication.RequestTitlebarUpdate();
-				ClientCommunication.PostManaUpdate();
+				m.ManaMax = p.ReadUInt16();
+				m.Mana = p.ReadUInt16();
+
+				if ( m == World.Player )
+				{
+					ClientCommunication.RequestTitlebarUpdate();
+					ClientCommunication.PostManaUpdate();
+				}
+
+				if ( m != World.Player && ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) && Config.GetBool( "ShowPartyStats" ) )
+				{
+					int stamPercent = (int)(m.Stam*100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
+					int manaPercent = (int)(m.Mana*100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
+
+					// Limit to people who are on screen and check the previous value so we dont get spammed.
+					if ( oldPercent != manaPercent && World.Player != null && Utility.Distance( World.Player.Position, m.Position ) <= 12 )
+					{
+						try 
+						{
+							m.OverheadMessageFrom( 0x63, 
+								Language.Format( LocString.sStatsA1, m.Name ), 
+								Config.GetString( "PartyStatFmt" ), manaPercent, stamPercent );
+						}
+						catch
+						{
+						}
+					}
+				}
 			}
 		}
 
 		private static void MobileStatInfo( PacketReader pvSrc, PacketHandlerEventArgs args )
 		{
-			Serial serial = pvSrc.ReadUInt32();
-			if ( World.Player == null || serial != World.Player.Serial )
+			Mobile m = World.FindMobile( pvSrc.ReadUInt32() );
+			if ( m == null )
 				return;
 			PlayerData p = World.Player;
 
-			p.HitsMax = pvSrc.ReadUInt16();
-			p.Hits = pvSrc.ReadUInt16();
+			m.HitsMax = pvSrc.ReadUInt16();
+			m.Hits = pvSrc.ReadUInt16();
 
-			p.ManaMax = pvSrc.ReadUInt16();
-			p.Mana = pvSrc.ReadUInt16();
+			m.ManaMax = pvSrc.ReadUInt16();
+			m.Mana = pvSrc.ReadUInt16();
 
-			p.StamMax = pvSrc.ReadUInt16();
-			p.Stam = pvSrc.ReadUInt16();
+			m.StamMax = pvSrc.ReadUInt16();
+			m.Stam = pvSrc.ReadUInt16();
 
-			ClientCommunication.RequestTitlebarUpdate();
-			ClientCommunication.PostHitsUpdate();
-			ClientCommunication.PostStamUpdate();
-			ClientCommunication.PostManaUpdate();
+			if ( m == World.Player )
+			{
+				ClientCommunication.RequestTitlebarUpdate();
+				ClientCommunication.PostHitsUpdate();
+				ClientCommunication.PostStamUpdate();
+				ClientCommunication.PostManaUpdate();
+			}
 		}
 
 		public static bool UseNewStatus = false;
@@ -1837,6 +1892,12 @@ namespace Assistant
 
 					break;
 				}
+				case 0xFE: // Begin Handshake/Features Negotiation
+				{
+					ClientCommunication.HandleNegotiate( p.ReadRawUInt64() );
+					ClientCommunication.SendToServer( new RazorNegotiateResponse() );
+					break;
+				}
 			}
 		}
 		
@@ -1888,8 +1949,8 @@ namespace Assistant
 				case 0x03: // text message
 				case 0x04: // 3 = private, 4 = public
 				{
-					Serial from = p.ReadUInt32();
-					string text = p.ReadUnicodeStringSafe();
+					//Serial from = p.ReadUInt32();
+					//string text = p.ReadUnicodeStringSafe();
 					break;
 				}
 				case 0x07: // party invite

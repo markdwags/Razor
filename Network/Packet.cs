@@ -905,10 +905,24 @@ namespace Assistant
 
 		public uint ReadUInt32()
 		{
-			return (uint)( (ReadByte() << 24)
+			return (uint)( 
+				  (ReadByte() << 24)
 				| (ReadByte() << 16)
 				| (ReadByte() <<  8)
 				|  ReadByte() );
+		}
+
+		public ulong ReadRawUInt64()
+		{
+			return (ulong)
+				( (ReadByte() <<  0)
+				| (ReadByte() <<  8)
+				| (ReadByte() << 16)
+				| (ReadByte() << 24)
+				| (ReadByte() << 32)
+				| (ReadByte() << 40)
+				| (ReadByte() << 48)
+				| (ReadByte() << 56) );
 		}
 
 		public ushort ReadUInt16()

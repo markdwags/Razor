@@ -1,7 +1,7 @@
 #pragma once
 #pragma pack(1)
 
-#define DLL_VERSION "1.0.7"
+#define DLL_VERSION "1.0.8"
 
 #define DLLFUNCTION __declspec(dllexport)
 #define DLLVAR DLLFUNCTION
@@ -160,6 +160,20 @@ bool PatchStatusBar( BOOL preAOS );
 #define CRYPT_KEY_STR_3D "\xD1\xE8\x0B\xC6\xC1\xE2\x1F\x35"
 #define CRYPT_KEY_3D_LEN 8
 
+/* To calculate login keys:
+key1 = ( Major << 23 ) | ( Minor << 14 ) | ( Revision << 4 );
+key1 ^= ( Revision * Revision ) << 9;
+key1 ^= ( Minor * Minor );
+key1 ^= ( Minor * 11 ) << 24;
+key1 ^= ( Revision * 7 ) << 19;
+key1 ^= 0x2C13A5FD;
+key2 = ( Major << 22 ) | ( Revision << 13 ) | ( Minor << 3 );
+key2 ^= ( Revision * Revision * 3 ) << 10;
+key2 ^= ( Minor * Minor );
+key2 ^= ( Minor * 13 ) << 23;
+key2 ^= ( Revision * 7 ) << 18;
+key2 ^= 0xA31D527F;
+*/
 /*
 .text:0041AA2F C1 E6 1F                          shl     esi, 31
 .text:0041AA32 D1 E8                             shr     eax, 1

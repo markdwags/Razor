@@ -253,7 +253,7 @@ namespace Assistant
 
 			if ( !m_Heap.IsEmpty )
 			{
-				int interval = (int)Math.Ceiling( ((Timer)m_Heap.Peek()).TimeUntilTick.TotalMilliseconds );
+				int interval = (int)Math.Round( ((Timer)m_Heap.Peek()).TimeUntilTick.TotalMilliseconds );
 				if ( allowImmediate && interval <= 0 )
 				{
 					Slice();
