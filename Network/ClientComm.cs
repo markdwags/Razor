@@ -28,9 +28,10 @@ namespace Assistant
 		public static readonly uint BuyAgent		= 12;
 		public static readonly uint PotionHotkeys	= 13;
 		public static readonly uint RandomTargets	= 14;
-		public static readonly uint OverheadHealth	= 15;
+		public static readonly uint ClosestTargets	= 15;
+		public static readonly uint OverheadHealth	= 16;
 
-		public static readonly uint MaxBit			= 15;
+		public static readonly uint MaxBit			= 16;
 	}
 
 	public unsafe sealed class ClientCommunication
@@ -511,8 +512,8 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetServer( uint ip, ushort port );
 		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern void HandleNegotiate( ulong features );
-
+		internal static unsafe extern bool HandleNegotiate( ulong features );
+#warning TODO: Warn when a profile is used in multiple instances at the same time.
 		public enum Loader_Error
 		{
 			SUCCESS = 0,

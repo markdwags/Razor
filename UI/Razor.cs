@@ -233,6 +233,7 @@ namespace Assistant
 		private System.Windows.Forms.ComboBox clientPrio;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.CheckBox chkPartyOverhead;
+		private System.Windows.Forms.LinkLabel mleLink;
 
 		private bool m_CanClose = true;
 
@@ -350,16 +351,16 @@ namespace Assistant
 			this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+			this.msglvl = new System.Windows.Forms.ComboBox();
+			this.forceSizeX = new System.Windows.Forms.TextBox();
+			this.forceSizeY = new System.Windows.Forms.TextBox();
 			this.healthFmt = new System.Windows.Forms.TextBox();
 			this.label10 = new System.Windows.Forms.Label();
 			this.showHealthOH = new System.Windows.Forms.CheckBox();
 			this.blockHealPoison = new System.Windows.Forms.CheckBox();
 			this.ltRange = new System.Windows.Forms.TextBox();
 			this.potionEquip = new System.Windows.Forms.CheckBox();
-			this.forceSizeX = new System.Windows.Forms.TextBox();
-			this.forceSizeY = new System.Windows.Forms.TextBox();
 			this.txtObjDelay = new System.Windows.Forms.TextBox();
-			this.msglvl = new System.Windows.Forms.ComboBox();
 			this.label17 = new System.Windows.Forms.Label();
 			this.QueueActions = new System.Windows.Forms.CheckBox();
 			this.spellUnequip = new System.Windows.Forms.CheckBox();
@@ -499,6 +500,7 @@ namespace Assistant
 			this.screenPrev = new System.Windows.Forms.PictureBox();
 			this.dispTime = new System.Windows.Forms.CheckBox();
 			this.statusTab = new System.Windows.Forms.TabPage();
+			this.mleLink = new System.Windows.Forms.LinkLabel();
 			this.features = new System.Windows.Forms.TextBox();
 			this.forumsLink = new System.Windows.Forms.LinkLabel();
 			this.homeLink = new System.Windows.Forms.LinkLabel();
@@ -1138,6 +1140,38 @@ namespace Assistant
 			this.moreMoreOptTab.TabIndex = 10;
 			this.moreMoreOptTab.Text = "More Options";
 			// 
+			// msglvl
+			// 
+			this.msglvl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.msglvl.Items.AddRange(new object[] {
+														"Show All",
+														"Warnings & Errors",
+														"Errors Only",
+														"None"});
+			this.msglvl.Location = new System.Drawing.Point(94, 164);
+			this.msglvl.Name = "msglvl";
+			this.msglvl.Size = new System.Drawing.Size(88, 21);
+			this.msglvl.TabIndex = 60;
+			this.msglvl.SelectedIndexChanged += new System.EventHandler(this.msglvl_SelectedIndexChanged);
+			// 
+			// forceSizeX
+			// 
+			this.forceSizeX.Location = new System.Drawing.Point(320, 144);
+			this.forceSizeX.Name = "forceSizeX";
+			this.forceSizeX.Size = new System.Drawing.Size(30, 20);
+			this.forceSizeX.TabIndex = 63;
+			this.forceSizeX.Text = "";
+			this.forceSizeX.TextChanged += new System.EventHandler(this.forceSizeX_TextChanged);
+			// 
+			// forceSizeY
+			// 
+			this.forceSizeY.Location = new System.Drawing.Point(362, 144);
+			this.forceSizeY.Name = "forceSizeY";
+			this.forceSizeY.Size = new System.Drawing.Size(30, 20);
+			this.forceSizeY.TabIndex = 64;
+			this.forceSizeY.Text = "";
+			this.forceSizeY.TextChanged += new System.EventHandler(this.forceSizeY_TextChanged);
+			// 
 			// healthFmt
 			// 
 			this.healthFmt.Location = new System.Drawing.Point(70, 126);
@@ -1191,24 +1225,6 @@ namespace Assistant
 			this.potionEquip.Text = "Auto Un/Re-equip hands for potions";
 			this.potionEquip.CheckedChanged += new System.EventHandler(this.potionEquip_CheckedChanged);
 			// 
-			// forceSizeX
-			// 
-			this.forceSizeX.Location = new System.Drawing.Point(320, 144);
-			this.forceSizeX.Name = "forceSizeX";
-			this.forceSizeX.Size = new System.Drawing.Size(30, 20);
-			this.forceSizeX.TabIndex = 63;
-			this.forceSizeX.Text = "";
-			this.forceSizeX.TextChanged += new System.EventHandler(this.forceSizeX_TextChanged);
-			// 
-			// forceSizeY
-			// 
-			this.forceSizeY.Location = new System.Drawing.Point(362, 144);
-			this.forceSizeY.Name = "forceSizeY";
-			this.forceSizeY.Size = new System.Drawing.Size(30, 20);
-			this.forceSizeY.TabIndex = 64;
-			this.forceSizeY.Text = "";
-			this.forceSizeY.TextChanged += new System.EventHandler(this.forceSizeY_TextChanged);
-			// 
 			// txtObjDelay
 			// 
 			this.txtObjDelay.Location = new System.Drawing.Point(68, 34);
@@ -1217,20 +1233,6 @@ namespace Assistant
 			this.txtObjDelay.TabIndex = 37;
 			this.txtObjDelay.Text = "";
 			this.txtObjDelay.TextChanged += new System.EventHandler(this.txtObjDelay_TextChanged);
-			// 
-			// msglvl
-			// 
-			this.msglvl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.msglvl.Items.AddRange(new object[] {
-														"Show All",
-														"Warnings & Errors",
-														"Errors Only",
-														"None"});
-			this.msglvl.Location = new System.Drawing.Point(94, 164);
-			this.msglvl.Name = "msglvl";
-			this.msglvl.Size = new System.Drawing.Size(88, 21);
-			this.msglvl.TabIndex = 60;
-			this.msglvl.SelectedIndexChanged += new System.EventHandler(this.msglvl_SelectedIndexChanged);
 			// 
 			// label17
 			// 
@@ -2577,6 +2579,7 @@ namespace Assistant
 			// 
 			// statusTab
 			// 
+			this.statusTab.Controls.Add(this.mleLink);
 			this.statusTab.Controls.Add(this.features);
 			this.statusTab.Controls.Add(this.forumsLink);
 			this.statusTab.Controls.Add(this.homeLink);
@@ -2589,16 +2592,28 @@ namespace Assistant
 			this.statusTab.TabIndex = 9;
 			this.statusTab.Text = "Help && Status";
 			// 
+			// mleLink
+			// 
+			this.mleLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+			this.mleLink.Location = new System.Drawing.Point(252, 84);
+			this.mleLink.Name = "mleLink";
+			this.mleLink.Size = new System.Drawing.Size(160, 16);
+			this.mleLink.TabIndex = 10;
+			this.mleLink.TabStop = true;
+			this.mleLink.Text = "Free Desktop Wallpapers";
+			this.mleLink.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.mleLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.mleLink_LinkClicked);
+			// 
 			// features
 			// 
 			this.features.AutoSize = false;
 			this.features.Cursor = System.Windows.Forms.Cursors.No;
-			this.features.Location = new System.Drawing.Point(248, 92);
+			this.features.Location = new System.Drawing.Point(248, 104);
 			this.features.Multiline = true;
 			this.features.Name = "features";
 			this.features.ReadOnly = true;
 			this.features.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.features.Size = new System.Drawing.Size(164, 92);
+			this.features.Size = new System.Drawing.Size(164, 82);
 			this.features.TabIndex = 9;
 			this.features.Text = "";
 			this.features.Visible = false;
@@ -2606,7 +2621,7 @@ namespace Assistant
 			// forumsLink
 			// 
 			this.forumsLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-			this.forumsLink.Location = new System.Drawing.Point(252, 72);
+			this.forumsLink.Location = new System.Drawing.Point(252, 68);
 			this.forumsLink.Name = "forumsLink";
 			this.forumsLink.Size = new System.Drawing.Size(160, 16);
 			this.forumsLink.TabIndex = 8;
@@ -2618,7 +2633,7 @@ namespace Assistant
 			// homeLink
 			// 
 			this.homeLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-			this.homeLink.Location = new System.Drawing.Point(252, 56);
+			this.homeLink.Location = new System.Drawing.Point(252, 52);
 			this.homeLink.Name = "homeLink";
 			this.homeLink.Size = new System.Drawing.Size(160, 16);
 			this.homeLink.TabIndex = 7;
@@ -2630,7 +2645,7 @@ namespace Assistant
 			// userGuideLink
 			// 
 			this.userGuideLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-			this.userGuideLink.Location = new System.Drawing.Point(252, 40);
+			this.userGuideLink.Location = new System.Drawing.Point(252, 36);
 			this.userGuideLink.Name = "userGuideLink";
 			this.userGuideLink.Size = new System.Drawing.Size(160, 16);
 			this.userGuideLink.TabIndex = 6;
@@ -2643,7 +2658,7 @@ namespace Assistant
 			// 
 			this.donate.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("donate.BackgroundImage")));
 			this.donate.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.donate.Location = new System.Drawing.Point(296, 4);
+			this.donate.Location = new System.Drawing.Point(296, 1);
 			this.donate.Name = "donate";
 			this.donate.Size = new System.Drawing.Size(64, 32);
 			this.donate.TabIndex = 4;
@@ -2653,7 +2668,7 @@ namespace Assistant
 			// 
 			this.statCol1.Location = new System.Drawing.Point(4, 8);
 			this.statCol1.Name = "statCol1";
-			this.statCol1.Size = new System.Drawing.Size(240, 176);
+			this.statCol1.Size = new System.Drawing.Size(240, 178);
 			this.statCol1.TabIndex = 0;
 			// 
 			// timerTimer
@@ -3893,8 +3908,9 @@ namespace Assistant
 			chkPass.Checked = hk.SendToUO;
 
 			if ( ( hk.LocName >= (int)LocString.DrinkHeal && hk.LocName <= (int)LocString.DrinkAg && !ClientCommunication.AllowBit( FeatureBit.PotionHotkeys ) ) || 
-				( (( hk.LocName >= (int)LocString.TargRed && hk.LocName <= (int)LocString.TargNFriend ) ||
-				( hk.LocName >= (int)LocString.TargEnemyHuman && hk.LocName <= (int)LocString.TargCriminal)) && !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) ) )
+				( hk.LocName >= (int)LocString.TargCloseRed && hk.LocName <= (int)LocString.TargCloseCriminal && !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) ) ||
+				( (( hk.LocName >= (int)LocString.TargRandRed && hk.LocName <= (int)LocString.TargRandNFriend ) ||
+				( hk.LocName >= (int)LocString.TargRandEnemyHuman && hk.LocName <= (int)LocString.TargRandCriminal)) && !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) ) )
 			{
 				LockControl( chkCtrl );
 				LockControl( chkAlt );
@@ -5766,6 +5782,11 @@ namespace Assistant
 		private void forumsLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			LaunchBrowser( "http://www.runuo.com/forums/razor-cutting-edge-uo-assistant/" );
+		}
+
+		private void mleLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			LaunchBrowser( "http://www.mlewallpapers.com/" );
 		}
 
 		private void lockBox_Click(object sender, System.EventArgs e)

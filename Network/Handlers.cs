@@ -1894,8 +1894,8 @@ namespace Assistant
 				}
 				case 0xFE: // Begin Handshake/Features Negotiation
 				{
-					ClientCommunication.HandleNegotiate( p.ReadRawUInt64() );
-					ClientCommunication.SendToServer( new RazorNegotiateResponse() );
+					if ( ClientCommunication.HandleNegotiate( p.ReadRawUInt64() ) )
+						ClientCommunication.SendToServer( new RazorNegotiateResponse() );
 					break;
 				}
 			}

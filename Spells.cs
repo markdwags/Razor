@@ -244,20 +244,20 @@ namespace Assistant
 			{
 				s = Get( 2, 3 ); // cure 
 			}
-			else if ( World.Player.Hits < World.Player.HitsMax )
+			else if ( World.Player.Hits+2 < World.Player.HitsMax )
 			{
 				if ( World.Player.Hits+30 < World.Player.HitsMax && World.Player.Mana >= 12 )
 					s = Get( 4, 5 ); // greater heal
 				else 
 					s = Get( 1, 4 ); // mini heal
 			}
-			else
+			/*else
 			{
 				if ( World.Player.Mana >= 12 )
 					s = Get( 4, 5 ); // greater heal
 				else 
 					s = Get( 1, 4 ); // mini heal
-			}
+			}*/
 
 			if ( s != null )
 			{
@@ -274,7 +274,7 @@ namespace Assistant
 
 			if ( World.Player.Poisoned )
 				s = Get( 2, 3 ); // cure
-			else //if ( World.Player.Hits < World.Player.HitsMax )
+			else if ( World.Player.Hits+1 < World.Player.HitsMax )
 				s = Get( 1, 4 ); // mini heal
 
 			if ( s != null )

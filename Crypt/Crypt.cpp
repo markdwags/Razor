@@ -7,7 +7,7 @@
 #include "MemFinder.h"
 #include "Checksum.h"
 
-//#define NO_CHECKSUM_VERSION
+#define NO_CHECKSUM_VERSION
 
 //*************************************************************************************
 //**************************************Varaibles**************************************
@@ -622,10 +622,12 @@ DLLFUNCTION void TranslateDo( void (__stdcall *TransFunc)( char *, char *, DWORD
 		TransFunc( in, out, outLen );
 }
 
-DLLFUNCTION void HandleNegotiate( __int64 features )
+DLLFUNCTION bool HandleNegotiate( __int64 features )
 {
-	if ( pShared && pShared->AuthBits )
+	if ( pShared && pShared->AuthBits && AllowNegotiate )
 		memcpy( pShared->AuthBits, &features, 8 );
+
+	return AllowNegotiate;
 }
 
 #define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"

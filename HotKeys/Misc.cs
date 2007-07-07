@@ -35,6 +35,7 @@ namespace Assistant.HotKeys
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkExp,		call, (ushort)3853 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkStr,		call, (ushort)3849 );
 			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkAg,		call, (ushort)3848 );
+			HotKey.Add( HKCategory.Items, HKSubCat.Potions, LocString.DrinkApple,	new HotKeyCallback( OnDrinkApple ) );
 		}
 
 		private static void PartyAccept()
@@ -154,6 +155,36 @@ namespace Assistant.HotKeys
 			}
 		}
 
+		private static bool DrinkApple( Item cont )
+		{
+			for (int i=0;i<cont.Contains.Count;i++)
+			{
+				Item item = (Item)cont.Contains[i];
+
+				if ( item.ItemID == 12248 && item.Hue == 1160 )
+				{
+					PlayerData.DoubleClick( item );
+					return true;
+				}
+				else if ( item.Contains != null && item.Contains.Count > 0 )
+				{
+					if ( DrinkApple( item ) )
+						return true;
+				}
+			}
+
+			return false;
+		}
+
+		private static void OnDrinkApple()
+		{
+			if ( World.Player.Backpack == null )
+				return;
+
+			if ( !DrinkApple( World.Player.Backpack ) )
+				World.Player.SendMessage( LocString.NoItemOfType, (ItemID)12248 );
+		}
+
 		private static void OnUseItem( ref object state )
 		{
 			Item pack = World.Player.Backpack;
@@ -195,7 +226,7 @@ namespace Assistant.HotKeys
 					PlayerData.DoubleClick( item );
 					return true;
 				}
-				else if ( item.Contains.Count > 0 )
+				else if ( item.Contains != null && item.Contains.Count > 0 )
 				{
 					if ( UseItem( item, find ) )
 						return true;

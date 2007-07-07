@@ -66,24 +66,38 @@ namespace Assistant
 			HotKey.Add( HKCategory.Targets, LocString.TargetSelf, new HotKeyCallback( TargetSelf ) );
 			HotKey.Add( HKCategory.Targets, LocString.ClearTargQueue, new HotKeyCallback( OnClearQueue ) );
 			HotKey.Add( HKCategory.Targets, LocString.SetLT, new HotKeyCallback( TargetSetLastTarget ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargRed, new HotKeyCallback( TargetRed ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargNFriend, new HotKeyCallback( TargetNonFriendly ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargFriend, new HotKeyCallback( TargetFriendly ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargBlue, new HotKeyCallback( TargetInnocent ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargGrey, new HotKeyCallback( TargetGrey ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargEnemy, new HotKeyCallback( TargetEnemy ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargCriminal, new HotKeyCallback( TargetCriminal ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandRed, new HotKeyCallback( TargetRandRed ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandNFriend, new HotKeyCallback( TargetRandNonFriendly ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandFriend, new HotKeyCallback( TargetRandFriendly ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandBlue, new HotKeyCallback( TargetRandInnocent ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandGrey, new HotKeyCallback( TargetRandGrey ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandEnemy, new HotKeyCallback( TargetRandEnemy ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandCriminal, new HotKeyCallback( TargetRandCriminal ) );
 
-			HotKey.Add( HKCategory.Targets, LocString.TargEnemyHuman, new HotKeyCallback( TargetEnemyHumanoid ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargGreyHuman, new HotKeyCallback( TargetGreyHumanoid ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargInnocentHuman, new HotKeyCallback( TargetInnocentHumanoid ) );
-			HotKey.Add( HKCategory.Targets, LocString.TargCriminalHuman, new HotKeyCallback( TargetCriminalHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandEnemyHuman, new HotKeyCallback( TargetRandEnemyHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandGreyHuman, new HotKeyCallback( TargetRandGreyHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandInnocentHuman, new HotKeyCallback( TargetRandInnocentHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargRandCriminalHuman, new HotKeyCallback( TargetRandCriminalHumanoid ) );
 
 			HotKey.Add( HKCategory.Targets, LocString.AttackLastComb, new HotKeyCallback( AttackLastComb ) );
 			HotKey.Add( HKCategory.Targets, LocString.AttackLastTarg, new HotKeyCallback( AttackLastTarg ) );
 			HotKey.Add( HKCategory.Targets, LocString.CancelTarget, new HotKeyCallback( CancelTarget ) );
 
 			HotKey.Add( HKCategory.Targets, LocString.NextTarget, new HotKeyCallback( NextTarget ) );
+
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseRed, new HotKeyCallback( TargetCloseRed ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseNFriend, new HotKeyCallback( TargetCloseNonFriendly ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseFriend, new HotKeyCallback( TargetCloseFriendly ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseBlue, new HotKeyCallback( TargetCloseInnocent ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseGrey, new HotKeyCallback( TargetCloseGrey ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseEnemy, new HotKeyCallback( TargetCloseEnemy ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseCriminal, new HotKeyCallback( TargetCloseCriminal ) );
+
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseEnemyHuman, new HotKeyCallback( TargetCloseEnemyHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseGreyHuman, new HotKeyCallback( TargetCloseGreyHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseInnocentHuman, new HotKeyCallback( TargetCloseInnocentHumanoid ) );
+			HotKey.Add( HKCategory.Targets, LocString.TargCloseCriminalHuman, new HotKeyCallback( TargetCloseCriminalHumanoid ) );
+
 		}
 
 		private static void CombatantChange( PacketReader p, PacketHandlerEventArgs e )
@@ -301,62 +315,62 @@ namespace Assistant
 
 		public static bool LTWasSet{ get{ return m_LTWasSet; } }
 
-		public static void TargetNonFriendly()
+		public static void TargetRandNonFriendly()
 		{
 			RandomTarget( 3, 4, 5, 6 );
 		}
 
-		public static void TargetFriendly()
+		public static void TargetRandFriendly()
 		{
 			RandomTarget( 0, 1, 2 );
 		}
 
-		public static void TargetEnemy()
+		public static void TargetRandEnemy()
 		{
 			RandomTarget( 5 );
 		}
 
-		public static void TargetEnemyHumanoid()
+		public static void TargetRandEnemyHumanoid()
 		{
 			RandomHumanoidTarget( 5 );
 		}
 
-		public static void TargetRed()
+		public static void TargetRandRed()
 		{
 			RandomTarget( 6 );
 		}
 
-		public static void TargetGrey()
+		public static void TargetRandGrey()
 		{
 			RandomTarget( 3, 4 );
 		}
 
-		public static void TargetGreyHumanoid()
+		public static void TargetRandGreyHumanoid()
 		{
 			RandomHumanoidTarget( 3, 4 );
 		}
 
-		public static void TargetCriminal()
+		public static void TargetRandCriminal()
 		{
 			RandomTarget( 4 );
 		}
 
-		public static void TargetCriminalHumanoid()
+		public static void TargetRandCriminalHumanoid()
 		{
 			RandomHumanoidTarget( 4 );
 		}
 
-		public static void TargetInnocent()
+		public static void TargetRandInnocent()
 		{
 			RandomTarget( 1 );
 		}
 
-		public static void TargetInnocentHumanoid()
+		public static void TargetRandInnocentHumanoid()
 		{
 			RandomHumanoidTarget( 1 );
 		}
 
-		public static void TargetAnyone()
+		public static void TargetRandAnyone()
 		{
 			RandomTarget();
 		}
@@ -424,6 +438,162 @@ namespace Assistant
 
 			if ( list.Count > 0 )
 				SetLastTargetTo( (Mobile)list[Utility.Random( list.Count )] );
+			else
+				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
+		}
+
+		
+		public static void TargetCloseNonFriendly()
+		{
+			ClosestTarget( 3, 4, 5, 6 );
+		}
+
+		public static void TargetCloseFriendly()
+		{
+			ClosestTarget( 0, 1, 2 );
+		}
+
+		public static void TargetCloseEnemy()
+		{
+			ClosestTarget( 5 );
+		}
+
+		public static void TargetCloseEnemyHumanoid()
+		{
+			ClosestHumanoidTarget( 5 );
+		}
+
+		public static void TargetCloseRed()
+		{
+			ClosestTarget( 6 );
+		}
+
+		public static void TargetCloseGrey()
+		{
+			ClosestTarget( 3, 4 );
+		}
+
+		public static void TargetCloseGreyHumanoid()
+		{
+			ClosestHumanoidTarget( 3, 4 );
+		}
+
+		public static void TargetCloseCriminal()
+		{
+			ClosestTarget( 4 );
+		}
+
+		public static void TargetCloseCriminalHumanoid()
+		{
+			ClosestHumanoidTarget( 4 );
+		}
+
+		public static void TargetCloseInnocent()
+		{
+			ClosestTarget( 1 );
+		}
+
+		public static void TargetCloseInnocentHumanoid()
+		{
+			ClosestHumanoidTarget( 1 );
+		}
+
+		public static void TargetClosest()
+		{
+			ClosestTarget();
+		}
+
+		public static void ClosestTarget( params int[] noto )
+		{
+			if ( !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) )
+				return;
+
+			ArrayList list = new ArrayList();
+			foreach ( Mobile m in World.MobilesInRange( 12 ) )
+			{
+				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
+					!m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+					Utility.InRange( World.Player.Position, m.Position, Config.GetInt( "LTRange" ) ) )
+				{
+					for(int i=0;i<noto.Length;i++)
+					{
+						if ( noto[i] == m.Notoriety )
+						{
+							list.Add( m );
+							break;
+						}
+					}
+
+					if ( noto.Length == 0 )
+						list.Add( m );
+				}
+			}
+
+			Mobile closest = null;
+			double closestDist = double.MaxValue;
+
+			foreach ( Mobile m in list )
+			{
+				double dist = Utility.DistanceSqrt( m.Position, World.Player.Position );
+
+				if ( dist < closestDist || closest == null )
+				{
+					closestDist = dist;
+					closest = m;
+				}
+			}
+
+			if ( closest != null )
+				SetLastTargetTo( closest );
+			else
+				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
+		}
+
+		public static void ClosestHumanoidTarget( params int[] noto )
+		{
+			if ( !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) )
+				return;
+
+			ArrayList list = new ArrayList();
+			foreach ( Mobile m in World.MobilesInRange( 12 ) )
+			{
+				if ( m.Body != 0x0190 && m.Body != 0x0191 && m.Body != 0x025D && m.Body != 0x025E )
+					continue;
+
+				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
+					!m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+					Utility.InRange( World.Player.Position, m.Position, Config.GetInt( "LTRange" ) ) )
+				{
+					for(int i=0;i<noto.Length;i++)
+					{
+						if ( noto[i] == m.Notoriety )
+						{
+							list.Add( m );
+							break;
+						}
+					}
+
+					if ( noto.Length == 0 )
+						list.Add( m );
+				}
+			}
+
+			Mobile closest = null;
+			double closestDist = double.MaxValue;
+
+			foreach ( Mobile m in list )
+			{
+				double dist = Utility.DistanceSqrt( m.Position, World.Player.Position );
+
+				if ( dist < closestDist || closest == null )
+				{
+					closestDist = dist;
+					closest = m;
+				}
+			}
+
+			if ( closest != null )
+				SetLastTargetTo( closest );
 			else
 				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
 		}
