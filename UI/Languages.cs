@@ -386,6 +386,8 @@ namespace Assistant
 		TargCloseCriminalHuman,
 		TargCloseCriminal,
 
+		ProfileInUse,
+
 		__End
 	}
 	#endregion

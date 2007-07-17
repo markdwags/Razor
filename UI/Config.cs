@@ -14,6 +14,7 @@ namespace Assistant
 	{
 		private string m_Name;
 		private Hashtable m_Props;
+		private System.Threading.Mutex m_Mutex;
 
 		public Profile( string name )
 		{
@@ -174,6 +175,8 @@ namespace Assistant
 			}
 		}
 
+		private static bool m_Warned = false;
+
 		public bool Load()
 		{
 			if ( m_Name == null || m_Name.Trim() == "" )
@@ -183,6 +186,22 @@ namespace Assistant
 			string file = Path.Combine( path, String.Format( "{0}.xml", m_Name ) );
 			if ( !File.Exists( file ) )
 				return false;
+
+			if ( m_Name != "default" && !m_Warned )
+			{
+				try
+				{
+					m_Mutex = new System.Threading.Mutex( true, String.Format( "Razor_Profile_{0}", m_Name ) );
+
+					if ( !m_Mutex.WaitOne( 10, false ) )
+						throw new Exception( "Can't crab profile mutex, must be in use!" );
+				}
+				catch
+				{
+					MessageBox.Show( Engine.ActiveWindow, Language.Format( LocString.ProfileInUse, m_Name ), "Profile In Use", MessageBoxButtons.OK, MessageBoxIcon.Warning );
+					m_Warned = true;
+				}
+			}
 
 			XmlDocument doc = new XmlDocument();
 			try
@@ -288,6 +307,16 @@ namespace Assistant
 			//	MessageBox.Show( Engine.ActiveWindow, "Warning: Could not load language from profile, using current language instead.", "Language Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 
 			return true;
+		}
+
+		public void Unload()
+		{
+			if ( m_Mutex != null )
+			{
+				m_Mutex.ReleaseMutex();
+				m_Mutex.Close();
+				m_Mutex = null;
+			}
 		}
 
 		public void Save()
@@ -440,6 +469,8 @@ namespace Assistant
 			if ( p.Load() )
 			{
 				LastProfileName = p.Name;
+				if ( m_Current != null )
+					m_Current.Unload();
 				m_Current = p;
 				return true;
 			}
@@ -451,6 +482,8 @@ namespace Assistant
 
 		public static void NewProfile( string name )
 		{
+			if ( m_Current != null )
+				m_Current.Unload();
 			m_Current = new Profile( name );
 		}
 
@@ -571,7 +604,12 @@ namespace Assistant
 				LastProfileName = "default";
 			}
 
-			m_Current = p;
+			if ( p != null )
+			{
+				if ( m_Current != null )
+					m_Current.Unload();
+				m_Current = p;
+			}
 			return !failed;
 		}
 

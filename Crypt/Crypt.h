@@ -87,6 +87,7 @@ struct SharedMemory
 	char DeathMsg[16];
 	int Position[3];
 	unsigned char CheatKey[16];
+	bool AllowNegotiate;
 	unsigned char AuthBits[8];
 	bool IsHaxed;
 	unsigned int ServerIP;

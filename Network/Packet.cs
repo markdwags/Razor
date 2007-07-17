@@ -915,14 +915,14 @@ namespace Assistant
 		public ulong ReadRawUInt64()
 		{
 			return (ulong)
-				( (ReadByte() <<  0)
-				| (ReadByte() <<  8)
-				| (ReadByte() << 16)
-				| (ReadByte() << 24)
-				| (ReadByte() << 32)
-				| (ReadByte() << 40)
-				| (ReadByte() << 48)
-				| (ReadByte() << 56) );
+				( ((ulong)ReadByte() <<  0)
+				| ((ulong)ReadByte() <<  8)
+				| ((ulong)ReadByte() << 16)
+				| ((ulong)ReadByte() << 24)
+				| ((ulong)ReadByte() << 32)
+				| ((ulong)ReadByte() << 40)
+				| ((ulong)ReadByte() << 48)
+				| ((ulong)ReadByte() << 56) );
 		}
 
 		public ushort ReadUInt16()

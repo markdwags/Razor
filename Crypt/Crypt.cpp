@@ -48,7 +48,6 @@ bool Active = true;
 bool Disabled = true;
 bool SmartCPU = false;
 bool ServerNegotiated = false;
-bool AllowNegotiate = false;
 bool InGame = false;
 bool CopyFailed = true;
 bool Forwarding = false;
@@ -622,12 +621,20 @@ DLLFUNCTION void TranslateDo( void (__stdcall *TransFunc)( char *, char *, DWORD
 		TransFunc( in, out, outLen );
 }
 
-DLLFUNCTION bool HandleNegotiate( __int64 features )
+DLLFUNCTION BOOL HandleNegotiate( __int64 features )
 {
-	if ( pShared && pShared->AuthBits && AllowNegotiate )
+	if ( pShared && pShared->AuthBits && pShared->AllowNegotiate )
+	{	
 		memcpy( pShared->AuthBits, &features, 8 );
 
-	return AllowNegotiate;
+		ServerNegotiated = true;
+
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 #define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
@@ -1027,7 +1034,7 @@ int RecvData()
 			int blen = Compression::Decompress( (char*)&pShared->InRecv.Buff[pShared->InRecv.Start+pShared->InRecv.Length], buff, ackLen );
 			pShared->InRecv.Length += blen;
 
-			if ( !InGame && AllowNegotiate && !ServerNegotiated && pShared )
+			if ( !ServerNegotiated && !InGame && pShared && pShared->AllowNegotiate )
 			{
 				int pos = pShared->InRecv.Start;
 				unsigned char *p_buff = &pShared->InRecv.Buff[pos];
@@ -1227,8 +1234,7 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 					ClientCrypt->DecryptFromClient( (BYTE*)buff, (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
 					ClientLogin->Decrypt( (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
 
-					LoginServer = Forwarding = false;
-					//Forwarded = false;
+					LoginServer = Forwarding = Forwarded = false;
 				}
 				else
 				{
@@ -1291,7 +1297,7 @@ void FlushSendData()
 				if ( *buff == 0x5D && len >= 1+4+30+30 && len <= left )
 				{
 					// play character
-					if ( AllowNegotiate && ServerNegotiated )
+					if ( pShared->AllowNegotiate && ServerNegotiated )
 					{
 						// the first 2 bytes are 0
 						// the next 4 bytes are "flags" which say the user's client type (lbr,t2a,aos,etc)
@@ -1312,7 +1318,7 @@ void FlushSendData()
 				else if ( *buff == 0x00 && (*((DWORD*)&buff[1])) == 0xEDEDEDED && len >= 1+4+4+1+30+30 && len <= left )
 				{
 					// char creation
-					if ( AllowNegotiate && ServerNegotiated )
+					if ( pShared->AllowNegotiate && ServerNegotiated )
 					{
 						memcpy( buff + 1 + 4 + 4 + 1 + 30 + 15, pShared->AuthBits, 8 );
 						memcpy( buff + 1 + 4 + 4 + 1 + 30 + 15 + 8, RAZOR_ID_KEY, min( 7, RAZOR_ID_KEY_LEN ) );
@@ -1783,10 +1789,7 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		hPostWnd = (HWND)lParam;
 		UOProcId = GetCurrentProcessId();
 		hWatchWnd = hWnd;
-		AllowNegotiate = (wParam & 0x04) != 0;
-		ClientEncrypted = (wParam & 0x08) != 0;
-		ServerEncrypted = (wParam & 0x10) != 0;
-
+		
 		InitThemes();
 
 		if ( !pShared ) // If this failed the first time or was not run at all, try it once more before panicing
@@ -1800,6 +1803,12 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			PostMessage( hPostWnd, WM_UONETEVENT, NOT_READY, NO_PATCH );
 		else
 			PostMessage( hPostWnd, WM_UONETEVENT, READY, SUCCESS );
+
+		if ( pShared )
+			pShared->AllowNegotiate = (wParam & 0x04) != 0;
+		ClientEncrypted = (wParam & 0x08) != 0;
+		ServerEncrypted = (wParam & 0x10) != 0;
+
 		break;
 
 	case WM_UONETEVENT:
@@ -1853,7 +1862,8 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			break;
 
 		case NEGOTIATE:
-			AllowNegotiate = lParam;
+			if ( pShared )
+				pShared->AllowNegotiate = (lParam != 0);
 			break;
 
 		case SET_MAP_HWND:

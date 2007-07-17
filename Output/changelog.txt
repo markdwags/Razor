@@ -5,18 +5,22 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
+Important Note:
+-UO Client version 6.0.1.7 introduced a number of major protocol changes.  This version of Razor is, unfortunently, not compatible with this version of the client.  We are working on updating Razor to support this client version, but we do not yet know how long this will take or when the new version will be available.
+
 Additions:
 -Overhead Health messages! This options allows Razor to shows People and Creature's health (as a percentage) over their head whenever their health changes.  The numbers are also shown in color (from blue-green at 100% to yellow at 50% purple-red at 0%).  The format of these numbers can also be changed (default is "[NN%]").
 -Overhead Status messages (mana / stamina) for party members.  Works the same as overhead health.  You can change the format of the message by editing the "PartyStatFmt" value in your profile.xml file.  (Sorry, there was not room for another textbox on the More Options tab)
 -Staff Only Item filter - (On the General tab, in the Filters list.) When enabled, this filter will hide all hidden items as well as Blockers and LOS Blockers.
 -"Target Closest <Type>" - Works just like "Target Random <Type>" but targets the closest one to you every time.
--This version of Razor is able to negotiate with any RunUO server which uses the appropriate server side scripts.  See: __link goes here__ for more information
+-This version of Razor is able to negotiate with any RunUO server which uses the appropriate server side scripts.  See:  for more information
 
 Changes/Fixes:
+-Updated Swedish language pack.
 -Misc. Packet Handler crash fixes.
 -Fix for RandomTargets targeting dead people.
 -Shuffled around some options and tabs to make room for the new overhead messages.
 -Fixed battle axe special moves
 -Fixed some problems with Agents and Macro actions finding items.
 -Made Dress lists a little smarter about what to do when toggling
-
+-Added a warning when the same profile is used by 2 different Razors at the same time, letting the user know that the profile could get corrupted.

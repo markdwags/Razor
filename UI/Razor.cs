@@ -5765,8 +5765,11 @@ namespace Assistant
 
 		private void negotiate_CheckedChanged(object sender, System.EventArgs e)
 		{
-			Config.SetProperty( "Negotiate", negotiate.Checked );
-			ClientCommunication.SetNegotiate( negotiate.Checked );
+			if ( !m_Initializing )
+			{
+				Config.SetProperty( "Negotiate", negotiate.Checked );
+				ClientCommunication.SetNegotiate( negotiate.Checked );
+			}
 		}
 
 		private void userGuideLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
@@ -5882,7 +5885,7 @@ namespace Assistant
 			m_LockBoxes.Clear();
 		}
 
-		public void OnLogin()
+		public void UpdateControlLocks()
 		{
 			for (int i=0;i<m_LockBoxes.Count;i++)
 			{

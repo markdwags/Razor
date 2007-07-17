@@ -369,7 +369,7 @@ namespace Assistant
 			PlayCharTime = DateTime.Now;
 
 			if ( Engine.MainWindow != null )
-				Engine.MainWindow.OnLogin();
+				Engine.MainWindow.UpdateControlLocks();
 		}
 
 		private static void PlayCharacter( PacketReader p, PacketHandlerEventArgs args )
@@ -380,7 +380,7 @@ namespace Assistant
 			PlayCharTime = DateTime.Now;
 
 			if ( Engine.MainWindow != null )
-				Engine.MainWindow.OnLogin();
+				Engine.MainWindow.UpdateControlLocks();
 
 			ClientCommunication.TranslateLogin( World.OrigPlayerName, World.ShardName );
 		}
@@ -1853,6 +1853,7 @@ namespace Assistant
 		private static void RunUOProtocolExtention(PacketReader p, PacketHandlerEventArgs args)
 		{
 			args.Block = true;
+
 			switch (p.ReadByte())
 			{
 				case 1: // Custom Party information
@@ -1894,8 +1895,14 @@ namespace Assistant
 				}
 				case 0xFE: // Begin Handshake/Features Negotiation
 				{
-					if ( ClientCommunication.HandleNegotiate( p.ReadRawUInt64() ) )
+					ulong features = p.ReadRawUInt64();
+
+					if ( ClientCommunication.HandleNegotiate( features ) != 0 )
+					{
 						ClientCommunication.SendToServer( new RazorNegotiateResponse() );
+						Engine.MainWindow.UpdateControlLocks();
+						System.Windows.Forms.MessageBox.Show( String.Format( "Nego: x{0:X16}", features ) );
+					}
 					break;
 				}
 			}

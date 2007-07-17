@@ -512,8 +512,8 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetServer( uint ip, ushort port );
 		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern bool HandleNegotiate( ulong features );
-#warning TODO: Warn when a profile is used in multiple instances at the same time.
+		internal static unsafe extern int HandleNegotiate( ulong word );
+
 		public enum Loader_Error
 		{
 			SUCCESS = 0,
@@ -854,10 +854,7 @@ namespace Assistant
 		
 		public static void SetNegotiate( bool negotiate )
 		{
-			IntPtr wnd = FindUOWindow();
-
-			if ( wnd != IntPtr.Zero )
-				PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.Negotiate, negotiate ? ((IntPtr)1) : IntPtr.Zero );
+			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.Negotiate, (IntPtr)(negotiate ? 1 : 0) );
 		}
 
 		public static bool Attach( int pid )
