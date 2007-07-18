@@ -13,7 +13,7 @@ Additions:
 -Overhead Status messages (mana / stamina) for party members.  Works the same as overhead health.  You can change the format of the message by editing the "PartyStatFmt" value in your profile.xml file.  (Sorry, there was not room for another textbox on the More Options tab)
 -Staff Only Item filter - (On the General tab, in the Filters list.) When enabled, this filter will hide all hidden items as well as Blockers and LOS Blockers.
 -"Target Closest <Type>" - Works just like "Target Random <Type>" but targets the closest one to you every time.
--This version of Razor is able to negotiate with any RunUO server which uses the appropriate server side scripts.  See:  for more information
+-This version of Razor is able to negotiate with any RunUO server which uses the appropriate server side scripts.  See: http://www.runuo.com/forums/custom-script-releases/84092-1-0-2-0-razor-feature-negotiation.html for more information
 
 Changes/Fixes:
 -Updated Swedish language pack.
