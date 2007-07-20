@@ -68,6 +68,8 @@ namespace Assistant
 		private byte[] m_HousePacket;
 		private int m_HouseRev;
 
+		private byte m_GridNum;
+
 		public override void SaveState( BinaryWriter writer )
 		{
 			base.SaveState (writer);
@@ -560,6 +562,13 @@ namespace Assistant
 		}
 
 		public ArrayList Contains{ get{ return m_Items; } }
+
+		// possibly 4 bit x/y - 16x16?
+		public byte GridNum
+		{
+			get { return m_GridNum; }
+			set { m_GridNum = value; }
+		}
 		
 		public bool OnGround{ get{ return Container == null; } }
 		public bool IsContainer

@@ -1,14 +1,14 @@
 // Razor Traditional Chinese/CHT Language Pack
-// Last modified Date: 2007-3-11
+// Last modified Date: 2007-7-19
 // Based on Simplified Chinese language file.
 // Translated by Cloud, E-mail: linhongjun@hotmail.com, Blog: http://blog.plaync.jp/linhongjun/55934
-// If Razor can not load skillnames with this language file, please replace "Cliloc.chs" with "Cliloc.enu" in UO installation directory. Becuase there's no corresponding entry in localization file of simplified chinese. Make sure you have made a copy of original file before doing this.
-// 為確保技能名稱可以正確顯示,請用"Cliloc.enu"替換UO安裝目錄下的"Cliloc.chs",也就是說刪掉原始的"Cliloc.chs"文件,然後更名"Cliloc.enu"為"Cliloc.chs".前提是你的作業系統必須為簡體中文.另外對於繁體中文版本的"Cliloc.cht",如果完整的話也可以進行類似替換,裡面的漢化完成度很高.如果排除這個方面的因素影響,強烈推薦使用.替換前請務必要備份原始文件.
+// If Razor can not load skillnames with this language file, please replace "Cliloc.chs" with "Cliloc.enu" under UO installation directory. Becuase there's no corresponding entry in localization file of simplified chinese. Make sure you have made a copy of original file before doing this.
+// 為確保技能名稱可以正確顯示,請用"Cliloc.enu"替換UO安裝目錄下的"Cliloc.chs",也就是說刪掉原始的"Cliloc.chs"文件,然後更名"Cliloc.enu"為"Cliloc.chs".前提是你的作業系統必須為簡體中文.另外對於繁體中文版本的"Cliloc.cht",如果完整的話也可以進行類似替換,裡面的中文化完成度很高.如果排除這個方面的因素影響,強烈推薦使用.替換前請務必要備份原始文件.
 // Special string used in the game such as LastTarget, LastObject will not be translated in order to match with UO.
 // 對於LastTarget,LastObject這類指令將不會進行翻譯,盡量保持其與UO設定中的一致性.
 // UseOnce僅僅表示一次性的代理,無特別意義,暫時不作翻譯考慮.
 // This CHT language pack is converted by tool. Please contact me for any problem or suggestion.
-// 該繁體語言文件通過工具轉換然後進行詞語校對而成,如有語言風格上的不同或問題請聯絡我,以便更正.
+// 該繁體語言文件通過工具轉換然後進行詞語校對而成,如有語言翻譯風格上的不同或問題請聯絡我,以便更正.
 // 以上為文檔說明,以下為語言文件內容:
 ::Encoding=BIG5
 ::CliLoc=CHT
@@ -40,7 +40,7 @@ MainForm::taskbar=任務欄
 MainForm::smartCPU=開啟智能化CPU使用
 MainForm::label7=語言:
 MainForm::label11=顯示於:
-MainForm::groupBox4=個人配置文件(保存於Profiles目錄下)
+MainForm::groupBox4=個人配置檔案(保存於Profiles目錄下)
 MainForm::delProfile=刪除
 MainForm::newProfile=建立(&N)...
 MainForm::showWelcome=顯示歡迎界面(會影響所有用戶)
@@ -60,7 +60,7 @@ MainForm::chkStealth=計算潛行步數
 MainForm::rememberPwds=記住密碼(不推薦)
 MainForm::showtargtext=單擊時顯示目標狀態
 MainForm::preAOSstatbar=使用Pre-AOS狀態視窗
-MainForm::logPackets=開啟數據包記錄(不推薦)
+MainForm::logPackets=開啟資料包記錄(不推薦)
 MainForm::rangeCheckLT=LastTarget指令距離檢測於
 MainForm::actionStatusMsg=顯示動作隊列狀態訊息
 MainForm::label5=目標動作延遲:
@@ -111,6 +111,8 @@ MainForm::checkNewConts=自動搜索新容器
 MainForm::groupBox3=顯示標題欄
 MainForm::showInBar=UO標題欄顯示如下訊息:
 MainForm::groupBox2=資源計數器
+MainForm::counters::0=名稱(格式)
+MainForm::counters::1=數量
 MainForm::delCounter=刪除/編輯
 MainForm::addCounter=新增...
 MainForm::recount=重新計數
@@ -134,6 +136,12 @@ MainForm::skillCopySel=複製所選
 MainForm::label1=基本技能和:
 MainForm::setlocks=設定技能鎖:
 MainForm::resetDelta=重置+/-
+MainForm::skillList::0=技能名
+MainForm::skillList::1=數值
+MainForm::skillList::2=基數
+MainForm::skillList::3=+/-
+MainForm::skillList::4=上限
+MainForm::skillList::5=鎖定
 MainForm::agentsTab=代理
 MainForm::hotkeysTab=熱鍵
 MainForm::dohotkey=執行所選熱鍵
@@ -152,17 +160,17 @@ MainForm::recMacro=記錄
 MainForm::playMacro=播放
 MainForm::delMacro=移除
 MainForm::newMacro=建立...
-MainForm::screenshotTab=抓圖
+MainForm::screenshotTab=擷圖
 MainForm::label12=圖像類型:
-MainForm::capNow=立即抓圖
+MainForm::capNow=立即擷圖
 MainForm::radioUO=僅限UO視窗
 MainForm::radioFull=全螢幕
-MainForm::screenAutoCap=死亡時自動抓圖
+MainForm::screenAutoCap=死亡時自動擷圖
 MainForm::setScnPath=...
 MainForm::dispTime=圖像包含截取時間
 MainForm::videoTab=視頻捕獲
 MainForm::recFolder=...
-MainForm::label13=視頻保存文件夾:
+MainForm::label13=視頻保存資料夾:
 MainForm::groupBox7=PacketVideo記錄
 MainForm::vidRec=開始記錄PacketVideo
 MainForm::groupBox10=AVI影像記錄
@@ -216,6 +224,9 @@ MacroInsertIf::label1=If:
 MacroInsertIf::cancel=取消(&C)
 MacroInsertIf::insert=插入(&I)
 
+InputBox::cancel=取消
+InputBox::ok=確定(&O)
+
 [strings]
 1001=死亡狀態
 1002=吟遊詩人音樂
@@ -257,7 +268,7 @@ MacroInsertIf::insert=插入(&I)
 1038=重新選定目標
 1039=轉換為雙擊類型
 1040=為該動作選擇一個新的目標.
-1041=警告:加載個人配置文件屬性時發生意外:\n{0}
+1041=警告:加載個人配置檔案屬性時發生意外:\n{0}
 1042=巨集警告:無法找到物品(超出範圍).
 1043=拿起{1} - {0}
 1044=轉換為拿起類型
@@ -303,38 +314,38 @@ MacroInsertIf::insert=插入(&I)
 1084=播放:{0}
 1085=播放巨集'{0}'...
 1086=巨集'{0}'已完成.
-1087=Razor無法初始化.錯誤代碼:\n
-1088=描述:無法找到客戶端視窗句柄.\n可能原因:客戶端未正常初始化.
-1089=描述:無法找到客戶端進程ID\n可能原因:客戶端未正常初始化.
-1090=描述:無法創建系統掛鉤.\n可能原因:內部錯誤.
-1091=描述:無法創建或讀取Razor共享內存.\n可能原因:系統錯誤或無效許可.
-1092=描述:Crypt.dll已被禁用.\n可能原因:版本不符.
-1093=描述:無法破解Winsock功能.\n可能原因:內部錯誤,系統錯誤,兼容性問題.
-1094=描述:無效參數被傳送.\n可能原因:不匹配的DLL文件版本.
-1095=警告:無法從客戶端複製包長度或加密訊息.\nRazor可以不使用這些訊息而運行,一些功能將無法正常運作.你仍想繼續啟動Razor嗎?\n\n可能原因:你的客戶端版本與Razor版本不兼容.
+1087=Razor無法初始化.錯誤代碼:
+1088=描述:無法找到客戶端窗口句柄.\n原因:客戶端未正常初始化(Razor無法創建其主窗口,請確保客戶端正常啟動).
+1089=描述:無法找到客戶端進程ID\n原因:客戶端未正常初始化(Razor啟動後無法與客戶端掛鉤,這通常是由於客戶端在未完成啟動過程時的崩潰所導致,請確保客戶端正常啟動).
+1090=描述:無法創建系統掛鉤.\n原因:內部窗口錯誤.
+1091=描述:無法創建或讀取Razor共享記憶體.\n原因:系統錯誤或無效許可.
+1092=描述:Crypt.dll已被自動禁用.\n原因:版本不符(Crypt.dll文件損壞,請重新安裝Razor,並且使用原始版本的Crypt.dll文件).
+1093=描述:無法修正Winsock功能.\n原因:內部錯誤,系統錯誤,相容性問題(請重新安裝Razor程式).
+1094=描述:無效參數被傳送到加載器.\n原因:不匹配的DLL文件版本(請重新安裝Razor程式).
+1095=警告:無法從客戶端複製包長度或加密訊息.\nRazor可以不使用這些訊息而運行,一些功能將無法正常運作.你仍想繼續啟動Razor嗎?\n\n原因:你的客戶端版本與Razor版本不兼容(請盡快更新Razor至5.0.0或以上版本以確保可以正常工作).
 1096=你的技能{0}已經更改了{4}{5:F1},現在是{3:F1}({1}{2:F1}).
 1097=無效縮略詞.
 1098=無效物品ID.
 1099=無效顏色.
 1100=選擇一個物品來計數.
-1101=加載'{0}'錯誤!\n該個人配置文件已經損壞並且無法使用.
-1102=屬性{0}在該個人配置文件中無法找到.
+1101=加載'{0}'錯誤!\n該個人配置檔案已經損壞並且無法使用.
+1102=屬性{0}在該個人配置檔案中無法找到.
 1103=你的counters.xml文件已經損壞並且無法使用.
 1104=因為你的自動容器搜索設定處於關閉狀態,你現在必須重新打開所有的包以便計數器可以更新.
 1105=警告:{0}數量現在是{1}!
 1106=選擇你想使用的顏色.
-1107=立即抓圖
+1107=立即擷圖
 1108=可用參數或值:\n{char} - 角色名\n{shard} - 站名\n{str}/{hp}/{hpmax} - 健康狀態\n{dex}/{stam}/{stammax} - 敏捷狀態\n{int}/{mana}/{manamax} - 智力狀態\n{weight}/{maxweight} - 負重訊息\n{gold} - 金錢\n{AR} - 裝甲/ 物力抵抗\n{tithe} - 賦稅狀態\n{followers}/{followersmax} - 隨從數量最大值\n{bandage} - 繃帶計時\n{statbar}/{mediumstatbar}/{largestatbar} - 狀態欄(小/中/大)\n{crimtime} - 成為罪犯時間\n{stealthsteps} - 潛行步數計數器\n{physresist} - 物理抵抗\n{coldresist} - 冰冷抗性\n{fireresist} - 火炎抗性\n{energyresist} - 能量抗性\n{poisonresist} - 毒抗性\n{luck} - 幸運值\n{damage} - 傷害值 Min-Max(最小值-最大值)\n顏色 - HTML16進制代碼:'~#rrggbb'(輸入'~#~'結束顏色代碼)\n或者從計數器列表中使用{Format}格式
-1109=程式版本:{0}\n內存使用:{1}\n發送數據:{2} ({3}/s)\n接收數據:{4} ({5}/s)\n連接時間:{6}\n玩家序號:0x{7:X8}\n背包序號:0x{8:X8}\n跟蹤物品:{9}\n跟蹤生物:{10}\n\n繁體中文:Cloud (linhongjun@hotmail.com)\n更新時間:2007/03/11\n注意事項:如某些訊息出現錯誤或無法顯示(如魔法名,技能名),請用文本編輯軟件打開Razor\Language\下的Razor_lang.chs文件閱讀詳細說明.
+1109=程式版本:{0}\n內存使用:{1}\n發送資料:{2} ({3}/s)\n接收資料:{4} ({5}/s)\n連接時間:{6}\n玩家序號:0x{7:X8}\n背包序號:0x{8:X8}\n跟蹤物品:{9}\n跟蹤生物:{10}\n\n繁體中文:Cloud (linhongjun@hotmail.com)\n更新時間:2007/03/11\n注意事項:如某些訊息出現錯誤或無法顯示(如魔法名,技能名),請用文本編輯軟件打開Razor\Language\下的Razor_lang.chs文件閱讀詳細說明.
 1110=設定技能鎖:上升
 1111=設定技能鎖:下降
 1112=設定技能鎖:鎖定
-1113=你確認要移除計數器"{0}"嗎?\n這將會影響所有個人配置文件.
-1114=現在加載個人配置文件"{0}"?
-1115=讀取個人配置文件時發生錯誤.
-1116=你不可以刪除預設的個人配置文件.
-1117=輸入新的個人配置文件的名稱:
-1118=無法創建新的個人配置文件!\n原因:該個人配置文件已存在.\n\n你想現在就加載該個人配置文件嗎?
+1113=你確認要移除計數器"{0}"嗎?\n這將會影響所有個人配置檔案.
+1114=現在加載個人配置檔案"{0}"?
+1115=讀取個人配置檔案時發生錯誤.
+1116=你不可以刪除預設的個人配置檔案.
+1117=輸入新的個人配置檔案的名稱:
+1118=無法創建新的個人配置檔案!\n原因:該個人配置檔案已存在.\n\n你想現在就加載該個人配置檔案嗎?
 1119=輸入新的衣物列表的名稱:
 1120=刪除該衣物列表嗎?
 1121={0:X}(物品超出範圍)
@@ -343,8 +354,8 @@ MacroInsertIf::insert=插入(&I)
 1124=設定卸下物品存放包.
 1125=物品未找到,或選擇了無效物品.
 1126=按鍵組合已經存在於'{0}'.\n需要更改為'{1}'?
-1127=數據成功保存.
-1128=警告!\n記錄數據包可能會降低Razor的性能.記錄文件會逐漸增大,但是Razor不會自動移除它.\n\nRazor的數據記錄文件可能會包含個人訊息例如密碼,並且這些文件不應該給任何你不信任的人.\n\n你確認要開啟數據包記錄嗎?\n(這個不會保存於你的個人配置文件中)
+1127=資料成功保存.
+1128=警告!\n記錄資料包可能會降低Razor的性能.記錄文件會逐漸增大,但是Razor不會自動移除它.\n\nRazor的資料記錄文件可能會包含個人訊息例如密碼,並且這些文件不應該給任何你不信任的人.\n\n你確認要開啟資料包記錄嗎?\n(這個不會保存於你的個人配置檔案中)
 1129=將選擇的目標轉換為類型
 1130=輸入新的巨集的名稱:
 1131=該名稱包含無效字符.
@@ -361,7 +372,7 @@ MacroInsertIf::insert=插入(&I)
 1142=你確認嗎?
 1143=警告:以下{0}文件{1}無法被刪除:\n{2}
 1144=更改將會在下次啟動Razor時生效.
-1145=開啟該設定將會導致Razor保存你的密碼於個人配置文件中.\n儘管密碼已經被加密,但其他人仍然有可能獲取.\n你確認要開啟該功能嗎?
+1145=開啟該設定將會導致Razor保存你的密碼於個人配置檔案中.\n儘管密碼已經被加密,但其他人仍然有可能獲取.\n你確認要開啟該功能嗎?
 1146=你必須指定一個有效的埠口.
 1147=忽略動作請求(已經處於隊列中).
 1148=隊列動作請求{0}...{1}剩餘.
@@ -424,7 +435,7 @@ MacroInsertIf::insert=插入(&I)
 1205=按類型設定目標{0}
 1206=清道夫
 1207=你確認要刪除這個嗎?
-1208=選擇一個文件夾來儲存抓圖.
+1208=選擇一個資料夾來儲存擷圖.
 1209=熱鍵
 
 1210=物品
@@ -566,7 +577,8 @@ MacroInsertIf::insert=插入(&I)
 1414=購買代理
 1415=藥水熱鍵
 1416=隨機目標
-// 1417 to 1465 reserved
+1417=頂部健康/狀態顯示
+// up to 1465: reserved
 1466=特性不被伺服器允許
 1467=該特性被當前遊戲伺服器禁用.\n你可以選擇忽略伺服器所允許的特性,可以在設定標籤下進行設定.\n\n查看被禁止的特性列表,請在幫助與狀態標籤下設定.
 1468=插入註釋
@@ -593,3 +605,33 @@ MacroInsertIf::insert=插入(&I)
 1489=敵對目標
 1490=(Razor好友)
 1491=從此處進行
+1492=初始化中...
+1493=正在加載最新的個人配置檔案...
+1494=正在加載客戶端...
+1495=等待客戶端啟動中...
+1496=記得贊助喔!
+1497=歡迎使用Razor!
+1498=2D客戶端(自動偵測)
+1499=3D客戶端(自動偵測)
+1500=(自動偵測)
+1501=透明度: {0}%
+1502=請指定該動作的超時時間(秒):
+1503=未指定
+1504=更改超時
+1505=輸入名稱
+1506=無效.
+1507=員工物品
+1508={0} 的狀態
+1509=食用被施魔的蘋果
+1510=指向最近兇手
+1511=指向最近嫌疑人
+1512=指向最近普通人
+1513=指向最近敵人
+1514=指向最近友人
+1515=指向最近非友人
+1516=指向最近敵對人形物
+1517=指向最近可疑人形物
+1518=指向最近普通人形物
+1519=指向最近犯罪人形物
+1520=指向最近罪犯
+1521=警告:配置檔案'{0}'正在被其它Razor程式進程所使用中!\n如果你對該檔案進行了修改,那麼可能它已經損壞.建議你在每一個Razor程式進程中使用獨立的(或不同的)個人配置檔案.

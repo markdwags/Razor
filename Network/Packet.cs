@@ -68,8 +68,11 @@ namespace Assistant
 		public Packet( byte packetID, int capacity )
 		{
 			m_Stream = new MemoryStream( capacity );
-			m_Stream.WriteByte( packetID );
+			
+			m_PacketID = packetID;
 			m_DynSize = false;
+
+			m_Stream.WriteByte( packetID );
 		}
 
 		public Packet( byte[] data, int len, bool dynLen )
@@ -88,7 +91,8 @@ namespace Assistant
 		{
 			m_Stream = new MemoryStream( capacity );
 			Write( (byte)m_PacketID );
-			Write( (short)0 );
+			if ( m_DynSize )
+				Write( (short)0 );
 		}
 
 		public byte[] Compile()

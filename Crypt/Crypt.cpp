@@ -7,7 +7,7 @@
 #include "MemFinder.h"
 #include "Checksum.h"
 
-#define NO_CHECKSUM_VERSION
+//#define NO_CHECKSUM_VERSION
 
 //*************************************************************************************
 //**************************************Varaibles**************************************

@@ -39,6 +39,58 @@ namespace Assistant
 			}
 		}
 
+		private static bool m_UsePostKRPackets = false;
+		private static void CheckClientVersion()
+		{
+			Version cv = ClientVersion;
+
+			m_UsePostKRPackets = false;
+
+			if ( cv.Major >= 6 )
+			{
+				if ( cv.Minor == 0 )
+				{
+					if ( cv.Build == 1 )
+					{
+						if ( cv.Revision >= 6 )
+							m_UsePostKRPackets = true;
+					}
+					else if ( cv.Build > 1 )
+					{
+						m_UsePostKRPackets = true;
+					}
+				}
+				else
+				{
+					m_UsePostKRPackets = true;
+				}
+			}
+
+			/*MessageBox.Show( "Version = " + cv.ToString() );
+
+			if ( UsePostKRPackets )
+				MessageBox.Show( "Is a KR client crap." );
+			else
+				MessageBox.Show( "Isn't nothing" );*/
+		}
+
+		private static FileVersionInfo m_ClientVersion = null;
+
+		public static Version ClientVersion
+		{
+			get
+			{
+				if ( m_ClientVersion == null )
+					return new Version( 5, 0, 0, 0 ); // default when confused
+				else if ( m_ClientVersion.InternalName == "uotd" )
+					return new Version( 5, 0, 9 ); // uotd discontinued after this version
+				else // the real version
+					return new Version( m_ClientVersion.FileMajorPart, m_ClientVersion.FileMinorPart, m_ClientVersion.FileBuildPart, m_ClientVersion.FilePrivatePart );
+			}
+		}
+
+		public static bool UsePostKRPackets { get { return m_UsePostKRPackets; } }
+
 		public static string ExePath{ get{ return Process.GetCurrentProcess().MainModule.FileName; } }
 		public static string BaseDirectory{ get{ return m_BaseDir; } }
 		public static MainForm MainWindow{ get{ return m_MainWnd; } }
@@ -286,6 +338,18 @@ namespace Assistant
 			Config.LoadCharList();
 			if ( !Config.LoadLastProfile() )
 				MessageBox.Show( SplashScreen.Instance, "The selected profile could not be loaded, using default instead.", "Profile Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
+
+			try
+			{
+				if ( clientPath == null || clientPath == "" )
+					clientPath = Ultima.Client.GetFilePath( "client.exe" );
+				m_ClientVersion = FileVersionInfo.GetVersionInfo( clientPath );
+			}
+			catch
+			{
+			}
+
+			CheckClientVersion();
 
 			if ( attPID == -1 )
 			{

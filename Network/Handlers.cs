@@ -23,6 +23,7 @@ namespace Assistant
 			PacketHandler.RegisterClientToServerViewer( 0x12, new PacketViewerCallback( ClientTextCommand ) );
 			PacketHandler.RegisterClientToServerViewer( 0x13, new PacketViewerCallback( EquipRequest ) );
 			PacketHandler.RegisterClientToServerViewer( 0x22, new PacketViewerCallback( ResyncRequest ) );
+			// 0x29 - UOKR confirm drop.  0 bytes payload (just a single byte, 0x29, no length or data)
 			PacketHandler.RegisterClientToServerViewer( 0x3A, new PacketViewerCallback( SetSkillLock ) );
 			PacketHandler.RegisterClientToServerViewer( 0x5D, new PacketViewerCallback( PlayCharacter ) );
 			PacketHandler.RegisterClientToServerViewer( 0x7D, new PacketViewerCallback( MenuResponse ) );
@@ -494,6 +495,8 @@ namespace Assistant
 			int x = p.ReadInt16();
 			int y = p.ReadInt16();
 			int z = p.ReadSByte();
+			if ( Engine.UsePostKRPackets )
+				/* grid num */p.ReadByte(); 
 			Point3D newPos = new Point3D( x, y, z );
 			Serial dser = p.ReadUInt32();
 			
@@ -574,6 +577,9 @@ namespace Assistant
 			if ( amount == 0 )
 				amount = 1;
 			Point3D pos = new Point3D( p.ReadUInt16(), p.ReadUInt16(), 0 );
+			byte gridPos = 0;
+			if ( Engine.UsePostKRPackets )
+				gridPos = p.ReadByte();
 			Serial cser = p.ReadUInt32();
 			ushort hue = p.ReadUInt16();
 
@@ -591,12 +597,16 @@ namespace Assistant
 				i.CancelRemove();
 			}
 
-			if ( !DragDropManager.EndHolding( serial ) )
-				return;
+			if ( serial != DragDropManager.Pending )
+			{
+				if ( !DragDropManager.EndHolding( serial ) )
+					return;
+			}
 
 			i.ItemID = itemid;
 			i.Amount = amount;
 			i.Position = pos;
+			i.GridNum = gridPos;
 			i.Hue = hue;
 
 			if ( SearchExemptionAgent.Contains( i ) )
@@ -662,6 +672,8 @@ namespace Assistant
 				if ( item.Amount == 0 )
 					item.Amount = 1;
 				item.Position = new Point3D( p.ReadUInt16(), p.ReadUInt16(), 0 );
+				if ( Engine.UsePostKRPackets )
+					item.GridNum = p.ReadByte();
 				Serial cont = p.ReadUInt32();
 				item.Hue = p.ReadUInt16();
 				if ( SearchExemptionAgent.Contains( item ) )
@@ -1901,7 +1913,6 @@ namespace Assistant
 					{
 						ClientCommunication.SendToServer( new RazorNegotiateResponse() );
 						Engine.MainWindow.UpdateControlLocks();
-						System.Windows.Forms.MessageBox.Show( String.Format( "Nego: x{0:X16}", features ) );
 					}
 					break;
 				}

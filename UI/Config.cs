@@ -187,22 +187,6 @@ namespace Assistant
 			if ( !File.Exists( file ) )
 				return false;
 
-			if ( m_Name != "default" && !m_Warned )
-			{
-				try
-				{
-					m_Mutex = new System.Threading.Mutex( true, String.Format( "Razor_Profile_{0}", m_Name ) );
-
-					if ( !m_Mutex.WaitOne( 10, false ) )
-						throw new Exception( "Can't crab profile mutex, must be in use!" );
-				}
-				catch
-				{
-					MessageBox.Show( Engine.ActiveWindow, Language.Format( LocString.ProfileInUse, m_Name ), "Profile In Use", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-					m_Warned = true;
-				}
-			}
-
 			XmlDocument doc = new XmlDocument();
 			try
 			{
@@ -297,12 +281,6 @@ namespace Assistant
 				}
 			}
 
-			if ( m_SaveTimer != null )
-			{
-				if ( m_SaveTimer.Running )
-					m_SaveTimer.Stop();
-			}
-
 			//if ( !Language.Load( GetString( "Language" ) ) )
 			//	MessageBox.Show( Engine.ActiveWindow, "Warning: Could not load language from profile, using current language instead.", "Language Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 
@@ -311,11 +289,17 @@ namespace Assistant
 
 		public void Unload()
 		{
-			if ( m_Mutex != null )
+			try 
 			{
-				m_Mutex.ReleaseMutex();
-				m_Mutex.Close();
-				m_Mutex = null;
+				if ( m_Mutex != null )
+				{
+					m_Mutex.ReleaseMutex();
+					m_Mutex.Close();
+					m_Mutex = null;
+				}
+			}
+			catch
+			{
 			}
 		}
 
@@ -324,8 +308,21 @@ namespace Assistant
 			string profileDir = Engine.GetDirectory( "Profiles" );
 			string file = Path.Combine( profileDir, String.Format( "{0}.xml", m_Name ) );
 
-			if ( m_SaveTimer != null )
-				m_SaveTimer.Stop();
+			if ( m_Name != "default" && !m_Warned )
+			{
+				try
+				{
+					m_Mutex = new System.Threading.Mutex( true, String.Format( "Razor_Profile_{0}", m_Name ) );
+
+					if ( !m_Mutex.WaitOne( 10, false ) )
+						throw new Exception( "Can't grab profile mutex, must be in use!" );
+				}
+				catch
+				{
+					MessageBox.Show( Engine.ActiveWindow, Language.Format( LocString.ProfileInUse, m_Name ), "Profile In Use", MessageBoxButtons.OK, MessageBoxIcon.Warning );
+					m_Warned = true;
+				}
+			}
 
 			XmlTextWriter xml;
 			try
@@ -419,19 +416,11 @@ namespace Assistant
 			return m_Props[name];
 		}
 
-		private Timer m_SaveTimer = null;
-
 		public void SetProperty( string name, object val )
 		{
 			if ( !m_Props.ContainsKey( name ) )
 				throw new Exception( Language.Format( LocString.NoProp, name ) );
 			m_Props[name] = val;
-
-			/*if ( m_SaveTimer == null )
-				m_SaveTimer = Timer.DelayedCallback( TimeSpan.FromSeconds( 10.0 ), new TimerCallback( Save ) );
-			if ( m_SaveTimer.Running )
-				m_SaveTimer.Stop();
-			m_SaveTimer.Start();*/
 		}
 
 		public void AddProperty( string name, object val )

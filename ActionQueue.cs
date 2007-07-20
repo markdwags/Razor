@@ -119,6 +119,7 @@ namespace Assistant
 		private static byte m_Front, m_Back;
 
 		public static Item Holding { get { return m_HoldingItem; } }
+		public static Serial Pending { get { return m_Pending; } }
 
 		public static int LastIDLifted { get { return m_LastID; } }
 
@@ -383,8 +384,8 @@ namespace Assistant
 
 		public static bool EndHolding( Serial s )
 		{
-			if ( m_Pending == s )
-				return false;
+			//if ( m_Pending == s )
+			//	return false;
 
 			if ( m_Holding == s )
 			{
