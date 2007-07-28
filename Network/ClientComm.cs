@@ -513,6 +513,8 @@ namespace Assistant
 		private static unsafe extern void SetServer( uint ip, ushort port );
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern int HandleNegotiate( ulong word );
+		[DllImport( "Crypt.dll" )]
+		internal static unsafe extern string GetUOVersion();
 
 		public enum Loader_Error
 		{

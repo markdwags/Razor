@@ -319,8 +319,9 @@ namespace Assistant
 				}
 				catch
 				{
-					MessageBox.Show( Engine.ActiveWindow, Language.Format( LocString.ProfileInUse, m_Name ), "Profile In Use", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-					m_Warned = true;
+					//MessageBox.Show( Engine.ActiveWindow, Language.Format( LocString.ProfileInUse, m_Name ), "Profile In Use", MessageBoxButtons.OK, MessageBoxIcon.Warning );
+					//m_Warned = true;
+					return; // refuse to overwrite profiles that we don't own.
 				}
 			}
 

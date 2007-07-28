@@ -39,57 +39,65 @@ namespace Assistant
 			}
 		}
 
-		private static bool m_UsePostKRPackets = false;
-		private static void CheckClientVersion()
-		{
-			Version cv = ClientVersion;
-
-			m_UsePostKRPackets = false;
-
-			if ( cv.Major >= 6 )
-			{
-				if ( cv.Minor == 0 )
-				{
-					if ( cv.Build == 1 )
-					{
-						if ( cv.Revision >= 6 )
-							m_UsePostKRPackets = true;
-					}
-					else if ( cv.Build > 1 )
-					{
-						m_UsePostKRPackets = true;
-					}
-				}
-				else
-				{
-					m_UsePostKRPackets = true;
-				}
-			}
-
-			/*MessageBox.Show( "Version = " + cv.ToString() );
-
-			if ( UsePostKRPackets )
-				MessageBox.Show( "Is a KR client crap." );
-			else
-				MessageBox.Show( "Isn't nothing" );*/
-		}
-
-		private static FileVersionInfo m_ClientVersion = null;
+		private static Version m_ClientVersion = null;
 
 		public static Version ClientVersion
 		{
 			get
 			{
-				if ( m_ClientVersion == null )
-					return new Version( 5, 0, 0, 0 ); // default when confused
-				else if ( m_ClientVersion.InternalName == "uotd" )
-					return new Version( 5, 0, 9 ); // uotd discontinued after this version
-				else // the real version
-					return new Version( m_ClientVersion.FileMajorPart, m_ClientVersion.FileMinorPart, m_ClientVersion.FileBuildPart, m_ClientVersion.FilePrivatePart );
+				if ( m_ClientVersion == null || m_ClientVersion.Major < 2 )
+				{
+					string[] split = ClientCommunication.GetUOVersion().Split( '.' );
+
+					if ( split.Length < 3 )
+						return new Version( 4, 0, 0, 0 );
+
+					int rev = 0;
+
+					if ( split.Length > 3 )
+						rev = Utility.ToInt32( split[3], 0 ) ;
+
+					m_ClientVersion = new Version( 
+						Utility.ToInt32( split[0], 0 ), 
+						Utility.ToInt32( split[1], 0 ), 
+						Utility.ToInt32( split[2], 0 ),
+						rev );
+
+					if ( m_ClientVersion.Major == 0 ) // sanity check if the client returns 0.0.0.0
+						m_ClientVersion = new Version( 4, 0, 0, 0 );
+				}
+
+				return m_ClientVersion;
 			}
 		}
 
-		public static bool UsePostKRPackets { get { return m_UsePostKRPackets; } }
+		public static bool UsePostKRPackets 
+		{
+			get 
+			{
+				if ( ClientVersion.Major >= 6 )
+				{
+					if ( ClientVersion.Minor == 0 )
+					{
+						if ( ClientVersion.Build == 1 )
+						{
+							if ( ClientVersion.Revision >= 7 )
+								return true;
+						}
+						else if ( ClientVersion.Build > 1 )
+						{
+							return true;
+						}
+					}
+					else
+					{
+						return true;
+					}
+				}
+
+				return false; 
+			}
+		}
 
 		public static string ExePath{ get{ return Process.GetCurrentProcess().MainModule.FileName; } }
 		public static string BaseDirectory{ get{ return m_BaseDir; } }
@@ -134,7 +142,7 @@ namespace Assistant
 			m_BaseDir = Config.BaseDirectory;
 			Directory.SetCurrentDirectory( m_BaseDir );
 #endif
-			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 )
+			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 || !File.Exists( Path.Combine( BaseDirectory, "Updater.exe" ) ) )
 				throw new InvalidOperationException( "This Razor installation is corrupted." );
 
 			if ( File.Exists( Path.Combine( BaseDirectory, "New_Updater.exe" ) ) )
@@ -338,18 +346,6 @@ namespace Assistant
 			Config.LoadCharList();
 			if ( !Config.LoadLastProfile() )
 				MessageBox.Show( SplashScreen.Instance, "The selected profile could not be loaded, using default instead.", "Profile Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-
-			try
-			{
-				if ( clientPath == null || clientPath == "" )
-					clientPath = Ultima.Client.GetFilePath( "client.exe" );
-				m_ClientVersion = FileVersionInfo.GetVersionInfo( clientPath );
-			}
-			catch
-			{
-			}
-
-			CheckClientVersion();
 
 			if ( attPID == -1 )
 			{

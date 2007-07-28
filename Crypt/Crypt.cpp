@@ -90,6 +90,9 @@ typedef int (PASCAL *NetIOFunc)(SOCKET, char *, int, int);
 typedef int (PASCAL *ConnFunc)(SOCKET, const sockaddr *, int);
 typedef int (PASCAL *CLSFunc)(SOCKET);
 typedef int (PASCAL *SelectFunc)( int, fd_set*, fd_set*, fd_set*, const struct timeval* );
+typedef char *(__cdecl *GetUOVersionFunc)();
+
+GetUOVersionFunc NativeGetUOVersion = NULL;
 
 BOOL APIENTRY DllMain( HANDLE hModule, DWORD dwReason, LPVOID )
 {
@@ -677,6 +680,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	mf.AddEntry( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
 	mf.AddEntry( CHEATPROC_STR, CHEATPROC_LEN );
 	mf.AddEntry( "CHEAT %s", 8, 0x00500000 );
+	mf.AddEntry( "UO Version %s", 12 );
 
 	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
 
@@ -875,6 +879,22 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 		VirtualProtect( (void*)addr, 52, oldProt, &oldProt );
 	}
 
+	NativeGetUOVersion = NULL;
+	if ( ClientType == TWOD )
+	{
+		addr = mf.GetAddress( "UO Version %s", 12 );
+		if ( addr )
+		{
+			char temp[8];
+			temp[0] = 0x68;
+			*((DWORD*)&temp[1]) = addr;
+
+			addr = MemFinder::Find( temp, 5 );
+
+			if ( addr )
+				NativeGetUOVersion = (GetUOVersionFunc)((addr-12+4) + *((DWORD*)(addr-12)));
+		}
+	}
 	//HookFunction( "kernel32.dll", "CreateFileA", 0, (unsigned long)CreateFileAHook, &OldCreateFileA, &CreateFileAAddress );
 }
 
@@ -885,6 +905,14 @@ DLLFUNCTION void SetServer( unsigned int addr, unsigned short port )
 		pShared->ServerIP = addr;
 		pShared->ServerPort = port;
 	}
+}
+
+DLLFUNCTION const char *GetUOVersion()
+{
+	if ( pShared )
+		return pShared->UOVersion;
+	else
+		return "";
 }
 
 bool CreateSharedMemory()
@@ -1789,6 +1817,9 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		hPostWnd = (HWND)lParam;
 		UOProcId = GetCurrentProcessId();
 		hWatchWnd = hWnd;
+
+		ClientEncrypted = (wParam & 0x08) != 0;
+		ServerEncrypted = (wParam & 0x10) != 0;
 		
 		InitThemes();
 
@@ -1805,9 +1836,14 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			PostMessage( hPostWnd, WM_UONETEVENT, READY, SUCCESS );
 
 		if ( pShared )
+		{
 			pShared->AllowNegotiate = (wParam & 0x04) != 0;
-		ClientEncrypted = (wParam & 0x08) != 0;
-		ServerEncrypted = (wParam & 0x10) != 0;
+
+			pShared->UOVersion[0] = 0;
+
+			if ( NativeGetUOVersion != NULL )
+				strncpy( pShared->UOVersion, NativeGetUOVersion(), 16 );
+		}
 
 		break;
 

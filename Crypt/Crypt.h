@@ -92,6 +92,7 @@ struct SharedMemory
 	bool IsHaxed;
 	unsigned int ServerIP;
 	unsigned short ServerPort;
+	char UOVersion[16];
 };
 
 class PatchInfo

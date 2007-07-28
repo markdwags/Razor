@@ -12,3 +12,9 @@ Changes/Fixes:
 -Changed the "Profile In Use" warning message to only warn you when a profile is overwritten.  Overall, this will cause the warning to show up a lot less.  This should also solve problems with profiles getting corrupted.
 -Fixed some reported problems with the Heal/Cure self macros.
 -Updated Chinese language pack (Thanks Cloud :-)
+-Fixed a bug that prevented some people from being able to lift items.
+-Fixed a crash with clients older than 5.0.9
+
+1.0.9.17000:
+-Fixed a crash problem with the 3D client
+-Removed the "Profile Corruption Warning" by popular demand.

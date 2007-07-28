@@ -29,4 +29,5 @@ EXPORTS
 	OnAttach
 	SetServer
 	HandleNegotiate
+	GetUOVersion
 	
