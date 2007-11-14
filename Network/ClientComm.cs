@@ -1623,6 +1623,12 @@ namespace Assistant
 
 			bool viewer = PacketHandler.HasServerViewer( buff[0] );
 			bool filter = PacketHandler.HasServerFilter( buff[0] );
+	
+			if ( buff[0] == 0x25 )
+				buff = PacketHandlers.HandleRPVContainerContentUpdate( new Packet( buff, buff.Length, IsDynLength( buff[0] ) ) );
+			else if ( buff[1] == 0x3C )
+				buff = PacketHandlers.HandleRPVContainerContent( new Packet( buff, buff.Length, IsDynLength( buff[0] ) ) );
+
 			Packet p = null;
 			PacketReader pr = null;
 			if ( viewer )

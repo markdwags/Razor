@@ -51,10 +51,48 @@ namespace Assistant
 		}
 	}
 
+	public sealed class ContainerContent : Packet
+	{
+		public ContainerContent( ArrayList items ) : this( items, Engine.UsePostKRPackets )
+		{
+		}
+
+		public ContainerContent( ArrayList items, bool useKR ) : base( 0x3C )
+		{
+			Write( (ushort)items.Count );
+
+			foreach ( Item item in items )
+			{
+				Write( (uint)item.Serial );
+				Write( (ushort)item.ItemID );
+				Write( (sbyte)0 );
+				Write( (ushort)item.Amount );
+				Write( (ushort)item.Position.X );
+				Write( (ushort)item.Position.Y );
+
+				if ( useKR )
+					Write( (byte)item.GridNum );
+
+				if ( item.Container is Item )
+					Write( (uint)((Item)item.Container).Serial );
+				else
+					Write( (uint)0 );
+				Write( (ushort)item.Hue );
+			}
+		}
+	}
+
 	public sealed class ContainerItem : Packet
 	{
-		public ContainerItem( Item item ) : base( 0x25, 20 )
+		public ContainerItem( Item item ) : this( item, Engine.UsePostKRPackets )
 		{
+		}
+
+		public ContainerItem( Item item, bool isKR ) : base( 0x25, 20 )
+		{
+			if ( isKR )
+				EnsureCapacity( 21 );
+
 			Write( item.Serial );
 
 			Write( item.ItemID );
@@ -62,6 +100,9 @@ namespace Assistant
 			Write( item.Amount );
 			Write( (ushort)item.Position.X );
 			Write( (ushort)item.Position.Y );
+
+			if ( isKR )
+				Write( item.GridNum );
 
 			object cont = item.Container;
 			if ( cont is UOEntity )

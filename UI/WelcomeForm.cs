@@ -324,6 +324,7 @@ namespace Assistant
 			this.Name = "WelcomeForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Welcome to Razor!";
+			this.Closing += new System.ComponentModel.CancelEventHandler(this.WelcomeForm_Closing);
 			this.Load += new System.EventHandler(this.WelcomeForm_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
@@ -897,6 +898,11 @@ namespace Assistant
 
 		private void dataDir_TextChanged(object sender, System.EventArgs e)
 		{
+		}
+
+		private void WelcomeForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			SaveData();
 		}
 	}
 }
