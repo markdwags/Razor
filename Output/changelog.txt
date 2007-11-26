@@ -5,9 +5,6 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
-Additions:
--Support for protocol changes in client version 6.0.1.7.  This means that Razor will once again work on OSI (counters, drag/drop, etc).  Please Note: This WILL NOT allow client 6.0.1.7 to work with emulators which do not support that client version.  At this time, all emulators do not support this client version. (Big thanks to UOX (especially Xuri).)
-
 Changes/Fixes:
 -This version of Razor will work with client 6.0.5.0
 -Fixed a bug which caused the welcome form to delete all of the data when closed via the "X" instead of the "Close" button.
