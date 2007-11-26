@@ -25,6 +25,7 @@ namespace Assistant
 			PacketHandler.RegisterClientToServerViewer( 0x22, new PacketViewerCallback( ResyncRequest ) );
 			// 0x29 - UOKR confirm drop.  0 bytes payload (just a single byte, 0x29, no length or data)
 			PacketHandler.RegisterClientToServerViewer( 0x3A, new PacketViewerCallback( SetSkillLock ) );
+			PacketHandler.RegisterClientToServerFilter( 0x48, new PacketFilterCallback( ServerListLoginNew ) );
 			PacketHandler.RegisterClientToServerViewer( 0x5D, new PacketViewerCallback( PlayCharacter ) );
 			PacketHandler.RegisterClientToServerViewer( 0x7D, new PacketViewerCallback( MenuResponse ) );
 			PacketHandler.RegisterClientToServerFilter( 0x80, new PacketFilterCallback( ServerListLogin ) );
@@ -2145,6 +2146,36 @@ namespace Assistant
 		}
 
 		private static string m_LastPW = "";
+		private static void ServerListLoginNew( Packet p, PacketHandlerEventArgs args )
+		{
+			m_LastPW = "";
+			if ( !Config.GetBool( "RememberPwds" ) )
+				return;
+
+			p.ReadInt32();
+			p.ReadInt32();
+			p.ReadInt32();
+			p.ReadInt16();
+			p.ReadByte();
+			World.AccountName = p.ReadStringSafe( 30 );
+			string pass = p.ReadStringSafe( 30 );
+
+			if ( pass == "" )
+			{
+				pass = PasswordMemory.Find( World.AccountName, ClientCommunication.LastConnection );
+				if ( pass != null && pass != "" )
+				{
+					p.Seek( -30, SeekOrigin.Current );
+					p.WriteAsciiFixed( pass, 30 );
+					m_LastPW = pass;
+				}
+			}
+			else
+			{
+				PasswordMemory.Add( World.AccountName, pass, ClientCommunication.LastConnection );
+			}
+		}
+
 		private static void ServerListLogin( Packet p, PacketHandlerEventArgs args )
 		{
 			m_LastPW = "";

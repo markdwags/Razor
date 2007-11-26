@@ -65,9 +65,14 @@ BYTE LoginEncryption::Crypt( BYTE in )
 	return out;
 }
 
-BYTE LoginEncryption::Test( BYTE in )
+bool LoginEncryption::TestForLogin( BYTE encrypted )
 {
-	return in ^ ((unsigned char)m_Table[0]);
+	return IsLoginByte( (BYTE)( encrypted ^ ((BYTE)m_Table[0]) ) );
+}
+
+bool LoginEncryption::IsLoginByte( BYTE unencrypted )
+{
+	return unencrypted == ((BYTE)0x80) || unencrypted == ((BYTE)0x48);
 }
 
 DWORD LoginEncryption::GenerateBadSeed( DWORD oldSeed )

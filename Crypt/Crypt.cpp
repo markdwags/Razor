@@ -1200,6 +1200,7 @@ int PASCAL HookRecv( SOCKET sock, char *buff, int len, int flags )
 	}
 }
 
+int SkipSendData = 0;
 int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 {
 	int ackLen;
@@ -1208,10 +1209,13 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 	{
 		if ( !Seeded )
 		{
-			Seeded = true;
+			if ( len > 0 && ((BYTE)*buff) == ((BYTE)0xEF) )
+				SkipSendData = 16;
 
 			if ( len >= 4 )
 			{
+				Seeded = true;
+
 				CryptSeed = *((DWORD*)buff);
 
 				if ( ServerEncrypted )
@@ -1232,16 +1236,18 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 			ackLen = (*(NetIOFunc)OldSend)(sock,buff,len,flags);
 			pShared->TotalSend += len;
 		}
-		else
+		else if ( SkipSendData < len )
 		{
+			SkipSendData = 0;
+
 			if ( FirstSend )
 			{
 				FirstSend = false;
 
 				if ( ClientEncrypted )
-					LoginServer = ClientLogin->Test( (BYTE)buff[0] ) == ((BYTE)0x80);
+					LoginServer = ClientLogin->TestForLogin( (BYTE)buff[0] );
 				else
-					LoginServer = ((BYTE)buff[0]) == ((BYTE)0x80);
+					LoginServer = LoginEncryption::IsLoginByte( (BYTE)buff[0] );
 
 				if ( LoginServer )
 					Forwarding = Forwarded = false;
@@ -1291,6 +1297,12 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 			ReleaseMutex( CommMutex );
 
 			ackLen = len;//lie and say we sent it all -- or should we tell the truth? (probably not since then it could try to send it again..)
+		}
+		else
+		{
+			ackLen = (*(NetIOFunc)OldSend)(sock,buff,len,flags);
+			pShared->TotalSend += len;
+			SkipSendData -= len;
 		}
 	}
 	else

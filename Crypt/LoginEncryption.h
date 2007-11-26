@@ -12,9 +12,11 @@ public:
 	void Encrypt( const BYTE *in, BYTE *out, int len );
 	void Decrypt( const BYTE *in, BYTE *out, int len );
 
-	BYTE Test( BYTE );
+	bool TestForLogin( BYTE encrypted );
 
 	static DWORD GenerateBadSeed( DWORD oldSeed );
+
+	static bool IsLoginByte( BYTE unencrypted );
 
 private:
 	static const DWORD *Key1, *Key2;
