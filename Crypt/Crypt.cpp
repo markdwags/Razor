@@ -59,6 +59,8 @@ bool ServerEncrypted = false;
 enum CLIENT_TYPE { TWOD = 1, THREED = 2 };
 CLIENT_TYPE ClientType = TWOD;
 
+BYTE CryptChecksum[16] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,};
+
 //**************************************OSI Only Stuff*********************************
 DWORD CryptSeed = 0x7f000001;
 OSIEncryption *ClientCrypt = NULL;
@@ -93,6 +95,7 @@ typedef int (PASCAL *SelectFunc)( int, fd_set*, fd_set*, fd_set*, const struct t
 typedef char *(__cdecl *GetUOVersionFunc)();
 
 GetUOVersionFunc NativeGetUOVersion = NULL;
+
 
 BOOL APIENTRY DllMain( HANDLE hModule, DWORD dwReason, LPVOID )
 {
@@ -214,6 +217,8 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 	{
 		Disabled = true;
 	}
+
+	OSIEncryption::MD5( (const BYTE*)&InitializeLibrary, 0x5000, CryptChecksum );
 
 #ifdef NO_CHECKSUM_VERSION
 	Disabled = false;
@@ -517,9 +522,8 @@ DLLFUNCTION void BringToFront( HWND hWnd )
 
 DLLFUNCTION void DoFeatures( int realFeatures )
 {
-	char ch;
-	int i, size = 8;
-	char pkt[256];
+	int i, c, size = 8;
+	char pkt[512];
 	char *str = NULL;
 
 	int features = 0;
@@ -552,18 +556,21 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 	
 	// CHEAT UO.exe 1 251--
 	sprintf( str, "%c%cE%c%c %s %d %d--", 'C', 'H', 'A', 'T', "UO.exe", ClientType, features );
+	c = strlen( str ) + 1;
 
-	i = 0;
-	do
-	{
-		ch = str[i];
-		str[i] = ch ^ pShared->CheatKey[i & 0xF];
-		i++;
-	} while ( ch != 0 );
+	memcpy( &str[c], CryptChecksum, 16 );
+	c += 16;
 
-	size = 8+i;
+	memcpy( &str[c], DLL_VERSION, strlen( DLL_VERSION ) );
+	c += strlen( DLL_VERSION );
+	str[c++] = 0;
 
-	if ( !ServerEncrypted )
+	for (i = 0; i < c; i++)
+		str[i] = str[i] ^ pShared->CheatKey[i & 0xF];
+	
+	size = 8+c;
+	
+	/*if ( !ServerEncrypted )
 	{
 		time_t now = time(NULL);
 
@@ -572,7 +579,7 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 
 		*((unsigned int*)&str[size]) = ~(ConnectedIP ^ (int)now);
 		size += 4;
-	}
+	}*/
 
 	// fill in size
 	pkt[1] = (size>>8)&0xFF;
