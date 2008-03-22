@@ -217,8 +217,8 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 	{
 		Disabled = true;
 	}
-
-	OSIEncryption::MD5( (const BYTE*)&InitializeLibrary, 0x5000, CryptChecksum );
+DLLFUNCTION bool AllowBit( unsigned int bit );
+	OSIEncryption::MD5( ((const BYTE*)AllowBit), 0x31, CryptChecksum );
 
 #ifdef NO_CHECKSUM_VERSION
 	Disabled = false;
@@ -556,13 +556,13 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 	
 	// CHEAT UO.exe 1 251--
 	sprintf( str, "%c%cE%c%c %s %d %d--", 'C', 'H', 'A', 'T', "UO.exe", ClientType, features );
-	c = strlen( str ) + 1;
+	c = (int)strlen( str ) + 1;
 
 	memcpy( &str[c], CryptChecksum, 16 );
 	c += 16;
 
 	memcpy( &str[c], DLL_VERSION, strlen( DLL_VERSION ) );
-	c += strlen( DLL_VERSION );
+	c += (int)strlen( DLL_VERSION );
 	str[c++] = 0;
 
 	for (i = 0; i < c; i++)
@@ -582,12 +582,12 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 	}*/
 
 	// fill in size
-	pkt[1] = (size>>8)&0xFF;
-	pkt[2] = size&0xFF;
+	pkt[1] = (BYTE)((size>>8)&0xFF);
+	pkt[2] = (BYTE)(size&0xFF);
 
 	WaitForSingleObject( CommMutex, 50 );
 	memcpy( pShared->OutSend.Buff + pShared->OutSend.Start + pShared->OutSend.Length, pkt, size );
-	pShared->OutSend.Length += size;
+	pShared->OutSend.Length += (int)size;
 	ReleaseMutex( CommMutex );
 	PostMessage( FindUOWindow(), WM_UONETEVENT, SEND, 0 );
 }
@@ -595,10 +595,7 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 DLLFUNCTION bool AllowBit( unsigned int bit )
 {
 	bit &= 0x0000003F; // limited to 64 bits
-	if ( !pShared )
-		return true;
-	else
-		return ( pShared->AuthBits[7-(bit/8)] & (1<<(bit%8)) ) == 0;
+	return !pShared || ( pShared->AuthBits[7-(bit/8)] & (1<<(bit%8)) ) == 0;
 }
 
 DLLFUNCTION void SetAllowDisconn( bool newVal )
@@ -647,13 +644,19 @@ DLLFUNCTION BOOL HandleNegotiate( __int64 features )
 	}
 }
 
-#define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
-#define PACKET_TS_LEN 24
-
-void (*RedrawUOScreen)() = NULL;
-void (*RedrawGameEdge)() = NULL;
-
 SIZE *SizePtr = NULL;
+void __stdcall OnSetUOWindowSize( int width )
+{
+	if ( width != 800 )
+	{
+		SizePtr->cx = 640;
+		SizePtr->cy = 480;
+	}
+	else
+	{
+		*SizePtr = DesiredSize;
+	}
+}
 
 DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 {
@@ -675,16 +678,18 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	mf.AddEntry( "UoClientApp", 12, 0x00500000 );
 	mf.AddEntry( "report\0", 8, 0x00500000 );
 	mf.AddEntry( "Another copy of ", 16, 0x00500000 );
-	mf.AddEntry( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 ); // (end of a push offset), push 5000, push esi
+	mf.AddEntry( "\x68\x88\x13\x00\x00", 5 ); // (end of a push offset), push 5000, push esi
 	mf.AddEntry( "Electronic Arts Inc.", 20 );
-
-	mf.AddEntry( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16, 0x00500000 ); // current screen size
+	mf.AddEntry( "intro.bik", 10 );
+	mf.AddEntry( "osilogo.bik", 12 );
+	mf.AddEntry( "\x80\x02\x00\x00\xE0\x01\x00\x00", 8, 0x00500000 ); // current screen size
 	mf.AddEntry( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 ); // resize screen function
 	mf.AddEntry( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 ); // redraw screen/edge function
-	mf.AddEntry( PACKET_TBL_STR, PACKET_TS_LEN );
+	mf.AddEntry( PACKET_TBL_STR, PACKET_TS_LEN, 10, 0x00500000 );
 	mf.AddEntry( CRYPT_KEY_STR, CRYPT_KEY_LEN );
 	mf.AddEntry( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
 	mf.AddEntry( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
+	mf.AddEntry( CRYPT_KEY_STR_MORE_NEW, CRYPT_KEY_MORE_NEW_LEN );
 	mf.AddEntry( CHEATPROC_STR, CHEATPROC_LEN );
 	mf.AddEntry( "CHEAT %s", 8, 0x00500000 );
 	mf.AddEntry( "UO Version %s", 12 );
@@ -696,77 +701,76 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 
 	mf.Execute();
 
-	SizePtr = (SIZE*)mf.GetAddress( "\x80\x02\x00\x00\xE0\x01\x00\x00palette.", 16 );
+	SizePtr = (SIZE*)mf.GetAddress( "\x80\x02\x00\x00\xE0\x01\x00\x00", 8 );
 	if ( SizePtr )
 	{
-		addr = mf.GetAddress( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 ); 
-		if ( addr && *((unsigned char*)(addr-0x13)) == 0xE8 &&  *((unsigned char*)(addr-0x13+5)) == 0xE8 )
+		/*addr = mf.GetAddress( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 ); 
+		if ( addr )
 		{
-			addr -= 0x12;
-			RedrawGameEdge = (void (*)())(addr + 4 + *((int*)addr));
-			addr += 5;
-			RedrawUOScreen = (void (*)())(addr + 4 + *((int*)addr));
+			for (int e = -5; e > -16; e--)
+			{
+				if ( *((BYTE*)(addr+e)) == 0xE8 && *((BYTE*)(addr+e-5)) == 0xE8 ) 
+				{
+					addr = addr + e - 4;
+					RedrawGameEdge = (void (*)())(addr + 4 + *((int*)addr));
+					addr += 5;
+					RedrawUOScreen = (void (*)())(addr + 4 + *((int*)addr));
+					break;
+				}
+			}
+		}*/
+
+		addr = mf.GetAddress( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 );
+		if ( addr )
+		{
+			int i;
+			DWORD origAddr = addr;
+
+			VirtualProtect( (void*)origAddr, 0x80, PAGE_EXECUTE_READWRITE, &oldProt );
+			for (i = 16; i < 128; i++)
+			{
+				if ( *((BYTE*)(addr+i)) == 0xE9 ) // find the first jmp
+				{
+					memset( (void*)addr, 0x90, i ); // nop
+
+					addr += 4; // mov eax, [arg_0]
+
+					*((BYTE*)addr) = 0x50; // push eax
+					addr++;
+					*((BYTE*)addr) = 0xE8;
+					*((DWORD*)(addr+1)) = ((DWORD)OnSetUOWindowSize) - (addr + 5);
+					break;
+				}
+			}
+			VirtualProtect( (void*)origAddr, 0x80, oldProt, &oldProt );
 		}
-	}
-
-	addr = mf.GetAddress( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 );
-	if ( addr )
-	{
-		DWORD origAddr = addr;
-
-		VirtualProtect( (void*)origAddr, 0x50, PAGE_EXECUTE_READWRITE, &oldProt );
-		addr += 0x11; // skip to jnz
-		addr += *((BYTE*)addr)+1; // skip to target
-		memset( (void*)addr, 0x90, 0x14 ); // nop
-		*((BYTE*)addr) = 0xBB; *((DWORD*)(addr+1)) = (DWORD)(&DesiredSize.cx); // mov ebx, offset DesiredSize.cx
-		addr += 5;
-		*((BYTE*)addr) = 0xB8; *((DWORD*)(addr+1)) = (DWORD)(&DesiredSize.cy); // mov eax, offset DesiredSize.cy
-		addr += 5;
-		*((BYTE*)addr) = 0x8B; *((BYTE*)(addr+1)) = 0x13;  // mov edx, [ebx]
-		addr += 2;
-		*((BYTE*)addr) = 0x8B; *((BYTE*)(addr+1)) = 0x08;  // mov ecx, [eax]
-		addr += 2;
-		*((BYTE*)(addr+6)) = 0xEB; // change jnz to jmp
-		VirtualProtect( (void*)origAddr, 0x50, oldProt, &oldProt );
 	}
 
 	addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN );
 	if ( addr )
 	{
-		DWORD Seek = 0;
+		addr -= 8;
 
-		addr += PACKET_TS_LEN;
+		memset( pShared->PacketTable, 0xFF, 512 );
 
-		// these appear at unpredictable offsets from the search string, so we have to seek for them.
-		// we use the first packet (0x00 with length 0x68) to find a place in the table to start from.
-		do {
-			addr ++;
-			count ++;
-
+		int total = 0;
+		for (count = 0; count < 256 && total < 256; count++, total++)
+		{
 			if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
 				break;
-			memcpy( &Seek, (const void*)addr, 4 );
-		} while ( Seek != 0x68 && count < 512 );
 
-		if ( Seek == 0x68 )
-		{
-			addr += 4;
+			memcpy( &packet, (const void*)addr, sizeof(ClientPacketInfo) );
+			addr += sizeof(ClientPacketInfo);
+			if ( packet.Id < count || packet.Id >= 256 )
+				break;
 
-			memset( pShared->PacketTable, 0xFF, 512 );
-			pShared->PacketTable[0] = 0x68;
-			count = 0;
-			do {
-				if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
-					break;
+			if ( pShared->PacketTable[(BYTE)packet.Id] == 0xFFFF )
+				pShared->PacketTable[(BYTE)packet.Id] = packet.Length;
 
-				memcpy( &packet, (const void*)addr, sizeof(ClientPacketInfo) );
-				addr += sizeof(ClientPacketInfo);
-				if ( pShared->PacketTable[(BYTE)packet.Id] == 0xFFFF )
-					pShared->PacketTable[(BYTE)packet.Id] = packet.Length;
-				count ++;
-			} while ( packet.Id != 0xFFFFFFFF && (BYTE)packet.Id == packet.Id && count < 256 );
+			count = packet.Id;
 		}
-		else
+
+		if ( packet.Id != 0xFFFFFFFF )
 		{
 			CopyFailed = true;
 		}
@@ -775,7 +779,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	{
 		CopyFailed = true;
 	}
-	
+
 	addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
 	if ( !addr )
 	{
@@ -783,15 +787,32 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 
 		if ( !addr )
 		{
-			addr = mf.GetAddress( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
-			if ( addr )
+			addr = mf.GetAddress( CRYPT_KEY_STR_MORE_NEW, CRYPT_KEY_MORE_NEW_LEN );
+			if ( !addr )
 			{
-				LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_3D_LEN), (const DWORD*)(addr + CRYPT_KEY_3D_LEN + 19) );
-				ClientType = THREED;
+				addr = mf.GetAddress( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
+				if ( addr )
+				{
+					LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_3D_LEN), (const DWORD*)(addr + CRYPT_KEY_3D_LEN + 19) );
+					ClientType = THREED;
+				}
+				else
+				{
+					CopyFailed = true;
+				}
 			}
 			else
 			{
-				CopyFailed = true;
+				addr += CRYPT_KEY_MORE_NEW_LEN;
+
+				const DWORD *pKey1 = *((DWORD**)addr);
+				const DWORD *pKey2 = pKey1 + 1;
+				if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
+				{
+					CopyFailed = true;
+				}
+				else
+					LoginEncryption::SetKeys( pKey1, pKey2 );
 			}
 		}
 		else
@@ -801,7 +822,9 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			const DWORD *pKey1 = *((DWORD**)addr);
 			const DWORD *pKey2 = pKey1 - 1;
 			if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
+			{
 				CopyFailed = true;
+			}
 			else
 				LoginEncryption::SetKeys( pKey1, pKey2 );
 		}
@@ -811,7 +834,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 		LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_LEN), (const DWORD*)(addr + CRYPT_KEY_LEN + 6) );
 	}
 
-	addr = mf.GetAddress( CHEATPROC_STR, CHEATPROC_LEN );
+	/*addr = mf.GetAddress( CHEATPROC_STR, CHEATPROC_LEN );
 	if ( addr )
 	{
 		addr = MemFinder::Find( "\x8A\x91", 2, addr, addr + 0x80 );
@@ -833,7 +856,9 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 				memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
 			ClientType = THREED;
 		}
-	}
+	}*/
+	BYTE cheatKey[16] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
+	memcpy( pShared->CheatKey, cheatKey, 16 );
 	
 	// Multi UO
 	addr = mf.GetAddress( "UoClientApp", 12 );
@@ -873,9 +898,27 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	}
 
 	// Splash screen crap:
-	addr = mf.GetAddress( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 );
+	/*for (int i = 0; i < 16; i++)
+	{
+		addr = mf.GetAddress( "\x68\x88\x13\x00\x00", 5, i );
+		if ( !addr )
+			break;
+		for (int e = 5; e < 24; e++)
+		{
+			if ( *((BYTE*)(addr+e)) == 0x8B && *((BYTE*)(addr+e+1)) == 0x3D )
+			{
+				MemoryPatch( addr+1, 0x00000001 ); // change 5000ms to 1ms
+				i = 10;
+				break;
+			}
+		}
+	}*/
+	addr = mf.GetAddress( "intro.bik", 10 );
 	if ( addr )
-		MemoryPatch( addr+2, 0x00000005 ); // change 5000ms to 5ms
+		MemoryPatch( addr, "intro.SUX", 10 );
+	addr = mf.GetAddress( "ostlogo.bik", 12 );
+	if ( addr )
+		MemoryPatch( addr, "osilogo.SUX", 12 );
 
 	addr = mf.GetAddress( "Electronic Arts Inc.", 20 );
 	if ( addr )
@@ -899,7 +942,17 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			addr = MemFinder::Find( temp, 5 );
 
 			if ( addr )
-				NativeGetUOVersion = (GetUOVersionFunc)((addr-12+4) + *((DWORD*)(addr-12)));
+			{
+				count = 0;
+				while ( *((BYTE*)addr) != 0xE8 && count < 128 )
+				{
+					addr--;
+					count++;
+				}
+
+				if ( *((BYTE*)addr) == 0xE8  )
+					NativeGetUOVersion = (GetUOVersionFunc)((addr+5) + *((DWORD*)(addr+1)));
+			}
 		}
 	}
 	//HookFunction( "kernel32.dll", "CreateFileA", 0, (unsigned long)CreateFileAHook, &OldCreateFileA, &CreateFileAAddress );

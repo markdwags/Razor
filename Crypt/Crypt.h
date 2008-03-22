@@ -1,7 +1,7 @@
 #pragma once
 #pragma pack(1)
 
-#define DLL_VERSION "1.0.10"
+#define DLL_VERSION "1.0.11"
 
 #define DLLFUNCTION __declspec(dllexport)
 #define DLLVAR DLLFUNCTION
@@ -150,8 +150,10 @@ void FreeArt();
 void InitThemes();
 bool PatchStatusBar( BOOL preAOS );
 
-#define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
-#define PACKET_TS_LEN 24
+//#define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
+//#define PACKET_TS_LEN 24
+#define PACKET_TBL_STR "\x68\0\0\0\x01\0\0\0"
+#define PACKET_TS_LEN 8
 
 //search disassembly for
 //static key1 C1 E2 1F D1 E8 D1 E9 0B C6 0B CA 35 static key2 81 F1 dynamic key 4D
@@ -182,7 +184,7 @@ key2 ^= 0xA31D527F;
 .text:0041AA34 0B C6                             or      eax, esi
 .text:0041AA36 47                                inc     edi
 .text:0041AA37 33 05 BC 29 6B 00                 xor     eax, LoginKey_2
-.text:0041AA3D C1 E2 1F                          shl     edx, 1Fh
+.text:0041AA3D C1 E2 1F                          shl     edx, 31
 .text:0041AA40 89 83 F8 00 0A 00                 mov     [ebx+0A00F8h], eax
 .text:0041AA46 D1 E8                             shr     eax, 1
 .text:0041AA48 0B C6                             or      eax, esi
@@ -197,3 +199,25 @@ key2 ^= 0xA31D527F;
 // 1F D1 E8 0B C6 47 33 05 memoryloc_2 C1 E2 1F 89 83 F8 00 0A 00 D1 E8 0B C6 8B 35 memoryloc_2 33 C6 D1 E9 89 83 F8 00 0A 00 0B Ca 8b 15 memoryloc_1 33 CA
 #define CRYPT_KEY_STR_NEW "\x1F\xD1\xE8\x0B\xC6\x47\x33\x05"
 #define CRYPT_KEY_NEW_LEN 8
+
+/*
+.text:0041C599 8B F0                             mov     esi, eax
+.text:0041C59B 8B FA                             mov     edi, edx
+.text:0041C59D D1 E8                             shr     eax, 1
+.text:0041C59F C1 E7 1F                          shl     edi, 31
+.text:0041C5A2 0B C7                             or      eax, edi
+.text:0041C5A4 33 05 FC AB 6C 00                 xor     eax, dword_6CABFC
+.text:0041C5AA D1 EA                             shr     edx, 1
+.text:0041C5AC D1 E8                             shr     eax, 1
+.text:0041C5AE C1 E6 1F                          shl     esi, 31
+.text:0041C5B1 0B C7                             or      eax, edi
+.text:0041C5B3 33 05 FC AB 6C 00                 xor     eax, dword_6CABFC
+.text:0041C5B9 0B D6                             or      edx, esi
+.text:0041C5BB 33 15 00 AC 6C 00                 xor     edx, dword_6CAC00
+.text:0041C5C1 83 EB 01                          sub     ebx, 1
+.text:0041C5C4 83 C5 01                          add     ebp, 1
+.text:0041C5C7 85 DB                             test    ebx, ebx
+*/
+// E8 C1 E7 1F 0B C7 33 05 memoryloc_2 
+#define CRYPT_KEY_STR_MORE_NEW "\xE8\xC1\xE7\x1F\x0B\xC7\x33\x05"
+#define CRYPT_KEY_MORE_NEW_LEN 8
