@@ -218,7 +218,15 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 		Disabled = true;
 	}
 DLLFUNCTION bool AllowBit( unsigned int bit );
-	OSIEncryption::MD5( ((const BYTE*)AllowBit), 0x31, CryptChecksum );
+	OSIEncryption::MD5( ((const BYTE*)AllowBit)+9, 0x31-9, CryptChecksum );
+
+	/*file = fopen( "C:\\zippy.bin", "w" );
+	fwrite( ((const BYTE*)AllowBit), 0x33, 1, file );
+	void *ptr = (void*)GetProcAddress( GetModuleHandle(NULL), "AllowBit" );
+	fwrite( &ptr, 4, 1, file );
+	ptr = (void*)AllowBit;
+	fwrite( &ptr, 4, 1, file );
+	fclose( file );*/
 
 #ifdef NO_CHECKSUM_VERSION
 	Disabled = false;
@@ -678,7 +686,8 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	mf.AddEntry( "UoClientApp", 12, 0x00500000 );
 	mf.AddEntry( "report\0", 8, 0x00500000 );
 	mf.AddEntry( "Another copy of ", 16, 0x00500000 );
-	mf.AddEntry( "\x68\x88\x13\x00\x00", 5 ); // (end of a push offset), push 5000, push esi
+	mf.AddEntry( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 );
+	mf.AddEntry( "\x68\x88\x13\x00\x00", 5, 16, 0x00400000 ); // (end of a push offset), push 5000, push esi
 	mf.AddEntry( "Electronic Arts Inc.", 20 );
 	mf.AddEntry( "intro.bik", 10 );
 	mf.AddEntry( "osilogo.bik", 12 );
@@ -704,22 +713,6 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	SizePtr = (SIZE*)mf.GetAddress( "\x80\x02\x00\x00\xE0\x01\x00\x00", 8 );
 	if ( SizePtr )
 	{
-		/*addr = mf.GetAddress( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 ); 
-		if ( addr )
-		{
-			for (int e = -5; e > -16; e--)
-			{
-				if ( *((BYTE*)(addr+e)) == 0xE8 && *((BYTE*)(addr+e-5)) == 0xE8 ) 
-				{
-					addr = addr + e - 4;
-					RedrawGameEdge = (void (*)())(addr + 4 + *((int*)addr));
-					addr += 5;
-					RedrawUOScreen = (void (*)())(addr + 4 + *((int*)addr));
-					break;
-				}
-			}
-		}*/
-
 		addr = mf.GetAddress( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 );
 		if ( addr )
 		{
@@ -898,7 +891,10 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	}
 
 	// Splash screen crap:
-	/*for (int i = 0; i < 16; i++)
+	/*addr = mf.GetAddress( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 );
+	if ( addr )
+		MemoryPatch( addr+2, 0x00000005 ); // change 5000ms to 5ms*/
+	for (int i = 0; i < 16; i++)
 	{
 		addr = mf.GetAddress( "\x68\x88\x13\x00\x00", 5, i );
 		if ( !addr )
@@ -908,11 +904,11 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			if ( *((BYTE*)(addr+e)) == 0x8B && *((BYTE*)(addr+e+1)) == 0x3D )
 			{
 				MemoryPatch( addr+1, 0x00000001 ); // change 5000ms to 1ms
-				i = 10;
+				i = 99;
 				break;
 			}
 		}
-	}*/
+	}
 	addr = mf.GetAddress( "intro.bik", 10 );
 	if ( addr )
 		MemoryPatch( addr, "intro.SUX", 10 );

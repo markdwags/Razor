@@ -387,6 +387,9 @@ namespace Assistant
 		TargCloseCriminal,
 
 		ProfileInUse,
+		WaitingTimeout,
+		NoCliLocMsg,
+		NoCliLoc,
 
 		__End
 	}
@@ -635,7 +638,7 @@ namespace Assistant
 				}
 				else
 				{
-					MessageBox.Show( Engine.ActiveWindow, "Razor was unable to locate and load a suitable UO cliloc file.\nSome text may not be displayed.", "No CliLoc", MessageBoxButtons.OK, MessageBoxIcon.Warning );
+					MessageBox.Show( Engine.ActiveWindow, Language.GetString( LocString.NoCliLocMsg ), Language.GetString( LocString.NoCliLoc ), MessageBoxButtons.OK, MessageBoxIcon.Warning );
 				}
 			}
 		}

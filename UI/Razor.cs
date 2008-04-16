@@ -3090,7 +3090,7 @@ namespace Assistant
 
 			if ( PacketHandlers.PlayCharTime < DateTime.Now && PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 30 ) > DateTime.Now )
 			{
-				if ( !features.Visible && Config.GetBool( "Negotiate" ) )
+				if ( Config.GetBool( "Negotiate" ) )
 				{
 					bool allAllowed = true;
 					StringBuilder text = new StringBuilder();
@@ -3118,6 +3118,10 @@ namespace Assistant
 
 					features.Visible = true;
 					features.Text = text.ToString();
+				}
+				else
+				{
+					features.Visible = false;
 				}
 			}
 		}
