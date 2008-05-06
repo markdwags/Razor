@@ -6,4 +6,6 @@ Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item
 Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
 
 Changes/Fixes:
--This version of Razor will work with client 6.0.6.2
+-The splash screen should now be skipped with all versions of Razor
+-Some small localization changes/updates
+-This version of Razor works with clients up to at least 6.0.6.2
