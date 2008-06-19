@@ -127,8 +127,11 @@ namespace Assistant
 
 		public static void AddFiles( ListBox list, string path, string ext )
 		{
+			if ( list.Items.Count >= 500 )
+				return;
+
 			string[] files = Directory.GetFiles( path, String.Format( "*.{0}", ext ) );
-			for (int i=0;i<files.Length;i++)
+			for (int i=0;i<files.Length && list.Items.Count < 500;i++)
 				list.Items.Add( Path.GetFileName( files[i] ) );
 		}
 	}

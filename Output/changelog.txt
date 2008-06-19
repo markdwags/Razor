@@ -9,3 +9,6 @@ Changes/Fixes:
 -The splash screen should now be skipped with all versions of Razor
 -Some small localization changes/updates
 -This version of Razor works with clients up to at least 6.0.6.2
+-Small stability fixes
+-Razor will no longer display more than 250 images in the screenshots list, thus fixing some "lag" problems related to screen shots
+-New splash screen by "Beelzebub" (www.phraktol.com)
