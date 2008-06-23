@@ -95,7 +95,7 @@ namespace Assistant
 			this.logo.Image = ((System.Drawing.Image)(resources.GetObject("logo.Image")));
 			this.logo.Location = new System.Drawing.Point(0, 0);
 			this.logo.Name = "logo";
-			this.logo.Size = new System.Drawing.Size(475, 475);
+			this.logo.Size = new System.Drawing.Size(350, 350);
 			this.logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
 			this.logo.TabIndex = 0;
 			this.logo.TabStop = false;
@@ -104,9 +104,9 @@ namespace Assistant
 			// 
 			this.message.BackColor = System.Drawing.Color.Black;
 			this.message.ForeColor = System.Drawing.Color.FromArgb(((System.Byte)(96)), ((System.Byte)(0)), ((System.Byte)(0)));
-			this.message.Location = new System.Drawing.Point(0, 444);
+			this.message.Location = new System.Drawing.Point(0, 328);
 			this.message.Name = "message";
-			this.message.Size = new System.Drawing.Size(472, 28);
+			this.message.Size = new System.Drawing.Size(350, 20);
 			this.message.TabIndex = 1;
 			this.message.Text = "Don\'t forget to Donate!";
 			this.message.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -115,10 +115,10 @@ namespace Assistant
 			// 
 			this.donate.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.donate.Image = ((System.Drawing.Image)(resources.GetObject("donate.Image")));
-			this.donate.Location = new System.Drawing.Point(4, 4);
+			this.donate.Location = new System.Drawing.Point(0, 0);
 			this.donate.Name = "donate";
-			this.donate.Size = new System.Drawing.Size(62, 31);
-			this.donate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+			this.donate.Size = new System.Drawing.Size(50, 25);
+			this.donate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.donate.TabIndex = 2;
 			this.donate.TabStop = false;
 			this.donate.Click += new System.EventHandler(this.donate_Click);
@@ -126,7 +126,7 @@ namespace Assistant
 			// SplashScreen
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(476, 472);
+			this.ClientSize = new System.Drawing.Size(350, 350);
 			this.ControlBox = false;
 			this.Controls.Add(this.donate);
 			this.Controls.Add(this.message);
