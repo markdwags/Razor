@@ -628,3 +628,5 @@ InputBox::ok=&Okay
 1522=Waiting... Timeout: 
 1523=Razor was unable to locate and load a suitable UO cliloc file.\nSome text may not be displayed.
 1524=No CliLoc
+1525=Bulk Order Deed
+1526=Launch BOD Agent

@@ -725,8 +725,8 @@ namespace Assistant
 					item.CancelRemove();
 				}
 
-				if ( !DragDropManager.EndHolding( serial ) )
-					continue;
+				//if ( !DragDropManager.EndHolding( serial ) )
+				//	continue;
 
 				item.ItemID = p.ReadUInt16();
 				item.ItemID = (ushort)(item.ItemID + p.ReadSByte());// signed, itemID offset
@@ -1836,6 +1836,8 @@ namespace Assistant
 
 			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
 				args.Block = true;
+
+			ClientCommunication.ForwardPacket( p.Pointer, p.Length );
 		}
 
 		private static void ClientGumpResponse( PacketReader p, PacketHandlerEventArgs args )
@@ -2332,6 +2334,8 @@ namespace Assistant
 			
 			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
 				args.Block = true;
+
+			ClientCommunication.ForwardPacket( p.Pointer, p.Length );
 		}
 /*
 				int serial  = pvSrc.ReadInt32(), dialog  = pvSrc.ReadInt32();

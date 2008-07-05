@@ -1,7 +1,7 @@
 #pragma once
 #pragma pack(1)
 
-#define DLL_VERSION "1.0.11"
+#define DLL_VERSION "1.0.12"
 
 #define DLLFUNCTION __declspec(dllexport)
 #define DLLVAR DLLFUNCTION
@@ -57,7 +57,8 @@ enum UONET_MESSAGE
 
 	SMART_CPU = 21,
 	NEGOTIATE = 22,
-	SET_MAP_HWND,
+	SET_MAP_HWND = 23,
+	SET_FWD_HWND = 24,
 };
 
 //#define SHARED_BUFF_SIZE 0x80000 // Client's buffers are 500k
@@ -71,7 +72,8 @@ struct Buffer
 
 struct SharedMemory
 {
-	// these must be at the top in this order
+	// these must be in this order
+	Buffer OutFwd;
 	Buffer InRecv;
 	Buffer OutRecv;
 	Buffer InSend;
@@ -120,6 +122,8 @@ public:
 #define WM_UONETEVENT WM_USER+1
 #define WM_CUSTOMTITLE WM_USER+2
 #define WM_UOA_MSG WM_USER+3
+#define WM_SETFWDWND WM_USER+4
+#define WM_FWDPACKET WM_USER+5
 
 #ifndef WM_XBUTTONDOWN
 #define WM_XBUTTONDOWN                  0x020B

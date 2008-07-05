@@ -2473,5 +2473,60 @@ namespace Assistant
 			}
 		}
 	}
+
+	public class BodAgent : Agent
+	{
+		private System.Diagnostics.Process m_BodProc;
+
+		public string Name{ get { return Language.GetString( LocString.BOD ); } }
+		public void Save( XmlTextWriter xml )
+		{
+		}
+
+		public void Load( XmlElement node )
+		{
+		}
+
+		public void Clear()
+		{
+		}
+
+		public void OnSelected( ListBox subList, params Button[] buttons )
+		{
+			subList.Visible = false;
+
+			buttons[0].Text = Language.GetString( LocString.LaunchBODAgent );
+			buttons[0].Visible = true;
+
+			Launch();
+		}
+
+		public void OnButtonPress( int num )
+		{
+			if ( num == 0 )
+				Launch();
+		}
+
+		public void Launch()
+		{
+			if ( m_BodProc == null || m_BodProc.HasExited )
+			{
+				string file = System.IO.Path.Combine( Engine.BaseDirectory, "BodAgent.exe" );
+
+				if ( System.IO.File.Exists( file ) )
+				{
+					m_BodProc = System.Diagnostics.Process.Start( file, ClientCommunication.GetUOProcId().ToString() );
+				}
+				else
+				{
+					MessageBox.Show( Engine.MainWindow, Language.Format( LocString.FileNotFoundA1, file ), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				}
+			}
+			else if ( ClientCommunication.FwdWnd != IntPtr.Zero )
+			{
+				ClientCommunication.SetForegroundWindow( ClientCommunication.FwdWnd );
+			}
+		}
+	}
 }
 

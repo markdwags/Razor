@@ -390,6 +390,8 @@ namespace Assistant
 		WaitingTimeout,
 		NoCliLocMsg,
 		NoCliLoc,
+		BOD,
+		LaunchBODAgent,
 
 		__End
 	}

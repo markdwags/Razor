@@ -1915,6 +1915,10 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 
 		break;
 
+	case WM_SETFWDWND:
+		PostMessage( hPostWnd, WM_UONETEVENT, SET_FWD_HWND, lParam );
+		break;
+
 	case WM_UONETEVENT:
 		switch ( LOWORD(wParam) )
 		{
@@ -1972,6 +1976,10 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 
 		case SET_MAP_HWND:
 			hMapWnd = (HWND)lParam;
+			break;
+
+		case SET_FWD_HWND:
+			PostMessage( hPostWnd, WM_UONETEVENT, SET_FWD_HWND, lParam );
 			break;
 		}
 		break;
