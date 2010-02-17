@@ -57,8 +57,6 @@ namespace Assistant.MapUO
 
 		public class MapMenuItem : MenuItem
 		{
-			public object Tag;
-
 			public MapMenuItem ( System.String text , System.EventHandler onClick ) : base( text, onClick )
 			{
 				Tag = null;

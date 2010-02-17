@@ -393,6 +393,8 @@ namespace Assistant
 		BOD,
 		LaunchBODAgent,
 
+		NextTargetHumanoid,
+
 		__End
 	}
 	#endregion
@@ -421,7 +423,7 @@ namespace Assistant
 
 		static Language()
 		{
-			m_Controls = new Hashtable( 32, 1.0f, CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default );
+			m_Controls = new Hashtable(32, 1.0f, StringComparer.OrdinalIgnoreCase);
 			m_Strings = new Hashtable( (int)(LocString.__End - LocString.__Start) + 1, 1.0f );
 		}
 

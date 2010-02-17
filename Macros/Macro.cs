@@ -272,10 +272,8 @@ namespace Assistant.Macros
 							m_Actions.Add( a );
 							a.Parent = this;
 						}
-						catch ( Exception e )
+						catch
 						{
-							string blah = e.ToString();
-							blah = blah;
 						}
 					}
 					else

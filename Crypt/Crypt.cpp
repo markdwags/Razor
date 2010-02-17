@@ -763,7 +763,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			count = packet.Id;
 		}
 
-		if ( packet.Id != 0xFFFFFFFF )
+		if ( packet.Id != 0xFFFFFFFF && ( packet.Id >> 16 ) != 0x67 ) /*packet.Id != 0x006761B4 && packet.Id != 0x00678314 && packet.Id != 0x00679314 && packet.Id != 0x0067B8BC && packet.Id != 0x0067CCBC*/
 		{
 			CopyFailed = true;
 		}
@@ -1915,10 +1915,11 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 
 		break;
 
-	case WM_SETFWDWND:
+// ZIPPY REV 80
+/*	case WM_SETFWDWND:
 		PostMessage( hPostWnd, WM_UONETEVENT, SET_FWD_HWND, lParam );
 		break;
-
+*/
 	case WM_UONETEVENT:
 		switch ( LOWORD(wParam) )
 		{
@@ -1978,10 +1979,11 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			hMapWnd = (HWND)lParam;
 			break;
 
-		case SET_FWD_HWND:
+// ZIPPY REV 80
+/*		case SET_FWD_HWND:
 			PostMessage( hPostWnd, WM_UONETEVENT, SET_FWD_HWND, lParam );
 			break;
-		}
+*/		}
 		break;
 
 		/*case WM_SIZE:

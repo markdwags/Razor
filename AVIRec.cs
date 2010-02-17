@@ -49,7 +49,7 @@ namespace Assistant
 				
 			if ( World.Player != null )
 				name = World.Player.Name;
-			if ( name == null || name.Trim() == "" || name.IndexOfAny( Path.InvalidPathChars ) != -1 )
+			if ( name == null || name.Trim() == "" || name.IndexOfAny( Path.GetInvalidPathChars() ) != -1 )
 				name = "Unknown";
 
 			name = String.Format( "{0}_{1}", name, DateTime.Now.ToString( "M-d_HH.mm" ) );

@@ -1,531 +1,354 @@
-<VisualStudioProject>
-    <CSHARP
-        ProjectType = "Local"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
-        ProjectGuid = "{B24E4FB1-4936-4544-9E88-F3FF9B04FDBA}"
-    >
-        <Build>
-            <Settings
-                ApplicationIcon = "UI\App.ico"
-                AssemblyKeyContainerName = ""
-                AssemblyName = "Razor"
-                AssemblyOriginatorKeyFile = ""
-                DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
-                DefaultTargetSchema = "IE50"
-                DelaySign = "false"
-                OutputType = "WinExe"
-                PreBuildEvent = ""
-                PostBuildEvent = ""
-                RootNamespace = "Assistant"
-                RunPostBuildEvent = "OnOutputUpdated"
-                StartupObject = "Assistant.Engine"
-            >
-                <Config
-                    Name = "Debug"
-                    AllowUnsafeBlocks = "true"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "true"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "true"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "false"
-                    OutputPath = "Output\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "Release"
-                    AllowUnsafeBlocks = "true"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "true"
-                    OutputPath = "Output\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-            </Settings>
-            <References>
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
-                />
-                <Reference
-                    Name = "Ultima"
-                    AssemblyName = "Ultima"
-                    HintPath = "Ultima.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "System.Windows.Forms"
-                    AssemblyName = "System.Windows.Forms"
-                    HintPath = "..\..\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.Windows.Forms.dll"
-                />
-                <Reference
-                    Name = "System"
-                    AssemblyName = "System"
-                    HintPath = "..\..\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.dll"
-                />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "..\..\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.Drawing"
-                    AssemblyName = "System.Drawing"
-                    HintPath = "..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
-                />
-            </References>
-        </Build>
-        <Files>
-            <Include>
-                <File
-                    RelPath = "ActionQueue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Agents.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AVIRec.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BandageTimer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Commands.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Counters.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DressList.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Geometry.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Item.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ItemID.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Main.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Map.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "MemHelper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mobile.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "MsgQueue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectPropertyList.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PacketRec.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PasswordMemory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Ping.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Player.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ScreenCapture.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Serial.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Spells.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StealthSteps.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Stuff.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Targeting.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Timer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UOEntity.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "World.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ZLib.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Filters\Death.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Filters\Filter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Filters\Light.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Filters\MessageFilter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Filters\SoundFilters.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Filters\StaffItems.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Filters\VetRewardGump.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Filters\Weather.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "HotKeys\Counters.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "HotKeys\HotKeys.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "HotKeys\Misc.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "HotKeys\Skills.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "HotKeys\SpecialMoves.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "HotKeys\Undress.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Macros\Actions.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Macros\Actions.resx"
-                    DependentUpon = "Actions.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Macros\Macro.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Macros\MacroManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Map\MapWindow.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Map\MapWindow.resx"
-                    DependentUpon = "MapWindow.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Map\Region.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Map\UOMapControl.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Map\UOMapControl.resx"
-                    DependentUpon = "UOMapControl.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Map\UOMapRuneButton.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Network\ClientComm.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Network\Handlers.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Network\Packet.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Network\PacketHandler.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Network\Packets.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Output\spells.def"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Output\Language\Razor_lang.enu"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "UI\AddCounter.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\AddCounter.resx"
-                    DependentUpon = "AddCounter.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\App.ico"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Config.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\HueEntry.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\HueEntry.resx"
-                    DependentUpon = "HueEntry.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\InputBox.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\InputBox.resx"
-                    DependentUpon = "InputBox.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Languages.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Lock.ico"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "UI\MacroInsertIf.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\MacroInsertIf.resx"
-                    DependentUpon = "MacroInsertIf.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\MacroInsertWait.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\MacroInsertWait.resx"
-                    DependentUpon = "MacroInsertWait.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\MessageDialog.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\MessageDialog.resx"
-                    DependentUpon = "MessageDialog.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Razor.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Razor.resx"
-                    DependentUpon = "Razor.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\SplashScreen.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\SplashScreen.resx"
-                    DependentUpon = "SplashScreen.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\UOPS.ico"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "UI\WelcomeForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\WelcomeForm.resx"
-                    DependentUpon = "WelcomeForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-            </Include>
-        </Files>
-    </CSHARP>
-</VisualStudioProject>
-
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B24E4FB1-4936-4544-9E88-F3FF9B04FDBA}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>UI\App.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Razor</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Assistant</RootNamespace>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <StartupObject>Assistant.Engine</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>Output\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>Output\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="Ultima">
+      <Name>Ultima</Name>
+      <HintPath>Ultima.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActionQueue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Agents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AVIRec.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BandageTimer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Commands.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Counters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DressList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\Death.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\Filter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\Light.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\MessageFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\SoundFilters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\StaffItems.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\VetRewardGump.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\Weather.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Geometry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\Counters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\HotKeys.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\Misc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\Skills.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\SpecialMoves.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\Undress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Item.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ItemID.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Macros\Actions.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Macros\Macro.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Macros\MacroManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Main.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Map.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Map\MapWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Map\Region.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Map\UOMapControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Map\UOMapRuneButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MemHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mobile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsgQueue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\ClientComm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Handlers.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Packet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\PacketHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Packets.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectPropertyList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PacketRec.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PasswordMemory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Player.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScreenCapture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serial.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Spells.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StealthSteps.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Stuff.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Targeting.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Timer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\AddCounter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Config.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\HueEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Languages.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\MacroInsertIf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MacroInsertWait.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MessageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Razor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\WelcomeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UOEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="World.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ZLib.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Macros\Actions.resx">
+      <DependentUpon>Actions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Map\MapWindow.resx">
+      <DependentUpon>MapWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Map\UOMapControl.resx">
+      <DependentUpon>UOMapControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AddCounter.resx">
+      <DependentUpon>AddCounter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\App.ico" />
+    <EmbeddedResource Include="UI\HueEntry.resx">
+      <DependentUpon>HueEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MacroInsertIf.resx">
+      <DependentUpon>MacroInsertIf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MacroInsertWait.resx">
+      <DependentUpon>MacroInsertWait.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MessageDialog.resx">
+      <DependentUpon>MessageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Razor.resx">
+      <DependentUpon>Razor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SplashScreen.resx">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\WelcomeForm.resx">
+      <DependentUpon>WelcomeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Output\Language\Razor_lang.enu" />
+    <None Include="Output\spells.def" />
+    <Content Include="UI\Lock.ico" />
+    <Content Include="UI\UOPS.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

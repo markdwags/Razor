@@ -172,7 +172,7 @@ namespace Assistant
 		private static Hashtable m_List;
 		static Command()
 		{
-			m_List = new Hashtable( 16, 1.0f, CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default );			
+			m_List = new Hashtable(16, 1.0f, StringComparer.OrdinalIgnoreCase);			
 			PacketHandler.RegisterClientToServerFilter( 0xAD, new PacketFilterCallback( OnSpeech ) );
 		}
 

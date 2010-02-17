@@ -92,7 +92,7 @@ namespace Assistant
 			}
 			else if ( Playing )
 			{
-				ClientCommunication.SetDeathMsg( Language.GetString( LocString.PacketPlayerStop + Utility.Random( 10 ) ) ); 
+				//ClientCommunication.SetDeathMsg( Language.GetString( LocString.PacketPlayerStop + Utility.Random( 10 ) ) ); 
 				ClientCommunication.ForceSendToClient( new DeathStatus( true ) );
 
 				RemoveAll();
@@ -127,7 +127,7 @@ namespace Assistant
 				
 			if ( World.Player != null )
 				name = World.Player.Name;
-			if ( name == null || name.Trim() == "" || name.IndexOfAny( Path.InvalidPathChars ) != -1 )
+			if ( name == null || name.Trim() == "" || name.IndexOfAny( Path.GetInvalidPathChars() ) != -1 )
 				name = "Unknown";
 
 			name = String.Format( "{0}_{1}", name, DateTime.Now.ToString( "M-d_HH.mm" ) );
@@ -785,7 +785,7 @@ namespace Assistant
 
 			ClientCommunication.BringToFront( ClientCommunication.FindUOWindow() );
 
-			ClientCommunication.SetDeathMsg( "Playing..." );
+			//ClientCommunication.SetDeathMsg( "Playing..." );
 			ClientCommunication.ForceSendToClient( new DeathStatus( true ) );
 
 			RemoveAll();
@@ -854,7 +854,7 @@ namespace Assistant
 		{
 			DoLogin( World.Player );
 
-			ClientCommunication.SetDeathMsg( "You are dead." );
+			//ClientCommunication.SetDeathMsg( "You are dead." );
 			ClientCommunication.BringToFront( ClientCommunication.FindUOWindow() );
 			
 			TimeSpan delay = TimeSpan.FromMilliseconds( m_GZIn.Compressed.ReadInt32() );
@@ -876,7 +876,7 @@ namespace Assistant
 			
 			m_Playing = false;
 			ClientCommunication.SetAllowDisconn( true );
-			ClientCommunication.SetDeathMsg( "You are dead." );
+			//ClientCommunication.SetDeathMsg( "You are dead." );
 
 			PlayerData player;
 			using ( BinaryReader reader = new BinaryReader( m_TempWriter.BaseStream ) )

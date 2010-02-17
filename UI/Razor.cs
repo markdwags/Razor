@@ -3553,7 +3553,7 @@ namespace Assistant
 			if ( InputBox.Show( this, Language.GetString( LocString.EnterProfileName ), Language.GetString( LocString.EnterAName ) ) )
 			{
 				string str = InputBox.GetString();
-				if ( str == null || str == "" || str.IndexOfAny( Path.InvalidPathChars ) != -1 || str.IndexOfAny( m_InvalidNameChars ) != -1 )
+				if ( str == null || str == "" || str.IndexOfAny( Path.GetInvalidPathChars() ) != -1 || str.IndexOfAny( m_InvalidNameChars ) != -1 )
 				{
 					MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), Language.GetString( LocString.Invalid ), MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
@@ -4412,7 +4412,7 @@ namespace Assistant
 			if ( InputBox.Show( this, Language.GetString( LocString.NewMacro ), Language.GetString( LocString.EnterAName ) ) )
 			{
 				string name = InputBox.GetString();
-				if ( name == null || name == "" || name.IndexOfAny( Path.InvalidPathChars ) != -1 || name.IndexOfAny( m_InvalidNameChars ) != -1 )
+				if ( name == null || name == "" || name.IndexOfAny( Path.GetInvalidPathChars() ) != -1 || name.IndexOfAny( m_InvalidNameChars ) != -1 )
 				{
 					MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), Language.GetString( LocString.Invalid ), MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
@@ -4593,7 +4593,7 @@ namespace Assistant
 				return;
 
 			string path = InputBox.GetString();
-			if ( path == null || path == "" || path.IndexOfAny( Path.InvalidPathChars ) != -1 || path.IndexOfAny( m_InvalidNameChars ) != -1 )
+			if ( path == null || path == "" || path.IndexOfAny( Path.GetInvalidPathChars() ) != -1 || path.IndexOfAny( m_InvalidNameChars ) != -1 )
 			{
 				MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				return;

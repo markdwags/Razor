@@ -19,7 +19,7 @@ namespace Assistant
 		public Profile( string name )
 		{
 			Name = name;
-			m_Props = new Hashtable( 16, 1.0f, CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default );
+			m_Props = new Hashtable(16, 1.0f, StringComparer.OrdinalIgnoreCase);
 
 			MakeDefault();
 		}

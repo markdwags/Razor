@@ -84,6 +84,7 @@ namespace Assistant
 			HotKey.Add( HKCategory.Targets, LocString.CancelTarget, new HotKeyCallback( CancelTarget ) );
 
 			HotKey.Add( HKCategory.Targets, LocString.NextTarget, new HotKeyCallback( NextTarget ) );
+			HotKey.Add( HKCategory.Targets, LocString.NextTargetHumanoid, new HotKeyCallback( NextTargetHumanoid ) );
 
 			HotKey.Add( HKCategory.Targets, LocString.TargCloseRed, new HotKeyCallback( TargetCloseRed ) );
 			HotKey.Add( HKCategory.Targets, LocString.TargCloseNFriend, new HotKeyCallback( TargetCloseNonFriendly ) );
@@ -1052,6 +1053,77 @@ namespace Assistant
 					m_NextTargIdx = 0;
 
 				m = (Mobile)list[m_NextTargIdx];
+
+				if ( m != null && m != World.Player && m != old )
+					break;
+				else
+					m = null;
+			}
+
+			if ( m == null )
+				m = old;
+
+			if ( m == null )
+			{
+				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
+				return;
+			}
+
+			m_LastGroundTarg = m_LastTarget = targ;
+
+			m_LastHarmTarg = m_LastBeneTarg = targ;
+
+			if ( m_HasTarget )
+				targ.Flags = m_CurFlags;
+			else
+				targ.Type = 0;
+
+			targ.Gfx = m.Body;
+			targ.Serial = m.Serial;
+			targ.X = m.Position.X;
+			targ.Y = m.Position.Y;
+			targ.Z = m.Position.Z;
+
+			ClientCommunication.SendToClient( new ChangeCombatant( m ) );
+			m_LastCombatant = m.Serial;
+			World.Player.SendMessage( MsgLevel.Force, LocString.NewTargSet );
+
+			/*if ( m_HasTarget )
+			{
+				DoLastTarget();
+				ClearQueue();
+			}*/
+		}
+
+		private static int m_NextTargHumanoidIdx = 0;
+		public static void NextTargetHumanoid()
+		{
+			ArrayList mobiles = World.MobilesInRange( 12 );
+			ArrayList list = new ArrayList();
+
+			foreach( Mobile mob in mobiles )
+			{
+				if ( mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E )
+					list.Add(mob);
+			}
+
+			if ( list.Count <= 0 )
+			{
+				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
+				return;
+			}
+
+			TargetInfo targ = new TargetInfo();
+			Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+			
+			for (int i=0;i<3;i++)
+			{
+				m_NextTargHumanoidIdx++;
+
+				if ( m_NextTargHumanoidIdx >= list.Count )
+					m_NextTargHumanoidIdx = 0;
+
+				m = (Mobile)list[m_NextTargHumanoidIdx];
 
 				if ( m != null && m != World.Player && m != old )
 					break;

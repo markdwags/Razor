@@ -59,7 +59,7 @@ namespace Assistant
 			SmartCPU = 21,
 			Negotiate = 22,
 			SetMapHWnd = 23,
-			SetFwdHWnd = 24,
+// ZIPPY REV 80			SetFwdHWnd = 24,
 		}
 
 		public const int WM_USER = 0x400;
@@ -433,8 +433,8 @@ namespace Assistant
 		public const int WM_UONETEVENT = WM_USER+1;
 		private const int WM_CUSTOMTITLE = WM_USER+2;
 		// uoa = user+3
-		private const int WM_SETFWDWND = WM_USER+4;
-		private const int WM_FWDPACKET = WM_USER+5;
+// ZIPPY REV 80		private const int WM_SETFWDWND = WM_USER+4;
+// ZIPPY REV 80		private const int WM_FWDPACKET = WM_USER+5;
 
 		private enum InitError
 		{
@@ -672,18 +672,18 @@ namespace Assistant
 		private static bool m_QueueRecv;
 		private static bool m_QueueSend;
 
-		private static Buffer *m_OutFwd;
+// ZIPPY REV 80		private static Buffer *m_OutFwd;
 		private static Buffer *m_InRecv;
 		private static Buffer *m_OutRecv;
 		private static Buffer *m_InSend;
 		private static Buffer *m_OutSend;
 		private static byte *m_TitleStr;
 		private static Mutex CommMutex;
-		private static Mutex FwdMutex;
+// ZIPPY REV 80		private static Mutex FwdMutex;
 		private static Process ClientProc;
-		private static IntPtr m_FwdWnd;
+// ZIPPY REV 80		private static IntPtr m_FwdWnd;
 
-		public static IntPtr FwdWnd { get { return m_FwdWnd; } }
+// ZIPPY REV 80		public static IntPtr FwdWnd { get { return m_FwdWnd; } }
 
 		private static bool m_Ready = false;
 		private static string m_LastStr = "";
@@ -824,20 +824,28 @@ namespace Assistant
 			}
 
 			byte *baseAddr = (byte*)GetSharedAddress().ToPointer();
-			m_OutFwd = (Buffer*)baseAddr;
+
+			// ZIPPY REV 80
+			/*m_OutFwd = (Buffer*)baseAddr;
 			m_InRecv = (Buffer*)(baseAddr+sizeof(Buffer)*1);
 			m_OutRecv = (Buffer*)(baseAddr+sizeof(Buffer)*2);
 			m_InSend = (Buffer*)(baseAddr+sizeof(Buffer)*3);
 			m_OutSend = (Buffer*)(baseAddr+sizeof(Buffer)*4);
-			m_TitleStr = (byte*)(baseAddr+sizeof(Buffer)*5);
+			m_TitleStr = (byte*)(baseAddr+sizeof(Buffer)*5);*/
+
+			m_InRecv = (Buffer*)baseAddr;
+			m_OutRecv = (Buffer*)(baseAddr+sizeof(Buffer));
+			m_InSend = (Buffer*)(baseAddr+sizeof(Buffer)*2);
+			m_OutSend = (Buffer*)(baseAddr+sizeof(Buffer)*3);
+			m_TitleStr = (byte*)(baseAddr+sizeof(Buffer)*4);
 
 			SetServer( m_ServerIP, m_ServerPort );
 
 			CommMutex = new Mutex();
 			CommMutex.Handle = GetCommMutex();
 
-			FwdMutex = new Mutex( false, String.Format( "UONetFwd_{0:X}", ClientProc.Id ) );
-			m_FwdWnd = IntPtr.Zero;
+// ZIPPY REV 80			FwdMutex = new Mutex( false, String.Format( "UONetFwd_{0:X}", ClientProc.Id ) );
+// ZIPPY REV 80			m_FwdWnd = IntPtr.Zero;
 
 			try
 			{
@@ -1322,10 +1330,12 @@ namespace Assistant
 					FindData.Message( (wParam&0xFFFF0000)>>16, lParam );
 					break;
 
-				case UONetMessage.SetFwdHWnd:
+				// ZIPPY REV 80
+				/*case UONetMessage.SetFwdHWnd:
 					m_FwdWnd = lParam;
-					break;
-					// Unknown
+					break;*/
+
+				// Unknown
 				default:
 					MessageBox.Show( Engine.ActiveWindow, "Unknown message from uo client\n" + ((int)wParam).ToString(), "Error?" );
 					break;
@@ -1431,6 +1441,8 @@ namespace Assistant
 			buffer->Length += len;
 		}
 
+// ZIPPY REV 80
+/*
 		internal static void ForwardPacket( byte *data, int len )
 		{
 			if ( length > 0 )
@@ -1444,7 +1456,7 @@ namespace Assistant
 				PostMessage( m_FwdWnd, WM_FWDPACKET, (IntPtr)len, (IntPtr)total );
 			}
 		}
-
+*/
 		internal static Packet MakePacketFrom( PacketReader pr )
 		{
 			byte[] data = pr.CopyBytes( 0, pr.Length );

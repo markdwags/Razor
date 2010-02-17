@@ -1,3 +1,13 @@
+Razor (v1.0.12.*) Changelog:
+
+Razor is a FREE program.  Unlike competing programs like UOAssist, Razor does not charge any money at all and provides even more features.  Razor is now available on the regular OSI servers for unlimited accounts absolutely free.  But Razor needs your help!  Razor is now accepting donations over PayPal.  UOAssist (a similar program, but for OSI servers only) costs $15 PER ACCOUNT while Razor is FREE for UNLIMITED ACCOUNTS.  Your donation of $5 or $10 (or any amount!) is LESS than you would pay for a similar program!  Donations are greatly appreciated and will help ensure that the developers continue to improve and maintain this fine product.
+Donate via PayPal: https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD
+
+Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
+
+Changes/Fixes:
+-Support for 7.x clients.
+
 Razor (v1.0.11.*) Changelog:
 
 Razor is a FREE program.  Unlike competing programs like UOAssist, Razor does not charge any money at all and provides even more features.  Razor is now available on the regular OSI servers for unlimited accounts absolutely free.  But Razor needs your help!  Razor is now accepting donations over PayPal.  UOAssist (a similar program, but for OSI servers only) costs $15 PER ACCOUNT while Razor is FREE for UNLIMITED ACCOUNTS.  Your donation of $5 or $10 (or any amount!) is LESS than you would pay for a similar program!  Donations are greatly appreciated and will help ensure that the developers continue to improve and maintain this fine product.

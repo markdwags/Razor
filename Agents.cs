@@ -2474,7 +2474,8 @@ namespace Assistant
 		}
 	}
 
-	public class BodAgent : Agent
+// ZIPPY REV 80
+/*	public class BodAgent : Agent
 	{
 		private System.Diagnostics.Process m_BodProc;
 
@@ -2528,5 +2529,6 @@ namespace Assistant
 			}
 		}
 	}
+*/
 }
 

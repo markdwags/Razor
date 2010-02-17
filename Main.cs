@@ -75,7 +75,11 @@ namespace Assistant
 		{
 			get 
 			{
-				if ( ClientVersion.Major >= 6 )
+				if ( ClientVersion.Major >= 7 )
+				{
+					return true;
+				}
+				else if ( ClientVersion.Major >= 6 )
 				{
 					if ( ClientVersion.Minor == 0 )
 					{
@@ -475,7 +479,7 @@ namespace Assistant
 			{
 				try
 				{
-					IPHostEntry iphe = Dns.Resolve( addr );
+					IPHostEntry iphe = Dns.GetHostEntry( addr );
 
 					if ( iphe.AddressList.Length > 0 )
 						ipAddr = iphe.AddressList[iphe.AddressList.Length - 1];

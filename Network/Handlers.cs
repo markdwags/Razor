@@ -82,6 +82,8 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientFilter( 0xDC, new PacketFilterCallback( ServOPLHash ) );
 			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
 			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) ); // Special RunUO protocol extentions (for KUOC/Razor)
+
+			PacketHandler.RegisterServerToClientViewer( 0xF3, new PacketViewerCallback( SAWorldItem ) );
 		}
 		
 		private static void DisplayStringQuery( PacketReader p, PacketHandlerEventArgs args )
@@ -1238,17 +1240,27 @@ namespace Assistant
 
 			UseNewStatus = true;
 
-			// 00 01 00 01
+			// 00 01
 			p.ReadUInt16();
-			p.ReadUInt16();
+			
+			// 00 01 Poison
+			// 00 02 Yellow Health Bar
 
-			byte poison = p.ReadByte();
+			ushort id = p.ReadUInt16();
+			
+			// 00 Off
+			// 01 On
+			// For Poison: Poison Level + 1
 
-			bool wasPoisoned = m.Poisoned;
-			m.Poisoned = ( poison != 0 );
+			byte flag = p.ReadByte();
 
-			if ( m == World.Player && wasPoisoned != m.Poisoned )
-				ClientCommunication.RequestTitlebarUpdate();
+			if ( id == 1 ) {
+				bool wasPoisoned = m.Poisoned;
+				m.Poisoned = ( flag != 0 );
+
+				if ( m == World.Player && wasPoisoned != m.Poisoned )
+					ClientCommunication.RequestTitlebarUpdate();
+			}
 		}
 
 		private static void MobileStatus( PacketReader p, PacketHandlerEventArgs args )
@@ -1619,6 +1631,101 @@ namespace Assistant
 			Item.UpdateContainers();
 		}
 
+		private static void SAWorldItem(PacketReader p, PacketHandlerEventArgs args)
+		{
+			/*
+			New World Item Packet
+			PacketID: 0xF3
+			PacketLen: 24
+			Format:
+
+				BYTE - 0xF3 packetId
+				WORD - 0x01
+				BYTE - ArtDataID: 0x00 if the item uses art from TileData table, 0x02 if the item uses art from MultiData table)
+				DWORD - item Serial
+				WORD - item ID
+				BYTE - item direction (same as old)
+				WORD - amount
+				WORD - amount
+				WORD - X
+				WORD - Y
+				SBYTE - Z
+				BYTE - item light
+				WORD - item Hue
+				BYTE - item flags (same as old packet)
+			*/
+
+			ushort _unk1 = p.ReadUInt16();
+			
+			byte _artDataID = p.ReadByte();
+
+			Item item;
+			uint serial = p.ReadUInt32();
+			item = World.FindItem(serial);
+			bool isNew = false;
+			if (item == null)
+			{
+				World.AddItem(item = new Item(serial));
+				isNew = true;
+			}
+			else
+			{
+				item.CancelRemove();
+			}
+
+			if (!DragDropManager.EndHolding(serial))
+				return;
+
+			item.Container = null;
+			Counter.Uncount(item);
+
+			ushort itemID = p.ReadUInt16();
+			item.ItemID = (ushort)( _artDataID == 0x02 ? itemID | 0x4000 : itemID );
+
+			item.Direction = p.ReadByte();
+
+			ushort _amount = p.ReadUInt16();
+			item.Amount = _amount = p.ReadUInt16();
+
+			ushort x = p.ReadUInt16();
+			ushort y = p.ReadUInt16();
+			short z = p.ReadSByte();
+
+			item.Position = new Point3D(x, y, z);
+
+			byte _light = p.ReadByte();
+
+			item.Hue = p.ReadUInt16();
+
+			byte flags = p.ReadByte();
+
+			item.ProcessPacketFlags(flags);
+
+			if (isNew && World.Player != null)
+			{
+				if (item.ItemID == 0x2006)// corpse itemid = 0x2006
+				{
+					if (Config.GetBool("ShowCorpseNames"))
+						ClientCommunication.SendToServer(new SingleClick(item));
+					if (Config.GetBool("AutoOpenCorpses") && Utility.InRange(item.Position, World.Player.Position, Config.GetInt("CorpseRange")) && World.Player != null && World.Player.Visible)
+						PlayerData.DoubleClick(item);
+				}
+				else if (item.IsMulti)
+				{
+					ClientCommunication.PostAddMulti(item.ItemID, item.Position);
+				}
+				else
+				{
+					ScavengerAgent s = ScavengerAgent.Instance;
+					int dist = Utility.Distance(item.GetWorldPosition(), World.Player.Position);
+					if (!World.Player.IsGhost && World.Player.Visible && dist <= 2 && s.Enabled && item.Movable)
+						s.Scavenge(item);
+				}
+			}
+
+			Item.UpdateContainers();
+		}
+
 		public static ArrayList SysMessages = new ArrayList( 21 );
 
 		public static void HandleSpeech( Packet p, PacketHandlerEventArgs args, Serial ser, ushort body, MessageType type, ushort hue, ushort font, string lang, string name, string text )
@@ -1837,7 +1944,8 @@ namespace Assistant
 			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
 				args.Block = true;
 
-			ClientCommunication.ForwardPacket( p.Pointer, p.Length );
+			// ZIPPY REV 80
+			// ClientCommunication.ForwardPacket( p.Pointer, p.Length );
 		}
 
 		private static void ClientGumpResponse( PacketReader p, PacketHandlerEventArgs args )
@@ -2335,7 +2443,8 @@ namespace Assistant
 			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
 				args.Block = true;
 
-			ClientCommunication.ForwardPacket( p.Pointer, p.Length );
+            // ZIPPY REV 80
+			// ClientCommunication.ForwardPacket( p.Pointer, p.Length );
 		}
 /*
 				int serial  = pvSrc.ReadInt32(), dialog  = pvSrc.ReadInt32();
