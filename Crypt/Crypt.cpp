@@ -655,7 +655,7 @@ DLLFUNCTION BOOL HandleNegotiate( __int64 features )
 SIZE *SizePtr = NULL;
 void __stdcall OnSetUOWindowSize( int width )
 {
-	if ( width != 800 )
+	if ( width != 800 && width != 600 ) // in case it actually the height for some reason
 	{
 		SizePtr->cx = 640;
 		SizePtr->cy = 480;
@@ -719,23 +719,30 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			int i;
 			DWORD origAddr = addr;
 
-			VirtualProtect( (void*)origAddr, 0x80, PAGE_EXECUTE_READWRITE, &oldProt );
+			VirtualProtect( (void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt );
 			for (i = 16; i < 128; i++)
 			{
 				if ( *((BYTE*)(addr+i)) == 0xE9 ) // find the first jmp
 				{
 					memset( (void*)addr, 0x90, i ); // nop
-
-					addr += 4; // mov eax, [arg_0]
-
+					
+					// mov eax, dword [esp+4]
+					*((BYTE*)(addr+0)) = 0x8B; // mov
+					*((BYTE*)(addr+1)) = 0x44; //  eax
+					*((BYTE*)(addr+2)) = 0x24; //  [esp
+					*((BYTE*)(addr+3)) = 0x04; //      +4]
+					addr += 4;
+					
 					*((BYTE*)addr) = 0x50; // push eax
 					addr++;
+					// call OnSetUOWindowSize
 					*((BYTE*)addr) = 0xE8;
 					*((DWORD*)(addr+1)) = ((DWORD)OnSetUOWindowSize) - (addr + 5);
+					addr += 5;
 					break;
 				}
 			}
-			VirtualProtect( (void*)origAddr, 0x80, oldProt, &oldProt );
+			VirtualProtect( (void*)origAddr, 128, oldProt, &oldProt );
 		}
 	}
 
