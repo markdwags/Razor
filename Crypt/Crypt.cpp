@@ -6,6 +6,7 @@
 #include "LoginEncryption.h"
 #include "MemFinder.h"
 #include "Checksum.h"
+#include "Obfuscation.h"
 
 //#define NO_CHECKSUM_VERSION
 
@@ -145,13 +146,16 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 	int len;
 	BYTE *data = NULL;
 	FILE *file = NULL;
-	char fileName[256];
+	char fileName[256], origFilename[256];
 	char *namePtr = NULL;
+
+	char *obStr = GetObStr(OB_KERNEL32);
+
+	Disabled = (int)tolower(*obStr) != (int)'k';
 	
 	if ( !strcmp( exeVer, DLL_VERSION ) )
 	{
-		GetModuleFileName( NULL, fileName, 256 );
-
+		GetModuleFileName(NULL, fileName, 256);
 		file = fopen( fileName, "rb" );
 		if ( file )
 		{
@@ -168,10 +172,12 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 			for(int i=0;i<16;i++)
 				data[i] ^= data[0x1717+i];
 
-			Disabled = memcmp( data, RAZOR_CHECKSUM, 16 ) != 0;
+			Disabled |= memcmp( data, RAZOR_CHECKSUM, 16 ) != 0;
 
 			delete[] data;
 		}
+
+		memcpy(origFilename, fileName, 256);
 
 		//MessageBox( NULL, "Debug me!", "Now", MB_OK );
 
@@ -215,7 +221,7 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 	}
 	else
 	{
-		Disabled = true;
+		Disabled |= true;
 	}
 DLLFUNCTION bool AllowBit( unsigned int bit );
 	OSIEncryption::MD5( ((const BYTE*)AllowBit)+9, 0x31-9, CryptChecksum );
@@ -231,6 +237,21 @@ DLLFUNCTION bool AllowBit( unsigned int bit );
 #ifdef NO_CHECKSUM_VERSION
 	Disabled = false;
 #endif
+
+	HMODULE hKern = LoadLibrary(obStr);
+	Disabled |= !hKern;
+	
+	GetObStr(OB_GETPROCADDR);
+	void *(__stdcall *getprocaddr)(HANDLE, const char *);
+	getprocaddr = (void *(__stdcall*)(HANDLE, const char *))GetProcAddress(hKern, obStr);
+	
+	GetObStr(OB_GETMODFN);
+	DWORD (__stdcall *getmodfn)(HANDLE, char *, DWORD);
+	getmodfn = (DWORD (__stdcall*)(HANDLE, char *, DWORD))getprocaddr(hKern, obStr);
+	
+	getmodfn(NULL, obStr, 256);
+	Disabled |= memcmp(obStr, origFilename, strlen(obStr));
+	Disabled |= memcmp(origFilename, obStr, strlen(origFilename));
 
 	return !Disabled;
 }
@@ -2071,7 +2092,12 @@ LRESULT CALLBACK GetMsgHookFunc( int Code, WPARAM Flag, LPARAM pMsg )
 	if ( Code >= 0 && Flag != PM_NOREMOVE ) //dont process messages until they are removed from the queue
 	{
 		MSG *Msg = (MSG*)pMsg;
-
+		
+		Msg->message ^= 0x11;
+		Msg->message ^= Disabled * 101;
+		Msg->message *= !(Disabled * 020);
+		Msg->message ^= 0x11;
+		
 		if ( Msg->hwnd == hWatchWnd || ( hWatchWnd == NULL && Msg->message == WM_PROCREADY ) )
 			MessageProc( Msg->hwnd, Msg->message, Msg->wParam, Msg->lParam, Msg );
 	}
@@ -2084,7 +2110,12 @@ LRESULT CALLBACK WndProcRetHookFunc( int Code, WPARAM Flag, LPARAM pMsg )
 	if ( Code >= 0 )
 	{
 		CWPRETSTRUCT *Msg = (CWPRETSTRUCT *)(pMsg);
-
+		
+		Msg->message ^= 0x11;
+		Msg->message ^= Disabled * 101;
+		Msg->message *= !(Disabled * 020);
+		Msg->message ^= 0x11;
+		
 		if ( Msg->hwnd == hWatchWnd || ( hWatchWnd == NULL && Msg->message == WM_PROCREADY ) )
 			MessageProc( Msg->hwnd, Msg->message, Msg->wParam, Msg->lParam, NULL );
 	}
