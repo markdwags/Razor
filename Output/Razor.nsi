@@ -32,7 +32,7 @@
 ;--------------------------------
 ;Pages
 
-  !insertmacro MUI_PAGE_LICENSE "Y:\Razor\Output\License.txt"
+  !insertmacro MUI_PAGE_LICENSE "X:\Razor\Output\License.txt"
   !insertmacro MUI_PAGE_DIRECTORY
   
   ;Start Menu Folder Page Configuration
@@ -85,29 +85,29 @@ foundFramework:
 
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
-  File "Y:\Razor\Output\Razor.exe"
-  File "Y:\Razor\Output\RPVOpenStub.exe"
-  File "Y:\Razor\Output\RPVEditor.exe"
-  File "Y:\Razor\Output\Updater.exe"
-  File "Y:\Razor\Output\UnRar.dll"
-  File "Y:\Razor\Output\Crypt.dll"
-  File "Y:\Razor\Output\Loader.dll"
-  File "Y:\Razor\Output\Ultima.dll"
-  File "Y:\Razor\Output\zlib.dll"
-  File "Y:\Razor\Output\License.txt"
-  File "Y:\Razor\Output\License_CHS.txt"
-  File "Y:\Razor\Output\changelog.txt"
+  File "X:\Razor\Output\Razor.exe"
+  File "X:\Razor\Output\RPVOpenStub.exe"
+  File "X:\Razor\Output\RPVEditor.exe"
+  File "X:\Razor\Output\Updater.exe"
+  File "X:\Razor\Output\UnRar.dll"
+  File "X:\Razor\Output\Crypt.dll"
+  File "X:\Razor\Output\Loader.dll"
+  File "X:\Razor\Output\Ultima.dll"
+  File "X:\Razor\Output\zlib.dll"
+  File "X:\Razor\Output\License.txt"
+  File "X:\Razor\Output\License_CHS.txt"
+  File "X:\Razor\Output\changelog.txt"
 
   SetOverwrite ifnewer
-  File "Y:\Razor\Output\Guardlines.def"
-  File "Y:\Razor\Output\Spells.def"
-  File "Y:\Razor\Output\Counters.xml"
+  File "X:\Razor\Output\Guardlines.def"
+  File "X:\Razor\Output\Spells.def"
+  File "X:\Razor\Output\Counters.xml"
   SetOverwrite on
 
   Delete "$INSTDIR\Crash.log"
 
   SetOutPath "$INSTDIR\Language"
-  File "Y:\Razor\Output\Language\Razor_lang.*"
+  File "X:\Razor\Output\Language\Razor_lang.*"
   
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     

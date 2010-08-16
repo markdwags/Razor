@@ -770,7 +770,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			count = packet.Id;
 		}
 
-		if ( packet.Id != 0xFFFFFFFF && ( packet.Id >> 16 ) != 0x67 ) /*packet.Id != 0x006761B4 && packet.Id != 0x00678314 && packet.Id != 0x00679314 && packet.Id != 0x0067B8BC && packet.Id != 0x0067CCBC*/
+		if ( packet.Id != 0xFFFFFFFF && ( packet.Id >> 16 ) != 0x67 && ( packet.Id >> 16 ) != 0x68 ) /*packet.Id != 0x006761B4 && packet.Id != 0x00678314 && packet.Id != 0x00679314 && packet.Id != 0x0067B8BC && packet.Id != 0x0067CCBC && packet.Id != 0x00680E64 */
 		{
 			CopyFailed = true;
 		}
