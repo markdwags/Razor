@@ -2,7 +2,7 @@
 #include "Crypt.h"
 #include "Resource.h"
 #include <uxtheme.h>
-#include <Tmschema.h>
+#include <vssym32.h>
 
 int DrawUOItem( HDC, RECT, int, int );
 

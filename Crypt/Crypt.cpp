@@ -1682,7 +1682,7 @@ bool HookFunction( const char *Dll, const char *FuncName, int Ordinal, unsigned 
 
 	while( iid->Name )
 	{
-		if( stricmp( Dll, (char *)(baseAddr + iid->Name) ) == 0 )
+		if( _stricmp( Dll, (char *)(baseAddr + iid->Name) ) == 0 )
 		{
 			IMAGE_THUNK_DATA * pThunk = (IMAGE_THUNK_DATA *)((DWORD)iid->OriginalFirstThunk + baseAddr);
 			IMAGE_THUNK_DATA * pThunk2 = (IMAGE_THUNK_DATA *)((DWORD)iid->FirstThunk + baseAddr);
@@ -1741,7 +1741,7 @@ bool FindFunction( const char *Dll, const char *FuncName, int Ordinal, unsigned 
 
 	while( iid->Name )
 	{
-		if( stricmp( Dll, (char *)(baseAddr + iid->Name) ) == 0 )
+		if( _stricmp( Dll, (char *)(baseAddr + iid->Name) ) == 0 )
 		{
 			IMAGE_THUNK_DATA * pThunk = (IMAGE_THUNK_DATA *)((DWORD)iid->OriginalFirstThunk + baseAddr);
 			IMAGE_THUNK_DATA * pThunk2 = (IMAGE_THUNK_DATA *)((DWORD)iid->FirstThunk + baseAddr);
