@@ -2092,12 +2092,12 @@ LRESULT CALLBACK GetMsgHookFunc( int Code, WPARAM Flag, LPARAM pMsg )
 	if ( Code >= 0 && Flag != PM_NOREMOVE ) //dont process messages until they are removed from the queue
 	{
 		MSG *Msg = (MSG*)pMsg;
-		
+		/*
 		Msg->message ^= 0x11;
 		Msg->message ^= Disabled * 101;
 		Msg->message *= !(Disabled * 020);
 		Msg->message ^= 0x11;
-		
+		*/
 		if ( Msg->hwnd == hWatchWnd || ( hWatchWnd == NULL && Msg->message == WM_PROCREADY ) )
 			MessageProc( Msg->hwnd, Msg->message, Msg->wParam, Msg->lParam, Msg );
 	}
@@ -2110,12 +2110,12 @@ LRESULT CALLBACK WndProcRetHookFunc( int Code, WPARAM Flag, LPARAM pMsg )
 	if ( Code >= 0 )
 	{
 		CWPRETSTRUCT *Msg = (CWPRETSTRUCT *)(pMsg);
-		
+		/*
 		Msg->message ^= 0x11;
 		Msg->message ^= Disabled * 101;
 		Msg->message *= !(Disabled * 020);
 		Msg->message ^= 0x11;
-		
+		*/
 		if ( Msg->hwnd == hWatchWnd || ( hWatchWnd == NULL && Msg->message == WM_PROCREADY ) )
 			MessageProc( Msg->hwnd, Msg->message, Msg->wParam, Msg->lParam, NULL );
 	}
