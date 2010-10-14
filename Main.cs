@@ -435,7 +435,7 @@ namespace Assistant
 				ClientCommunication.SetConnectionInfo( new IPAddress( 0 ), 0 );
 			}
 
-			Ultima.Multis.PostHSFormat = UsePostHSChanges;
+			Ultima.MultiComponentList.PostHSFormat = UsePostHSChanges;
 
 			if ( Utility.Random(4) != 0 )
 				SplashScreen.Message = LocString.WaitingForClient;

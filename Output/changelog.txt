@@ -1,4 +1,4 @@
-Razor (v1.0.12.14) Changelog:
+Razor (v1.0.12.15) Changelog:
 
 Changes/Fixes:
 -Support for 7.0.9.x clients.
