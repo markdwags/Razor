@@ -1655,6 +1655,30 @@ namespace Assistant
 				BYTE - item flags (same as old packet)
 			*/
 
+			// Post-7.0.9.0
+			/*
+			New World Item Packet
+			PacketID: 0xF3
+			PacketLen: 26
+			Format:
+
+				BYTE - 0xF3 packetId
+				WORD - 0x01
+				BYTE - ArtDataID: 0x00 if the item uses art from TileData table, 0x02 if the item uses art from MultiData table)
+				DWORD - item Serial
+				WORD - item ID
+				BYTE - item direction (same as old)
+				WORD - amount
+				WORD - amount
+				WORD - X
+				WORD - Y
+				SBYTE - Z
+				BYTE - item light
+				WORD - item Hue
+				BYTE - item flags (same as old packet)
+				WORD ???
+			*/
+
 			ushort _unk1 = p.ReadUInt16();
 			
 			byte _artDataID = p.ReadByte();
@@ -1700,6 +1724,11 @@ namespace Assistant
 			byte flags = p.ReadByte();
 
 			item.ProcessPacketFlags(flags);
+
+			if (Engine.UsePostHSChanges)
+			{
+				p.ReadUInt16();
+			}
 
 			if (isNew && World.Player != null)
 			{

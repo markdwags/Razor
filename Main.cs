@@ -71,6 +71,22 @@ namespace Assistant
 			}
 		}
 
+		public static bool UsePostHSChanges {
+			get {
+				if ( ClientVersion.Major > 7 ) {
+					return true;
+				} else if ( ClientVersion.Major == 7 ) {
+					if ( ClientVersion.Minor > 0 ) {
+						return true;
+					} else if ( ClientVersion.Build >= 9 ) {
+						return true;
+					}
+				}
+
+				return false;
+			}
+		}
+
 		public static bool UsePostKRPackets 
 		{
 			get 
@@ -418,6 +434,8 @@ namespace Assistant
 
 				ClientCommunication.SetConnectionInfo( new IPAddress( 0 ), 0 );
 			}
+
+			Ultima.Multis.PostHSFormat = UsePostHSChanges;
 
 			if ( Utility.Random(4) != 0 )
 				SplashScreen.Message = LocString.WaitingForClient;
