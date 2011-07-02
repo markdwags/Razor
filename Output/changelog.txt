@@ -1,6 +1,5 @@
 Razor (v1.0.13.*) Changelog:
-
-Please report any and all bugs you encounter at http://www.runuo.com/forums/forumdisplay.php?f=44
+Note, the support forum can be found at: http://www.runuo.com/community/forums/razor-the-cutting-edge-uo-assistant.47/
 
 Changes/Fixes:
 -Fixed a race condition which could inexplicably cause "Trouble communicating with Origin" messages.

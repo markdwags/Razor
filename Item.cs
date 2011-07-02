@@ -342,7 +342,7 @@ namespace Assistant
 			else if ( m_Parent is Mobile )
 				((Mobile)m_Parent).AddItem( this );
 
-			if ( IsChildOf( World.Player.Backpack ) || IsChildOf( World.Player.Quiver ) )
+            if (World.Player != null && (IsChildOf(World.Player.Backpack) || IsChildOf(World.Player.Quiver)))
 			{
 				bool exempt = SearchExemptionAgent.IsExempt( this );
 				if ( !exempt )
