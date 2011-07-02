@@ -50,7 +50,7 @@ namespace Assistant
 			{
 				try 
 				{
-					path = Engine.GetDirectory( "ScreenShots" );
+                    path = Config.GetUserDirectory("ScreenShots");
 					Config.SetProperty( "CapPath", path );
 				}
 				catch

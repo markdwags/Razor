@@ -615,7 +615,7 @@ namespace Assistant
 				}
 
 				if ( dllName == string.Empty  || dllName == null )
-					dllName = Path.Combine( Engine.BaseDirectory, "Translator.dll" );
+					dllName = Path.Combine( Config.GetInstallDirectory(), "Translator.dll" );
 
 				if ( !File.Exists( dllName ) )
 				{
@@ -769,7 +769,7 @@ namespace Assistant
 			{
 			}*/
 
-			string dll = Path.Combine( Engine.BaseDirectory, "Crypt.dll" );
+			string dll = Path.Combine( Config.GetInstallDirectory(), "Crypt.dll" );
 			uint pid = 0;
 			Loader_Error err = (Loader_Error)Load( client, dll, "OnAttach", null, 0, out pid );
 

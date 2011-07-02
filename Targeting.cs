@@ -912,7 +912,7 @@ namespace Assistant
 			Target( info );
 		}
 
-		public static void Target( Point3D pt, ushort gfx )
+		public static void Target( Point3D pt, int gfx )
 		{
 			TargetInfo info = new TargetInfo();
 			info.Type = 1;
@@ -921,7 +921,7 @@ namespace Assistant
 			info.X = pt.X;
 			info.Y = pt.Y;
 			info.Z = pt.Z;
-			info.Gfx = gfx;
+			info.Gfx = (ushort)(gfx & 0x3FFF);
 
 			Target( info );
 		}

@@ -72,8 +72,7 @@ struct Buffer
 
 struct SharedMemory
 {
-	// these must be in this order
-// ZIPPY REV 80	Buffer OutFwd;
+	// Do *not* mess with this struct.  Really.  I mean it.
 	Buffer InRecv;
 	Buffer OutRecv;
 	Buffer InSend;
@@ -150,6 +149,7 @@ void MemoryPatch( unsigned long, unsigned long );
 void MemoryPatch( unsigned long, int, int );
 void MemoryPatch( unsigned long, const void *, int );
 void RedrawTitleBar( HWND, bool );
+void CheckTitlebarAttr(HWND);
 void FreeArt();
 void InitThemes();
 bool PatchStatusBar( BOOL preAOS );

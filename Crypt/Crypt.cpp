@@ -38,8 +38,8 @@ HWND hUOAWnd = NULL;
 
 SIZE DesiredSize = {800,600};
 
-unsigned long OldRecv, OldSend, OldConnect, OldCloseSocket, OldSelect;
-unsigned long RecvAddress, SendAddress, ConnectAddress, CloseSocketAddress, SelectAddress;
+unsigned long OldRecv, OldSend, OldConnect, OldCloseSocket, OldSelect, OldCreateFileA;
+unsigned long RecvAddress, SendAddress, ConnectAddress, CloseSocketAddress, SelectAddress, CreateFileAAddress;
 
 bool Seeded = false;
 bool FirstRecv = true;
@@ -56,6 +56,7 @@ bool Forwarded = false;
 bool UltimaDLLHaxed = false;
 bool ClientEncrypted = false;
 bool ServerEncrypted = false;
+bool DwmAttrState = true;
 
 enum CLIENT_TYPE { TWOD = 1, THREED = 2 };
 CLIENT_TYPE ClientType = TWOD;
@@ -88,11 +89,13 @@ int PASCAL HookSend( SOCKET, char *, int, int );
 int PASCAL HookConnect( SOCKET, const sockaddr *, int );
 int PASCAL HookCloseSocket( SOCKET );
 int PASCAL HookSelect( int, fd_set*, fd_set*, fd_set*, const struct timeval * );
+//HANDLE WINAPI CreateFileAHook( LPCTSTR, DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE );
 
 typedef int (PASCAL *NetIOFunc)(SOCKET, char *, int, int);
 typedef int (PASCAL *ConnFunc)(SOCKET, const sockaddr *, int);
 typedef int (PASCAL *CLSFunc)(SOCKET);
 typedef int (PASCAL *SelectFunc)( int, fd_set*, fd_set*, fd_set*, const struct timeval* );
+typedef HANDLE (WINAPI *CreateFileAFunc)(LPCTSTR,DWORD,DWORD,LPSECURITY_ATTRIBUTES,DWORD,DWORD,HANDLE);
 typedef char *(__cdecl *GetUOVersionFunc)();
 
 GetUOVersionFunc NativeGetUOVersion = NULL;
@@ -225,19 +228,7 @@ DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 	}
 DLLFUNCTION bool AllowBit( unsigned int bit );
 	OSIEncryption::MD5( ((const BYTE*)AllowBit)+9, 0x31-9, CryptChecksum );
-
-	/*file = fopen( "C:\\zippy.bin", "w" );
-	fwrite( ((const BYTE*)AllowBit), 0x33, 1, file );
-	void *ptr = (void*)GetProcAddress( GetModuleHandle(NULL), "AllowBit" );
-	fwrite( &ptr, 4, 1, file );
-	ptr = (void*)AllowBit;
-	fwrite( &ptr, 4, 1, file );
-	fclose( file );*/
-
-#ifdef NO_CHECKSUM_VERSION
-	Disabled = false;
-#endif
-
+	
 	HMODULE hKern = LoadLibrary(obStr);
 	Disabled |= !hKern;
 	
@@ -250,8 +241,13 @@ DLLFUNCTION bool AllowBit( unsigned int bit );
 	getmodfn = (DWORD (__stdcall*)(HANDLE, char *, DWORD))getprocaddr(hKern, obStr);
 	
 	getmodfn(NULL, obStr, 256);
-	Disabled |= memcmp(obStr, origFilename, strlen(obStr));
-	Disabled |= memcmp(origFilename, obStr, strlen(origFilename));
+	
+	Disabled |= memcmp(obStr, origFilename, strlen(obStr)) != 0;
+	Disabled |= memcmp(origFilename, obStr, strlen(origFilename)) != 0;
+	
+#ifdef NO_CHECKSUM_VERSION
+	Disabled = false;
+#endif
 
 	return !Disabled;
 }
@@ -359,6 +355,7 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 
 	if ( !CreateSharedMemory() )
 		return NO_SHAREMEM;
+	memset( pShared, 0, sizeof(SharedMemory) );
 
 	pShared->IsHaxed = UltimaDLLHaxed;
 
@@ -699,7 +696,6 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	if ( !CreateSharedMemory() )
 		return;
 
-	memset( pShared, 0, sizeof(SharedMemory) );
 	pShared->AllowDisconn = true;
 
 	CopyFailed = false;
@@ -979,16 +975,14 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			}
 		}
 	}
+
 	//HookFunction( "kernel32.dll", "CreateFileA", 0, (unsigned long)CreateFileAHook, &OldCreateFileA, &CreateFileAAddress );
 }
 
 DLLFUNCTION void SetServer( unsigned int addr, unsigned short port )
 {
-	if ( pShared )
-	{
-		pShared->ServerIP = addr;
-		pShared->ServerPort = port;
-	}
+	pShared->ServerIP = addr;
+	pShared->ServerPort = port;
 }
 
 DLLFUNCTION const char *GetUOVersion()
@@ -1522,6 +1516,10 @@ int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 			useAddr.sin_port = htons( pShared->ServerPort );
 		}
 		
+		/*char blah[256];
+		sprintf(blah, "%08X - %08X", useAddr.sin_addr.S_un.S_addr, pShared->ServerIP);
+		MessageBox(NULL, blah, "Connect To:", MB_OK);*/
+
 		retVal = (*(ConnFunc)OldConnect)( sock, (sockaddr*)&useAddr, sizeof(sockaddr_in) );
 
 		ConnectedIP = useAddr.sin_addr.S_un.S_addr;
@@ -2076,12 +2074,13 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 
 		//Custom title bar:
 	case WM_NCACTIVATE:
-		Active = wParam; 
+		Active = wParam;
 		//fallthrough
-	case WM_GETICON:
 	case WM_NCPAINT:
+	case WM_GETICON:
 	case WM_SETTEXT:
 	case WM_CUSTOMTITLE:
+		CheckTitlebarAttr(hWnd);
 		RedrawTitleBar( hWnd, Active );
 		break;
 	}

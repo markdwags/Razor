@@ -19,26 +19,35 @@ namespace Assistant
 				t.Name = "Razor Splash Screen";
 				t.Start();
 				while ( m_Screen == null )
-					Thread.Sleep( 10 );
+					Thread.Sleep( 1 );
 			}
 		}
 
+        public delegate void CloseDelegate();
 		public static void End()
 		{
 			if ( m_Screen != null )
-				m_Screen.Close();
+                m_Screen.Invoke(new CloseDelegate(m_Screen.Close));
 		}
 
-		public static string MessageStr{ set{ if ( m_Screen != null ) m_Screen.message.Text = value; } }
-		public static LocString Message{ set{ if ( m_Screen != null ) m_Screen.message.Text = Language.GetString( value ); } }
+        public delegate void SetMsgDelegate(SplashScreen screen, string arg);
+        public static void SetMessage(SplashScreen screen, string msg)
+        {
+            screen.message.Text = msg;
+        }
+
+        public static string MessageStr { set { if (m_Screen != null) m_Screen.Invoke(new SetMsgDelegate(SetMessage), m_Screen, value); } }
+        public static LocString Message { set { if (m_Screen != null) m_Screen.Invoke(new SetMsgDelegate(SetMessage), m_Screen, Language.GetString(value)); } }
 		
 		public static void ThreadMain()
 		{
 			try
 			{
-				m_Screen = new SplashScreen();
-				Application.Run(m_Screen);
-				m_Screen = null;
+                using (m_Screen = new SplashScreen())
+                {
+                    Application.Run(m_Screen);
+                }
+                m_Screen = null;
 			}
 			catch
 			{

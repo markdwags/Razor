@@ -69,7 +69,7 @@ namespace Assistant
 
 			AddProperty( "AutoCap", false );
 			AddProperty( "CapFullScreen", false );
-			AddProperty( "CapPath", Path.Combine( Engine.BaseDirectory, "ScreenShots" ) );
+            AddProperty("CapPath", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RazorScreenShots"));
 			AddProperty( "CapTimeStamp", true );
 			AddProperty( "ImageFormat", "jpg" );
 
@@ -99,7 +99,7 @@ namespace Assistant
 			AddProperty( "SmartCPU", true );
 			AddProperty( "LTHilight", (int)0 );
 
-			AddProperty( "RecFolder", Path.Combine( Engine.BaseDirectory, "Videos" ) );
+            AddProperty("RecFolder", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RazorScreenShots"));
 			AddProperty( "AviFPS", 15 );
 			AddProperty( "AviRes", 1 );
 
@@ -182,7 +182,7 @@ namespace Assistant
 			if ( m_Name == null || m_Name.Trim() == "" )
 				return false;
 
-			string path = Engine.GetDirectory( "Profiles" );
+            string path = Config.GetUserDirectory("Profiles");
 			string file = Path.Combine( path, String.Format( "{0}.xml", m_Name ) );
 			if ( !File.Exists( file ) )
 				return false;
@@ -305,7 +305,7 @@ namespace Assistant
 
 		public void Save()
 		{
-			string profileDir = Engine.GetDirectory( "Profiles" );
+			string profileDir = Config.GetUserDirectory( "Profiles" );
 			string file = Path.Combine( profileDir, String.Format( "{0}.xml", m_Name ) );
 
 			if ( m_Name != "default" && !m_Warned )
@@ -484,7 +484,7 @@ namespace Assistant
 			else
 				m_Chars.Clear();
 
-			string file = Path.Combine( Engine.GetDirectory( "Profiles" ), "chars.lst" );
+			string file = Path.Combine( Config.GetUserDirectory( "Profiles" ), "chars.lst" );
 			if ( !File.Exists( file ) )
 				return;
 
@@ -514,7 +514,7 @@ namespace Assistant
 
 			try
 			{
-				using ( StreamWriter writer = new StreamWriter( Path.Combine( Engine.GetDirectory( "Profiles" ), "chars.lst" ) ) )
+				using ( StreamWriter writer = new StreamWriter( Path.Combine( Config.GetUserDirectory( "Profiles" ), "chars.lst" ) ) )
 				{
 					foreach ( DictionaryEntry de in m_Chars )
 					{
@@ -608,7 +608,7 @@ namespace Assistant
 			if ( list == null || list.Items == null )
 				return;
 
-			string[] files = Directory.GetFiles( Engine.GetDirectory( "Profiles" ), "*.xml" );
+			string[] files = Directory.GetFiles( Config.GetUserDirectory( "Profiles" ), "*.xml" );
 			string compare = String.Empty;
 			if ( selectName != null )
 				compare = selectName.ToLower();
@@ -716,28 +716,81 @@ namespace Assistant
 			}
 		}
 
-		public static string BaseDirectory
-		{
-			get
-			{
-				string inst = GetRegString( Microsoft.Win32.Registry.LocalMachine, "InstallDir" );
+        public static void RecursiveCopy(string oldDir, string newDir)
+        {
+            if (!Directory.Exists(oldDir))
+                return;
 
-				try
-				{
-					if ( inst == null || inst == "" )
-					{
-						inst = Directory.GetCurrentDirectory();
-						if ( inst != null )
-							SetRegString( Microsoft.Win32.Registry.LocalMachine, "InstallDir", inst );
-					}
-				}
-				catch
-				{
-				}
-				
-				return inst;
-			}
-		}
+            Engine.EnsureDirectory(newDir);
+
+            string[] files = Directory.GetFiles(oldDir);
+            foreach (string f in files)
+                File.Copy(f, Path.Combine(newDir, Path.GetFileName(f)));
+
+            string[] dirs = Directory.GetDirectories(oldDir);
+            foreach (string d in dirs)
+                RecursiveCopy(d, Path.Combine(newDir, Path.GetDirectoryName(d)));
+        }
+
+        public static void CopyUserFiles(string appDir, string name)
+        {
+            RecursiveCopy(Path.Combine(GetInstallDirectory(), name), Path.Combine(appDir, name));
+        }
+
+        public static string GetUserDirectory(string name)
+        {
+            string appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Razor");
+
+            if (!Directory.Exists(appDir))
+            {
+                Directory.CreateDirectory(appDir);
+
+                CopyUserFiles(appDir, "Profiles");
+                CopyUserFiles(appDir, "Macros");
+
+                string counters = Path.Combine(GetInstallDirectory(), "counters.xml");
+                if (File.Exists(counters))
+                    File.Copy(counters, Path.Combine(appDir, "counters.xml"));
+            }
+
+            if (name.Length > 0)
+                return Path.Combine(appDir, name);
+            else
+                return appDir;
+        }
+
+        public static string GetUserDirectory()
+        {
+            return GetUserDirectory("");
+        }
+
+        public static string GetInstallDirectory(string name)
+        {
+            string dir = GetRegString(Microsoft.Win32.Registry.LocalMachine, "InstallDir");
+
+            try
+            {
+                if (dir == null || dir == "")
+                {
+                    dir = Directory.GetCurrentDirectory();
+                    if (dir != null)
+                        SetRegString(Microsoft.Win32.Registry.LocalMachine, "InstallDir", dir);
+                }
+            }
+            catch
+            {
+            }
+
+            if (name.Length > 0)
+                dir = Path.Combine(dir, name);
+            Engine.EnsureDirectory(dir);
+            return dir;
+        }
+
+        public static string GetInstallDirectory()
+        {
+            return GetInstallDirectory("");
+        }
 
 		public static string LastProfileName
 		{
@@ -752,4 +805,3 @@ namespace Assistant
 		}
 	}
 }
-

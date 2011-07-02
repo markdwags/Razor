@@ -9,6 +9,7 @@
 #pragma warning(disable: 4312)
 #pragma warning(disable: 4800)
 #pragma warning(disable: 4530)
+#pragma warning(disable: 4996)
 #pragma pack(1)
 #pragma comment(lib, "ws2_32.lib")
 
@@ -23,6 +24,6 @@
 #include <zmouse.h>
 
 #include <vector>
+#include <string>
 using std::vector;
-
-// TODO: reference additional headers your program requires here
+using std::string;

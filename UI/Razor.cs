@@ -2772,7 +2772,7 @@ namespace Assistant
 			}
 
 			SplashScreen.Message = LocString.Welcome;
-			InitConfig();
+            InitConfig();
 
 			this.Show();
 			this.BringToFront();
@@ -2790,9 +2790,9 @@ namespace Assistant
 			showWelcome.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWelcome" ), 1 ) == 1;
 				
 			m_Tip.Active = true;
-			m_Tip.SetToolTip( titleStr, Language.GetString( LocString.TitleBarTip ) );
+            m_Tip.SetToolTip(titleStr, Language.GetString(LocString.TitleBarTip));
 
-			SplashScreen.End();
+            SplashScreen.End();
 		}
 		
 		private bool m_Initializing = false;
@@ -4419,7 +4419,7 @@ namespace Assistant
 				}
 
 				TreeNode node = GetMacroDirNode();
-				string path = ( node == null || !(node.Tag is string) ) ? Engine.GetDirectory( "Macros" ) : (string)node.Tag;
+                string path = (node == null || !(node.Tag is string)) ? Config.GetUserDirectory("Macros") : (string)node.Tag;
 				path = Path.Combine( path, name+".macro" );
 				if ( File.Exists( path ) )
 				{
@@ -4604,7 +4604,7 @@ namespace Assistant
 			try
 			{
 				if ( node == null || !(node.Tag is string) )
-					path = Path.Combine( Engine.GetDirectory("Macros"), path );
+					path = Path.Combine( Config.GetUserDirectory("Macros"), path );
 				else
 					path = Path.Combine( (string)node.Tag, path );
 				Engine.EnsureDirectory( path );
@@ -4660,7 +4660,7 @@ namespace Assistant
 
 			try
 			{
-				File.Move( sel.Filename, Path.Combine( Engine.BaseDirectory, String.Format( "Macros/{0}/{1}", InputBox.GetString(), Path.GetFileName( sel.Filename ) ) ) );
+				File.Move( sel.Filename, Path.Combine( Config.GetUserDirectory("Macros"), String.Format( "{0}/{1}", InputBox.GetString(), Path.GetFileName( sel.Filename ) ) ) );
 			}
 			catch
 			{

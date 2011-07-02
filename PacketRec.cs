@@ -139,7 +139,7 @@ namespace Assistant
 			{
 				try 
 				{
-					path = Engine.GetDirectory( "Videos" );
+                    path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RazorScreenShots");
 					Config.SetProperty( "RecFolder", path );
 				}
 				catch

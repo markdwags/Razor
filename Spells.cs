@@ -188,7 +188,7 @@ namespace Assistant
 		static Spell()
 		{
 			ArrayList list = new ArrayList();
-			string filename = Path.Combine( Engine.BaseDirectory, "spells.def" );
+			string filename = Path.Combine( Config.GetInstallDirectory(), "spells.def" );
 			m_SpellsByPower = new Hashtable( 64 + 10 + 16 );
 			m_SpellsByID = new Hashtable( 64 + 10 + 16 );
 

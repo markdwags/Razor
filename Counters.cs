@@ -281,7 +281,7 @@ namespace Assistant
 
 		private static void Load()
 		{
-			string file = Path.Combine( Engine.BaseDirectory, "counters.xml" );
+			string file = Path.Combine(Config.GetUserDirectory(), "counters.xml" );
 			if ( !File.Exists( file ) )
 				return;
 
@@ -312,7 +312,7 @@ namespace Assistant
 
 			try
 			{
-				string file = Path.Combine( Engine.BaseDirectory, "counters.xml" );
+				string file = Path.Combine( Config.GetUserDirectory(), "counters.xml" );
 				using ( StreamWriter op = new StreamWriter( file ) )
 				{
 					XmlTextWriter xml = new XmlTextWriter( op );

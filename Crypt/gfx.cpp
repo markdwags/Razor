@@ -3,6 +3,7 @@
 #include "Resource.h"
 #include <uxtheme.h>
 #include <vssym32.h>
+#include <dwmapi.h>
 
 int DrawUOItem( HDC, RECT, int, int );
 
@@ -18,7 +19,10 @@ typedef COLORREF (__stdcall *GETTHEMESYSCOLOR)(HTHEME, int);
 GETTHEMESYSCOLOR zGetThemeSysColor = NULL;
 typedef HRESULT (__stdcall *GETTHEMEMETRIC)(HTHEME,HDC,int,int,int,int*);
 GETTHEMEMETRIC zGetThemeMetric = NULL;
+typedef HRESULT (__stdcall *DWMSETWINDOWATTRIBUTE)(HWND, DWORD, LPCVOID, DWORD);
+DWMSETWINDOWATTRIBUTE zDwmSetWindowAttribute = NULL;
 HMODULE hThemes = NULL;
+HMODULE hDwmApi = NULL;
 
 HICON hRazorIcon = NULL;
 HFONT hRazorFont = NULL;
@@ -34,6 +38,12 @@ void InitThemes()
 		zGetThemeSysColor = (GETTHEMESYSCOLOR)GetProcAddress(hThemes, "GetThemeSysColor");
 		zGetThemeSysFont = (GETTHEMESYSFONT)GetProcAddress(hThemes, "GetThemeSysFont");
 		zGetThemeMetric = (GETTHEMEMETRIC)GetProcAddress(hThemes, "GetThemeMetric");
+	}
+
+	hDwmApi = LoadLibrary("DWMAPI.DLL");
+	if (hDwmApi)
+	{
+		zDwmSetWindowAttribute = (DWMSETWINDOWATTRIBUTE)GetProcAddress(hDwmApi, "DwmSetWindowAttribute");
 	}
 }
 
@@ -113,6 +123,19 @@ int DrawStatBar( HDC hDC, RECT rect, int width, int status, int hp, int mn, int 
     
 	SelectObject( hDC, hOld );
 	return width+2;
+}
+
+void CheckTitlebarAttr(HWND hWnd)
+{
+	static bool curNCRP = true;
+	bool newNCRP = !pShared || pShared->TitleBar[0] == '\0';
+	
+	if (curNCRP != newNCRP && zDwmSetWindowAttribute)
+	{
+		DWMNCRENDERINGPOLICY policy = newNCRP ? DWMNCRP_ENABLED : DWMNCRP_DISABLED;
+		zDwmSetWindowAttribute(hWnd, DWMWA_NCRENDERING_POLICY, &policy, sizeof(policy));
+		curNCRP = newNCRP;
+	}
 }
 
 void DrawColorTitleBar( HTHEME hTheme, HWND hWnd, HDC hOutDC, bool active, bool maximized, LPCSTR str, int len, RECT orig )
@@ -329,9 +352,8 @@ void RedrawTitleBar( HWND hWnd, bool active )
 	rect.top = GetSystemMetrics(SM_CYFRAME);
 	rect.bottom = rect.top + GetSystemMetrics(SM_CYCAPTION);
 
-	int iconSizeX = GetSystemMetrics(SM_CXSIZE);// + GetSystemMetrics(SM_CXBORDER);
-	rect.right = ( rect.right - rect.left ) - ( 3*(iconSizeX) + GetSystemMetrics(SM_CXFRAME) );
-	rect.left = iconSizeX;
+	rect.right = ( rect.right - rect.left ) - ( 4*GetSystemMetrics(SM_CXSIZE) + GetSystemMetrics(SM_CXFRAME) );
+	rect.left = GetSystemMetrics(SM_CXSIZEFRAME) + GetSystemMetrics(SM_CXSMICON) + 5;
 
 	if ( hThemes )
 	{

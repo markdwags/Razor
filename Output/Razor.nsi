@@ -75,10 +75,6 @@ foundFramework:
   WriteRegStr HKCR "Razor.PacketVideo\DefaultIcon" "" "$INSTDIR\RPVOpenStub.exe,0"
   WriteRegStr HKCR "Razor.PacketVideo\shell\open\command" "" '"$INSTDIR\RPVOpenStub.exe" %1'
 
-  CreateDirectory "$INSTDIR\Profiles"
-  CreateDirectory "$INSTDIR\Macros"
-  CreateDirectory "$INSTDIR\ScreenShots"
-  CreateDirectory "$INSTDIR\Videos"
   CreateDirectory "$INSTDIR\Language"
 
   SetOutPath "$INSTDIR"

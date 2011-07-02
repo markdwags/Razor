@@ -65,7 +65,7 @@ namespace Assistant.Macros
 			//return Path.GetFileNameWithoutExtension( m_Path );
 			StringBuilder sb = new StringBuilder( Path.GetFullPath( m_Path ) );
 			sb.Remove( sb.Length-6, 6 );
-			sb.Remove( 0, Path.Combine( Engine.BaseDirectory, "Macros" ).Length + 1 );
+			sb.Remove( 0, Config.GetUserDirectory( "Macros" ).Length + 1 );
 			return sb.ToString();
 		}
 

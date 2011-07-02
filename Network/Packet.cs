@@ -35,9 +35,17 @@ namespace Assistant
 			}
 		}
 
+        public static string PacketsLogFile
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Razor_Packets.log");
+            }
+        }
+
 		private static void BeginLog()
 		{
-			using ( StreamWriter sw = new StreamWriter( "Packets.log", true ) )
+            using (StreamWriter sw = new StreamWriter(PacketsLogFile, true))
 			{
 				sw.AutoFlush = true;
 				sw.WriteLine();
@@ -153,7 +161,7 @@ namespace Assistant
 
 			try
 			{
-				using ( StreamWriter sw = new StreamWriter( "Packets.log", true ) )
+                using (StreamWriter sw = new StreamWriter(PacketsLogFile, true))
 				{
 					sw.AutoFlush = true;
 					sw.WriteLine( line );
@@ -177,7 +185,7 @@ namespace Assistant
 
 			try
 			{
-				using ( StreamWriter sw = new StreamWriter( "Packets.log", true ) )
+                using (StreamWriter sw = new StreamWriter(PacketsLogFile, true))
 				{
 					sw.AutoFlush = true;
 

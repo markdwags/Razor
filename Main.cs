@@ -120,7 +120,6 @@ namespace Assistant
 		}
 
 		public static string ExePath{ get{ return Process.GetCurrentProcess().MainModule.FileName; } }
-		public static string BaseDirectory{ get{ return m_BaseDir; } }
 		public static MainForm MainWindow{ get{ return m_MainWnd; } }
 		public static bool Running{ get{ return m_Running; } }
 		public static Form ActiveWindow{ get{ return m_ActiveWnd; } set{ m_ActiveWnd = value; } }
@@ -143,45 +142,21 @@ namespace Assistant
 		private static Form m_ActiveWnd;
 		//private static Thread m_TimerThread;
 		private static bool m_Running;
-		private static string m_BaseDir;
 		private static string m_Version;
 
 		[STAThread]
 		public static void Main( string[] Args ) 
 		{
 			m_Running = true;
+            Thread.CurrentThread.Name = "Razor Main Thread";
+
 #if !DEBUG
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
+			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
 #endif
-			Thread.CurrentThread.Name = "Razor Main Thread";
-
-#if DEBUG
-			// dont use the registry in debug mode (use the files in our working directory)
-			m_BaseDir = Directory.GetCurrentDirectory();
-#else
-			m_BaseDir = Config.BaseDirectory;
-			Directory.SetCurrentDirectory( m_BaseDir );
-#endif
-			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 || !File.Exists( Path.Combine( BaseDirectory, "Updater.exe" ) ) )
+            
+			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 || !File.Exists( Path.Combine( Config.GetInstallDirectory(), "Updater.exe" ) ) )
 				throw new InvalidOperationException( "This Razor installation is corrupted." );
-
-			if ( File.Exists( Path.Combine( BaseDirectory, "New_Updater.exe" ) ) )
-			{
-				try { File.Delete( Path.Combine( BaseDirectory, "Updater.exe.old" ) ); } catch {}
-				try { File.Move( Path.Combine( BaseDirectory, "Updater.exe" ), Path.Combine( BaseDirectory, "Updater.exe.old" ) ); } catch { }
-				
-				File.Move( Path.Combine( BaseDirectory, "New_Updater.exe" ), Path.Combine( BaseDirectory, "Updater.exe" ) );
-			}
-
-			if ( File.Exists( Path.Combine( BaseDirectory, "New_UnRar.dll" ) ) )
-			{
-				try { File.Delete( Path.Combine( BaseDirectory, "UnRar.dll.old" ) ); } 
-				catch {}
-				try { File.Move( Path.Combine( BaseDirectory, "UnRar.dll" ), Path.Combine( BaseDirectory, "UnRar.dll.old" ) ); } 
-				catch { }
-				
-				File.Move( Path.Combine( BaseDirectory, "New_UnRar.dll" ), Path.Combine( BaseDirectory, "UnRar.dll" ) );
-			}
 
 			DateTime lastCheck = DateTime.MinValue;
 			try { lastCheck = DateTime.FromFileTime( Convert.ToInt64( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck" ), 16 ) ); } catch { }
@@ -367,6 +342,7 @@ namespace Assistant
 			if ( !Config.LoadLastProfile() )
 				MessageBox.Show( SplashScreen.Instance, "The selected profile could not be loaded, using default instead.", "Profile Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 
+            ClientCommunication.SetConnectionInfo(IPAddress.None, -1);
 			if ( attPID == -1 )
 			{
 				ClientCommunication.Loader_Error result = ClientCommunication.Loader_Error.UNKNOWN_ERROR;
@@ -398,18 +374,15 @@ namespace Assistant
 				int port = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "LastPort" ), 0 );
 
 				// if these are null then the registry entry does not exist (old razor version)
-				if ( addr != null )
+				IPAddress ip = Resolve( addr );
+				if ( ip == IPAddress.None || port == 0 )
 				{
-					IPAddress ip = Resolve( addr );
-					if ( ip == IPAddress.None || port == 0 )
-					{
-						MessageBox.Show( SplashScreen.Instance, Language.GetString( LocString.BadServerAddr ), "Bad Server Address", MessageBoxButtons.OK, MessageBoxIcon.Stop );
-						SplashScreen.End();
-						return;
-					}
-
-					ClientCommunication.SetConnectionInfo( ip, port );
+					MessageBox.Show( SplashScreen.Instance, Language.GetString( LocString.BadServerAddr ), "Bad Server Address", MessageBoxButtons.OK, MessageBoxIcon.Stop );
+					SplashScreen.End();
+					return;
 				}
+
+				ClientCommunication.SetConnectionInfo( ip, port );
 			}
 			else
 			{
@@ -432,7 +405,7 @@ namespace Assistant
 					return;
 				}
 
-				ClientCommunication.SetConnectionInfo( new IPAddress( 0 ), 0 );
+                ClientCommunication.SetConnectionInfo(IPAddress.None, -1);
 			}
 
 			Ultima.MultiComponentList.PostHSFormat = UsePostHSChanges;
@@ -456,12 +429,12 @@ namespace Assistant
 			Config.Save();
 		}
 
-		public static string GetDirectory( string relPath )
+		/*public static string GetDirectory( string relPath )
 		{
-			string path = Path.Combine( BaseDirectory, relPath );
+            string path = Path.Combine(ExeDirectory, relPath);
 			EnsureDirectory( path );
 			return path;
-		}
+		}*/
 
 		public static void EnsureDirectory( string dir )
 		{
@@ -556,7 +529,10 @@ namespace Assistant
 					Version v = Assembly.GetCallingAssembly().GetName().Version;
 					if ( v.CompareTo( newVer ) < 0 ) // v < newVer
 					{
-						Process.Start( Path.Combine( BaseDirectory, "Updater.exe" ) );
+                        ProcessStartInfo processInfo = new ProcessStartInfo();
+                        processInfo.Verb = "runas"; // Administrator Rights
+                        processInfo.FileName = Path.Combine(Config.GetInstallDirectory(), "Updater.exe");
+                        Process.Start(processInfo);
 						Process.GetCurrentProcess().Kill();
 					}
 				}
