@@ -2,7 +2,6 @@
 ;Include Modern UI
 
   !include "MUI.nsh"
-  !include "dotNet.nsh"
 
 ;--------------------------------
 ;General
@@ -32,7 +31,7 @@
 ;--------------------------------
 ;Pages
 
-  !insertmacro MUI_PAGE_LICENSE "X:\Razor\Output\License.txt"
+  !insertmacro MUI_PAGE_LICENSE ".\License.txt"
   !insertmacro MUI_PAGE_DIRECTORY
   
   ;Start Menu Folder Page Configuration
@@ -57,13 +56,6 @@
 
 Section "Razor" 
 
-  Call IsDotNETInstalled
-  Pop $0
-  StrCmp $0 1 foundFramework
-    MessageBox MB_OK|MB_ICONSTOP "Razor requires the .NET framework in order to run.\nTo install it, please visit Microsoft Windows Update (windowsupdate.microsoft.com)\n\nRazor installation cannot continue." 
-    Quit
-foundFramework:
-
   ;Store installation folder
   WriteRegStr HKLM "Software\Razor" "InstallDir" $INSTDIR
   WriteRegStr HKLM "Software\Razor" "UId" "0"
@@ -81,29 +73,29 @@ foundFramework:
 
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
-  File "X:\Razor\Output\Razor.exe"
-  File "X:\Razor\Output\RPVOpenStub.exe"
-  File "X:\Razor\Output\RPVEditor.exe"
-  File "X:\Razor\Output\Updater.exe"
-  File "X:\Razor\Output\UnRar.dll"
-  File "X:\Razor\Output\Crypt.dll"
-  File "X:\Razor\Output\Loader.dll"
-  File "X:\Razor\Output\Ultima.dll"
-  File "X:\Razor\Output\zlib.dll"
-  File "X:\Razor\Output\License.txt"
-  File "X:\Razor\Output\License_CHS.txt"
-  File "X:\Razor\Output\changelog.txt"
+  File ".\Razor.exe"
+  File ".\RPVOpenStub.exe"
+  File ".\RPVEditor.exe"
+  File ".\Updater.exe"
+  File ".\UnRar.dll"
+  File ".\Crypt.dll"
+  File ".\Loader.dll"
+  File ".\Ultima.dll"
+  File ".\zlib.dll"
+  File ".\License.txt"
+  File ".\License_CHS.txt"
+  File ".\changelog.txt"
 
   SetOverwrite ifnewer
-  File "X:\Razor\Output\Guardlines.def"
-  File "X:\Razor\Output\Spells.def"
-  File "X:\Razor\Output\Counters.xml"
+  File ".\Guardlines.def"
+  File ".\Spells.def"
+  File ".\Counters.xml"
   SetOverwrite on
 
   Delete "$INSTDIR\Crash.log"
 
   SetOutPath "$INSTDIR\Language"
-  File "X:\Razor\Output\Language\Razor_lang.*"
+  File ".\Language\Razor_lang.*"
   
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     
