@@ -7,4 +7,5 @@ Changes/Fixes:
 -By default screen shots and RPVs will go in "My Pictures" now
 -Special work arounds for disabling visual styles in order to get Razor to draw the titlebar are no longer needed.
 -Fixed Target Relative Location macro actions
+-Fixed a bug that sometimes caused null ref exceptions at login
 

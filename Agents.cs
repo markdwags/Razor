@@ -1673,7 +1673,6 @@ namespace Assistant
 			if ( count < pack.Contains.Count )
 			{
 				World.Player.SendMessage( MsgLevel.Debug, "Buy Agent Warning: Contains Count {0} does not match ExtInfo {1}.", pack.Contains.Count, count );
-				return;
 			}
 
 			pack.Contains.Sort( ItemXYComparer.Instance );

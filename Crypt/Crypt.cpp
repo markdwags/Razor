@@ -975,14 +975,17 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			}
 		}
 	}
-
+	
 	//HookFunction( "kernel32.dll", "CreateFileA", 0, (unsigned long)CreateFileAHook, &OldCreateFileA, &CreateFileAAddress );
 }
 
 DLLFUNCTION void SetServer( unsigned int addr, unsigned short port )
 {
-	pShared->ServerIP = addr;
-	pShared->ServerPort = port;
+	if (pShared)
+	{
+		pShared->ServerIP = addr;
+		pShared->ServerPort = port;
+	}
 }
 
 DLLFUNCTION const char *GetUOVersion()

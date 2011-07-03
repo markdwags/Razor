@@ -149,7 +149,7 @@ namespace Assistant
 		{
 			m_Running = true;
             Thread.CurrentThread.Name = "Razor Main Thread";
-
+            
 #if !DEBUG
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
 			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
