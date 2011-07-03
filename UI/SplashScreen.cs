@@ -37,8 +37,27 @@ namespace Assistant
             screen.message.Text = msg;
         }
 
-        public static string MessageStr { set { if (m_Screen != null) m_Screen.Invoke(new SetMsgDelegate(SetMessage), m_Screen, value); } }
-        public static LocString Message { set { if (m_Screen != null) m_Screen.Invoke(new SetMsgDelegate(SetMessage), m_Screen, Language.GetString(value)); } }
+        public static string MessageStr 
+        { 
+            set 
+            {
+                try
+                {
+                    if (m_Screen != null)
+                    {
+                        if (m_Screen.InvokeRequired)
+                            m_Screen.Invoke(new SetMsgDelegate(SetMessage), m_Screen, value);
+                        else
+                            SetMessage(m_Screen, value);
+                    }
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        public static LocString Message { set { MessageStr = Language.GetString(value); } }
 		
 		public static void ThreadMain()
 		{
