@@ -23,7 +23,7 @@
 #include <time.h>
 #include <zmouse.h>
 
-#include <vector>
-#include <string>
-using std::vector;
-using std::string;
+//#include <vector>
+//#include <string>
+//using std::vector;
+//using std::string;

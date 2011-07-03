@@ -20,7 +20,8 @@ namespace Assistant
 				t.Start();
 				while ( m_Screen == null )
 					Thread.Sleep( 1 );
-                Thread.Sleep(1000);
+
+				m_Screen.CreateControl();
 			}
 		}
 
