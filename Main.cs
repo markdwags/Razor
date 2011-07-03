@@ -164,7 +164,7 @@ namespace Assistant
 			{
 				SplashScreen.Start();
 				m_ActiveWnd = SplashScreen.Instance;
-				
+
 				CheckForUpdates();
 				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck", String.Format( "{0:X16}", DateTime.Now.ToFileTime() ) );
 			}
@@ -485,7 +485,11 @@ namespace Assistant
 
 		private static void CheckForUpdates()
 		{
-			SplashScreen.MessageStr = "Checking for Razor Updates...";
+            try
+            {
+                SplashScreen.MessageStr = "Checking for Razor Updates...";
+            }
+            catch { }
 
 			int uid = 0;
 			try
@@ -541,7 +545,11 @@ namespace Assistant
 			{
 			}
 
-			SplashScreen.Message = LocString.Initializing;
+            try
+            {
+                SplashScreen.Message = LocString.Initializing;
+            }
+            catch { }
 		}
 	}
 }
