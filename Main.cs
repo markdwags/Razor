@@ -342,9 +342,10 @@ namespace Assistant
 			if ( !Config.LoadLastProfile() )
 				MessageBox.Show( SplashScreen.Instance, "The selected profile could not be loaded, using default instead.", "Profile Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 
-            ClientCommunication.SetConnectionInfo(IPAddress.None, -1);
 			if ( attPID == -1 )
-			{
+            {
+                ClientCommunication.SetConnectionInfo(IPAddress.None, -1);
+
 				ClientCommunication.Loader_Error result = ClientCommunication.Loader_Error.UNKNOWN_ERROR;
 
 				SplashScreen.Message = LocString.LoadingClient;
@@ -405,7 +406,7 @@ namespace Assistant
 					return;
 				}
 
-                ClientCommunication.SetConnectionInfo(IPAddress.None, -1);
+                ClientCommunication.SetConnectionInfo(IPAddress.Any, 0);
 			}
 
 			Ultima.MultiComponentList.PostHSFormat = UsePostHSChanges;
