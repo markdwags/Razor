@@ -355,7 +355,7 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 
 	if ( !CreateSharedMemory() )
 		return NO_SHAREMEM;
-	memset( pShared, 0, sizeof(SharedMemory) );
+	//memset( pShared, 0, sizeof(SharedMemory) );
 
 	pShared->IsHaxed = UltimaDLLHaxed;
 
