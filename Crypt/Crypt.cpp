@@ -942,7 +942,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	{
 		addr -= 7;
 		VirtualProtect( (void*)addr, 52, PAGE_EXECUTE_READWRITE, &oldProt );
-		strncpy( (char*)addr, "[Powered by Razor - The cutting edge UO Assistant]", 51 );
+		strncpy( (char*)addr, "[Powered by Razor - The cutting edge UO Assistant]\0", 52 );
 		VirtualProtect( (void*)addr, 52, oldProt, &oldProt );
 	}
 
