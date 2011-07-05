@@ -688,7 +688,6 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 {
 	int count = 0;
 	DWORD addr = 0, oldProt;
-	ClientPacketInfo packet;
 	MemFinder mf;
 
 	UOProcId = GetCurrentProcessId();
@@ -762,34 +761,42 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			VirtualProtect( (void*)origAddr, 128, oldProt, &oldProt );
 		}
 	}
-	
-	memset( pShared->PacketTable, 0xFF, 512 );
 
 	int i = 0;
 	while (( addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN, i++ )) != 0)
 	{
+		memset( pShared->PacketTable, 0xFF, 512 );
+
 		addr += PACKET_TBL_OFFSET;
-		if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo)*256 ) )
+		if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo)*128 ) )
+			continue;
+		ClientPacketInfo *tbl = (ClientPacketInfo*)addr;
+
+		if (tbl[0].Id == 1 || tbl[0].Id == 2 || tbl[0].Id >= 256)
 			continue;
 		
-		pShared->PacketTable[0] = ((ClientPacketInfo*)addr)->Length;
-		addr += sizeof(ClientPacketInfo);
-
-		int total = 1;
-		for (count = 1; count < 256 && total < 256; count++, total++)
+		// this one isnt in order because OSI are idiots (0xF8)
+		pShared->PacketTable[tbl[0].Id] = tbl[0].Length;
+		
+		int idx = 1;
+		bool got1 = false, got2 = false;
+		for (int prev = 0; prev < 255 && idx < 256; idx++)
 		{
-			memcpy( &packet, (const void*)addr, sizeof(ClientPacketInfo) );
-			addr += sizeof(ClientPacketInfo);
-			if ( packet.Id < count || packet.Id >= 256 )
+			if (IsBadReadPtr( (void*)(tbl + idx), sizeof(ClientPacketInfo)) ||
+				tbl[idx].Id <= prev || tbl[idx].Id >= 256)
+			{
 				break;
+			}
 
-			if ( pShared->PacketTable[(BYTE)packet.Id] == 0xFFFF )
-				pShared->PacketTable[(BYTE)packet.Id] = packet.Length;
+			got1 |= tbl[idx].Id == 1 && tbl[idx].Length == StaticPacketTable[1];
+			got2 |= tbl[idx].Id == 2 && tbl[idx].Length == StaticPacketTable[2];
 
-			count = packet.Id;
+			prev = tbl[idx].Id;
+			if ( pShared->PacketTable[prev] == 0xFFFF )
+				pShared->PacketTable[prev] = tbl[idx].Length;
 		}
 
-		if ( packet.Id != 0xFFFFFFFF && ( packet.Id >> 16 ) != 0x67 && ( packet.Id >> 16 ) != 0x68 ) /*packet.Id != 0x006761B4 && packet.Id != 0x00678314 && packet.Id != 0x00679314 && packet.Id != 0x0067B8BC && packet.Id != 0x0067CCBC && packet.Id != 0x00680E64 */
+		if (idx < 128 || !got1 || !got2)
 			continue;
 		else
 			break;
