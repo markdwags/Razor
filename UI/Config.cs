@@ -718,18 +718,18 @@ namespace Assistant
 
         public static void RecursiveCopy(string oldDir, string newDir)
         {
+            Engine.EnsureDirectory(newDir);
+            
             if (!Directory.Exists(oldDir))
                 return;
 
-            Engine.EnsureDirectory(newDir);
-
             string[] files = Directory.GetFiles(oldDir);
             foreach (string f in files)
-                File.Copy(f, Path.Combine(newDir, Path.GetFileName(f)));
+                File.Copy(Path.Combine(oldDir, Path.GetFileName(f)), Path.Combine(newDir, Path.GetFileName(f)));
 
             string[] dirs = Directory.GetDirectories(oldDir);
             foreach (string d in dirs)
-                RecursiveCopy(d, Path.Combine(newDir, Path.GetDirectoryName(d)));
+                RecursiveCopy(Path.Combine(oldDir, Path.GetDirectoryName(d)), Path.Combine(newDir, Path.GetDirectoryName(d)));
         }
 
         public static void CopyUserFiles(string appDir, string name)
@@ -745,18 +745,21 @@ namespace Assistant
             {
                 Directory.CreateDirectory(appDir);
 
-                CopyUserFiles(appDir, "Profiles");
-                CopyUserFiles(appDir, "Macros");
-
                 string counters = Path.Combine(GetInstallDirectory(), "counters.xml");
                 if (File.Exists(counters))
                     File.Copy(counters, Path.Combine(appDir, "counters.xml"));
+
+                CopyUserFiles(appDir, "Profiles");
+                CopyUserFiles(appDir, "Macros");
             }
 
             if (name.Length > 0)
-                return Path.Combine(appDir, name);
+                name = Path.Combine(appDir, name);
             else
-                return appDir;
+                name = appDir;
+            
+            Engine.EnsureDirectory(name);
+            return name;
         }
 
         public static string GetUserDirectory()

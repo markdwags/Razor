@@ -762,20 +762,22 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			VirtualProtect( (void*)origAddr, 128, oldProt, &oldProt );
 		}
 	}
+	
+	memset( pShared->PacketTable, 0xFF, 512 );
 
-	addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN );
-	if ( addr )
+	int i = 0;
+	while (( addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN, i++ )) != 0)
 	{
-		addr -= 8;
+		addr += PACKET_TBL_OFFSET;
+		if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo)*256 ) )
+			continue;
+		
+		pShared->PacketTable[0] = ((ClientPacketInfo*)addr)->Length;
+		addr += sizeof(ClientPacketInfo);
 
-		memset( pShared->PacketTable, 0xFF, 512 );
-
-		int total = 0;
-		for (count = 0; count < 256 && total < 256; count++, total++)
+		int total = 1;
+		for (count = 1; count < 256 && total < 256; count++, total++)
 		{
-			if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo) ) )
-				break;
-
 			memcpy( &packet, (const void*)addr, sizeof(ClientPacketInfo) );
 			addr += sizeof(ClientPacketInfo);
 			if ( packet.Id < count || packet.Id >= 256 )
@@ -788,15 +790,18 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 		}
 
 		if ( packet.Id != 0xFFFFFFFF && ( packet.Id >> 16 ) != 0x67 && ( packet.Id >> 16 ) != 0x68 ) /*packet.Id != 0x006761B4 && packet.Id != 0x00678314 && packet.Id != 0x00679314 && packet.Id != 0x0067B8BC && packet.Id != 0x0067CCBC && packet.Id != 0x00680E64 */
-		{
-			CopyFailed = true;
-		}
-	}
-	else
-	{
-		CopyFailed = true;
+			continue;
+		else
+			break;
 	}
 
+	if (!addr)
+	{
+		CopyFailed = true;
+MessageBox(NULL, "1", "Debug", MB_OK);
+	
+	}
+	
 	addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
 	if ( !addr )
 	{
@@ -816,6 +821,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 				else
 				{
 					CopyFailed = true;
+MessageBox(NULL, "3", "Debug", MB_OK);
 				}
 			}
 			else
@@ -827,6 +833,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 				if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
 				{
 					CopyFailed = true;
+MessageBox(NULL, "4", "Debug", MB_OK);
 				}
 				else
 					LoginEncryption::SetKeys( pKey1, pKey2 );
@@ -841,6 +848,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
 			{
 				CopyFailed = true;
+MessageBox(NULL, "5", "Debug", MB_OK);
 			}
 			else
 				LoginEncryption::SetKeys( pKey1, pKey2 );

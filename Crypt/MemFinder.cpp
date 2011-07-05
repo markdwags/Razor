@@ -76,7 +76,7 @@ DWORD MemFinder::GetAddress( const void *data, int length, unsigned int idx )
 void MemFinder::Execute()
 {
 	bool allDone = false;
-	for( DWORD pos = _StartPos; pos < 0x01000000 && !allDone; pos++ )
+	for( DWORD pos = _StartPos; pos < 0x02000000 && !allDone; pos++ )
 	{
 		allDone = true;
 		for(unsigned int i=0;i<_Entries.size();i++)

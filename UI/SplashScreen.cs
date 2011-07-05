@@ -25,15 +25,20 @@ namespace Assistant
 			}
 		}
 
-        public delegate void CloseDelegate();
+        private delegate void CloseDelegate();
 		public static void End()
 		{
-			if ( m_Screen != null )
-                m_Screen.Invoke(new CloseDelegate(m_Screen.Close));
+            if (m_Screen != null)
+            {
+                if (m_Screen.InvokeRequired)
+                    m_Screen.Invoke(new CloseDelegate(m_Screen.Close));
+                else
+                    m_Screen.Close();
+            }
 		}
 
-        public delegate void SetMsgDelegate(SplashScreen screen, string arg);
-        public static void SetMessage(SplashScreen screen, string msg)
+        private delegate void SetMsgDelegate(SplashScreen screen, string arg);
+        private static void SetMessage(SplashScreen screen, string msg)
         {
             screen.message.Text = msg;
         }
@@ -60,7 +65,7 @@ namespace Assistant
 
         public static LocString Message { set { MessageStr = Language.GetString(value); } }
 		
-		public static void ThreadMain()
+		private static void ThreadMain()
 		{
 			try
 			{

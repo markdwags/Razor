@@ -4,7 +4,7 @@
 struct ClientPacketInfo // 12 bytes
 {
 	int Id;
-	int Unk00743269;
+	int Unk;
 	unsigned short Length;
 	short Unk0000;
 };

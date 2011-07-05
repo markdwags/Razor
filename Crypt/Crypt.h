@@ -156,8 +156,9 @@ bool PatchStatusBar( BOOL preAOS );
 
 //#define PACKET_TBL_STR "Got Logout OK packet!\0\0\0"
 //#define PACKET_TS_LEN 24
-#define PACKET_TBL_STR "\x68\0\0\0\x01\0\0\0"
+#define PACKET_TBL_STR "\x07\0\0\0\x03\0\0\0"
 #define PACKET_TS_LEN 8
+#define PACKET_TBL_OFFSET (0-(8+12+12))
 
 //search disassembly for
 //static key1 C1 E2 1F D1 E8 D1 E9 0B C6 0B CA 35 static key2 81 F1 dynamic key 4D
