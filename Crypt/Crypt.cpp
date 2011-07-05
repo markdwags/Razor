@@ -796,11 +796,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	}
 
 	if (!addr)
-	{
 		CopyFailed = true;
-MessageBox(NULL, "1", "Debug", MB_OK);
-	
-	}
 	
 	addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
 	if ( !addr )
@@ -821,7 +817,6 @@ MessageBox(NULL, "1", "Debug", MB_OK);
 				else
 				{
 					CopyFailed = true;
-MessageBox(NULL, "3", "Debug", MB_OK);
 				}
 			}
 			else
@@ -831,10 +826,7 @@ MessageBox(NULL, "3", "Debug", MB_OK);
 				const DWORD *pKey1 = *((DWORD**)addr);
 				const DWORD *pKey2 = pKey1 + 1;
 				if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
-				{
 					CopyFailed = true;
-MessageBox(NULL, "4", "Debug", MB_OK);
-				}
 				else
 					LoginEncryption::SetKeys( pKey1, pKey2 );
 			}
@@ -846,10 +838,7 @@ MessageBox(NULL, "4", "Debug", MB_OK);
 			const DWORD *pKey1 = *((DWORD**)addr);
 			const DWORD *pKey2 = pKey1 - 1;
 			if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
-			{
 				CopyFailed = true;
-MessageBox(NULL, "5", "Debug", MB_OK);
-			}
 			else
 				LoginEncryption::SetKeys( pKey1, pKey2 );
 		}
