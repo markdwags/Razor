@@ -34,7 +34,8 @@ namespace Assistant
 			PacketHandler.RegisterClientToServerViewer( 0xB1, new PacketViewerCallback( ClientGumpResponse ) );
 			PacketHandler.RegisterClientToServerFilter( 0xBF, new PacketFilterCallback( ExtendedClientCommand ) );
 			//PacketHandler.RegisterClientToServerViewer( 0xD6, new PacketViewerCallback( BatchQueryProperties ) );
-			PacketHandler.RegisterClientToServerViewer( 0xD7, new PacketViewerCallback( ClientEncodedPacket ) );
+            PacketHandler.RegisterClientToServerViewer(0xD7, new PacketViewerCallback(ClientEncodedPacket));
+            PacketHandler.RegisterClientToServerViewer(0xF8, new PacketViewerCallback(CreateCharacter));
 			
 			//Server -> Client handlers
 			PacketHandler.RegisterServerToClientViewer( 0x11, new PacketViewerCallback( MobileStatus ) );
