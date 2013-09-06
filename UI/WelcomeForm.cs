@@ -553,8 +553,12 @@ namespace Assistant
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
 				serverList.SelectedItem = uog;
 			*/
-			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Divinity (T2A)", "login.uodivinity.com" ) );
+			/*serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Divinity (T2A)", "login.uodivinity.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
+				serverList.SelectedItem = uog;*/
+
+			serverList.Items.Add(uog = new UOGamers_SE("Zenvera (UOR)", "login.zenvera.com"));
+			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
 			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Hybrid (UOR)", "login.uogamers.com" ) );
