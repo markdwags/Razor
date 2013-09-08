@@ -526,7 +526,9 @@ namespace Assistant
 			
 			try
 			{
-				WebRequest req = WebRequest.Create( String.Format( "http://www.runuo.com/razor/version.php?id={0}", uid ) );
+				ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
+
+				WebRequest req = WebRequest.Create( String.Format( "https://zenvera.com/razor/version.php?id={0}", uid ) );
 
 				using ( StreamReader reader = new StreamReader( req.GetResponse().GetResponseStream() ) )
 				{

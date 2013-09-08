@@ -118,8 +118,8 @@ namespace Updater
 		}
 		#endregion
 
-		private const string UpdateRAR = "http://www.runuo.com/razor/Razor_Latest.rar";
-		private const string ChangelogRAR = "http://www.runuo.com/razor/changelog.txt";
+		private const string UpdateRAR = "https://zenvera.com/razor/Razor_Latest.rar";
+		private const string ChangelogRAR = "https://zenvera.com/razor/changelog.txt";
 		private Downloader _Downloader;
 
 		private void Updater_Load(object sender, System.EventArgs e)

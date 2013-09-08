@@ -66,6 +66,8 @@ namespace Updater
             Stream s = null;
             FileStream fstr = null;
 
+			ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
+
 			if ( _MessageDownloaded != null )
 			{
 				try

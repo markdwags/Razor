@@ -5642,11 +5642,6 @@ namespace Assistant
 			Config.SetProperty( "AutoFriend", autoFriend.Checked );
 		}
 
-		private void rebirth_Click(object sender, System.EventArgs e)
-		{
-			LaunchBrowser( "http://www.uorebirth.com/" );
-		}
-
 		private void alwaysStealth_CheckedChanged(object sender, System.EventArgs e)
 		{
 			Config.SetProperty( "AlwaysStealth", alwaysStealth.Checked );
