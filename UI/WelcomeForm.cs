@@ -419,6 +419,12 @@ namespace Assistant
 			{
 				RealAddress = addr;
 			}
+
+			public UOGamers_SE(string name, string addr, int port)
+				: base(name, port)
+			{
+				RealAddress = addr;
+			}
 		}
 
 		private class PathElipsis
@@ -561,13 +567,25 @@ namespace Assistant
 			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
-			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Hybrid (UOR)", "login.uogamers.com" ) );
+			serverList.Items.Add(uog = new UOGamers_SE("Second Age (T2A)", "login.uosecondage.com"));
+			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
+				serverList.SelectedItem = uog;
+
+			serverList.Items.Add(uog = new UOGamers_SE("Pandora (HS)", "play.pandorauo.com"));
+			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
+				serverList.SelectedItem = uog;
+
+			serverList.Items.Add(uog = new UOGamers_SE("Skyrim (HS/China)", "skyrim.myuo.info", 7775));
+			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
+				serverList.SelectedItem = uog;
+
+			/*serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Hybrid (UOR)", "login.uogamers.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
 				serverList.SelectedItem = uog;
 
 			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Demise (SE/ML)", "login.uodemise.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
-				serverList.SelectedItem = uog;
+				serverList.SelectedItem = uog;*/
 
 			serverList.Items.Add( uog=new UOGamers_SE( "Electronic Arts/Origin Servers", "login.owo.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && ( lse.Port >= 7775 && lse.Port <= 7778 ) )
