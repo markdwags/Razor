@@ -603,7 +603,7 @@ namespace Assistant
             "AboveNormal",
             "High",
             "Realtime"});
-            this.clientPrio.Location = new System.Drawing.Point(274, 76);
+            this.clientPrio.Location = new System.Drawing.Point(286, 76);
             this.clientPrio.Name = "clientPrio";
             this.clientPrio.Size = new System.Drawing.Size(88, 21);
             this.clientPrio.TabIndex = 60;

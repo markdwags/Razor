@@ -96,7 +96,7 @@ namespace Assistant
 
 			AddProperty( "SmartLastTarget", false );
 			AddProperty( "LastTargTextFlags", true );
-			AddProperty( "SmartCPU", true );
+			AddProperty( "SmartCPU", false );
 			AddProperty( "LTHilight", (int)0 );
 
             AddProperty("RecFolder", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RazorScreenShots"));
