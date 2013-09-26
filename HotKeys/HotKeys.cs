@@ -310,7 +310,8 @@ namespace Assistant
 			m_Root.Tag = (int)LocString.HotKeys;
 
 			TreeNode items = MakeNode( "Items", HKCategory.Items );
-				MakeNode( items, "Potions", HKSubCat.Potions );
+
+            MakeNode( items, "Potions", HKSubCat.Potions );
 
 			MakeNode( "Targets", HKCategory.Targets );
 			

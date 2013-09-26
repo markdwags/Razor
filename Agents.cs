@@ -269,7 +269,9 @@ namespace Assistant
 		
 		private void OnTarget( bool location, Serial serial, Point3D loc, ushort gfx )
 		{
-			Engine.MainWindow.ShowMe();
+            if ( Config.GetBool("AlwaysOnTop") )
+                Engine.MainWindow.ShowMe();
+
 			if ( !location && serial.IsItem )
 			{
 				Item item = World.FindItem( serial );
