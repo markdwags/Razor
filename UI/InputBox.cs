@@ -230,7 +230,7 @@ namespace Assistant
 			this.BringToFront();
 			this.Activate();
 
-			Prompt.Focus();
+			EntryBox.Focus();
 
 			if ( _ShowTimer != null )
 				_ShowTimer.Stop();
