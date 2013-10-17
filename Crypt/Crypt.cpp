@@ -718,6 +718,7 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	mf.AddEntry( CHEATPROC_STR, CHEATPROC_LEN );
 	mf.AddEntry( "CHEAT %s", 8, 0x00500000 );
 	mf.AddEntry( "UO Version %s", 12 );
+	mf.AddEntry( "Multiple Instances Running", 26, 0x00500000 );
 
 	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
 
@@ -905,6 +906,28 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 			{
 				if ( (*((unsigned char*)(addr - 5))) == 0x74 ) // jz?
 					MemoryPatch( addr-5, 0xEB, 1 ); // change to jmp
+				addr += 5; // skip ahead to find the next instance
+			}
+		} while ( addr > 0 && addr < 0x00600000 );
+	}
+
+	addr = mf.GetAddress( "Multiple Instances Running", 26 );
+	if ( addr )
+	{
+		char buff[5];
+		
+		buff[0] = 0x68; // push
+		*((DWORD*)(&buff[1])) = addr;
+
+		addr = 0x00400000;
+		do {
+			addr = MemFinder::Find( buff, 5, addr, 0x00600000 );
+			if ( addr )
+			{
+				char in = (*((unsigned char*)(addr - 4))); 
+				if ( in == 0x74 || in == 0x75 ) { // jz or jnz
+					MemoryPatch( addr-4, 0xEB, 1 ); // change to jmp
+				}
 				addr += 5; // skip ahead to find the next instance
 			}
 		} while ( addr > 0 && addr < 0x00600000 );

@@ -1,4 +1,6 @@
 Razor (v1.0.13.*) Changelog:
+* Remove multiple client instances warning
+
 * Resolve 7.0.33.1 issues.
 * Several minor UI tweaks
 
