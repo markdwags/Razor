@@ -571,14 +571,6 @@ namespace Assistant
 			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
-			serverList.Items.Add(uog = new UOGamers_SE("Pandora (HS)", "play.pandorauo.com"));
-			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
-				serverList.SelectedItem = uog;
-
-			serverList.Items.Add(uog = new UOGamers_SE("Skyrim (HS/China)", "skyrim.myuo.info", 7775));
-			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
-				serverList.SelectedItem = uog;
-
 			/*serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Hybrid (UOR)", "login.uogamers.com" ) );
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
 				serverList.SelectedItem = uog;

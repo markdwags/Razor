@@ -71,6 +71,26 @@ namespace Assistant
 			}
 		}
 
+		public static bool UseNewMobileIncoming
+		{
+			get
+			{
+				if (ClientVersion.Major > 7)
+				{
+					return true;
+				}
+				else if (ClientVersion.Major == 7)
+				{
+					if (ClientVersion.Minor > 0 || ClientVersion.Build >= 33)
+					{
+						return true;
+					}
+				}
+
+				return false;
+			}
+		}
+
 		public static bool UsePostHSChanges {
 			get {
 				if ( ClientVersion.Major > 7 ) {
@@ -81,6 +101,19 @@ namespace Assistant
 					} else if ( ClientVersion.Build >= 9 ) {
 						return true;
 					}
+				}
+
+				return false;
+			}
+		}
+
+		public static bool UsePostSAChanges
+		{
+			get
+			{
+				if (ClientVersion.Major >= 7)
+				{
+					return true;
 				}
 
 				return false;

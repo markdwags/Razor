@@ -1487,23 +1487,42 @@ namespace Assistant
 				item.Container = m;
 
 				ushort id = p.ReadUInt16();
-				item.ItemID = (ushort)(id & 0x3FFF);
+
+				if (Engine.UseNewMobileIncoming)
+					item.ItemID = (ushort)(id & 0xFFFF);
+				else if (Engine.UsePostSAChanges)
+					item.ItemID = (ushort)(id & 0x7FFF);
+				else
+					item.ItemID = (ushort)(id & 0x3FFF);
+
 				item.Layer = (Layer)p.ReadByte();
 
-				if ( (id & 0x8000) != 0 )
+				if (Engine.UseNewMobileIncoming)
 				{
 					item.Hue = p.ReadUInt16();
-					if ( isLT )
+					if (isLT)
 					{
-						p.Seek( -2, SeekOrigin.Current );
-						p.Write( (short)(ltHue&0x3FFF) );
+						p.Seek(-2, SeekOrigin.Current);
+						p.Write((short)(ltHue & 0x3FFF));
 					}
 				}
 				else
 				{
-					item.Hue = 0;
-					if ( isLT )
-						ClientCommunication.SendToClient( new EquipmentItem( item, (ushort)(ltHue&0x3FFF), m.Serial ) );
+					if ((id & 0x8000) != 0)
+					{
+						item.Hue = p.ReadUInt16();
+						if (isLT)
+						{
+							p.Seek(-2, SeekOrigin.Current);
+							p.Write((short)(ltHue & 0x3FFF));
+						}
+					}
+					else
+					{
+						item.Hue = 0;
+						if (isLT)
+							ClientCommunication.SendToClient(new EquipmentItem(item, (ushort)(ltHue & 0x3FFF), m.Serial));
+					}
 				}
 
 				if ( item.Layer == Layer.Backpack && isNew && Config.GetBool( "AutoSearch" ) && m == World.Player && m != null )
