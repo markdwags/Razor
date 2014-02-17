@@ -451,7 +451,7 @@ namespace Assistant
 			UNKNOWN,
 		}
 
-		private const int SHARED_BUFF_SIZE = 262144; // 250k
+		private const int SHARED_BUFF_SIZE = 524288; // 262144; // 250k
 
 		[StructLayout( LayoutKind.Explicit, Size=8+SHARED_BUFF_SIZE )]
 		private struct Buffer

@@ -62,7 +62,7 @@ enum UONET_MESSAGE
 };
 
 //#define SHARED_BUFF_SIZE 0x80000 // Client's buffers are 500k
-#define SHARED_BUFF_SIZE 262144 // 250k
+#define SHARED_BUFF_SIZE 524288 // 262144 // 250k
 struct Buffer
 {
 	int Length;
