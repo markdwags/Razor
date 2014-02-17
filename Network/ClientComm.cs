@@ -871,7 +871,9 @@ namespace Assistant
 		
 		internal static void SetConnectionInfo( IPAddress addr, int port )
 		{
+#pragma warning disable 618
 			m_ServerIP = (uint)addr.Address;
+#pragma warning restore 618
 			m_ServerPort = (ushort)port;
 		}
 		
