@@ -1,4 +1,8 @@
 Razor (v1.0.13.*) Changelog:
+* Cryptographically sign Razor executable and libraries
+* Correct several edge-case crashes
+* Update EA/Origin login information
+
 * Remove multiple client instances warning
 
 * Resolve 7.0.33.1 issues.

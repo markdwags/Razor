@@ -579,7 +579,7 @@ namespace Assistant
 			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
 				serverList.SelectedItem = uog;*/
 
-			serverList.Items.Add( uog=new UOGamers_SE( "Electronic Arts/Origin Servers", "login.owo.com" ) );
+			serverList.Items.Add(uog = new UOGamers_SE("Electronic Arts/Origin Servers", "login.ultimaonline.com"));
 			if ( lse.RealAddress == uog.RealAddress && ( lse.Port >= 7775 && lse.Port <= 7778 ) )
 				serverList.SelectedItem = uog;
 
