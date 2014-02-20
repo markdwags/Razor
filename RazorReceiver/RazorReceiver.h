@@ -5,7 +5,7 @@
 
 #define WM_SET_FWD_HWND WM_USER+4 // Send this message to UO to give it your HWND
 #define WM_PACKETREADY WM_USER+5 // Razor sends these messages when we should call ReceivePacket()
-#define SHARED_BUFF_SIZE 262144 // 250k
+#define SHARED_BUFF_SIZE 524288 // 262144 // 250k
 #define FWD_BUFF_OFFSET 0
 
 class RazorReceiver
