@@ -76,7 +76,6 @@
       </DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>../Output/Loader.dll</OutputFile>
       <ModuleDefinitionFile>Loader.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -85,6 +84,13 @@
       <ImportLibrary>$(OutDir)Loader.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /Q /Y $(OutDir)$(TargetName)$(TargetExt) $(SolutionDir)Output\</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp" />

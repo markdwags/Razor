@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor", "Razor.csproj", "{B24E4FB1-4936-4544-9E88-F3FF9B04FDBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor", "Razor\Razor.csproj", "{B24E4FB1-4936-4544-9E88-F3FF9B04FDBA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Crypt", "Crypt\Crypt.vcxproj", "{B32A4D9E-3AF1-4C75-989D-D62C4E8F08B1}"
 EndProject

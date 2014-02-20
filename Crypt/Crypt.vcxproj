@@ -40,13 +40,10 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <PreBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</PreBuildEventUseInBuild>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
       <Message>Generating Checksum.h...</Message>
@@ -107,7 +104,6 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../Output/Crypt.dll</OutputFile>
       <ModuleDefinitionFile>Crypt.def</ModuleDefinitionFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -117,6 +113,9 @@
       <ImportLibrary>$(OutDir)Crypt.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Q /Y "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Output\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Crypt.cpp" />
@@ -177,7 +176,7 @@
     <None Include="Crypt.def" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Razor.csproj">
+    <ProjectReference Include="..\Razor\Razor.csproj">
       <Project>{b24e4fb1-4936-4544-9e88-f3ff9b04fdba}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

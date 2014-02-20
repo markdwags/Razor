@@ -78,13 +78,15 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>..\Output\RPVOpenStub.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Q /Y "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Output\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="RPVOpenStub.cpp" />
