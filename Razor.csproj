@@ -92,25 +92,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionQueue.cs">
+    <Compile Include="Core\ActionQueue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Agents.cs">
+    <Compile Include="Core\Agents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AVIRec.cs">
+    <Compile Include="Core\AVIRec.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BandageTimer.cs">
+    <Compile Include="Core\BandageTimer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands.cs">
+    <Compile Include="Core\Commands.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Counters.cs">
+    <Compile Include="Core\Counters.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DressList.cs">
+    <Compile Include="Core\DressList.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filters\Death.cs">
@@ -137,7 +137,7 @@
     <Compile Include="Filters\Weather.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Geometry.cs">
+    <Compile Include="Core\Geometry.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HotKeys\Counters.cs">
@@ -158,10 +158,10 @@
     <Compile Include="HotKeys\Undress.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Item.cs">
+    <Compile Include="Core\Item.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ItemID.cs">
+    <Compile Include="Core\ItemID.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Macros\Actions.cs">
@@ -173,10 +173,10 @@
     <Compile Include="Macros\MacroManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Main.cs">
+    <Compile Include="Core\Main.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Map.cs">
+    <Compile Include="Core\Map.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Map\MapWindow.cs">
@@ -191,13 +191,13 @@
     <Compile Include="Map\UOMapRuneButton.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MemHelper.cs">
+    <Compile Include="Core\MemHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobile.cs">
+    <Compile Include="Core\Mobile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MsgQueue.cs">
+    <Compile Include="Core\MsgQueue.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\ClientComm.cs">
@@ -215,19 +215,19 @@
     <Compile Include="Network\Packets.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ObjectPropertyList.cs">
+    <Compile Include="Core\ObjectPropertyList.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PacketRec.cs">
+    <Compile Include="Core\PacketRec.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PasswordMemory.cs">
+    <Compile Include="Core\PasswordMemory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ping.cs">
+    <Compile Include="Core\Ping.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Player.cs">
+    <Compile Include="Core\Player.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -235,31 +235,31 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ScreenCapture.cs">
+    <Compile Include="Core\ScreenCapture.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serial.cs">
+    <Compile Include="Core\Serial.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Spells.cs">
+    <Compile Include="Core\Spells.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StealthSteps.cs">
+    <Compile Include="Core\StealthSteps.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Stuff.cs">
+    <Compile Include="Core\Stuff.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Targeting.cs">
+    <Compile Include="Core\Targeting.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Timer.cs">
+    <Compile Include="Core\Timer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\AddCounter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Core\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Config.cs">
@@ -292,16 +292,16 @@
     <Compile Include="UI\WelcomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UOEntity.cs">
+    <Compile Include="Core\UOEntity.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utility.cs">
+    <Compile Include="Core\Utility.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="World.cs">
+    <Compile Include="Core\World.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ZLib.cs">
+    <Compile Include="Core\ZLib.cs">
       <SubType>Code</SubType>
     </Compile>
     <EmbeddedResource Include="Macros\Actions.resx">
@@ -368,7 +368,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>del $(SolutionDir)Crypt\Checksum.h</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
     <PostBuildEvent>xcopy /Q /Y "$(TargetPath)" "$(SolutionDir)Output\"</PostBuildEvent>
   </PropertyGroup>
 </Project>
