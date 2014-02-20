@@ -60,7 +60,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\Output\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -70,6 +70,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="System">
       <Name>System</Name>
@@ -258,7 +259,7 @@
     <Compile Include="UI\AddCounter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\AssemblyInfo.cs">
+    <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Config.cs">
@@ -344,9 +345,6 @@
     <EmbeddedResource Include="UI\WelcomeForm.resx">
       <DependentUpon>WelcomeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="Output\Language\Razor_lang.enu" />
-    <None Include="Output\spells.def" />
     <Content Include="UI\Lock.ico" />
     <Content Include="UI\UOPS.ico" />
   </ItemGroup>
@@ -371,7 +369,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>del $(SolutionDir)Crypt\Checksum.h</PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /Q /Y "$(TargetPath)" "$(SolutionDir)Output\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

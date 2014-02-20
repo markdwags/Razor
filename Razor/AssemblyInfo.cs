@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -26,7 +27,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersionAttribute("1.0.13.9")]
+[assembly: AssemblyVersionAttribute("1.0.13.10")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -56,3 +57,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
+[assembly: ComVisibleAttribute(false)]

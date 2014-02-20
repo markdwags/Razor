@@ -842,8 +842,9 @@ namespace Assistant
 			SetServer( m_ServerIP, m_ServerPort );
 
 			CommMutex = new Mutex();
+#pragma warning disable 618
 			CommMutex.Handle = GetCommMutex();
-
+#pragma warning restore 618
 // ZIPPY REV 80			FwdMutex = new Mutex( false, String.Format( "UONetFwd_{0:X}", ClientProc.Id ) );
 // ZIPPY REV 80			m_FwdWnd = IntPtr.Zero;
 
