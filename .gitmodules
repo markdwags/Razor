@@ -1,0 +1,3 @@
+[submodule "Razor"]
+	path = Razor
+	url = git@github.com:msturgill/razor.git
