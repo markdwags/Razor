@@ -84,7 +84,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
       <Message>Generating Checksum.h...</Message>
-      <Command>$(ProjectDir)GenerateRazorChecksumH.exe</Command>
+      <Command>del $(SolutionDir)Crypt\Checksum.h
+$(ProjectDir)GenerateRazorChecksumH.exe</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Full</Optimization>
