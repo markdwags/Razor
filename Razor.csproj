@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B24E4FB1-4936-4544-9E88-F3FF9B04FDBA}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>UI\App.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Razor</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Assistant</RootNamespace>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <StartupObject>Assistant.Engine</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>Output\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="Ultima">
+      <HintPath>..\Output\Ultima.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActionQueue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Agents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AVIRec.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BandageTimer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Commands.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Counters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DressList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\Death.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\Filter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\Light.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\MessageFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\SoundFilters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\StaffItems.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\VetRewardGump.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\Weather.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Geometry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\Counters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\HotKeys.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\Misc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\Skills.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\SpecialMoves.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKeys\Undress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Item.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ItemID.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Macros\Actions.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Macros\Macro.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Macros\MacroManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Main.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Map.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Map\MapWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Map\Region.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Map\UOMapControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Map\UOMapRuneButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MemHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mobile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsgQueue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\ClientComm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Handlers.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Packet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\PacketHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Packets.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectPropertyList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PacketRec.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PasswordMemory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Player.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenCapture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serial.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Spells.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StealthSteps.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Stuff.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Targeting.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Timer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\AddCounter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Config.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\HueEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Languages.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\MacroInsertIf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MacroInsertWait.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MessageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Razor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\WelcomeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UOEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="World.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ZLib.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Macros\Actions.resx">
+      <DependentUpon>Actions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Map\MapWindow.resx">
+      <DependentUpon>MapWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Map\UOMapControl.resx">
+      <DependentUpon>UOMapControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AddCounter.resx">
+      <DependentUpon>AddCounter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\App.ico" />
+    <EmbeddedResource Include="UI\HueEntry.resx">
+      <DependentUpon>HueEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MacroInsertIf.resx">
+      <DependentUpon>MacroInsertIf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MacroInsertWait.resx">
+      <DependentUpon>MacroInsertWait.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MessageDialog.resx">
+      <DependentUpon>MessageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Razor.resx">
+      <DependentUpon>Razor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SplashScreen.resx">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\WelcomeForm.resx">
+      <DependentUpon>WelcomeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="UI\Lock.ico" />
+    <Content Include="UI\UOPS.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>del $(SolutionDir)Crypt\Checksum.h</PreBuildEvent>
+    <PostBuildEvent>xcopy /Q /Y "$(TargetPath)" "$(SolutionDir)Output\"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

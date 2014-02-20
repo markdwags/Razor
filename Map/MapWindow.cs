@@ -1,0 +1,420 @@
+using System;
+using System.Drawing;
+using System.Collections;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Threading;
+
+namespace Assistant.MapUO
+{
+	/// <summary>
+	/// Summary description for MapWindow.
+	/// </summary>
+	public class MapWindow : System.Windows.Forms.Form
+	{
+		public const int WM_NCLBUTTONDOWN = 0xA1;
+		public const int HT_CAPTION = 0x2;
+		private Assistant.MapUO.UOMapControl Map;
+
+		[DllImport("user32.dll")]
+		private static extern int SendMessage( IntPtr hWnd, int Msg, int wParam, int lParam );
+		[DllImport("user32.dll")]
+		public static extern bool ReleaseCapture();
+
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.Container components = null;
+
+		public MapWindow()
+		{
+
+			//
+			// Required for Windows Form Designer support
+			//
+			InitializeComponent();
+			this.ContextMenu =  new ContextMenu();
+			this.ContextMenu.Popup += new EventHandler(ContextMenu_Popup);
+			this.Location = new Point( Config.GetInt( "MapX" ), Config.GetInt( "MapY" ) );
+			this.ClientSize = new Size( Config.GetInt( "MapW" ), Config.GetInt( "MapH" ) );
+
+			if ( this.Location.X < -10 || this.Location.Y < -10 )
+				this.Location = Point.Empty;
+
+			if ( this.Width < 50 )
+				this.Width = 50;
+			if ( this.Height < 50 )
+				this.Height = 50;
+
+			//
+			// TODO: Add any constructor code after InitializeComponent call
+			//
+
+			this.Map.FullUpdate();
+			ClientCommunication.SetMapWndHandle( this );
+		}
+
+		public class MapMenuItem : MenuItem
+		{
+			public MapMenuItem ( System.String text , System.EventHandler onClick ) : base( text, onClick )
+			{
+				Tag = null;
+			}
+		}
+
+		void ContextMenu_Popup(object sender, EventArgs e)
+		{
+			ContextMenu cm = this.ContextMenu;
+			cm.MenuItems.Clear();
+			if (World.Player != null && PacketHandlers.Party.Count > 0)
+			{
+				MapMenuItem mi  = new MapMenuItem("You", new EventHandler(FocusChange));
+				mi.Tag = World.Player.Serial;
+				cm.MenuItems.Add(mi);
+				foreach (Serial s in PacketHandlers.Party)
+				{
+					Mobile m = World.FindMobile(s);
+					if (m.Name != null)
+					{
+						mi = new MapMenuItem(m.Name, new EventHandler(FocusChange));
+						mi.Tag = s;
+						if ( this.Map.FocusMobile == m )
+							mi.Checked = true;
+						cm.MenuItems.Add(mi);
+
+					}
+				}
+			}
+			this.ContextMenu = cm;
+		}
+
+
+		private void FocusChange(object sender, System.EventArgs e)
+		{
+			if (sender != null)
+			{
+				MapMenuItem mItem = sender as MapMenuItem;
+
+				if ( mItem != null )
+				{
+					Serial s = (Serial)mItem.Tag;
+					Mobile m = World.FindMobile(s);
+					this.Map.FocusMobile = m;
+                    this.Map.FullUpdate();
+				}
+			}
+		}
+		public static void Initialize()
+		{
+			new ReqPartyLocTimer().Start();
+
+			HotKey.Add( HKCategory.Misc, LocString.ToggleMap, new HotKeyCallback( ToggleMap ) );
+		}
+
+		public static void ToggleMap()
+		{
+			if ( World.Player != null && Engine.MainWindow != null )
+			{
+				if ( Engine.MainWindow.MapWindow == null )
+				{
+					Engine.MainWindow.MapWindow = new Assistant.MapUO.MapWindow();
+					Engine.MainWindow.MapWindow.Show();
+					Engine.MainWindow.MapWindow.BringToFront();
+				}
+				else
+				{
+					if ( Engine.MainWindow.MapWindow.Visible )
+					{
+						Engine.MainWindow.MapWindow.Hide();
+						Engine.MainWindow.BringToFront();
+						ClientCommunication.BringToFront( ClientCommunication.FindUOWindow() );
+					}
+					else
+					{
+						Engine.MainWindow.MapWindow.Show();
+						Engine.MainWindow.MapWindow.BringToFront();
+						Engine.MainWindow.MapWindow.TopMost = true;
+						ClientCommunication.SetMapWndHandle( Engine.MainWindow.MapWindow );
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		protected override void Dispose( bool disposing )
+		{
+			if( disposing )
+			{
+				if(components != null)
+				{
+					components.Dispose();
+				}
+			}
+			base.Dispose( disposing );
+		}
+
+		#region Windows Form Designer generated code
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MapWindow));
+			this.Map = new Assistant.MapUO.UOMapControl();
+			this.SuspendLayout();
+			// 
+			// Map
+			// 
+			this.Map.Active = true;
+			this.Map.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.Map.FocusMobile = null;
+			this.Map.Location = new System.Drawing.Point(0, 0);
+			this.Map.Name = "Map";
+			this.Map.Size = new System.Drawing.Size(296, 272);
+			this.Map.TabIndex = 0;
+			this.Map.TabStop = false;
+			this.Map.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Map_MouseDown);
+			// 
+			// MapWindow
+			// 
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+			this.BackColor = System.Drawing.Color.Black;
+			this.ClientSize = new System.Drawing.Size(292, 266);
+			this.Controls.Add(this.Map);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MaximizeBox = false;
+			this.Name = "MapWindow";
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+			this.Text = "UO Positioning System";
+			this.TopMost = true;
+			this.Resize += new System.EventHandler(this.MapWindow_Resize);
+			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapWindow_MouseDown);
+			this.Closing += new System.ComponentModel.CancelEventHandler(this.MapWindow_Closing);
+			this.Move += new System.EventHandler(this.MapWindow_Move);
+			this.Deactivate += new System.EventHandler(this.MapWindow_Deactivate);
+			this.ResumeLayout(false);
+
+		}
+		#endregion
+
+		public void CheckLocalUpdate( Mobile mob )
+		{
+			if ( mob.InParty )
+                this.Map.FullUpdate();
+		}
+
+		private static Font m_RegFont = new Font( "Courier New", 8 );
+		/*private   int ButtonRows;
+		protected override void OnPaint(PaintEventArgs e)
+		{
+		base.OnPaint(e);
+		if ( PacketHandlers.Party.Count > 0 )
+		{
+		//75x15
+		int xcount = 0;
+		int ycount = 0;
+		Point org = new Point(0, (ButtonRows * 15));
+		if (this.FormBorderStyle == FormBorderStyle.None)
+		{
+		org = new Point(0,  (ButtonRows * 15) + 32);
+		}
+
+		foreach ( Serial s in PacketHandlers.Party )
+		{
+		Mobile mob = World.FindMobile( s );
+		if ( mob == null )
+			continue;
+
+		if (((75 * (xcount+1)) - this.Width) > 0)
+		{
+			xcount = 0;
+			ycount++;
+		}
+		string name = mob.Name;
+		if ( name != null && name.Length > 8)
+		{
+			name = name.Substring(0, 8);
+			name += "...";
+		}
+		else if ( name == null || name.Length < 1 )
+		{
+			name = "(Not Seen)";
+		}
+
+		Point drawPoint = new Point(org.X + (75 * xcount), org.Y + (15*ycount));
+		mob.ButtonPoint = new Point2D( drawPoint.X, drawPoint.Y );
+		e.Graphics.FillRectangle( Brushes.Black, drawPoint.X, drawPoint.Y, 75, 15 );
+		e.Graphics.DrawRectangle(Pens.Gray, drawPoint.X, drawPoint.Y, 75, 15 );
+		e.Graphics.DrawString(name, m_RegFont, Brushes.White, drawPoint);
+		xcount++;
+		}
+		if(ycount > 0)
+		ButtonRows = ycount;
+		}
+
+		}*/
+
+		private class ReqPartyLocTimer : Timer
+		{
+			public ReqPartyLocTimer() : base( TimeSpan.FromSeconds( 1.0 ), TimeSpan.FromSeconds( 1.0 ) )
+			{
+			}
+
+			protected override void OnTick()
+			{
+				// never send this packet to encrypted servers (could lead to OSI detecting razor)
+				if ( ClientCommunication.ServerEncrypted )
+				{
+					Stop();
+					return;
+				}
+
+				if ( Engine.MainWindow == null || Engine.MainWindow.MapWindow == null || !Engine.MainWindow.MapWindow.Visible )
+					return; // don't bother when the map window isnt visible
+
+				if ( World.Player != null && PacketHandlers.Party.Count > 0 )
+				{
+					if ( PacketHandlers.SpecialPartySent > PacketHandlers.SpecialPartyReceived )
+					{
+						// If we sent more than we received then the server stopped responding
+						// in that case, wait a long while before trying again
+						PacketHandlers.SpecialPartySent = PacketHandlers.SpecialPartyReceived = 0;
+						this.Interval = TimeSpan.FromSeconds( 5.0 );
+						return;
+					}
+					else
+					{
+						this.Interval = TimeSpan.FromSeconds( 1.0 );
+					}
+
+					bool send = false;
+					foreach ( Serial s in PacketHandlers.Party )
+					{
+						Mobile m = World.FindMobile( s );
+
+						if ( m == World.Player )
+							continue;
+
+						if ( m == null || Utility.Distance( World.Player.Position, m.Position ) > World.Player.VisRange || !m.Visible )
+						{
+							send = true;
+							break;
+						}
+					}
+
+					if ( send )
+					{
+						PacketHandlers.SpecialPartySent++;
+						ClientCommunication.SendToServer( new QueryPartyLocs() );
+					}
+				}
+				else
+				{
+					this.Interval = TimeSpan.FromSeconds( 1.0 );
+				}
+			}
+		}
+
+		private void RequestPartyLocations()
+		{
+			if ( World.Player != null && PacketHandlers.Party.Count > 0 )
+				ClientCommunication.SendToServer(new QueryPartyLocs());
+		}
+
+		public void UpdateMap()
+		{
+			ClientCommunication.SetMapWndHandle( this );
+			this.Map.UpdateMap();
+		}
+
+		private void MapWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if ( Assistant.Engine.Running )
+			{
+				e.Cancel = true;
+				this.Hide();
+				Engine.MainWindow.BringToFront();
+				ClientCommunication.BringToFront( ClientCommunication.FindUOWindow() );
+			}
+		}
+
+		public void PlayerMoved()
+		{
+			if ( this.Visible && this.Map != null )
+				this.Map.FullUpdate();
+		}
+
+		private void MapWindow_Resize(object sender, System.EventArgs e)
+		{
+			this.Map.Height = this.Height;
+			this.Map.Width = this.Width;
+
+			if ( this.Width < 50 )
+				this.Width = 50;
+			if ( this.Height < 50 )
+				this.Height = 50;
+
+			this.Refresh();
+
+			Config.SetProperty( "MapX", this.Location.X );
+			Config.SetProperty( "MapY", this.Location.Y );
+			Config.SetProperty( "MapW", this.ClientSize.Width );
+			Config.SetProperty( "MapH", this.ClientSize.Height );
+		}
+
+		private void MapWindow_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+		{
+			if (e.Clicks == 2)
+			{
+				if ( this.FormBorderStyle == FormBorderStyle.None )
+					this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
+				else
+					this.FormBorderStyle = FormBorderStyle.None;
+			}
+
+			if (e.Button == MouseButtons.Left)
+			{
+				ReleaseCapture();
+				SendMessage( Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0 );
+				/*foreach ( Serial s in PacketHandlers.Party )
+				{       
+				Mobile m = World.FindMobile( s );
+				if ( m == null )
+					continue;
+				Rectangle rec = new Rectangle( m.ButtonPoint.X, m.ButtonPoint.Y, 75, 15 );
+				if ( rec.Contains( e.X, e.Y ) )
+				{
+					this.Map.FocusMobile = m;
+					this.Map.Refresh();
+				}
+				}*/
+			}
+			this.Map.MapClick(e);
+		}
+
+		private void Map_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+		{
+			MapWindow_MouseDown(sender, e);
+		}
+
+		private void MapWindow_Move(object sender, System.EventArgs e)
+		{
+			Config.SetProperty( "MapX", this.Location.X );
+			Config.SetProperty( "MapY", this.Location.Y );
+			Config.SetProperty( "MapW", this.ClientSize.Width );
+			Config.SetProperty( "MapH", this.ClientSize.Height );
+		}
+
+		private void MapWindow_Deactivate(object sender, System.EventArgs e)
+		{
+			if ( this.TopMost )
+				this.TopMost = false;
+		}
+	}
+}
