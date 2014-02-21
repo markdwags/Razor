@@ -3,9 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor", "Razor\Razor.csproj", "{B24E4FB1-4936-4544-9E88-F3FF9B04FDBA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5D66ACE6-B2A4-400F-B5A5-24525959AC5C} = {5D66ACE6-B2A4-400F-B5A5-24525959AC5C}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Crypt", "Crypt\Crypt.vcxproj", "{B32A4D9E-3AF1-4C75-989D-D62C4E8F08B1}"
 EndProject
@@ -116,7 +113,6 @@ Global
 		{5D66ACE6-B2A4-400F-B5A5-24525959AC5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D66ACE6-B2A4-400F-B5A5-24525959AC5C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D66ACE6-B2A4-400F-B5A5-24525959AC5C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5D66ACE6-B2A4-400F-B5A5-24525959AC5C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5D66ACE6-B2A4-400F-B5A5-24525959AC5C}.Release|Win32.ActiveCfg = Release|Any CPU
 		{5D66ACE6-B2A4-400F-B5A5-24525959AC5C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection

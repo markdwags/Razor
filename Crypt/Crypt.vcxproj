@@ -84,8 +84,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
       <Message>Generating Checksum.h...</Message>
-      <Command>xcopy /Q /Y "$(SolutionDir)UltimaSDK\bin\Release\Ultima.dll" "$(SolutionDir)Release\"
-xcopy /Q /Y "$(SolutionDir)Updater\bin\Release\Updater.exe" "$(SolutionDir)Release\"
+      <Command>xcopy /Q /Y "$(SolutionDir)Updater\bin\Release\Updater.exe" "$(SolutionDir)Release\"
 xcopy /Q /Y "$(SolutionDir)Razor\bin\Release\Razor.exe" "$(SolutionDir)Release\"
 
 del $(SolutionDir)Crypt\Checksum.h
