@@ -84,9 +84,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /Q /Y "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Output\"</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="RPVOpenStub.cpp" />

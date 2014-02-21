@@ -10,7 +10,7 @@ namespace GenerateRazorChecksumH
         {
             using (StreamWriter sw = new StreamWriter("Checksum.h", false))
             {
-                byte[] data = File.ReadAllBytes("..\\Output\\Razor.exe");
+                byte[] data = File.ReadAllBytes("..\\Release\\Razor.exe");
 
                 MD5CryptoServiceProvider x = new MD5CryptoServiceProvider();
                 byte[] hash = x.ComputeHash(data);
@@ -30,7 +30,7 @@ namespace GenerateRazorChecksumH
 
                 sw.WriteLine("};");
 
-                byte[] data2 = File.ReadAllBytes("..\\Output\\Ultima.dll");
+                byte[] data2 = File.ReadAllBytes("..\\Release\\Ultima.dll");
 
                 MD5CryptoServiceProvider x2 = new MD5CryptoServiceProvider();
                 byte[] hash2 = x2.ComputeHash(data2);

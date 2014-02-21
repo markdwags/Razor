@@ -84,8 +84,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
       <Message>Generating Checksum.h...</Message>
-      <Command>xcopy /Q /Y "$(SolutionDir)\Ultima\bin\Release\Ultima.dll" "$(SolutionDir)Output\"
-xcopy /Q /Y "$(SolutionDir)\Razor\bin\Release\Razor.exe" "$(SolutionDir)Output\"
+      <Command>xcopy /Q /Y "$(SolutionDir)UltimaSDK\bin\Release\Ultima.dll" "$(SolutionDir)Release\"
+xcopy /Q /Y "$(SolutionDir)Updater\bin\Release\Updater.exe" "$(SolutionDir)Release\"
+xcopy /Q /Y "$(SolutionDir)Razor\bin\Release\Razor.exe" "$(SolutionDir)Release\"
 
 del $(SolutionDir)Crypt\Checksum.h
 $(ProjectDir)GenerateRazorChecksumH.exe</Command>
@@ -117,9 +118,7 @@ $(ProjectDir)GenerateRazorChecksumH.exe</Command>
       <ImportLibrary>$(OutDir)Crypt.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /Q /Y "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Output\"</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Crypt.cpp" />
