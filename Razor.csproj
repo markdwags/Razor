@@ -88,8 +88,7 @@
       <Name>System.XML</Name>
     </Reference>
     <Reference Include="Ultima">
-      <HintPath>..\Output\Ultima.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\UltimaSDK\bin\Release\Ultima.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
