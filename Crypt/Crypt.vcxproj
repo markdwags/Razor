@@ -84,7 +84,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
       <Message>Generating Checksum.h...</Message>
-      <Command>del $(SolutionDir)Crypt\Checksum.h
+      <Command>xcopy /Q /Y "$(SolutionDir)\Ultima\bin\Release\Ultima.dll" "$(SolutionDir)Output\"
+xcopy /Q /Y "$(SolutionDir)\Razor\bin\Release\Razor.exe" "$(SolutionDir)Output\"
+
+del $(SolutionDir)Crypt\Checksum.h
 $(ProjectDir)GenerateRazorChecksumH.exe</Command>
     </PreBuildEvent>
     <ClCompile>
