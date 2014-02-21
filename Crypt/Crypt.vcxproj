@@ -170,14 +170,12 @@ $(ProjectDir)GenerateRazorChecksumH.exe</Command>
     <ClInclude Include="PacketInfo.h" />
     <ClInclude Include="platform.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="twofish.h" />
     <ClInclude Include="uo_huffman.h" />
     <ClInclude Include="UOArt.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Crypt.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Crypt.def" />
@@ -187,6 +185,12 @@ $(ProjectDir)GenerateRazorChecksumH.exe</Command>
       <Project>{b24e4fb1-4936-4544-9e88-f3ff9b04fdba}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="App.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Crypt.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
