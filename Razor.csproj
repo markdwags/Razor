@@ -89,6 +89,7 @@
     </Reference>
     <Reference Include="Ultima">
       <HintPath>..\Output\Ultima.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +371,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>xcopy /Q /Y "$(TargetPath)" "$(SolutionDir)Output\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
