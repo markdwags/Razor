@@ -95,7 +95,6 @@ namespace Assistant
 		private System.Windows.Forms.TreeView hotkeyTree;
 		private System.Windows.Forms.TabPage screenshotTab;
 		private System.Windows.Forms.TabPage statusTab;
-		private System.Windows.Forms.Label statCol1;
 		private System.Windows.Forms.Button newMacro;
 		private System.Windows.Forms.Button delMacro;
 		private System.Windows.Forms.GroupBox macroActGroup;
@@ -234,6 +233,7 @@ namespace Assistant
 		private System.Windows.Forms.CheckBox chkPartyOverhead;
 		private Label btcLabel;
 		private TextBox textBox1;
+		private TextBox statusBox;
 
 		private bool m_CanClose = true;
 
@@ -504,10 +504,10 @@ namespace Assistant
 			this.issuesLink = new System.Windows.Forms.LinkLabel();
 			this.homeLink = new System.Windows.Forms.LinkLabel();
 			this.wikiLink = new System.Windows.Forms.LinkLabel();
-			this.statCol1 = new System.Windows.Forms.Label();
 			this.timerTimer = new System.Windows.Forms.Timer(this.components);
 			this.btcLabel = new System.Windows.Forms.Label();
 			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.statusBox = new System.Windows.Forms.TextBox();
 			this.tabs.SuspendLayout();
 			this.generalTab.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.lockBox)).BeginInit();
@@ -2567,13 +2567,13 @@ namespace Assistant
 			// 
 			// statusTab
 			// 
+			this.statusTab.Controls.Add(this.statusBox);
 			this.statusTab.Controls.Add(this.textBox1);
 			this.statusTab.Controls.Add(this.btcLabel);
 			this.statusTab.Controls.Add(this.features);
 			this.statusTab.Controls.Add(this.issuesLink);
 			this.statusTab.Controls.Add(this.homeLink);
 			this.statusTab.Controls.Add(this.wikiLink);
-			this.statusTab.Controls.Add(this.statCol1);
 			this.statusTab.Location = new System.Drawing.Point(4, 40);
 			this.statusTab.Name = "statusTab";
 			this.statusTab.Size = new System.Drawing.Size(416, 191);
@@ -2628,13 +2628,6 @@ namespace Assistant
 			this.wikiLink.TextAlign = System.Drawing.ContentAlignment.TopCenter;
 			this.wikiLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.wikiLink_LinkClicked);
 			// 
-			// statCol1
-			// 
-			this.statCol1.Location = new System.Drawing.Point(4, 8);
-			this.statCol1.Name = "statCol1";
-			this.statCol1.Size = new System.Drawing.Size(240, 178);
-			this.statCol1.TabIndex = 0;
-			// 
 			// timerTimer
 			// 
 			this.timerTimer.Enabled = true;
@@ -2656,9 +2649,21 @@ namespace Assistant
 			// 
 			this.textBox1.Location = new System.Drawing.Point(256, 27);
 			this.textBox1.Name = "textBox1";
+			this.textBox1.ReadOnly = true;
 			this.textBox1.Size = new System.Drawing.Size(148, 20);
 			this.textBox1.TabIndex = 11;
 			this.textBox1.Text = "1GdrG1uXDTjXgZe7seMic5FgFDKLLJVEuj";
+			// 
+			// statusBox
+			// 
+			this.statusBox.BackColor = System.Drawing.SystemColors.Control;
+			this.statusBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.statusBox.Location = new System.Drawing.Point(4, 8);
+			this.statusBox.Multiline = true;
+			this.statusBox.Name = "statusBox";
+			this.statusBox.ReadOnly = true;
+			this.statusBox.Size = new System.Drawing.Size(240, 178);
+			this.statusBox.TabIndex = 12;
 			// 
 			// MainForm
 			// 
@@ -3073,16 +3078,16 @@ namespace Assistant
 			if ( ClientCommunication.ConnectionStart != DateTime.MinValue )
 				time = (int)((DateTime.Now - ClientCommunication.ConnectionStart).TotalSeconds);
 
-			statCol1.Text = Language.Format( LocString.RazorStatus1, 
-				m_Ver, 
-				Utility.FormatSize( System.GC.GetTotalMemory( false ) ),
-				Utility.FormatSize( m_OutPrev ), Utility.FormatSize( (long)((m_OutPrev - ps)) ),
-				Utility.FormatSize( m_InPrev ), Utility.FormatSize( (long)((m_InPrev - pr)) ),
-				Utility.FormatTime( time ),
-				( World.Player != null ? (uint)World.Player.Serial : 0 ),
-				( World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0 ),
+			statusBox.Lines = Language.Format(LocString.RazorStatus1,
+				m_Ver,
+				Utility.FormatSize(System.GC.GetTotalMemory(false)),
+				Utility.FormatSize(m_OutPrev), Utility.FormatSize((long)((m_OutPrev - ps))),
+				Utility.FormatSize(m_InPrev), Utility.FormatSize((long)((m_InPrev - pr))),
+				Utility.FormatTime(time),
+				(World.Player != null ? (uint)World.Player.Serial : 0),
+				(World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0),
 				World.Items.Count,
-				World.Mobiles.Count );
+				World.Mobiles.Count).Split('\n');
 
 			if ( PacketHandlers.PlayCharTime < DateTime.Now && PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 30 ) > DateTime.Now )
 			{
