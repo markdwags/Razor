@@ -1,4 +1,6 @@
 Razor (v1.0.13.*) Changelog:
+* Minor server list entry fixes
+
 * Player coordinates added to status tab display
 * Status information can now be selected and copied
 * Default server list entries were updated
