@@ -2583,21 +2583,21 @@ namespace Assistant
 			// features
 			// 
 			this.features.Cursor = System.Windows.Forms.Cursors.No;
-			this.features.Location = new System.Drawing.Point(248, 104);
+			this.features.Location = new System.Drawing.Point(195, 104);
 			this.features.Multiline = true;
 			this.features.Name = "features";
 			this.features.ReadOnly = true;
 			this.features.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.features.Size = new System.Drawing.Size(164, 82);
+			this.features.Size = new System.Drawing.Size(217, 82);
 			this.features.TabIndex = 9;
 			this.features.Visible = false;
 			// 
 			// issuesLink
 			// 
 			this.issuesLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-			this.issuesLink.Location = new System.Drawing.Point(253, 85);
+			this.issuesLink.Location = new System.Drawing.Point(224, 81);
 			this.issuesLink.Name = "issuesLink";
-			this.issuesLink.Size = new System.Drawing.Size(160, 16);
+			this.issuesLink.Size = new System.Drawing.Size(164, 16);
 			this.issuesLink.TabIndex = 8;
 			this.issuesLink.TabStop = true;
 			this.issuesLink.Text = "Issue Tracker";
@@ -2607,9 +2607,9 @@ namespace Assistant
 			// homeLink
 			// 
 			this.homeLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-			this.homeLink.Location = new System.Drawing.Point(250, 53);
+			this.homeLink.Location = new System.Drawing.Point(224, 49);
 			this.homeLink.Name = "homeLink";
-			this.homeLink.Size = new System.Drawing.Size(160, 16);
+			this.homeLink.Size = new System.Drawing.Size(164, 16);
 			this.homeLink.TabIndex = 7;
 			this.homeLink.TabStop = true;
 			this.homeLink.Text = "Razor Homepage";
@@ -2619,9 +2619,9 @@ namespace Assistant
 			// wikiLink
 			// 
 			this.wikiLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-			this.wikiLink.Location = new System.Drawing.Point(252, 69);
+			this.wikiLink.Location = new System.Drawing.Point(224, 65);
 			this.wikiLink.Name = "wikiLink";
-			this.wikiLink.Size = new System.Drawing.Size(160, 16);
+			this.wikiLink.Size = new System.Drawing.Size(164, 16);
 			this.wikiLink.TabIndex = 6;
 			this.wikiLink.TabStop = true;
 			this.wikiLink.Text = "Razor Wiki";
@@ -2637,9 +2637,9 @@ namespace Assistant
 			// btcLabel
 			// 
 			this.btcLabel.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btcLabel.Location = new System.Drawing.Point(256, 8);
+			this.btcLabel.Location = new System.Drawing.Point(224, 8);
 			this.btcLabel.Name = "btcLabel";
-			this.btcLabel.Size = new System.Drawing.Size(148, 15);
+			this.btcLabel.Size = new System.Drawing.Size(164, 15);
 			this.btcLabel.TabIndex = 10;
 			this.btcLabel.Text = "Donate BTC to Razor";
 			this.btcLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -2647,22 +2647,24 @@ namespace Assistant
 			// 
 			// textBox1
 			// 
-			this.textBox1.Location = new System.Drawing.Point(256, 27);
+			this.textBox1.Location = new System.Drawing.Point(195, 26);
 			this.textBox1.Name = "textBox1";
 			this.textBox1.ReadOnly = true;
-			this.textBox1.Size = new System.Drawing.Size(148, 20);
+			this.textBox1.Size = new System.Drawing.Size(217, 20);
 			this.textBox1.TabIndex = 11;
 			this.textBox1.Text = "1GdrG1uXDTjXgZe7seMic5FgFDKLLJVEuj";
+			this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// statusBox
 			// 
 			this.statusBox.BackColor = System.Drawing.SystemColors.Control;
 			this.statusBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.statusBox.HideSelection = false;
 			this.statusBox.Location = new System.Drawing.Point(4, 8);
 			this.statusBox.Multiline = true;
 			this.statusBox.Name = "statusBox";
 			this.statusBox.ReadOnly = true;
-			this.statusBox.Size = new System.Drawing.Size(240, 178);
+			this.statusBox.Size = new System.Drawing.Size(185, 178);
 			this.statusBox.TabIndex = 12;
 			// 
 			// MainForm
@@ -3078,16 +3080,22 @@ namespace Assistant
 			if ( ClientCommunication.ConnectionStart != DateTime.MinValue )
 				time = (int)((DateTime.Now - ClientCommunication.ConnectionStart).TotalSeconds);
 
-			statusBox.Lines = Language.Format(LocString.RazorStatus1,
-				m_Ver,
-				Utility.FormatSize(System.GC.GetTotalMemory(false)),
-				Utility.FormatSize(m_OutPrev), Utility.FormatSize((long)((m_OutPrev - ps))),
-				Utility.FormatSize(m_InPrev), Utility.FormatSize((long)((m_InPrev - pr))),
-				Utility.FormatTime(time),
-				(World.Player != null ? (uint)World.Player.Serial : 0),
-				(World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0),
-				World.Items.Count,
-				World.Mobiles.Count).Split('\n');
+			if (String.IsNullOrEmpty(statusBox.SelectedText))
+			{
+				statusBox.Lines = Language.Format(LocString.RazorStatus1,
+					m_Ver,
+					Utility.FormatSize(System.GC.GetTotalMemory(false)),
+					Utility.FormatSize(m_OutPrev), Utility.FormatSize((long)((m_OutPrev - ps))),
+					Utility.FormatSize(m_InPrev), Utility.FormatSize((long)((m_InPrev - pr))),
+					Utility.FormatTime(time),
+					(World.Player != null ? (uint)World.Player.Serial : 0),
+					(World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0),
+					World.Items.Count,
+					World.Mobiles.Count).Split('\n');
+
+				if (World.Player != null)
+					statusBox.AppendText(String.Format("\r\nCoordinates: {0} {1} {2}", World.Player.Position.X, World.Player.Position.Y, World.Player.Position.Z));
+			}
 
 			if ( PacketHandlers.PlayCharTime < DateTime.Now && PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 30 ) > DateTime.Now )
 			{

@@ -554,30 +554,25 @@ namespace Assistant
 				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, pval );
 			}
 
-			/*
-			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Rebirth (PreT2A)", "login.uorebirth.com" ) );
-			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
-				serverList.SelectedItem = uog;
-			*/
-			/*serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Divinity (T2A)", "login.uodivinity.com" ) );
-			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
-				serverList.SelectedItem = uog;*/
-
 			serverList.Items.Add(uog = new UOGamers_SE("Zenvera (UOR)", "login.zenvera.com"));
-			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
+			if (serverList.SelectedItem == null || lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
 			serverList.Items.Add(uog = new UOGamers_SE("Second Age (T2A)", "login.uosecondage.com"));
 			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
-			/*serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Hybrid (UOR)", "login.uogamers.com" ) );
-			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
+			serverList.Items.Add(uog = new UOGamers_SE("An Corp (T2A)", "login.uoancorp.com"));
+			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
-			serverList.Items.Add( uog=new UOGamers_SE( "UOGamers: Demise (SE/ML)", "login.uodemise.com" ) );
-			if ( lse.RealAddress == uog.RealAddress && lse.Port == 2593 )
-				serverList.SelectedItem = uog;*/
+			serverList.Items.Add(uog = new UOGamers_SE("Forever (P16)", "login.uoancorp.com"));
+			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
+				serverList.SelectedItem = uog;
+
+			serverList.Items.Add(uog = new UOGamers_SE("Pandora (HS)", "play.pandorauo.com"));
+			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
+				serverList.SelectedItem = uog;
 
 			serverList.Items.Add(uog = new UOGamers_SE("Electronic Arts/Origin Servers", "login.ultimaonline.com"));
 			if ( lse.RealAddress == uog.RealAddress && ( lse.Port >= 7775 && lse.Port <= 7778 ) )
