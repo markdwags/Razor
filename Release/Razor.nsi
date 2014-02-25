@@ -103,7 +103,7 @@ Section "Razor"
     CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
     CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Razor.lnk" "$INSTDIR\Razor.exe"
     ;CreateShortcut "$SMPROGRAMS\$STARTMENU_FOLDER\RPV Editor (Alpha).lnk" "$INSTDIR\RPVEditor.exe"
-    CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Visit Razor's Website.lnk" "http://www.runuo.com/razor/"
+    CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Visit Razor's Website.lnk" "https://github.com/msturgill/razor"
     CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
     CreateShortcut "$DESKTOP\Razor.lnk" "$INSTDIR\Razor.exe"
   

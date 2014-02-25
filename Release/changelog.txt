@@ -1,4 +1,12 @@
 Razor (v1.0.13.*) Changelog:
+* Player coordinates added to status tab display
+* Status information can now be selected and copied
+* Default server list entries were updated
+* Minor UI tweaks
+* Remove PayPal links on splash and status screens
+* Add BTC address for Razor donations
+* Updated project links to https://github.com/msturgill/razor
+
 * Cryptographically sign Razor executable and libraries
 * Correct several edge-case crashes
 * Update EA/Origin login information
