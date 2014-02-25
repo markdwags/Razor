@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle("Razor")]
-[assembly: AssemblyDescription("The cutting edge Ultima Online Assistant.")]
+[assembly: AssemblyDescription("Ultima Online Assistant Tool")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Razor")]
@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersionAttribute("1.0.13.11")]
+[assembly: AssemblyVersionAttribute("1.0.13.12")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

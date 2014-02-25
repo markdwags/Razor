@@ -566,15 +566,15 @@ namespace Assistant
 			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
-			serverList.Items.Add(uog = new UOGamers_SE("Forever (P16)", "login.uoforever.com"));
-			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
+			serverList.Items.Add(uog = new UOGamers_SE("Forever (P16)", "login.uoforever.com", 2599));
+			if (lse.RealAddress == uog.RealAddress && lse.Port == 2599)
 				serverList.SelectedItem = uog;
 
 			serverList.Items.Add(uog = new UOGamers_SE("Pandora (HS)", "play.pandorauo.com"));
 			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
-			serverList.Items.Add(uog = new UOGamers_SE("Electronic Arts/Origin Servers", "login.ultimaonline.com"));
+			serverList.Items.Add(uog = new UOGamers_SE("Electronic Arts/Origin Servers", "login.ultimaonline.com", 7775));
 			if ( lse.RealAddress == uog.RealAddress && ( lse.Port >= 7775 && lse.Port <= 7778 ) )
 				serverList.SelectedItem = uog;
 
