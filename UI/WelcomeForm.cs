@@ -677,13 +677,17 @@ namespace Assistant
 			{
 				if ( serverList.SelectedItem is UOGamers_SE )
 				{
-					int port = 2593;
+					int port = ((UOGamers_SE)serverList.SelectedItem).Port;
+
 					string addr = ((UOGamers_SE)serverList.SelectedItem).RealAddress;
-					if ( addr == "login.owo.com" )
+
+					if ( addr == "login.ultimaonline.com" )
 					{
-						port = 7776;
 						ClientCommunication.ServerEncrypted = true;
 					}
+
+					if (port == 0)
+						port = 2593; // runuo default
 
 					se = new ServerEntry( addr, port );
 				}
