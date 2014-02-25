@@ -566,7 +566,7 @@ namespace Assistant
 			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
-			serverList.Items.Add(uog = new UOGamers_SE("Forever (P16)", "login.uoancorp.com"));
+			serverList.Items.Add(uog = new UOGamers_SE("Forever (P16)", "login.uoforever.com"));
 			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
 				serverList.SelectedItem = uog;
 
