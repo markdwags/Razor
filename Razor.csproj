@@ -89,10 +89,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="Ultima, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Release\Ultima.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\ActionQueue.cs">
@@ -371,6 +367,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Razor.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UltimaSDK\Ultima.csproj">
+      <Project>{5d66ace6-b2a4-400f-b5a5-24525959ac5c}</Project>
+      <Name>Ultima</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

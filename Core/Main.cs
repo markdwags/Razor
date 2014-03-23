@@ -358,8 +358,8 @@ namespace Assistant
 				}
 			}
 
-			if ( dataDir != null && Directory.Exists( dataDir ) )
-				Ultima.Client.Directories.Insert( 0, dataDir );
+			if (dataDir != null && Directory.Exists(dataDir))
+				Ultima.Files.SetMulPath(dataDir);
 
 			Language.LoadCliLoc();
 
@@ -384,9 +384,9 @@ namespace Assistant
 				SplashScreen.Message = LocString.LoadingClient;
 				
 				if ( launch == ClientLaunch.TwoD )
-					clientPath = Ultima.Client.GetFilePath( "client.exe" );
+					clientPath = Ultima.Files.GetFilePath("client.exe");
 				else if ( launch == ClientLaunch.ThirdDawn )
-					clientPath = Ultima.Client.GetFilePath( "uotd.exe" );
+					clientPath = Ultima.Files.GetFilePath( "uotd.exe" );
 
 				if ( !advCmdLine )
 					ClientCommunication.ClientEncrypted = patch;
@@ -442,7 +442,7 @@ namespace Assistant
                 ClientCommunication.SetConnectionInfo(IPAddress.Any, 0);
 			}
 
-			Ultima.MultiComponentList.PostHSFormat = UsePostHSChanges;
+			Ultima.Multis.PostHSFormat = UsePostHSChanges;
 
 			if ( Utility.Random(4) != 0 )
 				SplashScreen.Message = LocString.WaitingForClient;

@@ -737,7 +737,7 @@ namespace Assistant
 				//"Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.OrigPlayerName
 				//"Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.Player.Name );
 				//"Desktop/{0}/Multicache.dat", World.AccountName );
-				string path = Ultima.Client.GetFilePath( String.Format( "Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.OrigPlayerName ) );
+				string path = Ultima.Files.GetFilePath(String.Format("Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.OrigPlayerName));
 				if ( path == null || path == "" || !File.Exists( path ) )
 					return;
 

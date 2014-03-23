@@ -50,7 +50,7 @@ namespace Assistant
 				}
 				catch
 				{
-					return new Ultima.ItemData( "", Ultima.TileFlag.None, 0, 0, 0, 0, 0, 0 );
+					return new Ultima.ItemData("", Ultima.TileFlag.None, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 				}
 			}
 		}

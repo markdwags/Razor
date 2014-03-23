@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Collections;
 using System.Windows.Forms;
+using Ultima;
 
 namespace Assistant
 {
@@ -438,10 +439,10 @@ namespace Assistant
 		public static string GetString( int key )
 		{
 			string value = null;
-			if ( key > (uint)LocString.__Start && key < (uint)LocString.__End )
+			if (key > (uint)LocString.__Start && key < (uint)LocString.__End)
 				value = m_Strings[(LocString)key] as string;
-			else if ( m_CliLoc != null )
-				value = m_CliLoc.Table[key] as string;
+			else if (m_CliLoc != null)
+				value = m_CliLoc.GetString(key);
 			
 			if ( value == null )
 				value = String.Format( "LanguageString \"{0}\" not found!", key );
@@ -466,8 +467,8 @@ namespace Assistant
 		public static string Skill2Str( int skill )
 		{
 			string value = null;
-			if ( m_CliLoc != null )
-				value = m_CliLoc.Table[(1044060+skill)] as string;
+			if (m_CliLoc != null)
+				value = m_CliLoc.GetString(1044060 + skill);
 			if ( value == null )
 				value = String.Format( "LanguageString \"{0}\" not found!", 1044060+skill );
 			return value;
@@ -624,14 +625,14 @@ namespace Assistant
 				string fileName = "[CliLoc]";
 				try
 				{
-					fileName = Ultima.Client.GetFilePath( String.Format( "cliloc.{0}", m_CliLocName ) );
+					fileName = Ultima.Files.GetFilePath( String.Format( "cliloc.{0}", m_CliLocName ) );
 				}
 				catch{}
 
 				new MessageDialog( "Error loading CliLoc", true, "There was an exception while attempting to load '{0}':\n{1}", fileName, e ).ShowDialog( Engine.ActiveWindow );
 			}
 
-			if ( m_CliLoc == null || m_CliLoc.Entries == null || m_CliLoc.Entries.Length < 10 )	
+			if ( m_CliLoc == null || m_CliLoc.Entries == null || m_CliLoc.Entries.Count < 10 )	
 			{
 				m_CliLoc = null;
 				if ( m_CliLocName != "enu" )
@@ -649,24 +650,39 @@ namespace Assistant
 
 		public static string GetCliloc( int num )
 		{
-			if ( m_CliLoc != null )
-				return m_CliLoc.Format( num );
+			if (m_CliLoc == null)
+				return String.Empty;
+
+			StringEntry se = m_CliLoc.GetEntry(num);
+
+			if ( se != null )
+				return se.Format();
 			else
 				return string.Empty;
 		}
 
 		public static string ClilocFormat( int num, string argstr )
 		{
-			if ( m_CliLoc != null )
-				return m_CliLoc.SplitFormat( num, argstr );
+			if (m_CliLoc == null)
+				return String.Empty;
+
+			StringEntry se = m_CliLoc.GetEntry(num);
+
+			if (se != null)
+				return se.SplitFormat(argstr);
 			else
 				return string.Empty;
 		}
 
 		public static string ClilocFormat( int num, params object[] args )
 		{
-			if ( m_CliLoc != null )
-				return m_CliLoc.Format( num, args );
+			if (m_CliLoc == null)
+				return String.Empty;
+
+			StringEntry se = m_CliLoc.GetEntry(num);
+
+			if (se != null)
+				return se.Format(args);
 			else
 				return string.Empty;
 		}

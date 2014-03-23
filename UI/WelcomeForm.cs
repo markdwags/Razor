@@ -366,7 +366,7 @@ namespace Assistant
 				
 					try 
 					{
-						string fileName = Ultima.Client.GetFilePath( "Login.cfg" );
+						string fileName = Ultima.Files.GetFilePath("Login.cfg");
 						if ( fileName == null || fileName == "" )
 							return;
 						string server = null, port = null;

@@ -850,11 +850,11 @@ namespace Assistant
 
 			try
 			{
-				string path = Ultima.Client.GetFilePath( "art.mul" );
+				string path = Ultima.Files.GetFilePath("art.mul");
 				if ( path != null && path != string.Empty )
 					SetDataPath( Path.GetDirectoryName( path ) );
 				else
-					SetDataPath( Path.GetDirectoryName( (string)Ultima.Client.Directories[0] ) );
+					SetDataPath(Path.GetDirectoryName(Ultima.Files.Directory));
 			}
 			catch
 			{
@@ -1203,7 +1203,7 @@ namespace Assistant
 
 					try
 					{
-						SetDataPath( (string)Ultima.Client.Directories[0] );
+						SetDataPath(Ultima.Files.Directory);
 					}
 					catch
 					{
