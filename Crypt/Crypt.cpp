@@ -720,6 +720,10 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	mf.AddEntry( "UO Version %s", 12 );
 	mf.AddEntry( "Multiple Instances Running", 26, 0x00500000 );
 
+	//mf.AddEntry(ANIM_PATTERN_6, ANIM_PATTERN_LENGTH_6);
+
+	//mf.AddEntry(SPEEDHACK_PATTERN_1, SPEEDHACK_PATTERN_LENGTH_1);
+
 	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
 
 	const BYTE defaultCheatKey[] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
@@ -805,7 +809,43 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 
 	if (!addr)
 		CopyFailed = true;
-	
+
+	/*
+	i = 0;
+	while ((addr = mf.GetAddress(ANIM_PATTERN_6, ANIM_PATTERN_LENGTH_6, i++)) != 0)
+	{
+		//char blah[256];
+		//sprintf_s(blah, 256, "%02X %02X %02X %02X", *(unsigned char*)(addr), *(unsigned char*)(addr + 1), *(unsigned char*)(addr - 14), *(unsigned char*)(addr - 5));
+		//MessageBox(NULL, blah, "ANIM_PATTERN_6", MB_OK);
+		if (memcmp((void*)(addr - 14), ANIM_PATTERN_4, ANIM_PATTERN_LENGTH_4) != 0)
+			continue;
+
+		//MessageBox(NULL, "Matched", "ANIM_PATTERN_6", MB_OK);
+		DWORD origAddr = addr - 30;
+		VirtualProtect((void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt);
+		memcpy((void*)(origAddr + 11), "\x33\xC0\x90\x90\x90", 5);
+		memcpy((void*)(origAddr + 35), "\x08", 1);
+		memcpy((void*)(origAddr + 38), "\x04", 1);
+		VirtualProtect((void*)origAddr, 128, oldProt, &oldProt);
+	}
+
+	i = 0;
+	while ((addr = mf.GetAddress(SPEEDHACK_PATTERN_1, SPEEDHACK_PATTERN_LENGTH_1, i++)) != 0)
+	{
+		//char blah[256];
+		//sprintf_s(blah, 256, "%02X %02X %02X %02X", *(unsigned char*)(addr+8), *(unsigned char*)(addr + 9), *(unsigned char*)(addr +11), *(unsigned char*)(addr +12));
+		//MessageBox(NULL, blah, "SPEEDHACK_PATTERN_1", MB_OK);
+		if (memcmp((void*)(addr + 8), SPEEDHACK_PATTERN_2, SPEEDHACK_PATTERN_LENGTH_2) != 0)
+			continue;
+
+		//MessageBox(NULL, "Matched", "SPEEDHACK_PATTERN_1", MB_OK);
+		DWORD origAddr = addr;
+		VirtualProtect((void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt);
+		memcpy((void*)(origAddr + 10), "\x26", 1);
+		VirtualProtect((void*)origAddr, 128, oldProt, &oldProt);
+	}
+	*/
+
 	addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
 	if ( !addr )
 	{

@@ -227,8 +227,27 @@ key2 ^= 0xA31D527F;
 #define CRYPT_KEY_STR_MORE_NEW "\xE8\xC1\xE7\x1F\x0B\xC7\x33\x05"
 #define CRYPT_KEY_MORE_NEW_LEN 8
 
-#define ANIM_PATTERN "\x55\x68\xn\xn\xn\xn\x68\xn\xn\xn\xn\xE8\xn\xn\xn\xn\x8B\xE8\x83\xC4\x08\x85\xED\x75\xn\xB8\xn\xn\xn\xn\x8B\xFF\xC6\x40\xFF\x04\xC6\x00\x02\x83\xC0\x02\x3D\xn\xn\xn\xn"
-#define ANIM_PATTERN_LENGTH 47
+#define ANIM_PATTERN_1 "\x55\x68"
+// \xn\xn\xn\xn
+#define ANIM_PATTERN_2 "\x68"
+// \xn\xn\xn\xn
+#define ANIM_PATTERN_3 "\xE8"
+// \xn\xn\xn\xn
+#define ANIM_PATTERN_4 "\x8B\xE8\x83\xC4\x08\x85\xED\x75"
+// \xn
+#define ANIM_PATTERN_5 "\xB8"
+// \xn\xn\xn\xn
+#define ANIM_PATTERN_6 "\x8B\xFF\xC6\x40\xFF\x04\xC6\x00\x02\x83\xC0\x02\x3D"
+// \xn\xn\xn\xn
+
+#define ANIM_PATTERN_LENGTH_1 2
+#define ANIM_PATTERN_LENGTH_2 1
+#define ANIM_PATTERN_LENGTH_3 1
+#define ANIM_PATTERN_LENGTH_4 8
+#define ANIM_PATTERN_LENGTH_5 1
+#define ANIM_PATTERN_LENGTH_6 13
+
+// #define ANIM_PATTERN_LENGTH 47
 
 /*var animPattern = new byte?[]
 {
@@ -248,8 +267,18 @@ key2 ^= 0xA31D527F;
 0x3d, null, null, null, null        // cmp eax, dword
 };*/
 
-#define SPEEDHACK_PATTERN "\x8B\xFE\x2B\x3D\xn\xn\xn\xn\x83\xFF\xn\x0F\x82\xn\xn\xn\xn"
-#define SPEEDHACK_PATTERN_LENGTH 17
+#define SPEEDHACK_PATTERN_1 "\x8B\xFE\x2B\x3D"
+// \xn\xn\xn\xn
+#define SPEEDHACK_PATTERN_2 "\x83\xFF"
+// \xn
+#define SPEEDHACK_PATTERN_3 "\x0F\x82"
+//\xn\xn\xn\xn"
+
+#define SPEEDHACK_PATTERN_LENGTH_1 4
+#define SPEEDHACK_PATTERN_LENGTH_2 2
+#define SPEEDHACK_PATTERN_LENGTH_3 2
+
+// #define SPEEDHACK_PATTERN_LENGTH 17
 
 /*var speedhackPattern = new byte?[]
 {
