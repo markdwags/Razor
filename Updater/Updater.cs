@@ -224,16 +224,26 @@ namespace Updater
 					if (rar.CurrentFile.FileName.ToLower() == "updater.exe" && File.Exists("Updater.exe"))
 					{
 						if (rar.CurrentFile.FileTime > File.GetLastWriteTime("Updater.exe"))
+						{
 							rar.CurrentFile.FileName = "New_Updater.exe";
+						}
 						else
+						{
+							rar.Skip();
 							continue;
+						}
 					}
 					else if (rar.CurrentFile.FileName.ToLower() == "unrar.dll" && File.Exists("unrar.dll"))
 					{
 						if (rar.CurrentFile.FileTime > File.GetLastWriteTime("unrar.dll"))
+						{
 							rar.CurrentFile.FileName = "New_unrar.dll";
+						}
 						else
+						{
+							rar.Skip();
 							continue;
+						}
 					}
 
 					while ( File.Exists( rar.CurrentFile.FileName ) )
