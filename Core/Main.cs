@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Security.Principal;
 
 namespace Assistant
 {
@@ -187,7 +188,9 @@ namespace Assistant
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
 			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
 #endif
-            
+
+			CheckUpdaterFiles();
+
 			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 || !File.Exists( Path.Combine( Config.GetInstallDirectory(), "Updater.exe" ) ) )
 				throw new InvalidOperationException( "This Razor installation is corrupted." );
 
@@ -515,6 +518,51 @@ namespace Assistant
 			}
 
 			return ipAddr;
+		}
+
+		public static bool IsElevated {
+			get {
+				return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+			}
+		}
+
+		private static void CheckUpdaterFiles()
+		{
+			string instdir = Config.GetInstallDirectory();
+			string nUpdater = Path.Combine(instdir, "New_Updater.exe");
+			string nRar = Path.Combine(instdir, "New_unrar.dll");
+
+			if (File.Exists(nUpdater) || File.Exists(nRar)) {
+				if (IsElevated)
+				{
+					if (File.Exists("New_unrar.dll"))
+					{
+						File.Copy("New_unrar.dll", "unrar.dll", true);
+						File.Delete("New_unrar.dll");
+					}
+
+					if (File.Exists("New_Updater.exe"))
+					{
+						File.Copy("New_Updater.exe", "Updater.exe", true);
+						File.Delete("New_Updater.exe");
+					}
+
+					ProcessStartInfo processInfo = new ProcessStartInfo();
+					processInfo.FileName = Path.Combine(instdir, "Razor.exe");
+					processInfo.UseShellExecute = false;
+					processInfo.WorkingDirectory = instdir;
+					Process.Start(processInfo);
+					Process.GetCurrentProcess().Kill();
+				}
+				else
+				{
+					ProcessStartInfo processInfo = new ProcessStartInfo();
+					processInfo.Verb = "runas"; // Administrator Rights
+					processInfo.FileName = Path.Combine(instdir, "Razor.exe");
+					Process.Start(processInfo);
+					Process.GetCurrentProcess().Kill();
+				}
+			}
 		}
 
 		private static void CheckForUpdates()
