@@ -18,9 +18,9 @@ namespace Assistant.MapUO
 		private Assistant.MapUO.UOMapControl Map;
 
 		[DllImport("user32.dll")]
-		private static extern int SendMessage( IntPtr hWnd, int Msg, int wParam, int lParam );
+		private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 		[DllImport("user32.dll")]
-		public static extern bool ReleaseCapture();
+		internal static extern bool ReleaseCapture();
 
 		/// <summary>
 		/// Required designer variable.
@@ -381,7 +381,7 @@ namespace Assistant.MapUO
 			if (e.Button == MouseButtons.Left)
 			{
 				ReleaseCapture();
-				SendMessage( Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0 );
+				SendMessage( Handle, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, IntPtr.Zero );
 				/*foreach ( Serial s in PacketHandlers.Party )
 				{       
 				Mobile m = World.FindMobile( s );

@@ -470,29 +470,29 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern IntPtr GetSharedAddress(); 
 		[DllImport( "Crypt.dll" )]
-		public static unsafe extern int GetPacketLength( byte *data, int bufLen );//GetPacketLength( [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte[] data, int bufLen );
+		internal static unsafe extern int GetPacketLength( byte *data, int bufLen );//GetPacketLength( [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte[] data, int bufLen );
 		[DllImport( "Crypt.dll" )]
-		public static unsafe extern bool IsDynLength( byte packetId );
+		internal static unsafe extern bool IsDynLength(byte packetId);
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern int GetUOProcId();
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetCustomTitle( string title );
 		[DllImport( "Crypt.dll" )]
-		public static unsafe extern int InitializeLibrary( string version );
+		internal static unsafe extern int InitializeLibrary(string version);
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern IntPtr GetCommMutex();
 		[DllImport( "Crypt.dll" )]
-		public static unsafe extern uint TotalIn();
+		internal static unsafe extern uint TotalIn();
 		[DllImport( "Crypt.dll" )]
-		public static unsafe extern uint TotalOut();
+		internal static unsafe extern uint TotalOut();
 		[DllImport( "Crypt.dll" )]
-		public static unsafe extern IntPtr CaptureScreen( bool isFullScreen, string msgStr );
+		internal static unsafe extern IntPtr CaptureScreen(bool isFullScreen, string msgStr);
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void WaitForWindow( int pid );
 		[DllImport( "Crypt.dll" )]
-		public static unsafe extern void SetDataPath( string path );
+		internal static unsafe extern void SetDataPath(string path);
 		[DllImport( "Crypt.dll" )]
-		public static unsafe extern void SetDeathMsg( string msg );
+		internal static unsafe extern void SetDeathMsg(string msg);
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void CalibratePosition( int x, int y, int z );
 		[DllImport( "Crypt.dll" )]
@@ -541,7 +541,7 @@ namespace Assistant
 		private static unsafe extern uint Load( string exe, string dll, string func, void *dllData, int dataLen, out uint pid );
 
 		[DllImport( "msvcrt.dll" )]
-		public static unsafe extern void memcpy( void *to, void *from, int len );
+		internal static unsafe extern void memcpy(void* to, void* from, int len);
 
 		[DllImport( "user32.dll" )]
 		internal static extern uint PostMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
