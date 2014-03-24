@@ -124,6 +124,11 @@ namespace Updater
 
 		private void Updater_Load(object sender, System.EventArgs e)
 		{
+			if (File.Exists("New_unrar.dll")) {
+				File.Copy("New_unrar.dll", "unrar.dll", true);
+				File.Delete("New_unrar.dll");
+			}
+
 			closeTimer.Stop();
 			
 			_Downloader = new Downloader( UpdateRAR, "Update.rar", 
@@ -216,10 +221,20 @@ namespace Updater
 
 				while( rar.ReadHeader() )
 				{
-					if( rar.CurrentFile.FileName == "Updater.exe" )
-						rar.CurrentFile.FileName = "New_Updater.exe";
-					else if ( rar.CurrentFile.FileName == "UnRar.dll" )
-						rar.CurrentFile.FileName = "New_UnRar.dll";
+					if (rar.CurrentFile.FileName.ToLower() == "updater.exe" && File.Exists("Updater.exe"))
+					{
+						if (rar.CurrentFile.FileTime > File.GetLastWriteTime("Updater.exe"))
+							rar.CurrentFile.FileName = "New_Updater.exe";
+						else
+							continue;
+					}
+					else if (rar.CurrentFile.FileName.ToLower() == "unrar.dll" && File.Exists("unrar.dll"))
+					{
+						if (rar.CurrentFile.FileTime > File.GetLastWriteTime("unrar.dll"))
+							rar.CurrentFile.FileName = "New_unrar.dll";
+						else
+							continue;
+					}
 
 					while ( File.Exists( rar.CurrentFile.FileName ) )
 					{

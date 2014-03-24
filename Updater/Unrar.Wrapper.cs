@@ -243,7 +243,7 @@ namespace Updater
         [DllImport( "unrar.dll" )]
         private static extern IntPtr RAROpenArchive( ref RAROpenArchiveData archiveData );
 
-        [DllImport( "UNRAR.DLL" )]
+        [DllImport( "unrar.dll" )]
         private static extern IntPtr RAROpenArchiveEx( ref RAROpenArchiveDataEx archiveData );
 
         [DllImport( "unrar.dll" )]

@@ -1,3 +1,7 @@
+Razor (v1.4.0.*) Changelog:
+Update Razor project to .NET 4.0
+All executables and libraries are cryptographically signed
+
 Razor (v1.0.13.*) Changelog:
 * Minor server list entry fixes
 
