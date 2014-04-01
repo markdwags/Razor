@@ -109,6 +109,7 @@ $(ProjectDir)GenerateRazorChecksumH.exe</Command>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <CallingConvention>StdCall</CallingConvention>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>

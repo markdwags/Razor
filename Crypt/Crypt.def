@@ -2,7 +2,8 @@ LIBRARY	Crypt
 
 EXPORTS
 	InstallLibrary
-	Shutdown=?Shutdown@@YAX_N@Z
+	Shutdown=?Shutdown@@YGX_N@Z
+	;Shutdown=?Shutdown@@YAX_N@Z
 	FindUOWindow
 	GetSharedAddress
 	GetPacketLength

@@ -19,11 +19,13 @@ namespace Updater
 		private static UpdaterStatus _Status = UpdaterStatus.Incomplete;
 		public static UpdaterStatus Status { get { return _Status; } set { _Status = value; } }
 
+		public static Version UpdateVersion { get; set; }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
 		[STAThread]
-		static void Main()
+		static void Main(string[] args)
 		{
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
 
@@ -42,7 +44,12 @@ namespace Updater
 				Thread.Sleep( 50 );
 			}
 
-			Directory.SetCurrentDirectory( UpdaterMain.BaseDirectory );
+			for (int i = 0; i < args.Length; i++) {
+				if (!String.IsNullOrEmpty(args[i]))
+					UpdateVersion = new Version(args[i]);
+			}
+
+			Directory.SetCurrentDirectory(UpdaterMain.BaseDirectory);
 
 			Application.EnableVisualStyles();
 			Application.Run( new Updater() );

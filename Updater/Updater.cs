@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
+using System.Net;
 
 namespace Updater
 {
@@ -118,8 +119,8 @@ namespace Updater
 		}
 		#endregion
 
-		private const string UpdateRAR = "https://zenvera.com/razor/Razor_Latest.rar";
-		private const string ChangelogRAR = "https://zenvera.com/razor/changelog.txt";
+		//private const string UpdateRAR = "https://zenvera.com/razor/Razor_Latest.rar";
+		private const string ChangelogRAR = "http://razor.uo.cx/changelog.txt";
 		private Downloader _Downloader;
 
 		private void Updater_Load(object sender, System.EventArgs e)
@@ -130,8 +131,25 @@ namespace Updater
 			}
 
 			closeTimer.Stop();
-			
-			_Downloader = new Downloader( UpdateRAR, "Update.rar", 
+
+			if (UpdaterMain.UpdateVersion == null)
+			{
+				UpdateStatus("Checking latest version...");
+
+				try
+				{
+					HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://razor.uo.cx/version.txt");
+					req.UserAgent = "Razor Updater";
+
+					using (StreamReader reader = new StreamReader(req.GetResponse().GetResponseStream()))
+					{
+						UpdaterMain.UpdateVersion = new Version(reader.ReadToEnd().Trim());
+					}
+				}
+				catch { UpdateFailed(); return; }
+			}
+
+			_Downloader = new Downloader( String.Format("https://github.com/msturgill/razor/releases/download/v{0}/Update.rar", UpdaterMain.UpdateVersion.ToString()), "Update.rar", 
 				ChangelogRAR,
 				new ProgressChange( OnProgressChange ), new ConnectionFailed( OnConnectionFailed ), new OperationComplete( OnDownloadComplete ),
 				new MessageDownloaded( OnChangelogDownloaded ) );

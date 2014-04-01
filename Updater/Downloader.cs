@@ -73,6 +73,7 @@ namespace Updater
 				try
 				{
 					wr = ( HttpWebRequest )WebRequest.Create( _MsgUrl );
+					wr.UserAgent = "Razor Updater";
 					wr.Timeout = 5000;
 
 					ws = ( HttpWebResponse )wr.GetResponse();
@@ -104,7 +105,8 @@ namespace Updater
             try
             {
                 wr = ( HttpWebRequest )WebRequest.Create( _Url );
-                wr.Timeout = 10000;
+				wr.UserAgent = "Razor Updater";
+				wr.Timeout = 10000;
                 ws = ( HttpWebResponse )wr.GetResponse();
 				if( ws.StatusCode == HttpStatusCode.OK )
 				{
