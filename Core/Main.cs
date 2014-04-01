@@ -361,8 +361,9 @@ namespace Assistant
 				}
 			}
 
-			if (dataDir != null && Directory.Exists(dataDir))
+			if (dataDir != null && Directory.Exists(dataDir)) {
 				Ultima.Files.SetMulPath(dataDir);
+			}
 
 			Language.LoadCliLoc();
 
@@ -607,9 +608,12 @@ namespace Assistant
 			
 			try
 			{
-				ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
+				//ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
 
-				WebRequest req = WebRequest.Create( String.Format( "https://zenvera.com/razor/version.php?id={0}", uid ) );
+				//WebRequest req = WebRequest.Create( String.Format( "https://zenvera.com/razor/version.php?id={0}", uid ) );
+
+				HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://razor.uo.cx/version.txt");
+				req.UserAgent = "Razor Update Check";
 
 				using ( StreamReader reader = new StreamReader( req.GetResponse().GetResponseStream() ) )
 				{
@@ -620,6 +624,7 @@ namespace Assistant
                         ProcessStartInfo processInfo = new ProcessStartInfo();
                         processInfo.Verb = "runas"; // Administrator Rights
                         processInfo.FileName = Path.Combine(Config.GetInstallDirectory(), "Updater.exe");
+						processInfo.Arguments = v.ToString();
                         Process.Start(processInfo);
 						Process.GetCurrentProcess().Kill();
 					}
