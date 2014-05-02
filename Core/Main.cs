@@ -172,6 +172,8 @@ namespace Assistant
 			}
 		}
 
+		public static string ShardList { get; private set; }
+
 		private static MainForm m_MainWnd;
 		private static Form m_ActiveWnd;
 		//private static Thread m_TimerThread;
@@ -193,6 +195,9 @@ namespace Assistant
 
 			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 || !File.Exists( Path.Combine( Config.GetInstallDirectory(), "Updater.exe" ) ) )
 				throw new InvalidOperationException( "This Razor installation is corrupted." );
+
+			try { Engine.ShardList = Config.GetRegString(Microsoft.Win32.Registry.CurrentUser, "ShardList"); }
+			catch { }
 
 			DateTime lastCheck = DateTime.MinValue;
 			try { lastCheck = DateTime.FromFileTime( Convert.ToInt64( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck" ), 16 ) ); } catch { }
@@ -613,6 +618,7 @@ namespace Assistant
 				//WebRequest req = WebRequest.Create( String.Format( "https://zenvera.com/razor/version.php?id={0}", uid ) );
 
 				HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://razor.uo.cx/version.txt");
+				req.Timeout = 8000;
 				req.UserAgent = "Razor Update Check";
 
 				using ( StreamReader reader = new StreamReader( req.GetResponse().GetResponseStream() ) )
@@ -633,6 +639,28 @@ namespace Assistant
 			catch
 			{
 			}
+
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://uo.cx/razor/shards.php");
+				req.Timeout = 8000;
+                req.UserAgent = "Razor Shard List Update";
+
+                using (StreamReader reader = new StreamReader(req.GetResponse().GetResponseStream()))
+                {
+					string json = reader.ReadToEnd();
+
+					if (json != null && json.Length > 10) // Arbitrary, we just don't want to overwrite a valid shard list for empty Json
+					{
+						Engine.ShardList = json;
+						try { Config.SetRegString(Microsoft.Win32.Registry.CurrentUser, "ShardList", json); }
+						catch { }
+					}
+                }
+            }
+            catch
+            {
+            }
 
             try
             {

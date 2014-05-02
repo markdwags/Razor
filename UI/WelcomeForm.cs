@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Net;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 
 namespace Assistant
 {
@@ -82,6 +83,7 @@ namespace Assistant
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WelcomeForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.clientList = new System.Windows.Forms.ComboBox();
 			this.browse = new System.Windows.Forms.Button();
@@ -185,8 +187,8 @@ namespace Assistant
 			this.serverList.Name = "serverList";
 			this.serverList.Size = new System.Drawing.Size(196, 21);
 			this.serverList.TabIndex = 11;
-			this.serverList.TextChanged += new System.EventHandler(this.serverList_TextChanged);
 			this.serverList.SelectedIndexChanged += new System.EventHandler(this.serverList_SelectedIndexChanged);
+			this.serverList.TextChanged += new System.EventHandler(this.serverList_TextChanged);
 			// 
 			// label4
 			// 
@@ -202,7 +204,6 @@ namespace Assistant
 			this.port.Name = "port";
 			this.port.Size = new System.Drawing.Size(40, 20);
 			this.port.TabIndex = 13;
-			this.port.Text = "";
 			this.port.TextChanged += new System.EventHandler(this.port_TextChanged);
 			// 
 			// groupBox1
@@ -290,8 +291,8 @@ namespace Assistant
 			this.dataDir.Name = "dataDir";
 			this.dataDir.Size = new System.Drawing.Size(258, 21);
 			this.dataDir.TabIndex = 22;
-			this.dataDir.TextChanged += new System.EventHandler(this.dataDir_TextChanged);
 			this.dataDir.SelectedIndexChanged += new System.EventHandler(this.dataDir_SelectedIndexChanged);
+			this.dataDir.TextChanged += new System.EventHandler(this.dataDir_TextChanged);
 			// 
 			// groupBox3
 			// 
@@ -319,6 +320,7 @@ namespace Assistant
 			this.Controls.Add(this.quit);
 			this.Controls.Add(this.okay);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "WelcomeForm";
@@ -328,6 +330,7 @@ namespace Assistant
 			this.Load += new System.EventHandler(this.WelcomeForm_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
 			this.groupBox3.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -412,15 +415,23 @@ namespace Assistant
 			}
 		}
 
-		private class UOGamers_SE : ServerEntry
+		private class ShardEntry
+		{
+			public string name { get; set; }
+			public string type { get; set; }
+			public string host { get; set; }
+			public int port { get; set; }
+		}
+
+		private class Custom_SE : ServerEntry
 		{
 			public string RealAddress;
-			public UOGamers_SE( string name, string addr ) : base( name, 0 )
+			public Custom_SE( string name, string addr ) : base( name, 0 )
 			{
 				RealAddress = addr;
 			}
 
-			public UOGamers_SE(string name, string addr, int port)
+			public Custom_SE(string name, string addr, int port)
 				: base(name, port)
 			{
 				RealAddress = addr;
@@ -531,7 +542,11 @@ namespace Assistant
 			useEnc.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc" ), 0 ) != 0;
 			
 			LoginCFG_SE lse = new LoginCFG_SE();
-			UOGamers_SE uog;
+			Custom_SE cse;
+
+			ShardEntry[] entries = null;
+			try { entries = JsonConvert.DeserializeObject<ShardEntry[]>(Engine.ShardList); }
+			catch { }
 
 			serverList.BeginUpdate();
 
@@ -554,29 +569,25 @@ namespace Assistant
 				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, pval );
 			}
 
-			serverList.Items.Add(uog = new UOGamers_SE("Zenvera (UOR)", "login.zenvera.com"));
-			if (serverList.SelectedItem == null || lse.RealAddress == uog.RealAddress && lse.Port == 2593)
-				serverList.SelectedItem = uog;
+			if (entries == null)
+			{
+				serverList.Items.Add(cse = new Custom_SE("Zenvera (UOR)", "login.zenvera.com"));
+				if (serverList.SelectedItem == null || lse.RealAddress == cse.RealAddress && lse.Port == 2593)
+					serverList.SelectedItem = cse;
+			}
+			else
+			{
+				foreach(var entry in entries)
+				{
+					if (String.IsNullOrEmpty(entry.name))
+						continue;
 
-			serverList.Items.Add(uog = new UOGamers_SE("Second Age (T2A)", "login.uosecondage.com"));
-			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
-				serverList.SelectedItem = uog;
-
-			serverList.Items.Add(uog = new UOGamers_SE("An Corp (T2A)", "login.uoancorp.com"));
-			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
-				serverList.SelectedItem = uog;
-
-			serverList.Items.Add(uog = new UOGamers_SE("Forever (P16)", "login.uoforever.com", 2599));
-			if (lse.RealAddress == uog.RealAddress && lse.Port == 2599)
-				serverList.SelectedItem = uog;
-
-			serverList.Items.Add(uog = new UOGamers_SE("Pandora (HS)", "play.pandorauo.com"));
-			if (lse.RealAddress == uog.RealAddress && lse.Port == 2593)
-				serverList.SelectedItem = uog;
-
-			serverList.Items.Add(uog = new UOGamers_SE("Electronic Arts/Origin Servers", "login.ultimaonline.com", 7775));
-			if ( lse.RealAddress == uog.RealAddress && ( lse.Port >= 7775 && lse.Port <= 7778 ) )
-				serverList.SelectedItem = uog;
+					var ename = String.IsNullOrEmpty(entry.type) ? entry.name : String.Format("{0} ({1})", entry.name, entry.type);
+					serverList.Items.Add(cse = new Custom_SE(ename, entry.host, entry.port));
+					if (lse.RealAddress == cse.RealAddress && lse.Port == entry.port)
+						serverList.SelectedItem = cse;
+				}
+			}
 
 			serverList.EndUpdate();
 
@@ -622,7 +633,7 @@ namespace Assistant
 
 		private void serverList_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			port.Enabled = !( serverList.SelectedItem is UOGamers_SE || serverList.SelectedItem is LoginCFG_SE );
+			port.Enabled = !( serverList.SelectedItem is Custom_SE || serverList.SelectedItem is LoginCFG_SE );
 
 			if ( serverList.SelectedItem != null )
 			{
@@ -636,7 +647,7 @@ namespace Assistant
 		private void serverList_TextChanged(object sender, System.EventArgs e)
 		{
 			string txt = serverList.Text;
-			if ( ( serverList.SelectedItem is UOGamers_SE || serverList.SelectedItem is LoginCFG_SE ) && txt != (serverList.SelectedItem).ToString() ) 
+			if ( ( serverList.SelectedItem is Custom_SE || serverList.SelectedItem is LoginCFG_SE ) && txt != (serverList.SelectedItem).ToString() ) 
 			{
 				port.Text = "";
 				serverList.BeginUpdate();
@@ -651,7 +662,7 @@ namespace Assistant
 		{
 			if ( port.Text != "" )
 			{
-				if ( ( serverList.SelectedItem is LoginCFG_SE && ((ServerEntry)serverList.SelectedItem).Port == 0 ) || serverList.SelectedItem is UOGamers_SE )
+				if ( ( serverList.SelectedItem is LoginCFG_SE && ((ServerEntry)serverList.SelectedItem).Port == 0 ) || serverList.SelectedItem is Custom_SE )
 					port.Text = "";
 				else if ( serverList.SelectedItem != null )
 					((ServerEntry)serverList.SelectedItem).Port = Utility.ToInt32( port.Text, 0 );
@@ -675,11 +686,11 @@ namespace Assistant
 			ServerEntry se = null;
 			if ( serverList.SelectedItem != null )
 			{
-				if ( serverList.SelectedItem is UOGamers_SE )
+				if ( serverList.SelectedItem is Custom_SE )
 				{
-					int port = ((UOGamers_SE)serverList.SelectedItem).Port;
+					int port = ((Custom_SE)serverList.SelectedItem).Port;
 
-					string addr = ((UOGamers_SE)serverList.SelectedItem).RealAddress;
+					string addr = ((Custom_SE)serverList.SelectedItem).RealAddress;
 
 					if ( addr == "login.ultimaonline.com" )
 					{
@@ -715,7 +726,7 @@ namespace Assistant
 
 			if ( se != null && se.Address != null )
 			{
-				if ( !( serverList.SelectedItem is UOGamers_SE ) )
+				if ( !( serverList.SelectedItem is Custom_SE ) )
 				{
 					serverList.Items.Remove( se );
 					serverList.Items.Insert( 1, se );
@@ -756,7 +767,7 @@ namespace Assistant
 			for (int i=0;i<serverList.Items.Count;i++)
 			{
 				ServerEntry se = (ServerEntry)serverList.Items[i];
-				if ( se is UOGamers_SE || se is LoginCFG_SE )
+				if ( se is Custom_SE || se is LoginCFG_SE )
 					continue;
 				
 				if ( se.Address != "" )
