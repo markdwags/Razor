@@ -86,6 +86,8 @@ Section "Razor"
   File ".\License_CHS.txt"
   File ".\changelog.txt"
 
+  File ".\Newtonsoft.Json.dll"
+
   SetOverwrite ifnewer
   File ".\Guardlines.def"
   File ".\Spells.def"
@@ -137,6 +139,9 @@ Section "Uninstall"
   Delete "$INSTDIR\Crash.log"
   Delete "$INSTDIR\changelog.txt"
   Delete "$INSTDIR\Guardlines.def"
+
+  Delete "$INSTDIR\Newtonsoft.Json.dll"
+
   RMDir /r "$INSTDIR\Language"
 
   MessageBox MB_YESNO|MB_ICONQUESTION "Do you want to save your razor profiles and macros?  (Selecting no will delete them)" IDYES AfterProfiles
