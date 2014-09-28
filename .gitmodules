@@ -1,6 +1,3 @@
-[submodule "Razor"]
-	path = Razor
-	url = git@github.com:msturgill/razor.git
 [submodule "UltimaSDK"]
 	path = UltimaSDK
 	url = git@github.com:msturgill/ultimasdk.git
