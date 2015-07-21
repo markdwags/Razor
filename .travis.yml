@@ -6,5 +6,5 @@ git:
 before_install:
     - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
     - git submodule update --init --recursive
-    - sed -i 's/\<SignAssembly\>true\<\/SignAssembly\>/\<SignAssembly\>true\<\/SignAssembly\>/' Razor/Razor.csproj
-    - sed -i 's/\<AssemblyOriginatorKeyFile\>Razor.snk\<\/AssemblyOriginatorKeyFile\>//' Razor/Razor.csproj
+    - sed -i 's/<SignAssembly>true<\/SignAssembly>/<SignAssembly>true<\/SignAssembly>/' Razor/Razor.csproj
+    - sed -i 's/<AssemblyOriginatorKeyFile>Razor.snk<\/AssemblyOriginatorKeyFile>//' Razor/Razor.csproj
