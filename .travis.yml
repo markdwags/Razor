@@ -8,5 +8,5 @@ before_install:
     - git submodule update --init --recursive
     - sed -i 's/<SignAssembly>true<\/SignAssembly>/<SignAssembly>true<\/SignAssembly>/' Razor/Razor.csproj
     - sed -i 's/<AssemblyOriginatorKeyFile>Razor.snk<\/AssemblyOriginatorKeyFile>//' Razor/Razor.csproj
-    - sed -i 's/<SignAssembly>true<\/SignAssembly>/<SignAssembly>true<\/SignAssembly>/' Razor/Razor.csproj
+    - sed -i 's/<SignAssembly>true<\/SignAssembly>/<SignAssembly>true<\/SignAssembly>/' UltimaSDK/Ultima.csproj
     - sed -i 's/<AssemblyOriginatorKeyFile>UltimaSDK.snk<\/AssemblyOriginatorKeyFile>//' UltimaSDK/Ultima.csproj
