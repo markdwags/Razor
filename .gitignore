@@ -155,16 +155,12 @@ $RECYCLE.BIN/
 *.suo
 *.user
 *.opensdf
-/Crypt/GenerateRazorChecksumH.*
 /Updater/obj
 /obj
 /Loader/Release
 /Crypt/Release
 /Crypt/Debug
-/GenerateRazorChecksumH/obj
-/GenerateRazorChecksumH/bin
 /RPVOpenStub/ifiles
-/Crypt/Checksum.h
 /ipch
 /Output/Crypt.*
 /Output/Loader.*

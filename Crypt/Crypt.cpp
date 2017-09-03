@@ -5,10 +5,7 @@
 #include "OSIEncryption.h"
 #include "LoginEncryption.h"
 #include "MemFinder.h"
-#include "Checksum.h"
 #include "Obfuscation.h"
-
-//#define NO_CHECKSUM_VERSION
 
 //*************************************************************************************
 //**************************************Variables**************************************
@@ -46,22 +43,18 @@ bool FirstRecv = true;
 bool FirstSend = true;
 bool LoginServer = false;
 bool Active = true;
-bool Disabled = true;
 bool SmartCPU = false;
 bool ServerNegotiated = false;
 bool InGame = false;
 bool CopyFailed = true;
 bool Forwarding = false;
 bool Forwarded = false;
-bool UltimaDLLHaxed = false;
 bool ClientEncrypted = false;
 bool ServerEncrypted = false;
 bool DwmAttrState = true;
 
 enum CLIENT_TYPE { TWOD = 1, THREED = 2 };
 CLIENT_TYPE ClientType = TWOD;
-
-BYTE CryptChecksum[16] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,};
 
 //**************************************OSI Only Stuff*********************************
 DWORD CryptSeed = 0x7f000001;
@@ -146,110 +139,7 @@ BOOL APIENTRY DllMain( HANDLE hModule, DWORD dwReason, LPVOID )
 
 DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
 {
-	int len;
-	BYTE *data = NULL;
-	FILE *file = NULL;
-	char fileName[256], origFilename[256];
-	char *namePtr = NULL;
-
-	char *obStr = GetObStr(OB_KERNEL32);
-
-	Disabled = (int)tolower(*obStr) != (int)'k';
-	
-	if ( !strcmp( exeVer, DLL_VERSION ) )
-	{
-		GetModuleFileName(NULL, fileName, 256);
-		file = fopen( fileName, "rb" );
-		if ( file )
-		{
-			fseek( file, 0, SEEK_END );
-			len = ftell( file );
-			fseek( file, 0, SEEK_SET );
-
-			data = new BYTE[len];
-			fread( data, len, 1, file );
-			fclose( file );
-
-			OSIEncryption::MD5( data, len, data );
-
-			for(int i=0;i<16;i++)
-				data[i] ^= data[0x1717+i];
-
-			Disabled |= memcmp( data, RAZOR_CHECKSUM, 16 ) != 0;
-
-			delete[] data;
-		}
-
-		memcpy(origFilename, fileName, 256);
-
-		//MessageBox( NULL, "Debug me!", "Now", MB_OK );
-
-        namePtr = strrchr( fileName, '\\' );
-		if ( namePtr )
-			namePtr ++; // AFTER the slash
-		else
-			namePtr = fileName;
-		*namePtr++ = 'U'; *namePtr = 0;
-		*namePtr++ = 'l'; *namePtr = 0;
-		*namePtr++ = 't'; *namePtr = 0;
-		*namePtr++ = 'i'; *namePtr = 0;
-		*namePtr++ = 'm'; *namePtr = 0;
-		*namePtr++ = 'a'; *namePtr = 0;
-		*namePtr++ = '.'; *namePtr = 0;
-		*namePtr++ = 'd'; *namePtr = 0;
-		*namePtr++ = 'l'; *namePtr = 0;
-		*namePtr++ = 'l'; *namePtr = 0;
-		*namePtr++ = 000; *namePtr = 0;
-		
-		file = fopen( fileName, "rb" );
-		if ( file )
-		{
-			fseek( file, 0, SEEK_END );
-			len = ftell( file );
-			fseek( file, 0, SEEK_SET );
-
-			data = new BYTE[len];
-			fread( data, len, 1, file );
-			fclose( file );
-
-			OSIEncryption::MD5( data, len, data );
-
-			for(int i=0;i<16;i++)
-				data[i] ^= data[0x1717+i];
-
-			UltimaDLLHaxed = memcmp( data, ULTIMA_CHECKSUM, 16 ) != 0;
-
-			delete[] data;
-		}
-	}
-	else
-	{
-		Disabled |= true;
-	}
-DLLFUNCTION bool AllowBit( unsigned int bit );
-	OSIEncryption::MD5( ((const BYTE*)AllowBit)+9, 0x31-9, CryptChecksum );
-	
-	HMODULE hKern = LoadLibrary(obStr);
-	Disabled |= !hKern;
-	
-	GetObStr(OB_GETPROCADDR);
-	void *(__stdcall *getprocaddr)(HANDLE, const char *);
-	getprocaddr = (void *(__stdcall*)(HANDLE, const char *))GetProcAddress(hKern, obStr);
-	
-	GetObStr(OB_GETMODFN);
-	DWORD (__stdcall *getmodfn)(HANDLE, char *, DWORD);
-	getmodfn = (DWORD (__stdcall*)(HANDLE, char *, DWORD))getprocaddr(hKern, obStr);
-	
-	getmodfn(NULL, obStr, 256);
-	
-	Disabled |= memcmp(obStr, origFilename, strlen(obStr)) != 0;
-	Disabled |= memcmp(origFilename, obStr, strlen(origFilename)) != 0;
-	
-#ifdef NO_CHECKSUM_VERSION
-	Disabled = false;
-#endif
-
-	return !Disabled;
+	return true;
 }
 
 DLLFUNCTION void *GetSharedAddress()
@@ -307,9 +197,6 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 
 	Log( "Initialize library..." );
 
-	if ( Disabled )
-		return LIB_DISABLED;
-
 	HWND hWnd = NULL;
 	if ( pid != 0 )
 	{
@@ -357,7 +244,7 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 		return NO_SHAREMEM;
 	//memset( pShared, 0, sizeof(SharedMemory) );
 
-	pShared->IsHaxed = UltimaDLLHaxed;
+	pShared->Reserved0 = false;
 
 	hWndProcRetHook = SetWindowsHookEx( WH_CALLWNDPROCRET, WndProcRetHookFunc, hInstance, UOTId );
 	if ( !hWndProcRetHook )
@@ -584,7 +471,6 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 	sprintf( str, "%c%cE%c%c %s %d %d--", 'C', 'H', 'A', 'T', "UO.exe", ClientType, features );
 	c = (int)strlen( str ) + 1;
 
-	memcpy( &str[c], CryptChecksum, 16 );
 	c += 16;
 
 	memcpy( &str[c], DLL_VERSION, strlen( DLL_VERSION ) );
@@ -1495,12 +1381,6 @@ void FlushSendData()
 					}
 
 					InGame = true;
-#ifdef NO_CHECKSUM_VERSION
-					memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
-#else
-					if ( pShared->IsHaxed )
-						memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
-#endif
 					break;
 				}
 				else if ( *buff == 0x00 && (*((DWORD*)&buff[1])) == 0xEDEDEDED && len >= 1+4+4+1+30+30 && len <= left )
@@ -1513,12 +1393,6 @@ void FlushSendData()
 					}
 
 					InGame = true;
-#ifdef NO_CHECKSUM_VERSION
-					memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
-#else
-					if ( pShared->IsHaxed )
-						memcpy( buff + 1 + 4 + 30 + 28, "\xDE\xAD", 2 );
-#endif
 					break;
 				}
 				

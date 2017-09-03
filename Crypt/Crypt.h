@@ -90,7 +90,7 @@ struct SharedMemory
 	unsigned char CheatKey[16];
 	bool AllowNegotiate;
 	unsigned char AuthBits[8];
-	bool IsHaxed;
+	bool Reserved0;
 	unsigned int ServerIP;
 	unsigned short ServerPort;
 	char UOVersion[16];

@@ -105,11 +105,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Checksum.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="App.ico">
       <Filter>Resource Files</Filter>
     </Image>

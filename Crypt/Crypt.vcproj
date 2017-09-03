@@ -24,17 +24,6 @@
 			CharacterSet="2"
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-				Description="Generating Checksum.h..."
-				CommandLine="$(ProjectDir)GenerateRazorChecksumH.exe"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-				CommandLine="$(ProjectDir)/GenerateRazorChecksumH.exe&#x0D;&#x0A;"
-				AdditionalDependencies="Razor.exe"
-				Outputs="Checksum.h"
-			/>
-			<Tool
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
@@ -109,12 +98,6 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
 			>
-			<Tool
-				Name="VCPreBuildEventTool"
-				Description="Generating Checksum.h..."
-				CommandLine="csumgen.exe"
-				ExcludedFromBuild="true"
-			/>
 			<Tool
 				Name="VCCustomBuildTool"
 			/>
@@ -274,20 +257,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\Checksum.h"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Performing Custom Build Step"
-						CommandLine=""
-						Outputs=""
-					/>
-				</FileConfiguration>
-			</File>
 			<File
 				RelativePath=".\Crypt.h"
 				>
