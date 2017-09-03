@@ -84,10 +84,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
-    <PostBuildEvent />
-    <PostBuildEvent>
-      <Command>signtool sign /a /n "Mark Sturgill" /tr http://time.certum.pl/ /d "Razor RPV Open Stub" /du https://github.com/msturgill/razor  "$(SolutionDir)Release\RPVOpenStub.exe"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="RPVOpenStub.cpp" />

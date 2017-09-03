@@ -87,9 +87,6 @@
       <Command>xcopy /Q /Y "$(SolutionDir)Updater\bin\Release\Updater.exe" "$(SolutionDir)Release\"
 xcopy /Q /Y "$(SolutionDir)Razor\bin\Release\Razor.exe" "$(SolutionDir)Release\"
 xcopy /Q /Y "$(SolutionDir)UltimaSDK\bin\Release\Ultima.dll" "$(SolutionDir)Release\"
-signtool sign /a /n "Mark Sturgill" /tr http://time.certum.pl/ /d "Razor Updater" /du https://github.com/msturgill/razor  "$(SolutionDir)Release\Updater.exe"
-signtool sign /a /n "Mark Sturgill" /tr http://time.certum.pl/ /d "Razor Assistant" /du https://github.com/msturgill/razor  "$(SolutionDir)Release\Razor.exe"
-signtool sign /a /n "Mark Sturgill" /tr http://time.certum.pl/ /d "Ultima SDK" /du https://github.com/msturgill/razor  "$(SolutionDir)Release\Ultima.dll"
 
 del $(SolutionDir)Crypt\Checksum.h
 $(ProjectDir)GenerateRazorChecksumH.exe</Command>
@@ -122,10 +119,6 @@ $(ProjectDir)GenerateRazorChecksumH.exe</Command>
       <ImportLibrary>$(OutDir)Crypt.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
-    <PostBuildEvent />
-    <PostBuildEvent>
-      <Command>signtool sign /a /n "Mark Sturgill" /tr http://time.certum.pl/ /d "Razor Crypt Assembly" /du https://github.com/msturgill/razor  "$(SolutionDir)Release\Crypt.dll"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Crypt.cpp" />
