@@ -1,19 +1,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor", "Razor\Razor.csproj", "{B24E4FB1-4936-4544-9E88-F3FF9B04FDBA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Crypt", "Crypt\Crypt.vcxproj", "{B32A4D9E-3AF1-4C75-989D-D62C4E8F08B1}"
 	ProjectSection(ProjectDependencies) = postProject
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2} = {8AB99CD3-9582-4E68-BDEC-23F189A222B2}
 		{F308E8D5-2B4F-40AD-9BF7-9A8F5DDA420D} = {F308E8D5-2B4F-40AD-9BF7-9A8F5DDA420D}
 		{5D66ACE6-B2A4-400F-B5A5-24525959AC5C} = {5D66ACE6-B2A4-400F-B5A5-24525959AC5C}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Loader", "Loader\Loader.vcxproj", "{F308E8D5-2B4F-40AD-9BF7-9A8F5DDA420D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{8AB99CD3-9582-4E68-BDEC-23F189A222B2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RPVOpenStub", "RPVOpenStub\RPVOpenStub.vcxproj", "{50A2CA7B-6CC4-4750-B373-0DF99F2FE18E}"
 EndProject
@@ -69,20 +66,6 @@ Global
 		{F308E8D5-2B4F-40AD-9BF7-9A8F5DDA420D}.Release|Win32.ActiveCfg = Release|Win32
 		{F308E8D5-2B4F-40AD-9BF7-9A8F5DDA420D}.Release|Win32.Build.0 = Release|Win32
 		{F308E8D5-2B4F-40AD-9BF7-9A8F5DDA420D}.Release|x86.ActiveCfg = Release|Win32
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Debug|Win32.ActiveCfg = Debug|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Debug|Win32.Build.0 = Debug|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Debug|x86.ActiveCfg = Debug|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Debug|x86.Build.0 = Debug|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Release|Any CPU.ActiveCfg = Release|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Release|Mixed Platforms.Build.0 = Release|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Release|Win32.ActiveCfg = Release|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Release|Win32.Build.0 = Release|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Release|x86.ActiveCfg = Release|x86
-		{8AB99CD3-9582-4E68-BDEC-23F189A222B2}.Release|x86.Build.0 = Release|x86
 		{50A2CA7B-6CC4-4750-B373-0DF99F2FE18E}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{50A2CA7B-6CC4-4750-B373-0DF99F2FE18E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{50A2CA7B-6CC4-4750-B373-0DF99F2FE18E}.Debug|Mixed Platforms.Build.0 = Debug|Win32
@@ -110,5 +93,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {185AA9DC-62C1-4770-80D5-82AA7648EE75}
 	EndGlobalSection
 EndGlobal

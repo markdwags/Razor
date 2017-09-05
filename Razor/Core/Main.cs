@@ -191,24 +191,11 @@ namespace Assistant
 			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
 #endif
 
-			CheckUpdaterFiles();
-
-			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 || !File.Exists( Path.Combine( Config.GetInstallDirectory(), "Updater.exe" ) ) )
+			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 )
 				throw new InvalidOperationException( "This Razor installation is corrupted." );
 
 			try { Engine.ShardList = Config.GetRegString(Microsoft.Win32.Registry.CurrentUser, "ShardList"); }
 			catch { }
-
-			DateTime lastCheck = DateTime.MinValue;
-			try { lastCheck = DateTime.FromFileTime( Convert.ToInt64( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck" ), 16 ) ); } catch { }
-			if ( lastCheck + TimeSpan.FromHours( 3.0 ) < DateTime.Now )
-			{
-				SplashScreen.Start();
-				m_ActiveWnd = SplashScreen.Instance;
-
-				CheckForUpdates();
-				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "UpdateCheck", String.Format( "{0:X16}", DateTime.Now.ToFileTime() ) );
-			}
 
 			bool patch = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy" ), 1 ) != 0;
 			bool showWelcome = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWelcome" ), 1 ) != 0;
@@ -531,143 +518,6 @@ namespace Assistant
 				return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 			}
 		}
-
-		private static void CheckUpdaterFiles()
-		{
-			string instdir = Config.GetInstallDirectory();
-			string nUpdater = Path.Combine(instdir, "New_Updater.exe");
-			string nRar = Path.Combine(instdir, "New_unrar.dll");
-
-			if (File.Exists(nUpdater) || File.Exists(nRar)) {
-				if (IsElevated)
-				{
-					if (File.Exists("New_unrar.dll"))
-					{
-						File.Copy("New_unrar.dll", "unrar.dll", true);
-						File.Delete("New_unrar.dll");
-					}
-
-					if (File.Exists("New_Updater.exe"))
-					{
-						File.Copy("New_Updater.exe", "Updater.exe", true);
-						File.Delete("New_Updater.exe");
-					}
-
-					ProcessStartInfo processInfo = new ProcessStartInfo();
-					processInfo.FileName = Path.Combine(instdir, "Razor.exe");
-					processInfo.UseShellExecute = false;
-					processInfo.WorkingDirectory = instdir;
-					Process.Start(processInfo);
-					Process.GetCurrentProcess().Kill();
-				}
-				else
-				{
-					ProcessStartInfo processInfo = new ProcessStartInfo();
-					processInfo.Verb = "runas"; // Administrator Rights
-					processInfo.FileName = Path.Combine(instdir, "Razor.exe");
-					Process.Start(processInfo);
-					Process.GetCurrentProcess().Kill();
-				}
-			}
-		}
-
-		private static void CheckForUpdates()
-		{
-            try
-            {
-                SplashScreen.MessageStr = "Checking for Razor Updates...";
-            }
-            catch { }
-
-			int uid = 0;
-			try
-			{
-				string str = Config.GetRegString( Microsoft.Win32.Registry.LocalMachine, "UId" );
-				if ( str == null || str.Length <= 0 )
-					str = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UId" );
-
-				if ( str != null && str.Length > 0 )
-					uid = Convert.ToInt32( str, 16 );
-			}
-			catch
-			{
-				uid = 0;
-			}
-			
-			if ( uid == 0 )
-			{
-				try
-				{
-					uid = Utility.Random( int.MaxValue - 1 );
-					if ( !Config.SetRegString( Microsoft.Win32.Registry.LocalMachine, "UId", String.Format( "{0:x}", uid ) ) )
-					{
-						if ( !Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "UId", String.Format( "{0:x}", uid ) ) )
-							uid = 0;
-					}
-				}
-				catch
-				{
-					uid = 0;
-				}
-			}
-			
-			try
-			{
-				//ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
-
-				//WebRequest req = WebRequest.Create( String.Format( "https://zenvera.com/razor/version.php?id={0}", uid ) );
-
-				HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://razor.uo.cx/version.txt");
-				req.Timeout = 8000;
-				req.UserAgent = "Razor Update Check";
-
-				using ( StreamReader reader = new StreamReader( req.GetResponse().GetResponseStream() ) )
-				{
-					Version newVer = new Version( reader.ReadToEnd().Trim() );
-					Version v = Assembly.GetCallingAssembly().GetName().Version;
-					if ( v.CompareTo( newVer ) < 0 ) // v < newVer
-					{
-                        ProcessStartInfo processInfo = new ProcessStartInfo();
-                        processInfo.Verb = "runas"; // Administrator Rights
-                        processInfo.FileName = Path.Combine(Config.GetInstallDirectory(), "Updater.exe");
-						processInfo.Arguments = v.ToString();
-                        Process.Start(processInfo);
-						Process.GetCurrentProcess().Kill();
-					}
-				}
-			}
-			catch
-			{
-			}
-
-            try
-            {
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://uo.cx/razor/shards.php");
-				req.Timeout = 8000;
-                req.UserAgent = "Razor Shard List Update";
-
-                using (StreamReader reader = new StreamReader(req.GetResponse().GetResponseStream()))
-                {
-					string json = reader.ReadToEnd();
-
-					if (json != null && json.Length > 10) // Arbitrary, we just don't want to overwrite a valid shard list for empty Json
-					{
-						Engine.ShardList = json;
-						try { Config.SetRegString(Microsoft.Win32.Registry.CurrentUser, "ShardList", json); }
-						catch { }
-					}
-                }
-            }
-            catch
-            {
-            }
-
-            try
-            {
-                SplashScreen.Message = LocString.Initializing;
-            }
-            catch { }
-		}
-	}
+    }
 }
 
