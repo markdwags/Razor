@@ -846,7 +846,6 @@ namespace Assistant
 			return m_Pos;
 		}
 
-// ZIPPY REV 80		public byte *Data { get { return m_Data; } }
 		public int Length { get { return m_Length; } }
 		public bool DynamicLength { get { return m_Dyn; } }
 

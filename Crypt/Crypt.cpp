@@ -1885,11 +1885,6 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 
 		break;
 
-// ZIPPY REV 80
-/*	case WM_SETFWDWND:
-		PostMessage( hPostWnd, WM_UONETEVENT, SET_FWD_HWND, lParam );
-		break;
-*/
 	case WM_UONETEVENT:
 		switch ( LOWORD(wParam) )
 		{

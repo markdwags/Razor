@@ -1992,9 +1992,6 @@ namespace Assistant
 
 			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
 				args.Block = true;
-
-			// ZIPPY REV 80
-			// ClientCommunication.ForwardPacket( p.Pointer, p.Length );
 		}
 
 		private static void ClientGumpResponse( PacketReader p, PacketHandlerEventArgs args )
@@ -2470,50 +2467,9 @@ namespace Assistant
 				World.Player.CurrentGumpI = p.ReadUInt32();
 			}
 
-			/*try
-			{
-				int x = p.ReadInt32(), y = p.ReadInt32();
-
-				string layout = p.GetCompressedReader().ReadString();
-
-				int numStrings = p.ReadInt32();
-				if ( numStrings < 0 || numStrings > 256 )
-					numStrings = 0;
-				ArrayList strings = new ArrayList( numStrings );
-				PacketReader pComp = p.GetCompressedReader();
-				int len = 0;
-				while ( !pComp.AtEnd && (len=pComp.ReadInt16()) > 0 )
-					strings.Add( pComp.ReadUnicodeString( len ) );
-			}
-			catch
-			{
-			}*/
-			
 			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
 				args.Block = true;
 
-            // ZIPPY REV 80
-			// ClientCommunication.ForwardPacket( p.Pointer, p.Length );
 		}
-/*
-				int serial  = pvSrc.ReadInt32(), dialog  = pvSrc.ReadInt32();
-				int xOffset = pvSrc.ReadInt32(), yOffset = pvSrc.ReadInt32();
-				string layout = GetCompressedReader( pvSrc ).ReadString();
-				pvSrc = GetCompressedReader( pvSrc );
-				ArrayList strings = Engine.GetDataStore();
-				ushort length;
-				while ( !pvSrc.Finished && (length = pvSrc.ReadUInt16()) > 0 )
-					strings.Add( pvSrc.ReadUnicodeString( length ) );
-
-			int packLength = pvSrc.ReadInt32();
-			int fullLength = pvSrc.ReadInt32();
-			byte[] buffer = pvSrc.ReadBytes( packLength );
-
-packLength==0 || fullLength==0 just break out
-osi is rage
-when i saw they used int32's for those lengths
-i just snapped
-since packet lengths are int16's
-*/
 	}
 }

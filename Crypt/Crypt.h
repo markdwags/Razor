@@ -58,7 +58,6 @@ enum UONET_MESSAGE
 	SMART_CPU = 21,
 	NEGOTIATE = 22,
 	SET_MAP_HWND = 23,
-// ZIPPY REV 80	SET_FWD_HWND = 24,
 };
 
 //#define SHARED_BUFF_SIZE 0x80000 // Client's buffers are 500k
@@ -121,8 +120,6 @@ public:
 #define WM_UONETEVENT WM_USER+1
 #define WM_CUSTOMTITLE WM_USER+2
 #define WM_UOA_MSG WM_USER+3
-// ZIPPY REV 80#define WM_SETFWDWND WM_USER+4
-// ZIPPY REV 80#define WM_FWDPACKET WM_USER+5
 
 #ifndef WM_XBUTTONDOWN
 #define WM_XBUTTONDOWN                  0x020B
