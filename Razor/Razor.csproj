@@ -385,6 +385,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>xcopy /Q /Y $(SolutionDir)UltimaSDK\bin\x86\$(Configuration)\Ultima.dll $(SolutionDir)bin\Win32\$(Configuration)\</PostBuildEvent>
+    <PostBuildEvent>xcopy /Q /Y $(SolutionDir)UltimaSDK\bin\x86\$(Configuration)\Ultima.dll $(SolutionDir)bin\Win32\$(Configuration)\
+xcopy /S /Q /Y $(SolutionDir)etc\* $(SolutionDir)bin\Win32\$(Configuration)\</PostBuildEvent>
   </PropertyGroup>
 </Project>
