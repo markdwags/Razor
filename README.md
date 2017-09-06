@@ -1,10 +1,22 @@
-razor
-=====
+# Razor
 
-[![Build Status](https://travis-ci.org/msturgill/razor.svg?branch=master)](https://travis-ci.org/msturgill/razor)
+This is a fork of the Razor assistant from https://github.com/msturgill/razor. The goal of this fork is to
+make the code base build and run with minimal effort.
 
-Razor Assistant
+# Building
 
-This source code can be used to build a completely functional Razor installation. Sources for the Crypt and Linker libraries are not included.
+This project is currently Windows only. You'll need Visual Studio 2017. The free community edition is fine.
 
-Ultima SDK Dependency: https://github.com/msturgill/ultimasdk/releases/tag/v2.0.3
+You'll need to grab the UltimaSDK, which is included as a submodule. You can do this by running
+
+~~~{.sh}
+git submodule update --init
+~~~
+
+Then:
+
+* Open Razor.sln
+* Select your configuration (default to "Release")
+* Hit F5 to build. The output is in bin/Win32/[Release|Debug]
+* Run Razor.exe
+
