@@ -30,7 +30,7 @@ enum ERROR_TYPE
 	UNKNOWN_ERROR = 99
 };
 
-__declspec(dllexport) DWORD __stdcall Load( const char *exe, const char *dll, const char *func, const void *dllData, int dataLen, DWORD *pid )
+extern "C" __declspec(dllexport) DWORD __stdcall Load( const char *exe, const char *dll, const char *func, const void *dllData, int dataLen, DWORD *pid )
 {
 	SIZE_T Num;
 	char buff[MAX_PATH];
