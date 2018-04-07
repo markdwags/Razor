@@ -964,16 +964,28 @@ bool CreateSharedMemory()
 	if ( !CommMutex )
 		return false;
 
-	sprintf( name, "UONetSharedFM_%x", UOProcId );
-	hFileMap = CreateFileMapping( INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, sizeof(SharedMemory), name );
-	if ( !hFileMap )
-		return false;
+	for (int i = 0; i < 30; i++) {
+		sprintf(name, "UONetSharedFM_%x%d", UOProcId, i);
+		hFileMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, sizeof(SharedMemory), name);
+		if (!hFileMap || hFileMap == INVALID_HANDLE_VALUE) {
+			auto err = GetLastError();
+			continue;
+		}
 
-	pShared = (SharedMemory*)MapViewOfFile( hFileMap, FILE_MAP_ALL_ACCESS, 0, 0, 0 );
-	if ( !pShared )
-		return false;
+		pShared = (SharedMemory*)MapViewOfFile(hFileMap, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(SharedMemory));
+		if (!pShared) {
+			auto err = GetLastError();
+			continue;
+		}
 
-	//memset( pShared, 0, sizeof(SharedMemory) );
+		break;
+	}
+
+	if (!pShared) {
+		return false;
+	}
+
+	memset( pShared, 0, sizeof(SharedMemory) );
 
 	return true;
 }
@@ -2073,7 +2085,7 @@ void Log( const char *format, ... )
 {
 #ifdef _DEBUG
 #ifdef LOGGING
-	FILE *log = fopen( "C:\\Crypt.log", "a" );
+	FILE *log = fopen( "Crypt.log", "a" );
 	if ( log )
 	{
 		char timeStr[256];
