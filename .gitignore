@@ -1,6 +1,8 @@
 # Visual Studio
 *.vs
 *.vcxproj.user
+*.csproj.user
+packages/
 
 # Build Output
 [Dd]ebug/
