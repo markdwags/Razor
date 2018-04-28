@@ -395,6 +395,7 @@ namespace Assistant
             this.titlebarImages = new System.Windows.Forms.CheckBox();
             this.checkNewConts = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.titleBarParams = new System.Windows.Forms.ComboBox();
             this.titleStr = new System.Windows.Forms.TextBox();
             this.showInBar = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -518,13 +519,12 @@ namespace Assistant
             this.statusBox = new System.Windows.Forms.TextBox();
             this.features = new System.Windows.Forms.TextBox();
             this.aboutTab = new System.Windows.Forms.TabPage();
+            this.aboutSubInfo = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.aboutSubInfo = new System.Windows.Forms.Label();
-            this.titleBarParams = new System.Windows.Forms.ComboBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -1460,6 +1460,50 @@ namespace Assistant
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Title Bar Display";
+            // 
+            // titleBarParams
+            // 
+            this.titleBarParams.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.titleBarParams.FormattingEnabled = true;
+            this.titleBarParams.Items.AddRange(new object[] {
+            "{ar}",
+            "{bandage}",
+            "{char}",
+            "{crimtime}",
+            "{damage}",
+            "{dex}",
+            "{followersmax}",
+            "{followers}",
+            "{gold}",
+            "{hpmax}",
+            "{hp}",
+            "{int}",
+            "{largestatbar}",
+            "{manamax}",
+            "{mana}",
+            "{maxweight}",
+            "{mediumstatbar}",
+            "{shard}",
+            "{skill}",
+            "{stammax}",
+            "{stam}",
+            "{statbar}",
+            "{stealthsteps}",
+            "{str}",
+            "{weight}",
+            "-",
+            "{coldresist}",
+            "{energyresist}",
+            "{fireresist}",
+            "{luck}",
+            "{physresist}",
+            "{poisonresist}",
+            "{tithe}"});
+            this.titleBarParams.Location = new System.Drawing.Point(153, 12);
+            this.titleBarParams.Name = "titleBarParams";
+            this.titleBarParams.Size = new System.Drawing.Size(104, 23);
+            this.titleBarParams.TabIndex = 5;
+            this.titleBarParams.SelectedIndexChanged += new System.EventHandler(this.titleBarParams_SelectedIndexChanged);
             // 
             // titleStr
             // 
@@ -2702,6 +2746,16 @@ namespace Assistant
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             // 
+            // aboutSubInfo
+            // 
+            this.aboutSubInfo.AutoSize = true;
+            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutSubInfo.Location = new System.Drawing.Point(9, 31);
+            this.aboutSubInfo.Name = "aboutSubInfo";
+            this.aboutSubInfo.Size = new System.Drawing.Size(225, 17);
+            this.aboutSubInfo.TabIndex = 17;
+            this.aboutSubInfo.Text = "UO Renaissance Community Edition";
+            // 
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
@@ -2747,60 +2801,6 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-            // 
-            // aboutSubInfo
-            // 
-            this.aboutSubInfo.AutoSize = true;
-            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutSubInfo.Location = new System.Drawing.Point(9, 31);
-            this.aboutSubInfo.Name = "aboutSubInfo";
-            this.aboutSubInfo.Size = new System.Drawing.Size(225, 17);
-            this.aboutSubInfo.TabIndex = 17;
-            this.aboutSubInfo.Text = "UO Renaissance Community Edition";
-            // 
-            // titleBarParams
-            // 
-            this.titleBarParams.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.titleBarParams.FormattingEnabled = true;
-            this.titleBarParams.Items.AddRange(new object[] {
-            "{ar}",
-            "{bandage}",
-            "{char}",
-            "{crimtime}",
-            "{damage}",
-            "{dex}",
-            "{followersmax}",
-            "{followers}",
-            "{gold}",
-            "{hpmax}",
-            "{hp}",
-            "{int}",
-            "{largestatbar}",
-            "{manamax}",
-            "{mana}",
-            "{maxweight}",
-            "{mediumstatbar}",
-            "{shard}",
-            "{skill}",
-            "{stammax}",
-            "{stam}",
-            "{statbar}",
-            "{stealthsteps}",
-            "{str}",
-            "{weight}",
-            "-",
-            "{coldresist}",
-            "{energyresist}",
-            "{fireresist}",
-            "{luck}",
-            "{physresist}",
-            "{poisonresist}",
-            "{tithe}"});
-            this.titleBarParams.Location = new System.Drawing.Point(153, 12);
-            this.titleBarParams.Name = "titleBarParams";
-            this.titleBarParams.Size = new System.Drawing.Size(104, 23);
-            this.titleBarParams.TabIndex = 5;
-            this.titleBarParams.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // MainForm
             // 
@@ -3136,6 +3136,8 @@ namespace Assistant
 			else if ( tabs.SelectedTab == displayTab )
 			{
 				Counter.Redraw( counters );
+
+			    titleBarParams.SelectedIndex = 0;
 			}
 			else if ( tabs.SelectedTab == dressTab )
 			{
@@ -6563,9 +6565,12 @@ namespace Assistant
             }
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void titleBarParams_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (titleBarParams.SelectedItem.ToString().Contains("{"))
+            {
+                titleStr.AppendText($" {titleBarParams.SelectedItem} ");
+            }
         }
     }
 }
