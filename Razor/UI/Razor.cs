@@ -245,6 +245,7 @@ namespace Assistant
         private CheckBox negotiate;
         private CheckBox jsonApi;
         private Label aboutSubInfo;
+        private ComboBox titleBarParams;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -523,6 +524,7 @@ namespace Assistant
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
             this.aboutSubInfo = new System.Windows.Forms.Label();
+            this.titleBarParams = new System.Windows.Forms.ComboBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -856,7 +858,7 @@ namespace Assistant
             // 
             this.lthilight.Location = new System.Drawing.Point(8, 111);
             this.lthilight.Name = "lthilight";
-            this.lthilight.Size = new System.Drawing.Size(206, 20);
+            this.lthilight.Size = new System.Drawing.Size(206, 19);
             this.lthilight.TabIndex = 50;
             this.lthilight.Text = "Last Target Highlight:";
             this.lthilight.CheckedChanged += new System.EventHandler(this.lthilight_CheckedChanged);
@@ -1088,7 +1090,7 @@ namespace Assistant
             // 
             this.chkForceSpeechHue.Location = new System.Drawing.Point(8, 85);
             this.chkForceSpeechHue.Name = "chkForceSpeechHue";
-            this.chkForceSpeechHue.Size = new System.Drawing.Size(206, 21);
+            this.chkForceSpeechHue.Size = new System.Drawing.Size(206, 19);
             this.chkForceSpeechHue.TabIndex = 0;
             this.chkForceSpeechHue.Text = "Override Speech Hue:";
             this.chkForceSpeechHue.CheckedChanged += new System.EventHandler(this.chkForceSpeechHue_CheckedChanged);
@@ -1385,7 +1387,7 @@ namespace Assistant
             // 
             // showNotoHue
             // 
-            this.showNotoHue.Location = new System.Drawing.Point(236, 163);
+            this.showNotoHue.Location = new System.Drawing.Point(229, 168);
             this.showNotoHue.Name = "showNotoHue";
             this.showNotoHue.Size = new System.Drawing.Size(224, 20);
             this.showNotoHue.TabIndex = 47;
@@ -1394,7 +1396,7 @@ namespace Assistant
             // 
             // warnNum
             // 
-            this.warnNum.Location = new System.Drawing.Point(434, 213);
+            this.warnNum.Location = new System.Drawing.Point(418, 218);
             this.warnNum.Name = "warnNum";
             this.warnNum.Size = new System.Drawing.Size(20, 23);
             this.warnNum.TabIndex = 46;
@@ -1404,7 +1406,7 @@ namespace Assistant
             // 
             // warnCount
             // 
-            this.warnCount.Location = new System.Drawing.Point(236, 215);
+            this.warnCount.Location = new System.Drawing.Point(229, 220);
             this.warnCount.Name = "warnCount";
             this.warnCount.Size = new System.Drawing.Size(192, 19);
             this.warnCount.TabIndex = 45;
@@ -1422,7 +1424,7 @@ namespace Assistant
             // 
             // highlightSpellReags
             // 
-            this.highlightSpellReags.Location = new System.Drawing.Point(236, 137);
+            this.highlightSpellReags.Location = new System.Drawing.Point(229, 142);
             this.highlightSpellReags.Name = "highlightSpellReags";
             this.highlightSpellReags.Size = new System.Drawing.Size(200, 20);
             this.highlightSpellReags.TabIndex = 13;
@@ -1431,7 +1433,7 @@ namespace Assistant
             // 
             // titlebarImages
             // 
-            this.titlebarImages.Location = new System.Drawing.Point(236, 189);
+            this.titlebarImages.Location = new System.Drawing.Point(229, 194);
             this.titlebarImages.Name = "titlebarImages";
             this.titlebarImages.Size = new System.Drawing.Size(200, 20);
             this.titlebarImages.TabIndex = 12;
@@ -1449,22 +1451,23 @@ namespace Assistant
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.titleBarParams);
             this.groupBox3.Controls.Add(this.titleStr);
             this.groupBox3.Controls.Add(this.showInBar);
             this.groupBox3.Location = new System.Drawing.Point(210, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(263, 128);
+            this.groupBox3.Size = new System.Drawing.Size(263, 133);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Title Bar Display";
             // 
             // titleStr
             // 
-            this.titleStr.Location = new System.Drawing.Point(6, 35);
+            this.titleStr.Location = new System.Drawing.Point(6, 41);
             this.titleStr.Multiline = true;
             this.titleStr.Name = "titleStr";
             this.titleStr.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.titleStr.Size = new System.Drawing.Size(251, 87);
+            this.titleStr.Size = new System.Drawing.Size(251, 81);
             this.titleStr.TabIndex = 4;
             this.titleStr.TextChanged += new System.EventHandler(this.titleStr_TextChanged);
             // 
@@ -1472,9 +1475,9 @@ namespace Assistant
             // 
             this.showInBar.Location = new System.Drawing.Point(6, 15);
             this.showInBar.Name = "showInBar";
-            this.showInBar.Size = new System.Drawing.Size(180, 20);
+            this.showInBar.Size = new System.Drawing.Size(141, 20);
             this.showInBar.TabIndex = 3;
-            this.showInBar.Text = "Show this in the UO title bar:";
+            this.showInBar.Text = "Show in UO title bar:";
             this.showInBar.CheckedChanged += new System.EventHandler(this.showInBar_CheckedChanged);
             // 
             // groupBox2
@@ -2754,6 +2757,50 @@ namespace Assistant
             this.aboutSubInfo.Size = new System.Drawing.Size(225, 17);
             this.aboutSubInfo.TabIndex = 17;
             this.aboutSubInfo.Text = "UO Renaissance Community Edition";
+            // 
+            // titleBarParams
+            // 
+            this.titleBarParams.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.titleBarParams.FormattingEnabled = true;
+            this.titleBarParams.Items.AddRange(new object[] {
+            "{ar}",
+            "{bandage}",
+            "{char}",
+            "{crimtime}",
+            "{damage}",
+            "{dex}",
+            "{followersmax}",
+            "{followers}",
+            "{gold}",
+            "{hpmax}",
+            "{hp}",
+            "{int}",
+            "{largestatbar}",
+            "{manamax}",
+            "{mana}",
+            "{maxweight}",
+            "{mediumstatbar}",
+            "{shard}",
+            "{skill}",
+            "{stammax}",
+            "{stam}",
+            "{statbar}",
+            "{stealthsteps}",
+            "{str}",
+            "{weight}",
+            "-",
+            "{coldresist}",
+            "{energyresist}",
+            "{fireresist}",
+            "{luck}",
+            "{physresist}",
+            "{poisonresist}",
+            "{tithe}"});
+            this.titleBarParams.Location = new System.Drawing.Point(153, 12);
+            this.titleBarParams.Name = "titleBarParams";
+            this.titleBarParams.Size = new System.Drawing.Size(104, 23);
+            this.titleBarParams.TabIndex = 5;
+            this.titleBarParams.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // MainForm
             // 
@@ -6516,5 +6563,9 @@ namespace Assistant
             }
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

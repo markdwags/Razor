@@ -107,6 +107,7 @@
     <Compile Include="Core\AVIRec.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\SkillTimer.cs" />
     <Compile Include="Core\BandageTimer.cs">
       <SubType>Code</SubType>
     </Compile>

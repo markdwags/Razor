@@ -87,7 +87,7 @@ namespace Assistant
             // 
             this.hueNum.Location = new System.Drawing.Point(101, 6);
             this.hueNum.Name = "hueNum";
-            this.hueNum.Size = new System.Drawing.Size(50, 22);
+            this.hueNum.Size = new System.Drawing.Size(50, 23);
             this.hueNum.TabIndex = 1;
             this.hueNum.TextChanged += new System.EventHandler(this.hueNum_TextChanged);
             // 
@@ -116,7 +116,7 @@ namespace Assistant
             this.okay.Name = "okay";
             this.okay.Size = new System.Drawing.Size(52, 30);
             this.okay.TabIndex = 4;
-            this.okay.Text = "&Okay";
+            this.okay.Text = "&OK";
             this.okay.Click += new System.EventHandler(this.okay_Click);
             // 
             // cancel
@@ -132,7 +132,7 @@ namespace Assistant
             // HueEntry
             // 
             this.AcceptButton = this.okay;
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.CancelButton = this.cancel;
             this.ClientSize = new System.Drawing.Size(167, 127);
             this.ControlBox = false;
@@ -142,7 +142,7 @@ namespace Assistant
             this.Controls.Add(this.preview);
             this.Controls.Add(this.inGame);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

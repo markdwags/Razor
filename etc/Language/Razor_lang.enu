@@ -18,7 +18,7 @@ WelcomeForm::label1=Load Client:
 WelcomeForm::patchEncy=Patch client encryption
 WelcomeForm::showAtStart=Show this when Razor starts
 WelcomeForm::quit=&Quit
-WelcomeForm::okay=&Okay
+WelcomeForm::okay=&OK
 
 MainForm::Text=Razor v{0}
 MainForm::generalTab=General
@@ -185,7 +185,7 @@ MainForm::dataDir=Open Data Directory
 
 HueEntry::Text=Select a Hue
 HueEntry::cancel=Cancel
-HueEntry::okay=&Okay
+HueEntry::okay=&OK
 HueEntry::preview=Preview
 HueEntry::inGame=Select in Game
 HueEntry::label1=Hue Number:
@@ -194,7 +194,7 @@ AddCounter::Text=Add a Counter
 AddCounter::delete=Delete
 AddCounter::target=Target 
 AddCounter::cancel=Cancel
-AddCounter::Add=&Okay
+AddCounter::Add=&OK
 AddCounter::label4=Color (Any: -1):
 AddCounter::label3=Item ID:
 AddCounter::label2=Format:
@@ -216,7 +216,7 @@ MacroInsertIf::cancel=&Cancel
 MacroInsertIf::insert=&Insert
 
 InputBox::cancel=Cancel
-InputBox::ok=&Okay
+InputBox::ok=&OK
 
 [strings]
 1001=Death Status
@@ -326,7 +326,7 @@ InputBox::ok=&Okay
 1105=Warning: {0} amount is now {1}!
 1106=Select the hue you wish to use.
 1107=Take ScreenShot Now
-1108=Possible values:\n{char} - Character name\n{shard} - Shard name\n{str}/{hp}/{hpmax} - Health status\n{dex}/{stam}/{stammax} - Dex status\n{int}/{mana}/{manamax} - Int status\n{weight}/{maxweight} - Weight information\n{gold} - Total Gold on character\n{AR} - Armor Rating / Physical Resistance\n{tithe} - Tithing points\n{followers}/{followersmax} - Followers slots\n{bandage} - Bandage Timer\n{statbar}/{mediumstatbar}/{largestatbar} - Status bar\n{crimtime} - How long you have been a criminal\n{stealthsteps} - Stealth steps counter\n{physresist} - Physical Resistance\n{coldresist} - Cold Resistance\n{fireresist} - Fire Resistance\n{energyresist} - Energy Resistance\n{poisonresist} - Poison Resistance\n{luck} - Luck\n{damage} - Damage Min-Max\nColor - HTML hex color code: '~#rrggbb' ('~#~' to terminate)\nOr a {Format} from the Counters list
+1108=Possible values:\n{char} - Character name\n{shard} - Shard name\n{str}/{hp}/{hpmax} - Health status\n{dex}/{stam}/{stammax} - Dex status\n{int}/{mana}/{manamax} - Int status\n{weight}/{maxweight} - Weight information\n{gold} - Total Gold on character\n{AR} - Armor Rating / Physical Resistance\n{tithe} - Tithing points\n{followers}/{followersmax} - Followers slots\n{bandage} - Bandage Timer\n{statbar}/{mediumstatbar}/{largestatbar} - Status bar\n{crimtime} - How long you have been a criminal\n{stealthsteps} - Stealth steps counter\n{physresist} - Physical Resistance\n{coldresist} - Cold Resistance\n{fireresist} - Fire Resistance\n{energyresist} - Energy Resistance\n{poisonresist} - Poison Resistance\n{luck} - Luck\n{damage} - Damage Min-Max\nColor - HTML hex color code: '~#rrggbb' ('~#~' to terminate)\nOr a {Format} from the Counters list\n{skill} - Skill usage timer
 1109=Razor Version: {0}\nMemory Used: {1}\nSend: {2} ({3}/s)\nRecv: {4} ({5}/s)\nConnected for {6}\n\nPlayer Serial: 0x{7:X8}\nBackpack Serial: 0x{8:X8}\n\nTracking Items: {9}\nTracking Mobs: {10}\n
 1110=Set Lock: UP
 1111=Set Lock: DOWN
