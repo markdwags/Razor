@@ -208,7 +208,7 @@ namespace Assistant
 		private System.Windows.Forms.CheckBox chkPartyOverhead;
         private LinkLabel linkLabel2;
         private Label label21;
-        private Label label20;
+        private Label aboutVer;
         private LinkLabel linkLabel1;
         private Button cloneProfile;
         private Button setLTHilight;
@@ -244,6 +244,7 @@ namespace Assistant
         private TextBox features;
         private CheckBox negotiate;
         private CheckBox jsonApi;
+        private Label aboutSubInfo;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -518,9 +519,10 @@ namespace Assistant
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
+            this.aboutVer = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.aboutSubInfo = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -2686,9 +2688,10 @@ namespace Assistant
             // 
             // aboutTab
             // 
+            this.aboutTab.Controls.Add(this.aboutSubInfo);
             this.aboutTab.Controls.Add(this.linkLabel2);
             this.aboutTab.Controls.Add(this.label21);
-            this.aboutTab.Controls.Add(this.label20);
+            this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Controls.Add(this.linkLabel1);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
@@ -2699,7 +2702,7 @@ namespace Assistant
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(195, 84);
+            this.linkLabel2.Location = new System.Drawing.Point(8, 110);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(206, 15);
             this.linkLabel2.TabIndex = 16;
@@ -2710,26 +2713,26 @@ namespace Assistant
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(196, 65);
+            this.label21.Location = new System.Drawing.Point(9, 91);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(163, 15);
             this.label21.TabIndex = 15;
             this.label21.Text = "Project maintained by Quick";
             // 
-            // label20
+            // aboutVer
             // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(195, 8);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(272, 17);
-            this.label20.TabIndex = 14;
-            this.label20.Text = "Razor: UO Renaissance Community Edition";
+            this.aboutVer.AutoSize = true;
+            this.aboutVer.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutVer.Location = new System.Drawing.Point(8, 10);
+            this.aboutVer.Name = "aboutVer";
+            this.aboutVer.Size = new System.Drawing.Size(87, 21);
+            this.aboutVer.TabIndex = 14;
+            this.aboutVer.Text = "Razor v{0}";
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(195, 30);
+            this.linkLabel1.Location = new System.Drawing.Point(9, 52);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(179, 15);
             this.linkLabel1.TabIndex = 13;
@@ -2741,6 +2744,16 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
+            // 
+            // aboutSubInfo
+            // 
+            this.aboutSubInfo.AutoSize = true;
+            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutSubInfo.Location = new System.Drawing.Point(9, 31);
+            this.aboutSubInfo.Name = "aboutSubInfo";
+            this.aboutSubInfo.Size = new System.Drawing.Size(225, 17);
+            this.aboutSubInfo.TabIndex = 17;
+            this.aboutSubInfo.Text = "UO Renaissance Community Edition";
             // 
             // MainForm
             // 
@@ -3166,7 +3179,7 @@ namespace Assistant
 			m_OutPrev = ClientCommunication.TotalOut();
 			m_InPrev = ClientCommunication.TotalIn();
 
-			if ( tabs.SelectedTab != aboutTab )
+			if ( tabs.SelectedTab != advancedTab )
 				return;
 
 			int time = 0;
@@ -5659,21 +5672,33 @@ namespace Assistant
 					MessageBox.Show( this, Language.GetString( LocString.NextRestart ), "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information );
 			}
 		}
+        
+	    public void UpdateTitle()
+	    {
+	        string str = Language.GetControlText(this.Name);
+	        if (string.IsNullOrEmpty(str))
+	        {
+	            str = "Razor v{0}";
+            }
+	            
 
-		public void UpdateTitle()
-		{
-			string str = Language.GetControlText( this.Name );
-			if ( str == null || str == "" )
-				str = "Razor v{0}";
+	        str = String.Format(str, Engine.Version);
 
-			str = String.Format( str, Engine.Version );
-			if ( World.Player != null )
-				this.Text = String.Format( "{0} - {1} ({2})", str, World.Player.Name, World.ShardName );
-			else
-				this.Text = str;
+	        if (World.Player != null)
+	        {
+	            string title = $"{World.Player.Name} ({World.ShardName}) - {str}";
+	            Text = title;
+	        }
+	        else
+	        {
+	            Text = str;
+	        }
 
-			UpdateSystray();
-		}
+	        aboutVer.Text = str;
+
+
+            UpdateSystray();
+	    }
 
 		public void UpdateSystray()
 		{

@@ -554,21 +554,21 @@ namespace Assistant
 		[DllImport( "kernel32.dll" )]
 		private static extern uint GlobalGetAtomName( ushort atom, StringBuilder buff, int bufLen );
 
-		[DllImport( "kernel32.dll" )]
+		/*[DllImport( "kernel32.dll" )]
 		private static extern IntPtr LoadLibrary( string path );
 		[DllImport( "kernel32.dll" )]
 		private static extern bool FreeLibrary( IntPtr hModule );
 		[DllImport( "kernel32.dll" )]
-		private static extern IntPtr GetProcAddress( IntPtr hModule, string procName );
+		private static extern IntPtr GetProcAddress( IntPtr hModule, string procName );*/
 
 		[DllImport( "Advapi32.dll" )]
 		private static extern int GetUserNameA( StringBuilder buff, int *len );
 
-		private static IntPtr m_TranslateDLL = IntPtr.Zero;
+		/*private static IntPtr m_TranslateDLL = IntPtr.Zero;
 		private static IntPtr m_TranslateSetup = IntPtr.Zero;
 		private static IntPtr m_TranslateLogin = IntPtr.Zero;
 		private static IntPtr m_TranslateDo = IntPtr.Zero;
-		private static bool m_TranslateEnabled = false;
+		private static bool m_TranslateEnabled = false;*/
 
 		/*public static bool TranslateEnabled
 		{
