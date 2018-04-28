@@ -274,6 +274,9 @@
     <Compile Include="UI\HueEntry.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\InputDropdown.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -329,6 +332,9 @@
     <EmbeddedResource Include="UI\App.ico" />
     <EmbeddedResource Include="UI\HueEntry.resx">
       <DependentUpon>HueEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\InputDropdown.resx">
+      <DependentUpon>InputDropdown.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Assistant
@@ -13,7 +14,7 @@ namespace Assistant
 			Nothing,
 			Success,
 			KeepWaiting,
-			ReQueue,
+			ReQueue
 		}
 
 		public static bool Debug = false;
@@ -26,7 +27,7 @@ namespace Assistant
 				{
 					using ( StreamWriter w = new StreamWriter( "DragDrop.log", true ) )
 					{
-						w.Write( DateTime.Now.ToString( "HH:mm:ss.fff" ) );
+						w.Write( Engine.MistedDateTime.ToString( "HH:mm:ss.fff" ) );
 						w.Write( ":: " );
 						w.WriteLine( str, args );
 						w.Flush();
@@ -51,11 +52,11 @@ namespace Assistant
 				Id = NextID++;
 			}
 
-			public Serial Serial;
-			public int Amount;
-			public int Id;
-			public bool FromClient;
-			public bool DoLast;
+			public readonly Serial Serial;
+			public readonly int Amount;
+			public readonly int Id;
+			public readonly bool FromClient;
+			public readonly bool DoLast;
 
 			public override string ToString()
 			{
@@ -77,8 +78,8 @@ namespace Assistant
 			}
 
 			public Serial Serial;
-			public Point3D Point;
-			public Layer Layer;
+			public readonly Point3D Point;
+			public readonly Layer Layer;
 		}
 
 		public static void Initialize()
@@ -113,9 +114,9 @@ namespace Assistant
 		private static bool m_ClientLiftReq = false;
 		private static DateTime m_Lifted = DateTime.MinValue;
 
-		private static Hashtable m_DropReqs = new Hashtable();
-		
-		private static LiftReq[] m_LiftReqs = new LiftReq[ 256 ];
+	    private static readonly Dictionary<Serial, Queue<DropReq>> m_DropReqs = new Dictionary<Serial, Queue<DropReq>>();
+
+        private static readonly LiftReq[] m_LiftReqs = new LiftReq[ 256 ];
 		private static byte m_Front, m_Back;
 
 		public static Item Holding { get { return m_HoldingItem; } }
@@ -254,10 +255,10 @@ namespace Assistant
 				{
 					Log( "Queuing Equip {0} to {1} (@{2})", i, to.Serial, layer );
 
-					Queue q = m_DropReqs[i.Serial] as Queue;
-					if ( q == null )
-						m_DropReqs[i.Serial] = q = new Queue();
-					q.Enqueue( new DropReq( to == null ? Serial.Zero : to.Serial, layer ) );
+				    if (!m_DropReqs.TryGetValue(i.Serial, out var q) || q == null)
+						m_DropReqs[i.Serial] = q = new Queue<DropReq>();
+
+                    q.Enqueue( new DropReq( to == null ? Serial.Zero : to.Serial, layer ) );
 					return true;
 				}
 				else
@@ -296,9 +297,9 @@ namespace Assistant
 				{
 					Log( "Queuing Drop {0} (to {1} (@{2}))", i, dest, pt );
 
-					Queue q = m_DropReqs[i.Serial] as Queue;
-					if ( q == null )
-						m_DropReqs[i.Serial] = q = new Queue();
+				    if (!m_DropReqs.TryGetValue(i.Serial, out var q) || q == null)
+                        m_DropReqs[i.Serial] = q = new Queue<DropReq>();
+
 					q.Enqueue( new DropReq( dest, pt ) );
 					return true;
 				}
@@ -399,11 +400,10 @@ namespace Assistant
 		private static DropReq DequeueDropFor( Serial s )
 		{
 			DropReq dr = null;
-			Queue q = (Queue)m_DropReqs[s];
-			if ( q != null )
-			{
+		    if (m_DropReqs.TryGetValue(s, out var q) && q != null)
+            {
 				if ( q.Count > 0 )
-					dr = q.Dequeue() as DropReq;
+					dr = q.Dequeue();
 				if ( q.Count <= 0 )
 					m_DropReqs.Remove( s );
 			}
@@ -416,10 +416,9 @@ namespace Assistant
 
 			if ( m_Pending.IsValid )
 			{
-				object o = m_DropReqs[m_Pending];
-				m_DropReqs.Clear();
-
-				m_DropReqs.Add( m_Pending, o );
+			    m_DropReqs.TryGetValue(m_Pending, out var q);
+                m_DropReqs.Clear();
+				m_DropReqs[m_Pending] = q;
 			}
 		}
 
@@ -427,7 +426,7 @@ namespace Assistant
 		{
 			if ( m_Pending != Serial.Zero )
 			{
-				if ( m_Lifted + TimeSpan.FromMinutes( 2 ) < DateTime.Now )
+				if ( m_Lifted + TimeSpan.FromMinutes( 2 ) < DateTime.UtcNow )
 				{
 					Item i = World.FindItem( m_Pending );
 
@@ -504,7 +503,7 @@ namespace Assistant
 				else
 				{
 					m_Pending = lr.Serial;
-					m_Lifted = DateTime.Now;
+					m_Lifted = DateTime.UtcNow;
 				}
 				
 				return ProcStatus.Success;
@@ -520,8 +519,8 @@ namespace Assistant
 	public class ActionQueue
 	{
 		private static Serial m_Last = Serial.Zero;
-		private static Queue m_Queue = new Queue();
-		private static ProcTimer m_Timer = new ProcTimer();
+		private static readonly Queue m_Queue = new Queue();
+		private static readonly ProcTimer m_Timer = new ProcTimer();
 		private static int m_Total = 0;
 
 		public static void DoubleClick( bool silent, Serial s )
@@ -574,7 +573,7 @@ namespace Assistant
 					double time = Config.GetInt( "ObjectDelay" ) / 1000.0;
 					double init = 0;
 					if ( m_Timer.LastTick != DateTime.MinValue )
-						init = time - ( DateTime.Now - m_Timer.LastTick ).TotalSeconds;
+						init = time - ( DateTime.UtcNow - m_Timer.LastTick ).TotalSeconds;
 					time = init+time*m_Queue.Count;
 					if ( time < 0 )
 						time = 0;
@@ -600,8 +599,8 @@ namespace Assistant
 
 			public void StartMe()
 			{
-				m_LastTick = DateTime.Now;
-				m_StartTime = DateTime.Now;
+				m_LastTick = DateTime.UtcNow;
+				m_StartTime = DateTime.UtcNow;
 
 				OnTick();
 
@@ -614,7 +613,7 @@ namespace Assistant
 			{
 				ArrayList requeue = null;
 
-				m_LastTick = DateTime.Now;
+				m_LastTick = DateTime.UtcNow;
 
 				if ( m_Queue != null && m_Queue.Count > 0 )
 				{
@@ -656,7 +655,7 @@ namespace Assistant
 					Stop();
 
 					if ( m_Total > 1 && World.Player != null )
-						World.Player.SendMessage( LocString.QueueFinished, m_Total, ((DateTime.Now - m_StartTime) - this.Interval).TotalSeconds );
+						World.Player.SendMessage( LocString.QueueFinished, m_Total, ((DateTime.UtcNow - m_StartTime) - this.Interval).TotalSeconds );
 
 					m_Last = Serial.Zero;
 					m_Total = 0;

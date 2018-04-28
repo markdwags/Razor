@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -148,11 +149,11 @@ namespace Assistant
 				{
 					if ( m_Enabled )
 					{
-						if ( !SupressWarnings && m_LastWarning + TimeSpan.FromSeconds( 1.0 ) < DateTime.Now && 
+						if ( !SupressWarnings && m_LastWarning + TimeSpan.FromSeconds( 1.0 ) < DateTime.UtcNow && 
 							World.Player != null && value < m_Count && Config.GetBool( "CounterWarn" ) && value < Config.GetInt( "CounterWarnAmount" ) )
 						{
 							World.Player.SendMessage( MsgLevel.Warning, LocString.CountLow, Name, value );	
-							m_LastWarning = DateTime.Now;
+							m_LastWarning = DateTime.UtcNow;
 						}
 
 						if ( ClientCommunication.NotificationCount > 0 )
@@ -256,15 +257,15 @@ namespace Assistant
 		}
 
 		private static bool m_NeedXMLSave = false;
-		private static ArrayList m_List;
-		private static bool m_SupressWarn, m_SupressChecks;
-		private static Hashtable m_Cache;
-		public static ArrayList List{ get{ return m_List; } }
+	    private static List<Counter> m_List = new List<Counter>();
+        private static bool m_SupressWarn, m_SupressChecks;
+	    private static Dictionary<Item, ushort> m_Cache = new Dictionary<Item, ushort>();
+        public static List<Counter> List { get{ return m_List; } }
 
 		static Counter()
 		{
-			m_List = new ArrayList();
-			m_Cache = new Hashtable();
+			m_List = new List<Counter>();
+			m_Cache = new Dictionary<Item, ushort>();
 			Load();
 		}
 
@@ -342,7 +343,7 @@ namespace Assistant
 		{
 			for(int i=0;i<m_List.Count;i++)
 			{
-				Counter c = (Counter)m_List[i];
+				Counter c = m_List[i];
 				if ( c.Enabled )
 				{
 					xml.WriteStartElement( "counter" );
@@ -358,7 +359,7 @@ namespace Assistant
 		{
 			for(int i=0;i<m_List.Count;i++)
 			{
-				Counter c = (Counter)m_List[i];
+				Counter c = m_List[i];
 
 				if ( c.Format == "bp" || c.Format == "bm" || c.Format == "gl" || c.Format == "gs" || 
 					c.Format == "mr" || c.Format == "ns" || c.Format == "ss" || c.Format == "sa" || 
@@ -372,7 +373,7 @@ namespace Assistant
 		public static void DisableAll()
 		{
 			for(int i=0;i<m_List.Count;i++)
-				((Counter)m_List[i]).Enabled = false;
+				m_List[i].Enabled = false;
 		}
 
 		public static void LoadProfile( XmlElement xml )
@@ -393,7 +394,7 @@ namespace Assistant
 
 					for(int i=0;i<m_List.Count;i++)
 					{
-						Counter c = (Counter)m_List[i];
+						Counter c = m_List[i];
 
 						if ( c.Name == name )
 						{
@@ -458,23 +459,22 @@ namespace Assistant
 
 			for (int i=0;i<m_List.Count;i++)
 			{
-				Counter c = (Counter)m_List[i];
+				Counter c = m_List[i];
 				if ( c.Enabled )
 				{
 					if ( c.ItemID == item.ItemID && ( c.Hue == item.Hue || c.Hue == -1 || c.Hue == 0xFFFF ) )
 					{
-						if ( m_Cache[item] != null )
-						{
-							ushort rem = (ushort)m_Cache[item];
-							if ( rem >= c.Amount )
-								c.Amount = 0;
-							else
-								c.Amount -= rem;
+                        if (m_Cache.TryGetValue(item, out ushort rem))
+                        {
+                            if (rem >= c.Amount)
+                                c.Amount = 0;
+                            else
+                                c.Amount -= rem;
 
-							m_Cache[item] = null;
-						}
-						
-						break;
+                            m_Cache.Remove(item);
+                        }
+
+                        break;
 					}
 				}
 			}
@@ -484,16 +484,13 @@ namespace Assistant
 		{
 			for (int i=0;i<m_List.Count;i++)
 			{
-				Counter c = (Counter)m_List[i];
+				Counter c = m_List[i];
 				if ( c.Enabled )
 				{
 					if ( c.ItemID == item.ItemID && ( c.Hue == item.Hue || c.Hue == 0xFFFF || c.Hue == -1 ) )
 					{
-						ushort old = 0;
-						object o = m_Cache[item];
-						if ( o != null )
-						{
-							old = (ushort)o;
+					    if (m_Cache.TryGetValue(item, out var old))
+                        {
 							if ( old == item.Amount )
 								break; // dont change result cause we dont need an update
 						}
@@ -560,7 +557,7 @@ namespace Assistant
 			m_Cache.Clear();
 
 			for( int i=0;i<m_List.Count;i++ )
-				((Counter)m_List[i]).Amount = 0;
+				m_List[i].Amount = 0;
 			SupressWarnings = false;
 		}
 		
@@ -570,7 +567,7 @@ namespace Assistant
 			list.BeginUpdate();
 			list.Items.Clear();
 			for (int i=0;i<m_List.Count;i++)
-				list.Items.Add( ((Counter)m_List[i]).ViewItem );
+				list.Items.Add( m_List[i].ViewItem );
 			list.EndUpdate();
 			m_SupressChecks = false;
 		}

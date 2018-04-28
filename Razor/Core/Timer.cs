@@ -177,7 +177,7 @@ namespace Assistant
 			if ( !m_Running )
 			{
 				m_Index = 0;
-				m_Next = DateTime.Now + m_Delay;
+				m_Next = DateTime.UtcNow + m_Delay;
 				m_Running = true;
 				m_Heap.Add( this );
 				ChangedNextTick( true );
@@ -204,7 +204,7 @@ namespace Assistant
 
 		public TimeSpan TimeUntilTick
 		{
-			get { return m_Running ? m_Next - DateTime.Now : TimeSpan.MaxValue; }
+			get { return m_Running ? m_Next - DateTime.UtcNow : TimeSpan.MaxValue; }
 		}
 		
 		public bool Running { get { return m_Running; } }
@@ -287,7 +287,7 @@ namespace Assistant
 
 					if ( t.Running && ( t.m_Count == 0 || (++t.m_Index) < t.m_Count ) )
 					{
-						t.m_Next = DateTime.Now + t.m_Interval;
+						t.m_Next = DateTime.UtcNow + t.m_Interval;
 						readd.Add( t );
 					}
 					else

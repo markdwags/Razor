@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -22,15 +23,16 @@ namespace Assistant
 			}
 		}
 
-		private ArrayList m_StringNums = new ArrayList();
+	    private List<int> m_StringNums = new List<int>();
 
-		private int m_Hash = 0;
-		private ArrayList m_Content = new ArrayList();
-		
-		private int m_CustomHash = 0;
-		private ArrayList m_CustomContent = new ArrayList();
+        private int m_Hash = 0;
+	    private List<OPLEntry> m_Content = new List<OPLEntry>();
 
-		private UOEntity m_Owner = null;
+        private int m_CustomHash = 0;
+	    private List<OPLEntry> m_CustomContent = new List<OPLEntry>();
+
+
+        private UOEntity m_Owner = null;
 
 		public int Hash 
 		{ 
@@ -154,7 +156,7 @@ namespace Assistant
 			1063483, // ~1_MATERIAL~ ~2_ITEMNAME~
 			1076228, // ~1_DUMMY~ ~2_DUMMY~
 			1060847, // ~1_val~ ~2_val~
-			1050039, // ~1_NUMBER~ ~2_ITEMNAME~
+			1050039 // ~1_NUMBER~ ~2_ITEMNAME~
 			// these are ugly:
 			//1062613, // "~1_NAME~" (orange)
 			//1049644, // [~1_stuff~]
@@ -222,7 +224,7 @@ namespace Assistant
 
 					m_Content.RemoveAt( i );
 					AddHash( ent.Number );
-					if ( ent.Args != null && ent.Args != "" )
+					if ( !string.IsNullOrEmpty(ent.Args) )
 						AddHash( ent.Args.GetHashCode() );
 
 					return true;
@@ -248,7 +250,7 @@ namespace Assistant
 
 					m_CustomContent.RemoveAt( i );
 					AddHash( ent.Number );
-					if ( ent.Args != null && ent.Args != "" )
+					if ( !string.IsNullOrEmpty(ent.Args) )
 						AddHash( ent.Args.GetHashCode() );
 					if ( m_CustomContent.Count == 0 )
 						m_CustomHash = 0;
@@ -299,7 +301,7 @@ namespace Assistant
 						m_CustomContent.RemoveAt( i );
 
 						AddHash( ent.Number );
-						if ( ent.Args != null && ent.Args != "" )
+						if ( !string.IsNullOrEmpty(ent.Args) )
 							AddHash( ent.Args.GetHashCode() );
 						return true;
 					}
@@ -326,7 +328,7 @@ namespace Assistant
 				if ( ent != null && ent.Number != 0 )
 				{
 					p.Write( (int)ent.Number );
-					if ( ent.Args != null && ent.Args != "" )
+					if ( !string.IsNullOrEmpty(ent.Args) )
 					{
 						int byteCount = Encoding.Unicode.GetByteCount( ent.Args );
 
@@ -355,11 +357,11 @@ namespace Assistant
 
 						p.Write( (int)ent.Number );
 
-						if ( arguments == null || arguments == "" )
+						if ( string.IsNullOrEmpty(arguments) )
 							arguments = " ";
 						arguments += "\t ";
 						
-						if ( arguments != null && arguments != "" )
+						if ( !string.IsNullOrEmpty(arguments) )
 						{
 							int byteCount = Encoding.Unicode.GetByteCount( arguments );
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -15,7 +16,7 @@ namespace Assistant
 		Spell = 0x0A,
 		Encoded = 0xC0,
 
-		Special = 0x20,
+		Special = 0x20
 	}
 
 	public sealed class QueryPartyLocs : Packet
@@ -513,7 +514,7 @@ namespace Assistant
 
 	public sealed class VendorSellResponse : Packet
 	{
-		public VendorSellResponse( Mobile vendor, ArrayList list ) : base( 0x9F )
+		public VendorSellResponse( Mobile vendor, List<SellListItem> list ) : base( 0x9F )
 		{
 			EnsureCapacity( 1 + 2 + 4 + 2 + list.Count*6 );
 
@@ -522,7 +523,7 @@ namespace Assistant
 
 			for (int i=0;i<list.Count;i++)
 			{
-				SellListItem sli = (SellListItem)list[i];
+				SellListItem sli = list[i];
 				Write( (uint)sli.Serial );
 				Write( (ushort)sli.Amount );
 			}
@@ -892,7 +893,7 @@ namespace Assistant
 
 	public sealed class VendorBuyResponse : Packet
 	{
-		public VendorBuyResponse( Serial vendor, ArrayList list ) : base( 0x3B )
+		public VendorBuyResponse( Serial vendor, IList<VendorBuyItem> list ) : base( 0x3B )
 		{
 			EnsureCapacity( 1 + 2 + 4 + 1 + list.Count * 7 );
 
@@ -901,7 +902,7 @@ namespace Assistant
 
 			for(int i=0;i<list.Count;i++)
 			{
-				VendorBuyItem vbi = (VendorBuyItem)list[i];
+				VendorBuyItem vbi = list[i];
 				Write( (byte)0x1A ); // layer?
 				Write( vbi.Serial );
 				Write( (ushort)vbi.Amount );
@@ -1088,7 +1089,7 @@ namespace Assistant
 	{
 		public CurrentTime() : base( 0x5B, 4 )
 		{
-			DateTime now = DateTime.Now;
+			DateTime now = DateTime.UtcNow;
 
 			Write( (byte) now.Hour );
 			Write( (byte) now.Minute );

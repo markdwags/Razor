@@ -71,160 +71,162 @@ namespace Assistant
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.label1 = new System.Windows.Forms.Label();
-			this.name = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.format = new System.Windows.Forms.TextBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.itemid = new System.Windows.Forms.TextBox();
-			this.label4 = new System.Windows.Forms.Label();
-			this.hue = new System.Windows.Forms.TextBox();
-			this.Add = new System.Windows.Forms.Button();
-			this.cancel = new System.Windows.Forms.Button();
-			this.target = new System.Windows.Forms.Button();
-			this.delete = new System.Windows.Forms.Button();
-			this.dispImg = new System.Windows.Forms.CheckBox();
-			this.SuspendLayout();
-			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(8, 12);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(40, 16);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Name:";
-			// 
-			// name
-			// 
-			this.name.Location = new System.Drawing.Point(48, 8);
-			this.name.Name = "name";
-			this.name.Size = new System.Drawing.Size(68, 20);
-			this.name.TabIndex = 1;
-			this.name.Text = "";
-			// 
-			// label2
-			// 
-			this.label2.Location = new System.Drawing.Point(148, 12);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(48, 16);
-			this.label2.TabIndex = 2;
-			this.label2.Text = "Format:";
-			// 
-			// format
-			// 
-			this.format.Location = new System.Drawing.Point(196, 8);
-			this.format.Name = "format";
-			this.format.Size = new System.Drawing.Size(44, 20);
-			this.format.TabIndex = 3;
-			this.format.Text = "";
-			// 
-			// label3
-			// 
-			this.label3.Location = new System.Drawing.Point(8, 36);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(44, 16);
-			this.label3.TabIndex = 4;
-			this.label3.Text = "Item ID:";
-			// 
-			// itemid
-			// 
-			this.itemid.Location = new System.Drawing.Point(48, 32);
-			this.itemid.Name = "itemid";
-			this.itemid.Size = new System.Drawing.Size(44, 20);
-			this.itemid.TabIndex = 5;
-			this.itemid.Text = "";
-			// 
-			// label4
-			// 
-			this.label4.Location = new System.Drawing.Point(116, 36);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(84, 16);
-			this.label4.TabIndex = 6;
-			this.label4.Text = "Color (Any: -1):";
-			// 
-			// hue
-			// 
-			this.hue.Location = new System.Drawing.Point(196, 32);
-			this.hue.Name = "hue";
-			this.hue.Size = new System.Drawing.Size(44, 20);
-			this.hue.TabIndex = 7;
-			this.hue.Text = "";
-			// 
-			// Add
-			// 
-			this.Add.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.Add.Location = new System.Drawing.Point(8, 84);
-			this.Add.Name = "Add";
-			this.Add.Size = new System.Drawing.Size(56, 20);
-			this.Add.TabIndex = 8;
-			this.Add.Text = "&Okay";
-			this.Add.Click += new System.EventHandler(this.Add_Click);
-			// 
-			// cancel
-			// 
-			this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancel.Location = new System.Drawing.Point(72, 84);
-			this.cancel.Name = "cancel";
-			this.cancel.Size = new System.Drawing.Size(56, 20);
-			this.cancel.TabIndex = 9;
-			this.cancel.Text = "Cancel";
-			this.cancel.Click += new System.EventHandler(this.cancel_Click);
-			// 
-			// target
-			// 
-			this.target.Location = new System.Drawing.Point(200, 84);
-			this.target.Name = "target";
-			this.target.Size = new System.Drawing.Size(56, 20);
-			this.target.TabIndex = 10;
-			this.target.Text = "Target ";
-			this.target.Click += new System.EventHandler(this.target_Click);
-			// 
-			// delete
-			// 
-			this.delete.Location = new System.Drawing.Point(136, 84);
-			this.delete.Name = "delete";
-			this.delete.Size = new System.Drawing.Size(56, 20);
-			this.delete.TabIndex = 11;
-			this.delete.Text = "Delete";
-			this.delete.Visible = false;
-			this.delete.Click += new System.EventHandler(this.delete_Click);
-			// 
-			// dispImg
-			// 
-			this.dispImg.Checked = true;
-			this.dispImg.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.dispImg.Location = new System.Drawing.Point(8, 56);
-			this.dispImg.Name = "dispImg";
-			this.dispImg.Size = new System.Drawing.Size(160, 20);
-			this.dispImg.TabIndex = 12;
-			this.dispImg.Text = "Display image in titlebar";
-			// 
-			// AddCounter
-			// 
-			this.AcceptButton = this.Add;
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(264, 112);
-			this.ControlBox = false;
-			this.Controls.Add(this.dispImg);
-			this.Controls.Add(this.hue);
-			this.Controls.Add(this.itemid);
-			this.Controls.Add(this.format);
-			this.Controls.Add(this.name);
-			this.Controls.Add(this.delete);
-			this.Controls.Add(this.target);
-			this.Controls.Add(this.cancel);
-			this.Controls.Add(this.Add);
-			this.Controls.Add(this.label4);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.label1);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Name = "AddCounter";
-			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Add a Counter";
-			this.Load += new System.EventHandler(this.AddCounter_Load);
-			this.ResumeLayout(false);
+            this.label1 = new System.Windows.Forms.Label();
+            this.name = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.format = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.itemid = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.hue = new System.Windows.Forms.TextBox();
+            this.Add = new System.Windows.Forms.Button();
+            this.cancel = new System.Windows.Forms.Button();
+            this.target = new System.Windows.Forms.Button();
+            this.delete = new System.Windows.Forms.Button();
+            this.dispImg = new System.Windows.Forms.CheckBox();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(8, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 16);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Name:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // name
+            // 
+            this.name.Location = new System.Drawing.Point(57, 8);
+            this.name.Name = "name";
+            this.name.Size = new System.Drawing.Size(85, 22);
+            this.name.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(148, 12);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(48, 16);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Format:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // format
+            // 
+            this.format.Location = new System.Drawing.Point(200, 8);
+            this.format.Name = "format";
+            this.format.Size = new System.Drawing.Size(44, 22);
+            this.format.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(8, 33);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 19);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Item ID:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // itemid
+            // 
+            this.itemid.Location = new System.Drawing.Point(57, 32);
+            this.itemid.Name = "itemid";
+            this.itemid.Size = new System.Drawing.Size(44, 22);
+            this.itemid.TabIndex = 5;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(116, 36);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(84, 16);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Color (Any: -1):";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // hue
+            // 
+            this.hue.Location = new System.Drawing.Point(200, 32);
+            this.hue.Name = "hue";
+            this.hue.Size = new System.Drawing.Size(44, 22);
+            this.hue.TabIndex = 7;
+            // 
+            // Add
+            // 
+            this.Add.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Add.Location = new System.Drawing.Point(8, 84);
+            this.Add.Name = "Add";
+            this.Add.Size = new System.Drawing.Size(56, 23);
+            this.Add.TabIndex = 8;
+            this.Add.Text = "&Okay";
+            this.Add.Click += new System.EventHandler(this.Add_Click);
+            // 
+            // cancel
+            // 
+            this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancel.Location = new System.Drawing.Point(72, 84);
+            this.cancel.Name = "cancel";
+            this.cancel.Size = new System.Drawing.Size(56, 23);
+            this.cancel.TabIndex = 9;
+            this.cancel.Text = "Cancel";
+            this.cancel.Click += new System.EventHandler(this.cancel_Click);
+            // 
+            // target
+            // 
+            this.target.Location = new System.Drawing.Point(200, 84);
+            this.target.Name = "target";
+            this.target.Size = new System.Drawing.Size(56, 23);
+            this.target.TabIndex = 10;
+            this.target.Text = "Target ";
+            this.target.Click += new System.EventHandler(this.target_Click);
+            // 
+            // delete
+            // 
+            this.delete.Location = new System.Drawing.Point(136, 84);
+            this.delete.Name = "delete";
+            this.delete.Size = new System.Drawing.Size(56, 23);
+            this.delete.TabIndex = 11;
+            this.delete.Text = "Delete";
+            this.delete.Visible = false;
+            this.delete.Click += new System.EventHandler(this.delete_Click);
+            // 
+            // dispImg
+            // 
+            this.dispImg.Checked = true;
+            this.dispImg.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dispImg.Location = new System.Drawing.Point(8, 56);
+            this.dispImg.Name = "dispImg";
+            this.dispImg.Size = new System.Drawing.Size(160, 20);
+            this.dispImg.TabIndex = 12;
+            this.dispImg.Text = "Display image in titlebar";
+            // 
+            // AddCounter
+            // 
+            this.AcceptButton = this.Add;
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
+            this.ClientSize = new System.Drawing.Size(264, 119);
+            this.ControlBox = false;
+            this.Controls.Add(this.dispImg);
+            this.Controls.Add(this.hue);
+            this.Controls.Add(this.itemid);
+            this.Controls.Add(this.format);
+            this.Controls.Add(this.name);
+            this.Controls.Add(this.delete);
+            this.Controls.Add(this.target);
+            this.Controls.Add(this.cancel);
+            this.Controls.Add(this.Add);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Name = "AddCounter";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Add a Counter";
+            this.Load += new System.EventHandler(this.AddCounter_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion

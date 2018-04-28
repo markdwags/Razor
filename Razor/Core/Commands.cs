@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 using Assistant.Macros;
 
 namespace Assistant
@@ -20,13 +21,14 @@ namespace Assistant
 			Command.Register( "GetSerial", new CommandCallback( GetSerial ) );
 			Command.Register( "RPVInfo", new CommandCallback( GetRPVInfo ) );
 			Command.Register( "Macro", new CommandCallback( MacroCmd ) );
+		    Command.Register("Hue", new CommandCallback(GetHue));
 
-			Command.Register( "Setup-T", new CommandCallback( TranslateSetup ) );
+            //Command.Register( "Setup-T", new CommandCallback( TranslateSetup ) );
 		}
 
 		private static void GetRPVInfo( string[] param )
 		{
-			if ( PacketPlayer.CurrentOpenedInfo == null || PacketPlayer.CurrentOpenedInfo == "" )
+			if ( string.IsNullOrEmpty(PacketPlayer.CurrentOpenedInfo) )
 				return;
 
 			ClientCommunication.ForceSendToClient( new UnicodeMessage( 0xFFFFFFFF, -1, MessageType.Regular, 0x25, 3, Language.CliLocName, "System", "Current PacketVideo File Information:" ) );
@@ -42,7 +44,16 @@ namespace Assistant
 			}
 		}
 
-		private static void Echo( string[] param )
+	    private static void GetHue(string[] param)
+	    {
+	        if (PacketPlayer.Playing)
+	        {
+	            ClientCommunication.ForceSendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x25, 3, Language.CliLocName, "System", "Target an item to get the hue value."));
+	            ClientCommunication.ForceSendToClient(new Target(Targeting.LocalTargID, false));
+	        }
+	    }
+
+        private static void Echo( string[] param )
 		{
 			StringBuilder sb = new StringBuilder( "Note To Self: " );
 			for(int i=0;i<param.Length;i++)
@@ -85,7 +96,7 @@ namespace Assistant
 
 		private static void Time( string[] param )
 		{
-			World.Player.SendMessage( MsgLevel.Force, LocString.CurTime, DateTime.Now.ToString( "MM/dd/yy HH:mm:ss.f" ) );
+			World.Player.SendMessage( MsgLevel.Force, LocString.CurTime, Engine.MistedDateTime.ToString( "MM/dd/yy HH:mm:ss.f" ) );
 		}
 
 		private static void Where( string[] param )
@@ -147,7 +158,7 @@ namespace Assistant
 			}
 		}
 
-		private static void TranslateSetup( string[] param )
+		/*private static void TranslateSetup( string[] param )
 		{
 			//System.Threading.Thread t = new System.Threading.Thread( new System.Threading.ThreadStart( ClientCommunication.TranslateSetup ) );
 			//t.Start();
@@ -162,18 +173,18 @@ namespace Assistant
 			World.Player.SendMessage( "Translator disabled... use '-setup-t' to re-enable." );
 
 			Command.RemoveCommand( "Disable-T" );
-		}
+		}*/
 	}
 
 	public delegate void CommandCallback( string[] param );
 
 	public class Command
 	{
-		private static Hashtable m_List;
+		private static Dictionary<string, CommandCallback> m_List;
 		static Command()
 		{
-			m_List = new Hashtable(16, 1.0f, StringComparer.OrdinalIgnoreCase);			
-			PacketHandler.RegisterClientToServerFilter( 0xAD, new PacketFilterCallback( OnSpeech ) );
+			m_List = new Dictionary<string, CommandCallback>(16, StringComparer.OrdinalIgnoreCase);
+            PacketHandler.RegisterClientToServerFilter( 0xAD, new PacketFilterCallback( OnSpeech ) );
 		}
 
 		public static void ListCommands( string[] param )
@@ -203,7 +214,7 @@ namespace Assistant
 			m_List.Remove( cmd );
 		}
 
-		public static Hashtable List { get{ return m_List; } }
+		public static Dictionary<string, CommandCallback> List { get{ return m_List; } }
 
 		public static void OnSpeech( Packet pvSrc, PacketHandlerEventArgs args )
 		{
@@ -253,7 +264,7 @@ namespace Assistant
 			{
 				if ( text[0] != '-' )
 				{
-					if ( ClientCommunication.TranslateEnabled && text[0] != '[' && text[0] != ']' )
+					/*if ( ClientCommunication.TranslateEnabled && text[0] != '[' && text[0] != ']' )
 					{
 						StringBuilder sb = new StringBuilder( 512 );
 						uint outLen = 512;
@@ -268,7 +279,7 @@ namespace Assistant
 						else
 							pvSrc.WriteBigUniNull( text );
 						pvSrc.UnderlyingStream.SetLength( pvSrc.Position );
-					}
+					}*/
 
 					Macros.MacroManager.Action( new Macros.SpeechAction( type, hue, font, lang, keys, text ) );
 				}

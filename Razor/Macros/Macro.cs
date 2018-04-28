@@ -348,7 +348,7 @@ namespace Assistant.Macros
 
 				if ( m_Wait != null )
 				{
-					TimeSpan waitLen = DateTime.Now - m_Wait.StartTime;
+					TimeSpan waitLen = DateTime.UtcNow - m_Wait.StartTime;
 					if ( !( m_Wait is PauseAction ) && waitLen >= m_Wait.Timeout )
 					{
 						if ( Loop )
@@ -539,7 +539,7 @@ namespace Assistant.Macros
 					if ( !action.Perform() && isWait )
 					{
 						m_Wait = (MacroWaitAction)action;
-						m_Wait.StartTime = DateTime.Now;
+						m_Wait.StartTime = DateTime.UtcNow;
 					}
 					else if ( NextIsInstantWait() && !isWait )
 					{

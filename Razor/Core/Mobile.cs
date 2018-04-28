@@ -206,7 +206,7 @@ namespace Assistant
 			0x909090, // grey		   "   4
 			0xd88038, // orange		0x0090 5
 			0xb01000, // red		0x0022 6
-			0xe0e000, // yellow		0x0035 7
+			0xe0e000 // yellow		0x0035 7
 		};
 
 		public uint	GetNotorietyColor()

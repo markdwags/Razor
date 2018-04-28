@@ -58,7 +58,7 @@ namespace Assistant
 			FindData = 20,
 			SmartCPU = 21,
 			Negotiate = 22,
-			SetMapHWnd = 23,
+			SetMapHWnd = 23
 		}
 
 		public const int WM_USER = 0x400;
@@ -445,7 +445,7 @@ namespace Assistant
 			NO_MEMCOPY,
 			INVALID_PARAMS,
 
-			UNKNOWN,
+			UNKNOWN
 		}
 
 		private const int SHARED_BUFF_SIZE = 524288; // 262144; // 250k
@@ -504,13 +504,13 @@ namespace Assistant
 		internal static unsafe extern bool AllowBit( uint bit );
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void SetAllowDisconn( bool allowed );
-		[DllImport( "Crypt.dll" )]
+        /*[DllImport( "Crypt.dll" )]
 		private static unsafe extern void TranslateSetup( IntPtr setupFunc );
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void TranslateLogin( IntPtr loginFunc, string name, string shard );
 		[DllImport( "Crypt.dll" )]
-		private static unsafe extern void TranslateDo( IntPtr translateFunc, string inText, StringBuilder outText, ref uint outLen );
-		[DllImport( "Crypt.dll" )]
+		private static unsafe extern void TranslateDo( IntPtr translateFunc, string inText, StringBuilder outText, ref uint outLen );*/
+        [DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetServer( uint ip, ushort port );
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern int HandleNegotiate( ulong word );
@@ -542,7 +542,9 @@ namespace Assistant
 
 		[DllImport( "user32.dll" )]
 		internal static extern uint PostMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
-		[DllImport( "user32.dll" )]
+        //[DllImport("user32.dll")]
+        //internal static extern uint PostMessageA(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        [DllImport( "user32.dll" )]
 		internal static extern bool SetForegroundWindow( IntPtr hWnd );
 
 		[DllImport( "kernel32.dll" )]
@@ -568,7 +570,7 @@ namespace Assistant
 		private static IntPtr m_TranslateDo = IntPtr.Zero;
 		private static bool m_TranslateEnabled = false;
 
-		public static bool TranslateEnabled
+		/*public static bool TranslateEnabled
 		{
 			get { return m_TranslateDLL != IntPtr.Zero && m_TranslateDo != IntPtr.Zero && m_TranslateEnabled; }
 			set 
@@ -588,9 +590,9 @@ namespace Assistant
 					m_TranslateDo = IntPtr.Zero;
 				}
 			}
-		}
+		}*/
 
-		internal static void TranslateSetup()
+		/*internal static void TranslateSetup()
 		{
 			if ( m_TranslateDLL == IntPtr.Zero || m_TranslateSetup == IntPtr.Zero )
 			{
@@ -651,7 +653,7 @@ namespace Assistant
 		internal static void TranslateDo( string inText, StringBuilder outText, ref uint outLen )
 		{
 			TranslateDo( m_TranslateDo, inText, outText, ref outLen );
-		}
+		}*/
 
 		public static string GetWindowsUserName()
 		{
@@ -730,6 +732,8 @@ namespace Assistant
 
 		public static void SetSmartCPU( bool enabled )
 		{
+            // Disable SmartCPU completely
+
 			if ( enabled )
 				try { ClientCommunication.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch {}
 
@@ -739,7 +743,8 @@ namespace Assistant
 		public static void SetGameSize( int x, int y )
 		{
 			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x&0xFFFF)|((y&0xFFFF)<<16)) );
-		}
+            //PostMessageA(FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x & 0xFFFF) | ((y & 0xFFFF) << 16)));
+        }
 
 		public static Loader_Error LaunchClient( string client )
 		{
@@ -1146,7 +1151,7 @@ namespace Assistant
 			PacketHandlers.IgnoreGumps.Clear();
 			Config.Save();
 
-			TranslateEnabled = false;
+			//TranslateEnabled = false;
 		}
 
 		//private static DateTime m_LastActivate;
@@ -1211,7 +1216,7 @@ namespace Assistant
 					OnSend();
 					break;
 				case UONetMessage.Connect:
-					m_ConnStart = DateTime.Now;
+					m_ConnStart = DateTime.UtcNow;
 					try
 					{
 						m_LastConnection = new IPAddress( (uint)lParam );
@@ -1249,18 +1254,18 @@ namespace Assistant
 							if ( !razor.ShowInTaskbar && razor.Visible )
 								razor.Hide();
 							razor.WindowState = FormWindowState.Minimized;
-							m_LastActivate = DateTime.Now;
+							m_LastActivate = DateTime.UtcNow;
 						}
 						else if ( (lParam&0x0000FFFF) != 0 && (lParam&0xFFFF0000) != 0 && razor.WindowState != FormWindowState.Normal )
 						{ // is UO is activating and minimized and we are minimized
-							if ( m_LastActivate+TimeSpan.FromSeconds( 0.2 ) < DateTime.Now )
+							if ( m_LastActivate+TimeSpan.FromSeconds( 0.2 ) < DateTime.UtcNow )
 							{
 								if ( !razor.ShowInTaskbar && !razor.Visible )
 									razor.Show();
 								razor.WindowState = FormWindowState.Normal;
 								//SetForegroundWindow( FindUOWindow() );
 							}
-							m_LastActivate = DateTime.Now;
+							m_LastActivate = DateTime.UtcNow;
 						}
 					}*/
 					break;

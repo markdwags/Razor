@@ -1,7 +1,7 @@
 #pragma once
 #pragma pack(1)
 
-#define DLL_VERSION "1.4.0"
+#define DLL_VERSION "1.4.1"
 
 #define DLLFUNCTION __declspec(dllexport)
 #define DLLVAR DLLFUNCTION
@@ -57,7 +57,7 @@ enum UONET_MESSAGE
 
 	SMART_CPU = 21,
 	NEGOTIATE = 22,
-	SET_MAP_HWND = 23,
+	SET_MAP_HWND = 23
 };
 
 //#define SHARED_BUFF_SIZE 0x80000 // Client's buffers are 500k
@@ -88,7 +88,7 @@ struct SharedMemory
 	int Position[3];
 	unsigned char CheatKey[16];
 	bool AllowNegotiate;
-	unsigned char AuthBits[8];
+	unsigned char AuthBits[16];
 	bool Reserved0;
 	unsigned int ServerIP;
 	unsigned short ServerPort;
@@ -119,7 +119,6 @@ public:
 #define WM_PROCREADY WM_USER
 #define WM_UONETEVENT WM_USER+1
 #define WM_CUSTOMTITLE WM_USER+2
-#define WM_UOA_MSG WM_USER+3
 
 #ifndef WM_XBUTTONDOWN
 #define WM_XBUTTONDOWN                  0x020B

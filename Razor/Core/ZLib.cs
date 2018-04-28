@@ -14,7 +14,7 @@ namespace Assistant
 		Z_DATA_ERROR = (-3), // Data was corrupt
 		Z_MEM_ERROR = (-4), //  Not Enough Memory
 		Z_BUF_ERROR = (-5), // Not enough buffer space
-		Z_VERSION_ERROR = (-6),
+		Z_VERSION_ERROR = (-6)
 	}
 
 	[Flags]

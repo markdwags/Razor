@@ -66,46 +66,47 @@ namespace Assistant
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.message = new System.Windows.Forms.TextBox();
-			this.okay = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// message
-			// 
-			this.message.Location = new System.Drawing.Point(8, 8);
-			this.message.Multiline = true;
-			this.message.Name = "message";
-			this.message.ReadOnly = true;
-			this.message.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.message.Size = new System.Drawing.Size(552, 320);
-			this.message.TabIndex = 0;
-			this.message.Text = "";
-			// 
-			// okay
-			// 
-			this.okay.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.okay.Location = new System.Drawing.Point(8, 336);
-			this.okay.Name = "okay";
-			this.okay.Size = new System.Drawing.Size(80, 24);
-			this.okay.TabIndex = 1;
-			this.okay.Text = "&Okay";
-			this.okay.Click += new System.EventHandler(this.okay_Click);
-			// 
-			// MessageDialog
-			// 
-			this.AcceptButton = this.okay;
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(567, 366);
-			this.ControlBox = false;
-			this.Controls.Add(this.okay);
-			this.Controls.Add(this.message);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Name = "MessageDialog";
-			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Message";
-			this.Load += new System.EventHandler(this.MessageDialog_Load);
-			this.ResumeLayout(false);
+            this.message = new System.Windows.Forms.TextBox();
+            this.okay = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // message
+            // 
+            this.message.Location = new System.Drawing.Point(8, 8);
+            this.message.Multiline = true;
+            this.message.Name = "message";
+            this.message.ReadOnly = true;
+            this.message.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.message.Size = new System.Drawing.Size(552, 320);
+            this.message.TabIndex = 0;
+            // 
+            // okay
+            // 
+            this.okay.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.okay.Location = new System.Drawing.Point(8, 336);
+            this.okay.Name = "okay";
+            this.okay.Size = new System.Drawing.Size(80, 24);
+            this.okay.TabIndex = 1;
+            this.okay.Text = "&Okay";
+            this.okay.Click += new System.EventHandler(this.okay_Click);
+            // 
+            // MessageDialog
+            // 
+            this.AcceptButton = this.okay;
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
+            this.ClientSize = new System.Drawing.Size(567, 366);
+            this.ControlBox = false;
+            this.Controls.Add(this.okay);
+            this.Controls.Add(this.message);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Name = "MessageDialog";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Message";
+            this.Load += new System.EventHandler(this.MessageDialog_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion

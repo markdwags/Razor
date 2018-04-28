@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 using Ultima;
 
 namespace Assistant
@@ -10,7 +11,7 @@ namespace Assistant
 	{
 		Up = 0,
 		Down = 1,
-		Locked = 2,
+		Locked = 2
 	}
 
 	public enum MsgLevel
@@ -19,7 +20,7 @@ namespace Assistant
 		Info = 0,
 		Warning = 1,
 		Error = 2,
-		Force = 3,
+		Force = 3
 	}
 
 	public class Skill
@@ -149,7 +150,7 @@ namespace Assistant
 		Chivalry = 51,
 		Bushido = 52,
 		Ninjitsu = 53,
-		SpellWeaving = 54,
+		SpellWeaving = 54
 	}
 
 	public class PlayerData : Mobile
@@ -193,7 +194,7 @@ namespace Assistant
 		private bool m_SkillsSent;
 		//private Item m_Holding;
 		//private ushort m_HoldAmt;
-		private Hashtable m_MoveInfo;
+		private Dictionary<byte, MoveEntry> m_MoveInfo;
 		private Timer m_CriminalTime;
 		private DateTime m_CriminalStart = DateTime.MinValue;
 		private byte m_WalkSeq;
@@ -258,9 +259,9 @@ namespace Assistant
 			m_Gold = reader.ReadUInt32();
 			m_Weight = reader.ReadUInt16();
 
-			m_MoveInfo = new Hashtable( 256 );
+			m_MoveInfo = new Dictionary<byte, MoveEntry>(256);
 
-			if ( version >= 4 )
+            if ( version >= 4 )
 			{
 				Skill.Count = c = reader.ReadByte();
 			}
@@ -332,8 +333,8 @@ namespace Assistant
 
 		public PlayerData( Serial serial ) : base( serial )
 		{
-			m_MoveInfo = new Hashtable( 256 );
-			m_Skills = new Skill[Skill.Count];
+			m_MoveInfo = new Dictionary<byte, MoveEntry>(256);
+            m_Skills = new Skill[Skill.Count];
 			for (int i=0;i<m_Skills.Length;i++)
 				m_Skills[i] = new Skill(i);
 		}
@@ -489,7 +490,7 @@ namespace Assistant
 			{
 				if ( m_CriminalStart != DateTime.MinValue )
 				{
-					int sec = (int)(DateTime.Now - m_CriminalStart).TotalSeconds;
+					int sec = (int)(DateTime.UtcNow - m_CriminalStart).TotalSeconds;
 					if ( sec > 300 )
 					{
 						if ( m_CriminalTime != null )
@@ -557,10 +558,10 @@ namespace Assistant
 
 				foreach ( Item i in World.Items.Values )
 				{
-					if ( i.Position.X == x && i.Position.Y == y && i.IsDoor && i.Position.Z - 15 <= z && i.Position.Z + 15 >= z && ( m_LastDoor != i.Serial || m_LastDoorTime+TimeSpan.FromSeconds( 1 ) < DateTime.Now ) )
+					if ( i.Position.X == x && i.Position.Y == y && i.IsDoor && i.Position.Z - 15 <= z && i.Position.Z + 15 >= z && ( m_LastDoor != i.Serial || m_LastDoorTime+TimeSpan.FromSeconds( 1 ) < DateTime.UtcNow ) )
 					{
 						m_LastDoor = i.Serial;
-						m_LastDoorTime = DateTime.Now;
+						m_LastDoorTime = DateTime.UtcNow;
 						m_OpenDoorReq.Start();
 						break;
 					}
@@ -671,10 +672,10 @@ namespace Assistant
 
 		public override void OnPositionChanging( Point3D newPos )
 		{
-			ArrayList list = new ArrayList( World.Mobiles.Values );
-			for (int i=0;i<list.Count;i++)
+		    List<Mobile> mlist = new List<Mobile>( World.Mobiles.Values );
+			for (int i=0;i< mlist.Count;i++)
 			{
-				Mobile m = (Mobile)list[i];
+				Mobile m = mlist[i];
 				if ( m != this )
 				{
 					if ( !Utility.InRange( m.Position, newPos, VisRange ) )
@@ -684,11 +685,11 @@ namespace Assistant
 				}
 			}
 
-			list = new ArrayList( World.Items.Values );
+		    List<Item> ilist = new List<Item>( World.Items.Values );
 			ScavengerAgent s = ScavengerAgent.Instance;
-			for (int i=0;i<list.Count;i++)
+			for (int i=0;i< ilist.Count;i++)
 			{
-				Item item = (Item)list[i];
+				Item item = ilist[i];
 				if ( item.Deleted || item.Container != null )
 					continue;
 
@@ -704,13 +705,15 @@ namespace Assistant
 
 		public override void OnMapChange( byte old, byte cur )
 		{
-			ArrayList list = new ArrayList( World.Mobiles.Values );
+		    List<Mobile> list = new List<Mobile>( World.Mobiles.Values );
 			for (int i=0;i<list.Count;i++)
 			{
-				Mobile m = (Mobile)list[i];
+				Mobile m = list[i];
 				if ( m != this && m.Map != cur )
 					m.Remove();
 			}
+
+		    list = null;
 
 			World.Items.Clear();
 			Counter.Reset();
@@ -763,9 +766,9 @@ namespace Assistant
 
 		public void ResetCriminalTimer()
 		{
-			if ( m_CriminalStart == DateTime.MinValue || DateTime.Now - m_CriminalStart >= TimeSpan.FromSeconds( 1 ) )
+			if ( m_CriminalStart == DateTime.MinValue || DateTime.UtcNow - m_CriminalStart >= TimeSpan.FromSeconds( 1 ) )
 			{
-				m_CriminalStart = DateTime.Now;
+				m_CriminalStart = DateTime.UtcNow;
 				if ( m_CriminalTime == null )
 					m_CriminalTime = new CriminalTimer( this );
 				m_CriminalTime.Start();

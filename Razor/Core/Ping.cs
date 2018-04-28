@@ -14,7 +14,7 @@ namespace Assistant
 		{
 			if ( seq == m_Seq && m_Start != DateTime.MinValue )
 			{
-				double ms = ( DateTime.Now - m_Start ).TotalMilliseconds;
+				double ms = ( DateTime.UtcNow - m_Start ).TotalMilliseconds;
 				m_Time += ms;
 				if ( ms < m_Min )
 					m_Min = ms;
@@ -58,7 +58,7 @@ namespace Assistant
 		private static void DoPing()
 		{
 			m_Seq = (byte)Utility.Random( 256 );
-			m_Start = DateTime.Now;
+			m_Start = DateTime.UtcNow;
 			ClientCommunication.SendToServer( new PingPacket( m_Seq ) );
 		}
 	}

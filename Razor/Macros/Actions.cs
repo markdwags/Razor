@@ -135,7 +135,7 @@ namespace Assistant.Macros
 			{
 				m_MenuItems = new MacroMenuItem[]
 				{
-					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
+					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) )
 				};
 			}
 			
@@ -201,7 +201,7 @@ namespace Assistant.Macros
 				m_MenuItems = new MacroMenuItem[]
 				{
 					new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
-					new MacroMenuItem( LocString.Conv2DCT, new MacroMenuCallback( ConvertToByType ) ),
+					new MacroMenuItem( LocString.Conv2DCT, new MacroMenuCallback( ConvertToByType ) )
 				};
 			}
 			
@@ -330,7 +330,7 @@ namespace Assistant.Macros
 			{
 				m_MenuItems = new MacroMenuItem[]
 				{
-					new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
+					new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) )
 				};
 			}
 			
@@ -418,7 +418,7 @@ namespace Assistant.Macros
 				m_MenuItems = new MacroMenuItem[]
 				{
 					new MacroMenuItem( LocString.ConvLiftByType, new MacroMenuCallback( ConvertToByType ) ),
-					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) ),
+					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) )
 				};
 			}
 			
@@ -513,7 +513,7 @@ namespace Assistant.Macros
 			{
 				m_MenuItems = new MacroMenuItem[]
 				{
-					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) ),
+					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) )
 				};
 			}
 			
@@ -616,7 +616,7 @@ namespace Assistant.Macros
 				{
 					m_MenuItems = new MacroMenuItem[]
 					{
-						new MacroMenuItem( LocString.ConvRelLoc, new MacroMenuCallback( ConvertToRelLoc ) ),
+						new MacroMenuItem( LocString.ConvRelLoc, new MacroMenuCallback( ConvertToRelLoc ) )
 					};
 				}
 				
@@ -641,7 +641,7 @@ namespace Assistant.Macros
 			{
 				Convert.ToSByte( args[1] ),
 				Convert.ToSByte( args[2] ),
-				Convert.ToSByte( args[3] ),
+				Convert.ToSByte( args[3] )
 			};
 		}
 
@@ -818,7 +818,7 @@ namespace Assistant.Macros
 					new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
 					new MacroMenuItem( LocString.ConvLT, new MacroMenuCallback( ConvertToLastTarget ) ),
 					new MacroMenuItem( LocString.ConvTargType, new MacroMenuCallback( ConvertToByType ) ),
-					new MacroMenuItem( LocString.ConvRelLoc, new MacroMenuCallback( ConvertToRelLoc ) ),
+					new MacroMenuItem( LocString.ConvRelLoc, new MacroMenuCallback( ConvertToRelLoc ) )
 				};
 			}
 			
@@ -930,7 +930,7 @@ namespace Assistant.Macros
 				m_MenuItems = new MacroMenuItem[]
 				{
 					new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
-					new MacroMenuItem( LocString.ConvLT, new MacroMenuCallback( ConvertToLastTarget ) ),
+					new MacroMenuItem( LocString.ConvLT, new MacroMenuCallback( ConvertToLastTarget ) )
 				};
 			}
 			
@@ -1012,7 +1012,7 @@ namespace Assistant.Macros
 			{
 				m_MenuItems = new MacroMenuItem[]
 				{
-					new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
+					new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) )
 				};
 			}
 			
@@ -1538,14 +1538,14 @@ namespace Assistant.Macros
 
 		public override bool PerformWait()
 		{
-			if ( m_LastWalk+TimeSpan.FromSeconds( 0.4 ) >= DateTime.Now || World.Player.OutstandingMoveReqs > 4 )
+			if ( m_LastWalk+TimeSpan.FromSeconds( 0.4 ) >= DateTime.UtcNow || World.Player.OutstandingMoveReqs > 4 )
 			{
 				return true;
 			}
 			else
 			{
 				m_LastSeq = World.Player.WalkSequence;
-				m_LastWalk = DateTime.Now;
+				m_LastWalk = DateTime.UtcNow;
 
 				ClientCommunication.SendToClient( new MobileUpdate( World.Player ) );
 				ClientCommunication.SendToClient( new ForceWalk( m_Dir ) );
@@ -1632,7 +1632,7 @@ namespace Assistant.Macros
 				m_MenuItems = new MacroMenuItem[]
 				{
 					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
-					this.EditTimeoutMenuItem,
+					this.EditTimeoutMenuItem
 				};
 			}
 			
@@ -1726,7 +1726,7 @@ namespace Assistant.Macros
 				{
 					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
 					new MacroMenuItem( LocString.Null, new MacroMenuCallback( ToggleStrict ) ),
-					this.EditTimeoutMenuItem,
+					this.EditTimeoutMenuItem
 				};
 			}
 
@@ -1799,7 +1799,7 @@ namespace Assistant.Macros
 				m_MenuItems = new MacroMenuItem[]
 				{
 					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
-					this.EditTimeoutMenuItem,
+					this.EditTimeoutMenuItem
 				};
 			}
 			
@@ -1841,13 +1841,13 @@ namespace Assistant.Macros
 
 		public override bool Perform()
 		{
-			this.StartTime = DateTime.Now;
+			this.StartTime = DateTime.UtcNow;
 			return !PerformWait();
 		}
 
 		public override bool PerformWait()
 		{
-			return ( StartTime + m_Timeout >= DateTime.Now );
+			return ( StartTime + m_Timeout >= DateTime.UtcNow );
 		}
 
 		public override string ToString()
@@ -1862,7 +1862,7 @@ namespace Assistant.Macros
 			{
 				m_MenuItems = new MacroMenuItem[]
 				{
-					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
+					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) )
 				};
 			}
 			
@@ -1965,7 +1965,7 @@ namespace Assistant.Macros
 				m_MenuItems = new MacroMenuItem[]
 				{
 					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
-					this.EditTimeoutMenuItem,
+					this.EditTimeoutMenuItem
 				};
 			}
 			
@@ -1994,7 +1994,7 @@ namespace Assistant.Macros
 
 			BeginCountersMarker,
 
-			Counter = 50,
+			Counter = 50
 		}
 
 		private sbyte m_Direction;
@@ -2210,7 +2210,7 @@ namespace Assistant.Macros
 			{
 				m_MenuItems = new MacroMenuItem[]
 				{
-					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
+					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) )
 				};
 			}
 			
@@ -2342,7 +2342,7 @@ namespace Assistant.Macros
 			{
 				m_MenuItems = new MacroMenuItem[]
 				{
-					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
+					new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) )
 				};
 			}
 			

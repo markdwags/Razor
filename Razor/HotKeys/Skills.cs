@@ -31,7 +31,7 @@ namespace Assistant.HotKeys
 			38, // tracking
 			46, // Meditation
 			47, // Stealth
-			48, // RemoveTrap
+			48 // RemoveTrap
 		};
 
 		public static void Initialize()

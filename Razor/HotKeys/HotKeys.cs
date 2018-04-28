@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Assistant
 		None = 0,
 		Alt = 0x0001,
 		Control = 0x0002,
-		Shift = 0x0004,
+		Shift = 0x0004
 	}
 
 	public delegate void HotKeyCallback();
@@ -30,7 +31,7 @@ namespace Assistant
 		Spells,
 		Skills,
 
-		Misc,
+		Misc
 	}
 
 	public enum HKSubCat
@@ -52,7 +53,7 @@ namespace Assistant
 		// more # oriented, CAUTION!
 		BushidoC = SpellOffset+40,
 		NinjisuC = SpellOffset+50,
-		SpellWeaveC = SpellOffset+60,
+		SpellWeaveC = SpellOffset+60
 	}
 
 	public class KeyData
@@ -66,7 +67,8 @@ namespace Assistant
 		private ModKeys m_Mod;
 		private TreeNode m_Node;
 		private object m_State;
-		private DateTime m_LastTriggerTime = DateTime.MinValue;
+	    public object pState { get { return m_State; } }
+        private DateTime m_LastTriggerTime = DateTime.MinValue;
 
 		public string DispName{ get{ return m_Name != 0 ? Language.GetString( m_Name ) : m_SName; } }
 		public int LocName{ get{ return m_Name; } }
@@ -114,9 +116,9 @@ namespace Assistant
 		public void Callback()
 		{
 			// protect again weird keyboard oddities which "double press" the keys when the user only wanted to do an action once
-			if ( m_LastTriggerTime+TimeSpan.FromMilliseconds( 20 ) <= DateTime.Now )
+			if ( m_LastTriggerTime+TimeSpan.FromMilliseconds( 20 ) <= DateTime.UtcNow )
 			{
-				m_LastTriggerTime = DateTime.Now;
+				m_LastTriggerTime = DateTime.UtcNow;
 
 				if ( m_Callback != null )
 					m_Callback();
@@ -243,13 +245,13 @@ namespace Assistant
 
 	public class HotKey
 	{
-		private static ArrayList m_List;
-		private static TreeNode m_Root;
-		private static bool m_Enabled;
+	    private static List<KeyData> m_List = new List<KeyData>();
+        private static TreeNode m_Root = new TreeNode("Hot Keys");
+        private static bool m_Enabled;
 		private static System.Windows.Forms.Label m_Status;
 		private static KeyData m_HK_En;
 
-		public static ArrayList List { get{ return m_List; } }
+		public static List<KeyData> List { get{ return m_List; } }
 		public static TreeNode RootNode{ get{ return m_Root; } }
 		public static System.Windows.Forms.Label Status{ get{ return m_Status; } set{ m_Status = value; UpdateStatus(); } }
 
@@ -303,10 +305,8 @@ namespace Assistant
 
 		static HotKey()
 		{
-			m_List = new ArrayList();
 			m_Enabled = true;
-
-			m_Root = new TreeNode( "Hot Keys" );
+			
 			m_Root.Tag = (int)LocString.HotKeys;
 
 			TreeNode items = MakeNode( "Items", HKCategory.Items );
@@ -377,14 +377,24 @@ namespace Assistant
 		{
 			for (int i=0;i<m_List.Count;i++)
 			{
-				KeyData kd = ((KeyData)m_List[i]);
+				KeyData kd = m_List[i];
 				kd.Key = 0;
 				kd.Mod = ModKeys.None;
 				kd.SendToUO = false;
 			}
 		}
 
-		public static KeyData Get( int name )
+	    public static KeyData GetFromObj(object other)
+	    {
+	        for (int i = 0; i < m_List.Count; i++)
+	        {
+	            if (m_List[i].pState == other)
+	                return m_List[i];
+	        }
+	        return null;
+	    }
+
+        public static KeyData Get( int name )
 		{
 			for(int i=0;i<m_List.Count;i++)
 			{

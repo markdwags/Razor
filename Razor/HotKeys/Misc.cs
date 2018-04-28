@@ -109,9 +109,9 @@ namespace Assistant.HotKeys
 		private static DateTime m_LastSync;
 		private static void Resync()
 		{
-			if ( DateTime.Now - m_LastSync > TimeSpan.FromSeconds( 1.0 ) )
+			if ( DateTime.UtcNow - m_LastSync > TimeSpan.FromSeconds( 1.0 ) )
 			{
-				m_LastSync = DateTime.Now;
+				m_LastSync = DateTime.UtcNow;
 
 				//ClientCommunication.SendToClient( new MoveReject( World.Player.WalkSequence, World.Player ) );
 				ClientCommunication.SendToClient( new MobileUpdate( World.Player ) );

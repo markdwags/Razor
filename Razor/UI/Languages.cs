@@ -395,8 +395,12 @@ namespace Assistant
 		LaunchBODAgent,
 
 		NextTargetHumanoid,
+        NewClipboardMacro = 1950,
+        CopyClipboardMacro = 1951,
+        DeerSounds,
+        MacroRename,
 
-		__End
+        __End
 	}
 	#endregion
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -33,14 +34,14 @@ namespace Assistant
 			{
 				if ( m_Table.Count <= 0 )
 					return;
-				
-				ArrayList list = new ArrayList( m_Table );
-				foreach ( DictionaryEntry de in list )
-				{
-					string txt = de.Key.ToString();
-					MsgInfo msg = (MsgInfo)de.Value;
 
-					if ( msg.NextSend <= DateTime.Now )
+			    List<string> toremove = new List<string>();
+                foreach (KeyValuePair<string, MsgInfo> de in m_Table)
+				{
+					string txt = de.Key;
+					MsgInfo msg = de.Value;
+
+					if ( msg.NextSend <= DateTime.UtcNow )
 					{
 						if ( msg.Count > 0 )
 						{
@@ -49,19 +50,25 @@ namespace Assistant
 							else
 								ClientCommunication.SendToClient( new UnicodeMessage( msg.Serial, msg.Body, msg.Type, msg.Hue, msg.Font, msg.Lang, msg.Name, msg.Count > 1 ? String.Format( "{0} [{1}]", txt, msg.Count ) : txt ) );
 							msg.Count = 0;
-							msg.NextSend = DateTime.Now + msg.Delay;
+							msg.NextSend = DateTime.UtcNow + msg.Delay;
 						}
 						else
 						{
-							m_Table.Remove( de.Key );
+						    if (txt != null)
+						        toremove.Add( txt );
 						}
 					}
 				}
-			}
+
+			    for (int i = toremove.Count - 1; i >= 0; --i)
+			    {
+			        m_Table.Remove(toremove[i]);
+			    }
+            }
 		}
 
 		private static Timer m_Timer = new MessageTimer();
-		private static Hashtable m_Table = new Hashtable();
+		private static Dictionary<string, MsgInfo> m_Table = new Dictionary<string, MsgInfo>();
 
 		static MessageQueue()
 		{
@@ -79,7 +86,7 @@ namespace Assistant
 
 				m.Delay = TimeSpan.FromSeconds( (((int)(text.Length / 50))+1) * 3.5 );
 
-				m.NextSend = DateTime.Now + m.Delay;
+				m.NextSend = DateTime.UtcNow + m.Delay;
 
 				return true;
 			}

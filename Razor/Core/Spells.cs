@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Assistant
@@ -13,7 +14,7 @@ namespace Assistant
 			None = '?',
 			Beneficial = 'B',
 			Harmful = 'H',
-			Neutral = 'N',
+			Neutral = 'N'
 		}
 
 		readonly public SpellFlag Flag;
@@ -161,7 +162,7 @@ namespace Assistant
 			if ( World.Player != null )
 			{
 				World.Player.LastSpell = GetID();
-				LastCastTime = DateTime.Now;
+				LastCastTime = DateTime.UtcNow;
 				Targeting.SpellTargetID = 0;
 			}
 		}
@@ -182,17 +183,16 @@ namespace Assistant
 			}
 		}
 
-		private static Hashtable m_SpellsByPower;
-		private static Hashtable m_SpellsByID;
-		private static HotKeyCallbackState HotKeyCallback;
+	    private static Dictionary<string, Spell> m_SpellsByPower;
+	    private static Dictionary<int, Spell> m_SpellsByID;
+        private static HotKeyCallbackState HotKeyCallback;
 		static Spell()
 		{
-			ArrayList list = new ArrayList();
 			string filename = Path.Combine( Config.GetInstallDirectory(), "spells.def" );
-			m_SpellsByPower = new Hashtable( 64 + 10 + 16 );
-			m_SpellsByID = new Hashtable( 64 + 10 + 16 );
+			m_SpellsByPower = new Dictionary<string, Spell>(64 + 10 + 16);
+            m_SpellsByID = new Dictionary<int, Spell>(64 + 10 + 16);
 
-			if ( !File.Exists( filename ) )
+            if ( !File.Exists( filename ) )
 			{
 				MessageBox.Show( Engine.ActiveWindow, Language.GetString( LocString.NoSpells ), "Spells.def", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 				return;

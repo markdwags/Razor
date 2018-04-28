@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Assistant
 {
@@ -60,7 +61,7 @@ namespace Assistant
 		private object m_Parent;
 		private int m_Price;
 		private string m_BuyDesc;
-		private ArrayList m_Items;
+		private List<Item> m_Items;
 
 		private bool m_IsNew;
 		private bool m_AutoStack;
@@ -121,11 +122,12 @@ namespace Assistant
 				m_Parent = null;
 
 			int count = reader.ReadInt32();
-			m_Items = new ArrayList( count );
-			for(int i=0;i<count;i++)
-				m_Items.Add( (Serial)reader.ReadUInt32() );
+		    Serial.Serials = new List<Serial>(count);
 
-			if ( version > 2 )
+            for (int i=0;i<count;i++)
+                Serial.Serials.Add(reader.ReadUInt32());
+
+            if ( version > 2 )
 			{
 				m_HouseRev = reader.ReadInt32();
 				if ( m_HouseRev != 0 )
@@ -143,18 +145,23 @@ namespace Assistant
 
 		public override void AfterLoad()
 		{
-			for(int i=0;i<m_Items.Count;i++)
-			{
-				if ( m_Items[i] is Serial )
-				{
-					m_Items[i] = World.FindItem( (Serial)m_Items[i] );
+		    m_Items = new List<Item>();
 
-					if ( m_Items[i] == null )
+            for (int i=0;i< Serial.Serials.Count; i++)
+			{
+			    Serial s = Serial.Serials[i];
+			    if (s.IsItem)
+                {
+                    Item item = World.FindItem(s);
+
+                    if (item != null )
 					{
-						m_Items.RemoveAt( i );
-						i--;
-					}
-				}
+					    m_Items[i] = item;
+                    }
+
+                    Serial.Serials.RemoveAt(i);
+                    i--;
+                }
 			}
 
 			UpdateContainer();
@@ -162,9 +169,9 @@ namespace Assistant
 
 		public Item( Serial serial ) : base( serial )
 		{
-			m_Items = new ArrayList();
+		    m_Items = new List<Item>();
 
-			m_Visible = true;
+            m_Visible = true;
 			m_Movable = true;
 
 			Agent.InvokeItemCreated( this );
@@ -204,7 +211,7 @@ namespace Assistant
 		{
 			get
 			{
-				if ( m_Name != null && m_Name != "" )
+				if ( !string.IsNullOrEmpty(m_Name) )
 				{
 					return  m_Name;
 				}
@@ -375,7 +382,7 @@ namespace Assistant
 			return true;
 		}
 
-		private static ArrayList m_NeedContUpdate = new ArrayList();
+		private static List<Item> m_NeedContUpdate = new List<Item>();
 		public static void UpdateContainers()
 		{
 			int i = 0;
@@ -388,7 +395,7 @@ namespace Assistant
 			}
 		}
 
-		private static ArrayList m_AutoStackCache = new ArrayList();
+		private static List<Serial> m_AutoStackCache = new List<Serial>();
 		public void AutoStackResource()
 		{
 			if ( !IsResource || !Config.GetBool( "AutoStack" ) || m_AutoStackCache.Contains( Serial ) )
@@ -535,10 +542,10 @@ namespace Assistant
 			if ( IsMulti )
 				ClientCommunication.PostRemoveMulti( this );
 
-			ArrayList rem = new ArrayList( m_Items );
+		    List<Item> rem = new List<Item>( m_Items );
 			m_Items.Clear();
 			for (int i=0;i<rem.Count;i++)
-				((Item)rem[i]).Remove();
+				(rem[i]).Remove();
 			
 			Counter.Uncount( this );
 
@@ -561,7 +568,7 @@ namespace Assistant
 			base.OnPositionChanging ( newPos );
 		}
 
-		public ArrayList Contains{ get{ return m_Items; } }
+		public List<Item> Contains{ get{ return m_Items; } }
 
 		// possibly 4 bit x/y - 16x16?
 		public byte GridNum
@@ -738,7 +745,7 @@ namespace Assistant
 				//"Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.Player.Name );
 				//"Desktop/{0}/Multicache.dat", World.AccountName );
 				string path = Ultima.Files.GetFilePath(String.Format("Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.OrigPlayerName));
-				if ( path == null || path == "" || !File.Exists( path ) )
+				if ( string.IsNullOrEmpty(path) || !File.Exists( path ) )
 					return;
 
 				using ( StreamReader reader = new StreamReader( new FileStream( path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) ) )

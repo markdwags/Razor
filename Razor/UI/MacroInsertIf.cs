@@ -74,97 +74,98 @@ namespace Assistant
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.insert = new System.Windows.Forms.Button();
-			this.txtAmount = new System.Windows.Forms.TextBox();
-			this.varList = new System.Windows.Forms.ComboBox();
-			this.cancel = new System.Windows.Forms.Button();
-			this.opList = new System.Windows.Forms.ComboBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.SuspendLayout();
-			// 
-			// insert
-			// 
-			this.insert.Location = new System.Drawing.Point(32, 36);
-			this.insert.Name = "insert";
-			this.insert.Size = new System.Drawing.Size(76, 24);
-			this.insert.TabIndex = 0;
-			this.insert.Text = "&Insert";
-			this.insert.Click += new System.EventHandler(this.insert_Click);
-			// 
-			// txtAmount
-			// 
-			this.txtAmount.Location = new System.Drawing.Point(144, 9);
-			this.txtAmount.Name = "txtAmount";
-			this.txtAmount.Size = new System.Drawing.Size(80, 20);
-			this.txtAmount.TabIndex = 7;
-			this.txtAmount.Text = "";
-			// 
-			// varList
-			// 
-			this.varList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.varList.Items.AddRange(new object[] {
-														  "Hits",
-														  "Mana",
-														  "Stamina",
-														  "Poisoned",
-														  "SysMessage",
-														  "Weight",
-														  "Mounted",
-														  "R Hand Empty",
-														  "L Hand Empty"});
-			this.varList.Location = new System.Drawing.Point(24, 8);
-			this.varList.Name = "varList";
-			this.varList.Size = new System.Drawing.Size(80, 21);
-			this.varList.TabIndex = 8;
-			this.varList.SelectedIndexChanged += new System.EventHandler(this.varList_SelectedIndexChanged);
-			// 
-			// cancel
-			// 
-			this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancel.Location = new System.Drawing.Point(124, 36);
-			this.cancel.Name = "cancel";
-			this.cancel.Size = new System.Drawing.Size(76, 24);
-			this.cancel.TabIndex = 10;
-			this.cancel.Text = "&Cancel";
-			this.cancel.Click += new System.EventHandler(this.cancel_Click);
-			// 
-			// opList
-			// 
-			this.opList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.opList.Items.AddRange(new object[] {
-															"<=",
-															">="});
-			this.opList.Location = new System.Drawing.Point(104, 8);
-			this.opList.Name = "opList";
-			this.opList.Size = new System.Drawing.Size(40, 21);
-			this.opList.TabIndex = 11;
-			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(8, 12);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(16, 20);
-			this.label1.TabIndex = 12;
-			this.label1.Text = "If:";
-			// 
-			// MacroInsertIf
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(230, 68);
-			this.ControlBox = false;
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.opList);
-			this.Controls.Add(this.cancel);
-			this.Controls.Add(this.varList);
-			this.Controls.Add(this.txtAmount);
-			this.Controls.Add(this.insert);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Name = "MacroInsertIf";
-			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Insert If...";
-			this.Load += new System.EventHandler(this.MacroInsertIf_Load);
-			this.ResumeLayout(false);
+            this.insert = new System.Windows.Forms.Button();
+            this.txtAmount = new System.Windows.Forms.TextBox();
+            this.varList = new System.Windows.Forms.ComboBox();
+            this.cancel = new System.Windows.Forms.Button();
+            this.opList = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // insert
+            // 
+            this.insert.Location = new System.Drawing.Point(51, 42);
+            this.insert.Name = "insert";
+            this.insert.Size = new System.Drawing.Size(76, 24);
+            this.insert.TabIndex = 0;
+            this.insert.Text = "&Insert";
+            this.insert.Click += new System.EventHandler(this.insert_Click);
+            // 
+            // txtAmount
+            // 
+            this.txtAmount.Location = new System.Drawing.Point(167, 7);
+            this.txtAmount.Name = "txtAmount";
+            this.txtAmount.Size = new System.Drawing.Size(80, 22);
+            this.txtAmount.TabIndex = 7;
+            // 
+            // varList
+            // 
+            this.varList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.varList.Items.AddRange(new object[] {
+            "Hits",
+            "Mana",
+            "Stamina",
+            "Poisoned",
+            "SysMessage",
+            "Weight",
+            "Mounted",
+            "R Hand Empty",
+            "L Hand Empty"});
+            this.varList.Location = new System.Drawing.Point(24, 8);
+            this.varList.Name = "varList";
+            this.varList.Size = new System.Drawing.Size(91, 21);
+            this.varList.TabIndex = 8;
+            this.varList.SelectedIndexChanged += new System.EventHandler(this.varList_SelectedIndexChanged);
+            // 
+            // cancel
+            // 
+            this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancel.Location = new System.Drawing.Point(133, 42);
+            this.cancel.Name = "cancel";
+            this.cancel.Size = new System.Drawing.Size(76, 24);
+            this.cancel.TabIndex = 10;
+            this.cancel.Text = "&Cancel";
+            this.cancel.Click += new System.EventHandler(this.cancel_Click);
+            // 
+            // opList
+            // 
+            this.opList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.opList.Items.AddRange(new object[] {
+            "<=",
+            ">="});
+            this.opList.Location = new System.Drawing.Point(121, 8);
+            this.opList.Name = "opList";
+            this.opList.Size = new System.Drawing.Size(40, 21);
+            this.opList.TabIndex = 11;
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(8, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(16, 20);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "If:";
+            // 
+            // MacroInsertIf
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
+            this.ClientSize = new System.Drawing.Size(262, 78);
+            this.ControlBox = false;
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.opList);
+            this.Controls.Add(this.cancel);
+            this.Controls.Add(this.varList);
+            this.Controls.Add(this.txtAmount);
+            this.Controls.Add(this.insert);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Name = "MacroInsertIf";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Insert If...";
+            this.Load += new System.EventHandler(this.MacroInsertIf_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion

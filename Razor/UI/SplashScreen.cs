@@ -145,10 +145,5 @@ namespace Assistant
 			this.BringToFront();
 			this.Focus();
 		}
-
-		private void donate_Click(object sender, System.EventArgs e)
-		{
-			MainForm.LaunchBrowser( "https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD" );
-		}
 	}
 }

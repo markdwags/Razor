@@ -286,7 +286,7 @@ namespace Assistant
 						p.Write( (byte)0x30 );
 					}
 					//using ( StreamWriter w = new StreamWriter( "bf24.txt", true ) )
-					//	w.WriteLine( "{0} : 0x{1:X2}", DateTime.Now.ToString( "HH:mm:ss.ffff" ), b );
+					//	w.WriteLine( "{0} : 0x{1:X2}", Engine.MistedDateTime.ToString( "HH:mm:ss.ffff" ), b );
 					break;
 				}
 			}
@@ -370,7 +370,7 @@ namespace Assistant
 			p.Seek( 1+4+4+1, SeekOrigin.Begin ); // skip begining crap
 			World.OrigPlayerName = p.ReadStringSafe( 30 );
 
-			PlayCharTime = DateTime.Now;
+			PlayCharTime = DateTime.UtcNow;
 
 			if ( Engine.MainWindow != null )
 				Engine.MainWindow.UpdateControlLocks();
@@ -381,12 +381,12 @@ namespace Assistant
 			p.ReadUInt32(); //0xedededed
 			World.OrigPlayerName = p.ReadStringSafe( 30 );
 
-			PlayCharTime = DateTime.Now;
+			PlayCharTime = DateTime.UtcNow;
 
 			if ( Engine.MainWindow != null )
 				Engine.MainWindow.UpdateControlLocks();
 
-			ClientCommunication.TranslateLogin( World.OrigPlayerName, World.ShardName );
+			//ClientCommunication.TranslateLogin( World.OrigPlayerName, World.ShardName );
 		}
 
 		private static void ServerList( PacketReader p, PacketHandlerEventArgs args )
@@ -562,7 +562,7 @@ namespace Assistant
 				
 				World.Player.MoveReq( dir, seq );
 
-				WalkAction.LastWalkTime = DateTime.Now;
+				WalkAction.LastWalkTime = DateTime.UtcNow;
 				if ( MacroManager.AcceptActions )
 					MacroManager.Action( new WalkAction( dir ) );
 			}
@@ -1801,8 +1801,9 @@ namespace Assistant
 					string spell = Language.GetString( s.Name );
 					sb.Replace( @"{spell}", spell );
 					sb.Replace( @"{name}", spell );
-					
-					string newText = sb.ToString();
+				    sb.Replace(@"{circle}", s.Circle.ToString());
+
+                    string newText = sb.ToString();
 
 					if ( newText != null && newText != "" && newText != text )
 					{

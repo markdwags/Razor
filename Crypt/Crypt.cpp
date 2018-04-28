@@ -31,7 +31,6 @@ SharedMemory *pShared = NULL;
 LARGE_INTEGER PerfFreq, Counter;
 
 DWORD DeathMsgAddr = 0xFFFFFFFF;
-HWND hUOAWnd = NULL;
 
 SIZE DesiredSize = {800,600};
 
@@ -93,7 +92,6 @@ typedef char *(__cdecl *GetUOVersionFunc)();
 
 GetUOVersionFunc NativeGetUOVersion = NULL;
 
-
 BOOL APIENTRY DllMain( HANDLE hModule, DWORD dwReason, LPVOID )
 {
 	DWORD postID, thisID;
@@ -153,7 +151,7 @@ DLLFUNCTION HWND FindUOWindow( void )
 	if ( hWatchWnd == NULL || !IsWindow( hWatchWnd ) )
 	{
 		HWND hWnd = FindWindow( "Ultima Online", NULL );
-		if ( hWnd == NULL )
+		if (hWnd == NULL)
 			hWnd = FindWindow( "Ultima Online Third Dawn", NULL );
 		return hWnd;
 	}
@@ -166,7 +164,7 @@ DLLFUNCTION HWND FindUOWindow( void )
 DLLFUNCTION void SetDataPath( const char *path )
 {
 	WaitForSingleObject( CommMutex, INFINITE );
-	strncpy( pShared->DataPath, path, 256 );
+	strncpy( pShared->DataPath, path, MAX_PATH);
 	ReleaseMutex( CommMutex );
 }
 
@@ -215,7 +213,7 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 			while ( hWnd != NULL )
 			{
 				UOTId = GetWindowThreadProcessId( hWnd, &UOProcId );
-				if ( UOProcId == pid )
+				if (UOProcId == pid)
 					break;
 				hWnd = FindWindowEx( NULL, hWnd, "Ultima Online Third Dawn", NULL );
 			}
@@ -242,7 +240,6 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 
 	if ( !CreateSharedMemory() )
 		return NO_SHAREMEM;
-	//memset( pShared, 0, sizeof(SharedMemory) );
 
 	pShared->Reserved0 = false;
 
@@ -254,27 +251,8 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 	if ( !hGetMsgHook )
 		return NO_HOOK;
 
-	WNDCLASS wc;
-	wc.style			= 0;
-	wc.lpfnWndProc		= (WNDPROC)UOAWndProc;
-	wc.cbClsExtra		= 0;
-	wc.cbWndExtra		= 0;
-	wc.hInstance		= hInstance;
-	wc.hIcon			= LoadIcon(NULL, IDI_WINLOGO);
-	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground	= NULL;	
-	wc.lpszMenuName		= NULL;	
-	wc.lpszClassName	= "UOASSIST-TP-MSG-WND";
-	RegisterClass( &wc );
-	DWORD error = GetLastError();
-
-	hUOAWnd = CreateWindow( "UOASSIST-TP-MSG-WND", "UOASSIST-TP-MSG-WND", WS_OVERLAPPEDWINDOW, 0, 0, 50, 50, NULL, NULL, hInstance, 0 );
-	if ( hUOAWnd )
-		ShowWindow( hUOAWnd, FALSE );
-
 	ServerEncrypted = (flags&0x10) != 0;
 	ClientEncrypted = (flags&0x08) != 0;
-
 	PostMessage( hWatchWnd, WM_PROCREADY, (WPARAM)flags, (LPARAM)hPostWnd );
 	return SUCCESS;
 }
@@ -305,7 +283,7 @@ DLLFUNCTION void WaitForWindow( DWORD pid )
 			while ( hWnd != NULL )
 			{
 				UOTId = GetWindowThreadProcessId( hWnd, &UOProcId );
-				if ( UOProcId == pid )
+				if (UOProcId == pid)
 					break;
 				hWnd = FindWindowEx( NULL, hWnd, "Ultima Online Third Dawn", NULL );
 			}
@@ -320,13 +298,6 @@ DLLFUNCTION void WaitForWindow( DWORD pid )
 DLLFUNCTION void Shutdown( bool close )
 {
 	Log( "Shutdown" );
-
-	if ( hUOAWnd && IsWindow( hUOAWnd ) )
-	{
-		UnregisterClass( "UOASSIST-TP-MSG-WND", hInstance );
-		SendMessage( hUOAWnd, WM_CLOSE, 0, 0 );
-		hUOAWnd = NULL;
-	}
 
 	if ( hWatchWnd && IsWindow( hWatchWnd ) )
 		PostMessage( hWatchWnd, WM_QUIT, 0, 0 );
@@ -504,7 +475,7 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 	PostMessage( FindUOWindow(), WM_UONETEVENT, SEND, 0 );
 }
 
-DLLFUNCTION bool AllowBit( unsigned int bit )
+DLLFUNCTION bool AllowBit( unsigned long bit )
 {
 	bit &= 0x0000003F; // limited to 64 bits
 	return !pShared || ( pShared->AuthBits[7-(bit/8)] & (1<<(bit%8)) ) == 0;
@@ -520,31 +491,11 @@ DLLFUNCTION void SetAllowDisconn( bool newVal )
 	}
 }
 
-DLLFUNCTION void TranslateSetup( void (__stdcall *SetupFunc)() )
-{
-	if ( SetupFunc )
-		SetupFunc();
-	else
-		MessageBox( hPostWnd, "There is no translation DLL installed.", "No DLL", MB_OK|MB_ICONERROR );
-}
-
-DLLFUNCTION void TranslateLogin( void (__stdcall *LoginFunc)( char *, char * ), char *name, char *shard )
-{
-	if ( LoginFunc && name && shard )
-		LoginFunc( name, shard );
-}
-
-DLLFUNCTION void TranslateDo( void (__stdcall *TransFunc)( char *, char *, DWORD * ), char *in, char *out, DWORD *outLen )
-{
-	if ( TransFunc && in && out && outLen )
-		TransFunc( in, out, outLen );
-}
-
 DLLFUNCTION BOOL HandleNegotiate( __int64 features )
 {
 	if ( pShared && pShared->AuthBits && pShared->AllowNegotiate )
 	{	
-		memcpy( pShared->AuthBits, &features, 8 );
+		memcpy( pShared->AuthBits, &features, 16 );
 
 		ServerNegotiated = true;
 
@@ -581,353 +532,351 @@ DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
 	if ( !CreateSharedMemory() )
 		return;
 
-	pShared->AllowDisconn = true;
+		pShared->AllowDisconn = true;
+		CopyFailed = false;
+		mf.AddEntry("UoClientApp", 12, 0x00500000);
+		mf.AddEntry("report\0", 8, 0x00500000);
+		mf.AddEntry("Another copy of ", 16, 0x00500000);
+		mf.AddEntry("\x00\x68\x88\x13\x00\x00\x56\xE8", 8);
+		mf.AddEntry("\x68\x88\x13\x00\x00", 5, 16, 0x00400000); // (end of a push offset), push 5000, push esi
+		mf.AddEntry("Electronic Arts Inc.", 20);
+		mf.AddEntry("intro.bik", 10);
+		mf.AddEntry("osilogo.bik", 12);
+		mf.AddEntry("\x80\x02\x00\x00\xE0\x01\x00\x00", 8, 0x00500000); // current screen size
+		mf.AddEntry("\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16); // resize screen function
+		mf.AddEntry("\x57\x56\x6A\x00\x6A\x00\xE8", 7); // redraw screen/edge function
+		mf.AddEntry(PACKET_TBL_STR, PACKET_TS_LEN, 10, 0x00500000);
+		mf.AddEntry(CRYPT_KEY_STR, CRYPT_KEY_LEN);
+		mf.AddEntry(CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN);
+		mf.AddEntry(CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN);
+		mf.AddEntry(CRYPT_KEY_STR_MORE_NEW, CRYPT_KEY_MORE_NEW_LEN);
+		mf.AddEntry(CHEATPROC_STR, CHEATPROC_LEN);
+		mf.AddEntry("CHEAT %s", 8, 0x00500000);
+		mf.AddEntry("UO Version %s", 12);
+		mf.AddEntry("Multiple Instances Running", 26, 0x00500000);
 
-	CopyFailed = false;
-	
-	mf.AddEntry( "UoClientApp", 12, 0x00500000 );
-	mf.AddEntry( "report\0", 8, 0x00500000 );
-	mf.AddEntry( "Another copy of ", 16, 0x00500000 );
-	mf.AddEntry( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 );
-	mf.AddEntry( "\x68\x88\x13\x00\x00", 5, 16, 0x00400000 ); // (end of a push offset), push 5000, push esi
-	mf.AddEntry( "Electronic Arts Inc.", 20 );
-	mf.AddEntry( "intro.bik", 10 );
-	mf.AddEntry( "osilogo.bik", 12 );
-	mf.AddEntry( "\x80\x02\x00\x00\xE0\x01\x00\x00", 8, 0x00500000 ); // current screen size
-	mf.AddEntry( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 ); // resize screen function
-	mf.AddEntry( "\x57\x56\x6A\x00\x6A\x00\xE8", 7 ); // redraw screen/edge function
-	mf.AddEntry( PACKET_TBL_STR, PACKET_TS_LEN, 10, 0x00500000 );
-	mf.AddEntry( CRYPT_KEY_STR, CRYPT_KEY_LEN );
-	mf.AddEntry( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
-	mf.AddEntry( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
-	mf.AddEntry( CRYPT_KEY_STR_MORE_NEW, CRYPT_KEY_MORE_NEW_LEN );
-	mf.AddEntry( CHEATPROC_STR, CHEATPROC_LEN );
-	mf.AddEntry( "CHEAT %s", 8, 0x00500000 );
-	mf.AddEntry( "UO Version %s", 12 );
-	mf.AddEntry( "Multiple Instances Running", 26, 0x00500000 );
+		//mf.AddEntry(ANIM_PATTERN_6, ANIM_PATTERN_LENGTH_6);
 
-	//mf.AddEntry(ANIM_PATTERN_6, ANIM_PATTERN_LENGTH_6);
-
-	//mf.AddEntry(SPEEDHACK_PATTERN_1, SPEEDHACK_PATTERN_LENGTH_1);
+		//mf.AddEntry(SPEEDHACK_PATTERN_1, SPEEDHACK_PATTERN_LENGTH_1);
 
 	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
 
-	const BYTE defaultCheatKey[] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
-	memcpy( pShared->CheatKey, defaultCheatKey, 16 );
+		const BYTE defaultCheatKey[] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
+		memcpy(pShared->CheatKey, defaultCheatKey, 16);
 
-	mf.Execute();
+		mf.Execute();
 
-	SizePtr = (SIZE*)mf.GetAddress( "\x80\x02\x00\x00\xE0\x01\x00\x00", 8 );
-	if ( SizePtr )
-	{
-		addr = mf.GetAddress( "\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16 );
+		SizePtr = (SIZE*)mf.GetAddress("\x80\x02\x00\x00\xE0\x01\x00\x00", 8);
+		if (SizePtr)
+		{
+			addr = mf.GetAddress("\x8B\x44\x24\x04\xBA\x80\x02\x00\x00\x3B\xC2\xB9\xE0\x01\x00\x00", 16);
+			if (addr)
+			{
+				int i;
+				DWORD origAddr = addr;
+
+				VirtualProtect((void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt);
+				for (i = 16; i < 128; i++)
+				{
+					if (*((BYTE*)(addr + i)) == 0xE9) // find the first jmp
+					{
+						memset((void*)addr, 0x90, i); // nop
+
+						// mov eax, dword [esp+4]
+						*((BYTE*)(addr + 0)) = 0x8B; // mov
+						*((BYTE*)(addr + 1)) = 0x44; //  eax
+						*((BYTE*)(addr + 2)) = 0x24; //  [esp
+						*((BYTE*)(addr + 3)) = 0x04; //      +4]
+						addr += 4;
+
+						*((BYTE*)addr) = 0x50; // push eax
+						addr++;
+						// call OnSetUOWindowSize
+						*((BYTE*)addr) = 0xE8;
+						*((DWORD*)(addr + 1)) = ((DWORD)OnSetUOWindowSize) - (addr + 5);
+						addr += 5;
+						break;
+					}
+				}
+				VirtualProtect((void*)origAddr, 128, oldProt, &oldProt);
+			}
+		}
+
+		int i = 0;
+		while ((addr = mf.GetAddress(PACKET_TBL_STR, PACKET_TS_LEN, i++)) != 0)
+		{
+			memset(pShared->PacketTable, 0xFF, 512);
+
+			addr += PACKET_TBL_OFFSET;
+			if (IsBadReadPtr((void*)addr, sizeof(ClientPacketInfo) * 128))
+				continue;
+			ClientPacketInfo *tbl = (ClientPacketInfo*)addr;
+
+			if (tbl[0].Id == 1 || tbl[0].Id == 2 || tbl[0].Id >= 256)
+				continue;
+
+			// this one isnt in order because OSI are idiots (0xF8)
+			pShared->PacketTable[tbl[0].Id] = tbl[0].Length;
+
+			int idx = 1;
+			bool got1 = false, got2 = false;
+			for (int prev = 0; prev < 255 && idx < 256; idx++)
+			{
+				if (IsBadReadPtr((void*)(tbl + idx), sizeof(ClientPacketInfo)) ||
+					tbl[idx].Id <= prev || tbl[idx].Id >= 256)
+				{
+					break;
+				}
+
+				got1 |= tbl[idx].Id == 1 && tbl[idx].Length == StaticPacketTable[1];
+				got2 |= tbl[idx].Id == 2 && tbl[idx].Length == StaticPacketTable[2];
+
+				prev = tbl[idx].Id;
+				if (pShared->PacketTable[prev] == 0xFFFF)
+					pShared->PacketTable[prev] = tbl[idx].Length;
+			}
+
+			if (idx < 128 || !got1 || !got2)
+				continue;
+			else
+				break;
+		}
+
+		if (!addr)
+			CopyFailed = true;
+
+		/*
+		i = 0;
+		while ((addr = mf.GetAddress(ANIM_PATTERN_6, ANIM_PATTERN_LENGTH_6, i++)) != 0)
+		{
+			//char blah[256];
+			//sprintf_s(blah, 256, "%02X %02X %02X %02X", *(unsigned char*)(addr), *(unsigned char*)(addr + 1), *(unsigned char*)(addr - 14), *(unsigned char*)(addr - 5));
+			//MessageBox(NULL, blah, "ANIM_PATTERN_6", MB_OK);
+			if (memcmp((void*)(addr - 14), ANIM_PATTERN_4, ANIM_PATTERN_LENGTH_4) != 0)
+				continue;
+
+			//MessageBox(NULL, "Matched", "ANIM_PATTERN_6", MB_OK);
+			DWORD origAddr = addr - 30;
+			VirtualProtect((void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt);
+			memcpy((void*)(origAddr + 11), "\x33\xC0\x90\x90\x90", 5);
+			memcpy((void*)(origAddr + 35), "\x08", 1);
+			memcpy((void*)(origAddr + 38), "\x04", 1);
+			VirtualProtect((void*)origAddr, 128, oldProt, &oldProt);
+		}
+
+		i = 0;
+		while ((addr = mf.GetAddress(SPEEDHACK_PATTERN_1, SPEEDHACK_PATTERN_LENGTH_1, i++)) != 0)
+		{
+			//char blah[256];
+			//sprintf_s(blah, 256, "%02X %02X %02X %02X", *(unsigned char*)(addr+8), *(unsigned char*)(addr + 9), *(unsigned char*)(addr +11), *(unsigned char*)(addr +12));
+			//MessageBox(NULL, blah, "SPEEDHACK_PATTERN_1", MB_OK);
+			if (memcmp((void*)(addr + 8), SPEEDHACK_PATTERN_2, SPEEDHACK_PATTERN_LENGTH_2) != 0)
+				continue;
+
+			//MessageBox(NULL, "Matched", "SPEEDHACK_PATTERN_1", MB_OK);
+			DWORD origAddr = addr;
+			VirtualProtect((void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt);
+			memcpy((void*)(origAddr + 10), "\x26", 1);
+			VirtualProtect((void*)origAddr, 128, oldProt, &oldProt);
+		}
+		*/
+
+		addr = mf.GetAddress(CRYPT_KEY_STR, CRYPT_KEY_LEN);
+		if (!addr)
+		{
+			addr = mf.GetAddress(CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN);
+
+			if (!addr)
+			{
+				addr = mf.GetAddress(CRYPT_KEY_STR_MORE_NEW, CRYPT_KEY_MORE_NEW_LEN);
+				if (!addr)
+				{
+					addr = mf.GetAddress(CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN);
+					if (addr)
+					{
+						LoginEncryption::SetKeys((const DWORD*)(addr + CRYPT_KEY_3D_LEN), (const DWORD*)(addr + CRYPT_KEY_3D_LEN + 19));
+						ClientType = THREED;
+					}
+					else
+					{
+					CopyFailed = true;
+					}
+				}
+				else
+				{
+					addr += CRYPT_KEY_MORE_NEW_LEN;
+
+					const DWORD *pKey1 = *((DWORD**)addr);
+					const DWORD *pKey2 = pKey1 + 1;
+					if (IsBadReadPtr(pKey2, 4) || IsBadReadPtr(pKey1, 4))
+						CopyFailed = true;
+					else
+						LoginEncryption::SetKeys(pKey1, pKey2);
+				}
+			}
+			else
+			{
+				addr += CRYPT_KEY_NEW_LEN;
+
+				const DWORD *pKey1 = *((DWORD**)addr);
+				const DWORD *pKey2 = pKey1 - 1;
+				if (IsBadReadPtr(pKey2, 4) || IsBadReadPtr(pKey1, 4))
+					CopyFailed = true;
+				else
+					LoginEncryption::SetKeys(pKey1, pKey2);
+			}
+		}
+		else
+		{
+			LoginEncryption::SetKeys((const DWORD*)(addr + CRYPT_KEY_LEN), (const DWORD*)(addr + CRYPT_KEY_LEN + 6));
+		}
+
+		/*addr = mf.GetAddress( CHEATPROC_STR, CHEATPROC_LEN );
 		if ( addr )
 		{
-			int i;
-			DWORD origAddr = addr;
-
-			VirtualProtect( (void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt );
-			for (i = 16; i < 128; i++)
+			addr = MemFinder::Find( "\x8A\x91", 2, addr, addr + 0x80 );
+			if ( addr )
 			{
-				if ( *((BYTE*)(addr+i)) == 0xE9 ) // find the first jmp
+				addr += 2;
+
+				if ( !IsBadReadPtr( (void*)(*((DWORD*)addr)), 16 ) )
+					memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
+			}
+		}
+		else
+		{
+			addr = mf.GetAddress( "CHEAT %s", 8 );
+			if ( addr )
+			{
+				addr -= 16;
+				if ( !IsBadReadPtr( (void*)(*((DWORD*)addr)), 16 ) )
+					memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
+				ClientType = THREED;
+			}
+		}*/
+		BYTE cheatKey[16] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
+		memcpy(pShared->CheatKey, cheatKey, 16);
+
+		// Multi UO
+		addr = mf.GetAddress("UoClientApp", 12);
+		if (addr)
+		{
+			VirtualProtect((void*)addr, 12, PAGE_READWRITE, &oldProt);
+			_snprintf((char*)addr, 12, "UoApp%d", UOProcId);
+			VirtualProtect((void*)addr, 12, oldProt, &oldProt);
+		}
+
+		addr = mf.GetAddress("Another copy of ", 16);
+		if (addr)
+		{
+			char buff[5];
+
+			buff[0] = 0x68; // push
+			*((DWORD*)(&buff[1])) = addr;
+
+			addr = 0x00400000;
+			do {
+				addr = MemFinder::Find(buff, 5, addr, 0x00600000);
+				if (addr)
 				{
-					memset( (void*)addr, 0x90, i ); // nop
-					
-					// mov eax, dword [esp+4]
-					*((BYTE*)(addr+0)) = 0x8B; // mov
-					*((BYTE*)(addr+1)) = 0x44; //  eax
-					*((BYTE*)(addr+2)) = 0x24; //  [esp
-					*((BYTE*)(addr+3)) = 0x04; //      +4]
-					addr += 4;
-					
-					*((BYTE*)addr) = 0x50; // push eax
-					addr++;
-					// call OnSetUOWindowSize
-					*((BYTE*)addr) = 0xE8;
-					*((DWORD*)(addr+1)) = ((DWORD)OnSetUOWindowSize) - (addr + 5);
-					addr += 5;
+					if ((*((unsigned char*)(addr - 5))) == 0x74) // jz?
+						MemoryPatch(addr - 5, 0xEB, 1); // change to jmp
+					addr += 5; // skip ahead to find the next instance
+				}
+			} while (addr > 0 && addr < 0x00600000);
+		}
+
+		addr = mf.GetAddress("Multiple Instances Running", 26);
+		if (addr)
+		{
+			char buff[5];
+
+			buff[0] = 0x68; // push
+			*((DWORD*)(&buff[1])) = addr;
+
+			addr = 0x00400000;
+			do {
+				addr = MemFinder::Find(buff, 5, addr, 0x00600000);
+				if (addr)
+				{
+					char in = (*((unsigned char*)(addr - 4)));
+					if (in == 0x74 || in == 0x75) { // jz or jnz
+						MemoryPatch(addr - 4, 0xEB, 1); // change to jmp
+					}
+					addr += 5; // skip ahead to find the next instance
+				}
+			} while (addr > 0 && addr < 0x00600000);
+		}
+
+		addr = mf.GetAddress("report\0", 8);
+		if (addr)
+		{
+			VirtualProtect((void*)addr, 12, PAGE_READWRITE, &oldProt);
+			_snprintf((char*)addr, 8, "r%d", UOProcId);
+			VirtualProtect((void*)addr, 12, oldProt, &oldProt);
+		}
+
+		// Splash screen crap:
+		/*addr = mf.GetAddress( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 );
+		if ( addr )
+			MemoryPatch( addr+2, 0x00000005 ); // change 5000ms to 5ms*/
+		for (int i = 0; i < 16; i++)
+		{
+			addr = mf.GetAddress("\x68\x88\x13\x00\x00", 5, i);
+			if (!addr)
+				break;
+			for (int e = 5; e < 24; e++)
+			{
+				if (*((BYTE*)(addr + e)) == 0x8B && *((BYTE*)(addr + e + 1)) == 0x3D)
+				{
+					MemoryPatch(addr + 1, 0x00000001); // change 5000ms to 1ms
+					i = 99;
 					break;
 				}
 			}
-			VirtualProtect( (void*)origAddr, 128, oldProt, &oldProt );
 		}
-	}
+		addr = mf.GetAddress("intro.bik", 10);
+		if (addr)
+			MemoryPatch(addr, "intro.SUX", 10);
+		addr = mf.GetAddress("ostlogo.bik", 12);
+		if (addr)
+			MemoryPatch(addr, "osilogo.SUX", 12);
 
-	int i = 0;
-	while (( addr = mf.GetAddress( PACKET_TBL_STR, PACKET_TS_LEN, i++ )) != 0)
-	{
-		memset( pShared->PacketTable, 0xFF, 512 );
-
-		addr += PACKET_TBL_OFFSET;
-		if ( IsBadReadPtr( (void*)addr, sizeof(ClientPacketInfo)*128 ) )
-			continue;
-		ClientPacketInfo *tbl = (ClientPacketInfo*)addr;
-
-		if (tbl[0].Id == 1 || tbl[0].Id == 2 || tbl[0].Id >= 256)
-			continue;
-		
-		// this one isnt in order because OSI are idiots (0xF8)
-		pShared->PacketTable[tbl[0].Id] = tbl[0].Length;
-		
-		int idx = 1;
-		bool got1 = false, got2 = false;
-		for (int prev = 0; prev < 255 && idx < 256; idx++)
+		addr = mf.GetAddress("Electronic Arts Inc.", 20);
+		if (addr)
 		{
-			if (IsBadReadPtr( (void*)(tbl + idx), sizeof(ClientPacketInfo)) ||
-				tbl[idx].Id <= prev || tbl[idx].Id >= 256)
-			{
-				break;
-			}
-
-			got1 |= tbl[idx].Id == 1 && tbl[idx].Length == StaticPacketTable[1];
-			got2 |= tbl[idx].Id == 2 && tbl[idx].Length == StaticPacketTable[2];
-
-			prev = tbl[idx].Id;
-			if ( pShared->PacketTable[prev] == 0xFFFF )
-				pShared->PacketTable[prev] = tbl[idx].Length;
+			addr -= 7;
+			VirtualProtect((void*)addr, 52, PAGE_EXECUTE_READWRITE, &oldProt);
+			strncpy((char*)addr, "[Powered by Razor - The cutting edge UO Assistant]\0", 52);
+			VirtualProtect((void*)addr, 52, oldProt, &oldProt);
 		}
 
-		if (idx < 128 || !got1 || !got2)
-			continue;
-		else
-			break;
-	}
-
-	if (!addr)
-		CopyFailed = true;
-
-	/*
-	i = 0;
-	while ((addr = mf.GetAddress(ANIM_PATTERN_6, ANIM_PATTERN_LENGTH_6, i++)) != 0)
-	{
-		//char blah[256];
-		//sprintf_s(blah, 256, "%02X %02X %02X %02X", *(unsigned char*)(addr), *(unsigned char*)(addr + 1), *(unsigned char*)(addr - 14), *(unsigned char*)(addr - 5));
-		//MessageBox(NULL, blah, "ANIM_PATTERN_6", MB_OK);
-		if (memcmp((void*)(addr - 14), ANIM_PATTERN_4, ANIM_PATTERN_LENGTH_4) != 0)
-			continue;
-
-		//MessageBox(NULL, "Matched", "ANIM_PATTERN_6", MB_OK);
-		DWORD origAddr = addr - 30;
-		VirtualProtect((void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt);
-		memcpy((void*)(origAddr + 11), "\x33\xC0\x90\x90\x90", 5);
-		memcpy((void*)(origAddr + 35), "\x08", 1);
-		memcpy((void*)(origAddr + 38), "\x04", 1);
-		VirtualProtect((void*)origAddr, 128, oldProt, &oldProt);
-	}
-
-	i = 0;
-	while ((addr = mf.GetAddress(SPEEDHACK_PATTERN_1, SPEEDHACK_PATTERN_LENGTH_1, i++)) != 0)
-	{
-		//char blah[256];
-		//sprintf_s(blah, 256, "%02X %02X %02X %02X", *(unsigned char*)(addr+8), *(unsigned char*)(addr + 9), *(unsigned char*)(addr +11), *(unsigned char*)(addr +12));
-		//MessageBox(NULL, blah, "SPEEDHACK_PATTERN_1", MB_OK);
-		if (memcmp((void*)(addr + 8), SPEEDHACK_PATTERN_2, SPEEDHACK_PATTERN_LENGTH_2) != 0)
-			continue;
-
-		//MessageBox(NULL, "Matched", "SPEEDHACK_PATTERN_1", MB_OK);
-		DWORD origAddr = addr;
-		VirtualProtect((void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt);
-		memcpy((void*)(origAddr + 10), "\x26", 1);
-		VirtualProtect((void*)origAddr, 128, oldProt, &oldProt);
-	}
-	*/
-
-	addr = mf.GetAddress( CRYPT_KEY_STR, CRYPT_KEY_LEN );
-	if ( !addr )
-	{
-		addr = mf.GetAddress( CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN );
-
-		if ( !addr )
+		NativeGetUOVersion = NULL;
+		if (ClientType == TWOD)
 		{
-			addr = mf.GetAddress( CRYPT_KEY_STR_MORE_NEW, CRYPT_KEY_MORE_NEW_LEN );
-			if ( !addr )
+			addr = mf.GetAddress("UO Version %s", 12);
+			if (addr)
 			{
-				addr = mf.GetAddress( CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN );
-				if ( addr )
+				char temp[8];
+				temp[0] = 0x68;
+				*((DWORD*)&temp[1]) = addr;
+
+				addr = MemFinder::Find(temp, 5);
+
+				if (addr)
 				{
-					LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_3D_LEN), (const DWORD*)(addr + CRYPT_KEY_3D_LEN + 19) );
-					ClientType = THREED;
+					count = 0;
+					while (*((BYTE*)addr) != 0xE8 && count < 128)
+					{
+						addr--;
+						count++;
+					}
+
+					if (*((BYTE*)addr) == 0xE8)
+						NativeGetUOVersion = (GetUOVersionFunc)((addr + 5) + *((DWORD*)(addr + 1)));
 				}
-				else
-				{
-					CopyFailed = true;
-				}
-			}
-			else
-			{
-				addr += CRYPT_KEY_MORE_NEW_LEN;
-
-				const DWORD *pKey1 = *((DWORD**)addr);
-				const DWORD *pKey2 = pKey1 + 1;
-				if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
-					CopyFailed = true;
-				else
-					LoginEncryption::SetKeys( pKey1, pKey2 );
 			}
 		}
-		else
-		{
-			addr += CRYPT_KEY_NEW_LEN;
-
-			const DWORD *pKey1 = *((DWORD**)addr);
-			const DWORD *pKey2 = pKey1 - 1;
-			if ( IsBadReadPtr( pKey2, 4 ) || IsBadReadPtr( pKey1, 4 ) )
-				CopyFailed = true;
-			else
-				LoginEncryption::SetKeys( pKey1, pKey2 );
-		}
-	}
-	else
-	{
-		LoginEncryption::SetKeys( (const DWORD*)(addr + CRYPT_KEY_LEN), (const DWORD*)(addr + CRYPT_KEY_LEN + 6) );
-	}
-
-	/*addr = mf.GetAddress( CHEATPROC_STR, CHEATPROC_LEN );
-	if ( addr )
-	{
-		addr = MemFinder::Find( "\x8A\x91", 2, addr, addr + 0x80 );
-		if ( addr )
-		{
-			addr += 2;
-
-			if ( !IsBadReadPtr( (void*)(*((DWORD*)addr)), 16 ) )
-				memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
-		}
-	}
-	else
-	{
-		addr = mf.GetAddress( "CHEAT %s", 8 );
-		if ( addr )
-		{
-			addr -= 16;
-			if ( !IsBadReadPtr( (void*)(*((DWORD*)addr)), 16 ) )
-				memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
-			ClientType = THREED;
-		}
-	}*/
-	BYTE cheatKey[16] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
-	memcpy( pShared->CheatKey, cheatKey, 16 );
-	
-	// Multi UO
-	addr = mf.GetAddress( "UoClientApp", 12 );
-	if ( addr )
-	{
-		VirtualProtect( (void*)addr, 12, PAGE_READWRITE, &oldProt );
-		_snprintf( (char*)addr, 12, "UoApp%d", UOProcId );
-		VirtualProtect( (void*)addr, 12, oldProt, &oldProt );
-	}
-
-	addr = mf.GetAddress( "Another copy of ", 16 );
-	if ( addr )
-	{
-		char buff[5];
-		
-		buff[0] = 0x68; // push
-		*((DWORD*)(&buff[1])) = addr;
-
-		addr = 0x00400000;
-		do {
-			addr = MemFinder::Find( buff, 5, addr, 0x00600000 );
-			if ( addr )
-			{
-				if ( (*((unsigned char*)(addr - 5))) == 0x74 ) // jz?
-					MemoryPatch( addr-5, 0xEB, 1 ); // change to jmp
-				addr += 5; // skip ahead to find the next instance
-			}
-		} while ( addr > 0 && addr < 0x00600000 );
-	}
-
-	addr = mf.GetAddress( "Multiple Instances Running", 26 );
-	if ( addr )
-	{
-		char buff[5];
-		
-		buff[0] = 0x68; // push
-		*((DWORD*)(&buff[1])) = addr;
-
-		addr = 0x00400000;
-		do {
-			addr = MemFinder::Find( buff, 5, addr, 0x00600000 );
-			if ( addr )
-			{
-				char in = (*((unsigned char*)(addr - 4))); 
-				if ( in == 0x74 || in == 0x75 ) { // jz or jnz
-					MemoryPatch( addr-4, 0xEB, 1 ); // change to jmp
-				}
-				addr += 5; // skip ahead to find the next instance
-			}
-		} while ( addr > 0 && addr < 0x00600000 );
-	}
-
-	addr = mf.GetAddress( "report\0", 8 );
-	if ( addr )
-	{
-		VirtualProtect( (void*)addr, 12, PAGE_READWRITE, &oldProt );
-		_snprintf( (char*)addr, 8, "r%d", UOProcId );
-		VirtualProtect( (void*)addr, 12, oldProt, &oldProt );
-	}
-
-	// Splash screen crap:
-	/*addr = mf.GetAddress( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 );
-	if ( addr )
-		MemoryPatch( addr+2, 0x00000005 ); // change 5000ms to 5ms*/
-	for (int i = 0; i < 16; i++)
-	{
-		addr = mf.GetAddress( "\x68\x88\x13\x00\x00", 5, i );
-		if ( !addr )
-			break;
-		for (int e = 5; e < 24; e++)
-		{
-			if ( *((BYTE*)(addr+e)) == 0x8B && *((BYTE*)(addr+e+1)) == 0x3D )
-			{
-				MemoryPatch( addr+1, 0x00000001 ); // change 5000ms to 1ms
-				i = 99;
-				break;
-			}
-		}
-	}
-	addr = mf.GetAddress( "intro.bik", 10 );
-	if ( addr )
-		MemoryPatch( addr, "intro.SUX", 10 );
-	addr = mf.GetAddress( "ostlogo.bik", 12 );
-	if ( addr )
-		MemoryPatch( addr, "osilogo.SUX", 12 );
-
-	addr = mf.GetAddress( "Electronic Arts Inc.", 20 );
-	if ( addr )
-	{
-		addr -= 7;
-		VirtualProtect( (void*)addr, 52, PAGE_EXECUTE_READWRITE, &oldProt );
-		strncpy( (char*)addr, "[Powered by Razor - The cutting edge UO Assistant]\0", 52 );
-		VirtualProtect( (void*)addr, 52, oldProt, &oldProt );
-	}
-
-	NativeGetUOVersion = NULL;
-	if ( ClientType == TWOD )
-	{
-		addr = mf.GetAddress( "UO Version %s", 12 );
-		if ( addr )
-		{
-			char temp[8];
-			temp[0] = 0x68;
-			*((DWORD*)&temp[1]) = addr;
-
-			addr = MemFinder::Find( temp, 5 );
-
-			if ( addr )
-			{
-				count = 0;
-				while ( *((BYTE*)addr) != 0xE8 && count < 128 )
-				{
-					addr--;
-					count++;
-				}
-
-				if ( *((BYTE*)addr) == 0xE8  )
-					NativeGetUOVersion = (GetUOVersionFunc)((addr+5) + *((DWORD*)(addr+1)));
-			}
-		}
-	}
 	
 	//HookFunction( "kernel32.dll", "CreateFileA", 0, (unsigned long)CreateFileAHook, &OldCreateFileA, &CreateFileAAddress );
 }
@@ -951,6 +900,9 @@ DLLFUNCTION const char *GetUOVersion()
 
 bool CreateSharedMemory()
 {
+	if (pShared)
+		return true;
+
 	char name[256];
 
 	CommMutex = NULL;
@@ -960,6 +912,7 @@ bool CreateSharedMemory()
 	Log( "Creating shared mem, proc: %x", UOProcId );
 
 	sprintf( name, "UONetSharedCOMM_%x", UOProcId );
+
 	CommMutex = CreateMutex( NULL, FALSE, name );
 	if ( !CommMutex )
 		return false;
@@ -985,7 +938,7 @@ bool CreateSharedMemory()
 		return false;
 	}
 
-	memset( pShared, 0, sizeof(SharedMemory) );
+	//memset( pShared, 0, sizeof(SharedMemory) );
 
 	return true;
 }
@@ -1301,9 +1254,7 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 
 			WaitForSingleObject( CommMutex, INFINITE );
 
-			//memcpy( &pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length], buff, len );
-
-			if ( ClientEncrypted )
+			if (ClientEncrypted)
 			{
 				if ( Forwarded )
 				{
@@ -1327,10 +1278,12 @@ int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
 					}
 					else
 					{
-						ClientCrypt->DecryptFromClient( (BYTE*)(buff), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length]), len );
+						ClientCrypt->DecryptFromClient((BYTE*)(buff), (BYTE*)(&pShared->InSend.Buff[pShared->InSend.Start + pShared->InSend.Length]), len);
 					}
 				}
 			}
+			else
+				memcpy( &pShared->InSend.Buff[pShared->InSend.Start+pShared->InSend.Length], buff, len );
 
 			pShared->InSend.Length += len;
 			ReleaseMutex( CommMutex );
@@ -1868,13 +1821,13 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		UOProcId = GetCurrentProcessId();
 		hWatchWnd = hWnd;
 
+		if (!pShared) // If this failed the first time or was not run at all, try it once more before panicing
+			OnAttach(NULL, 0);
+
 		ClientEncrypted = (wParam & 0x08) != 0;
 		ServerEncrypted = (wParam & 0x10) != 0;
 		
 		InitThemes();
-
-		if ( !pShared ) // If this failed the first time or was not run at all, try it once more before panicing
-			OnAttach( NULL, 0 );
 
 		if ( !pShared )
 			PostMessage( hPostWnd, WM_UONETEVENT, NOT_READY, NO_SHAREMEM );
@@ -1955,12 +1908,7 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		case SET_MAP_HWND:
 			hMapWnd = (HWND)lParam;
 			break;
-
-// ZIPPY REV 80
-/*		case SET_FWD_HWND:
-			PostMessage( hPostWnd, WM_UONETEVENT, SET_FWD_HWND, lParam );
-			break;
-*/		}
+		}
 		break;
 
 		/*case WM_SIZE:
@@ -2071,14 +2019,6 @@ LRESULT CALLBACK WndProcRetHookFunc( int Code, WPARAM Flag, LPARAM pMsg )
 	}
 
 	return CallNextHookEx( NULL, Code, Flag, pMsg );
-}
-
-LRESULT CALLBACK UOAWndProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam )
-{
-	if ( nMsg >= WM_USER+200 && nMsg < WM_USER+315 )
-		return SendMessage( hPostWnd, nMsg, wParam, lParam );
-	else
-		return DefWindowProc( hWnd, nMsg, wParam, lParam );
 }
 
 void Log( const char *format, ... )

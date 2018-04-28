@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Assistant.Macros;
 
 namespace Assistant
@@ -52,7 +53,7 @@ namespace Assistant
 		private static uint m_SpellTargID = 0;
 		public static uint SpellTargetID { get { return m_SpellTargID; } set { m_SpellTargID = value; } }
 
-		private static ArrayList m_FilterCancel = new ArrayList();
+		private static List<uint> m_FilterCancel = new List<uint>();
 
 		public static bool HasTarget { get{ return m_HasTarget; } }
 
@@ -381,7 +382,7 @@ namespace Assistant
 			if ( !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) )
 				return;
 
-			ArrayList list = new ArrayList();
+			List<Mobile> list = new List<Mobile>();
 			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
 				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
@@ -413,7 +414,7 @@ namespace Assistant
 			if ( !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) )
 				return;
 
-			ArrayList list = new ArrayList();
+		    List<Mobile> list = new List<Mobile>();
 			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
 				if ( m.Body != 0x0190 && m.Body != 0x0191 && m.Body != 0x025D && m.Body != 0x025E )
@@ -438,7 +439,7 @@ namespace Assistant
 			}
 
 			if ( list.Count > 0 )
-				SetLastTargetTo( (Mobile)list[Utility.Random( list.Count )] );
+				SetLastTargetTo( list[Utility.Random( list.Count )] );
 			else
 				World.Player.SendMessage( MsgLevel.Warning, LocString.TargNoOne );
 		}
@@ -509,7 +510,7 @@ namespace Assistant
 			if ( !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) )
 				return;
 
-			ArrayList list = new ArrayList();
+		    List<Mobile> list = new List<Mobile>();
 			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
 				if ( ( !FriendsAgent.IsFriend( m ) || ( noto.Length > 0 && noto[0] == 0 ) ) && 
@@ -555,7 +556,7 @@ namespace Assistant
 			if ( !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) )
 				return;
 
-			ArrayList list = new ArrayList();
+		    List<Mobile> list = new List<Mobile>();
 			foreach ( Mobile m in World.MobilesInRange( 12 ) )
 			{
 				if ( m.Body != 0x0190 && m.Body != 0x0191 && m.Body != 0x025D && m.Body != 0x025E )
@@ -1035,7 +1036,7 @@ namespace Assistant
 		private static int m_NextTargIdx = 0;
 		public static void NextTarget()
 		{
-			ArrayList list = World.MobilesInRange( 12 );
+			List<Mobile> list = World.MobilesInRange( 12 );
 			TargetInfo targ = new TargetInfo();
 			Mobile m = null, old = World.FindMobile( m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial );
 
@@ -1098,8 +1099,8 @@ namespace Assistant
 		private static int m_NextTargHumanoidIdx = 0;
 		public static void NextTargetHumanoid()
 		{
-			ArrayList mobiles = World.MobilesInRange( 12 );
-			ArrayList list = new ArrayList();
+			List<Mobile> mobiles = World.MobilesInRange( 12 );
+		    List<Mobile> list = new List<Mobile>();
 
 			foreach( Mobile mob in mobiles )
 			{
@@ -1348,7 +1349,7 @@ namespace Assistant
 				return;
 			}
 
-			if ( Spell.LastCastTime + TimeSpan.FromSeconds( 3.0 ) > DateTime.Now && Spell.LastCastTime + TimeSpan.FromSeconds( 0.5 ) <= DateTime.Now && m_SpellTargID == 0 )
+			if ( Spell.LastCastTime + TimeSpan.FromSeconds( 3.0 ) > DateTime.UtcNow && Spell.LastCastTime + TimeSpan.FromSeconds( 0.5 ) <= DateTime.UtcNow && m_SpellTargID == 0 )
 				m_SpellTargID = m_CurrentID;
 
 			m_HasTarget = true;

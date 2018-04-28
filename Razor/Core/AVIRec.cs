@@ -52,7 +52,7 @@ namespace Assistant
 			if ( name == null || name.Trim() == "" || name.IndexOfAny( Path.GetInvalidPathChars() ) != -1 )
 				name = "Unknown";
 
-			name = String.Format( "{0}_{1}", name, DateTime.Now.ToString( "M-d_HH.mm" ) );
+			name = String.Format( "{0}_{1}", name, Engine.MistedDateTime.ToString( "M-d_HH.mm" ) );
 			Engine.EnsureDirectory( path );
 			int count  = 0;
 			do
@@ -105,7 +105,7 @@ namespace Assistant
 						sb.Append( " " );
 					}
 
-					if ( World.ShardName != null && World.ShardName != "" )
+					if ( !string.IsNullOrEmpty(World.ShardName) )
 					{
 						sb.Append( '(' );
 						sb.Append( World.ShardName );
@@ -115,7 +115,7 @@ namespace Assistant
 					if ( sb.Length > 0 )
 						sb.Append( "- " );
 
-					sb.Append( DateTime.Now.ToString( @"M/dd/yy - HH:mm:ss" ) );
+					sb.Append( Engine.MistedDateTime.ToString( @"M/dd/yy - HH:mm:ss" ) );
 				}
 
 				bool ok = false;

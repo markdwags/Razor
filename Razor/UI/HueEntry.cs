@@ -67,91 +67,92 @@ namespace Assistant
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.label1 = new System.Windows.Forms.Label();
-			this.hueNum = new System.Windows.Forms.TextBox();
-			this.inGame = new System.Windows.Forms.Button();
-			this.preview = new System.Windows.Forms.Label();
-			this.okay = new System.Windows.Forms.Button();
-			this.cancel = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(8, 8);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(72, 16);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Hue Number:";
-			// 
-			// hueNum
-			// 
-			this.hueNum.Location = new System.Drawing.Point(76, 4);
-			this.hueNum.Name = "hueNum";
-			this.hueNum.Size = new System.Drawing.Size(50, 20);
-			this.hueNum.TabIndex = 1;
-			this.hueNum.Text = "";
-			this.hueNum.TextChanged += new System.EventHandler(this.hueNum_TextChanged);
-			// 
-			// inGame
-			// 
-			this.inGame.Location = new System.Drawing.Point(4, 28);
-			this.inGame.Name = "inGame";
-			this.inGame.Size = new System.Drawing.Size(124, 20);
-			this.inGame.TabIndex = 2;
-			this.inGame.Text = "Select in Game";
-			this.inGame.Click += new System.EventHandler(this.inGame_Click);
-			// 
-			// preview
-			// 
-			this.preview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.preview.Location = new System.Drawing.Point(4, 52);
-			this.preview.Name = "preview";
-			this.preview.Size = new System.Drawing.Size(124, 20);
-			this.preview.TabIndex = 3;
-			this.preview.Text = "Preview";
-			this.preview.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// okay
-			// 
-			this.okay.Location = new System.Drawing.Point(10, 80);
-			this.okay.Name = "okay";
-			this.okay.Size = new System.Drawing.Size(52, 20);
-			this.okay.TabIndex = 4;
-			this.okay.Text = "&Okay";
-			this.okay.Click += new System.EventHandler(this.okay_Click);
-			// 
-			// cancel
-			// 
-			this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancel.Location = new System.Drawing.Point(70, 80);
-			this.cancel.Name = "cancel";
-			this.cancel.Size = new System.Drawing.Size(52, 20);
-			this.cancel.TabIndex = 5;
-			this.cancel.Text = "Cancel";
-			this.cancel.Click += new System.EventHandler(this.cancel_Click);
-			// 
-			// HueEntry
-			// 
-			this.AcceptButton = this.okay;
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.CancelButton = this.cancel;
-			this.ClientSize = new System.Drawing.Size(130, 108);
-			this.ControlBox = false;
-			this.Controls.Add(this.hueNum);
-			this.Controls.Add(this.cancel);
-			this.Controls.Add(this.okay);
-			this.Controls.Add(this.preview);
-			this.Controls.Add(this.inGame);
-			this.Controls.Add(this.label1);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
-			this.Name = "HueEntry";
-			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Select a Hue";
-			this.Load += new System.EventHandler(this.HueEntry_Load);
-			this.ResumeLayout(false);
+            this.label1 = new System.Windows.Forms.Label();
+            this.hueNum = new System.Windows.Forms.TextBox();
+            this.inGame = new System.Windows.Forms.Button();
+            this.preview = new System.Windows.Forms.Label();
+            this.okay = new System.Windows.Forms.Button();
+            this.cancel = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(83, 18);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Hue Number:";
+            // 
+            // hueNum
+            // 
+            this.hueNum.Location = new System.Drawing.Point(101, 6);
+            this.hueNum.Name = "hueNum";
+            this.hueNum.Size = new System.Drawing.Size(50, 22);
+            this.hueNum.TabIndex = 1;
+            this.hueNum.TextChanged += new System.EventHandler(this.hueNum_TextChanged);
+            // 
+            // inGame
+            // 
+            this.inGame.Location = new System.Drawing.Point(15, 34);
+            this.inGame.Name = "inGame";
+            this.inGame.Size = new System.Drawing.Size(136, 20);
+            this.inGame.TabIndex = 2;
+            this.inGame.Text = "Select in Game";
+            this.inGame.Click += new System.EventHandler(this.inGame_Click);
+            // 
+            // preview
+            // 
+            this.preview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.preview.Location = new System.Drawing.Point(15, 57);
+            this.preview.Name = "preview";
+            this.preview.Size = new System.Drawing.Size(136, 20);
+            this.preview.TabIndex = 3;
+            this.preview.Text = "Preview";
+            this.preview.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // okay
+            // 
+            this.okay.Location = new System.Drawing.Point(15, 89);
+            this.okay.Name = "okay";
+            this.okay.Size = new System.Drawing.Size(52, 30);
+            this.okay.TabIndex = 4;
+            this.okay.Text = "&Okay";
+            this.okay.Click += new System.EventHandler(this.okay_Click);
+            // 
+            // cancel
+            // 
+            this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancel.Location = new System.Drawing.Point(99, 89);
+            this.cancel.Name = "cancel";
+            this.cancel.Size = new System.Drawing.Size(52, 30);
+            this.cancel.TabIndex = 5;
+            this.cancel.Text = "Cancel";
+            this.cancel.Click += new System.EventHandler(this.cancel_Click);
+            // 
+            // HueEntry
+            // 
+            this.AcceptButton = this.okay;
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
+            this.CancelButton = this.cancel;
+            this.ClientSize = new System.Drawing.Size(167, 127);
+            this.ControlBox = false;
+            this.Controls.Add(this.hueNum);
+            this.Controls.Add(this.cancel);
+            this.Controls.Add(this.okay);
+            this.Controls.Add(this.preview);
+            this.Controls.Add(this.inGame);
+            this.Controls.Add(this.label1);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "HueEntry";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Select a Hue";
+            this.Load += new System.EventHandler(this.HueEntry_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion

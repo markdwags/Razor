@@ -24,9 +24,6 @@ EXPORTS
 	DoFeatures
 	AllowBit
 	SetAllowDisconn
-	TranslateSetup
-	TranslateLogin
-	TranslateDo
 	OnAttach
 	SetServer
 	HandleNegotiate

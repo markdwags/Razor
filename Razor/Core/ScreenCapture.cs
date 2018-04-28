@@ -37,11 +37,11 @@ namespace Assistant
 				name = "Unknown";
 			
 			if ( Config.GetBool( "CapTimeStamp" ) )
-				timestamp = String.Format( "{0} ({1}) - {2}", name, World.ShardName, DateTime.Now.ToString( @"M/dd/yy - HH:mm:ss" ) );
+				timestamp = String.Format( "{0} ({1}) - {2}", name, World.ShardName, Engine.MistedDateTime.ToString( @"M/dd/yy - HH:mm:ss" ) );
 			else
 				timestamp = "";
 
-			name = String.Format( "{0}_{1}", name, DateTime.Now.ToString( "M-d_HH.mm" ) );
+			name = String.Format( "{0}_{1}", name, Engine.MistedDateTime.ToString( "M-d_HH.mm" ) );
 			try
 			{
 				Engine.EnsureDirectory( path );

@@ -161,18 +161,18 @@ namespace Assistant
 
 		private static void OnStun()
 		{
-			if ( m_LastToggle+TimeSpan.FromSeconds( 0.5 ) < DateTime.Now )
+			if ( m_LastToggle+TimeSpan.FromSeconds( 0.5 ) < DateTime.UtcNow )
 			{
-				m_LastToggle = DateTime.Now;
+				m_LastToggle = DateTime.UtcNow;
 				ClientCommunication.SendToServer( new StunRequest() );
 			}
 		}
 
 		private static void OnDisarm()
 		{
-			if ( m_LastToggle+TimeSpan.FromSeconds( 0.5 ) < DateTime.Now )
+			if ( m_LastToggle+TimeSpan.FromSeconds( 0.5 ) < DateTime.UtcNow )
 			{
-				m_LastToggle = DateTime.Now;
+				m_LastToggle = DateTime.UtcNow;
 				ClientCommunication.SendToServer( new DisarmRequest() );
 			}
 		}

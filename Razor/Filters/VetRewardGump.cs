@@ -24,7 +24,7 @@ namespace Assistant.Filters
 		public override void OnFilter( PacketReader p, PacketHandlerEventArgs args )
 		{
 			// completely skip this filter if we've been connected for more thn 1 minute
-			if ( ClientCommunication.ConnectionStart + TimeSpan.FromMinutes( 1.0 ) < DateTime.Now )
+			if ( ClientCommunication.ConnectionStart + TimeSpan.FromMinutes( 1.0 ) < DateTime.UtcNow )
 				return;
 
 			try

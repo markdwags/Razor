@@ -12,7 +12,7 @@ namespace Assistant
 		ServerToClient,
 		RazorToClient,
 
-		PacketVideo,
+		PacketVideo
 	}
 
 	public class Packet
@@ -51,7 +51,7 @@ namespace Assistant
 				sw.WriteLine();
 				sw.WriteLine();
 				sw.WriteLine();
-				sw.WriteLine( ">>>>>>>>>> Logging started {0} <<<<<<<<<<", DateTime.Now );
+				sw.WriteLine( ">>>>>>>>>> Logging started {0} <<<<<<<<<<", DateTime.UtcNow );
 				sw.WriteLine();
 				sw.WriteLine();
 			}
@@ -212,7 +212,7 @@ namespace Assistant
 							break;
 					}
 
-					sw.WriteLine( "{0}: {1}{2}0x{3:X2} (Length: {4})", DateTime.Now.ToString( "HH:mm:ss.ffff" ), pathStr, blocked ? " [BLOCKED] " : " ", buff[0], len );
+					sw.WriteLine( "{0}: {1}{2}0x{3:X2} (Length: {4})", Engine.MistedDateTime.ToString( "HH:mm:ss.ffff" ), pathStr, blocked ? " [BLOCKED] " : " ", buff[0], len );
 					//if ( buff[0] != 0x80 && buff[0] != 0x91 )
 						Utility.FormatBuffer( sw, buff, len );
 					//else

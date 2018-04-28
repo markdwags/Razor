@@ -32,7 +32,7 @@ namespace Assistant
 				1010648,
 				1010650,
 				1060088,
-				1060167,
+				1060167
 			};
 		
 		static BandageTimer()

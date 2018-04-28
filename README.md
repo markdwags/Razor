@@ -1,22 +1,9 @@
 # Razor
 
-This is a fork of the Razor assistant from https://github.com/msturgill/razor. The goal of this fork is to
-make the code base build and run with minimal effort.
+This is a fork of the Ultima Online Razor assistant from https://github.com/msturgill/razor which is forked from the original project by Mark Sturgill . The goal of this fork is to support the Ultima Online 5.0.8.3 client on UO Renaissance while making small "quality of life" improvements to Razor while keeping the spirit of Razor intact.
 
-# Building
+# Changes
 
-This project is currently Windows only. You'll need Visual Studio 2017. The free community edition is fine.
+A running list of changes can be found here:
 
-You'll need to grab the UltimaSDK, which is included as a submodule. You can do this by running
-
-~~~{.sh}
-git submodule update --init
-~~~
-
-Then:
-
-* Open Razor.sln
-* Select your configuration (default to "Release")
-* Hit F5 to build. The output is in bin/Win32/[Release|Debug]
-* Run Razor.exe
-
+http://uorforum.com/threads/improving-razor-razor-development.33134/

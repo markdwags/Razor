@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Text;
@@ -19,7 +20,7 @@ namespace Assistant
 		private static GZBlockIn m_GZIn;
 		private static GZBlockOut m_GZOut;
 		private static DateTime m_LastTime, m_StartTime;
-		private static Hashtable m_HouseDataWritten = new Hashtable();
+		private static HashSet<Serial> m_HouseDataWritten = new HashSet<Serial>();
 
 		private static TimerCallback m_SendNext = new TimerCallback( SendNextPacket );
 		private static TimerCallback m_BeginPlay = new TimerCallback( BeginPlayback );
@@ -66,14 +67,14 @@ namespace Assistant
 				byte[] hash;
 
 				// the final timestamp
-				m_GZOut.Compressed.Write( (int)((DateTime.Now-m_LastTime).TotalMilliseconds) );
+				m_GZOut.Compressed.Write( (int)((DateTime.UtcNow-m_LastTime).TotalMilliseconds) );
 				m_GZOut.Compressed.Write( (byte)0xFF );
 
 				m_GZOut.ForceFlush();
 				m_GZOut.BufferAll = true;
 
 				m_GZOut.RawStream.Seek( 1+16+8, SeekOrigin.Begin );
-				m_GZOut.Raw.Write( (int)((DateTime.Now-m_StartTime).TotalMilliseconds) );
+				m_GZOut.Raw.Write( (int)((DateTime.UtcNow-m_StartTime).TotalMilliseconds) );
 
 				m_GZOut.RawStream.Seek( 1+16, SeekOrigin.Begin );
 				using ( MD5 md5 = MD5.Create() )
@@ -130,7 +131,7 @@ namespace Assistant
 			if ( name == null || name.Trim() == "" || name.IndexOfAny( Path.GetInvalidPathChars() ) != -1 )
 				name = "Unknown";
 
-			name = String.Format( "{0}_{1}", name, DateTime.Now.ToString( "M-d_HH.mm" ) );
+			name = String.Format( "{0}_{1}", name, Engine.MistedDateTime.ToString( "M-d_HH.mm" ) );
 			try
 			{
 				Engine.EnsureDirectory( path );
@@ -156,7 +157,7 @@ namespace Assistant
 			while ( File.Exists( filename ) );
 
 			m_Recording = true;
-			m_StartTime = m_LastTime = DateTime.Now;
+			m_StartTime = m_LastTime = DateTime.UtcNow;
 
 			try
 			{
@@ -213,7 +214,7 @@ namespace Assistant
 				{
 					m_GZOut.Compressed.Write( (byte)0 );
 					i.SaveState( m_GZOut.Compressed );
-					m_HouseDataWritten[i.Serial] = true;
+				    m_HouseDataWritten.Add(i.Serial);
 				}
 			}
 
@@ -288,15 +289,15 @@ namespace Assistant
 								{
 									i.HouseRevision = p.ReadInt32();
 
-									if ( m_HouseDataWritten[i.Serial] == null )
+									if (!m_HouseDataWritten.Contains(i.Serial))
 									{
 										if ( i.HousePacket == null )
 											i.MakeHousePacket();
 										if ( i.HousePacket != null )
 										{
-											m_HouseDataWritten[i.Serial] = true;
-											// WritePacket( p );
-											WritePacket( new Packet( i.HousePacket, i.HousePacket.Length, true ) );
+										    m_HouseDataWritten.Add(i.Serial);
+                                            // WritePacket( p );
+                                            WritePacket( new Packet( i.HousePacket, i.HousePacket.Length, true ) );
 											return true;
 										}
 									}
@@ -312,9 +313,9 @@ namespace Assistant
 						p.ReadByte(); // Compression
 						p.ReadByte(); // Unknown
 						Serial s = p.ReadUInt32();
-							
-						m_HouseDataWritten[s] = true;
-						break;
+
+					    m_HouseDataWritten.Add(s);
+                        break;
 					}
 				}
 
@@ -329,8 +330,8 @@ namespace Assistant
 
 		private static void WritePacket( Packet p )
 		{
-			int delay = (int)((DateTime.Now - m_LastTime).TotalMilliseconds);
-			m_LastTime = DateTime.Now;
+			int delay = (int)((DateTime.UtcNow - m_LastTime).TotalMilliseconds);
+			m_LastTime = DateTime.UtcNow;
 
 			m_GZOut.Compressed.Write( delay );
 			m_GZOut.Compressed.Write( p.Compile() );
@@ -863,7 +864,7 @@ namespace Assistant
 			if ( m_ScrollTimer == null )
 				m_ScrollTimer = new ScrollTimer();
 			m_ScrollTimer.Start();
-			m_StartTime = DateTime.Now;
+			m_StartTime = DateTime.UtcNow;
 			m_Elapsed = delay;
 			UpdateTimeText();
 
@@ -973,7 +974,7 @@ namespace Assistant
 			ClientCommunication.ForceSendToClient( new MobileUpdate( player ) );
 			ClientCommunication.ForceSendToClient( new MobileIncoming( player ) );
 
-			PacketHandlers.PlayCharTime = DateTime.Now;
+			PacketHandlers.PlayCharTime = DateTime.UtcNow;
 			
 			ClientCommunication.BeginCalibratePosition();
 		}
@@ -1013,10 +1014,10 @@ namespace Assistant
 					
 					tbPos.Value = val;
 
-					if ( (DateTime.Now-m_LastPing) >= TimeSpan.FromMinutes( 1 ) )
+					if ( (DateTime.UtcNow-m_LastPing) >= TimeSpan.FromMinutes( 1 ) )
 					{
 						ClientCommunication.ForceSendToServer( new PingPacket( 0 ) );
-						m_LastPing = DateTime.Now;
+						m_LastPing = DateTime.UtcNow;
 					}
 				}
 				else

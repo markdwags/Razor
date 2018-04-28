@@ -33,7 +33,7 @@ namespace Assistant
 			using ( StreamWriter txt = new StreamWriter( "Crash.log", true ) )
 			{
 				txt.AutoFlush = true;
-				txt.WriteLine( "Exception @ {0}", DateTime.Now.ToString( "MM-dd-yy HH:mm:ss.ffff" ) );
+				txt.WriteLine( "Exception @ {0}", Engine.MistedDateTime.ToString( "MM-dd-yy HH:mm:ss.ffff" ) );
 				txt.WriteLine( exception.ToString() );
 				txt.WriteLine( "" );
 				txt.WriteLine( "" );
@@ -180,7 +180,26 @@ namespace Assistant
 		private static bool m_Running;
 		private static string m_Version;
 
-		[STAThread]
+	    private static int _previousHour = -1;
+	    private static int _Differential;
+	    public static int Differential //to use in all cases where you rectify normal clocks obtained with utctimer!
+	    {
+	        get
+	        {
+	            if (_previousHour != DateTime.UtcNow.Hour)
+	            {
+	                _previousHour = DateTime.UtcNow.Hour;
+	                _Differential = Engine.MistedDateTime.Subtract(DateTime.UtcNow).Hours;
+	            }
+	            return _Differential;
+	        }
+	    }
+	    public static DateTime MistedDateTime
+	    {
+	        get { return DateTime.UtcNow.AddHours(Differential); }
+	    }
+
+        [STAThread]
 		public static void Main( string[] Args ) 
 		{
 			m_Running = true;
@@ -325,7 +344,7 @@ namespace Assistant
 					{
 						launch = ClientLaunch.Custom;
 						clientPath = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, String.Format( "Client{0}", cli - 1 ) );
-						if ( clientPath == null || clientPath == "" )
+						if ( string.IsNullOrEmpty(clientPath) )
 							showWelcome = true;
 					}
 					else
@@ -489,7 +508,7 @@ namespace Assistant
 		{
 			IPAddress ipAddr = IPAddress.None;
 
-			if ( addr == null || addr == string.Empty )
+			if ( string.IsNullOrEmpty(addr) )
 				return ipAddr;
 
 			try

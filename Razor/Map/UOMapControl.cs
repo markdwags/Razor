@@ -54,10 +54,10 @@ namespace Assistant.MapUO
 		private static Font m_RegFont = new Font( "Arial", 8 );
         public override void Refresh()
         {
-            TimeSpan now =  DateTime.Now - LastRefresh;
+            TimeSpan now =  DateTime.UtcNow - LastRefresh;
             if (now.TotalMilliseconds <= 100)
                 return;
-            LastRefresh = DateTime.Now;
+            LastRefresh = DateTime.UtcNow;
             base.Refresh();
         }
 

@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 
 namespace Assistant
 {
 	public struct Serial : IComparable
 	{
 		private uint m_Serial;
+	    public static List<Serial> Serials { get; set; }
 
-		public static readonly Serial MinusOne = new Serial( 0xFFFFFFFF );
+        public static readonly Serial MinusOne = new Serial( 0xFFFFFFFF );
 		public static readonly Serial Zero = new Serial( 0 );
 
 		private Serial( uint serial )
