@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using Assistant.Filters;
@@ -632,31 +634,26 @@ namespace Assistant
 			}
 		}
 
-		private const string RazorRegPath = @"SOFTWARE\Razor";
-		public static string GetRegString( Microsoft.Win32.RegistryKey hkey, string vname )
-		{
-			try
-			{
-				RegistryKey key = hkey.OpenSubKey( RazorRegPath ) ;
-				if ( key == null )
-				{
-					key = hkey.CreateSubKey( RazorRegPath );
-					if ( key == null )
-						return null;
-				}
+	    public static T GetAppSetting<T>(string key)
+	    {
+	        try
+	        {
+	            var appSetting = ConfigurationManager.AppSettings[key];
 
-				string v = key.GetValue( vname ) as string;
+	            if (!string.IsNullOrWhiteSpace(appSetting))
+	            {
+	                var converter = TypeDescriptor.GetConverter(typeof(T));
+	                return (T) (converter.ConvertFromInvariantString(appSetting));
+	            }
 
-				if ( v == null )
-					return null;
-				return v.Trim();
-			}
-			catch
-			{
-				return null;
-			}
-		}
-
+	            return default(T);
+	        }
+	        catch
+	        {
+	            return default(T);
+	        }
+	    }
+        
 		public static object GetProperty( string name )
 		{
 			return CurrentProfile.GetProperty( name );
@@ -687,39 +684,26 @@ namespace Assistant
 			return (int)CurrentProfile.GetProperty( name );
 		}
 
-		public static bool SetRegString( RegistryKey hkey, string vname, string value )
-		{
-			if ( vname == null || value == null )
-				return false;
+	    public static bool SetAppSetting(string key, string value)
+	    {
+	        try
+	        {
 
-			try
-			{
-				RegistryKey key = hkey.OpenSubKey( RazorRegPath, true );
-				if ( key == null )
-					key = hkey.CreateSubKey( RazorRegPath );
+	            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+	            config.AppSettings.Settings.Remove(key);
+	            config.AppSettings.Settings.Add(key, value);
 
-				key.SetValue( vname, value );
+                config.Save(ConfigurationSaveMode.Modified, true);
 
-				key.Close();
+	            ConfigurationManager.RefreshSection("appSettings");
 
-				return true;
-			}
-			catch
-			{
-				if ( hkey != Registry.CurrentUser )
-					return SetRegString( Registry.CurrentUser, vname, value );
-				else
-					return false;
-			}
-		}
-
-		public static void DeleteRegValue( Microsoft.Win32.RegistryKey hkey, string vname )
-		{
-			using ( RegistryKey key = hkey.OpenSubKey( RazorRegPath, true ) )
-			{
-				key.DeleteValue( vname, false );
-			}
-		}
+	            return true;
+	        }
+	        catch
+	        {
+	            return false;
+	        }
+	    }
 
         public static void RecursiveCopy(string oldDir, string newDir)
         {
@@ -772,44 +756,29 @@ namespace Assistant
             return GetUserDirectory("");
         }
 
-        public static string GetInstallDirectory(string name)
-        {
-            string dir = GetRegString(Microsoft.Win32.Registry.LocalMachine, "InstallDir");
+	    public static string GetInstallDirectory(string name)
+	    {
+	        string dir = Directory.GetCurrentDirectory();
 
-            try
-            {
-                if (dir == null || dir == "")
-                {
-                    dir = Directory.GetCurrentDirectory();
-                    if (dir != null)
-                        SetRegString(Microsoft.Win32.Registry.LocalMachine, "InstallDir", dir);
-                }
-            }
-            catch
-            {
-            }
+	        if (name.Length > 0)
+	        {
+	            dir = Path.Combine(dir, name);
+	        }
 
-            if (name.Length > 0)
-                dir = Path.Combine(dir, name);
-            Engine.EnsureDirectory(dir);
-            return dir;
-        }
+	        Engine.EnsureDirectory(dir);
+
+	        return dir;
+	    }
 
         public static string GetInstallDirectory()
         {
             return GetInstallDirectory("");
         }
 
-		public static string LastProfileName
-		{
-			get
-			{
-				return GetRegString( Microsoft.Win32.Registry.CurrentUser, "LastProfile" );
-			}
-			set
-			{
-				SetRegString( Microsoft.Win32.Registry.CurrentUser, "LastProfile", value );
-			}
-		}
-	}
+	    public static string LastProfileName
+	    {
+	        get => GetAppSetting<string>("LastProfile");
+	        set => SetAppSetting("LastProfile", value);
+	    }
+    }
 }

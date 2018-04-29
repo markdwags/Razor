@@ -1156,7 +1156,7 @@ namespace Assistant
             // 
             // healthFmt
             // 
-            this.healthFmt.Location = new System.Drawing.Point(93, 176);
+            this.healthFmt.Location = new System.Drawing.Point(102, 183);
             this.healthFmt.Name = "healthFmt";
             this.healthFmt.Size = new System.Drawing.Size(53, 23);
             this.healthFmt.TabIndex = 71;
@@ -1166,7 +1166,7 @@ namespace Assistant
             // 
             // label10
             // 
-            this.label10.Location = new System.Drawing.Point(5, 176);
+            this.label10.Location = new System.Drawing.Point(8, 184);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(115, 18);
             this.label10.TabIndex = 70;
@@ -1175,7 +1175,7 @@ namespace Assistant
             // 
             // showHealthOH
             // 
-            this.showHealthOH.Location = new System.Drawing.Point(8, 153);
+            this.showHealthOH.Location = new System.Drawing.Point(8, 161);
             this.showHealthOH.Name = "showHealthOH";
             this.showHealthOH.Size = new System.Drawing.Size(214, 20);
             this.showHealthOH.TabIndex = 69;
@@ -1193,7 +1193,7 @@ namespace Assistant
             // 
             // ltRange
             // 
-            this.ltRange.Location = new System.Drawing.Point(130, 100);
+            this.ltRange.Location = new System.Drawing.Point(164, 108);
             this.ltRange.Name = "ltRange";
             this.ltRange.Size = new System.Drawing.Size(30, 23);
             this.ltRange.TabIndex = 41;
@@ -1210,7 +1210,7 @@ namespace Assistant
             // 
             // txtObjDelay
             // 
-            this.txtObjDelay.Location = new System.Drawing.Point(85, 50);
+            this.txtObjDelay.Location = new System.Drawing.Point(85, 57);
             this.txtObjDelay.Name = "txtObjDelay";
             this.txtObjDelay.Size = new System.Drawing.Size(32, 23);
             this.txtObjDelay.TabIndex = 37;
@@ -1282,18 +1282,18 @@ namespace Assistant
             // 
             // showtargtext
             // 
-            this.showtargtext.Location = new System.Drawing.Point(8, 127);
+            this.showtargtext.Location = new System.Drawing.Point(8, 135);
             this.showtargtext.Name = "showtargtext";
-            this.showtargtext.Size = new System.Drawing.Size(190, 20);
+            this.showtargtext.Size = new System.Drawing.Size(212, 20);
             this.showtargtext.TabIndex = 53;
             this.showtargtext.Text = "Show target flag on single click";
             this.showtargtext.CheckedChanged += new System.EventHandler(this.showtargtext_CheckedChanged);
             // 
             // rangeCheckLT
             // 
-            this.rangeCheckLT.Location = new System.Drawing.Point(8, 101);
+            this.rangeCheckLT.Location = new System.Drawing.Point(8, 109);
             this.rangeCheckLT.Name = "rangeCheckLT";
-            this.rangeCheckLT.Size = new System.Drawing.Size(152, 20);
+            this.rangeCheckLT.Size = new System.Drawing.Size(162, 20);
             this.rangeCheckLT.TabIndex = 40;
             this.rangeCheckLT.Text = "Range check Last Target:";
             this.rangeCheckLT.CheckedChanged += new System.EventHandler(this.rangeCheckLT_CheckedChanged);
@@ -1309,7 +1309,7 @@ namespace Assistant
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(5, 54);
+            this.label5.Location = new System.Drawing.Point(5, 59);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(81, 18);
             this.label5.TabIndex = 35;
@@ -1317,7 +1317,7 @@ namespace Assistant
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(168, 103);
+            this.label8.Location = new System.Drawing.Point(200, 111);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(30, 18);
             this.label8.TabIndex = 42;
@@ -1325,7 +1325,7 @@ namespace Assistant
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(123, 54);
+            this.label6.Location = new System.Drawing.Point(123, 59);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(32, 18);
             this.label6.TabIndex = 36;
@@ -1343,7 +1343,7 @@ namespace Assistant
             // 
             // smartLT
             // 
-            this.smartLT.Location = new System.Drawing.Point(8, 75);
+            this.smartLT.Location = new System.Drawing.Point(8, 83);
             this.smartLT.Name = "smartLT";
             this.smartLT.Size = new System.Drawing.Size(186, 20);
             this.smartLT.TabIndex = 52;
@@ -1361,7 +1361,7 @@ namespace Assistant
             // 
             // chkPartyOverhead
             // 
-            this.chkPartyOverhead.Location = new System.Drawing.Point(8, 205);
+            this.chkPartyOverhead.Location = new System.Drawing.Point(8, 212);
             this.chkPartyOverhead.Name = "chkPartyOverhead";
             this.chkPartyOverhead.Size = new System.Drawing.Size(212, 20);
             this.chkPartyOverhead.TabIndex = 72;
@@ -2759,7 +2759,7 @@ namespace Assistant
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(223, 224);
+            this.linkLabel2.Location = new System.Drawing.Point(135, 200);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(206, 15);
             this.linkLabel2.TabIndex = 16;
@@ -2770,12 +2770,12 @@ namespace Assistant
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(8, 209);
+            this.label21.Location = new System.Drawing.Point(135, 161);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(209, 30);
             this.label21.TabIndex = 15;
             this.label21.Text = "Project maintained by Quick\r\nFor feedback and support please visit:\r\n";
-            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // aboutVer
             // 
@@ -2806,9 +2806,10 @@ namespace Assistant
             // 
             // MainForm
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.ClientSize = new System.Drawing.Size(489, 292);
             this.Controls.Add(this.tabs);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -2930,8 +2931,8 @@ namespace Assistant
 			m_ProfileConfirmLoad = false;
 			Config.SetupProfilesList( profiles, Config.CurrentProfile.Name );
 			m_ProfileConfirmLoad = true;
-
-			showWelcome.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWelcome" ), 1 ) == 1;
+            
+			showWelcome.Checked = Config.GetAppSetting<int>("ShowWelcome") == 1;
 				
 			m_Tip.Active = true;
             m_Tip.SetToolTip(titleStr, Language.GetString(LocString.TitleBarTip));
@@ -4608,7 +4609,8 @@ namespace Assistant
 
 		private void showWelcome_CheckedChanged(object sender, System.EventArgs e)
 		{
-			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWelcome", ( showWelcome.Checked ? 1 : 0 ).ToString() );
+			Config.SetAppSetting("ShowWelcome", ( showWelcome.Checked ? 1 : 0 ).ToString());
+
 		}
 
 		private ContextMenu m_DressItemsMenu = null;
@@ -5860,7 +5862,7 @@ namespace Assistant
 				}
 				else
 				{
-					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "DefaultLanguage", Language.Current );
+					Config.SetAppSetting("DefaultLanguage", Language.Current);
 					Language.LoadControlNames( this );
 					HotKey.RebuildList( hotkeyTree );
 				}

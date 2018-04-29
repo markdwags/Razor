@@ -213,38 +213,42 @@ namespace Assistant
 			if ( ClientCommunication.InitializeLibrary( Engine.Version ) == 0 )
 				throw new InvalidOperationException( "This Razor installation is corrupted." );
 
-			try { Engine.ShardList = Config.GetRegString(Microsoft.Win32.Registry.CurrentUser, "ShardList"); }
-			catch { }
-
-			bool patch = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy" ), 1 ) != 0;
-			bool showWelcome = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWelcome" ), 1 ) != 0;
+		    try
+		    {
+		        Engine.ShardList = Config.GetAppSetting<string>("ShardList");
+            }
+		    catch
+		    {
+		    }
+            
+			bool patch = Config.GetAppSetting<int>("PatchEncy") != 0;
+			bool showWelcome = Config.GetAppSetting<int>("ShowWelcome") != 0;
 			ClientLaunch launch = ClientLaunch.TwoD;
+
 			int attPID = -1;
 			string dataDir;
 
 			ClientCommunication.ClientEncrypted = false;
 
-			// check if the new ServerEncryption option is in the registry yet
-			dataDir = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc" );
+			// check if the new ServerEncryption option is in app.config
+			dataDir = Config.GetAppSetting<string>("ServerEnc");
 			if ( dataDir == null )
 			{
 				// if not, add it (copied from UseOSIEnc)
-				dataDir = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "UseOSIEnc" );
-				if ( dataDir == "1" )
+			    dataDir = Config.GetAppSetting<string>("UseOSIEnc");
+                if ( dataDir == "1" )
 				{
 					ClientCommunication.ServerEncrypted = true;
-					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc", "1" );
+				    Config.SetAppSetting("ServerEnc", "1");
 				}
 				else
 				{
-					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc", "0" );
-					ClientCommunication.ServerEncrypted = false;
+				    Config.SetAppSetting("ServerEnc", "0");
+                    ClientCommunication.ServerEncrypted = false;
 				}
-
-				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy", "1" ); // reset the patch encryption option to TRUE
-				patch = true;
-
-				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, "UseOSIEnc" ); // delete the old value
+                
+			    Config.SetAppSetting("PatchEncy", "1");
+                patch = true;
 			}
 			else
 			{
@@ -302,8 +306,8 @@ namespace Assistant
 					string[] split = Args[i].Split( ',', ':', ';', ' ' );
 					if ( split.Length >= 2 )
 					{
-						Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "LastServer", split[0] );
-						Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "LastPort", split[1] );
+					    Config.SetAppSetting("LastServer", split[0]);
+					    Config.SetAppSetting("LastPort", split[1]);
 
 						showWelcome = false;
 					}
@@ -328,7 +332,7 @@ namespace Assistant
 				return;
 			}
 
-			string defLang = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "DefaultLanguage" );
+            string defLang = Config.GetAppSetting<string>("DefaultLanguage");
 			if ( defLang != null && !Language.Load( defLang ) )
 				MessageBox.Show( String.Format( "WARNING: Razor was unable to load the file Language/Razor_lang.{0}\nENU will be used instead.", defLang ), "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 			
@@ -339,11 +343,11 @@ namespace Assistant
 			{
 				if ( !showWelcome )
 				{
-					int cli = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "DefClient" ), 0 );
+				    int cli = Config.GetAppSetting<int>("DefClient");
 					if ( cli < 0 || cli > 1 )
 					{
 						launch = ClientLaunch.Custom;
-						clientPath = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, String.Format( "Client{0}", cli - 1 ) );
+					    clientPath = Config.GetAppSetting<string>($"Client{cli - 1}");
 						if ( string.IsNullOrEmpty(clientPath) )
 							showWelcome = true;
 					}
@@ -418,9 +422,9 @@ namespace Assistant
 					SplashScreen.End();
 					return;
 				}
-
-				string addr = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "LastServer" );
-				int port = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "LastPort" ), 0 );
+                
+                string addr = Config.GetAppSetting<string>("LastServer");
+                int port = Config.GetAppSetting<int>("LastPort");
 
 				// if these are null then the registry entry does not exist (old razor version)
 				IPAddress ip = Resolve( addr );

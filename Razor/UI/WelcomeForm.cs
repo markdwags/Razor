@@ -1,10 +1,6 @@
 using System;
-using System.Drawing;
-using System.Collections;
 using System.IO;
-using System.ComponentModel;
 using System.Windows.Forms;
-using System.Net;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
@@ -358,62 +354,65 @@ namespace Assistant
 		private class LoginCFG_SE : ServerEntry
 		{
 			public string RealAddress;
-			public LoginCFG_SE() : base( "Use Last", 0 )
-			{
-				RealAddress = Config.GetRegString( Registry.CurrentUser, "LastServer" );
-				Port = Utility.ToInt32( Config.GetRegString( Registry.CurrentUser, "LastPort" ), 0 );
 
-				if ( string.IsNullOrEmpty(RealAddress) || Port == 0 )
-				{
-					RealAddress = "";
-					Port = 0;
-				
-					try 
-					{
-						string fileName = Ultima.Files.GetFilePath("Login.cfg");
-						if ( string.IsNullOrEmpty(fileName) )
-							return;
-						string server = null, port = null;
+		    public LoginCFG_SE() : base("Use Last", 0)
+		    {
+		        RealAddress = Config.GetAppSetting<string>("LastServer");
+		        Port = Config.GetAppSetting<int>("LastPort");
 
-						if ( File.Exists( fileName ) )
-						{
-							using ( FileStream file = new FileStream( fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
-							using ( StreamReader cfg = new StreamReader( file ) )
-							{
-								string line;
-								while ( (line = cfg.ReadLine()) != null )
-								{
-									line = line.Trim();
-									if ( line != "" && Char.ToUpper( line[0] ) == 'L' && line.Length > 12 )
-									{
-										int comma = line.IndexOf( ',' );
-										if ( comma > 12 )
-										{
-											server = line.Substring( 12, comma-12 );
-											port = line.Substring( comma+1 );
+                if (string.IsNullOrEmpty(RealAddress) || Port == 0)
+		        {
+		            RealAddress = "";
+		            Port = 0;
 
-											break;
-										}
-									}
-								}
-							}
-						}
+		            try
+		            {
+		                string fileName = Ultima.Files.GetFilePath("Login.cfg");
+		                if (string.IsNullOrEmpty(fileName))
+		                    return;
+		                string server = null, port = null;
 
-						if ( server != null )
-						{
-							Address = "(Use Last: "+server+")";
-							RealAddress = server;
-						}
-						if ( port != null )
-							Port = Utility.ToInt32( port, 0 );
-					}
-					catch
-					{
-						RealAddress = Address = "Use Last";
-						Port = 0;
-					}
-				}
-			}
+		                if (File.Exists(fileName))
+		                {
+		                    using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read,
+		                        FileShare.ReadWrite))
+		                    using (StreamReader cfg = new StreamReader(file))
+		                    {
+		                        string line;
+		                        while ((line = cfg.ReadLine()) != null)
+		                        {
+		                            line = line.Trim();
+		                            if (line != "" && Char.ToUpper(line[0]) == 'L' && line.Length > 12)
+		                            {
+		                                int comma = line.IndexOf(',');
+		                                if (comma > 12)
+		                                {
+		                                    server = line.Substring(12, comma - 12);
+		                                    port = line.Substring(comma + 1);
+
+		                                    break;
+		                                }
+		                            }
+		                        }
+		                    }
+		                }
+
+		                if (server != null)
+		                {
+		                    Address = "(Use Last: " + server + ")";
+		                    RealAddress = server;
+		                }
+
+		                if (port != null)
+		                    Port = Utility.ToInt32(port, 0);
+		            }
+		            catch
+		            {
+		                RealAddress = Address = "Use Last";
+		                Port = 0;
+		            }
+		        }
+		    }
 		}
 
 		private class ShardEntry
@@ -487,122 +486,153 @@ namespace Assistant
 			}
 		}
 
-		private void WelcomeForm_Load(object sender, System.EventArgs e)
-		{
-			Language.LoadControlNames( this );
+	    private void WelcomeForm_Load(object sender, System.EventArgs e)
+	    {
+	        Language.LoadControlNames(this);
 
-			this.BringToFront();
+	        this.BringToFront();
 
-			langSel.Items.AddRange( Language.GetPackNames() );
-			langSel.SelectedItem = Language.Current;
+	        langSel.Items.AddRange(Language.GetPackNames());
+	        langSel.SelectedItem = Language.Current;
 
-			showAtStart.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWindow" ), 1 ) == 1;
+	        showAtStart.Checked = Config.GetAppSetting<int>("ShowWelcome") == 1;
 
-			clientList.Items.Add( Language.GetString( LocString.Auto2D ) );
-			clientList.Items.Add( Language.GetString( LocString.Auto3D ) );
-			for (int i=1; ;i++)
-			{
-				string val = String.Format( "Client{0}", i );
-				string cli = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, val );
-				if ( string.IsNullOrEmpty(cli) )
-					break;
-				if ( File.Exists( cli )	)
-					clientList.Items.Add( new PathElipsis( cli ) );
-				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, val );
-			}
-			int sel = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "DefClient" ), 0 );
-			if ( sel >= clientList.Items.Count )
-			{
-				sel = 0;
-				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "DefClient", "0" );
-			}
-			clientList.SelectedIndex = sel;
+	        for (int i = 1;; i++)
+	        {
+	            string val = $"Client{i}";
+	            string cli = Config.GetAppSetting<string>(val);
+	            if (string.IsNullOrEmpty(cli))
+                {
+                    break;
+                }
 
-			dataDir.Items.Add( Language.GetString( LocString.AutoDetect ) );
-			for ( int i=1; ;i++)
-			{
-				string val = String.Format( "Dir{0}", i );
-				string dir = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, val );
-				if ( string.IsNullOrEmpty(dir) )
-					break;
-				if ( Directory.Exists( dir ) )
-					dataDir.Items.Add( dir );
-				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, val );
-			}
+                if (File.Exists(cli))
+                {
+                    clientList.Items.Add(new PathElipsis(cli));
+                }
+            }
+	        
+	        int sel = Config.GetAppSetting<int>("DefClient");
 
-			try
-			{
-				dataDir.SelectedIndex = Convert.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "LastDir" ) );
-			}
-			catch
-			{
-				dataDir.SelectedIndex = 0;
-			}
+            if (sel >= clientList.Items.Count)
+	        {
+	            sel = 0;
+	            Config.SetAppSetting("DefClient", "0");
+	        }
 
-			patchEncy.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy" ), 1 ) != 0;
-			useEnc.Checked = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc" ), 0 ) != 0;
-			
-			LoginCFG_SE lse = new LoginCFG_SE();
-			Custom_SE cse;
+	        clientList.SelectedIndex = sel;
+	        
+	        for (int i = 1;; i++)
+	        {
+	            string val = $"Dir{i}";
+	            string dir = Config.GetAppSetting<string>(val);
+	            if (string.IsNullOrEmpty(dir))
+                {
+                    break;
+                }
 
-			ShardEntry[] entries = null;
-			try { entries = JsonConvert.DeserializeObject<ShardEntry[]>(Engine.ShardList); }
-			catch { }
+                if (Directory.Exists(dir))
+                {
+                    dataDir.Items.Add(dir);
+                }
+	        }
 
-			serverList.BeginUpdate();
+	        try
+	        {
+	            dataDir.SelectedIndex = Config.GetAppSetting<int>("LastDir");
+	        }
+	        catch
+	        {
+	            dataDir.SelectedIndex = 0;
+	        }
 
-			//serverList.Items.Add( lse=new LoginCFG_SE() );
-			//serverList.SelectedItem = lse;
+	        patchEncy.Checked = Config.GetAppSetting<int>("PatchEncy") != 0;
+	        useEnc.Checked = Config.GetAppSetting<int>("ServerEnc") != 0;
 
-			for (int i=1; ;i++)
-			{
-				ServerEntry se;
-				string sval = String.Format( "Server{0}", i );
-				string serv = Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, sval );
-				if ( serv == null )
-					break;
-				string pval = String.Format( "Port{0}", i );
-				int port = Utility.ToInt32( Config.GetRegString( Microsoft.Win32.Registry.CurrentUser, pval ), 0 );
-				serverList.Items.Add( se=new ServerEntry( serv, port ) );
-				if ( serv == lse.RealAddress && port == lse.Port )
-					serverList.SelectedItem = se;
-				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, sval );
-				Config.DeleteRegValue( Microsoft.Win32.Registry.CurrentUser, pval );
-			}
+	        LoginCFG_SE lse = new LoginCFG_SE();
+	        Custom_SE cse;
 
-			if (entries == null)
-			{
-				serverList.Items.Add(cse = new Custom_SE("Zenvera (UOR)", "login.zenvera.com"));
-				if (serverList.SelectedItem == null || lse.RealAddress == cse.RealAddress && lse.Port == 2593)
-					serverList.SelectedItem = cse;
-			}
-			else
-			{
-				foreach(var entry in entries)
-				{
-					if (String.IsNullOrEmpty(entry.name))
-						continue;
+	        ShardEntry[] entries = null;
+	        try
+	        {
+	            entries = JsonConvert.DeserializeObject<ShardEntry[]>(Engine.ShardList);
+	        }
+	        catch
+	        {
+	        }
 
-					var ename = String.IsNullOrEmpty(entry.type) ? entry.name : String.Format("{0} ({1})", entry.name, entry.type);
-					serverList.Items.Add(cse = new Custom_SE(ename, entry.host, entry.port));
-					if (lse.RealAddress == cse.RealAddress && lse.Port == entry.port)
-						serverList.SelectedItem = cse;
-				}
-			}
+	        serverList.BeginUpdate();
 
-			serverList.EndUpdate();
+	        //serverList.Items.Add( lse=new LoginCFG_SE() );
+	        //serverList.SelectedItem = lse;
 
-			serverList.Refresh();
+	        for (int i = 1;; i++)
+	        {
+	            ServerEntry se;
+	            string sval = $"Server{i}";
+	            string serv = Config.GetAppSetting<string>(sval);
 
-			WindowState = FormWindowState.Normal;
-			this.BringToFront();
-			this.TopMost = true;
+	            if (serv == null)
+                {
+                    break;
+                }
 
-			_ShowTimer = new System.Windows.Forms.Timer();
-			_ShowTimer.Interval = 250;
-			_ShowTimer.Enabled = true;
-			_ShowTimer.Tick += new EventHandler(timer_Tick);
-		}
+                string pval = $"Port{i}";
+
+	            int portnum = Config.GetAppSetting<int>(pval);
+
+	            serverList.Items.Add(se = new ServerEntry(serv, portnum));
+
+	            if (serv == lse.RealAddress && portnum == lse.Port)
+	                serverList.SelectedItem = se;
+	        }
+
+	        if (entries == null)
+	        {
+	            serverList.Items.Add(cse = new Custom_SE("UO Renaissance (Prod)", "login.uorenaissance.com"));
+
+                if (serverList.SelectedItem == null)
+                {
+                    serverList.SelectedItem = cse;
+                }
+
+	            serverList.Items.Add(cse = new Custom_SE("UO Renaissance (Test)", "test.uorenaissance.com", 2597));
+            }
+	        else
+	        {
+	            foreach (var entry in entries)
+	            {
+	                if (string.IsNullOrEmpty(entry.name))
+                    {
+                        continue;
+                    }
+
+                    var ename = string.IsNullOrEmpty(entry.type)
+	                    ? entry.name
+	                    : $"{entry.name} ({entry.type})";
+
+	                serverList.Items.Add(cse = new Custom_SE(ename, entry.host, entry.port));
+
+	                if (lse.RealAddress == cse.RealAddress && lse.Port == entry.port)
+                    {
+                        serverList.SelectedItem = cse;
+                    }
+                }
+	        }
+
+	        serverList.EndUpdate();
+
+	        serverList.Refresh();
+
+	        WindowState = FormWindowState.Normal;
+	        this.BringToFront();
+	        this.TopMost = true;
+
+	        _ShowTimer = new System.Windows.Forms.Timer();
+	        _ShowTimer.Interval = 250;
+	        _ShowTimer.Enabled = true;
+	        _ShowTimer.Tick += new EventHandler(timer_Tick);
+	    }
 		
 		private System.Windows.Forms.Timer _ShowTimer;
 		private void timer_Tick(object sender, EventArgs e)
@@ -624,13 +654,17 @@ namespace Assistant
 			}
 		}
 
-		private void makeDef_Click(object sender, System.EventArgs e)
-		{
-			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "DefClient", ( clientList.SelectedIndex >= 0 ? clientList.SelectedIndex : 0 ).ToString() );
-			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "PatchEncy", patchEncy.Checked ? "1" : "0" );
-			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "ServerEnc", useEnc.Checked ? "1" : "0" );
-			MessageBox.Show( this, Language.GetString( LocString.SaveOK ), "Done", MessageBoxButtons.OK, MessageBoxIcon.Information );
-		}
+	    private void makeDef_Click(object sender, System.EventArgs e)
+	    {
+	        Config.SetAppSetting("DefClient",
+	            Convert.ToString(clientList.SelectedIndex >= 0 ? clientList.SelectedIndex : 0));
+
+	        Config.SetAppSetting("PatchEncy", patchEncy.Checked ? "1" : "0");
+	        Config.SetAppSetting("ServerEnc", useEnc.Checked ? "1" : "0");
+
+	        MessageBox.Show(this, Language.GetString(LocString.SaveOK), "Done", MessageBoxButtons.OK,
+	            MessageBoxIcon.Information);
+	    }
 
 		private void serverList_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
@@ -732,12 +766,9 @@ namespace Assistant
 					serverList.Items.Remove( se );
 					serverList.Items.Insert( 1, se );
 				}
-
-				//if ( se.Address != "" )
-				//	WriteLoginCFG( se.Address, se.Port );
-
-				Config.SetRegString( Registry.CurrentUser, "LastServer", se.Address );
-				Config.SetRegString( Registry.CurrentUser, "LastPort", se.Port.ToString() );
+                
+				Config.SetAppSetting("LastServer", se.Address);
+			    Config.SetAppSetting("LastPort", se.Port.ToString());
 			}
 
 			SaveData();
@@ -773,25 +804,28 @@ namespace Assistant
 				
 				if ( se.Address != "" )
 				{
-					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, String.Format( "Server{0}", num ), se.Address );
-					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, String.Format( "Port{0}", num ), se.Port.ToString() );
+					Config.SetAppSetting($"Server{num}", se.Address );
+				    Config.SetAppSetting($"Port{num}", se.Port.ToString());
 					num++;
 				}
 			}
 
-			for(int i=2;i<clientList.Items.Count;i++)
-				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, String.Format( "Client{0}", i-1 ), ((PathElipsis)clientList.Items[i]).GetPath() );
+		    for (int i = 2; i < clientList.Items.Count; i++)
+		    {
+		        Config.SetAppSetting($"Client{i - 1}", ((PathElipsis) clientList.Items[i]).GetPath());
+		    }
 
-			num = 1;
+            num = 1;
+
 			if ( dataDir.SelectedIndex == -1 )
 			{
 				string dir = dataDir.Text;
 				dir = dir.Trim();
 
-				if ( dir.Length > 0 && dir != "(Auto Detect)" )
+				if ( dir.Length > 0)
 				{
-					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "Dir1", dir );
-					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "LastDir", "1" );
+				    Config.SetAppSetting("Dir1", dir );
+				    Config.SetAppSetting("LastDir", "1" );
 					m_DataDir = dir;
 					num = 2;
 				}
@@ -799,7 +833,7 @@ namespace Assistant
 
 			if ( num == 1 )
 			{
-				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "LastDir", (dataDir.SelectedIndex != -1 ? dataDir.SelectedIndex : 0).ToString() );
+			    Config.SetAppSetting("LastDir", (dataDir.SelectedIndex != -1 ? dataDir.SelectedIndex : 0).ToString() );
 				try
 				{
 					if ( dataDir.SelectedIndex != 0 )
@@ -813,55 +847,15 @@ namespace Assistant
 			}
 
 			for (int i=1;i<dataDir.Items.Count;i++)
-				Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, String.Format( "Dir{0}", num++ ), (string)dataDir.Items[i] );
-		}
+            {
+                Config.SetAppSetting($"Dir{num++}", (string)dataDir.Items[i] );
+            }
+        }
 
-		/*private const string RazorLine = "; Razor Generated Entry";
-		private void WriteLoginCFG( string addr, int port )
-		{
-			string fileName = Ultima.Client.GetFilePath( "Login.cfg" );
-			if ( fileName == null || fileName == "" )
-				return;
-			ArrayList lines = new ArrayList();
-
-			if ( File.Exists( fileName ) )
-			{
-				using ( StreamReader cfg = new StreamReader( fileName ) )
-				{
-					string line;
-					while ( (line = cfg.ReadLine()) != null )
-					{
-						line = line.Trim();
-						if ( line == RazorLine )
-						{
-							cfg.ReadLine(); // skip the next line which is the razor server
-							continue;
-						}
-						else if ( line != "" )
-						{
-							lines.Add( line );
-						}
-					}
-				}
-			}
-
-			using ( StreamWriter cfg = new StreamWriter( fileName ) )
-			{
-				foreach ( string line in lines )
-				{
-					if ( line.Length > 0 && line[0] != ';' )
-						cfg.Write( ';' );
-					cfg.WriteLine( line );
-				}
-				cfg.WriteLine( RazorLine );
-				cfg.WriteLine( "LoginServer={0},{1}", addr.Trim(), port );
-			}
-		}*/
-
-		private void showAtStart_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "ShowWelcome", ( showAtStart.Checked ? 1 : 0 ).ToString() );
-		}
+	    private void showAtStart_CheckedChanged(object sender, System.EventArgs e)
+	    {
+	        Config.SetAppSetting("ShowWelcome", (showAtStart.Checked ? 1 : 0).ToString());
+	    }
 
 		private void langSel_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
@@ -876,12 +870,8 @@ namespace Assistant
 				}
 				else
 				{
-					Config.SetRegString( Microsoft.Win32.Registry.CurrentUser, "DefaultLanguage", Language.Current );
+				    Config.SetAppSetting("DefaultLanguage", Language.Current );
 					Language.LoadControlNames( this );
-
-					clientList.Items[0] = Language.GetString( LocString.Auto2D );
-					clientList.Items[1] = Language.GetString( LocString.Auto2D );
-					dataDir.Items[0] = Language.GetString( LocString.AutoDetect );
 				}
 			}
 		}
