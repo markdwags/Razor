@@ -1387,7 +1387,7 @@ namespace Assistant
             // 
             // showNotoHue
             // 
-            this.showNotoHue.Location = new System.Drawing.Point(229, 168);
+            this.showNotoHue.Location = new System.Drawing.Point(216, 168);
             this.showNotoHue.Name = "showNotoHue";
             this.showNotoHue.Size = new System.Drawing.Size(224, 20);
             this.showNotoHue.TabIndex = 47;
@@ -1396,7 +1396,7 @@ namespace Assistant
             // 
             // warnNum
             // 
-            this.warnNum.Location = new System.Drawing.Point(418, 218);
+            this.warnNum.Location = new System.Drawing.Point(405, 218);
             this.warnNum.Name = "warnNum";
             this.warnNum.Size = new System.Drawing.Size(20, 23);
             this.warnNum.TabIndex = 46;
@@ -1406,7 +1406,7 @@ namespace Assistant
             // 
             // warnCount
             // 
-            this.warnCount.Location = new System.Drawing.Point(229, 220);
+            this.warnCount.Location = new System.Drawing.Point(216, 220);
             this.warnCount.Name = "warnCount";
             this.warnCount.Size = new System.Drawing.Size(192, 19);
             this.warnCount.TabIndex = 45;
@@ -1415,7 +1415,7 @@ namespace Assistant
             // 
             // excludePouches
             // 
-            this.excludePouches.Location = new System.Drawing.Point(10, 220);
+            this.excludePouches.Location = new System.Drawing.Point(10, 219);
             this.excludePouches.Name = "excludePouches";
             this.excludePouches.Size = new System.Drawing.Size(192, 21);
             this.excludePouches.TabIndex = 14;
@@ -1424,7 +1424,7 @@ namespace Assistant
             // 
             // highlightSpellReags
             // 
-            this.highlightSpellReags.Location = new System.Drawing.Point(229, 142);
+            this.highlightSpellReags.Location = new System.Drawing.Point(216, 142);
             this.highlightSpellReags.Name = "highlightSpellReags";
             this.highlightSpellReags.Size = new System.Drawing.Size(200, 20);
             this.highlightSpellReags.TabIndex = 13;
@@ -1433,7 +1433,7 @@ namespace Assistant
             // 
             // titlebarImages
             // 
-            this.titlebarImages.Location = new System.Drawing.Point(229, 194);
+            this.titlebarImages.Location = new System.Drawing.Point(216, 194);
             this.titlebarImages.Name = "titlebarImages";
             this.titlebarImages.Size = new System.Drawing.Size(200, 20);
             this.titlebarImages.TabIndex = 12;
@@ -1442,7 +1442,7 @@ namespace Assistant
             // 
             // checkNewConts
             // 
-            this.checkNewConts.Location = new System.Drawing.Point(10, 200);
+            this.checkNewConts.Location = new System.Drawing.Point(10, 194);
             this.checkNewConts.Name = "checkNewConts";
             this.checkNewConts.Size = new System.Drawing.Size(200, 20);
             this.checkNewConts.TabIndex = 9;
@@ -2011,7 +2011,7 @@ namespace Assistant
             // 
             // hkStatus
             // 
-            this.hkStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hkStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hkStatus.Location = new System.Drawing.Point(298, 172);
             this.hkStatus.Name = "hkStatus";
             this.hkStatus.Size = new System.Drawing.Size(175, 64);
@@ -2749,17 +2749,17 @@ namespace Assistant
             // aboutSubInfo
             // 
             this.aboutSubInfo.AutoSize = true;
-            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutSubInfo.Location = new System.Drawing.Point(9, 31);
+            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutSubInfo.Location = new System.Drawing.Point(135, 36);
             this.aboutSubInfo.Name = "aboutSubInfo";
-            this.aboutSubInfo.Size = new System.Drawing.Size(225, 17);
+            this.aboutSubInfo.Size = new System.Drawing.Size(206, 17);
             this.aboutSubInfo.TabIndex = 17;
             this.aboutSubInfo.Text = "UO Renaissance Community Edition";
             // 
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(8, 110);
+            this.linkLabel2.Location = new System.Drawing.Point(223, 224);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(206, 15);
             this.linkLabel2.TabIndex = 16;
@@ -2769,18 +2769,19 @@ namespace Assistant
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(9, 91);
+            this.label21.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(8, 209);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(163, 15);
+            this.label21.Size = new System.Drawing.Size(209, 30);
             this.label21.TabIndex = 15;
-            this.label21.Text = "Project maintained by Quick";
+            this.label21.Text = "Project maintained by Quick\r\nFor feedback and support please visit:\r\n";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // aboutVer
             // 
             this.aboutVer.AutoSize = true;
             this.aboutVer.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutVer.Location = new System.Drawing.Point(8, 10);
+            this.aboutVer.Location = new System.Drawing.Point(190, 15);
             this.aboutVer.Name = "aboutVer";
             this.aboutVer.Size = new System.Drawing.Size(87, 21);
             this.aboutVer.TabIndex = 14;
@@ -2789,12 +2790,13 @@ namespace Assistant
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(9, 52);
+            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.Location = new System.Drawing.Point(141, 54);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(179, 15);
+            this.linkLabel1.Size = new System.Drawing.Size(194, 17);
             this.linkLabel1.TabIndex = 13;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://www.uorenaissance.com/";
+            this.linkLabel1.Text = "http://www.uorenaissance.com";
             // 
             // timerTimer
             // 
@@ -3107,7 +3109,9 @@ namespace Assistant
 
 		    jsonApi.Checked = Config.GetBool("JsonApi");
 
-		    if (jsonApi.Checked)
+		    //hotKeyStop.Checked = Config.GetBool("HotKeyStop");
+
+            if (jsonApi.Checked)
 		    {
 		        new JsonApiTimer(this).Start();
             }
@@ -6572,5 +6576,10 @@ namespace Assistant
                 titleStr.AppendText($" {titleBarParams.SelectedItem} ");
             }
         }
+
+        /*private void hotKeyStop_CheckedChanged(object sender, EventArgs e)
+        {
+           Config.SetProperty("HotKeyStop", hotKeyStop.Checked);
+        }*/
     }
 }

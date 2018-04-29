@@ -25,128 +25,132 @@ namespace Assistant
             MakeDefault();
 		}
 
-		public void MakeDefault()
-		{
-			m_Props.Clear();
+	    public void MakeDefault()
+	    {
+	        m_Props.Clear();
 
-			AddProperty( "ShowMobNames", false );
-			AddProperty( "ShowCorpseNames", false );
-			AddProperty( "DisplaySkillChanges", false );
-			AddProperty( "TitleBarText", @"UO - {char} {crimtime}- {mediumstatbar} {bp} {bm} {gl} {gs} {mr} {ns} {ss} {sa} {aids}" );
-			AddProperty( "TitleBarDisplay", true );
-			AddProperty( "AutoSearch", true );
-			AddProperty( "NoSearchPouches", true );
-			AddProperty( "CounterWarnAmount", (int)5 );
-			AddProperty( "CounterWarn", true );
-			AddProperty( "ObjectDelay", (int)600 );
-			AddProperty( "AlwaysOnTop", false );
-			AddProperty( "SortCounters", true );
-			AddProperty( "QueueActions", true );
-			AddProperty( "QueueTargets", true );
-			AddProperty( "WindowX", (int)400 );
-			AddProperty( "WindowY", (int)400 );
-			AddProperty( "CountStealthSteps", true );
-			AddProperty( "AlwaysStealth", false );
+	        AddProperty("ShowMobNames", false);
+	        AddProperty("ShowCorpseNames", false);
+	        AddProperty("DisplaySkillChanges", false);
+	        AddProperty("TitleBarText",
+	            @"UO - {char} {crimtime}- {mediumstatbar} {bp} {bm} {gl} {gs} {mr} {ns} {ss} {sa} {aids}");
+	        AddProperty("TitleBarDisplay", true);
+	        AddProperty("AutoSearch", true);
+	        AddProperty("NoSearchPouches", true);
+	        AddProperty("CounterWarnAmount", (int) 5);
+	        AddProperty("CounterWarn", true);
+	        AddProperty("ObjectDelay", (int) 600);
+	        AddProperty("AlwaysOnTop", false);
+	        AddProperty("SortCounters", true);
+	        AddProperty("QueueActions", true);
+	        AddProperty("QueueTargets", true);
+	        AddProperty("WindowX", (int) 400);
+	        AddProperty("WindowY", (int) 400);
+	        AddProperty("CountStealthSteps", true);
+	        AddProperty("AlwaysStealth", false);
 
-			AddProperty( "SysColor", (int)0x03B1 );
-			AddProperty( "WarningColor", (int)0x0025 );
-			AddProperty( "ExemptColor", (int)0x0480 );
-			AddProperty( "SpeechHue", (int)0x03B1 );
-			AddProperty( "BeneficialSpellHue", (int)0x0005 );
-			AddProperty( "HarmfulSpellHue", (int)0x0025 );
-			AddProperty( "NeutralSpellHue", (int)0x03B1 );
-			AddProperty( "ForceSpeechHue", false );
-			AddProperty( "ForceSpellHue", false );
-			AddProperty( "SpellFormat", @"{power} [{spell}]" );
+	        AddProperty("SysColor", (int) 0x03B1);
+	        AddProperty("WarningColor", (int) 0x0025);
+	        AddProperty("ExemptColor", (int) 0x0480);
+	        AddProperty("SpeechHue", (int) 0x03B1);
+	        AddProperty("BeneficialSpellHue", (int) 0x0005);
+	        AddProperty("HarmfulSpellHue", (int) 0x0025);
+	        AddProperty("NeutralSpellHue", (int) 0x03B1);
+	        AddProperty("ForceSpeechHue", false);
+	        AddProperty("ForceSpellHue", false);
+	        AddProperty("SpellFormat", @"{power} [{spell}]");
 
-			AddProperty( "ShowNotoHue", true );
-			AddProperty( "Opacity", (int)100 );
+	        AddProperty("ShowNotoHue", true);
+	        AddProperty("Opacity", (int) 100);
 
-			AddProperty( "AutoOpenCorpses", false );
-			AddProperty( "CorpseRange", (int)2 );
+	        AddProperty("AutoOpenCorpses", false);
+	        AddProperty("CorpseRange", (int) 2);
 
-			AddProperty( "FilterSpam", false );
-			AddProperty( "BlockDismount", false );
+	        AddProperty("FilterSpam", false);
+	        AddProperty("BlockDismount", false);
 
-			AddProperty( "AutoCap", false );
-			AddProperty( "CapFullScreen", false );
-            AddProperty("CapPath", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RazorScreenShots"));
-			AddProperty( "CapTimeStamp", true );
-			AddProperty( "ImageFormat", "jpg" );
+	        AddProperty("AutoCap", false);
+	        AddProperty("CapFullScreen", false);
+	        AddProperty("CapPath",
+	            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RazorScreenShots"));
+	        AddProperty("CapTimeStamp", true);
+	        AddProperty("ImageFormat", "jpg");
 
-			AddProperty( "UndressConflicts", true );
-			AddProperty( "HighlightReagents", true );
-			AddProperty( "Systray", true );
-			AddProperty( "TitlebarImages", true );
+	        AddProperty("UndressConflicts", true);
+	        AddProperty("HighlightReagents", true);
+	        AddProperty("Systray", true);
+	        AddProperty("TitlebarImages", true);
 
-			AddProperty( "SellAgentMax", (int)99 );
-			AddProperty( "SkillListCol", (int)-1 );
-			AddProperty( "SkillListAsc", false );
+	        AddProperty("SellAgentMax", (int) 99);
+	        AddProperty("SkillListCol", (int) -1);
+	        AddProperty("SkillListAsc", false);
 
-			AddProperty( "AutoStack", false );
-			AddProperty( "ActionStatusMsg", true );
-			AddProperty( "RememberPwds", false );
+	        AddProperty("AutoStack", false);
+	        AddProperty("ActionStatusMsg", true);
+	        AddProperty("RememberPwds", false);
 
-			AddProperty( "SpellUnequip", false );
-			AddProperty( "RangeCheckLT", true );
-			AddProperty( "LTRange", (int)12 );
+	        AddProperty("SpellUnequip", false);
+	        AddProperty("RangeCheckLT", true);
+	        AddProperty("LTRange", (int) 12);
 
-			AddProperty( "ClientPrio", "Normal" );
-			AddProperty( "FilterSnoopMsg", true );
-			AddProperty( "OldStatBar", false );
+	        AddProperty("ClientPrio", "Normal");
+	        AddProperty("FilterSnoopMsg", true);
+	        AddProperty("OldStatBar", false);
 
-			AddProperty( "SmartLastTarget", false );
-			AddProperty( "LastTargTextFlags", true );
-			AddProperty( "SmartCPU", false );
-			AddProperty( "LTHilight", (int)0 );
+	        AddProperty("SmartLastTarget", false);
+	        AddProperty("LastTargTextFlags", true);
+	        AddProperty("SmartCPU", false);
+	        AddProperty("LTHilight", (int) 0);
 
-            AddProperty("RecFolder", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RazorScreenShots"));
-			AddProperty( "AviFPS", 15 );
-			AddProperty( "AviRes", 1 );
+	        AddProperty("RecFolder",
+	            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RazorScreenShots"));
+	        AddProperty("AviFPS", 15);
+	        AddProperty("AviRes", 1);
 
-			AddProperty( "AutoFriend", false );
+	        AddProperty("AutoFriend", false);
 
-			AddProperty( "AutoOpenDoors", false );
+	        AddProperty("AutoOpenDoors", false);
 
-			AddProperty( "MessageLevel", 0 );
+	        AddProperty("MessageLevel", 0);
 
-			AddProperty( "ForceIP", "" );
-			AddProperty( "ForcePort", 0 );
+	        AddProperty("ForceIP", "");
+	        AddProperty("ForcePort", 0);
 
-			AddProperty( "ForceSizeEnabled", false );
-			AddProperty( "ForceSizeX", 800 );
-			AddProperty( "ForceSizeY", 600 );
+	        AddProperty("ForceSizeEnabled", false);
+	        AddProperty("ForceSizeX", 800);
+	        AddProperty("ForceSizeY", 600);
 
-			AddProperty( "FlipVidH", false );
-			AddProperty( "FlipVidV", false );
+	        AddProperty("FlipVidH", false);
+	        AddProperty("FlipVidV", false);
 
-			AddProperty( "PotionEquip", false );
-			AddProperty( "BlockHealPoison", false );
+	        AddProperty("PotionEquip", false);
+	        AddProperty("BlockHealPoison", false);
 
-			AddProperty( "SmoothWalk", false );
+	        AddProperty("SmoothWalk", false);
 
-			AddProperty( "Negotiate", true );
+	        AddProperty("Negotiate", true);
 
-			AddProperty( "MapX", 200 );
-			AddProperty( "MapY", 200 );
-			AddProperty( "MapW", 200 );
-			AddProperty( "MapH", 200 );
+	        AddProperty("MapX", 200);
+	        AddProperty("MapY", 200);
+	        AddProperty("MapW", 200);
+	        AddProperty("MapH", 200);
 
-			AddProperty( "LogPacketsByDefault", false );
+	        AddProperty("LogPacketsByDefault", false);
 
-			AddProperty( "ShowHealth", false );
-			AddProperty( "HealthFmt", "[{0}%]" );
-			AddProperty( "ShowPartyStats", false );
-			AddProperty( "PartyStatFmt", "[{0}% / {1}%]" );
-		    AddProperty("JsonApi", false);
+	        AddProperty("ShowHealth", false);
+	        AddProperty("HealthFmt", "[{0}%]");
+	        AddProperty("ShowPartyStats", false);
+	        AddProperty("PartyStatFmt", "[{0}% / {1}%]");
+	        AddProperty("JsonApi", false);
+	        AddProperty("HotKeyStop", false);
 
-            Counter.Default();
-			Filter.DisableAll();
-			DressList.ClearAll();
-			HotKey.ClearAll();
-			Agent.ClearAll();
-			PasswordMemory.ClearAll();
-		}
+	        Counter.Default();
+	        Filter.DisableAll();
+	        DressList.ClearAll();
+	        HotKey.ClearAll();
+	        Agent.ClearAll();
+	        PasswordMemory.ClearAll();
+	    }
 
 		public string Name
 		{

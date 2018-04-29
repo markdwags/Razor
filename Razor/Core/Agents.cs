@@ -148,7 +148,11 @@ namespace Assistant
 	{
 		public static void Initialize()
 		{
-			Agent.Add( new UseOnceAgent() );
+		    for (int i = 1; i <= 5; i++)
+		    {
+		        Agent.Add(new UseOnceAgent());
+            }
+                
 		}
 
 		private ListBox m_SubList;
@@ -483,7 +487,10 @@ namespace Assistant
 	{
 		public static void Initialize()
 		{
-			Agent.Add( new SellAgent() );
+		    for (int i = 1; i <= 2; i++)
+		    {
+		        Agent.Add(new SellAgent());
+            }
 		}
 
 		private ListBox m_SubList;
@@ -805,7 +812,7 @@ namespace Assistant
 	{
 		public static void Initialize()
 		{
-			for(int i=1;i<=10;i++)
+			for(int i=1;i<=20;i++)
             {
                 Agent.Add( new OrganizerAgent( i ) );
             }
@@ -1382,8 +1389,12 @@ namespace Assistant
 		public static bool Debug = false;
 
 		public static void Initialize()	
-		{ 
-			Agent.Add( m_Instance ); 
+		{
+		    for (int i = 1; i <= 5; i++)
+		    {
+		        Agent.Add(m_Instance);
+            }
+                
 		}
 
 		private bool m_Enabled;
@@ -1747,7 +1758,7 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0x74, new PacketViewerCallback( ExtBuyInfo ) );
 			PacketHandler.RegisterServerToClientViewer( 0x24, new PacketViewerCallback( DisplayBuy ) );
 
-			for(int i=1;i<=5;i++)
+			for(int i=1;i<=10;i++)
 			{
 				BuyAgent b = new BuyAgent( i );
 				m_Instances.Add( b );
@@ -2127,7 +2138,7 @@ namespace Assistant
 	{
 		public static void Initialize()	
 		{ 
-			for (int i=1;i<=5;i++)
+			for (int i=1;i<=10;i++)
             {
                 Agent.Add( new RestockAgent( i ) );
             }
