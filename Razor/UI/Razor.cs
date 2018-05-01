@@ -206,10 +206,9 @@ namespace Assistant
 		private System.Windows.Forms.ComboBox clientPrio;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.CheckBox chkPartyOverhead;
-        private LinkLabel linkLabel2;
+        private LinkLabel linkGithub;
         private Label label21;
         private Label aboutVer;
-        private LinkLabel linkLabel1;
         private Button cloneProfile;
         private Button setLTHilight;
         private CheckBox lthilight;
@@ -254,6 +253,8 @@ namespace Assistant
         private Button removeAbsoluteTarget;
         private Button addAbsoluteTarget;
         private ListBox absoluteTargets;
+        private LinkLabel linkLabel1;
+        private Label label20;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -530,10 +531,9 @@ namespace Assistant
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.label23 = new System.Windows.Forms.Label();
             this.aboutSubInfo = new System.Windows.Forms.Label();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.linkGithub = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
             this.absoluteTargetGroup = new System.Windows.Forms.GroupBox();
             this.retargetAbsoluteTarget = new System.Windows.Forms.Button();
@@ -541,6 +541,8 @@ namespace Assistant
             this.removeAbsoluteTarget = new System.Windows.Forms.Button();
             this.addAbsoluteTarget = new System.Windows.Forms.Button();
             this.absoluteTargets = new System.Windows.Forms.ListBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label20 = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -2762,12 +2764,13 @@ namespace Assistant
             // 
             // aboutTab
             // 
+            this.aboutTab.Controls.Add(this.label20);
+            this.aboutTab.Controls.Add(this.linkLabel1);
             this.aboutTab.Controls.Add(this.label23);
             this.aboutTab.Controls.Add(this.aboutSubInfo);
-            this.aboutTab.Controls.Add(this.linkLabel2);
+            this.aboutTab.Controls.Add(this.linkGithub);
             this.aboutTab.Controls.Add(this.label21);
             this.aboutTab.Controls.Add(this.aboutVer);
-            this.aboutTab.Controls.Add(this.linkLabel1);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
             this.aboutTab.Size = new System.Drawing.Size(482, 244);
@@ -2778,7 +2781,7 @@ namespace Assistant
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(35, 116);
+            this.label23.Location = new System.Drawing.Point(41, 126);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(412, 17);
             this.label23.TabIndex = 19;
@@ -2786,23 +2789,24 @@ namespace Assistant
             // 
             // aboutSubInfo
             // 
-            this.aboutSubInfo.AutoSize = true;
-            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutSubInfo.Location = new System.Drawing.Point(135, 36);
+            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutSubInfo.Location = new System.Drawing.Point(8, 45);
             this.aboutSubInfo.Name = "aboutSubInfo";
-            this.aboutSubInfo.Size = new System.Drawing.Size(206, 17);
+            this.aboutSubInfo.Size = new System.Drawing.Size(463, 19);
             this.aboutSubInfo.TabIndex = 17;
             this.aboutSubInfo.Text = "UO Renaissance Community Edition";
+            this.aboutSubInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // linkLabel2
+            // linkGithub
             // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(135, 137);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(206, 15);
-            this.linkLabel2.TabIndex = 16;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "https://github.com/markdwags/razor";
+            this.linkGithub.AutoSize = true;
+            this.linkGithub.Location = new System.Drawing.Point(137, 217);
+            this.linkGithub.Name = "linkGithub";
+            this.linkGithub.Size = new System.Drawing.Size(206, 15);
+            this.linkGithub.TabIndex = 16;
+            this.linkGithub.TabStop = true;
+            this.linkGithub.Text = "https://github.com/markdwags/razor";
+            this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // label21
             // 
@@ -2816,24 +2820,13 @@ namespace Assistant
             // 
             // aboutVer
             // 
-            this.aboutVer.AutoSize = true;
-            this.aboutVer.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutVer.Location = new System.Drawing.Point(190, 15);
+            this.aboutVer.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutVer.Location = new System.Drawing.Point(12, 10);
             this.aboutVer.Name = "aboutVer";
-            this.aboutVer.Size = new System.Drawing.Size(87, 21);
+            this.aboutVer.Size = new System.Drawing.Size(459, 35);
             this.aboutVer.TabIndex = 14;
             this.aboutVer.Text = "Razor v{0}";
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.Location = new System.Drawing.Point(141, 54);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(194, 17);
-            this.linkLabel1.TabIndex = 13;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://www.uorenaissance.com";
+            this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timerTimer
             // 
@@ -2904,6 +2897,28 @@ namespace Assistant
             this.absoluteTargets.Name = "absoluteTargets";
             this.absoluteTargets.Size = new System.Drawing.Size(153, 154);
             this.absoluteTargets.TabIndex = 1;
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.Location = new System.Drawing.Point(12, 76);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(459, 20);
+            this.linkLabel1.TabIndex = 20;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "http://www.uorenaissance.com";
+            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(77, 200);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(343, 17);
+            this.label20.TabIndex = 21;
+            this.label20.Text = "For feedback, support and the latest releases please visit:\r\n";
             // 
             // MainForm
             // 
@@ -2995,7 +3010,7 @@ namespace Assistant
 
 			Timer.Control = timerTimer;
 
-			new StatsTimer( this ).Start();
+            new StatsTimer( this ).Start();
 
 			this.Hide();
 			Language.LoadControlNames( this );
@@ -6813,6 +6828,16 @@ namespace Assistant
             // Save and reload the macros and vars
             MacroManager.Save();
             MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/markdwags/razor");
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://www.uorenaissance.com/");
         }
 
 

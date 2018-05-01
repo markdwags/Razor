@@ -148,12 +148,8 @@ namespace Assistant
 	{
 		public static void Initialize()
 		{
-		    for (int i = 1; i <= 5; i++)
-		    {
-		        Agent.Add(new UseOnceAgent());
-            }
-                
-		}
+		    Agent.Add(new UseOnceAgent());
+        }
 
 		private ListBox m_SubList;
 		private readonly ArrayList m_Items;
@@ -487,11 +483,8 @@ namespace Assistant
 	{
 		public static void Initialize()
 		{
-		    for (int i = 1; i <= 2; i++)
-		    {
-		        Agent.Add(new SellAgent());
-            }
-		}
+		    Agent.Add(new SellAgent());
+        }
 
 		private ListBox m_SubList;
 		private Button m_EnableBTN;
@@ -810,13 +803,13 @@ namespace Assistant
 
 	public class OrganizerAgent : Agent
 	{
-		public static void Initialize()
-		{
-			for(int i=1;i<=20;i++)
-            {
-                Agent.Add( new OrganizerAgent( i ) );
-            }
-        }
+	    public static void Initialize()
+	    {
+	        for (int i = 1; i <= Config.GetAppSetting<int>("MaxOrganizerAgents"); i++)
+	        {
+	            Agent.Add(new OrganizerAgent(i));
+	        }
+	    }
 
 		private ListBox m_SubList;
 		private Button m_BagBTN;
@@ -1390,12 +1383,8 @@ namespace Assistant
 
 		public static void Initialize()	
 		{
-		    for (int i = 1; i <= 5; i++)
-		    {
-		        Agent.Add(m_Instance);
-            }
-                
-		}
+		    Agent.Add(m_Instance);
+        }
 
 		private bool m_Enabled;
 		private Serial m_Bag;
@@ -1753,18 +1742,18 @@ namespace Assistant
 
 		private static readonly ArrayList m_Instances = new ArrayList();
 
-		public static void Initialize()
-		{
-			PacketHandler.RegisterServerToClientViewer( 0x74, new PacketViewerCallback( ExtBuyInfo ) );
-			PacketHandler.RegisterServerToClientViewer( 0x24, new PacketViewerCallback( DisplayBuy ) );
+	    public static void Initialize()
+	    {
+	        PacketHandler.RegisterServerToClientViewer(0x74, new PacketViewerCallback(ExtBuyInfo));
+	        PacketHandler.RegisterServerToClientViewer(0x24, new PacketViewerCallback(DisplayBuy));
 
-			for(int i=1;i<=10;i++)
-			{
-				BuyAgent b = new BuyAgent( i );
-				m_Instances.Add( b );
-				Agent.Add( b );
-			}
-		}
+	        for (int i = 1; i <= Config.GetAppSetting<int>("MaxBuyAgents"); i++)
+	        {
+	            BuyAgent b = new BuyAgent(i);
+	            m_Instances.Add(b);
+	            Agent.Add(b);
+	        }
+	    }
 		
 		private ListBox m_SubList;
 		private Button m_EnableBTN;
@@ -2136,13 +2125,13 @@ namespace Assistant
 
 	public class RestockAgent : Agent
 	{
-		public static void Initialize()	
-		{ 
-			for (int i=1;i<=10;i++)
-            {
-                Agent.Add( new RestockAgent( i ) );
-            }
-        }
+	    public static void Initialize()
+	    {
+	        for (int i = 1; i <= Config.GetAppSetting<int>("MaxRestockAgents"); i++)
+	        {
+	            Agent.Add(new RestockAgent(i));
+	        }
+	    }
 
 		private ListBox m_SubList;
 		private readonly List<RestockItem> m_Items;
