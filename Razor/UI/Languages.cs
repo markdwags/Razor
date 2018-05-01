@@ -399,6 +399,7 @@ namespace Assistant
         CopyClipboardMacro = 1951,
         DeerSounds,
         MacroRename,
+        NewAbsoluteTargetVar,
 
         __End
 	}

@@ -1,43 +1,83 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
 namespace Assistant.Macros
-{	
-	public class MacroManager
-	{
-		private static ArrayList m_List;
-		private static Macro m_Current, m_PrevPlay;
-		private static MacroTimer m_Timer;
+{
+    public class MacroManager
+    {
+        private static List<Macro> m_MacroList;
+        private static List<AbsoluteTarget> m_AbsoluteTargetList;
+        private static Macro m_Current, m_PrevPlay;
+        private static MacroTimer m_Timer;
 
-		public static void Initialize()
-		{
-			HotKey.Add( HKCategory.Macros, LocString.StopCurrent, new HotKeyCallback( HotKeyStop ) );
+        public static void Initialize()
+        {
+            HotKey.Add(HKCategory.Macros, LocString.StopCurrent, new HotKeyCallback(HotKeyStop));
 
-			string path = Config.GetUserDirectory( "Macros" );
-			Recurse( null, path );
-			/*string[] macros = Directory.GetFiles( path, "*.macro" );
-			for (int i=0;i<macros.Length;i++)
-				Add( new Macro( macros[i] ) );*/
-		}
+            string path = Config.GetUserDirectory("Macros");
+            Recurse(null, path);
 
-		static MacroManager()
-		{
-			m_List = new ArrayList();
-			m_Timer = new MacroTimer();
-		}
+        }
 
-		public static void Save()
-		{
+        static MacroManager()
+        {
+            m_MacroList = new List<Macro>();
+            m_AbsoluteTargetList = new List<AbsoluteTarget>();
+            m_Timer = new MacroTimer();
+        }
+
+        public static void Save()
+        {
             Engine.EnsureDirectory(Config.GetUserDirectory("Macros"));
-			for(int i=0;i<m_List.Count;i++)
-				((Macro)m_List[i]).Save();
-		}
-		
-		public static ArrayList List{ get{ return m_List; } }
-		public static bool Recording{ get{ return m_Current != null && m_Current.Recording; } }
+
+            for (int i = 0; i < m_MacroList.Count; i++)
+            {
+                m_MacroList[i].Save();
+            }
+
+            using (StreamWriter writer = new StreamWriter($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst"))
+            {
+                foreach (AbsoluteTarget at in m_AbsoluteTargetList)
+                {
+                    try
+                    {
+                        writer.WriteLine(at.Serialize());
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
+        }
+
+        public static void LoadAbsoluteTargets(ListBox list)
+        {
+            string[] targets = File.ReadAllLines($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst");
+            //testvar|test|0|0|824181|1371|1921|0|400
+
+            m_AbsoluteTargetList.Clear();
+
+            foreach (string target in targets)
+            {
+                AbsoluteTarget t = new AbsoluteTarget(target.Split('|'));
+
+                if (t.TargetVariableProfile.ToLower().Equals(Config.CurrentProfile.Name.ToLower()))
+                {
+                    m_AbsoluteTargetList.Add(t);
+
+                    list.Items.Add(t.ToString());
+                }
+            }
+        }
+
+        public static List<Macro> List { get{ return m_MacroList; } }
+        public static List<AbsoluteTarget> AbsoluteTargetList { get { return m_AbsoluteTargetList; } }
+        public static bool Recording{ get{ return m_Current != null && m_Current.Recording; } }
 		public static bool Playing{ get{ return m_Current != null && m_Current.Playing && m_Timer != null && m_Timer.Running; } }
 		public static Macro Current{ get{ return m_Current; } }
 		public static bool AcceptActions{ get { return Recording || ( Playing && m_Current.Waiting ); } }
@@ -46,13 +86,13 @@ namespace Assistant.Macros
 		public static void Add( Macro m )
 		{
 			HotKey.Add( HKCategory.Macros, HKSubCat.None, Language.Format( LocString.PlayA1, m ), new HotKeyCallbackState( HotKeyPlay ), m );
-			m_List.Add( m );
+		    m_MacroList.Add( m );
 		}
 
 		public static void Remove( Macro m )
 		{
 			HotKey.Remove( Language.Format( LocString.PlayA1, m ) );
-			m_List.Remove( m );
+		    m_MacroList.Remove( m );
 		}
 
 		public static void RecordAt( Macro m, int at )
@@ -180,6 +220,17 @@ namespace Assistant.Macros
 			tree.Update();
 		}
 
+        public static void DisplayAbsoluteTargetsTo(ListBox list)
+        {
+            list.BeginUpdate();
+            list.Items.Clear();
+            LoadAbsoluteTargets(list);
+            list.EndUpdate();
+            list.Refresh();
+            list.Update();
+        }
+        
+
 		private static void Recurse( TreeNodeCollection nodes, string path )
 		{
 			try
@@ -188,9 +239,9 @@ namespace Assistant.Macros
 				for (int i=0;i<macros.Length;i++)
 				{ 
 					Macro m = null;
-					for(int j=0;j<m_List.Count;j++)
+					for(int j=0;j<m_MacroList.Count;j++)
 					{
-						Macro check = (Macro)m_List[j];
+						Macro check = m_MacroList[j];
 
 						if ( check.Filename == macros[i] )
 						{

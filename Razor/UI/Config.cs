@@ -728,26 +728,22 @@ namespace Assistant
 
         public static string GetUserDirectory(string name)
         {
-            string appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Razor");
+            string appDir = GetInstallDirectory();
 
-            if (!Directory.Exists(appDir))
+            if (!Directory.Exists($"{appDir}\\Macros"))
             {
-                Directory.CreateDirectory(appDir);
-
-                string counters = Path.Combine(GetInstallDirectory(), "counters.xml");
-                if (File.Exists(counters))
-                    File.Copy(counters, Path.Combine(appDir, "counters.xml"));
-
-                CopyUserFiles(appDir, "Profiles");
-                CopyUserFiles(appDir, "Macros");
+                Directory.CreateDirectory($"{appDir}\\Macros");
             }
 
-            if (name.Length > 0)
-                name = Path.Combine(appDir, name);
-            else
-                name = appDir;
+            if (!Directory.Exists($"{appDir}\\Profiles"))
+            {
+                Directory.CreateDirectory($"{appDir}\\Profiles");
+            }
+
+            name = name.Length > 0 ? Path.Combine(appDir, name) : appDir;
             
             Engine.EnsureDirectory(name);
+
             return name;
         }
 

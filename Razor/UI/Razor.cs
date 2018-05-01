@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
@@ -246,6 +246,14 @@ namespace Assistant
         private CheckBox jsonApi;
         private Label aboutSubInfo;
         private ComboBox titleBarParams;
+        private Button expandAdvancedMacros;
+        private Label label23;
+        private GroupBox absoluteTargetGroup;
+        private Button retargetAbsoluteTarget;
+        private Button insertAbsoluteTarget;
+        private Button removeAbsoluteTarget;
+        private Button addAbsoluteTarget;
+        private ListBox absoluteTargets;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -464,6 +472,7 @@ namespace Assistant
             this.macrosTab = new System.Windows.Forms.TabPage();
             this.macroTree = new System.Windows.Forms.TreeView();
             this.macroActGroup = new System.Windows.Forms.GroupBox();
+            this.expandAdvancedMacros = new System.Windows.Forms.Button();
             this.waitDisp = new System.Windows.Forms.Label();
             this.loopMacro = new System.Windows.Forms.CheckBox();
             this.recMacro = new System.Windows.Forms.Button();
@@ -519,12 +528,19 @@ namespace Assistant
             this.statusBox = new System.Windows.Forms.TextBox();
             this.features = new System.Windows.Forms.TextBox();
             this.aboutTab = new System.Windows.Forms.TabPage();
+            this.label23 = new System.Windows.Forms.Label();
             this.aboutSubInfo = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.absoluteTargetGroup = new System.Windows.Forms.GroupBox();
+            this.retargetAbsoluteTarget = new System.Windows.Forms.Button();
+            this.insertAbsoluteTarget = new System.Windows.Forms.Button();
+            this.removeAbsoluteTarget = new System.Windows.Forms.Button();
+            this.addAbsoluteTarget = new System.Windows.Forms.Button();
+            this.absoluteTargets = new System.Windows.Forms.ListBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -554,6 +570,7 @@ namespace Assistant
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
             this.aboutTab.SuspendLayout();
+            this.absoluteTargetGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
@@ -2150,6 +2167,7 @@ namespace Assistant
             // 
             // macroActGroup
             // 
+            this.macroActGroup.Controls.Add(this.expandAdvancedMacros);
             this.macroActGroup.Controls.Add(this.waitDisp);
             this.macroActGroup.Controls.Add(this.loopMacro);
             this.macroActGroup.Controls.Add(this.recMacro);
@@ -2163,6 +2181,15 @@ namespace Assistant
             this.macroActGroup.Text = "Actions";
             this.macroActGroup.Visible = false;
             // 
+            // expandAdvancedMacros
+            // 
+            this.expandAdvancedMacros.Location = new System.Drawing.Point(266, 206);
+            this.expandAdvancedMacros.Name = "expandAdvancedMacros";
+            this.expandAdvancedMacros.Size = new System.Drawing.Size(21, 20);
+            this.expandAdvancedMacros.TabIndex = 6;
+            this.expandAdvancedMacros.UseVisualStyleBackColor = true;
+            this.expandAdvancedMacros.Click += new System.EventHandler(this.expandAdvancedMacros_Click);
+            // 
             // waitDisp
             // 
             this.waitDisp.Location = new System.Drawing.Point(227, 91);
@@ -2173,7 +2200,7 @@ namespace Assistant
             // 
             // loopMacro
             // 
-            this.loopMacro.Location = new System.Drawing.Point(227, 202);
+            this.loopMacro.Location = new System.Drawing.Point(230, 182);
             this.loopMacro.Name = "loopMacro";
             this.loopMacro.Size = new System.Drawing.Size(57, 24);
             this.loopMacro.TabIndex = 4;
@@ -2735,6 +2762,7 @@ namespace Assistant
             // 
             // aboutTab
             // 
+            this.aboutTab.Controls.Add(this.label23);
             this.aboutTab.Controls.Add(this.aboutSubInfo);
             this.aboutTab.Controls.Add(this.linkLabel2);
             this.aboutTab.Controls.Add(this.label21);
@@ -2745,6 +2773,16 @@ namespace Assistant
             this.aboutTab.Size = new System.Drawing.Size(482, 244);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.Location = new System.Drawing.Point(35, 116);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(412, 17);
+            this.label23.TabIndex = 19;
+            this.label23.Text = "Razor was designed by Zippy, modified for UO Renaissance by Quick";
             // 
             // aboutSubInfo
             // 
@@ -2759,7 +2797,7 @@ namespace Assistant
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(135, 200);
+            this.linkLabel2.Location = new System.Drawing.Point(135, 137);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(206, 15);
             this.linkLabel2.TabIndex = 16;
@@ -2770,11 +2808,10 @@ namespace Assistant
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(135, 161);
+            this.label21.Location = new System.Drawing.Point(52, 98);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(209, 30);
+            this.label21.Size = new System.Drawing.Size(0, 15);
             this.label21.TabIndex = 15;
-            this.label21.Text = "Project maintained by Quick\r\nFor feedback and support please visit:\r\n";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // aboutVer
@@ -2804,10 +2841,75 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
+            // absoluteTargetGroup
+            // 
+            this.absoluteTargetGroup.Controls.Add(this.retargetAbsoluteTarget);
+            this.absoluteTargetGroup.Controls.Add(this.insertAbsoluteTarget);
+            this.absoluteTargetGroup.Controls.Add(this.removeAbsoluteTarget);
+            this.absoluteTargetGroup.Controls.Add(this.addAbsoluteTarget);
+            this.absoluteTargetGroup.Controls.Add(this.absoluteTargets);
+            this.absoluteTargetGroup.Location = new System.Drawing.Point(12, 298);
+            this.absoluteTargetGroup.Name = "absoluteTargetGroup";
+            this.absoluteTargetGroup.Size = new System.Drawing.Size(240, 185);
+            this.absoluteTargetGroup.TabIndex = 1;
+            this.absoluteTargetGroup.TabStop = false;
+            this.absoluteTargetGroup.Text = "Absolute Target Variables:";
+            this.absoluteTargetGroup.Visible = false;
+            // 
+            // retargetAbsoluteTarget
+            // 
+            this.retargetAbsoluteTarget.Location = new System.Drawing.Point(167, 84);
+            this.retargetAbsoluteTarget.Name = "retargetAbsoluteTarget";
+            this.retargetAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
+            this.retargetAbsoluteTarget.TabIndex = 5;
+            this.retargetAbsoluteTarget.Text = "Retarget";
+            this.retargetAbsoluteTarget.UseVisualStyleBackColor = true;
+            this.retargetAbsoluteTarget.Click += new System.EventHandler(this.retargetAbsoluteTarget_Click);
+            // 
+            // insertAbsoluteTarget
+            // 
+            this.insertAbsoluteTarget.Location = new System.Drawing.Point(167, 53);
+            this.insertAbsoluteTarget.Name = "insertAbsoluteTarget";
+            this.insertAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
+            this.insertAbsoluteTarget.TabIndex = 4;
+            this.insertAbsoluteTarget.Text = "Insert";
+            this.insertAbsoluteTarget.UseVisualStyleBackColor = true;
+            this.insertAbsoluteTarget.Click += new System.EventHandler(this.insertAbsoluteTarget_Click);
+            // 
+            // removeAbsoluteTarget
+            // 
+            this.removeAbsoluteTarget.Location = new System.Drawing.Point(167, 115);
+            this.removeAbsoluteTarget.Name = "removeAbsoluteTarget";
+            this.removeAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
+            this.removeAbsoluteTarget.TabIndex = 3;
+            this.removeAbsoluteTarget.Text = "Remove";
+            this.removeAbsoluteTarget.UseVisualStyleBackColor = true;
+            this.removeAbsoluteTarget.Click += new System.EventHandler(this.removeAbsoluteTarget_Click);
+            // 
+            // addAbsoluteTarget
+            // 
+            this.addAbsoluteTarget.Location = new System.Drawing.Point(167, 22);
+            this.addAbsoluteTarget.Name = "addAbsoluteTarget";
+            this.addAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
+            this.addAbsoluteTarget.TabIndex = 2;
+            this.addAbsoluteTarget.Text = "Add";
+            this.addAbsoluteTarget.UseVisualStyleBackColor = true;
+            this.addAbsoluteTarget.Click += new System.EventHandler(this.addAbsoluteTarget_Click);
+            // 
+            // absoluteTargets
+            // 
+            this.absoluteTargets.FormattingEnabled = true;
+            this.absoluteTargets.ItemHeight = 15;
+            this.absoluteTargets.Location = new System.Drawing.Point(8, 22);
+            this.absoluteTargets.Name = "absoluteTargets";
+            this.absoluteTargets.Size = new System.Drawing.Size(153, 154);
+            this.absoluteTargets.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            this.ClientSize = new System.Drawing.Size(489, 292);
+            this.ClientSize = new System.Drawing.Size(487, 495);
+            this.Controls.Add(this.absoluteTargetGroup);
             this.Controls.Add(this.tabs);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -2864,6 +2966,7 @@ namespace Assistant
             this.advancedTab.PerformLayout();
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
+            this.absoluteTargetGroup.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -3125,6 +3228,8 @@ namespace Assistant
 			if ( tabs == null )
 				return;
 
+		    Size = new Size(503, 329);
+
 			if ( tabs.SelectedTab == generalTab )
 			{
 				Filters.Filter.Draw( filters );
@@ -3187,7 +3292,9 @@ namespace Assistant
 					MacroManager.Current.DisplayTo( actionList );
 
 				macroActGroup.Visible = macroTree.SelectedNode != null;
-			}
+
+			    expandAdvancedMacros.Text = "\u2193";
+            }
 			else if ( tabs.SelectedTab == screenshotTab )
 			{
 				ReloadScreenShotsList();
@@ -5060,6 +5167,8 @@ namespace Assistant
 			MacroManager.DisplayTo( macroTree );
 			if ( ms != null )
 				macroTree.SelectedNode = FindNode( macroTree.Nodes, ms );
+
+            MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
 		}
 
 		private void macroTree_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
@@ -6578,6 +6687,134 @@ namespace Assistant
                 titleStr.AppendText($" {titleBarParams.SelectedItem} ");
             }
         }
+
+        private void addAbsoluteTarget_Click(object sender, EventArgs e)
+        {
+            if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
+                return;
+
+            Targeting.OneTimeTarget(OnAbsoluteTargetListAddTarget);
+            World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
+        }
+
+	    private void OnAbsoluteTargetListAddTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+	    {
+	        TargetInfo t = new TargetInfo
+	        {
+	            Gfx = gfx,
+	            Serial = serial,
+	            Type = (byte) (ground ? 1 : 0),
+	            X = pt.X,
+	            Y = pt.Y,
+	            Z = pt.Z
+	        };
+
+	        if (InputBox.Show(this, Language.GetString(LocString.NewAbsoluteTargetVar), Language.GetString(LocString.EnterAName)))
+	        {
+                string name = InputBox.GetString();
+
+	            AbsoluteTarget at = new AbsoluteTarget(name, Config.CurrentProfile.Name, t);
+	            MacroManager.AbsoluteTargetList.Add(at);
+
+                // Save and reload the macros and vars
+                MacroManager.Save();
+                MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
+            }
+
+            Engine.MainWindow.ShowMe();
+        }
+
+        private void expandAdvancedMacros_Click(object sender, EventArgs e)
+        {
+            if (expandAdvancedMacros.Text.Equals("\u2191"))
+            {
+                expandAdvancedMacros.Text = "\u2193";
+                absoluteTargetGroup.Visible = false;
+                Size = new Size(503, 329);
+            }
+            else
+            {
+                expandAdvancedMacros.Text = "\u2191";
+                absoluteTargetGroup.Visible = true;
+                Size = new Size(503, 534);
+            }
+        }
+
+	    private void insertAbsoluteTarget_Click(object sender, EventArgs e)
+	    {
+	        if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
+	            return;
+
+            Macro m = GetMacroSel();
+
+	        if (m == null)
+	            return;
+
+	        int a = actionList.SelectedIndex;
+
+	        if (absoluteTargets.SelectedIndex < 0)
+	        {
+	            return;
+	        }
+
+	        m.Actions.Insert(a + 1,
+	            new AbsoluteTargetVariableAction(
+	                MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetVariableName,
+	                MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetVariableProfile,
+	                MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo));
+
+	        RedrawActionList(m);
+	    }
+        
+        private void retargetAbsoluteTarget_Click(object sender, EventArgs e)
+        {
+            if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
+                return;
+
+            if (absoluteTargets.SelectedIndex < 0)
+                return;
+
+            Targeting.OneTimeTarget(OnAbsoluteTargetListReTarget);
+            World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
+        }
+
+	    private void OnAbsoluteTargetListReTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+	    {
+	        TargetInfo t = new TargetInfo
+	        {
+	            Gfx = gfx,
+	            Serial = serial,
+	            Type = (byte)(ground ? 1 : 0),
+	            X = pt.X,
+	            Y = pt.Y,
+	            Z = pt.Z
+	        };
+
+	        MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo = t;
+	        
+	        // Save and reload the macros and vars
+	        MacroManager.Save();
+	        MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
+            
+
+	        Engine.MainWindow.ShowMe();
+	    }
+
+        private void removeAbsoluteTarget_Click(object sender, EventArgs e)
+        {
+            if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
+                return;
+
+            if (absoluteTargets.SelectedIndex < 0)
+                return;
+
+            MacroManager.AbsoluteTargetList.RemoveAt(absoluteTargets.SelectedIndex);
+
+            // Save and reload the macros and vars
+            MacroManager.Save();
+            MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
+        }
+
 
         /*private void hotKeyStop_CheckedChanged(object sender, EventArgs e)
         {

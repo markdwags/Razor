@@ -864,7 +864,115 @@ namespace Assistant.Macros
 		}
 	}
 
-	public class TargetTypeAction : MacroAction
+    /// <summary>
+    /// Action to handle variable macros to alleviate the headache of having multiple macros for the same thing
+    /// 
+    /// This Action does break the pattern that you see in every other action because the data that is stored for this
+    /// action exists not in the Macro file, but in a different file that has all the variables
+    /// 
+    /// TODO: Re-eval this concept and instead store all data 
+    /// </summary>
+    public class AbsoluteTargetVariableAction : MacroAction
+    {
+        private readonly TargetInfo _target;
+        private readonly string _variableName;
+        private readonly string _profileName;
+
+        public AbsoluteTargetVariableAction(string name, string profile, TargetInfo info)
+        {
+            _target = new TargetInfo
+            {
+                Type = info.Type,
+                Flags = info.Flags,
+                Serial = info.Serial,
+                X = info.X,
+                Y = info.Y,
+                Z = info.Z,
+                Gfx = info.Gfx
+            };
+
+            _variableName = name;
+            _profileName = profile;
+        }
+        
+        public AbsoluteTargetVariableAction(string[] args)
+        {
+            _variableName = args[1];
+            _profileName = Config.CurrentProfile.Name;
+
+            foreach (AbsoluteTarget target in MacroManager.AbsoluteTargetList)
+            {
+                if (target.TargetVariableName.Equals(_variableName) &&
+                    target.TargetVariableProfile.Equals(_profileName))
+                {
+                    _target = new TargetInfo
+                    {
+                        Type = target.TargetInfo.Type,
+                        Flags = target.TargetInfo.Flags,
+                        Serial = target.TargetInfo.Serial,
+                        X = target.TargetInfo.X,
+                        Y = target.TargetInfo.Y,
+                        Z = target.TargetInfo.Z,
+                        Gfx = target.TargetInfo.Gfx
+                    };
+
+                    break;
+                }
+            }
+        }
+
+        public override bool Perform()
+        {
+            Targeting.Target(_target);
+            return true;
+        }
+
+        public override string Serialize()
+        {
+            return DoSerialize(_variableName);
+        }
+
+        public override string ToString()
+        {
+            return $"{Language.GetString(LocString.AbsTarg)} (${_variableName})";
+        }
+
+        /*private MenuItem[] m_MenuItems;
+        public override MenuItem[] GetContextMenuItems()
+        {
+            if (m_MenuItems == null)
+            {
+                m_MenuItems = new MacroMenuItem[]
+                {
+                    new MacroMenuItem( LocString.ReTarget, ReTarget )
+                };
+            }
+
+            return m_MenuItems;
+        }
+
+        private void ReTarget(object[] args)
+        {
+            Targeting.OneTimeTarget(!_target.Serial.IsValid, new Targeting.TargetResponseCallback(ReTargetResponse));
+            World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
+        }
+
+        private void ReTargetResponse(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            _target.Gfx = gfx;
+            _target.Serial = serial;
+            _target.Type = (byte)(ground ? 1 : 0);
+            _target.X = pt.X;
+            _target.Y = pt.Y;
+            _target.Z = pt.Z;
+
+            Engine.MainWindow.ShowMe();
+
+            m_Parent?.Update();
+        }*/
+    }
+
+    public class TargetTypeAction : MacroAction
 	{
 		private bool m_Mobile;
 		private ushort m_Gfx;

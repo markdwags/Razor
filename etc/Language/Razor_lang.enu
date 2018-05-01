@@ -652,3 +652,4 @@ InputBox::ok=&OK
 1950=A Razor macro has been detected in your clipboard.\nWould you like to create this macro based on the clipboard data?
 1951=Macro has been copied to the clipboard
 1952=Deer Sounds
+1954=Enter the name for the new variable (do not include the $)
