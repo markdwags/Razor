@@ -165,7 +165,7 @@ namespace Assistant
 				if ( m_Version == null )
 				{
 					Version v = Assembly.GetCallingAssembly().GetName().Version;
-					m_Version = String.Format( "{0}.{1}.{2}", v.Major, v.Minor, v.Build );//, v.Revision
+					m_Version = $"{v.Major}.{v.Minor}.{v.Build}";//, v.Revision
 				}
 
 				return m_Version; 

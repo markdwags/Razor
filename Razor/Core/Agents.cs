@@ -2220,82 +2220,85 @@ namespace Assistant
 			}
 		}
 
-		public override void OnButtonPress( int num )
-		{
-			switch ( num )
-			{
-				case 1:
-				{
-					Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnItemTarget ) );
-					World.Player.SendMessage( MsgLevel.Force, LocString.TargItemAdd );
-					break;
-				}
-				case 2:
-				{
-					if ( m_SubList.SelectedIndex >= 0 && m_SubList.SelectedIndex < m_Items.Count )
-					{
-						m_Items.RemoveAt( m_SubList.SelectedIndex );
-						m_SubList.Items.RemoveAt( m_SubList.SelectedIndex );
-					}
-					break;
-				}
-				case 3:
-				{
-					int i = m_SubList.SelectedIndex;
-					if ( i < 0 || i > m_Items.Count )
-                        {
-                            return;
-                        }
+	    public override void OnButtonPress(int num)
+	    {
+	        switch (num)
+	        {
+	            case 1:
+	            {
+	                Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnItemTarget));
+	                World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
+	                break;
+	            }
+	            case 2:
+	            {
+	                if (m_SubList.SelectedIndex >= 0 && m_SubList.SelectedIndex < m_Items.Count)
+	                {
+	                    m_Items.RemoveAt(m_SubList.SelectedIndex);
+	                    m_SubList.Items.RemoveAt(m_SubList.SelectedIndex);
+	                }
 
-                        RestockItem ri = (RestockItem)m_Items[i];
-					if ( !InputBox.Show( Engine.MainWindow, Language.GetString( LocString.EnterAmount ), Language.GetString( LocString.InputReq ), ri.Amount.ToString() ) )
-                        {
-                            return;
-                        }
+	                break;
+	            }
+	            case 3:
+	            {
+	                int i = m_SubList.SelectedIndex;
+	                if (i < 0 || i > m_Items.Count)
+	                {
+	                    return;
+	                }
 
-                        ri.Amount = InputBox.GetInt( ri.Amount );
+	                RestockItem ri = (RestockItem) m_Items[i];
+	                if (!InputBox.Show(Engine.MainWindow, Language.GetString(LocString.EnterAmount),
+	                    Language.GetString(LocString.InputReq), ri.Amount.ToString()))
+	                {
+	                    return;
+	                }
 
-					m_SubList.BeginUpdate();
-					m_SubList.Items.Clear();
-					for(int j=0;j<m_Items.Count;j++)
-                        {
-                            m_SubList.Items.Add( m_Items[j] );
-                        }
+	                ri.Amount = InputBox.GetInt(ri.Amount);
 
-                        m_SubList.SelectedIndex = i;
-					m_SubList.EndUpdate();					
-					break;
-				}
-				case 4:
-				{
-				    if (MessageBox.Show(Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
-				            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-				    {
-				        m_SubList.Items.Clear();
-				        m_Items.Clear();
-				    }
-                            
-					break;
-				}
-				case 5:
-				{
-					if ( m_HotBag == Serial.Zero )
-					{
-						SetHB();
-					}
-					else
-					{
-						m_HotBag = Serial.Zero;
-						SetHBText();
-					}
-					break;
-				}
-				case 6:
-				{
-					OnHotKey();
-					break;
-				}
-			}
+	                m_SubList.BeginUpdate();
+	                m_SubList.Items.Clear();
+	                for (int j = 0; j < m_Items.Count; j++)
+	                {
+	                    m_SubList.Items.Add(m_Items[j]);
+	                }
+
+	                m_SubList.SelectedIndex = i;
+	                m_SubList.EndUpdate();
+	                break;
+	            }
+	            case 4:
+	            {
+	                if (MessageBox.Show(Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
+	                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+	                {
+	                    m_SubList.Items.Clear();
+	                    m_Items.Clear();
+	                }
+
+	                break;
+	            }
+	            case 5:
+	            {
+	                if (m_HotBag == Serial.Zero)
+	                {
+	                    SetHB();
+	                }
+	                else
+	                {
+	                    m_HotBag = Serial.Zero;
+	                    SetHBText();
+	                }
+
+	                break;
+	            }
+	            case 6:
+	            {
+	                OnHotKey();
+	                break;
+	            }
+	        }
 		}
 
 		private void SetHBText()

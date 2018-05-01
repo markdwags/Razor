@@ -529,6 +529,8 @@ namespace Assistant
             this.statusBox = new System.Windows.Forms.TextBox();
             this.features = new System.Windows.Forms.TextBox();
             this.aboutTab = new System.Windows.Forms.TabPage();
+            this.label20 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label23 = new System.Windows.Forms.Label();
             this.aboutSubInfo = new System.Windows.Forms.Label();
             this.linkGithub = new System.Windows.Forms.LinkLabel();
@@ -541,8 +543,6 @@ namespace Assistant
             this.removeAbsoluteTarget = new System.Windows.Forms.Button();
             this.addAbsoluteTarget = new System.Windows.Forms.Button();
             this.absoluteTargets = new System.Windows.Forms.ListBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.label20 = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -597,7 +597,7 @@ namespace Assistant
             this.tabs.Controls.Add(this.advancedTab);
             this.tabs.Controls.Add(this.aboutTab);
             this.tabs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabs.Location = new System.Drawing.Point(0, 0);
+            this.tabs.Location = new System.Drawing.Point(2, 0);
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
@@ -884,7 +884,7 @@ namespace Assistant
             // 
             // filterSnoop
             // 
-            this.filterSnoop.Location = new System.Drawing.Point(245, 137);
+            this.filterSnoop.Location = new System.Drawing.Point(245, 135);
             this.filterSnoop.Name = "filterSnoop";
             this.filterSnoop.Size = new System.Drawing.Size(220, 20);
             this.filterSnoop.TabIndex = 49;
@@ -893,7 +893,7 @@ namespace Assistant
             // 
             // corpseRange
             // 
-            this.corpseRange.Location = new System.Drawing.Point(405, 83);
+            this.corpseRange.Location = new System.Drawing.Point(405, 81);
             this.corpseRange.Name = "corpseRange";
             this.corpseRange.Size = new System.Drawing.Size(24, 23);
             this.corpseRange.TabIndex = 23;
@@ -902,7 +902,7 @@ namespace Assistant
             // 
             // incomingCorpse
             // 
-            this.incomingCorpse.Location = new System.Drawing.Point(245, 189);
+            this.incomingCorpse.Location = new System.Drawing.Point(245, 187);
             this.incomingCorpse.Name = "incomingCorpse";
             this.incomingCorpse.Size = new System.Drawing.Size(226, 20);
             this.incomingCorpse.TabIndex = 48;
@@ -911,7 +911,7 @@ namespace Assistant
             // 
             // incomingMob
             // 
-            this.incomingMob.Location = new System.Drawing.Point(245, 163);
+            this.incomingMob.Location = new System.Drawing.Point(245, 161);
             this.incomingMob.Name = "incomingMob";
             this.incomingMob.Size = new System.Drawing.Size(220, 20);
             this.incomingMob.TabIndex = 47;
@@ -1013,7 +1013,7 @@ namespace Assistant
             // 
             // autoStackRes
             // 
-            this.autoStackRes.Location = new System.Drawing.Point(245, 59);
+            this.autoStackRes.Location = new System.Drawing.Point(245, 57);
             this.autoStackRes.Name = "autoStackRes";
             this.autoStackRes.Size = new System.Drawing.Size(228, 20);
             this.autoStackRes.TabIndex = 35;
@@ -1031,7 +1031,7 @@ namespace Assistant
             // 
             // spamFilter
             // 
-            this.spamFilter.Location = new System.Drawing.Point(245, 111);
+            this.spamFilter.Location = new System.Drawing.Point(245, 109);
             this.spamFilter.Name = "spamFilter";
             this.spamFilter.Size = new System.Drawing.Size(228, 20);
             this.spamFilter.TabIndex = 26;
@@ -1040,7 +1040,7 @@ namespace Assistant
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(437, 87);
+            this.label4.Location = new System.Drawing.Point(437, 85);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(36, 16);
             this.label4.TabIndex = 24;
@@ -1048,7 +1048,7 @@ namespace Assistant
             // 
             // openCorpses
             // 
-            this.openCorpses.Location = new System.Drawing.Point(245, 85);
+            this.openCorpses.Location = new System.Drawing.Point(245, 83);
             this.openCorpses.Name = "openCorpses";
             this.openCorpses.Size = new System.Drawing.Size(165, 20);
             this.openCorpses.TabIndex = 22;
@@ -1081,7 +1081,7 @@ namespace Assistant
             // 
             // blockDis
             // 
-            this.blockDis.Location = new System.Drawing.Point(245, 57);
+            this.blockDis.Location = new System.Drawing.Point(245, 55);
             this.blockDis.Name = "blockDis";
             this.blockDis.Size = new System.Drawing.Size(184, 20);
             this.blockDis.TabIndex = 55;
@@ -2777,13 +2777,35 @@ namespace Assistant
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(77, 193);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(343, 17);
+            this.label20.TabIndex = 21;
+            this.label20.Text = "For feedback, support and the latest releases please visit:\r\n";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.Location = new System.Drawing.Point(12, 76);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(459, 20);
+            this.linkLabel1.TabIndex = 20;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "http://www.uorenaissance.com";
+            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(41, 126);
+            this.label23.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.Location = new System.Drawing.Point(33, 135);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(412, 17);
+            this.label23.Size = new System.Drawing.Size(422, 17);
             this.label23.TabIndex = 19;
             this.label23.Text = "Razor was designed by Zippy, modified for UO Renaissance by Quick";
             // 
@@ -2898,32 +2920,10 @@ namespace Assistant
             this.absoluteTargets.Size = new System.Drawing.Size(153, 154);
             this.absoluteTargets.TabIndex = 1;
             // 
-            // linkLabel1
-            // 
-            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.Location = new System.Drawing.Point(12, 76);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(459, 20);
-            this.linkLabel1.TabIndex = 20;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://www.uorenaissance.com";
-            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(77, 200);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(343, 17);
-            this.label20.TabIndex = 21;
-            this.label20.Text = "For feedback, support and the latest releases please visit:\r\n";
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            this.ClientSize = new System.Drawing.Size(487, 495);
+            this.ClientSize = new System.Drawing.Size(488, 490);
             this.Controls.Add(this.absoluteTargetGroup);
             this.Controls.Add(this.tabs);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -3243,7 +3243,7 @@ namespace Assistant
 			if ( tabs == null )
 				return;
 
-		    Size = new Size(503, 329);
+		    Size = new Size(500, 324);
 
 			if ( tabs.SelectedTab == generalTab )
 			{
@@ -6745,13 +6745,13 @@ namespace Assistant
             {
                 expandAdvancedMacros.Text = "\u2193";
                 absoluteTargetGroup.Visible = false;
-                Size = new Size(503, 329);
+                Size = new Size(500, 324);
             }
             else
             {
                 expandAdvancedMacros.Text = "\u2191";
                 absoluteTargetGroup.Visible = true;
-                Size = new Size(503, 534);
+                Size = new Size(500, 534);
             }
         }
 
@@ -6839,8 +6839,7 @@ namespace Assistant
         {
             Process.Start("http://www.uorenaissance.com/");
         }
-
-
+        
         /*private void hotKeyStop_CheckedChanged(object sender, EventArgs e)
         {
            Config.SetProperty("HotKeyStop", hotKeyStop.Checked);
