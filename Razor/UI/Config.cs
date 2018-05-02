@@ -534,41 +534,41 @@ namespace Assistant
 			}
 		}
 
-		public static void LoadProfileFor( PlayerData player )
-		{
-			if ( m_Chars == null )
-				m_Chars = new Dictionary<Serial, string>();
-            string prof = m_Chars[player.Serial] as string;
-			if ( m_Current != null && prof != null && ( m_Current.Name == prof || m_Current.Name.Trim() == prof.Trim() ) )
-				return;
+        public static void LoadProfileFor(PlayerData player)
+        {
+            if (m_Chars == null)
+                m_Chars = new Dictionary<Serial, string>();
+            string prof;
+            if (m_Chars.TryGetValue(player.Serial, out prof) && prof != null)
+            {
+                if (m_Current != null && (m_Current.Name == prof || m_Current.Name.Trim() == prof.Trim()))
+                    return;
 
-			if ( prof != null )
-			{
-				Save();
+                Save();
 
-				if ( !LoadProfile( prof ) )
-				{
-					if ( prof != "default" )
-					{
-						if ( !LoadProfile( "default" ) )
-							m_Current.MakeDefault();
-					}
-					else
-					{
-						m_Current.MakeDefault();
-					}
-				}
+                if (!LoadProfile(prof))
+                {
+                    if (prof != "default")
+                    {
+                        if (!LoadProfile("default"))
+                            m_Current.MakeDefault();
+                    }
+                    else
+                    {
+                        m_Current.MakeDefault();
+                    }
+                }
 
-				Engine.MainWindow.InitConfig();
-			}
-			else
-			{
-				m_Chars.Add( player.Serial, m_Current != null ? m_Current.Name : "default" );
-			}
-			Engine.MainWindow.SelectProfile( m_Current == null ? "default" : m_Current.Name );
-		}
+                Engine.MainWindow.InitConfig();
+            }
+            else
+            {
+                m_Chars[player.Serial] = (m_Current != null ? m_Current.Name : "default");
+            }
+            Engine.MainWindow.SelectProfile(m_Current != null ? m_Current.Name : "default");
+        }
 
-		public static void SetProfileFor( PlayerData player )
+        public static void SetProfileFor( PlayerData player )
 		{
 			if ( m_Current != null )
 				m_Chars[player.Serial] = m_Current.Name;

@@ -77,9 +77,10 @@ namespace Assistant
 
 		public static bool Enqueue( Serial ser, ushort body, MessageType type, ushort hue, ushort font, string lang, string name, string text )
 		{
-			MsgInfo m = m_Table[text] as MsgInfo;
-			if ( m == null )
-			{
+            MsgInfo m;
+
+            if (!m_Table.TryGetValue(text, out m) || m == null)
+            {
 				m_Table[text] = m = new MsgInfo( ser, body, type, hue, font, lang, name );
 
 				m.Count = 0;
