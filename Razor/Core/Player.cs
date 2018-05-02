@@ -615,21 +615,21 @@ namespace Assistant
 
 		public bool MoveAck( byte seq )
 		{
-			m_OutstandingMoves--;
+            m_OutstandingMoves--;
 
-			MoveEntry e = (MoveEntry)m_MoveInfo[seq];
-			if ( e != null )
-			{
-				if ( e.IsStep && !IsGhost )
-					StealthSteps.OnMove();
+            MoveEntry e;
+            if (m_MoveInfo.TryGetValue(seq, out e) && e != null)
+            {
+                if (e.IsStep && !IsGhost)
+                    StealthSteps.OnMove();
 
-				return !e.FilterAck;
-			}
-			else
-			{
-				return true;
-			}
-		}
+                return !e.FilterAck;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
 		private static bool m_ExternZ = false;
 		public static bool ExternalZ { get { return m_ExternZ; } set { m_ExternZ = value; } }

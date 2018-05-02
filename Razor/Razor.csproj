@@ -405,7 +405,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Razor.manifest" />
-    <None Include="Razor_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UltimaSDK\Ultima.csproj">
