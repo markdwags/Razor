@@ -39,6 +39,8 @@ namespace Assistant.Macros
                 m_MacroList[i].Save();
             }
 
+            if (m_AbsoluteTargetList.Count <= 0) return;
+
             using (StreamWriter writer = new StreamWriter($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst"))
             {
                 foreach (AbsoluteTarget at in m_AbsoluteTargetList)
@@ -53,11 +55,24 @@ namespace Assistant.Macros
                 }
             }
 
+
+
         }
 
         public static void LoadAbsoluteTargets(ListBox list)
         {
-            string[] targets = File.ReadAllLines($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst");
+            if (!File.Exists($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst"))
+            {
+                File.Create($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst");
+            }
+
+            string[] targets = { };
+
+            if (new FileInfo($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst").Length > 0)
+            {
+                targets = File.ReadAllLines($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst");
+            }
+
             //testvar|test|0|0|824181|1371|1921|0|400
 
             m_AbsoluteTargetList.Clear();

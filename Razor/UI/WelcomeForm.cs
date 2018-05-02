@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -16,14 +18,11 @@ namespace Assistant
 	public class WelcomeForm : System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ComboBox clientList;
 		private System.Windows.Forms.CheckBox patchEncy;
 		private System.Windows.Forms.Button okay;
 		private System.Windows.Forms.Button quit;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ComboBox serverList;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.TextBox port;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.OpenFileDialog openFile;
@@ -39,7 +38,6 @@ namespace Assistant
 		private System.Windows.Forms.ComboBox langSel;
 		private System.Windows.Forms.CheckBox useEnc;
 		private System.Windows.Forms.Button dataBrowse;
-		private System.Windows.Forms.ComboBox dataDir;
 		private System.Windows.Forms.GroupBox groupBox3;
 
 		public string ClientPath{ get{ return m_ClientPath; } }
@@ -50,7 +48,10 @@ namespace Assistant
 		private bool m_PatchEncy = false;
 		private string m_ClientPath = "";
 		private ClientLaunch m_Launch = ClientLaunch.Custom;
-		private string m_DataDir = "";
+        private TextBox uoClient;
+        private TextBox dataDir;
+        private Label serverInfo;
+        private string m_DataDir = "";
 
 		public WelcomeForm()
 		{
@@ -81,7 +82,6 @@ namespace Assistant
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WelcomeForm));
             this.label1 = new System.Windows.Forms.Label();
-            this.clientList = new System.Windows.Forms.ComboBox();
             this.browse = new System.Windows.Forms.Button();
             this.patchEncy = new System.Windows.Forms.CheckBox();
             this.okay = new System.Windows.Forms.Button();
@@ -89,9 +89,8 @@ namespace Assistant
             this.label3 = new System.Windows.Forms.Label();
             this.showAtStart = new System.Windows.Forms.CheckBox();
             this.serverList = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.port = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.uoClient = new System.Windows.Forms.TextBox();
             this.useEnc = new System.Windows.Forms.CheckBox();
             this.makeDef = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -99,8 +98,9 @@ namespace Assistant
             this.label5 = new System.Windows.Forms.Label();
             this.langSel = new System.Windows.Forms.ComboBox();
             this.dataBrowse = new System.Windows.Forms.Button();
-            this.dataDir = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.dataDir = new System.Windows.Forms.TextBox();
+            this.serverInfo = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -113,14 +113,6 @@ namespace Assistant
             this.label1.Size = new System.Drawing.Size(79, 19);
             this.label1.TabIndex = 0;
             this.label1.Text = "Load Client:";
-            // 
-            // clientList
-            // 
-            this.clientList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.clientList.Location = new System.Drawing.Point(85, 16);
-            this.clientList.Name = "clientList";
-            this.clientList.Size = new System.Drawing.Size(198, 23);
-            this.clientList.TabIndex = 1;
             // 
             // browse
             // 
@@ -135,7 +127,7 @@ namespace Assistant
             // 
             this.patchEncy.Location = new System.Drawing.Point(8, 45);
             this.patchEncy.Name = "patchEncy";
-            this.patchEncy.Size = new System.Drawing.Size(140, 20);
+            this.patchEncy.Size = new System.Drawing.Size(171, 20);
             this.patchEncy.TabIndex = 3;
             this.patchEncy.Text = "Patch client encryption";
             this.patchEncy.CheckedChanged += new System.EventHandler(this.patchEncy_CheckedChanged);
@@ -181,33 +173,16 @@ namespace Assistant
             // 
             this.serverList.Location = new System.Drawing.Point(52, 16);
             this.serverList.Name = "serverList";
-            this.serverList.Size = new System.Drawing.Size(196, 23);
+            this.serverList.Size = new System.Drawing.Size(284, 23);
             this.serverList.TabIndex = 11;
             this.serverList.SelectedIndexChanged += new System.EventHandler(this.serverList_SelectedIndexChanged);
-            this.serverList.TextChanged += new System.EventHandler(this.serverList_TextChanged);
-            // 
-            // label4
-            // 
-            this.label4.Location = new System.Drawing.Point(260, 20);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 16);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Port:";
-            // 
-            // port
-            // 
-            this.port.Location = new System.Drawing.Point(296, 16);
-            this.port.Name = "port";
-            this.port.Size = new System.Drawing.Size(40, 23);
-            this.port.TabIndex = 13;
-            this.port.TextChanged += new System.EventHandler(this.port_TextChanged);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.uoClient);
             this.groupBox1.Controls.Add(this.useEnc);
             this.groupBox1.Controls.Add(this.makeDef);
             this.groupBox1.Controls.Add(this.browse);
-            this.groupBox1.Controls.Add(this.clientList);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.patchEncy);
             this.groupBox1.Location = new System.Drawing.Point(4, 4);
@@ -216,6 +191,14 @@ namespace Assistant
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Client Options";
+            // 
+            // uoClient
+            // 
+            this.uoClient.Location = new System.Drawing.Point(81, 16);
+            this.uoClient.Name = "uoClient";
+            this.uoClient.ReadOnly = true;
+            this.uoClient.Size = new System.Drawing.Size(202, 23);
+            this.uoClient.TabIndex = 6;
             // 
             // useEnc
             // 
@@ -237,13 +220,12 @@ namespace Assistant
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.port);
+            this.groupBox2.Controls.Add(this.serverInfo);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.serverList);
-            this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Location = new System.Drawing.Point(4, 161);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(344, 48);
+            this.groupBox2.Size = new System.Drawing.Size(344, 66);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Server";
@@ -257,16 +239,16 @@ namespace Assistant
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(8, 217);
+            this.label5.Location = new System.Drawing.Point(210, 236);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(60, 16);
+            this.label5.Size = new System.Drawing.Size(90, 20);
             this.label5.TabIndex = 17;
             this.label5.Text = "Language:";
             // 
             // langSel
             // 
             this.langSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.langSel.Location = new System.Drawing.Point(74, 214);
+            this.langSel.Location = new System.Drawing.Point(276, 233);
             this.langSel.Name = "langSel";
             this.langSel.Size = new System.Drawing.Size(72, 23);
             this.langSel.TabIndex = 18;
@@ -274,21 +256,12 @@ namespace Assistant
             // 
             // dataBrowse
             // 
-            this.dataBrowse.Location = new System.Drawing.Point(274, 20);
+            this.dataBrowse.Location = new System.Drawing.Point(272, 18);
             this.dataBrowse.Name = "dataBrowse";
             this.dataBrowse.Size = new System.Drawing.Size(64, 23);
             this.dataBrowse.TabIndex = 21;
             this.dataBrowse.Text = "Browse...";
             this.dataBrowse.Click += new System.EventHandler(this.dataBrowse_Click);
-            // 
-            // dataDir
-            // 
-            this.dataDir.Location = new System.Drawing.Point(8, 20);
-            this.dataDir.Name = "dataDir";
-            this.dataDir.Size = new System.Drawing.Size(258, 23);
-            this.dataDir.TabIndex = 22;
-            this.dataDir.SelectedIndexChanged += new System.EventHandler(this.dataDir_SelectedIndexChanged);
-            this.dataDir.TextChanged += new System.EventHandler(this.dataDir_TextChanged);
             // 
             // groupBox3
             // 
@@ -300,6 +273,26 @@ namespace Assistant
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "UO Data Directory";
+            // 
+            // dataDir
+            // 
+            this.dataDir.Location = new System.Drawing.Point(7, 19);
+            this.dataDir.Name = "dataDir";
+            this.dataDir.ReadOnly = true;
+            this.dataDir.Size = new System.Drawing.Size(261, 23);
+            this.dataDir.TabIndex = 22;
+            // 
+            // serverInfo
+            // 
+            this.serverInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.serverInfo.AutoSize = true;
+            this.serverInfo.Font = new System.Drawing.Font("Segoe UI Semilight", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverInfo.Location = new System.Drawing.Point(49, 42);
+            this.serverInfo.Name = "serverInfo";
+            this.serverInfo.Size = new System.Drawing.Size(119, 15);
+            this.serverInfo.TabIndex = 12;
+            this.serverInfo.Text = "login.server.com,2593";
+            this.serverInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // WelcomeForm
             // 
@@ -326,9 +319,11 @@ namespace Assistant
             this.Closing += new System.ComponentModel.CancelEventHandler(this.WelcomeForm_Closing);
             this.Load += new System.EventHandler(this.WelcomeForm_Load);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -497,53 +492,12 @@ namespace Assistant
 
 	        showAtStart.Checked = Config.GetAppSetting<int>("ShowWelcome") == 1;
 
-	        for (int i = 1;; i++)
-	        {
-	            string val = $"Client{i}";
-	            string cli = Config.GetAppSetting<string>(val);
-	            if (string.IsNullOrEmpty(cli))
-                {
-                    break;
-                }
+	        uoClient.Text = Config.GetAppSetting<string>("UOClient");
+            dataDir.Text = Config.GetAppSetting<string>("UODataDir");
 
-                if (File.Exists(cli))
-                {
-                    clientList.Items.Add(new PathElipsis(cli));
-                }
-            }
-	        
-	        int sel = Config.GetAppSetting<int>("DefClient");
-
-            if (sel >= clientList.Items.Count)
+	        if (string.IsNullOrEmpty(uoClient.Text) || string.IsNullOrEmpty(dataDir.Text))
 	        {
-	            sel = 0;
-	            Config.SetAppSetting("DefClient", "0");
-	        }
-
-	        clientList.SelectedIndex = sel;
-	        
-	        for (int i = 1;; i++)
-	        {
-	            string val = $"Dir{i}";
-	            string dir = Config.GetAppSetting<string>(val);
-	            if (string.IsNullOrEmpty(dir))
-                {
-                    break;
-                }
-
-                if (Directory.Exists(dir))
-                {
-                    dataDir.Items.Add(dir);
-                }
-	        }
-
-	        try
-	        {
-	            dataDir.SelectedIndex = Config.GetAppSetting<int>("LastDir");
-	        }
-	        catch
-	        {
-	            dataDir.SelectedIndex = 0;
+                throw new Exception("UOClient or UODataDir is not set correctly.");
 	        }
 
 	        patchEncy.Checked = Config.GetAppSetting<int>("PatchEncy") != 0;
@@ -551,73 +505,28 @@ namespace Assistant
 
 	        LoginCFG_SE lse = new LoginCFG_SE();
 	        Custom_SE cse;
-
-	        ShardEntry[] entries = null;
-	        try
-	        {
-	            entries = JsonConvert.DeserializeObject<ShardEntry[]>(Engine.ShardList);
-	        }
-	        catch
-	        {
-	        }
-
+            
 	        serverList.BeginUpdate();
 
-	        //serverList.Items.Add( lse=new LoginCFG_SE() );
-	        //serverList.SelectedItem = lse;
+	        NameValueCollection servers =
+	            (NameValueCollection)ConfigurationManager.GetSection("Servers");
 
-	        for (int i = 1;; i++)
+	        serverList.Items.Add(cse = new Custom_SE("UO Renaissance (Prod)", "login.uorenaissance.com", 2593));
+
+	        if (serverList.SelectedItem == null)
 	        {
-	            ServerEntry se;
-	            string sval = $"Server{i}";
-	            string serv = Config.GetAppSetting<string>(sval);
-
-	            if (serv == null)
-                {
-                    break;
-                }
-
-                string pval = $"Port{i}";
-
-	            int portnum = Config.GetAppSetting<int>(pval);
-
-	            serverList.Items.Add(se = new ServerEntry(serv, portnum));
-
-	            if (serv == lse.RealAddress && portnum == lse.Port)
-	                serverList.SelectedItem = se;
+	            serverList.SelectedItem = cse;
 	        }
 
-	        if (entries == null)
+	        serverList.Items.Add(new Custom_SE("UO Renaissance (Test)", "test.uorenaissance.com", 2597));
+
+	        foreach (string server in servers.AllKeys)
 	        {
-	            serverList.Items.Add(cse = new Custom_SE("UO Renaissance (Prod)", "login.uorenaissance.com"));
+	            string[] serverInfo = servers[server].Split(',');
+	            string serverHost = serverInfo[0];
+	            string serverPort = serverInfo[1];
 
-                if (serverList.SelectedItem == null)
-                {
-                    serverList.SelectedItem = cse;
-                }
-
-	            serverList.Items.Add(cse = new Custom_SE("UO Renaissance (Test)", "test.uorenaissance.com", 2597));
-            }
-	        else
-	        {
-	            foreach (var entry in entries)
-	            {
-	                if (string.IsNullOrEmpty(entry.name))
-                    {
-                        continue;
-                    }
-
-                    var ename = string.IsNullOrEmpty(entry.type)
-	                    ? entry.name
-	                    : $"{entry.name} ({entry.type})";
-
-	                serverList.Items.Add(cse = new Custom_SE(ename, entry.host, entry.port));
-
-	                if (lse.RealAddress == cse.RealAddress && lse.Port == entry.port)
-                    {
-                        serverList.SelectedItem = cse;
-                    }
-                }
+	            serverList.Items.Add(new Custom_SE(server, serverHost, Convert.ToInt32(serverPort)));
 	        }
 
 	        serverList.EndUpdate();
@@ -649,15 +558,13 @@ namespace Assistant
 			if ( openFile.ShowDialog( this ) == DialogResult.OK )
 			{
 				PathElipsis pe = new PathElipsis( openFile.FileName );
-				clientList.Items.Add( pe );
-				clientList.SelectedItem = pe;
+
+			    uoClient.Text = pe.GetPath();
 			}
 		}
 
 	    private void makeDef_Click(object sender, System.EventArgs e)
 	    {
-	        Config.SetAppSetting("DefClient",
-	            Convert.ToString(clientList.SelectedIndex >= 0 ? clientList.SelectedIndex : 0));
 
 	        Config.SetAppSetting("PatchEncy", patchEncy.Checked ? "1" : "0");
 	        Config.SetAppSetting("ServerEnc", useEnc.Checked ? "1" : "0");
@@ -668,7 +575,7 @@ namespace Assistant
 
 		private void serverList_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			port.Enabled = !( serverList.SelectedItem is Custom_SE || serverList.SelectedItem is LoginCFG_SE );
+			/*port.Enabled = !( serverList.SelectedItem is Custom_SE || serverList.SelectedItem is LoginCFG_SE );
 
 			if ( serverList.SelectedItem != null )
 			{
@@ -676,105 +583,52 @@ namespace Assistant
 					port.Text = "";
 				else
 					port.Text = ((ServerEntry)serverList.SelectedItem).Port.ToString();
-			}
-		}
+			}*/
 
-		private void serverList_TextChanged(object sender, System.EventArgs e)
-		{
-			string txt = serverList.Text;
-			if ( ( serverList.SelectedItem is Custom_SE || serverList.SelectedItem is LoginCFG_SE ) && txt != (serverList.SelectedItem).ToString() ) 
-			{
-				port.Text = "";
-				serverList.BeginUpdate();
-				serverList.SelectedIndex = -1;
-				serverList.Text = txt;
-				serverList.Select( txt.Length, 0 );
-				serverList.EndUpdate();
-			}
+		    Custom_SE server = (Custom_SE) serverList.SelectedItem;
+
+		    serverInfo.Text = $"{server.RealAddress},{server.Port}";
 		}
 		
-		private void port_TextChanged(object sender, System.EventArgs e)
-		{
-			if ( port.Text != "" )
-			{
-				if ( ( serverList.SelectedItem is LoginCFG_SE && ((ServerEntry)serverList.SelectedItem).Port == 0 ) || serverList.SelectedItem is Custom_SE )
-					port.Text = "";
-				else if ( serverList.SelectedItem != null )
-					((ServerEntry)serverList.SelectedItem).Port = Utility.ToInt32( port.Text, 0 );
-			}
-		}
-
 		private void okay_Click(object sender, System.EventArgs e)
 		{
-			m_PatchEncy = patchEncy.Checked;
+            m_PatchEncy = patchEncy.Checked;
 
-			if ( clientList.SelectedIndex < 2 )
-			{
-				m_Launch = (ClientLaunch)clientList.SelectedIndex;
-			}
-			else
-			{
-				m_Launch = ClientLaunch.Custom;
-				m_ClientPath = ((PathElipsis)clientList.SelectedItem).GetPath();
-			}
-			
-			ServerEntry se = null;
-			if ( serverList.SelectedItem != null )
-			{
-				if ( serverList.SelectedItem is Custom_SE )
-				{
-					int port = ((Custom_SE)serverList.SelectedItem).Port;
+		    m_Launch = ClientLaunch.TwoD;
+		    m_ClientPath = uoClient.Text;
 
-					string addr = ((Custom_SE)serverList.SelectedItem).RealAddress;
+            ServerEntry se = null;
 
-					if ( addr == "login.ultimaonline.com" )
-					{
-						ClientCommunication.ServerEncrypted = true;
-					}
+            if (serverList.SelectedItem != null)
+            {
+                if (serverList.SelectedItem is Custom_SE)
+                {
+                    int port = ((Custom_SE)serverList.SelectedItem).Port;
 
-					if (port == 0)
-						port = 2593; // runuo default
+                    string addr = ((Custom_SE)serverList.SelectedItem).RealAddress;
 
-					se = new ServerEntry( addr, port );
-				}
-				else if ( !(serverList.SelectedItem is LoginCFG_SE) )
-				{
-					se = (ServerEntry)serverList.SelectedItem;
-					se.Port = Utility.ToInt32( port.Text.Trim(), 0 );
-					if ( se.Port <= 0 || se.Port > 65535 )
-					{
-						MessageBox.Show( this, Language.GetString( LocString.NeedPort ), "Need Port", MessageBoxButtons.OK, MessageBoxIcon.Information );
-						return;
-					}
-				}
-			}
-			else if ( serverList.Text != "" )
-			{
-				int thePort = Utility.ToInt32( port.Text.Trim(), 0 );
-				if ( thePort <= 0 || thePort > 65535 )
-				{
-					MessageBox.Show( this, Language.GetString( LocString.NeedPort ), "Need Port", MessageBoxButtons.OK, MessageBoxIcon.Information );
-					return;
-				}
-				se = new ServerEntry( serverList.Text.Trim(), thePort );
-			}
+                    if (addr == "login.ultimaonline.com")
+                    {
+                        ClientCommunication.ServerEncrypted = true;
+                    }
 
-			if ( se != null && se.Address != null )
-			{
-				if ( !( serverList.SelectedItem is Custom_SE ) )
-				{
-					serverList.Items.Remove( se );
-					serverList.Items.Insert( 1, se );
-				}
-                
-				Config.SetAppSetting("LastServer", se.Address);
-			    Config.SetAppSetting("LastPort", se.Port.ToString());
-			}
+                    if (port == 0)
+                        port = 2593; // runuo default
 
-			SaveData();
+                    se = new ServerEntry(addr, port);
+                }
+            }
 
-			this.Close();
-		}
+            if (se != null && se.Address != null)
+            {
+                Config.SetAppSetting("LastServer", se.Address);
+                Config.SetAppSetting("LastPort", se.Port.ToString());
+            }
+
+            SaveData();
+
+            this.Close();
+        }
 
 		private void quit_Click(object sender, System.EventArgs e)
 		{
@@ -810,46 +664,9 @@ namespace Assistant
 				}
 			}
 
-		    for (int i = 2; i < clientList.Items.Count; i++)
-		    {
-		        Config.SetAppSetting($"Client{i - 1}", ((PathElipsis) clientList.Items[i]).GetPath());
-		    }
-
-            num = 1;
-
-			if ( dataDir.SelectedIndex == -1 )
-			{
-				string dir = dataDir.Text;
-				dir = dir.Trim();
-
-				if ( dir.Length > 0)
-				{
-				    Config.SetAppSetting("Dir1", dir );
-				    Config.SetAppSetting("LastDir", "1" );
-					m_DataDir = dir;
-					num = 2;
-				}
-			}
-
-			if ( num == 1 )
-			{
-			    Config.SetAppSetting("LastDir", (dataDir.SelectedIndex != -1 ? dataDir.SelectedIndex : 0).ToString() );
-				try
-				{
-					if ( dataDir.SelectedIndex != 0 )
-						m_DataDir = dataDir.SelectedItem as string;
-					else
-						m_DataDir = null;
-				}
-				catch
-				{
-				}
-			}
-
-			for (int i=1;i<dataDir.Items.Count;i++)
-            {
-                Config.SetAppSetting($"Dir{num++}", (string)dataDir.Items[i] );
-            }
+		    Config.SetAppSetting("UOClient", uoClient.Text);
+		    Config.SetAppSetting("UODataDir", dataDir.Text);
+		    m_DataDir = dataDir.Text;
         }
 
 	    private void showAtStart_CheckedChanged(object sender, System.EventArgs e)
@@ -902,13 +719,9 @@ namespace Assistant
 			folder.ShowNewFolderButton = false;
 			if ( folder.ShowDialog() == DialogResult.OK )
 			{
-				dataDir.SelectedIndex = -1;
 				dataDir.Text = m_DataDir = folder.SelectedPath;
-			}
-		}
-
-		private void dataDir_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
+			    Config.SetAppSetting("UODataDir", dataDir.Text);
+            }
 		}
 
 		private void dataDir_TextChanged(object sender, System.EventArgs e)
@@ -919,5 +732,5 @@ namespace Assistant
 		{
 			SaveData();
 		}
-	}
+    }
 }
