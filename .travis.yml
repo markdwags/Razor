@@ -1,12 +1,8 @@
 language: csharp
 solution: Razor.sln
 git:
-    submodules: false
+    submodules: true
 # Use sed to replace the SSH URL with the public URL, then initialize submodules
 before_install:
-    - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-    - git submodule update --init --recursive
-    - sed -i 's/<SignAssembly>true<\/SignAssembly>/<SignAssembly>true<\/SignAssembly>/' Razor/Razor.csproj
-    - sed -i 's/<AssemblyOriginatorKeyFile>Razor.snk<\/AssemblyOriginatorKeyFile>//' Razor/Razor.csproj
-    - sed -i 's/<SignAssembly>true<\/SignAssembly>/<SignAssembly>true<\/SignAssembly>/' UltimaSDK/Ultima.csproj
-    - sed -i 's/<AssemblyOriginatorKeyFile>UltimaSDK.snk<\/AssemblyOriginatorKeyFile>//' UltimaSDK/Ultima.csproj
+#    - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+    - git submodule update --init --recursive    
