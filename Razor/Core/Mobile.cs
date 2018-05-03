@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Assistant
@@ -154,7 +155,7 @@ namespace Assistant
 			set{ m_Blessed = value;	}
 		}
 
-		public bool	IsGhost	
+        public bool	IsGhost	
 		{
 			get	
 			{

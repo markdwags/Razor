@@ -401,6 +401,11 @@ namespace Assistant
         MacroRename,
         NewAbsoluteTargetVar,
 
+	    TargCloseGreyMonster,
+	    TargCloseEnemyMonster,
+	    TargRandGreyMonster,
+	    TargRandEnemyMonster,
+
         __End
 	}
 	#endregion
