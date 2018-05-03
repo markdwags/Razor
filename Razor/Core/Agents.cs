@@ -1101,7 +1101,7 @@ namespace Assistant
 			for(int i=0;i<m_Items.Count;i++)
 			{
 				xml.WriteStartElement( "item" );
-				xml.WriteAttributeString( "id", m_Items[i].ToString() );
+				xml.WriteAttributeString( "id", m_Items[i].Value.ToString() );
 				xml.WriteEndElement();
 			}
 		}
