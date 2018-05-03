@@ -29,34 +29,40 @@ namespace Assistant.Macros
             m_AbsoluteTargetList = new List<AbsoluteTarget>();
             m_Timer = new MacroTimer();
         }
-
+        /// <summary>
+        /// Saves all the macros and absolute target lists
+        /// </summary>
         public static void Save()
         {
             Engine.EnsureDirectory(Config.GetUserDirectory("Macros"));
 
-            for (int i = 0; i < m_MacroList.Count; i++)
+            foreach (Macro macro in m_MacroList)
             {
-                m_MacroList[i].Save();
+                macro.Save();
             }
 
-            if (m_AbsoluteTargetList.Count <= 0) return;
-
-            using (StreamWriter writer = new StreamWriter($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst"))
+            if (m_AbsoluteTargetList.Count > 0)
             {
-                foreach (AbsoluteTarget at in m_AbsoluteTargetList)
+                using (StreamWriter writer =
+                    new StreamWriter($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst"))
                 {
-                    try
+                    foreach (AbsoluteTarget at in m_AbsoluteTargetList)
                     {
-                        writer.WriteLine(at.Serialize());
-                    }
-                    catch
-                    {
+                        try
+                        {
+                            writer.WriteLine(at.Serialize());
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
             }
-
-
-
+            else
+            {
+                // Empty list, just make a new empty file
+                File.Create($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst");
+            }
         }
 
         public static void LoadAbsoluteTargets(ListBox list)

@@ -94,13 +94,13 @@ namespace Assistant
             this.useEnc = new System.Windows.Forms.CheckBox();
             this.makeDef = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.serverInfo = new System.Windows.Forms.Label();
             this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.label5 = new System.Windows.Forms.Label();
             this.langSel = new System.Windows.Forms.ComboBox();
             this.dataBrowse = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dataDir = new System.Windows.Forms.TextBox();
-            this.serverInfo = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -230,6 +230,18 @@ namespace Assistant
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Server";
             // 
+            // serverInfo
+            // 
+            this.serverInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.serverInfo.Font = new System.Drawing.Font("Segoe UI Semilight", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverInfo.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.serverInfo.Location = new System.Drawing.Point(49, 42);
+            this.serverInfo.Name = "serverInfo";
+            this.serverInfo.Size = new System.Drawing.Size(287, 21);
+            this.serverInfo.TabIndex = 12;
+            this.serverInfo.Text = "login.server.com,2593";
+            this.serverInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // openFile
             // 
             this.openFile.DefaultExt = "exe";
@@ -282,18 +294,6 @@ namespace Assistant
             this.dataDir.Size = new System.Drawing.Size(261, 23);
             this.dataDir.TabIndex = 22;
             // 
-            // serverInfo
-            // 
-            this.serverInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.serverInfo.AutoSize = true;
-            this.serverInfo.Font = new System.Drawing.Font("Segoe UI Semilight", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverInfo.Location = new System.Drawing.Point(49, 42);
-            this.serverInfo.Name = "serverInfo";
-            this.serverInfo.Size = new System.Drawing.Size(119, 15);
-            this.serverInfo.TabIndex = 12;
-            this.serverInfo.Text = "login.server.com,2593";
-            this.serverInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // WelcomeForm
             // 
             this.AcceptButton = this.okay;
@@ -315,13 +315,12 @@ namespace Assistant
             this.MinimizeBox = false;
             this.Name = "WelcomeForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Welcome to Razor!";
+            this.Text = "Welcome to Razor: UOR Community Edition!";
             this.Closing += new System.ComponentModel.CancelEventHandler(this.WelcomeForm_Closing);
             this.Load += new System.EventHandler(this.WelcomeForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
@@ -495,12 +494,9 @@ namespace Assistant
 	        uoClient.Text = Config.GetAppSetting<string>("UOClient");
             dataDir.Text = Config.GetAppSetting<string>("UODataDir");
 
-	        if (string.IsNullOrEmpty(uoClient.Text) || string.IsNullOrEmpty(dataDir.Text))
-	        {
-                throw new Exception("UOClient or UODataDir is not set correctly.");
-	        }
+	        IsValidClientAndDataDir();
 
-	        patchEncy.Checked = Config.GetAppSetting<int>("PatchEncy") != 0;
+            patchEncy.Checked = Config.GetAppSetting<int>("PatchEncy") != 0;
 	        useEnc.Checked = Config.GetAppSetting<int>("ServerEnc") != 0;
 
 	        LoginCFG_SE lse = new LoginCFG_SE();
@@ -508,9 +504,7 @@ namespace Assistant
             
 	        serverList.BeginUpdate();
 
-	        NameValueCollection servers =
-	            (NameValueCollection)ConfigurationManager.GetSection("Servers");
-
+            // Always add the default UOR servers
 	        serverList.Items.Add(cse = new Custom_SE("UO Renaissance (Prod)", "login.uorenaissance.com", 2593));
 
 	        if (serverList.SelectedItem == null)
@@ -520,20 +514,33 @@ namespace Assistant
 
 	        serverList.Items.Add(new Custom_SE("UO Renaissance (Test)", "test.uorenaissance.com", 2597));
 
-	        foreach (string server in servers.AllKeys)
+            // Load any custom servers they might have added
+	        NameValueCollection servers =
+	            (NameValueCollection)ConfigurationManager.GetSection("Servers");
+
+            foreach (string server in servers.AllKeys)
 	        {
-	            string[] serverInfo = servers[server].Split(',');
-	            string serverHost = serverInfo[0];
-	            string serverPort = serverInfo[1];
+	            string[] serverHostAndPort = servers[server].Split(',');
+	            string serverHost = serverHostAndPort[0];
+	            string serverPort = serverHostAndPort[1];
 
 	            serverList.Items.Add(new Custom_SE(server, serverHost, Convert.ToInt32(serverPort)));
 	        }
 
 	        serverList.EndUpdate();
-
 	        serverList.Refresh();
 
-	        WindowState = FormWindowState.Normal;
+            // Set it to the last used one, or just set it to default UOR Prod
+	        try
+	        {
+	            serverList.SelectedIndex = Config.GetAppSetting<int>("LastServerId");
+	        }
+	        catch
+	        {
+	            serverList.SelectedIndex = 0;
+	        }
+
+            WindowState = FormWindowState.Normal;
 	        this.BringToFront();
 	        this.TopMost = true;
 
@@ -560,6 +567,8 @@ namespace Assistant
 				PathElipsis pe = new PathElipsis( openFile.FileName );
 
 			    uoClient.Text = pe.GetPath();
+
+			    IsValidClientAndDataDir();
 			}
 		}
 
@@ -575,16 +584,6 @@ namespace Assistant
 
 		private void serverList_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			/*port.Enabled = !( serverList.SelectedItem is Custom_SE || serverList.SelectedItem is LoginCFG_SE );
-
-			if ( serverList.SelectedItem != null )
-			{
-				if ( serverList.SelectedItem is LoginCFG_SE && ((ServerEntry)serverList.SelectedItem).Port == 0 )
-					port.Text = "";
-				else
-					port.Text = ((ServerEntry)serverList.SelectedItem).Port.ToString();
-			}*/
-
 		    Custom_SE server = (Custom_SE) serverList.SelectedItem;
 
 		    serverInfo.Text = $"{server.RealAddress},{server.Port}";
@@ -623,10 +622,11 @@ namespace Assistant
             {
                 Config.SetAppSetting("LastServer", se.Address);
                 Config.SetAppSetting("LastPort", se.Port.ToString());
+
+                Config.SetAppSetting("LastServerId", serverList.SelectedIndex.ToString());
             }
 
             SaveData();
-
             this.Close();
         }
 
@@ -721,7 +721,9 @@ namespace Assistant
 			{
 				dataDir.Text = m_DataDir = folder.SelectedPath;
 			    Config.SetAppSetting("UODataDir", dataDir.Text);
-            }
+
+			    IsValidClientAndDataDir();
+			}
 		}
 
 		private void dataDir_TextChanged(object sender, System.EventArgs e)
@@ -732,5 +734,24 @@ namespace Assistant
 		{
 			SaveData();
 		}
+
+	    private bool IsValidClientAndDataDir()
+	    {
+	        okay.Enabled = false;
+
+            if (string.IsNullOrEmpty(uoClient.Text) || string.IsNullOrEmpty(dataDir.Text))
+	        {
+	            return false;
+	        }
+
+
+	        if (!File.Exists(uoClient.Text) || !Directory.Exists(dataDir.Text))
+	        {
+	            return false;
+	        }
+
+	        okay.Enabled = true;
+            return true;
+	    }
     }
 }
