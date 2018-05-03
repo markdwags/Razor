@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Assistant.Macros;
 
 namespace Assistant
@@ -20,8 +21,29 @@ namespace Assistant
             Command.Register("RPVInfo", GetRPVInfo);
             Command.Register("Macro", MacroCmd);
             Command.Register("Hue", GetHue);
+            Command.Register("ClearItems", ClearItems);
+            Command.Register("Resync", Resync);
 
             //Command.Register( "Setup-T", new CommandCallback( TranslateSetup ) );
+        }
+
+        private static DateTime m_LastSync;
+        private static void Resync(string[] param)
+        {
+            if (DateTime.UtcNow - m_LastSync > TimeSpan.FromSeconds(1.0))
+            {
+                m_LastSync = DateTime.UtcNow;
+
+                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                    Language.CliLocName, "System", "Updating and resyncing with server"));
+
+                ClientCommunication.SendToClient(new MobileUpdate(World.Player));
+                ClientCommunication.SendToServer(new ResyncReq());
+                World.Player.Resync();
+
+                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                    Language.CliLocName, "System", "Done.."));
+            }
         }
 
         private static void GetRPVInfo(string[] param)
@@ -70,6 +92,19 @@ namespace Assistant
                 sb.Append(param[i]);
             ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", sb.ToString()));
+        }
+
+        private static void ClearItems(string[] param)
+        {
+            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Language.CliLocName, "System", "Clearing all items from memory cache"));
+
+            World.Items.Clear();
+            Resync(param);
+
+            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Language.CliLocName, "System", "All items in memory cache have been cleared"));
+
         }
 
         private static void AddUseOnce(string[] param)

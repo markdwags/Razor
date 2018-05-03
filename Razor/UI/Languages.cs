@@ -405,6 +405,7 @@ namespace Assistant
 	    TargCloseEnemyMonster,
 	    TargRandGreyMonster,
 	    TargRandEnemyMonster,
+	    CyclopTitanSounds,
 
         __End
 	}

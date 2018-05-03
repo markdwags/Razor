@@ -16,7 +16,8 @@ namespace Assistant.Filters
             Filter.Register(new SoundFilter(LocString.SS_Sound, 0x24A));
             Filter.Register(new SoundFilter(LocString.FizzleSound, 0x5C));
             Filter.Register(new SoundFilter(LocString.PackSound, 0x48));
-            Filter.Register(new SoundFilter(LocString.DeerSounds, 0x83, 0x84, 0x85, 0x2BE, 0x2BF, 0x2C0, 0x4CB, 0x4CC));
+            Filter.Register(new SoundFilter(LocString.DeerSounds, 0x82, 0x83, 0x84, 0x85, 0x2BE, 0x2BF, 0x2C0, 0x4CB, 0x4CC));
+            Filter.Register(new SoundFilter(LocString.CyclopTitanSounds, 0x25D, 0x25E, 0x25F, 0x260, 0x261, 0x262, 0x263, 0x264, 0x265, 0x266));
         }
 
         public static ushort[] GetRange(ushort min, ushort max)

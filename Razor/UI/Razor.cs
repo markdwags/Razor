@@ -904,7 +904,7 @@ namespace Assistant
             // 
             this.incomingCorpse.Location = new System.Drawing.Point(245, 215);
             this.incomingCorpse.Name = "incomingCorpse";
-            this.incomingCorpse.Size = new System.Drawing.Size(226, 20);
+            this.incomingCorpse.Size = new System.Drawing.Size(228, 20);
             this.incomingCorpse.TabIndex = 48;
             this.incomingCorpse.Text = "Show Names of New/Incoming Corpses";
             this.incomingCorpse.CheckedChanged += new System.EventHandler(this.incomingCorpse_CheckedChanged);
@@ -913,7 +913,7 @@ namespace Assistant
             // 
             this.incomingMob.Location = new System.Drawing.Point(245, 189);
             this.incomingMob.Name = "incomingMob";
-            this.incomingMob.Size = new System.Drawing.Size(220, 20);
+            this.incomingMob.Size = new System.Drawing.Size(228, 20);
             this.incomingMob.TabIndex = 47;
             this.incomingMob.Text = "Show Names of Incoming People/Creatures";
             this.incomingMob.CheckedChanged += new System.EventHandler(this.incomingMob_CheckedChanged);
@@ -1033,7 +1033,7 @@ namespace Assistant
             // 
             this.spamFilter.Location = new System.Drawing.Point(245, 137);
             this.spamFilter.Name = "spamFilter";
-            this.spamFilter.Size = new System.Drawing.Size(228, 20);
+            this.spamFilter.Size = new System.Drawing.Size(220, 20);
             this.spamFilter.TabIndex = 26;
             this.spamFilter.Text = "Filter repeating system messages";
             this.spamFilter.CheckedChanged += new System.EventHandler(this.spamFilter_CheckedChanged);
@@ -1196,7 +1196,7 @@ namespace Assistant
             // 
             this.showHealthOH.Location = new System.Drawing.Point(8, 161);
             this.showHealthOH.Name = "showHealthOH";
-            this.showHealthOH.Size = new System.Drawing.Size(214, 20);
+            this.showHealthOH.Size = new System.Drawing.Size(231, 20);
             this.showHealthOH.TabIndex = 69;
             this.showHealthOH.Text = "Show health above people/creatures";
             this.showHealthOH.CheckedChanged += new System.EventHandler(this.showHealthOH_CheckedChanged);
@@ -1364,7 +1364,7 @@ namespace Assistant
             // 
             this.smartLT.Location = new System.Drawing.Point(8, 83);
             this.smartLT.Name = "smartLT";
-            this.smartLT.Size = new System.Drawing.Size(186, 20);
+            this.smartLT.Size = new System.Drawing.Size(212, 20);
             this.smartLT.TabIndex = 52;
             this.smartLT.Text = "Use smart last target";
             this.smartLT.CheckedChanged += new System.EventHandler(this.smartLT_CheckedChanged);
@@ -1382,7 +1382,7 @@ namespace Assistant
             // 
             this.chkPartyOverhead.Location = new System.Drawing.Point(8, 212);
             this.chkPartyOverhead.Name = "chkPartyOverhead";
-            this.chkPartyOverhead.Size = new System.Drawing.Size(212, 20);
+            this.chkPartyOverhead.Size = new System.Drawing.Size(238, 20);
             this.chkPartyOverhead.TabIndex = 72;
             this.chkPartyOverhead.Text = "Show mana/stam above party members";
             this.chkPartyOverhead.CheckedChanged += new System.EventHandler(this.chkPartyOverhead_CheckedChanged);
@@ -3274,6 +3274,8 @@ namespace Assistant
 			}
 			else if ( tabs.SelectedTab == hotkeysTab )
 			{
+			    filterHotkeys.Text = string.Empty;
+
 				hotkeyTree.SelectedNode = null;
 				HotKey.Status = hkStatus;
 				if ( hotkeyTree.TopNode != null )
@@ -4945,6 +4947,7 @@ namespace Assistant
 						    new MenuItem( "-" ),
                             new MenuItem( "Copy to Clipboard", new EventHandler( Macro_CopyToClipboard ) ),
 						    new MenuItem( "Rename Macro", new EventHandler( Macro_Rename ) ),
+						    new MenuItem( "Open Externally", new EventHandler( Open_Externally ) ),
                             new MenuItem( "-" ),
 							new MenuItem( "Refresh Macro List", new EventHandler( Macro_RefreshList ) )
 					} );
@@ -5149,6 +5152,16 @@ namespace Assistant
 
 	        
 	    }
+
+	    private void Open_Externally(object sender, EventArgs args)
+	    {
+	        Macro sel = GetMacroSel();
+	        if (sel == null)
+	            return;
+
+	        Process.Start(Path.Combine(Config.GetUserDirectory("Macros"), $"{Path.GetFileName(sel.Filename)}"));
+
+        }
 
         private void Macro_RefreshList( object sender, EventArgs args )
 		{
