@@ -976,6 +976,7 @@ namespace Assistant.Macros
 	{
 		private bool m_Mobile;
 		private ushort m_Gfx;
+	    private object _previousObject;
 
 		public TargetTypeAction( string[] args )
 		{
@@ -989,33 +990,55 @@ namespace Assistant.Macros
 			m_Gfx = gfx;
 		}
 
-		public override bool Perform()
-		{
-			ArrayList list = new ArrayList();
-			if ( m_Mobile )
-			{
-				foreach ( Mobile find in World.MobilesInRange() )
-				{
-					if ( find.Body == m_Gfx )
-						list.Add( find );
-				}
-			}
-			else
-			{
-				foreach ( Item i in World.Items.Values )
-				{
-					if ( i.ItemID == m_Gfx && !i.IsInBank )
-						list.Add( i );
-				}
-			}
+	    public override bool Perform()
+	    {
+	        ArrayList list = new ArrayList();
+	        if (m_Mobile)
+	        {
+	            foreach (Mobile find in World.MobilesInRange())
+	            {
+	                if (find.Body == m_Gfx)
+	                    list.Add(find);
+	            }
+	        }
+	        else
+	        {
+	            foreach (Item i in World.Items.Values)
+	            {
+	                if (i.ItemID == m_Gfx && !i.IsInBank)
+	                    list.Add(i);
+	            }
+	        }
 
-			if ( list.Count > 0 )
-				Targeting.Target( list[Utility.Random( list.Count )] );
-			else
-				World.Player.SendMessage( MsgLevel.Warning, LocString.NoItemOfType, m_Mobile ? String.Format( "Character [{0}]", m_Gfx ) : ((ItemID)m_Gfx).ToString() );
-			
-			return true;
-		}
+	        if (list.Count > 0)
+	        {
+	            if (Config.GetBool("DiffTargetByType") && list.Count > 1)
+	            {
+	                object currentObject = list[Utility.Random(list.Count)];
+
+	                while (_previousObject != null && _previousObject == currentObject)
+	                {
+	                    currentObject = list[Utility.Random(list.Count)];
+	                }
+
+                    Targeting.Target(currentObject);
+
+	                _previousObject = currentObject;
+                }
+                else
+	            {
+	                Targeting.Target(list[Utility.Random(list.Count)]);
+                }
+
+            }
+	        else
+	        {
+	            World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType,
+	                m_Mobile ? String.Format("Character [{0}]", m_Gfx) : ((ItemID) m_Gfx).ToString());
+	        }
+
+	        return true;
+	    }
 
 		public override string Serialize()
 		{

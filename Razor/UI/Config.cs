@@ -143,8 +143,10 @@ namespace Assistant
 	        AddProperty("HealthFmt", "[{0}%]");
 	        AddProperty("ShowPartyStats", false);
 	        AddProperty("PartyStatFmt", "[{0}% / {1}%]");
+
 	        AddProperty("JsonApi", false);
 	        AddProperty("HotKeyStop", false);
+	        AddProperty("DiffTargetByType", false);
 
 	        Counter.Default();
 	        Filter.DisableAll();

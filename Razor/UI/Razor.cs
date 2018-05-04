@@ -247,14 +247,15 @@ namespace Assistant
         private ComboBox titleBarParams;
         private Button expandAdvancedMacros;
         private Label label23;
+        private LinkLabel linkLabel1;
+        private Label label20;
         private GroupBox absoluteTargetGroup;
         private Button retargetAbsoluteTarget;
         private Button insertAbsoluteTarget;
         private Button removeAbsoluteTarget;
         private Button addAbsoluteTarget;
         private ListBox absoluteTargets;
-        private LinkLabel linkLabel1;
-        private Label label20;
+        private CheckBox targetByTypeDifferent;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -471,6 +472,12 @@ namespace Assistant
             this.chkAlt = new System.Windows.Forms.CheckBox();
             this.chkShift = new System.Windows.Forms.CheckBox();
             this.macrosTab = new System.Windows.Forms.TabPage();
+            this.absoluteTargetGroup = new System.Windows.Forms.GroupBox();
+            this.retargetAbsoluteTarget = new System.Windows.Forms.Button();
+            this.insertAbsoluteTarget = new System.Windows.Forms.Button();
+            this.removeAbsoluteTarget = new System.Windows.Forms.Button();
+            this.addAbsoluteTarget = new System.Windows.Forms.Button();
+            this.absoluteTargets = new System.Windows.Forms.ListBox();
             this.macroTree = new System.Windows.Forms.TreeView();
             this.macroActGroup = new System.Windows.Forms.GroupBox();
             this.expandAdvancedMacros = new System.Windows.Forms.Button();
@@ -537,12 +544,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.absoluteTargetGroup = new System.Windows.Forms.GroupBox();
-            this.retargetAbsoluteTarget = new System.Windows.Forms.Button();
-            this.insertAbsoluteTarget = new System.Windows.Forms.Button();
-            this.removeAbsoluteTarget = new System.Windows.Forms.Button();
-            this.addAbsoluteTarget = new System.Windows.Forms.Button();
-            this.absoluteTargets = new System.Windows.Forms.ListBox();
+            this.targetByTypeDifferent = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -562,6 +564,7 @@ namespace Assistant
             this.hotkeysTab.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.macrosTab.SuspendLayout();
+            this.absoluteTargetGroup.SuspendLayout();
             this.macroActGroup.SuspendLayout();
             this.videoTab.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -572,7 +575,6 @@ namespace Assistant
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
             this.aboutTab.SuspendLayout();
-            this.absoluteTargetGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
@@ -601,7 +603,7 @@ namespace Assistant
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(490, 292);
+            this.tabs.Size = new System.Drawing.Size(490, 508);
             this.tabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabs.TabIndex = 0;
             this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_IndexChanged);
@@ -625,7 +627,7 @@ namespace Assistant
             this.generalTab.Controls.Add(this.label9);
             this.generalTab.Location = new System.Drawing.Point(4, 44);
             this.generalTab.Name = "generalTab";
-            this.generalTab.Size = new System.Drawing.Size(482, 244);
+            this.generalTab.Size = new System.Drawing.Size(482, 460);
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             // 
@@ -851,7 +853,7 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.label3);
             this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(482, 244);
+            this.moreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             // 
@@ -1153,7 +1155,7 @@ namespace Assistant
             this.moreMoreOptTab.Controls.Add(this.chkPartyOverhead);
             this.moreMoreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreMoreOptTab.Name = "moreMoreOptTab";
-            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 244);
+            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
             // 
@@ -1400,7 +1402,7 @@ namespace Assistant
             this.displayTab.Controls.Add(this.groupBox2);
             this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(482, 244);
+            this.displayTab.Size = new System.Drawing.Size(482, 460);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             // 
@@ -1617,7 +1619,7 @@ namespace Assistant
             this.dressTab.Controls.Add(this.groupBox5);
             this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 244);
+            this.dressTab.Size = new System.Drawing.Size(482, 460);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             // 
@@ -1776,7 +1778,7 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.skillList);
             this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 244);
+            this.skillsTab.Size = new System.Drawing.Size(482, 460);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             // 
@@ -1918,7 +1920,7 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB3);
             this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 244);
+            this.agentsTab.Size = new System.Drawing.Size(482, 460);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             // 
@@ -2007,7 +2009,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 244);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 460);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             // 
@@ -2145,15 +2147,81 @@ namespace Assistant
             // 
             // macrosTab
             // 
+            this.macrosTab.Controls.Add(this.targetByTypeDifferent);
+            this.macrosTab.Controls.Add(this.absoluteTargetGroup);
             this.macrosTab.Controls.Add(this.macroTree);
             this.macrosTab.Controls.Add(this.macroActGroup);
             this.macrosTab.Controls.Add(this.delMacro);
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 244);
+            this.macrosTab.Size = new System.Drawing.Size(482, 460);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
+            // 
+            // absoluteTargetGroup
+            // 
+            this.absoluteTargetGroup.Controls.Add(this.retargetAbsoluteTarget);
+            this.absoluteTargetGroup.Controls.Add(this.insertAbsoluteTarget);
+            this.absoluteTargetGroup.Controls.Add(this.removeAbsoluteTarget);
+            this.absoluteTargetGroup.Controls.Add(this.addAbsoluteTarget);
+            this.absoluteTargetGroup.Controls.Add(this.absoluteTargets);
+            this.absoluteTargetGroup.Location = new System.Drawing.Point(8, 256);
+            this.absoluteTargetGroup.Name = "absoluteTargetGroup";
+            this.absoluteTargetGroup.Size = new System.Drawing.Size(240, 185);
+            this.absoluteTargetGroup.TabIndex = 5;
+            this.absoluteTargetGroup.TabStop = false;
+            this.absoluteTargetGroup.Text = "Absolute Target Variables:";
+            this.absoluteTargetGroup.Visible = false;
+            // 
+            // retargetAbsoluteTarget
+            // 
+            this.retargetAbsoluteTarget.Location = new System.Drawing.Point(167, 84);
+            this.retargetAbsoluteTarget.Name = "retargetAbsoluteTarget";
+            this.retargetAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
+            this.retargetAbsoluteTarget.TabIndex = 5;
+            this.retargetAbsoluteTarget.Text = "Retarget";
+            this.retargetAbsoluteTarget.UseVisualStyleBackColor = true;
+            this.retargetAbsoluteTarget.Click += new System.EventHandler(this.retargetAbsoluteTarget_Click);
+            // 
+            // insertAbsoluteTarget
+            // 
+            this.insertAbsoluteTarget.Location = new System.Drawing.Point(167, 53);
+            this.insertAbsoluteTarget.Name = "insertAbsoluteTarget";
+            this.insertAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
+            this.insertAbsoluteTarget.TabIndex = 4;
+            this.insertAbsoluteTarget.Text = "Insert";
+            this.insertAbsoluteTarget.UseVisualStyleBackColor = true;
+            this.insertAbsoluteTarget.Click += new System.EventHandler(this.insertAbsoluteTarget_Click);
+            // 
+            // removeAbsoluteTarget
+            // 
+            this.removeAbsoluteTarget.Location = new System.Drawing.Point(167, 115);
+            this.removeAbsoluteTarget.Name = "removeAbsoluteTarget";
+            this.removeAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
+            this.removeAbsoluteTarget.TabIndex = 3;
+            this.removeAbsoluteTarget.Text = "Remove";
+            this.removeAbsoluteTarget.UseVisualStyleBackColor = true;
+            this.removeAbsoluteTarget.Click += new System.EventHandler(this.removeAbsoluteTarget_Click);
+            // 
+            // addAbsoluteTarget
+            // 
+            this.addAbsoluteTarget.Location = new System.Drawing.Point(167, 22);
+            this.addAbsoluteTarget.Name = "addAbsoluteTarget";
+            this.addAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
+            this.addAbsoluteTarget.TabIndex = 2;
+            this.addAbsoluteTarget.Text = "Add";
+            this.addAbsoluteTarget.UseVisualStyleBackColor = true;
+            this.addAbsoluteTarget.Click += new System.EventHandler(this.addAbsoluteTarget_Click);
+            // 
+            // absoluteTargets
+            // 
+            this.absoluteTargets.FormattingEnabled = true;
+            this.absoluteTargets.ItemHeight = 15;
+            this.absoluteTargets.Location = new System.Drawing.Point(8, 22);
+            this.absoluteTargets.Name = "absoluteTargets";
+            this.absoluteTargets.Size = new System.Drawing.Size(153, 139);
+            this.absoluteTargets.TabIndex = 1;
             // 
             // macroTree
             // 
@@ -2268,7 +2336,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 244);
+            this.videoTab.Size = new System.Drawing.Size(482, 460);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             // 
@@ -2531,7 +2599,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(482, 244);
+            this.screenshotTab.Size = new System.Drawing.Size(482, 460);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             // 
@@ -2661,7 +2729,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 244);
+            this.advancedTab.Size = new System.Drawing.Size(482, 460);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             // 
@@ -2773,7 +2841,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 244);
+            this.aboutTab.Size = new System.Drawing.Size(482, 460);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             // 
@@ -2856,75 +2924,21 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
-            // absoluteTargetGroup
+            // targetByTypeDifferent
             // 
-            this.absoluteTargetGroup.Controls.Add(this.retargetAbsoluteTarget);
-            this.absoluteTargetGroup.Controls.Add(this.insertAbsoluteTarget);
-            this.absoluteTargetGroup.Controls.Add(this.removeAbsoluteTarget);
-            this.absoluteTargetGroup.Controls.Add(this.addAbsoluteTarget);
-            this.absoluteTargetGroup.Controls.Add(this.absoluteTargets);
-            this.absoluteTargetGroup.Location = new System.Drawing.Point(12, 298);
-            this.absoluteTargetGroup.Name = "absoluteTargetGroup";
-            this.absoluteTargetGroup.Size = new System.Drawing.Size(240, 185);
-            this.absoluteTargetGroup.TabIndex = 1;
-            this.absoluteTargetGroup.TabStop = false;
-            this.absoluteTargetGroup.Text = "Absolute Target Variables:";
-            this.absoluteTargetGroup.Visible = false;
-            // 
-            // retargetAbsoluteTarget
-            // 
-            this.retargetAbsoluteTarget.Location = new System.Drawing.Point(167, 84);
-            this.retargetAbsoluteTarget.Name = "retargetAbsoluteTarget";
-            this.retargetAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
-            this.retargetAbsoluteTarget.TabIndex = 5;
-            this.retargetAbsoluteTarget.Text = "Retarget";
-            this.retargetAbsoluteTarget.UseVisualStyleBackColor = true;
-            this.retargetAbsoluteTarget.Click += new System.EventHandler(this.retargetAbsoluteTarget_Click);
-            // 
-            // insertAbsoluteTarget
-            // 
-            this.insertAbsoluteTarget.Location = new System.Drawing.Point(167, 53);
-            this.insertAbsoluteTarget.Name = "insertAbsoluteTarget";
-            this.insertAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
-            this.insertAbsoluteTarget.TabIndex = 4;
-            this.insertAbsoluteTarget.Text = "Insert";
-            this.insertAbsoluteTarget.UseVisualStyleBackColor = true;
-            this.insertAbsoluteTarget.Click += new System.EventHandler(this.insertAbsoluteTarget_Click);
-            // 
-            // removeAbsoluteTarget
-            // 
-            this.removeAbsoluteTarget.Location = new System.Drawing.Point(167, 115);
-            this.removeAbsoluteTarget.Name = "removeAbsoluteTarget";
-            this.removeAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
-            this.removeAbsoluteTarget.TabIndex = 3;
-            this.removeAbsoluteTarget.Text = "Remove";
-            this.removeAbsoluteTarget.UseVisualStyleBackColor = true;
-            this.removeAbsoluteTarget.Click += new System.EventHandler(this.removeAbsoluteTarget_Click);
-            // 
-            // addAbsoluteTarget
-            // 
-            this.addAbsoluteTarget.Location = new System.Drawing.Point(167, 22);
-            this.addAbsoluteTarget.Name = "addAbsoluteTarget";
-            this.addAbsoluteTarget.Size = new System.Drawing.Size(67, 25);
-            this.addAbsoluteTarget.TabIndex = 2;
-            this.addAbsoluteTarget.Text = "Add";
-            this.addAbsoluteTarget.UseVisualStyleBackColor = true;
-            this.addAbsoluteTarget.Click += new System.EventHandler(this.addAbsoluteTarget_Click);
-            // 
-            // absoluteTargets
-            // 
-            this.absoluteTargets.FormattingEnabled = true;
-            this.absoluteTargets.ItemHeight = 15;
-            this.absoluteTargets.Location = new System.Drawing.Point(8, 22);
-            this.absoluteTargets.Name = "absoluteTargets";
-            this.absoluteTargets.Size = new System.Drawing.Size(153, 139);
-            this.absoluteTargets.TabIndex = 1;
+            this.targetByTypeDifferent.AutoSize = true;
+            this.targetByTypeDifferent.Location = new System.Drawing.Point(267, 265);
+            this.targetByTypeDifferent.Name = "targetByTypeDifferent";
+            this.targetByTypeDifferent.Size = new System.Drawing.Size(183, 19);
+            this.targetByTypeDifferent.TabIndex = 6;
+            this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
+            this.targetByTypeDifferent.UseVisualStyleBackColor = true;
+            this.targetByTypeDifferent.CheckedChanged += new System.EventHandler(this.targetByTypeDifferent_CheckedChanged);
             // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.ClientSize = new System.Drawing.Size(734, 739);
-            this.Controls.Add(this.absoluteTargetGroup);
             this.Controls.Add(this.tabs);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -2966,6 +2980,8 @@ namespace Assistant
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.macrosTab.ResumeLayout(false);
+            this.macrosTab.PerformLayout();
+            this.absoluteTargetGroup.ResumeLayout(false);
             this.macroActGroup.ResumeLayout(false);
             this.videoTab.ResumeLayout(false);
             this.videoTab.PerformLayout();
@@ -2981,7 +2997,6 @@ namespace Assistant
             this.advancedTab.PerformLayout();
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
-            this.absoluteTargetGroup.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -3227,6 +3242,7 @@ namespace Assistant
 			hotkeyTree.SelectedNode = null;
 
 		    jsonApi.Checked = Config.GetBool("JsonApi");
+		    targetByTypeDifferent.Checked = Config.GetBool("DiffTargetByType");
 
 		    //hotKeyStop.Checked = Config.GetBool("HotKeyStop");
 
@@ -3242,8 +3258,9 @@ namespace Assistant
 		{
 			if ( tabs == null )
 				return;
-            
-		    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
+
+		    tabs.Size = new Size(tabs.Size.Width, 290);
+            Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
 
 			if ( tabs.SelectedTab == generalTab )
 			{
@@ -6758,13 +6775,16 @@ namespace Assistant
             {
                 expandAdvancedMacros.Text = "\u2193";
                 absoluteTargetGroup.Visible = false;
+                tabs.Size = new Size(tabs.Size.Width, 290);
+
                 Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
             }
             else
             {
                 expandAdvancedMacros.Text = "\u2191";
                 absoluteTargetGroup.Visible = true;
-                Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 250);
+                tabs.Size = new Size(tabs.Size.Width, 500);
+                Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
             }
         }
 
@@ -6852,7 +6872,12 @@ namespace Assistant
         {
             Process.Start("http://www.uorenaissance.com/");
         }
-        
+
+        private void targetByTypeDifferent_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("DiffTargetByType", targetByTypeDifferent.Checked);
+        }
+
         /*private void hotKeyStop_CheckedChanged(object sender, EventArgs e)
         {
            Config.SetProperty("HotKeyStop", hotKeyStop.Checked);
