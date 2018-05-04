@@ -2,16 +2,17 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 using Assistant.Macros;
 
 namespace Assistant
 {
 	public class PacketHandlers
 	{
-		private static ArrayList m_IgnoreGumps = new ArrayList();
-		public static ArrayList IgnoreGumps{ get{ return m_IgnoreGumps; } }
+	    private static List<Item> m_IgnoreGumps = new List<Item>();
+	    public static List<Item> IgnoreGumps { get { return m_IgnoreGumps; } }
 
-		public static void Initialize()
+        public static void Initialize()
 		{
 			//Client -> Server handlers
 			PacketHandler.RegisterClientToServerViewer( 0x00, new PacketViewerCallback( CreateCharacter ) );
@@ -250,14 +251,14 @@ namespace Assistant
 					else if ( ser.IsItem )
 						ent = World.FindItem( ser );
 
-					if ( ent != null && ent.ContextMenu != null && ent.ContextMenu.ContainsKey( idx ) )
-					{
-						ushort menu = (ushort)ent.ContextMenu[idx];
+				    if (ent != null && ent.ContextMenu != null)
+				    {
+				        ushort menu;// = (ushort)ent.ContextMenu[idx];
+				        if (ent.ContextMenu.TryGetValue(idx, out menu) && menu != 0 && MacroManager.AcceptActions)
+				            MacroManager.Action(new ContextMenuAction(ent, idx, menu));
+				    }
 
-						if ( menu != 0 && MacroManager.AcceptActions )
-							MacroManager.Action( new ContextMenuAction( ent, idx, menu ) );
-					}
-					break;
+                    break;
 				}
 				case 0x1C:// cast spell
 				{
@@ -404,16 +405,17 @@ namespace Assistant
 			}
 		}
 
-		private static void PlayServer( PacketReader p, PacketHandlerEventArgs args )
-		{
-			ushort index = p.ReadUInt16();
+	    private static void PlayServer(PacketReader p, PacketHandlerEventArgs args)
+	    {
+	        ushort index = p.ReadUInt16();
+	        string name;
+	        if (World.Servers.TryGetValue(index, out name) && !string.IsNullOrEmpty(name))
+	            World.ShardName = name;
+	        else
+	            World.ShardName = "[Unknown]";
+	    }
 
-			World.ShardName = World.Servers[index] as string;
-			if ( World.ShardName == null )
-				World.ShardName = "[Unknown]";
-		}
-
-		private static void LiftRequest( PacketReader p, PacketHandlerEventArgs args )
+        private static void LiftRequest( PacketReader p, PacketHandlerEventArgs args )
 		{
 			Serial serial = p.ReadUInt32();
 			ushort amount = p.ReadUInt16();
@@ -710,9 +712,9 @@ namespace Assistant
 			bool isPostKR = false, decided = false;;
 			int count = p.ReadUInt16();
 
-			ArrayList list = new ArrayList();
+		    List<Item> list = new List<Item>();
 
-			for (int i=0;i<count;i++)
+            for (int i=0;i<count;i++)
 			{
 				Serial serial = p.ReadUInt32();
 				// serial is purposely not checked to be valid, sometimes buy lists dont have "valid" item serials (and we are okay with that).
@@ -901,6 +903,7 @@ namespace Assistant
 							skill.FixedCap = p.ReadUInt16();
 							if ( !World.Player.SkillsSent )
 								skill.Delta = 0;
+
 							ClientCommunication.PostSkillUpdate( i-1, skill.FixedBase );
 						}
 						else
@@ -966,7 +969,8 @@ namespace Assistant
 						
 						if ( Config.GetBool( "DisplaySkillChanges" ) && skill.FixedBase != old )
 							World.Player.SendMessage( MsgLevel.Force, LocString.SkillChanged, (SkillName)i, skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value, skill.FixedBase - old > 0 ? "+" : "", ((double)( skill.FixedBase - old )) / 10.0 );
-						ClientCommunication.PostSkillUpdate( i, skill.FixedBase );
+
+					    ClientCommunication.PostSkillUpdate( i, skill.FixedBase );
 					}
 					break;
 				}
@@ -990,7 +994,8 @@ namespace Assistant
 						Engine.MainWindow.UpdateSkill( skill );
 						if ( Config.GetBool( "DisplaySkillChanges" ) && skill.FixedBase != old )
 							World.Player.SendMessage( MsgLevel.Force, LocString.SkillChanged, (SkillName)i, skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value, ((double)( skill.FixedBase - old )) / 10.0, skill.FixedBase - old > 0 ? "+" : "" );
-						ClientCommunication.PostSkillUpdate( i, skill.FixedBase );
+
+					    ClientCommunication.PostSkillUpdate( i, skill.FixedBase );
 					}
 					break;
 				}
@@ -1858,14 +1863,14 @@ namespace Assistant
 					}
 				}
 
-				if ( Config.GetBool( "FilterSpam" ) && ( ser == Serial.MinusOne || ser == Serial.Zero ) )
+				/*if ( Config.GetBool( "FilterSpam" ) && ( ser == Serial.MinusOne || ser == Serial.Zero ) )
 				{
 					if ( !MessageQueue.Enqueue( ser, body, type, hue, font, lang, name, text ) )
 					{
 						args.Block = true;
 						return;
 					}
-				}
+				}*/
 			}
 		}
 
@@ -2202,10 +2207,10 @@ namespace Assistant
 				}
 			}
 		}
-		
-		private static ArrayList m_Party = new ArrayList();
-		public static ArrayList Party { get { return m_Party; } }
-		private static Timer m_PartyDeclineTimer = null;
+
+	    private static List<Serial> m_Party = new List<Serial>();
+	    public static List<Serial> Party { get { return m_Party; } }
+        private static Timer m_PartyDeclineTimer = null;
 		public static Serial PartyLeader = Serial.Zero;
 
 		private static void OnPartyMessage( PacketReader p, PacketHandlerEventArgs args )

@@ -111,7 +111,7 @@ namespace Assistant
 
 	        AddProperty("AutoFriend", false);
 
-	        AddProperty("AutoOpenDoors", false);
+	        AddProperty("AutoOpenDoors", true);
 
 	        AddProperty("MessageLevel", 0);
 

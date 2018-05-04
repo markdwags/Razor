@@ -522,8 +522,10 @@ namespace Assistant
 
 		public MoveEntry GetMoveEntry( byte seq )
 		{
-			return (MoveEntry)m_MoveInfo[seq];
-		}
+		    MoveEntry me;
+		    m_MoveInfo.TryGetValue(seq, out me);
+		    return me;
+        }
 
 		private static Timer m_OpenDoorReq = Timer.DelayedCallback( TimeSpan.FromSeconds( 0.005 ), new TimerCallback( OpenDoor ) );
 		private static void OpenDoor()
@@ -601,8 +603,8 @@ namespace Assistant
 
 		public bool HasWalkEntry( byte seq )
 		{
-			return m_MoveInfo[seq] != null;
-		}
+			return m_MoveInfo.ContainsKey(seq);
+        }
 
 		public void MoveRej( byte seq, Direction dir, Point3D pos )
 		{
@@ -685,7 +687,10 @@ namespace Assistant
 				}
 			}
 
-		    List<Item> ilist = new List<Item>( World.Items.Values );
+		    mlist = null;
+
+
+            List<Item> ilist = new List<Item>( World.Items.Values );
 			ScavengerAgent s = ScavengerAgent.Instance;
 			for (int i=0;i< ilist.Count;i++)
 			{
@@ -700,7 +705,9 @@ namespace Assistant
 					s.Scavenge( item );
 			}
 
-			base.OnPositionChanging( newPos );
+		    ilist = null;
+
+            base.OnPositionChanging( newPos );
 		}
 
 		public override void OnMapChange( byte old, byte cur )

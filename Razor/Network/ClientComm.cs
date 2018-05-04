@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
@@ -567,10 +568,10 @@ namespace Assistant
 				return "";
 		}
 
-		private static Queue m_SendQueue;
-		private static Queue m_RecvQueue;
+		private static Queue<Packet> m_SendQueue = new Queue<Packet>();
+        private static Queue<Packet> m_RecvQueue = new Queue<Packet>();
 
-		private static bool m_QueueRecv;
+        private static bool m_QueueRecv;
 		private static bool m_QueueSend;
 
 		private static Buffer *m_InRecv;
@@ -612,8 +613,6 @@ namespace Assistant
 
 		static ClientCommunication()
 		{
-			m_SendQueue = new Queue();
-			m_RecvQueue = new Queue();
 			m_WndReg = new ArrayList();
 		}
 		
@@ -1328,7 +1327,7 @@ namespace Assistant
 			return new Packet( data, pr.Length, pr.DynamicLength );	
 		}
 
-		private static void HandleComm( Buffer *inBuff, Buffer *outBuff, Queue queue, PacketPath path )
+		private static void HandleComm( Buffer *inBuff, Buffer *outBuff, Queue<Packet> queue, PacketPath path )
 		{
 			CommMutex.WaitOne();
 			while ( inBuff->Length > 0 )

@@ -22,7 +22,17 @@ namespace Assistant
 		ValueMask =	0x87
 	}
 
-	public class Mobile	: UOEntity
+    public enum BodyType : byte
+    {
+        Empty,
+        Monster,
+        Sea,
+        Animal,
+        Human,
+        Equipment
+    }
+
+    public class Mobile	: UOEntity
 	{
 		private	ushort m_Body;
 		private	Direction m_Direction;
@@ -39,11 +49,41 @@ namespace Assistant
 		private	ushort m_HitsMax, m_Hits;
 		protected ushort m_StamMax, m_Stam, m_ManaMax, m_Mana;
 
-		private	ArrayList m_Items;
+	    private List<Serial> m_LoadSerials;
+	    private List<Item> m_Items = new List<Item>();
 
 		private	byte m_Map;
 
-		public override	void SaveState(	BinaryWriter writer	)
+	    private static BodyType[] m_Types;
+
+	    public static void Initialize()
+	    {
+	        using (StreamReader ip = new StreamReader(Path.Combine(Ultima.Files.RootDir, "mobtypes.txt")))
+	        {
+	            m_Types = new BodyType[0x1000];
+
+	            string line;
+
+	            while ((line = ip.ReadLine()) != null)
+	            {
+	                if (line.Length == 0 || line.StartsWith("#"))
+	                    continue;
+
+	                string[] split = line.Split('\t');
+
+	                BodyType type;
+	                int bodyID;
+
+	                if (int.TryParse(split[0], out bodyID) && Enum.TryParse(split[1], true, out type) && bodyID >= 0 &&
+	                    bodyID < m_Types.Length)
+	                {
+	                    m_Types[bodyID] = type;
+	                }
+	            }
+	        }
+	    }
+        
+        public override	void SaveState(	BinaryWriter writer	)
 		{
 			base.SaveState (writer);
 
@@ -74,31 +114,27 @@ namespace Assistant
 			m_Map =	reader.ReadByte();
 
 			int	count =	reader.ReadInt32();
-			m_Items	= new ArrayList( count );
-			for(int	i=0;i<count;i++)
-				m_Items.Add( (Serial)reader.ReadUInt32() );
-		}
+            m_LoadSerials = new List<Serial>();
+
+		    for (int i = count - 1; i >= 0; --i)
+		        m_LoadSerials.Add(reader.ReadUInt32());
+        }
 
 		public override	void AfterLoad()
-		{	
-			for(int	i=0;i<m_Items.Count;i++)
-			{
-				if ( m_Items[i]	is Serial )
-				{
-					m_Items[i] = World.FindItem( (Serial)m_Items[i]	);
+		{
+		    int count = m_LoadSerials.Count;
 
-					if ( m_Items[i]	== null	)
-					{
-						m_Items.RemoveAt( i	);
-						i--;
-					}
-				}
-			}
-		}
+		    for (int i = count - 1; i >= 0; --i)
+		    {
+		        Item it = World.FindItem(m_LoadSerials[i]);
+		        if (it != null)
+		            m_Items.Add(it);
+		    }
+		    m_LoadSerials = null;//per il GC e per liberare RAM
+        }
 
 		public Mobile( Serial serial ) : base( serial )
 		{
-			m_Items	= new ArrayList();
 			m_Map =	World.Player ==	null ? (byte)0 : World.Player.Map;
 			m_Visible =	true;
 
@@ -167,7 +203,42 @@ namespace Assistant
 			}
 		}
 
-		public bool	Warmode
+	    public bool IsHuman
+	    {
+	        get
+	        {
+	            return m_Body >= 0
+	                   && m_Body < m_Types.Length
+	                   && m_Types[m_Body] == BodyType.Human
+	                   && m_Body != 402
+	                   && m_Body != 403
+	                   && m_Body != 607
+	                   && m_Body != 608
+	                   && m_Body != 970;
+	        }
+	    }
+
+	    public bool IsMonster
+	    {
+	        get
+	        {
+	            return m_Body >= 0
+	                   && m_Body < m_Types.Length
+	                   && m_Types[m_Body] == BodyType.Monster;
+	        }
+	    }
+
+	    public bool IsAnimal
+	    {
+	        get
+	        {
+	            return m_Body >= 0
+	                   && m_Body < m_Types.Length
+	                   && m_Types[m_Body] == BodyType.Animal;
+	        }
+	    }
+
+        public bool	Warmode
 		{
 			get{ return	m_Warmode; }
 			set{ m_Warmode = value;	}
@@ -292,11 +363,11 @@ namespace Assistant
 
 		public override	void Remove()
 		{
-			ArrayList rem =	new	ArrayList(m_Items);
-			m_Items.Clear();
+		    List<Item> rem = new List<Item>(m_Items);
+            m_Items.Clear();
 
 			for	(int i = 0;	i <	rem.Count; i++)
-				((Item)rem[i]).Remove();
+				rem[i].Remove();
 
 			if ( !InParty )
 			{
@@ -401,7 +472,7 @@ namespace Assistant
 			m_Visible =	(flags&0x80) ==	0;
 		}
 
-		public ArrayList Contains{ get{	return m_Items;	} }
+		public List<Item> Contains{ get{	return m_Items;	} }
 
 		internal void OverheadMessageFrom( int hue, string from, string format, params object[] args )
 		{

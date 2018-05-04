@@ -54,11 +54,11 @@ namespace Assistant
 
 	public sealed class ContainerContent : Packet
 	{
-		public ContainerContent( ArrayList items ) : this( items, Engine.UsePostKRPackets )
+		public ContainerContent(List<Item> items ) : this( items, Engine.UsePostKRPackets )
 		{
 		}
 
-		public ContainerContent( ArrayList items, bool useKR ) : base( 0x3C )
+		public ContainerContent( List<Item> items, bool useKR ) : base( 0x3C )
 		{
 			Write( (ushort)items.Count );
 

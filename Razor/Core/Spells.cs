@@ -330,13 +330,17 @@ namespace Assistant
 
 		public static Spell Get( string power )
 		{
-			return m_SpellsByPower[power] as Spell;
-		}
+		    Spell s;
+		    m_SpellsByPower.TryGetValue(power, out s);
+		    return s;
+        }
 
 		public static Spell Get( int num )
 		{
-			return m_SpellsByID[num] as Spell;
-		}
+		    Spell s;
+		    m_SpellsByID.TryGetValue(num, out s);
+		    return s;
+        }
 
 		public static Spell Get( int circle, int num )
 		{

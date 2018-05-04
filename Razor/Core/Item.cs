@@ -539,8 +539,8 @@ namespace Assistant
 
 		public override void Remove()
 		{
-			if ( IsMulti )
-				ClientCommunication.PostRemoveMulti( this );
+			/*if ( IsMulti )
+				ClientCommunication.PostRemoveMulti( this );*/
 
 		    List<Item> rem = new List<Item>( m_Items );
 			m_Items.Clear();
@@ -558,7 +558,7 @@ namespace Assistant
 			base.Remove();
 		}
 
-		public override void OnPositionChanging( Point3D newPos )
+		/*public override void OnPositionChanging( Point3D newPos )
 		{
 			if ( IsMulti && this.Position != Point3D.Zero && newPos != Point3D.Zero && this.Position != newPos )
 			{
@@ -566,7 +566,7 @@ namespace Assistant
 				ClientCommunication.PostAddMulti( m_ItemID, newPos );
 			}
 			base.OnPositionChanging ( newPos );
-		}
+		}*/
 
 		public List<Item> Contains{ get{ return m_Items; } }
 
