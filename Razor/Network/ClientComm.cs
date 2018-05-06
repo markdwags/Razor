@@ -631,15 +631,17 @@ namespace Assistant
 			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.NotoHue, (IntPtr)hue );
 		}
 
-		public static void SetSmartCPU( bool enabled )
-		{
-            // Disable SmartCPU completely
+	    public static void SetSmartCPU()
+	    {
+	        // Disable SmartCPU completely
 
-			if ( enabled )
-				try { ClientCommunication.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch {}
+	        /*if ( enabled )
+                try { ClientCommunication.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch {}*/
 
-			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SmartCPU, (IntPtr)(enabled? 1 : 0) );
-		}
+	        //ClientProcess.PriorityClass = (ProcessPriorityClass) Enum.Parse(typeof(ProcessPriorityClass), "Normal", true);
+
+	        PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr) UONetMessage.SmartCPU, (IntPtr) 0);
+	    }
 
 		public static void SetGameSize( int x, int y )
 		{
@@ -676,8 +678,9 @@ namespace Assistant
 				try
 				{
 					ClientProc = Process.GetProcessById( (int)pid );
-					if ( ClientProc != null && !Config.GetBool( "SmartCPU" ) )
-						ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );
+
+                    /*if ( ClientProc != null && !Config.GetBool( "SmartCPU" ) )
+						ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );*/
 				}
 				catch
 				{

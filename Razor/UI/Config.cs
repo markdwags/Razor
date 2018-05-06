@@ -101,7 +101,7 @@ namespace Assistant
 
 	        AddProperty("SmartLastTarget", false);
 	        AddProperty("LastTargTextFlags", true);
-	        AddProperty("SmartCPU", false);
+	        //AddProperty("SmartCPU", false);
 	        AddProperty("LTHilight", (int) 0);
 
 	        AddProperty("RecFolder",

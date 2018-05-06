@@ -3035,7 +3035,7 @@ namespace Assistant
 			systray.Checked = m_NotifyIcon.Visible = st;
 
             // Disable SmartCPU in case it was enabled before the feature was removed
-		    ClientCommunication.SetSmartCPU(false);
+		    ClientCommunication.SetSmartCPU();
 
             //this.Text = String.Format( this.Text, Engine.Version );
             UpdateTitle();
