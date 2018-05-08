@@ -407,6 +407,7 @@ namespace Assistant
 	    TargRandEnemyMonster,
 	    CyclopTitanSounds,
 	    NextTargetEnemyHumanoid,
+        UnableToOpenMacro,
 
         __End
 	}

@@ -256,6 +256,8 @@ namespace Assistant
         private Button addAbsoluteTarget;
         private ListBox absoluteTargets;
         private CheckBox targetByTypeDifferent;
+        private CheckBox checkBox1;
+        private Button button1;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -472,6 +474,7 @@ namespace Assistant
             this.chkAlt = new System.Windows.Forms.CheckBox();
             this.chkShift = new System.Windows.Forms.CheckBox();
             this.macrosTab = new System.Windows.Forms.TabPage();
+            this.targetByTypeDifferent = new System.Windows.Forms.CheckBox();
             this.absoluteTargetGroup = new System.Windows.Forms.GroupBox();
             this.retargetAbsoluteTarget = new System.Windows.Forms.Button();
             this.insertAbsoluteTarget = new System.Windows.Forms.Button();
@@ -544,7 +547,8 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.targetByTypeDifferent = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -2147,6 +2151,9 @@ namespace Assistant
             // 
             // macrosTab
             // 
+            this.macrosTab.Controls.Add(this.button1);
+            this.macrosTab.Controls.Add(this.checkBox1);
+            this.macrosTab.Controls.Add(this.expandAdvancedMacros);
             this.macrosTab.Controls.Add(this.targetByTypeDifferent);
             this.macrosTab.Controls.Add(this.absoluteTargetGroup);
             this.macrosTab.Controls.Add(this.macroTree);
@@ -2158,6 +2165,17 @@ namespace Assistant
             this.macrosTab.Size = new System.Drawing.Size(482, 460);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
+            // 
+            // targetByTypeDifferent
+            // 
+            this.targetByTypeDifferent.AutoSize = true;
+            this.targetByTypeDifferent.Location = new System.Drawing.Point(267, 265);
+            this.targetByTypeDifferent.Name = "targetByTypeDifferent";
+            this.targetByTypeDifferent.Size = new System.Drawing.Size(183, 19);
+            this.targetByTypeDifferent.TabIndex = 6;
+            this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
+            this.targetByTypeDifferent.UseVisualStyleBackColor = true;
+            this.targetByTypeDifferent.CheckedChanged += new System.EventHandler(this.targetByTypeDifferent_CheckedChanged);
             // 
             // absoluteTargetGroup
             // 
@@ -2220,7 +2238,7 @@ namespace Assistant
             this.absoluteTargets.ItemHeight = 15;
             this.absoluteTargets.Location = new System.Drawing.Point(8, 22);
             this.absoluteTargets.Name = "absoluteTargets";
-            this.absoluteTargets.Size = new System.Drawing.Size(153, 139);
+            this.absoluteTargets.Size = new System.Drawing.Size(153, 154);
             this.absoluteTargets.TabIndex = 1;
             // 
             // macroTree
@@ -2237,7 +2255,6 @@ namespace Assistant
             // 
             // macroActGroup
             // 
-            this.macroActGroup.Controls.Add(this.expandAdvancedMacros);
             this.macroActGroup.Controls.Add(this.waitDisp);
             this.macroActGroup.Controls.Add(this.loopMacro);
             this.macroActGroup.Controls.Add(this.recMacro);
@@ -2253,7 +2270,7 @@ namespace Assistant
             // 
             // expandAdvancedMacros
             // 
-            this.expandAdvancedMacros.Location = new System.Drawing.Point(266, 206);
+            this.expandAdvancedMacros.Location = new System.Drawing.Point(153, 213);
             this.expandAdvancedMacros.Name = "expandAdvancedMacros";
             this.expandAdvancedMacros.Size = new System.Drawing.Size(21, 20);
             this.expandAdvancedMacros.TabIndex = 6;
@@ -2262,15 +2279,15 @@ namespace Assistant
             // 
             // waitDisp
             // 
-            this.waitDisp.Location = new System.Drawing.Point(227, 91);
+            this.waitDisp.Location = new System.Drawing.Point(227, 110);
             this.waitDisp.Name = "waitDisp";
-            this.waitDisp.Size = new System.Drawing.Size(60, 88);
+            this.waitDisp.Size = new System.Drawing.Size(60, 89);
             this.waitDisp.TabIndex = 5;
             this.waitDisp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // loopMacro
             // 
-            this.loopMacro.Location = new System.Drawing.Point(230, 182);
+            this.loopMacro.Location = new System.Drawing.Point(230, 202);
             this.loopMacro.Name = "loopMacro";
             this.loopMacro.Size = new System.Drawing.Size(57, 24);
             this.loopMacro.TabIndex = 4;
@@ -2310,7 +2327,7 @@ namespace Assistant
             // 
             // delMacro
             // 
-            this.delMacro.Location = new System.Drawing.Point(114, 210);
+            this.delMacro.Location = new System.Drawing.Point(74, 210);
             this.delMacro.Name = "delMacro";
             this.delMacro.Size = new System.Drawing.Size(60, 26);
             this.delMacro.TabIndex = 2;
@@ -2924,21 +2941,29 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
-            // targetByTypeDifferent
+            // checkBox1
             // 
-            this.targetByTypeDifferent.AutoSize = true;
-            this.targetByTypeDifferent.Location = new System.Drawing.Point(267, 265);
-            this.targetByTypeDifferent.Name = "targetByTypeDifferent";
-            this.targetByTypeDifferent.Size = new System.Drawing.Size(183, 19);
-            this.targetByTypeDifferent.TabIndex = 6;
-            this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
-            this.targetByTypeDifferent.UseVisualStyleBackColor = true;
-            this.targetByTypeDifferent.CheckedChanged += new System.EventHandler(this.targetByTypeDifferent_CheckedChanged);
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(267, 290);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(135, 19);
+            this.checkBox1.TabIndex = 7;
+            this.checkBox1.Text = "Step Through Macro";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(407, 287);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(60, 23);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Next";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            this.ClientSize = new System.Drawing.Size(734, 739);
+            this.ClientSize = new System.Drawing.Size(541, 525);
             this.Controls.Add(this.tabs);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -5106,13 +5131,13 @@ namespace Assistant
 
             try
             {
-                string[] macroLines = File.ReadAllLines(Path.Combine(Config.GetUserDirectory("Macros"), Path.GetFileName(sel.Filename)));
+                string[] macroLines = File.ReadAllLines(sel.Filename);
 
                 Clipboard.SetText(string.Join(Environment.NewLine, macroLines));
             }
             catch
             {
-                MessageBox.Show(this, Language.GetString(LocString.CopyClipboardMacro), "Copy Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, Language.GetString(LocString.ReadError), "Copy Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -5176,8 +5201,15 @@ namespace Assistant
 	        if (sel == null)
 	            return;
 
-	        Process.Start(Path.Combine(Config.GetUserDirectory("Macros"), $"{Path.GetFileName(sel.Filename)}"));
-
+	        try
+	        {
+	            Process.Start(sel.Filename);
+	        }
+	        catch (Exception)
+	        {
+	            MessageBox.Show(this, Language.GetString(LocString.UnableToOpenMacro), Language.GetString(LocString.ReadError),
+	                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Macro_RefreshList( object sender, EventArgs args )
