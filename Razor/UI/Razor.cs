@@ -4980,6 +4980,7 @@ namespace Assistant
 			actionList.SelectedIndex = -1;
 			macroTree.Enabled = actionList.Enabled = true;
 			newMacro.Enabled = delMacro.Enabled = true;
+		    nextMacroAction.Enabled = false;
 			RedrawMacros();
 		}
 		
@@ -5423,6 +5424,7 @@ namespace Assistant
 
 			MacroManager.PlayAt( m, sel );
 			playMacro.Text = "Stop";
+		    nextMacroAction.Enabled = stepThroughMacro.Checked;
 			recMacro.Enabled = false;
 
 			OnMacroStart( m );

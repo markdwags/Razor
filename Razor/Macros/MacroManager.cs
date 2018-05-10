@@ -154,7 +154,11 @@ namespace Assistant.Macros
 			m_Current.PlayAt( at );
 
 			m_Timer.Macro = m_Current;
-			m_Timer.Start();
+
+		    if (!Config.GetBool("StepThroughMacro"))
+		    {
+		        m_Timer.Start();
+		    }
 
 			if ( Engine.MainWindow.WaitDisplay != null )
 				Engine.MainWindow.WaitDisplay.Text = "";
