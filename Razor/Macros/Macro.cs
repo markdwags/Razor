@@ -13,7 +13,7 @@ namespace Assistant.Macros
 		private string m_Path;
 		private ArrayList m_Actions;
 		private bool m_Recording, m_Playing;
-		private MacroWaitAction m_Wait;
+	    private MacroWaitAction m_Wait;
 		private int m_CurrentAction;
 		private bool m_Loop;
 		private bool m_Loaded;
@@ -32,7 +32,8 @@ namespace Assistant.Macros
 		public ArrayList Actions { get{ return m_Actions; } }
 		public bool Recording { get{ return m_Recording; } }
 		public bool Playing { get{ return m_Playing; } }
-		public bool Waiting{ get{ return m_Wait != null; } }
+	    public bool StepThrough { get; set;  }
+	    public bool Waiting{ get{ return m_Wait != null; } }
 		public int CurrentAction { get{ return m_CurrentAction; } }
 
 		public bool Loop

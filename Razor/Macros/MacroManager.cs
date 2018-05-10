@@ -100,7 +100,8 @@ namespace Assistant.Macros
         public static List<AbsoluteTarget> AbsoluteTargetList { get { return m_AbsoluteTargetList; } }
         public static bool Recording{ get{ return m_Current != null && m_Current.Recording; } }
 		public static bool Playing{ get{ return m_Current != null && m_Current.Playing && m_Timer != null && m_Timer.Running; } }
-		public static Macro Current{ get{ return m_Current; } }
+        public static bool StepThrough { get { return m_Current != null && m_Current.StepThrough && m_Current.Playing; } }
+        public static Macro Current{ get{ return m_Current; } }
 		public static bool AcceptActions{ get { return Recording || ( Playing && m_Current.Waiting ); } }
 		//public static bool IsWaiting{ get{ return Playing && m_Current != null && m_Current.Waiting; } }
 
@@ -195,13 +196,27 @@ namespace Assistant.Macros
 			m_Current.Play();
 
 			m_Timer.Macro = m_Current;
-			m_Timer.Start();
+
+		    if (!Config.GetBool("StepThroughMacro"))
+		    {
+		        m_Timer.Start();
+            }
 
 			if ( Engine.MainWindow.WaitDisplay != null )
 				Engine.MainWindow.WaitDisplay.Text = "";
 		}
 
-		private static void HotKeyStop()
+        public static void PlayNext()
+        {
+            if (m_Current == null)
+                return;
+
+            m_Timer.PerformNextAction();
+
+
+        }
+
+        private static void HotKeyStop()
 		{
 			Stop();
 		}
@@ -362,28 +377,38 @@ namespace Assistant.Macros
 
 			public Macro Macro { get { return m_Macro; } set { m_Macro = value; } }
 
+		    public void PerformNextAction()
+		    {
+                ExecuteNextAction();
+            }
+
 			protected override void OnTick()
 			{
-				try
-				{
-					if ( m_Macro == null || World.Player == null )
-					{
-						this.Stop();
-						MacroManager.Stop();
-					}
-					else if ( !m_Macro.ExecNext() )
-					{
-						this.Stop();
-						MacroManager.Stop( true );
-						World.Player.SendMessage( LocString.MacroFinished, m_Macro );
-					}
-				}
-				catch
-				{
-					this.Stop();
-					MacroManager.Stop();
-				}
+			    ExecuteNextAction();
 			}
+
+		    private void ExecuteNextAction()
+		    {
+		        try
+		        {
+		            if (m_Macro == null || World.Player == null)
+		            {
+		                this.Stop();
+		                MacroManager.Stop();
+		            }
+		            else if (!m_Macro.ExecNext())
+		            {
+		                this.Stop();
+		                MacroManager.Stop(true);
+		                World.Player.SendMessage(LocString.MacroFinished, m_Macro);
+		            }
+		        }
+		        catch
+		        {
+		            this.Stop();
+		            MacroManager.Stop();
+		        }
+            }
 		}
 	}
 }

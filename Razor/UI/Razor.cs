@@ -256,8 +256,8 @@ namespace Assistant
         private Button addAbsoluteTarget;
         private ListBox absoluteTargets;
         private CheckBox targetByTypeDifferent;
-        private CheckBox checkBox1;
-        private Button button1;
+        private CheckBox stepThroughMacro;
+        private Button nextMacroAction;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -474,6 +474,9 @@ namespace Assistant
             this.chkAlt = new System.Windows.Forms.CheckBox();
             this.chkShift = new System.Windows.Forms.CheckBox();
             this.macrosTab = new System.Windows.Forms.TabPage();
+            this.nextMacroAction = new System.Windows.Forms.Button();
+            this.stepThroughMacro = new System.Windows.Forms.CheckBox();
+            this.expandAdvancedMacros = new System.Windows.Forms.Button();
             this.targetByTypeDifferent = new System.Windows.Forms.CheckBox();
             this.absoluteTargetGroup = new System.Windows.Forms.GroupBox();
             this.retargetAbsoluteTarget = new System.Windows.Forms.Button();
@@ -483,7 +486,6 @@ namespace Assistant
             this.absoluteTargets = new System.Windows.Forms.ListBox();
             this.macroTree = new System.Windows.Forms.TreeView();
             this.macroActGroup = new System.Windows.Forms.GroupBox();
-            this.expandAdvancedMacros = new System.Windows.Forms.Button();
             this.waitDisp = new System.Windows.Forms.Label();
             this.loopMacro = new System.Windows.Forms.CheckBox();
             this.recMacro = new System.Windows.Forms.Button();
@@ -547,8 +549,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -2151,8 +2151,8 @@ namespace Assistant
             // 
             // macrosTab
             // 
-            this.macrosTab.Controls.Add(this.button1);
-            this.macrosTab.Controls.Add(this.checkBox1);
+            this.macrosTab.Controls.Add(this.nextMacroAction);
+            this.macrosTab.Controls.Add(this.stepThroughMacro);
             this.macrosTab.Controls.Add(this.expandAdvancedMacros);
             this.macrosTab.Controls.Add(this.targetByTypeDifferent);
             this.macrosTab.Controls.Add(this.absoluteTargetGroup);
@@ -2165,6 +2165,37 @@ namespace Assistant
             this.macrosTab.Size = new System.Drawing.Size(482, 460);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
+            // 
+            // nextMacroAction
+            // 
+            this.nextMacroAction.Enabled = false;
+            this.nextMacroAction.Location = new System.Drawing.Point(407, 287);
+            this.nextMacroAction.Name = "nextMacroAction";
+            this.nextMacroAction.Size = new System.Drawing.Size(60, 23);
+            this.nextMacroAction.TabIndex = 8;
+            this.nextMacroAction.Text = "Next";
+            this.nextMacroAction.UseVisualStyleBackColor = true;
+            this.nextMacroAction.Click += new System.EventHandler(this.nextMacroAction_Click);
+            // 
+            // stepThroughMacro
+            // 
+            this.stepThroughMacro.AutoSize = true;
+            this.stepThroughMacro.Location = new System.Drawing.Point(267, 290);
+            this.stepThroughMacro.Name = "stepThroughMacro";
+            this.stepThroughMacro.Size = new System.Drawing.Size(135, 19);
+            this.stepThroughMacro.TabIndex = 7;
+            this.stepThroughMacro.Text = "Step Through Macro";
+            this.stepThroughMacro.UseVisualStyleBackColor = true;
+            this.stepThroughMacro.CheckedChanged += new System.EventHandler(this.stepThroughMacro_CheckedChanged);
+            // 
+            // expandAdvancedMacros
+            // 
+            this.expandAdvancedMacros.Location = new System.Drawing.Point(153, 213);
+            this.expandAdvancedMacros.Name = "expandAdvancedMacros";
+            this.expandAdvancedMacros.Size = new System.Drawing.Size(21, 20);
+            this.expandAdvancedMacros.TabIndex = 6;
+            this.expandAdvancedMacros.UseVisualStyleBackColor = true;
+            this.expandAdvancedMacros.Click += new System.EventHandler(this.expandAdvancedMacros_Click);
             // 
             // targetByTypeDifferent
             // 
@@ -2267,15 +2298,6 @@ namespace Assistant
             this.macroActGroup.TabStop = false;
             this.macroActGroup.Text = "Actions";
             this.macroActGroup.Visible = false;
-            // 
-            // expandAdvancedMacros
-            // 
-            this.expandAdvancedMacros.Location = new System.Drawing.Point(153, 213);
-            this.expandAdvancedMacros.Name = "expandAdvancedMacros";
-            this.expandAdvancedMacros.Size = new System.Drawing.Size(21, 20);
-            this.expandAdvancedMacros.TabIndex = 6;
-            this.expandAdvancedMacros.UseVisualStyleBackColor = true;
-            this.expandAdvancedMacros.Click += new System.EventHandler(this.expandAdvancedMacros_Click);
             // 
             // waitDisp
             // 
@@ -2941,25 +2963,6 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(267, 290);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(135, 19);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "Step Through Macro";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(407, 287);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(60, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Next";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3268,6 +3271,7 @@ namespace Assistant
 
 		    jsonApi.Checked = Config.GetBool("JsonApi");
 		    targetByTypeDifferent.Checked = Config.GetBool("DiffTargetByType");
+		    stepThroughMacro.Checked = Config.GetBool("StepThroughMacro");
 
 		    //hotKeyStop.Checked = Config.GetBool("HotKeyStop");
 
@@ -4890,29 +4894,34 @@ namespace Assistant
 				return (Macro)macroTree.SelectedNode.Tag;
 		}
 
-		public void playMacro_Click(object sender, System.EventArgs e)
-		{
-			if ( World.Player == null )
-				return;
+	    public void playMacro_Click(object sender, System.EventArgs e)
+	    {
+	        if (World.Player == null)
+	            return;
 
-			if ( MacroManager.Playing )
-			{
-				MacroManager.Stop();
-				//OnMacroStop();
-			}
-			else
-			{
-				Macro m = GetMacroSel();
-				if ( m == null || m.Actions.Count <= 0 )
-					return;
+            // Playing is true if the timer is running which in a step-through scenario isn't true
+	        if (MacroManager.Playing || MacroManager.StepThrough)
+	        {
+	            MacroManager.Stop();
+	            nextMacroAction.Enabled = false;
+	        }
+	        else
+	        {
+	            Macro m = GetMacroSel();
+	            if (m == null || m.Actions.Count <= 0)
+	                return;
 
-				actionList.SelectedIndex = 0;
-				MacroManager.Play( m );
-				playMacro.Text = "Stop";
-				recMacro.Enabled = false;
-				OnMacroStart( m );
-			}
-		}
+                // Check if we're going to step through the macro
+	            nextMacroAction.Enabled = stepThroughMacro.Checked;
+	            m.StepThrough = stepThroughMacro.Checked;
+
+                actionList.SelectedIndex = 0;
+	            MacroManager.Play(m);
+	            playMacro.Text = "Stop";
+	            recMacro.Enabled = false;
+	            OnMacroStart(m);
+	        }
+	    }
 
 		private void recMacro_Click(object sender, System.EventArgs e)
 		{
@@ -6908,6 +6917,21 @@ namespace Assistant
         private void targetByTypeDifferent_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("DiffTargetByType", targetByTypeDifferent.Checked);
+        }
+
+        private void stepThroughMacro_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("StepThroughMacro", stepThroughMacro.Checked);
+        }
+
+        private void nextMacroAction_Click(object sender, EventArgs e)
+        {
+            /*if (actionList.SelectedIndex + 1 > actionList.Items.Count - 1)
+            {
+                actionList.SelectedIndex = 0;
+            }*/
+
+            MacroManager.PlayNext();
         }
 
         /*private void hotKeyStop_CheckedChanged(object sender, EventArgs e)

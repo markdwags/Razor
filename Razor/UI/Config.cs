@@ -147,6 +147,7 @@ namespace Assistant
 	        AddProperty("JsonApi", false);
 	        AddProperty("HotKeyStop", false);
 	        AddProperty("DiffTargetByType", false);
+	        AddProperty("StepThroughMacro", false);
 
 	        Counter.Default();
 	        Filter.DisableAll();
