@@ -258,6 +258,7 @@ namespace Assistant
         private CheckBox targetByTypeDifferent;
         private CheckBox stepThroughMacro;
         private Button nextMacroAction;
+        private Button disableSmartCPU;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -549,6 +550,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.disableSmartCPU = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -2757,6 +2759,7 @@ namespace Assistant
             // advancedTab
             // 
             this.advancedTab.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedTab.Controls.Add(this.disableSmartCPU);
             this.advancedTab.Controls.Add(this.jsonApi);
             this.advancedTab.Controls.Add(this.negotiate);
             this.advancedTab.Controls.Add(this.backupDataDir);
@@ -2963,6 +2966,16 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
+            // disableSmartCPU
+            // 
+            this.disableSmartCPU.Location = new System.Drawing.Point(353, 145);
+            this.disableSmartCPU.Name = "disableSmartCPU";
+            this.disableSmartCPU.Size = new System.Drawing.Size(119, 21);
+            this.disableSmartCPU.TabIndex = 74;
+            this.disableSmartCPU.Text = "Disable SmartCPU";
+            this.disableSmartCPU.UseVisualStyleBackColor = true;
+            this.disableSmartCPU.Click += new System.EventHandler(this.disableSmartCPU_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3061,10 +3074,7 @@ namespace Assistant
 			bool st = Config.GetBool( "Systray" );
 			taskbar.Checked = this.ShowInTaskbar = !st;
 			systray.Checked = m_NotifyIcon.Visible = st;
-
-            // Disable SmartCPU in case it was enabled before the feature was removed
-		    ClientCommunication.SetSmartCPU();
-
+            
             //this.Text = String.Format( this.Text, Engine.Version );
             UpdateTitle();
 
@@ -3279,6 +3289,9 @@ namespace Assistant
 		    {
 		        new JsonApiTimer(this).Start();
             }
+
+		    // Disable SmartCPU in case it was enabled before the feature was removed
+		    ClientCommunication.SetSmartCPU(false);
 
             m_Initializing = false;
 		}
@@ -6934,6 +6947,11 @@ namespace Assistant
             }*/
 
             MacroManager.PlayNext();
+        }
+
+        private void disableSmartCPU_Click(object sender, EventArgs e)
+        {
+            ClientCommunication.SetSmartCPU(false);
         }
 
         /*private void hotKeyStop_CheckedChanged(object sender, EventArgs e)

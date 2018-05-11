@@ -631,17 +631,13 @@ namespace Assistant
 			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.NotoHue, (IntPtr)hue );
 		}
 
-	    public static void SetSmartCPU()
+	    public static void SetSmartCPU(bool enabled)
 	    {
-	        // Disable SmartCPU completely
+	        if (enabled)
+	            try { ClientCommunication.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch { }
 
-	        /*if ( enabled )
-                try { ClientCommunication.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch {}*/
-
-	        //ClientProcess.PriorityClass = (ProcessPriorityClass) Enum.Parse(typeof(ProcessPriorityClass), "Normal", true);
-
-	        PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr) UONetMessage.SmartCPU, (IntPtr) 0);
-	    }
+	        PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SmartCPU, (IntPtr)(enabled ? 1 : 0));
+        }
 
 		public static void SetGameSize( int x, int y )
 		{
