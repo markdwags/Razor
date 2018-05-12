@@ -408,6 +408,9 @@ namespace Assistant
 	    CyclopTitanSounds,
 	    NextTargetEnemyHumanoid,
         UnableToOpenMacro,
+        PauseCurrent,
+        MacroPaused,
+        MacroResuming,
 
         __End
 	}

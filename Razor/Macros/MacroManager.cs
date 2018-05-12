@@ -12,11 +12,13 @@ namespace Assistant.Macros
         private static List<Macro> m_MacroList;
         private static List<AbsoluteTarget> m_AbsoluteTargetList;
         private static Macro m_Current, m_PrevPlay;
+        private static bool m_Paused;
         private static MacroTimer m_Timer;
 
         public static void Initialize()
         {
             HotKey.Add(HKCategory.Macros, LocString.StopCurrent, new HotKeyCallback(HotKeyStop));
+            HotKey.Add(HKCategory.Macros, LocString.PauseCurrent, new HotKeyCallback(HotKeyPause));
 
             string path = Config.GetUserDirectory("Macros");
             Recurse(null, path);
@@ -220,6 +222,11 @@ namespace Assistant.Macros
 
         }
 
+        private static void HotKeyPause()
+        {
+            Pause();
+        }
+
         private static void HotKeyStop()
 		{
 			Stop();
@@ -250,7 +257,37 @@ namespace Assistant.Macros
 			m_PrevPlay = null;
 		}
 
-		public static void DisplayTo( TreeView tree )
+        public static void Pause()
+        {
+            if (m_Paused)
+            {
+                // unpause
+                int sel = m_Current.CurrentAction;
+                if (sel < 0 || sel > m_Current.Actions.Count)
+                    sel = m_Current.Actions.Count;
+
+                //m_Current.PlayAt(sel);
+                m_Timer.Start();
+
+                m_Paused = false;
+
+                World.Player.SendMessage(LocString.MacroResuming);
+            }
+            else
+            {   
+                // pause
+                m_Timer.Stop();
+
+                if (Engine.MainWindow.WaitDisplay != null)
+                    Engine.MainWindow.WaitDisplay.Text = "Paused";
+
+                World.Player.SendMessage(LocString.MacroPaused);
+
+                m_Paused = true;
+            }
+        }
+
+        public static void DisplayTo( TreeView tree )
 		{
 			tree.BeginUpdate();
 			tree.Nodes.Clear();
