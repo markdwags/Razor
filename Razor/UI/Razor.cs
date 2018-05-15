@@ -532,6 +532,7 @@ namespace Assistant
             this.screenPrev = new System.Windows.Forms.PictureBox();
             this.dispTime = new System.Windows.Forms.CheckBox();
             this.advancedTab = new System.Windows.Forms.TabPage();
+            this.disableSmartCPU = new System.Windows.Forms.Button();
             this.jsonApi = new System.Windows.Forms.CheckBox();
             this.negotiate = new System.Windows.Forms.CheckBox();
             this.backupDataDir = new System.Windows.Forms.Button();
@@ -550,7 +551,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.disableSmartCPU = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -2775,6 +2775,16 @@ namespace Assistant
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             // 
+            // disableSmartCPU
+            // 
+            this.disableSmartCPU.Location = new System.Drawing.Point(353, 145);
+            this.disableSmartCPU.Name = "disableSmartCPU";
+            this.disableSmartCPU.Size = new System.Drawing.Size(119, 21);
+            this.disableSmartCPU.TabIndex = 74;
+            this.disableSmartCPU.Text = "Disable SmartCPU";
+            this.disableSmartCPU.UseVisualStyleBackColor = true;
+            this.disableSmartCPU.Click += new System.EventHandler(this.disableSmartCPU_Click);
+            // 
             // jsonApi
             // 
             this.jsonApi.AutoSize = true;
@@ -2965,16 +2975,6 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-            // 
-            // disableSmartCPU
-            // 
-            this.disableSmartCPU.Location = new System.Drawing.Point(353, 145);
-            this.disableSmartCPU.Name = "disableSmartCPU";
-            this.disableSmartCPU.Size = new System.Drawing.Size(119, 21);
-            this.disableSmartCPU.TabIndex = 74;
-            this.disableSmartCPU.Text = "Disable SmartCPU";
-            this.disableSmartCPU.UseVisualStyleBackColor = true;
-            this.disableSmartCPU.Click += new System.EventHandler(this.disableSmartCPU_Click);
             // 
             // MainForm
             // 
