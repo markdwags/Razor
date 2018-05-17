@@ -68,7 +68,7 @@ namespace Assistant
 	        0x5B, 0x5C, 0x5D, 0x5E, 0x60, 0x61, 0x62, 0x69, 0x6A, 0x6B, 0x6C,
 	        0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x87, 0x88, 0x89,
 	        0x8A, 0x8B, 0x8C, 0x8E, 0x8F, 0x91, 0x93, 0x96, 0x99, 0x9B, 0x9E,
-	        0x9F, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xB4
+	        0x9F, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xB4, 0x4C, 0x4D, 0x3D
 	    };
 
         public static void Initialize()
@@ -482,7 +482,7 @@ namespace Assistant
 	        List<Mobile> list = new List<Mobile>();
             foreach (Mobile m in World.MobilesInRange(12))
 	        {
-	            if (!m_MonsterIds.Contains(m.Body))
+                if (!m.IsMonster)
                     continue;
 
 	            if ((!FriendsAgent.IsFriend(m) || (noto.Length > 0 && noto[0] == 0)) &&
@@ -683,7 +683,7 @@ namespace Assistant
 	        List<Mobile> list = new List<Mobile>();
 	        foreach (Mobile m in World.MobilesInRange(12))
 	        {
-	            if (!m_MonsterIds.Contains(m.Body))
+	            if (!m.IsMonster)
 	                continue;
 
 	            if ((!FriendsAgent.IsFriend(m) || (noto.Length > 0 && noto[0] == 0)) &&

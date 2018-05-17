@@ -20,9 +20,11 @@ namespace Assistant
             Command.Register("GetSerial", GetSerial);
             Command.Register("RPVInfo", GetRPVInfo);
             Command.Register("Macro", MacroCmd);
-            Command.Register("Hue", GetHue);
+            Command.Register("Hue", GetItemHue);
+            Command.Register("Item", GetItemHue);
             Command.Register("ClearItems", ClearItems);
             Command.Register("Resync", Resync);
+            Command.Register("Mobile", GetMobile);
 
             //Command.Register( "Setup-T", new CommandCallback( TranslateSetup ) );
         }
@@ -67,23 +69,49 @@ namespace Assistant
             }
         }
 
-        private static void GetHue(string[] param)
+        private static void GetItemHue(string[] param)
         {
-            Targeting.OneTimeTarget(OnGetHueTarget);
+            Targeting.OneTimeTarget(OnGetItemHueTarget);
             ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Select an item to get the hue value"));
         }
 
-        private static void OnGetHueTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        private static void OnGetItemHueTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
         {
             Item item = World.FindItem(serial);
             if (item != null)
             {
                 ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                    Language.CliLocName, "System", $"Item '{item.Name}' with hue '{item.Hue}'"));
+                    Language.CliLocName, "System", $"Item: '{item.Name}' '{item.ItemID.Value}'"));
+
+                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                    Language.CliLocName, "System", $"Hue: '{item.Hue}'"));
             }
-            
+
         }
+
+        private static void GetMobile(string[] param)
+        {
+            Targeting.OneTimeTarget(OnGetMobileTarget);
+            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Language.CliLocName, "System", "Select a mobile to get information on"));
+        }
+
+        private static void OnGetMobileTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            Mobile mobile = World.FindMobile(serial);
+
+            if (mobile != null)
+            {
+                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                    Language.CliLocName, "System", $"Mobile: '{mobile.Name}' with serial '{mobile.Serial.Value}'"));
+
+                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                    Language.CliLocName, "System", $"Animal: '{mobile.IsAnimal}' Ghost: '{mobile.IsGhost}' Human: '{mobile.IsHuman}' Monster: '{mobile.IsMonster}'"));
+            }
+
+        }
+
 
         private static void Echo(string[] param)
         {
@@ -156,10 +184,10 @@ namespace Assistant
             }
 
             World.Player.SendMessage(MsgLevel.Force, LocString.CurLoc, World.Player.Position, mapStr);
-//#if DEBUG
+#if DEBUG
             World.Player.SendMessage(MsgLevel.Debug, "Cal? {0} - CalcZ = {1} (Extern = {2})",
                 ClientCommunication.IsCalibrated(), World.Player.CalcZ, PlayerData.ExternalZ);
-//#endif
+#endif
         }
 
         private static void Ping(string[] param)
