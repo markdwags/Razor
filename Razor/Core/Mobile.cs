@@ -26,7 +26,7 @@ namespace Assistant
     {
         Empty,
         Monster,
-        Sea,
+        Sea_Monster,
         Animal,
         Human,
         Equipment
@@ -228,7 +228,17 @@ namespace Assistant
 	        }
 	    }
 
-	    public bool IsAnimal
+	    public bool IsSeaMonster
+	    {
+	        get
+	        {
+	            return m_Body >= 0
+	                   && m_Body < m_Types.Length
+	                   && m_Types[m_Body] == BodyType.Sea_Monster;
+	        }
+	    }
+
+        public bool IsAnimal
 	    {
 	        get
 	        {

@@ -482,7 +482,7 @@ namespace Assistant
 	        List<Mobile> list = new List<Mobile>();
             foreach (Mobile m in World.MobilesInRange(12))
 	        {
-                if (!m.IsMonster)
+                if (!m.IsMonster && !m.IsSeaMonster)
                     continue;
 
 	            if ((!FriendsAgent.IsFriend(m) || (noto.Length > 0 && noto[0] == 0)) &&
@@ -683,7 +683,7 @@ namespace Assistant
 	        List<Mobile> list = new List<Mobile>();
 	        foreach (Mobile m in World.MobilesInRange(12))
 	        {
-	            if (!m.IsMonster)
+	            if (!m.IsMonster && !m.IsSeaMonster)
 	                continue;
 
 	            if ((!FriendsAgent.IsFriend(m) || (noto.Length > 0 && noto[0] == 0)) &&
