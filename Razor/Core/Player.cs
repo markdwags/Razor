@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Ultima;
 
@@ -194,7 +195,7 @@ namespace Assistant
 		private bool m_SkillsSent;
 		//private Item m_Holding;
 		//private ushort m_HoldAmt;
-		private Dictionary<byte, MoveEntry> m_MoveInfo;
+		private ConcurrentDictionary<byte, MoveEntry> m_MoveInfo;
 		private Timer m_CriminalTime;
 		private DateTime m_CriminalStart = DateTime.MinValue;
 		private byte m_WalkSeq;
@@ -259,7 +260,7 @@ namespace Assistant
 			m_Gold = reader.ReadUInt32();
 			m_Weight = reader.ReadUInt16();
 
-			m_MoveInfo = new Dictionary<byte, MoveEntry>(256);
+			m_MoveInfo = new ConcurrentDictionary<byte, MoveEntry>();
 
             if ( version >= 4 )
 			{
@@ -333,7 +334,7 @@ namespace Assistant
 
 		public PlayerData( Serial serial ) : base( serial )
 		{
-			m_MoveInfo = new Dictionary<byte, MoveEntry>(256);
+		    m_MoveInfo = new ConcurrentDictionary<byte, MoveEntry>();
             m_Skills = new Skill[Skill.Count];
 			for (int i=0;i<m_Skills.Length;i++)
 				m_Skills[i] = new Skill(i);
@@ -542,9 +543,13 @@ namespace Assistant
 			FastWalkKey++;
 
 			MoveEntry e = new MoveEntry();
-			m_MoveInfo[seq] = e;
 
-			e.IsStep = (dir & Direction.Mask) == (Direction & Direction.Mask);
+		    if (!m_MoveInfo.ContainsKey(seq))
+		        m_MoveInfo.TryAdd(seq, e);
+		    else
+		        m_MoveInfo[seq] = e;
+
+            e.IsStep = (dir & Direction.Mask) == (Direction & Direction.Mask);
 			e.Dir = dir;
 
 			ProcessMove( dir ); // shouldnt this be in MoveAck?!?
