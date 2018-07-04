@@ -664,7 +664,32 @@ namespace Assistant
 		}
 	}
 
-	public sealed class UseSkill : Packet
+    public sealed class CompressedGump : Packet
+    {
+        public CompressedGump(uint serial, uint tid, int bid, int[] switches, GumpTextEntry[] entries) : base(0xDD)
+        {
+            EnsureCapacity(3 + 4 + 4 + 4 + 4 + switches.Length * 4 + 4 + entries.Length * 4);
+
+            Write((uint)serial);
+            Write((uint)tid);
+
+            Write((int)bid);
+
+            Write((int)switches.Length);
+            for (int i = 0; i < switches.Length; i++)
+                Write((int)switches[i]);
+            Write((int)entries.Length);
+            for (int i = 0; i < entries.Length; i++)
+            {
+                GumpTextEntry gte = (GumpTextEntry)entries[i];
+                Write((ushort)gte.EntryID);
+                Write((ushort)(gte.Text.Length * 2));
+                WriteBigUniFixed(gte.Text, gte.Text.Length);
+            }
+        }
+    }
+
+    public sealed class UseSkill : Packet
 	{
 		public UseSkill( int sk ) : base( 0x12 )
 		{

@@ -2465,17 +2465,55 @@ namespace Assistant
 			}
 		}
 
-		private static void CompressedGump( PacketReader p, PacketHandlerEventArgs args )
+        /*         
+        Packet Build
+        1.  BYTE[1] Cmd
+        2.  BYTE[2] len
+        3.  BYTE[4] Player Serial
+        4.  BYTE[4] Gump ID
+        5.  BYTE[4] x
+        6.  BYTE[4] y
+        7.  BYTE[4] Compressed Gump Layout Length (CLen)
+        8.  BYTE[4] Decompressed Gump Layout Length (DLen)
+        9.  BYTE[CLen-4] Gump Data, zlib compressed
+        10. BYTE[4] Number of text lines
+        11. BYTE[4] Compressed Text Line Length (CTxtLen)
+        12. BYTE[4] Decompressed Text Line Length (DTxtLen)
+        13. BYTE[CTxtLen-4] Gump's Compressed Text data, zlib compressed
+         */
+        private static void CompressedGump( PacketReader p, PacketHandlerEventArgs args )
 		{
-			if ( World.Player != null )
-			{
-				World.Player.CurrentGumpS = p.ReadUInt32();
-				World.Player.CurrentGumpI = p.ReadUInt32();
-			}
+		    try
+		    {
+		        p.Seek(0, System.IO.SeekOrigin.Begin);
+		        byte packetID = p.ReadByte(); //1
 
-			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
-				args.Block = true;
+		        p.MoveToData(); //2
 
-		}
+		        uint ser = p.ReadUInt32(); //3
+		        uint tid = p.ReadUInt32(); //4
+		        int x = p.ReadInt32(); //5
+		        int y = p.ReadInt32(); //6
+
+		        string layout = null;
+
+		        layout = p.GetCompressedReader().ReadString(); //7, 8, 9
+                
+		        int txtLen = p.ReadInt32(); //10
+
+		        string text = null;
+
+		        text = p.GetCompressedReader().ReadString(); //11, 12, 13
+
+		        if (text.Contains("sinking"))
+		        {
+                    //write to log
+		        }
+		    }
+		    catch
+		    {
+		    }
+
+        }
 	}
 }

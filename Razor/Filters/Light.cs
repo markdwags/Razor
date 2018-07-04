@@ -45,5 +45,19 @@ namespace Assistant.Filters
 			}
 		}
 
-	}
+	    public override void OnDisable()
+	    {
+	        base.OnDisable();
+
+	        if (ClientCommunication.AllowBit(FeatureBit.LightFilter) && World.Player != null)
+	        {
+	            World.Player.LocalLightLevel = 6;
+	            World.Player.GlobalLightLevel = 2;
+
+	            ClientCommunication.SendToClient(new GlobalLightLevel(26));
+	            ClientCommunication.SendToClient(new PersonalLightLevel(World.Player));
+	        }
+	    }
+
+    }
 }
