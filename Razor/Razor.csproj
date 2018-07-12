@@ -120,6 +120,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Boat\BoatWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Boat\BoatWindow.Designer.cs">
+      <DependentUpon>BoatWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Core\ActionQueue.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -337,6 +343,9 @@
     <Compile Include="Core\ZLib.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="Boat\BoatWindow.resx">
+      <DependentUpon>BoatWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Macros\Actions.resx">
       <DependentUpon>Actions.cs</DependentUpon>
     </EmbeddedResource>
@@ -381,6 +390,21 @@
     <EmbeddedResource Include="UI\WelcomeForm.resx">
       <DependentUpon>WelcomeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="Boat\Images\anchor-left.png" />
+    <Content Include="Boat\Images\anchor-right.png" />
+    <Content Include="Boat\Images\boateast.png" />
+    <Content Include="Boat\Images\boatnorth.png" />
+    <Content Include="Boat\Images\boatsouth.png" />
+    <Content Include="Boat\Images\boatwest.png" />
+    <Content Include="Boat\Images\east.png" />
+    <Content Include="Boat\Images\north.png" />
+    <Content Include="Boat\Images\northeast.png" />
+    <Content Include="Boat\Images\northwest.png" />
+    <Content Include="Boat\Images\serpentspillar.png" />
+    <Content Include="Boat\Images\south.png" />
+    <Content Include="Boat\Images\southeast.png" />
+    <Content Include="Boat\Images\southwest.png" />
+    <Content Include="Boat\Images\west.png" />
     <Content Include="UI\Lock.ico" />
     <Content Include="UI\UOPS.ico" />
   </ItemGroup>

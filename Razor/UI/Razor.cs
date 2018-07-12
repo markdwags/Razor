@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using Assistant.Filters;
 using Assistant.Macros;
 using System.Diagnostics;
+using Assistant.Boat;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -174,7 +175,6 @@ namespace Assistant
 		private System.Windows.Forms.Label label19;
 		private System.Windows.Forms.TextBox warnNum;
 		private System.Windows.Forms.CheckBox warnCount;
-		private System.Windows.Forms.Button btnMap;
 		private System.Windows.Forms.Label rpvTime;
 		private System.Windows.Forms.CheckBox showNotoHue;
 		private System.Windows.Forms.CheckBox preAOSstatbar;
@@ -271,6 +271,8 @@ namespace Assistant
         private CheckBox chkPartyOverhead;
         private TrackBar lightLevelBar;
         private Label lightLevel;
+        private Button btnMap;
+        private Button boatControl;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -337,7 +339,6 @@ namespace Assistant
             this.lightLevel = new System.Windows.Forms.Label();
             this.lightLevelBar = new System.Windows.Forms.TrackBar();
             this.clientPrio = new System.Windows.Forms.ComboBox();
-            this.btnMap = new System.Windows.Forms.Button();
             this.systray = new System.Windows.Forms.RadioButton();
             this.taskbar = new System.Windows.Forms.RadioButton();
             this.langSel = new System.Windows.Forms.ComboBox();
@@ -361,7 +362,6 @@ namespace Assistant
             this.lthilight = new System.Windows.Forms.CheckBox();
             this.filterSnoop = new System.Windows.Forms.CheckBox();
             this.corpseRange = new System.Windows.Forms.TextBox();
-            this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.incomingMob = new System.Windows.Forms.CheckBox();
             this.setHarmHue = new System.Windows.Forms.Button();
             this.setNeuHue = new System.Windows.Forms.Button();
@@ -386,6 +386,7 @@ namespace Assistant
             this.chkForceSpellHue = new System.Windows.Forms.CheckBox();
             this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
             this.forceSizeX = new System.Windows.Forms.TextBox();
             this.forceSizeY = new System.Windows.Forms.TextBox();
@@ -509,6 +510,7 @@ namespace Assistant
             this.delMacro = new System.Windows.Forms.Button();
             this.newMacro = new System.Windows.Forms.Button();
             this.mapTab = new System.Windows.Forms.TabPage();
+            this.btnMap = new System.Windows.Forms.Button();
             this.showPlayerPosition = new System.Windows.Forms.CheckBox();
             this.tiltMap = new System.Windows.Forms.CheckBox();
             this.showPartyMemberPositions = new System.Windows.Forms.CheckBox();
@@ -575,6 +577,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.boatControl = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
@@ -648,7 +651,6 @@ namespace Assistant
             this.generalTab.Controls.Add(this.lightLevel);
             this.generalTab.Controls.Add(this.lightLevelBar);
             this.generalTab.Controls.Add(this.clientPrio);
-            this.generalTab.Controls.Add(this.btnMap);
             this.generalTab.Controls.Add(this.systray);
             this.generalTab.Controls.Add(this.taskbar);
             this.generalTab.Controls.Add(this.langSel);
@@ -702,15 +704,6 @@ namespace Assistant
             this.clientPrio.Size = new System.Drawing.Size(154, 23);
             this.clientPrio.TabIndex = 60;
             this.clientPrio.SelectedIndexChanged += new System.EventHandler(this.clientPrio_SelectedIndexChanged);
-            // 
-            // btnMap
-            // 
-            this.btnMap.Location = new System.Drawing.Point(8, 211);
-            this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(167, 24);
-            this.btnMap.TabIndex = 58;
-            this.btnMap.Text = "Open UO Map System";
-            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
             // 
             // systray
             // 
@@ -844,7 +837,7 @@ namespace Assistant
             this.groupBox1.Controls.Add(this.filters);
             this.groupBox1.Location = new System.Drawing.Point(8, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(167, 202);
+            this.groupBox1.Size = new System.Drawing.Size(167, 232);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filters";
@@ -855,7 +848,7 @@ namespace Assistant
             this.filters.IntegralHeight = false;
             this.filters.Location = new System.Drawing.Point(6, 18);
             this.filters.Name = "filters";
-            this.filters.Size = new System.Drawing.Size(155, 178);
+            this.filters.Size = new System.Drawing.Size(155, 208);
             this.filters.TabIndex = 1;
             this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
             // 
@@ -882,7 +875,6 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.lthilight);
             this.moreOptTab.Controls.Add(this.filterSnoop);
             this.moreOptTab.Controls.Add(this.corpseRange);
-            this.moreOptTab.Controls.Add(this.incomingCorpse);
             this.moreOptTab.Controls.Add(this.incomingMob);
             this.moreOptTab.Controls.Add(this.setHarmHue);
             this.moreOptTab.Controls.Add(this.setNeuHue);
@@ -907,6 +899,7 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.chkForceSpellHue);
             this.moreOptTab.Controls.Add(this.chkForceSpeechHue);
             this.moreOptTab.Controls.Add(this.label3);
+            this.moreOptTab.Controls.Add(this.incomingCorpse);
             this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
             this.moreOptTab.Size = new System.Drawing.Size(482, 460);
@@ -957,15 +950,6 @@ namespace Assistant
             this.corpseRange.TabIndex = 23;
             this.corpseRange.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.corpseRange.TextChanged += new System.EventHandler(this.corpseRange_TextChanged);
-            // 
-            // incomingCorpse
-            // 
-            this.incomingCorpse.Location = new System.Drawing.Point(245, 215);
-            this.incomingCorpse.Name = "incomingCorpse";
-            this.incomingCorpse.Size = new System.Drawing.Size(228, 20);
-            this.incomingCorpse.TabIndex = 48;
-            this.incomingCorpse.Text = "Show Names of New/Incoming Corpses";
-            this.incomingCorpse.CheckedChanged += new System.EventHandler(this.incomingCorpse_CheckedChanged);
             // 
             // incomingMob
             // 
@@ -1180,6 +1164,15 @@ namespace Assistant
             this.label3.TabIndex = 4;
             this.label3.Text = "Spell Format:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // incomingCorpse
+            // 
+            this.incomingCorpse.Location = new System.Drawing.Point(245, 215);
+            this.incomingCorpse.Name = "incomingCorpse";
+            this.incomingCorpse.Size = new System.Drawing.Size(228, 20);
+            this.incomingCorpse.TabIndex = 48;
+            this.incomingCorpse.Text = "Show Names of New/Incoming Corpses";
+            this.incomingCorpse.CheckedChanged += new System.EventHandler(this.incomingCorpse_CheckedChanged);
             // 
             // moreMoreOptTab
             // 
@@ -1816,7 +1809,7 @@ namespace Assistant
             // 
             this.undressConflicts.Location = new System.Drawing.Point(6, 195);
             this.undressConflicts.Name = "undressConflicts";
-            this.undressConflicts.Size = new System.Drawing.Size(185, 38);
+            this.undressConflicts.Size = new System.Drawing.Size(136, 38);
             this.undressConflicts.TabIndex = 6;
             this.undressConflicts.Text = "Automatically move conflicting items";
             this.undressConflicts.CheckedChanged += new System.EventHandler(this.undressConflicts_CheckedChanged);
@@ -2420,6 +2413,8 @@ namespace Assistant
             // mapTab
             // 
             this.mapTab.BackColor = System.Drawing.SystemColors.Control;
+            this.mapTab.Controls.Add(this.boatControl);
+            this.mapTab.Controls.Add(this.btnMap);
             this.mapTab.Controls.Add(this.showPlayerPosition);
             this.mapTab.Controls.Add(this.tiltMap);
             this.mapTab.Controls.Add(this.showPartyMemberPositions);
@@ -2432,41 +2427,53 @@ namespace Assistant
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             // 
+            // btnMap
+            // 
+            this.btnMap.Location = new System.Drawing.Point(6, 205);
+            this.btnMap.Name = "btnMap";
+            this.btnMap.Size = new System.Drawing.Size(167, 24);
+            this.btnMap.TabIndex = 59;
+            this.btnMap.Text = "Open Old UO Map System";
+            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
+            // 
             // showPlayerPosition
             // 
             this.showPlayerPosition.AutoSize = true;
-            this.showPlayerPosition.Location = new System.Drawing.Point(20, 98);
+            this.showPlayerPosition.Location = new System.Drawing.Point(6, 52);
             this.showPlayerPosition.Name = "showPlayerPosition";
             this.showPlayerPosition.Size = new System.Drawing.Size(172, 19);
             this.showPlayerPosition.TabIndex = 5;
             this.showPlayerPosition.Text = "Show your position on map";
             this.showPlayerPosition.UseVisualStyleBackColor = true;
+            this.showPlayerPosition.CheckedChanged += new System.EventHandler(this.showPlayerPosition_CheckedChanged);
             // 
             // tiltMap
             // 
             this.tiltMap.AutoSize = true;
-            this.tiltMap.Location = new System.Drawing.Point(20, 173);
+            this.tiltMap.Location = new System.Drawing.Point(6, 127);
             this.tiltMap.Name = "tiltMap";
             this.tiltMap.Size = new System.Drawing.Size(93, 19);
             this.tiltMap.TabIndex = 4;
             this.tiltMap.Text = "Tilt map 45° ";
             this.tiltMap.UseVisualStyleBackColor = true;
+            this.tiltMap.CheckedChanged += new System.EventHandler(this.tiltMap_CheckedChanged);
             // 
             // showPartyMemberPositions
             // 
             this.showPartyMemberPositions.AutoSize = true;
-            this.showPartyMemberPositions.Location = new System.Drawing.Point(20, 148);
+            this.showPartyMemberPositions.Location = new System.Drawing.Point(6, 102);
             this.showPartyMemberPositions.Name = "showPartyMemberPositions";
             this.showPartyMemberPositions.Size = new System.Drawing.Size(184, 19);
             this.showPartyMemberPositions.TabIndex = 3;
             this.showPartyMemberPositions.Text = "Show party member positions";
             this.showPartyMemberPositions.UseVisualStyleBackColor = true;
+            this.showPartyMemberPositions.CheckedChanged += new System.EventHandler(this.showPartyMemberPositions_CheckedChanged);
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(6, 14);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(196, 32);
+            this.button1.Size = new System.Drawing.Size(267, 32);
             this.button1.TabIndex = 2;
             this.button1.Text = "Open UO Positioning System 2.0";
             this.button1.UseVisualStyleBackColor = true;
@@ -2476,7 +2483,7 @@ namespace Assistant
             this.groupMapPoints.Controls.Add(this.removeMapPoint);
             this.groupMapPoints.Controls.Add(this.addMapPoint);
             this.groupMapPoints.Controls.Add(this.mapPoints);
-            this.groupMapPoints.Location = new System.Drawing.Point(241, 42);
+            this.groupMapPoints.Location = new System.Drawing.Point(279, 3);
             this.groupMapPoints.Name = "groupMapPoints";
             this.groupMapPoints.Size = new System.Drawing.Size(200, 232);
             this.groupMapPoints.TabIndex = 1;
@@ -2513,12 +2520,13 @@ namespace Assistant
             // trackPlayerPosition
             // 
             this.trackPlayerPosition.AutoSize = true;
-            this.trackPlayerPosition.Location = new System.Drawing.Point(20, 123);
+            this.trackPlayerPosition.Location = new System.Drawing.Point(6, 77);
             this.trackPlayerPosition.Name = "trackPlayerPosition";
             this.trackPlayerPosition.Size = new System.Drawing.Size(220, 19);
             this.trackPlayerPosition.TabIndex = 0;
             this.trackPlayerPosition.Text = "Auto-track your position on the map";
             this.trackPlayerPosition.UseVisualStyleBackColor = true;
+            this.trackPlayerPosition.CheckedChanged += new System.EventHandler(this.trackPlayerPosition_CheckedChanged);
             // 
             // videoTab
             // 
@@ -3129,6 +3137,16 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
+            // boatControl
+            // 
+            this.boatControl.Location = new System.Drawing.Point(218, 142);
+            this.boatControl.Name = "boatControl";
+            this.boatControl.Size = new System.Drawing.Size(55, 46);
+            this.boatControl.TabIndex = 60;
+            this.boatControl.Text = "Boat Control";
+            this.boatControl.UseVisualStyleBackColor = true;
+            this.boatControl.Click += new System.EventHandler(this.boatControl_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3442,6 +3460,11 @@ namespace Assistant
 		    stepThroughMacro.Checked = Config.GetBool("StepThroughMacro");
 
 		    //hotKeyStop.Checked = Config.GetBool("HotKeyStop");
+
+		    showPartyMemberPositions.Checked = Config.GetBool("ShowPlayerPosition");
+            trackPlayerPosition.Checked = Config.GetBool("TrackPlayerPosition");
+            showPlayerPosition.Checked = Config.GetBool("ShowPartyMemberPositions");
+            tiltMap.Checked = Config.GetBool("TiltMap");
 
             if (jsonApi.Checked)
 		    {
@@ -7122,6 +7145,33 @@ namespace Assistant
                 ClientCommunication.SendToClient(new GlobalLightLevel(Convert.ToByte(lightLevelBar.Value)));
                 ClientCommunication.SendToClient(new PersonalLightLevel(World.Player));
             }
+        }
+
+        private void showPlayerPosition_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowPlayerPosition", showPlayerPosition.Checked);
+        }
+
+        private void trackPlayerPosition_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("TrackPlayerPosition", trackPlayerPosition.Checked);
+        }
+
+        private void showPartyMemberPositions_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowPartyMemberPositions", showPartyMemberPositions.Checked);
+        }
+
+        private void tiltMap_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("TiltMap", showPartyMemberPositions.Checked);
+        }
+
+        private void boatControl_Click(object sender, EventArgs e)
+        {
+            BoatWindow boatWindow = new BoatWindow();
+            boatWindow.Show();
+            boatWindow.BringToFront();
         }
     }
 }
