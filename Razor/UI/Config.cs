@@ -155,6 +155,8 @@ namespace Assistant
 	        AddProperty("ShowPartyMemberPositions", true);
 	        AddProperty("TiltMap", true);
 
+	        AddProperty("ShowTargetSelfLastClearOverhead", true);
+
             Counter.Default();
 	        Filter.DisableAll();
 	        DressList.ClearAll();

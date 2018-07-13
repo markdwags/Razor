@@ -273,6 +273,7 @@ namespace Assistant
         private Label lightLevel;
         private Button btnMap;
         private Button boatControl;
+        private CheckBox showTargetMessagesOverChar;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -510,6 +511,7 @@ namespace Assistant
             this.delMacro = new System.Windows.Forms.Button();
             this.newMacro = new System.Windows.Forms.Button();
             this.mapTab = new System.Windows.Forms.TabPage();
+            this.boatControl = new System.Windows.Forms.Button();
             this.btnMap = new System.Windows.Forms.Button();
             this.showPlayerPosition = new System.Windows.Forms.CheckBox();
             this.tiltMap = new System.Windows.Forms.CheckBox();
@@ -577,7 +579,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.boatControl = new System.Windows.Forms.Button();
+            this.showTargetMessagesOverChar = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
@@ -1176,6 +1178,7 @@ namespace Assistant
             // 
             // moreMoreOptTab
             // 
+            this.moreMoreOptTab.Controls.Add(this.showTargetMessagesOverChar);
             this.moreMoreOptTab.Controls.Add(this.forceSizeX);
             this.moreMoreOptTab.Controls.Add(this.forceSizeY);
             this.moreMoreOptTab.Controls.Add(this.healthFmt);
@@ -1449,9 +1452,9 @@ namespace Assistant
             this.displayTab.Controls.Add(this.checkNewConts);
             this.displayTab.Controls.Add(this.groupBox3);
             this.displayTab.Controls.Add(this.groupBox2);
-            this.displayTab.Location = new System.Drawing.Point(4, 44);
+            this.displayTab.Location = new System.Drawing.Point(4, 24);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(482, 460);
+            this.displayTab.Size = new System.Drawing.Size(482, 285);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             // 
@@ -1666,9 +1669,9 @@ namespace Assistant
             // 
             this.dressTab.Controls.Add(this.groupBox6);
             this.dressTab.Controls.Add(this.groupBox5);
-            this.dressTab.Location = new System.Drawing.Point(4, 44);
+            this.dressTab.Location = new System.Drawing.Point(4, 24);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 460);
+            this.dressTab.Size = new System.Drawing.Size(482, 285);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             // 
@@ -1825,9 +1828,9 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.setlocks);
             this.skillsTab.Controls.Add(this.resetDelta);
             this.skillsTab.Controls.Add(this.skillList);
-            this.skillsTab.Location = new System.Drawing.Point(4, 44);
+            this.skillsTab.Location = new System.Drawing.Point(4, 24);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 460);
+            this.skillsTab.Size = new System.Drawing.Size(482, 285);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             // 
@@ -1967,9 +1970,9 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB1);
             this.agentsTab.Controls.Add(this.agentB2);
             this.agentsTab.Controls.Add(this.agentB3);
-            this.agentsTab.Location = new System.Drawing.Point(4, 44);
+            this.agentsTab.Location = new System.Drawing.Point(4, 24);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 460);
+            this.agentsTab.Size = new System.Drawing.Size(482, 285);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             // 
@@ -2058,7 +2061,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 460);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 265);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             // 
@@ -2207,7 +2210,7 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 460);
+            this.macrosTab.Size = new System.Drawing.Size(482, 265);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             // 
@@ -2427,6 +2430,16 @@ namespace Assistant
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             // 
+            // boatControl
+            // 
+            this.boatControl.Location = new System.Drawing.Point(218, 142);
+            this.boatControl.Name = "boatControl";
+            this.boatControl.Size = new System.Drawing.Size(55, 46);
+            this.boatControl.TabIndex = 60;
+            this.boatControl.Text = "Boat Control";
+            this.boatControl.UseVisualStyleBackColor = true;
+            this.boatControl.Click += new System.EventHandler(this.boatControl_Click);
+            // 
             // btnMap
             // 
             this.btnMap.Location = new System.Drawing.Point(6, 205);
@@ -2538,7 +2551,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 460);
+            this.videoTab.Size = new System.Drawing.Size(482, 265);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             // 
@@ -2801,7 +2814,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(482, 460);
+            this.screenshotTab.Size = new System.Drawing.Size(482, 265);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             // 
@@ -2932,7 +2945,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 460);
+            this.advancedTab.Size = new System.Drawing.Size(482, 265);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             // 
@@ -3054,7 +3067,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 460);
+            this.aboutTab.Size = new System.Drawing.Size(482, 265);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             // 
@@ -3137,15 +3150,16 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
-            // boatControl
+            // showTargetMessagesOverChar
             // 
-            this.boatControl.Location = new System.Drawing.Point(218, 142);
-            this.boatControl.Name = "boatControl";
-            this.boatControl.Size = new System.Drawing.Size(55, 46);
-            this.boatControl.TabIndex = 60;
-            this.boatControl.Text = "Boat Control";
-            this.boatControl.UseVisualStyleBackColor = true;
-            this.boatControl.Click += new System.EventHandler(this.boatControl_Click);
+            this.showTargetMessagesOverChar.AutoSize = true;
+            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(8, 238);
+            this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
+            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
+            this.showTargetMessagesOverChar.TabIndex = 73;
+            this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
+            this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
+            this.showTargetMessagesOverChar.CheckedChanged += new System.EventHandler(this.showTargetMessagesOverChar_CheckedChanged);
             // 
             // MainForm
             // 
@@ -3466,6 +3480,8 @@ namespace Assistant
             showPlayerPosition.Checked = Config.GetBool("ShowPartyMemberPositions");
             tiltMap.Checked = Config.GetBool("TiltMap");
 
+		    showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
+
             if (jsonApi.Checked)
 		    {
 		        new JsonApiTimer(this).Start();
@@ -3556,6 +3572,11 @@ namespace Assistant
 			{
 				ReloadScreenShotsList();
 			}
+            else if (tabs.SelectedTab == moreMoreOptTab)
+			{
+			    tabs.Size = new Size(tabs.Size.Width, 313);
+			    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
+            }
 		}
 
 	    private void RebuildHotKeyCache()
@@ -7172,6 +7193,11 @@ namespace Assistant
             BoatWindow boatWindow = new BoatWindow();
             boatWindow.Show();
             boatWindow.BringToFront();
+        }
+
+        private void showTargetMessagesOverChar_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowTargetSelfLastClearOverhead", showTargetMessagesOverChar.Checked);
         }
     }
 }

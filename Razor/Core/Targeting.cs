@@ -143,8 +143,16 @@ namespace Assistant
 
 		private static void OnClearQueue()
 		{
-			Targeting.ClearQueue();
-			World.Player.OverheadMessage( LocString.TQCleared );
+			ClearQueue();
+
+		    if (Config.GetBool("ShowTargetSelfLastClearOverhead"))
+		    {
+		        World.Player.OverheadMessage(LocString.TQCleared);
+            }
+		    else
+		    {
+		        World.Player.SendMessage(MsgLevel.Force, LocString.TQCleared);
+            }
 		}
 
 		internal static void OneTimeTarget( TargetResponseCallback onTarget )
@@ -793,8 +801,18 @@ namespace Assistant
 			}
 			else if ( forceQ || Config.GetBool( "QueueTargets" ) )
 			{
-				if ( !forceQ )
-					World.Player.OverheadMessage( LocString.QueuedTS );
+			    if (!forceQ)
+			    {
+			        if (Config.GetBool("ShowTargetSelfLastClearOverhead"))
+			        {
+			            World.Player.OverheadMessage(LocString.QueuedTS);
+                    }
+			        else
+			        {
+			            World.Player.SendMessage(MsgLevel.Force, LocString.QueuedTS);
+                    }
+                }
+					
 				m_QueueTarget = TargetSelfAction;
 			}
 		}
@@ -849,9 +867,19 @@ namespace Assistant
 			}
 			else if ( forceQ || Config.GetBool( "QueueTargets" ) )
 			{
-				if ( !forceQ )
-					World.Player.OverheadMessage( LocString.QueuedLT );
-				m_QueueTarget = LastTargetAction;
+			    if (!forceQ)
+			    {
+			        if (Config.GetBool("ShowTargetSelfLastClearOverhead"))
+			        {
+			            World.Player.OverheadMessage(LocString.QueuedLT);
+			        }
+			        else
+			        {
+			            World.Player.SendMessage(MsgLevel.Force, LocString.QueuedLT);
+			        }
+                }
+
+                m_QueueTarget = LastTargetAction;
 			}
 		}
 
