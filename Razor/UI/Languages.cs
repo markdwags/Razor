@@ -415,6 +415,8 @@ namespace Assistant
         StunSuccessful,
         StunDisabled,
         StunFailed,
+        AllCorpses,
+        AllMobiles,
 
         __End
 	}

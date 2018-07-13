@@ -665,3 +665,5 @@ InputBox::ok=&OK
 1966=Stun successful
 1967=Stun disabled
 1968=Stun failed
+1969=All Corpses
+1970=All Mobiles
