@@ -67,36 +67,6 @@
 		<hue>0</hue>
 	</counter>
 	<counter>
-		<name>Batwing</name>
-		<format>bw</format>
-		<itemid>3960</itemid>
-		<hue>0</hue>
-	</counter>
-	<counter>
-		<name>Nox Crystal</name>
-		<format>nc</format>
-		<itemid>3982</itemid>
-		<hue>0</hue>
-	</counter>
-	<counter>
-		<name>Grave Dust</name>
-		<format>gd</format>
-		<itemid>3983</itemid>
-		<hue>0</hue>
-	</counter>
-	<counter>
-		<name>Daemon Blood</name>
-		<format>db</format>
-		<itemid>3965</itemid>
-		<hue>0</hue>
-	</counter>
-	<counter>
-		<name>Pig Iron</name>
-		<format>pi</format>
-		<itemid>3978</itemid>
-		<hue>0</hue>
-	</counter>
-	<counter>
 		<name>Arrows</name>
 		<format>arw</format>
 		<itemid>3903</itemid>
@@ -106,6 +76,84 @@
 		<name>Bolts</name>
 		<format>blt</format>
 		<itemid>7163</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Platinum</name>
+		<format>plat</format>
+		<itemid>3821</itemid>
+		<hue>1154</hue>
+	</counter>
+	<counter>
+		<name>Folded Cloth</name>
+		<format>fcloth</format>
+		<itemid>5990</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Cloth Bolts</name>
+		<format>bcloth</format>
+		<itemid>3989</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Logs</name>
+		<format>logs</format>
+		<itemid>7133</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Thread</name>
+		<format>thread</format>
+		<itemid>4000</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Yarn</name>
+		<format>yarn</format>
+		<itemid>3613</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Sewing Kit</name>
+		<format>sewing</format>
+		<itemid>3997</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Cotton Bale</name>
+		<format>bale</format>
+		<itemid>3577</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Lockpicks</name>
+		<format>lp</format>
+		<itemid>5372</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Explosion Potions</name>
+		<format>explo</format>
+		<itemid>3853</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Agility Potions</name>
+		<format>agility</format>
+		<itemid>3848</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Total Refresh Potion</name>
+		<format>refresh</format>
+		<itemid>3851</itemid>
+		<hue>-1</hue>
+	</counter>
+	<counter>
+		<name>Strength Potion</name>
+		<format>strength</format>
+		<itemid>3849</itemid>
 		<hue>-1</hue>
 	</counter>
 </counters>
