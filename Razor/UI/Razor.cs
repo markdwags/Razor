@@ -274,6 +274,7 @@ namespace Assistant
         private Button btnMap;
         private Button boatControl;
         private CheckBox showTargetMessagesOverChar;
+        private CheckBox showStunMessagesOverhead;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -389,6 +390,7 @@ namespace Assistant
             this.label3 = new System.Windows.Forms.Label();
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+            this.showTargetMessagesOverChar = new System.Windows.Forms.CheckBox();
             this.forceSizeX = new System.Windows.Forms.TextBox();
             this.forceSizeY = new System.Windows.Forms.TextBox();
             this.healthFmt = new System.Windows.Forms.TextBox();
@@ -579,7 +581,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.showTargetMessagesOverChar = new System.Windows.Forms.CheckBox();
+            this.showStunMessagesOverhead = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
@@ -1178,6 +1180,7 @@ namespace Assistant
             // 
             // moreMoreOptTab
             // 
+            this.moreMoreOptTab.Controls.Add(this.showStunMessagesOverhead);
             this.moreMoreOptTab.Controls.Add(this.showTargetMessagesOverChar);
             this.moreMoreOptTab.Controls.Add(this.forceSizeX);
             this.moreMoreOptTab.Controls.Add(this.forceSizeY);
@@ -1210,6 +1213,17 @@ namespace Assistant
             this.moreMoreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
+            // 
+            // showTargetMessagesOverChar
+            // 
+            this.showTargetMessagesOverChar.AutoSize = true;
+            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(8, 238);
+            this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
+            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
+            this.showTargetMessagesOverChar.TabIndex = 73;
+            this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
+            this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
+            this.showTargetMessagesOverChar.CheckedChanged += new System.EventHandler(this.showTargetMessagesOverChar_CheckedChanged);
             // 
             // forceSizeX
             // 
@@ -1452,9 +1466,9 @@ namespace Assistant
             this.displayTab.Controls.Add(this.checkNewConts);
             this.displayTab.Controls.Add(this.groupBox3);
             this.displayTab.Controls.Add(this.groupBox2);
-            this.displayTab.Location = new System.Drawing.Point(4, 24);
+            this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(482, 285);
+            this.displayTab.Size = new System.Drawing.Size(482, 460);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             // 
@@ -1669,9 +1683,9 @@ namespace Assistant
             // 
             this.dressTab.Controls.Add(this.groupBox6);
             this.dressTab.Controls.Add(this.groupBox5);
-            this.dressTab.Location = new System.Drawing.Point(4, 24);
+            this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 285);
+            this.dressTab.Size = new System.Drawing.Size(482, 460);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             // 
@@ -1828,9 +1842,9 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.setlocks);
             this.skillsTab.Controls.Add(this.resetDelta);
             this.skillsTab.Controls.Add(this.skillList);
-            this.skillsTab.Location = new System.Drawing.Point(4, 24);
+            this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 285);
+            this.skillsTab.Size = new System.Drawing.Size(482, 460);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             // 
@@ -1970,9 +1984,9 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB1);
             this.agentsTab.Controls.Add(this.agentB2);
             this.agentsTab.Controls.Add(this.agentB3);
-            this.agentsTab.Location = new System.Drawing.Point(4, 24);
+            this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 285);
+            this.agentsTab.Size = new System.Drawing.Size(482, 460);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             // 
@@ -2061,7 +2075,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 265);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 460);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             // 
@@ -2210,7 +2224,7 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 265);
+            this.macrosTab.Size = new System.Drawing.Size(482, 460);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             // 
@@ -2551,7 +2565,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 265);
+            this.videoTab.Size = new System.Drawing.Size(482, 460);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             // 
@@ -2814,7 +2828,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(482, 265);
+            this.screenshotTab.Size = new System.Drawing.Size(482, 460);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             // 
@@ -2945,7 +2959,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 265);
+            this.advancedTab.Size = new System.Drawing.Size(482, 460);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             // 
@@ -3067,7 +3081,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 265);
+            this.aboutTab.Size = new System.Drawing.Size(482, 460);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             // 
@@ -3150,16 +3164,16 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
-            // showTargetMessagesOverChar
+            // showStunMessagesOverhead
             // 
-            this.showTargetMessagesOverChar.AutoSize = true;
-            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(8, 238);
-            this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
-            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
-            this.showTargetMessagesOverChar.TabIndex = 73;
-            this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
-            this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
-            this.showTargetMessagesOverChar.CheckedChanged += new System.EventHandler(this.showTargetMessagesOverChar_CheckedChanged);
+            this.showStunMessagesOverhead.AutoSize = true;
+            this.showStunMessagesOverhead.Location = new System.Drawing.Point(245, 238);
+            this.showStunMessagesOverhead.Name = "showStunMessagesOverhead";
+            this.showStunMessagesOverhead.Size = new System.Drawing.Size(190, 19);
+            this.showStunMessagesOverhead.TabIndex = 74;
+            this.showStunMessagesOverhead.Text = "Show Stun Messages Overhead";
+            this.showStunMessagesOverhead.UseVisualStyleBackColor = true;
+            this.showStunMessagesOverhead.CheckedChanged += new System.EventHandler(this.showStunMessagesOverhead_CheckedChanged);
             // 
             // MainForm
             // 
@@ -3481,6 +3495,7 @@ namespace Assistant
             tiltMap.Checked = Config.GetBool("TiltMap");
 
 		    showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
+		    showStunMessagesOverhead.Checked = Config.GetBool("ShowStunOverhead");
 
             if (jsonApi.Checked)
 		    {
@@ -7198,6 +7213,11 @@ namespace Assistant
         private void showTargetMessagesOverChar_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowTargetSelfLastClearOverhead", showTargetMessagesOverChar.Checked);
+        }
+
+        private void showStunMessagesOverhead_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowStunOverhead", showStunMessagesOverhead.Checked);
         }
     }
 }

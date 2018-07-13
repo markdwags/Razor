@@ -1843,16 +1843,35 @@ namespace Assistant
 			{
 				if ( ser == Serial.MinusOne && name == "System" )
 				{
-					if ( Config.GetBool( "FilterSnoopMsg" ) && text.IndexOf( World.Player.Name ) == -1 && text.StartsWith( "You notice" ) && text.IndexOf( "attempting to peek into" ) != -1 && text.IndexOf( "belongings" ) != -1 )
+				    if ( Config.GetBool( "FilterSnoopMsg" ) && text.IndexOf( World.Player.Name ) == -1 && text.StartsWith( "You notice" ) && text.IndexOf( "attempting to peek into" ) != -1 && text.IndexOf( "belongings" ) != -1 )
 					{
 						args.Block = true;
 						return;
 					}
-					else if ( text.StartsWith( "You've committed a criminal act" ) || text.StartsWith( "You are now a criminal" ) )
-					{
-						World.Player.ResetCriminalTimer();
-					}
-				}
+
+				    if ( text.StartsWith( "You've committed a criminal act" ) || text.StartsWith( "You are now a criminal" ) )
+				    {
+				        World.Player.ResetCriminalTimer();
+				    }
+                    //"You get yourself ready to stun your opponent."
+                    else if (Config.GetBool("ShowStunOverhead") && text.Contains("ready to stun your opponent"))
+				    {
+                        World.Player.OverheadMessage(LocString.StunReady);
+				    }
+				    else if (Config.GetBool("ShowStunOverhead") && text.Contains("successfully stun your opponent"))
+				    {
+				        World.Player.OverheadMessage(LocString.StunSuccessful);
+                    }
+				    else if (Config.GetBool("ShowStunOverhead") && text.Contains("not try to stun anyone"))
+				    {
+				        World.Player.OverheadMessage(LocString.StunDisabled);
+                    }
+				    else if (Config.GetBool("ShowStunOverhead") && text.Contains("failed in your attempt to stun"))
+				    {
+				        World.Player.OverheadMessage(LocString.StunFailed);
+                    }
+
+                }
 
 				if ( ( type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper || type == MessageType.Yell ) && ser.IsMobile && ser != World.Player.Serial )
 				{

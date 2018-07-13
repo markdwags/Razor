@@ -183,6 +183,7 @@ MainForm::homeLink=Razor Homepage
 MainForm::userGuideLink=Razor User Guide
 MainForm::dataDir=Open Data Directory
 MainForm::showTargetMessagesOverChar=Show Target Self/Last/Clear Overhead
+MainForm::showStunMessagesOverhead=Show Stun Messages Overhead
 
 HueEntry::Text=Select a Hue
 HueEntry::cancel=Cancel
@@ -660,3 +661,7 @@ InputBox::ok=&OK
 1962=> Pause Current Macro
 1963=Macro paused..
 1964=Macro resuming..
+1965=Stun ready
+1966=Stun successful
+1967=Stun disabled
+1968=Stun failed

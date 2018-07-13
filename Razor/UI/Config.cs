@@ -156,6 +156,7 @@ namespace Assistant
 	        AddProperty("TiltMap", true);
 
 	        AddProperty("ShowTargetSelfLastClearOverhead", true);
+	        AddProperty("ShowStunOverhead", false);
 
             Counter.Default();
 	        Filter.DisableAll();
