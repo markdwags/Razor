@@ -159,6 +159,7 @@ namespace Assistant
 	        AddProperty("ShowStunOverhead", false);
 
 	        AddProperty("LightLevel", 31);
+	        AddProperty("LogSkillChanges", false);
 
             Counter.Default();
 	        Filter.DisableAll();

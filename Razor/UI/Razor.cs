@@ -276,6 +276,7 @@ namespace Assistant
         private CheckBox showTargetMessagesOverChar;
         private CheckBox showStunMessagesOverhead;
         private Label label24;
+        private CheckBox logSkillChanges;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -584,6 +585,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.logSkillChanges = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
@@ -1847,6 +1849,7 @@ namespace Assistant
             // 
             // skillsTab
             // 
+            this.skillsTab.Controls.Add(this.logSkillChanges);
             this.skillsTab.Controls.Add(this.dispDelta);
             this.skillsTab.Controls.Add(this.skillCopyAll);
             this.skillsTab.Controls.Add(this.skillCopySel);
@@ -1866,7 +1869,7 @@ namespace Assistant
             // 
             this.dispDelta.Location = new System.Drawing.Point(358, 132);
             this.dispDelta.Name = "dispDelta";
-            this.dispDelta.Size = new System.Drawing.Size(112, 42);
+            this.dispDelta.Size = new System.Drawing.Size(116, 42);
             this.dispDelta.TabIndex = 11;
             this.dispDelta.Text = "Display skill and stat changes";
             this.dispDelta.CheckedChanged += new System.EventHandler(this.dispDelta_CheckedChanged);
@@ -1892,7 +1895,7 @@ namespace Assistant
             // baseTotal
             // 
             this.baseTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.baseTotal.Location = new System.Drawing.Point(382, 203);
+            this.baseTotal.Location = new System.Drawing.Point(382, 213);
             this.baseTotal.Name = "baseTotal";
             this.baseTotal.ReadOnly = true;
             this.baseTotal.Size = new System.Drawing.Size(62, 23);
@@ -1901,7 +1904,7 @@ namespace Assistant
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(379, 177);
+            this.label1.Location = new System.Drawing.Point(380, 191);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 23);
             this.label1.TabIndex = 6;
@@ -3190,6 +3193,17 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
+            // logSkillChanges
+            // 
+            this.logSkillChanges.AutoSize = true;
+            this.logSkillChanges.Location = new System.Drawing.Point(358, 172);
+            this.logSkillChanges.Name = "logSkillChanges";
+            this.logSkillChanges.Size = new System.Drawing.Size(116, 19);
+            this.logSkillChanges.TabIndex = 13;
+            this.logSkillChanges.Text = "Log skill changes";
+            this.logSkillChanges.UseVisualStyleBackColor = true;
+            this.logSkillChanges.CheckedChanged += new System.EventHandler(this.logSkillChanges_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3511,7 +3525,9 @@ namespace Assistant
 
 		    showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
 		    showStunMessagesOverhead.Checked = Config.GetBool("ShowStunOverhead");
-            
+
+		    logSkillChanges.Checked = Config.GetBool("LogSkillChanges");
+
             lightLevelBar.Value = Config.GetInt("LightLevel");
             double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
 		    lightLevel.Text = $"Light: {percent}%";
@@ -3764,7 +3780,31 @@ namespace Assistant
 				Total += World.Player.Skills[i].Base;
 			baseTotal.Text = String.Format( "{0:F1}", Total );
 
-			for (int i=0;i<skillList.Items.Count;i++)
+		    if (Config.GetBool("LogSkillChanges"))
+		    {
+		        string skillLog =
+		            $"{Config.GetInstallDirectory()}\\SkillLog\\{World.Player.Name}_{World.Player.Serial}_SkillLog.csv";
+
+		        if (!Directory.Exists($"{Config.GetInstallDirectory()}\\SkillLog"))
+		        {
+		            Directory.CreateDirectory($"{Config.GetInstallDirectory()}\\SkillLog");
+		        }
+
+		        if (!File.Exists(skillLog))
+		        {
+		            using (StreamWriter sr = File.CreateText(skillLog))
+		            {
+		                sr.WriteLine("Timestamp,SkillName,Value,Base,Gain,Cap");
+		            }
+		        }
+
+		        using (StreamWriter sw = File.AppendText(skillLog))
+		        {
+		            sw.WriteLine($"{DateTime.Now},{(SkillName)skill.Index},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
+		        }
+		    }
+
+            for (int i=0;i<skillList.Items.Count;i++)
 			{
 				ListViewItem cur = skillList.Items[i];
 				if ( cur.Tag == skill )
@@ -3778,7 +3818,7 @@ namespace Assistant
 					return;
 				}
 			}
-		}
+        }
 
 		public void RedrawSkills()
 		{
@@ -7267,6 +7307,11 @@ namespace Assistant
                 MapWindow.Show();
                 MapWindow.BringToFront();
             }
+        }
+
+        private void logSkillChanges_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("LogSkillChanges", logSkillChanges.Checked);
         }
     }
 }
