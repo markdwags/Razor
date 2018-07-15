@@ -237,7 +237,7 @@ namespace Assistant
         private CheckBox trackPlayerPosition;
         private GroupBox groupMapPoints;
         private ListBox mapPoints;
-        private Button button1;
+        private Button openUOPS;
         private CheckBox tiltMap;
         private CheckBox showPartyMemberPositions;
         private Button removeMapPoint;
@@ -275,6 +275,7 @@ namespace Assistant
         private Button boatControl;
         private CheckBox showTargetMessagesOverChar;
         private CheckBox showStunMessagesOverhead;
+        private Label label24;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -390,6 +391,7 @@ namespace Assistant
             this.label3 = new System.Windows.Forms.Label();
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+            this.showStunMessagesOverhead = new System.Windows.Forms.CheckBox();
             this.showTargetMessagesOverChar = new System.Windows.Forms.CheckBox();
             this.forceSizeX = new System.Windows.Forms.TextBox();
             this.forceSizeY = new System.Windows.Forms.TextBox();
@@ -518,7 +520,7 @@ namespace Assistant
             this.showPlayerPosition = new System.Windows.Forms.CheckBox();
             this.tiltMap = new System.Windows.Forms.CheckBox();
             this.showPartyMemberPositions = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.openUOPS = new System.Windows.Forms.Button();
             this.groupMapPoints = new System.Windows.Forms.GroupBox();
             this.removeMapPoint = new System.Windows.Forms.Button();
             this.addMapPoint = new System.Windows.Forms.Button();
@@ -573,6 +575,7 @@ namespace Assistant
             this.statusBox = new System.Windows.Forms.TextBox();
             this.features = new System.Windows.Forms.TextBox();
             this.aboutTab = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label23 = new System.Windows.Forms.Label();
@@ -581,7 +584,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.showStunMessagesOverhead = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
@@ -691,6 +693,7 @@ namespace Assistant
             this.lightLevelBar.Size = new System.Drawing.Size(197, 21);
             this.lightLevelBar.TabIndex = 79;
             this.lightLevelBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.lightLevelBar.Value = 15;
             this.lightLevelBar.Scroll += new System.EventHandler(this.lightLevelBar_Scroll);
             // 
             // clientPrio
@@ -1213,6 +1216,17 @@ namespace Assistant
             this.moreMoreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
+            // 
+            // showStunMessagesOverhead
+            // 
+            this.showStunMessagesOverhead.AutoSize = true;
+            this.showStunMessagesOverhead.Location = new System.Drawing.Point(245, 238);
+            this.showStunMessagesOverhead.Name = "showStunMessagesOverhead";
+            this.showStunMessagesOverhead.Size = new System.Drawing.Size(190, 19);
+            this.showStunMessagesOverhead.TabIndex = 74;
+            this.showStunMessagesOverhead.Text = "Show Stun Messages Overhead";
+            this.showStunMessagesOverhead.UseVisualStyleBackColor = true;
+            this.showStunMessagesOverhead.CheckedChanged += new System.EventHandler(this.showStunMessagesOverhead_CheckedChanged);
             // 
             // showTargetMessagesOverChar
             // 
@@ -2435,7 +2449,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.showPlayerPosition);
             this.mapTab.Controls.Add(this.tiltMap);
             this.mapTab.Controls.Add(this.showPartyMemberPositions);
-            this.mapTab.Controls.Add(this.button1);
+            this.mapTab.Controls.Add(this.openUOPS);
             this.mapTab.Controls.Add(this.groupMapPoints);
             this.mapTab.Controls.Add(this.trackPlayerPosition);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
@@ -2446,21 +2460,21 @@ namespace Assistant
             // 
             // boatControl
             // 
-            this.boatControl.Location = new System.Drawing.Point(218, 142);
+            this.boatControl.Location = new System.Drawing.Point(145, 14);
             this.boatControl.Name = "boatControl";
-            this.boatControl.Size = new System.Drawing.Size(55, 46);
+            this.boatControl.Size = new System.Drawing.Size(128, 32);
             this.boatControl.TabIndex = 60;
-            this.boatControl.Text = "Boat Control";
+            this.boatControl.Text = "Open Boat Control";
             this.boatControl.UseVisualStyleBackColor = true;
             this.boatControl.Click += new System.EventHandler(this.boatControl_Click);
             // 
             // btnMap
             // 
-            this.btnMap.Location = new System.Drawing.Point(6, 205);
+            this.btnMap.Location = new System.Drawing.Point(20, 199);
             this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(167, 24);
+            this.btnMap.Size = new System.Drawing.Size(237, 24);
             this.btnMap.TabIndex = 59;
-            this.btnMap.Text = "Open Old UO Map System";
+            this.btnMap.Text = "Open UOPS";
             this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
             // 
             // showPlayerPosition
@@ -2496,14 +2510,15 @@ namespace Assistant
             this.showPartyMemberPositions.UseVisualStyleBackColor = true;
             this.showPartyMemberPositions.CheckedChanged += new System.EventHandler(this.showPartyMemberPositions_CheckedChanged);
             // 
-            // button1
+            // openUOPS
             // 
-            this.button1.Location = new System.Drawing.Point(6, 14);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(267, 32);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Open UO Positioning System 2.0";
-            this.button1.UseVisualStyleBackColor = true;
+            this.openUOPS.Location = new System.Drawing.Point(5, 14);
+            this.openUOPS.Name = "openUOPS";
+            this.openUOPS.Size = new System.Drawing.Size(134, 32);
+            this.openUOPS.TabIndex = 2;
+            this.openUOPS.Text = "Open UOPS 2.0";
+            this.openUOPS.UseVisualStyleBackColor = true;
+            this.openUOPS.Click += new System.EventHandler(this.openUOPS_Click);
             // 
             // groupMapPoints
             // 
@@ -3072,6 +3087,7 @@ namespace Assistant
             // 
             // aboutTab
             // 
+            this.aboutTab.Controls.Add(this.label24);
             this.aboutTab.Controls.Add(this.label20);
             this.aboutTab.Controls.Add(this.linkLabel1);
             this.aboutTab.Controls.Add(this.label23);
@@ -3084,6 +3100,16 @@ namespace Assistant
             this.aboutTab.Size = new System.Drawing.Size(482, 460);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(55, 155);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(378, 17);
+            this.label24.TabIndex = 22;
+            this.label24.Text = "Razor mapping tool designed and written by JimmyTheHand";
             // 
             // label20
             // 
@@ -3163,17 +3189,6 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-            // 
-            // showStunMessagesOverhead
-            // 
-            this.showStunMessagesOverhead.AutoSize = true;
-            this.showStunMessagesOverhead.Location = new System.Drawing.Point(245, 238);
-            this.showStunMessagesOverhead.Name = "showStunMessagesOverhead";
-            this.showStunMessagesOverhead.Size = new System.Drawing.Size(190, 19);
-            this.showStunMessagesOverhead.TabIndex = 74;
-            this.showStunMessagesOverhead.Text = "Show Stun Messages Overhead";
-            this.showStunMessagesOverhead.UseVisualStyleBackColor = true;
-            this.showStunMessagesOverhead.CheckedChanged += new System.EventHandler(this.showStunMessagesOverhead_CheckedChanged);
             // 
             // MainForm
             // 
@@ -3496,6 +3511,10 @@ namespace Assistant
 
 		    showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
 		    showStunMessagesOverhead.Checked = Config.GetBool("ShowStunOverhead");
+            
+            lightLevelBar.Value = Config.GetInt("LightLevel");
+            double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
+		    lightLevel.Text = $"Light: {percent}%";
 
             if (jsonApi.Checked)
 		    {
@@ -4621,10 +4640,17 @@ namespace Assistant
 				hk.SendToUO = chkPass.Checked;
 			}
 
-            HotKey.RebuildList(hotkeyTree);
-		    RebuildHotKeyCache();
+		    if (!string.IsNullOrEmpty(filterHotkeys.Text))
+		    {
+		        TreeNode node = hotkeyTree.SelectedNode;
 
-            filterHotkeys_TextChanged(sender, e);
+		        HotKey.RebuildList(hotkeyTree);
+		        RebuildHotKeyCache();
+
+		        filterHotkeys_TextChanged(sender, e);
+
+		        hotkeyTree.SelectedNode = node;
+		    }
         }
 
 		private void unsetHK_Click(object sender, System.EventArgs e)
@@ -7178,8 +7204,14 @@ namespace Assistant
                 World.Player.LocalLightLevel = 0;
                 World.Player.GlobalLightLevel = Convert.ToByte(lightLevelBar.Value);
 
-                ClientCommunication.SendToClient(new GlobalLightLevel(Convert.ToByte(lightLevelBar.Value)));
+                ClientCommunication.SendToClient(new GlobalLightLevel(Convert.ToByte(lightLevelBar.Maximum - lightLevelBar.Value)));
                 ClientCommunication.SendToClient(new PersonalLightLevel(World.Player));
+                
+                double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
+
+                lightLevel.Text = $"Light: {percent}%";
+
+                Config.SetProperty("LightLevel", lightLevelBar.Value);
             }
         }
 
@@ -7218,6 +7250,23 @@ namespace Assistant
         private void showStunMessagesOverhead_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowStunOverhead", showStunMessagesOverhead.Checked);
+        }
+
+        private void openUOPS_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Soon(tm)");
+
+            return;
+
+            if (World.Player != null)
+            {
+                if (MapWindow == null)
+                    MapWindow = new Assistant.MapUO.MapWindow();
+                //SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
+                //MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
+                MapWindow.Show();
+                MapWindow.BringToFront();
+            }
         }
     }
 }

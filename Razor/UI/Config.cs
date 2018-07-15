@@ -158,6 +158,8 @@ namespace Assistant
 	        AddProperty("ShowTargetSelfLastClearOverhead", true);
 	        AddProperty("ShowStunOverhead", false);
 
+	        AddProperty("LightLevel", 31);
+
             Counter.Default();
 	        Filter.DisableAll();
 	        DressList.ClearAll();

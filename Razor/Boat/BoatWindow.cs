@@ -28,6 +28,7 @@ namespace Assistant.Boat
         {
             InitializeComponent();
             this.MouseDown += BoatWindow_MouseDown;
+            this.boatBorder.MouseDown += BoatWindow_MouseDown;
         }
 
         private void BoatWindow_Load(object sender, EventArgs e)
@@ -207,6 +208,11 @@ namespace Assistant.Boat
         private void boatNav_Click(object sender, EventArgs e)
         {
             SendBoatCommand("Nav", false);
+        }
+
+        private void boatWindowsBorder_CheckedChanged(object sender, EventArgs e)
+        {
+            boatBorder.Visible = boatWindowsBorder.Checked;
         }
     }
 }

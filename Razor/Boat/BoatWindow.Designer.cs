@@ -59,6 +59,8 @@
             this.boatContinue = new System.Windows.Forms.Button();
             this.boatNav = new System.Windows.Forms.Button();
             this.alwaysOnTop = new System.Windows.Forms.CheckBox();
+            this.boatBorder = new System.Windows.Forms.PictureBox();
+            this.boatWindowsBorder = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.boatNorth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.boatNortheast)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.boatEast)).BeginInit();
@@ -73,6 +75,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.boatTurnRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.boatTurnLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.boatTurnAround)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.boatBorder)).BeginInit();
             this.SuspendLayout();
             // 
             // boatNorth
@@ -189,7 +192,7 @@
             // 
             this.boatSpeedNormal.AutoSize = true;
             this.boatSpeedNormal.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.boatSpeedNormal.ForeColor = System.Drawing.Color.White;
+            this.boatSpeedNormal.ForeColor = System.Drawing.Color.DarkGray;
             this.boatSpeedNormal.Location = new System.Drawing.Point(12, 12);
             this.boatSpeedNormal.Name = "boatSpeedNormal";
             this.boatSpeedNormal.Size = new System.Drawing.Size(62, 17);
@@ -202,7 +205,7 @@
             // 
             this.boatSpeedSlow.AutoSize = true;
             this.boatSpeedSlow.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.boatSpeedSlow.ForeColor = System.Drawing.Color.White;
+            this.boatSpeedSlow.ForeColor = System.Drawing.Color.DarkGray;
             this.boatSpeedSlow.Location = new System.Drawing.Point(80, 12);
             this.boatSpeedSlow.Name = "boatSpeedSlow";
             this.boatSpeedSlow.Size = new System.Drawing.Size(50, 17);
@@ -215,7 +218,7 @@
             // 
             this.boatSpeedOne.AutoSize = true;
             this.boatSpeedOne.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.boatSpeedOne.ForeColor = System.Drawing.Color.White;
+            this.boatSpeedOne.ForeColor = System.Drawing.Color.DarkGray;
             this.boatSpeedOne.Location = new System.Drawing.Point(136, 12);
             this.boatSpeedOne.Name = "boatSpeedOne";
             this.boatSpeedOne.Size = new System.Drawing.Size(47, 17);
@@ -427,8 +430,8 @@
             // 
             this.alwaysOnTop.AutoSize = true;
             this.alwaysOnTop.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.alwaysOnTop.ForeColor = System.Drawing.Color.White;
-            this.alwaysOnTop.Location = new System.Drawing.Point(40, 270);
+            this.alwaysOnTop.ForeColor = System.Drawing.Color.DarkGray;
+            this.alwaysOnTop.Location = new System.Drawing.Point(11, 270);
             this.alwaysOnTop.Name = "alwaysOnTop";
             this.alwaysOnTop.Size = new System.Drawing.Size(101, 17);
             this.alwaysOnTop.TabIndex = 31;
@@ -436,12 +439,36 @@
             this.alwaysOnTop.UseVisualStyleBackColor = true;
             this.alwaysOnTop.CheckedChanged += new System.EventHandler(this.alwaysOnTop_CheckedChanged);
             // 
+            // boatBorder
+            // 
+            this.boatBorder.Image = ((System.Drawing.Image)(resources.GetObject("boatBorder.Image")));
+            this.boatBorder.Location = new System.Drawing.Point(0, 0);
+            this.boatBorder.Name = "boatBorder";
+            this.boatBorder.Size = new System.Drawing.Size(190, 296);
+            this.boatBorder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.boatBorder.TabIndex = 32;
+            this.boatBorder.TabStop = false;
+            this.boatBorder.Visible = false;
+            // boatWindowsBorder
+            // 
+            this.boatWindowsBorder.AutoSize = true;
+            this.boatWindowsBorder.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.boatWindowsBorder.ForeColor = System.Drawing.Color.DarkGray;
+            this.boatWindowsBorder.Location = new System.Drawing.Point(114, 270);
+            this.boatWindowsBorder.Name = "boatWindowsBorder";
+            this.boatWindowsBorder.Size = new System.Drawing.Size(61, 17);
+            this.boatWindowsBorder.TabIndex = 33;
+            this.boatWindowsBorder.Text = "Border";
+            this.boatWindowsBorder.UseVisualStyleBackColor = true;
+            this.boatWindowsBorder.CheckedChanged += new System.EventHandler(this.boatWindowsBorder_CheckedChanged);
+            // 
             // BoatWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(190, 296);
+            this.Controls.Add(this.boatWindowsBorder);
             this.Controls.Add(this.alwaysOnTop);
             this.Controls.Add(this.boatNav);
             this.Controls.Add(this.boatContinue);
@@ -472,6 +499,7 @@
             this.Controls.Add(this.boatEast);
             this.Controls.Add(this.boatNortheast);
             this.Controls.Add(this.boatNorth);
+            this.Controls.Add(this.boatBorder);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -496,6 +524,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.boatTurnRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.boatTurnLeft)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.boatTurnAround)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.boatBorder)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -533,5 +562,7 @@
         private System.Windows.Forms.Button boatContinue;
         private System.Windows.Forms.Button boatNav;
         private System.Windows.Forms.CheckBox alwaysOnTop;
+        private System.Windows.Forms.PictureBox boatBorder;
+        private System.Windows.Forms.CheckBox boatWindowsBorder;
     }
 }
