@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using Assistant.Filters;
 using Assistant.Macros;
 using System.Diagnostics;
+using Assistant.Boat;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -74,7 +75,6 @@ namespace Assistant
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.CheckBox chkPass;
 		private System.Windows.Forms.TabPage moreOptTab;
-		private System.Windows.Forms.CheckBox chkStealth;
 		private System.Windows.Forms.TabPage agentsTab;
 		private System.Windows.Forms.GroupBox agentGroup;
 		private System.Windows.Forms.ListBox agentSubList;
@@ -137,20 +137,9 @@ namespace Assistant
 		private System.Windows.Forms.Label hkStatus;
 		private System.Windows.Forms.Button clearDress;
 		private System.Windows.Forms.TabPage moreMoreOptTab;
-		private System.Windows.Forms.CheckBox actionStatusMsg;
-		private System.Windows.Forms.TextBox txtObjDelay;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.CheckBox QueueActions;
-		private System.Windows.Forms.CheckBox rangeCheckLT;
-		private System.Windows.Forms.TextBox ltRange;
-		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.CheckBox excludePouches;
 		private System.Windows.Forms.CheckBox filterSnoop;
-		private System.Windows.Forms.CheckBox smartLT;
-		private System.Windows.Forms.CheckBox showtargtext;
 		private System.Windows.Forms.Label waitDisp;
-		private System.Windows.Forms.CheckBox rememberPwds;
 		private System.Windows.Forms.CheckBox blockDis;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.ComboBox imgFmt;
@@ -181,31 +170,16 @@ namespace Assistant
 
 		private int m_LastKV = 0;
 		private bool m_ProfileConfirmLoad;
-		private System.Windows.Forms.CheckBox spellUnequip;
-		private System.Windows.Forms.CheckBox autoFriend;
-		private System.Windows.Forms.CheckBox alwaysStealth;
-		private System.Windows.Forms.CheckBox autoOpenDoors;
-		private System.Windows.Forms.TextBox forceSizeX;
-		private System.Windows.Forms.TextBox forceSizeY;
-		private System.Windows.Forms.Label label18;
-		private System.Windows.Forms.CheckBox gameSize;
 		private System.Windows.Forms.CheckBox flipVidHoriz;
 		private System.Windows.Forms.CheckBox flipVidVert;
 		private System.Windows.Forms.Label label19;
-		private System.Windows.Forms.CheckBox potionEquip;
 		private System.Windows.Forms.TextBox warnNum;
 		private System.Windows.Forms.CheckBox warnCount;
-		private System.Windows.Forms.CheckBox blockHealPoison;
-		private System.Windows.Forms.Button btnMap;
 		private System.Windows.Forms.Label rpvTime;
 		private System.Windows.Forms.CheckBox showNotoHue;
 		private System.Windows.Forms.CheckBox preAOSstatbar;
-		private System.Windows.Forms.CheckBox showHealthOH;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.TextBox healthFmt;
 		private System.Windows.Forms.ComboBox clientPrio;
 		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.CheckBox chkPartyOverhead;
         private LinkLabel linkGithub;
         private Label label21;
         private Label aboutVer;
@@ -259,6 +233,50 @@ namespace Assistant
         private CheckBox stepThroughMacro;
         private Button nextMacroAction;
         private Button disableSmartCPU;
+        private TabPage mapTab;
+        private CheckBox trackPlayerPosition;
+        private GroupBox groupMapPoints;
+        private ListBox mapPoints;
+        private Button openUOPS;
+        private CheckBox tiltMap;
+        private CheckBox showPartyMemberPositions;
+        private Button removeMapPoint;
+        private Button addMapPoint;
+        private CheckBox showPlayerPosition;
+        private TextBox forceSizeX;
+        private TextBox forceSizeY;
+        private TextBox healthFmt;
+        private Label label10;
+        private CheckBox showHealthOH;
+        private CheckBox blockHealPoison;
+        private TextBox ltRange;
+        private CheckBox potionEquip;
+        private TextBox txtObjDelay;
+        private CheckBox QueueActions;
+        private CheckBox spellUnequip;
+        private CheckBox autoOpenDoors;
+        private CheckBox alwaysStealth;
+        private CheckBox autoFriend;
+        private CheckBox chkStealth;
+        private CheckBox rememberPwds;
+        private CheckBox showtargtext;
+        private CheckBox rangeCheckLT;
+        private CheckBox actionStatusMsg;
+        private Label label5;
+        private Label label8;
+        private Label label6;
+        private Label label18;
+        private CheckBox smartLT;
+        private CheckBox gameSize;
+        private CheckBox chkPartyOverhead;
+        private TrackBar lightLevelBar;
+        private Label lightLevel;
+        private Button btnMap;
+        private Button boatControl;
+        private CheckBox showTargetMessagesOverChar;
+        private CheckBox showStunMessagesOverhead;
+        private Label label24;
+        private CheckBox logSkillChanges;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -322,8 +340,9 @@ namespace Assistant
             this.m_NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.generalTab = new System.Windows.Forms.TabPage();
+            this.lightLevel = new System.Windows.Forms.Label();
+            this.lightLevelBar = new System.Windows.Forms.TrackBar();
             this.clientPrio = new System.Windows.Forms.ComboBox();
-            this.btnMap = new System.Windows.Forms.Button();
             this.systray = new System.Windows.Forms.RadioButton();
             this.taskbar = new System.Windows.Forms.RadioButton();
             this.langSel = new System.Windows.Forms.ComboBox();
@@ -347,7 +366,6 @@ namespace Assistant
             this.lthilight = new System.Windows.Forms.CheckBox();
             this.filterSnoop = new System.Windows.Forms.CheckBox();
             this.corpseRange = new System.Windows.Forms.TextBox();
-            this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.incomingMob = new System.Windows.Forms.CheckBox();
             this.setHarmHue = new System.Windows.Forms.Button();
             this.setNeuHue = new System.Windows.Forms.Button();
@@ -372,7 +390,10 @@ namespace Assistant
             this.chkForceSpellHue = new System.Windows.Forms.CheckBox();
             this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+            this.showStunMessagesOverhead = new System.Windows.Forms.CheckBox();
+            this.showTargetMessagesOverChar = new System.Windows.Forms.CheckBox();
             this.forceSizeX = new System.Windows.Forms.TextBox();
             this.forceSizeY = new System.Windows.Forms.TextBox();
             this.healthFmt = new System.Windows.Forms.TextBox();
@@ -494,6 +515,18 @@ namespace Assistant
             this.actionList = new System.Windows.Forms.ListBox();
             this.delMacro = new System.Windows.Forms.Button();
             this.newMacro = new System.Windows.Forms.Button();
+            this.mapTab = new System.Windows.Forms.TabPage();
+            this.boatControl = new System.Windows.Forms.Button();
+            this.btnMap = new System.Windows.Forms.Button();
+            this.showPlayerPosition = new System.Windows.Forms.CheckBox();
+            this.tiltMap = new System.Windows.Forms.CheckBox();
+            this.showPartyMemberPositions = new System.Windows.Forms.CheckBox();
+            this.openUOPS = new System.Windows.Forms.Button();
+            this.groupMapPoints = new System.Windows.Forms.GroupBox();
+            this.removeMapPoint = new System.Windows.Forms.Button();
+            this.addMapPoint = new System.Windows.Forms.Button();
+            this.mapPoints = new System.Windows.Forms.ListBox();
+            this.trackPlayerPosition = new System.Windows.Forms.CheckBox();
             this.videoTab = new System.Windows.Forms.TabPage();
             this.txtRecFolder = new System.Windows.Forms.TextBox();
             this.recFolder = new System.Windows.Forms.Button();
@@ -543,6 +576,7 @@ namespace Assistant
             this.statusBox = new System.Windows.Forms.TextBox();
             this.features = new System.Windows.Forms.TextBox();
             this.aboutTab = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label23 = new System.Windows.Forms.Label();
@@ -551,8 +585,10 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.logSkillChanges = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -572,6 +608,8 @@ namespace Assistant
             this.macrosTab.SuspendLayout();
             this.absoluteTargetGroup.SuspendLayout();
             this.macroActGroup.SuspendLayout();
+            this.mapTab.SuspendLayout();
+            this.groupMapPoints.SuspendLayout();
             this.videoTab.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox10.SuspendLayout();
@@ -600,6 +638,7 @@ namespace Assistant
             this.tabs.Controls.Add(this.agentsTab);
             this.tabs.Controls.Add(this.hotkeysTab);
             this.tabs.Controls.Add(this.macrosTab);
+            this.tabs.Controls.Add(this.mapTab);
             this.tabs.Controls.Add(this.videoTab);
             this.tabs.Controls.Add(this.screenshotTab);
             this.tabs.Controls.Add(this.advancedTab);
@@ -617,8 +656,9 @@ namespace Assistant
             // 
             // generalTab
             // 
+            this.generalTab.Controls.Add(this.lightLevel);
+            this.generalTab.Controls.Add(this.lightLevelBar);
             this.generalTab.Controls.Add(this.clientPrio);
-            this.generalTab.Controls.Add(this.btnMap);
             this.generalTab.Controls.Add(this.systray);
             this.generalTab.Controls.Add(this.taskbar);
             this.generalTab.Controls.Add(this.langSel);
@@ -637,6 +677,27 @@ namespace Assistant
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             // 
+            // lightLevel
+            // 
+            this.lightLevel.AutoSize = true;
+            this.lightLevel.Location = new System.Drawing.Point(181, 191);
+            this.lightLevel.Name = "lightLevel";
+            this.lightLevel.Size = new System.Drawing.Size(67, 15);
+            this.lightLevel.TabIndex = 81;
+            this.lightLevel.Text = "Light Level:";
+            // 
+            // lightLevelBar
+            // 
+            this.lightLevelBar.AutoSize = false;
+            this.lightLevelBar.Location = new System.Drawing.Point(279, 191);
+            this.lightLevelBar.Maximum = 31;
+            this.lightLevelBar.Name = "lightLevelBar";
+            this.lightLevelBar.Size = new System.Drawing.Size(197, 21);
+            this.lightLevelBar.TabIndex = 79;
+            this.lightLevelBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.lightLevelBar.Value = 15;
+            this.lightLevelBar.Scroll += new System.EventHandler(this.lightLevelBar_Scroll);
+            // 
             // clientPrio
             // 
             this.clientPrio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -652,15 +713,6 @@ namespace Assistant
             this.clientPrio.Size = new System.Drawing.Size(154, 23);
             this.clientPrio.TabIndex = 60;
             this.clientPrio.SelectedIndexChanged += new System.EventHandler(this.clientPrio_SelectedIndexChanged);
-            // 
-            // btnMap
-            // 
-            this.btnMap.Location = new System.Drawing.Point(8, 211);
-            this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(167, 24);
-            this.btnMap.TabIndex = 58;
-            this.btnMap.Text = "Open UO Map System";
-            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
             // 
             // systray
             // 
@@ -794,7 +846,7 @@ namespace Assistant
             this.groupBox1.Controls.Add(this.filters);
             this.groupBox1.Location = new System.Drawing.Point(8, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(167, 202);
+            this.groupBox1.Size = new System.Drawing.Size(167, 232);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filters";
@@ -805,13 +857,13 @@ namespace Assistant
             this.filters.IntegralHeight = false;
             this.filters.Location = new System.Drawing.Point(6, 18);
             this.filters.Name = "filters";
-            this.filters.Size = new System.Drawing.Size(155, 178);
+            this.filters.Size = new System.Drawing.Size(155, 208);
             this.filters.TabIndex = 1;
             this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
             // 
             // opacityLabel
             // 
-            this.opacityLabel.Location = new System.Drawing.Point(184, 216);
+            this.opacityLabel.Location = new System.Drawing.Point(181, 216);
             this.opacityLabel.Name = "opacityLabel";
             this.opacityLabel.Size = new System.Drawing.Size(89, 19);
             this.opacityLabel.TabIndex = 23;
@@ -832,7 +884,6 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.lthilight);
             this.moreOptTab.Controls.Add(this.filterSnoop);
             this.moreOptTab.Controls.Add(this.corpseRange);
-            this.moreOptTab.Controls.Add(this.incomingCorpse);
             this.moreOptTab.Controls.Add(this.incomingMob);
             this.moreOptTab.Controls.Add(this.setHarmHue);
             this.moreOptTab.Controls.Add(this.setNeuHue);
@@ -857,6 +908,7 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.chkForceSpellHue);
             this.moreOptTab.Controls.Add(this.chkForceSpeechHue);
             this.moreOptTab.Controls.Add(this.label3);
+            this.moreOptTab.Controls.Add(this.incomingCorpse);
             this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
             this.moreOptTab.Size = new System.Drawing.Size(482, 460);
@@ -907,15 +959,6 @@ namespace Assistant
             this.corpseRange.TabIndex = 23;
             this.corpseRange.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.corpseRange.TextChanged += new System.EventHandler(this.corpseRange_TextChanged);
-            // 
-            // incomingCorpse
-            // 
-            this.incomingCorpse.Location = new System.Drawing.Point(245, 215);
-            this.incomingCorpse.Name = "incomingCorpse";
-            this.incomingCorpse.Size = new System.Drawing.Size(228, 20);
-            this.incomingCorpse.TabIndex = 48;
-            this.incomingCorpse.Text = "Show Names of New/Incoming Corpses";
-            this.incomingCorpse.CheckedChanged += new System.EventHandler(this.incomingCorpse_CheckedChanged);
             // 
             // incomingMob
             // 
@@ -1131,8 +1174,19 @@ namespace Assistant
             this.label3.Text = "Spell Format:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // incomingCorpse
+            // 
+            this.incomingCorpse.Location = new System.Drawing.Point(245, 215);
+            this.incomingCorpse.Name = "incomingCorpse";
+            this.incomingCorpse.Size = new System.Drawing.Size(228, 20);
+            this.incomingCorpse.TabIndex = 48;
+            this.incomingCorpse.Text = "Show Names of New/Incoming Corpses";
+            this.incomingCorpse.CheckedChanged += new System.EventHandler(this.incomingCorpse_CheckedChanged);
+            // 
             // moreMoreOptTab
             // 
+            this.moreMoreOptTab.Controls.Add(this.showStunMessagesOverhead);
+            this.moreMoreOptTab.Controls.Add(this.showTargetMessagesOverChar);
             this.moreMoreOptTab.Controls.Add(this.forceSizeX);
             this.moreMoreOptTab.Controls.Add(this.forceSizeY);
             this.moreMoreOptTab.Controls.Add(this.healthFmt);
@@ -1164,6 +1218,28 @@ namespace Assistant
             this.moreMoreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
+            // 
+            // showStunMessagesOverhead
+            // 
+            this.showStunMessagesOverhead.AutoSize = true;
+            this.showStunMessagesOverhead.Location = new System.Drawing.Point(245, 238);
+            this.showStunMessagesOverhead.Name = "showStunMessagesOverhead";
+            this.showStunMessagesOverhead.Size = new System.Drawing.Size(190, 19);
+            this.showStunMessagesOverhead.TabIndex = 74;
+            this.showStunMessagesOverhead.Text = "Show Stun Messages Overhead";
+            this.showStunMessagesOverhead.UseVisualStyleBackColor = true;
+            this.showStunMessagesOverhead.CheckedChanged += new System.EventHandler(this.showStunMessagesOverhead_CheckedChanged);
+            // 
+            // showTargetMessagesOverChar
+            // 
+            this.showTargetMessagesOverChar.AutoSize = true;
+            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(8, 238);
+            this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
+            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
+            this.showTargetMessagesOverChar.TabIndex = 73;
+            this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
+            this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
+            this.showTargetMessagesOverChar.CheckedChanged += new System.EventHandler(this.showTargetMessagesOverChar_CheckedChanged);
             // 
             // forceSizeX
             // 
@@ -1766,13 +1842,14 @@ namespace Assistant
             // 
             this.undressConflicts.Location = new System.Drawing.Point(6, 195);
             this.undressConflicts.Name = "undressConflicts";
-            this.undressConflicts.Size = new System.Drawing.Size(185, 38);
+            this.undressConflicts.Size = new System.Drawing.Size(136, 38);
             this.undressConflicts.TabIndex = 6;
             this.undressConflicts.Text = "Automatically move conflicting items";
             this.undressConflicts.CheckedChanged += new System.EventHandler(this.undressConflicts_CheckedChanged);
             // 
             // skillsTab
             // 
+            this.skillsTab.Controls.Add(this.logSkillChanges);
             this.skillsTab.Controls.Add(this.dispDelta);
             this.skillsTab.Controls.Add(this.skillCopyAll);
             this.skillsTab.Controls.Add(this.skillCopySel);
@@ -1792,7 +1869,7 @@ namespace Assistant
             // 
             this.dispDelta.Location = new System.Drawing.Point(358, 132);
             this.dispDelta.Name = "dispDelta";
-            this.dispDelta.Size = new System.Drawing.Size(112, 42);
+            this.dispDelta.Size = new System.Drawing.Size(116, 42);
             this.dispDelta.TabIndex = 11;
             this.dispDelta.Text = "Display skill and stat changes";
             this.dispDelta.CheckedChanged += new System.EventHandler(this.dispDelta_CheckedChanged);
@@ -1818,7 +1895,7 @@ namespace Assistant
             // baseTotal
             // 
             this.baseTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.baseTotal.Location = new System.Drawing.Point(382, 203);
+            this.baseTotal.Location = new System.Drawing.Point(382, 213);
             this.baseTotal.Name = "baseTotal";
             this.baseTotal.ReadOnly = true;
             this.baseTotal.Size = new System.Drawing.Size(62, 23);
@@ -1827,7 +1904,7 @@ namespace Assistant
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(379, 177);
+            this.label1.Location = new System.Drawing.Point(380, 191);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 23);
             this.label1.TabIndex = 6;
@@ -2367,6 +2444,135 @@ namespace Assistant
             this.newMacro.Text = "New...";
             this.newMacro.Click += new System.EventHandler(this.newMacro_Click);
             // 
+            // mapTab
+            // 
+            this.mapTab.BackColor = System.Drawing.SystemColors.Control;
+            this.mapTab.Controls.Add(this.boatControl);
+            this.mapTab.Controls.Add(this.btnMap);
+            this.mapTab.Controls.Add(this.showPlayerPosition);
+            this.mapTab.Controls.Add(this.tiltMap);
+            this.mapTab.Controls.Add(this.showPartyMemberPositions);
+            this.mapTab.Controls.Add(this.openUOPS);
+            this.mapTab.Controls.Add(this.groupMapPoints);
+            this.mapTab.Controls.Add(this.trackPlayerPosition);
+            this.mapTab.Location = new System.Drawing.Point(4, 44);
+            this.mapTab.Name = "mapTab";
+            this.mapTab.Size = new System.Drawing.Size(482, 460);
+            this.mapTab.TabIndex = 13;
+            this.mapTab.Text = "Map";
+            // 
+            // boatControl
+            // 
+            this.boatControl.Location = new System.Drawing.Point(145, 14);
+            this.boatControl.Name = "boatControl";
+            this.boatControl.Size = new System.Drawing.Size(128, 32);
+            this.boatControl.TabIndex = 60;
+            this.boatControl.Text = "Open Boat Control";
+            this.boatControl.UseVisualStyleBackColor = true;
+            this.boatControl.Click += new System.EventHandler(this.boatControl_Click);
+            // 
+            // btnMap
+            // 
+            this.btnMap.Location = new System.Drawing.Point(20, 199);
+            this.btnMap.Name = "btnMap";
+            this.btnMap.Size = new System.Drawing.Size(237, 24);
+            this.btnMap.TabIndex = 59;
+            this.btnMap.Text = "Open UOPS";
+            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
+            // 
+            // showPlayerPosition
+            // 
+            this.showPlayerPosition.AutoSize = true;
+            this.showPlayerPosition.Location = new System.Drawing.Point(6, 52);
+            this.showPlayerPosition.Name = "showPlayerPosition";
+            this.showPlayerPosition.Size = new System.Drawing.Size(172, 19);
+            this.showPlayerPosition.TabIndex = 5;
+            this.showPlayerPosition.Text = "Show your position on map";
+            this.showPlayerPosition.UseVisualStyleBackColor = true;
+            this.showPlayerPosition.CheckedChanged += new System.EventHandler(this.showPlayerPosition_CheckedChanged);
+            // 
+            // tiltMap
+            // 
+            this.tiltMap.AutoSize = true;
+            this.tiltMap.Location = new System.Drawing.Point(6, 127);
+            this.tiltMap.Name = "tiltMap";
+            this.tiltMap.Size = new System.Drawing.Size(93, 19);
+            this.tiltMap.TabIndex = 4;
+            this.tiltMap.Text = "Tilt map 45° ";
+            this.tiltMap.UseVisualStyleBackColor = true;
+            this.tiltMap.CheckedChanged += new System.EventHandler(this.tiltMap_CheckedChanged);
+            // 
+            // showPartyMemberPositions
+            // 
+            this.showPartyMemberPositions.AutoSize = true;
+            this.showPartyMemberPositions.Location = new System.Drawing.Point(6, 102);
+            this.showPartyMemberPositions.Name = "showPartyMemberPositions";
+            this.showPartyMemberPositions.Size = new System.Drawing.Size(184, 19);
+            this.showPartyMemberPositions.TabIndex = 3;
+            this.showPartyMemberPositions.Text = "Show party member positions";
+            this.showPartyMemberPositions.UseVisualStyleBackColor = true;
+            this.showPartyMemberPositions.CheckedChanged += new System.EventHandler(this.showPartyMemberPositions_CheckedChanged);
+            // 
+            // openUOPS
+            // 
+            this.openUOPS.Location = new System.Drawing.Point(5, 14);
+            this.openUOPS.Name = "openUOPS";
+            this.openUOPS.Size = new System.Drawing.Size(134, 32);
+            this.openUOPS.TabIndex = 2;
+            this.openUOPS.Text = "Open UOPS 2.0";
+            this.openUOPS.UseVisualStyleBackColor = true;
+            this.openUOPS.Click += new System.EventHandler(this.openUOPS_Click);
+            // 
+            // groupMapPoints
+            // 
+            this.groupMapPoints.Controls.Add(this.removeMapPoint);
+            this.groupMapPoints.Controls.Add(this.addMapPoint);
+            this.groupMapPoints.Controls.Add(this.mapPoints);
+            this.groupMapPoints.Location = new System.Drawing.Point(279, 3);
+            this.groupMapPoints.Name = "groupMapPoints";
+            this.groupMapPoints.Size = new System.Drawing.Size(200, 232);
+            this.groupMapPoints.TabIndex = 1;
+            this.groupMapPoints.TabStop = false;
+            this.groupMapPoints.Text = "Map Points";
+            // 
+            // removeMapPoint
+            // 
+            this.removeMapPoint.Location = new System.Drawing.Point(123, 191);
+            this.removeMapPoint.Name = "removeMapPoint";
+            this.removeMapPoint.Size = new System.Drawing.Size(71, 35);
+            this.removeMapPoint.TabIndex = 2;
+            this.removeMapPoint.Text = "Remove";
+            this.removeMapPoint.UseVisualStyleBackColor = true;
+            // 
+            // addMapPoint
+            // 
+            this.addMapPoint.Location = new System.Drawing.Point(6, 191);
+            this.addMapPoint.Name = "addMapPoint";
+            this.addMapPoint.Size = new System.Drawing.Size(71, 35);
+            this.addMapPoint.TabIndex = 1;
+            this.addMapPoint.Text = "Add";
+            this.addMapPoint.UseVisualStyleBackColor = true;
+            // 
+            // mapPoints
+            // 
+            this.mapPoints.FormattingEnabled = true;
+            this.mapPoints.ItemHeight = 15;
+            this.mapPoints.Location = new System.Drawing.Point(6, 16);
+            this.mapPoints.Name = "mapPoints";
+            this.mapPoints.Size = new System.Drawing.Size(188, 169);
+            this.mapPoints.TabIndex = 0;
+            // 
+            // trackPlayerPosition
+            // 
+            this.trackPlayerPosition.AutoSize = true;
+            this.trackPlayerPosition.Location = new System.Drawing.Point(6, 77);
+            this.trackPlayerPosition.Name = "trackPlayerPosition";
+            this.trackPlayerPosition.Size = new System.Drawing.Size(220, 19);
+            this.trackPlayerPosition.TabIndex = 0;
+            this.trackPlayerPosition.Text = "Auto-track your position on the map";
+            this.trackPlayerPosition.UseVisualStyleBackColor = true;
+            this.trackPlayerPosition.CheckedChanged += new System.EventHandler(this.trackPlayerPosition_CheckedChanged);
+            // 
             // videoTab
             // 
             this.videoTab.Controls.Add(this.txtRecFolder);
@@ -2852,7 +3058,7 @@ namespace Assistant
             // 
             this.logPackets.Location = new System.Drawing.Point(202, 70);
             this.logPackets.Name = "logPackets";
-            this.logPackets.Size = new System.Drawing.Size(154, 23);
+            this.logPackets.Size = new System.Drawing.Size(146, 23);
             this.logPackets.TabIndex = 67;
             this.logPackets.Text = "Enable packet logging";
             this.logPackets.CheckedChanged += new System.EventHandler(this.logPackets_CheckedChanged);
@@ -2884,6 +3090,7 @@ namespace Assistant
             // 
             // aboutTab
             // 
+            this.aboutTab.Controls.Add(this.label24);
             this.aboutTab.Controls.Add(this.label20);
             this.aboutTab.Controls.Add(this.linkLabel1);
             this.aboutTab.Controls.Add(this.label23);
@@ -2896,6 +3103,16 @@ namespace Assistant
             this.aboutTab.Size = new System.Drawing.Size(482, 460);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(55, 155);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(378, 17);
+            this.label24.TabIndex = 22;
+            this.label24.Text = "Razor mapping tool designed and written by JimmyTheHand";
             // 
             // label20
             // 
@@ -2976,6 +3193,17 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
+            // logSkillChanges
+            // 
+            this.logSkillChanges.AutoSize = true;
+            this.logSkillChanges.Location = new System.Drawing.Point(358, 172);
+            this.logSkillChanges.Name = "logSkillChanges";
+            this.logSkillChanges.Size = new System.Drawing.Size(116, 19);
+            this.logSkillChanges.TabIndex = 13;
+            this.logSkillChanges.Text = "Log skill changes";
+            this.logSkillChanges.UseVisualStyleBackColor = true;
+            this.logSkillChanges.CheckedChanged += new System.EventHandler(this.logSkillChanges_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -2997,6 +3225,8 @@ namespace Assistant
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.tabs.ResumeLayout(false);
             this.generalTab.ResumeLayout(false);
+            this.generalTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).EndInit();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -3024,6 +3254,9 @@ namespace Assistant
             this.macrosTab.PerformLayout();
             this.absoluteTargetGroup.ResumeLayout(false);
             this.macroActGroup.ResumeLayout(false);
+            this.mapTab.ResumeLayout(false);
+            this.mapTab.PerformLayout();
+            this.groupMapPoints.ResumeLayout(false);
             this.videoTab.ResumeLayout(false);
             this.videoTab.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -3285,6 +3518,20 @@ namespace Assistant
 
 		    //hotKeyStop.Checked = Config.GetBool("HotKeyStop");
 
+		    showPartyMemberPositions.Checked = Config.GetBool("ShowPlayerPosition");
+            trackPlayerPosition.Checked = Config.GetBool("TrackPlayerPosition");
+            showPlayerPosition.Checked = Config.GetBool("ShowPartyMemberPositions");
+            tiltMap.Checked = Config.GetBool("TiltMap");
+
+		    showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
+		    showStunMessagesOverhead.Checked = Config.GetBool("ShowStunOverhead");
+
+		    logSkillChanges.Checked = Config.GetBool("LogSkillChanges");
+
+            lightLevelBar.Value = Config.GetInt("LightLevel");
+            double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
+		    lightLevel.Text = $"Light: {percent}%";
+
             if (jsonApi.Checked)
 		    {
 		        new JsonApiTimer(this).Start();
@@ -3375,6 +3622,11 @@ namespace Assistant
 			{
 				ReloadScreenShotsList();
 			}
+            else if (tabs.SelectedTab == moreMoreOptTab)
+			{
+			    tabs.Size = new Size(tabs.Size.Width, 313);
+			    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
+            }
 		}
 
 	    private void RebuildHotKeyCache()
@@ -3528,7 +3780,31 @@ namespace Assistant
 				Total += World.Player.Skills[i].Base;
 			baseTotal.Text = String.Format( "{0:F1}", Total );
 
-			for (int i=0;i<skillList.Items.Count;i++)
+		    if (Config.GetBool("LogSkillChanges"))
+		    {
+		        string skillLog =
+		            $"{Config.GetInstallDirectory()}\\SkillLog\\{World.Player.Name}_{World.Player.Serial}_SkillLog.csv";
+
+		        if (!Directory.Exists($"{Config.GetInstallDirectory()}\\SkillLog"))
+		        {
+		            Directory.CreateDirectory($"{Config.GetInstallDirectory()}\\SkillLog");
+		        }
+
+		        if (!File.Exists(skillLog))
+		        {
+		            using (StreamWriter sr = File.CreateText(skillLog))
+		            {
+		                sr.WriteLine("Timestamp,SkillName,Value,Base,Gain,Cap");
+		            }
+		        }
+
+		        using (StreamWriter sw = File.AppendText(skillLog))
+		        {
+		            sw.WriteLine($"{DateTime.Now},{(SkillName)skill.Index},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
+		        }
+		    }
+
+            for (int i=0;i<skillList.Items.Count;i++)
 			{
 				ListViewItem cur = skillList.Items[i];
 				if ( cur.Tag == skill )
@@ -3542,7 +3818,7 @@ namespace Assistant
 					return;
 				}
 			}
-		}
+        }
 
 		public void RedrawSkills()
 		{
@@ -4404,10 +4680,17 @@ namespace Assistant
 				hk.SendToUO = chkPass.Checked;
 			}
 
-            HotKey.RebuildList(hotkeyTree);
-		    RebuildHotKeyCache();
+		    if (!string.IsNullOrEmpty(filterHotkeys.Text))
+		    {
+		        TreeNode node = hotkeyTree.SelectedNode;
 
-            filterHotkeys_TextChanged(sender, e);
+		        HotKey.RebuildList(hotkeyTree);
+		        RebuildHotKeyCache();
+
+		        filterHotkeys_TextChanged(sender, e);
+
+		        hotkeyTree.SelectedNode = node;
+		    }
         }
 
 		private void unsetHK_Click(object sender, System.EventArgs e)
@@ -6953,10 +7236,82 @@ namespace Assistant
         {
             ClientCommunication.SetSmartCPU(false);
         }
-
-        /*private void hotKeyStop_CheckedChanged(object sender, EventArgs e)
+        
+        private void lightLevelBar_Scroll(object sender, EventArgs e)
         {
-           Config.SetProperty("HotKeyStop", hotKeyStop.Checked);
-        }*/
+            if (ClientCommunication.AllowBit(FeatureBit.LightFilter) && World.Player != null)
+            {
+                World.Player.LocalLightLevel = 0;
+                World.Player.GlobalLightLevel = Convert.ToByte(lightLevelBar.Value);
+
+                ClientCommunication.SendToClient(new GlobalLightLevel(Convert.ToByte(lightLevelBar.Maximum - lightLevelBar.Value)));
+                ClientCommunication.SendToClient(new PersonalLightLevel(World.Player));
+                
+                double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
+
+                lightLevel.Text = $"Light: {percent}%";
+
+                Config.SetProperty("LightLevel", lightLevelBar.Value);
+            }
+        }
+
+        private void showPlayerPosition_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowPlayerPosition", showPlayerPosition.Checked);
+        }
+
+        private void trackPlayerPosition_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("TrackPlayerPosition", trackPlayerPosition.Checked);
+        }
+
+        private void showPartyMemberPositions_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowPartyMemberPositions", showPartyMemberPositions.Checked);
+        }
+
+        private void tiltMap_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("TiltMap", showPartyMemberPositions.Checked);
+        }
+
+        private void boatControl_Click(object sender, EventArgs e)
+        {
+            BoatWindow boatWindow = new BoatWindow();
+            boatWindow.Show();
+            boatWindow.BringToFront();
+        }
+
+        private void showTargetMessagesOverChar_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowTargetSelfLastClearOverhead", showTargetMessagesOverChar.Checked);
+        }
+
+        private void showStunMessagesOverhead_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowStunOverhead", showStunMessagesOverhead.Checked);
+        }
+
+        private void openUOPS_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Soon(tm)");
+
+            return;
+
+            if (World.Player != null)
+            {
+                if (MapWindow == null)
+                    MapWindow = new Assistant.MapUO.MapWindow();
+                //SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
+                //MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
+                MapWindow.Show();
+                MapWindow.BringToFront();
+            }
+        }
+
+        private void logSkillChanges_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("LogSkillChanges", logSkillChanges.Checked);
+        }
     }
 }

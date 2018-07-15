@@ -224,7 +224,10 @@ namespace Assistant
 	        {
 	            return m_Body >= 0
 	                   && m_Body < m_Types.Length
-	                   && m_Types[m_Body] == BodyType.Monster;
+	                   && (m_Types[m_Body] == BodyType.Monster
+	                       || m_Body == 98 
+	                       || m_Body == 97
+	                       || m_Body == 23); // Dire wolves or hell hounds
 	        }
 	    }
 
@@ -244,8 +247,11 @@ namespace Assistant
 	        {
 	            return m_Body >= 0
 	                   && m_Body < m_Types.Length
-	                   && m_Types[m_Body] == BodyType.Animal;
-	        }
+	                   && m_Types[m_Body] == BodyType.Animal
+	                   && m_Body != 98
+	                   && m_Body != 97
+	                   && m_Body != 23; // Dire wolves or hell hounds
+            }
 	    }
 
         public bool	Warmode

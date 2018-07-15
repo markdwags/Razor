@@ -149,7 +149,19 @@ namespace Assistant
 	        AddProperty("DiffTargetByType", false);
 	        AddProperty("StepThroughMacro", false);
 
-	        Counter.Default();
+            // Map options
+	        AddProperty("ShowPlayerPosition", true);
+	        AddProperty("TrackPlayerPosition", true);
+	        AddProperty("ShowPartyMemberPositions", true);
+	        AddProperty("TiltMap", true);
+
+	        AddProperty("ShowTargetSelfLastClearOverhead", true);
+	        AddProperty("ShowStunOverhead", false);
+
+	        AddProperty("LightLevel", 31);
+	        AddProperty("LogSkillChanges", false);
+
+            Counter.Default();
 	        Filter.DisableAll();
 	        DressList.ClearAll();
 	        HotKey.ClearAll();

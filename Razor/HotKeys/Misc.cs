@@ -17,7 +17,9 @@ namespace Assistant.HotKeys
 			HotKey.Add( HKCategory.Misc, LocString.LastSkill, new HotKeyCallback( LastSkill ) );
 			HotKey.Add( HKCategory.Misc, LocString.LastObj, new HotKeyCallback( LastObj ) );
 			HotKey.Add( HKCategory.Misc, LocString.AllNames, new HotKeyCallback( AllNames ) );
-			HotKey.Add( HKCategory.Misc, LocString.Dismount, new HotKeyCallback( Dismount ) );
+		    HotKey.Add( HKCategory.Misc, LocString.AllCorpses, new HotKeyCallback( AllCorpses ));
+		    HotKey.Add( HKCategory.Misc, LocString.AllMobiles, new HotKeyCallback( AllMobiles ));
+            HotKey.Add( HKCategory.Misc, LocString.Dismount, new HotKeyCallback( Dismount ) );
 			
 			HotKey.Add( HKCategory.Items, LocString.BandageSelf, new HotKeyCallback( BandageSelf ) );
 			HotKey.Add( HKCategory.Items, LocString.BandageLT, new HotKeyCallback( BandageLastTarg ) );
@@ -84,7 +86,30 @@ namespace Assistant.HotKeys
 			}
 		}
 
-		private static void LastSkill()
+	    private static void AllCorpses()
+	    {
+	        foreach (Item i in World.Items.Values)
+	        {
+	            if (i.IsCorpse)
+	                ClientCommunication.SendToServer(new SingleClick(i));
+	        }
+	    }
+
+	    private static void AllMobiles()
+	    {
+	        bool textFlags = Config.GetBool("LastTargTextFlags");
+
+	        foreach (Mobile m in World.MobilesInRange())
+	        {
+	            if (m != World.Player)
+	                ClientCommunication.SendToServer(new SingleClick(m));
+
+	            if (textFlags)
+	                Targeting.CheckTextFlags(m);
+	        }
+        }
+
+        private static void LastSkill()
 		{
 			if ( World.Player != null && World.Player.LastSkill != -1 )
 				ClientCommunication.SendToServer( new UseSkill( World.Player.LastSkill ) );

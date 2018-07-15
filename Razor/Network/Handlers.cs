@@ -82,7 +82,7 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0xD6, new PacketViewerCallback( EncodedPacket ) );//0xD6 "encoded" packets
 			PacketHandler.RegisterServerToClientViewer( 0xD8, new PacketViewerCallback( CustomHouseInfo ) );
 			PacketHandler.RegisterServerToClientFilter( 0xDC, new PacketFilterCallback( ServOPLHash ) );
-			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
+			//PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
 			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) ); // Special RunUO protocol extentions (for KUOC/Razor)
 
 			PacketHandler.RegisterServerToClientViewer( 0xF3, new PacketViewerCallback( SAWorldItem ) );
@@ -1088,6 +1088,7 @@ namespace Assistant
 
 					if ( wasPoisoned != m.Poisoned || ( oldNoto != m.Notoriety && Config.GetBool( "ShowNotoHue" ) ) )
 						ClientCommunication.RequestTitlebarUpdate();
+
 				}
 			}
 		}
@@ -1109,7 +1110,7 @@ namespace Assistant
 				{
 					ClientCommunication.RequestTitlebarUpdate();
 					ClientCommunication.PostHitsUpdate();
-				}
+                }
 
 				if ( ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) && Config.GetBool( "ShowHealth" ) )
 				{
@@ -1843,16 +1844,35 @@ namespace Assistant
 			{
 				if ( ser == Serial.MinusOne && name == "System" )
 				{
-					if ( Config.GetBool( "FilterSnoopMsg" ) && text.IndexOf( World.Player.Name ) == -1 && text.StartsWith( "You notice" ) && text.IndexOf( "attempting to peek into" ) != -1 && text.IndexOf( "belongings" ) != -1 )
+				    if ( Config.GetBool( "FilterSnoopMsg" ) && text.IndexOf( World.Player.Name ) == -1 && text.StartsWith( "You notice" ) && text.IndexOf( "attempting to peek into" ) != -1 && text.IndexOf( "belongings" ) != -1 )
 					{
 						args.Block = true;
 						return;
 					}
-					else if ( text.StartsWith( "You've committed a criminal act" ) || text.StartsWith( "You are now a criminal" ) )
-					{
-						World.Player.ResetCriminalTimer();
-					}
-				}
+
+				    if ( text.StartsWith( "You've committed a criminal act" ) || text.StartsWith( "You are now a criminal" ) )
+				    {
+				        World.Player.ResetCriminalTimer();
+				    }
+                    //"You get yourself ready to stun your opponent."
+                    else if (Config.GetBool("ShowStunOverhead") && text.Contains("ready to stun your opponent"))
+				    {
+                        World.Player.OverheadMessage(LocString.StunReady);
+				    }
+				    else if (Config.GetBool("ShowStunOverhead") && text.Contains("successfully stun your opponent"))
+				    {
+				        World.Player.OverheadMessage(LocString.StunSuccessful);
+                    }
+				    else if (Config.GetBool("ShowStunOverhead") && text.Contains("not try to stun anyone"))
+				    {
+				        World.Player.OverheadMessage(LocString.StunDisabled);
+                    }
+				    else if (Config.GetBool("ShowStunOverhead") && text.Contains("failed in your attempt to stun"))
+				    {
+				        World.Player.OverheadMessage(LocString.StunFailed);
+                    }
+
+                }
 
 				if ( ( type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper || type == MessageType.Yell ) && ser.IsMobile && ser != World.Player.Serial )
 				{
@@ -2465,17 +2485,56 @@ namespace Assistant
 			}
 		}
 
-		private static void CompressedGump( PacketReader p, PacketHandlerEventArgs args )
-		{
-			if ( World.Player != null )
-			{
-				World.Player.CurrentGumpS = p.ReadUInt32();
-				World.Player.CurrentGumpI = p.ReadUInt32();
-			}
+        /*         
+        Packet Build
+        1.  BYTE[1] Cmd
+        2.  BYTE[2] len
+        3.  BYTE[4] Player Serial
+        4.  BYTE[4] Gump ID
+        5.  BYTE[4] x
+        6.  BYTE[4] y
+        7.  BYTE[4] Compressed Gump Layout Length (CLen)
+        8.  BYTE[4] Decompressed Gump Layout Length (DLen)
+        9.  BYTE[CLen-4] Gump Data, zlib compressed
+        10. BYTE[4] Number of text lines
+        11. BYTE[4] Compressed Text Line Length (CTxtLen)
+        12. BYTE[4] Decompressed Text Line Length (DTxtLen)
+        13. BYTE[CTxtLen-4] Gump's Compressed Text data, zlib compressed
+         */
+        private static void CompressedGump( PacketReader p, PacketHandlerEventArgs args )
+        {
+            // TODO: Look at reading certain gumps
+		    try
+		    {
+		        p.Seek(0, System.IO.SeekOrigin.Begin);
+		        byte packetID = p.ReadByte(); //1
 
-			if ( Macros.MacroManager.AcceptActions && MacroManager.Action( new WaitForGumpAction( World.Player.CurrentGumpI ) ) )
-				args.Block = true;
+		        p.MoveToData(); //2
 
-		}
+		        uint ser = p.ReadUInt32(); //3
+		        uint tid = p.ReadUInt32(); //4
+		        int x = p.ReadInt32(); //5
+		        int y = p.ReadInt32(); //6
+
+		        string layout = null;
+
+		        layout = p.GetCompressedReader().ReadString(); //7, 8, 9
+                
+		        int txtLen = p.ReadInt32(); //10
+
+		        string text = null;
+
+		        text = p.GetCompressedReader().ReadString(); //11, 12, 13
+
+		        if (text.Contains("sinking"))
+		        {
+                    //write to log
+		        }
+		    }
+		    catch
+		    {
+		    }
+
+        }
 	}
 }

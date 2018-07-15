@@ -411,6 +411,12 @@ namespace Assistant
         PauseCurrent,
         MacroPaused,
         MacroResuming,
+        StunReady,
+        StunSuccessful,
+        StunDisabled,
+        StunFailed,
+        AllCorpses,
+        AllMobiles,
 
         __End
 	}

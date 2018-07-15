@@ -104,7 +104,7 @@ namespace Assistant
             if (mobile != null)
             {
                 ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                    Language.CliLocName, "System", $"Name: '{mobile.Name}' Hits: '{mobile.Hits}/{mobile.HitsMax}' Mana: '{mobile.Mana}/{mobile.ManaMax}' Stam: '{mobile.Stam}/{mobile.StamMax}'"));
+                    Language.CliLocName, "System", $"Name: '{mobile.Name}'"));
 
                 ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", $"Serial: '{mobile.Serial}' Hue: '{mobile.Hue}' IsAnimal: '{mobile.IsAnimal}' IsGhost: '{mobile.IsGhost}' IsHuman: '{mobile.IsHuman}' IsMonster: '{mobile.IsMonster}' IsSeaMonster: '{mobile.IsSeaMonster}'"));
