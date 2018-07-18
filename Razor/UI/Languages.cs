@@ -417,6 +417,8 @@ namespace Assistant
         StunFailed,
         AllCorpses,
         AllMobiles,
+        BullSounds,
+        DragonSounds,
 
         __End
 	}

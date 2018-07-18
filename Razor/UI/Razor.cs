@@ -455,6 +455,7 @@ namespace Assistant
             this.dressList = new System.Windows.Forms.ListBox();
             this.undressConflicts = new System.Windows.Forms.CheckBox();
             this.skillsTab = new System.Windows.Forms.TabPage();
+            this.logSkillChanges = new System.Windows.Forms.CheckBox();
             this.dispDelta = new System.Windows.Forms.CheckBox();
             this.skillCopyAll = new System.Windows.Forms.Button();
             this.skillCopySel = new System.Windows.Forms.Button();
@@ -585,7 +586,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.logSkillChanges = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
@@ -1865,6 +1865,17 @@ namespace Assistant
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             // 
+            // logSkillChanges
+            // 
+            this.logSkillChanges.AutoSize = true;
+            this.logSkillChanges.Location = new System.Drawing.Point(358, 172);
+            this.logSkillChanges.Name = "logSkillChanges";
+            this.logSkillChanges.Size = new System.Drawing.Size(116, 19);
+            this.logSkillChanges.TabIndex = 13;
+            this.logSkillChanges.Text = "Log skill changes";
+            this.logSkillChanges.UseVisualStyleBackColor = true;
+            this.logSkillChanges.CheckedChanged += new System.EventHandler(this.logSkillChanges_CheckedChanged);
+            // 
             // dispDelta
             // 
             this.dispDelta.Location = new System.Drawing.Point(358, 132);
@@ -3110,9 +3121,9 @@ namespace Assistant
             this.label24.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label24.Location = new System.Drawing.Point(55, 155);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(378, 17);
+            this.label24.Size = new System.Drawing.Size(384, 17);
             this.label24.TabIndex = 22;
-            this.label24.Text = "Razor mapping tool designed and written by JimmyTheHand";
+            this.label24.Text = "Razor mapping tool designed and written by Jimmy the Hand";
             // 
             // label20
             // 
@@ -3159,12 +3170,12 @@ namespace Assistant
             // linkGithub
             // 
             this.linkGithub.AutoSize = true;
-            this.linkGithub.Location = new System.Drawing.Point(137, 217);
+            this.linkGithub.Location = new System.Drawing.Point(110, 214);
             this.linkGithub.Name = "linkGithub";
-            this.linkGithub.Size = new System.Drawing.Size(206, 15);
+            this.linkGithub.Size = new System.Drawing.Size(279, 15);
             this.linkGithub.TabIndex = 16;
             this.linkGithub.TabStop = true;
-            this.linkGithub.Text = "https://github.com/markdwags/razor";
+            this.linkGithub.Text = "https://bitbucket.org/markdwags/razor/wiki/Home";
             this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // label21
@@ -3192,17 +3203,6 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-            // 
-            // logSkillChanges
-            // 
-            this.logSkillChanges.AutoSize = true;
-            this.logSkillChanges.Location = new System.Drawing.Point(358, 172);
-            this.logSkillChanges.Name = "logSkillChanges";
-            this.logSkillChanges.Size = new System.Drawing.Size(116, 19);
-            this.logSkillChanges.TabIndex = 13;
-            this.logSkillChanges.Text = "Log skill changes";
-            this.logSkillChanges.UseVisualStyleBackColor = true;
-            this.logSkillChanges.CheckedChanged += new System.EventHandler(this.logSkillChanges_CheckedChanged);
             // 
             // MainForm
             // 
