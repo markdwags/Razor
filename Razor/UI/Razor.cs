@@ -1492,7 +1492,7 @@ namespace Assistant
             // 
             this.showNotoHue.Location = new System.Drawing.Point(216, 168);
             this.showNotoHue.Name = "showNotoHue";
-            this.showNotoHue.Size = new System.Drawing.Size(224, 20);
+            this.showNotoHue.Size = new System.Drawing.Size(251, 20);
             this.showNotoHue.TabIndex = 47;
             this.showNotoHue.Text = "Show noto hue on {char} in TitleBar";
             this.showNotoHue.CheckedChanged += new System.EventHandler(this.showNotoHue_CheckedChanged);
@@ -1529,7 +1529,7 @@ namespace Assistant
             // 
             this.highlightSpellReags.Location = new System.Drawing.Point(216, 142);
             this.highlightSpellReags.Name = "highlightSpellReags";
-            this.highlightSpellReags.Size = new System.Drawing.Size(200, 20);
+            this.highlightSpellReags.Size = new System.Drawing.Size(251, 20);
             this.highlightSpellReags.TabIndex = 13;
             this.highlightSpellReags.Text = "Highlight Spell Reagents on Cast";
             this.highlightSpellReags.CheckedChanged += new System.EventHandler(this.highlightSpellReags_CheckedChanged);
@@ -1538,7 +1538,7 @@ namespace Assistant
             // 
             this.titlebarImages.Location = new System.Drawing.Point(216, 194);
             this.titlebarImages.Name = "titlebarImages";
-            this.titlebarImages.Size = new System.Drawing.Size(200, 20);
+            this.titlebarImages.Size = new System.Drawing.Size(251, 20);
             this.titlebarImages.TabIndex = 12;
             this.titlebarImages.Text = "Show Images with Counters";
             this.titlebarImages.CheckedChanged += new System.EventHandler(this.titlebarImages_CheckedChanged);
@@ -3689,7 +3689,8 @@ namespace Assistant
 					World.Mobiles.Count).Split('\n');
 
 				if (World.Player != null)
-					statusBox.AppendText(String.Format("\r\nCoordinates: {0} {1} {2}", World.Player.Position.X, World.Player.Position.Y, World.Player.Position.Z));
+					statusBox.AppendText(
+					        $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}");
 			}
 
 			if ( PacketHandlers.PlayCharTime < DateTime.UtcNow && PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 30 ) > DateTime.UtcNow )
@@ -3764,7 +3765,8 @@ namespace Assistant
 	            {"Name", World.Player.Name},
 	            {"CriminalTime", World.Player.CriminalTime.ToString()},
 	            {"Weight", World.Player.Weight.ToString()},
-	            {"Weight", World.Player.LastSpell.ToString()}
+	            {"MaxWeight", World.Player.MaxWeight.ToString()},
+                {"LastSpell", World.Player.LastSpell.ToString()}
             };
 
 	        string json = JsonConvert.SerializeObject(jsonDict);
@@ -3773,52 +3775,56 @@ namespace Assistant
 
 	    }
 
-		public void UpdateSkill( Skill skill )
-		{
-			double Total = 0;
-			for (int i=0;i<Skill.Count;i++)
-				Total += World.Player.Skills[i].Base;
-			baseTotal.Text = String.Format( "{0:F1}", Total );
+	    public void UpdateSkill(Skill skill)
+	    {
+	        double total = 0;
+	        for (int i = 0; i < Skill.Count; i++)
+	        {
+	            total += World.Player.Skills[i].Base;
+	        }
 
-		    if (Config.GetBool("LogSkillChanges"))
-		    {
-		        string skillLog =
-		            $"{Config.GetInstallDirectory()}\\SkillLog\\{World.Player.Name}_{World.Player.Serial}_SkillLog.csv";
+	        baseTotal.Text = $"{total:F1}";
 
-		        if (!Directory.Exists($"{Config.GetInstallDirectory()}\\SkillLog"))
-		        {
-		            Directory.CreateDirectory($"{Config.GetInstallDirectory()}\\SkillLog");
-		        }
+	        if (Config.GetBool("LogSkillChanges"))
+	        {
+	            string skillLog =
+	                $"{Config.GetInstallDirectory()}\\SkillLog\\{World.Player.Name}_{World.Player.Serial}_SkillLog.csv";
 
-		        if (!File.Exists(skillLog))
-		        {
-		            using (StreamWriter sr = File.CreateText(skillLog))
-		            {
-		                sr.WriteLine("Timestamp,SkillName,Value,Base,Gain,Cap");
-		            }
-		        }
+	            if (!Directory.Exists($"{Config.GetInstallDirectory()}\\SkillLog"))
+	            {
+	                Directory.CreateDirectory($"{Config.GetInstallDirectory()}\\SkillLog");
+	            }
 
-		        using (StreamWriter sw = File.AppendText(skillLog))
-		        {
-		            sw.WriteLine($"{DateTime.Now},{(SkillName)skill.Index},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
-		        }
-		    }
+	            if (!File.Exists(skillLog))
+	            {
+	                using (StreamWriter sr = File.CreateText(skillLog))
+	                {
+	                    sr.WriteLine("Timestamp,SkillName,Value,Base,Gain,Cap");
+	                }
+	            }
 
-            for (int i=0;i<skillList.Items.Count;i++)
-			{
-				ListViewItem cur = skillList.Items[i];
-				if ( cur.Tag == skill )
-				{
-					cur.SubItems[1].Text = String.Format( "{0:F1}", skill.Value );
-					cur.SubItems[2].Text = String.Format( "{0:F1}", skill.Base );
-					cur.SubItems[3].Text = String.Format( "{0}{1:F1}", (skill.Delta > 0 ? "+" : ""), skill.Delta );
-					cur.SubItems[4].Text = String.Format( "{0:F1}", skill.Cap );
-					cur.SubItems[5].Text = skill.Lock.ToString()[0].ToString();
-					SortSkills();
-					return;
-				}
-			}
-        }
+	            using (StreamWriter sw = File.AppendText(skillLog))
+	            {
+	                sw.WriteLine(
+	                    $"{DateTime.Now},{(SkillName) skill.Index},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
+	            }
+	        }
+
+	        for (int i = 0; i < skillList.Items.Count; i++)
+	        {
+	            ListViewItem cur = skillList.Items[i];
+	            if (cur.Tag == skill)
+	            {
+	                cur.SubItems[1].Text = String.Format("{0:F1}", skill.Value);
+	                cur.SubItems[2].Text = String.Format("{0:F1}", skill.Base);
+	                cur.SubItems[3].Text = String.Format("{0}{1:F1}", (skill.Delta > 0 ? "+" : ""), skill.Delta);
+	                cur.SubItems[4].Text = String.Format("{0:F1}", skill.Cap);
+	                cur.SubItems[5].Text = skill.Lock.ToString()[0].ToString();
+	                SortSkills();
+	                return;
+	            }
+	        }
+	    }
 
 		public void RedrawSkills()
 		{
@@ -7298,7 +7304,7 @@ namespace Assistant
 
             return;
 
-            if (World.Player != null)
+            /*if (World.Player != null)
             {
                 if (MapWindow == null)
                     MapWindow = new Assistant.MapUO.MapWindow();
@@ -7306,7 +7312,7 @@ namespace Assistant
                 //MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
                 MapWindow.Show();
                 MapWindow.BringToFront();
-            }
+            }*/
         }
 
         private void logSkillChanges_CheckedChanged(object sender, EventArgs e)

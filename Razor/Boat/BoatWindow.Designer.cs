@@ -61,6 +61,7 @@
             this.alwaysOnTop = new System.Windows.Forms.CheckBox();
             this.boatBorder = new System.Windows.Forms.PictureBox();
             this.boatWindowsBorder = new System.Windows.Forms.CheckBox();
+            this.boatClose = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.boatNorth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.boatNortheast)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.boatEast)).BeginInit();
@@ -206,7 +207,7 @@
             this.boatSpeedSlow.AutoSize = true;
             this.boatSpeedSlow.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.boatSpeedSlow.ForeColor = System.Drawing.Color.DarkGray;
-            this.boatSpeedSlow.Location = new System.Drawing.Point(80, 12);
+            this.boatSpeedSlow.Location = new System.Drawing.Point(74, 12);
             this.boatSpeedSlow.Name = "boatSpeedSlow";
             this.boatSpeedSlow.Size = new System.Drawing.Size(50, 17);
             this.boatSpeedSlow.TabIndex = 12;
@@ -219,7 +220,7 @@
             this.boatSpeedOne.AutoSize = true;
             this.boatSpeedOne.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.boatSpeedOne.ForeColor = System.Drawing.Color.DarkGray;
-            this.boatSpeedOne.Location = new System.Drawing.Point(136, 12);
+            this.boatSpeedOne.Location = new System.Drawing.Point(128, 12);
             this.boatSpeedOne.Name = "boatSpeedOne";
             this.boatSpeedOne.Size = new System.Drawing.Size(47, 17);
             this.boatSpeedOne.TabIndex = 13;
@@ -236,6 +237,7 @@
             this.boatStop.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.boatStop.TabIndex = 14;
             this.boatStop.TabStop = false;
+            this.boatStop.Click += new System.EventHandler(this.boatStop_Click);
             // 
             // boatTurnRight
             // 
@@ -449,6 +451,7 @@
             this.boatBorder.TabIndex = 32;
             this.boatBorder.TabStop = false;
             this.boatBorder.Visible = false;
+            // 
             // boatWindowsBorder
             // 
             this.boatWindowsBorder.AutoSize = true;
@@ -462,12 +465,24 @@
             this.boatWindowsBorder.UseVisualStyleBackColor = true;
             this.boatWindowsBorder.CheckedChanged += new System.EventHandler(this.boatWindowsBorder_CheckedChanged);
             // 
+            // boatClose
+            // 
+            this.boatClose.AutoSize = true;
+            this.boatClose.ForeColor = System.Drawing.Color.DimGray;
+            this.boatClose.Location = new System.Drawing.Point(172, 4);
+            this.boatClose.Name = "boatClose";
+            this.boatClose.Size = new System.Drawing.Size(14, 15);
+            this.boatClose.TabIndex = 34;
+            this.boatClose.Text = "X";
+            this.boatClose.Click += new System.EventHandler(this.boatClose_Click);
+            // 
             // BoatWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(190, 296);
+            this.Controls.Add(this.boatClose);
             this.Controls.Add(this.boatWindowsBorder);
             this.Controls.Add(this.alwaysOnTop);
             this.Controls.Add(this.boatNav);
@@ -564,5 +579,6 @@
         private System.Windows.Forms.CheckBox alwaysOnTop;
         private System.Windows.Forms.PictureBox boatBorder;
         private System.Windows.Forms.CheckBox boatWindowsBorder;
+        private System.Windows.Forms.Label boatClose;
     }
 }

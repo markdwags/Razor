@@ -214,5 +214,15 @@ namespace Assistant.Boat
         {
             boatBorder.Visible = boatWindowsBorder.Checked;
         }
+
+        private void boatStop_Click(object sender, EventArgs e)
+        {
+            SendBoatCommand("Stop", false);
+        }
+
+        private void boatClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
