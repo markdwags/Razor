@@ -7210,7 +7210,7 @@ namespace Assistant
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/markdwags/razor");
+            Process.Start("https://bitbucket.org/markdwags/razor/wiki/Home");
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
