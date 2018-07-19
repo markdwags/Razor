@@ -82,7 +82,7 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0xD6, new PacketViewerCallback( EncodedPacket ) );//0xD6 "encoded" packets
 			PacketHandler.RegisterServerToClientViewer( 0xD8, new PacketViewerCallback( CustomHouseInfo ) );
 			PacketHandler.RegisterServerToClientFilter( 0xDC, new PacketFilterCallback( ServOPLHash ) );
-			//PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
+			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
 			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) ); // Special RunUO protocol extentions (for KUOC/Razor)
 
 			PacketHandler.RegisterServerToClientViewer( 0xF3, new PacketViewerCallback( SAWorldItem ) );
@@ -2503,37 +2503,49 @@ namespace Assistant
          */
         private static void CompressedGump( PacketReader p, PacketHandlerEventArgs args )
         {
+
+            if (World.Player != null)
+            {
+                World.Player.CurrentGumpS = p.ReadUInt32();
+                World.Player.CurrentGumpI = p.ReadUInt32();
+            }
+
+            if (Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
+                args.Block = true;
+
+            return;
+
             // TODO: Look at reading certain gumps
-		    try
-		    {
-		        p.Seek(0, System.IO.SeekOrigin.Begin);
-		        byte packetID = p.ReadByte(); //1
+            //try
+		    //{
+		    //    p.Seek(0, System.IO.SeekOrigin.Begin);
+		    //    byte packetID = p.ReadByte(); //1
 
-		        p.MoveToData(); //2
+		    //    p.MoveToData(); //2
 
-		        uint ser = p.ReadUInt32(); //3
-		        uint tid = p.ReadUInt32(); //4
-		        int x = p.ReadInt32(); //5
-		        int y = p.ReadInt32(); //6
+		    //    uint ser = p.ReadUInt32(); //3
+		    //    uint tid = p.ReadUInt32(); //4
+		    //    int x = p.ReadInt32(); //5
+		    //    int y = p.ReadInt32(); //6
 
-		        string layout = null;
+		    //    string layout = null;
 
-		        layout = p.GetCompressedReader().ReadString(); //7, 8, 9
+		    //    layout = p.GetCompressedReader().ReadString(); //7, 8, 9
                 
-		        int txtLen = p.ReadInt32(); //10
+		    //    int txtLen = p.ReadInt32(); //10
 
-		        string text = null;
+		    //    string text = null;
 
-		        text = p.GetCompressedReader().ReadString(); //11, 12, 13
+		    //    text = p.GetCompressedReader().ReadString(); //11, 12, 13
 
-		        if (text.Contains("sinking"))
-		        {
-                    //write to log
-		        }
-		    }
-		    catch
-		    {
-		    }
+		    //    if (text.Contains("sinking"))
+		    //    {
+            //              //write to log
+		    //    }
+		    //}
+		    //catch
+		    //{
+		    //}
 
         }
 	}
