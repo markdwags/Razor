@@ -693,7 +693,7 @@ namespace Assistant
 	        {
 	            if (!m.IsMonster && !m.IsSeaMonster)
 	                continue;
-
+                
 	            if ((!FriendsAgent.IsFriend(m) || (noto.Length > 0 && noto[0] == 0)) &&
 	                !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
 	                Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))

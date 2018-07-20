@@ -88,74 +88,78 @@ namespace Assistant
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(8, 12);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 16);
+            this.label1.Size = new System.Drawing.Size(42, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Name:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // name
             // 
-            this.name.Location = new System.Drawing.Point(57, 8);
+            this.name.Location = new System.Drawing.Point(60, 6);
             this.name.Name = "name";
-            this.name.Size = new System.Drawing.Size(85, 22);
+            this.name.Size = new System.Drawing.Size(85, 23);
             this.name.TabIndex = 1;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(148, 12);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(151, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 16);
+            this.label2.Size = new System.Drawing.Size(48, 15);
             this.label2.TabIndex = 2;
             this.label2.Text = "Format:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // format
             // 
-            this.format.Location = new System.Drawing.Point(200, 8);
+            this.format.Location = new System.Drawing.Point(205, 6);
             this.format.Name = "format";
-            this.format.Size = new System.Drawing.Size(44, 22);
+            this.format.Size = new System.Drawing.Size(94, 23);
             this.format.TabIndex = 3;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(8, 33);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 38);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 19);
+            this.label3.Size = new System.Drawing.Size(48, 15);
             this.label3.TabIndex = 4;
             this.label3.Text = "Item ID:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // itemid
             // 
-            this.itemid.Location = new System.Drawing.Point(57, 32);
+            this.itemid.Location = new System.Drawing.Point(60, 35);
             this.itemid.Name = "itemid";
-            this.itemid.Size = new System.Drawing.Size(44, 22);
+            this.itemid.Size = new System.Drawing.Size(85, 23);
             this.itemid.TabIndex = 5;
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(116, 36);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(151, 38);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(84, 16);
+            this.label4.Size = new System.Drawing.Size(88, 15);
             this.label4.TabIndex = 6;
             this.label4.Text = "Color (Any: -1):";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // hue
             // 
-            this.hue.Location = new System.Drawing.Point(200, 32);
+            this.hue.Location = new System.Drawing.Point(245, 35);
             this.hue.Name = "hue";
-            this.hue.Size = new System.Drawing.Size(44, 22);
+            this.hue.Size = new System.Drawing.Size(54, 23);
             this.hue.TabIndex = 7;
             // 
             // Add
             // 
             this.Add.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Add.Location = new System.Drawing.Point(8, 84);
+            this.Add.Location = new System.Drawing.Point(9, 90);
             this.Add.Name = "Add";
-            this.Add.Size = new System.Drawing.Size(56, 23);
+            this.Add.Size = new System.Drawing.Size(68, 34);
             this.Add.TabIndex = 8;
             this.Add.Text = "&Okay";
             this.Add.Click += new System.EventHandler(this.Add_Click);
@@ -163,27 +167,27 @@ namespace Assistant
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(72, 84);
+            this.cancel.Location = new System.Drawing.Point(83, 90);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(56, 23);
+            this.cancel.Size = new System.Drawing.Size(68, 34);
             this.cancel.TabIndex = 9;
             this.cancel.Text = "Cancel";
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
             // 
             // target
             // 
-            this.target.Location = new System.Drawing.Point(200, 84);
+            this.target.Location = new System.Drawing.Point(231, 90);
             this.target.Name = "target";
-            this.target.Size = new System.Drawing.Size(56, 23);
+            this.target.Size = new System.Drawing.Size(68, 34);
             this.target.TabIndex = 10;
             this.target.Text = "Target ";
             this.target.Click += new System.EventHandler(this.target_Click);
             // 
             // delete
             // 
-            this.delete.Location = new System.Drawing.Point(136, 84);
+            this.delete.Location = new System.Drawing.Point(157, 90);
             this.delete.Name = "delete";
-            this.delete.Size = new System.Drawing.Size(56, 23);
+            this.delete.Size = new System.Drawing.Size(68, 34);
             this.delete.TabIndex = 11;
             this.delete.Text = "Delete";
             this.delete.Visible = false;
@@ -193,7 +197,7 @@ namespace Assistant
             // 
             this.dispImg.Checked = true;
             this.dispImg.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.dispImg.Location = new System.Drawing.Point(8, 56);
+            this.dispImg.Location = new System.Drawing.Point(9, 64);
             this.dispImg.Name = "dispImg";
             this.dispImg.Size = new System.Drawing.Size(160, 20);
             this.dispImg.TabIndex = 12;
@@ -202,8 +206,8 @@ namespace Assistant
             // AddCounter
             // 
             this.AcceptButton = this.Add;
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
-            this.ClientSize = new System.Drawing.Size(264, 119);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
+            this.ClientSize = new System.Drawing.Size(308, 133);
             this.ControlBox = false;
             this.Controls.Add(this.dispImg);
             this.Controls.Add(this.hue);
@@ -218,7 +222,7 @@ namespace Assistant
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "AddCounter";
             this.ShowInTaskbar = false;

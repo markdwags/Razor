@@ -84,18 +84,18 @@ namespace Assistant
             // 
             // insert
             // 
-            this.insert.Location = new System.Drawing.Point(51, 42);
+            this.insert.Location = new System.Drawing.Point(124, 38);
             this.insert.Name = "insert";
-            this.insert.Size = new System.Drawing.Size(76, 24);
+            this.insert.Size = new System.Drawing.Size(76, 33);
             this.insert.TabIndex = 0;
             this.insert.Text = "&Insert";
             this.insert.Click += new System.EventHandler(this.insert_Click);
             // 
             // txtAmount
             // 
-            this.txtAmount.Location = new System.Drawing.Point(167, 7);
+            this.txtAmount.Location = new System.Drawing.Point(238, 9);
             this.txtAmount.Name = "txtAmount";
-            this.txtAmount.Size = new System.Drawing.Size(80, 22);
+            this.txtAmount.Size = new System.Drawing.Size(156, 23);
             this.txtAmount.TabIndex = 7;
             // 
             // varList
@@ -111,18 +111,18 @@ namespace Assistant
             "Mounted",
             "R Hand Empty",
             "L Hand Empty"});
-            this.varList.Location = new System.Drawing.Point(24, 8);
+            this.varList.Location = new System.Drawing.Point(30, 9);
             this.varList.Name = "varList";
-            this.varList.Size = new System.Drawing.Size(91, 21);
+            this.varList.Size = new System.Drawing.Size(143, 23);
             this.varList.TabIndex = 8;
             this.varList.SelectedIndexChanged += new System.EventHandler(this.varList_SelectedIndexChanged);
             // 
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(133, 42);
+            this.cancel.Location = new System.Drawing.Point(206, 38);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(76, 24);
+            this.cancel.Size = new System.Drawing.Size(76, 33);
             this.cancel.TabIndex = 10;
             this.cancel.Text = "&Cancel";
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
@@ -133,13 +133,14 @@ namespace Assistant
             this.opList.Items.AddRange(new object[] {
             "<=",
             ">="});
-            this.opList.Location = new System.Drawing.Point(121, 8);
+            this.opList.Location = new System.Drawing.Point(179, 9);
             this.opList.Name = "opList";
-            this.opList.Size = new System.Drawing.Size(40, 21);
+            this.opList.Size = new System.Drawing.Size(53, 23);
             this.opList.TabIndex = 11;
             // 
             // label1
             // 
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(8, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(16, 20);
@@ -148,8 +149,8 @@ namespace Assistant
             // 
             // MacroInsertIf
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
-            this.ClientSize = new System.Drawing.Size(262, 78);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
+            this.ClientSize = new System.Drawing.Size(404, 77);
             this.ControlBox = false;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.opList);
@@ -157,7 +158,7 @@ namespace Assistant
             this.Controls.Add(this.varList);
             this.Controls.Add(this.txtAmount);
             this.Controls.Add(this.insert);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MacroInsertIf";
             this.ShowInTaskbar = false;

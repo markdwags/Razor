@@ -138,7 +138,7 @@ namespace Assistant
             // 
             // Prompt
             // 
-            this.Prompt.Location = new System.Drawing.Point(4, 2);
+            this.Prompt.Location = new System.Drawing.Point(12, 9);
             this.Prompt.Name = "Prompt";
             this.Prompt.Size = new System.Drawing.Size(210, 16);
             this.Prompt.TabIndex = 0;
@@ -146,16 +146,16 @@ namespace Assistant
             // 
             // EntryBox
             // 
-            this.EntryBox.Location = new System.Drawing.Point(4, 20);
+            this.EntryBox.Location = new System.Drawing.Point(12, 28);
             this.EntryBox.Name = "EntryBox";
-            this.EntryBox.Size = new System.Drawing.Size(210, 22);
+            this.EntryBox.Size = new System.Drawing.Size(243, 23);
             this.EntryBox.TabIndex = 1;
             // 
             // ok
             // 
-            this.ok.Location = new System.Drawing.Point(32, 46);
+            this.ok.Location = new System.Drawing.Point(12, 57);
             this.ok.Name = "ok";
-            this.ok.Size = new System.Drawing.Size(72, 27);
+            this.ok.Size = new System.Drawing.Size(79, 34);
             this.ok.TabIndex = 2;
             this.ok.Text = "Okay";
             this.ok.Click += new System.EventHandler(this.ok_Click);
@@ -163,9 +163,9 @@ namespace Assistant
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(112, 46);
+            this.cancel.Location = new System.Drawing.Point(176, 57);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(72, 27);
+            this.cancel.Size = new System.Drawing.Size(79, 34);
             this.cancel.TabIndex = 3;
             this.cancel.Text = "Cancel";
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
@@ -173,15 +173,15 @@ namespace Assistant
             // InputBox
             // 
             this.AcceptButton = this.ok;
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(218, 78);
+            this.ClientSize = new System.Drawing.Size(267, 99);
             this.ControlBox = false;
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.ok);
             this.Controls.Add(this.EntryBox);
             this.Controls.Add(this.Prompt);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "InputBox";
             this.ShowInTaskbar = false;

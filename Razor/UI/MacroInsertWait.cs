@@ -98,18 +98,18 @@ namespace Assistant
             // 
             // insert
             // 
-            this.insert.Location = new System.Drawing.Point(46, 112);
+            this.insert.Location = new System.Drawing.Point(67, 148);
             this.insert.Name = "insert";
-            this.insert.Size = new System.Drawing.Size(64, 29);
+            this.insert.Size = new System.Drawing.Size(64, 38);
             this.insert.TabIndex = 0;
             this.insert.Text = "&Insert";
             this.insert.Click += new System.EventHandler(this.insert_Click);
             // 
             // radioPause
             // 
-            this.radioPause.Location = new System.Drawing.Point(8, 4);
+            this.radioPause.Location = new System.Drawing.Point(12, 12);
             this.radioPause.Name = "radioPause";
-            this.radioPause.Size = new System.Drawing.Size(76, 20);
+            this.radioPause.Size = new System.Drawing.Size(101, 20);
             this.radioPause.TabIndex = 1;
             this.radioPause.Text = "Pause for:";
             this.radioPause.CheckedChanged += new System.EventHandler(this.radioPause_CheckedChanged);
@@ -117,30 +117,30 @@ namespace Assistant
             // pause
             // 
             this.pause.Enabled = false;
-            this.pause.Location = new System.Drawing.Point(84, 4);
+            this.pause.Location = new System.Drawing.Point(89, 12);
             this.pause.Name = "pause";
-            this.pause.Size = new System.Drawing.Size(40, 22);
+            this.pause.Size = new System.Drawing.Size(40, 23);
             this.pause.TabIndex = 2;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(128, 7);
+            this.label1.Location = new System.Drawing.Point(135, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 16);
+            this.label1.Size = new System.Drawing.Size(91, 20);
             this.label1.TabIndex = 3;
             this.label1.Text = "milliseconds";
             // 
             // radioGump
             // 
-            this.radioGump.Location = new System.Drawing.Point(8, 24);
+            this.radioGump.Location = new System.Drawing.Point(12, 41);
             this.radioGump.Name = "radioGump";
-            this.radioGump.Size = new System.Drawing.Size(128, 20);
+            this.radioGump.Size = new System.Drawing.Size(176, 20);
             this.radioGump.TabIndex = 4;
             this.radioGump.Text = "Wait for Gump";
             // 
             // radioTarg
             // 
-            this.radioTarg.Location = new System.Drawing.Point(8, 64);
+            this.radioTarg.Location = new System.Drawing.Point(12, 93);
             this.radioTarg.Name = "radioTarg";
             this.radioTarg.Size = new System.Drawing.Size(128, 20);
             this.radioTarg.TabIndex = 5;
@@ -148,9 +148,9 @@ namespace Assistant
             // 
             // radioStat
             // 
-            this.radioStat.Location = new System.Drawing.Point(8, 84);
+            this.radioStat.Location = new System.Drawing.Point(12, 119);
             this.radioStat.Name = "radioStat";
-            this.radioStat.Size = new System.Drawing.Size(76, 20);
+            this.radioStat.Size = new System.Drawing.Size(67, 20);
             this.radioStat.TabIndex = 6;
             this.radioStat.Text = "Wait for ";
             this.radioStat.CheckedChanged += new System.EventHandler(this.radioStat_CheckedChanged);
@@ -158,9 +158,9 @@ namespace Assistant
             // statAmount
             // 
             this.statAmount.Enabled = false;
-            this.statAmount.Location = new System.Drawing.Point(180, 84);
+            this.statAmount.Location = new System.Drawing.Point(205, 119);
             this.statAmount.Name = "statAmount";
-            this.statAmount.Size = new System.Drawing.Size(40, 22);
+            this.statAmount.Size = new System.Drawing.Size(50, 23);
             this.statAmount.TabIndex = 7;
             // 
             // statList
@@ -171,17 +171,17 @@ namespace Assistant
             "Hits",
             "Mana",
             "Stamina"});
-            this.statList.Location = new System.Drawing.Point(72, 84);
+            this.statList.Location = new System.Drawing.Point(85, 119);
             this.statList.Name = "statList";
-            this.statList.Size = new System.Drawing.Size(64, 21);
+            this.statList.Size = new System.Drawing.Size(64, 23);
             this.statList.TabIndex = 8;
             // 
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(116, 112);
+            this.cancel.Location = new System.Drawing.Point(137, 148);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(64, 29);
+            this.cancel.Size = new System.Drawing.Size(64, 38);
             this.cancel.TabIndex = 10;
             this.cancel.Text = "&Cancel";
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
@@ -193,14 +193,14 @@ namespace Assistant
             this.statOpList.Items.AddRange(new object[] {
             "<=",
             ">="});
-            this.statOpList.Location = new System.Drawing.Point(136, 84);
+            this.statOpList.Location = new System.Drawing.Point(155, 119);
             this.statOpList.Name = "statOpList";
-            this.statOpList.Size = new System.Drawing.Size(44, 21);
+            this.statOpList.Size = new System.Drawing.Size(44, 23);
             this.statOpList.TabIndex = 11;
             // 
             // radioMenu
             // 
-            this.radioMenu.Location = new System.Drawing.Point(8, 44);
+            this.radioMenu.Location = new System.Drawing.Point(12, 67);
             this.radioMenu.Name = "radioMenu";
             this.radioMenu.Size = new System.Drawing.Size(176, 20);
             this.radioMenu.TabIndex = 12;
@@ -209,9 +209,9 @@ namespace Assistant
             // MacroInsertWait
             // 
             this.AcceptButton = this.insert;
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 15);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(226, 148);
+            this.ClientSize = new System.Drawing.Size(267, 192);
             this.ControlBox = false;
             this.Controls.Add(this.radioMenu);
             this.Controls.Add(this.statOpList);
@@ -225,7 +225,7 @@ namespace Assistant
             this.Controls.Add(this.radioPause);
             this.Controls.Add(this.insert);
             this.Controls.Add(this.radioGump);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MacroInsertWait";
             this.ShowInTaskbar = false;

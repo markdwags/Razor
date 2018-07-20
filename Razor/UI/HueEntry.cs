@@ -87,15 +87,15 @@ namespace Assistant
             // 
             this.hueNum.Location = new System.Drawing.Point(101, 6);
             this.hueNum.Name = "hueNum";
-            this.hueNum.Size = new System.Drawing.Size(50, 23);
+            this.hueNum.Size = new System.Drawing.Size(61, 23);
             this.hueNum.TabIndex = 1;
             this.hueNum.TextChanged += new System.EventHandler(this.hueNum_TextChanged);
             // 
             // inGame
             // 
-            this.inGame.Location = new System.Drawing.Point(15, 34);
+            this.inGame.Location = new System.Drawing.Point(15, 35);
             this.inGame.Name = "inGame";
-            this.inGame.Size = new System.Drawing.Size(136, 20);
+            this.inGame.Size = new System.Drawing.Size(147, 35);
             this.inGame.TabIndex = 2;
             this.inGame.Text = "Select in Game";
             this.inGame.Click += new System.EventHandler(this.inGame_Click);
@@ -103,18 +103,18 @@ namespace Assistant
             // preview
             // 
             this.preview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.preview.Location = new System.Drawing.Point(15, 57);
+            this.preview.Location = new System.Drawing.Point(15, 73);
             this.preview.Name = "preview";
-            this.preview.Size = new System.Drawing.Size(136, 20);
+            this.preview.Size = new System.Drawing.Size(147, 35);
             this.preview.TabIndex = 3;
             this.preview.Text = "Preview";
             this.preview.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // okay
             // 
-            this.okay.Location = new System.Drawing.Point(15, 89);
+            this.okay.Location = new System.Drawing.Point(15, 114);
             this.okay.Name = "okay";
-            this.okay.Size = new System.Drawing.Size(52, 30);
+            this.okay.Size = new System.Drawing.Size(52, 35);
             this.okay.TabIndex = 4;
             this.okay.Text = "&OK";
             this.okay.Click += new System.EventHandler(this.okay_Click);
@@ -122,9 +122,9 @@ namespace Assistant
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(99, 89);
+            this.cancel.Location = new System.Drawing.Point(110, 114);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(52, 30);
+            this.cancel.Size = new System.Drawing.Size(52, 35);
             this.cancel.TabIndex = 5;
             this.cancel.Text = "Cancel";
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
@@ -134,7 +134,7 @@ namespace Assistant
             this.AcceptButton = this.okay;
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(167, 127);
+            this.ClientSize = new System.Drawing.Size(177, 157);
             this.ControlBox = false;
             this.Controls.Add(this.hueNum);
             this.Controls.Add(this.cancel);
