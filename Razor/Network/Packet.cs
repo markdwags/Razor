@@ -39,7 +39,7 @@ namespace Assistant
         {
             get
             {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Razor_Packets.log");
+                return Path.Combine(Config.GetInstallDirectory(), "Razor_Packets.log");
             }
         }
 
