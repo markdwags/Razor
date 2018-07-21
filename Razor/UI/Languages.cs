@@ -419,6 +419,7 @@ namespace Assistant
         AllMobiles,
         BullSounds,
         DragonSounds,
+        SetSellAgentHotBag,
 
         __End
 	}

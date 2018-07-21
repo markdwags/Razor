@@ -500,7 +500,9 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0x9E, new PacketViewerCallback( OnVendorSell ) );
 			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
 
-			Agent.OnItemCreated += new ItemCreatedEventHandler( CheckHBOPL );
+		    HotKey.Add(HKCategory.Agents, HKSubCat.None, Language.GetString(LocString.SetSellAgentHotBag), new HotKeyCallback(SetHotBag));
+
+            Agent.OnItemCreated += new ItemCreatedEventHandler( CheckHBOPL );
 		}
 
 		private void CheckHBOPL( Item item )
@@ -743,7 +745,45 @@ namespace Assistant
 			}
 		}
 
-		public override void Save( XmlTextWriter xml )
+	    private void SetHotBag()
+	    {
+	        World.Player.SendMessage(MsgLevel.Force, LocString.TargCont);
+	        Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnHBTarget));
+	    }
+
+	    /*private void OnHBTarget(bool location, Serial serial, Point3D loc, ushort gfx)
+	    {
+	        Engine.MainWindow.ShowMe();
+
+	        Item hb = World.FindItem(m_HotBag);
+	        if (hb != null)
+	        {
+	            if (hb.ObjPropList.Remove(Language.Format(LocString.RestockHBA1, m_Num)))
+	            {
+	                hb.OPLChanged();
+	            }
+	        }
+
+	        if (!location && serial.IsItem)
+	        {
+	            m_HotBag = serial;
+	        }
+	        else
+	        {
+	            m_HotBag = Serial.Zero;
+	        }
+
+	        hb = World.FindItem(m_HotBag);
+	        if (hb != null)
+	        {
+	            hb.ObjPropList.Add(Language.Format(LocString.RestockHBA1, m_Num));
+	            hb.OPLChanged();
+	        }
+
+	        SetHBText();
+	    }*/
+
+        public override void Save( XmlTextWriter xml )
 		{
 			if ( m_Items == null )
             {
@@ -766,6 +806,8 @@ namespace Assistant
 				xml.WriteEndElement();
 			}
 		}
+
+
 		
 		public override void Load( XmlElement node )
 		{
