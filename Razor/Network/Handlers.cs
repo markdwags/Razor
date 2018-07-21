@@ -86,7 +86,9 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) ); // Special RunUO protocol extentions (for KUOC/Razor)
 
 			PacketHandler.RegisterServerToClientViewer( 0xF3, new PacketViewerCallback( SAWorldItem ) );
-		}
+
+		    PacketHandler.RegisterServerToClientViewer(0x2C, new PacketViewerCallback(ResurrectionGump));
+        }
 		
 		private static void DisplayStringQuery( PacketReader p, PacketHandlerEventArgs args )
 		{
@@ -227,7 +229,7 @@ namespace Assistant
 			{
 				Mobile m = World.FindMobile( killed );
 				if ( m != null && ( ( m.Body >= 0x0190 && m.Body <= 0x0193 ) || ( m.Body >= 0x025D && m.Body <= 0x0260 ) ) && Utility.Distance( World.Player.Position, m.Position ) <= 12 )
-					ScreenCapManager.DeathCapture();
+					ScreenCapManager.DeathCapture(0.5);
 			}
 		}
 
@@ -2510,10 +2512,19 @@ namespace Assistant
                 World.Player.CurrentGumpI = p.ReadUInt32();
             }
 
+            /*int x = p.ReadInt32(); //5
+            int y = p.ReadInt32(); //6
+
+            string layout = p.GetCompressedReader().ReadString(); //7, 8, 9
+
+            int txtLen = p.ReadInt32(); //10
+
+            string txt = p.GetCompressedReader().ReadString();  //11, 12, 13*/
+
             if (Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
 
-            return;
+            //return;
 
             // TODO: Look at reading certain gumps
             //try
@@ -2548,5 +2559,17 @@ namespace Assistant
 		    //}
 
         }
-	}
+        
+	    private static void ResurrectionGump(PacketReader p, PacketHandlerEventArgs args)
+	    {
+	        if (Config.GetBool("AutoCap"))
+	        {
+	            ScreenCapManager.DeathCapture(0.10);
+                ScreenCapManager.DeathCapture(0.25);
+	            ScreenCapManager.DeathCapture(0.50);
+	            ScreenCapManager.DeathCapture(0.75);
+	            
+            }
+        }
+    }
 }

@@ -2909,7 +2909,7 @@ namespace Assistant
             // 
             this.radioUO.Location = new System.Drawing.Point(12, 163);
             this.radioUO.Name = "radioUO";
-            this.radioUO.Size = new System.Drawing.Size(88, 26);
+            this.radioUO.Size = new System.Drawing.Size(75, 26);
             this.radioUO.TabIndex = 6;
             this.radioUO.Text = "UO Only";
             this.radioUO.CheckedChanged += new System.EventHandler(this.radioUO_CheckedChanged);

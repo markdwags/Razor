@@ -236,18 +236,18 @@ namespace Assistant
 			{
 			}
 
-			if ( !opList.Visible )
+			/*if ( !opList.Visible )
 			{
 				if ( txtAmount.Visible )
 				{
-					varList.Size = new System.Drawing.Size(80, 21);
+					//varList.Size = new System.Drawing.Size(80, 21);
 
-					txtAmount.Location = new System.Drawing.Point(104, 9);
-					txtAmount.Size = new System.Drawing.Size(120, 20);
+					//txtAmount.Location = new System.Drawing.Point(104, 9);
+					//txtAmount.Size = new System.Drawing.Size(120, 20);
 				}
 				else
 				{
-					varList.Size = new System.Drawing.Size(200, 21);
+					//varList.Size = new System.Drawing.Size(200, 21);
 				}
 			}
 			else
@@ -256,7 +256,7 @@ namespace Assistant
 
 				txtAmount.Location = new System.Drawing.Point(144, 9);
 				txtAmount.Size = new System.Drawing.Size(80, 20);
-			}
+			}*/
 		}
 	}
 }

@@ -17,10 +17,10 @@ namespace Assistant
 			HotKey.Add( HKCategory.Misc, LocString.TakeSS, new HotKeyCallback( CaptureNow ) );
 		}
 
-		public static void DeathCapture()
+		public static void DeathCapture(double delay)
 		{
 			if ( !PacketPlayer.Playing ) // dont take SS of RPV deaths
-				Timer.DelayedCallback( TimeSpan.FromSeconds( 0.5 ), m_DoCaptureCall ).Start();
+				Timer.DelayedCallback( TimeSpan.FromSeconds(delay), m_DoCaptureCall ).Start();
 		}
 
 		public static void CaptureNow()
