@@ -2253,7 +2253,7 @@ namespace Assistant.Macros
 					string text = (string)m_Value;
 					for(int i=PacketHandlers.SysMessages.Count-1;i>=0;i--)
 					{
-						string sys = (string)PacketHandlers.SysMessages[i];
+						string sys = PacketHandlers.SysMessages[i];
 						if ( sys.IndexOf( text ) != -1 )
 						{
 							PacketHandlers.SysMessages.RemoveRange( 0, i+1 );

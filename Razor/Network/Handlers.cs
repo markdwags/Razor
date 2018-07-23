@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Assistant.Macros;
 
 namespace Assistant
@@ -1783,7 +1784,7 @@ namespace Assistant
 			Item.UpdateContainers();
 		}
 
-		public static ArrayList SysMessages = new ArrayList( 21 );
+		public static List<string> SysMessages = new List<string>();
 
 		public static void HandleSpeech( Packet p, PacketHandlerEventArgs args, Serial ser, ushort body, MessageType type, ushort hue, ushort font, string lang, string name, string text )
 		{
@@ -1857,19 +1858,19 @@ namespace Assistant
 				        World.Player.ResetCriminalTimer();
 				    }
                     //"You get yourself ready to stun your opponent."
-                    else if (Config.GetBool("ShowStunOverhead") && text.Contains("ready to stun your opponent"))
+                    else if (Config.GetBool("ShowStunOverhead") && text.Equals(Language.GetCliloc(1019011)))
 				    {
                         World.Player.OverheadMessage(LocString.StunReady);
 				    }
-				    else if (Config.GetBool("ShowStunOverhead") && text.Contains("successfully stun your opponent"))
+				    else if (Config.GetBool("ShowStunOverhead") && text.Equals(Language.GetCliloc(1004013)))
 				    {
 				        World.Player.OverheadMessage(LocString.StunSuccessful);
                     }
-				    else if (Config.GetBool("ShowStunOverhead") && text.Contains("not try to stun anyone"))
+				    else if (Config.GetBool("ShowStunOverhead") && text.Equals(Language.GetCliloc(1019012)))
 				    {
 				        World.Player.OverheadMessage(LocString.StunDisabled);
                     }
-				    else if (Config.GetBool("ShowStunOverhead") && text.Contains("failed in your attempt to stun"))
+				    else if (Config.GetBool("ShowStunOverhead") && text.Equals(Language.GetCliloc(1004010)))
 				    {
 				        World.Player.OverheadMessage(LocString.StunFailed);
                     }
@@ -2506,61 +2507,136 @@ namespace Assistant
         private static void CompressedGump( PacketReader p, PacketHandlerEventArgs args )
         {
 
-            if (World.Player != null)
-            {
-                World.Player.CurrentGumpS = p.ReadUInt32();
-                World.Player.CurrentGumpI = p.ReadUInt32();
-            }
+            if (World.Player == null)
+                return;
 
-            /*int x = p.ReadInt32(); //5
-            int y = p.ReadInt32(); //6
+            World.Player.CurrentGumpS = p.ReadUInt32();
+            World.Player.CurrentGumpI = p.ReadUInt32();
 
-            string layout = p.GetCompressedReader().ReadString(); //7, 8, 9
-
-            int txtLen = p.ReadInt32(); //10
-
-            string txt = p.GetCompressedReader().ReadString();  //11, 12, 13*/
+            List<string> gumpStrings = new List<string>();
+            World.Player.HasGump = true;
 
             if (Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
 
-            //return;
+            try
+            {
+                int x = p.ReadInt32(), y = p.ReadInt32();
 
-            // TODO: Look at reading certain gumps
-            //try
-		    //{
-		    //    p.Seek(0, System.IO.SeekOrigin.Begin);
-		    //    byte packetID = p.ReadByte(); //1
+                string layout = p.GetCompressedReader().ReadString();
 
-		    //    p.MoveToData(); //2
+                int numStrings = p.ReadInt32();
+                if (numStrings < 0 || numStrings > 256)
+                    numStrings = 0;
 
-		    //    uint ser = p.ReadUInt32(); //3
-		    //    uint tid = p.ReadUInt32(); //4
-		    //    int x = p.ReadInt32(); //5
-		    //    int y = p.ReadInt32(); //6
+                // Split on one or more non-digit characters.
+                World.Player.CurrentGumpStrings.Clear();
 
-		    //    string layout = null;
+                string[] numbers = Regex.Split(layout, @"\D+");
 
-		    //    layout = p.GetCompressedReader().ReadString(); //7, 8, 9
-                
-		    //    int txtLen = p.ReadInt32(); //10
+                foreach (string value in numbers)
+                {
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        int i = int.Parse(value);
+                        if ((i >= 500000 && i <= 503405) || (i >= 1000000 && i <= 1155584) || (i >= 3000000 && i <= 3011032))
+                            gumpStrings.Add(Language.GetString(i));
+                    }
+                }
 
-		    //    string text = null;
+                PacketReader pComp = p.GetCompressedReader();
+                int len = 0;
+                int x1 = 0;
+                string[] stringlistparse = new string[numStrings];
 
-		    //    text = p.GetCompressedReader().ReadString(); //11, 12, 13
+                while (!pComp.AtEnd && (len = pComp.ReadInt16()) > 0)
+                {
+                    string tempString = pComp.ReadUnicodeString(len);
+                    stringlistparse[x1] = tempString;
+                    x1++;
+                }
 
-		    //    if (text.Contains("sinking"))
-		    //    {
-            //              //write to log
-		    //    }
-		    //}
-		    //catch
-		    //{
-		    //}
+                if (TryParseGump(layout, out string[] gumpPieces))
+                {
+                    gumpStrings.AddRange(ParseGumpString(gumpPieces, stringlistparse));
+                }
 
+                World.Player.CurrentGumpStrings.AddRange(gumpStrings);
+
+                World.Player.CurrentGumpRawData = layout; // Get raw data of current gump
+            }
+            catch { }
         }
-        
-	    private static void ResurrectionGump(PacketReader p, PacketHandlerEventArgs args)
+
+	    private static bool TryParseGump(string gumpData, out string[] pieces)
+	    {
+	        List<string> i = new List<string>();
+	        int dataIndex = 0;
+	        while (dataIndex < gumpData.Length)
+	        {
+	            if (gumpData.Substring(dataIndex) == "\0")
+	            {
+	                break;
+	            }
+	            else
+	            {
+	                int begin = gumpData.IndexOf("{", dataIndex);
+	                int end = gumpData.IndexOf("}", dataIndex + 1);
+	                if ((begin != -1) && (end != -1))
+	                {
+	                    string sub = gumpData.Substring(begin + 1, end - begin - 1).Trim();
+	                    i.Add(sub);
+	                    dataIndex = end;
+	                }
+	                else
+	                {
+	                    break;
+	                }
+	            }
+	        }
+
+	        pieces = i.ToArray();
+	        return (pieces.Length > 0);
+	    }
+
+	    private static List<string> ParseGumpString(string[] gumpPieces, string[] gumpLines)
+	    {
+	        List<string> gumpText = new List<string>();
+	        for (int i = 0; i < gumpPieces.Length; i++)
+	        {
+	            string[] gumpParams = Regex.Split(gumpPieces[i], @"\s+");
+	            switch (gumpParams[0].ToLower())
+	            {
+
+	                case "croppedtext":
+	                    gumpText.Add(gumpLines[int.Parse(gumpParams[6])]);
+	                    // CroppedText [x] [y] [width] [height] [color] [text-id]
+	                    // Adds a text field to the gump. gump is similar to the text command, but the text is cropped to the defined area.
+	                    //gump.AddControl(new CroppedText(gump, gumpParams, gumpLines), currentGUMPPage);
+	                    //(gump.LastControl as CroppedText).Hue = 1;
+	                    break;
+
+	                case "htmlgump":
+	                    gumpText.Add(gumpLines[int.Parse(gumpParams[5])]);
+	                    // HtmlGump [x] [y] [width] [height] [text-id] [background] [scrollbar]
+	                    // Defines a text-area where Html-commands are allowed.
+	                    // [background] and [scrollbar] can be 0 or 1 and define whether the background is transparent and a scrollbar is displayed.
+	                    //	gump.AddControl(new HtmlGumpling(gump, gumpParams, gumpLines), currentGUMPPage);
+	                    break;
+
+	                case "text":
+	                    gumpText.Add(gumpLines[int.Parse(gumpParams[4])]);
+	                    // Text [x] [y] [color] [text-id]
+	                    // Defines the position and color of a text (data) entry.
+	                    //gump.AddControl(new TextLabel(gump, gumpParams, gumpLines), currentGUMPPage);
+	                    break;
+	            }
+	        }
+
+	        return gumpText;
+	    }
+
+        private static void ResurrectionGump(PacketReader p, PacketHandlerEventArgs args)
 	    {
 	        if (Config.GetBool("AutoCap"))
 	        {
@@ -2568,7 +2644,6 @@ namespace Assistant
                 ScreenCapManager.DeathCapture(0.25);
 	            ScreenCapManager.DeathCapture(0.50);
 	            ScreenCapManager.DeathCapture(0.75);
-	            
             }
         }
     }

@@ -870,7 +870,9 @@ namespace Assistant
 
 		public uint CurrentGumpS, CurrentGumpI;
 		public bool HasGump;
-		public uint CurrentMenuS;
+	    public List<string> CurrentGumpStrings = new List<string>();
+	    public string CurrentGumpRawData;
+        public uint CurrentMenuS;
 		public ushort CurrentMenuI;
 		public bool HasMenu;
 
