@@ -112,7 +112,7 @@ namespace Assistant
             // 
             // okay
             // 
-            this.okay.Location = new System.Drawing.Point(15, 114);
+            this.okay.Location = new System.Drawing.Point(110, 111);
             this.okay.Name = "okay";
             this.okay.Size = new System.Drawing.Size(52, 35);
             this.okay.TabIndex = 4;
@@ -122,7 +122,7 @@ namespace Assistant
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(110, 114);
+            this.cancel.Location = new System.Drawing.Point(15, 111);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(52, 35);
             this.cancel.TabIndex = 5;
@@ -134,7 +134,7 @@ namespace Assistant
             this.AcceptButton = this.okay;
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(177, 157);
+            this.ClientSize = new System.Drawing.Size(177, 154);
             this.ControlBox = false;
             this.Controls.Add(this.hueNum);
             this.Controls.Add(this.cancel);

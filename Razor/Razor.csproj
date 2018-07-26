@@ -135,6 +135,7 @@
     <Compile Include="Core\AVIRec.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\OverheadMessages.cs" />
     <Compile Include="Core\SkillTimer.cs" />
     <Compile Include="Core\BandageTimer.cs">
       <SubType>Code</SubType>
@@ -322,6 +323,12 @@
     <Compile Include="UI\MessageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\OverheadMessages.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OverheadMessages.Designer.cs">
+      <DependentUpon>OverheadMessages.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Razor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -380,6 +387,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MessageDialog.resx">
       <DependentUpon>MessageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OverheadMessages.resx">
+      <DependentUpon>OverheadMessages.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Razor.resx">
       <DependentUpon>Razor.cs</DependentUpon>

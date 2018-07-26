@@ -438,7 +438,10 @@ namespace Assistant
 		public static string Current { get{ return m_Current; } }
 		public static string CliLocName { get{ return m_CliLocName; } }
 
-		public static string GetControlText( string name )
+	    public static Ultima.StringList CliLoc { get { return m_CliLoc; } }
+
+
+        public static string GetControlText( string name )
 		{
 			name = String.Format( "{0}::Text", name );
 			if ( m_Controls.ContainsKey( name ) )

@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Assistant.Core;
 using Assistant.Macros;
 
 namespace Assistant
@@ -1793,7 +1794,7 @@ namespace Assistant
 
 			if ( !ser.IsValid || ser == World.Player.Serial || ser.IsItem )
 			{
-				SysMessages.Add( text.ToLower() );
+				SysMessages.Add( text );
 
 				if ( SysMessages.Count >= 25 )
 					SysMessages.RemoveRange( 0, 10 );
@@ -1857,24 +1858,17 @@ namespace Assistant
 				    {
 				        World.Player.ResetCriminalTimer();
 				    }
-                    //"You get yourself ready to stun your opponent."
-                    else if (Config.GetBool("ShowStunOverhead") && text.Equals(Language.GetCliloc(1019011)))
-				    {
-                        World.Player.OverheadMessage(LocString.StunReady);
-				    }
-				    else if (Config.GetBool("ShowStunOverhead") && text.Equals(Language.GetCliloc(1004013)))
-				    {
-				        World.Player.OverheadMessage(LocString.StunSuccessful);
-                    }
-				    else if (Config.GetBool("ShowStunOverhead") && text.Equals(Language.GetCliloc(1019012)))
-				    {
-				        World.Player.OverheadMessage(LocString.StunDisabled);
-                    }
-				    else if (Config.GetBool("ShowStunOverhead") && text.Equals(Language.GetCliloc(1004010)))
-				    {
-				        World.Player.OverheadMessage(LocString.StunFailed);
-                    }
 
+				    if (Config.GetBool("ShowOverheadMessages") && OverheadMessages.OverheadMessageList.Count > 0)
+				    {
+				        foreach (OverheadMessages.OverheadMessage message in OverheadMessages.OverheadMessageList)
+				        {
+				            if (text.IndexOf(message.SearchMessage, StringComparison.OrdinalIgnoreCase) != -1)
+				            {
+				                World.Player.OverheadMessage(message.MessageOverhead);
+                            }
+				        }
+				    }
                 }
 
 				if ( ( type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper || type == MessageType.Yell ) && ser.IsMobile && ser != World.Player.Serial )

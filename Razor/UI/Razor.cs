@@ -13,6 +13,7 @@ using Assistant.Filters;
 using Assistant.Macros;
 using System.Diagnostics;
 using Assistant.Boat;
+using Assistant.UI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -269,14 +270,16 @@ namespace Assistant
         private CheckBox smartLT;
         private CheckBox gameSize;
         private CheckBox chkPartyOverhead;
-        private TrackBar lightLevelBar;
-        private Label lightLevel;
         private Button btnMap;
         private Button boatControl;
         private CheckBox showTargetMessagesOverChar;
-        private CheckBox showStunMessagesOverhead;
+        private CheckBox showOverheadMessages;
         private Label label24;
         private CheckBox logSkillChanges;
+        private Button overHeadMessages;
+        private Button saveProfile;
+        private Label lightLevel;
+        private TrackBar lightLevelBar;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -340,8 +343,6 @@ namespace Assistant
             this.m_NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.generalTab = new System.Windows.Forms.TabPage();
-            this.lightLevel = new System.Windows.Forms.Label();
-            this.lightLevelBar = new System.Windows.Forms.TrackBar();
             this.clientPrio = new System.Windows.Forms.ComboBox();
             this.systray = new System.Windows.Forms.RadioButton();
             this.taskbar = new System.Windows.Forms.RadioButton();
@@ -349,6 +350,7 @@ namespace Assistant
             this.label7 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.saveProfile = new System.Windows.Forms.Button();
             this.cloneProfile = new System.Windows.Forms.Button();
             this.delProfile = new System.Windows.Forms.Button();
             this.newProfile = new System.Windows.Forms.Button();
@@ -361,6 +363,8 @@ namespace Assistant
             this.opacityLabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.moreOptTab = new System.Windows.Forms.TabPage();
+            this.lightLevel = new System.Windows.Forms.Label();
+            this.lightLevelBar = new System.Windows.Forms.TrackBar();
             this.preAOSstatbar = new System.Windows.Forms.CheckBox();
             this.setLTHilight = new System.Windows.Forms.Button();
             this.lthilight = new System.Windows.Forms.CheckBox();
@@ -392,7 +396,8 @@ namespace Assistant
             this.label3 = new System.Windows.Forms.Label();
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
-            this.showStunMessagesOverhead = new System.Windows.Forms.CheckBox();
+            this.overHeadMessages = new System.Windows.Forms.Button();
+            this.showOverheadMessages = new System.Windows.Forms.CheckBox();
             this.showTargetMessagesOverChar = new System.Windows.Forms.CheckBox();
             this.forceSizeX = new System.Windows.Forms.TextBox();
             this.forceSizeY = new System.Windows.Forms.TextBox();
@@ -588,11 +593,11 @@ namespace Assistant
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.moreOptTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
             this.moreMoreOptTab.SuspendLayout();
             this.displayTab.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -656,8 +661,6 @@ namespace Assistant
             // 
             // generalTab
             // 
-            this.generalTab.Controls.Add(this.lightLevel);
-            this.generalTab.Controls.Add(this.lightLevelBar);
             this.generalTab.Controls.Add(this.clientPrio);
             this.generalTab.Controls.Add(this.systray);
             this.generalTab.Controls.Add(this.taskbar);
@@ -677,27 +680,6 @@ namespace Assistant
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             // 
-            // lightLevel
-            // 
-            this.lightLevel.AutoSize = true;
-            this.lightLevel.Location = new System.Drawing.Point(181, 191);
-            this.lightLevel.Name = "lightLevel";
-            this.lightLevel.Size = new System.Drawing.Size(67, 15);
-            this.lightLevel.TabIndex = 81;
-            this.lightLevel.Text = "Light Level:";
-            // 
-            // lightLevelBar
-            // 
-            this.lightLevelBar.AutoSize = false;
-            this.lightLevelBar.Location = new System.Drawing.Point(279, 191);
-            this.lightLevelBar.Maximum = 31;
-            this.lightLevelBar.Name = "lightLevelBar";
-            this.lightLevelBar.Size = new System.Drawing.Size(197, 21);
-            this.lightLevelBar.TabIndex = 79;
-            this.lightLevelBar.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.lightLevelBar.Value = 15;
-            this.lightLevelBar.Scroll += new System.EventHandler(this.lightLevelBar_Scroll);
-            // 
             // clientPrio
             // 
             this.clientPrio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -708,7 +690,7 @@ namespace Assistant
             "AboveNormal",
             "High",
             "Realtime"});
-            this.clientPrio.Location = new System.Drawing.Point(319, 135);
+            this.clientPrio.Location = new System.Drawing.Point(319, 159);
             this.clientPrio.Name = "clientPrio";
             this.clientPrio.Size = new System.Drawing.Size(154, 23);
             this.clientPrio.TabIndex = 60;
@@ -716,7 +698,7 @@ namespace Assistant
             // 
             // systray
             // 
-            this.systray.Location = new System.Drawing.Point(236, 106);
+            this.systray.Location = new System.Drawing.Point(236, 130);
             this.systray.Name = "systray";
             this.systray.Size = new System.Drawing.Size(88, 23);
             this.systray.TabIndex = 35;
@@ -725,7 +707,7 @@ namespace Assistant
             // 
             // taskbar
             // 
-            this.taskbar.Location = new System.Drawing.Point(330, 106);
+            this.taskbar.Location = new System.Drawing.Point(330, 130);
             this.taskbar.Name = "taskbar";
             this.taskbar.Size = new System.Drawing.Size(79, 23);
             this.taskbar.TabIndex = 34;
@@ -735,7 +717,7 @@ namespace Assistant
             // langSel
             // 
             this.langSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.langSel.Location = new System.Drawing.Point(319, 162);
+            this.langSel.Location = new System.Drawing.Point(319, 186);
             this.langSel.Name = "langSel";
             this.langSel.Size = new System.Drawing.Size(154, 23);
             this.langSel.TabIndex = 52;
@@ -743,7 +725,7 @@ namespace Assistant
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(181, 165);
+            this.label7.Location = new System.Drawing.Point(181, 189);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(68, 18);
             this.label7.TabIndex = 51;
@@ -751,7 +733,7 @@ namespace Assistant
             // 
             // label11
             // 
-            this.label11.Location = new System.Drawing.Point(181, 110);
+            this.label11.Location = new System.Drawing.Point(181, 134);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(54, 16);
             this.label11.TabIndex = 33;
@@ -759,20 +741,30 @@ namespace Assistant
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.saveProfile);
             this.groupBox4.Controls.Add(this.cloneProfile);
             this.groupBox4.Controls.Add(this.delProfile);
             this.groupBox4.Controls.Add(this.newProfile);
             this.groupBox4.Controls.Add(this.profiles);
             this.groupBox4.Location = new System.Drawing.Point(181, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(294, 53);
+            this.groupBox4.Size = new System.Drawing.Size(292, 75);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Profiles";
             // 
+            // saveProfile
+            // 
+            this.saveProfile.Location = new System.Drawing.Point(89, 45);
+            this.saveProfile.Name = "saveProfile";
+            this.saveProfile.Size = new System.Drawing.Size(50, 23);
+            this.saveProfile.TabIndex = 4;
+            this.saveProfile.Text = "Save";
+            this.saveProfile.Click += new System.EventHandler(this.saveProfile_Click);
+            // 
             // cloneProfile
             // 
-            this.cloneProfile.Location = new System.Drawing.Point(179, 18);
+            this.cloneProfile.Location = new System.Drawing.Point(145, 45);
             this.cloneProfile.Name = "cloneProfile";
             this.cloneProfile.Size = new System.Drawing.Size(50, 23);
             this.cloneProfile.TabIndex = 3;
@@ -781,7 +773,7 @@ namespace Assistant
             // 
             // delProfile
             // 
-            this.delProfile.Location = new System.Drawing.Point(235, 18);
+            this.delProfile.Location = new System.Drawing.Point(201, 45);
             this.delProfile.Name = "delProfile";
             this.delProfile.Size = new System.Drawing.Size(50, 23);
             this.delProfile.TabIndex = 2;
@@ -790,7 +782,7 @@ namespace Assistant
             // 
             // newProfile
             // 
-            this.newProfile.Location = new System.Drawing.Point(123, 18);
+            this.newProfile.Location = new System.Drawing.Point(33, 45);
             this.newProfile.Name = "newProfile";
             this.newProfile.Size = new System.Drawing.Size(50, 23);
             this.newProfile.TabIndex = 1;
@@ -801,18 +793,18 @@ namespace Assistant
             // 
             this.profiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.profiles.ItemHeight = 15;
-            this.profiles.Location = new System.Drawing.Point(6, 18);
+            this.profiles.Location = new System.Drawing.Point(33, 18);
             this.profiles.MaxDropDownItems = 5;
             this.profiles.Name = "profiles";
-            this.profiles.Size = new System.Drawing.Size(111, 23);
+            this.profiles.Size = new System.Drawing.Size(218, 23);
             this.profiles.TabIndex = 0;
             this.profiles.SelectedIndexChanged += new System.EventHandler(this.profiles_SelectedIndexChanged);
             // 
             // showWelcome
             // 
-            this.showWelcome.Location = new System.Drawing.Point(184, 62);
+            this.showWelcome.Location = new System.Drawing.Point(184, 77);
             this.showWelcome.Name = "showWelcome";
-            this.showWelcome.Size = new System.Drawing.Size(162, 23);
+            this.showWelcome.Size = new System.Drawing.Size(152, 23);
             this.showWelcome.TabIndex = 26;
             this.showWelcome.Text = "Show Welcome Screen";
             this.showWelcome.CheckedChanged += new System.EventHandler(this.showWelcome_CheckedChanged);
@@ -834,9 +826,9 @@ namespace Assistant
             // 
             // alwaysTop
             // 
-            this.alwaysTop.Location = new System.Drawing.Point(184, 84);
+            this.alwaysTop.Location = new System.Drawing.Point(184, 101);
             this.alwaysTop.Name = "alwaysTop";
-            this.alwaysTop.Size = new System.Drawing.Size(196, 23);
+            this.alwaysTop.Size = new System.Drawing.Size(162, 23);
             this.alwaysTop.TabIndex = 3;
             this.alwaysTop.Text = "Use Smart Always on Top";
             this.alwaysTop.CheckedChanged += new System.EventHandler(this.alwaysTop_CheckedChanged);
@@ -871,7 +863,7 @@ namespace Assistant
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(181, 138);
+            this.label9.Location = new System.Drawing.Point(181, 162);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(129, 18);
             this.label9.TabIndex = 59;
@@ -879,6 +871,8 @@ namespace Assistant
             // 
             // moreOptTab
             // 
+            this.moreOptTab.Controls.Add(this.lightLevel);
+            this.moreOptTab.Controls.Add(this.lightLevelBar);
             this.moreOptTab.Controls.Add(this.preAOSstatbar);
             this.moreOptTab.Controls.Add(this.setLTHilight);
             this.moreOptTab.Controls.Add(this.lthilight);
@@ -914,6 +908,27 @@ namespace Assistant
             this.moreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
+            // 
+            // lightLevel
+            // 
+            this.lightLevel.AutoSize = true;
+            this.lightLevel.Location = new System.Drawing.Point(8, 239);
+            this.lightLevel.Name = "lightLevel";
+            this.lightLevel.Size = new System.Drawing.Size(67, 15);
+            this.lightLevel.TabIndex = 83;
+            this.lightLevel.Text = "Light Level:";
+            // 
+            // lightLevelBar
+            // 
+            this.lightLevelBar.AutoSize = false;
+            this.lightLevelBar.Location = new System.Drawing.Point(91, 238);
+            this.lightLevelBar.Maximum = 31;
+            this.lightLevelBar.Name = "lightLevelBar";
+            this.lightLevelBar.Size = new System.Drawing.Size(146, 21);
+            this.lightLevelBar.TabIndex = 82;
+            this.lightLevelBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.lightLevelBar.Value = 15;
+            this.lightLevelBar.Scroll += new System.EventHandler(this.lightLevelBar_Scroll);
             // 
             // preAOSstatbar
             // 
@@ -1143,7 +1158,7 @@ namespace Assistant
             // 
             this.txtSpellFormat.Location = new System.Drawing.Point(91, 209);
             this.txtSpellFormat.Name = "txtSpellFormat";
-            this.txtSpellFormat.Size = new System.Drawing.Size(123, 23);
+            this.txtSpellFormat.Size = new System.Drawing.Size(136, 23);
             this.txtSpellFormat.TabIndex = 5;
             this.txtSpellFormat.TextChanged += new System.EventHandler(this.txtSpellFormat_TextChanged);
             // 
@@ -1185,7 +1200,8 @@ namespace Assistant
             // 
             // moreMoreOptTab
             // 
-            this.moreMoreOptTab.Controls.Add(this.showStunMessagesOverhead);
+            this.moreMoreOptTab.Controls.Add(this.overHeadMessages);
+            this.moreMoreOptTab.Controls.Add(this.showOverheadMessages);
             this.moreMoreOptTab.Controls.Add(this.showTargetMessagesOverChar);
             this.moreMoreOptTab.Controls.Add(this.forceSizeX);
             this.moreMoreOptTab.Controls.Add(this.forceSizeY);
@@ -1219,16 +1235,27 @@ namespace Assistant
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
             // 
-            // showStunMessagesOverhead
+            // overHeadMessages
             // 
-            this.showStunMessagesOverhead.AutoSize = true;
-            this.showStunMessagesOverhead.Location = new System.Drawing.Point(245, 238);
-            this.showStunMessagesOverhead.Name = "showStunMessagesOverhead";
-            this.showStunMessagesOverhead.Size = new System.Drawing.Size(190, 19);
-            this.showStunMessagesOverhead.TabIndex = 74;
-            this.showStunMessagesOverhead.Text = "Show Stun Messages Overhead";
-            this.showStunMessagesOverhead.UseVisualStyleBackColor = true;
-            this.showStunMessagesOverhead.CheckedChanged += new System.EventHandler(this.showStunMessagesOverhead_CheckedChanged);
+            this.overHeadMessages.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.overHeadMessages.Location = new System.Drawing.Point(425, 237);
+            this.overHeadMessages.Name = "overHeadMessages";
+            this.overHeadMessages.Size = new System.Drawing.Size(33, 19);
+            this.overHeadMessages.TabIndex = 75;
+            this.overHeadMessages.Text = "...";
+            this.overHeadMessages.UseVisualStyleBackColor = true;
+            this.overHeadMessages.Click += new System.EventHandler(this.overHeadMessages_Click);
+            // 
+            // showOverheadMessages
+            // 
+            this.showOverheadMessages.AutoSize = true;
+            this.showOverheadMessages.Location = new System.Drawing.Point(245, 238);
+            this.showOverheadMessages.Name = "showOverheadMessages";
+            this.showOverheadMessages.Size = new System.Drawing.Size(163, 19);
+            this.showOverheadMessages.TabIndex = 74;
+            this.showOverheadMessages.Text = "Show Overhead Messages";
+            this.showOverheadMessages.UseVisualStyleBackColor = true;
+            this.showOverheadMessages.CheckedChanged += new System.EventHandler(this.showStunMessagesOverhead_CheckedChanged);
             // 
             // showTargetMessagesOverChar
             // 
@@ -3207,7 +3234,7 @@ namespace Assistant
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            this.ClientSize = new System.Drawing.Size(541, 525);
+            this.ClientSize = new System.Drawing.Size(541, 486);
             this.Controls.Add(this.tabs);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -3225,13 +3252,12 @@ namespace Assistant
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.tabs.ResumeLayout(false);
             this.generalTab.ResumeLayout(false);
-            this.generalTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).EndInit();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.moreOptTab.ResumeLayout(false);
             this.moreOptTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).EndInit();
             this.moreMoreOptTab.ResumeLayout(false);
             this.moreMoreOptTab.PerformLayout();
             this.displayTab.ResumeLayout(false);
@@ -3524,7 +3550,7 @@ namespace Assistant
             tiltMap.Checked = Config.GetBool("TiltMap");
 
 		    showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
-		    showStunMessagesOverhead.Checked = Config.GetBool("ShowStunOverhead");
+		    showOverheadMessages.Checked = Config.GetBool("ShowOverheadMessages");
 
 		    logSkillChanges.Checked = Config.GetBool("LogSkillChanges");
 
@@ -3625,9 +3651,14 @@ namespace Assistant
             else if (tabs.SelectedTab == moreMoreOptTab)
 			{
 			    tabs.Size = new Size(tabs.Size.Width, 313);
-			    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
+			    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 35);
             }
-		}
+			else if (tabs.SelectedTab == moreOptTab)
+			{
+			    tabs.Size = new Size(tabs.Size.Width, 313);
+			    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 35);
+			}
+        }
 
 	    private void RebuildHotKeyCache()
 	    {
@@ -7295,7 +7326,9 @@ namespace Assistant
 
         private void showStunMessagesOverhead_CheckedChanged(object sender, EventArgs e)
         {
-            Config.SetProperty("ShowStunOverhead", showStunMessagesOverhead.Checked);
+            Config.SetProperty("ShowOverheadMessages", showOverheadMessages.Checked);
+
+            overHeadMessages.Enabled = showOverheadMessages.Checked;
         }
 
         private void openUOPS_Click(object sender, EventArgs e)
@@ -7318,6 +7351,24 @@ namespace Assistant
         private void logSkillChanges_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("LogSkillChanges", logSkillChanges.Checked);
+        }
+
+        private void overHeadMessages_Click(object sender, EventArgs e)
+        {
+            OverheadMessages form = new OverheadMessages();
+            form.Show();
+            form.BringToFront();
+        }
+
+        private void saveProfile_Click(object sender, EventArgs e)
+        {
+            if (profiles.SelectedIndex < 0)
+                return;
+
+            Config.Save();
+
+            string profileToClone = (string)profiles.Items[profiles.SelectedIndex];
+            MessageBox.Show(SplashScreen.Instance, $"Saved current settings to profile {Path.Combine(Config.GetUserDirectory("Profiles"), $"{profileToClone}.xml")}", "Save Profile", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

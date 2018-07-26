@@ -71,6 +71,7 @@ namespace Assistant
 			{
                 using (m_Screen = new SplashScreen())
                 {
+                    Application.EnableVisualStyles();
                     Application.Run(m_Screen);
                 }
                 m_Screen = null;

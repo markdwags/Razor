@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Windows.Forms;
+using Assistant.Core;
 using Microsoft.Win32;
 using Assistant.Filters;
 
@@ -156,7 +157,7 @@ namespace Assistant
 	        AddProperty("TiltMap", true);
 
 	        AddProperty("ShowTargetSelfLastClearOverhead", true);
-	        AddProperty("ShowStunOverhead", false);
+	        AddProperty("ShowOverheadMessages", false);
 
 	        AddProperty("LightLevel", 31);
 	        AddProperty("LogSkillChanges", false);
@@ -167,6 +168,7 @@ namespace Assistant
 	        HotKey.ClearAll();
 	        Agent.ClearAll();
 	        PasswordMemory.ClearAll();
+            OverheadMessages.ClearAll();
 	    }
 
 		public string Name
@@ -270,8 +272,9 @@ namespace Assistant
 			DressList.Load( root["dresslists"] );
 			HotKey.Load( root["hotkeys"] );
 			PasswordMemory.Load( root["passwords"] );
+		    OverheadMessages.Load(root["overheadmessages"]);
 
-			if ( m_Props.ContainsKey( "ForceSize" ) )
+            if ( m_Props.ContainsKey( "ForceSize" ) )
 			{
 				try
 				{
@@ -405,7 +408,11 @@ namespace Assistant
 			PasswordMemory.Save( xml );
 			xml.WriteEndElement();
 
-			xml.WriteEndElement(); // end profile section
+		    xml.WriteStartElement("overheadmessages");
+		    OverheadMessages.Save(xml);
+		    xml.WriteEndElement();
+
+            xml.WriteEndElement(); // end profile section
 
 			xml.Close();
 		}

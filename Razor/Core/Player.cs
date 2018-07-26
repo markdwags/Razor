@@ -861,7 +861,7 @@ namespace Assistant
 
 				ClientCommunication.SendToClient( new UnicodeMessage( 0xFFFFFFFF, -1, MessageType.Regular, hue, 3, Language.CliLocName, "System", text ) );
 
-				PacketHandlers.SysMessages.Add( text.ToLower() );
+				PacketHandlers.SysMessages.Add( text );
 
 				if ( PacketHandlers.SysMessages.Count >= 25 )
 					PacketHandlers.SysMessages.RemoveRange( 0, 10 );
