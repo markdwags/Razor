@@ -80,6 +80,7 @@
             this.cliLocTextSearch.Name = "cliLocTextSearch";
             this.cliLocTextSearch.Size = new System.Drawing.Size(179, 23);
             this.cliLocTextSearch.TabIndex = 2;
+            this.cliLocTextSearch.TextChanged += new System.EventHandler(this.cliLocTextSearch_TextChanged);
             // 
             // cliLocSearch
             // 
@@ -155,6 +156,7 @@
             // 
             // OverheadMessages
             // 
+            this.AcceptButton = this.cliLocSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(457, 346);

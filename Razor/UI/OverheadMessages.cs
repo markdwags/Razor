@@ -40,6 +40,8 @@ namespace Assistant.UI
 
         private void cliLocSearch_Click(object sender, EventArgs e)
         {
+            cliLocSearchView.Items.Clear();
+
             if (string.IsNullOrEmpty(cliLocTextSearch.Text) || cliLocTextSearch.Text.Length < 4)
                 return;
 
@@ -113,6 +115,11 @@ namespace Assistant.UI
         private void cancelOverheadMessages_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void cliLocTextSearch_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
