@@ -570,8 +570,17 @@ namespace Assistant
 			{
 				if ( m_Timer.Running )
 				{
-					double time = Config.GetInt( "ObjectDelay" ) / 1000.0;
-					double init = 0;
+                        //Config.GetBool("ObjectDelayEnabled")
+                        //double time = Config.GetInt( "ObjectDelay" ) / 1000.0;
+
+				     double time = Config.GetInt("ObjectDelay") / 1000.0;
+
+                         if (!Config.GetBool("ObjectDelayEnabled"))
+                         {
+                             time = 0;
+                         }
+
+                         double init = 0;
 					if ( m_Timer.LastTick != DateTime.MinValue )
 						init = time - ( DateTime.UtcNow - m_Timer.LastTick ).TotalSeconds;
 					time = init+time*m_Queue.Count;
@@ -617,7 +626,9 @@ namespace Assistant
 
 				if ( m_Queue != null && m_Queue.Count > 0 )
 				{
-					this.Interval = TimeSpan.FromMilliseconds( Config.GetInt( "ObjectDelay" ) );
+				    this.Interval = TimeSpan.FromMilliseconds(Config.GetBool("ObjectDelayEnabled") ? Config.GetInt("ObjectDelay") : 0);
+
+				    //this.Interval = TimeSpan.FromMilliseconds( Config.GetInt( "ObjectDelay" ) );
 
 					while ( m_Queue.Count > 0 )
 					{

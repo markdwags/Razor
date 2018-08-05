@@ -33,6 +33,7 @@ namespace Assistant.Core
 
             try
             {
+
                 foreach (XmlElement el in node.GetElementsByTagName("overheadmessage"))
                 {
                     OverheadMessage overheadMessage = new OverheadMessage

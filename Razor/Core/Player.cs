@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Assistant.Core;
 using Ultima;
 
 namespace Assistant
@@ -179,7 +180,7 @@ namespace Assistant
 		private ushort m_Str, m_Dex, m_Int;
 		private LockType m_StrLock, m_DexLock, m_IntLock;
 		private uint m_Gold;
-		private ushort m_Weight;
+        private ushort m_Weight;
 		private Skill[] m_Skills;
 		private ushort m_AR;
 		private ushort m_StatCap;
@@ -202,7 +203,10 @@ namespace Assistant
 
 		public static int FastWalkKey = 0;
 
-		public override void SaveState( BinaryWriter writer )
+	    internal List<BuffIcon> m_Buffs = new List<BuffIcon>();
+	    internal List<BuffIcon> Buffs { get { return m_Buffs; } }
+
+        public override void SaveState( BinaryWriter writer )
 		{
 			base.SaveState (writer);
 
@@ -364,7 +368,7 @@ namespace Assistant
 			set{ m_Gold = value; }
 		}
 
-		public ushort Weight
+        public ushort Weight
 		{
 			get{ return m_Weight; }
 			set{ m_Weight = value; }
@@ -674,7 +678,7 @@ namespace Assistant
 
 				if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
 					Engine.MainWindow.MapWindow.PlayerMoved();
-			}
+            }
 		}
 
 		public override void OnPositionChanging( Point3D newPos )
@@ -743,7 +747,8 @@ namespace Assistant
 			
 			if ( Engine.MainWindow != null && Engine.MainWindow.MapWindow != null )
 				Engine.MainWindow.MapWindow.PlayerMoved();
-		}
+
+        }
 
 		/*public override void OnMapChange( byte old, byte cur )
 		{

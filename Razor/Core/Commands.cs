@@ -25,8 +25,6 @@ namespace Assistant
             Command.Register("ClearItems", ClearItems);
             Command.Register("Resync", Resync);
             Command.Register("Mobile", GetMobile);
-
-            //Command.Register( "Setup-T", new CommandCallback( TranslateSetup ) );
         }
 
         private static DateTime m_LastSync;

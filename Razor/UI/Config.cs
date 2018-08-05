@@ -43,6 +43,7 @@ namespace Assistant
 	        AddProperty("CounterWarnAmount", (int) 5);
 	        AddProperty("CounterWarn", true);
 	        AddProperty("ObjectDelay", (int) 600);
+	        AddProperty("ObjectDelayEnabled", true);
 	        AddProperty("AlwaysOnTop", false);
 	        AddProperty("SortCounters", true);
 	        AddProperty("QueueActions", true);
@@ -158,9 +159,16 @@ namespace Assistant
 
 	        AddProperty("ShowTargetSelfLastClearOverhead", true);
 	        AddProperty("ShowOverheadMessages", false);
+	        AddProperty("CaptureMibs", false);
+
+            //OverheadFormat
+	        AddProperty("OverheadFormat", "[{msg}]");
+
+            AddProperty("GoldPerDisplay", false);
 
 	        AddProperty("LightLevel", 31);
 	        AddProperty("LogSkillChanges", false);
+	        AddProperty("StealthOverhead", false);
 
             Counter.Default();
 	        Filter.DisableAll();
@@ -173,12 +181,12 @@ namespace Assistant
 
 		public string Name
 		{
-			get 
-			{ 
-				return m_Name; 
+			get
+			{
+				return m_Name;
 			}
-			set 
-			{ 
+			set
+			{
 				if ( value != null && value.Trim() != "" )
 				{
 					StringBuilder sb = new StringBuilder( value );
@@ -274,6 +282,8 @@ namespace Assistant
 			PasswordMemory.Load( root["passwords"] );
 		    OverheadMessages.Load(root["overheadmessages"]);
 
+            GoldPerHourTimer.Stop();
+
             if ( m_Props.ContainsKey( "ForceSize" ) )
 			{
 				try
@@ -315,7 +325,7 @@ namespace Assistant
 
 		public void Unload()
 		{
-			try 
+			try
 			{
 				if ( m_Mutex != null )
 				{
@@ -367,7 +377,7 @@ namespace Assistant
 
 			xml.WriteStartDocument( true );
 			xml.WriteStartElement( "profile" );
-				
+
 			foreach(KeyValuePair<string, object> de in m_Props )
 			{
 				xml.WriteStartElement( "property" );
@@ -598,7 +608,7 @@ namespace Assistant
 			if ( m_Current != null )
 				m_Chars[player.Serial] = m_Current.Name;
 		}
-		
+
 		public static bool LoadLastProfile()
 		{
 			string name = LastProfileName;
@@ -610,7 +620,7 @@ namespace Assistant
 				p = new Profile( name );
 				failed = !p.Load();
 			}
-			
+
 			if ( failed )
 			{
 				if ( p == null )
@@ -644,7 +654,7 @@ namespace Assistant
 			string compare = String.Empty;
 			if ( selectName != null )
 				compare = selectName.ToLower();
-			
+
 			for(int i=0;i<files.Length;i++)
 			{
 				string name = Path.GetFileNameWithoutExtension( files[i] );
@@ -678,7 +688,7 @@ namespace Assistant
 	            return default(T);
 	        }
 	    }
-        
+
 		public static object GetProperty( string name )
 		{
 			return CurrentProfile.GetProperty( name );
@@ -733,7 +743,7 @@ namespace Assistant
         public static void RecursiveCopy(string oldDir, string newDir)
         {
             Engine.EnsureDirectory(newDir);
-            
+
             if (!Directory.Exists(oldDir))
                 return;
 
@@ -766,7 +776,7 @@ namespace Assistant
             }
 
             name = name.Length > 0 ? Path.Combine(appDir, name) : appDir;
-            
+
             Engine.EnsureDirectory(name);
 
             return name;

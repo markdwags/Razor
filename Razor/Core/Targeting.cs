@@ -1549,6 +1549,11 @@ namespace Assistant
 				}
 			}
 
+		    if (World.Player.LastSpell == 52 && !GateTimer.Running)
+		    {
+                  GateTimer.Start();
+		    }
+
 			m_FilterCancel.Clear();
 		}
 

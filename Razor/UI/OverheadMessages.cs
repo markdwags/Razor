@@ -36,6 +36,8 @@ namespace Assistant.UI
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, message.MessageOverhead));
                 cliLocOverheadView.Items.Add(item);
             }
+
+            overheadFormat.Text = Config.GetString("OverheadFormat");
         }
 
         private void cliLocSearch_Click(object sender, EventArgs e)
@@ -97,6 +99,14 @@ namespace Assistant.UI
         {
             Core.OverheadMessages.ClearAll();
 
+            // Keep it simple, reset to default if it isn't what we like
+            if (string.IsNullOrEmpty(overheadFormat.Text) || !overheadFormat.Text.Contains("{msg}"))
+            {
+                overheadFormat.Text = @"[{msg}]";
+            }
+
+            Config.SetProperty("OverheadFormat", overheadFormat.Text);
+
             foreach (ListViewItem item in cliLocOverheadView.Items)
             {  
                 Core.OverheadMessages.OverheadMessage message = new Core.OverheadMessages.OverheadMessage
@@ -109,6 +119,13 @@ namespace Assistant.UI
             }
 
             Config.Save();
+
+            /*// Apply the format to the message after its been saved
+            foreach (Core.OverheadMessages.OverheadMessage message in Core.OverheadMessages.OverheadMessageList)
+            {
+                message.MessageOverhead = overheadFormat.Text.Replace("{msg}", message.MessageOverhead);
+            }*/
+
             Close();
         }
 
@@ -117,9 +134,5 @@ namespace Assistant.UI
             Close();
         }
 
-        private void cliLocTextSearch_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

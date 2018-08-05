@@ -46,6 +46,14 @@ namespace Assistant
 		private	bool m_Blessed;
 		private	bool m_Warmode;
 
+        //new
+        private bool m_Unknown;
+        private bool m_Unknown2;
+        private bool m_Unknown3;
+
+        private bool m_CanRename;
+        //end new
+
 		private	ushort m_HitsMax, m_Hits;
 		protected ushort m_StamMax, m_Stam, m_ManaMax, m_Mana;
 
@@ -254,6 +262,29 @@ namespace Assistant
             }
 	    }
 
+        //new
+        public bool Unknown
+        {
+            get { return m_Unknown; }
+            set { m_Unknown = value; }
+        }
+        public bool Unknown2
+        {
+            get { return m_Unknown2; }
+            set { m_Unknown2 = value; }
+        }
+        public bool Unknown3
+        {
+            get { return m_Unknown3; }
+            set { m_Unknown3 = value; }
+        }
+        public bool CanRename       //A pet! (where the health bar is open, we can add this to an arraylist of mobiles...
+        {
+            get { return m_CanRename; }
+            set { m_CanRename = value; }
+        }
+        //end new
+
         public bool	Warmode
 		{
 			get{ return	m_Warmode; }
@@ -449,11 +480,11 @@ namespace Assistant
 
 		public override	void OnPositionChanging(Point3D	newPos)
 		{
-			if ( this != World.Player && Engine.MainWindow.MapWindow !=	null )
-				Engine.MainWindow.MapWindow.CheckLocalUpdate( this );
+            if (this != World.Player && Engine.MainWindow.MapWindow != null)
+                Engine.MainWindow.MapWindow.CheckLocalUpdate(this);
 
-			base.OnPositionChanging	(newPos);
-		}
+            base.OnPositionChanging(newPos);
+        }
 		
 		public int GetPacketFlags()
 		{
@@ -474,21 +505,35 @@ namespace Assistant
 			if ( !m_Visible	)
 				flags |= 0x80;
 
-			return flags;
+            if ( m_Unknown)
+                flags |= 0x01;
+            
+            if ( m_Unknown2)
+                flags |= 0x10;
+
+            if ( m_Unknown3)
+                flags |= 0x20;
+
+            return flags;
 		}
 
 		public void	ProcessPacketFlags(	byte flags )
 		{
-			if ( !PacketHandlers.UseNewStatus )
+            if ( !PacketHandlers.UseNewStatus )
 				m_Poisoned = (flags&0x04) != 0;
-			
-			m_Female  =	(flags&0x02) !=	0;	
-			m_Blessed =	(flags&0x08) !=	0;
-			m_Warmode =	(flags&0x40) !=	0;
-			m_Visible =	(flags&0x80) ==	0;
+
+            m_Unknown  =    (flags&0x01) != 0;  //new
+			m_Female   =	(flags&0x02) !=	0;	
+			m_Blessed  =	(flags&0x08) !=	0;
+            m_Unknown2 =    (flags&0x10) != 0;  //new
+            m_Unknown3 =    (flags&0x10) != 0;  //new
+            m_Warmode  =	(flags&0x40) !=	0;
+			m_Visible  =	(flags&0x80) ==	0;
+
+            
 		}
 
-		public List<Item> Contains{ get{	return m_Items;	} }
+        public List<Item> Contains{ get{	return m_Items;	} }
 
 		internal void OverheadMessageFrom( int hue, string from, string format, params object[] args )
 		{

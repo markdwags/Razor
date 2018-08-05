@@ -51,6 +51,8 @@ namespace Assistant
 			m_StringNums.AddRange( m_DefaultStringNums );
 		}
 
+        public UOEntity Owner {  get { return m_Owner; } }
+
 		public void Read( PacketReader p )
 		{
 			m_Content.Clear();

@@ -1,13 +1,18 @@
 using System;
+using System.Linq;
 
 namespace Assistant
 {
-    public class SkillTimer
+    public class GateTimer
     {
         private static int m_Count;
         private static Timer m_Timer;
 
-        static SkillTimer()
+        private static readonly int[] m_ClilocsStop = {502632};
+
+        private static readonly int[] m_ClilocsRestart = { 501024 };
+
+        static GateTimer()
         {
             m_Timer = new InternalTimer();
         }
@@ -15,6 +20,23 @@ namespace Assistant
         public static int Count
         {
             get { return m_Count; }
+        }
+
+        public static void OnAsciiMessage(string msg)
+        {
+            if (Running)
+            {
+
+                if (m_ClilocsStop.Any(t => Language.GetCliloc(t) == msg))
+                {
+                    Stop();
+                }
+
+                if (m_ClilocsRestart.Any(t => Language.GetCliloc(t) == msg))
+                {
+                    Start();
+                }
+            }
         }
 
         public static bool Running
@@ -50,7 +72,7 @@ namespace Assistant
             protected override void OnTick()
             {
                 m_Count++;
-                if (m_Count > 10)
+                if (m_Count > 30)
                 {
                     Stop();
                 }

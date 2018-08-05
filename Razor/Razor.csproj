@@ -101,6 +101,7 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -135,7 +136,11 @@
     <Compile Include="Core\AVIRec.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\Buffs.cs" />
+    <Compile Include="Core\MessageInBottleCapture.cs" />
     <Compile Include="Core\OverheadMessages.cs" />
+    <Compile Include="Core\GoldPerHourTimer.cs" />
+    <Compile Include="Core\GateTimer.cs" />
     <Compile Include="Core\SkillTimer.cs" />
     <Compile Include="Core\BandageTimer.cs">
       <SubType>Code</SubType>
@@ -352,6 +357,7 @@
     </Compile>
     <EmbeddedResource Include="Boat\BoatWindow.resx">
       <DependentUpon>BoatWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Macros\Actions.resx">
       <DependentUpon>Actions.cs</DependentUpon>
@@ -393,9 +399,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Razor.resx">
       <DependentUpon>Razor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\WelcomeForm.resx">
       <DependentUpon>WelcomeForm.cs</DependentUpon>

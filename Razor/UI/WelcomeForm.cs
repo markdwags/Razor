@@ -235,9 +235,9 @@ namespace Assistant
             this.serverInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.serverInfo.Font = new System.Drawing.Font("Segoe UI Semilight", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serverInfo.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.serverInfo.Location = new System.Drawing.Point(49, 42);
+            this.serverInfo.Location = new System.Drawing.Point(52, 42);
             this.serverInfo.Name = "serverInfo";
-            this.serverInfo.Size = new System.Drawing.Size(287, 21);
+            this.serverInfo.Size = new System.Drawing.Size(284, 21);
             this.serverInfo.TabIndex = 12;
             this.serverInfo.Text = "login.server.com,2593";
             this.serverInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -513,6 +513,7 @@ namespace Assistant
 	        }
 
 	        serverList.Items.Add(new Custom_SE("UO Renaissance (Test)", "test.uorenaissance.com", 2597));
+	        serverList.Items.Add(new Custom_SE("UO Renaissance (Dev)", "dev.uorenaissance.com", 2598));
 
             // Load any custom servers they might have added
 	        NameValueCollection servers =

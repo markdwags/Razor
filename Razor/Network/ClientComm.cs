@@ -896,13 +896,21 @@ namespace Assistant
 
 	            sb.Replace(@"{gold}", World.Player.Gold.ToString());
 
+	            sb.Replace(@"{gps}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerSecond:N2}" : "-");
+	            sb.Replace(@"{gpm}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerMinute:N2}" : "-");
+	            sb.Replace(@"{gph}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerHour:N2}" : "-");
+	            sb.Replace(@"{totalgold}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldSinceStart}" : "-");
+
 	            sb.Replace(@"{bandage}", BandageTimer.Running ? $"~#FF8000{BandageTimer.Count}~#~" : "-");
 
 	            sb.Replace(@"{skill}", SkillTimer.Running ? $"{SkillTimer.Count}" : "-");
+	            sb.Replace(@"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-");
 
-	            sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
+                 sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
 
-	            string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
+	            //sb.Replace(@"{buffs}", StealthSteps.Counting ? String.Join(",", World.Player.Buffs) : "None");
+
+                string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
 	                (int) (p.GetStatusCode()),
 	                (int) (World.Player.HitsMax == 0 ? 0 : (double) World.Player.Hits / World.Player.HitsMax * 99),
 	                (int) (World.Player.ManaMax == 0 ? 0 : (double) World.Player.Mana / World.Player.ManaMax * 99),
@@ -1041,7 +1049,7 @@ namespace Assistant
 			Engine.MainWindow.OnLogout();
 			if( Engine.MainWindow.MapWindow != null )
 				Engine.MainWindow.MapWindow.Close();
-			PacketHandlers.Party.Clear();
+            PacketHandlers.Party.Clear();
 			PacketHandlers.IgnoreGumps.Clear();
 			Config.Save();
 
@@ -1194,7 +1202,7 @@ namespace Assistant
 						}
 					}
 
-					break;
+                    break;
 
 				case UONetMessage.DLL_Error:
 				{

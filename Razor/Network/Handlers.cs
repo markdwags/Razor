@@ -83,13 +83,15 @@ namespace Assistant
 			PacketHandler.RegisterServerToClientFilter( 0xCC, new PacketFilterCallback( OnLocalizedMessageAffix ) );
 			PacketHandler.RegisterServerToClientViewer( 0xD6, new PacketViewerCallback( EncodedPacket ) );//0xD6 "encoded" packets
 			PacketHandler.RegisterServerToClientViewer( 0xD8, new PacketViewerCallback( CustomHouseInfo ) );
-			PacketHandler.RegisterServerToClientFilter( 0xDC, new PacketFilterCallback( ServOPLHash ) );
+			//PacketHandler.RegisterServerToClientFilter( 0xDC, new PacketFilterCallback( ServOPLHash ) );
 			PacketHandler.RegisterServerToClientViewer( 0xDD, new PacketViewerCallback( CompressedGump ) );
 			PacketHandler.RegisterServerToClientViewer( 0xF0, new PacketViewerCallback( RunUOProtocolExtention ) ); // Special RunUO protocol extentions (for KUOC/Razor)
 
 			PacketHandler.RegisterServerToClientViewer( 0xF3, new PacketViewerCallback( SAWorldItem ) );
 
 		    PacketHandler.RegisterServerToClientViewer(0x2C, new PacketViewerCallback(ResurrectionGump));
+
+		    PacketHandler.RegisterServerToClientViewer(0xDF, new PacketViewerCallback(BuffDebuff));
         }
 		
 		private static void DisplayStringQuery( PacketReader p, PacketHandlerEventArgs args )
@@ -1286,7 +1288,9 @@ namespace Assistant
 			m.Hits = p.ReadUInt16();
 			m.HitsMax = p.ReadUInt16();
 
-			p.ReadBoolean();//CanBeRenamed
+            //p.ReadBoolean();//CanBeRenamed
+            if (p.ReadBoolean())
+                m.CanRename = true;
 
 			byte type = p.ReadByte();
 
@@ -1859,14 +1863,18 @@ namespace Assistant
 				        World.Player.ResetCriminalTimer();
 				    }
 
+                    // Overhead message override
 				    if (Config.GetBool("ShowOverheadMessages") && OverheadMessages.OverheadMessageList.Count > 0)
 				    {
+				        string overheadFormat = Config.GetString("OverheadFormat");
+
 				        foreach (OverheadMessages.OverheadMessage message in OverheadMessages.OverheadMessageList)
 				        {
 				            if (text.IndexOf(message.SearchMessage, StringComparison.OrdinalIgnoreCase) != -1)
 				            {
-				                World.Player.OverheadMessage(message.MessageOverhead);
-                            }
+				                World.Player.OverheadMessage(overheadFormat.Replace("{msg}", message.MessageOverhead));
+				                break;
+				            }
 				        }
 				    }
                 }
@@ -1915,9 +1923,14 @@ namespace Assistant
 			{
 				HandleSpeech( p, args, serial, body, type, hue, font, "A", name, text );
 
-				if ( !serial.IsValid )
-					BandageTimer.OnAsciiMessage( text );
-			}
+			    if (!serial.IsValid)
+			    {
+			        BandageTimer.OnAsciiMessage(text);
+                   }
+
+			    GateTimer.OnAsciiMessage(text);
+
+            }
 		}
 
 		public static void UnicodeSpeech( Packet p, PacketHandlerEventArgs args )
@@ -2177,13 +2190,13 @@ namespace Assistant
 				case 1: // Custom Party information
 				{
 					Serial serial;
-
+                                                
 					PacketHandlers.SpecialPartyReceived++;
 
 					while ((serial = p.ReadUInt32()) > 0)
 					{
 						Mobile mobile = World.FindMobile(serial);
-						
+
 						short x = p.ReadInt16();
 						short y = p.ReadInt16();
 						byte map = p.ReadByte();
@@ -2209,7 +2222,7 @@ namespace Assistant
 					if (Engine.MainWindow.MapWindow != null)
 						Engine.MainWindow.MapWindow.UpdateMap();
 
-					break;
+                        break;
 				}
 				case 0xFE: // Begin Handshake/Features Negotiation
 				{
@@ -2271,11 +2284,12 @@ namespace Assistant
 					break;
 				}
 				case 0x03: // text message
+
 				case 0x04: // 3 = private, 4 = public
-				{
-					//Serial from = p.ReadUInt32();
-					//string text = p.ReadUnicodeStringSafe();
-					break;
+				{                        
+                    //Serial from = p.ReadUInt32();
+                    //string text = p.ReadUnicodeStringSafe();
+                    break;
 				}
 				case 0x07: // party invite
 				{
@@ -2291,7 +2305,7 @@ namespace Assistant
 			
 			if (Engine.MainWindow.MapWindow != null)
 				Engine.MainWindow.MapWindow.UpdateMap();
-		}
+        }
 
 		private static void PartyAutoDecline()
 		{
@@ -2513,11 +2527,17 @@ namespace Assistant
             if (Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
 
+            if (!Config.GetBool("CaptureMibs"))
+                return;
+
             try
             {
                 int x = p.ReadInt32(), y = p.ReadInt32();
 
                 string layout = p.GetCompressedReader().ReadString();
+
+                if (!MessageInBottleCapture.IsMibGump(layout))
+                    return;
 
                 int numStrings = p.ReadInt32();
                 if (numStrings < 0 || numStrings > 256)
@@ -2555,8 +2575,18 @@ namespace Assistant
                     gumpStrings.AddRange(ParseGumpString(gumpPieces, stringlistparse));
                 }
 
-                World.Player.CurrentGumpStrings.AddRange(gumpStrings);
+                switch (gumpStrings.Count)
+                {
+                    //Classic, non-custom MIB
+                    case 3:
+                        MessageInBottleCapture.CaptureMibCoordinates(gumpStrings[2], false);
+                        break;
+                    case 4:
+                        MessageInBottleCapture.CaptureMibCoordinates(gumpStrings[2], true);
+                        break;
+                }
 
+                World.Player.CurrentGumpStrings.AddRange(gumpStrings);
                 World.Player.CurrentGumpRawData = layout; // Get raw data of current gump
             }
             catch { }
@@ -2640,5 +2670,37 @@ namespace Assistant
 	            ScreenCapManager.DeathCapture(0.75);
             }
         }
+
+	    private static void BuffDebuff(PacketReader p, PacketHandlerEventArgs args)
+	    {
+	        Serial ser = p.ReadUInt32();
+	        ushort icon = p.ReadUInt16();
+	        ushort action = p.ReadUInt16();
+
+	        if (Enum.IsDefined(typeof(BuffIcon), icon))
+	        {
+	            BuffIcon buff = (BuffIcon) icon;
+	            switch (action)
+	            {
+	                case 0x01: // show
+	                    if (World.Player != null && !World.Player.Buffs.Contains(buff))
+	                    {
+	                        World.Player.Buffs.Add(buff);
+	                    }
+
+	                    break;
+
+	                case 0x0: // remove
+	                    if (World.Player != null && World.Player.Buffs.Contains(buff))
+	                    {
+	                        World.Player.Buffs.Remove(buff);
+	                    }
+
+	                    break;
+                }
+
+	            ClientCommunication.RequestTitlebarUpdate();
+            }
+	    }
     }
 }

@@ -165,14 +165,14 @@ namespace Assistant
 				if ( m_Version == null )
 				{
 					Version v = Assembly.GetCallingAssembly().GetName().Version;
-					m_Version = $"{v.Major}.{v.Minor}.{v.Build}";//, v.Revision
+					m_Version = $"{v.Major}.{v.Minor}.{v.Build}.{v.Revision}";//, v.Revision
 				}
 
 				return m_Version; 
 			}
 		}
 
-		public static string ShardList { get; private set; }
+        public static string ShardList { get; private set; }
 
 		private static MainForm m_MainWnd;
 		private static Form m_ActiveWnd;
