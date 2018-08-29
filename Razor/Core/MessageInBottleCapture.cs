@@ -46,11 +46,13 @@ namespace Assistant.Core
             {
                 ConvertCoords(coords, ref xAxis, ref yAxis);
             }
-            
+
             using (StreamWriter sw = File.AppendText(mibLog))
             {
                 sw.WriteLine($"{xAxis},{yAxis},mib,");
             }
+
+            World.Player.SendMessage(MsgLevel.Force, $"MIB Captured: {xAxis},{yAxis}");
         }
 
 
@@ -79,7 +81,7 @@ namespace Assistant.Core
             string[] xSplit = xCoord.Split('°');
             double xDegree = Convert.ToDouble(xSplit[0]);
             double xMinute = Convert.ToDouble(xSplit[1].Substring(0, xSplit[1].IndexOf("'", StringComparison.Ordinal)));
-            
+
             if (xCoord.Substring(xCoord.Length - 1).Equals("W"))
             {
                 xAxis = (int) (1323 - (xMinute / 60) * (5120.0 / 360) - xDegree * (5120.0 / 360));

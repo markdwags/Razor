@@ -3616,7 +3616,9 @@ namespace Assistant
 	            new JsonApiTimer(this).Start();
 	        }
 
-	        stealthOverhead.Checked = Config.GetBool("StealthOverhead");
+	        captureMibs.Checked = Config.GetBool("CaptureMibs"); 
+
+             stealthOverhead.Checked = Config.GetBool("StealthOverhead");
 
 	        // Disable SmartCPU in case it was enabled before the feature was removed
 	        ClientCommunication.SetSmartCPU(false);

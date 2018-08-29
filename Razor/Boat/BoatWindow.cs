@@ -340,7 +340,7 @@ namespace Assistant.Boat
                 }
             }
 
-            ClientCommunication.SendToServer(new ClientUniMessage(MessageType.Regular, World.Player.SpeechHue, 3, "ENU",kw, boatCommand));
+            ClientCommunication.SendToServer(new ClientUniMessage(MessageType.Regular, World.Player.SpeechHue, Config.GetInt("SysColor"), "ENU",kw, boatCommand));
         }
 
         private void boatNorth_Click(object sender, EventArgs e)
@@ -498,9 +498,7 @@ namespace Assistant.Boat
 
         private void boatStop_Click(object sender, EventArgs e)
         {
-            ArrayList kw = new ArrayList(5) {(ushort) 48, (byte) 54, (byte) 4, (byte) 241, (byte) 97};
-
-            SendBoatCommand("Stop");
+            SendBoatCommand("Stop", false);
         }
 
         private void boatClose_Click(object sender, EventArgs e)
