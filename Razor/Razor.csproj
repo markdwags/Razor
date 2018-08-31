@@ -136,7 +136,8 @@
     <Compile Include="Core\AVIRec.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Buffs.cs" />
+    <Compile Include="Core\BuffsTimer.cs" />
+    <Compile Include="Core\BuffsDebuffs.cs" />
     <Compile Include="Core\MessageInBottleCapture.cs" />
     <Compile Include="Core\OverheadMessages.cs" />
     <Compile Include="Core\GoldPerHourTimer.cs" />

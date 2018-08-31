@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Net;
+using Assistant.Core;
 using Microsoft.Win32;
 
 namespace Assistant
@@ -906,11 +908,35 @@ namespace Assistant
 	            sb.Replace(@"{skill}", SkillTimer.Running ? $"{SkillTimer.Count}" : "-");
 	            sb.Replace(@"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-");
 
-                 sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
+	            sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
+                
+	            if (BuffsTimer.Running)
+	            {
+	                StringBuilder buffs = new StringBuilder();
+	                foreach (BuffsDebuffs buff in World.Player.BuffsDebuffs)
+	                {
+	                    int timeLeft = 0;
 
-	            //sb.Replace(@"{buffs}", StealthSteps.Counting ? String.Join(",", World.Player.Buffs) : "None");
+	                    if (buff.Duration > 0)
+	                    {
+	                        TimeSpan diff = DateTime.UtcNow - buff.Timestamp;
+	                        timeLeft = buff.Duration - (int)diff.TotalSeconds;
+                         }
 
-                string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
+	                    buffs.Append(timeLeft <= 0
+	                        ? $"{buff.ClilocMessage1}, "
+	                        : $"{buff.ClilocMessage1} ({timeLeft}), ");
+	                }
+
+	                buffs.Length = buffs.Length - 2;
+	                sb.Replace(@"{buffsdebuffs}", buffs.ToString());
+	            }
+	            else
+	            {
+	                sb.Replace(@"{buffsdebuffs}", "-");
+	            }
+
+                 string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
 	                (int) (p.GetStatusCode()),
 	                (int) (World.Player.HitsMax == 0 ? 0 : (double) World.Player.Hits / World.Player.HitsMax * 99),
 	                (int) (World.Player.ManaMax == 0 ? 0 : (double) World.Player.Mana / World.Player.ManaMax * 99),
@@ -1045,6 +1071,10 @@ namespace Assistant
 			Macros.MacroManager.Stop();
 			ActionQueue.Stop();
 			Counter.Reset();
+               GoldPerHourTimer.Stop();
+               BandageTimer.Stop();
+               GateTimer.Stop();
+               BuffsTimer.Stop();
 			StealthSteps.Unhide();
 			Engine.MainWindow.OnLogout();
 			if( Engine.MainWindow.MapWindow != null )

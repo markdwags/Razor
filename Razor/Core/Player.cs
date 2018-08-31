@@ -203,8 +203,8 @@ namespace Assistant
 
 		public static int FastWalkKey = 0;
 
-	    internal List<BuffIcon> m_Buffs = new List<BuffIcon>();
-	    internal List<BuffIcon> Buffs { get { return m_Buffs; } }
+	    internal List<BuffsDebuffs> m_BuffsDebuffs = new List<BuffsDebuffs>();
+	    internal List<BuffsDebuffs> BuffsDebuffs { get { return m_BuffsDebuffs; } }
 
         public override void SaveState( BinaryWriter writer )
 		{

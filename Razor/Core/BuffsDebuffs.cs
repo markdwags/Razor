@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assistant.Core
 {
-    internal enum BuffIcon : ushort
+    public enum BuffIcon : ushort
     {
         DismountPrevention = 0x3E9,
         NoRearm = 0x3EA,
@@ -131,5 +131,15 @@ namespace Assistant.Core
         SwingSpeed = 1123,
         WraithForm = 1124,
         CityTradeDeal = 1126
+    }
+
+    public class BuffsDebuffs
+    {
+        public int IconNumber { get; set; }
+        public int Duration { get; set; }
+        public string ClilocMessage1 { get; set; }
+        public string ClilocMessage2 { get; set; }
+        public BuffIcon BuffIcon { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }

@@ -1631,6 +1631,7 @@ namespace Assistant
             "{bandage}",
             "{char}",
             "{crimtime}",
+            "{buffsdebuffs}",
             "{damage}",
             "{dex}",
             "{followersmax}",

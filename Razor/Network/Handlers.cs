@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Assistant.Core;
 using Assistant.Macros;
@@ -1276,93 +1277,96 @@ namespace Assistant
 			}
 		}
 
-		private static void MobileStatus( PacketReader p, PacketHandlerEventArgs args )
-		{
-			Serial serial = p.ReadUInt32();
-			Mobile m = World.FindMobile( serial );
-			if ( m == null )
-				World.AddMobile( m = new Mobile( serial ) );
+	    private static void MobileStatus(PacketReader p, PacketHandlerEventArgs args)
+	    {
+	        Serial serial = p.ReadUInt32();
+	        Mobile m = World.FindMobile(serial);
+	        if (m == null)
+	            World.AddMobile(m = new Mobile(serial));
 
-			m.Name = p.ReadString( 30 );
+	        m.Name = p.ReadString(30);
 
-			m.Hits = p.ReadUInt16();
-			m.HitsMax = p.ReadUInt16();
+	        m.Hits = p.ReadUInt16();
+	        m.HitsMax = p.ReadUInt16();
 
-            //p.ReadBoolean();//CanBeRenamed
-            if (p.ReadBoolean())
-                m.CanRename = true;
+	        //p.ReadBoolean();//CanBeRenamed
+	        if (p.ReadBoolean())
+	            m.CanRename = true;
 
-			byte type = p.ReadByte();
+	        byte type = p.ReadByte();
 
-			if ( m == World.Player && type != 0x00 )
-			{
-				PlayerData player = (PlayerData)m;
+	        if (m == World.Player && type != 0x00)
+	        {
+	            PlayerData player = (PlayerData) m;
 
-				player.Female = p.ReadBoolean();
+	            player.Female = p.ReadBoolean();
 
-				int oStr = player.Str, oDex = player.Dex, oInt = player.Int;
+	            int oStr = player.Str, oDex = player.Dex, oInt = player.Int;
 
-				player.Str = p.ReadUInt16();
-				player.Dex = p.ReadUInt16();
-				player.Int = p.ReadUInt16();
+	            player.Str = p.ReadUInt16();
+	            player.Dex = p.ReadUInt16();
+	            player.Int = p.ReadUInt16();
 
-				if ( player.Str != oStr && oStr != 0 && Config.GetBool( "DisplaySkillChanges" ) )
-					World.Player.SendMessage( MsgLevel.Force, LocString.StrChanged, player.Str - oStr > 0 ? "+" : "", player.Str - oStr, player.Str );
+	            if (player.Str != oStr && oStr != 0 && Config.GetBool("DisplaySkillChanges"))
+	                World.Player.SendMessage(MsgLevel.Force, LocString.StrChanged, player.Str - oStr > 0 ? "+" : "",
+	                    player.Str - oStr, player.Str);
 
-				if ( player.Dex != oDex && oDex != 0 && Config.GetBool( "DisplaySkillChanges" ) )
-					World.Player.SendMessage( MsgLevel.Force, LocString.DexChanged, player.Dex - oDex > 0 ? "+" : "", player.Dex - oDex, player.Dex );
+	            if (player.Dex != oDex && oDex != 0 && Config.GetBool("DisplaySkillChanges"))
+	                World.Player.SendMessage(MsgLevel.Force, LocString.DexChanged, player.Dex - oDex > 0 ? "+" : "",
+	                    player.Dex - oDex, player.Dex);
 
-				if ( player.Int != oInt && oInt != 0 && Config.GetBool( "DisplaySkillChanges" ) )
-					World.Player.SendMessage( MsgLevel.Force, LocString.IntChanged, player.Int - oInt > 0 ? "+" : "", player.Int - oInt, player.Int );
+	            if (player.Int != oInt && oInt != 0 && Config.GetBool("DisplaySkillChanges"))
+	                World.Player.SendMessage(MsgLevel.Force, LocString.IntChanged, player.Int - oInt > 0 ? "+" : "",
+	                    player.Int - oInt, player.Int);
 
-				player.Stam = p.ReadUInt16();
-				player.StamMax = p.ReadUInt16();
-				player.Mana = p.ReadUInt16();
-				player.ManaMax = p.ReadUInt16();
+	            player.Stam = p.ReadUInt16();
+	            player.StamMax = p.ReadUInt16();
+	            player.Mana = p.ReadUInt16();
+	            player.ManaMax = p.ReadUInt16();
 
-				player.Gold = p.ReadUInt32();
-				player.AR = p.ReadUInt16(); // ar / physical resist
-				player.Weight = p.ReadUInt16();
+	            player.Gold = p.ReadUInt32();
+	            player.AR = p.ReadUInt16(); // ar / physical resist
+	            player.Weight = p.ReadUInt16();
 
-				if ( type >= 0x03 )
-				{
-					if ( type > 0x04 )
-					{
-						player.MaxWeight = p.ReadUInt16();
+	            if (type >= 0x03)
+	            {
+	                if (type > 0x04)
+	                {
+	                    player.MaxWeight = p.ReadUInt16();
 
-						p.ReadByte(); // race?
-					}
+	                    p.ReadByte(); // race?
+	                }
 
-					player.StatCap = p.ReadUInt16();
+	                player.StatCap = p.ReadUInt16();
 
-					if ( type > 0x03 )
-					{
-						player.Followers = p.ReadByte();
-						player.FollowersMax = p.ReadByte();
+	                player.Followers = p.ReadByte();
+	                player.FollowersMax = p.ReadByte();
 
-						player.FireResistance = p.ReadInt16();
-						player.ColdResistance = p.ReadInt16();
-						player.PoisonResistance = p.ReadInt16();
-						player.EnergyResistance = p.ReadInt16();
-						
-						player.Luck = p.ReadInt16();
-						
-						player.DamageMin = p.ReadUInt16();
-						player.DamageMax = p.ReadUInt16();
+	                if (type > 0x03)
+	                {
+	                    player.FireResistance = p.ReadInt16();
+	                    player.ColdResistance = p.ReadInt16();
+	                    player.PoisonResistance = p.ReadInt16();
+	                    player.EnergyResistance = p.ReadInt16();
 
-						player.Tithe = p.ReadInt32();
-					}
-				}
+	                    player.Luck = p.ReadInt16();
 
-				ClientCommunication.RequestTitlebarUpdate();
-				
-				ClientCommunication.PostHitsUpdate();
-				ClientCommunication.PostStamUpdate();
-				ClientCommunication.PostManaUpdate();
+	                    player.DamageMin = p.ReadUInt16();
+	                    player.DamageMax = p.ReadUInt16();
 
-				Engine.MainWindow.UpdateTitle(); // update player name
-			}
-		}
+	                    player.Tithe = p.ReadInt32();
+	                }
+	            }
+
+	            ClientCommunication.RequestTitlebarUpdate();
+
+	            ClientCommunication.PostHitsUpdate();
+	            ClientCommunication.PostStamUpdate();
+	            ClientCommunication.PostManaUpdate();
+
+	            Engine.MainWindow.UpdateTitle(); // update player name
+	        }
+	    }
 		
 		private static void MobileUpdate( Packet p, PacketHandlerEventArgs args )
 		{
@@ -2680,27 +2684,60 @@ namespace Assistant
 	        if (Enum.IsDefined(typeof(BuffIcon), icon))
 	        {
 	            BuffIcon buff = (BuffIcon) icon;
+
 	            switch (action)
 	            {
 	                case 0x01: // show
-	                    if (World.Player != null && !World.Player.Buffs.Contains(buff))
+
+	                    p.ReadUInt32(); //0x000
+	                    p.ReadUInt16(); //icon # again..?
+	                    p.ReadUInt16(); //0x1 = show
+	                    p.ReadUInt32(); //0x000
+	                    ushort duration = p.ReadUInt16();
+	                    p.ReadUInt16(); //0x0000
+	                    p.ReadByte(); //0x0
+
+	                    BuffsDebuffs buffInfo = new BuffsDebuffs
 	                    {
-	                        World.Player.Buffs.Add(buff);
+	                        IconNumber = icon,
+	                        BuffIcon = (BuffIcon) icon,
+	                        ClilocMessage1 = Language.GetCliloc((int) p.ReadUInt32()),
+	                        ClilocMessage2 = Language.GetCliloc((int) p.ReadUInt32()),
+                             Duration = duration,
+                             Timestamp = DateTime.UtcNow
+                         };
+
+	                    if (World.Player != null && World.Player.BuffsDebuffs.All(b => b.BuffIcon != buff))
+	                    {
+	                        World.Player.BuffsDebuffs.Add(buffInfo);
 	                    }
 
 	                    break;
 
 	                case 0x0: // remove
-	                    if (World.Player != null && World.Player.Buffs.Contains(buff))
-	                    {
-	                        World.Player.Buffs.Remove(buff);
+	                    if (World.Player != null)// && World.Player.BuffsDebuffs.Any(b => b.BuffIcon == buff))
+                         {
+	                        World.Player.BuffsDebuffs.RemoveAll(b => b.BuffIcon == buff);
+	                        //World.Player.Buffs.Remove(buff);
 	                    }
 
-	                    break;
-                }
+
+	                    //ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+
+                         break;
+	            }
 
 	            ClientCommunication.RequestTitlebarUpdate();
-            }
+	        }
+
+	        if (World.Player != null && World.Player.BuffsDebuffs.Count > 0)
+	        {
+                 BuffsTimer.Start();
+	        }
+	        else
+	        {
+                 BuffsTimer.Stop();
+	        }
 	    }
     }
 }
