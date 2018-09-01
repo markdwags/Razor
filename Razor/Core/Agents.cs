@@ -1432,8 +1432,8 @@ namespace Assistant
 
 		public static void Initialize()	
 		{
-		    Agent.Add(m_Instance);
-        }
+		    Agent.Add(m_Instance);            
+          }
 
 		private bool m_Enabled;
 		private Serial m_Bag;
@@ -1449,12 +1449,43 @@ namespace Assistant
 			m_Items = new List<ItemID>();
 
 			HotKey.Add( HKCategory.Agents, LocString.ClearScavCache, new HotKeyCallback( ClearCache ) );
-			PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
+               HotKey.Add(HKCategory.Agents, LocString.ScavengerEnableDisable, new HotKeyCallback(OnEnableDisable));
+               HotKey.Add(HKCategory.Agents, LocString.ScavengerSetHotBag, new HotKeyCallback(OnSetHotBag));
+               HotKey.Add(HKCategory.Agents, LocString.ScavengerAddTarget, new HotKeyCallback(OnAddToHotBag));
+
+               PacketHandler.RegisterClientToServerViewer( 0x09, new PacketViewerCallback( OnSingleClick ) );
 
 			Agent.OnItemCreated += new ItemCreatedEventHandler( CheckBagOPL );
 		}
 
-		private void CheckBagOPL( Item item )
+        private void OnEnableDisable()
+        {   
+            m_Enabled = !m_Enabled;
+            UpdateEnableButton();
+
+            if (m_Enabled)
+            {
+                World.Player.SendMessage(MsgLevel.Force, "Scavenger Agent Enabled");
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Force, "Scavenger Agent Disabled");
+            }
+        }
+
+        private void OnAddToHotBag()
+        {
+            World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
+            Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnTarget));
+        }
+
+        private void OnSetHotBag()
+        {
+            World.Player.SendMessage(LocString.TargCont);
+            Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnTargetBag));
+        }
+
+        private void CheckBagOPL( Item item )
 		{
 			if ( item.Serial == m_Bag )
             {
@@ -1516,7 +1547,10 @@ namespace Assistant
 
 		private void UpdateEnableButton()
 		{
-			m_EnButton.Text = Language.GetString( m_Enabled ? LocString.PushDisable : LocString.PushEnable );
+            if (m_EnButton != null)
+            {
+                m_EnButton.Text = Language.GetString(m_Enabled ? LocString.PushDisable : LocString.PushEnable);
+            }
 		}
 		
 		public override void OnButtonPress( int num )
@@ -1589,7 +1623,13 @@ namespace Assistant
             }
 
             m_Items.Add( item.ItemID );
-			m_SubList.Items.Add( item.ItemID );
+
+            if (m_SubList != null)
+            {
+                m_SubList.Items.Add(item.ItemID);
+            }
+
+			
 
 			DebugLog( "Added item {0}", item );
 				

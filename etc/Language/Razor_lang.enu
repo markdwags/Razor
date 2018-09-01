@@ -680,3 +680,6 @@ InputBox::ok=&OK
 1974=Add UseOnce Container
 1975=Chicken Sounds
 1976=Toggle JMap Visibility
+1977=Scavenger Enable/Disable
+1978=Scavenger Set Hot Bag
+1979=Scavenger Add Target
