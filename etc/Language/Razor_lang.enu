@@ -188,6 +188,8 @@ MainForm::goldPerDisplay=Enable Gold Per Sec/Min/Hour Counters
 MainForm::stealthOverhead=Overhead
 MainForm::trackIncomingGold=Track gold per sec/min/hour
 MainForm::objectDelay=Object Delay:
+MainForm::showBuffDebuffOverhead=Show Buff/Debuff Overhead
+MainForm::lblBuffDebuff=Buff/Debuff Format:
 
 HueEntry::Text=Select a Hue
 HueEntry::cancel=Cancel

@@ -2685,6 +2685,12 @@ namespace Assistant
 	        {
 	            BuffIcon buff = (BuffIcon) icon;
 
+                 string format = Config.GetString("BuffDebuffFormat");
+                 if (string.IsNullOrEmpty(format))
+                 {
+                    format = "[{action}{name}]";
+                 }
+
 	            switch (action)
 	            {
 	                case 0x01: // show
@@ -2710,6 +2716,11 @@ namespace Assistant
 	                    if (World.Player != null && World.Player.BuffsDebuffs.All(b => b.BuffIcon != buff))
 	                    {
 	                        World.Player.BuffsDebuffs.Add(buffInfo);
+
+	                        if (Config.GetBool("ShowBuffDebuffOverhead"))
+	                        {	                            
+                                 World.Player.OverheadMessage(88, format.Replace("{action}","+").Replace("{name}", buffInfo.ClilocMessage1));
+                             }
 	                    }
 
 	                    break;
@@ -2717,14 +2728,16 @@ namespace Assistant
 	                case 0x0: // remove
 	                    if (World.Player != null)// && World.Player.BuffsDebuffs.Any(b => b.BuffIcon == buff))
                          {
-	                        World.Player.BuffsDebuffs.RemoveAll(b => b.BuffIcon == buff);
-	                        //World.Player.Buffs.Remove(buff);
-	                    }
+                             if (Config.GetBool("ShowBuffDebuffOverhead"))
+                             {
+                                 string buffRemoveInfo = World.Player.BuffsDebuffs.Where(b => b.BuffIcon == buff).Select(x => x.ClilocMessage1).FirstOrDefault();
+                                 World.Player.OverheadMessage(338, format.Replace("{action}", "-").Replace("{name}", buffRemoveInfo));
+                             }
 
+                             World.Player.BuffsDebuffs.RemoveAll(b => b.BuffIcon == buff);
+                         }
 
-	                    //ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-
-                         break;
+                        break;
 	            }
 
 	            ClientCommunication.RequestTitlebarUpdate();

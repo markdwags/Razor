@@ -170,6 +170,9 @@ namespace Assistant
 	        AddProperty("LogSkillChanges", false);
 	        AddProperty("StealthOverhead", false);
 
+	        AddProperty("ShowBuffDebuffOverhead", false);
+            AddProperty("BuffDebuffFormat", "[{action}{name}]");
+
             Counter.Default();
 	        Filter.DisableAll();
 	        DressList.ClearAll();

@@ -283,6 +283,9 @@ namespace Assistant
         private CheckBox captureMibs;
         private CheckBox trackIncomingGold;
         private CheckBox objectDelay;
+        private CheckBox showBuffDebuffOverhead;
+        private Label lblBuffDebuff;
+        private TextBox buffDebuffFormat;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -399,6 +402,7 @@ namespace Assistant
             this.label3 = new System.Windows.Forms.Label();
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+            this.showBuffDebuffOverhead = new System.Windows.Forms.CheckBox();
             this.txtObjDelay = new System.Windows.Forms.TextBox();
             this.objectDelay = new System.Windows.Forms.CheckBox();
             this.stealthOverhead = new System.Windows.Forms.CheckBox();
@@ -597,6 +601,8 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.buffDebuffFormat = new System.Windows.Forms.TextBox();
+            this.lblBuffDebuff = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -1206,6 +1212,9 @@ namespace Assistant
             //
             // moreMoreOptTab
             //
+            this.moreMoreOptTab.Controls.Add(this.lblBuffDebuff);
+            this.moreMoreOptTab.Controls.Add(this.buffDebuffFormat);
+            this.moreMoreOptTab.Controls.Add(this.showBuffDebuffOverhead);
             this.moreMoreOptTab.Controls.Add(this.txtObjDelay);
             this.moreMoreOptTab.Controls.Add(this.objectDelay);
             this.moreMoreOptTab.Controls.Add(this.stealthOverhead);
@@ -1241,6 +1250,17 @@ namespace Assistant
             this.moreMoreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
+            //
+            // showBuffDebuffOverhead
+            //
+            this.showBuffDebuffOverhead.AutoSize = true;
+            this.showBuffDebuffOverhead.Location = new System.Drawing.Point(8, 263);
+            this.showBuffDebuffOverhead.Name = "showBuffDebuffOverhead";
+            this.showBuffDebuffOverhead.Size = new System.Drawing.Size(175, 19);
+            this.showBuffDebuffOverhead.TabIndex = 77;
+            this.showBuffDebuffOverhead.Text = "Show Buff/Debuff Overhead";
+            this.showBuffDebuffOverhead.UseVisualStyleBackColor = true;
+            this.showBuffDebuffOverhead.CheckedChanged += new System.EventHandler(this.showBuffDebuffOverhead_CheckedChanged);
             //
             // txtObjDelay
             //
@@ -3279,10 +3299,29 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
+            // buffDebuffFormat
+            //
+            this.buffDebuffFormat.Location = new System.Drawing.Point(124, 284);
+            this.buffDebuffFormat.Name = "buffDebuffFormat";
+            this.buffDebuffFormat.Size = new System.Drawing.Size(115, 23);
+            this.buffDebuffFormat.TabIndex = 78;
+            this.buffDebuffFormat.Text = "[{action}{name}]";
+            this.buffDebuffFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.buffDebuffFormat.TextChanged += new System.EventHandler(this.buffDebuffFormat_TextChanged);
+            //
+            // lblBuffDebuff
+            //
+            this.lblBuffDebuff.Location = new System.Drawing.Point(8, 285);
+            this.lblBuffDebuff.Name = "lblBuffDebuff";
+            this.lblBuffDebuff.Size = new System.Drawing.Size(115, 18);
+            this.lblBuffDebuff.TabIndex = 79;
+            this.lblBuffDebuff.Text = "Buff/Debuff Format:";
+            this.lblBuffDebuff.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            this.ClientSize = new System.Drawing.Size(541, 352);
+            this.ClientSize = new System.Drawing.Size(541, 360);
             this.Controls.Add(this.tabs);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -3617,7 +3656,7 @@ namespace Assistant
 	            new JsonApiTimer(this).Start();
 	        }
 
-	        captureMibs.Checked = Config.GetBool("CaptureMibs"); 
+	        captureMibs.Checked = Config.GetBool("CaptureMibs");
 
              stealthOverhead.Checked = Config.GetBool("StealthOverhead");
 
@@ -3711,7 +3750,7 @@ namespace Assistant
 			}
             else if (tabs.SelectedTab == moreMoreOptTab)
 			{
-			    tabs.Size = new Size(tabs.Size.Width, 313);
+			    tabs.Size = new Size(tabs.Size.Width, 358);
 			    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
             }
 			else if (tabs.SelectedTab == moreOptTab)
@@ -7460,6 +7499,16 @@ namespace Assistant
             txtObjDelay.Enabled = objectDelay.Checked;
 
             Config.SetProperty("ObjectDelayEnabled", objectDelay.Checked);
+        }
+
+        private void showBuffDebuffOverhead_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBuffDebuffOverhead", showBuffDebuffOverhead.Checked);
+        }
+
+        private void buffDebuffFormat_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("BuffDebuffFormat", buffDebuffFormat.Text);
         }
     }
 }
