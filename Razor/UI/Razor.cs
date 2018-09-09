@@ -3724,7 +3724,7 @@ namespace Assistant
 				if ( sel >= 0 && sel < agentList.Items.Count )
 					agentList.SelectedIndex = sel;
 			}
-			else if ( tabs.SelectedTab == aboutTab )
+			else if ( tabs.SelectedTab == advancedTab)
 			{
 				UpdateRazorStatus();
 			}

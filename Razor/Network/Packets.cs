@@ -253,8 +253,18 @@ namespace Assistant
 			Write( (uint)serial );
 		}
 	}
-	
-	public sealed class CancelTarget : Packet
+
+    public sealed class SetWeather : Packet
+    {
+        public SetWeather(int type, int num) : base(0x65, 4)
+        {
+            Write((byte)type); //types: 0x00 - "It starts to rain", 0x01 - "A fierce storm approaches.", 0x02 - "It begins to snow", 0x03 - "A storm is brewing.", 0xFF - None (turns off sound effects), 0xFE (no effect?? Set temperature?) 
+            Write((byte)num); //number of weather effects on screen
+            Write((byte)0xFE);
+        }
+    }
+
+    public sealed class CancelTarget : Packet
 	{
 		public CancelTarget( uint id ) : base( 0x6C, 19 )
 		{

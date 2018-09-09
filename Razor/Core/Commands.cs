@@ -25,6 +25,7 @@ namespace Assistant
             Command.Register("ClearItems", ClearItems);
             Command.Register("Resync", Resync);
             Command.Register("Mobile", GetMobile);
+            Command.Register("Weather", SetWeather);
         }
 
         private static DateTime m_LastSync;
@@ -55,6 +56,14 @@ namespace Assistant
                 Language.CliLocName, "System", "Current PacketVideo File Information:"));
             ClientCommunication.ForceSendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x25, 3,
                 Language.CliLocName, "System", PacketPlayer.CurrentOpenedInfo));
+        }
+
+        private static void SetWeather(string[] param)
+        {
+            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Language.CliLocName, "System", "Setting weather.."));
+
+            ClientCommunication.SendToClient(new SetWeather(Convert.ToInt32(param[0]), Convert.ToInt32(param[1])));
         }
 
         private static void GetSerial(string[] param)
