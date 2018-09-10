@@ -19,7 +19,7 @@ namespace Assistant
 		{
 			//Client -> Server handlers
 			PacketHandler.RegisterClientToServerViewer( 0x00, new PacketViewerCallback( CreateCharacter ) );
-			PacketHandler.RegisterClientToServerViewer( 0x02, new PacketViewerCallback( MovementRequest ) );
+			PacketHandler.RegisterClientToServerFilter( 0x02, new PacketFilterCallback( MovementRequest ) );
 			PacketHandler.RegisterClientToServerViewer( 0x06, new PacketViewerCallback( ClientDoubleClick ) );
 			PacketHandler.RegisterClientToServerViewer( 0x07, new PacketViewerCallback( LiftRequest ) );
 			PacketHandler.RegisterClientToServerViewer( 0x08, new PacketViewerCallback( DropRequest ) );
@@ -562,7 +562,7 @@ namespace Assistant
 			}
 		}
 
-		private static void MovementRequest( PacketReader p, PacketHandlerEventArgs args )
+		private static void MovementRequest(Packet p, PacketHandlerEventArgs args )
 		{
 			if ( World.Player != null )
 			{
