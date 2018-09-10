@@ -8,6 +8,8 @@ namespace Assistant
         private static DateTime m_StartTime;
         private static int m_PrevGoldAmount;
 
+        private static bool m_PickedUpGold;
+
         public static int GoldSinceStart { get; set; }
         public static double GoldPerSecond { get; set; }
         public static double GoldPerMinute { get; set; }
@@ -24,11 +26,15 @@ namespace Assistant
             get { return m_Timer.Running; }
         }
 
+        public static double TotalMinutes { get; set; }
+
         public static void Start()
         {
             GoldSinceStart = 0;
-            m_PrevGoldAmount = 0;
+            m_PrevGoldAmount = (int) World.Player.Gold;
             m_StartTime = DateTime.UtcNow;
+
+            m_PickedUpGold = false;
 
             if (m_Timer.Running)
             {
@@ -64,7 +70,16 @@ namespace Assistant
                     if (GoldSinceStart + ((int) World.Player.Gold - m_PrevGoldAmount) > m_PrevGoldAmount)
                     {
                         GoldSinceStart = GoldSinceStart + ((int)World.Player.Gold - m_PrevGoldAmount);
+
+                        m_PickedUpGold = true;
                     }
+                }
+
+                // Let's not start calculating until we've picked up gold
+                if (m_PickedUpGold == false)
+                {
+                    m_StartTime = DateTime.UtcNow;
+                    return;
                 }
 
                 TimeSpan span = DateTime.UtcNow.Subtract(m_StartTime);
@@ -72,6 +87,8 @@ namespace Assistant
                 GoldPerSecond = span.Seconds > 0 ? (double)GoldSinceStart / span.TotalSeconds : 0;
                 GoldPerMinute = span.Seconds > 0 ? (double)GoldSinceStart / (span.TotalSeconds / 60.0) : 0;
                 GoldPerHour = span.Seconds > 0 ? (double)GoldSinceStart / (span.TotalSeconds / 3600.0) : 0;
+
+                TotalMinutes = span.TotalMinutes;
 
                 ClientCommunication.RequestTitlebarUpdate();
 

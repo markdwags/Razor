@@ -11,6 +11,8 @@ namespace Assistant.HotKeys
             HotKey.Add(HKCategory.Misc, LocString.RecStart, new HotKeyCallback(PacketPlayer.Record));
             HotKey.Add(HKCategory.Misc, LocString.VidStop, new HotKeyCallback(PacketPlayer.Stop));
 
+            HotKey.Add(HKCategory.Misc, LocString.GoldPerHotkey, new HotKeyCallback(ToggleGoldPer));
+
             HotKey.Add(HKCategory.Misc, LocString.ClearDragDropQueue, new HotKeyCallback(DragDropManager.GracefulStop));
 
             HotKey.Add(HKCategory.Misc, LocString.LastSpell, new HotKeyCallback(LastSpell));
@@ -38,6 +40,20 @@ namespace Assistant.HotKeys
             HotKey.Add(HKCategory.Items, HKSubCat.Potions, LocString.DrinkStr, call, (ushort) 3849);
             HotKey.Add(HKCategory.Items, HKSubCat.Potions, LocString.DrinkAg, call, (ushort) 3848);
             HotKey.Add(HKCategory.Items, HKSubCat.Potions, LocString.DrinkApple, new HotKeyCallback(OnDrinkApple));
+        }
+
+        private static void ToggleGoldPer()
+        {
+            if (GoldPerHourTimer.Running)
+            {
+                World.Player.SendMessage(MsgLevel.Force, "Stopping 'GoldPer Timer'");
+                GoldPerHourTimer.Stop();
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Force, "Starting 'GoldPer Timer' when you loot your first gold");
+                GoldPerHourTimer.Start();
+            }
         }
 
         private static void PartyAccept()

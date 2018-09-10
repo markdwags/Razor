@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using System.Net;
 using Assistant.Core;
 using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Assistant
 {
@@ -37,7 +39,45 @@ namespace Assistant
 		public static readonly uint MaxBit			= 16;
 	}
 
-	public unsafe sealed class ClientCommunication
+
+    public class JsonApi
+    {
+        public string Name { get; set; }
+        public string Shard { get; set; }
+        public int CrimeTime { get; set; }
+        public int Str { get; set; }
+        public int Dex { get; set; }
+        public int Int { get; set; }
+        public int HP { get; set; }
+        public int Stamina { get; set; }
+        public int MaxHp { get; set; }
+        public int MaxStam { get; set; }
+        public int MaxInt { get; set; }
+        public int MaxMana { get; set; }
+        public int Mana { get; set; }
+        public int AR { get; set; }
+        public string Tithe { get; set; }
+        public int Weight { get; set; }
+        public int MaxWeight { get; set; }
+        public int Followers { get; set; }
+        public int MaxFollowers { get; set; }
+        public int Gold { get; set; }
+        public double GPS { get; set; }
+        public double GPM { get; set; }
+        public double GPH { get; set; }
+        public int GoldTotal { get; set; }
+        public double GoldTotalMin { get; set; }
+
+        public int BandageTimer { get; set; }
+        public int SkillTimer { get; set; }
+        public int GateTimer { get; set; }
+
+        public int StealthSteps { get; set; }
+
+        public string BuffsDebuffs { get; set; }
+    }
+
+    public unsafe sealed class ClientCommunication
 	{
 		public enum UONetMessage
 		{
@@ -901,15 +941,18 @@ namespace Assistant
 	            sb.Replace(@"{gps}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerSecond:N2}" : "-");
 	            sb.Replace(@"{gpm}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerMinute:N2}" : "-");
 	            sb.Replace(@"{gph}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerHour:N2}" : "-");
-	            sb.Replace(@"{totalgold}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldSinceStart}" : "-");
+	            sb.Replace(@"{goldtotal}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldSinceStart}" : "-");
+                 sb.Replace(@"{goldtotalmin}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.TotalMinutes:N2} min" : "-");
 
-	            sb.Replace(@"{bandage}", BandageTimer.Running ? $"~#FF8000{BandageTimer.Count}~#~" : "-");
+                 sb.Replace(@"{bandage}", BandageTimer.Running ? $"~#FF8000{BandageTimer.Count}~#~" : "-");
 
 	            sb.Replace(@"{skill}", SkillTimer.Running ? $"{SkillTimer.Count}" : "-");
 	            sb.Replace(@"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-");
 
 	            sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
-                
+
+                 string buffList = string.Empty;
+
 	            if (BuffsTimer.Running)
 	            {
 	                StringBuilder buffs = new StringBuilder();
@@ -929,12 +972,61 @@ namespace Assistant
 	                }
 
 	                buffs.Length = buffs.Length - 2;
-	                sb.Replace(@"{buffsdebuffs}", buffs.ToString());
-	            }
+                     buffList = buffs.ToString();
+                     sb.Replace(@"{buffsdebuffs}", buffList);                     
+
+                 }
 	            else
 	            {
 	                sb.Replace(@"{buffsdebuffs}", "-");
-	            }
+                     buffList = string.Empty;
+                 }
+
+                 if (Config.GetBool("JsonApi"))
+                 {
+                    JsonApi json = new JsonApi();
+                    json.Name = p.Name;
+                    json.Shard = World.ShardName;
+                    json.CrimeTime = p.CriminalTime != 0 ? p.CriminalTime : 0;
+                    json.Str = p.Str;
+                    json.Dex = p.Dex;
+                    json.Int = p.Int;
+                    json.HP = p.Hits;
+                    json.Stamina = p.Stam;
+                    json.MaxHp = p.HitsMax;
+                    json.MaxStam = p.StamMax;
+                    json.MaxInt = p.Int;
+                    json.MaxMana = p.ManaMax;
+                    json.Mana = p.Mana;
+                    json.AR = p.AR;
+                    json.Tithe = p.Tithe.ToString();
+                    json.Weight = p.Weight;
+                    json.MaxWeight = p.MaxWeight;
+                    json.Followers = p.Followers;
+                    json.MaxFollowers = p.FollowersMax;
+
+                    json.Gold = (int) p.Gold;
+                    json.GPS = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldPerSecond : 0;
+                    json.GPM = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldPerMinute : 0;
+                    json.GPH = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldPerHour: 0;
+                    json.GoldTotal = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldSinceStart : 0;
+                    json.GoldTotalMin = GoldPerHourTimer.Running ? GoldPerHourTimer.TotalMinutes : 0;
+
+                    json.BandageTimer = BandageTimer.Running ? BandageTimer.Count : 0;
+                    json.SkillTimer = SkillTimer.Running ? SkillTimer.Count :0;
+                    json.GateTimer = GateTimer.Running ? GateTimer.Count : 0;
+
+
+                    json.StealthSteps = StealthSteps.Counting ? StealthSteps.Count : 0;
+                    json.BuffsDebuffs = !string.IsNullOrEmpty(buffList) ? buffList : "-";
+
+                    // Don't stop Razor because this file isn't available
+                    try
+                    {
+                        File.WriteAllText($"{Config.GetInstallDirectory()}\\{p.Name}_{p.Serial}_{World.ShardName}.json", JsonConvert.SerializeObject(json));
+                    }
+                    catch { }
+                 }
 
                  string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
 	                (int) (p.GetStatusCode()),
@@ -1613,5 +1705,6 @@ namespace Assistant
 			CommMutex.ReleaseMutex();
 		}
 	}
+
 }
 

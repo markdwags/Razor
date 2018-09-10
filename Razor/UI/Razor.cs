@@ -402,6 +402,8 @@ namespace Assistant
             this.label3 = new System.Windows.Forms.Label();
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+            this.lblBuffDebuff = new System.Windows.Forms.Label();
+            this.buffDebuffFormat = new System.Windows.Forms.TextBox();
             this.showBuffDebuffOverhead = new System.Windows.Forms.CheckBox();
             this.txtObjDelay = new System.Windows.Forms.TextBox();
             this.objectDelay = new System.Windows.Forms.CheckBox();
@@ -601,8 +603,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.buffDebuffFormat = new System.Windows.Forms.TextBox();
-            this.lblBuffDebuff = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -1250,6 +1250,25 @@ namespace Assistant
             this.moreMoreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
+            //
+            // lblBuffDebuff
+            //
+            this.lblBuffDebuff.Location = new System.Drawing.Point(8, 285);
+            this.lblBuffDebuff.Name = "lblBuffDebuff";
+            this.lblBuffDebuff.Size = new System.Drawing.Size(115, 18);
+            this.lblBuffDebuff.TabIndex = 79;
+            this.lblBuffDebuff.Text = "Buff/Debuff Format:";
+            this.lblBuffDebuff.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // buffDebuffFormat
+            //
+            this.buffDebuffFormat.Location = new System.Drawing.Point(124, 284);
+            this.buffDebuffFormat.Name = "buffDebuffFormat";
+            this.buffDebuffFormat.Size = new System.Drawing.Size(115, 23);
+            this.buffDebuffFormat.TabIndex = 78;
+            this.buffDebuffFormat.Text = "[{action}{name}]";
+            this.buffDebuffFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.buffDebuffFormat.TextChanged += new System.EventHandler(this.buffDebuffFormat_TextChanged);
             //
             // showBuffDebuffOverhead
             //
@@ -3099,7 +3118,6 @@ namespace Assistant
             // jsonApi
             //
             this.jsonApi.AutoSize = true;
-            this.jsonApi.Enabled = false;
             this.jsonApi.Location = new System.Drawing.Point(202, 148);
             this.jsonApi.Name = "jsonApi";
             this.jsonApi.Size = new System.Drawing.Size(113, 19);
@@ -3298,25 +3316,6 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-            //
-            // buffDebuffFormat
-            //
-            this.buffDebuffFormat.Location = new System.Drawing.Point(124, 284);
-            this.buffDebuffFormat.Name = "buffDebuffFormat";
-            this.buffDebuffFormat.Size = new System.Drawing.Size(115, 23);
-            this.buffDebuffFormat.TabIndex = 78;
-            this.buffDebuffFormat.Text = "[{action}{name}]";
-            this.buffDebuffFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.buffDebuffFormat.TextChanged += new System.EventHandler(this.buffDebuffFormat_TextChanged);
-            //
-            // lblBuffDebuff
-            //
-            this.lblBuffDebuff.Location = new System.Drawing.Point(8, 285);
-            this.lblBuffDebuff.Name = "lblBuffDebuff";
-            this.lblBuffDebuff.Size = new System.Drawing.Size(115, 18);
-            this.lblBuffDebuff.TabIndex = 79;
-            this.lblBuffDebuff.Text = "Buff/Debuff Format:";
-            this.lblBuffDebuff.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             //
             // MainForm
             //
@@ -3651,10 +3650,7 @@ namespace Assistant
 	        double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
 	        lightLevel.Text = $"Light: {percent}%";
 
-	        if (jsonApi.Checked)
-	        {
-	            new JsonApiTimer(this).Start();
-	        }
+            jsonApi.Checked = Config.GetBool("JsonApi");
 
 	        captureMibs.Checked = Config.GetBool("CaptureMibs");
 
@@ -3861,50 +3857,6 @@ namespace Assistant
 				}
 			}
 		}
-
-	    private class JsonApiTimer : Timer
-	    {
-	        MainForm m_Form;
-	        public JsonApiTimer(MainForm form) : base(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5))
-	        {
-	            m_Form = form;
-	        }
-
-	        protected override void OnTick()
-	        {
-	            if (Config.GetBool("JsonApi"))
-	            {
-	                m_Form.UpdateJsonApi();
-                }
-	            else
-	            {
-	                m_Form.UpdateJsonApi();
-                    Stop();
-	            }
-
-	        }
-	    }
-
-        public void UpdateJsonApi()
-	    {
-
-	        if (World.Player == null)
-	            return;
-
-	        var jsonDict = new Dictionary<string, string>
-	        {
-	            {"Name", World.Player.Name},
-	            {"CriminalTime", World.Player.CriminalTime.ToString()},
-	            {"Weight", World.Player.Weight.ToString()},
-	            {"MaxWeight", World.Player.MaxWeight.ToString()},
-                {"LastSpell", World.Player.LastSpell.ToString()}
-            };
-
-	        string json = JsonConvert.SerializeObject(jsonDict);
-
-	        File.WriteAllText($"{Config.GetUserDirectory("")}\\{World.Player.Name}.json", json);
-
-	    }
 
 	    public void UpdateSkill(Skill skill)
 	    {
@@ -7196,11 +7148,6 @@ namespace Assistant
         private void jsonApi_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("JsonApi", jsonApi.Checked);
-
-            /*if (jsonApi.Checked)
-            {
-                new JsonApiTimer(this).Start();
-            }*/
         }
 
         private void titleBarParams_SelectedIndexChanged(object sender, EventArgs e)
