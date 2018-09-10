@@ -82,7 +82,7 @@ namespace Assistant
 
 	        AddProperty("UndressConflicts", true);
 	        AddProperty("HighlightReagents", true);
-	        AddProperty("Systray", true);
+	        AddProperty("Systray", false);
 	        AddProperty("TitlebarImages", true);
 
 	        AddProperty("SellAgentMax", (int) 99);
