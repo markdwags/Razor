@@ -190,6 +190,7 @@ MainForm::trackIncomingGold=Track gold per sec/min/hour
 MainForm::objectDelay=Object Delay:
 MainForm::showBuffDebuffOverhead=Show Buff/Debuff Overhead
 MainForm::lblBuffDebuff=Buff/Debuff Format:
+MainForm::blockOpenCorpsesTwice=Block opening corpses twice
 
 HueEntry::Text=Select a Hue
 HueEntry::cancel=Cancel

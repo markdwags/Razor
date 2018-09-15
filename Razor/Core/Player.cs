@@ -206,6 +206,10 @@ namespace Assistant
 	    internal List<BuffsDebuffs> m_BuffsDebuffs = new List<BuffsDebuffs>();
 	    internal List<BuffsDebuffs> BuffsDebuffs { get { return m_BuffsDebuffs; } }
 
+         private List<uint> m_OpenedCorpses = new List<uint>();
+         public List<uint> OpenedCorpses { get { return m_OpenedCorpses; } }
+
+
         public override void SaveState( BinaryWriter writer )
 		{
 			base.SaveState (writer);

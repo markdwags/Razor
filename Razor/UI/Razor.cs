@@ -286,6 +286,7 @@ namespace Assistant
         private CheckBox showBuffDebuffOverhead;
         private Label lblBuffDebuff;
         private TextBox buffDebuffFormat;
+        private CheckBox blockOpenCorpsesTwice;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -369,6 +370,7 @@ namespace Assistant
             this.opacityLabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.moreOptTab = new System.Windows.Forms.TabPage();
+            this.blockOpenCorpsesTwice = new System.Windows.Forms.CheckBox();
             this.lightLevel = new System.Windows.Forms.Label();
             this.lightLevelBar = new System.Windows.Forms.TrackBar();
             this.preAOSstatbar = new System.Windows.Forms.CheckBox();
@@ -883,6 +885,7 @@ namespace Assistant
             //
             // moreOptTab
             //
+            this.moreOptTab.Controls.Add(this.blockOpenCorpsesTwice);
             this.moreOptTab.Controls.Add(this.lightLevel);
             this.moreOptTab.Controls.Add(this.lightLevelBar);
             this.moreOptTab.Controls.Add(this.preAOSstatbar);
@@ -920,6 +923,16 @@ namespace Assistant
             this.moreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
+            //
+            // blockOpenCorpsesTwice
+            //
+            this.blockOpenCorpsesTwice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.blockOpenCorpsesTwice.Location = new System.Drawing.Point(245, 109);
+            this.blockOpenCorpsesTwice.Name = "blockOpenCorpsesTwice";
+            this.blockOpenCorpsesTwice.Size = new System.Drawing.Size(209, 20);
+            this.blockOpenCorpsesTwice.TabIndex = 84;
+            this.blockOpenCorpsesTwice.Text = "Block opening corpses twice";
+            this.blockOpenCorpsesTwice.CheckedChanged += new System.EventHandler(this.blockOpenCorpsesTwice_CheckedChanged);
             //
             // lightLevel
             //
@@ -971,7 +984,7 @@ namespace Assistant
             //
             // filterSnoop
             //
-            this.filterSnoop.Location = new System.Drawing.Point(245, 163);
+            this.filterSnoop.Location = new System.Drawing.Point(245, 188);
             this.filterSnoop.Name = "filterSnoop";
             this.filterSnoop.Size = new System.Drawing.Size(220, 20);
             this.filterSnoop.TabIndex = 49;
@@ -989,7 +1002,7 @@ namespace Assistant
             //
             // incomingMob
             //
-            this.incomingMob.Location = new System.Drawing.Point(245, 189);
+            this.incomingMob.Location = new System.Drawing.Point(245, 214);
             this.incomingMob.Name = "incomingMob";
             this.incomingMob.Size = new System.Drawing.Size(228, 20);
             this.incomingMob.TabIndex = 47;
@@ -1109,7 +1122,7 @@ namespace Assistant
             //
             // spamFilter
             //
-            this.spamFilter.Location = new System.Drawing.Point(245, 137);
+            this.spamFilter.Location = new System.Drawing.Point(245, 162);
             this.spamFilter.Name = "spamFilter";
             this.spamFilter.Size = new System.Drawing.Size(220, 20);
             this.spamFilter.TabIndex = 26;
@@ -1159,7 +1172,7 @@ namespace Assistant
             //
             // blockDis
             //
-            this.blockDis.Location = new System.Drawing.Point(245, 110);
+            this.blockDis.Location = new System.Drawing.Point(245, 135);
             this.blockDis.Name = "blockDis";
             this.blockDis.Size = new System.Drawing.Size(184, 20);
             this.blockDis.TabIndex = 55;
@@ -1203,7 +1216,7 @@ namespace Assistant
             //
             // incomingCorpse
             //
-            this.incomingCorpse.Location = new System.Drawing.Point(245, 215);
+            this.incomingCorpse.Location = new System.Drawing.Point(245, 240);
             this.incomingCorpse.Name = "incomingCorpse";
             this.incomingCorpse.Size = new System.Drawing.Size(228, 20);
             this.incomingCorpse.TabIndex = 48;
@@ -3650,11 +3663,13 @@ namespace Assistant
 	        double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
 	        lightLevel.Text = $"Light: {percent}%";
 
-            jsonApi.Checked = Config.GetBool("JsonApi");
+             jsonApi.Checked = Config.GetBool("JsonApi");
 
 	        captureMibs.Checked = Config.GetBool("CaptureMibs");
 
              stealthOverhead.Checked = Config.GetBool("StealthOverhead");
+
+             blockOpenCorpsesTwice.Checked = Config.GetBool("BlockOpenCorpsesTwice");
 
 	        // Disable SmartCPU in case it was enabled before the feature was removed
 	        ClientCommunication.SetSmartCPU(false);
@@ -7456,6 +7471,19 @@ namespace Assistant
         private void buffDebuffFormat_TextChanged(object sender, EventArgs e)
         {
             Config.SetProperty("BuffDebuffFormat", buffDebuffFormat.Text);
+        }
+
+        private void blockOpenCorpsesTwice_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("BlockOpenCorpsesTwice", blockOpenCorpsesTwice.Checked);
+
+            if (blockOpenCorpsesTwice.Checked)
+            {
+                if (World.Player == null)
+                    return;
+
+                World.Player.OpenedCorpses.Clear();
+            }
         }
     }
 }
