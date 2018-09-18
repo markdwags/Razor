@@ -175,6 +175,10 @@ namespace Assistant
 
             AddProperty("BlockOpenCorpsesTwice", false);
 
+            AddProperty("ScreenshotUploadNotifications", true);
+            AddProperty("ScreenshotUploadClipboard", true);
+            AddProperty("ScreenshotUploadOpenBrowser", false);
+
 
             Counter.Default();
 	        Filter.DisableAll();

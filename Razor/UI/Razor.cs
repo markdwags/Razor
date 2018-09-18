@@ -16,6 +16,8 @@ using Assistant.Boat;
 using Assistant.UI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net;
+using System.Collections.Specialized;
 
 namespace Assistant
 {
@@ -287,6 +289,11 @@ namespace Assistant
         private Label lblBuffDebuff;
         private TextBox buffDebuffFormat;
         private CheckBox blockOpenCorpsesTwice;
+        private CheckBox screenShotOpenBrowser;
+        private NotifyIcon razorNotify;
+        private CheckBox screenShotNotification;
+        private ListBox imgurUploads;
+        private CheckBox screenShotClipboard;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -573,6 +580,7 @@ namespace Assistant
             this.vidPlayInfo = new System.Windows.Forms.Label();
             this.vidOpen = new System.Windows.Forms.Button();
             this.screenshotTab = new System.Windows.Forms.TabPage();
+            this.screenShotOpenBrowser = new System.Windows.Forms.CheckBox();
             this.imgFmt = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.capNow = new System.Windows.Forms.Button();
@@ -605,6 +613,10 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.razorNotify = new System.Windows.Forms.NotifyIcon(this.components);
+            this.screenShotNotification = new System.Windows.Forms.CheckBox();
+            this.screenShotClipboard = new System.Windows.Forms.CheckBox();
+            this.imgurUploads = new System.Windows.Forms.ListBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -918,9 +930,9 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.chkForceSpeechHue);
             this.moreOptTab.Controls.Add(this.label3);
             this.moreOptTab.Controls.Add(this.incomingCorpse);
-            this.moreOptTab.Location = new System.Drawing.Point(4, 44);
+            this.moreOptTab.Location = new System.Drawing.Point(4, 24);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(482, 460);
+            this.moreOptTab.Size = new System.Drawing.Size(482, 369);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             //
@@ -1258,9 +1270,9 @@ namespace Assistant
             this.moreMoreOptTab.Controls.Add(this.smartLT);
             this.moreMoreOptTab.Controls.Add(this.gameSize);
             this.moreMoreOptTab.Controls.Add(this.chkPartyOverhead);
-            this.moreMoreOptTab.Location = new System.Drawing.Point(4, 44);
+            this.moreMoreOptTab.Location = new System.Drawing.Point(4, 24);
             this.moreMoreOptTab.Name = "moreMoreOptTab";
-            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 460);
+            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 369);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
             //
@@ -1814,9 +1826,9 @@ namespace Assistant
             //
             this.dressTab.Controls.Add(this.groupBox6);
             this.dressTab.Controls.Add(this.groupBox5);
-            this.dressTab.Location = new System.Drawing.Point(4, 44);
+            this.dressTab.Location = new System.Drawing.Point(4, 24);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 460);
+            this.dressTab.Size = new System.Drawing.Size(482, 369);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             //
@@ -1974,9 +1986,9 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.setlocks);
             this.skillsTab.Controls.Add(this.resetDelta);
             this.skillsTab.Controls.Add(this.skillList);
-            this.skillsTab.Location = new System.Drawing.Point(4, 44);
+            this.skillsTab.Location = new System.Drawing.Point(4, 24);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 460);
+            this.skillsTab.Size = new System.Drawing.Size(482, 369);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             //
@@ -2127,9 +2139,9 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB1);
             this.agentsTab.Controls.Add(this.agentB2);
             this.agentsTab.Controls.Add(this.agentB3);
-            this.agentsTab.Location = new System.Drawing.Point(4, 44);
+            this.agentsTab.Location = new System.Drawing.Point(4, 24);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 460);
+            this.agentsTab.Size = new System.Drawing.Size(482, 369);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             //
@@ -2218,7 +2230,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 460);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 349);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2367,7 +2379,7 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 460);
+            this.macrosTab.Size = new System.Drawing.Size(482, 349);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             //
@@ -2584,7 +2596,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.trackPlayerPosition);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(482, 460);
+            this.mapTab.Size = new System.Drawing.Size(482, 349);
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             //
@@ -2720,7 +2732,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 460);
+            this.videoTab.Size = new System.Drawing.Size(482, 349);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             //
@@ -2970,6 +2982,10 @@ namespace Assistant
             //
             // screenshotTab
             //
+            this.screenshotTab.Controls.Add(this.imgurUploads);
+            this.screenshotTab.Controls.Add(this.screenShotClipboard);
+            this.screenshotTab.Controls.Add(this.screenShotNotification);
+            this.screenshotTab.Controls.Add(this.screenShotOpenBrowser);
             this.screenshotTab.Controls.Add(this.imgFmt);
             this.screenshotTab.Controls.Add(this.label12);
             this.screenshotTab.Controls.Add(this.capNow);
@@ -2986,6 +3002,15 @@ namespace Assistant
             this.screenshotTab.Size = new System.Drawing.Size(482, 460);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
+            //
+            // screenShotOpenBrowser
+            //
+            this.screenShotOpenBrowser.Location = new System.Drawing.Point(12, 309);
+            this.screenShotOpenBrowser.Name = "screenShotOpenBrowser";
+            this.screenShotOpenBrowser.Size = new System.Drawing.Size(216, 20);
+            this.screenShotOpenBrowser.TabIndex = 12;
+            this.screenShotOpenBrowser.Text = "Open link in browser when shared";
+            this.screenShotOpenBrowser.CheckedChanged += new System.EventHandler(this.screenShotOpenBrowser_CheckedChanged);
             //
             // imgFmt
             //
@@ -3051,7 +3076,7 @@ namespace Assistant
             //
             // screenAutoCap
             //
-            this.screenAutoCap.Location = new System.Drawing.Point(12, 216);
+            this.screenAutoCap.Location = new System.Drawing.Point(12, 221);
             this.screenAutoCap.Name = "screenAutoCap";
             this.screenAutoCap.Size = new System.Drawing.Size(180, 20);
             this.screenAutoCap.TabIndex = 4;
@@ -3073,7 +3098,7 @@ namespace Assistant
             this.screensList.ItemHeight = 15;
             this.screensList.Location = new System.Drawing.Point(8, 36);
             this.screensList.Name = "screensList";
-            this.screensList.Size = new System.Drawing.Size(220, 92);
+            this.screensList.Size = new System.Drawing.Size(210, 92);
             this.screensList.Sorted = true;
             this.screensList.TabIndex = 1;
             this.screensList.SelectedIndexChanged += new System.EventHandler(this.screensList_SelectedIndexChanged);
@@ -3082,9 +3107,9 @@ namespace Assistant
             // screenPrev
             //
             this.screenPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.screenPrev.Location = new System.Drawing.Point(234, 37);
+            this.screenPrev.Location = new System.Drawing.Point(224, 37);
             this.screenPrev.Name = "screenPrev";
-            this.screenPrev.Size = new System.Drawing.Size(236, 199);
+            this.screenPrev.Size = new System.Drawing.Size(246, 199);
             this.screenPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.screenPrev.TabIndex = 0;
             this.screenPrev.TabStop = false;
@@ -3114,7 +3139,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 460);
+            this.advancedTab.Size = new System.Drawing.Size(482, 349);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             //
@@ -3237,7 +3262,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 460);
+            this.aboutTab.Size = new System.Drawing.Size(482, 349);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             //
@@ -3330,10 +3355,44 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
+            // razorNotify
+            //
+            this.razorNotify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.razorNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("razorNotify.Icon")));
+            this.razorNotify.Visible = true;
+            //
+            // screenShotNotification
+            //
+            this.screenShotNotification.Location = new System.Drawing.Point(12, 257);
+            this.screenShotNotification.Name = "screenShotNotification";
+            this.screenShotNotification.Size = new System.Drawing.Size(216, 20);
+            this.screenShotNotification.TabIndex = 13;
+            this.screenShotNotification.Text = "Show upload notification";
+            this.screenShotNotification.CheckedChanged += new System.EventHandler(this.screenShotNotification_CheckedChanged);
+            //
+            // screenShotClipboard
+            //
+            this.screenShotClipboard.Location = new System.Drawing.Point(12, 283);
+            this.screenShotClipboard.Name = "screenShotClipboard";
+            this.screenShotClipboard.Size = new System.Drawing.Size(239, 20);
+            this.screenShotClipboard.TabIndex = 14;
+            this.screenShotClipboard.Text = "Copy link to clipboard after upload";
+            this.screenShotClipboard.CheckedChanged += new System.EventHandler(this.screenShotClipboard_CheckedChanged);
+            //
+            // imgurUploads
+            //
+            this.imgurUploads.FormattingEnabled = true;
+            this.imgurUploads.ItemHeight = 15;
+            this.imgurUploads.Location = new System.Drawing.Point(224, 244);
+            this.imgurUploads.Name = "imgurUploads";
+            this.imgurUploads.Size = new System.Drawing.Size(246, 94);
+            this.imgurUploads.TabIndex = 15;
+            this.imgurUploads.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgurUploads_MouseDown);
+            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            this.ClientSize = new System.Drawing.Size(541, 360);
+            this.ClientSize = new System.Drawing.Size(541, 534);
             this.Controls.Add(this.tabs);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -3471,307 +3530,314 @@ namespace Assistant
 
         private bool m_Initializing = false;
 
-	    public void InitConfig()
-	    {
-	        m_Initializing = true;
+        public void InitConfig()
+        {
+            m_Initializing = true;
 
-	        this.opacity.AutoSize = false;
-	        //this.opacity.Size = new System.Drawing.Size(156, 16);
+            this.opacity.AutoSize = false;
+            //this.opacity.Size = new System.Drawing.Size(156, 16);
 
-	        opacity.Value = Config.GetInt("Opacity");
-	        this.Opacity = ((float) opacity.Value) / 100.0;
-	        opacityLabel.Text = Language.Format(LocString.OpacityA1, opacity.Value);
+            opacity.Value = Config.GetInt("Opacity");
+            this.Opacity = ((float)opacity.Value) / 100.0;
+            opacityLabel.Text = Language.Format(LocString.OpacityA1, opacity.Value);
 
-	        this.TopMost = alwaysTop.Checked = Config.GetBool("AlwaysOnTop");
-	        this.Location = new System.Drawing.Point(Config.GetInt("WindowX"), Config.GetInt("WindowY"));
-	        this.TopLevel = true;
+            this.TopMost = alwaysTop.Checked = Config.GetBool("AlwaysOnTop");
+            this.Location = new System.Drawing.Point(Config.GetInt("WindowX"), Config.GetInt("WindowY"));
+            this.TopLevel = true;
 
-	        bool onScreen = false;
-	        foreach (Screen s in Screen.AllScreens)
-	        {
-	            if (s.Bounds.Contains(this.Location.X + this.Width, this.Location.Y + this.Height) ||
-	                s.Bounds.Contains(this.Location.X - this.Width, this.Location.Y - this.Height))
-	            {
-	                onScreen = true;
-	                break;
-	            }
-	        }
+            bool onScreen = false;
+            foreach (Screen s in Screen.AllScreens)
+            {
+                if (s.Bounds.Contains(this.Location.X + this.Width, this.Location.Y + this.Height) ||
+                    s.Bounds.Contains(this.Location.X - this.Width, this.Location.Y - this.Height))
+                {
+                    onScreen = true;
+                    break;
+                }
+            }
 
-	        if (!onScreen)
-	            this.Location = Point.Empty;
+            if (!onScreen)
+                this.Location = Point.Empty;
 
-	        spellUnequip.Checked = Config.GetBool("SpellUnequip");
-	        ltRange.Enabled = rangeCheckLT.Checked = Config.GetBool("RangeCheckLT");
-	        ltRange.Text = Config.GetInt("LTRange").ToString();
+            spellUnequip.Checked = Config.GetBool("SpellUnequip");
+            ltRange.Enabled = rangeCheckLT.Checked = Config.GetBool("RangeCheckLT");
+            ltRange.Text = Config.GetInt("LTRange").ToString();
 
-	        counters.BeginUpdate();
-	        if (Config.GetBool("SortCounters"))
-	        {
-	            counters.Sorting = SortOrder.None;
-	            counters.ListViewItemSorter = CounterLVIComparer.Instance;
-	            counters.Sort();
-	        }
-	        else
-	        {
-	            counters.ListViewItemSorter = null;
-	            counters.Sorting = SortOrder.Ascending;
-	        }
+            counters.BeginUpdate();
+            if (Config.GetBool("SortCounters"))
+            {
+                counters.Sorting = SortOrder.None;
+                counters.ListViewItemSorter = CounterLVIComparer.Instance;
+                counters.Sort();
+            }
+            else
+            {
+                counters.ListViewItemSorter = null;
+                counters.Sorting = SortOrder.Ascending;
+            }
 
-	        counters.EndUpdate();
-	        counters.Refresh();
+            counters.EndUpdate();
+            counters.Refresh();
 
-	        incomingMob.Checked = Config.GetBool("ShowMobNames");
-	        incomingCorpse.Checked = Config.GetBool("ShowCorpseNames");
-	        checkNewConts.Checked = Config.GetBool("AutoSearch");
-	        excludePouches.Checked = Config.GetBool("NoSearchPouches");
-	        excludePouches.Enabled = checkNewConts.Checked;
-	        warnNum.Enabled = warnCount.Checked = Config.GetBool("CounterWarn");
-	        warnNum.Text = Config.GetInt("CounterWarnAmount").ToString();
-	        QueueActions.Checked = Config.GetBool("QueueActions");
-	        queueTargets.Checked = Config.GetBool("QueueTargets");
-	        chkForceSpeechHue.Checked = setSpeechHue.Enabled = Config.GetBool("ForceSpeechHue");
-	        chkForceSpellHue.Checked = setBeneHue.Enabled =
-	            setNeuHue.Enabled = setHarmHue.Enabled = Config.GetBool("ForceSpellHue");
-	        if (Config.GetInt("LTHilight") != 0)
-	        {
-	            InitPreviewHue(lthilight, "LTHilight");
-	            //ClientCommunication.SetCustomNotoHue( Config.GetInt( "LTHilight" ) );
-	            lthilight.Checked = setLTHilight.Enabled = true;
-	        }
-	        else
-	        {
-	            //ClientCommunication.SetCustomNotoHue( 0 );
-	            lthilight.Checked = setLTHilight.Enabled = false;
-	        }
+            incomingMob.Checked = Config.GetBool("ShowMobNames");
+            incomingCorpse.Checked = Config.GetBool("ShowCorpseNames");
+            checkNewConts.Checked = Config.GetBool("AutoSearch");
+            excludePouches.Checked = Config.GetBool("NoSearchPouches");
+            excludePouches.Enabled = checkNewConts.Checked;
+            warnNum.Enabled = warnCount.Checked = Config.GetBool("CounterWarn");
+            warnNum.Text = Config.GetInt("CounterWarnAmount").ToString();
+            QueueActions.Checked = Config.GetBool("QueueActions");
+            queueTargets.Checked = Config.GetBool("QueueTargets");
+            chkForceSpeechHue.Checked = setSpeechHue.Enabled = Config.GetBool("ForceSpeechHue");
+            chkForceSpellHue.Checked = setBeneHue.Enabled =
+                setNeuHue.Enabled = setHarmHue.Enabled = Config.GetBool("ForceSpellHue");
+            if (Config.GetInt("LTHilight") != 0)
+            {
+                InitPreviewHue(lthilight, "LTHilight");
+                //ClientCommunication.SetCustomNotoHue( Config.GetInt( "LTHilight" ) );
+                lthilight.Checked = setLTHilight.Enabled = true;
+            }
+            else
+            {
+                //ClientCommunication.SetCustomNotoHue( 0 );
+                lthilight.Checked = setLTHilight.Enabled = false;
+            }
 
-	        txtSpellFormat.Text = Config.GetString("SpellFormat");
-	        txtObjDelay.Text = Config.GetInt("ObjectDelay").ToString();
-	        chkStealth.Checked = Config.GetBool("CountStealthSteps");
+            txtSpellFormat.Text = Config.GetString("SpellFormat");
+            txtObjDelay.Text = Config.GetInt("ObjectDelay").ToString();
+            chkStealth.Checked = Config.GetBool("CountStealthSteps");
 
-	        spamFilter.Checked = Config.GetBool("FilterSpam");
-	        screenAutoCap.Checked = Config.GetBool("AutoCap");
-	        radioUO.Checked = !(radioFull.Checked = Config.GetBool("CapFullScreen"));
-	        screenPath.Text = Config.GetString("CapPath");
-	        dispTime.Checked = Config.GetBool("CapTimeStamp");
-	        blockDis.Checked = Config.GetBool("BlockDismount");
-	        alwaysStealth.Checked = Config.GetBool("AlwaysStealth");
-	        autoOpenDoors.Checked = Config.GetBool("AutoOpenDoors");
+            spamFilter.Checked = Config.GetBool("FilterSpam");
+            screenAutoCap.Checked = Config.GetBool("AutoCap");
+            radioUO.Checked = !(radioFull.Checked = Config.GetBool("CapFullScreen"));
+            screenPath.Text = Config.GetString("CapPath");
+            dispTime.Checked = Config.GetBool("CapTimeStamp");
+            blockDis.Checked = Config.GetBool("BlockDismount");
+            alwaysStealth.Checked = Config.GetBool("AlwaysStealth");
+            autoOpenDoors.Checked = Config.GetBool("AutoOpenDoors");
 
-	        objectDelay.Checked = Config.GetBool("ObjectDelayEnabled");
-             txtObjDelay.Enabled = Config.GetBool("ObjectDelayEnabled");
+            objectDelay.Checked = Config.GetBool("ObjectDelayEnabled");
+            txtObjDelay.Enabled = Config.GetBool("ObjectDelayEnabled");
 
-             msglvl.SelectedIndex = Config.GetInt("MessageLevel");
+            msglvl.SelectedIndex = Config.GetInt("MessageLevel");
 
-	        try
-	        {
-	            imgFmt.SelectedItem = Config.GetString("ImageFormat");
-	        }
-	        catch
-	        {
-	            imgFmt.SelectedIndex = 0;
-	            Config.SetProperty("ImageFormat", "jpg");
-	        }
+            try
+            {
+                imgFmt.SelectedItem = Config.GetString("ImageFormat");
+            }
+            catch
+            {
+                imgFmt.SelectedIndex = 0;
+                Config.SetProperty("ImageFormat", "jpg");
+            }
 
-	        PacketPlayer.SetControls(vidPlayInfo, vidRec, vidPlay, vidPlayStop, vidClose, playPos, rpvTime);
-	        txtRecFolder.Text = Config.GetString("RecFolder");
-	        aviFPS.Text = Config.GetInt("AviFPS").ToString();
-	        aviRes.SelectedIndex = Config.GetInt("AviRes");
-	        playSpeed.SelectedIndex = 2;
+            PacketPlayer.SetControls(vidPlayInfo, vidRec, vidPlay, vidPlayStop, vidClose, playPos, rpvTime);
+            txtRecFolder.Text = Config.GetString("RecFolder");
+            aviFPS.Text = Config.GetInt("AviFPS").ToString();
+            aviRes.SelectedIndex = Config.GetInt("AviRes");
+            playSpeed.SelectedIndex = 2;
 
-	        InitPreviewHue(lblExHue, "ExemptColor");
-	        InitPreviewHue(lblMsgHue, "SysColor");
-	        InitPreviewHue(lblWarnHue, "WarningColor");
-	        InitPreviewHue(chkForceSpeechHue, "SpeechHue");
-	        InitPreviewHue(lblBeneHue, "BeneficialSpellHue");
-	        InitPreviewHue(lblHarmHue, "HarmfulSpellHue");
-	        InitPreviewHue(lblNeuHue, "NeutralSpellHue");
+            InitPreviewHue(lblExHue, "ExemptColor");
+            InitPreviewHue(lblMsgHue, "SysColor");
+            InitPreviewHue(lblWarnHue, "WarningColor");
+            InitPreviewHue(chkForceSpeechHue, "SpeechHue");
+            InitPreviewHue(lblBeneHue, "BeneficialSpellHue");
+            InitPreviewHue(lblHarmHue, "HarmfulSpellHue");
+            InitPreviewHue(lblNeuHue, "NeutralSpellHue");
 
-	        undressConflicts.Checked = Config.GetBool("UndressConflicts");
-	        taskbar.Checked = !(systray.Checked = Config.GetBool("Systray"));
-	        titlebarImages.Checked = Config.GetBool("TitlebarImages");
-	        highlightSpellReags.Checked = Config.GetBool("HighlightReagents");
+            undressConflicts.Checked = Config.GetBool("UndressConflicts");
+            taskbar.Checked = !(systray.Checked = Config.GetBool("Systray"));
+            titlebarImages.Checked = Config.GetBool("TitlebarImages");
+            highlightSpellReags.Checked = Config.GetBool("HighlightReagents");
 
-	        dispDelta.Checked = Config.GetBool("DisplaySkillChanges");
-	        titleStr.Enabled = showInBar.Checked = Config.GetBool("TitleBarDisplay");
-	        titleStr.Text = Config.GetString("TitleBarText");
+            dispDelta.Checked = Config.GetBool("DisplaySkillChanges");
+            titleStr.Enabled = showInBar.Checked = Config.GetBool("TitleBarDisplay");
+            titleStr.Text = Config.GetString("TitleBarText");
 
-	        showNotoHue.Checked = Config.GetBool("ShowNotoHue");
+            showNotoHue.Checked = Config.GetBool("ShowNotoHue");
 
-	        corpseRange.Enabled = openCorpses.Checked = Config.GetBool("AutoOpenCorpses");
-	        corpseRange.Text = Config.GetInt("CorpseRange").ToString();
+            corpseRange.Enabled = openCorpses.Checked = Config.GetBool("AutoOpenCorpses");
+            corpseRange.Text = Config.GetInt("CorpseRange").ToString();
 
-	        actionStatusMsg.Checked = Config.GetBool("ActionStatusMsg");
-	        autoStackRes.Checked = Config.GetBool("AutoStack");
+            actionStatusMsg.Checked = Config.GetBool("ActionStatusMsg");
+            autoStackRes.Checked = Config.GetBool("AutoStack");
 
-	        rememberPwds.Checked = Config.GetBool("RememberPwds");
-	        filterSnoop.Checked = Config.GetBool("FilterSnoopMsg");
+            rememberPwds.Checked = Config.GetBool("RememberPwds");
+            filterSnoop.Checked = Config.GetBool("FilterSnoopMsg");
 
-	        preAOSstatbar.Checked = Config.GetBool("OldStatBar");
-	        showtargtext.Checked = Config.GetBool("LastTargTextFlags");
-	        smartLT.Checked = Config.GetBool("SmartLastTarget");
+            preAOSstatbar.Checked = Config.GetBool("OldStatBar");
+            showtargtext.Checked = Config.GetBool("LastTargTextFlags");
+            smartLT.Checked = Config.GetBool("SmartLastTarget");
 
-	        autoFriend.Checked = Config.GetBool("AutoFriend");
+            autoFriend.Checked = Config.GetBool("AutoFriend");
 
-	        flipVidHoriz.Checked = Config.GetBool("FlipVidH");
-	        flipVidVert.Checked = Config.GetBool("FlipVidV");
+            flipVidHoriz.Checked = Config.GetBool("FlipVidH");
+            flipVidVert.Checked = Config.GetBool("FlipVidV");
 
-	        try
-	        {
-	            clientPrio.SelectedItem = Config.GetString("ClientPrio");
-	        }
-	        catch
-	        {
-	            clientPrio.SelectedItem = "Normal";
-	        }
+            try
+            {
+                clientPrio.SelectedItem = Config.GetString("ClientPrio");
+            }
+            catch
+            {
+                clientPrio.SelectedItem = "Normal";
+            }
 
-	        forceSizeX.Text = Config.GetInt("ForceSizeX").ToString();
-	        forceSizeY.Text = Config.GetInt("ForceSizeY").ToString();
+            forceSizeX.Text = Config.GetInt("ForceSizeX").ToString();
+            forceSizeY.Text = Config.GetInt("ForceSizeY").ToString();
 
-	        gameSize.Checked = Config.GetBool("ForceSizeEnabled");
+            gameSize.Checked = Config.GetBool("ForceSizeEnabled");
 
-	        potionEquip.Checked = Config.GetBool("PotionEquip");
-	        blockHealPoison.Checked = Config.GetBool("BlockHealPoison");
+            potionEquip.Checked = Config.GetBool("PotionEquip");
+            blockHealPoison.Checked = Config.GetBool("BlockHealPoison");
 
-	        negotiate.Checked = Config.GetBool("Negotiate");
+            negotiate.Checked = Config.GetBool("Negotiate");
 
-	        logPackets.Checked = Config.GetBool("LogPacketsByDefault");
+            logPackets.Checked = Config.GetBool("LogPacketsByDefault");
 
-	        healthFmt.Enabled = showHealthOH.Checked = Config.GetBool("ShowHealth");
-	        healthFmt.Text = Config.GetString("HealthFmt");
-	        chkPartyOverhead.Checked = Config.GetBool("ShowPartyStats");
+            healthFmt.Enabled = showHealthOH.Checked = Config.GetBool("ShowHealth");
+            healthFmt.Text = Config.GetString("HealthFmt");
+            chkPartyOverhead.Checked = Config.GetBool("ShowPartyStats");
 
-	        dressList.SelectedIndex = -1;
-	        hotkeyTree.SelectedNode = null;
+            dressList.SelectedIndex = -1;
+            hotkeyTree.SelectedNode = null;
 
-	        //jsonApi.Checked = Config.GetBool("JsonApi");
-	        targetByTypeDifferent.Checked = Config.GetBool("DiffTargetByType");
-	        stepThroughMacro.Checked = Config.GetBool("StepThroughMacro");
+            //jsonApi.Checked = Config.GetBool("JsonApi");
+            targetByTypeDifferent.Checked = Config.GetBool("DiffTargetByType");
+            stepThroughMacro.Checked = Config.GetBool("StepThroughMacro");
 
-	        //hotKeyStop.Checked = Config.GetBool("HotKeyStop");
+            //hotKeyStop.Checked = Config.GetBool("HotKeyStop");
 
 	        showPartyMemberPositions.Checked = Config.GetBool("ShowPartyMemberPositions");
             trackPlayerPosition.Checked = Config.GetBool("TrackPlayerPosition");
             showPlayerPosition.Checked = Config.GetBool("ShowPlayerPosition");
             tiltMap.Checked = Config.GetBool("TiltMap");
 
-	        showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
-	        showOverheadMessages.Checked = Config.GetBool("ShowOverheadMessages");
+            showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
+            showOverheadMessages.Checked = Config.GetBool("ShowOverheadMessages");
 
-	        logSkillChanges.Checked = Config.GetBool("LogSkillChanges");
+            logSkillChanges.Checked = Config.GetBool("LogSkillChanges");
 
-	        lightLevelBar.Value = Config.GetInt("LightLevel");
-	        double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
-	        lightLevel.Text = $"Light: {percent}%";
+            lightLevelBar.Value = Config.GetInt("LightLevel");
+            double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
+            lightLevel.Text = $"Light: {percent}%";
 
-             jsonApi.Checked = Config.GetBool("JsonApi");
+            jsonApi.Checked = Config.GetBool("JsonApi");
 
-	        captureMibs.Checked = Config.GetBool("CaptureMibs");
+            captureMibs.Checked = Config.GetBool("CaptureMibs");
 
-             stealthOverhead.Checked = Config.GetBool("StealthOverhead");
+            stealthOverhead.Checked = Config.GetBool("StealthOverhead");
 
-             blockOpenCorpsesTwice.Checked = Config.GetBool("BlockOpenCorpsesTwice");
+            blockOpenCorpsesTwice.Checked = Config.GetBool("BlockOpenCorpsesTwice");
 
-	        // Disable SmartCPU in case it was enabled before the feature was removed
-	        ClientCommunication.SetSmartCPU(false);
+            screenShotOpenBrowser.Checked = Config.GetBool("ScreenshotUploadOpenBrowser");
+            screenShotClipboard.Checked = Config.GetBool("ScreenshotUploadClipboard");
+            screenShotNotification.Checked = Config.GetBool("ScreenshotUploadNotifications");
 
-	        m_Initializing = false;
-	    }
+            // Disable SmartCPU in case it was enabled before the feature was removed
+            ClientCommunication.SetSmartCPU(false);
 
-		private void tabs_IndexChanged(object sender, System.EventArgs e)
-		{
-			if ( tabs == null )
-				return;
-
-		    tabs.Size = new Size(tabs.Size.Width, 290);
-            Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
-
-			if ( tabs.SelectedTab == generalTab )
-			{
-				Filters.Filter.Draw( filters );
-				langSel.BeginUpdate();
-				langSel.Items.Clear();
-				langSel.Items.AddRange( Language.GetPackNames() );
-				langSel.SelectedItem = Language.Current;
-				langSel.EndUpdate();
-			}
-			else if ( tabs.SelectedTab == skillsTab )
-			{
-				RedrawSkills();
-			}
-			else if ( tabs.SelectedTab == displayTab )
-			{
-				Counter.Redraw( counters );
-
-			    titleBarParams.SelectedIndex = 0;
-
-			    tabs.Size = new Size(tabs.Size.Width, 313);
-			    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
-            }
-			else if ( tabs.SelectedTab == dressTab )
-			{
-				int sel = dressList.SelectedIndex;
-				dressItems.Items.Clear();
-				DressList.Redraw( dressList );
-				if ( sel >= 0 && sel < dressList.Items.Count )
-					dressList.SelectedIndex = sel;
-			}
-			else if ( tabs.SelectedTab == hotkeysTab )
-			{
-			    filterHotkeys.Text = string.Empty;
-
-				hotkeyTree.SelectedNode = null;
-				HotKey.Status = hkStatus;
-				if ( hotkeyTree.TopNode != null )
-					hotkeyTree.TopNode.Expand();
-				else
-					HotKey.RebuildList( hotkeyTree );
-
-			    RebuildHotKeyCache();
-			}
-			else if ( tabs.SelectedTab == agentsTab )
-			{
-				int sel = agentList.SelectedIndex;
-				Agent.Redraw( agentList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6 );
-				if ( sel >= 0 && sel < agentList.Items.Count )
-					agentList.SelectedIndex = sel;
-			}
-			else if ( tabs.SelectedTab == advancedTab)
-			{
-				UpdateRazorStatus();
-			}
-			else if ( tabs.SelectedTab == macrosTab )
-			{
-				RedrawMacros();
-
-				if ( MacroManager.Playing || MacroManager.Recording )
-					OnMacroStart( MacroManager.Current );
-				else
-					OnMacroStop();
-
-				if ( MacroManager.Current != null )
-					MacroManager.Current.DisplayTo( actionList );
-
-				macroActGroup.Visible = macroTree.SelectedNode != null;
-
-			    expandAdvancedMacros.Text = "\u2193";
-            }
-			else if ( tabs.SelectedTab == screenshotTab )
-			{
-				ReloadScreenShotsList();
-			}
-            else if (tabs.SelectedTab == moreMoreOptTab)
-			{
-			    tabs.Size = new Size(tabs.Size.Width, 358);
-			    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
-            }
-			else if (tabs.SelectedTab == moreOptTab)
-			{
-			    tabs.Size = new Size(tabs.Size.Width, 313);
-			    Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
-			}
+            m_Initializing = false;
         }
 
-	    private void RebuildHotKeyCache()
+        private void tabs_IndexChanged(object sender, System.EventArgs e)
+        {
+            if (tabs == null)
+                return;
+
+            tabs.Size = new Size(tabs.Size.Width, 290);
+            Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
+
+            if (tabs.SelectedTab == generalTab)
+            {
+                Filters.Filter.Draw(filters);
+                langSel.BeginUpdate();
+                langSel.Items.Clear();
+                langSel.Items.AddRange(Language.GetPackNames());
+                langSel.SelectedItem = Language.Current;
+                langSel.EndUpdate();
+            }
+            else if (tabs.SelectedTab == skillsTab)
+            {
+                RedrawSkills();
+            }
+            else if (tabs.SelectedTab == displayTab)
+            {
+                Counter.Redraw(counters);
+
+                titleBarParams.SelectedIndex = 0;
+
+                tabs.Size = new Size(tabs.Size.Width, 313);
+                Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
+            }
+            else if (tabs.SelectedTab == dressTab)
+            {
+                int sel = dressList.SelectedIndex;
+                dressItems.Items.Clear();
+                DressList.Redraw(dressList);
+                if (sel >= 0 && sel < dressList.Items.Count)
+                    dressList.SelectedIndex = sel;
+            }
+            else if (tabs.SelectedTab == hotkeysTab)
+            {
+                filterHotkeys.Text = string.Empty;
+
+                hotkeyTree.SelectedNode = null;
+                HotKey.Status = hkStatus;
+                if (hotkeyTree.TopNode != null)
+                    hotkeyTree.TopNode.Expand();
+                else
+                    HotKey.RebuildList(hotkeyTree);
+
+                RebuildHotKeyCache();
+            }
+            else if (tabs.SelectedTab == agentsTab)
+            {
+                int sel = agentList.SelectedIndex;
+                Agent.Redraw(agentList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6);
+                if (sel >= 0 && sel < agentList.Items.Count)
+                    agentList.SelectedIndex = sel;
+            }
+            else if (tabs.SelectedTab == advancedTab)
+            {
+                UpdateRazorStatus();
+            }
+            else if (tabs.SelectedTab == macrosTab)
+            {
+                RedrawMacros();
+
+                if (MacroManager.Playing || MacroManager.Recording)
+                    OnMacroStart(MacroManager.Current);
+                else
+                    OnMacroStop();
+
+                if (MacroManager.Current != null)
+                    MacroManager.Current.DisplayTo(actionList);
+
+                macroActGroup.Visible = macroTree.SelectedNode != null;
+
+                expandAdvancedMacros.Text = "\u2193";
+            }
+            else if (tabs.SelectedTab == screenshotTab)
+            {
+                tabs.Size = new Size(tabs.Size.Width, 397);
+                Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
+
+                ReloadScreenShotsList();
+            }
+            else if (tabs.SelectedTab == moreMoreOptTab)
+            {
+                tabs.Size = new Size(tabs.Size.Width, 358);
+                Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
+            }
+            else if (tabs.SelectedTab == moreOptTab)
+            {
+                tabs.Size = new Size(tabs.Size.Width, 313);
+                Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
+            }
+        }
+
+        private void RebuildHotKeyCache()
 	    {
 	        _hotkeyTreeViewCache = new TreeView();
 
@@ -6157,9 +6223,116 @@ namespace Assistant
 				screenPrev.Image.Dispose();
 				screenPrev.Image = null;
 			}
+
+            ReloadImgurUploadList();
 		}
 
-		private void radioFull_CheckedChanged(object sender, System.EventArgs e)
+        public List<ImgurUpload> m_ImgurUploads = new List<ImgurUpload>();
+
+        public class ImgurUpload
+        {
+            public string Url { get; set; }
+            public string DeleteHash { get; set; }
+            public string UploadTime { get; set; }
+        }
+
+        public void ReloadImgurUploadList()
+        {
+            imgurUploads.Items.Clear();
+            m_ImgurUploads.Clear();
+
+            if (!File.Exists($"{Config.GetInstallDirectory()}\\ImgurUploads.csv"))
+                return;
+
+            string[] lines = File.ReadAllLines($"{Config.GetInstallDirectory()}\\ImgurUploads.csv");
+
+            foreach (string line in lines)
+            {
+                string[] splitLine = line.Split(',');
+
+                ImgurUpload upload = new ImgurUpload
+                {
+                    Url = splitLine[0],
+                    DeleteHash = splitLine[1],
+                    UploadTime = splitLine[2]
+                };
+
+                m_ImgurUploads.Add(upload);
+            }
+
+            foreach(ImgurUpload upload in m_ImgurUploads)
+            {
+                imgurUploads.Items.Add(upload.Url);
+            }
+        }
+
+        private void imgurUploads_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (imgurUploads.SelectedIndex < 0)
+                return;
+
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                ContextMenu menu = new ContextMenu();
+
+                m_LastImgurUrl = imgurUploads.Items[imgurUploads.SelectedIndex].ToString();
+
+                menu.MenuItems.Add("Copy URL to clipboard", new EventHandler(CopyImgurUrlToClipboard));
+                menu.MenuItems.Add("Open URL in browser", new EventHandler(razorNotify_BalloonTipClicked));
+                menu.MenuItems.Add("-");
+                menu.MenuItems.Add("Delete from Imgur", new EventHandler(DeleteFromImgur));
+
+                menu.Show(imgurUploads, new Point(e.X, e.Y));
+            }
+        }
+
+        private void DeleteFromImgur(object sender, System.EventArgs e)
+        {
+            try
+            {
+                if (MessageBox.Show(this, "Are you sure you want to delete this from Imgur? It will permanently be removed and cannot be undone.", "Delete Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
+
+                using (var w = new WebClient())
+                {
+                    string clientID = "b241fb37ce1e0e9";
+                    w.Headers.Add("Authorization", "Client-ID " + clientID);
+
+                    string deleteHash = m_ImgurUploads[imgurUploads.SelectedIndex].DeleteHash;
+
+                    string response = w.UploadString($"https://api.imgur.com/3/image/{deleteHash}", "DELETE", "");
+
+                    dynamic jsonResponse = JsonConvert.DeserializeObject(response);
+
+                    if (jsonResponse["status"] == 200)
+                    {
+                        m_ImgurUploads.RemoveAt(imgurUploads.SelectedIndex);
+
+                        SaveImgurUploadsToLog();
+
+                        ReloadImgurUploadList();
+                    }
+                    else
+                    {
+                        throw new Exception("Unable to delete image");
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Error deleting image on Imgur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+        }
+
+        private void CopyImgurUrlToClipboard(object sender, System.EventArgs e)
+        {
+            Clipboard.SetText(m_LastImgurUrl);
+        }
+
+        private void radioFull_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if ( radioFull.Checked )
 			{
@@ -6203,20 +6376,139 @@ namespace Assistant
 			}
 		}
 
-		private void screensList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if ( e.Button == MouseButtons.Right && e.Clicks == 1 )
-			{
-				ContextMenu menu = new ContextMenu();
-				menu.MenuItems.Add( "Delete", new EventHandler( DeleteScreenCap ) );
-				if ( screensList.SelectedIndex == -1 )
-					menu.MenuItems[menu.MenuItems.Count-1].Enabled = false;
-				menu.MenuItems.Add( "Delete ALL", new EventHandler( ClearScreensDirectory ) );
-				menu.Show( screensList, new Point( e.X, e.Y ) );
-			}
-		}
+        private void screensList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                ContextMenu menu = new ContextMenu();
 
-		private void DeleteScreenCap(object sender, System.EventArgs e)
+                menu.MenuItems.Add("Upload to Imgur", new EventHandler(UploadToImgur));
+                menu.MenuItems.Add("-");
+                menu.MenuItems.Add("Delete", new EventHandler(DeleteScreenCap));
+
+                if (screensList.SelectedIndex == -1)
+                    menu.MenuItems[menu.MenuItems.Count - 1].Enabled = false;
+
+                menu.MenuItems.Add("Delete ALL", new EventHandler(ClearScreensDirectory));
+
+
+
+                menu.Show(screensList, new Point(e.X, e.Y));
+            }
+        }
+
+        private void UploadToImgur(object sender, System.EventArgs e)
+        {
+            int sel = screensList.SelectedIndex;
+            if (sel == -1)
+                return;
+
+            string file = Path.Combine(Config.GetString("CapPath"), (string)screensList.SelectedItem);
+
+            try
+            {
+                using (var w = new WebClient())
+                {
+                    string clientID = "b241fb37ce1e0e9";
+                    w.Headers.Add("Authorization", "Client-ID " + clientID);
+                    var values = new NameValueCollection
+                    {
+                        { "image", Convert.ToBase64String(File.ReadAllBytes(file)) }
+                    };
+
+                    byte[] response = w.UploadValues("https://api.imgur.com/3/upload", values);
+
+                    dynamic jsonResponse = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(response));
+
+                    if (jsonResponse["status"] == 200)
+                    {
+                        m_LastImgurUrl = jsonResponse["data"].link.Value;
+
+                        LogImgurUpload(m_LastImgurUrl, jsonResponse["data"].deletehash.Value);
+
+                        if (Config.GetBool("ScreenshotUploadNotifications"))
+                        {
+                            razorNotify.ShowBalloonTip(2000, "Screenshot Uploaded", "Click here to view in your browser.", ToolTipIcon.Info);
+                            razorNotify.BalloonTipClicked += new EventHandler(razorNotify_BalloonTipClicked);
+                        }
+
+                        if (Config.GetBool("ScreenshotUploadOpenBrowser"))
+                        {
+                            Process.Start(m_LastImgurUrl);
+                        }
+
+                        if (Config.GetBool("ScreenshotUploadClipboard"))
+                        {
+                            Clipboard.SetText(m_LastImgurUrl);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Unable to upload");
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Error Uploading to Imgur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+        }
+
+        private string m_LastImgurUrl;
+
+        private void razorNotify_BalloonTipClicked(object sender, EventArgs e)
+        {
+            Process.Start(m_LastImgurUrl);
+        }
+
+        private void LogImgurUpload(string url, string deleteHash)
+        {
+            try
+            {
+                string path = $"{Config.GetInstallDirectory()}\\ImgurUploads.csv";
+                using (StreamWriter sw = File.AppendText(path))
+                {
+                    sw.WriteLine($"{url},{deleteHash},{DateTime.Now}");
+                }
+
+                ReloadImgurUploadList();
+            } catch (Exception ex)
+            {
+            }
+        }
+
+        private void SaveImgurUploadsToLog()
+        {
+            try
+            {
+                if (File.Exists($"{Config.GetInstallDirectory()}\\ImgurUploads.csv"))
+                {
+                    File.Delete($"{Config.GetInstallDirectory()}\\ImgurUploads.csv");
+                }
+
+                string path = $"{Config.GetInstallDirectory()}\\ImgurUploads.csv";
+
+                using (StreamWriter sw = File.AppendText(path))
+                {
+                    foreach (ImgurUpload upload in m_ImgurUploads)
+                    {
+                        sw.WriteLine($"{upload.Url},{upload.DeleteHash},{upload.UploadTime}");
+                    }
+                }
+
+                ReloadImgurUploadList();
+
+            } catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void DeleteScreenCap(object sender, System.EventArgs e)
 		{
 			int sel = screensList.SelectedIndex;
 			if ( sel == -1 )
@@ -7484,6 +7776,21 @@ namespace Assistant
 
                 World.Player.OpenedCorpses.Clear();
             }
+        }
+
+        private void screenShotNotification_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ScreenshotUploadNotifications", screenShotNotification.Checked);
+        }
+
+        private void screenShotClipboard_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ScreenshotUploadClipboard", screenShotClipboard.Checked);
+        }
+
+        private void screenShotOpenBrowser_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ScreenshotUploadOpenBrowser", screenShotOpenBrowser.Checked);
         }
     }
 }
