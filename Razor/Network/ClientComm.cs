@@ -950,6 +950,9 @@ namespace Assistant
 	            sb.Replace(@"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-");
 
 	            sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
+                //ClientCommunication.ConnectionStart != DateTime.MinValue )
+                //time = (int)((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
+                 sb.Replace(@"{uptime}", ConnectionStart != DateTime.MinValue ? Utility.FormatTime((int)((DateTime.UtcNow - ConnectionStart).TotalSeconds)) : "-");
 
                  string buffList = string.Empty;
 

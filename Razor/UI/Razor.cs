@@ -3949,7 +3949,7 @@ namespace Assistant
 					        $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}");
 			}
 
-			if ( PacketHandlers.PlayCharTime < DateTime.UtcNow && PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 30 ) > DateTime.UtcNow )
+			if ( PacketHandlers.PlayCharTime < DateTime.UtcNow && PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 30 ) < DateTime.UtcNow )
 			{
 				if ( Config.GetBool( "Negotiate" ) )
 				{
