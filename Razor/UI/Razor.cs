@@ -294,6 +294,7 @@ namespace Assistant
         private CheckBox screenShotNotification;
         private ListBox imgurUploads;
         private CheckBox screenShotClipboard;
+        private CheckBox showAttackTarget;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
 		[DllImport( "User32.dll" )]
@@ -580,6 +581,9 @@ namespace Assistant
             this.vidPlayInfo = new System.Windows.Forms.Label();
             this.vidOpen = new System.Windows.Forms.Button();
             this.screenshotTab = new System.Windows.Forms.TabPage();
+            this.imgurUploads = new System.Windows.Forms.ListBox();
+            this.screenShotClipboard = new System.Windows.Forms.CheckBox();
+            this.screenShotNotification = new System.Windows.Forms.CheckBox();
             this.screenShotOpenBrowser = new System.Windows.Forms.CheckBox();
             this.imgFmt = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -614,9 +618,7 @@ namespace Assistant
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
             this.razorNotify = new System.Windows.Forms.NotifyIcon(this.components);
-            this.screenShotNotification = new System.Windows.Forms.CheckBox();
-            this.screenShotClipboard = new System.Windows.Forms.CheckBox();
-            this.imgurUploads = new System.Windows.Forms.ListBox();
+            this.showAttackTarget = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -930,9 +932,9 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.chkForceSpeechHue);
             this.moreOptTab.Controls.Add(this.label3);
             this.moreOptTab.Controls.Add(this.incomingCorpse);
-            this.moreOptTab.Location = new System.Drawing.Point(4, 24);
+            this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(482, 369);
+            this.moreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             //
@@ -1237,6 +1239,7 @@ namespace Assistant
             //
             // moreMoreOptTab
             //
+            this.moreMoreOptTab.Controls.Add(this.showAttackTarget);
             this.moreMoreOptTab.Controls.Add(this.lblBuffDebuff);
             this.moreMoreOptTab.Controls.Add(this.buffDebuffFormat);
             this.moreMoreOptTab.Controls.Add(this.showBuffDebuffOverhead);
@@ -1270,15 +1273,15 @@ namespace Assistant
             this.moreMoreOptTab.Controls.Add(this.smartLT);
             this.moreMoreOptTab.Controls.Add(this.gameSize);
             this.moreMoreOptTab.Controls.Add(this.chkPartyOverhead);
-            this.moreMoreOptTab.Location = new System.Drawing.Point(4, 24);
+            this.moreMoreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreMoreOptTab.Name = "moreMoreOptTab";
-            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 369);
+            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 460);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
             //
             // lblBuffDebuff
             //
-            this.lblBuffDebuff.Location = new System.Drawing.Point(8, 285);
+            this.lblBuffDebuff.Location = new System.Drawing.Point(5, 285);
             this.lblBuffDebuff.Name = "lblBuffDebuff";
             this.lblBuffDebuff.Size = new System.Drawing.Size(115, 18);
             this.lblBuffDebuff.TabIndex = 79;
@@ -1826,9 +1829,9 @@ namespace Assistant
             //
             this.dressTab.Controls.Add(this.groupBox6);
             this.dressTab.Controls.Add(this.groupBox5);
-            this.dressTab.Location = new System.Drawing.Point(4, 24);
+            this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 369);
+            this.dressTab.Size = new System.Drawing.Size(482, 460);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             //
@@ -1986,9 +1989,9 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.setlocks);
             this.skillsTab.Controls.Add(this.resetDelta);
             this.skillsTab.Controls.Add(this.skillList);
-            this.skillsTab.Location = new System.Drawing.Point(4, 24);
+            this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 369);
+            this.skillsTab.Size = new System.Drawing.Size(482, 460);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             //
@@ -2139,9 +2142,9 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB1);
             this.agentsTab.Controls.Add(this.agentB2);
             this.agentsTab.Controls.Add(this.agentB3);
-            this.agentsTab.Location = new System.Drawing.Point(4, 24);
+            this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 369);
+            this.agentsTab.Size = new System.Drawing.Size(482, 460);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             //
@@ -2230,7 +2233,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 349);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 460);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2379,7 +2382,7 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 349);
+            this.macrosTab.Size = new System.Drawing.Size(482, 460);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             //
@@ -2596,7 +2599,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.trackPlayerPosition);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(482, 349);
+            this.mapTab.Size = new System.Drawing.Size(482, 460);
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             //
@@ -2732,7 +2735,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 349);
+            this.videoTab.Size = new System.Drawing.Size(482, 460);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             //
@@ -3003,6 +3006,34 @@ namespace Assistant
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             //
+            // imgurUploads
+            //
+            this.imgurUploads.FormattingEnabled = true;
+            this.imgurUploads.ItemHeight = 15;
+            this.imgurUploads.Location = new System.Drawing.Point(224, 244);
+            this.imgurUploads.Name = "imgurUploads";
+            this.imgurUploads.Size = new System.Drawing.Size(246, 94);
+            this.imgurUploads.TabIndex = 15;
+            this.imgurUploads.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgurUploads_MouseDown);
+            //
+            // screenShotClipboard
+            //
+            this.screenShotClipboard.Location = new System.Drawing.Point(12, 283);
+            this.screenShotClipboard.Name = "screenShotClipboard";
+            this.screenShotClipboard.Size = new System.Drawing.Size(239, 20);
+            this.screenShotClipboard.TabIndex = 14;
+            this.screenShotClipboard.Text = "Copy link to clipboard after upload";
+            this.screenShotClipboard.CheckedChanged += new System.EventHandler(this.screenShotClipboard_CheckedChanged);
+            //
+            // screenShotNotification
+            //
+            this.screenShotNotification.Location = new System.Drawing.Point(12, 257);
+            this.screenShotNotification.Name = "screenShotNotification";
+            this.screenShotNotification.Size = new System.Drawing.Size(216, 20);
+            this.screenShotNotification.TabIndex = 13;
+            this.screenShotNotification.Text = "Show upload notification";
+            this.screenShotNotification.CheckedChanged += new System.EventHandler(this.screenShotNotification_CheckedChanged);
+            //
             // screenShotOpenBrowser
             //
             this.screenShotOpenBrowser.Location = new System.Drawing.Point(12, 309);
@@ -3139,7 +3170,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 349);
+            this.advancedTab.Size = new System.Drawing.Size(482, 460);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             //
@@ -3262,7 +3293,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 349);
+            this.aboutTab.Size = new System.Drawing.Size(482, 460);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             //
@@ -3361,33 +3392,16 @@ namespace Assistant
             this.razorNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("razorNotify.Icon")));
             this.razorNotify.Visible = true;
             //
-            // screenShotNotification
+            // showAttackTarget
             //
-            this.screenShotNotification.Location = new System.Drawing.Point(12, 257);
-            this.screenShotNotification.Name = "screenShotNotification";
-            this.screenShotNotification.Size = new System.Drawing.Size(216, 20);
-            this.screenShotNotification.TabIndex = 13;
-            this.screenShotNotification.Text = "Show upload notification";
-            this.screenShotNotification.CheckedChanged += new System.EventHandler(this.screenShotNotification_CheckedChanged);
-            //
-            // screenShotClipboard
-            //
-            this.screenShotClipboard.Location = new System.Drawing.Point(12, 283);
-            this.screenShotClipboard.Name = "screenShotClipboard";
-            this.screenShotClipboard.Size = new System.Drawing.Size(239, 20);
-            this.screenShotClipboard.TabIndex = 14;
-            this.screenShotClipboard.Text = "Copy link to clipboard after upload";
-            this.screenShotClipboard.CheckedChanged += new System.EventHandler(this.screenShotClipboard_CheckedChanged);
-            //
-            // imgurUploads
-            //
-            this.imgurUploads.FormattingEnabled = true;
-            this.imgurUploads.ItemHeight = 15;
-            this.imgurUploads.Location = new System.Drawing.Point(224, 244);
-            this.imgurUploads.Name = "imgurUploads";
-            this.imgurUploads.Size = new System.Drawing.Size(246, 94);
-            this.imgurUploads.TabIndex = 15;
-            this.imgurUploads.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgurUploads_MouseDown);
+            this.showAttackTarget.AutoSize = true;
+            this.showAttackTarget.Location = new System.Drawing.Point(245, 263);
+            this.showAttackTarget.Name = "showAttackTarget";
+            this.showAttackTarget.Size = new System.Drawing.Size(209, 19);
+            this.showAttackTarget.TabIndex = 80;
+            this.showAttackTarget.Text = "Show attack target name overhead";
+            this.showAttackTarget.UseVisualStyleBackColor = true;
+            this.showAttackTarget.CheckedChanged += new System.EventHandler(this.showAttackTarget_CheckedChanged);
             //
             // MainForm
             //
@@ -3733,6 +3747,8 @@ namespace Assistant
             screenShotOpenBrowser.Checked = Config.GetBool("ScreenshotUploadOpenBrowser");
             screenShotClipboard.Checked = Config.GetBool("ScreenshotUploadClipboard");
             screenShotNotification.Checked = Config.GetBool("ScreenshotUploadNotifications");
+
+            showAttackTarget.Checked = Config.GetBool("ShowAttackTargetOverhead");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
@@ -6293,7 +6309,7 @@ namespace Assistant
                 if (MessageBox.Show(this, "Are you sure you want to delete this from Imgur? It will permanently be removed and cannot be undone.", "Delete Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                     return;
 
-                using (var w = new WebClient())
+                using (var w = new WebClient()) //HttpClient would be preferred, but I didn't want to add a new package to Razor
                 {
                     string clientID = "b241fb37ce1e0e9";
                     w.Headers.Add("Authorization", "Client-ID " + clientID);
@@ -7762,7 +7778,13 @@ namespace Assistant
 
         private void buffDebuffFormat_TextChanged(object sender, EventArgs e)
         {
-            Config.SetProperty("BuffDebuffFormat", buffDebuffFormat.Text);
+            if (string.IsNullOrEmpty(buffDebuffFormat.Text))
+            {
+                Config.SetProperty("BuffDebuffFormat", "[{action}{name}]");
+            } else
+            {
+                Config.SetProperty("BuffDebuffFormat", buffDebuffFormat.Text);
+            }
         }
 
         private void blockOpenCorpsesTwice_CheckedChanged(object sender, EventArgs e)
@@ -7791,6 +7813,11 @@ namespace Assistant
         private void screenShotOpenBrowser_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ScreenshotUploadOpenBrowser", screenShotOpenBrowser.Checked);
+        }
+
+        private void showAttackTarget_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowAttackTargetOverhead", showAttackTarget.Checked);
         }
     }
 }

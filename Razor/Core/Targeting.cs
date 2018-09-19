@@ -1431,133 +1431,150 @@ namespace Assistant
 
 			return false;
 		}
-		
-		private static void TargetResponse( PacketReader p, PacketHandlerEventArgs args )
-		{
-			TargetInfo info = new TargetInfo();
-			info.Type = p.ReadByte();
-			info.TargID = p.ReadUInt32();
-			info.Flags = p.ReadByte();
-			info.Serial = p.ReadUInt32();
-			info.X = p.ReadUInt16();
-			info.Y = p.ReadUInt16();
-			info.Z = p.ReadInt16();
-			info.Gfx = p.ReadUInt16();
 
-			m_ClientTarget = false;
+        private static void TargetResponse(PacketReader p, PacketHandlerEventArgs args)
+        {
+            TargetInfo info = new TargetInfo();
+            info.Type = p.ReadByte();
+            info.TargID = p.ReadUInt32();
+            info.Flags = p.ReadByte();
+            info.Serial = p.ReadUInt32();
+            info.X = p.ReadUInt16();
+            info.Y = p.ReadUInt16();
+            info.Z = p.ReadInt16();
+            info.Gfx = p.ReadUInt16();
 
-			// check for cancel
-			if ( info.X == 0xFFFF && info.X == 0xFFFF && ( info.Serial <= 0 || info.Serial >= 0x80000000 ) )
-			{
-				m_HasTarget = false;
+            m_ClientTarget = false;
 
-				if ( m_Intercept )
-				{
-					args.Block = true;
-					Timer.DelayedCallbackState( TimeSpan.Zero, m_OneTimeRespCallback, info ).Start();
-					EndIntercept();
+            //if (Config.GetBool("ShowAttackTargetOverhead"))
+            //{
+            //    Mobile m = World.FindMobile(info.Serial);
 
-					if ( m_PreviousID != 0 )
-					{
-						m_CurrentID = m_PreviousID;
-						m_AllowGround = m_PreviousGround;
-						m_CurFlags = m_PrevFlags;
+            //    if (m != null)
+            //    {
+            //        if (FriendsAgent.IsFriend(m))
+            //        {
+            //            World.Player.OverheadMessage(63, $"Target: {m.Name}");
+            //        }
+            //        else
+            //        {
+            //            World.Player.OverheadMessage(m.GetNotorietyColorInt(), $"Target: {m.Name}");
+            //        }
+            //    }
+            //}            
 
-						m_PreviousID = 0;
+            // check for cancel
+            if (info.X == 0xFFFF && info.X == 0xFFFF && (info.Serial <= 0 || info.Serial >= 0x80000000))
+            {
+                m_HasTarget = false;
 
-						ResendTarget();
-					}
-				}
-				else if ( m_FilterCancel.Contains( (uint)info.TargID ) || info.TargID == LocalTargID )
-				{
-					args.Block = true;
-				}
+                if (m_Intercept)
+                {
+                    args.Block = true;
+                    Timer.DelayedCallbackState(TimeSpan.Zero, m_OneTimeRespCallback, info).Start();
+                    EndIntercept();
 
-				m_FilterCancel.Clear();
-				return;
-			}
+                    if (m_PreviousID != 0)
+                    {
+                        m_CurrentID = m_PreviousID;
+                        m_AllowGround = m_PreviousGround;
+                        m_CurFlags = m_PrevFlags;
 
-			ClearQueue();
+                        m_PreviousID = 0;
 
-			if ( m_Intercept )
-			{
-				if ( info.TargID == LocalTargID )
-				{
-					Timer.DelayedCallbackState( TimeSpan.Zero, m_OneTimeRespCallback, info ).Start();
+                        ResendTarget();
+                    }
+                }
+                else if (m_FilterCancel.Contains((uint)info.TargID) || info.TargID == LocalTargID)
+                {
+                    args.Block = true;
+                }
 
-					m_HasTarget = false;
-					args.Block = true;
-					
-					if ( m_PreviousID != 0 )
-					{
-						m_CurrentID = m_PreviousID;
-						m_AllowGround = m_PreviousGround;
-						m_CurFlags = m_PrevFlags;
+                m_FilterCancel.Clear();
+                return;
+            }
 
-						m_PreviousID = 0;
+            ClearQueue();
 
-						ResendTarget();
-					}
+            if (m_Intercept)
+            {
+                if (info.TargID == LocalTargID)
+                {
+                    Timer.DelayedCallbackState(TimeSpan.Zero, m_OneTimeRespCallback, info).Start();
 
-					m_FilterCancel.Clear();
-					
-					return;
-				}
-				else
-				{
-					EndIntercept();
-				}
-			}
+                    m_HasTarget = false;
+                    args.Block = true;
 
-			m_HasTarget = false;
+                    if (m_PreviousID != 0)
+                    {
+                        m_CurrentID = m_PreviousID;
+                        m_AllowGround = m_PreviousGround;
+                        m_CurFlags = m_PrevFlags;
 
-			if ( CheckHealPoisonTarg( m_CurrentID, info.Serial ) )
-			{
-				ResendTarget();
-				args.Block = true;
-			}
-			
-			if ( info.Serial != World.Player.Serial )
-			{
-				if ( info.Serial.IsValid )
-				{
-					// only let lasttarget be a non-ground target
+                        m_PreviousID = 0;
 
-					m_LastTarget = info;
-					if ( info.Flags == 1 )
-						m_LastHarmTarg = info;
-					else if ( info.Flags == 2 )
-						m_LastBeneTarg = info;
+                        ResendTarget();
+                    }
 
-					LastTargetChanged();
-				}
+                    m_FilterCancel.Clear();
 
-				m_LastGroundTarg = info; // ground target is the true last target
+                    return;
+                }
+                else
+                {
+                    EndIntercept();
+                }
+            }
 
-				if ( Macros.MacroManager.AcceptActions )
-					MacroManager.Action( new AbsoluteTargetAction( info ) );
-			}
-			else 
-			{
-				if ( Macros.MacroManager.AcceptActions )
-				{
-					KeyData hk = HotKey.Get( (int)LocString.TargetSelf );
-					if ( hk != null )
-						MacroManager.Action( new HotKeyAction( hk ) );
-					else
-						MacroManager.Action( new AbsoluteTargetAction( info ) );
-				}
-			}
+            m_HasTarget = false;
 
-		    if (World.Player.LastSpell == 52 && !GateTimer.Running)
-		    {
-                  GateTimer.Start();
-		    }
+            if (CheckHealPoisonTarg(m_CurrentID, info.Serial))
+            {
+                ResendTarget();
+                args.Block = true;
+            }
 
-			m_FilterCancel.Clear();
-		}
+            if (info.Serial != World.Player.Serial)
+            {
+                if (info.Serial.IsValid)
+                {
+                    // only let lasttarget be a non-ground target
 
-		private static void NewTarget( PacketReader p, PacketHandlerEventArgs args )
+                    m_LastTarget = info;
+                    if (info.Flags == 1)
+                        m_LastHarmTarg = info;
+                    else if (info.Flags == 2)
+                        m_LastBeneTarg = info;
+
+                    LastTargetChanged();
+                }
+
+                m_LastGroundTarg = info; // ground target is the true last target
+
+                if (Macros.MacroManager.AcceptActions)
+                    MacroManager.Action(new AbsoluteTargetAction(info));
+            }
+            else
+            {
+                if (Macros.MacroManager.AcceptActions)
+                {
+                    KeyData hk = HotKey.Get((int)LocString.TargetSelf);
+                    if (hk != null)
+                        MacroManager.Action(new HotKeyAction(hk));
+                    else
+                        MacroManager.Action(new AbsoluteTargetAction(info));
+                }
+            }
+
+            if (World.Player.LastSpell == 52 && !GateTimer.Running)
+            {
+                GateTimer.Start();
+            }
+
+            m_FilterCancel.Clear();
+        }
+
+        private static void NewTarget( PacketReader p, PacketHandlerEventArgs args )
 		{
 			bool prevAllowGround = m_AllowGround;
 			uint prevID = m_CurrentID;

@@ -21,6 +21,7 @@ namespace Assistant
             PacketHandler.RegisterClientToServerViewer(0x00, new PacketViewerCallback(CreateCharacter));
             //PacketHandler.RegisterClientToServerViewer(0x01, new PacketViewerCallback(Disconnect));
             PacketHandler.RegisterClientToServerFilter(0x02, new PacketFilterCallback(MovementRequest));
+            PacketHandler.RegisterClientToServerFilter(0x05, new PacketFilterCallback(AttackRequest));
             PacketHandler.RegisterClientToServerViewer(0x06, new PacketViewerCallback(ClientDoubleClick));
             PacketHandler.RegisterClientToServerViewer(0x07, new PacketViewerCallback(LiftRequest));
             PacketHandler.RegisterClientToServerViewer(0x08, new PacketViewerCallback(DropRequest));
@@ -2806,5 +2807,28 @@ namespace Assistant
                 BuffsTimer.Stop();
             }
         }
+
+        private static void AttackRequest(Packet p, PacketHandlerEventArgs args)
+        {
+            if (Config.GetBool("ShowAttackTargetOverhead"))
+            {
+                uint serial = p.ReadUInt32();
+
+                Mobile m = World.FindMobile(serial);
+
+                if (m != null)
+                {
+                    if (FriendsAgent.IsFriend(m))
+                    {
+                        World.Player.OverheadMessage(63, $"Attack: {m.Name}");
+                    }
+                    else
+                    {
+                        World.Player.OverheadMessage(m.GetNotorietyColorInt(), $"Attack: {m.Name}");
+                    }
+                }
+            }
+        }
+
     }
 }

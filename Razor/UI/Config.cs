@@ -179,6 +179,7 @@ namespace Assistant
             AddProperty("ScreenshotUploadClipboard", true);
             AddProperty("ScreenshotUploadOpenBrowser", false);
 
+            AddProperty("ShowAttackTargetOverhead", true);
 
             Counter.Default();
 	        Filter.DisableAll();
