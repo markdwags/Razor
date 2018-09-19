@@ -982,51 +982,51 @@ namespace Assistant
                      buffList = string.Empty;
                  }
 
-                 if (Config.GetBool("JsonApi"))
-                 {
-                    JsonApi json = new JsonApi();
-                    json.Name = p.Name;
-                    json.Shard = World.ShardName;
-                    json.CrimeTime = p.CriminalTime != 0 ? p.CriminalTime : 0;
-                    json.Str = p.Str;
-                    json.Dex = p.Dex;
-                    json.Int = p.Int;
-                    json.HP = p.Hits;
-                    json.Stamina = p.Stam;
-                    json.MaxHp = p.HitsMax;
-                    json.MaxStam = p.StamMax;
-                    json.MaxInt = p.Int;
-                    json.MaxMana = p.ManaMax;
-                    json.Mana = p.Mana;
-                    json.AR = p.AR;
-                    json.Tithe = p.Tithe.ToString();
-                    json.Weight = p.Weight;
-                    json.MaxWeight = p.MaxWeight;
-                    json.Followers = p.Followers;
-                    json.MaxFollowers = p.FollowersMax;
+                 //if (Config.GetBool("JsonApi"))
+                 //{
+                 //   JsonApi json = new JsonApi();
+                 //   json.Name = p.Name;
+                 //   json.Shard = World.ShardName;
+                 //   json.CrimeTime = p.CriminalTime != 0 ? p.CriminalTime : 0;
+                 //   json.Str = p.Str;
+                 //   json.Dex = p.Dex;
+                 //   json.Int = p.Int;
+                 //   json.HP = p.Hits;
+                 //   json.Stamina = p.Stam;
+                 //   json.MaxHp = p.HitsMax;
+                 //   json.MaxStam = p.StamMax;
+                 //   json.MaxInt = p.Int;
+                 //   json.MaxMana = p.ManaMax;
+                 //   json.Mana = p.Mana;
+                 //   json.AR = p.AR;
+                 //   json.Tithe = p.Tithe.ToString();
+                 //   json.Weight = p.Weight;
+                 //   json.MaxWeight = p.MaxWeight;
+                 //   json.Followers = p.Followers;
+                 //   json.MaxFollowers = p.FollowersMax;
 
-                    json.Gold = (int) p.Gold;
-                    json.GPS = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldPerSecond : 0;
-                    json.GPM = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldPerMinute : 0;
-                    json.GPH = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldPerHour: 0;
-                    json.GoldTotal = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldSinceStart : 0;
-                    json.GoldTotalMin = GoldPerHourTimer.Running ? GoldPerHourTimer.TotalMinutes : 0;
+                 //   json.Gold = (int) p.Gold;
+                 //   json.GPS = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldPerSecond : 0;
+                 //   json.GPM = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldPerMinute : 0;
+                 //   json.GPH = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldPerHour: 0;
+                 //   json.GoldTotal = GoldPerHourTimer.Running ? GoldPerHourTimer.GoldSinceStart : 0;
+                 //   json.GoldTotalMin = GoldPerHourTimer.Running ? GoldPerHourTimer.TotalMinutes : 0;
 
-                    json.BandageTimer = BandageTimer.Running ? BandageTimer.Count : 0;
-                    json.SkillTimer = SkillTimer.Running ? SkillTimer.Count :0;
-                    json.GateTimer = GateTimer.Running ? GateTimer.Count : 0;
+                 //   json.BandageTimer = BandageTimer.Running ? BandageTimer.Count : 0;
+                 //   json.SkillTimer = SkillTimer.Running ? SkillTimer.Count :0;
+                 //   json.GateTimer = GateTimer.Running ? GateTimer.Count : 0;
 
 
-                    json.StealthSteps = StealthSteps.Counting ? StealthSteps.Count : 0;
-                    json.BuffsDebuffs = !string.IsNullOrEmpty(buffList) ? buffList : "-";
+                 //   json.StealthSteps = StealthSteps.Counting ? StealthSteps.Count : 0;
+                 //   json.BuffsDebuffs = !string.IsNullOrEmpty(buffList) ? buffList : "-";
 
-                    // Don't stop Razor because this file isn't available
-                    try
-                    {
-                        File.WriteAllText($"{Config.GetInstallDirectory()}\\{p.Name}_{p.Serial}_{World.ShardName}.json", JsonConvert.SerializeObject(json));
-                    }
-                    catch { }
-                 }
+                 //   // Don't stop Razor because this file isn't available
+                 //   try
+                 //   {
+                 //       File.WriteAllText($"{Config.GetInstallDirectory()}\\{p.Name}_{p.Serial}_{World.ShardName}.json", JsonConvert.SerializeObject(json));
+                 //   }
+                 //   catch { }
+                 //}
 
                  string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
 	                (int) (p.GetStatusCode()),
