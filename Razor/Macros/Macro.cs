@@ -144,9 +144,7 @@ namespace Assistant.Macros
 			bool resync = false;
 			foreach ( MacroAction a in m_Actions )
 			{
-				if ( a is WalkAction )
-					resync = true;
-				else if ( a is ForAction )
+				if ( a is ForAction )
 					((ForAction)a).Count = 0;
 			}
 

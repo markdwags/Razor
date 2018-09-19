@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
@@ -1703,6 +1704,22 @@ namespace Assistant.Macros
         private Direction m_Dir;
         private static DateTime m_LastWalk = DateTime.MinValue;
 
+        private enum KeyboardDir {
+            North = 0x21, //page up
+            Right = 0x27, // right
+            East = 0x22, // page down
+            Down = 0x28, // down
+            South = 0x23, // end
+            Left = 0x25, // left
+            West = 0x24, // home
+            Up = 0x26, // up
+        }
+
+        private static uint WM_KEYDOWN = 0x100, WM_KEYUP = 0x101;
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
         public static DateTime LastWalkTime { get { return m_LastWalk; } set { m_LastWalk = value; } }
 
         public WalkAction(string[] args)
@@ -1715,16 +1732,16 @@ namespace Assistant.Macros
             m_Dir = dir & Direction.Mask;
         }
 
-        private static int m_LastSeq = -1;
+        //private static int m_LastSeq = -1;
         public override bool Perform()
         {
             return !PerformWait();
         }
 
-        public static bool IsMacroWalk(byte seq)
-        {
-            return m_LastSeq != -1 && m_LastSeq == (int)seq && World.Player.HasWalkEntry((byte)m_LastSeq);
-        }
+        //public static bool IsMacroWalk(byte seq)
+        //{
+        //    return m_LastSeq != -1 && m_LastSeq == (int)seq && World.Player.HasWalkEntry((byte)m_LastSeq);
+        //}
 
         public override bool PerformWait()
         {
@@ -1734,13 +1751,48 @@ namespace Assistant.Macros
             }
             else
             {
-                m_LastSeq = World.Player.WalkSequence;
+                //m_LastSeq = World.Player.WalkSequence;
                 m_LastWalk = DateTime.UtcNow;
 
-                ClientCommunication.SendToClient(new MobileUpdate(World.Player));
-                ClientCommunication.SendToClient(new ForceWalk(m_Dir));
-                ClientCommunication.SendToServer(new WalkRequest(m_Dir, World.Player.WalkSequence));
-                World.Player.MoveReq(m_Dir, World.Player.WalkSequence);
+                //ClientCommunication.SendToClient(new MobileUpdate(World.Player));
+                //ClientCommunication.SendToClient(new ForceWalk(m_Dir));
+                //ClientCommunication.SendToServer(new WalkRequest(m_Dir, World.Player.WalkSequence));
+                //World.Player.MoveReq(m_Dir, World.Player.WalkSequence);
+
+                int direction;
+
+                switch (m_Dir)
+                {
+                    case Direction.Down:
+                        direction = (int) KeyboardDir.Down;
+                        break;
+                    case Direction.East:
+                        direction = (int)KeyboardDir.East;
+                        break;
+                    case Direction.Left:
+                        direction = (int)KeyboardDir.Left;
+                        break;
+                    case Direction.North:
+                        direction = (int)KeyboardDir.North;
+                        break;
+                    case Direction.Right:
+                        direction = (int)KeyboardDir.Right;
+                        break;
+                    case Direction.South:
+                        direction = (int)KeyboardDir.South;
+                        break;
+                    case Direction.Up:
+                        direction = (int)KeyboardDir.Up;
+                        break;
+                    case Direction.West:
+                        direction = (int)KeyboardDir.West;
+                        break;
+                    default:
+                        direction = (int)KeyboardDir.Up;
+                        break;
+                }
+              
+                SendMessage(ClientCommunication.FindUOWindow(), WM_KEYDOWN, (IntPtr)direction, (IntPtr)1);
 
                 return false;
             }
