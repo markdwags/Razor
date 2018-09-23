@@ -99,6 +99,12 @@ namespace Assistant.Boat
 
             _boatCommandKw.Add(new BoatCommandKeywords
             {
+                command = "slow left",
+                keywords = new ArrayList(2) { (ushort)16, (byte)80 }
+            });
+
+            _boatCommandKw.Add(new BoatCommandKeywords
+            {
                 command = "slow forward left",
                 keywords = new ArrayList(2) { (ushort)16, (byte)84 }
             });
