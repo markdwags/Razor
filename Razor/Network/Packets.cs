@@ -264,6 +264,14 @@ namespace Assistant
         }
     }
 
+    public sealed class PlayMusic : Packet
+    {
+        public PlayMusic(int num) : base(0x6D, 3)
+        {
+            Write((uint)num);
+        }
+    }
+
     public sealed class CancelTarget : Packet
 	{
 		public CancelTarget( uint id ) : base( 0x6C, 19 )
