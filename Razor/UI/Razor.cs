@@ -2,9 +2,7 @@
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Forms;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,174 +13,174 @@ using System.Diagnostics;
 using Assistant.Boat;
 using Assistant.UI;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 
 namespace Assistant
 {
-	public class MainForm : System.Windows.Forms.Form
-	{
-		#region Class Variables
-		private System.Windows.Forms.NotifyIcon m_NotifyIcon;
-		private System.Windows.Forms.TabControl tabs;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.ColumnHeader skillHDRName;
-		private System.Windows.Forms.ColumnHeader skillHDRvalue;
-		private System.Windows.Forms.ColumnHeader skillHDRbase;
-		private System.Windows.Forms.ColumnHeader skillHDRdelta;
-		private System.Windows.Forms.Button resetDelta;
-		private System.Windows.Forms.Button setlocks;
-		private System.Windows.Forms.ComboBox locks;
-		private System.Windows.Forms.ListView skillList;
-		private System.Windows.Forms.ColumnHeader skillHDRcap;
-		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.Button addCounter;
-		private System.Windows.Forms.Button delCounter;
-		private System.Windows.Forms.GroupBox groupBox3;
-		private System.Windows.Forms.CheckBox showInBar;
-		private System.Windows.Forms.TextBox titleStr;
-		private System.Windows.Forms.CheckBox checkNewConts;
-		private System.Windows.Forms.Timer timerTimer;
-		private System.Windows.Forms.CheckBox alwaysTop;
-		private System.Windows.Forms.ColumnHeader cntName;
-		private System.Windows.Forms.ColumnHeader cntCount;
-		private System.Windows.Forms.ListView counters;
-		private System.Windows.Forms.GroupBox groupBox4;
-		private System.Windows.Forms.Button newProfile;
-		private System.Windows.Forms.Button delProfile;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox baseTotal;
-		private System.Windows.Forms.TabPage dressTab;
-		private System.Windows.Forms.Button skillCopySel;
-		private System.Windows.Forms.Button skillCopyAll;
-		private System.Windows.Forms.GroupBox groupBox5;
-		private System.Windows.Forms.Button removeDress;
-		private System.Windows.Forms.Button addDress;
-		private System.Windows.Forms.ListBox dressList;
-		private System.Windows.Forms.GroupBox groupBox6;
-		private System.Windows.Forms.Button targItem;
-		private System.Windows.Forms.ListBox dressItems;
-		private System.Windows.Forms.Button dressUseCur;
-		private System.Windows.Forms.TabPage generalTab;
-		private System.Windows.Forms.TabPage displayTab;
-		private System.Windows.Forms.TabPage skillsTab;
-		private System.Windows.Forms.TabPage hotkeysTab;
-		private System.Windows.Forms.CheckBox chkCtrl;
-		private System.Windows.Forms.CheckBox chkAlt;
-		private System.Windows.Forms.CheckBox chkShift;
-		private System.Windows.Forms.GroupBox groupBox8;
-		private System.Windows.Forms.TextBox key;
-		private System.Windows.Forms.Button setHK;
-		private System.Windows.Forms.Button unsetHK;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.CheckBox chkPass;
-		private System.Windows.Forms.TabPage moreOptTab;
-		private System.Windows.Forms.TabPage agentsTab;
-		private System.Windows.Forms.GroupBox agentGroup;
-		private System.Windows.Forms.ListBox agentSubList;
-		private System.Windows.Forms.Button agentB1;
-		private System.Windows.Forms.Button agentB2;
-		private System.Windows.Forms.Button agentB3;
-		private System.Windows.Forms.Button dohotkey;
-		private System.Windows.Forms.Button agentB4;
-		private System.Windows.Forms.Label opacityLabel;
-		private System.Windows.Forms.TrackBar opacity;
-		private System.Windows.Forms.CheckBox dispDelta;
-		private System.Windows.Forms.ComboBox agentList;
-		private System.Windows.Forms.Button recount;
-		private System.Windows.Forms.CheckBox openCorpses;
-		private System.Windows.Forms.TextBox corpseRange;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.TabPage macrosTab;
-		private System.Windows.Forms.TreeView hotkeyTree;
-		private System.Windows.Forms.TabPage screenshotTab;
-		private System.Windows.Forms.TabPage aboutTab;
-		private System.Windows.Forms.Button newMacro;
-		private System.Windows.Forms.Button delMacro;
-		private System.Windows.Forms.GroupBox macroActGroup;
-		private System.Windows.Forms.ListBox actionList;
-		private System.Windows.Forms.Button playMacro;
-		private System.Windows.Forms.Button recMacro;
-		private System.Windows.Forms.CheckBox loopMacro;
-		private System.Windows.Forms.Button dressNow;
-		private System.Windows.Forms.Button undressList;
-		private System.Windows.Forms.CheckBox spamFilter;
-		private System.Windows.Forms.PictureBox screenPrev;
-		private System.Windows.Forms.ListBox screensList;
-		private System.Windows.Forms.Button setScnPath;
-		private System.Windows.Forms.RadioButton radioFull;
-		private System.Windows.Forms.RadioButton radioUO;
-		private System.Windows.Forms.CheckBox screenAutoCap;
-		private System.Windows.Forms.TextBox screenPath;
-		private System.Windows.Forms.Button capNow;
-		private System.Windows.Forms.CheckBox dispTime;
-		private System.Windows.Forms.Button agentB5;
-		private System.Windows.Forms.Button agentB6;
-		private System.Windows.Forms.CheckBox undressConflicts;
-		private System.Windows.Forms.CheckBox titlebarImages;
-		private System.Windows.Forms.CheckBox showWelcome;
-		private System.Windows.Forms.CheckBox highlightSpellReags;
-		private System.Windows.Forms.ColumnHeader skillHDRlock;
-		private System.ComponentModel.IContainer components;
-		private System.Windows.Forms.CheckBox queueTargets;
-		private System.Windows.Forms.RadioButton systray;
-		private System.Windows.Forms.RadioButton taskbar;
-		private System.Windows.Forms.Label label11;
-		private System.Windows.Forms.CheckBox autoStackRes;
-		private System.Windows.Forms.Button undressBag;
-		private System.Windows.Forms.Button dressDelSel;
-		private System.Windows.Forms.CheckBox incomingCorpse;
-		private System.Windows.Forms.CheckBox incomingMob;
-		private System.Windows.Forms.ComboBox langSel;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.ComboBox profiles;
-		private System.Windows.Forms.Label hkStatus;
-		private System.Windows.Forms.Button clearDress;
-		private System.Windows.Forms.TabPage moreMoreOptTab;
-		private System.Windows.Forms.CheckBox excludePouches;
-		private System.Windows.Forms.CheckBox filterSnoop;
-		private System.Windows.Forms.Label waitDisp;
-		private System.Windows.Forms.CheckBox blockDis;
-		private System.Windows.Forms.Label label12;
-		private System.Windows.Forms.ComboBox imgFmt;
-		private System.Windows.Forms.TabPage videoTab;
-		private System.Windows.Forms.Button vidRec;
-		private System.Windows.Forms.GroupBox groupBox7;
-		private System.Windows.Forms.GroupBox groupBox9;
-		private System.Windows.Forms.Button vidOpen;
-		private System.Windows.Forms.Button vidPlay;
-		private System.Windows.Forms.Button vidPlayStop;
-		private System.Windows.Forms.Label vidPlayInfo;
-		private System.Windows.Forms.TrackBar playPos;
-		private System.Windows.Forms.Button vidClose;
-		private System.Windows.Forms.Label label14;
-		private System.Windows.Forms.ComboBox playSpeed;
-		private System.Windows.Forms.GroupBox groupBox10;
-		private System.Windows.Forms.Label label15;
-		private System.Windows.Forms.TextBox aviFPS;
-		private System.Windows.Forms.Label label16;
-		private System.Windows.Forms.ComboBox aviRes;
-		private System.Windows.Forms.Button recAVI;
-		private System.Windows.Forms.Button recFolder;
-		private System.Windows.Forms.Label label13;
-		private System.Windows.Forms.TextBox txtRecFolder;
-		private System.Windows.Forms.TreeView macroTree;
-		private ToolTip m_Tip;
-		#endregion
+    public class MainForm : System.Windows.Forms.Form
+    {
+        #region Class Variables
+        private System.Windows.Forms.NotifyIcon m_NotifyIcon;
+        private System.Windows.Forms.TabControl tabs;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ColumnHeader skillHDRName;
+        private System.Windows.Forms.ColumnHeader skillHDRvalue;
+        private System.Windows.Forms.ColumnHeader skillHDRbase;
+        private System.Windows.Forms.ColumnHeader skillHDRdelta;
+        private System.Windows.Forms.Button resetDelta;
+        private System.Windows.Forms.Button setlocks;
+        private System.Windows.Forms.ComboBox locks;
+        private System.Windows.Forms.ListView skillList;
+        private System.Windows.Forms.ColumnHeader skillHDRcap;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button addCounter;
+        private System.Windows.Forms.Button delCounter;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox showInBar;
+        private System.Windows.Forms.TextBox titleStr;
+        private System.Windows.Forms.CheckBox checkNewConts;
+        private System.Windows.Forms.Timer timerTimer;
+        private System.Windows.Forms.CheckBox alwaysTop;
+        private System.Windows.Forms.ColumnHeader cntName;
+        private System.Windows.Forms.ColumnHeader cntCount;
+        private System.Windows.Forms.ListView counters;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button newProfile;
+        private System.Windows.Forms.Button delProfile;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox baseTotal;
+        private System.Windows.Forms.TabPage dressTab;
+        private System.Windows.Forms.Button skillCopySel;
+        private System.Windows.Forms.Button skillCopyAll;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button removeDress;
+        private System.Windows.Forms.Button addDress;
+        private System.Windows.Forms.ListBox dressList;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button targItem;
+        private System.Windows.Forms.ListBox dressItems;
+        private System.Windows.Forms.Button dressUseCur;
+        private System.Windows.Forms.TabPage generalTab;
+        private System.Windows.Forms.TabPage displayTab;
+        private System.Windows.Forms.TabPage skillsTab;
+        private System.Windows.Forms.TabPage hotkeysTab;
+        private System.Windows.Forms.CheckBox chkCtrl;
+        private System.Windows.Forms.CheckBox chkAlt;
+        private System.Windows.Forms.CheckBox chkShift;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.TextBox key;
+        private System.Windows.Forms.Button setHK;
+        private System.Windows.Forms.Button unsetHK;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox chkPass;
+        private System.Windows.Forms.TabPage moreOptTab;
+        private System.Windows.Forms.TabPage agentsTab;
+        private System.Windows.Forms.GroupBox agentGroup;
+        private System.Windows.Forms.ListBox agentSubList;
+        private System.Windows.Forms.Button agentB1;
+        private System.Windows.Forms.Button agentB2;
+        private System.Windows.Forms.Button agentB3;
+        private System.Windows.Forms.Button dohotkey;
+        private System.Windows.Forms.Button agentB4;
+        private System.Windows.Forms.Label opacityLabel;
+        private System.Windows.Forms.TrackBar opacity;
+        private System.Windows.Forms.CheckBox dispDelta;
+        private System.Windows.Forms.ComboBox agentList;
+        private System.Windows.Forms.Button recount;
+        private System.Windows.Forms.CheckBox openCorpses;
+        private System.Windows.Forms.TextBox corpseRange;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TabPage macrosTab;
+        private System.Windows.Forms.TreeView hotkeyTree;
+        private System.Windows.Forms.TabPage screenshotTab;
+        private System.Windows.Forms.TabPage aboutTab;
+        private System.Windows.Forms.Button newMacro;
+        private System.Windows.Forms.Button delMacro;
+        private System.Windows.Forms.GroupBox macroActGroup;
+        private System.Windows.Forms.ListBox actionList;
+        private System.Windows.Forms.Button playMacro;
+        private System.Windows.Forms.Button recMacro;
+        private System.Windows.Forms.CheckBox loopMacro;
+        private System.Windows.Forms.Button dressNow;
+        private System.Windows.Forms.Button undressList;
+        private System.Windows.Forms.CheckBox spamFilter;
+        private System.Windows.Forms.PictureBox screenPrev;
+        private System.Windows.Forms.ListBox screensList;
+        private System.Windows.Forms.Button setScnPath;
+        private System.Windows.Forms.RadioButton radioFull;
+        private System.Windows.Forms.RadioButton radioUO;
+        private System.Windows.Forms.CheckBox screenAutoCap;
+        private System.Windows.Forms.TextBox screenPath;
+        private System.Windows.Forms.Button capNow;
+        private System.Windows.Forms.CheckBox dispTime;
+        private System.Windows.Forms.Button agentB5;
+        private System.Windows.Forms.Button agentB6;
+        private System.Windows.Forms.CheckBox undressConflicts;
+        private System.Windows.Forms.CheckBox titlebarImages;
+        private System.Windows.Forms.CheckBox showWelcome;
+        private System.Windows.Forms.CheckBox highlightSpellReags;
+        private System.Windows.Forms.ColumnHeader skillHDRlock;
+        private System.ComponentModel.IContainer components;
+        private System.Windows.Forms.CheckBox queueTargets;
+        private System.Windows.Forms.RadioButton systray;
+        private System.Windows.Forms.RadioButton taskbar;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.CheckBox autoStackRes;
+        private System.Windows.Forms.Button undressBag;
+        private System.Windows.Forms.Button dressDelSel;
+        private System.Windows.Forms.CheckBox incomingCorpse;
+        private System.Windows.Forms.CheckBox incomingMob;
+        private System.Windows.Forms.ComboBox langSel;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox profiles;
+        private System.Windows.Forms.Label hkStatus;
+        private System.Windows.Forms.Button clearDress;
+        private System.Windows.Forms.TabPage moreMoreOptTab;
+        private System.Windows.Forms.CheckBox excludePouches;
+        private System.Windows.Forms.CheckBox filterSnoop;
+        private System.Windows.Forms.Label waitDisp;
+        private System.Windows.Forms.CheckBox blockDis;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox imgFmt;
+        private System.Windows.Forms.TabPage videoTab;
+        private System.Windows.Forms.Button vidRec;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Button vidOpen;
+        private System.Windows.Forms.Button vidPlay;
+        private System.Windows.Forms.Button vidPlayStop;
+        private System.Windows.Forms.Label vidPlayInfo;
+        private System.Windows.Forms.TrackBar playPos;
+        private System.Windows.Forms.Button vidClose;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox playSpeed;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox aviFPS;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox aviRes;
+        private System.Windows.Forms.Button recAVI;
+        private System.Windows.Forms.Button recFolder;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtRecFolder;
+        private System.Windows.Forms.TreeView macroTree;
+        private ToolTip m_Tip;
+        #endregion
 
-		private int m_LastKV = 0;
-		private bool m_ProfileConfirmLoad;
-		private System.Windows.Forms.CheckBox flipVidHoriz;
-		private System.Windows.Forms.CheckBox flipVidVert;
-		private System.Windows.Forms.Label label19;
-		private System.Windows.Forms.TextBox warnNum;
-		private System.Windows.Forms.CheckBox warnCount;
-		private System.Windows.Forms.Label rpvTime;
-		private System.Windows.Forms.CheckBox showNotoHue;
-		private System.Windows.Forms.CheckBox preAOSstatbar;
-		private System.Windows.Forms.ComboBox clientPrio;
-		private System.Windows.Forms.Label label9;
+        private int m_LastKV = 0;
+        private bool m_ProfileConfirmLoad;
+        private System.Windows.Forms.CheckBox flipVidHoriz;
+        private System.Windows.Forms.CheckBox flipVidVert;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox warnNum;
+        private System.Windows.Forms.CheckBox warnCount;
+        private System.Windows.Forms.Label rpvTime;
+        private System.Windows.Forms.CheckBox showNotoHue;
+        private System.Windows.Forms.CheckBox preAOSstatbar;
+        private System.Windows.Forms.ComboBox clientPrio;
+        private System.Windows.Forms.Label label9;
         private LinkLabel linkGithub;
         private Label label21;
         private Label aboutVer;
@@ -299,62 +297,62 @@ namespace Assistant
         private CheckBox rangeCheckDoubleClick;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
-		[DllImport( "User32.dll" )]
-		private static extern IntPtr GetSystemMenu( IntPtr wnd, bool reset );
-		[DllImport( "User32.dll" )]
-		private static extern IntPtr EnableMenuItem( IntPtr menu, uint item, uint options );
+        [DllImport("User32.dll")]
+        private static extern IntPtr GetSystemMenu(IntPtr wnd, bool reset);
+        [DllImport("User32.dll")]
+        private static extern IntPtr EnableMenuItem(IntPtr menu, uint item, uint options);
 
-		public Label WaitDisplay { get{ return waitDisp; } }
+        public Label WaitDisplay { get { return waitDisp; } }
 
-		public MainForm()
-		{
-			m_ProfileConfirmLoad = true;
-			m_Tip = new ToolTip();
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
+        public MainForm()
+        {
+            m_ProfileConfirmLoad = true;
+            m_Tip = new ToolTip();
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
 
-			m_NotifyIcon.ContextMenu =
-				new ContextMenu( new MenuItem[]
-				{
-					new MenuItem( "Show Razor", new EventHandler( DoShowMe ) ),
-					new MenuItem( "Hide Razor", new EventHandler( HideMe ) ),
-					new MenuItem( "-" ),
-					new MenuItem( "Toggle Razor Visibility", new EventHandler( ToggleVisible ) ),
-					new MenuItem( "-" ),
-					new MenuItem( "Close Razor && UO", new EventHandler( OnClose ) )
-				} );
-			m_NotifyIcon.ContextMenu.MenuItems[0].DefaultItem = true;
-		}
+            m_NotifyIcon.ContextMenu =
+                 new ContextMenu(new MenuItem[]
+                 {
+                         new MenuItem( "Show Razor", new EventHandler( DoShowMe ) ),
+                         new MenuItem( "Hide Razor", new EventHandler( HideMe ) ),
+                         new MenuItem( "-" ),
+                         new MenuItem( "Toggle Razor Visibility", new EventHandler( ToggleVisible ) ),
+                         new MenuItem( "-" ),
+                         new MenuItem( "Close Razor && UO", new EventHandler( OnClose ) )
+                 });
+            m_NotifyIcon.ContextMenu.MenuItems[0].DefaultItem = true;
+        }
 
-		public void SwitchToVidTab()
-		{
-			tabs.SelectedTab = videoTab;
-		}
+        public void SwitchToVidTab()
+        {
+            tabs.SelectedTab = videoTab;
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if (components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.m_NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
@@ -3503,73 +3501,73 @@ namespace Assistant
             this.aboutTab.PerformLayout();
             this.ResumeLayout(false);
 
-		}
-		#endregion
+        }
+        #endregion
 
-		protected override void WndProc( ref Message msg )
-		{
-			if ( msg.Msg == ClientCommunication.WM_UONETEVENT )
-				msg.Result = (IntPtr)( ClientCommunication.OnMessage( this, (uint)msg.WParam.ToInt32(), msg.LParam.ToInt32() ) ? 1 : 0 );
-			else if ( msg.Msg >= (int)ClientCommunication.UOAMessage.First && msg.Msg <= (int)ClientCommunication.UOAMessage.Last )
-				msg.Result = (IntPtr)ClientCommunication.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(), msg.LParam.ToInt32());
-			else
-				base.WndProc( ref msg );
-		}
+        protected override void WndProc(ref Message msg)
+        {
+            if (msg.Msg == ClientCommunication.WM_UONETEVENT)
+                msg.Result = (IntPtr)(ClientCommunication.OnMessage(this, (uint)msg.WParam.ToInt32(), msg.LParam.ToInt32()) ? 1 : 0);
+            else if (msg.Msg >= (int)ClientCommunication.UOAMessage.First && msg.Msg <= (int)ClientCommunication.UOAMessage.Last)
+                msg.Result = (IntPtr)ClientCommunication.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(), msg.LParam.ToInt32());
+            else
+                base.WndProc(ref msg);
+        }
 
-		private void DisableCloseButton()
-		{
-			IntPtr menu = GetSystemMenu( this.Handle, false );
-			EnableMenuItem( menu, 0xF060, 0x00000002 ); //menu, SC_CLOSE, MF_BYCOMMAND|MF_GRAYED
-			m_CanClose = false;
-		}
+        private void DisableCloseButton()
+        {
+            IntPtr menu = GetSystemMenu(this.Handle, false);
+            EnableMenuItem(menu, 0xF060, 0x00000002); //menu, SC_CLOSE, MF_BYCOMMAND|MF_GRAYED
+            m_CanClose = false;
+        }
 
-	    private void MainForm_Load(object sender, System.EventArgs e)
-	    {
-	        //ClientCommunication.SetCustomNotoHue( 0x2 );
+        private void MainForm_Load(object sender, System.EventArgs e)
+        {
+            //ClientCommunication.SetCustomNotoHue( 0x2 );
 
-	        Timer.Control = timerTimer;
+            Timer.Control = timerTimer;
 
-	        new StatsTimer(this).Start();
+            new StatsTimer(this).Start();
 
-	        this.Hide();
-	        Language.LoadControlNames(this);
+            this.Hide();
+            Language.LoadControlNames(this);
 
-	        bool st = Config.GetBool("Systray");
-	        taskbar.Checked = this.ShowInTaskbar = !st;
-	        systray.Checked = m_NotifyIcon.Visible = st;
+            bool st = Config.GetBool("Systray");
+            taskbar.Checked = this.ShowInTaskbar = !st;
+            systray.Checked = m_NotifyIcon.Visible = st;
 
-	        //this.Text = String.Format( this.Text, Engine.Version );
-	        UpdateTitle();
+            //this.Text = String.Format( this.Text, Engine.Version );
+            UpdateTitle();
 
-	        if (!ClientCommunication.InstallHooks(this.Handle)) // WaitForInputIdle done here
-	        {
-	            m_CanClose = true;
-	            SplashScreen.End();
-	            this.Close();
-	            System.Diagnostics.Process.GetCurrentProcess().Kill();
-	            return;
-	        }
+            if (!ClientCommunication.InstallHooks(this.Handle)) // WaitForInputIdle done here
+            {
+                m_CanClose = true;
+                SplashScreen.End();
+                this.Close();
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+                return;
+            }
 
-	        SplashScreen.Message = LocString.Welcome;
-	        InitConfig();
+            SplashScreen.Message = LocString.Welcome;
+            InitConfig();
 
-	        this.Show();
-	        this.BringToFront();
+            this.Show();
+            this.BringToFront();
 
-	        Engine.ActiveWindow = this;
+            Engine.ActiveWindow = this;
 
-	        DisableCloseButton();
+            DisableCloseButton();
 
-	        tabs_IndexChanged(this, null); // load first tab
+            tabs_IndexChanged(this, null); // load first tab
 
-	        m_ProfileConfirmLoad = false;
-	        Config.SetupProfilesList(profiles, Config.CurrentProfile.Name);
-	        m_ProfileConfirmLoad = true;
+            m_ProfileConfirmLoad = false;
+            Config.SetupProfilesList(profiles, Config.CurrentProfile.Name);
+            m_ProfileConfirmLoad = true;
 
-	        showWelcome.Checked = Config.GetAppSetting<int>("ShowWelcome") == 1;
+            showWelcome.Checked = Config.GetAppSetting<int>("ShowWelcome") == 1;
 
-	        m_Tip.Active = true;
-	        m_Tip.SetToolTip(titleStr, Language.GetString(LocString.TitleBarTip));
+            m_Tip.Active = true;
+            m_Tip.SetToolTip(titleStr, Language.GetString(LocString.TitleBarTip));
 
             SplashScreen.End();
 	    }
@@ -3781,6 +3779,9 @@ namespace Assistant
             screenShotNotification.Checked = Config.GetBool("ScreenshotUploadNotifications");
 
             showAttackTarget.Checked = Config.GetBool("ShowAttackTargetOverhead");
+            showBuffDebuffOverhead.Checked = Config.GetBool("ShowBuffDebuffOverhead");
+
+            buffDebuffFormat.Text = Config.GetString("BuffDebuffFormat");
 
             rangeCheckTargetByType.Checked = Config.GetBool("RangeCheckTargetByType");
             rangeCheckDoubleClick.Checked = Config.GetBool("RangeCheckDoubleClick");
@@ -3889,1472 +3890,1472 @@ namespace Assistant
         }
 
         private void RebuildHotKeyCache()
-	    {
-	        _hotkeyTreeViewCache = new TreeView();
+        {
+            _hotkeyTreeViewCache = new TreeView();
 
             foreach (TreeNode node in hotkeyTree.Nodes)
-	        {
-	            _hotkeyTreeViewCache.Nodes.Add((TreeNode) node.Clone());
-	        }
-	    }
-
-	    private Version m_Ver = System.Reflection.Assembly.GetCallingAssembly().GetName().Version;
-
-		private uint m_OutPrev;
-		private uint m_InPrev;
-
-		private class StatsTimer : Timer
-		{
-			MainForm m_Form;
-			public StatsTimer( MainForm form ) : base( TimeSpan.FromSeconds( 0.5 ), TimeSpan.FromSeconds( 0.5 ) )
-			{
-				m_Form = form;
-			}
-
-			protected override void OnTick()
-			{
-				m_Form.UpdateRazorStatus();
-			}
-		}
-
-		private void UpdateRazorStatus()
-		{
-			if ( !ClientCommunication.ClientRunning )
-				Close();
-
-			uint ps = m_OutPrev;
-			uint pr = m_InPrev;
-			m_OutPrev = ClientCommunication.TotalOut();
-			m_InPrev = ClientCommunication.TotalIn();
-
-			if ( tabs.SelectedTab != advancedTab )
-				return;
-
-			int time = 0;
-			if ( ClientCommunication.ConnectionStart != DateTime.MinValue )
-				time = (int)((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
-
-			if (String.IsNullOrEmpty(statusBox.SelectedText))
-			{
-				statusBox.Lines = Language.Format(LocString.RazorStatus1,
-					m_Ver,
-					Utility.FormatSize(System.GC.GetTotalMemory(false)),
-					Utility.FormatSize(m_OutPrev), Utility.FormatSize((long)((m_OutPrev - ps))),
-					Utility.FormatSize(m_InPrev), Utility.FormatSize((long)((m_InPrev - pr))),
-					Utility.FormatTime(time),
-					(World.Player != null ? (uint)World.Player.Serial : 0),
-					(World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0),
-					World.Items.Count,
-					World.Mobiles.Count).Split('\n');
-
-				if (World.Player != null)
-					statusBox.AppendText(
-					        $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}");
-			}
-
-			if ( PacketHandlers.PlayCharTime < DateTime.UtcNow && PacketHandlers.PlayCharTime+TimeSpan.FromSeconds( 30 ) < DateTime.UtcNow )
-			{
-				if ( Config.GetBool( "Negotiate" ) )
-				{
-					bool allAllowed = true;
-					StringBuilder text = new StringBuilder();
-
-					text.Append( Language.GetString( LocString.NegotiateTitle ) );
-					text.Append( "\r\n" );
-
-					for (uint i=0;i<FeatureBit.MaxBit;i++)
-					{
-						if ( !ClientCommunication.AllowBit( i ) )
-						{
-							allAllowed = false;
-
-							text.Append( Language.GetString( (LocString)( ((int)LocString.FeatureDescBase) + i ) ) );
-							text.Append( ' ' );
-							text.Append( Language.GetString( LocString.NotAllowed ) );
-							text.Append( "\r\n" );
-						}
-					}
-
-					if ( allAllowed )
-						text.Append( Language.GetString( LocString.AllFeaturesEnabled ) );
-
-					text.Append( "\r\n" );
-
-					features.Visible = true;
-					features.Text = text.ToString();
-				}
-				else
-				{
-					features.Visible = false;
-				}
-			}
-		}
-
-	    public void UpdateSkill(Skill skill)
-	    {
-	        double total = 0;
-	        for (int i = 0; i < Skill.Count; i++)
-	        {
-	            total += World.Player.Skills[i].Base;
-	        }
-
-	        baseTotal.Text = $"{total:F1}";
-
-	        if (Config.GetBool("LogSkillChanges"))
-	        {
-	            string skillLog =
-	                $"{Config.GetInstallDirectory()}\\SkillLog\\{World.Player.Name}_{World.Player.Serial}_SkillLog.csv";
-
-	            if (!Directory.Exists($"{Config.GetInstallDirectory()}\\SkillLog"))
-	            {
-	                Directory.CreateDirectory($"{Config.GetInstallDirectory()}\\SkillLog");
-	            }
-
-	            if (!File.Exists(skillLog))
-	            {
-	                using (StreamWriter sr = File.CreateText(skillLog))
-	                {
-	                    sr.WriteLine("Timestamp,SkillName,Value,Base,Gain,Cap");
-	                }
-	            }
-
-	            using (StreamWriter sw = File.AppendText(skillLog))
-	            {
-	                sw.WriteLine(
-	                    $"{DateTime.Now},{(SkillName) skill.Index},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
-	            }
-	        }
-
-	        for (int i = 0; i < skillList.Items.Count; i++)
-	        {
-	            ListViewItem cur = skillList.Items[i];
-	            if (cur.Tag == skill)
-	            {
-	                cur.SubItems[1].Text = String.Format("{0:F1}", skill.Value);
-	                cur.SubItems[2].Text = String.Format("{0:F1}", skill.Base);
-	                cur.SubItems[3].Text = String.Format("{0}{1:F1}", (skill.Delta > 0 ? "+" : ""), skill.Delta);
-	                cur.SubItems[4].Text = String.Format("{0:F1}", skill.Cap);
-	                cur.SubItems[5].Text = skill.Lock.ToString()[0].ToString();
-	                SortSkills();
-	                return;
-	            }
-	        }
-	    }
-
-		public void RedrawSkills()
-		{
-			skillList.BeginUpdate();
-			skillList.Items.Clear();
-			double Total = 0;
-			if ( World.Player != null && World.Player.SkillsSent )
-			{
-				string [] items = new string[6];
-				for (int i=0;i<Skill.Count;i++)
-				{
-					Skill sk = World.Player.Skills[i];
-					Total += sk.Base;
-					items[0] = Language.Skill2Str( i );//((SkillName)i).ToString();
-					items[1] = String.Format( "{0:F1}", sk.Value );
-					items[2] = String.Format( "{0:F1}", sk.Base );
-					items[3] = String.Format( "{0}{1:F1}", (sk.Delta > 0 ? "+" : ""), sk.Delta );
-					items[4] = String.Format( "{0:F1}", sk.Cap );
-					items[5] = sk.Lock.ToString()[0].ToString();
-
-					ListViewItem lvi = new ListViewItem( items );
-					lvi.Tag = sk;
-					skillList.Items.Add( lvi );
-				}
-
-				//Config.SetProperty( "SkillListAsc", false );
-				SortSkills();
-			}
-			skillList.EndUpdate();
-			baseTotal.Text = String.Format( "{0:F1}", Total );
-		}
-
-		private void OnFilterCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
-		{
-			((Filter)filters.Items[e.Index]).OnCheckChanged( e.NewValue );
-		}
-
-		private void incomingMob_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "ShowMobNames", incomingMob.Checked );
-		}
-
-		private void incomingCorpse_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "ShowCorpseNames", incomingCorpse.Checked );
-		}
-
-		private ContextMenu m_SkillMenu ;
-		private void skillList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if ( e.Button == MouseButtons.Right )
-			{
-				ListView.SelectedListViewItemCollection items = skillList.SelectedItems;
-				if ( items.Count <= 0 )
-					return;
-				Skill s = items[0].Tag as Skill;
-				if ( s == null )
-					return;
-
-				if ( m_SkillMenu == null )
-				{
-					m_SkillMenu = new ContextMenu( new MenuItem[]
-					{
-						new MenuItem( Language.GetString( LocString.SetSLUp ), new EventHandler( onSetSkillLockUP ) ),
-						new MenuItem( Language.GetString( LocString.SetSLDown ), new EventHandler( onSetSkillLockDOWN ) ),
-						new MenuItem( Language.GetString( LocString.SetSLLocked ), new EventHandler( onSetSkillLockLOCKED ) )
-					} );
-				}
-
-				for (int i=0;i<3;i++)
-					m_SkillMenu.MenuItems[i].Checked = ((int)s.Lock) == i;
-
-				m_SkillMenu.Show( skillList, new Point( e.X, e.Y ) );
-			}
-		}
-
-		private void onSetSkillLockUP(object sender, EventArgs e)
-		{
-			SetLock( LockType.Up );
-		}
-
-		private void onSetSkillLockDOWN(object sender, EventArgs e)
-		{
-			SetLock( LockType.Down );
-		}
-
-		private void onSetSkillLockLOCKED(object sender, EventArgs e)
-		{
-			SetLock( LockType.Locked );
-		}
-
-		private void SetLock( LockType lockType )
-		{
-			ListView.SelectedListViewItemCollection items = skillList.SelectedItems;
-			if ( items.Count <= 0 )
-				return;
-			Skill s = items[0].Tag as Skill;
-			if ( s == null )
-				return;
-
-			try
-			{
-				ClientCommunication.SendToServer( new SetSkillLock( s.Index, lockType ) );
-
-				s.Lock = lockType;
-				UpdateSkill( s );
-
-				ClientCommunication.SendToClient( new SkillUpdate( s ) );
-			}
-			catch
-			{
-			}
-
-		}
-
-		private void OnSkillColClick(object sender, System.Windows.Forms.ColumnClickEventArgs e)
-		{
-			if ( e.Column == Config.GetInt( "SkillListCol" ) )
-				Config.SetProperty( "SkillListAsc", !Config.GetBool( "SkillListAsc" ) );
-			else
-				Config.SetProperty( "SkillListCol", e.Column );
-			SortSkills();
-		}
-
-		private void SortSkills()
-		{
-			int col = Config.GetInt( "SkillListCol" );
-			bool asc = Config.GetBool( "SkillListAsc" );
-
-			if ( col < 0 || col > 5 )
-				col = 0;
-
-			skillList.BeginUpdate();
-			if ( col == 0 || col == 5 )
-			{
-				skillList.ListViewItemSorter = null;
-				skillList.Sorting = asc ? SortOrder.Ascending : SortOrder.Descending;
-			}
-			else
-			{
-				LVDoubleComparer.Column = col;
-				LVDoubleComparer.Asc = asc;
-
-				skillList.ListViewItemSorter = LVDoubleComparer.Instance;
-
-				skillList.Sorting = SortOrder.None;
-				skillList.Sort();
-			}
-			skillList.EndUpdate();
-			skillList.Refresh();
-		}
-
-		private class LVDoubleComparer : IComparer
-		{
-			public static readonly LVDoubleComparer Instance = new LVDoubleComparer();
-			public static int Column { set{ Instance.m_Col = value; } }
-			public static bool Asc{ set{ Instance.m_Asc = value; } }
-
-			private int m_Col;
-			private bool m_Asc;
-
-			private LVDoubleComparer()
-			{
-			}
-
-			public int Compare( object x, object y )
-			{
-				if ( x == null || !(x is ListViewItem) )
-					return m_Asc ? 1 : -1;
-				else if ( y == null || !(y is ListViewItem) )
-					return m_Asc ? -1 : 1;
-
-				try
-				{
-					double dx = Convert.ToDouble( ((ListViewItem)x).SubItems[m_Col].Text );
-					double dy = Convert.ToDouble( ((ListViewItem)y).SubItems[m_Col].Text );
-
-					if ( dx > dy )
-						return m_Asc ? -1 : 1;
-					else if ( dx == dy )
-						return 0;
-					else //if ( dx > dy )
-						return m_Asc ? 1 : -1;
-				}
-				catch
-				{
-					return ((ListViewItem)x).Text.CompareTo( ((ListViewItem)y).Text ) * ( m_Asc ? 1 : -1 );
-				}
-			}
-		}
-
-		private void OnResetSkillDelta(object sender, System.EventArgs e)
-		{
-			if ( World.Player == null )
-				return;
-
-			for (int i=0;i<Skill.Count;i++)
-				World.Player.Skills[i].Delta = 0;
-
-			RedrawSkills();
-		}
-
-		private void OnSetSkillLocks(object sender, System.EventArgs e)
-		{
-			if ( locks.SelectedIndex == -1 || World.Player == null )
-				return;
-
-			LockType type = (LockType)locks.SelectedIndex;
-
-			for (short i=0;i<Skill.Count;i++)
-			{
-				World.Player.Skills[i].Lock = type;
-				ClientCommunication.SendToServer( new SetSkillLock( i, type ) );
-			}
-			ClientCommunication.SendToClient( new SkillsList() );
-			RedrawSkills();
-		}
-
-		private void OnDispSkillCheck(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "DispSkillChanges", dispDelta.Checked );
-		}
-
-		private void delCounter_Click(object sender, System.EventArgs e)
-		{
-			if ( counters.SelectedItems.Count <= 0 )
-				return;
-
-			Counter c = counters.SelectedItems[0].Tag as Counter;
-
-			if ( c != null )
-			{
-				AddCounter ac = new AddCounter( c );
-				switch ( ac.ShowDialog( this ) )
-				{
-					case DialogResult.Abort:
-						counters.Items.Remove( c.ViewItem );
-						Counter.List.Remove( c );
-						break;
-
-					case DialogResult.OK:
-						c.Set( (ushort)ac.ItemID, ac.Hue, ac.NameStr, ac.FmtStr, ac.DisplayImage );
-						break;
-				}
-			}
-		}
-
-		private void addCounter_Click(object sender, System.EventArgs e)
-		{
-			AddCounter dlg = new AddCounter();
-
-			if ( dlg.ShowDialog( this ) == DialogResult.OK )
-			{
-				Counter.Register( new Counter( dlg.NameStr, dlg.FmtStr, (ushort)dlg.ItemID, (int)dlg.Hue, dlg.DisplayImage ) );
-				Counter.Redraw( counters );
-			}
-		}
-
-		private void showInBar_CheckedChanged(object sender, System.EventArgs e)
-		{
-			titleStr.Enabled = showInBar.Checked;
-			Config.SetProperty( "TitleBarDisplay", showInBar.Checked );
-			ClientCommunication.RequestTitlebarUpdate();
-		}
-
-		private void titleStr_TextChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "TitleBarText", titleStr.Text.TrimEnd() );
-			if ( Config.GetBool( "TitleBarDisplay" ) )
-				ClientCommunication.RequestTitlebarUpdate();
-		}
-
-		private void counters_ItemCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
-		{
-			if ( e.Index >= 0 && e.Index < Counter.List.Count && !Counter.SupressChecks )
-			{
-				((Counter)(counters.Items[e.Index].Tag)).SetEnabled( e.NewValue == CheckState.Checked );
-				ClientCommunication.RequestTitlebarUpdate();
-				counters.Sort();
-				//counters.Refresh();
-			}
-		}
-
-		public void RedrawCounters()
-		{
-			Counter.Redraw( counters );
-		}
-
-		private void checkNewConts_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "AutoSearch", checkNewConts.Checked );
-			excludePouches.Enabled = checkNewConts.Checked;
-		}
-
-		private void warnCount_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "CounterWarn", warnCount.Checked );
-			warnNum.Enabled = warnCount.Checked;
-		}
-
-		private void timerTimer_Tick(object sender, System.EventArgs e)
-		{
-			Timer.Control = timerTimer;
-			Timer.Slice();
-		}
-
-		private void warnNum_TextChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "CounterWarnAmount", Utility.ToInt32( warnNum.Text.Trim(), 3 ) );
-		}
-
-		private void alwaysTop_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "AlwaysOnTop", this.TopMost = alwaysTop.Checked );
-		}
-
-		private void profiles_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if ( profiles.SelectedIndex < 0 || !m_ProfileConfirmLoad )
-				return;
-
-			string name = (string)profiles.Items[profiles.SelectedIndex];
-			if ( MessageBox.Show( this, Language.Format( LocString.ProfLoadQ, name ), "Load?", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
-			{
-				Config.Save();
-				if ( !Config.LoadProfile( name ) )
-				{
-					MessageBox.Show( this, Language.GetString( LocString.ProfLoadE ), "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-				}
-				else
-				{
-					InitConfig();
-					if ( World.Player != null )
-						Config.SetProfileFor( World.Player );
-				}
-				ClientCommunication.RequestTitlebarUpdate();
-			}
-			else
-			{
-				m_ProfileConfirmLoad = false;
-				for (int i=0;i<profiles.Items.Count;i++)
-				{
-					if ( (string)profiles.Items[i] == Config.CurrentProfile.Name )
-					{
-						profiles.SelectedIndex = i;
-						break;
-					}
-				}
-				m_ProfileConfirmLoad = true;
-			}
-		}
-
-		private void delProfile_Click(object sender, System.EventArgs e)
-		{
-			if ( profiles.SelectedIndex < 0 )
-				return;
-
-		    if (MessageBox.Show(this, "Are you sure you want to delete this profile?", "Delete Profile?",
-		            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-		    {
-		        return;
-		    }
-
-                string remove = (string)profiles.Items[profiles.SelectedIndex];
-
-			if ( remove == "default" )
-			{
-				MessageBox.Show( this, Language.GetString( LocString.NoDelete ), "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-				return;
-			}
-
-			string file = String.Format( "Profiles/{0}.xml", remove );
-			if ( File.Exists( file ) )
-				File.Delete( file );
-
-			profiles.Items.Remove( remove );
-			if ( !Config.LoadProfile( "default" ) )
-			{
-				Config.CurrentProfile.MakeDefault();
-				Config.CurrentProfile.Name = "default";
-			}
-			InitConfig();
-
-			m_ProfileConfirmLoad = false;
-			for (int i=0;i<profiles.Items.Count;i++)
-			{
-				if ( (string)profiles.Items[i] == "default" )
-				{
-					profiles.SelectedIndex = i;
-					m_ProfileConfirmLoad = true;
-					return;
-				}
-			}
-
-			int sel = profiles.Items.Count;
-			profiles.Items.Add( "default" );
-			profiles.SelectedIndex = sel;
-			m_ProfileConfirmLoad = true;
-		}
-
-		public void SelectProfile( string name )
-		{
-			m_ProfileConfirmLoad = false;
-			profiles.SelectedItem = name;
-			m_ProfileConfirmLoad = true;
-		}
-
-	    private void newProfile_Click(object sender, System.EventArgs e)
-	    {
-	        if (InputBox.Show(this, Language.GetString(LocString.EnterProfileName),
-	            Language.GetString(LocString.EnterAName)))
-	        {
-	            string str = InputBox.GetString();
-	            if (str == null || str == "" || str.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
-	                str.IndexOfAny(m_InvalidNameChars) != -1)
-	            {
-	                MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
-	                    Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
-	                return;
-	            }
-
-	            m_ProfileConfirmLoad = false;
-	            int sel = profiles.Items.Count;
-	            string lwr = str.ToLower();
-	            for (int i = 0; i < profiles.Items.Count; i++)
-	            {
-	                if (lwr == ((string) profiles.Items[i]).ToLower())
-	                {
-	                    if (MessageBox.Show(this, Language.GetString(LocString.ProfExists), "Load Profile?",
-	                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-	                    {
-	                        Config.Save();
-	                        profiles.SelectedIndex = i;
-	                        if (!Config.LoadProfile(str))
-	                        {
-	                            MessageBox.Show(this, Language.GetString(LocString.ProfLoadE), "Load Error",
-	                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-	                        }
-	                        else
-	                        {
-	                            InitConfig();
-	                            if (World.Player != null)
-	                                Config.SetProfileFor(World.Player);
-	                        }
-
-	                        ClientCommunication.RequestTitlebarUpdate();
-	                    }
-
-	                    m_ProfileConfirmLoad = true;
-	                    return;
-	                }
-	            }
-
-	            Config.Save();
-	            Config.NewProfile(str);
-	            profiles.Items.Add(str);
-	            profiles.SelectedIndex = sel;
-	            InitConfig();
-	            if (World.Player != null)
-	                Config.SetProfileFor(World.Player);
-	            m_ProfileConfirmLoad = true;
-	        }
-	    }
-
-		public bool CanClose
-		{
-			get
-			{
-				return m_CanClose;
-			}
-			set
-			{
-				m_CanClose = value;
-			}
-		}
-
-		private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-            if ( !m_CanClose && ClientCommunication.ClientRunning )
-			{
-				DisableCloseButton();
-				e.Cancel = true;
-			}
-			else
-			{
-				PacketPlayer.Stop();
-				AVIRec.Stop();
-			}
-			//if ( Engine.NoPatch )
-			//	e.Cancel = MessageBox.Show( this, "Are you sure you want to close Razor?\n(This will not close the UO client.)", "Close Razor?", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.No;
-		}
-
-		private void skillCopySel_Click(object sender, System.EventArgs e)
-		{
-			if ( skillList.SelectedItems == null || skillList.SelectedItems.Count <= 0 )
-				return;
-
-			StringBuilder sb = new StringBuilder();
-			for (int i=0;i<skillList.SelectedItems.Count;i++)
-			{
-				ListViewItem vi = skillList.SelectedItems[i];
-				if ( vi != null && vi.SubItems != null && vi.SubItems.Count > 4 )
-				{
-					string name = vi.SubItems[0].Text;
-					if ( name != null && name.Length > 20 )
-						name = name.Substring( 0, 16 ) + "...";
-
-					sb.AppendFormat( "{0,-20} {1,5:F1} {2,5:F1} {4:F1} {5,5:F1}\n",
-						name,
-						vi.SubItems[1].Text,
-						vi.SubItems[2].Text,
-						Utility.ToInt32( vi.SubItems[3].Text, 0 ) < 0 ? "" : "+",
-						vi.SubItems[3].Text,
-						vi.SubItems[4].Text );
-				}
-			}
-
-			if ( sb.Length > 0 )
-				Clipboard.SetDataObject( sb.ToString(), true );
-		}
-
-		private void skillCopyAll_Click(object sender, System.EventArgs e)
-		{
-			if ( World.Player == null )
-				return;
-
-			StringBuilder sb = new StringBuilder();
-			for (int i=0;i<Skill.Count;i++)
-			{
-				Skill sk = World.Player.Skills[i];
-				sb.AppendFormat( "{0,-20} {1,-5:F1} {2,-5:F1} {3}{4,-5:F1} {5,-5:F1}\n", (SkillName)i, sk.Value, sk.Base, sk.Delta > 0 ? "+":"", sk.Delta, sk.Cap );
-			}
-
-			if ( sb.Length > 0 )
-				Clipboard.SetDataObject( sb.ToString(), true );
-		}
-
-		private void addDress_Click(object sender, System.EventArgs e)
-		{
-			if ( InputBox.Show( this, Language.GetString( LocString.DressName ), Language.GetString( LocString.EnterAName ) ) )
-			{
-				string str = InputBox.GetString();
-				if ( str == null || str == "" )
-					return;
-				DressList list = new DressList( str );
-				DressList.Add( list );
-				dressList.Items.Add( list );
-				dressList.SelectedItem = list;
-			}
-		}
-
-		private void removeDress_Click(object sender, System.EventArgs e)
-		{
-			DressList dress = (DressList)dressList.SelectedItem;
-
-			if ( dress != null && MessageBox.Show( this, Language.GetString( LocString.DelDressQ ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
-			{
-				dress.Items.Clear();
-				dressList.Items.Remove( dress );
-				dressList.SelectedIndex = -1;
-				dressItems.Items.Clear();
-				DressList.Remove( dress );
-			}
-		}
-
-		private void dressNow_Click(object sender, System.EventArgs e)
-		{
-			DressList dress = (DressList)dressList.SelectedItem;
-			if ( dress != null && World.Player != null )
-				dress.Dress();
-		}
-
-		private void undressList_Click(object sender, System.EventArgs e)
-		{
-			DressList dress = (DressList)dressList.SelectedItem;
-			if ( dress != null && World.Player != null && World.Player.Backpack != null )
-				dress.Undress();
-		}
-
-		private void targItem_Click(object sender, System.EventArgs e)
-		{
-			Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnDressItemTarget ) );
-		}
-
-		private void OnDressItemTarget( bool loc, Serial serial, Point3D pt, ushort itemid )
-		{
-			if ( loc )
-				return;
-
-			ShowMe();
-			if ( serial.IsItem )
-			{
-				DressList list = (DressList)dressList.SelectedItem;
-
-				if ( list == null  )
-					return;
-
-				list.Items.Add( serial );
-				Item item = World.FindItem( serial );
-
-				if ( item == null )
-					dressItems.Items.Add( Language.Format( LocString.OutOfRangeA1, serial ) );
-				else
-					dressItems.Items.Add( item.ToString() );
-			}
-		}
-
-		private void dressDelSel_Click(object sender, System.EventArgs e)
-		{
-			DressList list = (DressList)dressList.SelectedItem;
-			if ( list == null )
-				return;
-
-			int sel = dressItems.SelectedIndex;
-			if ( sel < 0 || sel >= list.Items.Count )
-				return;
-
-			if ( MessageBox.Show( this, Language.GetString( LocString.DelDressItemQ ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
-			{
-				try
-				{
-					list.Items.RemoveAt( sel );
-					dressItems.Items.RemoveAt( sel );
-				}
-				catch
-				{
-				}
-			}
-		}
-
-		private void clearDress_Click(object sender, System.EventArgs e)
-		{
-			DressList list = (DressList)dressList.SelectedItem;
-			if ( list == null )
-				return;
-
-		    if (MessageBox.Show(this, Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
-		            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-		    {
-		        list.Items.Clear();
-		        dressItems.Items.Clear();
+            {
+                _hotkeyTreeViewCache.Nodes.Add((TreeNode)node.Clone());
             }
-		}
-
-		private DressList undressBagList = null;
-		private void undressBag_Click(object sender, System.EventArgs e)
-		{
-			if ( World.Player == null )
-				return;
-
-			DressList list = (DressList)dressList.SelectedItem;
-			if ( list == null )
-				return;
-
-			undressBagList = list;
-			Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( onDressBagTarget ) );
-			World.Player.SendMessage( MsgLevel.Force, LocString.TargUndressBag, list.Name );
-		}
-
-		void onDressBagTarget( bool location, Serial serial, Point3D p, ushort gfxid )
-		{
-			if ( undressBagList == null )
-				return;
-
-			ShowMe();
-			if ( serial.IsItem )
-			{
-				Item item = World.FindItem( serial );
-				if ( item != null )
-				{
-					undressBagList.SetUndressBag( item.Serial );
-					World.Player.SendMessage( MsgLevel.Force, LocString.UB_Set );
-				}
-				else
-				{
-					undressBagList.SetUndressBag( Serial.Zero );
-					World.Player.SendMessage( MsgLevel.Force, LocString.ItemNotFound );
-				}
-			}
-			else
-			{
-				World.Player.SendMessage( MsgLevel.Force, LocString.ItemNotFound );
-			}
-
-			undressBagList = null;
-		}
-
-		private void dressList_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			DressList list = (DressList)dressList.SelectedItem;
-
-			dressItems.BeginUpdate();
-			dressItems.Items.Clear();
-			if ( list != null  )
-			{
-				for (int i=0;i<list.Items.Count;i++)
-				{
-					if ( list.Items[i] is Serial )
-					{
-						Serial serial = (Serial)list.Items[i];
-						Item item = World.FindItem( serial );
-
-						if ( item != null )
-							dressItems.Items.Add( item.ToString() );
-						else
-							dressItems.Items.Add( Language.Format( LocString.OutOfRangeA1, serial ) );
-					}
-					else if ( list.Items[i] is ItemID )
-					{
-						dressItems.Items.Add( list.Items[i].ToString() );
-					}
-				}
-			}
-			dressItems.EndUpdate();
-		}
-
-		private void dressUseCur_Click(object sender, System.EventArgs e)
-		{
-			DressList list = (DressList)dressList.SelectedItem;
-			if ( World.Player == null )
-				return;
-			if ( list == null )
-				return;
-
-			for ( int i=0;i<World.Player.Contains.Count;i++ )
-			{
-				Item item = (Item)World.Player.Contains[i];
-				if ( item.Layer <= Layer.LastUserValid && item.Layer != Layer.Backpack && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair )
-					list.Items.Add( item.Serial );
-			}
-			dressList.SelectedItem = null;
-			dressList.SelectedItem = list;
-		}
-
-		private void hotkeyTree_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
-		{
-			ClearHKCtrls();
-
-			if ( e.Node == null || !(e.Node.Tag is KeyData ) )
-				return;
-			KeyData hk = (KeyData)e.Node.Tag;
-
-			try
-			{
-				m_LastKV = hk.Key;
-				switch ( hk.Key )
-				{
-					case -1:
-						key.Text = ( "MouseWheel UP" );
-						break;
-					case -2:
-						key.Text = ( "MouseWheel DOWN" );
-						break;
-					case -3:
-						key.Text = ( "Mouse MID Button" );
-						break;
-					case -4:
-						key.Text = ( "Mouse XButton 1" );
-						break;
-					case -5:
-						key.Text = ( "Mouse XButton 2" );
-						break;
-					default:
-						if ( hk.Key > 0 && hk.Key < 256 )
-							key.Text = ( ((Keys)hk.Key).ToString() );
-						else
-							key.Text = ( "" );
-						break;
-				}
-			}
-			catch
-			{
-				key.Text = ">>ERROR<<";
-			}
-
-			chkCtrl.Checked = (hk.Mod&ModKeys.Control) != 0;
-			chkAlt.Checked = (hk.Mod&ModKeys.Alt) != 0;
-			chkShift.Checked = (hk.Mod&ModKeys.Shift)!= 0;
-			chkPass.Checked = hk.SendToUO;
-
-			if ( ( hk.LocName >= (int)LocString.DrinkHeal && hk.LocName <= (int)LocString.DrinkAg && !ClientCommunication.AllowBit( FeatureBit.PotionHotkeys ) ) ||
-				( hk.LocName >= (int)LocString.TargCloseRed && hk.LocName <= (int)LocString.TargCloseCriminal && !ClientCommunication.AllowBit( FeatureBit.ClosestTargets ) ) ||
-				( (( hk.LocName >= (int)LocString.TargRandRed && hk.LocName <= (int)LocString.TargRandNFriend ) ||
-				( hk.LocName >= (int)LocString.TargRandEnemyHuman && hk.LocName <= (int)LocString.TargRandCriminal)) && !ClientCommunication.AllowBit( FeatureBit.RandomTargets ) ) )
-			{
-				LockControl( chkCtrl );
-				LockControl( chkAlt );
-				LockControl( chkShift );
-				LockControl( chkPass );
-				LockControl( key );
-				LockControl( unsetHK );
-				LockControl( setHK );
-				LockControl( dohotkey );
-			}
-		}
-
-		private KeyData GetSelectedHK()
-		{
-			if ( hotkeyTree != null && hotkeyTree.SelectedNode != null )
-				return hotkeyTree.SelectedNode.Tag as KeyData;
-			else
-				return null;
-		}
-
-		private void ClearHKCtrls()
-		{
-			m_LastKV = 0;
-			key.Text = "";
-			chkCtrl.Checked = false;
-			chkAlt.Checked = false;
-			chkShift.Checked = false;
-			chkPass.Checked = false;
-
-			UnlockControl( chkCtrl );
-			UnlockControl( chkAlt );
-			UnlockControl( chkShift );
-			UnlockControl( chkPass );
-			UnlockControl( key );
-			UnlockControl( unsetHK );
-			UnlockControl( setHK );
-			UnlockControl( dohotkey );
-		}
-
-		private void setHK_Click(object sender, System.EventArgs e)
-		{
-			KeyData hk = GetSelectedHK();
-			if ( hk == null || m_LastKV == 0  )
-				return;
-
-			ModKeys mod = ModKeys.None;
-			if ( chkCtrl.Checked )
-				mod |= ModKeys.Control;
-			if ( chkAlt.Checked )
-				mod |= ModKeys.Alt;
-			if ( chkShift.Checked )
-				mod |= ModKeys.Shift;
-
-			KeyData g = HotKey.Get( m_LastKV, mod );
-			bool block = false;
-			if ( g != null && g != hk )
-			{
-				if ( MessageBox.Show( this, Language.Format( LocString.KeyUsed, g.DispName, hk.DispName ), "Hot Key Conflict", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
-				{
-					g.Key = 0;
-					g.Mod = ModKeys.None;
-					g.SendToUO = false;
-				}
-				else
-				{
-					block = true;
-				}
-			}
-
-			if ( !block )
-			{
-				hk.Key = m_LastKV;
-				hk.Mod = mod;
-
-				hk.SendToUO = chkPass.Checked;
-			}
-
-		    if (!string.IsNullOrEmpty(filterHotkeys.Text))
-		    {
-		        TreeNode node = hotkeyTree.SelectedNode;
-
-		        HotKey.RebuildList(hotkeyTree);
-		        RebuildHotKeyCache();
-
-		        filterHotkeys_TextChanged(sender, e);
-
-		        hotkeyTree.SelectedNode = node;
-		    }
         }
 
-		private void unsetHK_Click(object sender, System.EventArgs e)
-		{
-			KeyData hk = GetSelectedHK();
-			if ( hk == null )
-				return;
+        private Version m_Ver = System.Reflection.Assembly.GetCallingAssembly().GetName().Version;
 
-			hk.Key = 0;
-			hk.Mod = 0;
-			hk.SendToUO = false;
+        private uint m_OutPrev;
+        private uint m_InPrev;
 
-			ClearHKCtrls();
+        private class StatsTimer : Timer
+        {
+            MainForm m_Form;
+            public StatsTimer(MainForm form) : base(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5))
+            {
+                m_Form = form;
+            }
 
-		    HotKey.RebuildList(hotkeyTree);
-		    RebuildHotKeyCache();
-
-		    filterHotkeys_TextChanged(sender, e);
+            protected override void OnTick()
+            {
+                m_Form.UpdateRazorStatus();
+            }
         }
 
-		private void key_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			m_LastKV = (int)e.KeyCode;
-			key.Text = e.KeyCode.ToString();
+        private void UpdateRazorStatus()
+        {
+            if (!ClientCommunication.ClientRunning)
+                Close();
 
-			e.Handled = true;
-		}
+            uint ps = m_OutPrev;
+            uint pr = m_InPrev;
+            m_OutPrev = ClientCommunication.TotalOut();
+            m_InPrev = ClientCommunication.TotalIn();
 
-		private void key_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if ( e.Delta > 0 )
-			{
-				m_LastKV = -1;
-				key.Text = "MouseWheel UP";
-			}
-			else if ( e.Delta < 0 )
-			{
-				m_LastKV = -2;
-				key.Text = "MouseWheel DOWN";
-			}
-		}
+            if (tabs.SelectedTab != advancedTab)
+                return;
 
-		private void key_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if ( e.Button == MouseButtons.Middle )
-			{
-				m_LastKV = -3;
-				key.Text = "Mouse MID Button";
-			}
-			else if ( e.Button == MouseButtons.XButton1 )
-			{
-				m_LastKV = -4;
-				key.Text = "Mouse XButton 1";
-			}
-			else if ( e.Button == MouseButtons.XButton2 )
-			{
-				m_LastKV = -5;
-				key.Text = "Mouse XButton 2";
-			}
-		}
+            int time = 0;
+            if (ClientCommunication.ConnectionStart != DateTime.MinValue)
+                time = (int)((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
 
-		private void dohotkey_Click(object sender, System.EventArgs e)
-		{
-			KeyData hk = GetSelectedHK();
-			if ( hk != null && World.Player != null )
-			{
-				if ( MacroManager.AcceptActions )
-					MacroManager.Action( new HotKeyAction( hk ) );
-				hk.Callback();
-			}
-		}
+            if (String.IsNullOrEmpty(statusBox.SelectedText))
+            {
+                statusBox.Lines = Language.Format(LocString.RazorStatus1,
+                     m_Ver,
+                     Utility.FormatSize(System.GC.GetTotalMemory(false)),
+                     Utility.FormatSize(m_OutPrev), Utility.FormatSize((long)((m_OutPrev - ps))),
+                     Utility.FormatSize(m_InPrev), Utility.FormatSize((long)((m_InPrev - pr))),
+                     Utility.FormatTime(time),
+                     (World.Player != null ? (uint)World.Player.Serial : 0),
+                     (World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0),
+                     World.Items.Count,
+                     World.Mobiles.Count).Split('\n');
 
-		private void queueTargets_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "QueueTargets", queueTargets.Checked );
-		}
+                if (World.Player != null)
+                    statusBox.AppendText(
+                            $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}");
+            }
 
-		private void chkForceSpeechHue_CheckedChanged(object sender, System.EventArgs e)
-		{
-			setSpeechHue.Enabled = chkForceSpeechHue.Checked;
-			Config.SetProperty( "ForceSpeechHue", chkForceSpeechHue.Checked );
-		}
+            if (PacketHandlers.PlayCharTime < DateTime.UtcNow && PacketHandlers.PlayCharTime + TimeSpan.FromSeconds(30) < DateTime.UtcNow)
+            {
+                if (Config.GetBool("Negotiate"))
+                {
+                    bool allAllowed = true;
+                    StringBuilder text = new StringBuilder();
 
-		private void lthilight_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( !(setLTHilight.Enabled = lthilight.Checked) )
-			{
-				Config.SetProperty( "LTHilight", 0 );
-				ClientCommunication.SetCustomNotoHue( 0 );
-				lthilight.BackColor = SystemColors.Control;
-				lthilight.ForeColor = SystemColors.ControlText;
-			}
-		}
+                    text.Append(Language.GetString(LocString.NegotiateTitle));
+                    text.Append("\r\n");
 
-		private void chkForceSpellHue_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( chkForceSpellHue.Checked )
-			{
-				setBeneHue.Enabled = setHarmHue.Enabled = setNeuHue.Enabled = true;
-				Config.SetProperty( "ForceSpellHue", true );
-			}
-			else
-			{
-				setBeneHue.Enabled = setHarmHue.Enabled = setNeuHue.Enabled = false;
-				Config.SetProperty( "ForceSpellHue", false );
-			}
-		}
+                    for (uint i = 0; i < FeatureBit.MaxBit; i++)
+                    {
+                        if (!ClientCommunication.AllowBit(i))
+                        {
+                            allAllowed = false;
 
-		private void txtSpellFormat_TextChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "SpellFormat", txtSpellFormat.Text.Trim() );
-		}
+                            text.Append(Language.GetString((LocString)(((int)LocString.FeatureDescBase) + i)));
+                            text.Append(' ');
+                            text.Append(Language.GetString(LocString.NotAllowed));
+                            text.Append("\r\n");
+                        }
+                    }
 
-		private void InitPreviewHue( Control ctrl, string cfg )
-		{
-			int hueIdx = Config.GetInt( cfg );
-			if ( hueIdx > 0 && hueIdx < 3000 )
-				ctrl.BackColor = Ultima.Hues.GetHue( hueIdx - 1 ).GetColor( HueEntry.TextHueIDX );
-			else
-				ctrl.BackColor = SystemColors.Control;
-			ctrl.ForeColor = ( ctrl.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black );
-		}
+                    if (allAllowed)
+                        text.Append(Language.GetString(LocString.AllFeaturesEnabled));
 
-		private bool SetHue( Control ctrl, string cfg )
-		{
-			HueEntry h = new HueEntry( Config.GetInt( cfg ) );
+                    text.Append("\r\n");
 
-			if ( h.ShowDialog( this ) == DialogResult.OK )
-			{
-				int hueIdx = h.Hue;
-				Config.SetProperty( cfg, hueIdx );
-				if ( hueIdx > 0 && hueIdx < 3000 )
-					ctrl.BackColor = Ultima.Hues.GetHue( hueIdx - 1 ).GetColor( HueEntry.TextHueIDX );
-				else
-					ctrl.BackColor = Color.White;
-				ctrl.ForeColor = ( ctrl.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black );
+                    features.Visible = true;
+                    features.Text = text.ToString();
+                }
+                else
+                {
+                    features.Visible = false;
+                }
+            }
+        }
 
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
+        public void UpdateSkill(Skill skill)
+        {
+            double total = 0;
+            for (int i = 0; i < Skill.Count; i++)
+            {
+                total += World.Player.Skills[i].Base;
+            }
 
-		private void setExHue_Click(object sender, System.EventArgs e)
-		{
-			SetHue( lblExHue, "ExemptColor" );
-		}
+            baseTotal.Text = $"{total:F1}";
 
-		private void setMsgHue_Click(object sender, System.EventArgs e)
-		{
-			SetHue( lblMsgHue, "SysColor" );
-		}
+            if (Config.GetBool("LogSkillChanges"))
+            {
+                string skillLog =
+                    $"{Config.GetInstallDirectory()}\\SkillLog\\{World.Player.Name}_{World.Player.Serial}_SkillLog.csv";
 
-		private void setWarnHue_Click(object sender, System.EventArgs e)
-		{
-			SetHue( lblWarnHue, "WarningColor" );
-		}
+                if (!Directory.Exists($"{Config.GetInstallDirectory()}\\SkillLog"))
+                {
+                    Directory.CreateDirectory($"{Config.GetInstallDirectory()}\\SkillLog");
+                }
 
-		private void setSpeechHue_Click(object sender, System.EventArgs e)
-		{
-			SetHue( chkForceSpeechHue, "SpeechHue" );
-		}
+                if (!File.Exists(skillLog))
+                {
+                    using (StreamWriter sr = File.CreateText(skillLog))
+                    {
+                        sr.WriteLine("Timestamp,SkillName,Value,Base,Gain,Cap");
+                    }
+                }
 
-		private void setLTHilight_Click(object sender, System.EventArgs e)
-		{
-			if ( SetHue( lthilight, "LTHilight" ) )
-				ClientCommunication.SetCustomNotoHue( Config.GetInt( "LTHilight" ) );
-		}
+                using (StreamWriter sw = File.AppendText(skillLog))
+                {
+                    sw.WriteLine(
+                        $"{DateTime.Now},{(SkillName)skill.Index},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
+                }
+            }
 
-		private void setBeneHue_Click(object sender, System.EventArgs e)
-		{
-			SetHue( lblBeneHue, "BeneficialSpellHue" );
-		}
+            for (int i = 0; i < skillList.Items.Count; i++)
+            {
+                ListViewItem cur = skillList.Items[i];
+                if (cur.Tag == skill)
+                {
+                    cur.SubItems[1].Text = String.Format("{0:F1}", skill.Value);
+                    cur.SubItems[2].Text = String.Format("{0:F1}", skill.Base);
+                    cur.SubItems[3].Text = String.Format("{0}{1:F1}", (skill.Delta > 0 ? "+" : ""), skill.Delta);
+                    cur.SubItems[4].Text = String.Format("{0:F1}", skill.Cap);
+                    cur.SubItems[5].Text = skill.Lock.ToString()[0].ToString();
+                    SortSkills();
+                    return;
+                }
+            }
+        }
 
-		private void setHarmHue_Click(object sender, System.EventArgs e)
-		{
-			SetHue( lblHarmHue, "HarmfulSpellHue" );
-		}
+        public void RedrawSkills()
+        {
+            skillList.BeginUpdate();
+            skillList.Items.Clear();
+            double Total = 0;
+            if (World.Player != null && World.Player.SkillsSent)
+            {
+                string[] items = new string[6];
+                for (int i = 0; i < Skill.Count; i++)
+                {
+                    Skill sk = World.Player.Skills[i];
+                    Total += sk.Base;
+                    items[0] = Language.Skill2Str(i);//((SkillName)i).ToString();
+                    items[1] = String.Format("{0:F1}", sk.Value);
+                    items[2] = String.Format("{0:F1}", sk.Base);
+                    items[3] = String.Format("{0}{1:F1}", (sk.Delta > 0 ? "+" : ""), sk.Delta);
+                    items[4] = String.Format("{0:F1}", sk.Cap);
+                    items[5] = sk.Lock.ToString()[0].ToString();
 
-		private void setNeuHue_Click(object sender, System.EventArgs e)
-		{
-			SetHue( lblNeuHue, "NeutralSpellHue" );
-		}
+                    ListViewItem lvi = new ListViewItem(items);
+                    lvi.Tag = sk;
+                    skillList.Items.Add(lvi);
+                }
 
-		private void QueueActions_CheckedChanged(object sender, System.EventArgs e)
-		{
-			//txtObjDelay.Enabled = QueueActions.Checked;
-			Config.SetProperty( "QueueActions", QueueActions.Checked );
-		}
+                //Config.SetProperty( "SkillListAsc", false );
+                SortSkills();
+            }
+            skillList.EndUpdate();
+            baseTotal.Text = String.Format("{0:F1}", Total);
+        }
 
-		private void txtObjDelay_TextChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "ObjectDelay", Utility.ToInt32( txtObjDelay.Text.Trim(), 500 ) );
-		}
+        private void OnFilterCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
+        {
+            ((Filter)filters.Items[e.Index]).OnCheckChanged(e.NewValue);
+        }
 
-		private void chkStealth_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "CountStealthSteps", chkStealth.Checked );
+        private void incomingMob_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("ShowMobNames", incomingMob.Checked);
+        }
 
-		    stealthOverhead.Enabled = chkStealth.Checked;
-		}
+        private void incomingCorpse_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("ShowCorpseNames", incomingCorpse.Checked);
+        }
 
-		private void agentList_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			try
-			{
-				Agent.Select( agentList.SelectedIndex, agentList, agentSubList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6 );
-			}
-			catch
-			{
-			}
-		}
+        private ContextMenu m_SkillMenu;
+        private void skillList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ListView.SelectedListViewItemCollection items = skillList.SelectedItems;
+                if (items.Count <= 0)
+                    return;
+                Skill s = items[0].Tag as Skill;
+                if (s == null)
+                    return;
 
-		private void Agent_Button( int b )
-		{
-			if ( World.Player == null )
-				return;
+                if (m_SkillMenu == null)
+                {
+                    m_SkillMenu = new ContextMenu(new MenuItem[]
+                    {
+                              new MenuItem( Language.GetString( LocString.SetSLUp ), new EventHandler( onSetSkillLockUP ) ),
+                              new MenuItem( Language.GetString( LocString.SetSLDown ), new EventHandler( onSetSkillLockDOWN ) ),
+                              new MenuItem( Language.GetString( LocString.SetSLLocked ), new EventHandler( onSetSkillLockLOCKED ) )
+                    });
+                }
 
-			Agent a = agentList.SelectedItem as Agent;
-			if ( a == null )
-				agentList.SelectedIndex = -1;
-			else
-				a.OnButtonPress( b );
-		}
+                for (int i = 0; i < 3; i++)
+                    m_SkillMenu.MenuItems[i].Checked = ((int)s.Lock) == i;
 
-		private void agentB1_Click(object sender, System.EventArgs e)
-		{
-			Agent_Button( 1 );
-		}
+                m_SkillMenu.Show(skillList, new Point(e.X, e.Y));
+            }
+        }
 
-		private void agentB2_Click(object sender, System.EventArgs e)
-		{
-			Agent_Button( 2 );
-		}
+        private void onSetSkillLockUP(object sender, EventArgs e)
+        {
+            SetLock(LockType.Up);
+        }
 
-		private void agentB3_Click(object sender, System.EventArgs e)
-		{
-			Agent_Button( 3 );
-		}
+        private void onSetSkillLockDOWN(object sender, EventArgs e)
+        {
+            SetLock(LockType.Down);
+        }
 
-		private void agentB4_Click(object sender, System.EventArgs e)
-		{
-			Agent_Button( 4 );
-		}
+        private void onSetSkillLockLOCKED(object sender, EventArgs e)
+        {
+            SetLock(LockType.Locked);
+        }
 
-		private void agentB5_Click(object sender, System.EventArgs e)
-		{
-			Agent_Button( 5 );
-		}
+        private void SetLock(LockType lockType)
+        {
+            ListView.SelectedListViewItemCollection items = skillList.SelectedItems;
+            if (items.Count <= 0)
+                return;
+            Skill s = items[0].Tag as Skill;
+            if (s == null)
+                return;
 
-		private void agentB6_Click(object sender, System.EventArgs e)
-		{
-			Agent_Button( 6 );
-		}
+            try
+            {
+                ClientCommunication.SendToServer(new SetSkillLock(s.Index, lockType));
 
-		private void MainForm_Activated(object sender, System.EventArgs e)
-		{
-			DisableCloseButton();
-			//this.TopMost = true;
-		}
+                s.Lock = lockType;
+                UpdateSkill(s);
 
-		private void MainForm_Deactivate(object sender, System.EventArgs e)
-		{
-			if ( this.TopMost )
-				this.TopMost = false;
-		}
+                ClientCommunication.SendToClient(new SkillUpdate(s));
+            }
+            catch
+            {
+            }
 
-		private void MainForm_Resize(object sender, System.EventArgs e)
-		{
-			if ( WindowState == FormWindowState.Minimized && !this.ShowInTaskbar )
-				this.Hide();
-		}
+        }
 
-		private bool IsNear( int a, int b )
-		{
-			return ( a <= b+5 && a >= b-5 );
-		}
+        private void OnSkillColClick(object sender, System.Windows.Forms.ColumnClickEventArgs e)
+        {
+            if (e.Column == Config.GetInt("SkillListCol"))
+                Config.SetProperty("SkillListAsc", !Config.GetBool("SkillListAsc"));
+            else
+                Config.SetProperty("SkillListCol", e.Column);
+            SortSkills();
+        }
 
-		private void MainForm_Move(object sender, System.EventArgs e)
-		{
-			// atempt to dock to the side of the screen.  Also try not to save the X/Y when we are minimized (which is -32000, -32000)
-			System.Drawing.Point pt = this.Location;
+        private void SortSkills()
+        {
+            int col = Config.GetInt("SkillListCol");
+            bool asc = Config.GetBool("SkillListAsc");
 
-			Rectangle screen = Screen.GetWorkingArea( this );
-			if ( this.WindowState != FormWindowState.Minimized && pt.X+this.Width/2 >= screen.Left && pt.Y+this.Height/2 >= screen.Top && pt.X <= screen.Right && pt.Y <= screen.Bottom )
-			{
-				if ( IsNear( pt.X + this.Width, screen.Right ) )
-					pt.X = screen.Right - this.Width;
-				else if ( IsNear( pt.X, screen.Left ) )
-					pt.X = screen.Left;
+            if (col < 0 || col > 5)
+                col = 0;
 
-				if ( IsNear( pt.Y + this.Height, screen.Bottom ) )
-					pt.Y = screen.Bottom - this.Height;
-				else if ( IsNear( pt.Y, screen.Top ) )
-					pt.Y = screen.Top;
+            skillList.BeginUpdate();
+            if (col == 0 || col == 5)
+            {
+                skillList.ListViewItemSorter = null;
+                skillList.Sorting = asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
+            else
+            {
+                LVDoubleComparer.Column = col;
+                LVDoubleComparer.Asc = asc;
 
-				this.Location = pt;
-				Config.SetProperty( "WindowX", (int)pt.X );
-				Config.SetProperty( "WindowY", (int)pt.Y );
-			}
-		}
+                skillList.ListViewItemSorter = LVDoubleComparer.Instance;
 
-		private void opacity_Scroll(object sender, System.EventArgs e)
-		{
-			int o = opacity.Value;
-			Config.SetProperty( "Opacity", o );
-			opacityLabel.Text = String.Format( "Opacity: {0}%", o );
-			this.Opacity = ((double)o) / 100.0;
-		}
+                skillList.Sorting = SortOrder.None;
+                skillList.Sort();
+            }
+            skillList.EndUpdate();
+            skillList.Refresh();
+        }
 
-		private void dispDelta_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "DisplaySkillChanges", dispDelta.Checked );
-		}
+        private class LVDoubleComparer : IComparer
+        {
+            public static readonly LVDoubleComparer Instance = new LVDoubleComparer();
+            public static int Column { set { Instance.m_Col = value; } }
+            public static bool Asc { set { Instance.m_Asc = value; } }
 
-		/*private void saveProfile_Click(object sender, System.EventArgs e)
-		{
-			Counter.Save();
-			Config.Save();
-			MacroManager.Save();
-			MessageBox.Show( this, Language.GetString( LocString.SaveOK ), "Save OK", MessageBoxButtons.OK, MessageBoxIcon.Information );
-		}
+            private int m_Col;
+            private bool m_Asc;
 
-		private void edit_Click(object sender, System.EventArgs e)
-		{
-			if ( counters.SelectedItems.Count <= 0 )
-				return;
+            private LVDoubleComparer()
+            {
+            }
 
-			Counter c = counters.SelectedItems[0].Tag as Counter;
-			if ( c == null )
-				return;
+            public int Compare(object x, object y)
+            {
+                if (x == null || !(x is ListViewItem))
+                    return m_Asc ? 1 : -1;
+                else if (y == null || !(y is ListViewItem))
+                    return m_Asc ? -1 : 1;
 
-			AddCounter dlg = new AddCounter( c.Name, c.Format, c.ItemID, c.Hue );
+                try
+                {
+                    double dx = Convert.ToDouble(((ListViewItem)x).SubItems[m_Col].Text);
+                    double dy = Convert.ToDouble(((ListViewItem)y).SubItems[m_Col].Text);
 
-			if ( dlg.ShowDialog( this ) == DialogResult.OK )
-			{
-				c.Name = dlg.NameStr;
-				c.Format = dlg.FmtStr;
-				c.ItemID = (ushort)dlg.ItemID;
-				c.Hue = (int)dlg.Hue;
-				Counter.Redraw( counters );
-			}
-		}*/
+                    if (dx > dy)
+                        return m_Asc ? -1 : 1;
+                    else if (dx == dy)
+                        return 0;
+                    else //if ( dx > dy )
+                        return m_Asc ? 1 : -1;
+                }
+                catch
+                {
+                    return ((ListViewItem)x).Text.CompareTo(((ListViewItem)y).Text) * (m_Asc ? 1 : -1);
+                }
+            }
+        }
 
-		private void logPackets_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( logPackets.Checked )
-			{
-				if ( m_Initializing || MessageBox.Show( this, Language.GetString( LocString.PacketLogWarn ), "Caution!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning ) == DialogResult.Yes )
-					Packet.Logging = true;
-				else
-					logPackets.Checked = false;
-			}
-			else
-			{
-				Packet.Logging = false;
-			}
-		}
+        private void OnResetSkillDelta(object sender, System.EventArgs e)
+        {
+            if (World.Player == null)
+                return;
 
-		private void showNotoHue_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "ShowNotoHue", showNotoHue.Checked );
-			if ( showNotoHue.Checked )
-				ClientCommunication.RequestTitlebarUpdate();
-		}
+            for (int i = 0; i < Skill.Count; i++)
+                World.Player.Skills[i].Delta = 0;
 
-		private void recount_Click(object sender, System.EventArgs e)
-		{
-			Counter.FullRecount();
-		}
+            RedrawSkills();
+        }
 
-		private void openCorpses_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "AutoOpenCorpses", openCorpses.Checked );
-			corpseRange.Enabled = openCorpses.Checked;
-		}
+        private void OnSetSkillLocks(object sender, System.EventArgs e)
+        {
+            if (locks.SelectedIndex == -1 || World.Player == null)
+                return;
 
-		private void corpseRange_TextChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "CorpseRange", Utility.ToInt32( corpseRange.Text, 2 ) );
-		}
+            LockType type = (LockType)locks.SelectedIndex;
 
-		private void showWelcome_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetAppSetting("ShowWelcome", ( showWelcome.Checked ? 1 : 0 ).ToString());
+            for (short i = 0; i < Skill.Count; i++)
+            {
+                World.Player.Skills[i].Lock = type;
+                ClientCommunication.SendToServer(new SetSkillLock(i, type));
+            }
+            ClientCommunication.SendToClient(new SkillsList());
+            RedrawSkills();
+        }
 
-		}
+        private void OnDispSkillCheck(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("DispSkillChanges", dispDelta.Checked);
+        }
 
-		private ContextMenu m_DressItemsMenu = null;
-		private void dressItems_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if ( e.Button == MouseButtons.Right )
-			{
-				m_DressItemsMenu = new ContextMenu( new MenuItem[]{ new MenuItem( Language.GetString( LocString.Conv2Type ), new EventHandler( OnMakeType ) ) } );
-				m_DressItemsMenu.Show( dressItems, new Point( e.X, e.Y ) );
-			}
-		}
+        private void delCounter_Click(object sender, System.EventArgs e)
+        {
+            if (counters.SelectedItems.Count <= 0)
+                return;
 
-		private void OnMakeType( object sender, System.EventArgs e )
-		{
-			DressList list = (DressList)dressList.SelectedItem;
-			if ( list == null )
-				return;
-			int sel = dressItems.SelectedIndex;
-			if ( sel < 0 || sel >= list.Items.Count )
-				return;
+            Counter c = counters.SelectedItems[0].Tag as Counter;
 
-			if ( list.Items[sel] is Serial )
-			{
-				Serial s = (Serial)list.Items[sel];
-				Item item = World.FindItem( s );
-				if ( item != null )
-				{
-					list.Items[sel] = item.ItemID;
-					dressItems.BeginUpdate();
-					dressItems.Items[sel] = item.ItemID.ToString();
-					dressItems.EndUpdate();
-				}
-			}
-		}
+            if (c != null)
+            {
+                AddCounter ac = new AddCounter(c);
+                switch (ac.ShowDialog(this))
+                {
+                    case DialogResult.Abort:
+                        counters.Items.Remove(c.ViewItem);
+                        Counter.List.Remove(c);
+                        break;
 
-		private static char[] m_InvalidNameChars = new char[]{ '/', '\\', ';', '?', ':', '*' };
-		private void newMacro_Click(object sender, System.EventArgs e)
-		{
-            if ( InputBox.Show( this, Language.GetString( LocString.NewMacro ), Language.GetString( LocString.EnterAName ) ) )
-			{
+                    case DialogResult.OK:
+                        c.Set((ushort)ac.ItemID, ac.Hue, ac.NameStr, ac.FmtStr, ac.DisplayImage);
+                        break;
+                }
+            }
+        }
+
+        private void addCounter_Click(object sender, System.EventArgs e)
+        {
+            AddCounter dlg = new AddCounter();
+
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                Counter.Register(new Counter(dlg.NameStr, dlg.FmtStr, (ushort)dlg.ItemID, (int)dlg.Hue, dlg.DisplayImage));
+                Counter.Redraw(counters);
+            }
+        }
+
+        private void showInBar_CheckedChanged(object sender, System.EventArgs e)
+        {
+            titleStr.Enabled = showInBar.Checked;
+            Config.SetProperty("TitleBarDisplay", showInBar.Checked);
+            ClientCommunication.RequestTitlebarUpdate();
+        }
+
+        private void titleStr_TextChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("TitleBarText", titleStr.Text.TrimEnd());
+            if (Config.GetBool("TitleBarDisplay"))
+                ClientCommunication.RequestTitlebarUpdate();
+        }
+
+        private void counters_ItemCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
+        {
+            if (e.Index >= 0 && e.Index < Counter.List.Count && !Counter.SupressChecks)
+            {
+                ((Counter)(counters.Items[e.Index].Tag)).SetEnabled(e.NewValue == CheckState.Checked);
+                ClientCommunication.RequestTitlebarUpdate();
+                counters.Sort();
+                //counters.Refresh();
+            }
+        }
+
+        public void RedrawCounters()
+        {
+            Counter.Redraw(counters);
+        }
+
+        private void checkNewConts_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("AutoSearch", checkNewConts.Checked);
+            excludePouches.Enabled = checkNewConts.Checked;
+        }
+
+        private void warnCount_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("CounterWarn", warnCount.Checked);
+            warnNum.Enabled = warnCount.Checked;
+        }
+
+        private void timerTimer_Tick(object sender, System.EventArgs e)
+        {
+            Timer.Control = timerTimer;
+            Timer.Slice();
+        }
+
+        private void warnNum_TextChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("CounterWarnAmount", Utility.ToInt32(warnNum.Text.Trim(), 3));
+        }
+
+        private void alwaysTop_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("AlwaysOnTop", this.TopMost = alwaysTop.Checked);
+        }
+
+        private void profiles_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            if (profiles.SelectedIndex < 0 || !m_ProfileConfirmLoad)
+                return;
+
+            string name = (string)profiles.Items[profiles.SelectedIndex];
+            if (MessageBox.Show(this, Language.Format(LocString.ProfLoadQ, name), "Load?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Config.Save();
+                if (!Config.LoadProfile(name))
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.ProfLoadE), "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    InitConfig();
+                    if (World.Player != null)
+                        Config.SetProfileFor(World.Player);
+                }
+                ClientCommunication.RequestTitlebarUpdate();
+            }
+            else
+            {
+                m_ProfileConfirmLoad = false;
+                for (int i = 0; i < profiles.Items.Count; i++)
+                {
+                    if ((string)profiles.Items[i] == Config.CurrentProfile.Name)
+                    {
+                        profiles.SelectedIndex = i;
+                        break;
+                    }
+                }
+                m_ProfileConfirmLoad = true;
+            }
+        }
+
+        private void delProfile_Click(object sender, System.EventArgs e)
+        {
+            if (profiles.SelectedIndex < 0)
+                return;
+
+            if (MessageBox.Show(this, "Are you sure you want to delete this profile?", "Delete Profile?",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
+
+            string remove = (string)profiles.Items[profiles.SelectedIndex];
+
+            if (remove == "default")
+            {
+                MessageBox.Show(this, Language.GetString(LocString.NoDelete), "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string file = String.Format("Profiles/{0}.xml", remove);
+            if (File.Exists(file))
+                File.Delete(file);
+
+            profiles.Items.Remove(remove);
+            if (!Config.LoadProfile("default"))
+            {
+                Config.CurrentProfile.MakeDefault();
+                Config.CurrentProfile.Name = "default";
+            }
+            InitConfig();
+
+            m_ProfileConfirmLoad = false;
+            for (int i = 0; i < profiles.Items.Count; i++)
+            {
+                if ((string)profiles.Items[i] == "default")
+                {
+                    profiles.SelectedIndex = i;
+                    m_ProfileConfirmLoad = true;
+                    return;
+                }
+            }
+
+            int sel = profiles.Items.Count;
+            profiles.Items.Add("default");
+            profiles.SelectedIndex = sel;
+            m_ProfileConfirmLoad = true;
+        }
+
+        public void SelectProfile(string name)
+        {
+            m_ProfileConfirmLoad = false;
+            profiles.SelectedItem = name;
+            m_ProfileConfirmLoad = true;
+        }
+
+        private void newProfile_Click(object sender, System.EventArgs e)
+        {
+            if (InputBox.Show(this, Language.GetString(LocString.EnterProfileName),
+                Language.GetString(LocString.EnterAName)))
+            {
+                string str = InputBox.GetString();
+                if (str == null || str == "" || str.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+                    str.IndexOfAny(m_InvalidNameChars) != -1)
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                m_ProfileConfirmLoad = false;
+                int sel = profiles.Items.Count;
+                string lwr = str.ToLower();
+                for (int i = 0; i < profiles.Items.Count; i++)
+                {
+                    if (lwr == ((string)profiles.Items[i]).ToLower())
+                    {
+                        if (MessageBox.Show(this, Language.GetString(LocString.ProfExists), "Load Profile?",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            Config.Save();
+                            profiles.SelectedIndex = i;
+                            if (!Config.LoadProfile(str))
+                            {
+                                MessageBox.Show(this, Language.GetString(LocString.ProfLoadE), "Load Error",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                            else
+                            {
+                                InitConfig();
+                                if (World.Player != null)
+                                    Config.SetProfileFor(World.Player);
+                            }
+
+                            ClientCommunication.RequestTitlebarUpdate();
+                        }
+
+                        m_ProfileConfirmLoad = true;
+                        return;
+                    }
+                }
+
+                Config.Save();
+                Config.NewProfile(str);
+                profiles.Items.Add(str);
+                profiles.SelectedIndex = sel;
+                InitConfig();
+                if (World.Player != null)
+                    Config.SetProfileFor(World.Player);
+                m_ProfileConfirmLoad = true;
+            }
+        }
+
+        public bool CanClose
+        {
+            get
+            {
+                return m_CanClose;
+            }
+            set
+            {
+                m_CanClose = value;
+            }
+        }
+
+        private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!m_CanClose && ClientCommunication.ClientRunning)
+            {
+                DisableCloseButton();
+                e.Cancel = true;
+            }
+            else
+            {
+                PacketPlayer.Stop();
+                AVIRec.Stop();
+            }
+            //if ( Engine.NoPatch )
+            //	e.Cancel = MessageBox.Show( this, "Are you sure you want to close Razor?\n(This will not close the UO client.)", "Close Razor?", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.No;
+        }
+
+        private void skillCopySel_Click(object sender, System.EventArgs e)
+        {
+            if (skillList.SelectedItems == null || skillList.SelectedItems.Count <= 0)
+                return;
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < skillList.SelectedItems.Count; i++)
+            {
+                ListViewItem vi = skillList.SelectedItems[i];
+                if (vi != null && vi.SubItems != null && vi.SubItems.Count > 4)
+                {
+                    string name = vi.SubItems[0].Text;
+                    if (name != null && name.Length > 20)
+                        name = name.Substring(0, 16) + "...";
+
+                    sb.AppendFormat("{0,-20} {1,5:F1} {2,5:F1} {4:F1} {5,5:F1}\n",
+                         name,
+                         vi.SubItems[1].Text,
+                         vi.SubItems[2].Text,
+                         Utility.ToInt32(vi.SubItems[3].Text, 0) < 0 ? "" : "+",
+                         vi.SubItems[3].Text,
+                         vi.SubItems[4].Text);
+                }
+            }
+
+            if (sb.Length > 0)
+                Clipboard.SetDataObject(sb.ToString(), true);
+        }
+
+        private void skillCopyAll_Click(object sender, System.EventArgs e)
+        {
+            if (World.Player == null)
+                return;
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < Skill.Count; i++)
+            {
+                Skill sk = World.Player.Skills[i];
+                sb.AppendFormat("{0,-20} {1,-5:F1} {2,-5:F1} {3}{4,-5:F1} {5,-5:F1}\n", (SkillName)i, sk.Value, sk.Base, sk.Delta > 0 ? "+" : "", sk.Delta, sk.Cap);
+            }
+
+            if (sb.Length > 0)
+                Clipboard.SetDataObject(sb.ToString(), true);
+        }
+
+        private void addDress_Click(object sender, System.EventArgs e)
+        {
+            if (InputBox.Show(this, Language.GetString(LocString.DressName), Language.GetString(LocString.EnterAName)))
+            {
+                string str = InputBox.GetString();
+                if (str == null || str == "")
+                    return;
+                DressList list = new DressList(str);
+                DressList.Add(list);
+                dressList.Items.Add(list);
+                dressList.SelectedItem = list;
+            }
+        }
+
+        private void removeDress_Click(object sender, System.EventArgs e)
+        {
+            DressList dress = (DressList)dressList.SelectedItem;
+
+            if (dress != null && MessageBox.Show(this, Language.GetString(LocString.DelDressQ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                dress.Items.Clear();
+                dressList.Items.Remove(dress);
+                dressList.SelectedIndex = -1;
+                dressItems.Items.Clear();
+                DressList.Remove(dress);
+            }
+        }
+
+        private void dressNow_Click(object sender, System.EventArgs e)
+        {
+            DressList dress = (DressList)dressList.SelectedItem;
+            if (dress != null && World.Player != null)
+                dress.Dress();
+        }
+
+        private void undressList_Click(object sender, System.EventArgs e)
+        {
+            DressList dress = (DressList)dressList.SelectedItem;
+            if (dress != null && World.Player != null && World.Player.Backpack != null)
+                dress.Undress();
+        }
+
+        private void targItem_Click(object sender, System.EventArgs e)
+        {
+            Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnDressItemTarget));
+        }
+
+        private void OnDressItemTarget(bool loc, Serial serial, Point3D pt, ushort itemid)
+        {
+            if (loc)
+                return;
+
+            ShowMe();
+            if (serial.IsItem)
+            {
+                DressList list = (DressList)dressList.SelectedItem;
+
+                if (list == null)
+                    return;
+
+                list.Items.Add(serial);
+                Item item = World.FindItem(serial);
+
+                if (item == null)
+                    dressItems.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
+                else
+                    dressItems.Items.Add(item.ToString());
+            }
+        }
+
+        private void dressDelSel_Click(object sender, System.EventArgs e)
+        {
+            DressList list = (DressList)dressList.SelectedItem;
+            if (list == null)
+                return;
+
+            int sel = dressItems.SelectedIndex;
+            if (sel < 0 || sel >= list.Items.Count)
+                return;
+
+            if (MessageBox.Show(this, Language.GetString(LocString.DelDressItemQ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try
+                {
+                    list.Items.RemoveAt(sel);
+                    dressItems.Items.RemoveAt(sel);
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        private void clearDress_Click(object sender, System.EventArgs e)
+        {
+            DressList list = (DressList)dressList.SelectedItem;
+            if (list == null)
+                return;
+
+            if (MessageBox.Show(this, Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                list.Items.Clear();
+                dressItems.Items.Clear();
+            }
+        }
+
+        private DressList undressBagList = null;
+        private void undressBag_Click(object sender, System.EventArgs e)
+        {
+            if (World.Player == null)
+                return;
+
+            DressList list = (DressList)dressList.SelectedItem;
+            if (list == null)
+                return;
+
+            undressBagList = list;
+            Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(onDressBagTarget));
+            World.Player.SendMessage(MsgLevel.Force, LocString.TargUndressBag, list.Name);
+        }
+
+        void onDressBagTarget(bool location, Serial serial, Point3D p, ushort gfxid)
+        {
+            if (undressBagList == null)
+                return;
+
+            ShowMe();
+            if (serial.IsItem)
+            {
+                Item item = World.FindItem(serial);
+                if (item != null)
+                {
+                    undressBagList.SetUndressBag(item.Serial);
+                    World.Player.SendMessage(MsgLevel.Force, LocString.UB_Set);
+                }
+                else
+                {
+                    undressBagList.SetUndressBag(Serial.Zero);
+                    World.Player.SendMessage(MsgLevel.Force, LocString.ItemNotFound);
+                }
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Force, LocString.ItemNotFound);
+            }
+
+            undressBagList = null;
+        }
+
+        private void dressList_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            DressList list = (DressList)dressList.SelectedItem;
+
+            dressItems.BeginUpdate();
+            dressItems.Items.Clear();
+            if (list != null)
+            {
+                for (int i = 0; i < list.Items.Count; i++)
+                {
+                    if (list.Items[i] is Serial)
+                    {
+                        Serial serial = (Serial)list.Items[i];
+                        Item item = World.FindItem(serial);
+
+                        if (item != null)
+                            dressItems.Items.Add(item.ToString());
+                        else
+                            dressItems.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
+                    }
+                    else if (list.Items[i] is ItemID)
+                    {
+                        dressItems.Items.Add(list.Items[i].ToString());
+                    }
+                }
+            }
+            dressItems.EndUpdate();
+        }
+
+        private void dressUseCur_Click(object sender, System.EventArgs e)
+        {
+            DressList list = (DressList)dressList.SelectedItem;
+            if (World.Player == null)
+                return;
+            if (list == null)
+                return;
+
+            for (int i = 0; i < World.Player.Contains.Count; i++)
+            {
+                Item item = (Item)World.Player.Contains[i];
+                if (item.Layer <= Layer.LastUserValid && item.Layer != Layer.Backpack && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair)
+                    list.Items.Add(item.Serial);
+            }
+            dressList.SelectedItem = null;
+            dressList.SelectedItem = list;
+        }
+
+        private void hotkeyTree_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
+        {
+            ClearHKCtrls();
+
+            if (e.Node == null || !(e.Node.Tag is KeyData))
+                return;
+            KeyData hk = (KeyData)e.Node.Tag;
+
+            try
+            {
+                m_LastKV = hk.Key;
+                switch (hk.Key)
+                {
+                    case -1:
+                        key.Text = ("MouseWheel UP");
+                        break;
+                    case -2:
+                        key.Text = ("MouseWheel DOWN");
+                        break;
+                    case -3:
+                        key.Text = ("Mouse MID Button");
+                        break;
+                    case -4:
+                        key.Text = ("Mouse XButton 1");
+                        break;
+                    case -5:
+                        key.Text = ("Mouse XButton 2");
+                        break;
+                    default:
+                        if (hk.Key > 0 && hk.Key < 256)
+                            key.Text = (((Keys)hk.Key).ToString());
+                        else
+                            key.Text = ("");
+                        break;
+                }
+            }
+            catch
+            {
+                key.Text = ">>ERROR<<";
+            }
+
+            chkCtrl.Checked = (hk.Mod & ModKeys.Control) != 0;
+            chkAlt.Checked = (hk.Mod & ModKeys.Alt) != 0;
+            chkShift.Checked = (hk.Mod & ModKeys.Shift) != 0;
+            chkPass.Checked = hk.SendToUO;
+
+            if ((hk.LocName >= (int)LocString.DrinkHeal && hk.LocName <= (int)LocString.DrinkAg && !ClientCommunication.AllowBit(FeatureBit.PotionHotkeys)) ||
+                 (hk.LocName >= (int)LocString.TargCloseRed && hk.LocName <= (int)LocString.TargCloseCriminal && !ClientCommunication.AllowBit(FeatureBit.ClosestTargets)) ||
+                 (((hk.LocName >= (int)LocString.TargRandRed && hk.LocName <= (int)LocString.TargRandNFriend) ||
+                 (hk.LocName >= (int)LocString.TargRandEnemyHuman && hk.LocName <= (int)LocString.TargRandCriminal)) && !ClientCommunication.AllowBit(FeatureBit.RandomTargets)))
+            {
+                LockControl(chkCtrl);
+                LockControl(chkAlt);
+                LockControl(chkShift);
+                LockControl(chkPass);
+                LockControl(key);
+                LockControl(unsetHK);
+                LockControl(setHK);
+                LockControl(dohotkey);
+            }
+        }
+
+        private KeyData GetSelectedHK()
+        {
+            if (hotkeyTree != null && hotkeyTree.SelectedNode != null)
+                return hotkeyTree.SelectedNode.Tag as KeyData;
+            else
+                return null;
+        }
+
+        private void ClearHKCtrls()
+        {
+            m_LastKV = 0;
+            key.Text = "";
+            chkCtrl.Checked = false;
+            chkAlt.Checked = false;
+            chkShift.Checked = false;
+            chkPass.Checked = false;
+
+            UnlockControl(chkCtrl);
+            UnlockControl(chkAlt);
+            UnlockControl(chkShift);
+            UnlockControl(chkPass);
+            UnlockControl(key);
+            UnlockControl(unsetHK);
+            UnlockControl(setHK);
+            UnlockControl(dohotkey);
+        }
+
+        private void setHK_Click(object sender, System.EventArgs e)
+        {
+            KeyData hk = GetSelectedHK();
+            if (hk == null || m_LastKV == 0)
+                return;
+
+            ModKeys mod = ModKeys.None;
+            if (chkCtrl.Checked)
+                mod |= ModKeys.Control;
+            if (chkAlt.Checked)
+                mod |= ModKeys.Alt;
+            if (chkShift.Checked)
+                mod |= ModKeys.Shift;
+
+            KeyData g = HotKey.Get(m_LastKV, mod);
+            bool block = false;
+            if (g != null && g != hk)
+            {
+                if (MessageBox.Show(this, Language.Format(LocString.KeyUsed, g.DispName, hk.DispName), "Hot Key Conflict", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    g.Key = 0;
+                    g.Mod = ModKeys.None;
+                    g.SendToUO = false;
+                }
+                else
+                {
+                    block = true;
+                }
+            }
+
+            if (!block)
+            {
+                hk.Key = m_LastKV;
+                hk.Mod = mod;
+
+                hk.SendToUO = chkPass.Checked;
+            }
+
+            if (!string.IsNullOrEmpty(filterHotkeys.Text))
+            {
+                TreeNode node = hotkeyTree.SelectedNode;
+
+                HotKey.RebuildList(hotkeyTree);
+                RebuildHotKeyCache();
+
+                filterHotkeys_TextChanged(sender, e);
+
+                hotkeyTree.SelectedNode = node;
+            }
+        }
+
+        private void unsetHK_Click(object sender, System.EventArgs e)
+        {
+            KeyData hk = GetSelectedHK();
+            if (hk == null)
+                return;
+
+            hk.Key = 0;
+            hk.Mod = 0;
+            hk.SendToUO = false;
+
+            ClearHKCtrls();
+
+            HotKey.RebuildList(hotkeyTree);
+            RebuildHotKeyCache();
+
+            filterHotkeys_TextChanged(sender, e);
+        }
+
+        private void key_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            m_LastKV = (int)e.KeyCode;
+            key.Text = e.KeyCode.ToString();
+
+            e.Handled = true;
+        }
+
+        private void key_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                m_LastKV = -1;
+                key.Text = "MouseWheel UP";
+            }
+            else if (e.Delta < 0)
+            {
+                m_LastKV = -2;
+                key.Text = "MouseWheel DOWN";
+            }
+        }
+
+        private void key_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Middle)
+            {
+                m_LastKV = -3;
+                key.Text = "Mouse MID Button";
+            }
+            else if (e.Button == MouseButtons.XButton1)
+            {
+                m_LastKV = -4;
+                key.Text = "Mouse XButton 1";
+            }
+            else if (e.Button == MouseButtons.XButton2)
+            {
+                m_LastKV = -5;
+                key.Text = "Mouse XButton 2";
+            }
+        }
+
+        private void dohotkey_Click(object sender, System.EventArgs e)
+        {
+            KeyData hk = GetSelectedHK();
+            if (hk != null && World.Player != null)
+            {
+                if (MacroManager.AcceptActions)
+                    MacroManager.Action(new HotKeyAction(hk));
+                hk.Callback();
+            }
+        }
+
+        private void queueTargets_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("QueueTargets", queueTargets.Checked);
+        }
+
+        private void chkForceSpeechHue_CheckedChanged(object sender, System.EventArgs e)
+        {
+            setSpeechHue.Enabled = chkForceSpeechHue.Checked;
+            Config.SetProperty("ForceSpeechHue", chkForceSpeechHue.Checked);
+        }
+
+        private void lthilight_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (!(setLTHilight.Enabled = lthilight.Checked))
+            {
+                Config.SetProperty("LTHilight", 0);
+                ClientCommunication.SetCustomNotoHue(0);
+                lthilight.BackColor = SystemColors.Control;
+                lthilight.ForeColor = SystemColors.ControlText;
+            }
+        }
+
+        private void chkForceSpellHue_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (chkForceSpellHue.Checked)
+            {
+                setBeneHue.Enabled = setHarmHue.Enabled = setNeuHue.Enabled = true;
+                Config.SetProperty("ForceSpellHue", true);
+            }
+            else
+            {
+                setBeneHue.Enabled = setHarmHue.Enabled = setNeuHue.Enabled = false;
+                Config.SetProperty("ForceSpellHue", false);
+            }
+        }
+
+        private void txtSpellFormat_TextChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("SpellFormat", txtSpellFormat.Text.Trim());
+        }
+
+        private void InitPreviewHue(Control ctrl, string cfg)
+        {
+            int hueIdx = Config.GetInt(cfg);
+            if (hueIdx > 0 && hueIdx < 3000)
+                ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+            else
+                ctrl.BackColor = SystemColors.Control;
+            ctrl.ForeColor = (ctrl.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+        }
+
+        private bool SetHue(Control ctrl, string cfg)
+        {
+            HueEntry h = new HueEntry(Config.GetInt(cfg));
+
+            if (h.ShowDialog(this) == DialogResult.OK)
+            {
+                int hueIdx = h.Hue;
+                Config.SetProperty(cfg, hueIdx);
+                if (hueIdx > 0 && hueIdx < 3000)
+                    ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                else
+                    ctrl.BackColor = Color.White;
+                ctrl.ForeColor = (ctrl.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void setExHue_Click(object sender, System.EventArgs e)
+        {
+            SetHue(lblExHue, "ExemptColor");
+        }
+
+        private void setMsgHue_Click(object sender, System.EventArgs e)
+        {
+            SetHue(lblMsgHue, "SysColor");
+        }
+
+        private void setWarnHue_Click(object sender, System.EventArgs e)
+        {
+            SetHue(lblWarnHue, "WarningColor");
+        }
+
+        private void setSpeechHue_Click(object sender, System.EventArgs e)
+        {
+            SetHue(chkForceSpeechHue, "SpeechHue");
+        }
+
+        private void setLTHilight_Click(object sender, System.EventArgs e)
+        {
+            if (SetHue(lthilight, "LTHilight"))
+                ClientCommunication.SetCustomNotoHue(Config.GetInt("LTHilight"));
+        }
+
+        private void setBeneHue_Click(object sender, System.EventArgs e)
+        {
+            SetHue(lblBeneHue, "BeneficialSpellHue");
+        }
+
+        private void setHarmHue_Click(object sender, System.EventArgs e)
+        {
+            SetHue(lblHarmHue, "HarmfulSpellHue");
+        }
+
+        private void setNeuHue_Click(object sender, System.EventArgs e)
+        {
+            SetHue(lblNeuHue, "NeutralSpellHue");
+        }
+
+        private void QueueActions_CheckedChanged(object sender, System.EventArgs e)
+        {
+            //txtObjDelay.Enabled = QueueActions.Checked;
+            Config.SetProperty("QueueActions", QueueActions.Checked);
+        }
+
+        private void txtObjDelay_TextChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("ObjectDelay", Utility.ToInt32(txtObjDelay.Text.Trim(), 500));
+        }
+
+        private void chkStealth_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("CountStealthSteps", chkStealth.Checked);
+
+            stealthOverhead.Enabled = chkStealth.Checked;
+        }
+
+        private void agentList_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            try
+            {
+                Agent.Select(agentList.SelectedIndex, agentList, agentSubList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6);
+            }
+            catch
+            {
+            }
+        }
+
+        private void Agent_Button(int b)
+        {
+            if (World.Player == null)
+                return;
+
+            Agent a = agentList.SelectedItem as Agent;
+            if (a == null)
+                agentList.SelectedIndex = -1;
+            else
+                a.OnButtonPress(b);
+        }
+
+        private void agentB1_Click(object sender, System.EventArgs e)
+        {
+            Agent_Button(1);
+        }
+
+        private void agentB2_Click(object sender, System.EventArgs e)
+        {
+            Agent_Button(2);
+        }
+
+        private void agentB3_Click(object sender, System.EventArgs e)
+        {
+            Agent_Button(3);
+        }
+
+        private void agentB4_Click(object sender, System.EventArgs e)
+        {
+            Agent_Button(4);
+        }
+
+        private void agentB5_Click(object sender, System.EventArgs e)
+        {
+            Agent_Button(5);
+        }
+
+        private void agentB6_Click(object sender, System.EventArgs e)
+        {
+            Agent_Button(6);
+        }
+
+        private void MainForm_Activated(object sender, System.EventArgs e)
+        {
+            DisableCloseButton();
+            //this.TopMost = true;
+        }
+
+        private void MainForm_Deactivate(object sender, System.EventArgs e)
+        {
+            if (this.TopMost)
+                this.TopMost = false;
+        }
+
+        private void MainForm_Resize(object sender, System.EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized && !this.ShowInTaskbar)
+                this.Hide();
+        }
+
+        private bool IsNear(int a, int b)
+        {
+            return (a <= b + 5 && a >= b - 5);
+        }
+
+        private void MainForm_Move(object sender, System.EventArgs e)
+        {
+            // atempt to dock to the side of the screen.  Also try not to save the X/Y when we are minimized (which is -32000, -32000)
+            System.Drawing.Point pt = this.Location;
+
+            Rectangle screen = Screen.GetWorkingArea(this);
+            if (this.WindowState != FormWindowState.Minimized && pt.X + this.Width / 2 >= screen.Left && pt.Y + this.Height / 2 >= screen.Top && pt.X <= screen.Right && pt.Y <= screen.Bottom)
+            {
+                if (IsNear(pt.X + this.Width, screen.Right))
+                    pt.X = screen.Right - this.Width;
+                else if (IsNear(pt.X, screen.Left))
+                    pt.X = screen.Left;
+
+                if (IsNear(pt.Y + this.Height, screen.Bottom))
+                    pt.Y = screen.Bottom - this.Height;
+                else if (IsNear(pt.Y, screen.Top))
+                    pt.Y = screen.Top;
+
+                this.Location = pt;
+                Config.SetProperty("WindowX", (int)pt.X);
+                Config.SetProperty("WindowY", (int)pt.Y);
+            }
+        }
+
+        private void opacity_Scroll(object sender, System.EventArgs e)
+        {
+            int o = opacity.Value;
+            Config.SetProperty("Opacity", o);
+            opacityLabel.Text = String.Format("Opacity: {0}%", o);
+            this.Opacity = ((double)o) / 100.0;
+        }
+
+        private void dispDelta_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("DisplaySkillChanges", dispDelta.Checked);
+        }
+
+        /*private void saveProfile_Click(object sender, System.EventArgs e)
+        {
+             Counter.Save();
+             Config.Save();
+             MacroManager.Save();
+             MessageBox.Show( this, Language.GetString( LocString.SaveOK ), "Save OK", MessageBoxButtons.OK, MessageBoxIcon.Information );
+        }
+
+        private void edit_Click(object sender, System.EventArgs e)
+        {
+             if ( counters.SelectedItems.Count <= 0 )
+                  return;
+
+             Counter c = counters.SelectedItems[0].Tag as Counter;
+             if ( c == null )
+                  return;
+
+             AddCounter dlg = new AddCounter( c.Name, c.Format, c.ItemID, c.Hue );
+
+             if ( dlg.ShowDialog( this ) == DialogResult.OK )
+             {
+                  c.Name = dlg.NameStr;
+                  c.Format = dlg.FmtStr;
+                  c.ItemID = (ushort)dlg.ItemID;
+                  c.Hue = (int)dlg.Hue;
+                  Counter.Redraw( counters );
+             }
+        }*/
+
+        private void logPackets_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (logPackets.Checked)
+            {
+                if (m_Initializing || MessageBox.Show(this, Language.GetString(LocString.PacketLogWarn), "Caution!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    Packet.Logging = true;
+                else
+                    logPackets.Checked = false;
+            }
+            else
+            {
+                Packet.Logging = false;
+            }
+        }
+
+        private void showNotoHue_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("ShowNotoHue", showNotoHue.Checked);
+            if (showNotoHue.Checked)
+                ClientCommunication.RequestTitlebarUpdate();
+        }
+
+        private void recount_Click(object sender, System.EventArgs e)
+        {
+            Counter.FullRecount();
+        }
+
+        private void openCorpses_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("AutoOpenCorpses", openCorpses.Checked);
+            corpseRange.Enabled = openCorpses.Checked;
+        }
+
+        private void corpseRange_TextChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("CorpseRange", Utility.ToInt32(corpseRange.Text, 2));
+        }
+
+        private void showWelcome_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetAppSetting("ShowWelcome", (showWelcome.Checked ? 1 : 0).ToString());
+
+        }
+
+        private ContextMenu m_DressItemsMenu = null;
+        private void dressItems_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                m_DressItemsMenu = new ContextMenu(new MenuItem[] { new MenuItem(Language.GetString(LocString.Conv2Type), new EventHandler(OnMakeType)) });
+                m_DressItemsMenu.Show(dressItems, new Point(e.X, e.Y));
+            }
+        }
+
+        private void OnMakeType(object sender, System.EventArgs e)
+        {
+            DressList list = (DressList)dressList.SelectedItem;
+            if (list == null)
+                return;
+            int sel = dressItems.SelectedIndex;
+            if (sel < 0 || sel >= list.Items.Count)
+                return;
+
+            if (list.Items[sel] is Serial)
+            {
+                Serial s = (Serial)list.Items[sel];
+                Item item = World.FindItem(s);
+                if (item != null)
+                {
+                    list.Items[sel] = item.ItemID;
+                    dressItems.BeginUpdate();
+                    dressItems.Items[sel] = item.ItemID.ToString();
+                    dressItems.EndUpdate();
+                }
+            }
+        }
+
+        private static char[] m_InvalidNameChars = new char[] { '/', '\\', ';', '?', ':', '*' };
+        private void newMacro_Click(object sender, System.EventArgs e)
+        {
+            if (InputBox.Show(this, Language.GetString(LocString.NewMacro), Language.GetString(LocString.EnterAName)))
+            {
                 string name = InputBox.GetString();
-				if ( name == null || name == "" || name.IndexOfAny( Path.GetInvalidPathChars() ) != -1 || name.IndexOfAny( m_InvalidNameChars ) != -1 )
-				{
-					MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), Language.GetString( LocString.Invalid ), MessageBoxButtons.OK, MessageBoxIcon.Error );
-					return;
-				}
+                if (name == null || name == "" || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 || name.IndexOfAny(m_InvalidNameChars) != -1)
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars), Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-				TreeNode node = GetMacroDirNode();
+                TreeNode node = GetMacroDirNode();
                 string path = (node == null || !(node.Tag is string)) ? Config.GetUserDirectory("Macros") : (string)node.Tag;
-				path = Path.Combine( path, name+".macro" );
-				if ( File.Exists( path ) )
-				{
-					MessageBox.Show( this, Language.GetString( LocString.MacroExists ), Language.GetString( LocString.Invalid ), MessageBoxButtons.OK, MessageBoxIcon.Error );
-					return;
-				}
+                path = Path.Combine(path, name + ".macro");
+                if (File.Exists(path))
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.MacroExists), Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 try
                 {
@@ -5385,267 +5386,267 @@ namespace Assistant
                     }
 
 
-				}
-				catch
-				{
-					return;
-				}
+                }
+                catch
+                {
+                    return;
+                }
 
-				Macro m = new Macro( path );
-				MacroManager.Add( m );
-				TreeNode newNode = new TreeNode( Path.GetFileNameWithoutExtension( m.Filename ) );
-				newNode.Tag = m;
-				if ( node == null )
-					macroTree.Nodes.Add( newNode );
-				else
-					node.Nodes.Add( newNode );
-				macroTree.SelectedNode = newNode;
-			}
-
-			RedrawMacros();
-		}
-
-		public Macro GetMacroSel()
-		{
-			if ( macroTree.SelectedNode == null || !(macroTree.SelectedNode.Tag is Macro) )
-				return null;
-			else
-				return (Macro)macroTree.SelectedNode.Tag;
-		}
-
-	    public void playMacro_Click(object sender, System.EventArgs e)
-	    {
-	        if (World.Player == null)
-	            return;
-
-            // Playing is true if the timer is running which in a step-through scenario isn't true
-	        if (MacroManager.Playing || MacroManager.StepThrough)
-	        {
-	            MacroManager.Stop();
-	            nextMacroAction.Enabled = false;
-	        }
-	        else
-	        {
-	            Macro m = GetMacroSel();
-	            if (m == null || m.Actions.Count <= 0)
-	                return;
-
-                // Check if we're going to step through the macro
-	            nextMacroAction.Enabled = stepThroughMacro.Checked;
-	            m.StepThrough = stepThroughMacro.Checked;
-
-                actionList.SelectedIndex = 0;
-	            MacroManager.Play(m);
-	            playMacro.Text = "Stop";
-	            recMacro.Enabled = false;
-	            OnMacroStart(m);
-	        }
-	    }
-
-		private void recMacro_Click(object sender, System.EventArgs e)
-		{
-			if ( World.Player == null )
-				return;
-
-			if ( MacroManager.Recording )
-			{
-				MacroManager.Stop();
-				//OnMacroStop();
-			}
-			else
-			{
-				Macro m = GetMacroSel();
-				if ( m == null )
-					return;
-
-				bool rec = true;
-				if ( m.Actions.Count > 0 )
-					rec = MessageBox.Show( this, Language.GetString( LocString.MacroConfRec ), "Overwrite?", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes;
-
-				if ( rec )
-				{
-					MacroManager.Record( m );
-					OnMacroStart( m );
-					recMacro.Text = "Stop";
-					playMacro.Enabled = false;
-				}
-			}
-		}
-
-		public void OnMacroStart( Macro m )
-		{
-			actionList.SelectedIndex = -1;
-			macroTree.Enabled = actionList.Enabled = false;
-			newMacro.Enabled = delMacro.Enabled = false;
-			//macroList.SelectedItem = m;
-			macroTree.SelectedNode = FindNode( macroTree.Nodes, m );
-			macroTree.Update();
-			macroTree.Refresh();
-			m.DisplayTo( actionList );
-		}
-
-		public void PlayMacro( Macro m )
-		{
-			playMacro.Text = "Stop";
-			recMacro.Enabled = false;
-		}
-
-		public void OnMacroStop()
-		{
-			recMacro.Text = "Record";
-			recMacro.Enabled = true;
-			playMacro.Text = "Play";
-			playMacro.Enabled = true;
-			actionList.SelectedIndex = -1;
-			macroTree.Enabled = actionList.Enabled = true;
-			newMacro.Enabled = delMacro.Enabled = true;
-		    nextMacroAction.Enabled = false;
-			RedrawMacros();
-		}
-
-		private ContextMenu m_MacroContextMenu = null;
-		private void macroTree_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if ( e.Button == MouseButtons.Right && e.Clicks == 1 )
-			{
-				if ( m_MacroContextMenu == null )
-				{
-					m_MacroContextMenu = new ContextMenu( new MenuItem[]
-						{
-							new MenuItem( "Add Category", new EventHandler( Macro_AddCategory ) ),
-							new MenuItem( "Delete Category", new EventHandler( Macro_DeleteCategory ) ),
-							new MenuItem( "Move to Category", new EventHandler( Macro_Move2Category ) ),
-						    new MenuItem( "-" ),
-                            new MenuItem( "Copy to Clipboard", new EventHandler( Macro_CopyToClipboard ) ),
-						    new MenuItem( "Rename Macro", new EventHandler( Macro_Rename ) ),
-						    new MenuItem( "Open Externally", new EventHandler( Open_Externally ) ),
-                            new MenuItem( "-" ),
-							new MenuItem( "Refresh Macro List", new EventHandler( Macro_RefreshList ) )
-					} );
-				}
-
-				Macro sel = GetMacroSel();
-
-				m_MacroContextMenu.MenuItems[1].Enabled = sel == null;
-				m_MacroContextMenu.MenuItems[2].Enabled = sel != null;
-
-				m_MacroContextMenu.Show( this, new Point( e.X, e.Y ) );
-			}
-
-			//RedrawMacros();
-		}
-
-		private TreeNode GetMacroDirNode()
-		{
-			if ( macroTree.SelectedNode == null )
-			{
-				return null;
-			}
-			else
-			{
-				if ( macroTree.SelectedNode.Tag is string )
-					return macroTree.SelectedNode;
-				else if ( macroTree.SelectedNode.Parent == null || !(macroTree.SelectedNode.Parent.Tag is string) )
-					return null;
-				else
-					return macroTree.SelectedNode.Parent;
-			}
-		}
-
-		private void Macro_AddCategory( object sender, EventArgs args )
-		{
-			if ( !InputBox.Show( this, Language.GetString( LocString.CatName ) ) )
-				return;
-
-			string path = InputBox.GetString();
-			if ( path == null || path == "" || path.IndexOfAny( Path.GetInvalidPathChars() ) != -1 || path.IndexOfAny( m_InvalidNameChars ) != -1 )
-			{
-				MessageBox.Show( this, Language.GetString( LocString.InvalidChars ), "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error );
-				return;
-			}
-
-			TreeNode node = GetMacroDirNode();
-
-			try
-			{
-				if ( node == null || !(node.Tag is string) )
-					path = Path.Combine( Config.GetUserDirectory("Macros"), path );
-				else
-					path = Path.Combine( (string)node.Tag, path );
-				Engine.EnsureDirectory( path );
-			}
-			catch
-			{
-				MessageBox.Show( this, Language.Format( LocString.CanCreateDir, path ), "Unabled to Create Directory", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-				return;
-			}
-
-			TreeNode newNode = new TreeNode( String.Format( "[{0}]", Path.GetFileName( path ) ) );
-			newNode.Tag = path;
-			if ( node == null )
-				macroTree.Nodes.Add( newNode );
-			else
-				node.Nodes.Add( newNode );
-			RedrawMacros();
-			macroTree.SelectedNode = newNode;
-		}
-
-		private void Macro_DeleteCategory( object sender, EventArgs args )
-		{
-			string path = null;
-			if ( macroTree.SelectedNode != null )
-				path = macroTree.SelectedNode.Tag as string;
-
-			if ( path == null )
-				return;
-
-			try
-			{
-				Directory.Delete( path );
-			}
-			catch
-			{
-				MessageBox.Show( this, Language.GetString( LocString.CantDelDir ), "Unable to Delete Directory", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-				return;
-			}
-
-			TreeNode node = FindNode( macroTree.Nodes, path );
-			if ( node != null )
-				node.Remove();
-		}
-
-	    private void Macro_Move2Category(object sender, EventArgs args)
-	    {
-	        Macro sel = GetMacroSel();
-	        if (sel == null)
-	            return;
-
-            List<string> dirNames = new List<string>();
-	        dirNames.Add("<None>");
-
-            foreach (string dir in Directory.GetDirectories(Config.GetUserDirectory("Macros")))
-	        {
-	            dirNames.Add(dir.Substring(dir.LastIndexOf('\\') + 1));
+                Macro m = new Macro(path);
+                MacroManager.Add(m);
+                TreeNode newNode = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename));
+                newNode.Tag = m;
+                if (node == null)
+                    macroTree.Nodes.Add(newNode);
+                else
+                    node.Nodes.Add(newNode);
+                macroTree.SelectedNode = newNode;
             }
 
-	        if (!InputDropdown.Show(this,Language.GetString(LocString.CatName), dirNames.ToArray()))
-	            return;
+            RedrawMacros();
+        }
 
-	        try
-	        {
-	            File.Move(sel.Filename, InputDropdown.GetString().Equals("<None>")
-	                    ? Path.Combine(Config.GetUserDirectory("Macros"), $"{Path.GetFileName(sel.Filename)}")
-                        : Path.Combine(Config.GetUserDirectory("Macros"), $"{InputDropdown.GetString()}/{Path.GetFileName(sel.Filename)}"));
-	        }
-	        catch
-	        {
-	            MessageBox.Show(this, Language.GetString(LocString.CantMoveMacro), "Unable to Move Macro",
-	                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-	        }
+        public Macro GetMacroSel()
+        {
+            if (macroTree.SelectedNode == null || !(macroTree.SelectedNode.Tag is Macro))
+                return null;
+            else
+                return (Macro)macroTree.SelectedNode.Tag;
+        }
 
-	        RedrawMacros();
-	        macroTree.SelectedNode = FindNode(macroTree.Nodes, sel);
-	    }
+        public void playMacro_Click(object sender, System.EventArgs e)
+        {
+            if (World.Player == null)
+                return;
+
+            // Playing is true if the timer is running which in a step-through scenario isn't true
+            if (MacroManager.Playing || MacroManager.StepThrough)
+            {
+                MacroManager.Stop();
+                nextMacroAction.Enabled = false;
+            }
+            else
+            {
+                Macro m = GetMacroSel();
+                if (m == null || m.Actions.Count <= 0)
+                    return;
+
+                // Check if we're going to step through the macro
+                nextMacroAction.Enabled = stepThroughMacro.Checked;
+                m.StepThrough = stepThroughMacro.Checked;
+
+                actionList.SelectedIndex = 0;
+                MacroManager.Play(m);
+                playMacro.Text = "Stop";
+                recMacro.Enabled = false;
+                OnMacroStart(m);
+            }
+        }
+
+        private void recMacro_Click(object sender, System.EventArgs e)
+        {
+            if (World.Player == null)
+                return;
+
+            if (MacroManager.Recording)
+            {
+                MacroManager.Stop();
+                //OnMacroStop();
+            }
+            else
+            {
+                Macro m = GetMacroSel();
+                if (m == null)
+                    return;
+
+                bool rec = true;
+                if (m.Actions.Count > 0)
+                    rec = MessageBox.Show(this, Language.GetString(LocString.MacroConfRec), "Overwrite?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+
+                if (rec)
+                {
+                    MacroManager.Record(m);
+                    OnMacroStart(m);
+                    recMacro.Text = "Stop";
+                    playMacro.Enabled = false;
+                }
+            }
+        }
+
+        public void OnMacroStart(Macro m)
+        {
+            actionList.SelectedIndex = -1;
+            macroTree.Enabled = actionList.Enabled = false;
+            newMacro.Enabled = delMacro.Enabled = false;
+            //macroList.SelectedItem = m;
+            macroTree.SelectedNode = FindNode(macroTree.Nodes, m);
+            macroTree.Update();
+            macroTree.Refresh();
+            m.DisplayTo(actionList);
+        }
+
+        public void PlayMacro(Macro m)
+        {
+            playMacro.Text = "Stop";
+            recMacro.Enabled = false;
+        }
+
+        public void OnMacroStop()
+        {
+            recMacro.Text = "Record";
+            recMacro.Enabled = true;
+            playMacro.Text = "Play";
+            playMacro.Enabled = true;
+            actionList.SelectedIndex = -1;
+            macroTree.Enabled = actionList.Enabled = true;
+            newMacro.Enabled = delMacro.Enabled = true;
+            nextMacroAction.Enabled = false;
+            RedrawMacros();
+        }
+
+        private ContextMenu m_MacroContextMenu = null;
+        private void macroTree_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                if (m_MacroContextMenu == null)
+                {
+                    m_MacroContextMenu = new ContextMenu(new MenuItem[]
+                         {
+                                   new MenuItem( "Add Category", new EventHandler( Macro_AddCategory ) ),
+                                   new MenuItem( "Delete Category", new EventHandler( Macro_DeleteCategory ) ),
+                                   new MenuItem( "Move to Category", new EventHandler( Macro_Move2Category ) ),
+                                  new MenuItem( "-" ),
+                            new MenuItem( "Copy to Clipboard", new EventHandler( Macro_CopyToClipboard ) ),
+                                  new MenuItem( "Rename Macro", new EventHandler( Macro_Rename ) ),
+                                  new MenuItem( "Open Externally", new EventHandler( Open_Externally ) ),
+                            new MenuItem( "-" ),
+                                   new MenuItem( "Refresh Macro List", new EventHandler( Macro_RefreshList ) )
+                    });
+                }
+
+                Macro sel = GetMacroSel();
+
+                m_MacroContextMenu.MenuItems[1].Enabled = sel == null;
+                m_MacroContextMenu.MenuItems[2].Enabled = sel != null;
+
+                m_MacroContextMenu.Show(this, new Point(e.X, e.Y));
+            }
+
+            //RedrawMacros();
+        }
+
+        private TreeNode GetMacroDirNode()
+        {
+            if (macroTree.SelectedNode == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (macroTree.SelectedNode.Tag is string)
+                    return macroTree.SelectedNode;
+                else if (macroTree.SelectedNode.Parent == null || !(macroTree.SelectedNode.Parent.Tag is string))
+                    return null;
+                else
+                    return macroTree.SelectedNode.Parent;
+            }
+        }
+
+        private void Macro_AddCategory(object sender, EventArgs args)
+        {
+            if (!InputBox.Show(this, Language.GetString(LocString.CatName)))
+                return;
+
+            string path = InputBox.GetString();
+            if (path == null || path == "" || path.IndexOfAny(Path.GetInvalidPathChars()) != -1 || path.IndexOfAny(m_InvalidNameChars) != -1)
+            {
+                MessageBox.Show(this, Language.GetString(LocString.InvalidChars), "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            TreeNode node = GetMacroDirNode();
+
+            try
+            {
+                if (node == null || !(node.Tag is string))
+                    path = Path.Combine(Config.GetUserDirectory("Macros"), path);
+                else
+                    path = Path.Combine((string)node.Tag, path);
+                Engine.EnsureDirectory(path);
+            }
+            catch
+            {
+                MessageBox.Show(this, Language.Format(LocString.CanCreateDir, path), "Unabled to Create Directory", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            TreeNode newNode = new TreeNode(String.Format("[{0}]", Path.GetFileName(path)));
+            newNode.Tag = path;
+            if (node == null)
+                macroTree.Nodes.Add(newNode);
+            else
+                node.Nodes.Add(newNode);
+            RedrawMacros();
+            macroTree.SelectedNode = newNode;
+        }
+
+        private void Macro_DeleteCategory(object sender, EventArgs args)
+        {
+            string path = null;
+            if (macroTree.SelectedNode != null)
+                path = macroTree.SelectedNode.Tag as string;
+
+            if (path == null)
+                return;
+
+            try
+            {
+                Directory.Delete(path);
+            }
+            catch
+            {
+                MessageBox.Show(this, Language.GetString(LocString.CantDelDir), "Unable to Delete Directory", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            TreeNode node = FindNode(macroTree.Nodes, path);
+            if (node != null)
+                node.Remove();
+        }
+
+        private void Macro_Move2Category(object sender, EventArgs args)
+        {
+            Macro sel = GetMacroSel();
+            if (sel == null)
+                return;
+
+            List<string> dirNames = new List<string>();
+            dirNames.Add("<None>");
+
+            foreach (string dir in Directory.GetDirectories(Config.GetUserDirectory("Macros")))
+            {
+                dirNames.Add(dir.Substring(dir.LastIndexOf('\\') + 1));
+            }
+
+            if (!InputDropdown.Show(this, Language.GetString(LocString.CatName), dirNames.ToArray()))
+                return;
+
+            try
+            {
+                File.Move(sel.Filename, InputDropdown.GetString().Equals("<None>")
+                        ? Path.Combine(Config.GetUserDirectory("Macros"), $"{Path.GetFileName(sel.Filename)}")
+                       : Path.Combine(Config.GetUserDirectory("Macros"), $"{InputDropdown.GetString()}/{Path.GetFileName(sel.Filename)}"));
+            }
+            catch
+            {
+                MessageBox.Show(this, Language.GetString(LocString.CantMoveMacro), "Unable to Move Macro",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            RedrawMacros();
+            macroTree.SelectedNode = FindNode(macroTree.Nodes, sel);
+        }
 
         /// <summary>
         /// Copy the selected macro the user's clipboard
@@ -5670,43 +5671,43 @@ namespace Assistant
             }
         }
 
-	    private void Macro_Rename(object sender, EventArgs args)
-	    {
-	        Macro sel = GetMacroSel();
-	        if (sel == null)
-	            return;
+        private void Macro_Rename(object sender, EventArgs args)
+        {
+            Macro sel = GetMacroSel();
+            if (sel == null)
+                return;
 
-	        if (InputBox.Show(this, Language.GetString(LocString.MacroRename), Language.GetString(LocString.EnterAName)))
-	        {
-	            string name = InputBox.GetString();
-	            if (string.IsNullOrEmpty(name) || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
-	                name.IndexOfAny(m_InvalidNameChars) != -1)
-	            {
-	                MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
-	                    Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
-	                return;
-	            }
+            if (InputBox.Show(this, Language.GetString(LocString.MacroRename), Language.GetString(LocString.EnterAName)))
+            {
+                string name = InputBox.GetString();
+                if (string.IsNullOrEmpty(name) || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+                    name.IndexOfAny(m_InvalidNameChars) != -1)
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-	            TreeNode node = GetMacroDirNode();
+                TreeNode node = GetMacroDirNode();
 
-	            string newMacro = $"{Path.GetDirectoryName(sel.Filename)}/{name}.macro";
+                string newMacro = $"{Path.GetDirectoryName(sel.Filename)}/{name}.macro";
 
 
                 if (File.Exists(newMacro))
-	            {
-	                MessageBox.Show(this, Language.GetString(LocString.MacroExists), Language.GetString(LocString.Invalid),
-	                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-	                return;
-	            }
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.MacroExists), Language.GetString(LocString.Invalid),
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-	            try
-	            {
-	                File.Move(sel.Filename, newMacro);
-	            }
-	            catch
-	            {
-	                return;
-	            }
+                try
+                {
+                    File.Move(sel.Filename, newMacro);
+                }
+                catch
+                {
+                    return;
+                }
 
                 /*Macro m = new Macro(newMacro);
 	            MacroManager.Add(m);
@@ -5718,363 +5719,363 @@ namespace Assistant
 	                node.Nodes.Add(newNode);
 	            macroTree.SelectedNode = newNode;*/
 
-	            RedrawMacros();
+                RedrawMacros();
             }
 
 
-	    }
+        }
 
-	    private void Open_Externally(object sender, EventArgs args)
-	    {
-	        Macro sel = GetMacroSel();
-	        if (sel == null)
-	            return;
+        private void Open_Externally(object sender, EventArgs args)
+        {
+            Macro sel = GetMacroSel();
+            if (sel == null)
+                return;
 
-	        try
-	        {
-	            Process.Start(sel.Filename);
-	        }
-	        catch (Exception)
-	        {
-	            MessageBox.Show(this, Language.GetString(LocString.UnableToOpenMacro), Language.GetString(LocString.ReadError),
-	                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                Process.Start(sel.Filename);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(this, Language.GetString(LocString.UnableToOpenMacro), Language.GetString(LocString.ReadError),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void Macro_RefreshList( object sender, EventArgs args )
-		{
-			RedrawMacros();
-		}
+        private void Macro_RefreshList(object sender, EventArgs args)
+        {
+            RedrawMacros();
+        }
 
-		private static TreeNode FindNode( TreeNodeCollection nodes, object tag )
-		{
-			for( int i=0;i<nodes.Count;i++ )
-			{
-				TreeNode node = nodes[i];
+        private static TreeNode FindNode(TreeNodeCollection nodes, object tag)
+        {
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                TreeNode node = nodes[i];
 
-				if ( node.Tag == tag )
-				{
-					return node;
-				}
-				else if ( node.Nodes.Count > 0 )
-				{
-					node = FindNode( node.Nodes, tag );
-					if ( node != null )
-						return node;
-				}
-			}
+                if (node.Tag == tag)
+                {
+                    return node;
+                }
+                else if (node.Nodes.Count > 0)
+                {
+                    node = FindNode(node.Nodes, tag);
+                    if (node != null)
+                        return node;
+                }
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		private void RedrawMacros()
-		{
-			Macro ms = GetMacroSel();
-			MacroManager.DisplayTo( macroTree );
-			if ( ms != null )
-				macroTree.SelectedNode = FindNode( macroTree.Nodes, ms );
+        private void RedrawMacros()
+        {
+            Macro ms = GetMacroSel();
+            MacroManager.DisplayTo(macroTree);
+            if (ms != null)
+                macroTree.SelectedNode = FindNode(macroTree.Nodes, ms);
 
             MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
-		}
+        }
 
-		private void macroTree_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
-		{
-			if ( MacroManager.Recording )
-				return;
+        private void macroTree_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
+        {
+            if (MacroManager.Recording)
+                return;
 
-			Macro m = e.Node.Tag as Macro;
-			macroActGroup.Visible = m != null;
-			MacroManager.Select( m, actionList, playMacro, recMacro, loopMacro );
-		}
+            Macro m = e.Node.Tag as Macro;
+            macroActGroup.Visible = m != null;
+            MacroManager.Select(m, actionList, playMacro, recMacro, loopMacro);
+        }
 
-		private void delMacro_Click(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();
-			if ( m == null )
-			{
-				Macro_DeleteCategory(sender,e);
-				return;
-			}
+        private void delMacro_Click(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+            {
+                Macro_DeleteCategory(sender, e);
+                return;
+            }
 
-			if ( m == MacroManager.Current )
-				return;
+            if (m == MacroManager.Current)
+                return;
 
-			if ( m.Actions.Count <= 0 || MessageBox.Show( this, Language.Format( LocString.DelConf, m.ToString() ), "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
-			{
-				try
-				{
-					File.Delete( m.Filename );
-				}
-				catch
-				{
-					return;
-				}
+            if (m.Actions.Count <= 0 || MessageBox.Show(this, Language.Format(LocString.DelConf, m.ToString()), "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try
+                {
+                    File.Delete(m.Filename);
+                }
+                catch
+                {
+                    return;
+                }
 
-				MacroManager.Remove( m );
+                MacroManager.Remove(m);
 
-				TreeNode node = FindNode( macroTree.Nodes, m );
-				if ( node != null )
-					node.Remove();
-			}
-		}
+                TreeNode node = FindNode(macroTree.Nodes, m);
+                if (node != null)
+                    node.Remove();
+            }
+        }
 
-	    private void actionList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-	    {
-	        if (e.Button == MouseButtons.Right && e.Clicks == 1)
-	        {
-	            if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
-	                return;
+        private void actionList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
+                    return;
 
-	            ContextMenu menu = new ContextMenu();
-	            menu.MenuItems.Add(Language.GetString(LocString.Reload), new EventHandler(onMacroReload));
-	            menu.MenuItems.Add(Language.GetString(LocString.Save), new EventHandler(onMacroSave));
+                ContextMenu menu = new ContextMenu();
+                menu.MenuItems.Add(Language.GetString(LocString.Reload), new EventHandler(onMacroReload));
+                menu.MenuItems.Add(Language.GetString(LocString.Save), new EventHandler(onMacroSave));
 
-	            MacroAction a;
-	            try
-	            {
-	                a = actionList.SelectedItem as MacroAction;
-	            }
-	            catch
-	            {
-	                a = null;
-	            }
+                MacroAction a;
+                try
+                {
+                    a = actionList.SelectedItem as MacroAction;
+                }
+                catch
+                {
+                    a = null;
+                }
 
-	            if (a != null)
-	            {
-	                int pos = actionList.SelectedIndex;
+                if (a != null)
+                {
+                    int pos = actionList.SelectedIndex;
 
-	                menu.MenuItems.Add("-");
-	                if (actionList.Items.Count > 1)
-	                {
-	                    menu.MenuItems.Add(Language.GetString(LocString.MoveUp), new EventHandler(OnMacroActionMoveUp));
+                    menu.MenuItems.Add("-");
+                    if (actionList.Items.Count > 1)
+                    {
+                        menu.MenuItems.Add(Language.GetString(LocString.MoveUp), new EventHandler(OnMacroActionMoveUp));
 
-	                    if (pos <= 0)
-	                    {
-	                        menu.MenuItems[menu.MenuItems.Count - 1].Enabled = false;
-	                    }
+                        if (pos <= 0)
+                        {
+                            menu.MenuItems[menu.MenuItems.Count - 1].Enabled = false;
+                        }
 
-	                    menu.MenuItems.Add(Language.GetString(LocString.MoveDown),
-	                        new EventHandler(OnMacroActionMoveDown));
+                        menu.MenuItems.Add(Language.GetString(LocString.MoveDown),
+                            new EventHandler(OnMacroActionMoveDown));
 
-	                    if (pos >= actionList.Items.Count - 1)
-	                    {
-	                        menu.MenuItems[menu.MenuItems.Count - 1].Enabled = false;
-	                    }
+                        if (pos >= actionList.Items.Count - 1)
+                        {
+                            menu.MenuItems[menu.MenuItems.Count - 1].Enabled = false;
+                        }
 
-	                    menu.MenuItems.Add("-");
-	                }
+                        menu.MenuItems.Add("-");
+                    }
 
-	                menu.MenuItems.Add(Language.GetString(LocString.RemAct), new EventHandler(onMacroActionDelete));
-	                menu.MenuItems.Add("-");
-	                menu.MenuItems.Add(Language.GetString(LocString.BeginRec), new EventHandler(onMacroBegRecHere));
-	                menu.MenuItems.Add(Language.GetString(LocString.PlayFromHere), new EventHandler(onMacroPlayHere));
+                    menu.MenuItems.Add(Language.GetString(LocString.RemAct), new EventHandler(onMacroActionDelete));
+                    menu.MenuItems.Add("-");
+                    menu.MenuItems.Add(Language.GetString(LocString.BeginRec), new EventHandler(onMacroBegRecHere));
+                    menu.MenuItems.Add(Language.GetString(LocString.PlayFromHere), new EventHandler(onMacroPlayHere));
 
-	                MenuItem[] aMenus = a.GetContextMenuItems();
-	                if (aMenus != null && aMenus.Length > 0)
-	                {
-	                    menu.MenuItems.Add("-");
-	                    menu.MenuItems.AddRange(aMenus);
-	                }
-	            }
+                    MenuItem[] aMenus = a.GetContextMenuItems();
+                    if (aMenus != null && aMenus.Length > 0)
+                    {
+                        menu.MenuItems.Add("-");
+                        menu.MenuItems.AddRange(aMenus);
+                    }
+                }
 
-	            menu.MenuItems.Add("-");
-	            menu.MenuItems.Add(Language.GetString(LocString.Constructs), new MenuItem[]
-	            {
-	                new MenuItem(Language.GetString(LocString.InsWait), new EventHandler(onMacroInsPause)),
-	                new MenuItem(Language.GetString(LocString.InsLT), new EventHandler(onMacroInsertSetLT)),
-	                new MenuItem(Language.GetString(LocString.InsComment), new EventHandler(onMacroInsertComment)),
-	                new MenuItem("-"),
-	                new MenuItem(Language.GetString(LocString.InsIF), new EventHandler(onMacroInsertIf)),
-	                new MenuItem(Language.GetString(LocString.InsELSE), new EventHandler(onMacroInsertElse)),
-	                new MenuItem(Language.GetString(LocString.InsENDIF), new EventHandler(onMacroInsertEndIf)),
-	                new MenuItem("-"),
-	                new MenuItem(Language.GetString(LocString.InsFOR), new EventHandler(onMacroInsertFor)),
-	                new MenuItem(Language.GetString(LocString.InsENDFOR), new EventHandler(onMacroInsertEndFor))
-	            });
+                menu.MenuItems.Add("-");
+                menu.MenuItems.Add(Language.GetString(LocString.Constructs), new MenuItem[]
+                {
+                     new MenuItem(Language.GetString(LocString.InsWait), new EventHandler(onMacroInsPause)),
+                     new MenuItem(Language.GetString(LocString.InsLT), new EventHandler(onMacroInsertSetLT)),
+                     new MenuItem(Language.GetString(LocString.InsComment), new EventHandler(onMacroInsertComment)),
+                     new MenuItem("-"),
+                     new MenuItem(Language.GetString(LocString.InsIF), new EventHandler(onMacroInsertIf)),
+                     new MenuItem(Language.GetString(LocString.InsELSE), new EventHandler(onMacroInsertElse)),
+                     new MenuItem(Language.GetString(LocString.InsENDIF), new EventHandler(onMacroInsertEndIf)),
+                     new MenuItem("-"),
+                     new MenuItem(Language.GetString(LocString.InsFOR), new EventHandler(onMacroInsertFor)),
+                     new MenuItem(Language.GetString(LocString.InsENDFOR), new EventHandler(onMacroInsertEndFor))
+                });
 
-	            menu.Show(actionList, new Point(e.X, e.Y));
-	        }
+                menu.Show(actionList, new Point(e.X, e.Y));
+            }
             else if (e.Button == MouseButtons.Left && e.Clicks == 2)
-	        {
-	            /*if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
-	                return;*/
+            {
+                /*if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
+                    return;*/
 
-	            MacroAction a;
-	            try
-	            {
-	                a = actionList.SelectedItem as MacroAction;
-	            }
-	            catch
-	            {
-	                a = null;
-	            }
+                MacroAction a;
+                try
+                {
+                    a = actionList.SelectedItem as MacroAction;
+                }
+                catch
+                {
+                    a = null;
+                }
 
                 MenuItem[] aMenus = a.GetContextMenuItems();
 
-	            if (aMenus != null && aMenus.Length > 0)
-	            {
-	                if (aMenus[0].Text.Equals(Language.GetString(LocString.Edit)))
-	                {
-	                    if (a.GetType().Name.Equals("IfAction"))
-	                    {
-	                        new MacroInsertIf(a).ShowDialog(Engine.MainWindow);
+                if (aMenus != null && aMenus.Length > 0)
+                {
+                    if (aMenus[0].Text.Equals(Language.GetString(LocString.Edit)))
+                    {
+                        if (a.GetType().Name.Equals("IfAction"))
+                        {
+                            new MacroInsertIf(a).ShowDialog(Engine.MainWindow);
                         }
-	                    else
-	                    {
+                        else
+                        {
                             new MacroInsertWait(a).ShowDialog(Engine.MainWindow);
                         }
 
 
                     }
-	            }
+                }
             }
 
         }
 
-		private void onMacroPlayHere(object sender, EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void onMacroPlayHere(object sender, EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			int sel = actionList.SelectedIndex+1;
-			if ( sel < 0 || sel > m.Actions.Count )
-				sel = m.Actions.Count;
+            int sel = actionList.SelectedIndex + 1;
+            if (sel < 0 || sel > m.Actions.Count)
+                sel = m.Actions.Count;
 
-			MacroManager.PlayAt( m, sel );
-			playMacro.Text = "Stop";
-		    nextMacroAction.Enabled = stepThroughMacro.Checked;
-			recMacro.Enabled = false;
+            MacroManager.PlayAt(m, sel);
+            playMacro.Text = "Stop";
+            nextMacroAction.Enabled = stepThroughMacro.Checked;
+            recMacro.Enabled = false;
 
-			OnMacroStart( m );
-		}
+            OnMacroStart(m);
+        }
 
-		private void onMacroInsertComment(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();
-			if ( m == null )
-				return;
+        private void onMacroInsertComment(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
 
-			int a = actionList.SelectedIndex;
-			if ( a >= m.Actions.Count ) // -1 is valid, will insert @ top
-				return;
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
 
-			if ( InputBox.Show( Language.GetString( LocString.InsComment ) ) )
-			{
-				m.Actions.Insert( a+1, new MacroComment( InputBox.GetString() ) );
-				RedrawActionList( m );
-			}
-		}
+            if (InputBox.Show(Language.GetString(LocString.InsComment)))
+            {
+                m.Actions.Insert(a + 1, new MacroComment(InputBox.GetString()));
+                RedrawActionList(m);
+            }
+        }
 
-		private void onMacroInsertIf(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();
-			if ( m == null )
-				return;
+        private void onMacroInsertIf(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
 
-			int a = actionList.SelectedIndex;
-			if ( a >= m.Actions.Count ) // -1 is valid, will insert @ top
-				return;
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
 
-			MacroInsertIf ins = new MacroInsertIf( m, a );
-			if ( ins.ShowDialog( this ) == DialogResult.OK )
-				RedrawActionList( m );
-		}
+            MacroInsertIf ins = new MacroInsertIf(m, a);
+            if (ins.ShowDialog(this) == DialogResult.OK)
+                RedrawActionList(m);
+        }
 
-		private void onMacroInsertElse(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void onMacroInsertElse(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			int a = actionList.SelectedIndex;
-			if ( a >= m.Actions.Count ) // -1 is valid, will insert @ top
-				return;
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
 
-			m.Actions.Insert( a+1, new ElseAction() );
-			RedrawActionList( m );
-		}
+            m.Actions.Insert(a + 1, new ElseAction());
+            RedrawActionList(m);
+        }
 
-		private void onMacroInsertEndIf(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void onMacroInsertEndIf(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			int a = actionList.SelectedIndex;
-			if ( a >= m.Actions.Count ) // -1 is valid, will insert @ top
-				return;
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
 
-			m.Actions.Insert( a+1, new EndIfAction() );
-			RedrawActionList( m );
-		}
+            m.Actions.Insert(a + 1, new EndIfAction());
+            RedrawActionList(m);
+        }
 
-		private void onMacroInsertFor(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();
-			if ( m == null )
-				return;
+        private void onMacroInsertFor(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
 
-			int a = actionList.SelectedIndex;
-			if ( a >= m.Actions.Count ) // -1 is valid, will insert @ top
-				return;
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
 
-			if ( InputBox.Show( Language.GetString( LocString.NumIter ) ) )
-			{
-				m.Actions.Insert( a+1, new ForAction( InputBox.GetInt( 1 ) ) );
-				RedrawActionList( m );
-			}
-		}
+            if (InputBox.Show(Language.GetString(LocString.NumIter)))
+            {
+                m.Actions.Insert(a + 1, new ForAction(InputBox.GetInt(1)));
+                RedrawActionList(m);
+            }
+        }
 
-		private void onMacroInsertEndFor(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();
-			if ( m == null )
-				return;
+        private void onMacroInsertEndFor(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
 
-			int a = actionList.SelectedIndex;
-			if ( a >= m.Actions.Count ) // -1 is valid, will insert @ top
-				return;
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
 
-			m.Actions.Insert( a+1, new EndForAction() );
-			RedrawActionList( m );
-		}
+            m.Actions.Insert(a + 1, new EndForAction());
+            RedrawActionList(m);
+        }
 
-		private void OnMacroActionMoveUp(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void OnMacroActionMoveUp(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			int move = actionList.SelectedIndex;
-			if ( move > 0 && move < m.Actions.Count )
-			{
-				MacroAction a = (MacroAction)m.Actions[move-1];
-				m.Actions[move-1] = m.Actions[move];
-				m.Actions[move] = a;
+            int move = actionList.SelectedIndex;
+            if (move > 0 && move < m.Actions.Count)
+            {
+                MacroAction a = (MacroAction)m.Actions[move - 1];
+                m.Actions[move - 1] = m.Actions[move];
+                m.Actions[move] = a;
 
-				RedrawActionList( m );
-				actionList.SelectedIndex = move - 1;
-			}
-		}
+                RedrawActionList(m);
+                actionList.SelectedIndex = move - 1;
+            }
+        }
 
         private void OnMacroActionMoveDown(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			int move = actionList.SelectedIndex;
-			if ( move+1 < m.Actions.Count )
-			{
-				MacroAction a = (MacroAction)m.Actions[move+1];
-				m.Actions[move+1] = m.Actions[move];
-				m.Actions[move] = a;
+            int move = actionList.SelectedIndex;
+            if (move + 1 < m.Actions.Count)
+            {
+                MacroAction a = (MacroAction)m.Actions[move + 1];
+                m.Actions[move + 1] = m.Actions[move];
+                m.Actions[move] = a;
 
-				RedrawActionList( m );
-				actionList.SelectedIndex = move + 1;
-			}
-		}
+                RedrawActionList(m);
+                actionList.SelectedIndex = move + 1;
+            }
+        }
 
 
         private void OnMacroKeyMoveUp()
@@ -6111,16 +6112,16 @@ namespace Assistant
             }
         }
 
-        private void RedrawActionList( Macro m )
-		{
-			int sel = actionList.SelectedIndex;
-			m.DisplayTo( actionList );
-			actionList.SelectedIndex = sel;
-		}
+        private void RedrawActionList(Macro m)
+        {
+            int sel = actionList.SelectedIndex;
+            m.DisplayTo(actionList);
+            actionList.SelectedIndex = sel;
+        }
 
-		private void actionList_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			if ( e.KeyCode == Keys.Delete )
+        private void actionList_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
             {
                 onMacroActionDelete(sender, e);
 
@@ -6144,139 +6145,139 @@ namespace Assistant
             }
         }
 
-		private void onMacroActionDelete(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void onMacroActionDelete(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			int a = actionList.SelectedIndex;
-			if ( a < 0 || a >= m.Actions.Count )
-				return;
+            int a = actionList.SelectedIndex;
+            if (a < 0 || a >= m.Actions.Count)
+                return;
 
-			if ( MessageBox.Show( this, Language.Format( LocString.DelConf, m.Actions[a].ToString() ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
-			{
-				m.Actions.RemoveAt( a );
-				actionList.Items.RemoveAt( a );
-			}
-		}
+            if (MessageBox.Show(this, Language.Format(LocString.DelConf, m.Actions[a].ToString()), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                m.Actions.RemoveAt(a);
+                actionList.Items.RemoveAt(a);
+            }
+        }
 
-		private void onMacroBegRecHere(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void onMacroBegRecHere(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			int sel = actionList.SelectedIndex+1;
-			if ( sel < 0 || sel > m.Actions.Count )
-				sel = m.Actions.Count;
+            int sel = actionList.SelectedIndex + 1;
+            if (sel < 0 || sel > m.Actions.Count)
+                sel = m.Actions.Count;
 
-			MacroManager.RecordAt( m, sel );
-			recMacro.Text = "Stop";
-			playMacro.Enabled = false;
-			OnMacroStart( m );
-		}
+            MacroManager.RecordAt(m, sel);
+            recMacro.Text = "Stop";
+            playMacro.Enabled = false;
+            OnMacroStart(m);
+        }
 
-		private void onMacroInsPause(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void onMacroInsPause(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			int a = actionList.SelectedIndex;
-			if ( a >= m.Actions.Count ) // -1 is valid, will insert @ top
-				return;
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
 
-			MacroInsertWait ins = new MacroInsertWait( m, a );
-			if ( ins.ShowDialog( this ) == DialogResult.OK )
-				RedrawActionList( m );
-		}
+            MacroInsertWait ins = new MacroInsertWait(m, a);
+            if (ins.ShowDialog(this) == DialogResult.OK)
+                RedrawActionList(m);
+        }
 
-		private void onMacroReload(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void onMacroReload(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			m.Load();
-			RedrawActionList( m );
-		}
+            m.Load();
+            RedrawActionList(m);
+        }
 
-		private void onMacroSave(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void onMacroSave(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			m.Save();
-			RedrawActionList( m );
-		}
+            m.Save();
+            RedrawActionList(m);
+        }
 
-		private void onMacroInsertSetLT( object sender, EventArgs e )
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
+        private void onMacroInsertSetLT(object sender, EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
 
-			int a = actionList.SelectedIndex;
-			if ( a >= m.Actions.Count ) // -1 is valid, will insert @ top
-				return;
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
 
-			m.Actions.Insert( a+1, new SetLastTargetAction() );
-			RedrawActionList( m );
-		}
+            m.Actions.Insert(a + 1, new SetLastTargetAction());
+            RedrawActionList(m);
+        }
 
-		private void loopMacro_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Macro m = GetMacroSel();;
-			if ( m == null )
-				return;
-			m.Loop = loopMacro.Checked;
-		}
+        private void loopMacro_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel(); ;
+            if (m == null)
+                return;
+            m.Loop = loopMacro.Checked;
+        }
 
-		private void spamFilter_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "FilterSpam", spamFilter.Checked );
-		}
+        private void spamFilter_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("FilterSpam", spamFilter.Checked);
+        }
 
-		private void jump2SearchEx_Click(object sender, System.EventArgs e)
-		{
-			tabs.SelectedTab = agentsTab;
-			agentList.SelectedItem = SearchExemptionAgent.Instance;
-		}
+        private void jump2SearchEx_Click(object sender, System.EventArgs e)
+        {
+            tabs.SelectedTab = agentsTab;
+            agentList.SelectedItem = SearchExemptionAgent.Instance;
+        }
 
-		private void screenAutoCap_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "AutoCap", screenAutoCap.Checked );
-		}
+        private void screenAutoCap_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("AutoCap", screenAutoCap.Checked);
+        }
 
-		private void setScnPath_Click(object sender, System.EventArgs e)
-		{
-			FolderBrowserDialog folder = new FolderBrowserDialog();
-			folder.Description = Language.GetString( LocString.SelSSFolder );
-			folder.SelectedPath = Config.GetString( "CapPath" );
-			folder.ShowNewFolderButton = true;
+        private void setScnPath_Click(object sender, System.EventArgs e)
+        {
+            FolderBrowserDialog folder = new FolderBrowserDialog();
+            folder.Description = Language.GetString(LocString.SelSSFolder);
+            folder.SelectedPath = Config.GetString("CapPath");
+            folder.ShowNewFolderButton = true;
 
-			if ( folder.ShowDialog( this ) == DialogResult.OK )
-			{
-				Config.SetProperty( "CapPath", folder.SelectedPath );
-				screenPath.Text = folder.SelectedPath;
+            if (folder.ShowDialog(this) == DialogResult.OK)
+            {
+                Config.SetProperty("CapPath", folder.SelectedPath);
+                screenPath.Text = folder.SelectedPath;
 
-				ReloadScreenShotsList();
-			}
-		}
+                ReloadScreenShotsList();
+            }
+        }
 
-		public void ReloadScreenShotsList()
-		{
-			ScreenCapManager.DisplayTo( screensList );
-			if ( screenPrev.Image != null )
-			{
-				screenPrev.Image.Dispose();
-				screenPrev.Image = null;
-			}
+        public void ReloadScreenShotsList()
+        {
+            ScreenCapManager.DisplayTo(screensList);
+            if (screenPrev.Image != null)
+            {
+                screenPrev.Image.Dispose();
+                screenPrev.Image = null;
+            }
 
             ReloadImgurUploadList();
-		}
+        }
 
         public List<ImgurUpload> m_ImgurUploads = new List<ImgurUpload>();
 
@@ -6311,7 +6312,7 @@ namespace Assistant
                 m_ImgurUploads.Add(upload);
             }
 
-            foreach(ImgurUpload upload in m_ImgurUploads)
+            foreach (ImgurUpload upload in m_ImgurUploads)
             {
                 imgurUploads.Items.Add(upload.Url);
             }
@@ -6384,48 +6385,48 @@ namespace Assistant
         }
 
         private void radioFull_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( radioFull.Checked )
-			{
-				radioUO.Checked = false;
-				Config.SetProperty( "CapFullScreen", true );
-			}
-		}
+        {
+            if (radioFull.Checked)
+            {
+                radioUO.Checked = false;
+                Config.SetProperty("CapFullScreen", true);
+            }
+        }
 
-		private void radioUO_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( radioUO.Checked )
-			{
-				radioFull.Checked = false;
-				Config.SetProperty( "CapFullScreen", false );
-			}
-		}
+        private void radioUO_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (radioUO.Checked)
+            {
+                radioFull.Checked = false;
+                Config.SetProperty("CapFullScreen", false);
+            }
+        }
 
-		private void screensList_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if ( screenPrev.Image != null )
-			{
-				screenPrev.Image.Dispose();
-				screenPrev.Image = null;
-			}
+        private void screensList_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            if (screenPrev.Image != null)
+            {
+                screenPrev.Image.Dispose();
+                screenPrev.Image = null;
+            }
 
-			if ( screensList.SelectedIndex == -1 )
-				return;
+            if (screensList.SelectedIndex == -1)
+                return;
 
-			string file = Path.Combine( Config.GetString( "CapPath" ), screensList.SelectedItem.ToString() );
-			if ( !File.Exists( file ) )
-			{
-				MessageBox.Show( this, Language.Format( LocString.FileNotFoundA1, file ), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-				screensList.Items.RemoveAt( screensList.SelectedIndex );
-				screensList.SelectedIndex = -1;
-				return;
-			}
+            string file = Path.Combine(Config.GetString("CapPath"), screensList.SelectedItem.ToString());
+            if (!File.Exists(file))
+            {
+                MessageBox.Show(this, Language.Format(LocString.FileNotFoundA1, file), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                screensList.Items.RemoveAt(screensList.SelectedIndex);
+                screensList.SelectedIndex = -1;
+                return;
+            }
 
-			using ( Stream reader = new FileStream( file, FileMode.Open, FileAccess.Read ) )
-			{
-				screenPrev.Image = Image.FromStream( reader );
-			}
-		}
+            using (Stream reader = new FileStream(file, FileMode.Open, FileAccess.Read))
+            {
+                screenPrev.Image = Image.FromStream(reader);
+            }
+        }
 
         private void screensList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
@@ -6433,7 +6434,7 @@ namespace Assistant
             {
                 ContextMenu menu = new ContextMenu();
 
-                menu.MenuItems.Add("Upload to Imgur", new EventHandler(UploadToImgur));
+                menu.MenuItems.Add("Upload to Imgur", new EventHandler(UploadToImgurEvent));
                 menu.MenuItems.Add("-");
                 menu.MenuItems.Add("Delete", new EventHandler(DeleteScreenCap));
 
@@ -6448,7 +6449,7 @@ namespace Assistant
             }
         }
 
-        private void UploadToImgur(object sender, System.EventArgs e)
+        private void UploadToImgurEvent(object sender, System.EventArgs e)
         {
             int sel = screensList.SelectedIndex;
             if (sel == -1)
@@ -6456,6 +6457,13 @@ namespace Assistant
 
             string file = Path.Combine(Config.GetString("CapPath"), (string)screensList.SelectedItem);
 
+
+            // This is .NET 4.0, can't use async Task.Run
+            Task T = Task.Factory.StartNew(() => { UploadToImgur(file); });
+        }
+
+        private void UploadToImgur(string file)
+        {
             try
             {
                 using (var w = new WebClient())
@@ -6527,7 +6535,8 @@ namespace Assistant
                 }
 
                 ReloadImgurUploadList();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
             }
         }
@@ -6553,819 +6562,820 @@ namespace Assistant
 
                 ReloadImgurUploadList();
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
 
             }
         }
 
         private void DeleteScreenCap(object sender, System.EventArgs e)
-		{
-			int sel = screensList.SelectedIndex;
-			if ( sel == -1 )
-				return;
+        {
+            int sel = screensList.SelectedIndex;
+            if (sel == -1)
+                return;
 
-			string file = Path.Combine( Config.GetString( "CapPath" ), (string)screensList.SelectedItem );
-			if ( MessageBox.Show( this, Language.Format( LocString.DelConf, file ), "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.No )
-				return;
+            string file = Path.Combine(Config.GetString("CapPath"), (string)screensList.SelectedItem);
+            if (MessageBox.Show(this, Language.Format(LocString.DelConf, file), "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
 
-			screensList.SelectedIndex = -1;
-			if ( screenPrev.Image != null )
-			{
-				screenPrev.Image.Dispose();
-				screenPrev.Image = null;
-			}
+            screensList.SelectedIndex = -1;
+            if (screenPrev.Image != null)
+            {
+                screenPrev.Image.Dispose();
+                screenPrev.Image = null;
+            }
 
-			try
-			{
-				File.Delete( file );
-				screensList.Items.RemoveAt( sel );
-			}
-			catch ( Exception ex )
-			{
-				MessageBox.Show( this, ex.Message, "Unable to Delete", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-				return;
-			}
-			ReloadScreenShotsList();
-		}
-
-		private void ClearScreensDirectory(object sender, System.EventArgs e)
-		{
-			string dir = Config.GetString( "CapPath" );
-			if ( MessageBox.Show( this, Language.Format( LocString.Confirm, dir ), "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.No )
-				return;
-
-			string[] files = Directory.GetFiles( dir, "*.jpg" );
-			StringBuilder sb = new StringBuilder();
-			int failed = 0;
-			for (int i=0;i<files.Length;i++)
-			{
-				try
-				{
-					File.Delete( files[i] );
-				}
-				catch
-				{
-					sb.AppendFormat( "{0}\n", files[i] );
-					failed ++;
-				}
-			}
-
-			if ( failed > 0 )
-				MessageBox.Show( this, Language.Format( LocString.FileDelError, failed, failed != 1 ? "s" : "", sb.ToString() ), "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-			ReloadScreenShotsList();
-		}
-
-		private void capNow_Click(object sender, System.EventArgs e)
-		{
-			ScreenCapManager.CaptureNow();
-		}
-
-		private void dispTime_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "CapTimeStamp", dispTime.Checked );
-		}
-
-		public static void LaunchBrowser( string site )
-		{
-			try
-			{
-				System.Diagnostics.Process.Start( site );//"iexplore", site );
-			}
-			catch
-			{
-				MessageBox.Show( String.Format( "Unable to open browser to '{0}'", site ), "Error", MessageBoxButtons.OK,  MessageBoxIcon.Warning );
-			}
-		}
-
-		private void donate_Click(object sender, System.EventArgs e)
-		{
-			LaunchBrowser( "https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD" );
-		}
-
-		private void undressConflicts_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "UndressConflicts", undressConflicts.Checked );
-		}
-
-		private void taskbar_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( taskbar.Checked )
-			{
-				systray.Checked = false;
-				Config.SetProperty( "Systray", false );
-				if ( !this.ShowInTaskbar )
-					MessageBox.Show( this, Language.GetString( LocString.NextRestart ), "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information );
-			}
-		}
-
-		private void systray_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( systray.Checked )
-			{
-				taskbar.Checked = false;
-				Config.SetProperty( "Systray", true );
-				if ( this.ShowInTaskbar )
-					MessageBox.Show( this, Language.GetString( LocString.NextRestart ), "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information );
-			}
-		}
-
-	    public void UpdateTitle()
-	    {
-	        string str = Language.GetControlText(this.Name);
-	        if (string.IsNullOrEmpty(str))
-	        {
-	            str = "Razor v{0}";
-	        }
-
-
-	        str = string.Format(str, Engine.Version);
-
-	        if (World.Player != null)
-	        {
-	            string title = $"{World.Player.Name} ({World.ShardName}) - {str}";
-	            Text = title;
-	        }
-	        else
-	        {
-	            Text = str;
-	        }
-
-	        aboutVer.Text = str;
-
-
-	        UpdateSystray();
-	    }
-
-		public void UpdateSystray()
-		{
-			if ( m_NotifyIcon != null && m_NotifyIcon.Visible )
-			{
-				if ( World.Player != null )
-					m_NotifyIcon.Text = String.Format( "Razor - {0} ({1})", World.Player.Name, World.ShardName );
-				else
-					m_NotifyIcon.Text = "Razor";
-			}
-		}
-
-		private void DoShowMe(object sender, System.EventArgs e)
-		{
-			ShowMe();
-		}
-
-	    public void ShowMe()
-	    {
-	        // Fuck windows, seriously.
-
-	        ClientCommunication.BringToFront(this.Handle);
-	        if (Config.GetBool("AlwaysOnTop"))
-	            this.TopMost = true;
-	        if (WindowState != FormWindowState.Normal)
-	            WindowState = FormWindowState.Normal;
-	    }
-
-		private void HideMe(object sender, System.EventArgs e)
-		{
-			//this.WindowState = FormWindowState.Minimized;
-			this.TopMost = false;
-			this.SendToBack();
-			this.Hide();
+            try
+            {
+                File.Delete(file);
+                screensList.Items.RemoveAt(sel);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Unable to Delete", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            ReloadScreenShotsList();
         }
 
-		private void NotifyIcon_DoubleClick(object sender, System.EventArgs e)
-		{
-			ShowMe();
-		}
-
-		private void ToggleVisible(object sender, System.EventArgs e)
-		{
-			if ( this.Visible )
-				HideMe(sender,e);
-			else
-				ShowMe();
-		}
-
-		private void OnClose(object sender, System.EventArgs e)
-		{
-			m_CanClose = true;
-			this.Close();
-		}
-
-		private void titlebarImages_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "TitlebarImages", titlebarImages.Checked );
-			ClientCommunication.RequestTitlebarUpdate();
-		}
-
-		private void highlightSpellReags_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "HighlightReagents", highlightSpellReags.Checked );
-			ClientCommunication.RequestTitlebarUpdate();
-		}
-
-		private void actionStatusMsg_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "ActionStatusMsg", actionStatusMsg.Checked );
-		}
-
-		private void autoStackRes_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "AutoStack", autoStackRes.Checked );
-			//setAutoStackDest.Enabled = autoStackRes.Checked;
-		}
-
-		private void screenPath_TextChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "CapPath", screenPath.Text );
-		}
-
-		private void rememberPwds_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( rememberPwds.Checked && !Config.GetBool( "RememberPwds" ) )
-			{
-				if ( MessageBox.Show( this, Language.GetString( LocString.PWWarn ), "Security Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.No )
-				{
-					rememberPwds.Checked = false;
-					return;
-				}
-			}
-			Config.SetProperty( "RememberPwds", rememberPwds.Checked );
-		}
-
-		private void langSel_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			string lang = langSel.SelectedItem as String;
-			if ( lang != null && lang != Language.Current )
-			{
-				if ( !Language.Load( lang ) )
-				{
-					MessageBox.Show( this, "Unable to load that language.", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation );
-					langSel.SelectedItem = Language.Current;
-				}
-				else
-				{
-					Config.SetAppSetting("DefaultLanguage", Language.Current);
-					Language.LoadControlNames( this );
-					HotKey.RebuildList( hotkeyTree );
-				}
-			}
-		}
-
-		private void tabs_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			HotKey.KeyDown( e.KeyData );
-		}
-
-		private void MainForm_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			HotKey.KeyDown( e.KeyData );
-		}
-
-		private void spellUnequip_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "SpellUnequip", spellUnequip.Checked );
-		}
-
-		private void rangeCheckLT_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "RangeCheckLT", ltRange.Enabled=rangeCheckLT.Checked );
-		}
-
-		private void ltRange_TextChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "LTRange", Utility.ToInt32( ltRange.Text, 11 ) );
-		}
-
-		private void excludePouches_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "NoSearchPouches", excludePouches.Checked );
-		}
-
-		private void clientPrio_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			string str = (string)clientPrio.SelectedItem;
-			Config.SetProperty( "ClientPrio", str );
-			try
-			{
-				ClientCommunication.ClientProcess.PriorityClass = (System.Diagnostics.ProcessPriorityClass)Enum.Parse( typeof(System.Diagnostics.ProcessPriorityClass), str, true );
-			}
-			catch
-			{
-			}
-		}
-
-		private void filterSnoop_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "FilterSnoopMsg", filterSnoop.Checked );
-		}
-
-		private void preAOSstatbar_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "OldStatBar", preAOSstatbar.Checked );
-			ClientCommunication.RequestStatbarPatch( preAOSstatbar.Checked );
-			if ( World.Player != null && !m_Initializing )
-				MessageBox.Show( this, "Close and re-open your status bar for the change to take effect.", "Status Window Note", MessageBoxButtons.OK, MessageBoxIcon.Information );
-		}
-
-		private void smartLT_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "SmartLastTarget", smartLT.Checked );
-		}
-
-		private void showtargtext_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "LastTargTextFlags", showtargtext.Checked );
-		}
-
-		private void dressItems_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-		{
-			if ( e.KeyCode == Keys.Delete )
-			{
-				DressList list = (DressList)dressList.SelectedItem;
-				if ( list == null )
-					return;
-
-				int sel = dressItems.SelectedIndex;
-				if ( sel < 0 || sel >= list.Items.Count )
-					return;
-
-				if ( MessageBox.Show( this, Language.GetString( LocString.DelDressItemQ ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
-				{
-					try
-					{
-						list.Items.RemoveAt( sel );
-						dressItems.Items.RemoveAt( sel );
-					}
-					catch
-					{
-					}
-				}
-			}
-		}
-
-		private void blockDis_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "BlockDismount", blockDis.Checked );
-		}
-
-		private void imgFmt_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if ( imgFmt.SelectedIndex != -1 )
-				Config.SetProperty( "ImageFormat", imgFmt.SelectedItem );
-			else
-				Config.SetProperty( "ImageFormat", "jpg" );
-		}
-
-		private void vidRec_Click(object sender, System.EventArgs e)
-		{
-			if ( !PacketPlayer.Playing )
-			{
-				if ( PacketPlayer.Recording )
-					PacketPlayer.Stop();
-				else
-					PacketPlayer.Record();
-			}
-		}
-
-		private void recFolder_Click(object sender, System.EventArgs e)
-		{
-			FolderBrowserDialog folder = new FolderBrowserDialog();
-			folder.Description = "Select Recording Folder";//Language.GetString( LocString.SelRecFolder );
-			folder.SelectedPath = Config.GetString( "RecFolder" );
-			folder.ShowNewFolderButton = true;
-
-			if ( folder.ShowDialog( this ) == DialogResult.OK )
-			{
-				Config.SetProperty( "RecFolder", folder.SelectedPath );
-				txtRecFolder.Text = folder.SelectedPath;
-			}
-		}
-
-		private void vidPlay_Click(object sender, System.EventArgs e)
-		{
-			if ( !PacketPlayer.Playing )
-				PacketPlayer.Play();
-			else
-				PacketPlayer.Pause();
-		}
-
-		private void vidPlayStop_Click(object sender, System.EventArgs e)
-		{
-			if ( PacketPlayer.Playing )
-				PacketPlayer.Stop();
-		}
-
-		private void vidOpen_Click(object sender, System.EventArgs e)
-		{
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.AddExtension = false;
-			ofd.CheckFileExists = true;
-			ofd.CheckPathExists = true;
-			ofd.DefaultExt = "rpv";
-			ofd.DereferenceLinks = true;
-			ofd.Filter = "Razor PacketVideo (*.rpv)|*.rpv|All Files (*.*)|*.*";
-			ofd.FilterIndex = 0;
-			ofd.InitialDirectory = Config.GetString( "RecFolder" );
-			ofd.Multiselect = false;
-			ofd.RestoreDirectory = true;
-			ofd.ShowHelp = ofd.ShowReadOnly = false;
-			ofd.Title = "Select a Video File...";
-			ofd.ValidateNames = true;
-
-			if ( ofd.ShowDialog( this ) == DialogResult.OK )
-				PacketPlayer.Open( ofd.FileName );
-		}
-
-		private void playPos_Scroll(object sender, System.EventArgs e)
-		{
-			PacketPlayer.OnScroll();
-		}
-
-		private void txtRecFolder_TextChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "RecFolder", txtRecFolder.Text );
-		}
-
-		private void vidClose_Click(object sender, System.EventArgs e)
-		{
-			PacketPlayer.Close();
-		}
-
-		private void playSpeed_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			PacketPlayer.SetSpeed( playSpeed.SelectedIndex - 2 );
-		}
-
-		private void recAVI_Click(object sender, System.EventArgs e)
-		{
-			if ( !AVIRec.Recording )
-			{
-				double res = 1.00;
-				switch( Config.GetInt( "AviRes" ) )
-				{
-					case 1: res = 0.75; break;
-					case 2: res = 0.50; break;
-					case 3: res = 0.25; break;
-				}
-				if( AVIRec.Record( Config.GetInt( "AviFPS" ), res ) )
-				{
-					recAVI.Text = "Stop Rec";
-				}
-			}
-			else
-			{
-				AVIRec.Stop();
-				recAVI.Text = "Record AVI Video";
-			}
-		}
-
-		private void aviFPS_TextChanged(object sender, System.EventArgs e)
-		{
-			try
-			{
-				int fps = Convert.ToInt32( aviFPS.Text );
-				if ( fps < 5 )
-					fps = 5;
-				else if ( fps > 30 )
-					fps = 30;
-				Config.SetProperty( "AviFPS", fps );
-			}
-			catch
-			{
-			}
-		}
-
-		private void aviRes_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "AviRes", aviRes.SelectedIndex );
-		}
-
-		private void autoFriend_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "AutoFriend", autoFriend.Checked );
-		}
-
-		private void alwaysStealth_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "AlwaysStealth", alwaysStealth.Checked );
-		}
-
-		private void autoOpenDoors_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "AutoOpenDoors", autoOpenDoors.Checked );
-		}
-
-		private void msglvl_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "MessageLevel", msglvl.SelectedIndex );
-		}
-
-		private void screenPrev_Click(object sender, System.EventArgs e)
-		{
-			string file = screensList.SelectedItem as String;
-			if ( file != null )
-				System.Diagnostics.Process.Start( Path.Combine( Config.GetString( "CapPath" ), file ) );
-		}
-
-		private void flipVidHoriz_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "FlipVidH", flipVidHoriz.Checked );
-			AVIRec.UpdateFlip();
-		}
-
-		private void flipVidVert_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "FlipVidV", flipVidVert.Checked );
-			AVIRec.UpdateFlip();
-		}
-
-		private Timer m_ResizeTimer = Timer.DelayedCallback( TimeSpan.FromSeconds( 1.0 ), new TimerCallback( ForceSize ) );
-
-		private static void ForceSize()
-		{
-			int x, y;
-
-			if ( Config.GetBool( "ForceSizeEnabled" ) )
-			{
-				x = Config.GetInt( "ForceSizeX" );
-				y = Config.GetInt( "ForceSizeY" );
-
-				if ( x > 100 && x < 2000 && y > 100 && y < 2000 )
-					ClientCommunication.SetGameSize( x, y );
-				else
-					MessageBox.Show( Engine.MainWindow, Language.GetString( LocString.ForceSizeBad ), "Bad Size", MessageBoxButtons.OK, MessageBoxIcon.Stop );
-			}
-		}
-
-		private void gameSize_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "ForceSizeEnabled", gameSize.Checked );
-			forceSizeX.Enabled = forceSizeY.Enabled = gameSize.Checked;
-
-			if ( gameSize.Checked )
-			{
-				int x = Utility.ToInt32( forceSizeX.Text, 800 );
-				int y = Utility.ToInt32( forceSizeY.Text, 600 );
-
-                if ( x < 100 || y < 100 || x > 2000 || y > 2000 )
-					MessageBox.Show( this, Language.GetString( LocString.ForceSizeBad ), "Bad Size", MessageBoxButtons.OK, MessageBoxIcon.Stop );
-				else
-					ClientCommunication.SetGameSize( x, y );
-			}
-			else
-			{
-				ClientCommunication.SetGameSize( 800, 600 );
-			}
-
-			if ( !m_Initializing )
-				MessageBox.Show( this, Language.GetString( LocString.ApplyOptionsRequired), "Additional Step", MessageBoxButtons.OK, MessageBoxIcon.Information );
-
-		}
-
-		private void forceSizeX_TextChanged(object sender, System.EventArgs e)
-		{
-			int x = Utility.ToInt32( forceSizeX.Text, 600 );
-			if ( x >= 100 && x <= 2000 )
-				Config.SetProperty( "ForceSizeX", x );
-
-			if ( !m_Initializing )
-			{
-				if ( x > 100 && x < 2000 )
-				{
-					m_ResizeTimer.Stop();
-					m_ResizeTimer.Start();
-				}
-			}
-		}
-
-		private void forceSizeY_TextChanged(object sender, System.EventArgs e)
-		{
-			int y = Utility.ToInt32( forceSizeY.Text, 600 );
-			if ( y >= 100 && y <= 2000 )
-				Config.SetProperty( "ForceSizeY", y );
-
-			if ( !m_Initializing )
-			{
-				if ( y > 100 && y < 2000 )
-				{
-					m_ResizeTimer.Stop();
-					m_ResizeTimer.Start();
-				}
-			}
-		}
-
-		private void potionEquip_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "PotionEquip", potionEquip.Checked );
-		}
-
-		private void blockHealPoison_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "BlockHealPoison", blockHealPoison.Checked );
-		}
-
-		private void negotiate_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( !m_Initializing )
-			{
-				Config.SetProperty( "Negotiate", negotiate.Checked );
-				ClientCommunication.SetNegotiate( negotiate.Checked );
-			}
-		}
-
-		private void wikiLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			LaunchBrowser("https://github.com/msturgill/razor/wiki");
-		}
-
-		private void homeLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			LaunchBrowser("https://github.com/msturgill/razor/wiki");
-		}
-
-		private void issuesLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			LaunchBrowser("https://github.com/msturgill/razor/issues");
-		}
-
-		private void mleLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			LaunchBrowser( "http://www.mlewallpapers.com/" );
-		}
-
-		private void lockBox_Click(object sender, System.EventArgs e)
-		{
-			MessageBox.Show( this, Language.GetString( LocString.FeatureDisabledText ), Language.GetString( LocString.FeatureDisabled ), MessageBoxButtons.OK, MessageBoxIcon.Stop );
-		}
-
-		private ArrayList m_LockBoxes = new ArrayList();
-
-		public void LockControl( Control locked )
-		{
-			if ( locked != null )
-			{
-				if ( locked.Parent != null && locked.Parent.Controls != null )
-				{
-					try
-					{
-						int y_off = (locked.Size.Height - 16) / 2;
-						int x_off = 0;
-						System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MainForm));
-						PictureBox newLockBox = new PictureBox();
-
-						if ( locked is TextBox )
-							x_off += 5;
-						else if ( !(locked is CheckBox || locked is RadioButton) )
-							x_off = (locked.Size.Width - 16) / 2;
-
-						newLockBox.Cursor = System.Windows.Forms.Cursors.Help;
-						//newLockBox.Image = ((System.Drawing.Image)(resources.GetObject("lockBox.Image")));
-						newLockBox.Size = new System.Drawing.Size(16, 16);
-						newLockBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-						newLockBox.Click += new System.EventHandler(this.lockBox_Click);
-
-						newLockBox.TabIndex = locked.TabIndex;
-						newLockBox.TabStop = locked.TabStop;
-						newLockBox.Location = new System.Drawing.Point( locked.Location.X + x_off, locked.Location.Y + y_off );
-						newLockBox.Name = locked.Name + "LockBox";
-						newLockBox.Tag = locked;
-						newLockBox.Visible = true;
-
-						locked.Parent.Controls.Add ( newLockBox );
-						locked.Parent.Controls.SetChildIndex( newLockBox, 0 );
-						m_LockBoxes.Add( newLockBox );
-					}
-					catch
-					{
-					}
-				}
-
-				locked.Enabled = false;
-			}
-		}
-
-		public void UnlockControl( Control unlock )
-		{
-			if ( unlock != null )
-			{
-				for (int i=0;i<m_LockBoxes.Count;i++)
-				{
-					PictureBox box = m_LockBoxes[i] as PictureBox;
-					if ( box == null )
-						continue;
-
-					if ( box.Tag == unlock )
-					{
-						unlock.Enabled = true;
-						if ( box.Parent != null && box.Parent.Controls != null )
-							box.Parent.Controls.Remove( box );
-
-						m_LockBoxes.RemoveAt( i );
-						break;
-					}
-				}
-			}
-		}
-
-		public void OnLogout()
-		{
-			OnMacroStop();
-
-			features.Visible = false;
-
-			for (int i=0;i<m_LockBoxes.Count;i++)
-			{
-				PictureBox box = m_LockBoxes[i] as PictureBox;
-				if ( box == null )
-					continue;
-
-				box.Parent.Controls.Remove( box );
-				if ( box.Tag is Control )
-					((Control)box.Tag).Enabled = true;
-			}
-			m_LockBoxes.Clear();
-		}
-
-		public void UpdateControlLocks()
-		{
-			for (int i=0;i<m_LockBoxes.Count;i++)
-			{
-				PictureBox box = m_LockBoxes[i] as PictureBox;
-				if ( box == null )
-					continue;
-
-				box.Parent.Controls.Remove( box );
-				if ( box.Tag is Control )
-					((Control)box.Tag).Enabled = true;
-			}
-			m_LockBoxes.Clear();
-
-			if ( !ClientCommunication.AllowBit( FeatureBit.SmartLT ) )
-				LockControl( this.smartLT );
-
-			if ( !ClientCommunication.AllowBit( FeatureBit.RangeCheckLT ) )
-				LockControl( this.rangeCheckLT );
-
-			if ( !ClientCommunication.AllowBit( FeatureBit.AutoOpenDoors ) )
-				LockControl( this.autoOpenDoors );
-
-			if ( !ClientCommunication.AllowBit( FeatureBit.UnequipBeforeCast ) )
-				LockControl( this.spellUnequip );
-
-			if ( !ClientCommunication.AllowBit( FeatureBit.AutoPotionEquip ) )
-				LockControl( this.potionEquip );
-
-			if ( !ClientCommunication.AllowBit( FeatureBit.BlockHealPoisoned ) )
-				LockControl( this.blockHealPoison );
-
-			if ( !ClientCommunication.AllowBit( FeatureBit.LoopingMacros ) )
-				LockControl( this.loopMacro );
-
-			if ( !ClientCommunication.AllowBit( FeatureBit.OverheadHealth ) )
-			{
-				LockControl( this.showHealthOH );
-				LockControl( this.healthFmt );
-				LockControl( this.chkPartyOverhead );
-			}
-		}
-
-		public Assistant.MapUO.MapWindow MapWindow;
-
-        [System.Runtime.InteropServices.DllImport( "user32.dll" )]
-		private static extern IntPtr SetParent( IntPtr child, IntPtr newParent );
-
-		private void btnMap_Click(object sender, System.EventArgs e)
-		{
-			if ( World.Player != null )
-			{
-				if ( MapWindow == null )
-					MapWindow = new Assistant.MapUO.MapWindow();
-				//SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
-				//MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
-				MapWindow.Show();
-				MapWindow.BringToFront();
-			}
-		}
-
-		private void showHealthOH_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "ShowHealth", healthFmt.Enabled=showHealthOH.Checked );
-		}
-
-		private void healthFmt_TextChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "HealthFmt", healthFmt.Text );
-		}
-
-		private void chkPartyOverhead_CheckedChanged(object sender, System.EventArgs e)
-		{
-			Config.SetProperty( "ShowPartyStats", chkPartyOverhead.Checked );
-		}
-
-		private void btcLabel_Click(object sender, EventArgs e)
-		{
-
-		}
+        private void ClearScreensDirectory(object sender, System.EventArgs e)
+        {
+            string dir = Config.GetString("CapPath");
+            if (MessageBox.Show(this, Language.Format(LocString.Confirm, dir), "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
+            string[] files = Directory.GetFiles(dir, "*.jpg");
+            StringBuilder sb = new StringBuilder();
+            int failed = 0;
+            for (int i = 0; i < files.Length; i++)
+            {
+                try
+                {
+                    File.Delete(files[i]);
+                }
+                catch
+                {
+                    sb.AppendFormat("{0}\n", files[i]);
+                    failed++;
+                }
+            }
+
+            if (failed > 0)
+                MessageBox.Show(this, Language.Format(LocString.FileDelError, failed, failed != 1 ? "s" : "", sb.ToString()), "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            ReloadScreenShotsList();
+        }
+
+        private void capNow_Click(object sender, System.EventArgs e)
+        {
+            ScreenCapManager.CaptureNow();
+        }
+
+        private void dispTime_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("CapTimeStamp", dispTime.Checked);
+        }
+
+        public static void LaunchBrowser(string site)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(site);//"iexplore", site );
+            }
+            catch
+            {
+                MessageBox.Show(String.Format("Unable to open browser to '{0}'", site), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void donate_Click(object sender, System.EventArgs e)
+        {
+            LaunchBrowser("https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD");
+        }
+
+        private void undressConflicts_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("UndressConflicts", undressConflicts.Checked);
+        }
+
+        private void taskbar_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (taskbar.Checked)
+            {
+                systray.Checked = false;
+                Config.SetProperty("Systray", false);
+                if (!this.ShowInTaskbar)
+                    MessageBox.Show(this, Language.GetString(LocString.NextRestart), "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void systray_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (systray.Checked)
+            {
+                taskbar.Checked = false;
+                Config.SetProperty("Systray", true);
+                if (this.ShowInTaskbar)
+                    MessageBox.Show(this, Language.GetString(LocString.NextRestart), "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        public void UpdateTitle()
+        {
+            string str = Language.GetControlText(this.Name);
+            if (string.IsNullOrEmpty(str))
+            {
+                str = "Razor v{0}";
+            }
+
+
+            str = string.Format(str, Engine.Version);
+
+            if (World.Player != null)
+            {
+                string title = $"{World.Player.Name} ({World.ShardName}) - {str}";
+                Text = title;
+            }
+            else
+            {
+                Text = str;
+            }
+
+            aboutVer.Text = str;
+
+
+            UpdateSystray();
+        }
+
+        public void UpdateSystray()
+        {
+            if (m_NotifyIcon != null && m_NotifyIcon.Visible)
+            {
+                if (World.Player != null)
+                    m_NotifyIcon.Text = String.Format("Razor - {0} ({1})", World.Player.Name, World.ShardName);
+                else
+                    m_NotifyIcon.Text = "Razor";
+            }
+        }
+
+        private void DoShowMe(object sender, System.EventArgs e)
+        {
+            ShowMe();
+        }
+
+        public void ShowMe()
+        {
+            // Fuck windows, seriously.
+
+            ClientCommunication.BringToFront(this.Handle);
+            if (Config.GetBool("AlwaysOnTop"))
+                this.TopMost = true;
+            if (WindowState != FormWindowState.Normal)
+                WindowState = FormWindowState.Normal;
+        }
+
+        private void HideMe(object sender, System.EventArgs e)
+        {
+            //this.WindowState = FormWindowState.Minimized;
+            this.TopMost = false;
+            this.SendToBack();
+            this.Hide();
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, System.EventArgs e)
+        {
+            ShowMe();
+        }
+
+        private void ToggleVisible(object sender, System.EventArgs e)
+        {
+            if (this.Visible)
+                HideMe(sender, e);
+            else
+                ShowMe();
+        }
+
+        private void OnClose(object sender, System.EventArgs e)
+        {
+            m_CanClose = true;
+            this.Close();
+        }
+
+        private void titlebarImages_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("TitlebarImages", titlebarImages.Checked);
+            ClientCommunication.RequestTitlebarUpdate();
+        }
+
+        private void highlightSpellReags_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("HighlightReagents", highlightSpellReags.Checked);
+            ClientCommunication.RequestTitlebarUpdate();
+        }
+
+        private void actionStatusMsg_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("ActionStatusMsg", actionStatusMsg.Checked);
+        }
+
+        private void autoStackRes_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("AutoStack", autoStackRes.Checked);
+            //setAutoStackDest.Enabled = autoStackRes.Checked;
+        }
+
+        private void screenPath_TextChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("CapPath", screenPath.Text);
+        }
+
+        private void rememberPwds_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (rememberPwds.Checked && !Config.GetBool("RememberPwds"))
+            {
+                if (MessageBox.Show(this, Language.GetString(LocString.PWWarn), "Security Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    rememberPwds.Checked = false;
+                    return;
+                }
+            }
+            Config.SetProperty("RememberPwds", rememberPwds.Checked);
+        }
+
+        private void langSel_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            string lang = langSel.SelectedItem as String;
+            if (lang != null && lang != Language.Current)
+            {
+                if (!Language.Load(lang))
+                {
+                    MessageBox.Show(this, "Unable to load that language.", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    langSel.SelectedItem = Language.Current;
+                }
+                else
+                {
+                    Config.SetAppSetting("DefaultLanguage", Language.Current);
+                    Language.LoadControlNames(this);
+                    HotKey.RebuildList(hotkeyTree);
+                }
+            }
+        }
+
+        private void tabs_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            HotKey.KeyDown(e.KeyData);
+        }
+
+        private void MainForm_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            HotKey.KeyDown(e.KeyData);
+        }
+
+        private void spellUnequip_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("SpellUnequip", spellUnequip.Checked);
+        }
+
+        private void rangeCheckLT_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("RangeCheckLT", ltRange.Enabled = rangeCheckLT.Checked);
+        }
+
+        private void ltRange_TextChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("LTRange", Utility.ToInt32(ltRange.Text, 11));
+        }
+
+        private void excludePouches_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("NoSearchPouches", excludePouches.Checked);
+        }
+
+        private void clientPrio_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            string str = (string)clientPrio.SelectedItem;
+            Config.SetProperty("ClientPrio", str);
+            try
+            {
+                ClientCommunication.ClientProcess.PriorityClass = (System.Diagnostics.ProcessPriorityClass)Enum.Parse(typeof(System.Diagnostics.ProcessPriorityClass), str, true);
+            }
+            catch
+            {
+            }
+        }
+
+        private void filterSnoop_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("FilterSnoopMsg", filterSnoop.Checked);
+        }
+
+        private void preAOSstatbar_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("OldStatBar", preAOSstatbar.Checked);
+            ClientCommunication.RequestStatbarPatch(preAOSstatbar.Checked);
+            if (World.Player != null && !m_Initializing)
+                MessageBox.Show(this, "Close and re-open your status bar for the change to take effect.", "Status Window Note", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void smartLT_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("SmartLastTarget", smartLT.Checked);
+        }
+
+        private void showtargtext_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("LastTargTextFlags", showtargtext.Checked);
+        }
+
+        private void dressItems_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                DressList list = (DressList)dressList.SelectedItem;
+                if (list == null)
+                    return;
+
+                int sel = dressItems.SelectedIndex;
+                if (sel < 0 || sel >= list.Items.Count)
+                    return;
+
+                if (MessageBox.Show(this, Language.GetString(LocString.DelDressItemQ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        list.Items.RemoveAt(sel);
+                        dressItems.Items.RemoveAt(sel);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+        }
+
+        private void blockDis_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("BlockDismount", blockDis.Checked);
+        }
+
+        private void imgFmt_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            if (imgFmt.SelectedIndex != -1)
+                Config.SetProperty("ImageFormat", imgFmt.SelectedItem);
+            else
+                Config.SetProperty("ImageFormat", "jpg");
+        }
+
+        private void vidRec_Click(object sender, System.EventArgs e)
+        {
+            if (!PacketPlayer.Playing)
+            {
+                if (PacketPlayer.Recording)
+                    PacketPlayer.Stop();
+                else
+                    PacketPlayer.Record();
+            }
+        }
+
+        private void recFolder_Click(object sender, System.EventArgs e)
+        {
+            FolderBrowserDialog folder = new FolderBrowserDialog();
+            folder.Description = "Select Recording Folder";//Language.GetString( LocString.SelRecFolder );
+            folder.SelectedPath = Config.GetString("RecFolder");
+            folder.ShowNewFolderButton = true;
+
+            if (folder.ShowDialog(this) == DialogResult.OK)
+            {
+                Config.SetProperty("RecFolder", folder.SelectedPath);
+                txtRecFolder.Text = folder.SelectedPath;
+            }
+        }
+
+        private void vidPlay_Click(object sender, System.EventArgs e)
+        {
+            if (!PacketPlayer.Playing)
+                PacketPlayer.Play();
+            else
+                PacketPlayer.Pause();
+        }
+
+        private void vidPlayStop_Click(object sender, System.EventArgs e)
+        {
+            if (PacketPlayer.Playing)
+                PacketPlayer.Stop();
+        }
+
+        private void vidOpen_Click(object sender, System.EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.AddExtension = false;
+            ofd.CheckFileExists = true;
+            ofd.CheckPathExists = true;
+            ofd.DefaultExt = "rpv";
+            ofd.DereferenceLinks = true;
+            ofd.Filter = "Razor PacketVideo (*.rpv)|*.rpv|All Files (*.*)|*.*";
+            ofd.FilterIndex = 0;
+            ofd.InitialDirectory = Config.GetString("RecFolder");
+            ofd.Multiselect = false;
+            ofd.RestoreDirectory = true;
+            ofd.ShowHelp = ofd.ShowReadOnly = false;
+            ofd.Title = "Select a Video File...";
+            ofd.ValidateNames = true;
+
+            if (ofd.ShowDialog(this) == DialogResult.OK)
+                PacketPlayer.Open(ofd.FileName);
+        }
+
+        private void playPos_Scroll(object sender, System.EventArgs e)
+        {
+            PacketPlayer.OnScroll();
+        }
+
+        private void txtRecFolder_TextChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("RecFolder", txtRecFolder.Text);
+        }
+
+        private void vidClose_Click(object sender, System.EventArgs e)
+        {
+            PacketPlayer.Close();
+        }
+
+        private void playSpeed_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            PacketPlayer.SetSpeed(playSpeed.SelectedIndex - 2);
+        }
+
+        private void recAVI_Click(object sender, System.EventArgs e)
+        {
+            if (!AVIRec.Recording)
+            {
+                double res = 1.00;
+                switch (Config.GetInt("AviRes"))
+                {
+                    case 1: res = 0.75; break;
+                    case 2: res = 0.50; break;
+                    case 3: res = 0.25; break;
+                }
+                if (AVIRec.Record(Config.GetInt("AviFPS"), res))
+                {
+                    recAVI.Text = "Stop Rec";
+                }
+            }
+            else
+            {
+                AVIRec.Stop();
+                recAVI.Text = "Record AVI Video";
+            }
+        }
+
+        private void aviFPS_TextChanged(object sender, System.EventArgs e)
+        {
+            try
+            {
+                int fps = Convert.ToInt32(aviFPS.Text);
+                if (fps < 5)
+                    fps = 5;
+                else if (fps > 30)
+                    fps = 30;
+                Config.SetProperty("AviFPS", fps);
+            }
+            catch
+            {
+            }
+        }
+
+        private void aviRes_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("AviRes", aviRes.SelectedIndex);
+        }
+
+        private void autoFriend_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("AutoFriend", autoFriend.Checked);
+        }
+
+        private void alwaysStealth_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("AlwaysStealth", alwaysStealth.Checked);
+        }
+
+        private void autoOpenDoors_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("AutoOpenDoors", autoOpenDoors.Checked);
+        }
+
+        private void msglvl_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("MessageLevel", msglvl.SelectedIndex);
+        }
+
+        private void screenPrev_Click(object sender, System.EventArgs e)
+        {
+            string file = screensList.SelectedItem as String;
+            if (file != null)
+                System.Diagnostics.Process.Start(Path.Combine(Config.GetString("CapPath"), file));
+        }
+
+        private void flipVidHoriz_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("FlipVidH", flipVidHoriz.Checked);
+            AVIRec.UpdateFlip();
+        }
+
+        private void flipVidVert_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("FlipVidV", flipVidVert.Checked);
+            AVIRec.UpdateFlip();
+        }
+
+        private Timer m_ResizeTimer = Timer.DelayedCallback(TimeSpan.FromSeconds(1.0), new TimerCallback(ForceSize));
+
+        private static void ForceSize()
+        {
+            int x, y;
+
+            if (Config.GetBool("ForceSizeEnabled"))
+            {
+                x = Config.GetInt("ForceSizeX");
+                y = Config.GetInt("ForceSizeY");
+
+                if (x > 100 && x < 2000 && y > 100 && y < 2000)
+                    ClientCommunication.SetGameSize(x, y);
+                else
+                    MessageBox.Show(Engine.MainWindow, Language.GetString(LocString.ForceSizeBad), "Bad Size", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+        }
+
+        private void gameSize_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("ForceSizeEnabled", gameSize.Checked);
+            forceSizeX.Enabled = forceSizeY.Enabled = gameSize.Checked;
+
+            if (gameSize.Checked)
+            {
+                int x = Utility.ToInt32(forceSizeX.Text, 800);
+                int y = Utility.ToInt32(forceSizeY.Text, 600);
+
+                if (x < 100 || y < 100 || x > 2000 || y > 2000)
+                    MessageBox.Show(this, Language.GetString(LocString.ForceSizeBad), "Bad Size", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                else
+                    ClientCommunication.SetGameSize(x, y);
+            }
+            else
+            {
+                ClientCommunication.SetGameSize(800, 600);
+            }
+
+            if (!m_Initializing)
+                MessageBox.Show(this, Language.GetString(LocString.ApplyOptionsRequired), "Additional Step", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
+        private void forceSizeX_TextChanged(object sender, System.EventArgs e)
+        {
+            int x = Utility.ToInt32(forceSizeX.Text, 600);
+            if (x >= 100 && x <= 2000)
+                Config.SetProperty("ForceSizeX", x);
+
+            if (!m_Initializing)
+            {
+                if (x > 100 && x < 2000)
+                {
+                    m_ResizeTimer.Stop();
+                    m_ResizeTimer.Start();
+                }
+            }
+        }
+
+        private void forceSizeY_TextChanged(object sender, System.EventArgs e)
+        {
+            int y = Utility.ToInt32(forceSizeY.Text, 600);
+            if (y >= 100 && y <= 2000)
+                Config.SetProperty("ForceSizeY", y);
+
+            if (!m_Initializing)
+            {
+                if (y > 100 && y < 2000)
+                {
+                    m_ResizeTimer.Stop();
+                    m_ResizeTimer.Start();
+                }
+            }
+        }
+
+        private void potionEquip_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("PotionEquip", potionEquip.Checked);
+        }
+
+        private void blockHealPoison_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("BlockHealPoison", blockHealPoison.Checked);
+        }
+
+        private void negotiate_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (!m_Initializing)
+            {
+                Config.SetProperty("Negotiate", negotiate.Checked);
+                ClientCommunication.SetNegotiate(negotiate.Checked);
+            }
+        }
+
+        private void wikiLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        {
+            LaunchBrowser("https://github.com/msturgill/razor/wiki");
+        }
+
+        private void homeLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        {
+            LaunchBrowser("https://github.com/msturgill/razor/wiki");
+        }
+
+        private void issuesLink_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        {
+            LaunchBrowser("https://github.com/msturgill/razor/issues");
+        }
+
+        private void mleLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LaunchBrowser("http://www.mlewallpapers.com/");
+        }
+
+        private void lockBox_Click(object sender, System.EventArgs e)
+        {
+            MessageBox.Show(this, Language.GetString(LocString.FeatureDisabledText), Language.GetString(LocString.FeatureDisabled), MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        }
+
+        private ArrayList m_LockBoxes = new ArrayList();
+
+        public void LockControl(Control locked)
+        {
+            if (locked != null)
+            {
+                if (locked.Parent != null && locked.Parent.Controls != null)
+                {
+                    try
+                    {
+                        int y_off = (locked.Size.Height - 16) / 2;
+                        int x_off = 0;
+                        System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MainForm));
+                        PictureBox newLockBox = new PictureBox();
+
+                        if (locked is TextBox)
+                            x_off += 5;
+                        else if (!(locked is CheckBox || locked is RadioButton))
+                            x_off = (locked.Size.Width - 16) / 2;
+
+                        newLockBox.Cursor = System.Windows.Forms.Cursors.Help;
+                        //newLockBox.Image = ((System.Drawing.Image)(resources.GetObject("lockBox.Image")));
+                        newLockBox.Size = new System.Drawing.Size(16, 16);
+                        newLockBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+                        newLockBox.Click += new System.EventHandler(this.lockBox_Click);
+
+                        newLockBox.TabIndex = locked.TabIndex;
+                        newLockBox.TabStop = locked.TabStop;
+                        newLockBox.Location = new System.Drawing.Point(locked.Location.X + x_off, locked.Location.Y + y_off);
+                        newLockBox.Name = locked.Name + "LockBox";
+                        newLockBox.Tag = locked;
+                        newLockBox.Visible = true;
+
+                        locked.Parent.Controls.Add(newLockBox);
+                        locked.Parent.Controls.SetChildIndex(newLockBox, 0);
+                        m_LockBoxes.Add(newLockBox);
+                    }
+                    catch
+                    {
+                    }
+                }
+
+                locked.Enabled = false;
+            }
+        }
+
+        public void UnlockControl(Control unlock)
+        {
+            if (unlock != null)
+            {
+                for (int i = 0; i < m_LockBoxes.Count; i++)
+                {
+                    PictureBox box = m_LockBoxes[i] as PictureBox;
+                    if (box == null)
+                        continue;
+
+                    if (box.Tag == unlock)
+                    {
+                        unlock.Enabled = true;
+                        if (box.Parent != null && box.Parent.Controls != null)
+                            box.Parent.Controls.Remove(box);
+
+                        m_LockBoxes.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void OnLogout()
+        {
+            OnMacroStop();
+
+            features.Visible = false;
+
+            for (int i = 0; i < m_LockBoxes.Count; i++)
+            {
+                PictureBox box = m_LockBoxes[i] as PictureBox;
+                if (box == null)
+                    continue;
+
+                box.Parent.Controls.Remove(box);
+                if (box.Tag is Control)
+                    ((Control)box.Tag).Enabled = true;
+            }
+            m_LockBoxes.Clear();
+        }
+
+        public void UpdateControlLocks()
+        {
+            for (int i = 0; i < m_LockBoxes.Count; i++)
+            {
+                PictureBox box = m_LockBoxes[i] as PictureBox;
+                if (box == null)
+                    continue;
+
+                box.Parent.Controls.Remove(box);
+                if (box.Tag is Control)
+                    ((Control)box.Tag).Enabled = true;
+            }
+            m_LockBoxes.Clear();
+
+            if (!ClientCommunication.AllowBit(FeatureBit.SmartLT))
+                LockControl(this.smartLT);
+
+            if (!ClientCommunication.AllowBit(FeatureBit.RangeCheckLT))
+                LockControl(this.rangeCheckLT);
+
+            if (!ClientCommunication.AllowBit(FeatureBit.AutoOpenDoors))
+                LockControl(this.autoOpenDoors);
+
+            if (!ClientCommunication.AllowBit(FeatureBit.UnequipBeforeCast))
+                LockControl(this.spellUnequip);
+
+            if (!ClientCommunication.AllowBit(FeatureBit.AutoPotionEquip))
+                LockControl(this.potionEquip);
+
+            if (!ClientCommunication.AllowBit(FeatureBit.BlockHealPoisoned))
+                LockControl(this.blockHealPoison);
+
+            if (!ClientCommunication.AllowBit(FeatureBit.LoopingMacros))
+                LockControl(this.loopMacro);
+
+            if (!ClientCommunication.AllowBit(FeatureBit.OverheadHealth))
+            {
+                LockControl(this.showHealthOH);
+                LockControl(this.healthFmt);
+                LockControl(this.chkPartyOverhead);
+            }
+        }
+
+        public Assistant.MapUO.MapWindow MapWindow;
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr SetParent(IntPtr child, IntPtr newParent);
+
+        private void btnMap_Click(object sender, System.EventArgs e)
+        {
+            if (World.Player != null)
+            {
+                if (MapWindow == null)
+                    MapWindow = new Assistant.MapUO.MapWindow();
+                //SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
+                //MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
+                MapWindow.Show();
+                MapWindow.BringToFront();
+            }
+        }
+
+        private void showHealthOH_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("ShowHealth", healthFmt.Enabled = showHealthOH.Checked);
+        }
+
+        private void healthFmt_TextChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("HealthFmt", healthFmt.Text);
+        }
+
+        private void chkPartyOverhead_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetProperty("ShowPartyStats", chkPartyOverhead.Checked);
+        }
+
+        private void btcLabel_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void actionList_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -7455,53 +7465,53 @@ namespace Assistant
             }
         }
 
-	    private void backupDataDir_Click(object sender, EventArgs e)
-	    {
-	        try
-	        {
-	            if (!Directory.Exists($"{Config.GetUserDirectory()}\\Backup"))
-	            {
-	                Directory.CreateDirectory($"{Config.GetUserDirectory()}\\Backup");
-	            }
+        private void backupDataDir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!Directory.Exists($"{Config.GetUserDirectory()}\\Backup"))
+                {
+                    Directory.CreateDirectory($"{Config.GetUserDirectory()}\\Backup");
+                }
 
-	            string backupTime = $"{DateTime.Now:yy-MM-dd-HH-mm-ss}";
+                string backupTime = $"{DateTime.Now:yy-MM-dd-HH-mm-ss}";
 
-	            Directory.CreateDirectory($"{Config.GetUserDirectory()}\\Backup\\{backupTime}");
+                Directory.CreateDirectory($"{Config.GetUserDirectory()}\\Backup\\{backupTime}");
 
-	            // Backup the macros
-	            foreach (string dirPath in Directory.GetDirectories($"{Config.GetUserDirectory()}\\Macros", "*",
-	                SearchOption.AllDirectories))
-	            {
-	                Directory.CreateDirectory(dirPath.Replace($"{Config.GetUserDirectory()}\\Macros",
-	                    $"{Config.GetUserDirectory()}\\Backup\\{backupTime}\\Macros"));
-	            }
+                // Backup the macros
+                foreach (string dirPath in Directory.GetDirectories($"{Config.GetUserDirectory()}\\Macros", "*",
+                    SearchOption.AllDirectories))
+                {
+                    Directory.CreateDirectory(dirPath.Replace($"{Config.GetUserDirectory()}\\Macros",
+                        $"{Config.GetUserDirectory()}\\Backup\\{backupTime}\\Macros"));
+                }
 
-	            foreach (string newPath in Directory.GetFiles($"{Config.GetUserDirectory()}\\Macros", "*.*",
-	                SearchOption.AllDirectories))
-	            {
-	                File.Copy(newPath,
-	                    newPath.Replace($"{Config.GetUserDirectory()}\\Macros",
-	                        $"{Config.GetUserDirectory()}\\Backup\\{backupTime}\\Macros"), true);
-	            }
+                foreach (string newPath in Directory.GetFiles($"{Config.GetUserDirectory()}\\Macros", "*.*",
+                    SearchOption.AllDirectories))
+                {
+                    File.Copy(newPath,
+                        newPath.Replace($"{Config.GetUserDirectory()}\\Macros",
+                            $"{Config.GetUserDirectory()}\\Backup\\{backupTime}\\Macros"), true);
+                }
 
-	            // Backup the profiles
+                // Backup the profiles
                 Directory.CreateDirectory($"{Config.GetUserDirectory()}\\Backup\\{backupTime}\\Profiles");
 
                 foreach (string newPath in Directory.GetFiles($"{Config.GetUserDirectory()}\\Profiles", "*.*",
-	                SearchOption.AllDirectories))
-	            {
-	                File.Copy(newPath,
-	                    newPath.Replace($"{Config.GetUserDirectory()}\\Profiles",
-	                        $"{Config.GetUserDirectory()}\\Backup\\{backupTime}\\Profiles"), true);
-	            }
+                     SearchOption.AllDirectories))
+                {
+                    File.Copy(newPath,
+                        newPath.Replace($"{Config.GetUserDirectory()}\\Profiles",
+                            $"{Config.GetUserDirectory()}\\Backup\\{backupTime}\\Profiles"), true);
+                }
 
-	            MessageBox.Show(this, $"Backup created: {Config.GetUserDirectory()}\\Backup\\{backupTime}\\", "Razor Backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(this, $"Backup created: {Config.GetUserDirectory()}\\Backup\\{backupTime}\\", "Razor Backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-	        catch (Exception ex)
-	        {
-	            MessageBox.Show(this, ex.Message, "Unable to create backup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Unable to create backup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-	    }
+        }
 
         private void jsonApi_CheckedChanged(object sender, EventArgs e)
         {
@@ -7525,24 +7535,24 @@ namespace Assistant
             World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
         }
 
-	    private void OnAbsoluteTargetListAddTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
-	    {
-	        TargetInfo t = new TargetInfo
-	        {
-	            Gfx = gfx,
-	            Serial = serial,
-	            Type = (byte) (ground ? 1 : 0),
-	            X = pt.X,
-	            Y = pt.Y,
-	            Z = pt.Z
-	        };
+        private void OnAbsoluteTargetListAddTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            TargetInfo t = new TargetInfo
+            {
+                Gfx = gfx,
+                Serial = serial,
+                Type = (byte)(ground ? 1 : 0),
+                X = pt.X,
+                Y = pt.Y,
+                Z = pt.Z
+            };
 
-	        if (InputBox.Show(this, Language.GetString(LocString.NewAbsoluteTargetVar), Language.GetString(LocString.EnterAName)))
-	        {
+            if (InputBox.Show(this, Language.GetString(LocString.NewAbsoluteTargetVar), Language.GetString(LocString.EnterAName)))
+            {
                 string name = InputBox.GetString();
 
-	            AbsoluteTarget at = new AbsoluteTarget(name, Config.CurrentProfile.Name, t);
-	            MacroManager.AbsoluteTargetList.Add(at);
+                AbsoluteTarget at = new AbsoluteTarget(name, Config.CurrentProfile.Name, t);
+                MacroManager.AbsoluteTargetList.Add(at);
 
                 // Save and reload the macros and vars
                 MacroManager.Save();
@@ -7571,31 +7581,31 @@ namespace Assistant
             }
         }
 
-	    private void insertAbsoluteTarget_Click(object sender, EventArgs e)
-	    {
-	        if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
-	            return;
+        private void insertAbsoluteTarget_Click(object sender, EventArgs e)
+        {
+            if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
+                return;
 
             Macro m = GetMacroSel();
 
-	        if (m == null)
-	            return;
+            if (m == null)
+                return;
 
-	        int a = actionList.SelectedIndex;
+            int a = actionList.SelectedIndex;
 
-	        if (absoluteTargets.SelectedIndex < 0)
-	        {
-	            return;
-	        }
+            if (absoluteTargets.SelectedIndex < 0)
+            {
+                return;
+            }
 
-	        m.Actions.Insert(a + 1,
-	            new AbsoluteTargetVariableAction(
-	                MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetVariableName,
-	                MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetVariableProfile,
-	                MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo));
+            m.Actions.Insert(a + 1,
+                new AbsoluteTargetVariableAction(
+                    MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetVariableName,
+                    MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetVariableProfile,
+                    MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo));
 
-	        RedrawActionList(m);
-	    }
+            RedrawActionList(m);
+        }
 
         private void retargetAbsoluteTarget_Click(object sender, EventArgs e)
         {
@@ -7609,27 +7619,27 @@ namespace Assistant
             World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
         }
 
-	    private void OnAbsoluteTargetListReTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
-	    {
-	        TargetInfo t = new TargetInfo
-	        {
-	            Gfx = gfx,
-	            Serial = serial,
-	            Type = (byte)(ground ? 1 : 0),
-	            X = pt.X,
-	            Y = pt.Y,
-	            Z = pt.Z
-	        };
+        private void OnAbsoluteTargetListReTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            TargetInfo t = new TargetInfo
+            {
+                Gfx = gfx,
+                Serial = serial,
+                Type = (byte)(ground ? 1 : 0),
+                X = pt.X,
+                Y = pt.Y,
+                Z = pt.Z
+            };
 
-	        MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo = t;
+            MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo = t;
 
-	        // Save and reload the macros and vars
-	        MacroManager.Save();
-	        MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
+            // Save and reload the macros and vars
+            MacroManager.Save();
+            MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
 
 
-	        Engine.MainWindow.ShowMe();
-	    }
+            Engine.MainWindow.ShowMe();
+        }
 
         private void removeAbsoluteTarget_Click(object sender, EventArgs e)
         {
@@ -7691,7 +7701,7 @@ namespace Assistant
                 ClientCommunication.SendToClient(new GlobalLightLevel(Convert.ToByte(lightLevelBar.Maximum - lightLevelBar.Value)));
                 ClientCommunication.SendToClient(new PersonalLightLevel(World.Player));
 
-                double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
+                double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
 
                 lightLevel.Text = $"Light: {percent}%";
 
@@ -7793,7 +7803,8 @@ namespace Assistant
             if (trackIncomingGold.Checked)
             {
                 GoldPerHourTimer.Start();
-            } else
+            }
+            else
             {
                 GoldPerHourTimer.Stop();
             }
@@ -7816,7 +7827,8 @@ namespace Assistant
             if (string.IsNullOrEmpty(buffDebuffFormat.Text))
             {
                 Config.SetProperty("BuffDebuffFormat", "[{action}{name}]");
-            } else
+            }
+            else
             {
                 Config.SetProperty("BuffDebuffFormat", buffDebuffFormat.Text);
             }
