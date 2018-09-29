@@ -166,51 +166,6 @@
   <metadata name="timerTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>135, 17</value>
   </metadata>
-  <metadata name="razorNotify.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>246, 17</value>
-  </metadata>
-  <data name="razorNotify.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACAAAAAAAAAQAAAAAAAAAAAAAAAEAAAAB
-        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAwMDAAMDcwADwyqYABAQEAAgICAAMDAwAERERABYW
-        FgAcHBwAIiIiACkpKQBVVVUATU1NAEJCQgA5OTkAgHz/AFBQ/wCTANYA/+zMAMbW7wDW5+cAkKmtAAAA
-        MwAAAGYAAACZAAAAzAAAMwAAADMzAAAzZgAAM5kAADPMAAAz/wAAZgAAAGYzAABmZgAAZpkAAGbMAABm
-        /wAAmQAAAJkzAACZZgAAmZkAAJnMAACZ/wAAzAAAAMwzAADMZgAAzJkAAMzMAADM/wAA/2YAAP+ZAAD/
-        zAAzAAAAMwAzADMAZgAzAJkAMwDMADMA/wAzMwAAMzMzADMzZgAzM5kAMzPMADMz/wAzZgAAM2YzADNm
-        ZgAzZpkAM2bMADNm/wAzmQAAM5kzADOZZgAzmZkAM5nMADOZ/wAzzAAAM8wzADPMZgAzzJkAM8zMADPM
-        /wAz/zMAM/9mADP/mQAz/8wAM///AGYAAABmADMAZgBmAGYAmQBmAMwAZgD/AGYzAABmMzMAZjNmAGYz
-        mQBmM8wAZjP/AGZmAABmZjMAZmZmAGZmmQBmZswAZpkAAGaZMwBmmWYAZpmZAGaZzABmmf8AZswAAGbM
-        MwBmzJkAZszMAGbM/wBm/wAAZv8zAGb/mQBm/8wAzAD/AP8AzACZmQAAmTOZAJkAmQCZAMwAmQAAAJkz
-        MwCZAGYAmTPMAJkA/wCZZgAAmWYzAJkzZgCZZpkAmWbMAJkz/wCZmTMAmZlmAJmZmQCZmcwAmZn/AJnM
-        AACZzDMAZsxmAJnMmQCZzMwAmcz/AJn/AACZ/zMAmcxmAJn/mQCZ/8wAmf//AMwAAACZADMAzABmAMwA
-        mQDMAMwAmTMAAMwzMwDMM2YAzDOZAMwzzADMM/8AzGYAAMxmMwCZZmYAzGaZAMxmzACZZv8AzJkAAMyZ
-        MwDMmWYAzJmZAMyZzADMmf8AzMwAAMzMMwDMzGYAzMyZAMzMzADMzP8AzP8AAMz/MwCZ/2YAzP+ZAMz/
-        zADM//8AzAAzAP8AZgD/AJkAzDMAAP8zMwD/M2YA/zOZAP8zzAD/M/8A/2YAAP9mMwDMZmYA/2aZAP9m
-        zADMZv8A/5kAAP+ZMwD/mWYA/5mZAP+ZzAD/mf8A/8wAAP/MMwD/zGYA/8yZAP/MzAD/zP8A//8zAMz/
-        ZgD//5kA///MAGZm/wBm/2YAZv//AP9mZgD/Zv8A//9mACEApQBfX18Ad3d3AIaGhgCWlpYAy8vLALKy
-        sgDX19cA3d3dAOPj4wDq6uoA8fHxAPj4+ADw+/8ApKCgAICAgAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
-        AAD///8ACgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK
-        CgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCrcKCgoKCgoKCgoKCgoK
-        CgoKCgoKCgoKCgoKCgoKCgoK+QoKCgoKCgoKCgrSCgoKCgoKCgoKCgoKCgoKCgoKCgr5+QoKCgoKCgr5
-        sQoKCgoKCgoKCgoKCgoKCgoKCgoKCvn5CgoKCgoKsbEKCgoKCgoKCgoKCgoKCgoKCgoKCgoK+ZQKCgoK
-        CuPjCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgr5sQoKCgpHsQoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgpq
-        Cgr5QbEKCgqxtwoKCgoKCgr5CgoK+QoKCgoKCgoKCuP5lPmUCgoKCrGxt7f5+fkKCvkK+fkKCgoKCgoK
-        CgoKFkH5lAoK+QoK+bcKCgr5t7cK+fn5CgoKCgoKCgoKCrdB+fkKCgoK0rext7EKCvn5Crf5+QoKCgoK
-        CgoKCgqx+UdBCgoKCgq3+fkKt5QK+fkK0vn5CgoKCgoKCgoKCgq3+UGUCgoKCvmxtwoKsbcK+QqUCvn5
-        +QoKCgoKCgoKCgr5F0f5CgoKCmqxCgoKavn5+eP5arexagoKCgoKCgoKCgqU+Wrj+QoKt7cKRmlq+Qq3
-        lJQXF+MWCgoKCgoKCgoKCvn5+flq4/kKCuvs7O0KCgoKCgoKCgoKCgoKCgoKCgoKCkfjCgoWRxaSku3s
-        7OwKCgoKCgoKCgoKCgoKCgoKCgoK+fkKCgr5bpKS7e3t7eztCgoKCgoKCgoKCgoKCgoKCgr5+ZQKCgqS
-        kpLt7e3t7e3tCgoKCgoKCgoKCgoKCgoKCgr54woK7++SkpLt7e3t7Ozs7fcKCgoKCgoKCgoKCrHjFkEX
-        FhZpku/3kpLt7e3s7Ozs7JIKCgoKCgoKCgoKR/n5+fn5+fkg7e+SkpLt7Ozs7Ozs7ZIKCgoKCgoKCgpH
-        QUFBQUcXahbt95KS7e3s7Ozs7Oztkvf3CgoKCgoKCgoKCgrs6+wKCpKS7e3t7Ozs7Ozt7ZL39+/vCgoK
-        CgoKCgoKCuzr6uzs7ZLt7ezs7Ozs7ZKS9+/v7+/vCgoKCgoKCgrr7JLrbeyS7ezs7Ozs7ZKS9/fv7wcH
-        BwcKCgoKCgoK7BLs7/fs7Ozs7Ozs7O2S9+/v7+8HBwcHBwoKCgoKCgoSbe8H7+zt7Ovs7O2Skvfv7+8H
-        BwcHBwcHCgoKCgoK7ezv7++S7O3v9+zs9/fv7+8HBwcHBwcH8fAKCgoKCuwS6+ztkvfv7+8HB/f3B7y8
-        vPDw8PDwvPP/8/////////////////f////3/v//8/n///Pz///z5///88////sc/u/4PAaf+GziP/Dw
-        ZH/h8SR/8PGVH/h5wA/8GQgP/AYf//5gD//+cAP//jgB//8wAD/4AAAf+AAAD/gAAAP/jAAB/4AAAP8A
-        AAD+AAAA/gAAAPwAAAD4AAAA
-</value>
-  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>63</value>
   </metadata>

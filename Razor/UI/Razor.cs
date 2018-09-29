@@ -288,7 +288,6 @@ namespace Assistant
         private TextBox buffDebuffFormat;
         private CheckBox blockOpenCorpsesTwice;
         private CheckBox screenShotOpenBrowser;
-        private NotifyIcon razorNotify;
         private CheckBox screenShotNotification;
         private ListBox imgurUploads;
         private CheckBox screenShotClipboard;
@@ -620,7 +619,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.razorNotify = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -1285,7 +1283,7 @@ namespace Assistant
             //
             this.showAttackTarget.Location = new System.Drawing.Point(245, 263);
             this.showAttackTarget.Name = "showAttackTarget";
-            this.showAttackTarget.Size = new System.Drawing.Size(209, 19);
+            this.showAttackTarget.Size = new System.Drawing.Size(232, 19);
             this.showAttackTarget.TabIndex = 80;
             this.showAttackTarget.Text = "Show attack target name overhead";
             this.showAttackTarget.UseVisualStyleBackColor = true;
@@ -3426,12 +3424,6 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
-            // razorNotify
-            //
-            this.razorNotify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.razorNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("razorNotify.Icon")));
-            this.razorNotify.Visible = true;
-            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3776,6 +3768,17 @@ namespace Assistant
             screenShotOpenBrowser.Checked = Config.GetBool("ScreenshotUploadOpenBrowser");
             screenShotClipboard.Checked = Config.GetBool("ScreenshotUploadClipboard");
             screenShotNotification.Checked = Config.GetBool("ScreenshotUploadNotifications");
+
+            if (screenShotNotification.Checked)
+            {
+                m_NotifyIcon.Visible = true;
+            }
+            else
+            {
+                bool st = Config.GetBool("Systray");
+                taskbar.Checked = ShowInTaskbar = !st;
+                systray.Checked = m_NotifyIcon.Visible = st;
+            }
 
             showAttackTarget.Checked = Config.GetBool("ShowAttackTargetOverhead");
             showBuffDebuffOverhead.Checked = Config.GetBool("ShowBuffDebuffOverhead");
@@ -6482,30 +6485,31 @@ namespace Assistant
                     {
                         m_LastImgurUrl = jsonResponse["data"].link.Value;
 
-                        LogImgurUpload(m_LastImgurUrl, jsonResponse["data"].deletehash.Value);
+                        imgurUploads.Invoke((MethodInvoker)delegate {
+                            // Running on the UI thread
+                            LogImgurUpload(m_LastImgurUrl, jsonResponse["data"].deletehash.Value);
 
-                        if (Config.GetBool("ScreenshotUploadNotifications"))
-                        {
-                            razorNotify.ShowBalloonTip(2000, "Screenshot Uploaded", "Click here to view in your browser.", ToolTipIcon.Info);
-                            razorNotify.BalloonTipClicked += new EventHandler(razorNotify_BalloonTipClicked);
-                        }
+                            if (Config.GetBool("ScreenshotUploadNotifications"))
+                            {
+                                m_NotifyIcon.ShowBalloonTip(2000, "Screenshot Uploaded", "Click here to view in your browser.", ToolTipIcon.Info);
+                                m_NotifyIcon.BalloonTipClicked += new EventHandler(razorNotify_BalloonTipClicked);
+                            }
 
-                        if (Config.GetBool("ScreenshotUploadOpenBrowser"))
-                        {
-                            Process.Start(m_LastImgurUrl);
-                        }
+                            if (Config.GetBool("ScreenshotUploadOpenBrowser"))
+                            {
+                                Process.Start(m_LastImgurUrl);
+                            }
 
-                        if (Config.GetBool("ScreenshotUploadClipboard"))
-                        {
-                            Clipboard.SetText(m_LastImgurUrl);
-                        }
+                            if (Config.GetBool("ScreenshotUploadClipboard"))
+                            {
+                                Clipboard.SetText(m_LastImgurUrl);
+                            }
+                        });
                     }
                     else
                     {
                         throw new Exception("Unable to upload");
                     }
-
-
                 }
             }
             catch (Exception ex)
@@ -7849,6 +7853,18 @@ namespace Assistant
         private void screenShotNotification_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ScreenshotUploadNotifications", screenShotNotification.Checked);
+
+
+            if (screenShotNotification.Checked)
+            {
+                m_NotifyIcon.Visible = true;
+            }
+            else
+            {
+                bool st = Config.GetBool("Systray");
+                taskbar.Checked = ShowInTaskbar = !st;
+                systray.Checked = m_NotifyIcon.Visible = st;
+            }
         }
 
         private void screenShotClipboard_CheckedChanged(object sender, EventArgs e)

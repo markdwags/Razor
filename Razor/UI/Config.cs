@@ -175,9 +175,9 @@ namespace Assistant
 
             AddProperty("BlockOpenCorpsesTwice", false);
 
-            AddProperty("ScreenshotUploadNotifications", true);
+            AddProperty("ScreenshotUploadNotifications", false);
             AddProperty("ScreenshotUploadClipboard", true);
-            AddProperty("ScreenshotUploadOpenBrowser", false);
+            AddProperty("ScreenshotUploadOpenBrowser", true);
 
             AddProperty("ShowAttackTargetOverhead", true);
 
