@@ -91,10 +91,10 @@ namespace Assistant.Macros
 
                 if (t.TargetVariableProfile.ToLower().Equals(Config.CurrentProfile.Name.ToLower()))
                 {
-                    m_AbsoluteTargetList.Add(t);
-
                     list.Items.Add(t.ToString());
                 }
+
+                m_AbsoluteTargetList.Add(t);
             }
         }
 

@@ -726,7 +726,7 @@ namespace Assistant
             //
             // systray
             //
-            this.systray.Location = new System.Drawing.Point(236, 130);
+            this.systray.Location = new System.Drawing.Point(319, 130);
             this.systray.Name = "systray";
             this.systray.Size = new System.Drawing.Size(88, 23);
             this.systray.TabIndex = 35;
@@ -735,7 +735,7 @@ namespace Assistant
             //
             // taskbar
             //
-            this.taskbar.Location = new System.Drawing.Point(330, 130);
+            this.taskbar.Location = new System.Drawing.Point(241, 130);
             this.taskbar.Name = "taskbar";
             this.taskbar.Size = new System.Drawing.Size(79, 23);
             this.taskbar.TabIndex = 34;
@@ -1653,7 +1653,7 @@ namespace Assistant
             //
             // excludePouches
             //
-            this.excludePouches.Location = new System.Drawing.Point(10, 219);
+            this.excludePouches.Location = new System.Drawing.Point(14, 243);
             this.excludePouches.Name = "excludePouches";
             this.excludePouches.Size = new System.Drawing.Size(192, 21);
             this.excludePouches.TabIndex = 14;
@@ -1680,7 +1680,7 @@ namespace Assistant
             //
             // checkNewConts
             //
-            this.checkNewConts.Location = new System.Drawing.Point(10, 194);
+            this.checkNewConts.Location = new System.Drawing.Point(14, 219);
             this.checkNewConts.Name = "checkNewConts";
             this.checkNewConts.Size = new System.Drawing.Size(200, 20);
             this.checkNewConts.TabIndex = 9;
@@ -1778,7 +1778,7 @@ namespace Assistant
             this.groupBox2.Controls.Add(this.recount);
             this.groupBox2.Location = new System.Drawing.Point(8, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(196, 191);
+            this.groupBox2.Size = new System.Drawing.Size(196, 210);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Counters";
@@ -1795,7 +1795,7 @@ namespace Assistant
             this.counters.Location = new System.Drawing.Point(6, 18);
             this.counters.MultiSelect = false;
             this.counters.Name = "counters";
-            this.counters.Size = new System.Drawing.Size(180, 141);
+            this.counters.Size = new System.Drawing.Size(180, 160);
             this.counters.TabIndex = 11;
             this.counters.UseCompatibleStateImageBehavior = false;
             this.counters.View = System.Windows.Forms.View.Details;
@@ -1813,7 +1813,7 @@ namespace Assistant
             //
             // delCounter
             //
-            this.delCounter.Location = new System.Drawing.Point(64, 165);
+            this.delCounter.Location = new System.Drawing.Point(64, 184);
             this.delCounter.Name = "delCounter";
             this.delCounter.Size = new System.Drawing.Size(56, 20);
             this.delCounter.TabIndex = 4;
@@ -1822,7 +1822,7 @@ namespace Assistant
             //
             // addCounter
             //
-            this.addCounter.Location = new System.Drawing.Point(6, 165);
+            this.addCounter.Location = new System.Drawing.Point(6, 184);
             this.addCounter.Name = "addCounter";
             this.addCounter.Size = new System.Drawing.Size(52, 20);
             this.addCounter.TabIndex = 3;
@@ -1831,7 +1831,7 @@ namespace Assistant
             //
             // recount
             //
-            this.recount.Location = new System.Drawing.Point(126, 165);
+            this.recount.Location = new System.Drawing.Point(126, 184);
             this.recount.Name = "recount";
             this.recount.Size = new System.Drawing.Size(60, 20);
             this.recount.TabIndex = 2;
@@ -4929,10 +4929,17 @@ namespace Assistant
 
             ClearHKCtrls();
 
-            HotKey.RebuildList(hotkeyTree);
-            RebuildHotKeyCache();
+            if (!string.IsNullOrEmpty(filterHotkeys.Text))
+            {
+                TreeNode node = hotkeyTree.SelectedNode;
 
-            filterHotkeys_TextChanged(sender, e);
+                HotKey.RebuildList(hotkeyTree);
+                RebuildHotKeyCache();
+
+                filterHotkeys_TextChanged(sender, e);
+
+                hotkeyTree.SelectedNode = node;
+            }
         }
 
         private void key_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -5921,6 +5928,14 @@ namespace Assistant
                         if (a.GetType().Name.Equals("IfAction"))
                         {
                             new MacroInsertIf(a).ShowDialog(Engine.MainWindow);
+                        }
+                        else if (a.GetType().Name.Equals("ForAction"))
+                        {
+                            aMenus[0].PerformClick();
+                        }
+                        else if (a.GetType().Name.Equals("MacroComment"))
+                        {
+                            aMenus[0].PerformClick();
                         }
                         else
                         {
@@ -7601,13 +7616,29 @@ namespace Assistant
                 return;
             }
 
-            m.Actions.Insert(a + 1,
-                new AbsoluteTargetVariableAction(
-                    MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetVariableName,
-                    MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetVariableProfile,
-                    MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo));
+            string varName = absoluteTargets.Items[absoluteTargets.SelectedIndex].ToString().Split(' ')[0].Substring(1);
+            int varIndex = -1;
 
-            RedrawActionList(m);
+            for (int i = 0; i < MacroManager.AbsoluteTargetList.Count; i++)
+            {
+                if (MacroManager.AbsoluteTargetList[i].TargetVariableProfile.Equals(Config.CurrentProfile.Name) &&
+                    MacroManager.AbsoluteTargetList[i].TargetVariableName.Equals(varName))
+                {
+                    varIndex = i;
+                    break;
+                }
+            }
+
+            if (varIndex != -1)
+            {
+                m.Actions.Insert(a + 1,
+                new AbsoluteTargetVariableAction(
+                    MacroManager.AbsoluteTargetList[varIndex].TargetVariableName,
+                    MacroManager.AbsoluteTargetList[varIndex].TargetVariableProfile,
+                    MacroManager.AbsoluteTargetList[varIndex].TargetInfo));
+
+                RedrawActionList(m);
+            }
         }
 
         private void retargetAbsoluteTarget_Click(object sender, EventArgs e)
@@ -7634,14 +7665,29 @@ namespace Assistant
                 Z = pt.Z
             };
 
-            MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo = t;
+            string varName = absoluteTargets.Items[absoluteTargets.SelectedIndex].ToString().Split(' ')[0].Substring(1);
+            int varIndex = -1;
 
-            // Save and reload the macros and vars
-            MacroManager.Save();
-            MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
+            for (int i = 0; i < MacroManager.AbsoluteTargetList.Count; i++)
+            {
+                if (MacroManager.AbsoluteTargetList[i].TargetVariableProfile.Equals(Config.CurrentProfile.Name) &&
+                    MacroManager.AbsoluteTargetList[i].TargetVariableName.Equals(varName))
+                {
+                    varIndex = i;
+                    break;
+                }
+            }
 
+            if (varIndex != -1)
+            {
+                MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo = t;
 
-            Engine.MainWindow.ShowMe();
+                // Save and reload the macros and vars
+                MacroManager.Save();
+                MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
+
+                Engine.MainWindow.ShowMe();
+            }
         }
 
         private void removeAbsoluteTarget_Click(object sender, EventArgs e)
@@ -7652,11 +7698,27 @@ namespace Assistant
             if (absoluteTargets.SelectedIndex < 0)
                 return;
 
-            MacroManager.AbsoluteTargetList.RemoveAt(absoluteTargets.SelectedIndex);
+            string varName = absoluteTargets.Items[absoluteTargets.SelectedIndex].ToString().Split(' ')[0].Substring(1);
+            int varIndex = -1;
 
-            // Save and reload the macros and vars
-            MacroManager.Save();
-            MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
+            for (int i = 0; i < MacroManager.AbsoluteTargetList.Count; i++)
+            {
+                if (MacroManager.AbsoluteTargetList[i].TargetVariableProfile.Equals(Config.CurrentProfile.Name) &&
+                    MacroManager.AbsoluteTargetList[i].TargetVariableName.Equals(varName))
+                {
+                    varIndex = i;
+                    break;
+                }
+            }
+
+            if (varIndex != -1)
+            {
+                MacroManager.AbsoluteTargetList.RemoveAt(varIndex);
+
+                // Save and reload the macros and vars
+                MacroManager.Save();
+                MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
+            }
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
