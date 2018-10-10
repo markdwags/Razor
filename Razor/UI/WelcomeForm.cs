@@ -617,6 +617,20 @@ namespace Assistant
 
                     se = new ServerEntry(addr, port);
                 }
+            } else if (serverList.Text != null)
+            {
+                string[] addr = serverList.Text.Split(',');
+
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+                var servers = (AppSettingsSection)config.GetSection("Servers");
+                servers.Settings.Add(addr[0], serverList.Text);
+                config.Save(ConfigurationSaveMode.Modified, true);
+                ConfigurationManager.RefreshSection("Servers");
+
+                serverList.Items.Add(new Custom_SE(addr[0], addr[0], Convert.ToInt32(addr[1])));
+
+                se = new ServerEntry(addr[0], Convert.ToInt32(addr[1]));
             }
 
             if (se != null && se.Address != null)
