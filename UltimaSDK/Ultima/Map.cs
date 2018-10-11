@@ -33,9 +33,11 @@ namespace Ultima
 		{
 			m_FileIndex = fileIndex;
 			m_MapID = mapID;
-			m_Width = width;
-			m_Height = height;
 			m_path = null;
+
+			m_Tiles = new TileMatrix(m_FileIndex, m_MapID, width, height, m_path);
+			m_Width = m_Tiles.Width;
+			m_Height = m_Tiles.Height;
 		}
 
 		public Map(string path, int fileIndex, int mapID, int width, int height)

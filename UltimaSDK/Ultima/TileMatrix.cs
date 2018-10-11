@@ -78,6 +78,16 @@ namespace Ultima
 					IsUOPFormat = true;
 			}
 
+			if (mapPath != null && fileIndex == 0)
+			{
+				FileInfo fi = new FileInfo(mapPath);
+				if (fi.Length < 89915392)
+				{
+					// Old map size.
+					Width = 6144;
+				}
+			}
+
 			if (path == null)
 				indexPath = Files.GetFilePath("staidx{0}.mul", fileIndex);
 			else
