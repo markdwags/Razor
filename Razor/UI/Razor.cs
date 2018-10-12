@@ -217,7 +217,6 @@ namespace Assistant
         private TextBox statusBox;
         private TextBox features;
         private CheckBox negotiate;
-        private CheckBox jsonApi;
         private Label aboutSubInfo;
         private ComboBox titleBarParams;
         private Button expandAdvancedMacros;
@@ -600,7 +599,6 @@ namespace Assistant
             this.dispTime = new System.Windows.Forms.CheckBox();
             this.advancedTab = new System.Windows.Forms.TabPage();
             this.disableSmartCPU = new System.Windows.Forms.Button();
-            this.jsonApi = new System.Windows.Forms.CheckBox();
             this.negotiate = new System.Windows.Forms.CheckBox();
             this.backupDataDir = new System.Windows.Forms.Button();
             this.openRazorDataDir = new System.Windows.Forms.Button();
@@ -3196,7 +3194,6 @@ namespace Assistant
             //
             this.advancedTab.BackColor = System.Drawing.SystemColors.Control;
             this.advancedTab.Controls.Add(this.disableSmartCPU);
-            this.advancedTab.Controls.Add(this.jsonApi);
             this.advancedTab.Controls.Add(this.negotiate);
             this.advancedTab.Controls.Add(this.backupDataDir);
             this.advancedTab.Controls.Add(this.openRazorDataDir);
@@ -3220,18 +3217,6 @@ namespace Assistant
             this.disableSmartCPU.Text = "Disable SmartCPU";
             this.disableSmartCPU.UseVisualStyleBackColor = true;
             this.disableSmartCPU.Click += new System.EventHandler(this.disableSmartCPU_Click);
-            //
-            // jsonApi
-            //
-            this.jsonApi.AutoSize = true;
-            this.jsonApi.Enabled = false;
-            this.jsonApi.Location = new System.Drawing.Point(202, 148);
-            this.jsonApi.Name = "jsonApi";
-            this.jsonApi.Size = new System.Drawing.Size(113, 19);
-            this.jsonApi.TabIndex = 73;
-            this.jsonApi.Text = "Enable JSON API";
-            this.jsonApi.UseVisualStyleBackColor = true;
-            this.jsonApi.CheckedChanged += new System.EventHandler(this.jsonApi_CheckedChanged);
             //
             // negotiate
             //
@@ -3737,7 +3722,6 @@ namespace Assistant
             dressList.SelectedIndex = -1;
             hotkeyTree.SelectedNode = null;
 
-            //jsonApi.Checked = Config.GetBool("JsonApi");
             targetByTypeDifferent.Checked = Config.GetBool("DiffTargetByType");
             stepThroughMacro.Checked = Config.GetBool("StepThroughMacro");
 
@@ -3756,8 +3740,6 @@ namespace Assistant
             lightLevelBar.Value = Config.GetInt("LightLevel");
             double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
             lightLevel.Text = $"Light: {percent}%";
-
-            jsonApi.Checked = Config.GetBool("JsonApi");
 
             captureMibs.Checked = Config.GetBool("CaptureMibs");
 
@@ -7529,11 +7511,6 @@ namespace Assistant
             {
                 MessageBox.Show(this, ex.Message, "Unable to create backup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-
-        private void jsonApi_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.SetProperty("JsonApi", jsonApi.Checked);
         }
 
         private void titleBarParams_SelectedIndexChanged(object sender, EventArgs e)

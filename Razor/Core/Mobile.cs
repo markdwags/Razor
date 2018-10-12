@@ -22,15 +22,15 @@ namespace Assistant
         ValueMask = 0x87
     }
 
-    public enum BodyType : byte
-    {
-        Empty,
-        Monster,
-        Sea_Monster,
-        Animal,
-        Human,
-        Equipment
-    }
+    //public enum BodyType : byte
+    //{
+    //    Empty,
+    //    Monster,
+    //    Sea_Monster,
+    //    Animal,
+    //    Human,
+    //    Equipment
+    //}
 
     public class Mobile : UOEntity
     {
@@ -62,34 +62,34 @@ namespace Assistant
 
         private byte m_Map;
 
-        private static BodyType[] m_Types;
+        //private static BodyType[] m_Types;
 
-        public static void Initialize()
-        {
-            using (StreamReader ip = new StreamReader(Path.Combine(Ultima.Files.RootDir, "mobtypes.txt")))
-            {
-                m_Types = new BodyType[0x1000];
+        //public static void Initialize()
+        //{
+        //    using (StreamReader ip = new StreamReader(Path.Combine(Ultima.Files.RootDir, "mobtypes.txt")))
+        //    {
+        //        m_Types = new BodyType[0x1000];
 
-                string line;
+        //        string line;
 
-                while ((line = ip.ReadLine()) != null)
-                {
-                    if (line.Length == 0 || line.StartsWith("#"))
-                        continue;
+        //        while ((line = ip.ReadLine()) != null)
+        //        {
+        //            if (line.Length == 0 || line.StartsWith("#"))
+        //                continue;
 
-                    string[] split = line.Split('\t');
+        //            string[] split = line.Split('\t');
 
-                    BodyType type;
-                    int bodyID;
+        //            BodyType type;
+        //            int bodyID;
 
-                    if (int.TryParse(split[0], out bodyID) && Enum.TryParse(split[1], true, out type) && bodyID >= 0 &&
-                        bodyID < m_Types.Length)
-                    {
-                        m_Types[bodyID] = type;
-                    }
-                }
-            }
-        }
+        //            if (int.TryParse(split[0], out bodyID) && Enum.TryParse(split[1], true, out type) && bodyID >= 0 &&
+        //                bodyID < m_Types.Length)
+        //            {
+        //                m_Types[bodyID] = type;
+        //            }
+        //        }
+        //    }
+        //}
 
         public override void SaveState(BinaryWriter writer)
         {
@@ -216,13 +216,15 @@ namespace Assistant
             get
             {
                 return m_Body >= 0
-                       && m_Body < m_Types.Length
-                       && m_Types[m_Body] == BodyType.Human
-                       && m_Body != 402
-                       && m_Body != 403
-                       && m_Body != 607
-                       && m_Body != 608
-                       && m_Body != 970;
+                    && (m_Body == 400
+                    || m_Body == 401
+                    || m_Body == 402
+                    || m_Body == 403
+                    || m_Body == 605
+                    || m_Body == 606
+                    || m_Body == 607
+                    || m_Body == 608
+                    || m_Body == 970); //player ghost
             }
         }
 
@@ -230,38 +232,10 @@ namespace Assistant
         {
             get
             {
-                return m_Body >= 0
-                       && m_Body < m_Types.Length
-                       && (m_Types[m_Body] == BodyType.Monster
-                           || m_Body == 98
-                           || m_Body == 97
-                           || m_Body == 23); // Dire wolves or hell hounds
+                return !IsHuman;
             }
         }
-
-        public bool IsSeaMonster
-        {
-            get
-            {
-                return m_Body >= 0
-                       && m_Body < m_Types.Length
-                       && m_Types[m_Body] == BodyType.Sea_Monster;
-            }
-        }
-
-        public bool IsAnimal
-        {
-            get
-            {
-                return m_Body >= 0
-                       && m_Body < m_Types.Length
-                       && m_Types[m_Body] == BodyType.Animal
-                       && m_Body != 98
-                       && m_Body != 97
-                       && m_Body != 23; // Dire wolves or hell hounds
-            }
-        }
-
+        
         //new
         public bool Unknown
         {
