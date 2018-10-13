@@ -325,6 +325,8 @@ namespace Assistant
 
                         if (skillIndex == (int)SkillName.Stealth && !World.Player.Visible)
                             StealthSteps.Hide();
+
+                        SkillTimer.Start();
                         break;
                     }
                 case 0x27: // Cast spell from book
