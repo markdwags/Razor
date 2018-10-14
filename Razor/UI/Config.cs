@@ -743,7 +743,7 @@ namespace Assistant
 	            config.AppSettings.Settings.Remove(key);
 	            config.AppSettings.Settings.Add(key, value);
 
-                config.Save(ConfigurationSaveMode.Modified, true);
+                 config.Save(ConfigurationSaveMode.Modified, true);
 
 	            ConfigurationManager.RefreshSection("appSettings");
 
@@ -755,7 +755,7 @@ namespace Assistant
 	        }
 	    }
 
-        public static void RecursiveCopy(string oldDir, string newDir)
+        public static void RecursiveCopy(string oldDir, string newDir, bool overWrite = false)
         {
             Engine.EnsureDirectory(newDir);
 
@@ -764,16 +764,25 @@ namespace Assistant
 
             string[] files = Directory.GetFiles(oldDir);
             foreach (string f in files)
-                File.Copy(Path.Combine(oldDir, Path.GetFileName(f)), Path.Combine(newDir, Path.GetFileName(f)));
+                File.Copy(Path.Combine(oldDir, Path.GetFileName(f)), Path.Combine(newDir, Path.GetFileName(f)), overWrite);
 
             string[] dirs = Directory.GetDirectories(oldDir);
             foreach (string d in dirs)
-                RecursiveCopy(Path.Combine(oldDir, Path.GetDirectoryName(d)), Path.Combine(newDir, Path.GetDirectoryName(d)));
+                RecursiveCopy(Path.Combine(oldDir, Path.GetDirectoryName(d)), Path.Combine(newDir, Path.GetDirectoryName(d)), overWrite);
         }
 
         public static void CopyUserFiles(string appDir, string name)
         {
             RecursiveCopy(Path.Combine(GetInstallDirectory(), name), Path.Combine(appDir, name));
+        }
+
+        public static void ImportProfilesMacros(string appDataSource)
+        {
+            RecursiveCopy(Path.Combine(appDataSource, "Profiles"), Path.Combine(GetInstallDirectory(), "Profiles"), true);
+
+            RecursiveCopy(Path.Combine(appDataSource, "Macros"), Path.Combine(GetInstallDirectory(), "Macros"), true);
+
+            File.Copy(Path.Combine(appDataSource, "counters.xml"), Path.Combine(GetInstallDirectory(), "counters.xml"), true);            
         }
 
         public static string GetUserDirectory(string name)

@@ -8,78 +8,78 @@ using Newtonsoft.Json;
 
 namespace Assistant
 {
-	public enum ClientLaunch
-	{
-		TwoD,
-		ThirdDawn,
-		Custom
-	}
+    public enum ClientLaunch
+    {
+        TwoD,
+        ThirdDawn,
+        Custom
+    }
 
-	public class WelcomeForm : System.Windows.Forms.Form
-	{
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.CheckBox patchEncy;
-		private System.Windows.Forms.Button okay;
-		private System.Windows.Forms.Button quit;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.ComboBox serverList;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.OpenFileDialog openFile;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		private System.Windows.Forms.Button browse;
-		private System.Windows.Forms.Button makeDef;
-		
-		private System.Windows.Forms.CheckBox showAtStart;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.ComboBox langSel;
-		private System.Windows.Forms.CheckBox useEnc;
-		private System.Windows.Forms.Button dataBrowse;
-		private System.Windows.Forms.GroupBox groupBox3;
+    public class WelcomeForm : System.Windows.Forms.Form
+    {
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox patchEncy;
+        private System.Windows.Forms.Button okay;
+        private System.Windows.Forms.Button quit;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox serverList;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.OpenFileDialog openFile;
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
+        private System.Windows.Forms.Button browse;
+        private System.Windows.Forms.Button makeDef;
 
-		public string ClientPath{ get{ return m_ClientPath; } }
-		public ClientLaunch Client{ get{ return m_Launch; } } 
-		public bool PatchEncryption{ get{ return m_PatchEncy; } }
-		public string DataDirectory{ get{ if ( m_DataDir == "" || m_DataDir == "(Auto Detect)" ) m_DataDir = null; return m_DataDir; } }
+        private System.Windows.Forms.CheckBox showAtStart;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox langSel;
+        private System.Windows.Forms.CheckBox useEnc;
+        private System.Windows.Forms.Button dataBrowse;
+        private System.Windows.Forms.GroupBox groupBox3;
 
-		private bool m_PatchEncy = false;
-		private string m_ClientPath = "";
-		private ClientLaunch m_Launch = ClientLaunch.Custom;
+        public string ClientPath { get { return m_ClientPath; } }
+        public ClientLaunch Client { get { return m_Launch; } }
+        public bool PatchEncryption { get { return m_PatchEncy; } }
+        public string DataDirectory { get { if (m_DataDir == "" || m_DataDir == "(Auto Detect)") m_DataDir = null; return m_DataDir; } }
+
+        private bool m_PatchEncy = false;
+        private string m_ClientPath = "";
+        private ClientLaunch m_Launch = ClientLaunch.Custom;
         private TextBox uoClient;
         private TextBox dataDir;
         private Label serverInfo;
         private string m_DataDir = "";
 
-		public WelcomeForm()
-		{
-			InitializeComponent();
-		}
+        public WelcomeForm()
+        {
+            InitializeComponent();
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WelcomeForm));
             this.label1 = new System.Windows.Forms.Label();
             this.browse = new System.Windows.Forms.Button();
@@ -325,277 +325,296 @@ namespace Assistant
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
-		}
-		#endregion
+        }
+        #endregion
 
-		private class ServerEntry
-		{
-			public ServerEntry( string addr, int p )
-			{
-				Address = addr;
-				Port = p;
-			}
+        private class ServerEntry
+        {
+            public ServerEntry(string addr, int p)
+            {
+                Address = addr;
+                Port = p;
+            }
 
-			public string Address;
-			public int Port;
+            public string Address;
+            public int Port;
 
-			public override string ToString()
-			{
-				return Address;
-			}
-		}
+            public override string ToString()
+            {
+                return Address;
+            }
+        }
 
-		private class LoginCFG_SE : ServerEntry
-		{
-			public string RealAddress;
+        private class LoginCFG_SE : ServerEntry
+        {
+            public string RealAddress;
 
-		    public LoginCFG_SE() : base("Use Last", 0)
-		    {
-		        RealAddress = Config.GetAppSetting<string>("LastServer");
-		        Port = Config.GetAppSetting<int>("LastPort");
+            public LoginCFG_SE() : base("Use Last", 0)
+            {
+                RealAddress = Config.GetAppSetting<string>("LastServer");
+                Port = Config.GetAppSetting<int>("LastPort");
 
                 if (string.IsNullOrEmpty(RealAddress) || Port == 0)
-		        {
-		            RealAddress = "";
-		            Port = 0;
+                {
+                    RealAddress = "";
+                    Port = 0;
 
-		            try
-		            {
-		                string fileName = Ultima.Files.GetFilePath("Login.cfg");
-		                if (string.IsNullOrEmpty(fileName))
-		                    return;
-		                string server = null, port = null;
+                    try
+                    {
+                        string fileName = Ultima.Files.GetFilePath("Login.cfg");
+                        if (string.IsNullOrEmpty(fileName))
+                            return;
+                        string server = null, port = null;
 
-		                if (File.Exists(fileName))
-		                {
-		                    using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read,
-		                        FileShare.ReadWrite))
-		                    using (StreamReader cfg = new StreamReader(file))
-		                    {
-		                        string line;
-		                        while ((line = cfg.ReadLine()) != null)
-		                        {
-		                            line = line.Trim();
-		                            if (line != "" && Char.ToUpper(line[0]) == 'L' && line.Length > 12)
-		                            {
-		                                int comma = line.IndexOf(',');
-		                                if (comma > 12)
-		                                {
-		                                    server = line.Substring(12, comma - 12);
-		                                    port = line.Substring(comma + 1);
+                        if (File.Exists(fileName))
+                        {
+                            using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read,
+                                FileShare.ReadWrite))
+                            using (StreamReader cfg = new StreamReader(file))
+                            {
+                                string line;
+                                while ((line = cfg.ReadLine()) != null)
+                                {
+                                    line = line.Trim();
+                                    if (line != "" && Char.ToUpper(line[0]) == 'L' && line.Length > 12)
+                                    {
+                                        int comma = line.IndexOf(',');
+                                        if (comma > 12)
+                                        {
+                                            server = line.Substring(12, comma - 12);
+                                            port = line.Substring(comma + 1);
 
-		                                    break;
-		                                }
-		                            }
-		                        }
-		                    }
-		                }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
-		                if (server != null)
-		                {
-		                    Address = "(Use Last: " + server + ")";
-		                    RealAddress = server;
-		                }
+                        if (server != null)
+                        {
+                            Address = "(Use Last: " + server + ")";
+                            RealAddress = server;
+                        }
 
-		                if (port != null)
-		                    Port = Utility.ToInt32(port, 0);
-		            }
-		            catch
-		            {
-		                RealAddress = Address = "Use Last";
-		                Port = 0;
-		            }
-		        }
-		    }
-		}
+                        if (port != null)
+                            Port = Utility.ToInt32(port, 0);
+                    }
+                    catch
+                    {
+                        RealAddress = Address = "Use Last";
+                        Port = 0;
+                    }
+                }
+            }
+        }
 
-		private class ShardEntry
-		{
-			public string name { get; set; }
-			public string type { get; set; }
-			public string host { get; set; }
-			public int port { get; set; }
-		}
+        private class ShardEntry
+        {
+            public string name { get; set; }
+            public string type { get; set; }
+            public string host { get; set; }
+            public int port { get; set; }
+        }
 
-		private class Custom_SE : ServerEntry
-		{
-			public string RealAddress;
-			public Custom_SE( string name, string addr ) : base( name, 0 )
-			{
-				RealAddress = addr;
-			}
+        private class Custom_SE : ServerEntry
+        {
+            public string RealAddress;
+            public Custom_SE(string name, string addr) : base(name, 0)
+            {
+                RealAddress = addr;
+            }
 
-			public Custom_SE(string name, string addr, int port)
-				: base(name, port)
-			{
-				RealAddress = addr;
-			}
-		}
+            public Custom_SE(string name, string addr, int port)
+                 : base(name, port)
+            {
+                RealAddress = addr;
+            }
+        }
 
-		private class PathElipsis
-		{
-			private string m_Path;
-			private string m_Show;
-			public PathElipsis( string path )
-			{
-				m_Path = path;
-				m_Show = GetPathElipsis( path, 23 );
-			}
+        private class PathElipsis
+        {
+            private string m_Path;
+            private string m_Show;
+            public PathElipsis(string path)
+            {
+                m_Path = path;
+                m_Show = GetPathElipsis(path, 23);
+            }
 
-			public string GetPath(){return m_Path;}
-			public void SetPath(string value){m_Path=value;m_Show=GetPathElipsis(m_Path, 23);}
-			public override string ToString()
-			{
-				return m_Show;
-			}
+            public string GetPath() { return m_Path; }
+            public void SetPath(string value) { m_Path = value; m_Show = GetPathElipsis(m_Path, 23); }
+            public override string ToString()
+            {
+                return m_Show;
+            }
 
-			private static char[] pathChars = new char[]{ Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar, Path.PathSeparator, Path.VolumeSeparatorChar };
-			public static string GetPathElipsis( string path, int PathMaxLength )
-			{
-				if ( path.Length <= PathMaxLength )
-					return path;
+            private static char[] pathChars = new char[] { Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar, Path.PathSeparator, Path.VolumeSeparatorChar };
+            public static string GetPathElipsis(string path, int PathMaxLength)
+            {
+                if (path.Length <= PathMaxLength)
+                    return path;
 
-				System.Text.StringBuilder sb = new System.Text.StringBuilder( path );
-				int remlen = path.Length - PathMaxLength - 3;
+                System.Text.StringBuilder sb = new System.Text.StringBuilder(path);
+                int remlen = path.Length - PathMaxLength - 3;
 
-				int ls = path.LastIndexOfAny( pathChars );
-				if ( ls == -1 )
-					ls = 15 + remlen;
+                int ls = path.LastIndexOfAny(pathChars);
+                if (ls == -1)
+                    ls = 15 + remlen;
 
-				if ( ls - remlen < 4 )
-					ls = remlen+4;
+                if (ls - remlen < 4)
+                    ls = remlen + 4;
 
-				if ( ls > remlen && remlen > 0 )
-				{
-					try
-					{
-						sb.Remove( ls - remlen, remlen );
-						sb.Insert( ls - remlen, "..." );
-					}
-					catch
-					{
-					}
-				}
-				return sb.ToString();
-			}
-		}
+                if (ls > remlen && remlen > 0)
+                {
+                    try
+                    {
+                        sb.Remove(ls - remlen, remlen);
+                        sb.Insert(ls - remlen, "...");
+                    }
+                    catch
+                    {
+                    }
+                }
+                return sb.ToString();
+            }
+        }
 
-	    private void WelcomeForm_Load(object sender, System.EventArgs e)
-	    {
-	        Language.LoadControlNames(this);
+        private void WelcomeForm_Load(object sender, System.EventArgs e)
+        {
+            Language.LoadControlNames(this);
 
-	        this.BringToFront();
+            this.BringToFront();
 
-	        langSel.Items.AddRange(Language.GetPackNames());
-	        langSel.SelectedItem = Language.Current;
+            langSel.Items.AddRange(Language.GetPackNames());
+            langSel.SelectedItem = Language.Current;
 
-	        showAtStart.Checked = Config.GetAppSetting<int>("ShowWelcome") == 1;
+            showAtStart.Checked = Config.GetAppSetting<int>("ShowWelcome") == 1;
 
-	        uoClient.Text = Config.GetAppSetting<string>("UOClient");
+            uoClient.Text = Config.GetAppSetting<string>("UOClient");
             dataDir.Text = Config.GetAppSetting<string>("UODataDir");
 
-	        IsValidClientAndDataDir();
+            IsValidClientAndDataDir();
 
             patchEncy.Checked = Config.GetAppSetting<int>("PatchEncy") != 0;
-	        useEnc.Checked = Config.GetAppSetting<int>("ServerEnc") != 0;
+            useEnc.Checked = Config.GetAppSetting<int>("ServerEnc") != 0;
 
-	        LoginCFG_SE lse = new LoginCFG_SE();
-	        Custom_SE cse;
-            
-	        serverList.BeginUpdate();
+            LoginCFG_SE lse = new LoginCFG_SE();
+            Custom_SE cse;
+
+            serverList.BeginUpdate();
 
             // Always add the default UOR servers
-	        serverList.Items.Add(cse = new Custom_SE("UO Renaissance (Prod)", "login.uorenaissance.com", 2593));
+            serverList.Items.Add(cse = new Custom_SE("UO Renaissance (Prod)", "login.uorenaissance.com", 2593));
 
-	        if (serverList.SelectedItem == null)
-	        {
-	            serverList.SelectedItem = cse;
-	        }
+            if (serverList.SelectedItem == null)
+            {
+                serverList.SelectedItem = cse;
+            }
 
-	        serverList.Items.Add(new Custom_SE("UO Renaissance (Test)", "test.uorenaissance.com", 2597));
-	        serverList.Items.Add(new Custom_SE("UO Renaissance (Dev)", "dev.uorenaissance.com", 2598));
+            serverList.Items.Add(new Custom_SE("UO Renaissance (Test)", "test.uorenaissance.com", 2597));
+            serverList.Items.Add(new Custom_SE("UO Renaissance (Dev)", "dev.uorenaissance.com", 2598));
 
             // Load any custom servers they might have added
-	        NameValueCollection servers =
-	            (NameValueCollection)ConfigurationManager.GetSection("Servers");
+            NameValueCollection servers =
+                (NameValueCollection)ConfigurationManager.GetSection("Servers");
 
             foreach (string server in servers.AllKeys)
-	        {
-	            string[] serverHostAndPort = servers[server].Split(',');
-	            string serverHost = serverHostAndPort[0];
-	            string serverPort = serverHostAndPort[1];
+            {
+                string[] serverHostAndPort = servers[server].Split(',');
+                string serverHost = serverHostAndPort[0];
+                string serverPort = serverHostAndPort[1];
 
-	            serverList.Items.Add(new Custom_SE(server, serverHost, Convert.ToInt32(serverPort)));
-	        }
+                serverList.Items.Add(new Custom_SE(server, serverHost, Convert.ToInt32(serverPort)));
+            }
 
-	        serverList.EndUpdate();
-	        serverList.Refresh();
+            serverList.EndUpdate();
+            serverList.Refresh();
 
             // Set it to the last used one, or just set it to default UOR Prod
-	        try
-	        {
-	            serverList.SelectedIndex = Config.GetAppSetting<int>("LastServerId");
-	        }
-	        catch
-	        {
-	            serverList.SelectedIndex = 0;
-	        }
+            try
+            {
+                serverList.SelectedIndex = Config.GetAppSetting<int>("LastServerId");
+            }
+            catch
+            {
+                serverList.SelectedIndex = 0;
+            }
 
             WindowState = FormWindowState.Normal;
-	        this.BringToFront();
-	        this.TopMost = true;
+            this.BringToFront();
+            this.TopMost = true;
 
-	        _ShowTimer = new System.Windows.Forms.Timer();
-	        _ShowTimer.Interval = 250;
-	        _ShowTimer.Enabled = true;
-	        _ShowTimer.Tick += new EventHandler(timer_Tick);
-	    }
-		
-		private System.Windows.Forms.Timer _ShowTimer;
-		private void timer_Tick(object sender, EventArgs e)
-		{
-			this.TopMost = false;
-			this.BringToFront();
+            _ShowTimer = new System.Windows.Forms.Timer();
+            _ShowTimer.Interval = 250;
+            _ShowTimer.Enabled = true;
+            _ShowTimer.Tick += new EventHandler(timer_Tick);
 
-			if ( _ShowTimer != null )
-				_ShowTimer.Stop();
-		}
 
-		private void browse_Click(object sender, System.EventArgs e)
-		{
-			if ( openFile.ShowDialog( this ) == DialogResult.OK )
-			{
-				PathElipsis pe = new PathElipsis( openFile.FileName );
+            if (Config.GetAppSetting<bool>("ImportProfilesAndMacros"))
+            {
+                string appDataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Razor");
 
-			    uoClient.Text = pe.GetPath();
+                if (Directory.Exists(appDataDir))
+                {
+                    if (MessageBox.Show(Language.GetString(LocString.ImportFromPrevious), "Import Razor Profiles and Macros",
+                           MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        Config.ImportProfilesMacros(appDataDir);
 
-			    IsValidClientAndDataDir();
-			}
-		}
+                        MessageBox.Show("Import complete", "Import Razor Profiles and Macros", MessageBoxButtons.OK);
+                    }
+                }
 
-	    private void makeDef_Click(object sender, System.EventArgs e)
-	    {
+                Config.SetAppSetting("ImportProfilesAndMacros", "false");
+            }
+        }
 
-	        Config.SetAppSetting("PatchEncy", patchEncy.Checked ? "1" : "0");
-	        Config.SetAppSetting("ServerEnc", useEnc.Checked ? "1" : "0");
+        private System.Windows.Forms.Timer _ShowTimer;
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            this.TopMost = false;
+            this.BringToFront();
 
-	        MessageBox.Show(this, Language.GetString(LocString.SaveOK), "Done", MessageBoxButtons.OK,
-	            MessageBoxIcon.Information);
-	    }
+            if (_ShowTimer != null)
+                _ShowTimer.Stop();
+        }
 
-		private void serverList_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-		    Custom_SE server = (Custom_SE) serverList.SelectedItem;
+        private void browse_Click(object sender, System.EventArgs e)
+        {
+            if (openFile.ShowDialog(this) == DialogResult.OK)
+            {
+                PathElipsis pe = new PathElipsis(openFile.FileName);
 
-		    serverInfo.Text = $"{server.RealAddress},{server.Port}";
-		}
-		
-		private void okay_Click(object sender, System.EventArgs e)
-		{
+                uoClient.Text = pe.GetPath();
+
+                IsValidClientAndDataDir();
+            }
+        }
+
+        private void makeDef_Click(object sender, System.EventArgs e)
+        {
+
+            Config.SetAppSetting("PatchEncy", patchEncy.Checked ? "1" : "0");
+            Config.SetAppSetting("ServerEnc", useEnc.Checked ? "1" : "0");
+
+            MessageBox.Show(this, Language.GetString(LocString.SaveOK), "Done", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void serverList_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            Custom_SE server = (Custom_SE)serverList.SelectedItem;
+
+            serverInfo.Text = $"{server.RealAddress},{server.Port}";
+        }
+
+        private void okay_Click(object sender, System.EventArgs e)
+        {
             m_PatchEncy = patchEncy.Checked;
 
-		    m_Launch = ClientLaunch.TwoD;
-		    m_ClientPath = uoClient.Text;
+            m_Launch = ClientLaunch.TwoD;
+            m_ClientPath = uoClient.Text;
 
             ServerEntry se = null;
 
@@ -617,7 +636,8 @@ namespace Assistant
 
                     se = new ServerEntry(addr, port);
                 }
-            } else if (serverList.Text != null)
+            }
+            else if (serverList.Text != null)
             {
                 string[] addr = serverList.Text.Split(',');
 
@@ -645,128 +665,128 @@ namespace Assistant
             this.Close();
         }
 
-		private void quit_Click(object sender, System.EventArgs e)
-		{
-			SaveData();
-			this.Close();
-		}
-
-		private void SaveData()
-		{
-			for (int i=0;i<serverList.Items.Count;i++)
-			{
-				for (int j=i+1;j<serverList.Items.Count;j++)
-				{
-					ServerEntry si = (ServerEntry)serverList.Items[i];
-					ServerEntry sj = (ServerEntry)serverList.Items[j];
-					if ( si.Address == sj.Address && si.Port == sj.Port )
-						serverList.Items.RemoveAt( j );
-				}
-			}
-		
-			int num = 1;
-			for (int i=0;i<serverList.Items.Count;i++)
-			{
-				ServerEntry se = (ServerEntry)serverList.Items[i];
-				if ( se is Custom_SE || se is LoginCFG_SE )
-					continue;
-				
-				if ( se.Address != "" )
-				{
-					Config.SetAppSetting($"Server{num}", se.Address );
-				    Config.SetAppSetting($"Port{num}", se.Port.ToString());
-					num++;
-				}
-			}
-
-		    Config.SetAppSetting("UOClient", uoClient.Text);
-		    Config.SetAppSetting("UODataDir", dataDir.Text);
-		    m_DataDir = dataDir.Text;
+        private void quit_Click(object sender, System.EventArgs e)
+        {
+            SaveData();
+            this.Close();
         }
 
-	    private void showAtStart_CheckedChanged(object sender, System.EventArgs e)
-	    {
-	        Config.SetAppSetting("ShowWelcome", (showAtStart.Checked ? 1 : 0).ToString());
-	    }
+        private void SaveData()
+        {
+            for (int i = 0; i < serverList.Items.Count; i++)
+            {
+                for (int j = i + 1; j < serverList.Items.Count; j++)
+                {
+                    ServerEntry si = (ServerEntry)serverList.Items[i];
+                    ServerEntry sj = (ServerEntry)serverList.Items[j];
+                    if (si.Address == sj.Address && si.Port == sj.Port)
+                        serverList.Items.RemoveAt(j);
+                }
+            }
 
-		private void langSel_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			string lang = langSel.SelectedItem as string;
+            int num = 1;
+            for (int i = 0; i < serverList.Items.Count; i++)
+            {
+                ServerEntry se = (ServerEntry)serverList.Items[i];
+                if (se is Custom_SE || se is LoginCFG_SE)
+                    continue;
 
-			if ( lang != null && lang != Language.Current )
-			{
-				if ( !Language.Load( lang ) )
-				{
-					MessageBox.Show( "There was an error loading that language.", "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-					langSel.SelectedItem = Language.Current;
-				}
-				else
-				{
-				    Config.SetAppSetting("DefaultLanguage", Language.Current );
-					Language.LoadControlNames( this );
-				}
-			}
-		}
+                if (se.Address != "")
+                {
+                    Config.SetAppSetting($"Server{num}", se.Address);
+                    Config.SetAppSetting($"Port{num}", se.Port.ToString());
+                    num++;
+                }
+            }
 
-		private void patchEncy_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if ( !patchEncy.Checked )
-			{
-				if ( MessageBox.Show( this, Language.GetString( LocString.NoPatchWarning ), Language.GetString( LocString.Confirm ), MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.No )
-					patchEncy.Checked = true;
-			}
-		}
+            Config.SetAppSetting("UOClient", uoClient.Text);
+            Config.SetAppSetting("UODataDir", dataDir.Text);
+            m_DataDir = dataDir.Text;
+        }
 
-		private void useEnc_CheckedChanged(object sender, System.EventArgs e)
-		{
-			ClientCommunication.ServerEncrypted = useEnc.Checked;
-		}
+        private void showAtStart_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Config.SetAppSetting("ShowWelcome", (showAtStart.Checked ? 1 : 0).ToString());
+        }
 
-		private void dataBrowse_Click(object sender, System.EventArgs e)
-		{
-			FolderBrowserDialog folder = new FolderBrowserDialog();
+        private void langSel_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            string lang = langSel.SelectedItem as string;
 
-			folder.Description = "Select a UO Data Directory...";
+            if (lang != null && lang != Language.Current)
+            {
+                if (!Language.Load(lang))
+                {
+                    MessageBox.Show("There was an error loading that language.", "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    langSel.SelectedItem = Language.Current;
+                }
+                else
+                {
+                    Config.SetAppSetting("DefaultLanguage", Language.Current);
+                    Language.LoadControlNames(this);
+                }
+            }
+        }
 
-			if ( m_DataDir != null )
-				folder.SelectedPath = m_DataDir;
+        private void patchEncy_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (!patchEncy.Checked)
+            {
+                if (MessageBox.Show(this, Language.GetString(LocString.NoPatchWarning), Language.GetString(LocString.Confirm), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    patchEncy.Checked = true;
+            }
+        }
 
-			folder.ShowNewFolderButton = false;
-			if ( folder.ShowDialog() == DialogResult.OK )
-			{
-				dataDir.Text = m_DataDir = folder.SelectedPath;
-			    Config.SetAppSetting("UODataDir", dataDir.Text);
+        private void useEnc_CheckedChanged(object sender, System.EventArgs e)
+        {
+            ClientCommunication.ServerEncrypted = useEnc.Checked;
+        }
 
-			    IsValidClientAndDataDir();
-			}
-		}
+        private void dataBrowse_Click(object sender, System.EventArgs e)
+        {
+            FolderBrowserDialog folder = new FolderBrowserDialog();
 
-		private void dataDir_TextChanged(object sender, System.EventArgs e)
-		{
-		}
+            folder.Description = "Select a UO Data Directory...";
 
-		private void WelcomeForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			SaveData();
-		}
+            if (m_DataDir != null)
+                folder.SelectedPath = m_DataDir;
 
-	    private bool IsValidClientAndDataDir()
-	    {
-	        okay.Enabled = false;
+            folder.ShowNewFolderButton = false;
+            if (folder.ShowDialog() == DialogResult.OK)
+            {
+                dataDir.Text = m_DataDir = folder.SelectedPath;
+                Config.SetAppSetting("UODataDir", dataDir.Text);
+
+                IsValidClientAndDataDir();
+            }
+        }
+
+        private void dataDir_TextChanged(object sender, System.EventArgs e)
+        {
+        }
+
+        private void WelcomeForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveData();
+        }
+
+        private bool IsValidClientAndDataDir()
+        {
+            okay.Enabled = false;
 
             if (string.IsNullOrEmpty(uoClient.Text) || string.IsNullOrEmpty(dataDir.Text))
-	        {
-	            return false;
-	        }
+            {
+                return false;
+            }
 
 
-	        if (!File.Exists(uoClient.Text) || !Directory.Exists(dataDir.Text))
-	        {
-	            return false;
-	        }
+            if (!File.Exists(uoClient.Text) || !Directory.Exists(dataDir.Text))
+            {
+                return false;
+            }
 
-	        okay.Enabled = true;
+            okay.Enabled = true;
             return true;
-	    }
+        }
     }
 }

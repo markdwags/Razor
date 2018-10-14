@@ -429,6 +429,7 @@ namespace Assistant
         ScavengerAddTarget,
         GoldPerHotkey,
         EnterNewText,
+        ImportFromPrevious,
 
 
         __End
