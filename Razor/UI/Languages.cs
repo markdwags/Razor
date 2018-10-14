@@ -428,6 +428,7 @@ namespace Assistant
         ScavengerSetHotBag,
         ScavengerAddTarget,
         GoldPerHotkey,
+        EnterNewText,
 
 
         __End

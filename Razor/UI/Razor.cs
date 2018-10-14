@@ -5919,6 +5919,10 @@ namespace Assistant
                         {
                             aMenus[0].PerformClick();
                         }
+                        else if (a.GetType().Name.Equals("SpeechAction"))
+                        {
+                            aMenus[0].PerformClick();
+                        }
                         else
                         {
                             new MacroInsertWait(a).ShowDialog(Engine.MainWindow);

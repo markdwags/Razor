@@ -1394,6 +1394,27 @@ namespace Assistant.Macros
             sb.Append(m_Speech);
             return sb.ToString();
         }
+
+        private MenuItem[] m_MenuItems;
+
+        public override MenuItem[] GetContextMenuItems()
+        {
+            if (this.m_MenuItems == null)
+                this.m_MenuItems = (MenuItem[])new MacroMenuItem[1]
+                {
+          new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
+                };
+            return this.m_MenuItems;
+        }
+
+        private void Edit(object[] args)
+        {
+            if (InputBox.Show(Language.GetString(LocString.EnterNewText), "Input Box", this.m_Speech))
+                this.m_Speech = InputBox.GetString();
+            if (this.Parent == null)
+                return;
+            this.Parent.Update();
+        }
     }
 
     public class UseSkillAction : MacroAction
@@ -1933,6 +1954,14 @@ namespace Assistant.Macros
         public override bool PerformWait()
         {
             return !(World.Player.HasGump && (World.Player.CurrentGumpI == m_GumpID || !m_Strict || m_GumpID == 0));
+
+            //if (!World.Player.HasGump) // Does the player even have a gump?
+            //    return true;
+
+            //if ((int)World.Player.CurrentGumpI != (int)m_GumpID && m_Strict)
+            //    return m_GumpID > 0;
+            
+            //return false;
         }
 
         public override string ToString()
