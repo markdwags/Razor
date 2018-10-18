@@ -431,6 +431,7 @@ namespace Assistant
         EnterNewText,
         ImportFromPrevious,
         SetOrganizerHB,
+        SetContainerLabel,
 
 
         __End

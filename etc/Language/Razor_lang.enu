@@ -688,3 +688,4 @@ InputBox::ok=&OK
 1981=Enter new text
 1982=This version of Razor is portable and your profiles and macros are stored within the Razor folder. Would you like to import your existing Profiles and Macros? This process will not effect your existing macros from your previous version.
 1983=Set Organizer HotBag
+1984=Set container label

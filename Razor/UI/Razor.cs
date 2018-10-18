@@ -293,6 +293,8 @@ namespace Assistant
         private CheckBox showAttackTarget;
         private CheckBox rangeCheckTargetByType;
         private CheckBox rangeCheckDoubleClick;
+        private Button containerLabels;
+        private CheckBox showContainerLabels;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -617,6 +619,8 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.showContainerLabels = new System.Windows.Forms.CheckBox();
+            this.containerLabels = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -1181,6 +1185,7 @@ namespace Assistant
             this.lblExHue.Size = new System.Drawing.Size(206, 18);
             this.lblExHue.TabIndex = 14;
             this.lblExHue.Text = "Search Exemption Hue:";
+            this.lblExHue.Click += new System.EventHandler(this.lblExHue_Click);
             //
             // blockDis
             //
@@ -1237,6 +1242,8 @@ namespace Assistant
             //
             // moreMoreOptTab
             //
+            this.moreMoreOptTab.Controls.Add(this.containerLabels);
+            this.moreMoreOptTab.Controls.Add(this.showContainerLabels);
             this.moreMoreOptTab.Controls.Add(this.showAttackTarget);
             this.moreMoreOptTab.Controls.Add(this.lblBuffDebuff);
             this.moreMoreOptTab.Controls.Add(this.buffDebuffFormat);
@@ -2201,6 +2208,7 @@ namespace Assistant
             this.agentSubList.Name = "agentSubList";
             this.agentSubList.Size = new System.Drawing.Size(315, 211);
             this.agentSubList.TabIndex = 0;
+            this.agentSubList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.agentSubList_MouseDown);
             //
             // agentB4
             //
@@ -3409,6 +3417,28 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
+            // showContainerLabels
+            //
+            this.showContainerLabels.AutoSize = true;
+            this.showContainerLabels.Location = new System.Drawing.Point(245, 286);
+            this.showContainerLabels.Name = "showContainerLabels";
+            this.showContainerLabels.Size = new System.Drawing.Size(146, 19);
+            this.showContainerLabels.TabIndex = 81;
+            this.showContainerLabels.Text = "Show Container Labels";
+            this.showContainerLabels.UseVisualStyleBackColor = true;
+            this.showContainerLabels.CheckedChanged += new System.EventHandler(this.showContainerLabels_CheckedChanged);
+            //
+            // containerLabels
+            //
+            this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.containerLabels.Location = new System.Drawing.Point(425, 285);
+            this.containerLabels.Name = "containerLabels";
+            this.containerLabels.Size = new System.Drawing.Size(33, 19);
+            this.containerLabels.TabIndex = 82;
+            this.containerLabels.Text = "...";
+            this.containerLabels.UseVisualStyleBackColor = true;
+            this.containerLabels.Click += new System.EventHandler(this.containerLabels_Click);
+            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3478,6 +3508,7 @@ namespace Assistant
             this.ResumeLayout(false);
 
         }
+
         #endregion
 
         protected override void WndProc(ref Message msg)
@@ -3750,6 +3781,8 @@ namespace Assistant
             screenShotOpenBrowser.Checked = Config.GetBool("ScreenshotUploadOpenBrowser");
             screenShotClipboard.Checked = Config.GetBool("ScreenshotUploadClipboard");
             screenShotNotification.Checked = Config.GetBool("ScreenshotUploadNotifications");
+
+            showContainerLabels.Checked = Config.GetBool("ShowContainerLabels");
 
             if (screenShotNotification.Checked)
             {
@@ -7933,6 +7966,64 @@ namespace Assistant
         private void rangeCheckDoubleClick_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("RangeCheckDoubleClick", rangeCheckDoubleClick.Checked);
+        }
+
+        private void agentSubList_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (agentList.SelectedIndex < 0 || agentSubList.Items.Count == 0)
+                return;
+
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                ContextMenu menu = new ContextMenu();
+                //menu.MenuItems.Add(Language.GetString(LocString.Reload), new EventHandler(onMacroReload));
+                menu.MenuItems.Add("Import (Copy from clipboard)", new EventHandler(OnAgentImport));
+                menu.MenuItems.Add("-");
+                menu.MenuItems.Add("Export (Copy to clipboard)", new EventHandler(OnAgentExport));
+
+                menu.Show(agentSubList, new Point(e.X, e.Y));
+            }
+        }
+
+        private void OnAgentExport(object sender, System.EventArgs e)
+        {
+            if (agentList.SelectedIndex < 0 || agentSubList.Items.Count == 0)
+                return;
+
+            //Agent.Select(agentList.SelectedIndex, agentList, agentSubList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6);
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var item in agentSubList.Items)
+            {
+                sb.AppendLine(item.ToString());
+            }
+
+            Console.WriteLine(sb.ToString());
+        }
+
+        private void OnAgentImport(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void showContainerLabels_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowContainerLabels", showContainerLabels.Checked);
+
+            containerLabels.Enabled = showContainerLabels.Checked;
+        }
+
+        private void lblExHue_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void containerLabels_Click(object sender, EventArgs e)
+        {
+            ContainerLabels form = new ContainerLabels();
+            form.Show();
+            form.BringToFront();
         }
     }
 }

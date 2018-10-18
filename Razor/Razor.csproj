@@ -140,6 +140,7 @@
     <Compile Include="Core\BuffsTimer.cs" />
     <Compile Include="Core\BuffsDebuffs.cs" />
     <Compile Include="Core\MessageInBottleCapture.cs" />
+    <Compile Include="Core\ContainerLabels.cs" />
     <Compile Include="Core\OverheadMessages.cs" />
     <Compile Include="Core\GoldPerHourTimer.cs" />
     <Compile Include="Core\GateTimer.cs" />
@@ -330,6 +331,12 @@
     <Compile Include="UI\MessageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\ContainerLabels.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ContainerLabels.Designer.cs">
+      <DependentUpon>ContainerLabels.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\OverheadMessages.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -395,6 +402,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MessageDialog.resx">
       <DependentUpon>MessageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ContainerLabels.resx">
+      <DependentUpon>ContainerLabels.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OverheadMessages.resx">
       <DependentUpon>OverheadMessages.cs</DependentUpon>
