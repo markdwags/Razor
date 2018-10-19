@@ -115,6 +115,7 @@
             this.containerView.TabIndex = 22;
             this.containerView.UseCompatibleStateImageBehavior = false;
             this.containerView.View = System.Windows.Forms.View.Details;
+            this.containerView.MouseDown += new System.Windows.Forms.MouseEventHandler(OnMouseDownContainerView);
             // 
             // containerId
             // 

@@ -219,7 +219,7 @@ namespace Assistant.UI
         private bool SetContainerLabelHue()
         {
             ListViewItem selectedItem = containerView.Items[containerView.SelectedIndices[0]];
-            
+
             HueEntry h = new HueEntry(GetHueFromListView(selectedItem.SubItems[0].Text));
 
             // TODO: BREAKING DRY!
@@ -269,7 +269,7 @@ namespace Assistant.UI
             {
                 if (list.Id.Equals(id))
                 {
-                    return list.Hue;                    
+                    return list.Hue;
                 }
             }
 
@@ -282,6 +282,35 @@ namespace Assistant.UI
             }
 
             return hue;
+        }
+
+        private void OnMouseDownContainerView(object sender, MouseEventArgs e)
+        {
+            if (containerView.SelectedItems.Count == 0)
+                return;
+
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                ContextMenu menu = new ContextMenu();                                
+                menu.MenuItems.Add("Open Container (if in range)", new EventHandler(OnContainerDoubleClick));
+
+                menu.Show(containerView, new Point(e.X, e.Y));
+            }
+
+        }
+
+        private void OnContainerDoubleClick(object sender, System.EventArgs e)
+        {
+            ListViewItem selectedItem = containerView.Items[containerView.SelectedIndices[0]];
+
+            Item container = World.FindItem(Serial.Parse(selectedItem.SubItems[0].Text));
+
+            if (!container.IsContainer)
+                return;
+
+            World.Player.SendMessage(MsgLevel.Force, "Opening container");
+
+            ClientCommunication.SendToServer(new DoubleClick(container.Serial));
         }
     }
 }
