@@ -5442,6 +5442,8 @@ namespace Assistant
                             string[] macroCommands = Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
                             File.WriteAllLines(path, macroCommands);
+
+                            Clipboard.Clear();
                         }
                         else
                         {
