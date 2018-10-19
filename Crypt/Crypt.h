@@ -138,6 +138,21 @@ DLLFUNCTION bool IsDynLength( unsigned char packet );
 DLLFUNCTION int GetUOProcId();
 DLLFUNCTION DWORD InitializeLibrary( const char * );
 DLLFUNCTION HANDLE GetCommMutex();
+DLLFUNCTION unsigned int TotalIn();
+DLLFUNCTION unsigned int TotalOut();
+DLLFUNCTION HBITMAP CaptureScreen(BOOL full, const char *msg);
+DLLFUNCTION bool IsCalibrated();
+DLLFUNCTION void CalibratePosition(int x, int y, int z);
+DLLFUNCTION bool GetPosition(int *x, int *y, int *z);
+DLLFUNCTION void BringToFront(HWND hWnd);
+DLLFUNCTION void DoFeatures(int realFeatures);
+DLLFUNCTION bool AllowBit(unsigned long bit);
+DLLFUNCTION void SetAllowDisconn(bool newVal);
+DLLFUNCTION BOOL HandleNegotiate(__int64 features);
+DLLFUNCTION void __stdcall OnAttach(void *params, int paramsLen);
+DLLFUNCTION void SetServer(unsigned int addr, unsigned short port);
+DLLFUNCTION const char *GetUOVersion();
+
 
 LRESULT CALLBACK UOAWndProc( HWND, UINT, WPARAM, LPARAM );
 void Log( const char *format, ... );
