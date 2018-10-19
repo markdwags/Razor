@@ -136,7 +136,6 @@ DLLFUNCTION void *GetSharedAddress();
 DLLFUNCTION int GetPacketLength( unsigned char *data, int len );
 DLLFUNCTION bool IsDynLength( unsigned char packet );
 DLLFUNCTION int GetUOProcId();
-DLLFUNCTION DWORD InitializeLibrary( const char * );
 DLLFUNCTION HANDLE GetCommMutex();
 DLLFUNCTION unsigned int TotalIn();
 DLLFUNCTION unsigned int TotalOut();

@@ -242,9 +242,6 @@ namespace Assistant
 			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
 #endif
 
-            if (ClientCommunication.InitializeLibrary(Engine.Version) == 0)
-                throw new InvalidOperationException("This Razor installation is corrupted.");
-
             try
             {
                 Engine.ShardList = Config.GetAppSetting<string>("ShardList");

@@ -137,11 +137,6 @@ BOOL APIENTRY DllMain( HANDLE hModule, DWORD dwReason, LPVOID )
 	return TRUE;
 }
 
-DLLFUNCTION DWORD InitializeLibrary( const char *exeVer )
-{
-	return true;
-}
-
 DLLFUNCTION void *GetSharedAddress()
 {
 	Log( "Get shared address [0x%x]", pShared );

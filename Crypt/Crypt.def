@@ -8,7 +8,6 @@ EXPORTS
 	GetPacketLength
 	IsDynLength
 	GetUOProcId
-	InitializeLibrary
 	GetCommMutex
 	TotalIn
 	TotalOut

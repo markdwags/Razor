@@ -480,8 +480,6 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetCustomTitle( string title );
 		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern int InitializeLibrary(string version);
-		[DllImport( "Crypt.dll" )]
 		private static unsafe extern IntPtr GetCommMutex();
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern uint TotalIn();
