@@ -147,7 +147,7 @@ namespace Assistant
             string use = Language.GetString(LocString.UseOnce);
             for (int i = 0; i < Agent.List.Count; i++)
             {
-                Agent a = (Agent) Agent.List[i];
+                Agent a = (Agent)Agent.List[i];
                 if (a.Name == use)
                 {
                     a.OnButtonPress(1);
@@ -202,6 +202,10 @@ namespace Assistant
             int count = 5;
             if (param.Length > 0)
                 count = Utility.ToInt32(param[0], 5);
+
+            if (count > 10)
+                count = 10;
+
             Assistant.Ping.StartPing(count);
         }
 
@@ -271,7 +275,7 @@ namespace Assistant
 
         public static void OnSpeech(Packet pvSrc, PacketHandlerEventArgs args)
         {
-            MessageType type = (MessageType) pvSrc.ReadByte();
+            MessageType type = (MessageType)pvSrc.ReadByte();
             ushort hue = pvSrc.ReadUInt16();
             ushort font = pvSrc.ReadUInt16();
             string lang = pvSrc.ReadString(4);
@@ -286,7 +290,7 @@ namespace Assistant
                 int value = pvSrc.ReadInt16();
                 int count = (value & 0xFFF0) >> 4;
                 keys = new ArrayList();
-                keys.Add((ushort) value);
+                keys.Add((ushort)value);
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -323,7 +327,7 @@ namespace Assistant
                 {
                     text = text.Substring(1);
                     string[] split = text.Split(' ', '\t');
-                    CommandCallback call = (CommandCallback) m_List[split[0]];
+                    CommandCallback call = (CommandCallback)m_List[split[0]];
                     if (call != null)
                     {
                         string[] param = new String[split.Length - 1];

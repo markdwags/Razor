@@ -3404,12 +3404,12 @@ namespace Assistant
             // linkGithub
             //
             this.linkGithub.AutoSize = true;
-            this.linkGithub.Location = new System.Drawing.Point(110, 214);
+            this.linkGithub.Location = new System.Drawing.Point(162, 216);
             this.linkGithub.Name = "linkGithub";
-            this.linkGithub.Size = new System.Drawing.Size(279, 15);
+            this.linkGithub.Size = new System.Drawing.Size(148, 15);
             this.linkGithub.TabIndex = 16;
             this.linkGithub.TabStop = true;
-            this.linkGithub.Text = "https://bitbucket.org/markdwags/razor/wiki/Home";
+            this.linkGithub.Text = "http://www.uor-razor.com";
             this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             //
             // label21
@@ -7736,7 +7736,7 @@ namespace Assistant
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://bitbucket.org/markdwags/razor/wiki/Home");
+            Process.Start("http://www.uor-razor.com");
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
