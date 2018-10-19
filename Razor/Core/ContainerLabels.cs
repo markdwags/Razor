@@ -13,6 +13,7 @@ namespace Assistant.Core
             public string Id { get; set; }
             public string Type { get; set; }
             public string Label { get; set; }
+            public int Hue { get; set; }
         }
 
         public static List<ContainerLabel> ContainerLabelList = new List<ContainerLabel>();
@@ -25,6 +26,7 @@ namespace Assistant.Core
                 xml.WriteAttributeString("id", label.Id);
                 xml.WriteAttributeString("type", label.Type);
                 xml.WriteAttributeString("label", label.Label);
+                xml.WriteAttributeString("hue", label.Hue.ToString());
                 xml.WriteEndElement();
             }
         }
@@ -43,6 +45,7 @@ namespace Assistant.Core
                         Id = el.GetAttribute("id"),
                         Type = el.GetAttribute("type"),
                         Label = el.GetAttribute("label"),
+                        Hue = Convert.ToInt32(el.GetAttribute("hue"))
                     };
 
                     ContainerLabelList.Add(label);

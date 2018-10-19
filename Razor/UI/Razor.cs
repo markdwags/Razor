@@ -412,6 +412,8 @@ namespace Assistant
             this.label3 = new System.Windows.Forms.Label();
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+            this.containerLabels = new System.Windows.Forms.Button();
+            this.showContainerLabels = new System.Windows.Forms.CheckBox();
             this.showAttackTarget = new System.Windows.Forms.CheckBox();
             this.lblBuffDebuff = new System.Windows.Forms.Label();
             this.buffDebuffFormat = new System.Windows.Forms.TextBox();
@@ -619,8 +621,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.showContainerLabels = new System.Windows.Forms.CheckBox();
-            this.containerLabels = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -1185,7 +1185,6 @@ namespace Assistant
             this.lblExHue.Size = new System.Drawing.Size(206, 18);
             this.lblExHue.TabIndex = 14;
             this.lblExHue.Text = "Search Exemption Hue:";
-            this.lblExHue.Click += new System.EventHandler(this.lblExHue_Click);
             //
             // blockDis
             //
@@ -1284,6 +1283,28 @@ namespace Assistant
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
             //
+            // containerLabels
+            //
+            this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.containerLabels.Location = new System.Drawing.Point(425, 287);
+            this.containerLabels.Name = "containerLabels";
+            this.containerLabels.Size = new System.Drawing.Size(33, 19);
+            this.containerLabels.TabIndex = 82;
+            this.containerLabels.Text = "...";
+            this.containerLabels.UseVisualStyleBackColor = true;
+            this.containerLabels.Click += new System.EventHandler(this.containerLabels_Click);
+            //
+            // showContainerLabels
+            //
+            this.showContainerLabels.AutoSize = true;
+            this.showContainerLabels.Location = new System.Drawing.Point(245, 288);
+            this.showContainerLabels.Name = "showContainerLabels";
+            this.showContainerLabels.Size = new System.Drawing.Size(141, 19);
+            this.showContainerLabels.TabIndex = 81;
+            this.showContainerLabels.Text = "Show container labels";
+            this.showContainerLabels.UseVisualStyleBackColor = true;
+            this.showContainerLabels.CheckedChanged += new System.EventHandler(this.showContainerLabels_CheckedChanged);
+            //
             // showAttackTarget
             //
             this.showAttackTarget.Location = new System.Drawing.Point(245, 263);
@@ -1307,7 +1328,7 @@ namespace Assistant
             //
             this.buffDebuffFormat.Location = new System.Drawing.Point(124, 284);
             this.buffDebuffFormat.Name = "buffDebuffFormat";
-            this.buffDebuffFormat.Size = new System.Drawing.Size(115, 23);
+            this.buffDebuffFormat.Size = new System.Drawing.Size(109, 23);
             this.buffDebuffFormat.TabIndex = 78;
             this.buffDebuffFormat.Text = "[{action}{name}]";
             this.buffDebuffFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1344,12 +1365,12 @@ namespace Assistant
             //
             // stealthOverhead
             //
-            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stealthOverhead.Location = new System.Drawing.Point(385, 57);
+            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stealthOverhead.Location = new System.Drawing.Point(387, 49);
             this.stealthOverhead.Name = "stealthOverhead";
-            this.stealthOverhead.Size = new System.Drawing.Size(92, 20);
+            this.stealthOverhead.Size = new System.Drawing.Size(92, 36);
             this.stealthOverhead.TabIndex = 76;
-            this.stealthOverhead.Text = "Overhead";
+            this.stealthOverhead.Text = "Show overhead";
             this.stealthOverhead.UseVisualStyleBackColor = true;
             this.stealthOverhead.CheckedChanged += new System.EventHandler(this.stealthOverhead_CheckedChanged);
             //
@@ -1369,9 +1390,9 @@ namespace Assistant
             this.showOverheadMessages.AutoSize = true;
             this.showOverheadMessages.Location = new System.Drawing.Point(245, 238);
             this.showOverheadMessages.Name = "showOverheadMessages";
-            this.showOverheadMessages.Size = new System.Drawing.Size(163, 19);
+            this.showOverheadMessages.Size = new System.Drawing.Size(161, 19);
             this.showOverheadMessages.TabIndex = 74;
-            this.showOverheadMessages.Text = "Show Overhead Messages";
+            this.showOverheadMessages.Text = "Show overhead messages";
             this.showOverheadMessages.UseVisualStyleBackColor = true;
             this.showOverheadMessages.CheckedChanged += new System.EventHandler(this.showStunMessagesOverhead_CheckedChanged);
             //
@@ -3416,28 +3437,6 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-            //
-            // showContainerLabels
-            //
-            this.showContainerLabels.AutoSize = true;
-            this.showContainerLabels.Location = new System.Drawing.Point(245, 286);
-            this.showContainerLabels.Name = "showContainerLabels";
-            this.showContainerLabels.Size = new System.Drawing.Size(146, 19);
-            this.showContainerLabels.TabIndex = 81;
-            this.showContainerLabels.Text = "Show Container Labels";
-            this.showContainerLabels.UseVisualStyleBackColor = true;
-            this.showContainerLabels.CheckedChanged += new System.EventHandler(this.showContainerLabels_CheckedChanged);
-            //
-            // containerLabels
-            //
-            this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.containerLabels.Location = new System.Drawing.Point(425, 285);
-            this.containerLabels.Name = "containerLabels";
-            this.containerLabels.Size = new System.Drawing.Size(33, 19);
-            this.containerLabels.TabIndex = 82;
-            this.containerLabels.Text = "...";
-            this.containerLabels.UseVisualStyleBackColor = true;
-            this.containerLabels.Click += new System.EventHandler(this.containerLabels_Click);
             //
             // MainForm
             //
@@ -7973,16 +7972,16 @@ namespace Assistant
             if (agentList.SelectedIndex < 0 || agentSubList.Items.Count == 0)
                 return;
 
-            if (e.Button == MouseButtons.Right && e.Clicks == 1)
-            {
-                ContextMenu menu = new ContextMenu();
-                //menu.MenuItems.Add(Language.GetString(LocString.Reload), new EventHandler(onMacroReload));
-                menu.MenuItems.Add("Import (Copy from clipboard)", new EventHandler(OnAgentImport));
-                menu.MenuItems.Add("-");
-                menu.MenuItems.Add("Export (Copy to clipboard)", new EventHandler(OnAgentExport));
+            //if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            //{
+            //    ContextMenu menu = new ContextMenu();
+            //    //menu.MenuItems.Add(Language.GetString(LocString.Reload), new EventHandler(onMacroReload));
+            //    menu.MenuItems.Add("Import (Copy from clipboard)", new EventHandler(OnAgentImport));
+            //    menu.MenuItems.Add("-");
+            //    menu.MenuItems.Add("Export (Copy to clipboard)", new EventHandler(OnAgentExport));
 
-                menu.Show(agentSubList, new Point(e.X, e.Y));
-            }
+            //    menu.Show(agentSubList, new Point(e.X, e.Y));
+            //}
         }
 
         private void OnAgentExport(object sender, System.EventArgs e)
@@ -8014,13 +8013,11 @@ namespace Assistant
             containerLabels.Enabled = showContainerLabels.Checked;
         }
 
-        private void lblExHue_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void containerLabels_Click(object sender, EventArgs e)
         {
+            //if (World.Player == null)
+            //    return;
+
             ContainerLabels form = new ContainerLabels();
             form.Show();
             form.BringToFront();

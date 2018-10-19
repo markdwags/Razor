@@ -210,7 +210,7 @@ namespace Assistant
                     {
                         if (Serial.Parse(label.Id) == ser)
                         {
-                            ClientCommunication.SendToClient(new UnicodeMessage(ser, item.ItemID.Value, Assistant.MessageType.Label, Config.GetInt("ContainerLabelColor"), 3, Language.CliLocName, "", Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label)));
+                            ClientCommunication.SendToClient(new UnicodeMessage(ser, item.ItemID.Value, MessageType.Label, label.Hue, 3, Language.CliLocName, "", Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label)));
                             break;
                         }
                     }
