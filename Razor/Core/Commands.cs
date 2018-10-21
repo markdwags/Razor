@@ -26,6 +26,7 @@ namespace Assistant
             Command.Register("Resync", Resync);
             Command.Register("Mobile", GetMobile);
             Command.Register("Weather", SetWeather);
+            Command.Register("Season", SetSeason);
         }
 
         private static DateTime m_LastSync;
@@ -64,6 +65,14 @@ namespace Assistant
                 Language.CliLocName, "System", "Setting weather.."));
 
             ClientCommunication.SendToClient(new SetWeather(Convert.ToInt32(param[0]), Convert.ToInt32(param[1])));
+        }
+
+        private static void SetSeason(string[] param)
+        {
+            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Language.CliLocName, "System", "Setting season.."));
+
+            ClientCommunication.ForceSendToClient(new SeasonChange(Convert.ToInt32(param[0]), true));
         }
 
         private static void GetSerial(string[] param)

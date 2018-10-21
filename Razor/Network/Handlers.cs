@@ -195,27 +195,7 @@ namespace Assistant
                 Mobile m = World.FindMobile(ser);                
                 if (m != null)
                     Targeting.CheckTextFlags(m);
-            }
-            
-            if (Config.GetBool("ShowContainerLabels"))
-            {
-                if (ser != null && ser.IsItem)
-                {
-                    Item item = World.FindItem(ser);
-
-                    if (!item.IsContainer)
-                        return;
-
-                    foreach (ContainerLabels.ContainerLabel label in ContainerLabels.ContainerLabelList)
-                    {
-                        if (Serial.Parse(label.Id) == ser)
-                        {
-                            ClientCommunication.SendToClient(new UnicodeMessage(ser, item.ItemID.Value, MessageType.Label, label.Hue, 3, Language.CliLocName, "", Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label)));
-                            break;
-                        }
-                    }
-                }
-            }            
+            }                      
         }
 
         private static void ClientDoubleClick(PacketReader p, PacketHandlerEventArgs args)
@@ -1957,6 +1937,26 @@ namespace Assistant
                             if (text.IndexOf(message.SearchMessage, StringComparison.OrdinalIgnoreCase) != -1)
                             {
                                 World.Player.OverheadMessage(overheadFormat.Replace("{msg}", message.MessageOverhead));
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (Config.GetBool("ShowContainerLabels"))
+                {
+                    if (ser != null && ser.IsItem)
+                    {
+                        Item item = World.FindItem(ser);
+
+                        if (!item.IsContainer || !text.Contains("items,"))
+                            return;
+
+                        foreach (ContainerLabels.ContainerLabel label in ContainerLabels.ContainerLabelList)
+                        {
+                            if (Serial.Parse(label.Id) == ser)
+                            {
+                                ClientCommunication.SendToClient(new UnicodeMessage(ser, item.ItemID.Value, MessageType.Label, label.Hue, 3, Language.CliLocName, "", Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label)));
                                 break;
                             }
                         }
