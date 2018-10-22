@@ -159,7 +159,7 @@ namespace Assistant
             }
 
             ClientCommunication.RequestTitlebarUpdate();
-            ClientCommunication.PostSpellCast(this.Number);
+            UOAssist.PostSpellCast(this.Number);
 
             if (World.Player != null)
             {

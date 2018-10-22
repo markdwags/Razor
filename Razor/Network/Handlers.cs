@@ -797,7 +797,7 @@ namespace Assistant
                                 if (!World.Player.SkillsSent)
                                     skill.Delta = 0;
 
-                                ClientCommunication.PostSkillUpdate(i - 1, skill.FixedBase);
+                                UOAssist.PostSkillUpdate(i - 1, skill.FixedBase);
                             }
                             else
                             {
@@ -829,7 +829,7 @@ namespace Assistant
                                 if (!World.Player.SkillsSent)
                                     skill.Delta = 0;
 
-                                ClientCommunication.PostSkillUpdate(i - 1, skill.FixedBase);
+                                UOAssist.PostSkillUpdate(i - 1, skill.FixedBase);
                             }
                             else
                             {
@@ -877,7 +877,7 @@ namespace Assistant
                                 }
                             }
 
-                            ClientCommunication.PostSkillUpdate(i, skill.FixedBase);
+                            UOAssist.PostSkillUpdate(i, skill.FixedBase);
                         }
                         break;
                     }
@@ -915,7 +915,7 @@ namespace Assistant
                                 }
                             }
 
-                            ClientCommunication.PostSkillUpdate(i, skill.FixedBase);
+                            UOAssist.PostSkillUpdate(i, skill.FixedBase);
                         }
                         break;
                     }
@@ -953,7 +953,7 @@ namespace Assistant
             //ClientCommunication.SendToServer( new StatusQuery( m ) );
 
             ClientCommunication.RequestTitlebarUpdate();
-            ClientCommunication.PostLogin((int)serial.Value);
+            UOAssist.PostLogin((int)serial.Value);
             Engine.MainWindow.UpdateTitle(); // update player name & shard name
                                              /*
                                              //the rest of the packet: (total length: 37)
@@ -1052,7 +1052,7 @@ namespace Assistant
                 if (m == World.Player)
                 {
                     ClientCommunication.RequestTitlebarUpdate();
-                    ClientCommunication.PostHitsUpdate();
+                    UOAssist.PostHitsUpdate();
                 }
 
                 if (ClientCommunication.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowHealth"))
@@ -1090,7 +1090,7 @@ namespace Assistant
                 if (m == World.Player)
                 {
                     ClientCommunication.RequestTitlebarUpdate();
-                    ClientCommunication.PostStamUpdate();
+                    UOAssist.PostStamUpdate();
                 }
 
                 if (m != World.Player && ClientCommunication.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowPartyStats"))
@@ -1129,7 +1129,7 @@ namespace Assistant
                 if (m == World.Player)
                 {
                     ClientCommunication.RequestTitlebarUpdate();
-                    ClientCommunication.PostManaUpdate();
+                    UOAssist.PostManaUpdate();
                 }
 
                 if (m != World.Player && ClientCommunication.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowPartyStats"))
@@ -1173,9 +1173,9 @@ namespace Assistant
             if (m == World.Player)
             {
                 ClientCommunication.RequestTitlebarUpdate();
-                ClientCommunication.PostHitsUpdate();
-                ClientCommunication.PostStamUpdate();
-                ClientCommunication.PostManaUpdate();
+                UOAssist.PostHitsUpdate();
+                UOAssist.PostStamUpdate();
+                UOAssist.PostManaUpdate();
             }
         }
 
@@ -1364,9 +1364,9 @@ namespace Assistant
 
                 ClientCommunication.RequestTitlebarUpdate();
 
-                ClientCommunication.PostHitsUpdate();
-                ClientCommunication.PostStamUpdate();
-                ClientCommunication.PostManaUpdate();
+                UOAssist.PostHitsUpdate();
+                UOAssist.PostStamUpdate();
+                UOAssist.PostManaUpdate();
 
                 Engine.MainWindow.UpdateTitle(); // update player name
             }
@@ -1704,7 +1704,7 @@ namespace Assistant
                 }
                 else if (item.IsMulti)
                 {
-                    ClientCommunication.PostAddMulti(item.ItemID, item.Position);
+                    UOAssist.PostAddMulti(item.ItemID, item.Position);
                 }
                 else
                 {
@@ -1831,7 +1831,7 @@ namespace Assistant
                 }
                 else if (item.IsMulti)
                 {
-                    ClientCommunication.PostAddMulti(item.ItemID, item.Position);
+                    UOAssist.PostAddMulti(item.ItemID, item.Position);
                 }
                 else
                 {

@@ -188,7 +188,7 @@ namespace Assistant.Macros
 				m_Current.Stop();
 				m_Current = null;
 			}
-			ClientCommunication.PostMacroStop();
+			UOAssist.PostMacroStop();
 			
 			if ( Engine.MainWindow.WaitDisplay != null )
 				Engine.MainWindow.WaitDisplay.Text = "";

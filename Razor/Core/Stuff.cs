@@ -41,7 +41,7 @@ namespace Assistant
 		{
 			uint wParam = ((uint)ClientCommunication.UONetMessage.FindData)|0xFFFF0000;
 			World.Player.SendMessage( MsgLevel.Force, "Clearing addr list." );
-			ClientCommunication.PostMessage( ClientCommunication.FindUOWindow(), ClientCommunication.WM_UONETEVENT, (IntPtr)wParam, IntPtr.Zero );
+			UOAssist.PostMessage( ClientCommunication.FindUOWindow(), ClientCommunication.WM_UONETEVENT, (IntPtr)wParam, IntPtr.Zero );
 		}
 
 		public static void Walk( string[] args )
@@ -53,7 +53,7 @@ namespace Assistant
 				loc.X = Utility.ToInt32( args[0], 0 );
 				loc.Y = Utility.ToInt32( args[1], 0 );
 				loc.Z = Utility.ToInt32( args[2], 0 );
-				
+
 				ClientCommunication.SendToClient( new PathFindTo( loc ) );
 				World.Player.SendMessage( "Going... {0}", loc );
 			}
@@ -99,7 +99,7 @@ namespace Assistant
 
 				World.Player.SendMessage( MsgLevel.Force, "Finding 0x{0:X8} ({1})...", val, size );
 
-				ClientCommunication.PostMessage( ClientCommunication.FindUOWindow(), ClientCommunication.WM_UONETEVENT, (IntPtr)(((uint)ClientCommunication.UONetMessage.FindData)|(((uint)size)<<16)), (IntPtr)((int)val) );
+				UOAssist.PostMessage( ClientCommunication.FindUOWindow(), ClientCommunication.WM_UONETEVENT, (IntPtr)(((uint)ClientCommunication.UONetMessage.FindData)|(((uint)size)<<16)), (IntPtr)((int)val) );
 			}
 			catch ( Exception e )
 			{
@@ -127,7 +127,7 @@ namespace Assistant
 		{
 			Command.Register( "AutoTarget", new CommandCallback( AutoTargetCallback ) );
 			//Command.Register( "pwn", new CommandCallback( Pwn ) );
-			PacketHandler.RegisterServerToClientViewer( 0x77, new PacketViewerCallback( MobileMoving ) );	
+			PacketHandler.RegisterServerToClientViewer( 0x77, new PacketViewerCallback( MobileMoving ) );
 			PacketHandler.RegisterServerToClientViewer( 0x78, new PacketViewerCallback( MobileIncoming ) );
 		}
 
