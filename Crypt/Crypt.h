@@ -124,7 +124,7 @@ public:
 #define WM_XBUTTONDOWN                  0x020B
 #endif
 
-extern HWND hWatchWnd;
+extern HWND hUOWindow;
 extern HINSTANCE hInstance;
 extern SharedMemory *pShared;
 extern HANDLE CommMutex;
