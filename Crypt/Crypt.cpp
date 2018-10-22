@@ -78,17 +78,17 @@ bool CreateSharedMemory();
 void CloseSharedMemory();
 
 //Hooks:
-int PASCAL HookRecv( SOCKET, char *, int, int );
-int PASCAL HookSend( SOCKET, char *, int, int );
-int PASCAL HookConnect( SOCKET, const sockaddr *, int );
-int PASCAL HookCloseSocket( SOCKET );
-int PASCAL HookSelect( int, fd_set*, fd_set*, fd_set*, const struct timeval * );
+int HookRecv( SOCKET, char *, int, int );
+int HookSend( SOCKET, char *, int, int );
+int HookConnect( SOCKET, const sockaddr *, int );
+int HookCloseSocket( SOCKET );
+int HookSelect( int, fd_set*, fd_set*, fd_set*, const struct timeval * );
 
-typedef int (PASCAL *NetIOFunc)(SOCKET, char *, int, int);
-typedef int (PASCAL *ConnFunc)(SOCKET, const sockaddr *, int);
-typedef int (PASCAL *CLSFunc)(SOCKET);
-typedef int (PASCAL *SelectFunc)( int, fd_set*, fd_set*, fd_set*, const struct timeval* );
-typedef HANDLE (WINAPI *CreateFileAFunc)(LPCTSTR,DWORD,DWORD,LPSECURITY_ATTRIBUTES,DWORD,DWORD,HANDLE);
+typedef int (*NetIOFunc)(SOCKET, char *, int, int);
+typedef int (*ConnFunc)(SOCKET, const sockaddr *, int);
+typedef int (*CLSFunc)(SOCKET);
+typedef int (*SelectFunc)( int, fd_set*, fd_set*, fd_set*, const struct timeval* );
+typedef HANDLE (*CreateFileAFunc)(LPCTSTR,DWORD,DWORD,LPSECURITY_ATTRIBUTES,DWORD,DWORD,HANDLE);
 typedef char *(__cdecl *GetUOVersionFunc)();
 
 GetUOVersionFunc NativeGetUOVersion = NULL;
@@ -1066,7 +1066,7 @@ int RecvData()
 	return ackLen;
 }
 
-int PASCAL HookRecv( SOCKET sock, char *buff, int len, int flags )
+int HookRecv( SOCKET sock, char *buff, int len, int flags )
 {
 	int ackLen;
 
@@ -1143,7 +1143,7 @@ int PASCAL HookRecv( SOCKET sock, char *buff, int len, int flags )
 }
 
 int SkipSendData = 0;
-int PASCAL HookSend( SOCKET sock, char *buff, int len, int flags )
+int HookSend( SOCKET sock, char *buff, int len, int flags )
 {
 	int ackLen;
 
@@ -1351,7 +1351,7 @@ void FlushSendData()
 	ReleaseMutex( CommMutex );
 }
 
-int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
+int HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 {
 	int retVal;
 
@@ -1401,7 +1401,7 @@ int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 	return retVal;
 }
 
-int PASCAL HookCloseSocket( SOCKET sock )
+int HookCloseSocket( SOCKET sock )
 {
 	int retVal = (*(CLSFunc)OldCloseSocket)( sock );
 
@@ -1428,7 +1428,7 @@ int PASCAL HookCloseSocket( SOCKET sock )
 	return retVal;
 }
 
-int PASCAL HookSelect( int ndfs, fd_set *readfd, fd_set *writefd, fd_set *exceptfd, const struct timeval *timeout )
+int HookSelect( int ndfs, fd_set *readfd, fd_set *writefd, fd_set *exceptfd, const struct timeval *timeout )
 {
 	bool checkRecv = false;
 	bool checkErr = false;
