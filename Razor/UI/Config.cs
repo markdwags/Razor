@@ -163,6 +163,7 @@ namespace Assistant
 
             //OverheadFormat
             AddProperty("OverheadFormat", "[{msg}]");
+            AddProperty("OverheadStyle", 1);
 
             AddProperty("GoldPerDisplay", false);
 
@@ -185,8 +186,12 @@ namespace Assistant
             AddProperty("RangeCheckDoubleClick", false);
 
             AddProperty("ShowContainerLabels", false);
-            AddProperty("ContainerLabelFormat", "[{label}]");
-            AddProperty("ContainerLabelColor", 0x0480);
+            AddProperty("ContainerLabelFormat", "[{label}] ({name})");
+            AddProperty("ContainerLabelColor", 88);
+            AddProperty("ContainerLabelStyle", 1);
+
+            AddProperty("RealSeason", false);
+            AddProperty("Season", 5);
 
             Counter.Default();
             Filter.DisableAll();

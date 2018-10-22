@@ -38,6 +38,15 @@ namespace Assistant.UI
             }
 
             overheadFormat.Text = Config.GetString("OverheadFormat");
+
+            if (Config.GetInt("OverheadStyle") == 0)
+            {
+                asciiStyle.Checked = true;
+            }
+            else
+            {
+                unicodeStyle.Checked = true;
+            }
         }
 
         private void cliLocSearch_Click(object sender, EventArgs e)
@@ -106,6 +115,15 @@ namespace Assistant.UI
             }
 
             Config.SetProperty("OverheadFormat", overheadFormat.Text);
+
+            if (asciiStyle.Checked)
+            {
+                Config.SetProperty("OverheadStyle", 0);
+            }
+            else
+            {
+                Config.SetProperty("OverheadStyle", 1);
+            }
 
             foreach (ListViewItem item in cliLocOverheadView.Items)
             {  

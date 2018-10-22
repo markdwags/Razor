@@ -536,7 +536,14 @@ namespace Assistant
 
         internal void OverheadMessageFrom(int hue, string from, string text)
         {
-            ClientCommunication.SendToClient(new UnicodeMessage(Serial, m_Body, MessageType.Regular, hue, 3, Language.CliLocName, from, text));
+            if (Config.GetInt("OverheadStyle") == 0)
+            {
+                ClientCommunication.SendToClient(new AsciiMessage(Serial, m_Body, MessageType.Regular, hue, 3, Language.CliLocName, text));
+            }
+            else
+            {
+                ClientCommunication.SendToClient(new UnicodeMessage(Serial, m_Body, MessageType.Regular, hue, 3, Language.CliLocName, from, text));
+            }
         }
 
         internal void OverheadMessage(string text)

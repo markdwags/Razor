@@ -16,6 +16,8 @@ namespace Assistant.Core
             public int Hue { get; set; }
         }
 
+        public static Serial LastContainerLabelDisplayed;
+
         public static List<ContainerLabel> ContainerLabelList = new List<ContainerLabel>();
 
         public static void Save(XmlTextWriter xml)

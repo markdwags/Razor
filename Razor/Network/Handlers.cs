@@ -1065,6 +1065,9 @@ namespace Assistant
                                              */
 
             ClientCommunication.BeginCalibratePosition();
+
+            if (World.Player != null)
+                World.Player.SetSeason();
         }
 
         private static void MobileMoving(Packet p, PacketHandlerEventArgs args)
@@ -1853,7 +1856,7 @@ namespace Assistant
             Item.UpdateContainers();
         }
 
-        public static List<string> SysMessages = new List<string>();
+        public static List<string> SysMessages = new List<string>();        
 
         public static void HandleSpeech(Packet p, PacketHandlerEventArgs args, Serial ser, ushort body, MessageType type, ushort hue, ushort font, string lang, string name, string text)
         {
@@ -1943,22 +1946,37 @@ namespace Assistant
                     }
                 }
 
-                if (Config.GetBool("ShowContainerLabels"))
+                if (Config.GetBool("ShowContainerLabels") && ser.IsItem)
                 {
-                    if (ser != null && ser.IsItem)
+                     Item item = World.FindItem(ser);
+                    
+                    if (!item.IsContainer)
+                        return;
+
+                    foreach (ContainerLabels.ContainerLabel label in ContainerLabels.ContainerLabelList)
                     {
-                        Item item = World.FindItem(ser);
-
-                        if (!item.IsContainer || !text.Contains("items,"))
-                            return;
-
-                        foreach (ContainerLabels.ContainerLabel label in ContainerLabels.ContainerLabelList)
+                        // Check if its the serial match and if the text matches the name (since we override that for the label)
+                        if (Serial.Parse(label.Id) == ser && item.DisplayName.Equals(text))
                         {
-                            if (Serial.Parse(label.Id) == ser)
+                            string labelDisplay = $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{name}", text)}";
+
+                            //ContainerLabelStyle
+                            if (Config.GetInt("ContainerLabelStyle") == 0)
                             {
-                                ClientCommunication.SendToClient(new UnicodeMessage(ser, item.ItemID.Value, MessageType.Label, label.Hue, 3, Language.CliLocName, "", Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label)));
-                                break;
+                                ClientCommunication.SendToClient(new AsciiMessage(ser, item.ItemID.Value, MessageType.Label, label.Hue, 3, Language.CliLocName, labelDisplay));
+                                
                             }
+                            else
+                            {
+                                ClientCommunication.SendToClient(new UnicodeMessage(ser, item.ItemID.Value, MessageType.Label, label.Hue, 3, Language.CliLocName, "", labelDisplay));
+                            }
+
+                            // block the actual message from coming through since we have it in the label
+                            args.Block = true;
+
+                            ContainerLabels.LastContainerLabelDisplayed = ser;
+
+                            break;
                         }
                     }
                 }
@@ -2153,7 +2171,11 @@ namespace Assistant
         private static void ChangeSeason(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player != null)
-                World.Player.Season = p.ReadByte();
+            {
+                byte season = p.ReadByte();
+                World.Player.SetSeason(season);
+            }
+                
         }
 
         private static void ExtendedPacket(PacketReader p, PacketHandlerEventArgs args)

@@ -46,6 +46,15 @@ namespace Assistant.UI
 
             containerLabelFormat.Text = Config.GetString("ContainerLabelFormat");
             InitPreviewHue(lblContainerHue, "ContainerLabelColor");
+
+            if (Config.GetInt("ContainerLabelStyle") == 0)
+            {
+                asciiStyle.Checked = true;
+            }
+            else
+            {
+                unicodeStyle.Checked = true;
+            }
         }
 
         private void InitPreviewHue(Control ctrl, string cfg)
@@ -67,10 +76,18 @@ namespace Assistant.UI
             // Keep it simple, reset to default if it isn't what we like
             if (string.IsNullOrEmpty(containerLabelFormat.Text) || !containerLabelFormat.Text.Contains("{label}"))
             {
-                containerLabelFormat.Text = @"[{label}]";
+                containerLabelFormat.Text = @"[{label}] ({name})";
             }
 
             Config.SetProperty("ContainerLabelFormat", containerLabelFormat.Text);
+
+            if (asciiStyle.Checked)
+            {
+                Config.SetProperty("ContainerLabelStyle", 0);
+            } else
+            {
+                Config.SetProperty("ContainerLabelStyle", 1);
+            }
 
             foreach (ListViewItem item in containerView.Items)
             {
@@ -311,6 +328,16 @@ namespace Assistant.UI
             World.Player.SendMessage(MsgLevel.Force, "Opening container");
 
             ClientCommunication.SendToServer(new DoubleClick(container.Serial));
+        }
+
+        private void containerLabelFormat_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void asciiFormat_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

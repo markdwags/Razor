@@ -41,6 +41,9 @@
             this.setExHue = new System.Windows.Forms.Button();
             this.lblContainerHue = new System.Windows.Forms.Label();
             this.setColorHue = new System.Windows.Forms.Button();
+            this.asciiStyle = new System.Windows.Forms.RadioButton();
+            this.unicodeStyle = new System.Windows.Forms.RadioButton();
+            this.lblStyle = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cancelContainerLabels
@@ -76,10 +79,11 @@
             // 
             this.containerLabelFormat.Location = new System.Drawing.Point(97, 237);
             this.containerLabelFormat.Name = "containerLabelFormat";
-            this.containerLabelFormat.Size = new System.Drawing.Size(84, 23);
+            this.containerLabelFormat.Size = new System.Drawing.Size(132, 23);
             this.containerLabelFormat.TabIndex = 29;
-            this.containerLabelFormat.Text = "[{label}]";
+            this.containerLabelFormat.Text = "[{label}] ({name})";
             this.containerLabelFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.containerLabelFormat.TextChanged += new System.EventHandler(this.containerLabelFormat_TextChanged);
             // 
             // removeContainerLabel
             // 
@@ -115,7 +119,7 @@
             this.containerView.TabIndex = 22;
             this.containerView.UseCompatibleStateImageBehavior = false;
             this.containerView.View = System.Windows.Forms.View.Details;
-            this.containerView.MouseDown += new System.Windows.Forms.MouseEventHandler(OnMouseDownContainerView);
+            this.containerView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnMouseDownContainerView);
             // 
             // containerId
             // 
@@ -134,7 +138,7 @@
             // 
             // setExHue
             // 
-            this.setExHue.Location = new System.Drawing.Point(320, 237);
+            this.setExHue.Location = new System.Drawing.Point(182, 263);
             this.setExHue.Name = "setExHue";
             this.setExHue.Size = new System.Drawing.Size(47, 21);
             this.setExHue.TabIndex = 39;
@@ -143,9 +147,9 @@
             // 
             // lblContainerHue
             // 
-            this.lblContainerHue.Location = new System.Drawing.Point(198, 237);
+            this.lblContainerHue.Location = new System.Drawing.Point(12, 263);
             this.lblContainerHue.Name = "lblContainerHue";
-            this.lblContainerHue.Size = new System.Drawing.Size(169, 21);
+            this.lblContainerHue.Size = new System.Drawing.Size(217, 21);
             this.lblContainerHue.TabIndex = 38;
             this.lblContainerHue.Text = "Default Label Hue:";
             this.lblContainerHue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -160,11 +164,46 @@
             this.setColorHue.UseVisualStyleBackColor = true;
             this.setColorHue.Click += new System.EventHandler(this.setColorHue_Click);
             // 
+            // asciiStyle
+            // 
+            this.asciiStyle.AutoSize = true;
+            this.asciiStyle.Location = new System.Drawing.Point(309, 238);
+            this.asciiStyle.Name = "asciiStyle";
+            this.asciiStyle.Size = new System.Drawing.Size(53, 19);
+            this.asciiStyle.TabIndex = 41;
+            this.asciiStyle.TabStop = true;
+            this.asciiStyle.Text = "ASCII";
+            this.asciiStyle.UseVisualStyleBackColor = true;
+            this.asciiStyle.CheckedChanged += new System.EventHandler(this.asciiFormat_CheckedChanged);
+            // 
+            // unicodeStyle
+            // 
+            this.unicodeStyle.AutoSize = true;
+            this.unicodeStyle.Location = new System.Drawing.Point(309, 263);
+            this.unicodeStyle.Name = "unicodeStyle";
+            this.unicodeStyle.Size = new System.Drawing.Size(69, 19);
+            this.unicodeStyle.TabIndex = 42;
+            this.unicodeStyle.TabStop = true;
+            this.unicodeStyle.Text = "Unicode";
+            this.unicodeStyle.UseVisualStyleBackColor = true;
+            // 
+            // lblStyle
+            // 
+            this.lblStyle.AutoSize = true;
+            this.lblStyle.Location = new System.Drawing.Point(237, 240);
+            this.lblStyle.Name = "lblStyle";
+            this.lblStyle.Size = new System.Drawing.Size(66, 15);
+            this.lblStyle.TabIndex = 43;
+            this.lblStyle.Text = "Label Style:";
+            // 
             // ContainerLabels
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(509, 273);
+            this.ClientSize = new System.Drawing.Size(509, 294);
+            this.Controls.Add(this.lblStyle);
+            this.Controls.Add(this.unicodeStyle);
+            this.Controls.Add(this.asciiStyle);
             this.Controls.Add(this.setColorHue);
             this.Controls.Add(this.setExHue);
             this.Controls.Add(this.lblContainerHue);
@@ -200,5 +239,8 @@
         private System.Windows.Forms.Button setExHue;
         private System.Windows.Forms.Label lblContainerHue;
         private System.Windows.Forms.Button setColorHue;
+        private System.Windows.Forms.RadioButton asciiStyle;
+        private System.Windows.Forms.RadioButton unicodeStyle;
+        private System.Windows.Forms.Label lblStyle;
     }
 }

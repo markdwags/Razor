@@ -229,6 +229,14 @@ namespace Assistant
 			}
 		}
 
+        public string DisplayName
+        {
+            get
+            {
+                return Ultima.TileData.ItemTable[m_ItemID.Value].Name;
+            }
+        }
+
 		public Layer Layer
 		{
 			get
