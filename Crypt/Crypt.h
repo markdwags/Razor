@@ -148,7 +148,7 @@ DLLFUNCTION void DoFeatures(int realFeatures);
 DLLFUNCTION bool AllowBit(unsigned long bit);
 DLLFUNCTION void SetAllowDisconn(bool newVal);
 DLLFUNCTION BOOL HandleNegotiate(__int64 features);
-DLLFUNCTION void __stdcall OnAttach(void *params, int paramsLen);
+DLLFUNCTION void OnAttach(void *params, int paramsLen);
 DLLFUNCTION void SetServer(unsigned int addr, unsigned short port);
 DLLFUNCTION const char *GetUOVersion();
 

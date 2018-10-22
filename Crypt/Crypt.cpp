@@ -531,7 +531,7 @@ DLLFUNCTION BOOL HandleNegotiate( __int64 features )
 }
 
 SIZE *SizePtr = NULL;
-void __stdcall OnSetUOWindowSize( int width )
+void OnSetUOWindowSize( int width )
 {
 	if ( width != 800 && width != 600 ) // in case it actually the height for some reason
 	{
@@ -544,7 +544,7 @@ void __stdcall OnSetUOWindowSize( int width )
 	}
 }
 
-DLLFUNCTION void __stdcall OnAttach( void *params, int paramsLen )
+DLLFUNCTION void OnAttach( void *params, int paramsLen )
 {
 	int count = 0;
 	DWORD addr = 0, oldProt;
