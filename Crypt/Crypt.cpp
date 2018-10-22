@@ -83,7 +83,6 @@ int PASCAL HookSend( SOCKET, char *, int, int );
 int PASCAL HookConnect( SOCKET, const sockaddr *, int );
 int PASCAL HookCloseSocket( SOCKET );
 int PASCAL HookSelect( int, fd_set*, fd_set*, fd_set*, const struct timeval * );
-//HANDLE WINAPI CreateFileAHook( LPCTSTR, DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE );
 
 typedef int (PASCAL *NetIOFunc)(SOCKET, char *, int, int);
 typedef int (PASCAL *ConnFunc)(SOCKET, const sockaddr *, int);
@@ -476,17 +475,6 @@ DLLFUNCTION void DoFeatures( int realFeatures )
 
 	size = 8+c;
 
-	/*if ( !ServerEncrypted )
-	{
-		time_t now = time(NULL);
-
-		*((unsigned int*)&str[size]) = ~((unsigned int)now ^ 0x54494D45);
-		size += 4;
-
-		*((unsigned int*)&str[size]) = ~(ConnectedIP ^ (int)now);
-		size += 4;
-	}*/
-
 	// fill in size
 	pkt[1] = (BYTE)((size>>8)&0xFF);
 	pkt[2] = (BYTE)(size&0xFF);
@@ -578,10 +566,6 @@ DLLFUNCTION void OnAttach( void *params, int paramsLen )
 		mf.AddEntry("UO Version %s", 12);
 		mf.AddEntry("Multiple Instances Running", 26, 0x00500000);
 
-		//mf.AddEntry(ANIM_PATTERN_6, ANIM_PATTERN_LENGTH_6);
-
-		//mf.AddEntry(SPEEDHACK_PATTERN_1, SPEEDHACK_PATTERN_LENGTH_1);
-
 	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
 
 		const BYTE defaultCheatKey[] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
@@ -668,42 +652,6 @@ DLLFUNCTION void OnAttach( void *params, int paramsLen )
 		if (!addr)
 			CopyFailed = true;
 
-		/*
-		i = 0;
-		while ((addr = mf.GetAddress(ANIM_PATTERN_6, ANIM_PATTERN_LENGTH_6, i++)) != 0)
-		{
-			//char blah[256];
-			//sprintf_s(blah, 256, "%02X %02X %02X %02X", *(unsigned char*)(addr), *(unsigned char*)(addr + 1), *(unsigned char*)(addr - 14), *(unsigned char*)(addr - 5));
-			//MessageBox(NULL, blah, "ANIM_PATTERN_6", MB_OK);
-			if (memcmp((void*)(addr - 14), ANIM_PATTERN_4, ANIM_PATTERN_LENGTH_4) != 0)
-				continue;
-
-			//MessageBox(NULL, "Matched", "ANIM_PATTERN_6", MB_OK);
-			DWORD origAddr = addr - 30;
-			VirtualProtect((void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt);
-			memcpy((void*)(origAddr + 11), "\x33\xC0\x90\x90\x90", 5);
-			memcpy((void*)(origAddr + 35), "\x08", 1);
-			memcpy((void*)(origAddr + 38), "\x04", 1);
-			VirtualProtect((void*)origAddr, 128, oldProt, &oldProt);
-		}
-
-		i = 0;
-		while ((addr = mf.GetAddress(SPEEDHACK_PATTERN_1, SPEEDHACK_PATTERN_LENGTH_1, i++)) != 0)
-		{
-			//char blah[256];
-			//sprintf_s(blah, 256, "%02X %02X %02X %02X", *(unsigned char*)(addr+8), *(unsigned char*)(addr + 9), *(unsigned char*)(addr +11), *(unsigned char*)(addr +12));
-			//MessageBox(NULL, blah, "SPEEDHACK_PATTERN_1", MB_OK);
-			if (memcmp((void*)(addr + 8), SPEEDHACK_PATTERN_2, SPEEDHACK_PATTERN_LENGTH_2) != 0)
-				continue;
-
-			//MessageBox(NULL, "Matched", "SPEEDHACK_PATTERN_1", MB_OK);
-			DWORD origAddr = addr;
-			VirtualProtect((void*)origAddr, 128, PAGE_EXECUTE_READWRITE, &oldProt);
-			memcpy((void*)(origAddr + 10), "\x26", 1);
-			VirtualProtect((void*)origAddr, 128, oldProt, &oldProt);
-		}
-		*/
-
 		addr = mf.GetAddress(CRYPT_KEY_STR, CRYPT_KEY_LEN);
 		if (!addr)
 		{
@@ -754,29 +702,6 @@ DLLFUNCTION void OnAttach( void *params, int paramsLen )
 			LoginEncryption::SetKeys((const DWORD*)(addr + CRYPT_KEY_LEN), (const DWORD*)(addr + CRYPT_KEY_LEN + 6));
 		}
 
-		/*addr = mf.GetAddress( CHEATPROC_STR, CHEATPROC_LEN );
-		if ( addr )
-		{
-			addr = MemFinder::Find( "\x8A\x91", 2, addr, addr + 0x80 );
-			if ( addr )
-			{
-				addr += 2;
-
-				if ( !IsBadReadPtr( (void*)(*((DWORD*)addr)), 16 ) )
-					memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
-			}
-		}
-		else
-		{
-			addr = mf.GetAddress( "CHEAT %s", 8 );
-			if ( addr )
-			{
-				addr -= 16;
-				if ( !IsBadReadPtr( (void*)(*((DWORD*)addr)), 16 ) )
-					memcpy( pShared->CheatKey, (void*)(*((DWORD*)addr)), 16 );
-				ClientType = THREED;
-			}
-		}*/
 		BYTE cheatKey[16] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
 		memcpy(pShared->CheatKey, cheatKey, 16);
 
@@ -840,9 +765,6 @@ DLLFUNCTION void OnAttach( void *params, int paramsLen )
 		}
 
 		// Splash screen crap:
-		/*addr = mf.GetAddress( "\x00\x68\x88\x13\x00\x00\x56\xE8", 8 );
-		if ( addr )
-			MemoryPatch( addr+2, 0x00000005 ); // change 5000ms to 5ms*/
 		for (int i = 0; i < 16; i++)
 		{
 			addr = mf.GetAddress("\x68\x88\x13\x00\x00", 5, i);
@@ -900,8 +822,6 @@ DLLFUNCTION void OnAttach( void *params, int paramsLen )
 				}
 			}
 		}
-
-	//HookFunction( "kernel32.dll", "CreateFileA", 0, (unsigned long)CreateFileAHook, &OldCreateFileA, &CreateFileAAddress );
 }
 
 DLLFUNCTION void SetServer( unsigned int addr, unsigned short port )
@@ -1448,10 +1368,6 @@ int PASCAL HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 			useAddr.sin_port = htons( pShared->ServerPort );
 		}
 
-		/*char blah[256];
-		sprintf(blah, "%08X - %08X", useAddr.sin_addr.S_un.S_addr, pShared->ServerIP);
-		MessageBox(NULL, blah, "Connect To:", MB_OK);*/
-
 		retVal = (*(ConnFunc)OldConnect)( sock, (sockaddr*)&useAddr, sizeof(sockaddr_in) );
 
 		ConnectedIP = useAddr.sin_addr.S_un.S_addr;
@@ -1740,8 +1656,6 @@ bool PatchMemory( void )
 		HookFunction( "wsock32.dll", "select", 18, (unsigned long)HookSelect, &OldSelect, &SelectAddress ) &&
 		HookFunction( "wsock32.dll", "send", 19, (unsigned long)HookSend, &OldSend, &SendAddress )
 		;
-	//HookFunction( "wsock32.dll", "socket", 23, (unsigned long)HookSocket, &OldSocket, &SocketAddress)
-	//HookFunction( "wsock32.dll", "WSAAsyncSelect", 101, (unsigned long)HookAsyncSelect, &OldAsyncSelect, &AsyncSelectAddress );
 }
 
 void MemoryPatch( unsigned long Address, unsigned long value )
@@ -1822,18 +1736,6 @@ void FindList( DWORD val, unsigned short size )
 
 void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg )
 {
-	/*if ( SizePtr && ( SizePtr->cx != DesiredSize.cx || SizePtr->cy != DesiredSize.cy ) )// && ( SizePtr->cx != 640 || SizePtr->cy != 480 ) )
-	{
-		SizePtr->cx = DesiredSize.cx;
-		SizePtr->cy = DesiredSize.cy;
-
-		if ( RedrawGameEdge )
-		{
-			RedrawGameEdge();
-			RedrawUOScreen();
-		}
-	}*/
-
 	HWND hFore;
 
 	switch ( nMsg )
@@ -1929,21 +1831,6 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			break;
 		}
 		break;
-
-		/*case WM_SIZE:
-		if ( wParam == 2 && pMsg && pMsg->hwnd == hWnd  )
-		pMsg->lParam = lParam = MAKELONG( 800, 600 );
-		break;
-		case WM_GETMINMAXINFO:
-		if ( SetMaxSize )
-		{
-		((MINMAXINFO *)lParam)->ptMaxSize.x = 800;
-		((MINMAXINFO *)lParam)->ptMaxSize.y = 600;
-		((MINMAXINFO *)lParam)->ptMaxTrackSize.x = 800;
-		((MINMAXINFO *)lParam)->ptMaxTrackSize.y = 600;
-		}
-		break;
-		*/
 
 		// Macro stuff
 	case WM_SYSKEYDOWN:
