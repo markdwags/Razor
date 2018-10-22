@@ -39,12 +39,7 @@ namespace Assistant
                 ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", "Updating and resyncing with server"));
 
-                ClientCommunication.SendToClient(new MobileUpdate(World.Player));
                 ClientCommunication.SendToServer(new ResyncReq());
-                World.Player.Resync();
-
-                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                    Language.CliLocName, "System", "Done.."));
             }
         }
 
@@ -187,10 +182,6 @@ namespace Assistant
             }
 
             World.Player.SendMessage(MsgLevel.Force, LocString.CurLoc, World.Player.Position, mapStr);
-#if DEBUG
-            World.Player.SendMessage(MsgLevel.Debug, "Cal? {0} - CalcZ = {1} (Extern = {2})",
-                ClientCommunication.IsCalibrated(), World.Player.CalcZ, PlayerData.ExternalZ);
-#endif
         }
 
         private static void Ping(string[] param)

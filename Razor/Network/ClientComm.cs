@@ -64,8 +64,14 @@ namespace Assistant
 			SetMapHWnd = 23
 		}
 
+		public enum UONetMessageCopyData
+		{
+			Position = 1,
+		}
+
 		public const int WM_USER = 0x400;
 
+		public const int WM_COPYDATA = 0x4A;
 		public const int WM_UONETEVENT = WM_USER+1;
 		private const int WM_CUSTOMTITLE = WM_USER+2;
 
@@ -119,11 +125,7 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void SetDataPath(string path);
 		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern void CalibratePosition( int x, int y, int z );
-		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern bool IsCalibrated();
-		[DllImport( "Crypt.dll" )]
-		private static unsafe extern bool GetPosition( int *x, int *y, int *z );
+		internal static unsafe extern void CalibratePosition( uint x, uint y, uint z, byte dir );
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void BringToFront( IntPtr hWnd );
 		[DllImport( "Crypt.dll" )]
@@ -596,57 +598,6 @@ namespace Assistant
 			PostMessage( FindUOWindow(), WM_CUSTOMTITLE, IntPtr.Zero, IntPtr.Zero );
 		}
 
-		public static int GetZ( int x, int y, int z )
-		{
-			if ( IsCalibrated() )
-			{
-				if ( GetPosition( null, null, &z ) )
-					return z;
-			}
-
-			return Map.ZTop( World.Player.Map, x, y, z );
-		}
-
-		private static void CalibrateNow()
-		{
-			m_CalTimer = null;
-
-			if ( World.Player == null )
-				return;
-
-			PlayerData.ExternalZ = false;
-
-			Point3D pos = World.Player.Position;
-
-			if ( pos != Point3D.Zero && m_CalPos == pos )
-			{
-				CalibratePosition( pos.X, pos.Y, pos.Z );
-				System.Threading.Thread.Sleep( TimeSpan.FromSeconds( 0.1 ) );
-			}
-
-			m_CalPos = Point2D.Zero;
-
-			PlayerData.ExternalZ = true;
-		}
-
-		public static Timer m_CalTimer = null;
-		private static TimerCallback m_CalibrateNow = new TimerCallback( CalibrateNow );
-		private static Point2D m_CalPos = Point2D.Zero;
-
-		public static void BeginCalibratePosition()
-		{
-			if ( World.Player == null || IsCalibrated() )
-				return;
-
-			if ( m_CalTimer != null )
-				m_CalTimer.Stop();
-
-			m_CalPos = new Point2D( World.Player.Position );
-
-			m_CalTimer = Timer.DelayedCallback( TimeSpan.FromSeconds( 0.5 ), m_CalibrateNow );
-			m_CalTimer.Start();
-		}
-
 		private static void FatalInit( InitError error )
 		{
 			StringBuilder sb = new StringBuilder( Language.GetString( LocString.InitError ) );
@@ -673,9 +624,7 @@ namespace Assistant
 				m_ConnStart = DateTime.MinValue;
 			}
 
-			PlayerData.ExternalZ = false;
 			World.Player = null;
-			PlayerData.FastWalkKey = 0;
 			World.Items.Clear();
 			World.Mobiles.Clear();
 			Macros.MacroManager.Stop();
@@ -854,6 +803,46 @@ namespace Assistant
 			}
 
 			return retVal;
+		}
+
+		[StructLayout(LayoutKind.Sequential, Pack=1)]
+		private struct CopyData
+		{
+			public int dwData;
+			public int cbDAta;
+			public IntPtr lpData;
+		};
+
+		[StructLayout(LayoutKind.Sequential, Pack=1)]
+		private struct Position
+		{
+			public ushort x;
+			public ushort y;
+			public ushort z;
+		};
+
+		internal static unsafe bool OnCopyData(IntPtr wparam, IntPtr lparam)
+		{
+			CopyData copydata = (CopyData)Marshal.PtrToStructure(lparam, typeof(CopyData));
+
+			switch ((UONetMessageCopyData)copydata.dwData)
+			{
+				case UONetMessageCopyData.Position:
+					if (World.Player != null)
+					{
+						Position pos = (Position)Marshal.PtrToStructure(copydata.lpData, typeof(Position));
+						Point3D pt = new Point3D();
+
+						pt.X = pos.x;
+						pt.Y = pos.y;
+						pt.Z = pos.z;
+
+						World.Player.Position = pt;
+					}
+					return true;
+			}
+
+			return false;
 		}
 
 		internal static void SendToServer( Packet p )

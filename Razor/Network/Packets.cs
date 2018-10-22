@@ -664,42 +664,6 @@ namespace Assistant
 		}
 	}
 
-	public sealed class MoveRequest : Packet
-	{
-		public MoveRequest( byte seq, byte dir ) : base( 0x02, 7 )
-		{
-			Write( (byte)dir );
-			Write( (byte)seq );
-			//Write( (uint)Utility.Random( 0x7FFFFFFF ) ); // fastwalk key (unused)
-			if ( PlayerData.FastWalkKey < 5 )
-				Write( (uint)0xBAADF00D );
-			else
-				Write( (uint)0 );
-			PlayerData.FastWalkKey++;
-		}
-	}
-
-	public sealed class MoveReject : Packet
-	{
-		public MoveReject( byte seq, Mobile m ) : base( 0x21, 8 )
-		{
-			Write( (byte) seq );
-			Write( (short)m.Position.X );
-			Write( (short)m.Position.Y );
-			Write( (byte) m.Direction );
-			Write( (sbyte)m.Position.Z );
-		}
-	}
-
-	public sealed class MoveAcknowledge : Packet
-	{
-		public MoveAcknowledge( byte seq, byte noto ) : base( 0x22, 3 )
-		{
-			Write( (byte) seq );
-			Write( (byte) noto );
-		}
-	}
-
 	public sealed class GumpTextEntry
 	{
 		public GumpTextEntry( ushort id, string s )

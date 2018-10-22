@@ -141,21 +141,10 @@ namespace Assistant.Macros
 
             m_IfStatus.Clear();
 
-            bool resync = false;
             foreach (MacroAction a in m_Actions)
             {
                 if (a is ForAction)
                     ((ForAction)a).Count = 0;
-            }
-
-            if (resync && World.Player != null)
-            {
-                // resync if the macro walked for us
-                //ClientCommunication.SendToClient( new MoveReject( World.Player.WalkSequence, World.Player ) );
-                ClientCommunication.SendToClient(new MobileIncoming(World.Player));
-                ClientCommunication.SendToClient(new MobileIncoming(World.Player));
-                ClientCommunication.SendToServer(new ResyncReq());
-                World.Player.Resync();
             }
         }
 

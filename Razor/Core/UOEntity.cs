@@ -56,8 +56,9 @@ namespace Assistant
 			{ 
 				if ( value != m_Pos )
 				{
-					OnPositionChanging( value );
-					m_Pos = value; 
+					var oldPos = m_Pos;
+					m_Pos = value;
+					OnPositionChanging( oldPos );
 				}
 			}
 		}
@@ -86,7 +87,7 @@ namespace Assistant
 			m_Deleted = true;
 		}
 
-		public virtual void OnPositionChanging( Point3D newPos )
+		public virtual void OnPositionChanging( Point3D oldPos )
 		{
 		}
 

@@ -178,7 +178,15 @@ namespace Assistant
         public Direction Direction
         {
             get { return m_Direction; }
-            set { m_Direction = value; }
+            set
+            {
+                if (value != m_Direction)
+                {
+                    var oldDir = m_Direction;
+                    m_Direction = value;
+                    OnDirectionChanging(oldDir);
+                }
+            }
         }
 
         public bool Visible
@@ -472,12 +480,16 @@ namespace Assistant
             return null;
         }
 
-        public override void OnPositionChanging(Point3D newPos)
+        public override void OnPositionChanging(Point3D oldPos)
         {
             if (this != World.Player && Engine.MainWindow.MapWindow != null)
                 Engine.MainWindow.MapWindow.CheckLocalUpdate(this);
 
-            base.OnPositionChanging(newPos);
+            base.OnPositionChanging(oldPos);
+        }
+
+        public virtual void OnDirectionChanging(Direction oldDir)
+        {
         }
 
         public int GetPacketFlags()

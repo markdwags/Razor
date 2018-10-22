@@ -566,16 +566,6 @@ namespace Assistant
 			base.Remove();
 		}
 
-		/*public override void OnPositionChanging( Point3D newPos )
-		{
-			if ( IsMulti && this.Position != Point3D.Zero && newPos != Point3D.Zero && this.Position != newPos )
-			{
-				UOAssist.PostRemoveMulti( this );
-				UOAssist.PostAddMulti( m_ItemID, newPos );
-			}
-			base.OnPositionChanging ( newPos );
-		}*/
-
 		public List<Item> Contains{ get{ return m_Items; } }
 
 		// possibly 4 bit x/y - 16x16?

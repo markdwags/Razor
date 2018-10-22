@@ -1,6 +1,8 @@
 #pragma once
 #pragma pack(1)
 
+#include <stdint.h>
+
 #define DLL_VERSION "1.4.1"
 
 #define DLLFUNCTION __declspec(dllexport)
@@ -44,9 +46,6 @@ enum UONET_MESSAGE
 	NOTO_HUE = 13,
 	DLL_ERROR = 14,
 
-	CALIBRATE_POS = 16,
-	GET_POS = 17,
-
 	SETWNDSIZE = 19,
 
 	FINDDATA = 20,
@@ -54,6 +53,11 @@ enum UONET_MESSAGE
 	SMART_CPU = 21,
 	NEGOTIATE = 22,
 	SET_MAP_HWND = 23
+};
+
+enum class UONET_MESSAGE_COPYDATA
+{
+	POSITION = 1,
 };
 
 //#define SHARED_BUFF_SIZE 0x80000 // Client's buffers are 500k
@@ -64,6 +68,14 @@ struct Buffer
 	int Start;
 	BYTE Buff[SHARED_BUFF_SIZE];
 };
+
+#pragma pack(1)
+struct Position {
+	uint16_t x;
+	uint16_t y;
+	uint16_t z;
+};
+static_assert(sizeof(struct Position) == 6, "Incorrect size\n");
 
 struct SharedMemory
 {
@@ -79,7 +91,6 @@ struct SharedMemory
 	unsigned int TotalRecv;
 	unsigned short PacketTable[256];
 	char DataPath[256];
-	int Position[3];
 	bool AllowNegotiate;
 	unsigned char AuthBits[16];
 	bool Reserved0;
@@ -133,9 +144,7 @@ DLLFUNCTION HANDLE GetCommMutex();
 DLLFUNCTION unsigned int TotalIn();
 DLLFUNCTION unsigned int TotalOut();
 DLLFUNCTION HBITMAP CaptureScreen(BOOL full, const char *msg);
-DLLFUNCTION bool IsCalibrated();
-DLLFUNCTION void CalibratePosition(int x, int y, int z);
-DLLFUNCTION bool GetPosition(int *x, int *y, int *z);
+DLLFUNCTION void CalibratePosition(uint16_t x, uint16_t y, uint16_t z);
 DLLFUNCTION void BringToFront(HWND hWnd);
 DLLFUNCTION bool AllowBit(unsigned long bit);
 DLLFUNCTION BOOL HandleNegotiate(__int64 features);

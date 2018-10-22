@@ -3873,7 +3873,9 @@ namespace Assistant
         {
             if (msg.Msg == ClientCommunication.WM_UONETEVENT)
                 msg.Result = (IntPtr)(ClientCommunication.OnMessage(this, (uint)msg.WParam.ToInt32(), msg.LParam.ToInt32()) ? 1 : 0);
-            else if (Config.GetBool("EnableUOAAPI") && msg.Msg >= (int)UOAssist.UOAMessage.First && msg.Msg <= (int)UOAssist.UOAMessage.Last)
+            else if (msg.Msg == ClientCommunication.WM_COPYDATA)
+                msg.Result = (IntPtr)(ClientCommunication.OnCopyData(msg.WParam, msg.LParam) ? 1 : 0);
+            else if (Config.GetBool("EnableUOAAPI") &&  msg.Msg >= (int)UOAssist.UOAMessage.First && msg.Msg <= (int)UOAssist.UOAMessage.Last)
                 msg.Result = (IntPtr)UOAssist.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(), msg.LParam.ToInt32());
             else
                 base.WndProc(ref msg);
@@ -6247,14 +6249,14 @@ namespace Assistant
                 }
 
                 /*Macro m = new Macro(newMacro);
-	            MacroManager.Add(m);
-	            TreeNode newNode = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename));
-	            newNode.Tag = m;
-	            if (node == null)
-	                macroTree.Nodes.Add(newNode);
-	            else
-	                node.Nodes.Add(newNode);
-	            macroTree.SelectedNode = newNode;*/
+                MacroManager.Add(m);
+                TreeNode newNode = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename));
+                newNode.Tag = m;
+                if (node == null)
+                    macroTree.Nodes.Add(newNode);
+                else
+                    node.Nodes.Add(newNode);
+                macroTree.SelectedNode = newNode;*/
 
                 RedrawMacros();
             }

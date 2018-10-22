@@ -237,7 +237,7 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 
 	hUOAWnd = CreateWindow("UOASSIST-TP-MSG-WND", "UOASSIST-TP-MSG-WND", WS_OVERLAPPEDWINDOW, 0, 0, 50, 50, NULL, NULL, hInstance, 0);
 	if (hUOAWnd)
-	    ShowWindow(hUOAWnd, FALSE);
+		ShowWindow(hUOAWnd, FALSE);
 
 	ServerEncrypted = (flags&0x10) != 0;
 	ClientEncrypted = (flags&0x08) != 0;
@@ -290,9 +290,9 @@ DLLFUNCTION void Shutdown( bool close )
 
 	if (hUOAWnd && IsWindow(hUOAWnd))
 	{
-	    UnregisterClass("UOASSIST-TP-MSG-WND", hInstance);
-	    SendMessage(hUOAWnd, WM_CLOSE, 0, 0);
-	    hUOAWnd = NULL;
+		UnregisterClass("UOASSIST-TP-MSG-WND", hInstance);
+		SendMessage(hUOAWnd, WM_CLOSE, 0, 0);
+		hUOAWnd = NULL;
 	}
 
 	if ( hUOWindow && IsWindow( hUOWindow ) )
@@ -326,66 +326,119 @@ DLLFUNCTION unsigned int TotalIn()
 		return 0;
 }
 
-DLLFUNCTION bool IsCalibrated()
+DLLFUNCTION void CalibratePosition( uint16_t x, uint16_t y, uint16_t z )
 {
-	return pShared && pShared->Position[0] == 0xFFFFFFFF && pShared->Position[1] == 0xDEADBEEF && pShared->Position[2] != 0 && pShared->Position[2] != 0xFFFFFFFF;
+	Position pos;
+	COPYDATASTRUCT copydata;
+
+	pos.x = x;
+	pos.y = y;
+	pos.z = z;
+
+	copydata.dwData = (ULONG_PTR)UONET_MESSAGE_COPYDATA::POSITION;
+	copydata.cbData = sizeof(pos);
+	copydata.lpData = &pos;
+
+	SendMessage(hUOWindow, WM_COPYDATA, (WPARAM)hRazorWnd, (LPARAM)&copydata);
 }
 
-DLLFUNCTION void CalibratePosition( int x, int y, int z )
+/* These variables are used in the UO client process address space */
+
+/* 7.0.15.1 Client, Modified for Outlands
+   Located at 0x00A72BD8 */
+#pragma pack(1)
+struct PositionOutlands {
+	uint16_t x;
+	uint16_t y;
+	uint16_t z;
+};
+static_assert(sizeof(struct PositionOutlands) == 6, "Incorrect size\n");
+
+/* 5.0.8.3 Client, UO Renaissance
+   Located at address 0x007D7C58 */
+#pragma pack(1)
+struct PositionUOR {
+	uint32_t z;
+	uint32_t y;
+	uint32_t x;
+};
+static_assert(sizeof(struct PositionUOR) == 12, "Incorrect size\n");
+// UOR client this is at 0x007D7C60 (x is)
+
+// Fall back search. Not always reliable.
+#pragma pack(1)
+struct PositionGeneric {
+	uint32_t z;
+	uint32_t y;
+	uint32_t x;
+};
+static_assert(sizeof(struct PositionGeneric) == 12, "Incorrect size\n");
+
+Position g_TestPosition = {};
+Position g_LastPosition = {};
+void *g_ClientMem = nullptr;
+
+VOID CALLBACK CheckPosition(HWND hwnd, UINT Message, UINT TimerId, DWORD dwTime)
 {
-	pShared->Position[2] = x;
-	pShared->Position[1] = y;
-	pShared->Position[0] = z;
-
-	PostMessage( hUOWindow, WM_UONETEVENT, CALIBRATE_POS, 0 );
-}
-
-DLLFUNCTION bool GetPosition( int *x, int *y, int *z )
-{
-	if ( IsCalibrated() )
-	{
-		int buffer[3];
-		DWORD Read = 0;
-		HANDLE hProc = OpenProcess( PROCESS_VM_READ, FALSE, UOProcId );
-		if ( !hProc )
-			return false;
-
-		if ( ReadProcessMemory( hProc, (void*)pShared->Position[2], buffer, sizeof(int)*3, &Read ) )
-		{
-			if ( Read == sizeof(int)*3 )
+	if (g_ClientMem == nullptr) {
+		if (strncmp(pShared->UOVersion, "5.0.8.3", sizeof(pShared->UOVersion)) == 0) {
+			/* On UOR, we know exactly where the position is. */
+			g_ClientMem = (void *)(0x007D7C60);
+		}
+		else if (strncmp(pShared->UOVersion, "7.0.15.1", sizeof(pShared->UOVersion)) == 0) {
+			/* Similarly on Outlands, we know where the position is. */
+			g_ClientMem = (void *)(0x00A72BD8);
+		} else {
+			/* Scan the region of memory in the client known to hold the player's position */
+			for (uintptr_t addr = 0x00500000; addr < 0x00C00000; addr += 2)
 			{
-				if ( x )
-					*x = buffer[2];
-				if ( y )
-					*y = buffer[1];
-				if ( z )
-					*z = buffer[0];
-			}
-			else
-			{
-				Read = 0;
-			}
-		}
-		else
-		{
-			Read = 0;
-		}
+				if (IsBadReadPtr((void*)addr, sizeof(PositionGeneric))) {
+					break;
+				}
 
-		CloseHandle( hProc );
+				PositionGeneric* mem = (PositionGeneric*)addr;
 
-		if ( Read == sizeof(int)*3 && ( x == NULL || ( *x >= 0 && *x < 8192 ) ) && ( y == NULL || ( *y >= 0 && *y < 8192 ) ) )
-		{
-			return true;
-		}
-		else
-		{
-			memset( pShared->Position, 0, sizeof(int)*3 );
-			return false;
+				if (mem->x == g_TestPosition.x && mem->y == g_TestPosition.y && mem->z == g_TestPosition.z) {
+					g_ClientMem = mem;
+					break;
+				}
+			}
 		}
 	}
-	else
-	{
-		return false;
+
+	if (g_ClientMem != nullptr) {
+		Position pos;
+		if (strncmp(pShared->UOVersion, "5.0.8.3", sizeof(pShared->UOVersion)) == 0) {
+			PositionUOR *mem = (PositionUOR*)g_ClientMem;
+			pos.x = mem->x;
+			pos.y = mem->y;
+			pos.z = mem->z;
+		} else if (strncmp(pShared->UOVersion, "7.0.15.1", sizeof(pShared->UOVersion)) == 0) {
+			/* Similarly on Outlands, we know where the position is. */
+			PositionOutlands *mem = (PositionOutlands*)g_ClientMem;
+			pos.x = mem->x;
+			pos.y = mem->y;
+			pos.z = mem->z;
+		} else {
+			PositionGeneric *mem = (PositionGeneric*)g_ClientMem;
+			pos.x = mem->x;
+			pos.y = mem->y;
+			pos.z = mem->z;
+		}
+
+		if (pos.x != g_LastPosition.x || pos.y != g_LastPosition.y || pos.z != g_LastPosition.z) {
+			/* Inform Razor of a position change */
+
+			COPYDATASTRUCT copydata;
+
+			copydata.dwData = (ULONG_PTR)UONET_MESSAGE_COPYDATA::POSITION;
+			copydata.cbData = sizeof(pos);
+			copydata.lpData = &pos;
+
+			SendMessage(hRazorWnd, WM_COPYDATA, (WPARAM)hUOWindow, (LPARAM)&copydata);
+		}
+
+		g_LastPosition = pos;
 	}
 }
 
@@ -1302,7 +1355,6 @@ int HookCloseSocket( SOCKET sock )
 
 		WaitForSingleObject( CommMutex, INFINITE );
 		pShared->OutRecv.Length = pShared->InRecv.Length = pShared->OutSend.Length = pShared->InSend.Length = 0;
-		memset( pShared->Position, 0, 4*3 );
 		pShared->TotalSend = pShared->TotalRecv = 0;
 		pShared->ForceDisconn = false;
 		ReleaseMutex( CommMutex );
@@ -1677,23 +1729,6 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		case NOTO_HUE:
 			SetCustomNotoHue( (int)lParam );
 			break;
-		case CALIBRATE_POS:
-			WaitForSingleObject( CommMutex, INFINITE );
-			if ( pShared->Position[0] >= -255 && pShared->Position[0] <= 255 && pShared->Position[1] >= 0 && pShared->Position[1] <= 8192 && pShared->Position[2] >= 0 && pShared->Position[2] <= 8192 )
-			{
-				pShared->Position[2] = (int)MemFinder::Find( pShared->Position, sizeof(int)*3, 0x00500000, 0x00C00000 );
-				if ( pShared->Position[2] )
-				{
-					pShared->Position[0] = 0xFFFFFFFF;
-					pShared->Position[1] = 0xDEADBEEF;
-				}
-				else
-				{
-					memset( pShared->Position, 0, sizeof(int)*3 );
-				}
-			}
-			ReleaseMutex( CommMutex );
-			break;
 
 		case SETWNDSIZE:
 			DesiredSize.cx = LOWORD(lParam);
@@ -1718,6 +1753,22 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			break;
 		}
 		break;
+
+	case WM_COPYDATA: {
+		COPYDATASTRUCT *copydata = (COPYDATASTRUCT *)lParam;
+
+		switch ((UONET_MESSAGE_COPYDATA)copydata->dwData) {
+		case UONET_MESSAGE_COPYDATA::POSITION:
+			g_TestPosition = *(Position *)copydata->lpData;
+
+			/* Start (or restart) a timer that will keep searching client memory for the given position.
+			 * Once found, it will broadcast updates to the position any time it changes. */
+			SetTimer(hUOWindow, (UINT_PTR)0xAA, 50, CheckPosition);
+			break;
+
+		}
+		break;
+	}
 
 		// Macro stuff
 	case WM_SYSKEYDOWN:
@@ -1816,9 +1867,9 @@ LRESULT CALLBACK WndProcRetHookFunc( int Code, WPARAM Flag, LPARAM pMsg )
 
 LRESULT CALLBACK UOAWndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
-    if (nMsg >= WM_USER + 200 && nMsg < WM_USER + 315)
+	if (nMsg >= WM_USER + 200 && nMsg < WM_USER + 315)
 	   return SendMessage(hRazorWnd, nMsg, wParam, lParam);
-    else
+	else
 	   return DefWindowProc(hWnd, nMsg, wParam, lParam);
 }
 
