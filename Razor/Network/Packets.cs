@@ -1328,7 +1328,20 @@ namespace Assistant
 		}
 	}
 
-	public sealed class RazorNegotiateResponse : Packet
+    public sealed class PlaySound : Packet
+    {
+        public PlaySound(int sound) : base(0x54, 12)
+        {
+            Write((byte)0x01); //(0x00=quiet, repeating, 0x01=single normally played sound effect)
+            Write((ushort)sound);
+            Write((ushort)0);
+            Write((ushort)World.Player.Position.X);
+            Write((ushort)World.Player.Position.Y);
+            Write((ushort)World.Player.Position.Z);
+        }
+    }
+
+    public sealed class RazorNegotiateResponse : Packet
 	{
 		public RazorNegotiateResponse() : base( 0xF0 )
 		{
