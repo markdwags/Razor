@@ -827,7 +827,7 @@ namespace Assistant
 
         public static string GetInstallDirectory(string name)
         {
-            string dir = Directory.GetCurrentDirectory();
+            string dir = AppDomain.CurrentDomain.BaseDirectory;
 
             if (name.Length > 0)
             {
