@@ -377,6 +377,11 @@ namespace Assistant
 
         private void OnTargetBag(bool location, Serial serial, Point3D loc, ushort gfx)
         {
+            if (Config.GetBool("AlwaysOnTop"))
+            {
+                Engine.MainWindow.ShowMe();
+            }
+
             Engine.MainWindow.ShowMe();
             if (!location && serial.IsItem)
             {
@@ -392,7 +397,11 @@ namespace Assistant
                             toAdd.ObjPropList.Add(Language.GetString(LocString.UseOnce));
                             toAdd.OPLChanged();
                             m_Items.Add(toAdd);
-                            m_SubList.Items.Add(toAdd);
+
+                            if (m_SubList != null)
+                            {
+                                m_SubList.Items.Add(toAdd);
+                            }
                         }
                     }
 
