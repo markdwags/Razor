@@ -7559,11 +7559,13 @@ namespace Assistant
                     Directory.CreateDirectory($"{Config.GetUserDirectory()}\\Backup");
                 }
 
-                string backupTime = $"{DateTime.Now:yy-MM-dd-HH-mm-ss}";
+                string backupTime = $"{DateTime.Now:yyMMddHHmmss}";
 
                 Directory.CreateDirectory($"{Config.GetUserDirectory()}\\Backup\\{backupTime}");
 
                 // Backup the macros
+                Directory.CreateDirectory($"{Config.GetUserDirectory()}\\Backup\\{backupTime}\\Macros");
+
                 foreach (string dirPath in Directory.GetDirectories($"{Config.GetUserDirectory()}\\Macros", "*",
                     SearchOption.AllDirectories))
                 {
@@ -8105,10 +8107,6 @@ namespace Assistant
             if (seasonList.SelectedIndex < 5)
             {
                 ClientCommunication.ForceSendToClient(new SeasonChange(seasonList.SelectedIndex, true));
-            }
-            else
-            {
-                MessageBox.Show(this, "Season will reset when you log out and back in.", "Default Season", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }
