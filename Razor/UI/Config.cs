@@ -306,6 +306,7 @@ namespace Assistant
             PasswordMemory.Load(root["passwords"]);
             OverheadMessages.Load(root["overheadmessages"]);
             ContainerLabels.Load(root["containerlabels"]);
+            ContainerLabels.Load(root["absolutetargets"]);
 
             GoldPerHourTimer.Stop();
 

@@ -208,6 +208,7 @@
     <Compile Include="Core\ItemID.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Macros\AbsoluteTargets.cs" />
     <Compile Include="Macros\AbsoluteTarget.cs" />
     <Compile Include="Macros\Actions.cs">
       <SubType>Component</SubType>
