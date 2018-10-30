@@ -10,7 +10,6 @@ namespace Assistant.Macros
     public class MacroManager
     {
         private static List<Macro> m_MacroList;
-        private static List<AbsoluteTarget> m_AbsoluteTargetList;
         private static Macro m_Current, m_PrevPlay;
         private static bool m_Paused;
         private static MacroTimer m_Timer;
@@ -28,7 +27,6 @@ namespace Assistant.Macros
         static MacroManager()
         {
             m_MacroList = new List<Macro>();
-            m_AbsoluteTargetList = new List<AbsoluteTarget>();
             m_Timer = new MacroTimer();
         }
         /// <summary>
@@ -42,64 +40,9 @@ namespace Assistant.Macros
             {
                 macro.Save();
             }
-
-            if (m_AbsoluteTargetList.Count > 0)
-            {
-                using (StreamWriter writer =
-                    new StreamWriter($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst"))
-                {
-                    foreach (AbsoluteTarget at in m_AbsoluteTargetList)
-                    {
-                        try
-                        {
-                            writer.WriteLine(at.Serialize());
-                        }
-                        catch
-                        {
-                        }
-                    }
-                }
-            }
-            else
-            {
-                // Empty list, just make a new empty file
-                File.Create($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst");
-            }
-        }
-
-        public static void LoadAbsoluteTargets(ListBox list)
-        {
-            if (!File.Exists($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst"))
-            {
-                File.Create($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst");
-            }
-
-            string[] targets = { };
-
-            if (new FileInfo($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst").Length > 0)
-            {
-                targets = File.ReadAllLines($"{Config.GetUserDirectory("Macros")}\\AbsoluteTargets.lst");
-            }
-
-            //testvar|test|0|0|824181|1371|1921|0|400
-
-            m_AbsoluteTargetList.Clear();
-
-            foreach (string target in targets)
-            {
-                AbsoluteTarget t = new AbsoluteTarget(target.Split('|'));
-
-                if (t.TargetVariableProfile.ToLower().Equals(Config.CurrentProfile.Name.ToLower()))
-                {
-                    list.Items.Add(t.ToString());
-                }
-
-                m_AbsoluteTargetList.Add(t);
-            }
         }
 
         public static List<Macro> List { get{ return m_MacroList; } }
-        public static List<AbsoluteTarget> AbsoluteTargetList { get { return m_AbsoluteTargetList; } }
         public static bool Recording{ get{ return m_Current != null && m_Current.Recording; } }
 		public static bool Playing{ get{ return m_Current != null && m_Current.Playing && m_Timer != null && m_Timer.Running; } }
         public static bool StepThrough { get { return m_Current != null && m_Current.StepThrough && m_Current.Playing; } }
@@ -301,7 +244,12 @@ namespace Assistant.Macros
         {
             list.BeginUpdate();
             list.Items.Clear();
-            LoadAbsoluteTargets(list);
+
+            foreach (AbsoluteTargets.AbsoluteTarget at in AbsoluteTargets.AbsoluteTargetList)
+            {
+                list.Items.Add($"${at.TargetVariableName} ({at.TargetInfo.Serial})");
+            }
+
             list.EndUpdate();
             list.Refresh();
             list.Update();

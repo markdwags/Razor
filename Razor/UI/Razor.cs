@@ -7635,11 +7635,18 @@ namespace Assistant
             {
                 string name = InputBox.GetString();
 
-                AbsoluteTarget at = new AbsoluteTarget(name, Config.CurrentProfile.Name, t);
-                MacroManager.AbsoluteTargetList.Add(at);
+                foreach (AbsoluteTargets.AbsoluteTarget at in AbsoluteTargets.AbsoluteTargetList)
+                {
+                    if (at.TargetVariableName.ToLower().Equals(name.ToLower()))
+                    {
+                        MessageBox.Show(this, "Pick a unique Absolute Target name and try again", "New Absolute Target", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+
+                AbsoluteTargets.AbsoluteTargetList.Add(new AbsoluteTargets.AbsoluteTarget(name, t));
 
                 // Save and reload the macros and vars
-                MacroManager.Save();
                 MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
             }
 
@@ -7682,29 +7689,10 @@ namespace Assistant
                 return;
             }
 
-            string varName = absoluteTargets.Items[absoluteTargets.SelectedIndex].ToString().Split(' ')[0].Substring(1);
-            int varIndex = -1;
+            m.Actions.Insert(a + 1,
+                new AbsoluteTargetVariableAction(AbsoluteTargets.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetVariableName));
 
-            for (int i = 0; i < MacroManager.AbsoluteTargetList.Count; i++)
-            {
-                if (MacroManager.AbsoluteTargetList[i].TargetVariableProfile.Equals(Config.CurrentProfile.Name) &&
-                    MacroManager.AbsoluteTargetList[i].TargetVariableName.Equals(varName))
-                {
-                    varIndex = i;
-                    break;
-                }
-            }
-
-            if (varIndex != -1)
-            {
-                m.Actions.Insert(a + 1,
-                new AbsoluteTargetVariableAction(
-                    MacroManager.AbsoluteTargetList[varIndex].TargetVariableName,
-                    MacroManager.AbsoluteTargetList[varIndex].TargetVariableProfile,
-                    MacroManager.AbsoluteTargetList[varIndex].TargetInfo));
-
-                RedrawActionList(m);
-            }
+            RedrawActionList(m);
         }
 
         private void retargetAbsoluteTarget_Click(object sender, EventArgs e)
@@ -7731,29 +7719,12 @@ namespace Assistant
                 Z = pt.Z
             };
 
-            string varName = absoluteTargets.Items[absoluteTargets.SelectedIndex].ToString().Split(' ')[0].Substring(1);
-            int varIndex = -1;
+            AbsoluteTargets.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo = t;
 
-            for (int i = 0; i < MacroManager.AbsoluteTargetList.Count; i++)
-            {
-                if (MacroManager.AbsoluteTargetList[i].TargetVariableProfile.Equals(Config.CurrentProfile.Name) &&
-                    MacroManager.AbsoluteTargetList[i].TargetVariableName.Equals(varName))
-                {
-                    varIndex = i;
-                    break;
-                }
-            }
+            // Save and reload the macros and vars
+            MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
 
-            if (varIndex != -1)
-            {
-                MacroManager.AbsoluteTargetList[absoluteTargets.SelectedIndex].TargetInfo = t;
-
-                // Save and reload the macros and vars
-                MacroManager.Save();
-                MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
-
-                Engine.MainWindow.ShowMe();
-            }
+            Engine.MainWindow.ShowMe();
         }
 
         private void removeAbsoluteTarget_Click(object sender, EventArgs e)
@@ -7764,27 +7735,11 @@ namespace Assistant
             if (absoluteTargets.SelectedIndex < 0)
                 return;
 
-            string varName = absoluteTargets.Items[absoluteTargets.SelectedIndex].ToString().Split(' ')[0].Substring(1);
-            int varIndex = -1;
+            AbsoluteTargets.AbsoluteTargetList.RemoveAt(absoluteTargets.SelectedIndex);
 
-            for (int i = 0; i < MacroManager.AbsoluteTargetList.Count; i++)
-            {
-                if (MacroManager.AbsoluteTargetList[i].TargetVariableProfile.Equals(Config.CurrentProfile.Name) &&
-                    MacroManager.AbsoluteTargetList[i].TargetVariableName.Equals(varName))
-                {
-                    varIndex = i;
-                    break;
-                }
-            }
-
-            if (varIndex != -1)
-            {
-                MacroManager.AbsoluteTargetList.RemoveAt(varIndex);
-
-                // Save and reload the macros and vars
-                MacroManager.Save();
-                MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
-            }
+            // Save and reload the macros and vars
+            MacroManager.Save();
+            MacroManager.DisplayAbsoluteTargetsTo(absoluteTargets);
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

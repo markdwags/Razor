@@ -14,16 +14,14 @@ namespace Assistant.Macros
 
         public class AbsoluteTarget
         {
-            public byte Type { get; set; }
-            public byte Flags { get; set; }
-            public uint Serial { get; set; }
-            public ushort X { get; set; }
-            public ushort Y { get; set; }
-            public ushort Z { get; set; }
-            public ushort Gfx { get; set; }
-            public string TargetVariableName { get; set; }    
-
             public TargetInfo TargetInfo { get; set; }
+            public string TargetVariableName { get; set; }
+
+            public AbsoluteTarget(string targetVarName, TargetInfo t)
+            {
+                TargetInfo = t;
+                TargetVariableName = targetVarName;
+            }
         }
 
         public static List<AbsoluteTarget> AbsoluteTargetList = new List<AbsoluteTarget>();
@@ -47,16 +45,22 @@ namespace Assistant.Macros
 
         public static void Save(XmlTextWriter xml)
         {
-            foreach (var target in AbsoluteTargetList)
+            //object[] serialString = new object[]
+            //{
+            //    TargetVariableName, TargetVariableProfile, TargetInfo.Type, TargetInfo.Flags, TargetInfo.Serial.Value, TargetInfo.X, TargetInfo.Y,
+            //    TargetInfo.Z, TargetInfo.Gfx
+            //};
+
+            foreach (AbsoluteTarget target in AbsoluteTargetList)
             {
                 xml.WriteStartElement("absolutetarget");
-                xml.WriteAttributeString("type", target.Type.ToString());
-                xml.WriteAttributeString("flags", target.Flags.ToString());
-                xml.WriteAttributeString("serial", target.Serial.ToString());
-                xml.WriteAttributeString("x", target.X.ToString());
-                xml.WriteAttributeString("y", target.Y.ToString());
-                xml.WriteAttributeString("z", target.X.ToString());
-                xml.WriteAttributeString("gfx", target.Gfx.ToString());
+                xml.WriteAttributeString("type", target.TargetInfo.Type.ToString());
+                xml.WriteAttributeString("flags", target.TargetInfo.Flags.ToString());
+                xml.WriteAttributeString("serial", target.TargetInfo.Serial.ToString());
+                xml.WriteAttributeString("x", target.TargetInfo.X.ToString());
+                xml.WriteAttributeString("y", target.TargetInfo.Y.ToString());
+                xml.WriteAttributeString("z", target.TargetInfo.X.ToString());
+                xml.WriteAttributeString("gfx", target.TargetInfo.Gfx.ToString());
                 xml.WriteAttributeString("name", target.TargetVariableName);
                 xml.WriteEndElement();
             }
@@ -71,22 +75,22 @@ namespace Assistant.Macros
 
                 foreach (XmlElement el in node.GetElementsByTagName("absolutetarget"))
                 {
-                    AbsoluteTarget absoluteTarget = new AbsoluteTarget
+                    TargetInfo target = new TargetInfo
                     {
                         Type = Convert.ToByte(el.GetAttribute("type")),
                         Flags = Convert.ToByte(el.GetAttribute("flags")),
-                        Serial = Convert.ToUInt32(el.GetAttribute("serial")),
+                        Serial = Convert.ToUInt32(Serial.Parse(el.GetAttribute("serial"))),
                         X = Convert.ToUInt16(el.GetAttribute("x")),
                         Y = Convert.ToUInt16(el.GetAttribute("y")),
                         Z = Convert.ToUInt16(el.GetAttribute("z")),
-                        Gfx = Convert.ToUInt16(el.GetAttribute("gfx")),
-                        TargetVariableName = el.GetAttribute("name")
+                        Gfx = Convert.ToUInt16(el.GetAttribute("gfx"))
                     };
 
+                    AbsoluteTarget absoluteTarget = new AbsoluteTarget(el.GetAttribute("name"), target);
                     AbsoluteTargetList.Add(absoluteTarget);
                 }
             }
-            catch
+            catch (Exception ex)
             {
             }
         }

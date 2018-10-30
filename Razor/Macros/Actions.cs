@@ -909,57 +909,38 @@ namespace Assistant.Macros
     /// </summary>
     public class AbsoluteTargetVariableAction : MacroAction
     {
-        private readonly TargetInfo _target;
+        private TargetInfo _target;
         private readonly string _variableName;
-        private readonly string _profileName;
 
-        public AbsoluteTargetVariableAction(string name, string profile, TargetInfo info)
+        public AbsoluteTargetVariableAction(string name)
         {
-            _target = new TargetInfo
-            {
-                Type = info.Type,
-                Flags = info.Flags,
-                Serial = info.Serial,
-                X = info.X,
-                Y = info.Y,
-                Z = info.Z,
-                Gfx = info.Gfx
-            };
-
             _variableName = name;
-            _profileName = profile;
-        }
-
-        public AbsoluteTargetVariableAction(string[] args)
-        {
-            _variableName = args[1];
-            _profileName = Config.CurrentProfile.Name;
-
-            foreach (AbsoluteTarget target in MacroManager.AbsoluteTargetList)
-            {
-                if (target.TargetVariableName.Equals(_variableName) &&
-                    target.TargetVariableProfile.Equals(_profileName))
-                {
-                    _target = new TargetInfo
-                    {
-                        Type = target.TargetInfo.Type,
-                        Flags = target.TargetInfo.Flags,
-                        Serial = target.TargetInfo.Serial,
-                        X = target.TargetInfo.X,
-                        Y = target.TargetInfo.Y,
-                        Z = target.TargetInfo.Z,
-                        Gfx = target.TargetInfo.Gfx
-                    };
-
-                    break;
-                }
-            }
         }
 
         public override bool Perform()
         {
-            Targeting.Target(_target);
-            return true;
+            _target = null;
+
+            foreach (AbsoluteTargets.AbsoluteTarget at in AbsoluteTargets.AbsoluteTargetList)
+            {
+                if (at.TargetVariableName.Equals(_variableName))
+                {
+                    _target = at.TargetInfo;
+                    break;
+                }
+            }
+
+            if (_target != null)
+            {
+                Targeting.Target(_target);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+            
         }
 
         public override string Serialize()
