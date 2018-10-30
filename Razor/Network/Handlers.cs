@@ -1983,7 +1983,7 @@ namespace Assistant
 
                 if ((type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper || type == MessageType.Yell) && ser.IsMobile && ser != World.Player.Serial)
                 {
-                    if (IgnoreAgent.IsEnabled() && IgnoreAgent.IsIgnored(ser)) {
+                    if (IgnoreAgent.IsIgnored(ser)) {
                         args.Block = true;
                         return;
                     }
