@@ -1,12 +1,23 @@
 #include "stdafx.h"
 #include "MemFinder.h"
 
-DWORD MemFinder::Find( const void *data, int length, DWORD addressHint, DWORD addressMax )
+DWORD MemFinder::Find(const void *data, int length, DWORD addressHint, DWORD addressMax)
 {
-	for( DWORD addr = addressHint; addr < addressMax && !IsBadReadPtr( (void*)addr, length ) ; addr++ )
+	for (DWORD addr = addressHint; addr < addressMax; addr++)
 	{
-		if ( memcmp( (const void*)addr, data, length ) == 0 )
-			return addr;
+		if (IsBadReadPtr((void*)addr, length)) {
+			continue;
+		}
+
+		__try
+		{
+			if (memcmp((const void*)addr, data, length) == 0)
+				return addr;
+		}
+		__except (EXCEPTION_ACCESS_VIOLATION)
+		{
+			continue;
+		}
 	}
 
 	return 0;
@@ -24,46 +35,46 @@ MemFinder::~MemFinder()
 
 void MemFinder::Clear()
 {
-	_Executed = false; 
+	_Executed = false;
 	_StartPos = 0xFFFFFFFF;
 
-	for(unsigned int i=0;i<_Entries.size();i++)
+	for (unsigned int i = 0; i<_Entries.size(); i++)
 		delete[] _Entries[i].Data;
 
 	_Entries.clear();
 }
 
 
-void MemFinder::AddEntry( const void *data, int length, unsigned int maxResults, DWORD hint )
+void MemFinder::AddEntry(const void *data, int length, unsigned int maxResults, DWORD hint)
 {
 	Entry ent;
 
 	ent.Data = new char[length];
-	memcpy( ent.Data, data, length );
+	memcpy(ent.Data, data, length);
 
 	ent.Length = length;
 	ent.MaxResults = maxResults;
 	ent.PositionHint = hint;
 
-	if ( hint < _StartPos )
+	if (hint < _StartPos)
 		_StartPos = hint;
 
-	_Entries.push_back( ent );
+	_Entries.push_back(ent);
 }
 
-DWORD MemFinder::GetAddress( const void *data, int length, unsigned int idx )
+DWORD MemFinder::GetAddress(const void *data, int length, unsigned int idx)
 {
-	if ( !_Executed )
+	if (!_Executed)
 		return 0;
 
-	for(unsigned int i=0;i<_Entries.size();i++)
+	for (unsigned int i = 0; i < _Entries.size(); i++)
 	{
-		if ( _Entries[i].Length != length )
+		if (_Entries[i].Length != length)
 			continue;
 
-		if ( !memcmp( data, _Entries[i].Data, length ) )
+		if (!memcmp(data, _Entries[i].Data, length))
 		{
-			if ( idx < _Entries[i].Results.size() )
+			if (idx < _Entries[i].Results.size())
 				return _Entries[i].Results[idx];
 			else
 				return 0;
@@ -76,26 +87,39 @@ DWORD MemFinder::GetAddress( const void *data, int length, unsigned int idx )
 void MemFinder::Execute()
 {
 	bool allDone = false;
-	for( DWORD pos = _StartPos; pos < 0x02000000 && !allDone; pos++ )
+	for (DWORD pos = _StartPos; pos < 0x02000000 && !allDone; pos++)
 	{
-		allDone = true;
-		for(unsigned int i=0;i<_Entries.size();i++)
+		__try
 		{
-			Entry &e = _Entries[i];
+			allDone = true;
+			for (unsigned int i = 0; i < _Entries.size(); i++)
+			{
+				Entry &e = _Entries[i];
 
-			if ( e.Results.size() >= e.MaxResults )
-				continue;
+				if (e.Results.size() >= e.MaxResults) {
+					/* Already found this entry */
+					continue;
+				}
 
-			if ( IsBadReadPtr( (void*)pos, e.Length ) )
-				continue;
+				if (IsBadReadPtr((void*)pos, e.Length)) {
+					continue;
+				}
 
-			allDone = false;
+				allDone = false;
 
-			if ( e.PositionHint > pos )
-				continue;
+				if (e.PositionHint > pos) {
+					/* This entry always appears in memory after this position */
+					continue;
+				}
 
-			if ( !memcmp( (void*)pos, e.Data, e.Length ) )
-				e.Results.push_back( pos );
+				if (!memcmp((void*)pos, e.Data, e.Length)) {
+					e.Results.push_back(pos);
+				}
+			}
+		}
+		__except (EXCEPTION_ACCESS_VIOLATION)
+		{
+			break;
 		}
 	}
 
