@@ -76,7 +76,7 @@ namespace Assistant.UI
             // Keep it simple, reset to default if it isn't what we like
             if (string.IsNullOrEmpty(containerLabelFormat.Text) || !containerLabelFormat.Text.Contains("{label}"))
             {
-                containerLabelFormat.Text = @"[{label}] ({name})";
+                containerLabelFormat.Text = @"[{label}] ({type})";
             }
 
             Config.SetProperty("ContainerLabelFormat", containerLabelFormat.Text);

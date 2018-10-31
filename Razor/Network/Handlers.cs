@@ -1950,7 +1950,7 @@ namespace Assistant
                         // Check if its the serial match and if the text matches the name (since we override that for the label)
                         if (Serial.Parse(label.Id) == ser && item.DisplayName.Equals(text))
                         {
-                            string labelDisplay = $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{name}", text)}";
+                            string labelDisplay = $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{type}", text)}";
 
                             //ContainerLabelStyle
                             if (Config.GetInt("ContainerLabelStyle") == 0)

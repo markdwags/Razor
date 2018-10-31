@@ -187,7 +187,7 @@ namespace Assistant
             AddProperty("RangeCheckDoubleClick", false);
 
             AddProperty("ShowContainerLabels", false);
-            AddProperty("ContainerLabelFormat", "[{label}] ({name})");
+            AddProperty("ContainerLabelFormat", "[{label}] ({type})");
             AddProperty("ContainerLabelColor", 88);
             AddProperty("ContainerLabelStyle", 1);
 

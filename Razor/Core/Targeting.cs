@@ -1155,7 +1155,7 @@ namespace Assistant
 
             if (IgnoreAgent.IsIgnored(m.Serial))
             {
-                m.OverheadMessage(Config.GetInt("SysColor"), String.Format("[Ignored]", Language.GetString(LocString.LastTarget)));
+                m.OverheadMessage(Config.GetInt("SysColor"), "[Ignored]");
             }
 
             if (Config.GetBool("SmartLastTarget") && ClientCommunication.AllowBit(FeatureBit.SmartLT))
