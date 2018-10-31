@@ -1863,14 +1863,6 @@ namespace Assistant
             if (World.Player == null)
                 return;
 
-            if (!ser.IsValid || ser == World.Player.Serial || ser.IsItem)
-            {
-                SysMessages.Add(text);
-
-                if (SysMessages.Count >= 25)
-                    SysMessages.RemoveRange(0, 10);
-            }
-
             if (type == MessageType.Spell)
             {
                 Spell s = Spell.Get(text.Trim());
@@ -1993,6 +1985,14 @@ namespace Assistant
                         p.Seek(10, SeekOrigin.Begin);
                         p.Write((ushort)Config.GetInt("SpeechHue"));
                     }
+                }
+
+                if (!ser.IsValid || ser == World.Player.Serial || ser.IsItem)
+                {
+                    SysMessages.Add(text);
+
+                    if (SysMessages.Count >= 25)
+                        SysMessages.RemoveRange(0, 10);
                 }
 
                 /*if ( Config.GetBool( "FilterSpam" ) && ( ser == Serial.MinusOne || ser == Serial.Zero ) )
