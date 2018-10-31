@@ -104,6 +104,10 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.NextTargetEnemyHumanoid, new HotKeyCallback(NextTargetEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.NextTargetHumanoid, new HotKeyCallback(NextTargetHumanoid));
 
+            HotKey.Add(HKCategory.Targets, LocString.PrevTarget, new HotKeyCallback(PrevTarget));
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetEnemyHumanoid, new HotKeyCallback(PrevTargetEnemyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetHumanoid, new HotKeyCallback(PrevTargetHumanoid));
+
             HotKey.Add(HKCategory.Targets, LocString.TargCloseRed, new HotKeyCallback(TargetCloseRed));
             HotKey.Add(HKCategory.Targets, LocString.TargCloseNFriend, new HotKeyCallback(TargetCloseNonFriendly));
             HotKey.Add(HKCategory.Targets, LocString.TargCloseFriend, new HotKeyCallback(TargetCloseFriendly));
@@ -1191,7 +1195,7 @@ namespace Assistant
             return false;
         }
 
-        private static int m_NextTargIdx = 0;
+        private static int m_NextPrevTargIdx = 0;
         public static void NextTarget()
         {
             List<Mobile> list = World.MobilesInRange(12);
@@ -1206,12 +1210,12 @@ namespace Assistant
 
             for (int i = 0; i < 3; i++)
             {
-                m_NextTargIdx++;
+                m_NextPrevTargIdx++;
 
-                if (m_NextTargIdx >= list.Count)
-                    m_NextTargIdx = 0;
+                if (m_NextPrevTargIdx >= list.Count)
+                    m_NextPrevTargIdx = 0;
 
-                m = (Mobile)list[m_NextTargIdx];
+                m = (Mobile)list[m_NextPrevTargIdx];
 
                 if (m != null && m != World.Player && m != old)
                     break;
@@ -1254,7 +1258,7 @@ namespace Assistant
             }*/
         }
 
-        private static int m_NextTargHumanoidIdx = 0;
+        private static int m_NextPrevTargHumanoidIdx = 0;
         public static void NextTargetHumanoid()
         {
             List<Mobile> mobiles = World.MobilesInRange(12);
@@ -1277,12 +1281,12 @@ namespace Assistant
 
             for (int i = 0; i < 3; i++)
             {
-                m_NextTargHumanoidIdx++;
+                m_NextPrevTargHumanoidIdx++;
 
-                if (m_NextTargHumanoidIdx >= list.Count)
-                    m_NextTargHumanoidIdx = 0;
+                if (m_NextPrevTargHumanoidIdx >= list.Count)
+                    m_NextPrevTargHumanoidIdx = 0;
 
-                m = (Mobile)list[m_NextTargHumanoidIdx];
+                m = (Mobile)list[m_NextPrevTargHumanoidIdx];
 
                 if (m != null && m != World.Player && m != old)
                     break;
@@ -1325,7 +1329,7 @@ namespace Assistant
             }*/
         }
 
-        private static int m_NextTargEnemyHumanoidIdx = 0;
+        private static int m_NextPrevTargEnemyHumanoidIdx = 0;
         public static void NextTargetEnemyHumanoid()
         {
             List<Mobile> mobiles = World.MobilesInRange(12);
@@ -1353,12 +1357,12 @@ namespace Assistant
 
             for (int i = 0; i < 3; i++)
             {
-                m_NextTargEnemyHumanoidIdx++;
+                m_NextPrevTargEnemyHumanoidIdx++;
 
-                if (m_NextTargEnemyHumanoidIdx >= list.Count)
-                    m_NextTargEnemyHumanoidIdx = 0;
+                if (m_NextPrevTargEnemyHumanoidIdx >= list.Count)
+                    m_NextPrevTargEnemyHumanoidIdx = 0;
 
-                m = list[m_NextTargEnemyHumanoidIdx];
+                m = list[m_NextPrevTargEnemyHumanoidIdx];
 
                 if (m != null && m != World.Player && m != old)
                     break;
@@ -1399,6 +1403,201 @@ namespace Assistant
                DoLastTarget();
                ClearQueue();
            }*/
+        }
+        
+        public static void PrevTarget()
+        {
+            List<Mobile> list = World.MobilesInRange(12);
+            TargetInfo targ = new TargetInfo();
+            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+
+            if (list.Count <= 0)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                m_NextPrevTargIdx--;
+
+                if (m_NextPrevTargIdx < 0)
+                    m_NextPrevTargIdx = list.Count - 1;
+
+                m = (Mobile)list[m_NextPrevTargIdx];
+
+                if (m != null && m != World.Player && m != old)
+                    break;
+                else
+                    m = null;
+            }
+
+            if (m == null)
+                m = old;
+
+            if (m == null)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
+            m_LastGroundTarg = m_LastTarget = targ;
+
+            m_LastHarmTarg = m_LastBeneTarg = targ;
+
+            if (m_HasTarget)
+                targ.Flags = m_CurFlags;
+            else
+                targ.Type = 0;
+
+            targ.Gfx = m.Body;
+            targ.Serial = m.Serial;
+            targ.X = m.Position.X;
+            targ.Y = m.Position.Y;
+            targ.Z = m.Position.Z;
+
+            ClientCommunication.SendToClient(new ChangeCombatant(m));
+            m_LastCombatant = m.Serial;
+            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+        }
+        
+        public static void PrevTargetHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange(12);
+            List<Mobile> list = new List<Mobile>();
+
+            foreach (Mobile mob in mobiles)
+            {
+                if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
+                    list.Add(mob);
+            }
+
+            if (list.Count <= 0)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
+            TargetInfo targ = new TargetInfo();
+            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+
+            for (int i = 0; i < 3; i++)
+            {
+                m_NextPrevTargHumanoidIdx--;
+
+                if (m_NextPrevTargHumanoidIdx < 0)
+                    m_NextPrevTargHumanoidIdx = list.Count - 1;
+
+                m = (Mobile)list[m_NextPrevTargHumanoidIdx];
+
+                if (m != null && m != World.Player && m != old)
+                    break;
+                else
+                    m = null;
+            }
+
+            if (m == null)
+                m = old;
+
+            if (m == null)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
+            m_LastGroundTarg = m_LastTarget = targ;
+
+            m_LastHarmTarg = m_LastBeneTarg = targ;
+
+            if (m_HasTarget)
+                targ.Flags = m_CurFlags;
+            else
+                targ.Type = 0;
+
+            targ.Gfx = m.Body;
+            targ.Serial = m.Serial;
+            targ.X = m.Position.X;
+            targ.Y = m.Position.Y;
+            targ.Z = m.Position.Z;
+
+            ClientCommunication.SendToClient(new ChangeCombatant(m));
+            m_LastCombatant = m.Serial;
+            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+
+            /*if ( m_HasTarget )
+            {
+                 DoLastTarget();
+                 ClearQueue();
+            }*/
+        }
+        
+        public static void PrevTargetEnemyHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange(12);
+            List<Mobile> list = new List<Mobile>();
+
+            foreach (Mobile mob in mobiles)
+            {
+                if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
+                {
+                    if (mob.Notoriety == 5) // Check if they are red
+                    {
+                        list.Add(mob);
+                    }
+                }
+            }
+
+            if (list.Count <= 0)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
+            TargetInfo targ = new TargetInfo();
+            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+
+            for (int i = 0; i < 3; i++)
+            {
+                m_NextPrevTargEnemyHumanoidIdx--;
+
+                if (m_NextPrevTargEnemyHumanoidIdx < 0)
+                    m_NextPrevTargEnemyHumanoidIdx = list.Count - 1;
+
+                m = list[m_NextPrevTargEnemyHumanoidIdx];
+
+                if (m != null && m != World.Player && m != old)
+                    break;
+                else
+                    m = null;
+            }
+
+            if (m == null)
+                m = old;
+
+            if (m == null)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
+            m_LastGroundTarg = m_LastTarget = targ;
+
+            m_LastHarmTarg = m_LastBeneTarg = targ;
+
+            if (m_HasTarget)
+                targ.Flags = m_CurFlags;
+            else
+                targ.Type = 0;
+
+            targ.Gfx = m.Body;
+            targ.Serial = m.Serial;
+            targ.X = m.Position.X;
+            targ.Y = m.Position.Y;
+            targ.Z = m.Position.Z;
+
+            ClientCommunication.SendToClient(new ChangeCombatant(m));
+            m_LastCombatant = m.Serial;
+            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
         }
 
         public static void CheckLastTargetRange(Mobile m)

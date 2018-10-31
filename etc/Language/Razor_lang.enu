@@ -693,3 +693,6 @@ InputBox::ok=&OK
 1986=Remove from ignore list
 1987=(Razor Ignored)
 1988=IgnoreList
+1989=Previous Target
+1990=Previous Enemy Humanoid Target
+1991=Previous Humanoid Target
