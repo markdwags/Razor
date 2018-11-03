@@ -5983,6 +5983,9 @@ namespace Assistant
                     a = null;
                 }
 
+                if (a == null)
+                    return;
+
                 MenuItem[] aMenus = a.GetContextMenuItems();
 
                 if (aMenus != null && aMenus.Length > 0)
@@ -6002,6 +6005,10 @@ namespace Assistant
                             aMenus[0].PerformClick();
                         }
                         else if (a.GetType().Name.Equals("SpeechAction"))
+                        {
+                            aMenus[0].PerformClick();
+                        }
+                        else if (a.GetType().Name.Equals("GumpResponseAction"))
                         {
                             aMenus[0].PerformClick();
                         }
@@ -7464,11 +7471,6 @@ namespace Assistant
 
         }
 
-        private void actionList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void cloneProfile_Click(object sender, EventArgs e)
         {
             if (profiles.SelectedIndex < 0)
@@ -8065,6 +8067,11 @@ namespace Assistant
             {
                 ClientCommunication.ForceSendToClient(new SeasonChange(seasonList.SelectedIndex, true));
             }
+        }
+
+        private void actionList_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

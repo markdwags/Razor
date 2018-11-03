@@ -760,6 +760,27 @@ namespace Assistant.Macros
             else
                 return Language.Format(LocString.CloseGump);
         }
+
+        private MenuItem[] m_MenuItems;
+
+        public override MenuItem[] GetContextMenuItems()
+        {
+            if (this.m_MenuItems == null)
+                this.m_MenuItems = (MenuItem[])new MacroMenuItem[1]
+                {
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
+                };
+            return this.m_MenuItems;
+        }
+
+        private void Edit(object[] args)
+        {
+            if (InputBox.Show(Language.GetString(LocString.EnterNewText), "Input Box", this.m_ButtonID.ToString()))
+                this.m_ButtonID = InputBox.GetInt();
+            if (this.Parent == null)
+                return;
+            this.Parent.Update();
+        }
     }
 
     public class MenuResponseAction : MacroAction
