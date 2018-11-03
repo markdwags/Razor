@@ -2171,6 +2171,8 @@ namespace Assistant
 
             if (Macros.MacroManager.AcceptActions)
                 MacroManager.Action(new GumpResponseAction(bid, switches, entries));
+
+            World.Player.LastGumpResponseAction = new GumpResponseAction(bid, switches, entries);
         }
 
         private static void ChangeSeason(PacketReader p, PacketHandlerEventArgs args)

@@ -696,3 +696,4 @@ InputBox::ok=&OK
 1989=Previous Target
 1990=Previous Enemy Humanoid Target
 1991=Previous Humanoid Target
+1992=Use Last Gump Response

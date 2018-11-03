@@ -766,8 +766,9 @@ namespace Assistant.Macros
         public override MenuItem[] GetContextMenuItems()
         {
             if (this.m_MenuItems == null)
-                this.m_MenuItems = (MenuItem[])new MacroMenuItem[1]
+                this.m_MenuItems = (MenuItem[])new MacroMenuItem[]
                 {
+                    new MacroMenuItem(LocString.UseLastGumpResponse, new MacroMenuCallback(this.UseLastResponse), new object[0]),
                     new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
                 };
             return this.m_MenuItems;
@@ -777,9 +778,19 @@ namespace Assistant.Macros
         {
             if (InputBox.Show(Language.GetString(LocString.EnterNewText), "Input Box", this.m_ButtonID.ToString()))
                 this.m_ButtonID = InputBox.GetInt();
-            if (this.Parent == null)
-                return;
-            this.Parent.Update();
+
+            Parent?.Update();
+        }
+
+        private void UseLastResponse(object[] args)
+        {
+            m_ButtonID = World.Player.LastGumpResponseAction.m_ButtonID;
+            m_Switches = World.Player.LastGumpResponseAction.m_Switches;
+            m_TextEntries = World.Player.LastGumpResponseAction.m_TextEntries;
+
+            World.Player.SendMessage(MsgLevel.Force, "Set GumpResponse to last response");
+
+            Parent?.Update();
         }
     }
 
