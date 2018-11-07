@@ -1,5 +1,6 @@
 using System;
 using Assistant;
+using Assistant.Core;
 
 namespace Assistant.HotKeys
 {
@@ -12,6 +13,8 @@ namespace Assistant.HotKeys
             HotKey.Add(HKCategory.Misc, LocString.VidStop, new HotKeyCallback(PacketPlayer.Stop));
 
             HotKey.Add(HKCategory.Misc, LocString.GoldPerHotkey, new HotKeyCallback(ToggleGoldPer));
+
+            HotKey.Add(HKCategory.Misc, LocString.CaptureBod, new HotKeyCallback(CaptureBod));
 
             HotKey.Add(HKCategory.Misc, LocString.ClearDragDropQueue, new HotKeyCallback(DragDropManager.GracefulStop));
 
@@ -55,6 +58,31 @@ namespace Assistant.HotKeys
                 GoldPerHourTimer.Start();
             }
         }
+
+
+        private static void CaptureBod()
+        {
+            try
+            {
+                if (BodCapture.IsBodGump(World.Player.CurrentGumpI))
+                {
+                    BodCapture.CaptureBod(World.Player.CurrentGumpStrings);
+
+                    World.Player.SendMessage(MsgLevel.Force, "BOD has been captured and saved to BODs.csv");
+                }
+                else
+                {
+                    World.Player.SendMessage(MsgLevel.Force, "The last gump you had open doesn't appear to be a BOD");
+                }
+            }
+            catch
+            {
+                World.Player.SendMessage(MsgLevel.Force, "Unable to capture BOD, probably unknown format");
+            }
+
+            
+        }
+
 
         private static void PartyAccept()
         {

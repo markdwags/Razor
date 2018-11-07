@@ -2692,10 +2692,7 @@ namespace Assistant
 
             if (Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
-
-            if (!Config.GetBool("CaptureMibs"))
-                return;
-
+            
             List<string> gumpStrings = new List<string>();
 
             try
@@ -2703,9 +2700,6 @@ namespace Assistant
                 int x = p.ReadInt32(), y = p.ReadInt32();
 
                 string layout = p.GetCompressedReader().ReadString();
-
-                if (!MessageInBottleCapture.IsMibGump(layout))
-                    return;
 
                 int numStrings = p.ReadInt32();
                 if (numStrings < 0 || numStrings > 256)
@@ -2743,15 +2737,18 @@ namespace Assistant
                     gumpStrings.AddRange(ParseGumpString(gumpPieces, stringlistparse));
                 }
 
-                switch (gumpStrings.Count)
+                if (Config.GetBool("CaptureMibs") && MessageInBottleCapture.IsMibGump(layout))
                 {
-                    //Classic, non-custom MIB
-                    case 3:
-                        MessageInBottleCapture.CaptureMibCoordinates(gumpStrings[2], false);
-                        break;
-                    case 4:
-                        MessageInBottleCapture.CaptureMibCoordinates(gumpStrings[2], true);
-                        break;
+                    switch (gumpStrings.Count)
+                    {
+                        //Classic, non-custom MIB
+                        case 3:
+                            MessageInBottleCapture.CaptureMibCoordinates(gumpStrings[2], false);
+                            break;
+                        case 4:
+                            MessageInBottleCapture.CaptureMibCoordinates(gumpStrings[2], true);
+                            break;
+                    }
                 }
 
                 World.Player.CurrentGumpStrings.AddRange(gumpStrings);
