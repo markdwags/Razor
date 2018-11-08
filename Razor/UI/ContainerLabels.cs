@@ -29,6 +29,7 @@ namespace Assistant.UI
                 ListViewItem item = new ListViewItem($"{list.Id}");
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, list.Type));
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, list.Label));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, list.Alias));
 
                 int hueIdx = list.Hue;
 
@@ -96,7 +97,8 @@ namespace Assistant.UI
                     Id = item.SubItems[0].Text,
                     Type = item.SubItems[1].Text,
                     Label = item.SubItems[2].Text,
-                    Hue = GetHueFromListView(item.SubItems[0].Text)
+                    Hue = GetHueFromListView(item.SubItems[0].Text),
+                    Alias = item.SubItems[3].Text
                 };
 
                 newContainerLabelList.Add(label);
@@ -164,6 +166,7 @@ namespace Assistant.UI
                         ListViewItem lvItem = new ListViewItem($"{t.Serial.Value}");
                         lvItem.SubItems.Add(new ListViewItem.ListViewSubItem(lvItem, item.Name));
                         lvItem.SubItems.Add(new ListViewItem.ListViewSubItem(lvItem, name));
+                        lvItem.SubItems.Add(new ListViewItem.ListViewSubItem(lvItem, string.Empty));
 
                         int hueIdx = Config.GetInt("ContainerLabelColor");
 
@@ -251,7 +254,6 @@ namespace Assistant.UI
 
                 selectedItem.SubItems[2].ForeColor = (selectedItem.SubItems[2].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
 
-
                 foreach (Core.ContainerLabels.ContainerLabel list in Core.ContainerLabels.ContainerLabelList)
                 {
                     if (list.Id.Equals(selectedItem.Text))
@@ -330,14 +332,38 @@ namespace Assistant.UI
             ClientCommunication.SendToServer(new DoubleClick(container.Serial));
         }
 
-        private void containerLabelFormat_TextChanged(object sender, EventArgs e)
+        private void setAlias_Click(object sender, EventArgs e)
         {
+            if (containerView.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = containerView.Items[containerView.SelectedIndices[0]];
 
-        }
+                if (InputBox.Show(this, Language.GetString(LocString.SetContainerLabel),
+                    Language.GetString(LocString.EnterAName)))
+                {
+                    string name = InputBox.GetString();
 
-        private void asciiFormat_CheckedChanged(object sender, EventArgs e)
-        {
+                    selectedItem.SubItems[3].Text = name;
 
+                    foreach (Core.ContainerLabels.ContainerLabel list in Core.ContainerLabels.ContainerLabelList)
+                    {
+                        if (list.Id.Equals(selectedItem.Text))
+                        {
+                            list.Alias = name;
+                            break;
+                        }
+                    }
+
+                    foreach (Core.ContainerLabels.ContainerLabel list in NewContainerEntries)
+                    {
+                        if (list.Id.Equals(selectedItem.Text))
+                        {
+                            list.Alias = name;
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }

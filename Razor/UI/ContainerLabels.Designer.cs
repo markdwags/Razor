@@ -44,11 +44,13 @@
             this.asciiStyle = new System.Windows.Forms.RadioButton();
             this.unicodeStyle = new System.Windows.Forms.RadioButton();
             this.lblStyle = new System.Windows.Forms.Label();
+            this.containerAlias = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.setAlias = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cancelContainerLabels
             // 
-            this.cancelContainerLabels.Location = new System.Drawing.Point(391, 233);
+            this.cancelContainerLabels.Location = new System.Drawing.Point(449, 240);
             this.cancelContainerLabels.Name = "cancelContainerLabels";
             this.cancelContainerLabels.Size = new System.Drawing.Size(54, 28);
             this.cancelContainerLabels.TabIndex = 20;
@@ -58,7 +60,7 @@
             // 
             // saveContainerLabels
             // 
-            this.saveContainerLabels.Location = new System.Drawing.Point(449, 233);
+            this.saveContainerLabels.Location = new System.Drawing.Point(507, 240);
             this.saveContainerLabels.Name = "saveContainerLabels";
             this.saveContainerLabels.Size = new System.Drawing.Size(50, 28);
             this.saveContainerLabels.TabIndex = 19;
@@ -83,11 +85,10 @@
             this.containerLabelFormat.TabIndex = 29;
             this.containerLabelFormat.Text = "[{label}] ({name})";
             this.containerLabelFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.containerLabelFormat.TextChanged += new System.EventHandler(this.containerLabelFormat_TextChanged);
             // 
             // removeContainerLabel
             // 
-            this.removeContainerLabel.Location = new System.Drawing.Point(391, 104);
+            this.removeContainerLabel.Location = new System.Drawing.Point(449, 150);
             this.removeContainerLabel.Name = "removeContainerLabel";
             this.removeContainerLabel.Size = new System.Drawing.Size(108, 40);
             this.removeContainerLabel.TabIndex = 28;
@@ -97,7 +98,7 @@
             // 
             // addContainLabel
             // 
-            this.addContainLabel.Location = new System.Drawing.Point(391, 12);
+            this.addContainLabel.Location = new System.Drawing.Point(449, 12);
             this.addContainLabel.Name = "addContainLabel";
             this.addContainLabel.Size = new System.Drawing.Size(108, 40);
             this.addContainLabel.TabIndex = 27;
@@ -110,12 +111,13 @@
             this.containerView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.containerId,
             this.containerType,
-            this.containerLabel});
+            this.containerLabel,
+            this.containerAlias});
             this.containerView.FullRowSelect = true;
             this.containerView.Location = new System.Drawing.Point(12, 12);
             this.containerView.MultiSelect = false;
             this.containerView.Name = "containerView";
-            this.containerView.Size = new System.Drawing.Size(373, 215);
+            this.containerView.Size = new System.Drawing.Size(431, 215);
             this.containerView.TabIndex = 22;
             this.containerView.UseCompatibleStateImageBehavior = false;
             this.containerView.View = System.Windows.Forms.View.Details;
@@ -134,7 +136,7 @@
             // containerLabel
             // 
             this.containerLabel.Text = "Label";
-            this.containerLabel.Width = 180;
+            this.containerLabel.Width = 132;
             // 
             // setExHue
             // 
@@ -156,7 +158,7 @@
             // 
             // setColorHue
             // 
-            this.setColorHue.Location = new System.Drawing.Point(391, 58);
+            this.setColorHue.Location = new System.Drawing.Point(449, 58);
             this.setColorHue.Name = "setColorHue";
             this.setColorHue.Size = new System.Drawing.Size(108, 40);
             this.setColorHue.TabIndex = 40;
@@ -174,7 +176,6 @@
             this.asciiStyle.TabStop = true;
             this.asciiStyle.Text = "ASCII";
             this.asciiStyle.UseVisualStyleBackColor = true;
-            this.asciiStyle.CheckedChanged += new System.EventHandler(this.asciiFormat_CheckedChanged);
             // 
             // unicodeStyle
             // 
@@ -196,10 +197,26 @@
             this.lblStyle.TabIndex = 43;
             this.lblStyle.Text = "Label Style:";
             // 
+            // containerAlias
+            // 
+            this.containerAlias.Text = "Alias";
+            this.containerAlias.Width = 106;
+            // 
+            // setAlias
+            // 
+            this.setAlias.Location = new System.Drawing.Point(449, 104);
+            this.setAlias.Name = "setAlias";
+            this.setAlias.Size = new System.Drawing.Size(108, 40);
+            this.setAlias.TabIndex = 44;
+            this.setAlias.Text = "Set Alias";
+            this.setAlias.UseVisualStyleBackColor = true;
+            this.setAlias.Click += new System.EventHandler(this.setAlias_Click);
+            // 
             // ContainerLabels
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(509, 294);
+            this.ClientSize = new System.Drawing.Size(569, 291);
+            this.Controls.Add(this.setAlias);
             this.Controls.Add(this.lblStyle);
             this.Controls.Add(this.unicodeStyle);
             this.Controls.Add(this.asciiStyle);
@@ -241,5 +258,7 @@
         private System.Windows.Forms.RadioButton asciiStyle;
         private System.Windows.Forms.RadioButton unicodeStyle;
         private System.Windows.Forms.Label lblStyle;
+        private System.Windows.Forms.ColumnHeader containerAlias;
+        private System.Windows.Forms.Button setAlias;
     }
 }

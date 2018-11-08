@@ -2956,6 +2956,8 @@ namespace Assistant
     public class IgnoreAgent : Agent
     {
         private static readonly IgnoreAgent m_Instance = new IgnoreAgent();
+        public static IgnoreAgent Instance { get { return m_Instance; } }
+
         public static void Initialize()
         {
             Agent.Add(m_Instance);
@@ -2963,7 +2965,7 @@ namespace Assistant
 
         public static bool IsIgnored(Serial ser)
         {
-            return m_Instance.IsSerialIgnored(ser);
+            return m_Instance == null ? false : m_Instance.IsSerialIgnored(ser);
         }
 
         private ListBox m_SubList;

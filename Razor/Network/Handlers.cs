@@ -1948,7 +1948,7 @@ namespace Assistant
                     foreach (ContainerLabels.ContainerLabel label in ContainerLabels.ContainerLabelList)
                     {
                         // Check if its the serial match and if the text matches the name (since we override that for the label)
-                        if (Serial.Parse(label.Id) == ser && item.DisplayName.Equals(text))
+                        if (Serial.Parse(label.Id) == ser && (item.DisplayName.Equals(text) || label.Alias.Equals(text, StringComparison.InvariantCultureIgnoreCase)))
                         {
                             string labelDisplay = $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{type}", text)}";
 
@@ -1975,7 +1975,7 @@ namespace Assistant
 
                 if ((type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper || type == MessageType.Yell) && ser.IsMobile && ser != World.Player.Serial)
                 {
-                    if (IgnoreAgent.IsIgnored(ser)) {
+                    if (ser.IsMobile && IgnoreAgent.IsIgnored(ser)) {
                         args.Block = true;
                         return;
                     }

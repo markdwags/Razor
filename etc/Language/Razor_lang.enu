@@ -697,3 +697,4 @@ InputBox::ok=&OK
 1990=Previous Enemy Humanoid Target
 1991=Previous Humanoid Target
 1992=Use Last Gump Response
+1993=Set container alias

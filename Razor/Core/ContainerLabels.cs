@@ -14,6 +14,7 @@ namespace Assistant.Core
             public string Type { get; set; }
             public string Label { get; set; }
             public int Hue { get; set; }
+            public string Alias { get; set; }
         }
 
         public static Serial LastContainerLabelDisplayed;
@@ -29,6 +30,7 @@ namespace Assistant.Core
                 xml.WriteAttributeString("type", label.Type);
                 xml.WriteAttributeString("label", label.Label);
                 xml.WriteAttributeString("hue", label.Hue.ToString());
+                xml.WriteAttributeString("alias", label.Alias);
                 xml.WriteEndElement();
             }
         }
@@ -47,7 +49,8 @@ namespace Assistant.Core
                         Id = el.GetAttribute("id"),
                         Type = el.GetAttribute("type"),
                         Label = el.GetAttribute("label"),
-                        Hue = Convert.ToInt32(el.GetAttribute("hue"))
+                        Hue = Convert.ToInt32(el.GetAttribute("hue")),
+                        Alias = el.GetAttribute("alias")
                     };
 
                     ContainerLabelList.Add(label);
