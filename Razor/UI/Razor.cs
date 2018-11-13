@@ -105,7 +105,6 @@ namespace Assistant
         private System.Windows.Forms.CheckBox loopMacro;
         private System.Windows.Forms.Button dressNow;
         private System.Windows.Forms.Button undressList;
-        private System.Windows.Forms.CheckBox spamFilter;
         private System.Windows.Forms.PictureBox screenPrev;
         private System.Windows.Forms.ListBox screensList;
         private System.Windows.Forms.Button setScnPath;
@@ -298,6 +297,8 @@ namespace Assistant
         private CheckBox realSeason;
         private ComboBox seasonList;
         private Label lblSeason;
+        private CheckBox blockPartyInvites;
+        private CheckBox blockTradeRequests;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -405,7 +406,6 @@ namespace Assistant
             this.setExHue = new System.Windows.Forms.Button();
             this.autoStackRes = new System.Windows.Forms.CheckBox();
             this.queueTargets = new System.Windows.Forms.CheckBox();
-            this.spamFilter = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.openCorpses = new System.Windows.Forms.CheckBox();
             this.lblWarnHue = new System.Windows.Forms.Label();
@@ -627,6 +627,8 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.blockTradeRequests = new System.Windows.Forms.CheckBox();
+            this.blockPartyInvites = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -907,6 +909,8 @@ namespace Assistant
             //
             // moreOptTab
             //
+            this.moreOptTab.Controls.Add(this.blockPartyInvites);
+            this.moreOptTab.Controls.Add(this.blockTradeRequests);
             this.moreOptTab.Controls.Add(this.realSeason);
             this.moreOptTab.Controls.Add(this.seasonList);
             this.moreOptTab.Controls.Add(this.lblSeason);
@@ -931,7 +935,6 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.setExHue);
             this.moreOptTab.Controls.Add(this.autoStackRes);
             this.moreOptTab.Controls.Add(this.queueTargets);
-            this.moreOptTab.Controls.Add(this.spamFilter);
             this.moreOptTab.Controls.Add(this.label4);
             this.moreOptTab.Controls.Add(this.openCorpses);
             this.moreOptTab.Controls.Add(this.lblWarnHue);
@@ -1045,7 +1048,7 @@ namespace Assistant
             //
             // filterSnoop
             //
-            this.filterSnoop.Location = new System.Drawing.Point(245, 188);
+            this.filterSnoop.Location = new System.Drawing.Point(245, 213);
             this.filterSnoop.Name = "filterSnoop";
             this.filterSnoop.Size = new System.Drawing.Size(220, 20);
             this.filterSnoop.TabIndex = 49;
@@ -1063,7 +1066,7 @@ namespace Assistant
             //
             // incomingMob
             //
-            this.incomingMob.Location = new System.Drawing.Point(245, 214);
+            this.incomingMob.Location = new System.Drawing.Point(245, 239);
             this.incomingMob.Name = "incomingMob";
             this.incomingMob.Size = new System.Drawing.Size(228, 20);
             this.incomingMob.TabIndex = 47;
@@ -1181,15 +1184,6 @@ namespace Assistant
             this.queueTargets.Text = "Queue LastTarget and TargetSelf";
             this.queueTargets.CheckedChanged += new System.EventHandler(this.queueTargets_CheckedChanged);
             //
-            // spamFilter
-            //
-            this.spamFilter.Location = new System.Drawing.Point(245, 162);
-            this.spamFilter.Name = "spamFilter";
-            this.spamFilter.Size = new System.Drawing.Size(220, 20);
-            this.spamFilter.TabIndex = 26;
-            this.spamFilter.Text = "Filter repeating system messages";
-            this.spamFilter.CheckedChanged += new System.EventHandler(this.spamFilter_CheckedChanged);
-            //
             // label4
             //
             this.label4.Location = new System.Drawing.Point(437, 85);
@@ -1277,7 +1271,7 @@ namespace Assistant
             //
             // incomingCorpse
             //
-            this.incomingCorpse.Location = new System.Drawing.Point(245, 240);
+            this.incomingCorpse.Location = new System.Drawing.Point(245, 265);
             this.incomingCorpse.Name = "incomingCorpse";
             this.incomingCorpse.Size = new System.Drawing.Size(228, 20);
             this.incomingCorpse.TabIndex = 48;
@@ -3483,6 +3477,24 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
+            // blockTradeRequests
+            //
+            this.blockTradeRequests.Location = new System.Drawing.Point(245, 161);
+            this.blockTradeRequests.Name = "blockTradeRequests";
+            this.blockTradeRequests.Size = new System.Drawing.Size(184, 20);
+            this.blockTradeRequests.TabIndex = 88;
+            this.blockTradeRequests.Text = "Block trade requests";
+            this.blockTradeRequests.CheckedChanged += new System.EventHandler(this.blockTradeRequests_CheckedChanged);
+            //
+            // blockPartyInvites
+            //
+            this.blockPartyInvites.Location = new System.Drawing.Point(245, 187);
+            this.blockPartyInvites.Name = "blockPartyInvites";
+            this.blockPartyInvites.Size = new System.Drawing.Size(184, 20);
+            this.blockPartyInvites.TabIndex = 89;
+            this.blockPartyInvites.Text = "Block party invites";
+            this.blockPartyInvites.CheckedChanged += new System.EventHandler(this.blockPartyInvites_CheckedChanged);
+            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3702,7 +3714,6 @@ namespace Assistant
             txtObjDelay.Text = Config.GetInt("ObjectDelay").ToString();
             chkStealth.Checked = Config.GetBool("CountStealthSteps");
 
-            spamFilter.Checked = Config.GetBool("FilterSpam");
             screenAutoCap.Checked = Config.GetBool("AutoCap");
             radioUO.Checked = !(radioFull.Checked = Config.GetBool("CapFullScreen"));
             screenPath.Text = Config.GetString("CapPath");
@@ -3849,6 +3860,9 @@ namespace Assistant
 
             rangeCheckTargetByType.Checked = Config.GetBool("RangeCheckTargetByType");
             rangeCheckDoubleClick.Checked = Config.GetBool("RangeCheckDoubleClick");
+
+            blockTradeRequests.Checked = Config.GetBool("BlockTradeRequests");
+            blockPartyInvites.Checked = Config.GetBool("BlockPartyInvites");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
@@ -5938,6 +5952,9 @@ namespace Assistant
                         menu.MenuItems.Add("-");
                     }
 
+                    menu.MenuItems.Add("Copy Line", new EventHandler(onMacroCopyLine));
+                    menu.MenuItems.Add("Paste Line", new EventHandler(onMacroPasteLine));
+
                     menu.MenuItems.Add(Language.GetString(LocString.RemAct), new EventHandler(onMacroActionDelete));
                     menu.MenuItems.Add("-");
                     menu.MenuItems.Add(Language.GetString(LocString.BeginRec), new EventHandler(onMacroBegRecHere));
@@ -6237,6 +6254,39 @@ namespace Assistant
             }
         }
 
+        private int _macroActionToCopy;
+
+        private void onMacroCopyLine(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a < 0 || a >= m.Actions.Count)
+                return;
+
+            _macroActionToCopy = a;
+        }
+
+        private void onMacroPasteLine(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a < 0 || a >= m.Actions.Count)
+                return;
+
+            m.Actions.Insert(a + 1,
+                m.Actions[_macroActionToCopy]);
+
+            RedrawActionList(m);
+
+            actionList.SelectedIndex = a + 1;
+        }
+
         private void onMacroActionDelete(object sender, System.EventArgs e)
         {
             Macro m = GetMacroSel(); ;
@@ -6325,11 +6375,6 @@ namespace Assistant
             if (m == null)
                 return;
             m.Loop = loopMacro.Checked;
-        }
-
-        private void spamFilter_CheckedChanged(object sender, System.EventArgs e)
-        {
-            Config.SetProperty("FilterSpam", spamFilter.Checked);
         }
 
         private void jump2SearchEx_Click(object sender, System.EventArgs e)
@@ -8072,6 +8117,16 @@ namespace Assistant
         private void actionList_SelectedIndexChanged_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void blockPartyInvites_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("BlockPartyInvites", blockPartyInvites.Checked);
+        }
+
+        private void blockTradeRequests_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("BlockTradeRequests", blockTradeRequests.Checked);
         }
     }
 }

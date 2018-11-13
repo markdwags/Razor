@@ -70,8 +70,7 @@ namespace Assistant
 
             AddProperty("AutoOpenCorpses", false);
             AddProperty("CorpseRange", (int)2);
-
-            AddProperty("FilterSpam", false);
+            
             AddProperty("BlockDismount", false);
 
             AddProperty("AutoCap", false);
@@ -193,6 +192,9 @@ namespace Assistant
 
             AddProperty("RealSeason", false);
             AddProperty("Season", 5);
+            
+            AddProperty("BlockTradeRequests", false);
+            AddProperty("BlockPartyInvites", false);
 
             Counter.Default();
             Filter.DisableAll();

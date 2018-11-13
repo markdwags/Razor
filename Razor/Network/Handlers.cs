@@ -63,6 +63,7 @@ namespace Assistant
             PacketHandler.RegisterServerToClientFilter(0x3C, new PacketFilterCallback(ContainerContent));
             PacketHandler.RegisterServerToClientViewer(0x4E, new PacketViewerCallback(PersonalLight));
             PacketHandler.RegisterServerToClientViewer(0x4F, new PacketViewerCallback(GlobalLight));
+            PacketHandler.RegisterServerToClientViewer(0x6F, new PacketViewerCallback(TradeRequest));
             PacketHandler.RegisterServerToClientViewer(0x72, new PacketViewerCallback(ServerSetWarMode));
             PacketHandler.RegisterServerToClientViewer(0x73, new PacketViewerCallback(PingResponse));
             PacketHandler.RegisterServerToClientViewer(0x76, new PacketViewerCallback(ServerChange));
@@ -1994,15 +1995,6 @@ namespace Assistant
                     if (SysMessages.Count >= 25)
                         SysMessages.RemoveRange(0, 10);
                 }
-
-                /*if ( Config.GetBool( "FilterSpam" ) && ( ser == Serial.MinusOne || ser == Serial.Zero ) )
-                {
-                     if ( !MessageQueue.Enqueue( ser, body, type, hue, font, lang, name, text ) )
-                     {
-                          args.Block = true;
-                          return;
-                     }
-                }*/
             }
         }
 
@@ -2408,6 +2400,12 @@ namespace Assistant
                     {
                         //Serial leader = p.ReadUInt32();
                         PartyLeader = p.ReadUInt32();
+
+                        if (Config.GetBool("BlockPartyInvites"))
+                        {
+                            ClientCommunication.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
+                        }
+
                         if (m_PartyDeclineTimer == null)
                             m_PartyDeclineTimer = Timer.DelayedCallback(TimeSpan.FromSeconds(10.0), new TimerCallback(PartyAutoDecline));
                         m_PartyDeclineTimer.Start();
@@ -2883,5 +2881,12 @@ namespace Assistant
             }
         }
 
+        private static void TradeRequest(PacketReader p, PacketHandlerEventArgs args)
+        {
+            if (Config.GetBool("BlockTradeRequests"))
+            {
+                args.Block = true;
+            }
+        }
     }
 }

@@ -273,6 +273,9 @@ namespace Ultima
         /// <returns></returns>
         public static bool ValidatePath(string dir)
         {
+            if (string.IsNullOrEmpty(dir) || !System.IO.Directory.Exists(dir))
+                return false;
+
             List<string> files = System.IO.Directory.EnumerateFiles(dir, "*.mul", SearchOption.TopDirectoryOnly).Select(Path.GetFileName).ToList();
 
             double filesExist = 0;
@@ -285,7 +288,8 @@ namespace Ultima
                 }
             }
 
-            return filesExist / files.Count > 0.10;
+            // The folder should have what, 10% of the mul files
+            return filesExist / m_Files.Length > 0.10;
         }
 
         /// <summary>
