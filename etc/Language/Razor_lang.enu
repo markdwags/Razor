@@ -698,3 +698,4 @@ InputBox::ok=&OK
 1991=Previous Humanoid Target
 1992=Use Last Gump Response
 1993=Set container alias
+1994=>Interrupt

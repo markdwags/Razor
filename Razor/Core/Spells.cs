@@ -240,6 +240,7 @@ namespace Assistant
                     (ushort) s.GetID());
             HotKey.Add(HKCategory.Spells, LocString.HealOrCureSelf, new HotKeyCallback(HealOrCureSelf));
             HotKey.Add(HKCategory.Spells, LocString.MiniHealOrCureSelf, new HotKeyCallback(MiniHealOrCureSelf));
+            HotKey.Add(HKCategory.Spells, LocString.Interrupt, new HotKeyCallback(Interrupt));
         }
 
         public static void HealOrCureSelf()
@@ -307,6 +308,98 @@ namespace Assistant
                 ClientCommunication.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
                 s.Cast();
             }
+        }
+
+        public static void Interrupt()
+        {
+            Item item = FindUsedLayer();
+
+            if (item != null)
+            {
+                ClientCommunication.SendToServer(new LiftRequest(item, 1)); // unequip
+                ClientCommunication.SendToServer(new EquipRequest(item.Serial, World.Player, item.Layer)); // Equip
+            }
+        }
+
+        internal static Item FindUsedLayer()
+        {
+            Item layeredItem = World.Player.GetItemOnLayer(Layer.Shoes);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Pants);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Shirt);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Head);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Gloves);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Ring);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Neck);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Waist);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.InnerTorso);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Bracelet);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.MiddleTorso);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Earrings);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Arms);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Cloak);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.OuterTorso);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.OuterLegs);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.InnerLegs);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.RightHand);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.LeftHand);
+            if (layeredItem != null)
+                return layeredItem;
+
+            return null;
         }
 
         public static void Initialize()
