@@ -2406,9 +2406,27 @@ namespace Assistant
                             ClientCommunication.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
                         }
 
-                        if (m_PartyDeclineTimer == null)
-                            m_PartyDeclineTimer = Timer.DelayedCallback(TimeSpan.FromSeconds(10.0), new TimerCallback(PartyAutoDecline));
-                        m_PartyDeclineTimer.Start();
+                        if (Config.GetBool("AutoAcceptParty"))
+                        {
+                            Mobile leaderMobile = World.FindMobile(PartyLeader);
+                            if (leaderMobile != null && FriendsAgent.IsFriend(leaderMobile))
+                            {
+                                if (PartyLeader != Serial.Zero)
+                                {
+                                    World.Player.SendMessage($"Auto accepted party invite from: {leaderMobile.Name}");
+
+                                    ClientCommunication.SendToServer(new AcceptParty(PartyLeader));
+                                    PartyLeader = Serial.Zero;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (m_PartyDeclineTimer == null)
+                                m_PartyDeclineTimer = Timer.DelayedCallback(TimeSpan.FromSeconds(10.0), new TimerCallback(PartyAutoDecline));
+                            m_PartyDeclineTimer.Start();
+                        }
+
                         break;
                     }
             }
