@@ -38,13 +38,13 @@
             this.containerId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.containerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.containerLabel = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.containerAlias = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.setExHue = new System.Windows.Forms.Button();
             this.lblContainerHue = new System.Windows.Forms.Label();
             this.setColorHue = new System.Windows.Forms.Button();
             this.asciiStyle = new System.Windows.Forms.RadioButton();
             this.unicodeStyle = new System.Windows.Forms.RadioButton();
             this.lblStyle = new System.Windows.Forms.Label();
-            this.containerAlias = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.setAlias = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -138,6 +138,11 @@
             this.containerLabel.Text = "Label";
             this.containerLabel.Width = 132;
             // 
+            // containerAlias
+            // 
+            this.containerAlias.Text = "Alias";
+            this.containerAlias.Width = 106;
+            // 
             // setExHue
             // 
             this.setExHue.Location = new System.Drawing.Point(182, 263);
@@ -197,18 +202,13 @@
             this.lblStyle.TabIndex = 43;
             this.lblStyle.Text = "Label Style:";
             // 
-            // containerAlias
-            // 
-            this.containerAlias.Text = "Alias";
-            this.containerAlias.Width = 106;
-            // 
             // setAlias
             // 
             this.setAlias.Location = new System.Drawing.Point(449, 104);
             this.setAlias.Name = "setAlias";
             this.setAlias.Size = new System.Drawing.Size(108, 40);
             this.setAlias.TabIndex = 44;
-            this.setAlias.Text = "Set Alias";
+            this.setAlias.Text = "Set Container Alias";
             this.setAlias.UseVisualStyleBackColor = true;
             this.setAlias.Click += new System.EventHandler(this.setAlias_Click);
             // 
