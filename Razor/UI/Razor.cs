@@ -300,6 +300,9 @@ namespace Assistant
         private CheckBox blockPartyInvites;
         private CheckBox blockTradeRequests;
         private CheckBox autoAcceptParty;
+        private Button setMinLightLevel;
+        private Button setMaxLightLevel;
+        private CheckBox minMaxLightLevel;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -383,6 +386,8 @@ namespace Assistant
             this.opacityLabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.moreOptTab = new System.Windows.Forms.TabPage();
+            this.setMinLightLevel = new System.Windows.Forms.Button();
+            this.setMaxLightLevel = new System.Windows.Forms.Button();
             this.blockPartyInvites = new System.Windows.Forms.CheckBox();
             this.blockTradeRequests = new System.Windows.Forms.CheckBox();
             this.realSeason = new System.Windows.Forms.CheckBox();
@@ -420,7 +425,9 @@ namespace Assistant
             this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
+            this.minMaxLightLevel = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+            this.autoAcceptParty = new System.Windows.Forms.CheckBox();
             this.containerLabels = new System.Windows.Forms.Button();
             this.showContainerLabels = new System.Windows.Forms.CheckBox();
             this.showAttackTarget = new System.Windows.Forms.CheckBox();
@@ -630,7 +637,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.autoAcceptParty = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -693,7 +699,7 @@ namespace Assistant
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(490, 466);
+            this.tabs.Size = new System.Drawing.Size(490, 477);
             this.tabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabs.TabIndex = 0;
             this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_IndexChanged);
@@ -716,7 +722,7 @@ namespace Assistant
             this.generalTab.Controls.Add(this.label9);
             this.generalTab.Location = new System.Drawing.Point(4, 44);
             this.generalTab.Name = "generalTab";
-            this.generalTab.Size = new System.Drawing.Size(482, 449);
+            this.generalTab.Size = new System.Drawing.Size(482, 429);
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             //
@@ -911,6 +917,8 @@ namespace Assistant
             //
             // moreOptTab
             //
+            this.moreOptTab.Controls.Add(this.setMinLightLevel);
+            this.moreOptTab.Controls.Add(this.setMaxLightLevel);
             this.moreOptTab.Controls.Add(this.blockPartyInvites);
             this.moreOptTab.Controls.Add(this.blockTradeRequests);
             this.moreOptTab.Controls.Add(this.realSeason);
@@ -948,11 +956,30 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.chkForceSpeechHue);
             this.moreOptTab.Controls.Add(this.label3);
             this.moreOptTab.Controls.Add(this.incomingCorpse);
+            this.moreOptTab.Controls.Add(this.minMaxLightLevel);
             this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(482, 449);
+            this.moreOptTab.Size = new System.Drawing.Size(482, 429);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
+            //
+            // setMinLightLevel
+            //
+            this.setMinLightLevel.Location = new System.Drawing.Point(116, 291);
+            this.setMinLightLevel.Name = "setMinLightLevel";
+            this.setMinLightLevel.Size = new System.Drawing.Size(58, 25);
+            this.setMinLightLevel.TabIndex = 91;
+            this.setMinLightLevel.Text = "Set Min";
+            this.setMinLightLevel.Click += new System.EventHandler(this.setMinLightLevel_Click);
+            //
+            // setMaxLightLevel
+            //
+            this.setMaxLightLevel.Location = new System.Drawing.Point(180, 291);
+            this.setMaxLightLevel.Name = "setMaxLightLevel";
+            this.setMaxLightLevel.Size = new System.Drawing.Size(58, 25);
+            this.setMaxLightLevel.TabIndex = 90;
+            this.setMaxLightLevel.Text = "Set Max";
+            this.setMaxLightLevel.Click += new System.EventHandler(this.setMaxLightLevel_Click);
             //
             // blockPartyInvites
             //
@@ -1298,6 +1325,15 @@ namespace Assistant
             this.incomingCorpse.Text = "Show Names of New/Incoming Corpses";
             this.incomingCorpse.CheckedChanged += new System.EventHandler(this.incomingCorpse_CheckedChanged);
             //
+            // minMaxLightLevel
+            //
+            this.minMaxLightLevel.Location = new System.Drawing.Point(8, 294);
+            this.minMaxLightLevel.Name = "minMaxLightLevel";
+            this.minMaxLightLevel.Size = new System.Drawing.Size(114, 20);
+            this.minMaxLightLevel.TabIndex = 92;
+            this.minMaxLightLevel.Text = "Enable Min/Max";
+            this.minMaxLightLevel.CheckedChanged += new System.EventHandler(this.minMaxLightLevel_CheckedChanged);
+            //
             // moreMoreOptTab
             //
             this.moreMoreOptTab.Controls.Add(this.autoAcceptParty);
@@ -1339,9 +1375,18 @@ namespace Assistant
             this.moreMoreOptTab.Controls.Add(this.chkPartyOverhead);
             this.moreMoreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreMoreOptTab.Name = "moreMoreOptTab";
-            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 418);
+            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 429);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
+            //
+            // autoAcceptParty
+            //
+            this.autoAcceptParty.Location = new System.Drawing.Point(245, 57);
+            this.autoAcceptParty.Name = "autoAcceptParty";
+            this.autoAcceptParty.Size = new System.Drawing.Size(232, 20);
+            this.autoAcceptParty.TabIndex = 83;
+            this.autoAcceptParty.Text = "Auto-accept party invites from friends";
+            this.autoAcceptParty.CheckedChanged += new System.EventHandler(this.autoAcceptParty_CheckedChanged);
             //
             // containerLabels
             //
@@ -1694,7 +1739,7 @@ namespace Assistant
             this.displayTab.Controls.Add(this.groupBox2);
             this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(482, 449);
+            this.displayTab.Size = new System.Drawing.Size(482, 429);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             //
@@ -1930,7 +1975,7 @@ namespace Assistant
             this.dressTab.Controls.Add(this.groupBox5);
             this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 449);
+            this.dressTab.Size = new System.Drawing.Size(482, 429);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             //
@@ -2090,7 +2135,7 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.skillList);
             this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 449);
+            this.skillsTab.Size = new System.Drawing.Size(482, 429);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             //
@@ -2243,7 +2288,7 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB3);
             this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 449);
+            this.agentsTab.Size = new System.Drawing.Size(482, 429);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             //
@@ -2333,7 +2378,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 449);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 429);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2484,7 +2529,7 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 449);
+            this.macrosTab.Size = new System.Drawing.Size(482, 429);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             //
@@ -2723,7 +2768,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.trackPlayerPosition);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(482, 449);
+            this.mapTab.Size = new System.Drawing.Size(482, 429);
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             //
@@ -2859,7 +2904,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 449);
+            this.videoTab.Size = new System.Drawing.Size(482, 429);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             //
@@ -3126,7 +3171,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(482, 449);
+            this.screenshotTab.Size = new System.Drawing.Size(482, 429);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             //
@@ -3293,7 +3338,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 449);
+            this.advancedTab.Size = new System.Drawing.Size(482, 429);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             //
@@ -3405,7 +3450,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 449);
+            this.aboutTab.Size = new System.Drawing.Size(482, 429);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             //
@@ -3497,15 +3542,6 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-            //
-            // autoAcceptParty
-            //
-            this.autoAcceptParty.Location = new System.Drawing.Point(245, 57);
-            this.autoAcceptParty.Name = "autoAcceptParty";
-            this.autoAcceptParty.Size = new System.Drawing.Size(232, 20);
-            this.autoAcceptParty.TabIndex = 83;
-            this.autoAcceptParty.Text = "Auto-accept party invites from friends";
-            this.autoAcceptParty.CheckedChanged += new System.EventHandler(this.autoAcceptParty_CheckedChanged);
             //
             // MainForm
             //
@@ -3664,19 +3700,10 @@ namespace Assistant
             this.Location = new System.Drawing.Point(Config.GetInt("WindowX"), Config.GetInt("WindowY"));
             this.TopLevel = true;
 
-            bool onScreen = false;
-            foreach (Screen s in Screen.AllScreens)
+            if (!IsOnScreen(this))
             {
-                if (s.Bounds.Contains(this.Location.X + this.Width, this.Location.Y + this.Height) ||
-                    s.Bounds.Contains(this.Location.X - this.Width, this.Location.Y - this.Height))
-                {
-                    onScreen = true;
-                    break;
-                }
+                this.Location = new System.Drawing.Point(400, 400);
             }
-
-            if (!onScreen)
-                this.Location = Point.Empty;
 
             spellUnequip.Checked = Config.GetBool("SpellUnequip");
             ltRange.Enabled = rangeCheckLT.Checked = Config.GetBool("RangeCheckLT");
@@ -3835,7 +3862,7 @@ namespace Assistant
 
             logSkillChanges.Checked = Config.GetBool("LogSkillChanges");
 
-            lightLevelBar.Value = Config.GetInt("LightLevel");
+            lightLevelBar.Value = lightLevelBar.Maximum - Config.GetInt("LightLevel");
             double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
             lightLevel.Text = $"Light: {percent}%";
 
@@ -3877,6 +3904,8 @@ namespace Assistant
             blockPartyInvites.Checked = Config.GetBool("BlockPartyInvites");
 
             autoAcceptParty.Checked = Config.GetBool("AutoAcceptParty");
+
+            minMaxLightLevel.Checked = Config.GetBool("MinMaxLightLevelEnabled");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
@@ -3976,7 +4005,7 @@ namespace Assistant
             }
             else if (tabs.SelectedTab == moreOptTab)
             {
-                tabs.Size = new Size(tabs.Size.Width, 346);
+                tabs.Size = new Size(tabs.Size.Width, 372);
                 Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
             }
         }
@@ -5290,6 +5319,22 @@ namespace Assistant
         private bool IsNear(int a, int b)
         {
             return (a <= b + 5 && a >= b - 5);
+        }
+
+        public bool IsOnScreen(Form form)
+        {
+            Screen[] screens = Screen.AllScreens;
+            foreach (Screen screen in screens)
+            {
+                Point formTopLeft = new Point(form.Left, form.Top);
+
+                if (screen.WorkingArea.Contains(formTopLeft))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void MainForm_Move(object sender, System.EventArgs e)
@@ -7842,17 +7887,19 @@ namespace Assistant
         {
             if (ClientCommunication.AllowBit(FeatureBit.LightFilter) && World.Player != null)
             {
-                World.Player.LocalLightLevel = 0;
-                World.Player.GlobalLightLevel = Convert.ToByte(lightLevelBar.Value);
+                byte selectedLightLevel = Convert.ToByte(lightLevelBar.Maximum - lightLevelBar.Value);
 
-                ClientCommunication.SendToClient(new GlobalLightLevel(Convert.ToByte(lightLevelBar.Maximum - lightLevelBar.Value)));
+                World.Player.LocalLightLevel = 0;
+                World.Player.GlobalLightLevel = selectedLightLevel;
+
+                ClientCommunication.SendToClient(new GlobalLightLevel(selectedLightLevel));
                 ClientCommunication.SendToClient(new PersonalLightLevel(World.Player));
 
                 double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
 
                 lightLevel.Text = $"Light: {percent}%";
 
-                Config.SetProperty("LightLevel", lightLevelBar.Value);
+                Config.SetProperty("LightLevel", (int) selectedLightLevel);
             }
         }
 
@@ -8146,6 +8193,41 @@ namespace Assistant
         private void autoAcceptParty_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("AutoAcceptParty", autoAcceptParty.Checked);
+        }
+
+        private void setMaxLightLevel_Click(object sender, EventArgs e)
+        {
+            int lightLevel = lightLevelBar.Maximum - lightLevelBar.Value;
+
+            if (lightLevel > Config.GetInt("MinLightLevel"))
+            {
+                MessageBox.Show(this, $"Selected maximum light level {lightLevel} exceeds minimum light level {Config.GetInt("MinLightLevel")}",
+                    "Set Max Light Level", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                Config.SetProperty("MaxLightLevel", lightLevel);
+            }
+        }
+
+        private void setMinLightLevel_Click(object sender, EventArgs e)
+        {
+            int lightLevel = lightLevelBar.Maximum - lightLevelBar.Value;
+
+            if (lightLevel < Config.GetInt("MaxLightLevel"))
+            {
+                MessageBox.Show(this, $"Selected minimum light level {lightLevel} exceeds maximum light level {Config.GetInt("MaxLightLevel")}",
+                    "Set Min Light Level", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                Config.SetProperty("MinLightLevel", lightLevel);
+            }
+        }
+
+        private void minMaxLightLevel_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("MinMaxLightLevelEnabled", minMaxLightLevel.Checked);
         }
     }
 }

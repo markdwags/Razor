@@ -267,32 +267,6 @@ namespace Ultima
         }
 
         /// <summary>
-        /// Try to validate the folder looks like it could be a UO folder
-        /// </summary>
-        /// <param name="dir"></param>
-        /// <returns></returns>
-        public static bool ValidatePath(string dir)
-        {
-            if (string.IsNullOrEmpty(dir) || !System.IO.Directory.Exists(dir))
-                return false;
-
-            List<string> files = System.IO.Directory.EnumerateFiles(dir, "*.mul", SearchOption.TopDirectoryOnly).Select(Path.GetFileName).ToList();
-
-            double filesExist = 0;
-
-            foreach (string file in files)
-            {
-                if (m_Files.Contains(file.ToLower()))
-                {
-                    filesExist++;
-                }
-            }
-
-            // The folder should have what, 10% of the mul files
-            return filesExist / m_Files.Length > 0.10;
-        }
-
-        /// <summary>
         /// Looks up a given <paramref name="file" /> in <see cref="Files.MulPath"/>
         /// </summary>
         /// <returns>The absolute path to <paramref name="file" /> -or- <c>null</c> if <paramref name="file" /> was not found.</returns>
@@ -351,7 +325,7 @@ namespace Ultima
         {
             string dir = ConfigurationManager.AppSettings["UODataDir"];
 
-            if (!ValidatePath(dir)) // If the path in the config looks bad, try the registry as a fallback
+            if (string.IsNullOrEmpty(dir) || !System.IO.Directory.Exists(dir)) // If the path in the config looks bad, try the registry as a fallback
             {
                 for (int i = knownRegkeys.Length - 1; i >= 0; i--)
                 {

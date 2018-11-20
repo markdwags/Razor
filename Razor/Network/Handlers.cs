@@ -2589,14 +2589,54 @@ namespace Assistant
             if (World.Player != null && !args.Block)
             {
                 p.ReadUInt32(); // serial
+
                 World.Player.LocalLightLevel = p.ReadSByte();
+
+                if (EnforceLightLevels(World.Player.LocalLightLevel))
+                    args.Block = true;
             }
         }
 
         private static void GlobalLight(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player != null && !args.Block)
+            {
                 World.Player.GlobalLightLevel = p.ReadByte();
+
+                if (EnforceLightLevels(World.Player.GlobalLightLevel))
+                    args.Block = true;
+            }   
+        }
+
+        private static bool EnforceLightLevels(int lightLevel)
+        {
+            if (Config.GetBool("MinMaxLightLevelEnabled"))
+            {
+                // 0 bright, 30 is dark
+
+                if (lightLevel < Config.GetInt("MaxLightLevel"))
+                {
+                    lightLevel = Convert.ToByte(Config.GetInt("MaxLightLevel")); // light level is too light
+                }
+                else if (lightLevel > Config.GetInt("MinLightLevel")) // light level is too dark
+                {
+                    lightLevel = Convert.ToByte(Config.GetInt("MinLightLevel"));
+                }
+                else // No need to block or do anything special
+                {
+                    return false;
+                }
+
+                World.Player.LocalLightLevel = 0;
+                World.Player.GlobalLightLevel = (byte) lightLevel;
+
+                ClientCommunication.SendToClient(new GlobalLightLevel(lightLevel));
+                ClientCommunication.SendToClient(new PersonalLightLevel(World.Player));
+
+                return true;
+            }
+
+            return false;
         }
 
         private static void MovementDemand(PacketReader p, PacketHandlerEventArgs args)
