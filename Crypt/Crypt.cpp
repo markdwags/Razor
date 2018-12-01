@@ -20,7 +20,6 @@ DWORD UOProcId = 0;
 HANDLE hFileMap = NULL;
 HMODULE hInstance = NULL;
 SOCKET CurrentConnection = 0;
-int ConnectedIP = 0;
 
 HANDLE CommMutex = NULL;
 
@@ -50,7 +49,6 @@ bool Forwarding = false;
 bool Forwarded = false;
 bool ClientEncrypted = false;
 bool ServerEncrypted = false;
-bool DwmAttrState = true;
 
 enum CLIENT_TYPE { TWOD = 1, THREED = 2 };
 CLIENT_TYPE ClientType = TWOD;
@@ -1346,8 +1344,6 @@ int HookConnect( SOCKET sock, const sockaddr *addr, int addrlen )
 		}
 
 		retVal = (*(ConnFunc)OldConnect)( sock, (sockaddr*)&useAddr, sizeof(sockaddr_in) );
-
-		ConnectedIP = useAddr.sin_addr.S_un.S_addr;
 
 		if ( retVal != SOCKET_ERROR )
 		{
