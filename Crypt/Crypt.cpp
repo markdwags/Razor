@@ -398,69 +398,6 @@ DLLFUNCTION void BringToFront( HWND hWnd )
 	SetFocus( hWnd );
 }
 
-#define CHEATPROC_STR "jTjAjHjC"
-#define CHEATPROC_LEN 8
-
-DLLFUNCTION void DoFeatures( int realFeatures )
-{
-	int i, c, size = 8;
-	char pkt[512];
-	char *str = NULL;
-
-	int features = 0;
-	if ( (realFeatures & 0x8000) == 0 )
-	{
-		if ( (realFeatures & 1) != 0 )
-			features = 2;
-		if ( (realFeatures & 2) != 0 )
-			features |= 8;
-		features &= 0xFFFF;
-	}
-	else
-	{
-		features = realFeatures & 0x7FFF;
-	}
-
-	pkt[0] = 0x03;
-
-	pkt[1] = pkt[2] = 0; // size = 0 (filled in later)
-
-	pkt[3] = 0x20; // MessageType.Special
-
-	pkt[4] = 0x02; // hue = 0x2b2
-	pkt[5] = 0xB2;
-
-	pkt[6] = 0x00; // font = 3
-	pkt[7] = 0x03;
-
-	str = &pkt[8];
-
-	// CHEAT UO.exe 1 251--
-	sprintf( str, "%c%cE%c%c %s %d %d--", 'C', 'H', 'A', 'T', "UO.exe", ClientType, features );
-	c = (int)strlen( str ) + 1;
-
-	c += 16;
-
-	memcpy( &str[c], DLL_VERSION, strlen( DLL_VERSION ) );
-	c += (int)strlen( DLL_VERSION );
-	str[c++] = 0;
-
-	for (i = 0; i < c; i++)
-		str[i] = str[i] ^ pShared->CheatKey[i & 0xF];
-
-	size = 8+c;
-
-	// fill in size
-	pkt[1] = (BYTE)((size>>8)&0xFF);
-	pkt[2] = (BYTE)(size&0xFF);
-
-	WaitForSingleObject( CommMutex, 50 );
-	memcpy( pShared->OutSend.Buff + pShared->OutSend.Start + pShared->OutSend.Length, pkt, size );
-	pShared->OutSend.Length += (int)size;
-	ReleaseMutex( CommMutex );
-	PostMessage( hUOWindow, WM_UONETEVENT, SEND, 0 );
-}
-
 DLLFUNCTION bool AllowBit( unsigned long bit )
 {
 	bit &= 0x0000003F; // limited to 64 bits
@@ -536,15 +473,10 @@ DLLFUNCTION void OnAttach( void *params, int paramsLen )
 		mf.AddEntry(CRYPT_KEY_STR_3D, CRYPT_KEY_3D_LEN);
 		mf.AddEntry(CRYPT_KEY_STR_NEW, CRYPT_KEY_NEW_LEN);
 		mf.AddEntry(CRYPT_KEY_STR_MORE_NEW, CRYPT_KEY_MORE_NEW_LEN);
-		mf.AddEntry(CHEATPROC_STR, CHEATPROC_LEN);
-		mf.AddEntry("CHEAT %s", 8, 0x00500000);
 		mf.AddEntry("UO Version %s", 12);
 		mf.AddEntry("Multiple Instances Running", 26, 0x00500000);
 
-	memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
-
-		const BYTE defaultCheatKey[] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
-		memcpy(pShared->CheatKey, defaultCheatKey, 16);
+		memcpy( pShared->PacketTable, StaticPacketTable, 256*sizeof(short) );
 
 		mf.Execute();
 
@@ -676,9 +608,6 @@ DLLFUNCTION void OnAttach( void *params, int paramsLen )
 		{
 			LoginEncryption::SetKeys((const DWORD*)(addr + CRYPT_KEY_LEN), (const DWORD*)(addr + CRYPT_KEY_LEN + 6));
 		}
-
-		BYTE cheatKey[16] = { 0x98, 0x5B, 0x51, 0x7E, 0x11, 0x0C, 0x3D, 0x77, 0x2D, 0x28, 0x41, 0x22, 0x74, 0xAD, 0x5B, 0x39 };
-		memcpy(pShared->CheatKey, cheatKey, 16);
 
 		// Multi UO
 		addr = mf.GetAddress("UoClientApp", 12);

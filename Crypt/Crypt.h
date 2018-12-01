@@ -81,7 +81,6 @@ struct SharedMemory
 	unsigned short PacketTable[256];
 	char DataPath[256];
 	int Position[3];
-	unsigned char CheatKey[16];
 	bool AllowNegotiate;
 	unsigned char AuthBits[16];
 	bool Reserved0;
@@ -139,7 +138,6 @@ DLLFUNCTION bool IsCalibrated();
 DLLFUNCTION void CalibratePosition(int x, int y, int z);
 DLLFUNCTION bool GetPosition(int *x, int *y, int *z);
 DLLFUNCTION void BringToFront(HWND hWnd);
-DLLFUNCTION void DoFeatures(int realFeatures);
 DLLFUNCTION bool AllowBit(unsigned long bit);
 DLLFUNCTION void SetAllowDisconn(bool newVal);
 DLLFUNCTION BOOL HandleNegotiate(__int64 features);
@@ -228,6 +226,6 @@ key2 ^= 0xA31D527F;
 .text:0041C5C4 83 C5 01                          add     ebp, 1
 .text:0041C5C7 85 DB                             test    ebx, ebx
 */
-// E8 C1 E7 1F 0B C7 33 05 memoryloc_2 
+// E8 C1 E7 1F 0B C7 33 05 memoryloc_2
 #define CRYPT_KEY_STR_MORE_NEW "\xE8\xC1\xE7\x1F\x0B\xC7\x33\x05"
 #define CRYPT_KEY_MORE_NEW_LEN 8

@@ -18,7 +18,6 @@ EXPORTS
 	IsCalibrated
 	GetPosition
 	BringToFront
-	DoFeatures
 	AllowBit
 	SetAllowDisconn
 	OnAttach
