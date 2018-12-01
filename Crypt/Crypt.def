@@ -14,8 +14,6 @@ EXPORTS
 	WaitForWindow
 	SetDataPath
 	CalibratePosition
-	AllowBit
 	OnAttach
 	SetServer
-	HandleNegotiate
 	GetUOVersion

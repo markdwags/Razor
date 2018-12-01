@@ -89,3 +89,18 @@ DLLFUNCTION void BringToFront(HWND hWnd)
 	SetForegroundWindow(hWnd);
 	SetFocus(hWnd);
 }
+
+static bool Negotiated = false;
+static uint8_t AuthBits[16] = {};
+
+DLLFUNCTION bool AllowBit(uint64_t bit)
+{
+	bit &= 0x0000003F; // limited to 64 bits
+	return Negotiated || (AuthBits[7 - (bit / 8)] & (1 << (bit % 8))) == 0;
+}
+
+DLLFUNCTION void HandleNegotiate(uint64_t features)
+{
+	memcpy(AuthBits, &features, 16);
+	Negotiated = true;
+}

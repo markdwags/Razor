@@ -2,6 +2,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -13,3 +14,5 @@
 
 DLLFUNCTION HBITMAP CaptureScreen(HWND hUOWindow, BOOL full, const char *msg);
 DLLFUNCTION void BringToFront(HWND hWnd);
+DLLFUNCTION bool AllowBit(uint64_t bit);
+DLLFUNCTION void HandleNegotiate(uint64_t features);

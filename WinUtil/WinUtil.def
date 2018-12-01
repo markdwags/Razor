@@ -3,3 +3,5 @@ LIBRARY	WinUtil
 EXPORTS
 	CaptureScreen
 	BringToFront
+	AllowBit
+	HandleNegotiate
