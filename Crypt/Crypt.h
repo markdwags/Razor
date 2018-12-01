@@ -44,12 +44,8 @@ enum UONET_MESSAGE
 	NOTO_HUE = 13,
 	DLL_ERROR = 14,
 
-	DEATH_MSG = 15,
-
 	CALIBRATE_POS = 16,
 	GET_POS = 17,
-
-	RESERVED0 = 18,
 
 	SETWNDSIZE = 19,
 
@@ -84,7 +80,6 @@ struct SharedMemory
 	unsigned int TotalRecv;
 	unsigned short PacketTable[256];
 	char DataPath[256];
-	char DeathMsg[16];
 	int Position[3];
 	unsigned char CheatKey[16];
 	bool AllowNegotiate;

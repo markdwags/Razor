@@ -57,8 +57,6 @@ namespace Assistant
 			StatBar = 12,
 			NotoHue = 13,
 			DLL_Error = 14,
-			DeathMsg = 15,
-			Reserved0 = 18,
 			SetGameSize = 19,
 			FindData = 20,
 			SmartCPU = 21,
@@ -491,8 +489,6 @@ namespace Assistant
 		private static unsafe extern void WaitForWindow( int pid );
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void SetDataPath(string path);
-		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern void SetDeathMsg(string msg);
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void CalibratePosition( int x, int y, int z );
 		[DllImport( "Crypt.dll" )]
