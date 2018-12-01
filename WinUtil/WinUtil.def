@@ -2,3 +2,4 @@ LIBRARY	WinUtil
 
 EXPORTS
 	CaptureScreen
+	BringToFront

@@ -442,14 +442,6 @@ VOID CALLBACK CheckPosition(HWND hwnd, UINT Message, UINT TimerId, DWORD dwTime)
 	}
 }
 
-DLLFUNCTION void BringToFront( HWND hWnd )
-{
-	SetWindowPos( hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE|SWP_NOSIZE );
-	ShowWindow( hWnd, SW_SHOW );
-	SetForegroundWindow( hWnd );
-	SetFocus( hWnd );
-}
-
 DLLFUNCTION bool AllowBit( unsigned long bit )
 {
 	bit &= 0x0000003F; // limited to 64 bits
