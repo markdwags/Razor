@@ -19,7 +19,6 @@ EXPORTS
 	GetPosition
 	BringToFront
 	AllowBit
-	SetAllowDisconn
 	OnAttach
 	SetServer
 	HandleNegotiate

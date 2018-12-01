@@ -75,7 +75,6 @@ struct SharedMemory
 
 	char TitleBar[1024];
 	bool ForceDisconn;
-	bool AllowDisconn;
 	unsigned int TotalSend;
 	unsigned int TotalRecv;
 	unsigned short PacketTable[256];
@@ -139,7 +138,6 @@ DLLFUNCTION void CalibratePosition(int x, int y, int z);
 DLLFUNCTION bool GetPosition(int *x, int *y, int *z);
 DLLFUNCTION void BringToFront(HWND hWnd);
 DLLFUNCTION bool AllowBit(unsigned long bit);
-DLLFUNCTION void SetAllowDisconn(bool newVal);
 DLLFUNCTION BOOL HandleNegotiate(__int64 features);
 DLLFUNCTION void OnAttach(void *params, int paramsLen);
 DLLFUNCTION void SetServer(unsigned int addr, unsigned short port);

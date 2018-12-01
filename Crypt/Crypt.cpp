@@ -403,16 +403,6 @@ DLLFUNCTION bool AllowBit( unsigned long bit )
 	return !pShared || ( pShared->AuthBits[7-(bit/8)] & (1<<(bit%8)) ) == 0;
 }
 
-DLLFUNCTION void SetAllowDisconn( bool newVal )
-{
-	if ( pShared && CommMutex )
-	{
-		WaitForSingleObject( CommMutex, INFINITE );
-		pShared->AllowDisconn = newVal;
-		ReleaseMutex( CommMutex );
-	}
-}
-
 DLLFUNCTION BOOL HandleNegotiate( __int64 features )
 {
 	if ( pShared && pShared->AuthBits && pShared->AllowNegotiate )
@@ -454,7 +444,6 @@ DLLFUNCTION void OnAttach( void *params, int paramsLen )
 	if ( !CreateSharedMemory() )
 		return;
 
-		pShared->AllowDisconn = true;
 		CopyFailed = false;
 		mf.AddEntry("UoClientApp", 12, 0x00500000);
 		mf.AddEntry("report\0", 8, 0x00500000);
@@ -976,7 +965,7 @@ int HookRecv( SOCKET sock, char *buff, int len, int flags )
 	if ( sock == CurrentConnection && CurrentConnection )
 	{
 		WaitForSingleObject( CommMutex, INFINITE );
-		if ( pShared->ForceDisconn && pShared->AllowDisconn && pShared->OutRecv.Length <= 0 )
+		if ( pShared->ForceDisconn && pShared->OutRecv.Length <= 0 )
 		{
 			ReleaseMutex( CommMutex );
 			WSASetLastError( WSAECONNRESET );
@@ -1383,7 +1372,7 @@ int HookSelect( int ndfs, fd_set *readfd, fd_set *writefd, fd_set *exceptfd, con
 		}
 
 		WaitForSingleObject( CommMutex, INFINITE );
-		if ( pShared->OutRecv.Length > 0 || ( pShared->ForceDisconn && pShared->AllowDisconn ) )
+		if ( pShared->OutRecv.Length > 0 || ( pShared->ForceDisconn ) )
 		{
 			FD_SET( CurrentConnection, readfd );
 			myRet++;
@@ -1394,7 +1383,7 @@ int HookSelect( int ndfs, fd_set *readfd, fd_set *writefd, fd_set *exceptfd, con
 	if ( checkErr && !FD_ISSET( CurrentConnection, exceptfd ) )
 	{
 		WaitForSingleObject( CommMutex, INFINITE );
-		if ( pShared->ForceDisconn && pShared->AllowDisconn && pShared->OutRecv.Length <= 0 )
+		if ( pShared->ForceDisconn && pShared->OutRecv.Length <= 0 )
 		{
 			FD_SET( CurrentConnection, exceptfd );
 			myRet++;

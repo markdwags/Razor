@@ -107,10 +107,6 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern bool IsDynLength(byte packetId);
 		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern int GetUOProcId();
-		[DllImport( "Crypt.dll" )]
-		private static unsafe extern void SetCustomTitle( string title );
-		[DllImport( "Crypt.dll" )]
 		private static unsafe extern IntPtr GetCommMutex();
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern uint TotalIn();
@@ -132,14 +128,6 @@ namespace Assistant
 		internal static unsafe extern void BringToFront( IntPtr hWnd );
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern bool AllowBit( uint bit );
-		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern void SetAllowDisconn( bool allowed );
-        /*[DllImport( "Crypt.dll" )]
-		private static unsafe extern void TranslateSetup( IntPtr setupFunc );
-		[DllImport( "Crypt.dll" )]
-		private static unsafe extern void TranslateLogin( IntPtr loginFunc, string name, string shard );
-		[DllImport( "Crypt.dll" )]
-		private static unsafe extern void TranslateDo( IntPtr translateFunc, string inText, StringBuilder outText, ref uint outLen );*/
         [DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetServer( uint ip, ushort port );
 		[DllImport( "Crypt.dll" )]
