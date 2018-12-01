@@ -11,7 +11,6 @@ EXPORTS
 	GetCommMutex
 	TotalIn
 	TotalOut
-	CaptureScreen
 	WaitForWindow
 	SetDataPath
 	CalibratePosition
