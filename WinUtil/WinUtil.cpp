@@ -81,3 +81,11 @@ DLLFUNCTION HBITMAP CaptureScreen(HWND hUOWindow, BOOL full, const char *msg)
 
 	return hBMP;
 }
+
+DLLFUNCTION void BringToFront(HWND hWnd)
+{
+	SetWindowPos(hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	ShowWindow(hWnd, SW_SHOW);
+	SetForegroundWindow(hWnd);
+	SetFocus(hWnd);
+}

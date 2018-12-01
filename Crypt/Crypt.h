@@ -144,7 +144,6 @@ DLLFUNCTION HANDLE GetCommMutex();
 DLLFUNCTION unsigned int TotalIn();
 DLLFUNCTION unsigned int TotalOut();
 DLLFUNCTION void CalibratePosition(uint16_t x, uint16_t y, uint16_t z);
-DLLFUNCTION void BringToFront(HWND hWnd);
 DLLFUNCTION bool AllowBit(unsigned long bit);
 DLLFUNCTION BOOL HandleNegotiate(__int64 features);
 DLLFUNCTION void OnAttach(void *params, int paramsLen);

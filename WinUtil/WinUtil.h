@@ -12,3 +12,4 @@
 #define DLLFUNCTION __declspec(dllexport)
 
 DLLFUNCTION HBITMAP CaptureScreen(HWND hUOWindow, BOOL full, const char *msg);
+DLLFUNCTION void BringToFront(HWND hWnd);

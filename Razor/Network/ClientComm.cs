@@ -125,8 +125,6 @@ namespace Assistant
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void CalibratePosition( uint x, uint y, uint z, byte dir );
 		[DllImport( "Crypt.dll" )]
-		internal static unsafe extern void BringToFront( IntPtr hWnd );
-		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern bool AllowBit( uint bit );
         [DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetServer( uint ip, ushort port );
@@ -137,6 +135,8 @@ namespace Assistant
 
 		[DllImport("WinUtil.dll")]
 		internal static unsafe extern IntPtr CaptureScreen(IntPtr handle, bool isFullScreen, string msgStr);
+		[DllImport("WinUtil.dll")]
+		internal static unsafe extern void BringToFront(IntPtr hWnd);
 
 		public enum Loader_Error
 		{
