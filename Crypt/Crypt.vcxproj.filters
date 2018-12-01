@@ -92,9 +92,6 @@
     <ClInclude Include="UOArt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Obfuscation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource1.h">
       <Filter>Header Files</Filter>
     </ClInclude>

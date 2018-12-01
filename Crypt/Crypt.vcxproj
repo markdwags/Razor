@@ -152,7 +152,6 @@
     <ClInclude Include="gfx.h" />
     <ClInclude Include="LoginEncryption.h" />
     <ClInclude Include="MemFinder.h" />
-    <ClInclude Include="Obfuscation.h" />
     <ClInclude Include="OSIEncryption.h" />
     <ClInclude Include="PacketInfo.h" />
     <ClInclude Include="platform.h" />

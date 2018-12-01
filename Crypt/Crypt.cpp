@@ -5,7 +5,6 @@
 #include "OSIEncryption.h"
 #include "LoginEncryption.h"
 #include "MemFinder.h"
-#include "Obfuscation.h"
 
 //*************************************************************************************
 //**************************************Variables**************************************
