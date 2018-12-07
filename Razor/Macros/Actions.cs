@@ -944,9 +944,9 @@ namespace Assistant.Macros
         private TargetInfo _target;
         private readonly string _variableName;
 
-        public AbsoluteTargetVariableAction(string name)
+        public AbsoluteTargetVariableAction(string[] args)
         {
-            _variableName = name;
+            _variableName = args[1];
         }
 
         public override bool Perform()
