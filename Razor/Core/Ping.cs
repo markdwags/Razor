@@ -15,7 +15,7 @@ namespace Assistant
             if (seq == m_Seq && m_Start != DateTime.MinValue)
             {
                 double ms = (DateTime.UtcNow - m_Start).TotalMilliseconds;
-                m_Time += ms;
+                
                 if (ms < m_Min)
                     m_Min = ms;
                 if (ms > m_Max)
@@ -23,6 +23,7 @@ namespace Assistant
 
                 if (m_Count-- > 0)
                 {
+                    m_Time += ms;
                     World.Player.SendMessage(MsgLevel.Force, $"Response: {ms:F1}ms");
                     DoPing();
                 }
