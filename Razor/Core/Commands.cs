@@ -336,16 +336,25 @@ namespace Assistant
                 {
                     text = text.Substring(1);
                     string[] split = text.Split(' ', '\t');
-                    CommandCallback call = (CommandCallback)m_List[split[0]];
-                    if (call != null)
-                    {
-                        string[] param = new String[split.Length - 1];
-                        for (int i = 0; i < param.Length; i++)
-                            param[i] = split[i + 1];
-                        call(param);
 
-                        args.Block = true;
+                    if (m_List.ContainsKey(split[0]))
+                    {
+                        CommandCallback call = (CommandCallback)m_List[split[0]];
+                        if (call != null)
+                        {
+                            string[] param = new String[split.Length - 1];
+                            for (int i = 0; i < param.Length; i++)
+                                param[i] = split[i + 1];
+                            call(param);
+
+                            args.Block = true;
+                        }
                     }
+                    else
+                    {
+                        World.Player.SendMessage(MsgLevel.Force, "Unknown command");
+                    }
+                    
                 }
             }
         }
