@@ -2594,6 +2594,16 @@ namespace Assistant
             }
 
             RestockItem ri = new RestockItem(gfx, InputBox.GetInt(1));
+
+            foreach (RestockItem restockItem in m_Items)
+            {
+                if (restockItem.ItemID.Value == gfx)
+                {
+                    World.Player.SendMessage(MsgLevel.Force, LocString.ItemExists);
+                    return;
+                }
+            }
+
             m_Items.Add(ri);
             m_SubList.Items.Add(ri);
 
