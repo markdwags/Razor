@@ -8090,6 +8090,21 @@ namespace Assistant
             if (agentList.SelectedIndex < 0 || agentSubList.Items.Count == 0)
                 return;
 
+            if (e.Button == MouseButtons.Left && e.Clicks == 2)
+            {
+                Agent a = agentList.SelectedItem as Agent;
+
+                switch (agentList.SelectedItem)
+                {
+                    case RestockAgent _:
+                        a.OnButtonPress(3);
+                        break;
+                    case BuyAgent _:
+                        a.OnButtonPress(2);
+                        break;
+                }
+            }
+
             //if (e.Button == MouseButtons.Right && e.Clicks == 1)
             //{
             //    ContextMenu menu = new ContextMenu();
