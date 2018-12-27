@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Assistant.Core;
+using Assistant.Filters;
 using Assistant.Macros;
 
 namespace Assistant
@@ -1731,6 +1732,9 @@ namespace Assistant
             }
 
             Item.UpdateContainers();
+
+            if (Config.GetBool("ShowStaticWalls"))
+                args.Block = WallStaticFilter.MakeWallStatic(item);
         }
 
         private static void SAWorldItem(PacketReader p, PacketHandlerEventArgs args)
@@ -1855,6 +1859,9 @@ namespace Assistant
             }
 
             Item.UpdateContainers();
+
+            if (Config.GetBool("ShowStaticWalls"))
+                args.Block = WallStaticFilter.MakeWallStatic(item);
         }
 
         public static List<string> SysMessages = new List<string>();        

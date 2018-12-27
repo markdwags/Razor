@@ -200,6 +200,8 @@ namespace Assistant
             AddProperty("MaxLightLevel", 31);
             AddProperty("MinLightLevel", 0);
             AddProperty("MinMaxLightLevelEnabled", false);
+            AddProperty("ShowStaticWalls", false);
+            AddProperty("ShowStaticWallLabels", false);
 
             Counter.Default();
             Filter.DisableAll();

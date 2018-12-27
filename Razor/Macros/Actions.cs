@@ -946,7 +946,7 @@ namespace Assistant.Macros
 
         public AbsoluteTargetVariableAction(string[] args)
         {
-            _variableName = args[1];
+            _variableName = args.Length > 1 ? args[1] : args[0];
         }
 
         public override bool Perform()

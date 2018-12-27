@@ -303,6 +303,8 @@ namespace Assistant
         private Button setMinLightLevel;
         private Button setMaxLightLevel;
         private CheckBox minMaxLightLevel;
+        private CheckBox showStaticWalls;
+        private CheckBox showStaticWallLabels;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -637,6 +639,8 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.showStaticWalls = new System.Windows.Forms.CheckBox();
+            this.showStaticWallLabels = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -1336,6 +1340,8 @@ namespace Assistant
             //
             // moreMoreOptTab
             //
+            this.moreMoreOptTab.Controls.Add(this.showStaticWallLabels);
+            this.moreMoreOptTab.Controls.Add(this.showStaticWalls);
             this.moreMoreOptTab.Controls.Add(this.autoAcceptParty);
             this.moreMoreOptTab.Controls.Add(this.containerLabels);
             this.moreMoreOptTab.Controls.Add(this.showContainerLabels);
@@ -1402,7 +1408,7 @@ namespace Assistant
             // showContainerLabels
             //
             this.showContainerLabels.AutoSize = true;
-            this.showContainerLabels.Location = new System.Drawing.Point(245, 314);
+            this.showContainerLabels.Location = new System.Drawing.Point(245, 313);
             this.showContainerLabels.Name = "showContainerLabels";
             this.showContainerLabels.Size = new System.Drawing.Size(141, 19);
             this.showContainerLabels.TabIndex = 81;
@@ -3542,6 +3548,29 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
+            //
+            // showStaticWalls
+            //
+            this.showStaticWalls.AutoSize = true;
+            this.showStaticWalls.Location = new System.Drawing.Point(8, 317);
+            this.showStaticWalls.Name = "showStaticWalls";
+            this.showStaticWalls.Size = new System.Drawing.Size(153, 19);
+            this.showStaticWalls.TabIndex = 84;
+            this.showStaticWalls.Text = "Static magic fields/walls";
+            this.showStaticWalls.UseVisualStyleBackColor = true;
+            this.showStaticWalls.CheckedChanged += new System.EventHandler(this.showStaticWalls_CheckedChanged);
+            //
+            // showStaticWallLabels
+            //
+            this.showStaticWallLabels.AutoSize = true;
+            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showStaticWallLabels.Location = new System.Drawing.Point(164, 317);
+            this.showStaticWallLabels.Name = "showStaticWallLabels";
+            this.showStaticWallLabels.Size = new System.Drawing.Size(60, 19);
+            this.showStaticWallLabels.TabIndex = 85;
+            this.showStaticWallLabels.Text = "Labels";
+            this.showStaticWallLabels.UseVisualStyleBackColor = true;
+            this.showStaticWallLabels.CheckedChanged += new System.EventHandler(this.showStaticWallLabels_CheckedChanged);
             //
             // MainForm
             //
@@ -8245,6 +8274,16 @@ namespace Assistant
         private void minMaxLightLevel_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("MinMaxLightLevelEnabled", minMaxLightLevel.Checked);
+        }
+
+        private void showStaticWalls_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowStaticWalls", showStaticWalls.Checked);
+        }
+
+        private void showStaticWallLabels_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowStaticWallLabels", showStaticWallLabels.Checked);
         }
     }
 }

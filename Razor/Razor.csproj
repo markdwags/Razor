@@ -179,6 +179,7 @@
     <Compile Include="Filters\VetRewardGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\WallStaticFilter.cs" />
     <Compile Include="Filters\Weather.cs">
       <SubType>Code</SubType>
     </Compile>
