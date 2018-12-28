@@ -202,6 +202,9 @@ namespace Assistant.Macros
 
         public static void Pause()
         {
+            if (m_Current == null)
+                return;
+
             if (m_Paused)
             {
                 // unpause
