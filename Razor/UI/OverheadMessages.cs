@@ -144,12 +144,12 @@ namespace Assistant.UI
                 message.MessageOverhead = overheadFormat.Text.Replace("{msg}", message.MessageOverhead);
             }*/
 
-            Close();
+            Hide();
         }
 
         private void cancelOverheadMessages_Click(object sender, EventArgs e)
         {
-            Close();
+            Hide();
         }
 
     }

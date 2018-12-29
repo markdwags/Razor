@@ -8000,11 +8000,19 @@ namespace Assistant
             Config.SetProperty("LogSkillChanges", logSkillChanges.Checked);
         }
 
+        private OverheadMessages _overMessagesForm = null;
+
         private void overHeadMessages_Click(object sender, EventArgs e)
         {
-            OverheadMessages form = new OverheadMessages();
-            form.Show();
-            form.BringToFront();
+            if (_overMessagesForm != null)
+            {
+                _overMessagesForm.Show();
+            }
+            else
+            {
+                _overMessagesForm = new OverheadMessages();
+                _overMessagesForm.Show();
+            }
         }
 
         private void saveProfile_Click(object sender, EventArgs e)
@@ -8180,14 +8188,19 @@ namespace Assistant
             containerLabels.Enabled = showContainerLabels.Checked;
         }
 
+        private ContainerLabels _containerLabelsForm = null;
+
         private void containerLabels_Click(object sender, EventArgs e)
         {
-            //if (World.Player == null)
-            //    return;
-
-            ContainerLabels form = new ContainerLabels();
-            form.Show();
-            form.BringToFront();
+            if (_containerLabelsForm != null)
+            {
+                _containerLabelsForm.Show();
+            }
+            else
+            {
+                _containerLabelsForm = new ContainerLabels();
+                _containerLabelsForm.Show();
+            }
         }
 
         private void realSeason_CheckedChanged(object sender, EventArgs e)

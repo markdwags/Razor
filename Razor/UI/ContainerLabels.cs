@@ -108,7 +108,7 @@ namespace Assistant.UI
 
             Config.Save();
 
-            Close();
+            Hide();
         }
 
         private void removeContainerLabel_Click(object sender, EventArgs e)
@@ -121,7 +121,7 @@ namespace Assistant.UI
 
         private void cancelOverheadMessages_Click(object sender, EventArgs e)
         {
-            Close();
+            Hide();
         }
 
         private void addContainLabel_Click(object sender, EventArgs e)
