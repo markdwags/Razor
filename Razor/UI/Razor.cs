@@ -6342,7 +6342,7 @@ namespace Assistant
             }
         }
 
-        private int _macroActionToCopy;
+        private MacroAction _macroActionToCopy;
 
         private void onMacroCopyLine(object sender, System.EventArgs e)
         {
@@ -6354,11 +6354,14 @@ namespace Assistant
             if (a < 0 || a >= m.Actions.Count)
                 return;
 
-            _macroActionToCopy = a;
+            _macroActionToCopy = (MacroAction) m.Actions[a];
         }
 
         private void onMacroPasteLine(object sender, System.EventArgs e)
         {
+            if (_macroActionToCopy == null)
+                return;
+
             Macro m = GetMacroSel();
             if (m == null)
                 return;
@@ -6367,12 +6370,14 @@ namespace Assistant
             if (a < 0 || a >= m.Actions.Count)
                 return;
 
-            m.Actions.Insert(a + 1,
-                m.Actions[_macroActionToCopy]);
-
+            m.Actions.Insert(a + 1, _macroActionToCopy);
+            
             RedrawActionList(m);
 
             actionList.SelectedIndex = a + 1;
+
+            onMacroSave(sender, e);
+            onMacroReload(sender, e);
         }
 
         private void onMacroActionDelete(object sender, System.EventArgs e)
