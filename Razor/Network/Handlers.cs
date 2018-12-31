@@ -2929,17 +2929,10 @@ namespace Assistant
 
                 Mobile m = World.FindMobile(serial);
 
-                if (m != null)
-                {
-                    if (FriendsAgent.IsFriend(m))
-                    {
-                        World.Player.OverheadMessage(63, $"Attack: {m.Name}");
-                    }
-                    else
-                    {
-                        World.Player.OverheadMessage(m.GetNotorietyColorInt(), $"Attack: {m.Name}");
-                    }
-                }
+                if (m == null) return;
+
+                World.Player.OverheadMessage(FriendsAgent.IsFriend(m) ? 63 : m.GetNotorietyColorInt(),
+                    $"Attack: {m.Name}");
             }
         }
 

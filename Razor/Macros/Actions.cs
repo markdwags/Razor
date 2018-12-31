@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -1358,7 +1360,14 @@ namespace Assistant.Macros
                 hue = World.Player.SpeechHue;
             }
 
-            ClientCommunication.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech));
+            List<ushort> kw = null;
+
+            if (m_Keywords != null)
+            {
+                kw = m_Keywords.OfType<ushort>().ToList();
+            }
+
+            ClientCommunication.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, kw, m_Speech));
             return true;
         }
 

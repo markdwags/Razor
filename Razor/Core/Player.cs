@@ -977,6 +977,20 @@ namespace Assistant
             }
         }
 
+        internal void Say(int hue, string msg)
+        {
+            List<ushort> kw = EncodedSpeech.GetKeywords(msg);
+
+            if (kw.Count == 1 && kw[0] == 0)
+            {
+                ClientCommunication.SendToServer(new ClientUniMessage(MessageType.Regular, hue, 3, Language.CliLocName, kw, msg));
+            }
+            else
+            {
+                ClientCommunication.SendToServer(new ClientUniMessage(MessageType.Encoded, hue, 3, Language.CliLocName, kw, msg));
+            }
+        }
+
         public uint CurrentGumpS, CurrentGumpI;
         public GumpResponseAction LastGumpResponseAction;
         public bool HasGump;

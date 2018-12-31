@@ -305,6 +305,8 @@ namespace Assistant
         private CheckBox minMaxLightLevel;
         private CheckBox showStaticWalls;
         private CheckBox showStaticWallLabels;
+        private CheckBox showAttackTargetNewOnly;
+        private CheckBox showTextTargetIndicator;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -429,6 +431,10 @@ namespace Assistant
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.minMaxLightLevel = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+            this.showAttackTargetNewOnly = new System.Windows.Forms.CheckBox();
+            this.showTextTargetIndicator = new System.Windows.Forms.CheckBox();
+            this.showStaticWallLabels = new System.Windows.Forms.CheckBox();
+            this.showStaticWalls = new System.Windows.Forms.CheckBox();
             this.autoAcceptParty = new System.Windows.Forms.CheckBox();
             this.containerLabels = new System.Windows.Forms.Button();
             this.showContainerLabels = new System.Windows.Forms.CheckBox();
@@ -639,8 +645,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.showStaticWalls = new System.Windows.Forms.CheckBox();
-            this.showStaticWallLabels = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -703,7 +707,7 @@ namespace Assistant
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(490, 477);
+            this.tabs.Size = new System.Drawing.Size(490, 411);
             this.tabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabs.TabIndex = 0;
             this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_IndexChanged);
@@ -726,7 +730,7 @@ namespace Assistant
             this.generalTab.Controls.Add(this.label9);
             this.generalTab.Location = new System.Drawing.Point(4, 44);
             this.generalTab.Name = "generalTab";
-            this.generalTab.Size = new System.Drawing.Size(482, 429);
+            this.generalTab.Size = new System.Drawing.Size(482, 384);
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             //
@@ -963,7 +967,7 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.minMaxLightLevel);
             this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(482, 429);
+            this.moreOptTab.Size = new System.Drawing.Size(482, 384);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             //
@@ -1340,8 +1344,10 @@ namespace Assistant
             //
             // moreMoreOptTab
             //
-            this.moreMoreOptTab.Controls.Add(this.showStaticWallLabels);
             this.moreMoreOptTab.Controls.Add(this.showStaticWalls);
+            this.moreMoreOptTab.Controls.Add(this.showAttackTargetNewOnly);
+            this.moreMoreOptTab.Controls.Add(this.showTextTargetIndicator);
+            this.moreMoreOptTab.Controls.Add(this.showStaticWallLabels);
             this.moreMoreOptTab.Controls.Add(this.autoAcceptParty);
             this.moreMoreOptTab.Controls.Add(this.containerLabels);
             this.moreMoreOptTab.Controls.Add(this.showContainerLabels);
@@ -1381,9 +1387,53 @@ namespace Assistant
             this.moreMoreOptTab.Controls.Add(this.chkPartyOverhead);
             this.moreMoreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreMoreOptTab.Name = "moreMoreOptTab";
-            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 429);
+            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 363);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
+            //
+            // showAttackTargetNewOnly
+            //
+            this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showAttackTargetNewOnly.Location = new System.Drawing.Point(185, 317);
+            this.showAttackTargetNewOnly.Name = "showAttackTargetNewOnly";
+            this.showAttackTargetNewOnly.Size = new System.Drawing.Size(74, 44);
+            this.showAttackTargetNewOnly.TabIndex = 87;
+            this.showAttackTargetNewOnly.Text = "New targets";
+            this.showAttackTargetNewOnly.UseVisualStyleBackColor = true;
+            this.showAttackTargetNewOnly.CheckedChanged += new System.EventHandler(this.showAttackTargetNewOnly_CheckedChanged);
+            //
+            // showTextTargetIndicator
+            //
+            this.showTextTargetIndicator.Location = new System.Drawing.Point(8, 340);
+            this.showTextTargetIndicator.Name = "showTextTargetIndicator";
+            this.showTextTargetIndicator.Size = new System.Drawing.Size(232, 19);
+            this.showTextTargetIndicator.TabIndex = 86;
+            this.showTextTargetIndicator.Text = "Show text target indicator";
+            this.showTextTargetIndicator.UseVisualStyleBackColor = true;
+            this.showTextTargetIndicator.CheckedChanged += new System.EventHandler(this.showTextTargetIndicator_CheckedChanged);
+            //
+            // showStaticWallLabels
+            //
+            this.showStaticWallLabels.AutoSize = true;
+            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showStaticWallLabels.Location = new System.Drawing.Point(401, 315);
+            this.showStaticWallLabels.Name = "showStaticWallLabels";
+            this.showStaticWallLabels.Size = new System.Drawing.Size(60, 19);
+            this.showStaticWallLabels.TabIndex = 85;
+            this.showStaticWallLabels.Text = "Labels";
+            this.showStaticWallLabels.UseVisualStyleBackColor = true;
+            this.showStaticWallLabels.CheckedChanged += new System.EventHandler(this.showStaticWallLabels_CheckedChanged);
+            //
+            // showStaticWalls
+            //
+            this.showStaticWalls.AutoSize = true;
+            this.showStaticWalls.Location = new System.Drawing.Point(245, 315);
+            this.showStaticWalls.Name = "showStaticWalls";
+            this.showStaticWalls.Size = new System.Drawing.Size(153, 19);
+            this.showStaticWalls.TabIndex = 84;
+            this.showStaticWalls.Text = "Static magic fields/walls";
+            this.showStaticWalls.UseVisualStyleBackColor = true;
+            this.showStaticWalls.CheckedChanged += new System.EventHandler(this.showStaticWalls_CheckedChanged);
             //
             // autoAcceptParty
             //
@@ -1397,7 +1447,7 @@ namespace Assistant
             // containerLabels
             //
             this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.containerLabels.Location = new System.Drawing.Point(425, 313);
+            this.containerLabels.Location = new System.Drawing.Point(425, 290);
             this.containerLabels.Name = "containerLabels";
             this.containerLabels.Size = new System.Drawing.Size(33, 19);
             this.containerLabels.TabIndex = 82;
@@ -1408,7 +1458,7 @@ namespace Assistant
             // showContainerLabels
             //
             this.showContainerLabels.AutoSize = true;
-            this.showContainerLabels.Location = new System.Drawing.Point(245, 313);
+            this.showContainerLabels.Location = new System.Drawing.Point(245, 290);
             this.showContainerLabels.Name = "showContainerLabels";
             this.showContainerLabels.Size = new System.Drawing.Size(141, 19);
             this.showContainerLabels.TabIndex = 81;
@@ -1418,11 +1468,11 @@ namespace Assistant
             //
             // showAttackTarget
             //
-            this.showAttackTarget.Location = new System.Drawing.Point(245, 289);
+            this.showAttackTarget.Location = new System.Drawing.Point(8, 315);
             this.showAttackTarget.Name = "showAttackTarget";
             this.showAttackTarget.Size = new System.Drawing.Size(232, 19);
             this.showAttackTarget.TabIndex = 80;
-            this.showAttackTarget.Text = "Show attack target name overhead";
+            this.showAttackTarget.Text = "Attack/target name overhead";
             this.showAttackTarget.UseVisualStyleBackColor = true;
             this.showAttackTarget.CheckedChanged += new System.EventHandler(this.showAttackTarget_CheckedChanged);
             //
@@ -1477,9 +1527,9 @@ namespace Assistant
             // stealthOverhead
             //
             this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stealthOverhead.Location = new System.Drawing.Point(387, 75);
+            this.stealthOverhead.Location = new System.Drawing.Point(383, 75);
             this.stealthOverhead.Name = "stealthOverhead";
-            this.stealthOverhead.Size = new System.Drawing.Size(92, 36);
+            this.stealthOverhead.Size = new System.Drawing.Size(96, 36);
             this.stealthOverhead.TabIndex = 76;
             this.stealthOverhead.Text = "Show overhead";
             this.stealthOverhead.UseVisualStyleBackColor = true;
@@ -1745,7 +1795,7 @@ namespace Assistant
             this.displayTab.Controls.Add(this.groupBox2);
             this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(482, 429);
+            this.displayTab.Size = new System.Drawing.Size(482, 384);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             //
@@ -1981,7 +2031,7 @@ namespace Assistant
             this.dressTab.Controls.Add(this.groupBox5);
             this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 429);
+            this.dressTab.Size = new System.Drawing.Size(482, 384);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             //
@@ -2141,7 +2191,7 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.skillList);
             this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 429);
+            this.skillsTab.Size = new System.Drawing.Size(482, 384);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             //
@@ -2294,7 +2344,7 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB3);
             this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 429);
+            this.agentsTab.Size = new System.Drawing.Size(482, 384);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             //
@@ -2384,7 +2434,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 429);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 384);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2535,7 +2585,7 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 429);
+            this.macrosTab.Size = new System.Drawing.Size(482, 384);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             //
@@ -2774,7 +2824,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.trackPlayerPosition);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(482, 429);
+            this.mapTab.Size = new System.Drawing.Size(482, 384);
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             //
@@ -2910,7 +2960,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 429);
+            this.videoTab.Size = new System.Drawing.Size(482, 384);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             //
@@ -3177,7 +3227,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(482, 429);
+            this.screenshotTab.Size = new System.Drawing.Size(482, 384);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             //
@@ -3344,7 +3394,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 429);
+            this.advancedTab.Size = new System.Drawing.Size(482, 384);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             //
@@ -3456,7 +3506,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 429);
+            this.aboutTab.Size = new System.Drawing.Size(482, 384);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             //
@@ -3548,29 +3598,6 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-            //
-            // showStaticWalls
-            //
-            this.showStaticWalls.AutoSize = true;
-            this.showStaticWalls.Location = new System.Drawing.Point(8, 317);
-            this.showStaticWalls.Name = "showStaticWalls";
-            this.showStaticWalls.Size = new System.Drawing.Size(153, 19);
-            this.showStaticWalls.TabIndex = 84;
-            this.showStaticWalls.Text = "Static magic fields/walls";
-            this.showStaticWalls.UseVisualStyleBackColor = true;
-            this.showStaticWalls.CheckedChanged += new System.EventHandler(this.showStaticWalls_CheckedChanged);
-            //
-            // showStaticWallLabels
-            //
-            this.showStaticWallLabels.AutoSize = true;
-            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showStaticWallLabels.Location = new System.Drawing.Point(164, 317);
-            this.showStaticWallLabels.Name = "showStaticWallLabels";
-            this.showStaticWallLabels.Size = new System.Drawing.Size(60, 19);
-            this.showStaticWallLabels.TabIndex = 85;
-            this.showStaticWallLabels.Text = "Labels";
-            this.showStaticWallLabels.UseVisualStyleBackColor = true;
-            this.showStaticWallLabels.CheckedChanged += new System.EventHandler(this.showStaticWallLabels_CheckedChanged);
             //
             // MainForm
             //
@@ -4029,7 +4056,7 @@ namespace Assistant
             }
             else if (tabs.SelectedTab == moreMoreOptTab)
             {
-                tabs.Size = new Size(tabs.Size.Width, 392);
+                tabs.Size = new Size(tabs.Size.Width, 411);
                 Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
             }
             else if (tabs.SelectedTab == moreOptTab)
@@ -6371,7 +6398,7 @@ namespace Assistant
                 return;
 
             m.Actions.Insert(a + 1, _macroActionToCopy);
-            
+
             RedrawActionList(m);
 
             actionList.SelectedIndex = a + 1;
@@ -7959,11 +7986,19 @@ namespace Assistant
             Config.SetProperty("TiltMap", showPartyMemberPositions.Checked);
         }
 
+        private BoatWindow _boatWindowForm = null;
+
         private void boatControl_Click(object sender, EventArgs e)
         {
-            BoatWindow boatWindow = new BoatWindow();
-            boatWindow.Show();
-            boatWindow.BringToFront();
+            if (_boatWindowForm != null)
+            {
+                _boatWindowForm.Show();
+            }
+            else
+            {
+                _boatWindowForm = new BoatWindow();
+                _boatWindowForm.Show();
+            }
         }
 
         private void showTargetMessagesOverChar_CheckedChanged(object sender, EventArgs e)
@@ -8302,6 +8337,16 @@ namespace Assistant
         private void showStaticWallLabels_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowStaticWallLabels", showStaticWallLabels.Checked);
+        }
+
+        private void showTextTargetIndicator_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowTextTargetIndicator", showTextTargetIndicator.Checked);
+        }
+
+        private void showAttackTargetNewOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowAttackTargetNewOnly", showAttackTargetNewOnly.Checked);
         }
     }
 }

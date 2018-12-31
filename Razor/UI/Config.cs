@@ -203,6 +203,9 @@ namespace Assistant
             AddProperty("ShowStaticWalls", false);
             AddProperty("ShowStaticWallLabels", false);
 
+            AddProperty("ShowTextTargetIndicator", false);
+            AddProperty("ShowAttackTargetNewOnly", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
@@ -211,6 +214,7 @@ namespace Assistant
             PasswordMemory.ClearAll();
             OverheadMessages.ClearAll();
             ContainerLabels.ClearAll();
+            AbsoluteTargets.ClearAll();
         }
 
         public string Name

@@ -12,6 +12,17 @@ namespace Assistant.Boat
 {
     public partial class BoatWindow : Form
     {
+        private enum Orientation
+        {
+            Normal,
+            Northwest,
+            Southwest,
+            Southeast,
+            Northeast
+        }
+
+        private int _orientation = 0;
+
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
 
@@ -24,288 +35,11 @@ namespace Assistant.Boat
         private bool _inT2A = false;
         private bool _ancherUp = false;
 
-        private List<BoatCommandKeywords> _boatCommandKw = new List<BoatCommandKeywords>();
-
-        private class BoatCommandKeywords
-        {
-            public string command { get; set; }
-            public ArrayList keywords { get; set; }
-        }
-
         public BoatWindow()
         {
             InitializeComponent();
             this.MouseDown += BoatWindow_MouseDown;
             this.boatBorder.MouseDown += BoatWindow_MouseDown;
-
-            LoadKeywords();
-        }
-
-        private void LoadKeywords()
-        {
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "stop",
-                keywords = new ArrayList(5) {(ushort) 48, (byte) 54, (byte) 4, (byte) 241, (byte) 97}
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "forward left",
-                keywords = new ArrayList(2) { (ushort)16, (byte)75 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "forward",
-                keywords = new ArrayList(2) { (ushort)16, (byte)69 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "forward right",
-                keywords = new ArrayList(2) { (ushort)16, (byte)76 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "right",
-                keywords = new ArrayList(2) { (ushort)16, (byte)72 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "back right",
-                keywords = new ArrayList(2) { (ushort)16, (byte)78 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "back",
-                keywords = new ArrayList(2) { (ushort)16, (byte)70 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "back left",
-                keywords = new ArrayList(2) { (ushort)16, (byte)77 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "left",
-                keywords = new ArrayList(2) { (ushort)16, (byte)71 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "slow left",
-                keywords = new ArrayList(2) { (ushort)16, (byte)80 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "slow forward left",
-                keywords = new ArrayList(2) { (ushort)16, (byte)84 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "slow forward",
-                keywords = new ArrayList(2) { (ushort)16, (byte)82 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "slow forward right",
-                keywords = new ArrayList(2) { (ushort)16, (byte)85 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "slow right",
-                keywords = new ArrayList(2) { (ushort)16, (byte)81 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "slow back right",
-                keywords = new ArrayList(2) { (ushort)16, (byte)86 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "slow back",
-                keywords = new ArrayList(2) { (ushort)16, (byte)83 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "slow back left",
-                keywords = new ArrayList(2) { (ushort)16, (byte)87 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "forward left one",
-                keywords = new ArrayList(2) { (ushort)16, (byte)92 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "forward one",
-                keywords = new ArrayList(2) { (ushort)16, (byte)90 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "forward right one",
-                keywords = new ArrayList(2) { (ushort)16, (byte)93 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "right one",
-                keywords = new ArrayList(2) { (ushort)16, (byte)89 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "back right one",
-                keywords = new ArrayList(2) { (ushort)16, (byte)94 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "back one",
-                keywords = new ArrayList(2) { (ushort)16, (byte)91 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "back left one",
-                keywords = new ArrayList(2) { (ushort)16, (byte)95 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "left one",
-                keywords = new ArrayList(2) { (ushort)16, (byte)88 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "turn right",
-                keywords = new ArrayList(2) { (ushort)16, (byte)101 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "turn left",
-                keywords = new ArrayList(2) { (ushort)16, (byte)102 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "raise anchor",
-                keywords = new ArrayList(4) { (ushort)32, (byte)44, (byte)6, (byte)176 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "drop anchor",
-                keywords = new ArrayList(4) { (ushort)32, (byte)44, (byte)6, (byte)160 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "turn around",
-                keywords = new ArrayList(2) { (ushort)16, (byte)103 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "doracron",
-                keywords = new ArrayList(0)
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "sueacron",
-                keywords = new ArrayList(0)
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "goto 1",
-                keywords = new ArrayList(2) { (ushort)16, (byte)99 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "goto 2",
-                keywords = new ArrayList(2) { (ushort)16, (byte)99 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "goto 3",
-                keywords = new ArrayList(2) { (ushort)16, (byte)99 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "goto 4",
-                keywords = new ArrayList(2) { (ushort)16, (byte)99 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "goto 5",
-                keywords = new ArrayList(2) { (ushort)16, (byte)99 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "goto 6",
-                keywords = new ArrayList(2) { (ushort)16, (byte)99 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "goto 7",
-                keywords = new ArrayList(2) { (ushort)16, (byte)99 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "goto 8",
-                keywords = new ArrayList(2) { (ushort)16, (byte)99 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "goto 9",
-                keywords = new ArrayList(2) { (ushort)16, (byte)99 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "start",
-                keywords = new ArrayList(2) { (ushort)16, (byte)97 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "continue",
-                keywords = new ArrayList(2) { (ushort)16, (byte)98 }
-            });
-
-            _boatCommandKw.Add(new BoatCommandKeywords
-            {
-                command = "nav",
-                keywords = new ArrayList(2) { (ushort)16, (byte)96 }
-            });
         }
 
         private void BoatWindow_Load(object sender, EventArgs e)
@@ -335,58 +69,287 @@ namespace Assistant.Boat
                 boatCommand = $"Slow {command}";
             }
 
-            ArrayList kw = new ArrayList();
-
-            foreach (BoatCommandKeywords boatCommandKw in _boatCommandKw)
+            if (World.Player != null)
             {
-                if (boatCommandKw.command.Equals(boatCommand.ToLower()))
-                {
-                    kw = boatCommandKw.keywords;
-                    break;
-                }
+                World.Player.Say(World.Player.SpeechHue, boatCommand);
             }
+        }
+       
+        private string[] _boatDirCommands =
+            {"Forward", "Forward Right", "Right", "Back Right", "Back", "Back Left", "Left", "Forward Left"};
+        //        0             1            2           3          4        5          6           7
 
-            ClientCommunication.SendToServer(new ClientUniMessage(MessageType.Regular, World.Player.SpeechHue, Config.GetInt("SysColor"), "ENU",kw, boatCommand));
+        private void boatNorth_MouseClick(object sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+
+                    switch (_orientation)
+                    {
+                        case (int)Orientation.Northwest:
+                            SendBoatCommand(_boatDirCommands[1]);
+                            break;
+                        case (int)Orientation.Southwest:
+                            SendBoatCommand(_boatDirCommands[3]);
+                            break;
+                        case (int)Orientation.Southeast:
+                            SendBoatCommand(_boatDirCommands[5]);
+                            break;
+                        case (int)Orientation.Northeast:
+                            SendBoatCommand(_boatDirCommands[7]);
+                            break;
+                        default:
+                            SendBoatCommand(_boatDirCommands[0]);
+                            break;
+                    }
+
+                    //SendBoatCommand(_boatDirCommands[1]); //NW orientation
+                    //SendBoatCommand(_boatDirCommands[3]); //SW orientation
+                    //SendBoatCommand(_boatDirCommands[5]); //SE orientation
+                    //SendBoatCommand(_boatDirCommands[7]); //NE orientation
+                    break;
+                case MouseButtons.Right:
+                    _orientation = (int) Orientation.Normal;
+
+                    boatNorth.BorderStyle = BorderStyle.FixedSingle;
+                    boatNortheast.BorderStyle = BorderStyle.None;
+                    boatNorthwest.BorderStyle = BorderStyle.None;
+                    boatSouthwest.BorderStyle = BorderStyle.None;
+                    boatSoutheast.BorderStyle = BorderStyle.None;
+
+                    if (World.Player != null)
+                        World.Player.SendMessage(MsgLevel.Force, "Set Boat Orientation: Normal");
+
+                    break;
+            }
         }
 
-        private void boatNorth_Click(object sender, EventArgs e)
+        private void boatNorthwest_Click(object sender, MouseEventArgs e)
         {
-            SendBoatCommand("Forward");
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    switch (_orientation)
+                    {
+                        case (int)Orientation.Northwest:
+                            SendBoatCommand(_boatDirCommands[0]);
+                            break;
+                        case (int)Orientation.Southwest:
+                            SendBoatCommand(_boatDirCommands[2]);
+                            break;
+                        case (int)Orientation.Southeast:
+                            SendBoatCommand(_boatDirCommands[4]);
+                            break;
+                        case (int)Orientation.Northeast:
+                            SendBoatCommand(_boatDirCommands[6]);
+                            break;
+                        default:
+                            SendBoatCommand(_boatDirCommands[7]);
+                            break;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    _orientation = (int) Orientation.Northwest;
+
+                    boatNorth.BorderStyle = BorderStyle.None;
+                    boatNortheast.BorderStyle = BorderStyle.None;
+                    boatNorthwest.BorderStyle = BorderStyle.FixedSingle;
+                    boatSouthwest.BorderStyle = BorderStyle.None;
+                    boatSoutheast.BorderStyle = BorderStyle.None;
+
+                    if (World.Player != null)
+                        World.Player.SendMessage(MsgLevel.Force, "Set Boat Orientation: Northwest");
+
+
+                    break;
+            }
         }
 
         private void boatSouth_Click(object sender, EventArgs e)
         {
-            SendBoatCommand("Back");
+            switch (_orientation)
+            {
+                case (int)Orientation.Northwest:
+                    SendBoatCommand(_boatDirCommands[5]);
+                    break;
+                case (int)Orientation.Southwest:
+                    SendBoatCommand(_boatDirCommands[7]);
+                    break;
+                case (int)Orientation.Southeast:
+                    SendBoatCommand(_boatDirCommands[1]);
+                    break;
+                case (int)Orientation.Northeast:
+                    SendBoatCommand(_boatDirCommands[3]);
+                    break;
+                default:
+                    SendBoatCommand(_boatDirCommands[4]);
+                    break;
+            }
         }
 
-        private void boatSoutheast_Click(object sender, EventArgs e)
+        private void boatSoutheast_Click(object sender, MouseEventArgs e)
         {
-            SendBoatCommand("Back Right");
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    switch (_orientation)
+                    {
+                        case (int)Orientation.Northwest:
+                            SendBoatCommand(_boatDirCommands[4]);
+                            break;
+                        case (int)Orientation.Southwest:
+                            SendBoatCommand(_boatDirCommands[6]);
+                            break;
+                        case (int)Orientation.Southeast:
+                            SendBoatCommand(_boatDirCommands[0]);
+                            break;
+                        case (int)Orientation.Northeast:
+                            SendBoatCommand(_boatDirCommands[2]);
+                            break;
+                        default:
+                            SendBoatCommand(_boatDirCommands[3]);
+                            break;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    _orientation = (int) Orientation.Southeast;
+
+                    boatNorth.BorderStyle = BorderStyle.None;
+                    boatNortheast.BorderStyle = BorderStyle.None;
+                    boatNorthwest.BorderStyle = BorderStyle.None;
+                    boatSouthwest.BorderStyle = BorderStyle.None;
+                    boatSoutheast.BorderStyle = BorderStyle.FixedSingle;
+
+                    if (World.Player != null)
+                        World.Player.SendMessage(MsgLevel.Force, "Set Boat Orientation: Southeast");
+
+                    break;
+            }
         }
 
-        private void boatSouthwest_Click(object sender, EventArgs e)
+        private void boatSouthwest_Click(object sender, MouseEventArgs e)
         {
-            SendBoatCommand("Back Left");
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    switch (_orientation)
+                    {
+                        case (int)Orientation.Northwest:
+                            SendBoatCommand(_boatDirCommands[6]);
+                            break;
+                        case (int)Orientation.Southwest:
+                            SendBoatCommand(_boatDirCommands[0]);
+                            break;
+                        case (int)Orientation.Southeast:
+                            SendBoatCommand(_boatDirCommands[2]);
+                            break;
+                        case (int)Orientation.Northeast:
+                            SendBoatCommand(_boatDirCommands[4]);
+                            break;
+                        default:
+                            SendBoatCommand(_boatDirCommands[5]);
+                            break;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    _orientation = (int) Orientation.Southwest;
+
+                    boatNorth.BorderStyle = BorderStyle.None;
+                    boatNortheast.BorderStyle = BorderStyle.None;
+                    boatNorthwest.BorderStyle = BorderStyle.None;
+                    boatSouthwest.BorderStyle = BorderStyle.FixedSingle;
+                    boatSoutheast.BorderStyle = BorderStyle.None;
+
+                    if (World.Player != null)
+                        World.Player.SendMessage(MsgLevel.Force, "Set Boat Orientation: Southwest");
+
+                    break;
+            }
         }
 
         private void boatWest_Click(object sender, EventArgs e)
         {
-            SendBoatCommand("Left");
+            switch (_orientation)
+            {
+                case (int)Orientation.Northwest:
+                    SendBoatCommand(_boatDirCommands[7]);
+                    break;
+                case (int)Orientation.Southwest:
+                    SendBoatCommand(_boatDirCommands[1]);
+                    break;
+                case (int)Orientation.Southeast:
+                    SendBoatCommand(_boatDirCommands[3]);
+                    break;
+                case (int)Orientation.Northeast:
+                    SendBoatCommand(_boatDirCommands[5]);
+                    break;
+                default:
+                    SendBoatCommand(_boatDirCommands[6]);
+                    break;
+            }
         }
 
-        private void boatNorthwest_Click(object sender, EventArgs e)
+        private void boatNortheast_Click(object sender, MouseEventArgs e)
         {
-            SendBoatCommand("Forward Left");
-        }
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    switch (_orientation)
+                    {
+                        case (int)Orientation.Northwest:
+                            SendBoatCommand(_boatDirCommands[2]);
+                            break;
+                        case (int)Orientation.Southwest:
+                            SendBoatCommand(_boatDirCommands[4]);
+                            break;
+                        case (int)Orientation.Southeast:
+                            SendBoatCommand(_boatDirCommands[6]);
+                            break;
+                        case (int)Orientation.Northeast:
+                            SendBoatCommand(_boatDirCommands[0]);
+                            break;
+                        default:
+                            SendBoatCommand(_boatDirCommands[1]);
+                            break;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    _orientation = (int) Orientation.Northeast;
 
-        private void boatNortheast_Click(object sender, EventArgs e)
-        {
-            SendBoatCommand("Forward Right");
+                    boatNorth.BorderStyle = BorderStyle.None;
+                    boatNortheast.BorderStyle = BorderStyle.FixedSingle;
+                    boatNorthwest.BorderStyle = BorderStyle.None;
+                    boatSouthwest.BorderStyle = BorderStyle.None;
+                    boatSoutheast.BorderStyle = BorderStyle.None;
+
+                    if (World.Player != null)
+                        World.Player.SendMessage(MsgLevel.Force, "Set Boat Orientation: Northeast");
+
+                    break;
+            }
         }
 
         private void boatEast_Click(object sender, EventArgs e)
         {
-            SendBoatCommand("Right");
+            switch (_orientation)
+            {
+                case (int)Orientation.Northwest:
+                    SendBoatCommand(_boatDirCommands[3]);
+                    break;
+                case (int)Orientation.Southwest:
+                    SendBoatCommand(_boatDirCommands[5]);
+                    break;
+                case (int)Orientation.Southeast:
+                    SendBoatCommand(_boatDirCommands[7]);
+                    break;
+                case (int)Orientation.Northeast:
+                    SendBoatCommand(_boatDirCommands[1]);
+                    break;
+                default:
+                    SendBoatCommand(_boatDirCommands[2]);
+                    break;
+            }
         }
 
         private void boatTurnRight_Click(object sender, EventArgs e)
@@ -509,7 +472,7 @@ namespace Assistant.Boat
 
         private void boatClose_Click(object sender, EventArgs e)
         {
-            Close();
+            Hide();
         }
     }
 }

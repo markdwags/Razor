@@ -246,6 +246,9 @@ namespace Assistant
             m_LTWasSet = true;
 
             World.Player.SendMessage(MsgLevel.Force, LocString.LTSet);
+
+            //OverheadTargetMessage(m_LastTarget);
+
             if (serial.IsMobile)
             {
                 LastTargetChanged();
@@ -768,6 +771,8 @@ namespace Assistant
             ClientCommunication.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+            
+            OverheadTargetMessage(targ);
 
             bool wasSmart = Config.GetBool("SmartLastTarget");
             if (wasSmart)
@@ -1251,6 +1256,8 @@ namespace Assistant
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
+            OverheadTargetMessage(targ);
+
             /*if ( m_HasTarget )
             {
                  DoLastTarget();
@@ -1321,6 +1328,8 @@ namespace Assistant
             ClientCommunication.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+
+            OverheadTargetMessage(targ);
 
             /*if ( m_HasTarget )
             {
@@ -1398,6 +1407,8 @@ namespace Assistant
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
+            OverheadTargetMessage(targ);
+
             /*if ( m_HasTarget )
            {
                DoLastTarget();
@@ -1459,6 +1470,8 @@ namespace Assistant
             ClientCommunication.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+
+            OverheadTargetMessage(targ);
         }
         
         public static void PrevTargetHumanoid()
@@ -1523,6 +1536,8 @@ namespace Assistant
             ClientCommunication.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+
+            OverheadTargetMessage(targ);
 
             /*if ( m_HasTarget )
             {
@@ -1598,6 +1613,8 @@ namespace Assistant
             ClientCommunication.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+
+            OverheadTargetMessage(targ);
         }
 
         public static void CheckLastTargetRange(Mobile m)
@@ -1639,34 +1656,21 @@ namespace Assistant
 
         private static void TargetResponse(PacketReader p, PacketHandlerEventArgs args)
         {
-            TargetInfo info = new TargetInfo();
-            info.Type = p.ReadByte();
-            info.TargID = p.ReadUInt32();
-            info.Flags = p.ReadByte();
-            info.Serial = p.ReadUInt32();
-            info.X = p.ReadUInt16();
-            info.Y = p.ReadUInt16();
-            info.Z = p.ReadInt16();
-            info.Gfx = p.ReadUInt16();
+            TargetInfo info = new TargetInfo
+            {
+                Type = p.ReadByte(),
+                TargID = p.ReadUInt32(),
+                Flags = p.ReadByte(),
+                Serial = p.ReadUInt32(),
+                X = p.ReadUInt16(),
+                Y = p.ReadUInt16(),
+                Z = p.ReadInt16(),
+                Gfx = p.ReadUInt16()
+            };
 
             m_ClientTarget = false;
 
-            //if (Config.GetBool("ShowAttackTargetOverhead"))
-            //{
-            //    Mobile m = World.FindMobile(info.Serial);
-
-            //    if (m != null)
-            //    {
-            //        if (FriendsAgent.IsFriend(m))
-            //        {
-            //            World.Player.OverheadMessage(63, $"Target: {m.Name}");
-            //        }
-            //        else
-            //        {
-            //            World.Player.OverheadMessage(m.GetNotorietyColorInt(), $"Target: {m.Name}");
-            //        }
-            //    }
-            //}            
+            OverheadTargetMessage(info);
 
             // check for cancel
             if (info.X == 0xFFFF && info.X == 0xFFFF && (info.Serial <= 0 || info.Serial >= 0x80000000))
@@ -1858,6 +1862,43 @@ namespace Assistant
                 m_ClientTarget = m_HasTarget = true;
                 ClientCommunication.SendToClient(new Target(m_CurrentID, m_AllowGround, m_CurFlags));
             }
+        }
+
+        private static TargetInfo _lastTarget = new TargetInfo();
+
+        public static void OverheadTargetMessage(TargetInfo info)
+        {
+            if (info == null)
+                return;
+
+            if (Config.GetBool("ShowAttackTargetNewOnly") && info.Serial == _lastTarget.Serial)
+                return;
+
+            Mobile m = null;
+
+            if (Config.GetBool("ShowAttackTargetOverhead") && info.Serial != 0 && info.Serial.IsMobile)
+            {
+                m = World.FindMobile(info.Serial);
+
+                if (m == null)
+                    return;
+
+                World.Player.OverheadMessage(FriendsAgent.IsFriend(m) ? 63 : m.GetNotorietyColorInt(), $"Target: {m.Name}");
+            }
+
+            if (Config.GetBool("ShowTextTargetIndicator") && info.Serial != 0 && info.Serial.IsMobile)
+            {
+                // lets not look it up again they had the previous feature enabled
+                if (m == null)
+                    m = World.FindMobile(info.Serial);
+
+                if (m == null)
+                    return;
+
+                m.OverheadMessage(10, "* Target *");
+            }
+
+            _lastTarget = info;
         }
     }
 }

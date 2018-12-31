@@ -1,4 +1,6 @@
-﻿namespace Assistant.Boat
+﻿using System.Windows.Forms;
+
+namespace Assistant.Boat
 {
     partial class BoatWindow
     {
@@ -81,6 +83,7 @@
             // 
             // boatNorth
             // 
+            this.boatNorth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.boatNorth.Image = ((System.Drawing.Image)(resources.GetObject("boatNorth.Image")));
             this.boatNorth.Location = new System.Drawing.Point(80, 40);
             this.boatNorth.Name = "boatNorth";
@@ -88,7 +91,7 @@
             this.boatNorth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.boatNorth.TabIndex = 0;
             this.boatNorth.TabStop = false;
-            this.boatNorth.Click += new System.EventHandler(this.boatNorth_Click);
+            this.boatNorth.MouseClick += new System.Windows.Forms.MouseEventHandler(this.boatNorth_MouseClick);
             // 
             // boatNortheast
             // 
@@ -99,7 +102,7 @@
             this.boatNortheast.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.boatNortheast.TabIndex = 1;
             this.boatNortheast.TabStop = false;
-            this.boatNortheast.Click += new System.EventHandler(this.boatNortheast_Click);
+            this.boatNortheast.MouseClick += new MouseEventHandler(this.boatNortheast_Click);
             // 
             // boatEast
             // 
@@ -121,7 +124,7 @@
             this.boatSoutheast.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.boatSoutheast.TabIndex = 3;
             this.boatSoutheast.TabStop = false;
-            this.boatSoutheast.Click += new System.EventHandler(this.boatSoutheast_Click);
+            this.boatSoutheast.MouseClick += new MouseEventHandler(this.boatSoutheast_Click);
             // 
             // boatSouth
             // 
@@ -143,7 +146,7 @@
             this.boatSouthwest.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.boatSouthwest.TabIndex = 5;
             this.boatSouthwest.TabStop = false;
-            this.boatSouthwest.Click += new System.EventHandler(this.boatSouthwest_Click);
+            this.boatSouthwest.MouseClick += new MouseEventHandler(this.boatSouthwest_Click);
             // 
             // boatWest
             // 
@@ -165,7 +168,7 @@
             this.boatNorthwest.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.boatNorthwest.TabIndex = 7;
             this.boatNorthwest.TabStop = false;
-            this.boatNorthwest.Click += new System.EventHandler(this.boatNorthwest_Click);
+            this.boatNorthwest.MouseClick += new MouseEventHandler(this.boatNorthwest_Click);
             // 
             // boatAnchor
             // 

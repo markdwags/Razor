@@ -430,7 +430,7 @@ namespace Assistant
 
 	public sealed class ClientUniMessage : Packet
 	{
-		public ClientUniMessage( MessageType type, int hue, int font, string lang, ArrayList keys, string text ) : base( 0xAD )
+		public ClientUniMessage( MessageType type, int hue, int font, string lang, List<ushort> keys, string text ) : base( 0xAD )
 		{
 			if ( lang == null || lang == "" ) lang = "ENU";
 			if ( text == null ) text = "";
