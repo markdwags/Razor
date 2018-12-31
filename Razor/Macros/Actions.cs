@@ -567,11 +567,27 @@ namespace Assistant.Macros
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
+                    new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
                          new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) )
                 };
             }
 
             return m_MenuItems;
+        }
+
+        private void ReTarget(object[] args)
+        {
+            Targeting.OneTimeTarget(false, new Targeting.TargetResponseCallback(ReTargetResponse));
+            World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
+        }
+
+        private void ReTargetResponse(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            m_Gfx = gfx;
+
+            Engine.MainWindow.ShowMe();
+
+            m_Parent?.Update();
         }
 
         private void EditAmount(object[] args)
@@ -954,9 +970,7 @@ namespace Assistant.Macros
     /// Action to handle variable macros to alleviate the headache of having multiple macros for the same thing
     /// 
     /// This Action does break the pattern that you see in every other action because the data that is stored for this
-    /// action exists not in the Macro file, but in a different file that has all the variables
-    /// 
-    /// TODO: Re-eval this concept and instead store all data 
+    /// action exists not in the Macro file, but in a different file that has all the variables in the profile
     /// </summary>
     public class AbsoluteTargetVariableAction : MacroAction
     {
