@@ -454,12 +454,29 @@ namespace Assistant.Macros
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
+                         new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
                          new MacroMenuItem( LocString.ConvLiftByType, new MacroMenuCallback( ConvertToByType ) ),
                          new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) )
                 };
             }
 
             return m_MenuItems;
+        }
+
+        private void ReTarget(object[] args)
+        {
+            Targeting.OneTimeTarget(!m_Serial.IsValid, new Targeting.TargetResponseCallback(ReTargetResponse));
+            World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
+        }
+
+        private void ReTargetResponse(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            m_Serial = serial;
+            m_Gfx = gfx;
+
+            Engine.MainWindow.ShowMe();
+
+            m_Parent?.Update();
         }
 
         private void EditAmount(object[] args)
