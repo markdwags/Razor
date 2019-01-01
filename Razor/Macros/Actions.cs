@@ -986,9 +986,9 @@ namespace Assistant.Macros
         {
             _target = null;
 
-            foreach (AbsoluteTargets.AbsoluteTarget at in AbsoluteTargets.AbsoluteTargetList)
+            foreach (AbsoluteTargetVariables.AbsoluteTargetVariable at in AbsoluteTargetVariables.AbsoluteTargetList)
             {
-                if (at.TargetVariableName.Equals(_variableName))
+                if (at.Name.Equals(_variableName))
                 {
                     _target = at.TargetInfo;
                     break;
@@ -1051,6 +1051,56 @@ namespace Assistant.Macros
 
             m_Parent?.Update();
         }*/
+    }
+
+    /// <summary>
+    /// Action to handle variable macros to alleviate the headache of having multiple macros for the same thing
+    /// 
+    /// This Action does break the pattern that you see in every other action because the data that is stored for this
+    /// action exists not in the Macro file, but in a different file that has all the variables in the profile
+    /// </summary>
+    public class DoubleClickVariableAction : MacroAction
+    {
+        private Serial _serial;
+        private ushort _gfx;
+        private readonly string _variableName;
+
+        public DoubleClickVariableAction(string[] args)
+        {
+            _variableName = args.Length > 1 ? args[1] : args[0];
+        }
+
+        public override bool Perform()
+        {
+            _serial = Serial.Zero;
+
+            foreach (DoubleClickVariables.DoubleClickVariable dblClick in DoubleClickVariables.DoubleClickTargetList)
+            {
+                if (dblClick.Name.Equals(_variableName))
+                {
+                    _serial = dblClick.Serial;
+                    break;
+                }
+            }
+
+            if (_serial != null && _serial != Serial.Zero)
+            {
+                PlayerData.DoubleClick(_serial);
+                return true;
+            }
+
+            return false;
+        }
+
+        public override string Serialize()
+        {
+            return DoSerialize(_variableName);
+        }
+
+        public override string ToString()
+        {
+            return $"DoubleClick (${_variableName})";
+        }
     }
 
     public class TargetTypeAction : MacroAction

@@ -243,23 +243,51 @@ namespace Assistant.Macros
 			tree.Update();
 		}
 
+        public static void DisplayMacroVariables(int index, ListBox list)
+        {
+            switch (index)
+            {
+                case 0:
+                    DisplayAbsoluteTargetsTo(list);
+                    break;
+                case 1:
+                    DisplayDoubleClickTo(list);
+                    break;
+            }
+        }
+
         public static void DisplayAbsoluteTargetsTo(ListBox list)
         {
             list.BeginUpdate();
             list.Items.Clear();
 
-            foreach (AbsoluteTargets.AbsoluteTarget at in AbsoluteTargets.AbsoluteTargetList)
+            foreach (AbsoluteTargetVariables.AbsoluteTargetVariable at in AbsoluteTargetVariables.AbsoluteTargetList)
             {
-                list.Items.Add($"${at.TargetVariableName} ({at.TargetInfo.Serial})");
+                list.Items.Add($"${at.Name} ({at.TargetInfo.Serial})");
             }
 
             list.EndUpdate();
             list.Refresh();
             list.Update();
         }
-        
 
-		private static void Recurse( TreeNodeCollection nodes, string path )
+        public static void DisplayDoubleClickTo(ListBox list)
+        {
+            list.BeginUpdate();
+            list.Items.Clear();
+
+            foreach (DoubleClickVariables.DoubleClickVariable dbt in DoubleClickVariables.DoubleClickTargetList)
+            {
+                list.Items.Add($"${dbt.Name} ({dbt.Serial})");
+            }
+
+            list.EndUpdate();
+            list.Refresh();
+            list.Update();
+        }
+
+
+        private static void Recurse( TreeNodeCollection nodes, string path )
 		{
 			try
 			{

@@ -6,52 +6,25 @@ using System.Xml;
 
 namespace Assistant.Macros
 {
-    public class AbsoluteTargets
+    public class AbsoluteTargetVariables
     {
-        public TargetInfo TargetInfo { get; set; }
-        public string TargetVariableName { get; set; }
-        public string TargetVariableProfile { get; set; }
-
-        public class AbsoluteTarget
+        public class AbsoluteTargetVariable
         {
             public TargetInfo TargetInfo { get; set; }
-            public string TargetVariableName { get; set; }
+            public string Name { get; set; }
 
-            public AbsoluteTarget(string targetVarName, TargetInfo t)
+            public AbsoluteTargetVariable(string targetVarName, TargetInfo t)
             {
                 TargetInfo = t;
-                TargetVariableName = targetVarName;
+                Name = targetVarName;
             }
         }
 
-        public static List<AbsoluteTarget> AbsoluteTargetList = new List<AbsoluteTarget>();
-
-        //public AbsoluteTarget(string name, string profile, TargetInfo info)
-        //{
-        //    TargetInfo = new TargetInfo
-        //    {
-        //        Type = info.Type,
-        //        Flags = info.Flags,
-        //        Serial = info.Serial,
-        //        X = info.X,
-        //        Y = info.Y,
-        //        Z = info.Z,
-        //        Gfx = info.Gfx
-        //    };
-
-        //    TargetVariableName = name;
-        //    TargetVariableProfile = profile;
-        //}
+        public static List<AbsoluteTargetVariable> AbsoluteTargetList = new List<AbsoluteTargetVariable>();
 
         public static void Save(XmlTextWriter xml)
         {
-            //object[] serialString = new object[]
-            //{
-            //    TargetVariableName, TargetVariableProfile, TargetInfo.Type, TargetInfo.Flags, TargetInfo.Serial.Value, TargetInfo.X, TargetInfo.Y,
-            //    TargetInfo.Z, TargetInfo.Gfx
-            //};
-
-            foreach (AbsoluteTarget target in AbsoluteTargetList)
+            foreach (AbsoluteTargetVariable target in AbsoluteTargetList)
             {
                 xml.WriteStartElement("absolutetarget");
                 xml.WriteAttributeString("type", target.TargetInfo.Type.ToString());
@@ -61,7 +34,7 @@ namespace Assistant.Macros
                 xml.WriteAttributeString("y", target.TargetInfo.Y.ToString());
                 xml.WriteAttributeString("z", target.TargetInfo.X.ToString());
                 xml.WriteAttributeString("gfx", target.TargetInfo.Gfx.ToString());
-                xml.WriteAttributeString("name", target.TargetVariableName);
+                xml.WriteAttributeString("name", target.Name);
                 xml.WriteEndElement();
             }
         }
@@ -72,7 +45,6 @@ namespace Assistant.Macros
 
             try
             {
-
                 foreach (XmlElement el in node.GetElementsByTagName("absolutetarget"))
                 {
                     TargetInfo target = new TargetInfo
@@ -86,7 +58,7 @@ namespace Assistant.Macros
                         Gfx = Convert.ToUInt16(el.GetAttribute("gfx"))
                     };
 
-                    AbsoluteTarget absoluteTarget = new AbsoluteTarget(el.GetAttribute("name"), target);
+                    AbsoluteTargetVariable absoluteTarget = new AbsoluteTargetVariable(el.GetAttribute("name"), target);
                     AbsoluteTargetList.Add(absoluteTarget);
                 }
             }

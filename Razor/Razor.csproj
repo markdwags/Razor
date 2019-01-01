@@ -211,7 +211,8 @@
     <Compile Include="Core\ItemID.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Macros\AbsoluteTargets.cs" />
+    <Compile Include="Macros\DoubleClickVariables.cs" />
+    <Compile Include="Macros\AbsoluteTargetVariables.cs" />
     <Compile Include="Macros\Actions.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -214,7 +214,8 @@ namespace Assistant
             PasswordMemory.ClearAll();
             OverheadMessages.ClearAll();
             ContainerLabels.ClearAll();
-            AbsoluteTargets.ClearAll();
+            AbsoluteTargetVariables.ClearAll();
+            DoubleClickVariables.ClearAll();
         }
 
         public string Name
@@ -320,7 +321,8 @@ namespace Assistant
             PasswordMemory.Load(root["passwords"]);
             OverheadMessages.Load(root["overheadmessages"]);
             ContainerLabels.Load(root["containerlabels"]);
-            AbsoluteTargets.Load(root["absolutetargets"]);
+            AbsoluteTargetVariables.Load(root["absolutetargets"]);
+            DoubleClickVariables.Load(root["doubleclicktargets"]);
 
             GoldPerHourTimer.Stop();
 
@@ -467,7 +469,11 @@ namespace Assistant
             xml.WriteEndElement();
 
             xml.WriteStartElement("absolutetargets");
-            AbsoluteTargets.Save(xml);
+            AbsoluteTargetVariables.Save(xml);
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("doubleclickvariables");
+            DoubleClickVariables.Save(xml);
             xml.WriteEndElement();
 
             xml.WriteEndElement(); // end profile section
