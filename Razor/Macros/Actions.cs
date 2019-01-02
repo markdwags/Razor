@@ -1440,15 +1440,8 @@ namespace Assistant.Macros
                     World.Player.SpeechHue = m_Hue;
                 hue = World.Player.SpeechHue;
             }
-
-            List<ushort> kw = null;
-
-            if (m_Keywords != null)
-            {
-                kw = m_Keywords.OfType<ushort>().ToList();
-            }
-
-            ClientCommunication.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, kw, m_Speech));
+            
+            ClientCommunication.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech));
             return true;
         }
 

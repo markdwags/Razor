@@ -979,15 +979,15 @@ namespace Assistant
 
         internal void Say(int hue, string msg)
         {
-            List<ushort> kw = EncodedSpeech.GetKeywords(msg);
+            List<ushort> keywords = EncodedSpeech.GetKeywords(msg);
 
-            if (kw.Count == 1 && kw[0] == 0)
+            if (keywords.Count == 1 && (int) keywords[0] == 0)
             {
-                ClientCommunication.SendToServer(new ClientUniMessage(MessageType.Regular, hue, 3, Language.CliLocName, kw, msg));
+                ClientCommunication.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Regular, hue, 3, Language.CliLocName, keywords, msg));
             }
             else
             {
-                ClientCommunication.SendToServer(new ClientUniMessage(MessageType.Encoded, hue, 3, Language.CliLocName, kw, msg));
+                ClientCommunication.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Encoded, hue, 3, Language.CliLocName, keywords, msg));
             }
         }
 

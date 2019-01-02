@@ -430,7 +430,7 @@ namespace Assistant
 
 	public sealed class ClientUniMessage : Packet
 	{
-		public ClientUniMessage( MessageType type, int hue, int font, string lang, List<ushort> keys, string text ) : base( 0xAD )
+		public ClientUniMessage( MessageType type, int hue, int font, string lang, ArrayList keys, string text ) : base( 0xAD )
 		{
 			if ( lang == null || lang == "" ) lang = "ENU";
 			if ( text == null ) text = "";
@@ -455,9 +455,38 @@ namespace Assistant
 				WriteBigUniNull( text );
 			}
 		}
-	}
+     }
+    
+    public sealed class ClientUniEncodedCommandMessage : Packet
+    {
+        public ClientUniEncodedCommandMessage(MessageType type, int hue, int font, string lang, List<ushort> keys, string text) : base(0xAD)
+        {
+            if (lang == null || lang == "") lang = "ENU";
+            if (text == null) text = "";
 
-	public sealed class LiftRequest : Packet
+            this.EnsureCapacity(50 + (text.Length * 2) + (keys == null ? 0 : keys.Count + 1));
+            if (keys == null || keys.Count <= 1)
+                Write((byte)type);
+            else
+                Write((byte)(type | MessageType.Encoded));
+            Write((short)hue);
+            Write((short)font);
+            WriteAsciiFixed(lang, 4);
+            if (keys != null && keys.Count > 1)
+            {
+                Write(keys[0]);
+                for (int i = 1; i < keys.Count; i++)
+                    Write((byte)keys[i]);
+                WriteUTF8Null(text);
+            }
+            else
+            {
+                WriteBigUniNull(text);
+            }
+        }
+    }
+
+    public sealed class LiftRequest : Packet
 	{
 		public LiftRequest( Serial ser, int amount ) : base( 0x07, 7 )
 		{
