@@ -206,6 +206,11 @@ namespace Assistant
             AddProperty("ShowTextTargetIndicator", false);
             AddProperty("ShowAttackTargetNewOnly", false);
 
+            AddProperty("FilterDragonGraphics", false);
+            AddProperty("DragonGraphic", 0);
+            AddProperty("ShowDamageDealt", false);
+
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
@@ -322,7 +327,7 @@ namespace Assistant
             OverheadMessages.Load(root["overheadmessages"]);
             ContainerLabels.Load(root["containerlabels"]);
             AbsoluteTargetVariables.Load(root["absolutetargets"]);
-            DoubleClickVariables.Load(root["doubleclicktargets"]);
+            DoubleClickVariables.Load(root["doubleclickvariables"]);
 
             GoldPerHourTimer.Stop();
 

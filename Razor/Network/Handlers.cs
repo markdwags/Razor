@@ -45,7 +45,7 @@ namespace Assistant
             PacketHandler.RegisterClientToServerViewer(0xF8, new PacketViewerCallback(CreateCharacter));
 
             //Server -> Client handlers
-            //PacketHandler.RegisterServerToClientViewer(0x0B, new PacketViewerCallback(Damage));
+            PacketHandler.RegisterServerToClientViewer(0x0B, new PacketViewerCallback(Damage));
             PacketHandler.RegisterServerToClientViewer(0x11, new PacketViewerCallback(MobileStatus));
             PacketHandler.RegisterServerToClientViewer(0x17, new PacketViewerCallback(NewMobileStatus));
             PacketHandler.RegisterServerToClientViewer(0x1A, new PacketViewerCallback(WorldItem));
@@ -194,10 +194,10 @@ namespace Assistant
             // if you modify this, don't forget to modify the allnames hotkey
             if (Config.GetBool("LastTargTextFlags"))
             {
-                Mobile m = World.FindMobile(ser);                
+                Mobile m = World.FindMobile(ser);
                 if (m != null)
                     Targeting.CheckTextFlags(m);
-            }                      
+            }
         }
 
         private static void ClientDoubleClick(PacketReader p, PacketHandlerEventArgs args)
@@ -549,7 +549,7 @@ namespace Assistant
 
                 //if (WalkAction.IsMacroWalk(seq))
                 //    args.Block = true;
-                
+
                 World.Player.MoveRej(seq, dir, new Point3D(x, y, z));
             }
         }
@@ -1079,6 +1079,17 @@ namespace Assistant
             if (m != null)
             {
                 m.Body = p.ReadUInt16();
+
+                if (Config.GetBool("FilterDragonGraphics"))
+                {
+                    if (m.Body == 0xC || m.Body == 0x3B)
+                    {
+                        p.Seek(-2, SeekOrigin.Current);
+                        p.Write((ushort) Config.GetInt("DragonGraphic"));
+                    }
+                }
+
+
                 m.Position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
                 if (World.Player != null && !Utility.InRange(World.Player.Position, m.Position, World.Player.VisRange))
@@ -1292,20 +1303,23 @@ namespace Assistant
             }
         }
 
-        //private static void Damage(PacketReader p, PacketHandlerEventArgs args)
-        //{
-        //    if (Config.GetBool("TrackDps"))
-        //    {
-        //        uint serial = p.ReadUInt32();
-        //        ushort damage = p.ReadUInt16();
+        private static void Damage(PacketReader p, PacketHandlerEventArgs args)
+        {
+            uint serial = p.ReadUInt32();
+            ushort damage = p.ReadUInt16();
 
-        //        if (serial != World.Player.Serial)
-        //            return;
+            if (serial == World.Player.Serial)
+                return;
 
-        //        World.Player.AddDamage(damage);
-        //    }
+            if (Config.GetBool("ShowDamageDealt"))
+            {
+                Mobile m = World.FindMobile(serial);
+                m?.OverheadMessageFrom(38, m.Name, $"[{damage}]", true);
+            }
 
-        //}
+            if (DamagePerSecondTimer.Running)
+                DamagePerSecondTimer.AddDamage(serial, damage);
+        }
 
         private static void MobileStatus(PacketReader p, PacketHandlerEventArgs args)
         {
@@ -1458,6 +1472,16 @@ namespace Assistant
 
             Serial serial = p.ReadUInt32();
             ushort body = p.ReadUInt16();
+
+            if (Config.GetBool("FilterDragonGraphics"))
+            {
+                if (body == 0xC || body == 0x3B)
+                {
+                    p.Seek(-2, SeekOrigin.Current);
+                    p.Write((ushort) Config.GetInt("DragonGraphic"));
+                }
+            }
+
             Point3D position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
             if (World.Player.Position != Point3D.Zero && !Utility.InRange(World.Player.Position, position, World.Player.VisRange))
@@ -1864,7 +1888,7 @@ namespace Assistant
                 args.Block = WallStaticFilter.MakeWallStatic(item);
         }
 
-        public static List<string> SysMessages = new List<string>();        
+        public static List<string> SysMessages = new List<string>();
 
         public static void HandleSpeech(Packet p, PacketHandlerEventArgs args, Serial ser, ushort body, MessageType type, ushort hue, ushort font, string lang, string name, string text)
         {
@@ -1949,7 +1973,7 @@ namespace Assistant
                 if (Config.GetBool("ShowContainerLabels") && ser.IsItem)
                 {
                     Item item = World.FindItem(ser);
-                    
+
                     if (item == null || !item.IsContainer)
                         return;
 
@@ -1964,7 +1988,7 @@ namespace Assistant
                             if (Config.GetInt("ContainerLabelStyle") == 0)
                             {
                                 ClientCommunication.SendToClient(new AsciiMessage(ser, item.ItemID.Value, MessageType.Label, label.Hue, 3, Language.CliLocName, labelDisplay));
-                                
+
                             }
                             else
                             {
@@ -2181,7 +2205,7 @@ namespace Assistant
                 byte season = p.ReadByte();
                 World.Player.SetSeason(season);
             }
-                
+
         }
 
         private static void ExtendedPacket(PacketReader p, PacketHandlerEventArgs args)
@@ -2612,7 +2636,7 @@ namespace Assistant
 
                 if (EnforceLightLevels(World.Player.GlobalLightLevel))
                     args.Block = true;
-            }   
+            }
         }
 
         private static bool EnforceLightLevels(int lightLevel)
@@ -2699,7 +2723,7 @@ namespace Assistant
 
             if (Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
-            
+
             List<string> gumpStrings = new List<string>();
 
             try

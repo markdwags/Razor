@@ -916,7 +916,12 @@ namespace Assistant
                 //time = (int)((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
                  sb.Replace(@"{uptime}", ConnectionStart != DateTime.MinValue ? Utility.FormatTime((int)((DateTime.UtcNow - ConnectionStart).TotalSeconds)) : "-");
 
-                 string buffList = string.Empty;
+	            sb.Replace(@"{dps}", DamagePerSecondTimer.Running ? $"{DamagePerSecondTimer.DamagePerSecond:N2}" : "-");
+	            sb.Replace(@"{maxdps}", DamagePerSecondTimer.Running ? $"{DamagePerSecondTimer.MaxDamagePerSecond:N2}" : "-");
+                 sb.Replace(@"{maxdamage}", DamagePerSecondTimer.Running ? $"{DamagePerSecondTimer.MaxSingleDamage}" : "-");
+	            sb.Replace(@"{totaldamage}", DamagePerSecondTimer.Running ? $"{DamagePerSecondTimer.TotalDamage}" : "-");
+
+                string buffList = string.Empty;
 
 	            if (BuffsTimer.Running)
 	            {

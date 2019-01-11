@@ -355,16 +355,64 @@ namespace Assistant.Boat
         private void boatTurnRight_Click(object sender, EventArgs e)
         {
             SendBoatCommand("Turn Right", false);
+
+            switch (_orientation)
+            {
+                case (int)Orientation.Northwest:
+                    boatNortheast_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+                case (int)Orientation.Southwest:
+                    boatNorthwest_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+                case (int)Orientation.Southeast:
+                    boatSouthwest_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+                case (int)Orientation.Northeast:
+                    boatSoutheast_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+            }
         }
 
         private void boatTurnLeft_Click(object sender, EventArgs e)
         {
             SendBoatCommand("Turn Left", false);
+
+            switch (_orientation)
+            {
+                case (int)Orientation.Northwest:
+                    boatSouthwest_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+                case (int)Orientation.Southwest:
+                    boatSoutheast_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+                case (int)Orientation.Southeast:
+                    boatNortheast_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+                case (int)Orientation.Northeast:
+                    boatNorthwest_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+            }
         }
 
         private void boatTurnAround_Click(object sender, EventArgs e)
         {
             SendBoatCommand("Turn Around", false);
+
+            switch (_orientation)
+            {
+                case (int)Orientation.Northwest:
+                    boatSoutheast_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+                case (int)Orientation.Southwest:
+                    boatNortheast_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+                case (int)Orientation.Southeast:
+                    boatNorthwest_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+                case (int)Orientation.Northeast:
+                    boatSouthwest_Click(null, new MouseEventArgs(MouseButtons.Right, 1, 1, 1, 1));
+                    break;
+            }
         }
 
         private void boatAnchor_Click(object sender, EventArgs e)

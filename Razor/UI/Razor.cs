@@ -15,7 +15,10 @@ using Assistant.UI;
 using Newtonsoft.Json;
 using System.Net;
 using System.Collections.Specialized;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Ultima;
 
 namespace Assistant
 {
@@ -308,6 +311,10 @@ namespace Assistant
         private CheckBox showAttackTargetNewOnly;
         private CheckBox showTextTargetIndicator;
         private ComboBox macroVariableList;
+        private CheckBox trackDps;
+        private ComboBox animationList;
+        private CheckBox filterDragonGraphics;
+        private CheckBox showDamageDealt;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -391,6 +398,8 @@ namespace Assistant
             this.opacityLabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.moreOptTab = new System.Windows.Forms.TabPage();
+            this.animationList = new System.Windows.Forms.ComboBox();
+            this.filterDragonGraphics = new System.Windows.Forms.CheckBox();
             this.setMinLightLevel = new System.Windows.Forms.Button();
             this.setMaxLightLevel = new System.Windows.Forms.Button();
             this.blockPartyInvites = new System.Windows.Forms.CheckBox();
@@ -474,6 +483,7 @@ namespace Assistant
             this.gameSize = new System.Windows.Forms.CheckBox();
             this.chkPartyOverhead = new System.Windows.Forms.CheckBox();
             this.displayTab = new System.Windows.Forms.TabPage();
+            this.trackDps = new System.Windows.Forms.CheckBox();
             this.trackIncomingGold = new System.Windows.Forms.CheckBox();
             this.showNotoHue = new System.Windows.Forms.CheckBox();
             this.warnNum = new System.Windows.Forms.TextBox();
@@ -647,6 +657,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.showDamageDealt = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -709,7 +720,7 @@ namespace Assistant
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(490, 521);
+            this.tabs.Size = new System.Drawing.Size(490, 558);
             this.tabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabs.TabIndex = 0;
             this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_IndexChanged);
@@ -927,6 +938,8 @@ namespace Assistant
             //
             // moreOptTab
             //
+            this.moreOptTab.Controls.Add(this.animationList);
+            this.moreOptTab.Controls.Add(this.filterDragonGraphics);
             this.moreOptTab.Controls.Add(this.setMinLightLevel);
             this.moreOptTab.Controls.Add(this.setMaxLightLevel);
             this.moreOptTab.Controls.Add(this.blockPartyInvites);
@@ -972,6 +985,28 @@ namespace Assistant
             this.moreOptTab.Size = new System.Drawing.Size(482, 473);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
+            //
+            // animationList
+            //
+            this.animationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.animationList.DropDownWidth = 250;
+            this.animationList.FormattingEnabled = true;
+            this.animationList.Location = new System.Drawing.Point(349, 289);
+            this.animationList.Name = "animationList";
+            this.animationList.Size = new System.Drawing.Size(121, 23);
+            this.animationList.TabIndex = 94;
+            this.animationList.SelectedIndexChanged += new System.EventHandler(this.animationList_SelectedIndexChanged);
+            //
+            // filterDragonGraphics
+            //
+            this.filterDragonGraphics.AutoSize = true;
+            this.filterDragonGraphics.Location = new System.Drawing.Point(245, 291);
+            this.filterDragonGraphics.Name = "filterDragonGraphics";
+            this.filterDragonGraphics.Size = new System.Drawing.Size(98, 19);
+            this.filterDragonGraphics.TabIndex = 93;
+            this.filterDragonGraphics.Text = "Filter dragons";
+            this.filterDragonGraphics.UseVisualStyleBackColor = true;
+            this.filterDragonGraphics.CheckedChanged += new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
             //
             // setMinLightLevel
             //
@@ -1346,6 +1381,7 @@ namespace Assistant
             //
             // moreMoreOptTab
             //
+            this.moreMoreOptTab.Controls.Add(this.showDamageDealt);
             this.moreMoreOptTab.Controls.Add(this.showStaticWalls);
             this.moreMoreOptTab.Controls.Add(this.showAttackTargetNewOnly);
             this.moreMoreOptTab.Controls.Add(this.showTextTargetIndicator);
@@ -1407,7 +1443,7 @@ namespace Assistant
             // showAttackTargetNewOnly
             //
             this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showAttackTargetNewOnly.Location = new System.Drawing.Point(185, 317);
+            this.showAttackTargetNewOnly.Location = new System.Drawing.Point(184, 315);
             this.showAttackTargetNewOnly.Name = "showAttackTargetNewOnly";
             this.showAttackTargetNewOnly.Size = new System.Drawing.Size(74, 44);
             this.showAttackTargetNewOnly.TabIndex = 87;
@@ -1785,6 +1821,7 @@ namespace Assistant
             //
             // displayTab
             //
+            this.displayTab.Controls.Add(this.trackDps);
             this.displayTab.Controls.Add(this.trackIncomingGold);
             this.displayTab.Controls.Add(this.showNotoHue);
             this.displayTab.Controls.Add(this.warnNum);
@@ -1797,9 +1834,20 @@ namespace Assistant
             this.displayTab.Controls.Add(this.groupBox2);
             this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(482, 473);
+            this.displayTab.Size = new System.Drawing.Size(482, 510);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
+            //
+            // trackDps
+            //
+            this.trackDps.AutoSize = true;
+            this.trackDps.Location = new System.Drawing.Point(216, 270);
+            this.trackDps.Name = "trackDps";
+            this.trackDps.Size = new System.Drawing.Size(161, 19);
+            this.trackDps.TabIndex = 49;
+            this.trackDps.Text = "Track damage per second";
+            this.trackDps.UseVisualStyleBackColor = true;
+            this.trackDps.CheckedChanged += new System.EventHandler(this.trackDps_CheckedChanged);
             //
             // trackIncomingGold
             //
@@ -3615,6 +3663,17 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
+            // showDamageDealt
+            //
+            this.showDamageDealt.AutoSize = true;
+            this.showDamageDealt.Location = new System.Drawing.Point(245, 340);
+            this.showDamageDealt.Name = "showDamageDealt";
+            this.showDamageDealt.Size = new System.Drawing.Size(151, 19);
+            this.showDamageDealt.TabIndex = 88;
+            this.showDamageDealt.Text = "Damage dealt overhead";
+            this.showDamageDealt.UseVisualStyleBackColor = true;
+            this.showDamageDealt.CheckedChanged += new System.EventHandler(this.showDamageDealt_CheckedChanged);
+            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3984,10 +4043,57 @@ namespace Assistant
 
             macroVariableList.SelectedIndex = 0;
 
+            filterDragonGraphics.Checked = Config.GetBool("FilterDragonGraphics");
+            LoadAnimationList();
+
+            int animIndex = 0;
+            foreach (AnimData animData in _animationData)
+            {
+                if (animData.body.Equals(Config.GetInt("DragonGraphic").ToString()))
+                {
+                    animationList.SelectedIndex = animIndex;
+                    break;
+                }
+                animIndex++;
+            }
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
 
             m_Initializing = false;
+        }
+
+        private class AnimData
+        {
+            public string name { get; set; }
+            public string body { get; set; }
+        }
+
+        private List<AnimData> _animationData = new List<AnimData>();
+
+        private void LoadAnimationList()
+        {
+            int hue = 0;
+
+            using (StreamReader r = new StreamReader($"{Config.GetInstallDirectory()}\\animdata.json"))
+            {
+                string json = r.ReadToEnd();
+                List<AnimData> items = JsonConvert.DeserializeObject<List<AnimData>>(json);
+
+                _animationData.Clear();
+
+                foreach (AnimData animData in items)
+                {
+                    Frame[] frames = Animations.GetAnimation(Convert.ToInt32(animData.body), 0, 1, ref hue, false, false);
+
+                    if (frames != null)
+                    {
+                        _animationData.Add(animData);
+                        animationList.Items.Add(animData.name);
+                    }
+
+                }
+            }
         }
 
         private void tabs_IndexChanged(object sender, System.EventArgs e)
@@ -4017,7 +4123,7 @@ namespace Assistant
 
                 titleBarParams.SelectedIndex = 0;
 
-                tabs.Size = new Size(tabs.Size.Width, 313);
+                tabs.Size = new Size(tabs.Size.Width, 344);
                 Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
             }
             else if (tabs.SelectedTab == dressTab)
@@ -8070,6 +8176,12 @@ namespace Assistant
 
         private void trackIncomingGold_CheckedChanged(object sender, EventArgs e)
         {
+            if (World.Player == null)
+            {
+                GoldPerHourTimer.Stop();
+                return;
+            }
+
             if (trackIncomingGold.Checked)
             {
                 GoldPerHourTimer.Start();
@@ -8263,17 +8375,15 @@ namespace Assistant
             //4: Desolation
             //Default server
 
+            if (seasonList.SelectedIndex < 0)
+                return;
+
             Config.SetProperty("Season", seasonList.SelectedIndex);
 
             if (seasonList.SelectedIndex < 5)
             {
                 ClientCommunication.ForceSendToClient(new SeasonChange(seasonList.SelectedIndex, true));
             }
-        }
-
-        private void actionList_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
         }
 
         private void blockPartyInvites_CheckedChanged(object sender, EventArgs e)
@@ -8444,6 +8554,43 @@ namespace Assistant
         private void macroVariableList_SelectedIndexChanged(object sender, EventArgs e)
         {
             MacroManager.DisplayMacroVariables(macroVariableList.SelectedIndex, macroVariables);
+        }
+
+        private void filterDragonGraphics_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("FilterDragonGraphics", filterDragonGraphics.Checked);
+
+        }
+
+        private void animationList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (animationList.SelectedIndex < 0)
+                return;
+
+            Config.SetProperty("DragonGraphic", Convert.ToInt32(_animationData[animationList.SelectedIndex].body));
+        }
+
+        private void trackDps_CheckedChanged(object sender, EventArgs e)
+        {
+            if (World.Player == null)
+            {
+                DamagePerSecondTimer.Stop();
+                return;
+            }
+
+            if (trackDps.Checked)
+            {
+                DamagePerSecondTimer.Start();
+            }
+            else
+            {
+                DamagePerSecondTimer.Stop();
+            }
+        }
+
+        private void showDamageDealt_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowDamageDealt", showDamageDealt.Checked);
         }
     }
 }

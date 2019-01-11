@@ -534,16 +534,23 @@ namespace Assistant
             OverheadMessageFrom(hue, from, String.Format(format, args));
         }
 
-        internal void OverheadMessageFrom(int hue, string from, string text)
+        internal void OverheadMessageFrom(int hue, string from, string text, bool ascii)
         {
-            if (Config.GetInt("OverheadStyle") == 0)
+            if (ascii)
             {
-                ClientCommunication.SendToClient(new AsciiMessage(Serial, m_Body, MessageType.Regular, hue, 3, Language.CliLocName, text));
+                ClientCommunication.SendToClient(new AsciiMessage(Serial, m_Body, MessageType.Regular, hue, 3, from, text));
             }
             else
             {
                 ClientCommunication.SendToClient(new UnicodeMessage(Serial, m_Body, MessageType.Regular, hue, 3, Language.CliLocName, from, text));
             }
+        }
+
+        internal void OverheadMessageFrom(int hue, string from, string text)
+        {
+            bool ascii = Config.GetInt("OverheadStyle") == 0;
+
+            OverheadMessageFrom(hue, from, text, ascii);
         }
 
         internal void OverheadMessage(string text)
