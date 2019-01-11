@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
+using Assistant.UI;
+
 namespace Assistant
 {
 	public class ScreenCapManager
@@ -30,12 +32,12 @@ namespace Assistant
 			string name = "Unknown";
 			string path = Config.GetString( "CapPath" );
 			string type = Config.GetString( "ImageFormat" ).ToLower();
-				
+
 			if ( World.Player != null )
 				name = World.Player.Name;
 			if ( name == null || name.Trim() == "" || name.IndexOfAny( Path.GetInvalidPathChars() ) != -1 )
 				name = "Unknown";
-			
+
 			if ( Config.GetBool( "CapTimeStamp" ) )
 				timestamp = String.Format( "{0} ({1}) - {2}", name, World.ShardName, Engine.MistedDateTime.ToString( @"M/dd/yy - HH:mm:ss" ) );
 			else
@@ -48,7 +50,7 @@ namespace Assistant
 			}
 			catch
 			{
-				try 
+				try
 				{
                     path = Config.GetUserDirectory("ScreenShots");
 					Config.SetProperty( "CapPath", path );
@@ -63,10 +65,10 @@ namespace Assistant
 			do
 			{
 				filename = Path.Combine( path, String.Format( "{0}{1}.{2}", name, count != 0 ? count.ToString() : "" , type ) );
-				count--; // cause a - to be put in front of the number 
+				count--; // cause a - to be put in front of the number
 			}
 			while ( File.Exists( filename ) );
-			
+
 			try
 			{
 				IntPtr hBmp = Platform.CaptureScreen(Client.Instance.GetWindowHandle(), Config.GetBool( "CapFullScreen" ), timestamp );
@@ -78,8 +80,8 @@ namespace Assistant
 			{
 			}
 
-			Engine.MainWindow.ReloadScreenShotsList();
-		} 
+			Engine.MainWindow.SafeAction(s => s.ReloadScreenShotsList());
+		}
 
 		private static ImageFormat GetFormat( string fmt )
 		{
@@ -157,7 +159,7 @@ namespace Assistant
             GDI32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, GDI32.SRCCOPY);
             // restore selection
             GDI32.SelectObject(hdcDest, hOld);
-            // clean up 
+            // clean up
             GDI32.DeleteDC(hdcDest);
             User32.ReleaseDC(handle, hdcSrc);
             // get a .NET image object for it

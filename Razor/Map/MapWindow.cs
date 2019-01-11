@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
 
+using Assistant.UI;
+
 namespace Assistant.MapUO
 {
 	/// <summary>
@@ -118,17 +120,23 @@ namespace Assistant.MapUO
 			{
 				if ( Engine.MainWindow.MapWindow == null )
 				{
-					Engine.MainWindow.MapWindow = new Assistant.MapUO.MapWindow();
-					Engine.MainWindow.MapWindow.Show();
-					Engine.MainWindow.MapWindow.BringToFront();
+                    Engine.MainWindow.SafeAction(s =>
+                    {
+                        s.MapWindow = new Assistant.MapUO.MapWindow();
+                        s.MapWindow.Show();
+                        s.MapWindow.BringToFront();
+                    });
 				}
 				else
 				{
-					if ( Engine.MainWindow.MapWindow.Visible )
-					{
-						Engine.MainWindow.MapWindow.Hide();
-						Engine.MainWindow.BringToFront();
-						Platform.BringToFront( Client.Instance.GetWindowHandle() );
+                    if (Engine.MainWindow.MapWindow.Visible)
+                    {
+                        Engine.MainWindow.SafeAction(s =>
+                        {
+                            s.MapWindow.Hide();
+                            s.BringToFront();
+                        });
+						Platform.BringToFront(Client.Instance.GetWindowHandle());
 					}
 					else
 					{
@@ -166,9 +174,9 @@ namespace Assistant.MapUO
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MapWindow));
 			this.Map = new Assistant.MapUO.UOMapControl();
 			this.SuspendLayout();
-			// 
+			//
 			// Map
-			// 
+			//
 			this.Map.Active = true;
 			this.Map.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.Map.FocusMobile = null;
@@ -178,9 +186,9 @@ namespace Assistant.MapUO
 			this.Map.TabIndex = 0;
 			this.Map.TabStop = false;
 			this.Map.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Map_MouseDown);
-			// 
+			//
 			// MapWindow
-			// 
+			//
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.BackColor = System.Drawing.Color.Black;
 			this.ClientSize = new System.Drawing.Size(292, 266);
@@ -383,7 +391,7 @@ namespace Assistant.MapUO
 				ReleaseCapture();
 				SendMessage( Handle, WM_NCLBUTTONDOWN, (IntPtr)HT_CAPTION, IntPtr.Zero );
 				/*foreach ( Serial s in PacketHandlers.Party )
-				{       
+				{
 				Mobile m = World.FindMobile( s );
 				if ( m == null )
 					continue;

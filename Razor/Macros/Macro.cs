@@ -6,6 +6,8 @@ using System.IO;
 using System.Text;
 using Assistant;
 
+using Assistant.UI;
+
 namespace Assistant.Macros
 {
     public class Macro
@@ -46,19 +48,22 @@ namespace Assistant.Macros
         {
             m_ListBox = list;
 
-            m_ListBox.Items.Clear();
+            m_ListBox.SafeAction(s => s.Items.Clear());
 
             if (!m_Loaded)
                 Load();
 
-            m_ListBox.BeginUpdate();
-            if (m_Actions.Count > 0)
-                m_ListBox.Items.AddRange((object[])m_Actions.ToArray(typeof(object)));
-            if (m_Playing && m_CurrentAction >= 0 && m_CurrentAction < m_Actions.Count)
-                m_ListBox.SelectedIndex = m_CurrentAction;
-            else
-                m_ListBox.SelectedIndex = -1;
-            m_ListBox.EndUpdate();
+            m_ListBox.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                if (m_Actions.Count > 0)
+                    s.Items.AddRange((object[])m_Actions.ToArray(typeof(object)));
+                if (m_Playing && m_CurrentAction >= 0 && m_CurrentAction < m_Actions.Count)
+                    s.SelectedIndex = m_CurrentAction;
+                else
+                    s.SelectedIndex = -1;
+                s.EndUpdate();
+            });
         }
 
         public override string ToString()
@@ -82,7 +87,7 @@ namespace Assistant.Macros
         {
             m_Actions.Clear();
             if (m_ListBox != null)
-                m_ListBox.Items.Clear();
+                m_ListBox.SafeAction(s => s.Items.Clear());
             RecordAt(0);
         }
 
@@ -110,7 +115,7 @@ namespace Assistant.Macros
                 m_Playing = true;
                 m_CurrentAction = -1;
                 if (m_ListBox != null)
-                    m_ListBox.SelectedIndex = -1;
+                    m_ListBox.SafeAction(s => s.SelectedIndex = -1);
             }
         }
 
@@ -165,7 +170,7 @@ namespace Assistant.Macros
                 action.Parent = this;
                 m_Actions.Insert(m_CurrentAction, action);
                 if (m_ListBox != null)
-                    m_ListBox.Items.Insert(m_CurrentAction, action);
+                    m_ListBox.SafeAction(s => s.Items.Insert(m_CurrentAction, action));
                 m_CurrentAction++;
 
                 return false;
@@ -309,7 +314,7 @@ namespace Assistant.Macros
                 DisplayTo(m_ListBox);
                 try
                 {
-                    m_ListBox.SelectedIndex = sel;
+                    m_ListBox.SafeAction(s => s.SelectedIndex = sel);
                 }
                 catch
                 {
@@ -401,9 +406,9 @@ namespace Assistant.Macros
                 if (m_ListBox != null)
                 {
                     if (m_CurrentAction < m_ListBox.Items.Count)
-                        m_ListBox.SelectedIndex = m_CurrentAction;
+                        m_ListBox.SafeAction(s => s.SelectedIndex = m_CurrentAction);
                     else
-                        m_ListBox.SelectedIndex = -1;
+                        m_ListBox.SafeAction(s => s.SelectedIndex = -1);
                 }
 
                 if (m_CurrentAction >= 0 && m_CurrentAction < m_Actions.Count)

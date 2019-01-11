@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
+using Assistant.UI;
+
 namespace Assistant.Macros
 {
     public delegate void MacroMenuCallback(object[] Args);
@@ -231,7 +233,7 @@ namespace Assistant.Macros
                 m_Gfx = gfx;
             }
 
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             if (m_Parent != null)
                 m_Parent.Update();
@@ -336,7 +338,7 @@ namespace Assistant.Macros
                         {
                             list.Add(m);
                         }
-                    }  
+                    }
                 }
 
                 if (list.Count > 0)
@@ -385,7 +387,7 @@ namespace Assistant.Macros
             m_Gfx = gfx;
             m_Item = serial.IsItem;
 
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (m_Parent != null)
                 m_Parent.Update();
         }
@@ -942,7 +944,7 @@ namespace Assistant.Macros
             m_Info.Y = pt.Y;
             m_Info.Z = pt.Z;
 
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (m_Parent != null)
                 m_Parent.Update();
         }
@@ -968,7 +970,7 @@ namespace Assistant.Macros
 
     /// <summary>
     /// Action to handle variable macros to alleviate the headache of having multiple macros for the same thing
-    /// 
+    ///
     /// This Action does break the pattern that you see in every other action because the data that is stored for this
     /// action exists not in the Macro file, but in a different file that has all the variables in the profile
     /// </summary>
@@ -1005,7 +1007,7 @@ namespace Assistant.Macros
                 return false;
             }
 
-            
+
         }
 
         public override string Serialize()
@@ -1047,7 +1049,7 @@ namespace Assistant.Macros
             _target.Y = pt.Y;
             _target.Z = pt.Z;
 
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             m_Parent?.Update();
         }*/
@@ -1055,7 +1057,7 @@ namespace Assistant.Macros
 
     /// <summary>
     /// Action to handle variable macros to alleviate the headache of having multiple macros for the same thing
-    /// 
+    ///
     /// This Action does break the pattern that you see in every other action because the data that is stored for this
     /// action exists not in the Macro file, but in a different file that has all the variables in the profile
     /// </summary>
@@ -1237,7 +1239,7 @@ namespace Assistant.Macros
                 m_Mobile = serial.IsMobile;
                 m_Gfx = gfx;
             }
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (m_Parent != null)
                 m_Parent.Update();
         }
@@ -1308,7 +1310,7 @@ namespace Assistant.Macros
 
         private void ReTarget(object[] args)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             Targeting.OneTimeTarget(true, new Targeting.TargetResponseCallback(ReTargetResponse));
             World.Player.SendMessage(LocString.SelTargAct);
@@ -1440,7 +1442,7 @@ namespace Assistant.Macros
                     World.Player.SpeechHue = m_Hue;
                 hue = World.Player.SpeechHue;
             }
-            
+
             Client.Instance.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech));
             return true;
         }
@@ -2051,7 +2053,7 @@ namespace Assistant.Macros
 
             //if ((int)World.Player.CurrentGumpI != (int)m_GumpID && m_Strict)
             //    return m_GumpID > 0;
-            
+
             //return false;
         }
 

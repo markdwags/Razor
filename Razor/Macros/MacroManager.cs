@@ -5,6 +5,8 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
+using Assistant.UI;
+
 namespace Assistant.Macros
 {
     public class MacroManager
@@ -106,7 +108,7 @@ namespace Assistant.Macros
 		    }
 
 			if ( Engine.MainWindow.WaitDisplay != null )
-				Engine.MainWindow.WaitDisplay.Text = "";
+				Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "");
 		}
 
 		private static void HotKeyPlay( ref object state )
@@ -120,7 +122,7 @@ namespace Assistant.Macros
 			{
 				Play( m );
 				World.Player.SendMessage( LocString.PlayingA1, m );
-				Engine.MainWindow.PlayMacro( m );
+				Engine.MainWindow.SafeAction(s => s.PlayMacro( m ));
 			}
 		}
 
@@ -152,7 +154,7 @@ namespace Assistant.Macros
             }
 
 			if ( Engine.MainWindow.WaitDisplay != null )
-				Engine.MainWindow.WaitDisplay.Text = "";
+				Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "");
 		}
 
         public static void PlayNext()
@@ -191,9 +193,9 @@ namespace Assistant.Macros
 			UOAssist.PostMacroStop();
 			
 			if ( Engine.MainWindow.WaitDisplay != null )
-				Engine.MainWindow.WaitDisplay.Text = "";
+				Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "");
 
-			Engine.MainWindow.OnMacroStop();
+			Engine.MainWindow.SafeAction(s => s.OnMacroStop());
 			
 			//if ( restartPrev )
 			//	Play( m_PrevPlay );
@@ -225,7 +227,7 @@ namespace Assistant.Macros
                 m_Timer.Stop();
 
                 if (Engine.MainWindow.WaitDisplay != null)
-                    Engine.MainWindow.WaitDisplay.Text = "Paused";
+                    Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "Paused");
 
                 World.Player.SendMessage(LocString.MacroPaused);
 

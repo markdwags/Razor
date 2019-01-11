@@ -179,7 +179,7 @@ namespace Assistant
 			hueNum.Text = hue.ToString();
 			Callback = null;
 
-			//Engine.MainWindow.ShowMe();
+			//Engine.MainWindow.SafeAction(s => s.ShowMe());
 			this.Hide();
 			this.SendToBack();
 			this.WindowState = FormWindowState.Normal;
