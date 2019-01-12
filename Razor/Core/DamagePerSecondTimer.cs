@@ -14,7 +14,7 @@ namespace Assistant
         public static double MaxDamagePerSecond { get; set; }
         public static int TotalDamage { get; set; }
         public static int MaxSingleDamage { get; set; }
-        
+
         public static ConcurrentDictionary<string, int> TotalDamageByType;
 
         static DamagePerSecondTimer()
@@ -72,9 +72,9 @@ namespace Assistant
                     World.Player.SendMessage(MsgLevel.Force, $"{x}) {top.Key} [{top.Value:N2}]");
                     x++;
                 }
-            }
 
-            TotalDamageByType.Clear();
+                TotalDamageByType.Clear();
+            }
 
             DpsTimer.Stop();
             ClientCommunication.RequestTitlebarUpdate();

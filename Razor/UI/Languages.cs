@@ -444,6 +444,8 @@ namespace Assistant
         Interrupt,
         CaptureBod,
         DamageTracker,
+        EnableHotkeys,
+        DisableHotkeys,
 
         __End
     }

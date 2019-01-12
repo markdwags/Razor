@@ -701,3 +701,5 @@ InputBox::ok=&OK
 1994=>Interrupt
 1995=Capture Last Opened BOD
 1996=Toogle Damage Tracker
+1997=>> Enable Razor HotKeys
+1998=>> Disable Razor HotKeys
