@@ -209,6 +209,7 @@ namespace Assistant
             AddProperty("FilterDragonGraphics", false);
             AddProperty("DragonGraphic", 0);
             AddProperty("ShowDamageDealt", false);
+            AddProperty("ShowDamageDealtOverhead", false);
 
 
             Counter.Default();
@@ -330,6 +331,7 @@ namespace Assistant
             DoubleClickVariables.Load(root["doubleclickvariables"]);
 
             GoldPerHourTimer.Stop();
+            DamagePerSecondTimer.Stop();
 
             if (m_Props.ContainsKey("ForceSize"))
             {

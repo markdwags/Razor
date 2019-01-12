@@ -1088,6 +1088,7 @@ namespace Assistant
 			ActionQueue.Stop();
 			Counter.Reset();
                GoldPerHourTimer.Stop();
+               DamagePerSecondTimer.Stop();
                BandageTimer.Stop();
                GateTimer.Stop();
                BuffsTimer.Stop();

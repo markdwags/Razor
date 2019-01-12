@@ -1314,7 +1314,18 @@ namespace Assistant
             if (Config.GetBool("ShowDamageDealt"))
             {
                 Mobile m = World.FindMobile(serial);
-                m?.OverheadMessageFrom(38, m.Name, $"[{damage}]", true);
+
+                if (m == null)
+                    return;
+
+                if (Config.GetBool("ShowDamageDealtOverhead"))
+                {
+                    m.OverheadMessageFrom(38, m.Name, $"[{damage}]", true);
+                }
+                else
+                {
+                    World.Player.SendMessage(MsgLevel.Force, $"{m.Name}: {damage} damage");
+                }
             }
 
             if (DamagePerSecondTimer.Running)
@@ -1395,6 +1406,7 @@ namespace Assistant
 
                         player.Luck = p.ReadInt16();
 
+                        player.DamageMin = p.ReadUInt16();
                         player.DamageMin = p.ReadUInt16();
                         player.DamageMax = p.ReadUInt16();
 

@@ -315,6 +315,7 @@ namespace Assistant
         private ComboBox animationList;
         private CheckBox filterDragonGraphics;
         private CheckBox showDamageDealt;
+        private CheckBox damageOverhead;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -441,6 +442,8 @@ namespace Assistant
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.minMaxLightLevel = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
+            this.damageOverhead = new System.Windows.Forms.CheckBox();
+            this.showDamageDealt = new System.Windows.Forms.CheckBox();
             this.showStaticWalls = new System.Windows.Forms.CheckBox();
             this.showAttackTargetNewOnly = new System.Windows.Forms.CheckBox();
             this.showTextTargetIndicator = new System.Windows.Forms.CheckBox();
@@ -657,7 +660,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.showDamageDealt = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -743,7 +745,7 @@ namespace Assistant
             this.generalTab.Controls.Add(this.label9);
             this.generalTab.Location = new System.Drawing.Point(4, 44);
             this.generalTab.Name = "generalTab";
-            this.generalTab.Size = new System.Drawing.Size(482, 473);
+            this.generalTab.Size = new System.Drawing.Size(482, 510);
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             //
@@ -982,7 +984,7 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.minMaxLightLevel);
             this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(482, 473);
+            this.moreOptTab.Size = new System.Drawing.Size(482, 510);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             //
@@ -1381,6 +1383,7 @@ namespace Assistant
             //
             // moreMoreOptTab
             //
+            this.moreMoreOptTab.Controls.Add(this.damageOverhead);
             this.moreMoreOptTab.Controls.Add(this.showDamageDealt);
             this.moreMoreOptTab.Controls.Add(this.showStaticWalls);
             this.moreMoreOptTab.Controls.Add(this.showAttackTargetNewOnly);
@@ -1425,9 +1428,31 @@ namespace Assistant
             this.moreMoreOptTab.Controls.Add(this.chkPartyOverhead);
             this.moreMoreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreMoreOptTab.Name = "moreMoreOptTab";
-            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 473);
+            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 510);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
+            //
+            // damageOverhead
+            //
+            this.damageOverhead.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.damageOverhead.Location = new System.Drawing.Point(381, 335);
+            this.damageOverhead.Name = "damageOverhead";
+            this.damageOverhead.Size = new System.Drawing.Size(94, 28);
+            this.damageOverhead.TabIndex = 89;
+            this.damageOverhead.Text = "Overhead";
+            this.damageOverhead.UseVisualStyleBackColor = true;
+            this.damageOverhead.CheckedChanged += new System.EventHandler(this.damageOverhead_CheckedChanged);
+            //
+            // showDamageDealt
+            //
+            this.showDamageDealt.AutoSize = true;
+            this.showDamageDealt.Location = new System.Drawing.Point(245, 340);
+            this.showDamageDealt.Name = "showDamageDealt";
+            this.showDamageDealt.Size = new System.Drawing.Size(130, 19);
+            this.showDamageDealt.TabIndex = 88;
+            this.showDamageDealt.Text = "Show damage dealt";
+            this.showDamageDealt.UseVisualStyleBackColor = true;
+            this.showDamageDealt.CheckedChanged += new System.EventHandler(this.showDamageDealt_CheckedChanged);
             //
             // showStaticWalls
             //
@@ -1442,7 +1467,7 @@ namespace Assistant
             //
             // showAttackTargetNewOnly
             //
-            this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showAttackTargetNewOnly.Location = new System.Drawing.Point(184, 315);
             this.showAttackTargetNewOnly.Name = "showAttackTargetNewOnly";
             this.showAttackTargetNewOnly.Size = new System.Drawing.Size(74, 44);
@@ -1464,10 +1489,10 @@ namespace Assistant
             // showStaticWallLabels
             //
             this.showStaticWallLabels.AutoSize = true;
-            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showStaticWallLabels.Location = new System.Drawing.Point(401, 315);
             this.showStaticWallLabels.Name = "showStaticWallLabels";
-            this.showStaticWallLabels.Size = new System.Drawing.Size(60, 19);
+            this.showStaticWallLabels.Size = new System.Drawing.Size(58, 17);
             this.showStaticWallLabels.TabIndex = 85;
             this.showStaticWallLabels.Text = "Labels";
             this.showStaticWallLabels.UseVisualStyleBackColor = true;
@@ -1564,7 +1589,7 @@ namespace Assistant
             //
             // stealthOverhead
             //
-            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stealthOverhead.Location = new System.Drawing.Point(383, 75);
             this.stealthOverhead.Name = "stealthOverhead";
             this.stealthOverhead.Size = new System.Drawing.Size(96, 36);
@@ -1843,9 +1868,9 @@ namespace Assistant
             this.trackDps.AutoSize = true;
             this.trackDps.Location = new System.Drawing.Point(216, 270);
             this.trackDps.Name = "trackDps";
-            this.trackDps.Size = new System.Drawing.Size(161, 19);
+            this.trackDps.Size = new System.Drawing.Size(146, 19);
             this.trackDps.TabIndex = 49;
-            this.trackDps.Text = "Track damage per second";
+            this.trackDps.Text = "Enable damage tracker";
             this.trackDps.UseVisualStyleBackColor = true;
             this.trackDps.CheckedChanged += new System.EventHandler(this.trackDps_CheckedChanged);
             //
@@ -2081,7 +2106,7 @@ namespace Assistant
             this.dressTab.Controls.Add(this.groupBox5);
             this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 473);
+            this.dressTab.Size = new System.Drawing.Size(482, 510);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             //
@@ -2241,7 +2266,7 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.skillList);
             this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 473);
+            this.skillsTab.Size = new System.Drawing.Size(482, 510);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             //
@@ -2394,7 +2419,7 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB3);
             this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 473);
+            this.agentsTab.Size = new System.Drawing.Size(482, 510);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             //
@@ -2484,7 +2509,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 473);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 510);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2635,7 +2660,7 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 473);
+            this.macrosTab.Size = new System.Drawing.Size(482, 510);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             //
@@ -2888,7 +2913,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.trackPlayerPosition);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(482, 473);
+            this.mapTab.Size = new System.Drawing.Size(482, 510);
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             //
@@ -3024,7 +3049,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 473);
+            this.videoTab.Size = new System.Drawing.Size(482, 510);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             //
@@ -3291,7 +3316,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(482, 473);
+            this.screenshotTab.Size = new System.Drawing.Size(482, 510);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             //
@@ -3458,7 +3483,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 473);
+            this.advancedTab.Size = new System.Drawing.Size(482, 510);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             //
@@ -3570,7 +3595,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 473);
+            this.aboutTab.Size = new System.Drawing.Size(482, 510);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             //
@@ -3662,17 +3687,6 @@ namespace Assistant
             this.timerTimer.Enabled = true;
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
-            //
-            // showDamageDealt
-            //
-            this.showDamageDealt.AutoSize = true;
-            this.showDamageDealt.Location = new System.Drawing.Point(245, 340);
-            this.showDamageDealt.Name = "showDamageDealt";
-            this.showDamageDealt.Size = new System.Drawing.Size(151, 19);
-            this.showDamageDealt.TabIndex = 88;
-            this.showDamageDealt.Text = "Damage dealt overhead";
-            this.showDamageDealt.UseVisualStyleBackColor = true;
-            this.showDamageDealt.CheckedChanged += new System.EventHandler(this.showDamageDealt_CheckedChanged);
             //
             // MainForm
             //
@@ -4057,6 +4071,9 @@ namespace Assistant
                 animIndex++;
             }
 
+            showDamageDealt.Checked = Config.GetBool("ShowDamageDealt");
+            damageOverhead.Checked = Config.GetBool("ShowDamageDealtOverhead");
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
 
@@ -4343,6 +4360,24 @@ namespace Assistant
                     SortSkills();
                     return;
                 }
+            }
+        }
+
+        public void ToggleDamageTracker(bool enable)
+        {
+            if (World.Player == null)
+            {
+                DamagePerSecondTimer.Stop();
+                return;
+            }
+
+            if (enable)
+            {
+                trackDps.Checked = true;
+            }
+            else
+            {
+                trackDps.Checked = false;
             }
         }
 
@@ -8572,12 +8607,6 @@ namespace Assistant
 
         private void trackDps_CheckedChanged(object sender, EventArgs e)
         {
-            if (World.Player == null)
-            {
-                DamagePerSecondTimer.Stop();
-                return;
-            }
-
             if (trackDps.Checked)
             {
                 DamagePerSecondTimer.Start();
@@ -8591,6 +8620,11 @@ namespace Assistant
         private void showDamageDealt_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowDamageDealt", showDamageDealt.Checked);
+        }
+
+        private void damageOverhead_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowDamageDealtOverhead", damageOverhead.Checked);
         }
     }
 }

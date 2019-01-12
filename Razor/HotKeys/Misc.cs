@@ -13,6 +13,7 @@ namespace Assistant.HotKeys
             HotKey.Add(HKCategory.Misc, LocString.VidStop, new HotKeyCallback(PacketPlayer.Stop));
 
             HotKey.Add(HKCategory.Misc, LocString.GoldPerHotkey, new HotKeyCallback(ToggleGoldPer));
+            HotKey.Add(HKCategory.Misc, LocString.DamageTracker, new HotKeyCallback(ToggleDamage));
 
             HotKey.Add(HKCategory.Misc, LocString.CaptureBod, new HotKeyCallback(CaptureBod));
 
@@ -59,6 +60,11 @@ namespace Assistant.HotKeys
             }
         }
 
+        private static void ToggleDamage()
+        {
+            Engine.MainWindow.ToggleDamageTracker(!DamagePerSecondTimer.Running);
+
+        }
 
         private static void CaptureBod()
         {

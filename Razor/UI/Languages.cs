@@ -443,6 +443,7 @@ namespace Assistant
         SetContainerAlias,
         Interrupt,
         CaptureBod,
+        DamageTracker,
 
         __End
     }
