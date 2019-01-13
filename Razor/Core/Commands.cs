@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using Assistant.Core;
 using Assistant.Macros;
 
 namespace Assistant
@@ -27,6 +28,7 @@ namespace Assistant
             Command.Register("Mobile", GetMobile);
             Command.Register("Weather", SetWeather);
             Command.Register("Season", SetSeason);
+            Command.Register("Damage", DamageTrackerReport);
         }
 
         private static DateTime m_LastSync;
@@ -57,6 +59,12 @@ namespace Assistant
                 Language.CliLocName, "System", "Current PacketVideo File Information:"));
             ClientCommunication.ForceSendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x25, 3,
                 Language.CliLocName, "System", PacketPlayer.CurrentOpenedInfo));
+        }
+
+        private static void DamageTrackerReport(string[] param)
+        {
+            if (DamageTracker.Running)
+                DamageTracker.SendReport();
         }
 
         private static void SetWeather(string[] param)

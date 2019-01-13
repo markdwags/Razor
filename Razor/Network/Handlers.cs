@@ -1308,28 +1308,40 @@ namespace Assistant
             uint serial = p.ReadUInt32();
             ushort damage = p.ReadUInt16();
 
-            if (serial == World.Player.Serial)
-                return;
-
-            if (Config.GetBool("ShowDamageDealt"))
+            if (Config.GetBool("ShowDamageTaken") || Config.GetBool("ShowDamageDealt"))
             {
                 Mobile m = World.FindMobile(serial);
 
                 if (m == null)
                     return;
 
-                if (Config.GetBool("ShowDamageDealtOverhead"))
+                if (serial == World.Player.Serial && Config.GetBool("ShowDamageTaken"))
                 {
-                    m.OverheadMessageFrom(38, m.Name, $"[{damage}]", true);
+                    if (Config.GetBool("ShowDamageTakenOverhead"))
+                    {
+                        World.Player.OverheadMessage(38, $"[{damage}]", true);
+                    }
+                    else
+                    {
+                        World.Player.SendMessage(MsgLevel.Force, $"{damage} dmg->{m.Name}");
+                    }
                 }
-                else
+
+                if (Config.GetBool("ShowDamageDealt"))
                 {
-                    World.Player.SendMessage(MsgLevel.Force, $"{m.Name}: {damage} damage");
+                    if (Config.GetBool("ShowDamageDealtOverhead"))
+                    {
+                        m.OverheadMessageFrom(38, m.Name, $"[{damage}]", true);
+                    }
+                    else
+                    {
+                        World.Player.SendMessage(MsgLevel.Force, $"{World.Player.Name}->{m.Name}: {damage} damage");
+                    }
                 }
             }
 
-            if (DamagePerSecondTimer.Running)
-                DamagePerSecondTimer.AddDamage(serial, damage);
+            if (DamageTracker.Running)
+                DamageTracker.AddDamage(serial, damage);
         }
 
         private static void MobileStatus(PacketReader p, PacketHandlerEventArgs args)

@@ -141,7 +141,7 @@
     <Compile Include="Core\BuffsDebuffs.cs" />
     <Compile Include="Core\BodCapture.cs" />
     <Compile Include="Core\EncodedSpeech.cs" />
-    <Compile Include="Core\DamagePerSecondTimer.cs" />
+    <Compile Include="Core\DamageTracker.cs" />
     <Compile Include="Core\MessageInBottleCapture.cs" />
     <Compile Include="Core\ContainerLabels.cs" />
     <Compile Include="Core\OverheadMessages.cs" />

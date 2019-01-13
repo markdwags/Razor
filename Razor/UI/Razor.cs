@@ -11,14 +11,16 @@ using Assistant.Filters;
 using Assistant.Macros;
 using System.Diagnostics;
 using Assistant.Boat;
-using Assistant.UI;
 using Newtonsoft.Json;
 using System.Net;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Assistant.Core;
 using Newtonsoft.Json.Linq;
 using Ultima;
+using ContainerLabels = Assistant.UI.ContainerLabels;
+using OverheadMessages = Assistant.UI.OverheadMessages;
 
 namespace Assistant
 {
@@ -315,7 +317,9 @@ namespace Assistant
         private ComboBox animationList;
         private CheckBox filterDragonGraphics;
         private CheckBox showDamageDealt;
-        private CheckBox damageOverhead;
+        private CheckBox damageDealtOverhead;
+        private CheckBox damageTakenOverhead;
+        private CheckBox showDamageTaken;
         private TreeView _hotkeyTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -442,7 +446,9 @@ namespace Assistant
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.minMaxLightLevel = new System.Windows.Forms.CheckBox();
             this.moreMoreOptTab = new System.Windows.Forms.TabPage();
-            this.damageOverhead = new System.Windows.Forms.CheckBox();
+            this.damageTakenOverhead = new System.Windows.Forms.CheckBox();
+            this.showDamageTaken = new System.Windows.Forms.CheckBox();
+            this.damageDealtOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageDealt = new System.Windows.Forms.CheckBox();
             this.showStaticWalls = new System.Windows.Forms.CheckBox();
             this.showAttackTargetNewOnly = new System.Windows.Forms.CheckBox();
@@ -1383,7 +1389,9 @@ namespace Assistant
             //
             // moreMoreOptTab
             //
-            this.moreMoreOptTab.Controls.Add(this.damageOverhead);
+            this.moreMoreOptTab.Controls.Add(this.damageTakenOverhead);
+            this.moreMoreOptTab.Controls.Add(this.showDamageTaken);
+            this.moreMoreOptTab.Controls.Add(this.damageDealtOverhead);
             this.moreMoreOptTab.Controls.Add(this.showDamageDealt);
             this.moreMoreOptTab.Controls.Add(this.showStaticWalls);
             this.moreMoreOptTab.Controls.Add(this.showAttackTargetNewOnly);
@@ -1432,16 +1440,38 @@ namespace Assistant
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
             //
-            // damageOverhead
+            // damageTakenOverhead
             //
-            this.damageOverhead.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.damageOverhead.Location = new System.Drawing.Point(381, 335);
-            this.damageOverhead.Name = "damageOverhead";
-            this.damageOverhead.Size = new System.Drawing.Size(94, 28);
-            this.damageOverhead.TabIndex = 89;
-            this.damageOverhead.Text = "Overhead";
-            this.damageOverhead.UseVisualStyleBackColor = true;
-            this.damageOverhead.CheckedChanged += new System.EventHandler(this.damageOverhead_CheckedChanged);
+            this.damageTakenOverhead.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.damageTakenOverhead.Location = new System.Drawing.Point(385, 365);
+            this.damageTakenOverhead.Name = "damageTakenOverhead";
+            this.damageTakenOverhead.Size = new System.Drawing.Size(77, 19);
+            this.damageTakenOverhead.TabIndex = 91;
+            this.damageTakenOverhead.Text = "Overhead";
+            this.damageTakenOverhead.UseVisualStyleBackColor = true;
+            this.damageTakenOverhead.CheckedChanged += new System.EventHandler(this.damageTakenOverhead_CheckedChanged);
+            //
+            // showDamageTaken
+            //
+            this.showDamageTaken.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showDamageTaken.Location = new System.Drawing.Point(245, 365);
+            this.showDamageTaken.Name = "showDamageTaken";
+            this.showDamageTaken.Size = new System.Drawing.Size(139, 19);
+            this.showDamageTaken.TabIndex = 90;
+            this.showDamageTaken.Text = "Show damage taken";
+            this.showDamageTaken.UseVisualStyleBackColor = true;
+            this.showDamageTaken.CheckedChanged += new System.EventHandler(this.showDamageTaken_CheckedChanged);
+            //
+            // damageDealtOverhead
+            //
+            this.damageDealtOverhead.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.damageDealtOverhead.Location = new System.Drawing.Point(385, 340);
+            this.damageDealtOverhead.Name = "damageDealtOverhead";
+            this.damageDealtOverhead.Size = new System.Drawing.Size(77, 19);
+            this.damageDealtOverhead.TabIndex = 89;
+            this.damageDealtOverhead.Text = "Overhead";
+            this.damageDealtOverhead.UseVisualStyleBackColor = true;
+            this.damageDealtOverhead.CheckedChanged += new System.EventHandler(this.damageDealtOverhead_CheckedChanged);
             //
             // showDamageDealt
             //
@@ -4072,7 +4102,9 @@ namespace Assistant
             }
 
             showDamageDealt.Checked = Config.GetBool("ShowDamageDealt");
-            damageOverhead.Checked = Config.GetBool("ShowDamageDealtOverhead");
+            damageDealtOverhead.Checked = Config.GetBool("ShowDamageDealtOverhead");
+            showDamageTaken.Checked = Config.GetBool("ShowDamageTaken");
+            damageTakenOverhead.Checked = Config.GetBool("ShowDamageTakenOverhead");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
@@ -4367,7 +4399,7 @@ namespace Assistant
         {
             if (World.Player == null)
             {
-                DamagePerSecondTimer.Stop();
+                DamageTracker.Stop();
                 return;
             }
 
@@ -8609,11 +8641,11 @@ namespace Assistant
         {
             if (trackDps.Checked)
             {
-                DamagePerSecondTimer.Start();
+                DamageTracker.Start();
             }
             else
             {
-                DamagePerSecondTimer.Stop();
+                DamageTracker.Stop();
             }
         }
 
@@ -8622,9 +8654,19 @@ namespace Assistant
             Config.SetProperty("ShowDamageDealt", showDamageDealt.Checked);
         }
 
-        private void damageOverhead_CheckedChanged(object sender, EventArgs e)
+        private void damageDealtOverhead_CheckedChanged(object sender, EventArgs e)
         {
-            Config.SetProperty("ShowDamageDealtOverhead", damageOverhead.Checked);
+            Config.SetProperty("ShowDamageDealtOverhead", damageDealtOverhead.Checked);
+        }
+
+        private void damageTakenOverhead_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowDamageTakenOverhead", damageDealtOverhead.Checked);
+        }
+
+        private void showDamageTaken_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowDamageTaken", showDamageTaken.Checked);
         }
     }
 }

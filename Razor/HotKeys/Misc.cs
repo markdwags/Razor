@@ -62,7 +62,7 @@ namespace Assistant.HotKeys
 
         private static void ToggleDamage()
         {
-            Engine.MainWindow.ToggleDamageTracker(!DamagePerSecondTimer.Running);
+            Engine.MainWindow.ToggleDamageTracker(!DamageTracker.Running);
 
         }
 

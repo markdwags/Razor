@@ -32,6 +32,8 @@ LARGE_INTEGER PerfFreq, Counter;
 
 DWORD DeathMsgAddr = 0xFFFFFFFF;
 
+HWND hUOAWnd = NULL;
+
 SIZE DesiredSize = {800,600};
 
 unsigned long OldRecv, OldSend, OldConnect, OldCloseSocket, OldSelect, OldCreateFileA;
@@ -251,8 +253,27 @@ DLLFUNCTION int InstallLibrary( HWND PostWindow, DWORD pid, int flags )
 	if ( !hGetMsgHook )
 		return NO_HOOK;
 
+	WNDCLASS wc;
+	wc.style = 0;
+	wc.lpfnWndProc = (WNDPROC)UOAWndProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = hInstance;
+	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground = NULL;
+	wc.lpszMenuName = NULL;
+	wc.lpszClassName = "UOASSIST-TP-MSG-WND";
+	RegisterClass(&wc);
+	DWORD error = GetLastError();
+
+	hUOAWnd = CreateWindow("UOASSIST-TP-MSG-WND", "UOASSIST-TP-MSG-WND", WS_OVERLAPPEDWINDOW, 0, 0, 50, 50, NULL, NULL, hInstance, 0);
+	if (hUOAWnd)
+	    ShowWindow(hUOAWnd, FALSE);
+
 	ServerEncrypted = (flags&0x10) != 0;
 	ClientEncrypted = (flags&0x08) != 0;
+
 	PostMessage( hWatchWnd, WM_PROCREADY, (WPARAM)flags, (LPARAM)hPostWnd );
 	return SUCCESS;
 }
@@ -298,6 +319,13 @@ DLLFUNCTION void WaitForWindow( DWORD pid )
 DLLFUNCTION void Shutdown( bool close )
 {
 	Log( "Shutdown" );
+
+	if (hUOAWnd && IsWindow(hUOAWnd))
+	{
+	    UnregisterClass("UOASSIST-TP-MSG-WND", hInstance);
+	    SendMessage(hUOAWnd, WM_CLOSE, 0, 0);
+	    hUOAWnd = NULL;
+	}
 
 	if ( hWatchWnd && IsWindow( hWatchWnd ) )
 		PostMessage( hWatchWnd, WM_QUIT, 0, 0 );
@@ -2019,6 +2047,14 @@ LRESULT CALLBACK WndProcRetHookFunc( int Code, WPARAM Flag, LPARAM pMsg )
 	}
 
 	return CallNextHookEx( NULL, Code, Flag, pMsg );
+}
+
+LRESULT CALLBACK UOAWndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam)
+{
+    if (nMsg >= WM_USER + 200 && nMsg < WM_USER + 315)
+	   return SendMessage(hPostWnd, nMsg, wParam, lParam);
+    else
+	   return DefWindowProc(hWnd, nMsg, wParam, lParam);
 }
 
 void Log( const char *format, ... )

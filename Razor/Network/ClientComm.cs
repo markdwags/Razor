@@ -916,10 +916,14 @@ namespace Assistant
                 //time = (int)((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
                  sb.Replace(@"{uptime}", ConnectionStart != DateTime.MinValue ? Utility.FormatTime((int)((DateTime.UtcNow - ConnectionStart).TotalSeconds)) : "-");
 
-	            sb.Replace(@"{dps}", DamagePerSecondTimer.Running ? $"{DamagePerSecondTimer.DamagePerSecond:N2}" : "-");
-	            sb.Replace(@"{maxdps}", DamagePerSecondTimer.Running ? $"{DamagePerSecondTimer.MaxDamagePerSecond:N2}" : "-");
-                 sb.Replace(@"{maxdamage}", DamagePerSecondTimer.Running ? $"{DamagePerSecondTimer.MaxSingleDamage}" : "-");
-	            sb.Replace(@"{totaldamage}", DamagePerSecondTimer.Running ? $"{DamagePerSecondTimer.TotalDamage}" : "-");
+	            sb.Replace(@"{dps}", DamageTracker.Running ? $"{DamageTracker.DamagePerSecond:N2}" : "-");
+	            sb.Replace(@"{maxdps}", DamageTracker.Running ? $"{DamageTracker.MaxDamagePerSecond:N2}" : "-");
+                 sb.Replace(@"{maxdamagedealt}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageDealt}" : "-");
+	            sb.Replace(@"{maxdamagetaken}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageTaken}" : "-");
+                 sb.Replace(@"{totaldamagedealt}", DamageTracker.Running ? $"{DamageTracker.TotalDamageDealt}" : "-");
+	            sb.Replace(@"{maxdamagetaken}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageTaken}" : "-");
+	            sb.Replace(@"{totaldamagetaken}", DamageTracker.Running ? $"{DamageTracker.TotalDamageTaken}" : "-");
+
 
                 string buffList = string.Empty;
 
@@ -1088,7 +1092,7 @@ namespace Assistant
 			ActionQueue.Stop();
 			Counter.Reset();
                GoldPerHourTimer.Stop();
-               DamagePerSecondTimer.Stop();
+		    DamageTracker.Stop();
                BandageTimer.Stop();
                GateTimer.Stop();
                BuffsTimer.Stop();
