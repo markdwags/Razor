@@ -146,6 +146,8 @@ namespace Assistant
             World.Items.Clear();
             Resync(param);
 
+            Item.UpdateContainers();
+
             ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "All items in memory cache have been cleared"));
 

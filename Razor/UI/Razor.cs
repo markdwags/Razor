@@ -1434,7 +1434,7 @@ namespace Assistant
             //
             // damageOverhead
             //
-            this.damageOverhead.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.damageOverhead.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.damageOverhead.Location = new System.Drawing.Point(381, 335);
             this.damageOverhead.Name = "damageOverhead";
             this.damageOverhead.Size = new System.Drawing.Size(94, 28);
@@ -1467,7 +1467,7 @@ namespace Assistant
             //
             // showAttackTargetNewOnly
             //
-            this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showAttackTargetNewOnly.Location = new System.Drawing.Point(184, 315);
             this.showAttackTargetNewOnly.Name = "showAttackTargetNewOnly";
             this.showAttackTargetNewOnly.Size = new System.Drawing.Size(74, 44);
@@ -1489,10 +1489,10 @@ namespace Assistant
             // showStaticWallLabels
             //
             this.showStaticWallLabels.AutoSize = true;
-            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showStaticWallLabels.Location = new System.Drawing.Point(401, 315);
             this.showStaticWallLabels.Name = "showStaticWallLabels";
-            this.showStaticWallLabels.Size = new System.Drawing.Size(58, 17);
+            this.showStaticWallLabels.Size = new System.Drawing.Size(58, 19);
             this.showStaticWallLabels.TabIndex = 85;
             this.showStaticWallLabels.Text = "Labels";
             this.showStaticWallLabels.UseVisualStyleBackColor = true;
@@ -1589,7 +1589,7 @@ namespace Assistant
             //
             // stealthOverhead
             //
-            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI Emoji", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stealthOverhead.Location = new System.Drawing.Point(383, 75);
             this.stealthOverhead.Name = "stealthOverhead";
             this.stealthOverhead.Size = new System.Drawing.Size(96, 36);

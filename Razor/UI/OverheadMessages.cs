@@ -13,6 +13,8 @@ namespace Assistant.UI
 {
     public partial class OverheadMessages : Form
     {
+        private List<Core.OverheadMessages.OverheadMessage> NewOverheadEntries = new List<Core.OverheadMessages.OverheadMessage>();
+
         public OverheadMessages()
         {
             InitializeComponent();
@@ -20,20 +22,22 @@ namespace Assistant.UI
 
         private void OverheadMessages_Load(object sender, EventArgs e)
         {
-            /*foreach (StringEntry entry in Language.CliLoc.Entries)
-            {
-                //var cliItem = new ListViewItem(new[] { $"{entry.Number}", $"{entry.Text}", "" });
-
-                ListViewItem item = new ListViewItem($"{entry.Number}");
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, $"{entry.Text}"));
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, "None"));
-                cliLocSearchView.Items.Add(item);
-            }*/
-
             foreach (Core.OverheadMessages.OverheadMessage message in Core.OverheadMessages.OverheadMessageList)
             {
                 ListViewItem item = new ListViewItem($"{message.SearchMessage}");
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, message.MessageOverhead));
+
+                int hueIdx = message.Hue;
+
+                if (hueIdx > 0 && hueIdx < 3000)
+                    item.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                else
+                    item.SubItems[1].BackColor = SystemColors.Control;
+
+                item.SubItems[1].ForeColor = (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+
+                item.UseItemStyleForSubItems = false;
+
                 cliLocOverheadView.Items.Add(item);
             }
 
@@ -69,30 +73,46 @@ namespace Assistant.UI
 
         private void setOverheadMessage_Click(object sender, EventArgs e)
         {
+            int hueIdx = Config.GetInt("SysColor");
+            string newItemText = string.Empty;
+
+            if (string.IsNullOrEmpty(cliLocTextSearch.Text))
+                return;
+
             if (cliLocSearchView.SelectedItems.Count > 0)
             {
-                //if (InputBox.Show(this, Language.GetString(LocString.NewMacro), Language.GetString(LocString.EnterAName)))
-                if (InputBox.Show(this, "Enter Overhead Text", "Enter text to display overhead"))
-                {
-                    string overheadMessage = InputBox.GetString();
-
-                    ListViewItem selectedItem = cliLocSearchView.SelectedItems[0];
-
-                    ListViewItem item = new ListViewItem($"{selectedItem.SubItems[1].Text}");
-                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, overheadMessage));
-                    cliLocOverheadView.Items.Add(item);
-                }
+                ListViewItem selectedItem = cliLocSearchView.SelectedItems[0];
+                newItemText = selectedItem.SubItems[1].Text;
             }
             else
             {
-                if (InputBox.Show(this, "Enter Overhead Text", "Enter text to display overhead"))
-                {
-                    string overheadMessage = InputBox.GetString();
+                newItemText = cliLocTextSearch.Text;
+            }
 
-                    ListViewItem item = new ListViewItem($"{cliLocTextSearch.Text}");
-                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, overheadMessage));
-                    cliLocOverheadView.Items.Add(item);
-                }
+            ListViewItem item = new ListViewItem(newItemText);
+
+            if (InputBox.Show(this, "Enter Overhead Text", "Enter text to display overhead"))
+            {
+                string overheadMessage = InputBox.GetString();
+
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, overheadMessage));
+
+                if (hueIdx > 0 && hueIdx < 3000)
+                    item.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                else
+                    item.SubItems[1].BackColor = SystemColors.Control;
+
+                item.SubItems[1].ForeColor = (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+                item.UseItemStyleForSubItems = false;
+                
+                cliLocOverheadView.Items.Add(item);
+
+                NewOverheadEntries.Add(new Core.OverheadMessages.OverheadMessage
+                {
+                    SearchMessage = newItemText,
+                    Hue = hueIdx,
+                    MessageOverhead = overheadMessage
+                });
             }
         }
 
@@ -106,7 +126,9 @@ namespace Assistant.UI
 
         private void saveOverheadMessages_Click(object sender, EventArgs e)
         {
-            Core.OverheadMessages.ClearAll();
+            //Core.OverheadMessages.ClearAll();
+            List<Core.OverheadMessages.OverheadMessage> newOverheadMessageList = new List<Core.OverheadMessages.OverheadMessage>();
+
 
             // Keep it simple, reset to default if it isn't what we like
             if (string.IsNullOrEmpty(overheadFormat.Text) || !overheadFormat.Text.Contains("{msg}"))
@@ -130,11 +152,14 @@ namespace Assistant.UI
                 Core.OverheadMessages.OverheadMessage message = new Core.OverheadMessages.OverheadMessage
                 {
                     SearchMessage = item.SubItems[0].Text,
-                    MessageOverhead = item.SubItems[1].Text
+                    MessageOverhead = item.SubItems[1].Text,
+                    Hue = GetHueFromListView(item.SubItems[1].Text)
                 };
 
-                Core.OverheadMessages.OverheadMessageList.Add(message);
+                newOverheadMessageList.Add(message);
             }
+
+            Core.OverheadMessages.OverheadMessageList = new List<Core.OverheadMessages.OverheadMessage>(newOverheadMessageList);
 
             Config.Save();
 
@@ -152,5 +177,74 @@ namespace Assistant.UI
             Hide();
         }
 
+        private void setColorHue_Click(object sender, EventArgs e)
+        {
+            if (cliLocOverheadView.SelectedItems.Count > 0)
+            {
+                SetContainerLabelHue();
+            }
+        }
+
+        private void SetContainerLabelHue()
+        {
+            ListViewItem selectedItem = cliLocOverheadView.Items[cliLocOverheadView.SelectedIndices[0]];
+
+            HueEntry h = new HueEntry(GetHueFromListView(selectedItem.SubItems[1].Text));
+
+            // TODO: BREAKING DRY!
+            if (h.ShowDialog(this) == DialogResult.OK)
+            {
+                int hueIdx = h.Hue;
+
+                if (hueIdx > 0 && hueIdx < 3000)
+                    selectedItem.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                else
+                    selectedItem.SubItems[1].BackColor = Color.White;
+
+                selectedItem.SubItems[1].ForeColor = (selectedItem.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+
+                foreach (Core.OverheadMessages.OverheadMessage list in Core.OverheadMessages.OverheadMessageList)
+                {
+                    if (list.SearchMessage.Equals(selectedItem.Text))
+                    {
+                        list.Hue = hueIdx;
+                        break;
+                    }
+                }
+
+                foreach (Core.OverheadMessages.OverheadMessage list in NewOverheadEntries)
+                {
+                    if (list.SearchMessage.Equals(selectedItem.Text))
+                    {
+                        list.Hue = hueIdx;
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        public int GetHueFromListView(string id)
+        {
+            int hue = 0;
+
+            foreach (Core.OverheadMessages.OverheadMessage list in Core.OverheadMessages.OverheadMessageList)
+            {
+                if (list.MessageOverhead.Equals(id))
+                {
+                    return list.Hue;
+                }
+            }
+
+            foreach (Core.OverheadMessages.OverheadMessage list in NewOverheadEntries)
+            {
+                if (list.MessageOverhead.Equals(id))
+                {
+                    return list.Hue;
+                }
+            }
+
+            return hue;
+        }
     }
 }

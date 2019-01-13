@@ -46,13 +46,14 @@
             this.unicodeStyle = new System.Windows.Forms.RadioButton();
             this.asciiStyle = new System.Windows.Forms.RadioButton();
             this.label3 = new System.Windows.Forms.Label();
+            this.setColorHue = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cancelOverheadMessages
             // 
             this.cancelOverheadMessages.Location = new System.Drawing.Point(334, 307);
             this.cancelOverheadMessages.Name = "cancelOverheadMessages";
-            this.cancelOverheadMessages.Size = new System.Drawing.Size(54, 46);
+            this.cancelOverheadMessages.Size = new System.Drawing.Size(54, 28);
             this.cancelOverheadMessages.TabIndex = 20;
             this.cancelOverheadMessages.Text = "Cancel";
             this.cancelOverheadMessages.UseVisualStyleBackColor = true;
@@ -62,7 +63,7 @@
             // 
             this.saveOverheadMessages.Location = new System.Drawing.Point(394, 307);
             this.saveOverheadMessages.Name = "saveOverheadMessages";
-            this.saveOverheadMessages.Size = new System.Drawing.Size(54, 46);
+            this.saveOverheadMessages.Size = new System.Drawing.Size(54, 28);
             this.saveOverheadMessages.TabIndex = 19;
             this.saveOverheadMessages.Text = "OK";
             this.saveOverheadMessages.UseVisualStyleBackColor = true;
@@ -90,7 +91,7 @@
             // 
             this.removeOverheadMessage.Location = new System.Drawing.Point(15, 307);
             this.removeOverheadMessage.Name = "removeOverheadMessage";
-            this.removeOverheadMessage.Size = new System.Drawing.Size(121, 28);
+            this.removeOverheadMessage.Size = new System.Drawing.Size(110, 28);
             this.removeOverheadMessage.TabIndex = 28;
             this.removeOverheadMessage.Text = "Remove Selected";
             this.removeOverheadMessage.UseVisualStyleBackColor = true;
@@ -179,7 +180,7 @@
             // unicodeStyle
             // 
             this.unicodeStyle.AutoSize = true;
-            this.unicodeStyle.Location = new System.Drawing.Point(230, 337);
+            this.unicodeStyle.Location = new System.Drawing.Point(205, 342);
             this.unicodeStyle.Name = "unicodeStyle";
             this.unicodeStyle.Size = new System.Drawing.Size(69, 19);
             this.unicodeStyle.TabIndex = 44;
@@ -190,7 +191,7 @@
             // asciiStyle
             // 
             this.asciiStyle.AutoSize = true;
-            this.asciiStyle.Location = new System.Drawing.Point(230, 312);
+            this.asciiStyle.Location = new System.Drawing.Point(280, 342);
             this.asciiStyle.Name = "asciiStyle";
             this.asciiStyle.Size = new System.Drawing.Size(53, 19);
             this.asciiStyle.TabIndex = 43;
@@ -201,17 +202,28 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(142, 314);
+            this.label3.Location = new System.Drawing.Point(115, 344);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(84, 15);
             this.label3.TabIndex = 45;
             this.label3.Text = "Message Style:";
             // 
+            // setColorHue
+            // 
+            this.setColorHue.Location = new System.Drawing.Point(131, 307);
+            this.setColorHue.Name = "setColorHue";
+            this.setColorHue.Size = new System.Drawing.Size(110, 28);
+            this.setColorHue.TabIndex = 46;
+            this.setColorHue.Text = "Set Color/Hue";
+            this.setColorHue.UseVisualStyleBackColor = true;
+            this.setColorHue.Click += new System.EventHandler(this.setColorHue_Click);
+            // 
             // OverheadMessages
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 364);
+            this.ClientSize = new System.Drawing.Size(456, 368);
+            this.Controls.Add(this.setColorHue);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.unicodeStyle);
             this.Controls.Add(this.asciiStyle);
@@ -256,5 +268,6 @@
         private System.Windows.Forms.RadioButton unicodeStyle;
         private System.Windows.Forms.RadioButton asciiStyle;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button setColorHue;
     }
 }

@@ -12,6 +12,7 @@ namespace Assistant.Core
         {
             public string SearchMessage { get; set; }
             public string MessageOverhead { get; set; }
+            public int Hue { get; set; }
         }
 
         public static List<OverheadMessage> OverheadMessageList = new List<OverheadMessage>();
@@ -23,6 +24,7 @@ namespace Assistant.Core
                 xml.WriteStartElement("overheadmessage");
                 xml.WriteAttributeString("searchtext", message.SearchMessage);
                 xml.WriteAttributeString("message", (message.MessageOverhead));
+                xml.WriteAttributeString("hue", Convert.ToString(message.Hue));
                 xml.WriteEndElement();
             }
         }
@@ -39,7 +41,8 @@ namespace Assistant.Core
                     OverheadMessage overheadMessage = new OverheadMessage
                     {
                         MessageOverhead = el.GetAttribute("message"),
-                        SearchMessage = el.GetAttribute("searchtext")
+                        SearchMessage = el.GetAttribute("searchtext"),
+                        Hue = string.IsNullOrEmpty(el.GetAttribute("hue")) ? 68 : Convert.ToInt32(el.GetAttribute("hue"))
                     };
 
                     OverheadMessageList.Add(overheadMessage);

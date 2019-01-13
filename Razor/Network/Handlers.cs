@@ -1975,7 +1975,7 @@ namespace Assistant
                         {
                             if (text.IndexOf(message.SearchMessage, StringComparison.OrdinalIgnoreCase) != -1)
                             {
-                                World.Player.OverheadMessage(overheadFormat.Replace("{msg}", message.MessageOverhead));
+                                World.Player.OverheadMessage(message.Hue, overheadFormat.Replace("{msg}", message.MessageOverhead));
                                 break;
                             }
                         }
