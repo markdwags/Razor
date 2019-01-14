@@ -286,7 +286,6 @@ namespace Assistant.Macros
             list.Update();
         }
 
-
         private static void Recurse( TreeNodeCollection nodes, string path )
 		{
 			try

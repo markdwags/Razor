@@ -320,7 +320,10 @@ namespace Assistant
         private CheckBox damageDealtOverhead;
         private CheckBox damageTakenOverhead;
         private CheckBox showDamageTaken;
+        private TextBox filterMacros;
+        private Label filterLabel;
         private TreeView _hotkeyTreeViewCache = new TreeView();
+        private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
         private static extern IntPtr GetSystemMenu(IntPtr wnd, bool reset);
@@ -570,6 +573,8 @@ namespace Assistant
             this.chkAlt = new System.Windows.Forms.CheckBox();
             this.chkShift = new System.Windows.Forms.CheckBox();
             this.macrosTab = new System.Windows.Forms.TabPage();
+            this.filterMacros = new System.Windows.Forms.TextBox();
+            this.filterLabel = new System.Windows.Forms.Label();
             this.rangeCheckDoubleClick = new System.Windows.Forms.CheckBox();
             this.rangeCheckTargetByType = new System.Windows.Forms.CheckBox();
             this.nextMacroAction = new System.Windows.Forms.Button();
@@ -728,7 +733,7 @@ namespace Assistant
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(490, 558);
+            this.tabs.Size = new System.Drawing.Size(490, 554);
             this.tabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabs.TabIndex = 0;
             this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_IndexChanged);
@@ -751,7 +756,7 @@ namespace Assistant
             this.generalTab.Controls.Add(this.label9);
             this.generalTab.Location = new System.Drawing.Point(4, 44);
             this.generalTab.Name = "generalTab";
-            this.generalTab.Size = new System.Drawing.Size(482, 510);
+            this.generalTab.Size = new System.Drawing.Size(482, 506);
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             //
@@ -990,7 +995,7 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.minMaxLightLevel);
             this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(482, 510);
+            this.moreOptTab.Size = new System.Drawing.Size(482, 506);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             //
@@ -1436,7 +1441,7 @@ namespace Assistant
             this.moreMoreOptTab.Controls.Add(this.chkPartyOverhead);
             this.moreMoreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreMoreOptTab.Name = "moreMoreOptTab";
-            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 510);
+            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 506);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
             //
@@ -1889,7 +1894,7 @@ namespace Assistant
             this.displayTab.Controls.Add(this.groupBox2);
             this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(482, 510);
+            this.displayTab.Size = new System.Drawing.Size(482, 506);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             //
@@ -2136,7 +2141,7 @@ namespace Assistant
             this.dressTab.Controls.Add(this.groupBox5);
             this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 510);
+            this.dressTab.Size = new System.Drawing.Size(482, 506);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             //
@@ -2296,7 +2301,7 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.skillList);
             this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 510);
+            this.skillsTab.Size = new System.Drawing.Size(482, 506);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             //
@@ -2449,7 +2454,7 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB3);
             this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 510);
+            this.agentsTab.Size = new System.Drawing.Size(482, 506);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             //
@@ -2537,9 +2542,9 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.hotkeyTree);
             this.hotkeysTab.Controls.Add(this.dohotkey);
             this.hotkeysTab.Controls.Add(this.groupBox8);
-            this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
+            this.hotkeysTab.Location = new System.Drawing.Point(4, 24);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 510);
+            this.hotkeysTab.Size = new System.Drawing.Size(519, 526);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2677,6 +2682,8 @@ namespace Assistant
             //
             // macrosTab
             //
+            this.macrosTab.Controls.Add(this.filterMacros);
+            this.macrosTab.Controls.Add(this.filterLabel);
             this.macrosTab.Controls.Add(this.rangeCheckDoubleClick);
             this.macrosTab.Controls.Add(this.rangeCheckTargetByType);
             this.macrosTab.Controls.Add(this.nextMacroAction);
@@ -2690,14 +2697,31 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 510);
+            this.macrosTab.Size = new System.Drawing.Size(482, 506);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
+            //
+            // filterMacros
+            //
+            this.filterMacros.Location = new System.Drawing.Point(50, 7);
+            this.filterMacros.Name = "filterMacros";
+            this.filterMacros.Size = new System.Drawing.Size(125, 23);
+            this.filterMacros.TabIndex = 12;
+            this.filterMacros.TextChanged += new System.EventHandler(this.filterMacros_TextChanged);
+            //
+            // filterLabel
+            //
+            this.filterLabel.AutoSize = true;
+            this.filterLabel.Location = new System.Drawing.Point(8, 10);
+            this.filterLabel.Name = "filterLabel";
+            this.filterLabel.Size = new System.Drawing.Size(36, 15);
+            this.filterLabel.TabIndex = 11;
+            this.filterLabel.Text = "Filter:";
             //
             // rangeCheckDoubleClick
             //
             this.rangeCheckDoubleClick.AutoSize = true;
-            this.rangeCheckDoubleClick.Location = new System.Drawing.Point(267, 315);
+            this.rangeCheckDoubleClick.Location = new System.Drawing.Point(264, 333);
             this.rangeCheckDoubleClick.Name = "rangeCheckDoubleClick";
             this.rangeCheckDoubleClick.Size = new System.Drawing.Size(208, 19);
             this.rangeCheckDoubleClick.TabIndex = 10;
@@ -2708,7 +2732,7 @@ namespace Assistant
             // rangeCheckTargetByType
             //
             this.rangeCheckTargetByType.AutoSize = true;
-            this.rangeCheckTargetByType.Location = new System.Drawing.Point(267, 290);
+            this.rangeCheckTargetByType.Location = new System.Drawing.Point(264, 308);
             this.rangeCheckTargetByType.Name = "rangeCheckTargetByType";
             this.rangeCheckTargetByType.Size = new System.Drawing.Size(190, 19);
             this.rangeCheckTargetByType.TabIndex = 9;
@@ -2719,7 +2743,7 @@ namespace Assistant
             // nextMacroAction
             //
             this.nextMacroAction.Enabled = false;
-            this.nextMacroAction.Location = new System.Drawing.Point(407, 352);
+            this.nextMacroAction.Location = new System.Drawing.Point(404, 370);
             this.nextMacroAction.Name = "nextMacroAction";
             this.nextMacroAction.Size = new System.Drawing.Size(60, 23);
             this.nextMacroAction.TabIndex = 8;
@@ -2730,7 +2754,7 @@ namespace Assistant
             // stepThroughMacro
             //
             this.stepThroughMacro.AutoSize = true;
-            this.stepThroughMacro.Location = new System.Drawing.Point(267, 355);
+            this.stepThroughMacro.Location = new System.Drawing.Point(264, 373);
             this.stepThroughMacro.Name = "stepThroughMacro";
             this.stepThroughMacro.Size = new System.Drawing.Size(135, 19);
             this.stepThroughMacro.TabIndex = 7;
@@ -2740,7 +2764,7 @@ namespace Assistant
             //
             // expandAdvancedMacros
             //
-            this.expandAdvancedMacros.Location = new System.Drawing.Point(153, 213);
+            this.expandAdvancedMacros.Location = new System.Drawing.Point(145, 248);
             this.expandAdvancedMacros.Name = "expandAdvancedMacros";
             this.expandAdvancedMacros.Size = new System.Drawing.Size(21, 20);
             this.expandAdvancedMacros.TabIndex = 6;
@@ -2750,7 +2774,7 @@ namespace Assistant
             // targetByTypeDifferent
             //
             this.targetByTypeDifferent.AutoSize = true;
-            this.targetByTypeDifferent.Location = new System.Drawing.Point(267, 265);
+            this.targetByTypeDifferent.Location = new System.Drawing.Point(264, 283);
             this.targetByTypeDifferent.Name = "targetByTypeDifferent";
             this.targetByTypeDifferent.Size = new System.Drawing.Size(183, 19);
             this.targetByTypeDifferent.TabIndex = 6;
@@ -2766,7 +2790,7 @@ namespace Assistant
             this.absoluteTargetGroup.Controls.Add(this.removeMacroVariable);
             this.absoluteTargetGroup.Controls.Add(this.addMacroVariable);
             this.absoluteTargetGroup.Controls.Add(this.macroVariables);
-            this.absoluteTargetGroup.Location = new System.Drawing.Point(8, 256);
+            this.absoluteTargetGroup.Location = new System.Drawing.Point(9, 283);
             this.absoluteTargetGroup.Name = "absoluteTargetGroup";
             this.absoluteTargetGroup.Size = new System.Drawing.Size(240, 214);
             this.absoluteTargetGroup.TabIndex = 5;
@@ -2840,9 +2864,9 @@ namespace Assistant
             //
             this.macroTree.FullRowSelect = true;
             this.macroTree.HideSelection = false;
-            this.macroTree.Location = new System.Drawing.Point(8, 8);
+            this.macroTree.Location = new System.Drawing.Point(9, 36);
             this.macroTree.Name = "macroTree";
-            this.macroTree.Size = new System.Drawing.Size(166, 196);
+            this.macroTree.Size = new System.Drawing.Size(166, 200);
             this.macroTree.Sorted = true;
             this.macroTree.TabIndex = 4;
             this.macroTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.macroTree_AfterSelect);
@@ -2857,7 +2881,7 @@ namespace Assistant
             this.macroActGroup.Controls.Add(this.actionList);
             this.macroActGroup.Location = new System.Drawing.Point(180, 4);
             this.macroActGroup.Name = "macroActGroup";
-            this.macroActGroup.Size = new System.Drawing.Size(293, 232);
+            this.macroActGroup.Size = new System.Drawing.Size(293, 264);
             this.macroActGroup.TabIndex = 3;
             this.macroActGroup.TabStop = false;
             this.macroActGroup.Text = "Actions";
@@ -2873,9 +2897,9 @@ namespace Assistant
             //
             // loopMacro
             //
-            this.loopMacro.Location = new System.Drawing.Point(230, 202);
+            this.loopMacro.Location = new System.Drawing.Point(227, 234);
             this.loopMacro.Name = "loopMacro";
-            this.loopMacro.Size = new System.Drawing.Size(57, 24);
+            this.loopMacro.Size = new System.Drawing.Size(66, 24);
             this.loopMacro.TabIndex = 4;
             this.loopMacro.Text = "Loop";
             this.loopMacro.CheckedChanged += new System.EventHandler(this.loopMacro_CheckedChanged);
@@ -2906,14 +2930,14 @@ namespace Assistant
             this.actionList.ItemHeight = 15;
             this.actionList.Location = new System.Drawing.Point(8, 16);
             this.actionList.Name = "actionList";
-            this.actionList.Size = new System.Drawing.Size(213, 210);
+            this.actionList.Size = new System.Drawing.Size(213, 242);
             this.actionList.TabIndex = 0;
             this.actionList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.actionList_KeyDown);
             this.actionList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.actionList_MouseDown);
             //
             // delMacro
             //
-            this.delMacro.Location = new System.Drawing.Point(74, 210);
+            this.delMacro.Location = new System.Drawing.Point(75, 242);
             this.delMacro.Name = "delMacro";
             this.delMacro.Size = new System.Drawing.Size(60, 26);
             this.delMacro.TabIndex = 2;
@@ -2922,7 +2946,7 @@ namespace Assistant
             //
             // newMacro
             //
-            this.newMacro.Location = new System.Drawing.Point(8, 210);
+            this.newMacro.Location = new System.Drawing.Point(9, 242);
             this.newMacro.Name = "newMacro";
             this.newMacro.Size = new System.Drawing.Size(60, 26);
             this.newMacro.TabIndex = 1;
@@ -2943,7 +2967,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.trackPlayerPosition);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(482, 510);
+            this.mapTab.Size = new System.Drawing.Size(519, 506);
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             //
@@ -3079,7 +3103,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 510);
+            this.videoTab.Size = new System.Drawing.Size(519, 506);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             //
@@ -3346,7 +3370,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(482, 510);
+            this.screenshotTab.Size = new System.Drawing.Size(519, 506);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             //
@@ -3513,7 +3537,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 510);
+            this.advancedTab.Size = new System.Drawing.Size(519, 506);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             //
@@ -3625,7 +3649,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 510);
+            this.aboutTab.Size = new System.Drawing.Size(519, 506);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             //
@@ -4221,6 +4245,9 @@ namespace Assistant
 
                 macroActGroup.Visible = macroTree.SelectedNode != null;
 
+                tabs.Size = new Size(tabs.Size.Width, 325);
+                Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
+
                 expandAdvancedMacros.Text = "\u2193";
             }
             else if (tabs.SelectedTab == screenshotTab)
@@ -4249,6 +4276,16 @@ namespace Assistant
             foreach (TreeNode node in hotkeyTree.Nodes)
             {
                 _hotkeyTreeViewCache.Nodes.Add((TreeNode)node.Clone());
+            }
+        }
+
+        private void RebuildMacroCache()
+        {
+            _macroTreeViewCache = new TreeView();
+
+            foreach (TreeNode node in macroTree.Nodes)
+            {
+                _macroTreeViewCache.Nodes.Add((TreeNode)node.Clone());
             }
         }
 
@@ -5799,6 +5836,8 @@ namespace Assistant
                 macroTree.SelectedNode = newNode;
             }
 
+            filterMacros.Text = string.Empty;
+
             RedrawMacros();
         }
 
@@ -6171,6 +6210,8 @@ namespace Assistant
             if (ms != null)
                 macroTree.SelectedNode = FindNode(macroTree.Nodes, ms);
 
+            RebuildMacroCache();
+
             MacroManager.DisplayMacroVariables(macroVariableList.SelectedIndex, macroVariables);
         }
 
@@ -6213,6 +6254,8 @@ namespace Assistant
                 if (node != null)
                     node.Remove();
             }
+
+            RebuildMacroCache();
         }
 
         private void actionList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -7899,6 +7942,42 @@ namespace Assistant
             this.hotkeyTree.EndUpdate();
         }
 
+        private void filterMacros_TextChanged(object sender, EventArgs e)
+        {
+            this.macroTree.BeginUpdate();
+            this.macroTree.Nodes.Clear();
+
+            if (filterMacros.Text != string.Empty)
+            {
+                foreach (TreeNode _parentNode in _macroTreeViewCache.Nodes) // We won't filter on the top parent domain
+                {
+
+                    if (_parentNode.Text.ToLower().Contains(filterMacros.Text.ToLower()))
+                    {
+                        macroTree.Nodes.Add((TreeNode)_parentNode.Clone());
+                    }
+
+                    if (_parentNode.Nodes.Count > 0) // Just in case
+                    {
+                        foreach (TreeNode _subSubChildNode in _parentNode.Nodes)
+                        {
+                            if (_subSubChildNode.Text.ToLower().Contains(filterMacros.Text.ToLower()))
+                            {
+                                this.macroTree.Nodes.Add((TreeNode)_subSubChildNode.Clone());
+                            }
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                MacroManager.DisplayTo(macroTree);
+            }
+            //enables redrawing tree after all objects have been added
+            this.macroTree.EndUpdate();
+        }
+
         private void openRazorDataDir_Click(object sender, EventArgs e)
         {
             //C:\Users\Quick\AppData\Roaming\Razor
@@ -8036,7 +8115,7 @@ namespace Assistant
             {
                 expandAdvancedMacros.Text = "\u2193";
                 absoluteTargetGroup.Visible = false;
-                tabs.Size = new Size(tabs.Size.Width, 290);
+                tabs.Size = new Size(tabs.Size.Width, 325);
 
                 Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
             }
@@ -8044,7 +8123,7 @@ namespace Assistant
             {
                 expandAdvancedMacros.Text = "\u2191";
                 absoluteTargetGroup.Visible = true;
-                tabs.Size = new Size(tabs.Size.Width, 512);
+                tabs.Size = new Size(tabs.Size.Width, 554);
                 Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 30);
             }
         }
