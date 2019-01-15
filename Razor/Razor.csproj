@@ -296,9 +296,6 @@
     <Compile Include="Core\StealthSteps.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Stuff.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\Targeting.cs">
       <SubType>Code</SubType>
     </Compile>
