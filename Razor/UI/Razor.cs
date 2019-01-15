@@ -3884,6 +3884,8 @@ namespace Assistant
         {
             Ultima.Multis.PostHSFormat = Engine.UsePostHSChanges;
 
+            PacketsTable.AdjustPacketSizeByVersion(Engine.ClientVersion);
+
             SplashScreen.Message = LocString.Welcome;
             InitConfig();
 
