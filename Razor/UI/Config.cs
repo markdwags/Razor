@@ -207,7 +207,9 @@ namespace Assistant
             AddProperty("ShowAttackTargetNewOnly", false);
 
             AddProperty("FilterDragonGraphics", false);
+            AddProperty("FilterDrakeGraphics", false);
             AddProperty("DragonGraphic", 0);
+            AddProperty("DrakeGraphic", 0);
             AddProperty("ShowDamageDealt", false);
             AddProperty("ShowDamageDealtOverhead", false);
             AddProperty("ShowDamageTaken", false);

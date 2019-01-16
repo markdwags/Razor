@@ -208,7 +208,6 @@ namespace Assistant
         private CheckBox chkForceSpellHue;
         private CheckBox chkForceSpeechHue;
         private Label label3;
-        private CheckedListBox filters;
         private TextBox filterHotkeys;
         private Label label22;
         private bool m_CanClose = true;
@@ -314,8 +313,6 @@ namespace Assistant
         private CheckBox showTextTargetIndicator;
         private ComboBox macroVariableList;
         private CheckBox trackDps;
-        private ComboBox animationList;
-        private CheckBox filterDragonGraphics;
         private CheckBox showDamageDealt;
         private CheckBox damageDealtOverhead;
         private CheckBox damageTakenOverhead;
@@ -323,6 +320,14 @@ namespace Assistant
         private TextBox filterMacros;
         private Label filterLabel;
         private TreeView _hotkeyTreeViewCache = new TreeView();
+        private TabControl tabControl1;
+        private TabPage tabFilterSounds;
+        private CheckedListBox filters;
+        private TabPage tabFilterMobiles;
+        private ComboBox dragonAnimationList;
+        private CheckBox filterDragonGraphics;
+        private CheckBox filterDrakeGraphics;
+        private ComboBox drakeAnimationList;
         private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -402,12 +407,15 @@ namespace Assistant
             this.opacity = new System.Windows.Forms.TrackBar();
             this.alwaysTop = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabFilterSounds = new System.Windows.Forms.TabPage();
             this.filters = new System.Windows.Forms.CheckedListBox();
+            this.tabFilterMobiles = new System.Windows.Forms.TabPage();
+            this.dragonAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterDragonGraphics = new System.Windows.Forms.CheckBox();
             this.opacityLabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.moreOptTab = new System.Windows.Forms.TabPage();
-            this.animationList = new System.Windows.Forms.ComboBox();
-            this.filterDragonGraphics = new System.Windows.Forms.CheckBox();
             this.setMinLightLevel = new System.Windows.Forms.Button();
             this.setMaxLightLevel = new System.Windows.Forms.Button();
             this.blockPartyInvites = new System.Windows.Forms.CheckBox();
@@ -671,11 +679,16 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.filterDrakeGraphics = new System.Windows.Forms.CheckBox();
+            this.drakeAnimationList = new System.Windows.Forms.ComboBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabFilterSounds.SuspendLayout();
+            this.tabFilterMobiles.SuspendLayout();
             this.moreOptTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
             this.moreMoreOptTab.SuspendLayout();
@@ -733,7 +746,7 @@ namespace Assistant
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(490, 554);
+            this.tabs.Size = new System.Drawing.Size(490, 558);
             this.tabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabs.TabIndex = 0;
             this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_IndexChanged);
@@ -756,7 +769,7 @@ namespace Assistant
             this.generalTab.Controls.Add(this.label9);
             this.generalTab.Location = new System.Drawing.Point(4, 44);
             this.generalTab.Name = "generalTab";
-            this.generalTab.Size = new System.Drawing.Size(482, 506);
+            this.generalTab.Size = new System.Drawing.Size(482, 510);
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             //
@@ -770,15 +783,15 @@ namespace Assistant
             "AboveNormal",
             "High",
             "Realtime"});
-            this.clientPrio.Location = new System.Drawing.Point(319, 159);
+            this.clientPrio.Location = new System.Drawing.Point(339, 184);
             this.clientPrio.Name = "clientPrio";
-            this.clientPrio.Size = new System.Drawing.Size(154, 23);
+            this.clientPrio.Size = new System.Drawing.Size(125, 23);
             this.clientPrio.TabIndex = 60;
             this.clientPrio.SelectedIndexChanged += new System.EventHandler(this.clientPrio_SelectedIndexChanged);
             //
             // systray
             //
-            this.systray.Location = new System.Drawing.Point(319, 130);
+            this.systray.Location = new System.Drawing.Point(347, 148);
             this.systray.Name = "systray";
             this.systray.Size = new System.Drawing.Size(88, 23);
             this.systray.TabIndex = 35;
@@ -787,7 +800,7 @@ namespace Assistant
             //
             // taskbar
             //
-            this.taskbar.Location = new System.Drawing.Point(241, 130);
+            this.taskbar.Location = new System.Drawing.Point(269, 148);
             this.taskbar.Name = "taskbar";
             this.taskbar.Size = new System.Drawing.Size(79, 23);
             this.taskbar.TabIndex = 34;
@@ -797,15 +810,15 @@ namespace Assistant
             // langSel
             //
             this.langSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.langSel.Location = new System.Drawing.Point(319, 186);
+            this.langSel.Location = new System.Drawing.Point(339, 211);
             this.langSel.Name = "langSel";
-            this.langSel.Size = new System.Drawing.Size(154, 23);
+            this.langSel.Size = new System.Drawing.Size(125, 23);
             this.langSel.TabIndex = 52;
             this.langSel.SelectedIndexChanged += new System.EventHandler(this.langSel_SelectedIndexChanged);
             //
             // label7
             //
-            this.label7.Location = new System.Drawing.Point(181, 189);
+            this.label7.Location = new System.Drawing.Point(210, 214);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(68, 18);
             this.label7.TabIndex = 51;
@@ -813,7 +826,7 @@ namespace Assistant
             //
             // label11
             //
-            this.label11.Location = new System.Drawing.Point(181, 134);
+            this.label11.Location = new System.Drawing.Point(209, 152);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(54, 16);
             this.label11.TabIndex = 33;
@@ -826,45 +839,45 @@ namespace Assistant
             this.groupBox4.Controls.Add(this.delProfile);
             this.groupBox4.Controls.Add(this.newProfile);
             this.groupBox4.Controls.Add(this.profiles);
-            this.groupBox4.Location = new System.Drawing.Point(181, 3);
+            this.groupBox4.Location = new System.Drawing.Point(213, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(292, 75);
+            this.groupBox4.Size = new System.Drawing.Size(260, 83);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Profiles";
             //
             // saveProfile
             //
-            this.saveProfile.Location = new System.Drawing.Point(89, 45);
+            this.saveProfile.Location = new System.Drawing.Point(79, 44);
             this.saveProfile.Name = "saveProfile";
-            this.saveProfile.Size = new System.Drawing.Size(50, 23);
+            this.saveProfile.Size = new System.Drawing.Size(50, 30);
             this.saveProfile.TabIndex = 4;
             this.saveProfile.Text = "Save";
             this.saveProfile.Click += new System.EventHandler(this.saveProfile_Click);
             //
             // cloneProfile
             //
-            this.cloneProfile.Location = new System.Drawing.Point(145, 45);
+            this.cloneProfile.Location = new System.Drawing.Point(135, 44);
             this.cloneProfile.Name = "cloneProfile";
-            this.cloneProfile.Size = new System.Drawing.Size(50, 23);
+            this.cloneProfile.Size = new System.Drawing.Size(50, 30);
             this.cloneProfile.TabIndex = 3;
             this.cloneProfile.Text = "Clone";
             this.cloneProfile.Click += new System.EventHandler(this.cloneProfile_Click);
             //
             // delProfile
             //
-            this.delProfile.Location = new System.Drawing.Point(201, 45);
+            this.delProfile.Location = new System.Drawing.Point(191, 44);
             this.delProfile.Name = "delProfile";
-            this.delProfile.Size = new System.Drawing.Size(50, 23);
+            this.delProfile.Size = new System.Drawing.Size(50, 30);
             this.delProfile.TabIndex = 2;
             this.delProfile.Text = "Delete";
             this.delProfile.Click += new System.EventHandler(this.delProfile_Click);
             //
             // newProfile
             //
-            this.newProfile.Location = new System.Drawing.Point(33, 45);
+            this.newProfile.Location = new System.Drawing.Point(23, 44);
             this.newProfile.Name = "newProfile";
-            this.newProfile.Size = new System.Drawing.Size(50, 23);
+            this.newProfile.Size = new System.Drawing.Size(50, 30);
             this.newProfile.TabIndex = 1;
             this.newProfile.Text = "New";
             this.newProfile.Click += new System.EventHandler(this.newProfile_Click);
@@ -873,7 +886,7 @@ namespace Assistant
             //
             this.profiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.profiles.ItemHeight = 15;
-            this.profiles.Location = new System.Drawing.Point(33, 18);
+            this.profiles.Location = new System.Drawing.Point(23, 17);
             this.profiles.MaxDropDownItems = 5;
             this.profiles.Name = "profiles";
             this.profiles.Size = new System.Drawing.Size(218, 23);
@@ -882,7 +895,7 @@ namespace Assistant
             //
             // showWelcome
             //
-            this.showWelcome.Location = new System.Drawing.Point(184, 77);
+            this.showWelcome.Location = new System.Drawing.Point(213, 92);
             this.showWelcome.Name = "showWelcome";
             this.showWelcome.Size = new System.Drawing.Size(152, 23);
             this.showWelcome.TabIndex = 26;
@@ -893,11 +906,11 @@ namespace Assistant
             //
             this.opacity.AutoSize = false;
             this.opacity.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this.opacity.Location = new System.Drawing.Point(279, 214);
+            this.opacity.Location = new System.Drawing.Point(289, 241);
             this.opacity.Maximum = 100;
             this.opacity.Minimum = 10;
             this.opacity.Name = "opacity";
-            this.opacity.Size = new System.Drawing.Size(197, 21);
+            this.opacity.Size = new System.Drawing.Size(183, 21);
             this.opacity.TabIndex = 22;
             this.opacity.TickFrequency = 0;
             this.opacity.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -906,7 +919,7 @@ namespace Assistant
             //
             // alwaysTop
             //
-            this.alwaysTop.Location = new System.Drawing.Point(184, 101);
+            this.alwaysTop.Location = new System.Drawing.Point(213, 121);
             this.alwaysTop.Name = "alwaysTop";
             this.alwaysTop.Size = new System.Drawing.Size(162, 23);
             this.alwaysTop.TabIndex = 3;
@@ -915,27 +928,83 @@ namespace Assistant
             //
             // groupBox1
             //
-            this.groupBox1.Controls.Add(this.filters);
+            this.groupBox1.Controls.Add(this.tabControl1);
             this.groupBox1.Location = new System.Drawing.Point(8, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(167, 232);
+            this.groupBox1.Size = new System.Drawing.Size(196, 259);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filters";
+            //
+            // tabControl1
+            //
+            this.tabControl1.Controls.Add(this.tabFilterSounds);
+            this.tabControl1.Controls.Add(this.tabFilterMobiles);
+            this.tabControl1.Location = new System.Drawing.Point(6, 22);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(184, 231);
+            this.tabControl1.TabIndex = 97;
+            //
+            // tabFilterSounds
+            //
+            this.tabFilterSounds.BackColor = System.Drawing.SystemColors.Control;
+            this.tabFilterSounds.Controls.Add(this.filters);
+            this.tabFilterSounds.Location = new System.Drawing.Point(4, 24);
+            this.tabFilterSounds.Name = "tabFilterSounds";
+            this.tabFilterSounds.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFilterSounds.Size = new System.Drawing.Size(176, 203);
+            this.tabFilterSounds.TabIndex = 0;
+            this.tabFilterSounds.Text = "Sounds/Gumps";
             //
             // filters
             //
             this.filters.CheckOnClick = true;
             this.filters.IntegralHeight = false;
-            this.filters.Location = new System.Drawing.Point(6, 18);
+            this.filters.Location = new System.Drawing.Point(11, 11);
             this.filters.Name = "filters";
-            this.filters.Size = new System.Drawing.Size(155, 208);
-            this.filters.TabIndex = 1;
-            this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
+            this.filters.Size = new System.Drawing.Size(155, 186);
+            this.filters.TabIndex = 2;
+            //
+            // tabFilterMobiles
+            //
+            this.tabFilterMobiles.BackColor = System.Drawing.SystemColors.Control;
+            this.tabFilterMobiles.Controls.Add(this.drakeAnimationList);
+            this.tabFilterMobiles.Controls.Add(this.filterDrakeGraphics);
+            this.tabFilterMobiles.Controls.Add(this.dragonAnimationList);
+            this.tabFilterMobiles.Controls.Add(this.filterDragonGraphics);
+            this.tabFilterMobiles.Location = new System.Drawing.Point(4, 24);
+            this.tabFilterMobiles.Name = "tabFilterMobiles";
+            this.tabFilterMobiles.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFilterMobiles.Size = new System.Drawing.Size(176, 203);
+            this.tabFilterMobiles.TabIndex = 1;
+            this.tabFilterMobiles.Text = "Mobiles";
+            //
+            // dragonAnimationList
+            //
+            this.dragonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.dragonAnimationList.DropDownWidth = 250;
+            this.dragonAnimationList.FormattingEnabled = true;
+            this.dragonAnimationList.Location = new System.Drawing.Point(6, 31);
+            this.dragonAnimationList.Name = "dragonAnimationList";
+            this.dragonAnimationList.Size = new System.Drawing.Size(164, 23);
+            this.dragonAnimationList.TabIndex = 98;
+            this.dragonAnimationList.SelectedIndexChanged += new System.EventHandler(this.dragonAnimationList_SelectedIndexChanged);
+            //
+            // filterDragonGraphics
+            //
+            this.filterDragonGraphics.AutoSize = true;
+            this.filterDragonGraphics.Location = new System.Drawing.Point(6, 6);
+            this.filterDragonGraphics.Name = "filterDragonGraphics";
+            this.filterDragonGraphics.Size = new System.Drawing.Size(98, 19);
+            this.filterDragonGraphics.TabIndex = 97;
+            this.filterDragonGraphics.Text = "Filter dragons";
+            this.filterDragonGraphics.UseVisualStyleBackColor = true;
+            this.filterDragonGraphics.CheckedChanged += new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
             //
             // opacityLabel
             //
-            this.opacityLabel.Location = new System.Drawing.Point(181, 216);
+            this.opacityLabel.Location = new System.Drawing.Point(209, 243);
             this.opacityLabel.Name = "opacityLabel";
             this.opacityLabel.Size = new System.Drawing.Size(89, 19);
             this.opacityLabel.TabIndex = 23;
@@ -943,7 +1012,7 @@ namespace Assistant
             //
             // label9
             //
-            this.label9.Location = new System.Drawing.Point(181, 162);
+            this.label9.Location = new System.Drawing.Point(210, 187);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(129, 18);
             this.label9.TabIndex = 59;
@@ -951,8 +1020,6 @@ namespace Assistant
             //
             // moreOptTab
             //
-            this.moreOptTab.Controls.Add(this.animationList);
-            this.moreOptTab.Controls.Add(this.filterDragonGraphics);
             this.moreOptTab.Controls.Add(this.setMinLightLevel);
             this.moreOptTab.Controls.Add(this.setMaxLightLevel);
             this.moreOptTab.Controls.Add(this.blockPartyInvites);
@@ -998,28 +1065,6 @@ namespace Assistant
             this.moreOptTab.Size = new System.Drawing.Size(482, 506);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
-            //
-            // animationList
-            //
-            this.animationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.animationList.DropDownWidth = 250;
-            this.animationList.FormattingEnabled = true;
-            this.animationList.Location = new System.Drawing.Point(349, 289);
-            this.animationList.Name = "animationList";
-            this.animationList.Size = new System.Drawing.Size(121, 23);
-            this.animationList.TabIndex = 94;
-            this.animationList.SelectedIndexChanged += new System.EventHandler(this.animationList_SelectedIndexChanged);
-            //
-            // filterDragonGraphics
-            //
-            this.filterDragonGraphics.AutoSize = true;
-            this.filterDragonGraphics.Location = new System.Drawing.Point(245, 291);
-            this.filterDragonGraphics.Name = "filterDragonGraphics";
-            this.filterDragonGraphics.Size = new System.Drawing.Size(98, 19);
-            this.filterDragonGraphics.TabIndex = 93;
-            this.filterDragonGraphics.Text = "Filter dragons";
-            this.filterDragonGraphics.UseVisualStyleBackColor = true;
-            this.filterDragonGraphics.CheckedChanged += new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
             //
             // setMinLightLevel
             //
@@ -2542,9 +2587,9 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.hotkeyTree);
             this.hotkeysTab.Controls.Add(this.dohotkey);
             this.hotkeysTab.Controls.Add(this.groupBox8);
-            this.hotkeysTab.Location = new System.Drawing.Point(4, 24);
+            this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(519, 526);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 506);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2967,7 +3012,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.trackPlayerPosition);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(519, 506);
+            this.mapTab.Size = new System.Drawing.Size(482, 506);
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             //
@@ -3103,7 +3148,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(519, 506);
+            this.videoTab.Size = new System.Drawing.Size(482, 506);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             //
@@ -3370,7 +3415,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(519, 506);
+            this.screenshotTab.Size = new System.Drawing.Size(482, 506);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             //
@@ -3537,7 +3582,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(519, 506);
+            this.advancedTab.Size = new System.Drawing.Size(482, 506);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             //
@@ -3649,7 +3694,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(519, 506);
+            this.aboutTab.Size = new System.Drawing.Size(482, 506);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             //
@@ -3742,6 +3787,28 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
+            // filterDrakeGraphics
+            //
+            this.filterDrakeGraphics.AutoSize = true;
+            this.filterDrakeGraphics.Location = new System.Drawing.Point(6, 60);
+            this.filterDrakeGraphics.Name = "filterDrakeGraphics";
+            this.filterDrakeGraphics.Size = new System.Drawing.Size(89, 19);
+            this.filterDrakeGraphics.TabIndex = 99;
+            this.filterDrakeGraphics.Text = "Filter drakes";
+            this.filterDrakeGraphics.UseVisualStyleBackColor = true;
+            this.filterDrakeGraphics.CheckedChanged += new System.EventHandler(this.filterDrakeGraphics_CheckedChanged);
+            //
+            // drakeAnimationList
+            //
+            this.drakeAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.drakeAnimationList.DropDownWidth = 250;
+            this.drakeAnimationList.FormattingEnabled = true;
+            this.drakeAnimationList.Location = new System.Drawing.Point(6, 85);
+            this.drakeAnimationList.Name = "drakeAnimationList";
+            this.drakeAnimationList.Size = new System.Drawing.Size(164, 23);
+            this.drakeAnimationList.TabIndex = 100;
+            this.drakeAnimationList.SelectedIndexChanged += new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
+            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3766,6 +3833,10 @@ namespace Assistant
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabFilterSounds.ResumeLayout(false);
+            this.tabFilterMobiles.ResumeLayout(false);
+            this.tabFilterMobiles.PerformLayout();
             this.moreOptTab.ResumeLayout(false);
             this.moreOptTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).EndInit();
@@ -4112,14 +4183,26 @@ namespace Assistant
             macroVariableList.SelectedIndex = 0;
 
             filterDragonGraphics.Checked = Config.GetBool("FilterDragonGraphics");
-            LoadAnimationList();
+            filterDrakeGraphics.Checked = Config.GetBool("FilterDrakeGraphics");
+            LoadAnimationLists();
 
             int animIndex = 0;
             foreach (AnimData animData in _animationData)
             {
                 if (animData.body.Equals(Config.GetInt("DragonGraphic").ToString()))
                 {
-                    animationList.SelectedIndex = animIndex;
+                    dragonAnimationList.SelectedIndex = animIndex;
+                    break;
+                }
+                animIndex++;
+            }
+
+            animIndex = 0;
+            foreach (AnimData animData in _animationData)
+            {
+                if (animData.body.Equals(Config.GetInt("DrakeGraphic").ToString()))
+                {
+                    drakeAnimationList.SelectedIndex = animIndex;
                     break;
                 }
                 animIndex++;
@@ -4144,7 +4227,7 @@ namespace Assistant
 
         private List<AnimData> _animationData = new List<AnimData>();
 
-        private void LoadAnimationList()
+        private void LoadAnimationLists()
         {
             int hue = 0;
 
@@ -4162,7 +4245,8 @@ namespace Assistant
                     if (frames != null)
                     {
                         _animationData.Add(animData);
-                        animationList.Items.Add(animData.name);
+                        dragonAnimationList.Items.Add(animData.name);
+                        drakeAnimationList.Items.Add(animData.name);
                     }
 
                 }
@@ -4185,6 +4269,9 @@ namespace Assistant
                 langSel.Items.AddRange(Language.GetPackNames());
                 langSel.SelectedItem = Language.Current;
                 langSel.EndUpdate();
+
+                tabs.Size = new Size(tabs.Size.Width, 322);
+                Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
             }
             else if (tabs.SelectedTab == skillsTab)
             {
@@ -8708,12 +8795,20 @@ namespace Assistant
 
         }
 
-        private void animationList_SelectedIndexChanged(object sender, EventArgs e)
+        private void dragonAnimationList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (animationList.SelectedIndex < 0)
+            if (dragonAnimationList.SelectedIndex < 0)
                 return;
 
-            Config.SetProperty("DragonGraphic", Convert.ToInt32(_animationData[animationList.SelectedIndex].body));
+            Config.SetProperty("DragonGraphic", Convert.ToInt32(_animationData[dragonAnimationList.SelectedIndex].body));
+        }
+
+        private void drakeAnimationList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (drakeAnimationList.SelectedIndex < 0)
+                return;
+
+            Config.SetProperty("DrakeGraphic", Convert.ToInt32(_animationData[drakeAnimationList.SelectedIndex].body));
         }
 
         private void trackDps_CheckedChanged(object sender, EventArgs e)
@@ -8746,6 +8841,11 @@ namespace Assistant
         private void showDamageTaken_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowDamageTaken", showDamageTaken.Checked);
+        }
+
+        private void filterDrakeGraphics_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("FilterDrakeGraphics", filterDrakeGraphics.Checked);
         }
     }
 }

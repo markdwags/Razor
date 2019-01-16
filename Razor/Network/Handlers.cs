@@ -1089,6 +1089,15 @@ namespace Assistant
                     }
                 }
 
+                if (Config.GetBool("FilterDrakeGraphics"))
+                {
+                    if (m.Body == 0x3C || m.Body == 0x3D)
+                    {
+                        p.Seek(-2, SeekOrigin.Current);
+                        p.Write((ushort)Config.GetInt("DrakeGraphic"));
+                    }
+                }
+
 
                 m.Position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
