@@ -261,7 +261,6 @@ namespace Assistant
         private CheckBox alwaysStealth;
         private CheckBox autoFriend;
         private CheckBox chkStealth;
-        private CheckBox rememberPwds;
         private CheckBox showtargtext;
         private CheckBox rangeCheckLT;
         private CheckBox actionStatusMsg;
@@ -328,6 +327,11 @@ namespace Assistant
         private CheckBox filterDragonGraphics;
         private CheckBox filterDrakeGraphics;
         private ComboBox drakeAnimationList;
+        private CheckBox rememberPwds;
+        private GroupBox groupBox11;
+        private CheckBox showInRazorTitleBar;
+        private TextBox razorTitleBar;
+        private Button razorTitleBarKey;
         private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -391,6 +395,7 @@ namespace Assistant
             this.m_NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.generalTab = new System.Windows.Forms.TabPage();
+            this.rememberPwds = new System.Windows.Forms.CheckBox();
             this.clientPrio = new System.Windows.Forms.ComboBox();
             this.systray = new System.Windows.Forms.RadioButton();
             this.taskbar = new System.Windows.Forms.RadioButton();
@@ -411,6 +416,8 @@ namespace Assistant
             this.tabFilterSounds = new System.Windows.Forms.TabPage();
             this.filters = new System.Windows.Forms.CheckedListBox();
             this.tabFilterMobiles = new System.Windows.Forms.TabPage();
+            this.drakeAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterDrakeGraphics = new System.Windows.Forms.CheckBox();
             this.dragonAnimationList = new System.Windows.Forms.ComboBox();
             this.filterDragonGraphics = new System.Windows.Forms.CheckBox();
             this.opacityLabel = new System.Windows.Forms.Label();
@@ -492,7 +499,6 @@ namespace Assistant
             this.alwaysStealth = new System.Windows.Forms.CheckBox();
             this.autoFriend = new System.Windows.Forms.CheckBox();
             this.chkStealth = new System.Windows.Forms.CheckBox();
-            this.rememberPwds = new System.Windows.Forms.CheckBox();
             this.showtargtext = new System.Windows.Forms.CheckBox();
             this.rangeCheckLT = new System.Windows.Forms.CheckBox();
             this.actionStatusMsg = new System.Windows.Forms.CheckBox();
@@ -679,8 +685,10 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.filterDrakeGraphics = new System.Windows.Forms.CheckBox();
-            this.drakeAnimationList = new System.Windows.Forms.ComboBox();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.razorTitleBar = new System.Windows.Forms.TextBox();
+            this.showInRazorTitleBar = new System.Windows.Forms.CheckBox();
+            this.razorTitleBarKey = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -717,6 +725,7 @@ namespace Assistant
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
             this.aboutTab.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             this.SuspendLayout();
             //
             // m_NotifyIcon
@@ -754,6 +763,7 @@ namespace Assistant
             //
             // generalTab
             //
+            this.generalTab.Controls.Add(this.rememberPwds);
             this.generalTab.Controls.Add(this.clientPrio);
             this.generalTab.Controls.Add(this.systray);
             this.generalTab.Controls.Add(this.taskbar);
@@ -773,6 +783,15 @@ namespace Assistant
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             //
+            // rememberPwds
+            //
+            this.rememberPwds.Location = new System.Drawing.Point(213, 148);
+            this.rememberPwds.Name = "rememberPwds";
+            this.rememberPwds.Size = new System.Drawing.Size(148, 20);
+            this.rememberPwds.TabIndex = 61;
+            this.rememberPwds.Text = "Remember passwords ";
+            this.rememberPwds.CheckedChanged += new System.EventHandler(this.rememberPwds_CheckedChanged);
+            //
             // clientPrio
             //
             this.clientPrio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -783,7 +802,7 @@ namespace Assistant
             "AboveNormal",
             "High",
             "Realtime"});
-            this.clientPrio.Location = new System.Drawing.Point(339, 184);
+            this.clientPrio.Location = new System.Drawing.Point(339, 180);
             this.clientPrio.Name = "clientPrio";
             this.clientPrio.Size = new System.Drawing.Size(125, 23);
             this.clientPrio.TabIndex = 60;
@@ -791,7 +810,7 @@ namespace Assistant
             //
             // systray
             //
-            this.systray.Location = new System.Drawing.Point(347, 148);
+            this.systray.Location = new System.Drawing.Point(381, 134);
             this.systray.Name = "systray";
             this.systray.Size = new System.Drawing.Size(88, 23);
             this.systray.TabIndex = 35;
@@ -800,7 +819,7 @@ namespace Assistant
             //
             // taskbar
             //
-            this.taskbar.Location = new System.Drawing.Point(269, 148);
+            this.taskbar.Location = new System.Drawing.Point(381, 114);
             this.taskbar.Name = "taskbar";
             this.taskbar.Size = new System.Drawing.Size(79, 23);
             this.taskbar.TabIndex = 34;
@@ -810,7 +829,7 @@ namespace Assistant
             // langSel
             //
             this.langSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.langSel.Location = new System.Drawing.Point(339, 211);
+            this.langSel.Location = new System.Drawing.Point(339, 207);
             this.langSel.Name = "langSel";
             this.langSel.Size = new System.Drawing.Size(125, 23);
             this.langSel.TabIndex = 52;
@@ -818,7 +837,7 @@ namespace Assistant
             //
             // label7
             //
-            this.label7.Location = new System.Drawing.Point(210, 214);
+            this.label7.Location = new System.Drawing.Point(210, 210);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(68, 18);
             this.label7.TabIndex = 51;
@@ -826,7 +845,7 @@ namespace Assistant
             //
             // label11
             //
-            this.label11.Location = new System.Drawing.Point(209, 152);
+            this.label11.Location = new System.Drawing.Point(391, 95);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(54, 16);
             this.label11.TabIndex = 33;
@@ -906,7 +925,7 @@ namespace Assistant
             //
             this.opacity.AutoSize = false;
             this.opacity.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this.opacity.Location = new System.Drawing.Point(289, 241);
+            this.opacity.Location = new System.Drawing.Point(289, 237);
             this.opacity.Maximum = 100;
             this.opacity.Minimum = 10;
             this.opacity.Name = "opacity";
@@ -919,7 +938,7 @@ namespace Assistant
             //
             // alwaysTop
             //
-            this.alwaysTop.Location = new System.Drawing.Point(213, 121);
+            this.alwaysTop.Location = new System.Drawing.Point(213, 119);
             this.alwaysTop.Name = "alwaysTop";
             this.alwaysTop.Size = new System.Drawing.Size(162, 23);
             this.alwaysTop.TabIndex = 3;
@@ -973,12 +992,34 @@ namespace Assistant
             this.tabFilterMobiles.Controls.Add(this.filterDrakeGraphics);
             this.tabFilterMobiles.Controls.Add(this.dragonAnimationList);
             this.tabFilterMobiles.Controls.Add(this.filterDragonGraphics);
-            this.tabFilterMobiles.Location = new System.Drawing.Point(4, 24);
+            this.tabFilterMobiles.Location = new System.Drawing.Point(4, 22);
             this.tabFilterMobiles.Name = "tabFilterMobiles";
             this.tabFilterMobiles.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFilterMobiles.Size = new System.Drawing.Size(176, 203);
+            this.tabFilterMobiles.Size = new System.Drawing.Size(176, 205);
             this.tabFilterMobiles.TabIndex = 1;
             this.tabFilterMobiles.Text = "Mobiles";
+            //
+            // drakeAnimationList
+            //
+            this.drakeAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.drakeAnimationList.DropDownWidth = 250;
+            this.drakeAnimationList.FormattingEnabled = true;
+            this.drakeAnimationList.Location = new System.Drawing.Point(6, 85);
+            this.drakeAnimationList.Name = "drakeAnimationList";
+            this.drakeAnimationList.Size = new System.Drawing.Size(164, 23);
+            this.drakeAnimationList.TabIndex = 100;
+            this.drakeAnimationList.SelectedIndexChanged += new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
+            //
+            // filterDrakeGraphics
+            //
+            this.filterDrakeGraphics.AutoSize = true;
+            this.filterDrakeGraphics.Location = new System.Drawing.Point(6, 60);
+            this.filterDrakeGraphics.Name = "filterDrakeGraphics";
+            this.filterDrakeGraphics.Size = new System.Drawing.Size(89, 19);
+            this.filterDrakeGraphics.TabIndex = 99;
+            this.filterDrakeGraphics.Text = "Filter drakes";
+            this.filterDrakeGraphics.UseVisualStyleBackColor = true;
+            this.filterDrakeGraphics.CheckedChanged += new System.EventHandler(this.filterDrakeGraphics_CheckedChanged);
             //
             // dragonAnimationList
             //
@@ -1004,7 +1045,7 @@ namespace Assistant
             //
             // opacityLabel
             //
-            this.opacityLabel.Location = new System.Drawing.Point(209, 243);
+            this.opacityLabel.Location = new System.Drawing.Point(209, 239);
             this.opacityLabel.Name = "opacityLabel";
             this.opacityLabel.Size = new System.Drawing.Size(89, 19);
             this.opacityLabel.TabIndex = 23;
@@ -1012,7 +1053,7 @@ namespace Assistant
             //
             // label9
             //
-            this.label9.Location = new System.Drawing.Point(210, 187);
+            this.label9.Location = new System.Drawing.Point(210, 183);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(129, 18);
             this.label9.TabIndex = 59;
@@ -1062,7 +1103,7 @@ namespace Assistant
             this.moreOptTab.Controls.Add(this.minMaxLightLevel);
             this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(482, 506);
+            this.moreOptTab.Size = new System.Drawing.Size(482, 510);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             //
@@ -1474,7 +1515,6 @@ namespace Assistant
             this.moreMoreOptTab.Controls.Add(this.alwaysStealth);
             this.moreMoreOptTab.Controls.Add(this.autoFriend);
             this.moreMoreOptTab.Controls.Add(this.chkStealth);
-            this.moreMoreOptTab.Controls.Add(this.rememberPwds);
             this.moreMoreOptTab.Controls.Add(this.showtargtext);
             this.moreMoreOptTab.Controls.Add(this.rangeCheckLT);
             this.moreMoreOptTab.Controls.Add(this.actionStatusMsg);
@@ -1486,14 +1526,14 @@ namespace Assistant
             this.moreMoreOptTab.Controls.Add(this.chkPartyOverhead);
             this.moreMoreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreMoreOptTab.Name = "moreMoreOptTab";
-            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 506);
+            this.moreMoreOptTab.Size = new System.Drawing.Size(482, 510);
             this.moreMoreOptTab.TabIndex = 10;
             this.moreMoreOptTab.Text = "More Options";
             //
             // damageTakenOverhead
             //
             this.damageTakenOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.damageTakenOverhead.Location = new System.Drawing.Point(385, 365);
+            this.damageTakenOverhead.Location = new System.Drawing.Point(386, 340);
             this.damageTakenOverhead.Name = "damageTakenOverhead";
             this.damageTakenOverhead.Size = new System.Drawing.Size(77, 19);
             this.damageTakenOverhead.TabIndex = 91;
@@ -1504,7 +1544,7 @@ namespace Assistant
             // showDamageTaken
             //
             this.showDamageTaken.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.showDamageTaken.Location = new System.Drawing.Point(245, 365);
+            this.showDamageTaken.Location = new System.Drawing.Point(246, 340);
             this.showDamageTaken.Name = "showDamageTaken";
             this.showDamageTaken.Size = new System.Drawing.Size(139, 19);
             this.showDamageTaken.TabIndex = 90;
@@ -1515,7 +1555,7 @@ namespace Assistant
             // damageDealtOverhead
             //
             this.damageDealtOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.damageDealtOverhead.Location = new System.Drawing.Point(385, 340);
+            this.damageDealtOverhead.Location = new System.Drawing.Point(386, 315);
             this.damageDealtOverhead.Name = "damageDealtOverhead";
             this.damageDealtOverhead.Size = new System.Drawing.Size(77, 19);
             this.damageDealtOverhead.TabIndex = 89;
@@ -1526,7 +1566,7 @@ namespace Assistant
             // showDamageDealt
             //
             this.showDamageDealt.AutoSize = true;
-            this.showDamageDealt.Location = new System.Drawing.Point(245, 340);
+            this.showDamageDealt.Location = new System.Drawing.Point(246, 315);
             this.showDamageDealt.Name = "showDamageDealt";
             this.showDamageDealt.Size = new System.Drawing.Size(130, 19);
             this.showDamageDealt.TabIndex = 88;
@@ -1537,7 +1577,7 @@ namespace Assistant
             // showStaticWalls
             //
             this.showStaticWalls.AutoSize = true;
-            this.showStaticWalls.Location = new System.Drawing.Point(245, 315);
+            this.showStaticWalls.Location = new System.Drawing.Point(246, 290);
             this.showStaticWalls.Name = "showStaticWalls";
             this.showStaticWalls.Size = new System.Drawing.Size(153, 19);
             this.showStaticWalls.TabIndex = 84;
@@ -1570,7 +1610,7 @@ namespace Assistant
             //
             this.showStaticWallLabels.AutoSize = true;
             this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showStaticWallLabels.Location = new System.Drawing.Point(401, 315);
+            this.showStaticWallLabels.Location = new System.Drawing.Point(404, 291);
             this.showStaticWallLabels.Name = "showStaticWallLabels";
             this.showStaticWallLabels.Size = new System.Drawing.Size(55, 17);
             this.showStaticWallLabels.TabIndex = 85;
@@ -1580,7 +1620,7 @@ namespace Assistant
             //
             // autoAcceptParty
             //
-            this.autoAcceptParty.Location = new System.Drawing.Point(245, 57);
+            this.autoAcceptParty.Location = new System.Drawing.Point(246, 31);
             this.autoAcceptParty.Name = "autoAcceptParty";
             this.autoAcceptParty.Size = new System.Drawing.Size(232, 20);
             this.autoAcceptParty.TabIndex = 83;
@@ -1590,7 +1630,7 @@ namespace Assistant
             // containerLabels
             //
             this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.containerLabels.Location = new System.Drawing.Point(425, 290);
+            this.containerLabels.Location = new System.Drawing.Point(426, 263);
             this.containerLabels.Name = "containerLabels";
             this.containerLabels.Size = new System.Drawing.Size(33, 19);
             this.containerLabels.TabIndex = 82;
@@ -1601,7 +1641,7 @@ namespace Assistant
             // showContainerLabels
             //
             this.showContainerLabels.AutoSize = true;
-            this.showContainerLabels.Location = new System.Drawing.Point(245, 290);
+            this.showContainerLabels.Location = new System.Drawing.Point(246, 264);
             this.showContainerLabels.Name = "showContainerLabels";
             this.showContainerLabels.Size = new System.Drawing.Size(141, 19);
             this.showContainerLabels.TabIndex = 81;
@@ -1670,7 +1710,7 @@ namespace Assistant
             // stealthOverhead
             //
             this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stealthOverhead.Location = new System.Drawing.Point(383, 75);
+            this.stealthOverhead.Location = new System.Drawing.Point(384, 49);
             this.stealthOverhead.Name = "stealthOverhead";
             this.stealthOverhead.Size = new System.Drawing.Size(96, 36);
             this.stealthOverhead.TabIndex = 76;
@@ -1681,7 +1721,7 @@ namespace Assistant
             // overHeadMessages
             //
             this.overHeadMessages.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.overHeadMessages.Location = new System.Drawing.Point(425, 263);
+            this.overHeadMessages.Location = new System.Drawing.Point(426, 236);
             this.overHeadMessages.Name = "overHeadMessages";
             this.overHeadMessages.Size = new System.Drawing.Size(33, 19);
             this.overHeadMessages.TabIndex = 75;
@@ -1692,7 +1732,7 @@ namespace Assistant
             // showOverheadMessages
             //
             this.showOverheadMessages.AutoSize = true;
-            this.showOverheadMessages.Location = new System.Drawing.Point(245, 264);
+            this.showOverheadMessages.Location = new System.Drawing.Point(246, 238);
             this.showOverheadMessages.Name = "showOverheadMessages";
             this.showOverheadMessages.Size = new System.Drawing.Size(161, 19);
             this.showOverheadMessages.TabIndex = 74;
@@ -1713,7 +1753,7 @@ namespace Assistant
             //
             // forceSizeX
             //
-            this.forceSizeX.Location = new System.Drawing.Point(369, 237);
+            this.forceSizeX.Location = new System.Drawing.Point(370, 211);
             this.forceSizeX.Name = "forceSizeX";
             this.forceSizeX.Size = new System.Drawing.Size(34, 23);
             this.forceSizeX.TabIndex = 63;
@@ -1721,7 +1761,7 @@ namespace Assistant
             //
             // forceSizeY
             //
-            this.forceSizeY.Location = new System.Drawing.Point(425, 237);
+            this.forceSizeY.Location = new System.Drawing.Point(426, 210);
             this.forceSizeY.Name = "forceSizeY";
             this.forceSizeY.Size = new System.Drawing.Size(33, 23);
             this.forceSizeY.TabIndex = 64;
@@ -1757,7 +1797,7 @@ namespace Assistant
             //
             // blockHealPoison
             //
-            this.blockHealPoison.Location = new System.Drawing.Point(245, 213);
+            this.blockHealPoison.Location = new System.Drawing.Point(246, 187);
             this.blockHealPoison.Name = "blockHealPoison";
             this.blockHealPoison.Size = new System.Drawing.Size(201, 20);
             this.blockHealPoison.TabIndex = 68;
@@ -1774,7 +1814,7 @@ namespace Assistant
             //
             // potionEquip
             //
-            this.potionEquip.Location = new System.Drawing.Point(245, 187);
+            this.potionEquip.Location = new System.Drawing.Point(246, 161);
             this.potionEquip.Name = "potionEquip";
             this.potionEquip.Size = new System.Drawing.Size(232, 20);
             this.potionEquip.TabIndex = 67;
@@ -1792,7 +1832,7 @@ namespace Assistant
             //
             // spellUnequip
             //
-            this.spellUnequip.Location = new System.Drawing.Point(245, 161);
+            this.spellUnequip.Location = new System.Drawing.Point(246, 135);
             this.spellUnequip.Name = "spellUnequip";
             this.spellUnequip.Size = new System.Drawing.Size(213, 20);
             this.spellUnequip.TabIndex = 39;
@@ -1801,7 +1841,7 @@ namespace Assistant
             //
             // autoOpenDoors
             //
-            this.autoOpenDoors.Location = new System.Drawing.Point(245, 135);
+            this.autoOpenDoors.Location = new System.Drawing.Point(246, 109);
             this.autoOpenDoors.Name = "autoOpenDoors";
             this.autoOpenDoors.Size = new System.Drawing.Size(190, 20);
             this.autoOpenDoors.TabIndex = 58;
@@ -1810,7 +1850,7 @@ namespace Assistant
             //
             // alwaysStealth
             //
-            this.alwaysStealth.Location = new System.Drawing.Point(245, 109);
+            this.alwaysStealth.Location = new System.Drawing.Point(246, 83);
             this.alwaysStealth.Name = "alwaysStealth";
             this.alwaysStealth.Size = new System.Drawing.Size(190, 20);
             this.alwaysStealth.TabIndex = 57;
@@ -1819,7 +1859,7 @@ namespace Assistant
             //
             // autoFriend
             //
-            this.autoFriend.Location = new System.Drawing.Point(245, 31);
+            this.autoFriend.Location = new System.Drawing.Point(246, 5);
             this.autoFriend.Name = "autoFriend";
             this.autoFriend.Size = new System.Drawing.Size(217, 20);
             this.autoFriend.TabIndex = 56;
@@ -1828,21 +1868,12 @@ namespace Assistant
             //
             // chkStealth
             //
-            this.chkStealth.Location = new System.Drawing.Point(245, 83);
+            this.chkStealth.Location = new System.Drawing.Point(246, 58);
             this.chkStealth.Name = "chkStealth";
             this.chkStealth.Size = new System.Drawing.Size(190, 20);
             this.chkStealth.TabIndex = 12;
             this.chkStealth.Text = "Count stealth steps";
             this.chkStealth.CheckedChanged += new System.EventHandler(this.chkStealth_CheckedChanged);
-            //
-            // rememberPwds
-            //
-            this.rememberPwds.Location = new System.Drawing.Point(245, 5);
-            this.rememberPwds.Name = "rememberPwds";
-            this.rememberPwds.Size = new System.Drawing.Size(190, 20);
-            this.rememberPwds.TabIndex = 54;
-            this.rememberPwds.Text = "Remember passwords ";
-            this.rememberPwds.CheckedChanged += new System.EventHandler(this.rememberPwds_CheckedChanged);
             //
             // showtargtext
             //
@@ -1890,7 +1921,7 @@ namespace Assistant
             // label18
             //
             this.label18.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(409, 240);
+            this.label18.Location = new System.Drawing.Point(410, 214);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(10, 18);
             this.label18.TabIndex = 66;
@@ -1908,7 +1939,7 @@ namespace Assistant
             //
             // gameSize
             //
-            this.gameSize.Location = new System.Drawing.Point(245, 239);
+            this.gameSize.Location = new System.Drawing.Point(246, 213);
             this.gameSize.Name = "gameSize";
             this.gameSize.Size = new System.Drawing.Size(118, 18);
             this.gameSize.TabIndex = 65;
@@ -1926,6 +1957,7 @@ namespace Assistant
             //
             // displayTab
             //
+            this.displayTab.Controls.Add(this.groupBox11);
             this.displayTab.Controls.Add(this.trackDps);
             this.displayTab.Controls.Add(this.trackIncomingGold);
             this.displayTab.Controls.Add(this.showNotoHue);
@@ -1939,14 +1971,14 @@ namespace Assistant
             this.displayTab.Controls.Add(this.groupBox2);
             this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(482, 506);
+            this.displayTab.Size = new System.Drawing.Size(482, 496);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             //
             // trackDps
             //
             this.trackDps.AutoSize = true;
-            this.trackDps.Location = new System.Drawing.Point(216, 270);
+            this.trackDps.Location = new System.Drawing.Point(216, 296);
             this.trackDps.Name = "trackDps";
             this.trackDps.Size = new System.Drawing.Size(146, 19);
             this.trackDps.TabIndex = 49;
@@ -1957,17 +1989,17 @@ namespace Assistant
             // trackIncomingGold
             //
             this.trackIncomingGold.AutoSize = true;
-            this.trackIncomingGold.Location = new System.Drawing.Point(216, 245);
+            this.trackIncomingGold.Location = new System.Drawing.Point(216, 271);
             this.trackIncomingGold.Name = "trackIncomingGold";
-            this.trackIncomingGold.Size = new System.Drawing.Size(177, 19);
+            this.trackIncomingGold.Size = new System.Drawing.Size(223, 19);
             this.trackIncomingGold.TabIndex = 48;
-            this.trackIncomingGold.Text = "Track gold per sec/min/hour";
+            this.trackIncomingGold.Text = "Enable gold per sec/min/hour tracker";
             this.trackIncomingGold.UseVisualStyleBackColor = true;
             this.trackIncomingGold.CheckedChanged += new System.EventHandler(this.trackIncomingGold_CheckedChanged);
             //
             // showNotoHue
             //
-            this.showNotoHue.Location = new System.Drawing.Point(216, 168);
+            this.showNotoHue.Location = new System.Drawing.Point(216, 245);
             this.showNotoHue.Name = "showNotoHue";
             this.showNotoHue.Size = new System.Drawing.Size(251, 20);
             this.showNotoHue.TabIndex = 47;
@@ -1976,9 +2008,9 @@ namespace Assistant
             //
             // warnNum
             //
-            this.warnNum.Location = new System.Drawing.Point(405, 218);
+            this.warnNum.Location = new System.Drawing.Point(145, 294);
             this.warnNum.Name = "warnNum";
-            this.warnNum.Size = new System.Drawing.Size(20, 23);
+            this.warnNum.Size = new System.Drawing.Size(30, 23);
             this.warnNum.TabIndex = 46;
             this.warnNum.Text = "3";
             this.warnNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1986,11 +2018,11 @@ namespace Assistant
             //
             // warnCount
             //
-            this.warnCount.Location = new System.Drawing.Point(216, 220);
+            this.warnCount.Location = new System.Drawing.Point(14, 296);
             this.warnCount.Name = "warnCount";
             this.warnCount.Size = new System.Drawing.Size(192, 19);
             this.warnCount.TabIndex = 45;
-            this.warnCount.Text = "Warn when a counter is below:";
+            this.warnCount.Text = "Warn when below:";
             this.warnCount.CheckedChanged += new System.EventHandler(this.warnCount_CheckedChanged);
             //
             // excludePouches
@@ -2004,7 +2036,7 @@ namespace Assistant
             //
             // highlightSpellReags
             //
-            this.highlightSpellReags.Location = new System.Drawing.Point(216, 142);
+            this.highlightSpellReags.Location = new System.Drawing.Point(216, 219);
             this.highlightSpellReags.Name = "highlightSpellReags";
             this.highlightSpellReags.Size = new System.Drawing.Size(251, 20);
             this.highlightSpellReags.TabIndex = 13;
@@ -2013,9 +2045,9 @@ namespace Assistant
             //
             // titlebarImages
             //
-            this.titlebarImages.Location = new System.Drawing.Point(216, 194);
+            this.titlebarImages.Location = new System.Drawing.Point(14, 270);
             this.titlebarImages.Name = "titlebarImages";
-            this.titlebarImages.Size = new System.Drawing.Size(251, 20);
+            this.titlebarImages.Size = new System.Drawing.Size(180, 20);
             this.titlebarImages.TabIndex = 12;
             this.titlebarImages.Text = "Show Images with Counters";
             this.titlebarImages.CheckedChanged += new System.EventHandler(this.titlebarImages_CheckedChanged);
@@ -2095,6 +2127,7 @@ namespace Assistant
             //
             // titleStr
             //
+            this.titleStr.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleStr.Location = new System.Drawing.Point(6, 41);
             this.titleStr.Multiline = true;
             this.titleStr.Name = "titleStr";
@@ -2186,7 +2219,7 @@ namespace Assistant
             this.dressTab.Controls.Add(this.groupBox5);
             this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(482, 506);
+            this.dressTab.Size = new System.Drawing.Size(482, 510);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             //
@@ -2346,7 +2379,7 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.skillList);
             this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(482, 506);
+            this.skillsTab.Size = new System.Drawing.Size(482, 510);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             //
@@ -2499,7 +2532,7 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB3);
             this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(482, 506);
+            this.agentsTab.Size = new System.Drawing.Size(482, 510);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             //
@@ -2589,7 +2622,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(482, 506);
+            this.hotkeysTab.Size = new System.Drawing.Size(482, 510);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2742,7 +2775,7 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.newMacro);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(482, 506);
+            this.macrosTab.Size = new System.Drawing.Size(482, 510);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             //
@@ -3012,7 +3045,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.trackPlayerPosition);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(482, 506);
+            this.mapTab.Size = new System.Drawing.Size(482, 510);
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Map";
             //
@@ -3148,7 +3181,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(482, 506);
+            this.videoTab.Size = new System.Drawing.Size(482, 510);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             //
@@ -3415,7 +3448,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(482, 506);
+            this.screenshotTab.Size = new System.Drawing.Size(482, 510);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             //
@@ -3582,7 +3615,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(482, 506);
+            this.advancedTab.Size = new System.Drawing.Size(482, 510);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             //
@@ -3694,7 +3727,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(482, 506);
+            this.aboutTab.Size = new System.Drawing.Size(482, 510);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             //
@@ -3787,27 +3820,48 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
-            // filterDrakeGraphics
+            // groupBox11
             //
-            this.filterDrakeGraphics.AutoSize = true;
-            this.filterDrakeGraphics.Location = new System.Drawing.Point(6, 60);
-            this.filterDrakeGraphics.Name = "filterDrakeGraphics";
-            this.filterDrakeGraphics.Size = new System.Drawing.Size(89, 19);
-            this.filterDrakeGraphics.TabIndex = 99;
-            this.filterDrakeGraphics.Text = "Filter drakes";
-            this.filterDrakeGraphics.UseVisualStyleBackColor = true;
-            this.filterDrakeGraphics.CheckedChanged += new System.EventHandler(this.filterDrakeGraphics_CheckedChanged);
+            this.groupBox11.Controls.Add(this.razorTitleBarKey);
+            this.groupBox11.Controls.Add(this.showInRazorTitleBar);
+            this.groupBox11.Controls.Add(this.razorTitleBar);
+            this.groupBox11.Location = new System.Drawing.Point(210, 142);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(263, 71);
+            this.groupBox11.TabIndex = 50;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "Razor Title Bar";
             //
-            // drakeAnimationList
+            // razorTitleBar
             //
-            this.drakeAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.drakeAnimationList.DropDownWidth = 250;
-            this.drakeAnimationList.FormattingEnabled = true;
-            this.drakeAnimationList.Location = new System.Drawing.Point(6, 85);
-            this.drakeAnimationList.Name = "drakeAnimationList";
-            this.drakeAnimationList.Size = new System.Drawing.Size(164, 23);
-            this.drakeAnimationList.TabIndex = 100;
-            this.drakeAnimationList.SelectedIndexChanged += new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
+            this.razorTitleBar.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.razorTitleBar.Location = new System.Drawing.Point(6, 42);
+            this.razorTitleBar.Name = "razorTitleBar";
+            this.razorTitleBar.Size = new System.Drawing.Size(251, 22);
+            this.razorTitleBar.TabIndex = 0;
+            this.razorTitleBar.Text = "{name} ({profile} - {shard}) - Razor v{version}";
+            this.razorTitleBar.TextChanged += new System.EventHandler(this.razorTitleBar_TextChanged);
+            //
+            // showInRazorTitleBar
+            //
+            this.showInRazorTitleBar.AutoSize = true;
+            this.showInRazorTitleBar.Location = new System.Drawing.Point(6, 17);
+            this.showInRazorTitleBar.Name = "showInRazorTitleBar";
+            this.showInRazorTitleBar.Size = new System.Drawing.Size(146, 19);
+            this.showInRazorTitleBar.TabIndex = 1;
+            this.showInRazorTitleBar.Text = "Show in Razor title bar:";
+            this.showInRazorTitleBar.UseVisualStyleBackColor = true;
+            this.showInRazorTitleBar.CheckedChanged += new System.EventHandler(this.showInRazorTitleBar_CheckedChanged);
+            //
+            // razorTitleBarKey
+            //
+            this.razorTitleBarKey.Location = new System.Drawing.Point(153, 15);
+            this.razorTitleBarKey.Name = "razorTitleBarKey";
+            this.razorTitleBarKey.Size = new System.Drawing.Size(16, 20);
+            this.razorTitleBarKey.TabIndex = 2;
+            this.razorTitleBarKey.Text = "?";
+            this.razorTitleBarKey.UseVisualStyleBackColor = true;
+            this.razorTitleBarKey.Click += new System.EventHandler(this.razorTitleBarKey_Click);
             //
             // MainForm
             //
@@ -3879,6 +3933,8 @@ namespace Assistant
             this.advancedTab.PerformLayout();
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4213,6 +4269,9 @@ namespace Assistant
             showDamageTaken.Checked = Config.GetBool("ShowDamageTaken");
             damageDealtOverhead.Checked = Config.GetBool("ShowDamageTakenOverhead");
 
+            razorTitleBar.Text = Config.GetString("RazorTitleBarText");
+            showInRazorTitleBar.Checked = Config.GetBool("ShowInRazorTitleBar");
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
 
@@ -4283,7 +4342,7 @@ namespace Assistant
 
                 titleBarParams.SelectedIndex = 0;
 
-                tabs.Size = new Size(tabs.Size.Width, 344);
+                tabs.Size = new Size(tabs.Size.Width, 374);
                 Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
             }
             else if (tabs.SelectedTab == dressTab)
@@ -4346,7 +4405,7 @@ namespace Assistant
             }
             else if (tabs.SelectedTab == moreMoreOptTab)
             {
-                tabs.Size = new Size(tabs.Size.Width, 440);
+                tabs.Size = new Size(tabs.Size.Width, 412);
                 Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
             }
             else if (tabs.SelectedTab == moreOptTab)
@@ -7271,13 +7330,20 @@ namespace Assistant
                 str = "Razor v{0}";
             }
 
-
             str = string.Format(str, Engine.Version);
 
             if (World.Player != null)
             {
-                string title = $"{World.Player.Name} ({World.ShardName}) - {str}";
-                Text = title;
+                if (Config.GetBool("ShowInRazorTitleBar") && !string.IsNullOrEmpty(razorTitleBar.Text))
+                {
+                    Text = razorTitleBar.Text.Replace("{name}", World.Player.Name).Replace("{shard}", World.ShardName)
+                        .Replace("{version}", Engine.Version).Replace("{profile}", Config.CurrentProfile.Name).Replace("{account}", World.AccountName);
+                }
+                else
+                {
+                    string title = $"{World.Player.Name} ({World.ShardName}) - {str}";
+                    Text = title;
+                }
             }
             else
             {
@@ -7285,7 +7351,6 @@ namespace Assistant
             }
 
             aboutVer.Text = str;
-
 
             UpdateSystray();
         }
@@ -7295,7 +7360,15 @@ namespace Assistant
             if (m_NotifyIcon != null && m_NotifyIcon.Visible)
             {
                 if (World.Player != null)
-                    m_NotifyIcon.Text = String.Format("Razor - {0} ({1})", World.Player.Name, World.ShardName);
+                    if (Config.GetBool("ShowInRazorTitleBar") && !string.IsNullOrEmpty(razorTitleBar.Text))
+                    {
+                        m_NotifyIcon.Text = razorTitleBar.Text.Replace("{name}", World.Player.Name).Replace("{shard}", World.ShardName)
+                            .Replace("{version}", Engine.Version);
+                    }
+                    else
+                    {
+                        m_NotifyIcon.Text = String.Format("Razor - {0} ({1})", World.Player.Name, World.ShardName);
+                    }
                 else
                     m_NotifyIcon.Text = "Razor";
             }
@@ -8846,6 +8919,37 @@ namespace Assistant
         private void filterDrakeGraphics_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("FilterDrakeGraphics", filterDrakeGraphics.Checked);
+        }
+
+        private void showInRazorTitleBar_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowInRazorTitleBar", showInRazorTitleBar.Checked);
+
+            UpdateTitle();
+        }
+
+        private void razorTitleBar_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("RazorTitleBarText", razorTitleBar.Text.TrimEnd());
+            if (Config.GetBool("ShowInRazorTitleBar"))
+                UpdateTitle();
+        }
+
+        private void razorTitleBarKey_Click(object sender, EventArgs e)
+        {
+            //Replace("{name}", World.Player.Name).Replace("{shard}", World.ShardName)
+            //.Replace("{version}", Engine.Version).Replace("{profile}", Config.CurrentProfile.Name).Replace("{account}", World.AccountName);
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("You can insert these variables into the Razor Title Bar to display specific information.");
+            sb.AppendLine(string.Empty);
+            sb.AppendLine("{name} - Character name");
+            sb.AppendLine("{shard} - Shard/Server name");
+            sb.AppendLine("{version} - Razor version");
+            sb.AppendLine("{profile} - Selected profile name");
+            sb.AppendLine("{account} - Account name");
+
+            MessageBox.Show(this, sb.ToString(), "Razor Title Bar Variables", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

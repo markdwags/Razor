@@ -210,11 +210,14 @@ namespace Assistant
             AddProperty("FilterDrakeGraphics", false);
             AddProperty("DragonGraphic", 0);
             AddProperty("DrakeGraphic", 0);
+
             AddProperty("ShowDamageDealt", false);
             AddProperty("ShowDamageDealtOverhead", false);
             AddProperty("ShowDamageTaken", false);
             AddProperty("ShowDamageTakenOverhead", false);
 
+            AddProperty("ShowInRazorTitleBar", false);
+            AddProperty("RazorTitleBarText", "{name} on {account} ({profile} - {shard}) - Razor v{version}");
 
             Counter.Default();
             Filter.DisableAll();
