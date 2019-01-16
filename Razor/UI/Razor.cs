@@ -185,7 +185,7 @@ namespace Assistant
         private System.Windows.Forms.CheckBox preAOSstatbar;
         private System.Windows.Forms.ComboBox clientPrio;
         private System.Windows.Forms.Label label9;
-        private LinkLabel linkGithub;
+        private LinkLabel linkMain;
         private Label label21;
         private Label aboutVer;
         private Button cloneProfile;
@@ -332,6 +332,10 @@ namespace Assistant
         private CheckBox showInRazorTitleBar;
         private TextBox razorTitleBar;
         private Button razorTitleBarKey;
+        private Button openUOAM;
+        private Button openUltimaMapper;
+        private LinkLabel linkHelp;
+        private CheckBox enableUOAAPI;
         private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -681,7 +685,7 @@ namespace Assistant
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label23 = new System.Windows.Forms.Label();
             this.aboutSubInfo = new System.Windows.Forms.Label();
-            this.linkGithub = new System.Windows.Forms.LinkLabel();
+            this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
@@ -689,6 +693,10 @@ namespace Assistant
             this.razorTitleBar = new System.Windows.Forms.TextBox();
             this.showInRazorTitleBar = new System.Windows.Forms.CheckBox();
             this.razorTitleBarKey = new System.Windows.Forms.Button();
+            this.openUltimaMapper = new System.Windows.Forms.Button();
+            this.openUOAM = new System.Windows.Forms.Button();
+            this.linkHelp = new System.Windows.Forms.LinkLabel();
+            this.enableUOAAPI = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -1971,7 +1979,7 @@ namespace Assistant
             this.displayTab.Controls.Add(this.groupBox2);
             this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(482, 496);
+            this.displayTab.Size = new System.Drawing.Size(482, 510);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             //
@@ -3034,6 +3042,8 @@ namespace Assistant
             // mapTab
             //
             this.mapTab.BackColor = System.Drawing.SystemColors.Control;
+            this.mapTab.Controls.Add(this.openUOAM);
+            this.mapTab.Controls.Add(this.openUltimaMapper);
             this.mapTab.Controls.Add(this.captureMibs);
             this.mapTab.Controls.Add(this.boatControl);
             this.mapTab.Controls.Add(this.btnMap);
@@ -3047,12 +3057,12 @@ namespace Assistant
             this.mapTab.Name = "mapTab";
             this.mapTab.Size = new System.Drawing.Size(482, 510);
             this.mapTab.TabIndex = 13;
-            this.mapTab.Text = "Map";
+            this.mapTab.Text = "Maps";
             //
             // captureMibs
             //
             this.captureMibs.AutoSize = true;
-            this.captureMibs.Location = new System.Drawing.Point(9, 77);
+            this.captureMibs.Location = new System.Drawing.Point(9, 63);
             this.captureMibs.Name = "captureMibs";
             this.captureMibs.Size = new System.Drawing.Size(236, 19);
             this.captureMibs.TabIndex = 62;
@@ -3062,9 +3072,9 @@ namespace Assistant
             //
             // boatControl
             //
-            this.boatControl.Location = new System.Drawing.Point(145, 14);
+            this.boatControl.Location = new System.Drawing.Point(302, 42);
             this.boatControl.Name = "boatControl";
-            this.boatControl.Size = new System.Drawing.Size(128, 32);
+            this.boatControl.Size = new System.Drawing.Size(147, 32);
             this.boatControl.TabIndex = 60;
             this.boatControl.Text = "Open Boat Control";
             this.boatControl.UseVisualStyleBackColor = true;
@@ -3072,9 +3082,9 @@ namespace Assistant
             //
             // btnMap
             //
-            this.btnMap.Location = new System.Drawing.Point(21, 198);
+            this.btnMap.Location = new System.Drawing.Point(302, 225);
             this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(237, 29);
+            this.btnMap.Size = new System.Drawing.Size(147, 34);
             this.btnMap.TabIndex = 59;
             this.btnMap.Text = "Open UOPS";
             this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
@@ -3113,7 +3123,7 @@ namespace Assistant
             //
             // openUOPS
             //
-            this.openUOPS.Location = new System.Drawing.Point(5, 14);
+            this.openUOPS.Location = new System.Drawing.Point(9, 7);
             this.openUOPS.Name = "openUOPS";
             this.openUOPS.Size = new System.Drawing.Size(134, 32);
             this.openUOPS.TabIndex = 2;
@@ -3126,9 +3136,9 @@ namespace Assistant
             this.groupMapPoints.Controls.Add(this.removeMapPoint);
             this.groupMapPoints.Controls.Add(this.addMapPoint);
             this.groupMapPoints.Controls.Add(this.mapPoints);
-            this.groupMapPoints.Location = new System.Drawing.Point(279, 3);
+            this.groupMapPoints.Location = new System.Drawing.Point(9, 117);
             this.groupMapPoints.Name = "groupMapPoints";
-            this.groupMapPoints.Size = new System.Drawing.Size(200, 232);
+            this.groupMapPoints.Size = new System.Drawing.Size(264, 160);
             this.groupMapPoints.TabIndex = 1;
             this.groupMapPoints.TabStop = false;
             this.groupMapPoints.Text = "Map Points";
@@ -3604,6 +3614,7 @@ namespace Assistant
             // advancedTab
             //
             this.advancedTab.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedTab.Controls.Add(this.enableUOAAPI);
             this.advancedTab.Controls.Add(this.disableSmartCPU);
             this.advancedTab.Controls.Add(this.negotiate);
             this.advancedTab.Controls.Add(this.backupDataDir);
@@ -3717,12 +3728,13 @@ namespace Assistant
             //
             // aboutTab
             //
+            this.aboutTab.Controls.Add(this.linkHelp);
             this.aboutTab.Controls.Add(this.label24);
             this.aboutTab.Controls.Add(this.label20);
             this.aboutTab.Controls.Add(this.linkLabel1);
             this.aboutTab.Controls.Add(this.label23);
             this.aboutTab.Controls.Add(this.aboutSubInfo);
-            this.aboutTab.Controls.Add(this.linkGithub);
+            this.aboutTab.Controls.Add(this.linkMain);
             this.aboutTab.Controls.Add(this.label21);
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
@@ -3735,7 +3747,7 @@ namespace Assistant
             //
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(55, 155);
+            this.label24.Location = new System.Drawing.Point(52, 182);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(384, 17);
             this.label24.TabIndex = 22;
@@ -3745,7 +3757,7 @@ namespace Assistant
             //
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(77, 193);
+            this.label20.Location = new System.Drawing.Point(77, 96);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(343, 17);
             this.label20.TabIndex = 21;
@@ -3754,7 +3766,7 @@ namespace Assistant
             // linkLabel1
             //
             this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.Location = new System.Drawing.Point(12, 76);
+            this.linkLabel1.Location = new System.Drawing.Point(9, 64);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(459, 20);
             this.linkLabel1.TabIndex = 20;
@@ -3767,7 +3779,7 @@ namespace Assistant
             //
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(33, 135);
+            this.label23.Location = new System.Drawing.Point(30, 162);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(422, 17);
             this.label23.TabIndex = 19;
@@ -3783,16 +3795,17 @@ namespace Assistant
             this.aboutSubInfo.Text = "UO Renaissance Community Edition";
             this.aboutSubInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             //
-            // linkGithub
+            // linkMain
             //
-            this.linkGithub.AutoSize = true;
-            this.linkGithub.Location = new System.Drawing.Point(162, 216);
-            this.linkGithub.Name = "linkGithub";
-            this.linkGithub.Size = new System.Drawing.Size(148, 15);
-            this.linkGithub.TabIndex = 16;
-            this.linkGithub.TabStop = true;
-            this.linkGithub.Text = "http://www.uor-razor.com";
-            this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.linkMain.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkMain.Location = new System.Drawing.Point(9, 114);
+            this.linkMain.Name = "linkMain";
+            this.linkMain.Size = new System.Drawing.Size(459, 20);
+            this.linkMain.TabIndex = 16;
+            this.linkMain.TabStop = true;
+            this.linkMain.Text = "http://www.uor-razor.com";
+            this.linkMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkMain.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             //
             // label21
             //
@@ -3862,6 +3875,47 @@ namespace Assistant
             this.razorTitleBarKey.Text = "?";
             this.razorTitleBarKey.UseVisualStyleBackColor = true;
             this.razorTitleBarKey.Click += new System.EventHandler(this.razorTitleBarKey_Click);
+            //
+            // openUltimaMapper
+            //
+            this.openUltimaMapper.Location = new System.Drawing.Point(302, 185);
+            this.openUltimaMapper.Name = "openUltimaMapper";
+            this.openUltimaMapper.Size = new System.Drawing.Size(147, 34);
+            this.openUltimaMapper.TabIndex = 65;
+            this.openUltimaMapper.Text = "Open Ultima Mapper";
+            this.openUltimaMapper.Click += new System.EventHandler(this.openUltimaMapper_Click);
+            //
+            // openUOAM
+            //
+            this.openUOAM.Location = new System.Drawing.Point(302, 147);
+            this.openUOAM.Name = "openUOAM";
+            this.openUOAM.Size = new System.Drawing.Size(147, 32);
+            this.openUOAM.TabIndex = 66;
+            this.openUOAM.Text = "Open UOAM";
+            this.openUOAM.Click += new System.EventHandler(this.openUOAM_Click);
+            //
+            // linkHelp
+            //
+            this.linkHelp.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkHelp.Location = new System.Drawing.Point(388, 10);
+            this.linkHelp.Name = "linkHelp";
+            this.linkHelp.Size = new System.Drawing.Size(91, 20);
+            this.linkHelp.TabIndex = 23;
+            this.linkHelp.TabStop = true;
+            this.linkHelp.Text = "Need Help?";
+            this.linkHelp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkHelp_LinkClicked);
+            //
+            // enableUOAAPI
+            //
+            this.enableUOAAPI.Checked = true;
+            this.enableUOAAPI.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enableUOAAPI.Location = new System.Drawing.Point(202, 144);
+            this.enableUOAAPI.Name = "enableUOAAPI";
+            this.enableUOAAPI.Size = new System.Drawing.Size(146, 23);
+            this.enableUOAAPI.TabIndex = 75;
+            this.enableUOAAPI.Text = "Enable UOA API";
+            this.enableUOAAPI.CheckedChanged += new System.EventHandler(this.enableUOAAPI_CheckedChanged);
             //
             // MainForm
             //
@@ -3945,7 +3999,7 @@ namespace Assistant
         {
             if (msg.Msg == ClientCommunication.WM_UONETEVENT)
                 msg.Result = (IntPtr)(ClientCommunication.OnMessage(this, (uint)msg.WParam.ToInt32(), msg.LParam.ToInt32()) ? 1 : 0);
-            else if (msg.Msg >= (int)ClientCommunication.UOAMessage.First && msg.Msg <= (int)ClientCommunication.UOAMessage.Last)
+            else if (Config.GetBool("EnableUOAAPI") && msg.Msg >= (int)ClientCommunication.UOAMessage.First && msg.Msg <= (int)ClientCommunication.UOAMessage.Last)
                 msg.Result = (IntPtr)ClientCommunication.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(), msg.LParam.ToInt32());
             else
                 base.WndProc(ref msg);
@@ -4272,6 +4326,8 @@ namespace Assistant
             razorTitleBar.Text = Config.GetString("RazorTitleBarText");
             showInRazorTitleBar.Checked = Config.GetBool("ShowInRazorTitleBar");
 
+            enableUOAAPI.Checked = Config.GetBool("EnableUOAAPI");
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
 
@@ -4335,6 +4391,11 @@ namespace Assistant
             else if (tabs.SelectedTab == skillsTab)
             {
                 RedrawSkills();
+            }
+            else if (tabs.SelectedTab == mapTab)
+            {
+                tabs.Size = new Size(tabs.Size.Width, 334);
+                Size = new Size(tabs.Size.Width + 10, tabs.Size.Height + 33);
             }
             else if (tabs.SelectedTab == displayTab)
             {
@@ -8950,6 +9011,58 @@ namespace Assistant
             sb.AppendLine("{account} - Account name");
 
             MessageBox.Show(this, sb.ToString(), "Razor Title Bar Variables", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void linkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://www.uor-razor.com/help/");
+        }
+
+        private void enableUOAAPI_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("EnableUOAAPI", enableUOAAPI.Checked);
+        }
+
+        private void openUOAM_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(Config.GetString("UOAMPath")))
+            {
+                OpenFileDialog file = new OpenFileDialog();
+                file.Filter = "Executables (*.exe)|*.exe";
+                file.FilterIndex = 1;
+                file.Multiselect = false;
+
+                if (file.ShowDialog(this) == DialogResult.OK)
+                {
+                    Config.SetProperty("UOAMPath", file.FileName);
+                    Process.Start(Config.GetString("UOAMPath"));
+                }
+            }
+            else
+            {
+                Process.Start(Config.GetString("UOAMPath"));
+            }
+        }
+
+        private void openUltimaMapper_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(Config.GetString("UltimaMapperPath")))
+            {
+                OpenFileDialog file = new OpenFileDialog();
+                file.Filter = "Executables (*.exe)|*.exe";
+                file.FilterIndex = 1;
+                file.Multiselect = false;
+
+                if (file.ShowDialog(this) == DialogResult.OK)
+                {
+                    Config.SetProperty("UltimaMapperPath", file.FileName);
+                    Process.Start(Config.GetString("UltimaMapperPath"));
+                }
+            }
+            else
+            {
+                Process.Start(Config.GetString("UltimaMapperPath"));
+            }
         }
     }
 }
