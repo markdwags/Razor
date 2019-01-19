@@ -27,9 +27,9 @@ namespace Assistant
     public class MainForm : System.Windows.Forms.Form
     {
         #region Class Variables
+
         private System.Windows.Forms.NotifyIcon m_NotifyIcon;
         private System.Windows.Forms.TabControl tabs;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ColumnHeader skillHDRName;
         private System.Windows.Forms.ColumnHeader skillHDRvalue;
         private System.Windows.Forms.ColumnHeader skillHDRbase;
@@ -40,10 +40,6 @@ namespace Assistant
         private System.Windows.Forms.ListView skillList;
         private System.Windows.Forms.ColumnHeader skillHDRcap;
         private System.Windows.Forms.Timer timerTimer;
-        private System.Windows.Forms.CheckBox alwaysTop;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button newProfile;
-        private System.Windows.Forms.Button delProfile;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox baseTotal;
         private System.Windows.Forms.TabPage dressTab;
@@ -79,8 +75,6 @@ namespace Assistant
         private System.Windows.Forms.Button agentB3;
         private System.Windows.Forms.Button dohotkey;
         private System.Windows.Forms.Button agentB4;
-        private System.Windows.Forms.Label opacityLabel;
-        private System.Windows.Forms.TrackBar opacity;
         private System.Windows.Forms.CheckBox dispDelta;
         private System.Windows.Forms.ComboBox agentList;
         private System.Windows.Forms.TabPage macrosTab;
@@ -101,17 +95,10 @@ namespace Assistant
         private System.Windows.Forms.Button agentB5;
         private System.Windows.Forms.Button agentB6;
         private System.Windows.Forms.CheckBox undressConflicts;
-        private System.Windows.Forms.CheckBox showWelcome;
         private System.Windows.Forms.ColumnHeader skillHDRlock;
         private System.ComponentModel.IContainer components;
-        private System.Windows.Forms.RadioButton systray;
-        private System.Windows.Forms.RadioButton taskbar;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button undressBag;
         private System.Windows.Forms.Button dressDelSel;
-        private System.Windows.Forms.ComboBox langSel;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox profiles;
         private System.Windows.Forms.Label hkStatus;
         private System.Windows.Forms.Button clearDress;
         private System.Windows.Forms.Label label12;
@@ -138,6 +125,7 @@ namespace Assistant
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtRecFolder;
         private ToolTip m_Tip;
+
         #endregion
 
         private int m_LastKV = 0;
@@ -146,12 +134,9 @@ namespace Assistant
         private System.Windows.Forms.CheckBox flipVidVert;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label rpvTime;
-        private System.Windows.Forms.ComboBox clientPrio;
-        private System.Windows.Forms.Label label9;
         private LinkLabel linkMain;
         private Label label21;
         private Label aboutVer;
-        private Button cloneProfile;
         private TextBox filterHotkeys;
         private Label label22;
         private bool m_CanClose = true;
@@ -171,20 +156,11 @@ namespace Assistant
         private TabPage mapTab;
         private Label label24;
         private CheckBox logSkillChanges;
-        private Button saveProfile;
         private CheckBox screenShotOpenBrowser;
         private CheckBox screenShotNotification;
         private ListBox imgurUploads;
         private CheckBox screenShotClipboard;
         private TreeView _hotkeyTreeViewCache = new TreeView();
-        private TabControl tabControl1;
-        private TabPage tabFilterSounds;
-        private CheckedListBox filters;
-        private TabPage tabFilterMobiles;
-        private ComboBox dragonAnimationList;
-        private CheckBox filterDragonGraphics;
-        private CheckBox filterDrakeGraphics;
-        private ComboBox drakeAnimationList;
         private LinkLabel linkHelp;
         private CheckBox enableUOAAPI;
         private TabControl tabControl2;
@@ -213,7 +189,7 @@ namespace Assistant
         private CheckBox loopMacro;
         private Button recMacro;
         private ListBox actionList;
-        private TabControl tabControl3;
+        private TabControl optionsTabCtrl;
         private TabPage subOptionsSpeechTab;
         private Button setLTHilight;
         private CheckBox lthilight;
@@ -311,10 +287,6 @@ namespace Assistant
         private Button openUOAM;
         private Button openUltimaMapper;
         private Button btnMap;
-        private GroupBox groupBox16;
-        private Button setBackupFolder;
-        private Label lastBackup;
-        private Button createBackup;
         private CheckBox rememberPwds;
         private TabControl tabControl4;
         private TabPage subDisplayTab;
@@ -344,14 +316,48 @@ namespace Assistant
         private Button addCounter;
         private Button recount;
         private CheckBox captureMibs;
+        private TabControl subGeneralTab;
+        private TabPage tabPage1;
+        private TabPage subFiltersTab;
+        private CheckedListBox filters;
+        private GroupBox groupBox16;
+        private Button setBackupFolder;
+        private Label lastBackup;
+        private Button createBackup;
+        private ComboBox clientPrio;
+        private RadioButton systray;
+        private RadioButton taskbar;
+        private ComboBox langSel;
+        private Label label7;
+        private Label label11;
+        private CheckBox showWelcome;
+        private TrackBar opacity;
+        private CheckBox alwaysTop;
+        private Label opacityLabel;
+        private Label label9;
+        private GroupBox groupBox4;
+        private Button saveProfile;
+        private Button cloneProfile;
+        private Button delProfile;
+        private Button newProfile;
+        private ComboBox profiles;
+        private ComboBox drakeAnimationList;
+        private CheckBox filterDrakeGraphics;
+        private ComboBox dragonAnimationList;
+        private CheckBox filterDragonGraphics;
+        private Button openBackupFolder;
         private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
         private static extern IntPtr GetSystemMenu(IntPtr wnd, bool reset);
+
         [DllImport("User32.dll")]
         private static extern IntPtr EnableMenuItem(IntPtr menu, uint item, uint options);
 
-        public Label WaitDisplay { get { return waitDisp; } }
+        public Label WaitDisplay
+        {
+            get { return waitDisp; }
+        }
 
         public MainForm()
         {
@@ -363,15 +369,15 @@ namespace Assistant
             InitializeComponent();
 
             m_NotifyIcon.ContextMenu =
-                 new ContextMenu(new MenuItem[]
-                 {
-                         new MenuItem( "Show Razor", new EventHandler( DoShowMe ) ),
-                         new MenuItem( "Hide Razor", new EventHandler( HideMe ) ),
-                         new MenuItem( "-" ),
-                         new MenuItem( "Toggle Razor Visibility", new EventHandler( ToggleVisible ) ),
-                         new MenuItem( "-" ),
-                         new MenuItem( "Close Razor && UO", new EventHandler( OnClose ) )
-                 });
+                new ContextMenu(new MenuItem[]
+                {
+                    new MenuItem("Show Razor", new EventHandler(DoShowMe)),
+                    new MenuItem("Hide Razor", new EventHandler(HideMe)),
+                    new MenuItem("-"),
+                    new MenuItem("Toggle Razor Visibility", new EventHandler(ToggleVisible)),
+                    new MenuItem("-"),
+                    new MenuItem("Close Razor && UO", new EventHandler(OnClose))
+                });
             m_NotifyIcon.ContextMenu.MenuItems[0].DefaultItem = true;
         }
 
@@ -392,10 +398,12 @@ namespace Assistant
                     components.Dispose();
                 }
             }
+
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
+
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -407,7 +415,10 @@ namespace Assistant
             this.m_NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.generalTab = new System.Windows.Forms.TabPage();
+            this.subGeneralTab = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.openBackupFolder = new System.Windows.Forms.Button();
             this.setBackupFolder = new System.Windows.Forms.Button();
             this.lastBackup = new System.Windows.Forms.Label();
             this.createBackup = new System.Windows.Forms.Button();
@@ -417,28 +428,25 @@ namespace Assistant
             this.langSel = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.showWelcome = new System.Windows.Forms.CheckBox();
+            this.opacity = new System.Windows.Forms.TrackBar();
+            this.alwaysTop = new System.Windows.Forms.CheckBox();
+            this.opacityLabel = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.saveProfile = new System.Windows.Forms.Button();
             this.cloneProfile = new System.Windows.Forms.Button();
             this.delProfile = new System.Windows.Forms.Button();
             this.newProfile = new System.Windows.Forms.Button();
             this.profiles = new System.Windows.Forms.ComboBox();
-            this.showWelcome = new System.Windows.Forms.CheckBox();
-            this.opacity = new System.Windows.Forms.TrackBar();
-            this.alwaysTop = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabFilterSounds = new System.Windows.Forms.TabPage();
-            this.filters = new System.Windows.Forms.CheckedListBox();
-            this.tabFilterMobiles = new System.Windows.Forms.TabPage();
+            this.subFiltersTab = new System.Windows.Forms.TabPage();
             this.drakeAnimationList = new System.Windows.Forms.ComboBox();
             this.filterDrakeGraphics = new System.Windows.Forms.CheckBox();
             this.dragonAnimationList = new System.Windows.Forms.ComboBox();
             this.filterDragonGraphics = new System.Windows.Forms.CheckBox();
-            this.opacityLabel = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.filters = new System.Windows.Forms.CheckedListBox();
             this.moreOptTab = new System.Windows.Forms.TabPage();
-            this.tabControl3 = new System.Windows.Forms.TabControl();
+            this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
             this.damageTakenOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageTaken = new System.Windows.Forms.CheckBox();
@@ -713,15 +721,14 @@ namespace Assistant
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
+            this.subGeneralTab.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.groupBox16.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabFilterSounds.SuspendLayout();
-            this.tabFilterMobiles.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.subFiltersTab.SuspendLayout();
             this.moreOptTab.SuspendLayout();
-            this.tabControl3.SuspendLayout();
+            this.optionsTabCtrl.SuspendLayout();
             this.subOptionsSpeechTab.SuspendLayout();
             this.subOptionsTargetTab.SuspendLayout();
             this.subOptionsMiscTab.SuspendLayout();
@@ -787,7 +794,7 @@ namespace Assistant
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(527, 366);
+            this.tabs.Size = new System.Drawing.Size(527, 370);
             this.tabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabs.TabIndex = 0;
             this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_IndexChanged);
@@ -795,43 +802,74 @@ namespace Assistant
             //
             // generalTab
             //
-            this.generalTab.Controls.Add(this.groupBox16);
-            this.generalTab.Controls.Add(this.clientPrio);
-            this.generalTab.Controls.Add(this.systray);
-            this.generalTab.Controls.Add(this.taskbar);
-            this.generalTab.Controls.Add(this.langSel);
-            this.generalTab.Controls.Add(this.label7);
-            this.generalTab.Controls.Add(this.label11);
-            this.generalTab.Controls.Add(this.groupBox4);
-            this.generalTab.Controls.Add(this.showWelcome);
-            this.generalTab.Controls.Add(this.opacity);
-            this.generalTab.Controls.Add(this.alwaysTop);
-            this.generalTab.Controls.Add(this.groupBox1);
-            this.generalTab.Controls.Add(this.opacityLabel);
-            this.generalTab.Controls.Add(this.label9);
+            this.generalTab.Controls.Add(this.subGeneralTab);
             this.generalTab.Location = new System.Drawing.Point(4, 44);
             this.generalTab.Name = "generalTab";
-            this.generalTab.Size = new System.Drawing.Size(519, 318);
+            this.generalTab.Size = new System.Drawing.Size(519, 322);
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             //
+            // subGeneralTab
+            //
+            this.subGeneralTab.Controls.Add(this.tabPage1);
+            this.subGeneralTab.Controls.Add(this.subFiltersTab);
+            this.subGeneralTab.Location = new System.Drawing.Point(6, 3);
+            this.subGeneralTab.Name = "subGeneralTab";
+            this.subGeneralTab.SelectedIndex = 0;
+            this.subGeneralTab.Size = new System.Drawing.Size(510, 314);
+            this.subGeneralTab.TabIndex = 63;
+            //
+            // tabPage1
+            //
+            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.groupBox16);
+            this.tabPage1.Controls.Add(this.clientPrio);
+            this.tabPage1.Controls.Add(this.systray);
+            this.tabPage1.Controls.Add(this.taskbar);
+            this.tabPage1.Controls.Add(this.langSel);
+            this.tabPage1.Controls.Add(this.label7);
+            this.tabPage1.Controls.Add(this.label11);
+            this.tabPage1.Controls.Add(this.showWelcome);
+            this.tabPage1.Controls.Add(this.opacity);
+            this.tabPage1.Controls.Add(this.alwaysTop);
+            this.tabPage1.Controls.Add(this.opacityLabel);
+            this.tabPage1.Controls.Add(this.label9);
+            this.tabPage1.Controls.Add(this.groupBox4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(502, 286);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "General";
+            //
             // groupBox16
             //
+            this.groupBox16.Controls.Add(this.openBackupFolder);
             this.groupBox16.Controls.Add(this.setBackupFolder);
             this.groupBox16.Controls.Add(this.lastBackup);
             this.groupBox16.Controls.Add(this.createBackup);
-            this.groupBox16.Location = new System.Drawing.Point(252, 232);
+            this.groupBox16.Location = new System.Drawing.Point(6, 139);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(259, 81);
-            this.groupBox16.TabIndex = 62;
+            this.groupBox16.Size = new System.Drawing.Size(229, 124);
+            this.groupBox16.TabIndex = 74;
             this.groupBox16.TabStop = false;
-            this.groupBox16.Text = "Backup";
+            this.groupBox16.Text = "Backup Profiles && Macros";
+            //
+            // openBackupFolder
+            //
+            this.openBackupFolder.Location = new System.Drawing.Point(119, 88);
+            this.openBackupFolder.Name = "openBackupFolder";
+            this.openBackupFolder.Size = new System.Drawing.Size(104, 30);
+            this.openBackupFolder.TabIndex = 75;
+            this.openBackupFolder.Text = "Open Folder";
+            this.openBackupFolder.UseVisualStyleBackColor = true;
+            this.openBackupFolder.Click += new System.EventHandler(this.openBackupFolder_Click);
             //
             // setBackupFolder
             //
-            this.setBackupFolder.Location = new System.Drawing.Point(146, 22);
+            this.setBackupFolder.Location = new System.Drawing.Point(6, 88);
             this.setBackupFolder.Name = "setBackupFolder";
-            this.setBackupFolder.Size = new System.Drawing.Size(107, 25);
+            this.setBackupFolder.Size = new System.Drawing.Size(107, 30);
             this.setBackupFolder.TabIndex = 74;
             this.setBackupFolder.Text = "Set Folder";
             this.setBackupFolder.UseVisualStyleBackColor = true;
@@ -840,7 +878,7 @@ namespace Assistant
             // lastBackup
             //
             this.lastBackup.AutoSize = true;
-            this.lastBackup.Location = new System.Drawing.Point(36, 56);
+            this.lastBackup.Location = new System.Drawing.Point(27, 61);
             this.lastBackup.Name = "lastBackup";
             this.lastBackup.Size = new System.Drawing.Size(176, 15);
             this.lastBackup.TabIndex = 73;
@@ -848,13 +886,13 @@ namespace Assistant
             //
             // createBackup
             //
-            this.createBackup.Location = new System.Drawing.Point(6, 22);
+            this.createBackup.Location = new System.Drawing.Point(61, 22);
             this.createBackup.Name = "createBackup";
-            this.createBackup.Size = new System.Drawing.Size(107, 25);
+            this.createBackup.Size = new System.Drawing.Size(107, 30);
             this.createBackup.TabIndex = 72;
             this.createBackup.Text = "Create Backup";
             this.createBackup.UseVisualStyleBackColor = true;
-            this.createBackup.Click += new System.EventHandler(this.backupDataDir_Click);
+            this.createBackup.Click += new System.EventHandler(this.createBackup_Click);
             //
             // clientPrio
             //
@@ -866,54 +904,103 @@ namespace Assistant
             "AboveNormal",
             "High",
             "Realtime"});
-            this.clientPrio.Location = new System.Drawing.Point(381, 154);
+            this.clientPrio.Location = new System.Drawing.Point(371, 127);
             this.clientPrio.Name = "clientPrio";
             this.clientPrio.Size = new System.Drawing.Size(125, 23);
-            this.clientPrio.TabIndex = 60;
+            this.clientPrio.TabIndex = 73;
             this.clientPrio.SelectedIndexChanged += new System.EventHandler(this.clientPrio_SelectedIndexChanged);
             //
             // systray
             //
-            this.systray.Location = new System.Drawing.Point(413, 128);
+            this.systray.Location = new System.Drawing.Point(298, 93);
             this.systray.Name = "systray";
             this.systray.Size = new System.Drawing.Size(88, 23);
-            this.systray.TabIndex = 35;
+            this.systray.TabIndex = 69;
             this.systray.Text = "System Tray";
             this.systray.CheckedChanged += new System.EventHandler(this.systray_CheckedChanged);
             //
             // taskbar
             //
-            this.taskbar.Location = new System.Drawing.Point(413, 108);
+            this.taskbar.Location = new System.Drawing.Point(298, 70);
             this.taskbar.Name = "taskbar";
             this.taskbar.Size = new System.Drawing.Size(79, 23);
-            this.taskbar.TabIndex = 34;
+            this.taskbar.TabIndex = 68;
             this.taskbar.Text = "Taskbar";
             this.taskbar.CheckedChanged += new System.EventHandler(this.taskbar_CheckedChanged);
             //
             // langSel
             //
             this.langSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.langSel.Location = new System.Drawing.Point(381, 181);
+            this.langSel.Location = new System.Drawing.Point(371, 156);
             this.langSel.Name = "langSel";
             this.langSel.Size = new System.Drawing.Size(125, 23);
-            this.langSel.TabIndex = 52;
+            this.langSel.TabIndex = 71;
             this.langSel.SelectedIndexChanged += new System.EventHandler(this.langSel_SelectedIndexChanged);
             //
             // label7
             //
-            this.label7.Location = new System.Drawing.Point(249, 184);
+            this.label7.Location = new System.Drawing.Point(238, 159);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(68, 18);
-            this.label7.TabIndex = 51;
+            this.label7.TabIndex = 70;
             this.label7.Text = "Language:";
             //
             // label11
             //
-            this.label11.Location = new System.Drawing.Point(410, 89);
+            this.label11.Location = new System.Drawing.Point(238, 74);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(54, 16);
-            this.label11.TabIndex = 33;
+            this.label11.TabIndex = 67;
             this.label11.Text = "Show in:";
+            //
+            // showWelcome
+            //
+            this.showWelcome.Location = new System.Drawing.Point(241, 16);
+            this.showWelcome.Name = "showWelcome";
+            this.showWelcome.Size = new System.Drawing.Size(152, 23);
+            this.showWelcome.TabIndex = 66;
+            this.showWelcome.Text = "Show Welcome Screen";
+            this.showWelcome.CheckedChanged += new System.EventHandler(this.showWelcome_CheckedChanged);
+            //
+            // opacity
+            //
+            this.opacity.AutoSize = false;
+            this.opacity.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.opacity.Location = new System.Drawing.Point(324, 197);
+            this.opacity.Maximum = 100;
+            this.opacity.Minimum = 10;
+            this.opacity.Name = "opacity";
+            this.opacity.Size = new System.Drawing.Size(174, 21);
+            this.opacity.TabIndex = 64;
+            this.opacity.TickFrequency = 0;
+            this.opacity.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.opacity.Value = 100;
+            this.opacity.Scroll += new System.EventHandler(this.opacity_Scroll);
+            //
+            // alwaysTop
+            //
+            this.alwaysTop.Location = new System.Drawing.Point(241, 41);
+            this.alwaysTop.Name = "alwaysTop";
+            this.alwaysTop.Size = new System.Drawing.Size(162, 23);
+            this.alwaysTop.TabIndex = 63;
+            this.alwaysTop.Text = "Use Smart Always on Top";
+            this.alwaysTop.CheckedChanged += new System.EventHandler(this.alwaysTop_CheckedChanged);
+            //
+            // opacityLabel
+            //
+            this.opacityLabel.Location = new System.Drawing.Point(238, 197);
+            this.opacityLabel.Name = "opacityLabel";
+            this.opacityLabel.Size = new System.Drawing.Size(89, 19);
+            this.opacityLabel.TabIndex = 65;
+            this.opacityLabel.Text = "Opacity: 100%";
+            //
+            // label9
+            //
+            this.label9.Location = new System.Drawing.Point(238, 130);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(129, 18);
+            this.label9.TabIndex = 72;
+            this.label9.Text = "Default Client Priority:";
             //
             // groupBox4
             //
@@ -922,16 +1009,16 @@ namespace Assistant
             this.groupBox4.Controls.Add(this.delProfile);
             this.groupBox4.Controls.Add(this.newProfile);
             this.groupBox4.Controls.Add(this.profiles);
-            this.groupBox4.Location = new System.Drawing.Point(252, 3);
+            this.groupBox4.Location = new System.Drawing.Point(6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(260, 83);
-            this.groupBox4.TabIndex = 4;
+            this.groupBox4.Size = new System.Drawing.Size(229, 127);
+            this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Profiles";
             //
             // saveProfile
             //
-            this.saveProfile.Location = new System.Drawing.Point(79, 44);
+            this.saveProfile.Location = new System.Drawing.Point(62, 54);
             this.saveProfile.Name = "saveProfile";
             this.saveProfile.Size = new System.Drawing.Size(50, 30);
             this.saveProfile.TabIndex = 4;
@@ -940,7 +1027,7 @@ namespace Assistant
             //
             // cloneProfile
             //
-            this.cloneProfile.Location = new System.Drawing.Point(135, 44);
+            this.cloneProfile.Location = new System.Drawing.Point(118, 54);
             this.cloneProfile.Name = "cloneProfile";
             this.cloneProfile.Size = new System.Drawing.Size(50, 30);
             this.cloneProfile.TabIndex = 3;
@@ -949,7 +1036,7 @@ namespace Assistant
             //
             // delProfile
             //
-            this.delProfile.Location = new System.Drawing.Point(191, 44);
+            this.delProfile.Location = new System.Drawing.Point(174, 54);
             this.delProfile.Name = "delProfile";
             this.delProfile.Size = new System.Drawing.Size(50, 30);
             this.delProfile.TabIndex = 2;
@@ -958,7 +1045,7 @@ namespace Assistant
             //
             // newProfile
             //
-            this.newProfile.Location = new System.Drawing.Point(23, 44);
+            this.newProfile.Location = new System.Drawing.Point(6, 54);
             this.newProfile.Name = "newProfile";
             this.newProfile.Size = new System.Drawing.Size(50, 30);
             this.newProfile.TabIndex = 1;
@@ -969,118 +1056,46 @@ namespace Assistant
             //
             this.profiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.profiles.ItemHeight = 15;
-            this.profiles.Location = new System.Drawing.Point(23, 17);
+            this.profiles.Location = new System.Drawing.Point(6, 22);
             this.profiles.MaxDropDownItems = 5;
             this.profiles.Name = "profiles";
-            this.profiles.Size = new System.Drawing.Size(218, 23);
+            this.profiles.Size = new System.Drawing.Size(217, 23);
             this.profiles.TabIndex = 0;
             this.profiles.SelectedIndexChanged += new System.EventHandler(this.profiles_SelectedIndexChanged);
             //
-            // showWelcome
+            // subFiltersTab
             //
-            this.showWelcome.Location = new System.Drawing.Point(252, 92);
-            this.showWelcome.Name = "showWelcome";
-            this.showWelcome.Size = new System.Drawing.Size(152, 23);
-            this.showWelcome.TabIndex = 26;
-            this.showWelcome.Text = "Show Welcome Screen";
-            this.showWelcome.CheckedChanged += new System.EventHandler(this.showWelcome_CheckedChanged);
-            //
-            // opacity
-            //
-            this.opacity.AutoSize = false;
-            this.opacity.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this.opacity.Location = new System.Drawing.Point(328, 210);
-            this.opacity.Maximum = 100;
-            this.opacity.Minimum = 10;
-            this.opacity.Name = "opacity";
-            this.opacity.Size = new System.Drawing.Size(183, 21);
-            this.opacity.TabIndex = 22;
-            this.opacity.TickFrequency = 0;
-            this.opacity.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.opacity.Value = 100;
-            this.opacity.Scroll += new System.EventHandler(this.opacity_Scroll);
-            //
-            // alwaysTop
-            //
-            this.alwaysTop.Location = new System.Drawing.Point(252, 121);
-            this.alwaysTop.Name = "alwaysTop";
-            this.alwaysTop.Size = new System.Drawing.Size(162, 23);
-            this.alwaysTop.TabIndex = 3;
-            this.alwaysTop.Text = "Use Smart Always on Top";
-            this.alwaysTop.CheckedChanged += new System.EventHandler(this.alwaysTop_CheckedChanged);
-            //
-            // groupBox1
-            //
-            this.groupBox1.Controls.Add(this.tabControl1);
-            this.groupBox1.Location = new System.Drawing.Point(8, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(234, 310);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Filters";
-            //
-            // tabControl1
-            //
-            this.tabControl1.Controls.Add(this.tabFilterSounds);
-            this.tabControl1.Controls.Add(this.tabFilterMobiles);
-            this.tabControl1.Location = new System.Drawing.Point(6, 22);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(222, 282);
-            this.tabControl1.TabIndex = 97;
-            //
-            // tabFilterSounds
-            //
-            this.tabFilterSounds.BackColor = System.Drawing.SystemColors.Control;
-            this.tabFilterSounds.Controls.Add(this.filters);
-            this.tabFilterSounds.Location = new System.Drawing.Point(4, 24);
-            this.tabFilterSounds.Name = "tabFilterSounds";
-            this.tabFilterSounds.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFilterSounds.Size = new System.Drawing.Size(214, 254);
-            this.tabFilterSounds.TabIndex = 0;
-            this.tabFilterSounds.Text = "Sounds/Gumps";
-            //
-            // filters
-            //
-            this.filters.CheckOnClick = true;
-            this.filters.IntegralHeight = false;
-            this.filters.Location = new System.Drawing.Point(11, 11);
-            this.filters.Name = "filters";
-            this.filters.Size = new System.Drawing.Size(197, 237);
-            this.filters.TabIndex = 2;
-            //
-            // tabFilterMobiles
-            //
-            this.tabFilterMobiles.BackColor = System.Drawing.SystemColors.Control;
-            this.tabFilterMobiles.Controls.Add(this.drakeAnimationList);
-            this.tabFilterMobiles.Controls.Add(this.filterDrakeGraphics);
-            this.tabFilterMobiles.Controls.Add(this.dragonAnimationList);
-            this.tabFilterMobiles.Controls.Add(this.filterDragonGraphics);
-            this.tabFilterMobiles.Location = new System.Drawing.Point(4, 22);
-            this.tabFilterMobiles.Name = "tabFilterMobiles";
-            this.tabFilterMobiles.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFilterMobiles.Size = new System.Drawing.Size(214, 256);
-            this.tabFilterMobiles.TabIndex = 1;
-            this.tabFilterMobiles.Text = "Mobiles";
+            this.subFiltersTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subFiltersTab.Controls.Add(this.drakeAnimationList);
+            this.subFiltersTab.Controls.Add(this.filterDrakeGraphics);
+            this.subFiltersTab.Controls.Add(this.dragonAnimationList);
+            this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
+            this.subFiltersTab.Controls.Add(this.filters);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
+            this.subFiltersTab.Name = "subFiltersTab";
+            this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
+            this.subFiltersTab.TabIndex = 1;
+            this.subFiltersTab.Text = "Filters";
             //
             // drakeAnimationList
             //
             this.drakeAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.drakeAnimationList.DropDownWidth = 250;
             this.drakeAnimationList.FormattingEnabled = true;
-            this.drakeAnimationList.Location = new System.Drawing.Point(6, 85);
+            this.drakeAnimationList.Location = new System.Drawing.Point(209, 85);
             this.drakeAnimationList.Name = "drakeAnimationList";
             this.drakeAnimationList.Size = new System.Drawing.Size(202, 23);
-            this.drakeAnimationList.TabIndex = 100;
+            this.drakeAnimationList.TabIndex = 104;
             this.drakeAnimationList.SelectedIndexChanged += new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
             //
             // filterDrakeGraphics
             //
             this.filterDrakeGraphics.AutoSize = true;
-            this.filterDrakeGraphics.Location = new System.Drawing.Point(6, 60);
+            this.filterDrakeGraphics.Location = new System.Drawing.Point(209, 60);
             this.filterDrakeGraphics.Name = "filterDrakeGraphics";
             this.filterDrakeGraphics.Size = new System.Drawing.Size(89, 19);
-            this.filterDrakeGraphics.TabIndex = 99;
+            this.filterDrakeGraphics.TabIndex = 103;
             this.filterDrakeGraphics.Text = "Filter drakes";
             this.filterDrakeGraphics.UseVisualStyleBackColor = true;
             this.filterDrakeGraphics.CheckedChanged += new System.EventHandler(this.filterDrakeGraphics_CheckedChanged);
@@ -1090,58 +1105,52 @@ namespace Assistant
             this.dragonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dragonAnimationList.DropDownWidth = 250;
             this.dragonAnimationList.FormattingEnabled = true;
-            this.dragonAnimationList.Location = new System.Drawing.Point(6, 31);
+            this.dragonAnimationList.Location = new System.Drawing.Point(209, 31);
             this.dragonAnimationList.Name = "dragonAnimationList";
             this.dragonAnimationList.Size = new System.Drawing.Size(202, 23);
-            this.dragonAnimationList.TabIndex = 98;
+            this.dragonAnimationList.TabIndex = 102;
             this.dragonAnimationList.SelectedIndexChanged += new System.EventHandler(this.dragonAnimationList_SelectedIndexChanged);
             //
             // filterDragonGraphics
             //
             this.filterDragonGraphics.AutoSize = true;
-            this.filterDragonGraphics.Location = new System.Drawing.Point(6, 6);
+            this.filterDragonGraphics.Location = new System.Drawing.Point(209, 6);
             this.filterDragonGraphics.Name = "filterDragonGraphics";
             this.filterDragonGraphics.Size = new System.Drawing.Size(98, 19);
-            this.filterDragonGraphics.TabIndex = 97;
+            this.filterDragonGraphics.TabIndex = 101;
             this.filterDragonGraphics.Text = "Filter dragons";
             this.filterDragonGraphics.UseVisualStyleBackColor = true;
             this.filterDragonGraphics.CheckedChanged += new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
             //
-            // opacityLabel
+            // filters
             //
-            this.opacityLabel.Location = new System.Drawing.Point(249, 210);
-            this.opacityLabel.Name = "opacityLabel";
-            this.opacityLabel.Size = new System.Drawing.Size(89, 19);
-            this.opacityLabel.TabIndex = 23;
-            this.opacityLabel.Text = "Opacity: 100%";
-            //
-            // label9
-            //
-            this.label9.Location = new System.Drawing.Point(248, 157);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(129, 18);
-            this.label9.TabIndex = 59;
-            this.label9.Text = "Default Client Priority:";
+            this.filters.CheckOnClick = true;
+            this.filters.IntegralHeight = false;
+            this.filters.Location = new System.Drawing.Point(6, 6);
+            this.filters.Name = "filters";
+            this.filters.Size = new System.Drawing.Size(197, 274);
+            this.filters.TabIndex = 3;
+            this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
             //
             // moreOptTab
             //
-            this.moreOptTab.Controls.Add(this.tabControl3);
+            this.moreOptTab.Controls.Add(this.optionsTabCtrl);
             this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(519, 318);
+            this.moreOptTab.Size = new System.Drawing.Size(519, 322);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             //
-            // tabControl3
+            // optionsTabCtrl
             //
-            this.tabControl3.Controls.Add(this.subOptionsSpeechTab);
-            this.tabControl3.Controls.Add(this.subOptionsTargetTab);
-            this.tabControl3.Controls.Add(this.subOptionsMiscTab);
-            this.tabControl3.Location = new System.Drawing.Point(6, 3);
-            this.tabControl3.Name = "tabControl3";
-            this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(510, 314);
-            this.tabControl3.TabIndex = 93;
+            this.optionsTabCtrl.Controls.Add(this.subOptionsSpeechTab);
+            this.optionsTabCtrl.Controls.Add(this.subOptionsTargetTab);
+            this.optionsTabCtrl.Controls.Add(this.subOptionsMiscTab);
+            this.optionsTabCtrl.Location = new System.Drawing.Point(6, 3);
+            this.optionsTabCtrl.Name = "optionsTabCtrl";
+            this.optionsTabCtrl.SelectedIndex = 0;
+            this.optionsTabCtrl.Size = new System.Drawing.Size(510, 314);
+            this.optionsTabCtrl.TabIndex = 93;
             //
             // subOptionsSpeechTab
             //
@@ -1367,7 +1376,7 @@ namespace Assistant
             //
             this.incomingCorpse.Location = new System.Drawing.Point(260, 64);
             this.incomingCorpse.Name = "incomingCorpse";
-            this.incomingCorpse.Size = new System.Drawing.Size(211, 20);
+            this.incomingCorpse.Size = new System.Drawing.Size(238, 20);
             this.incomingCorpse.TabIndex = 72;
             this.incomingCorpse.Text = "Show Names of New/Incoming Corpses";
             this.incomingCorpse.CheckedChanged += new System.EventHandler(this.incomingCorpse_CheckedChanged);
@@ -1750,9 +1759,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             //
@@ -2067,7 +2076,7 @@ namespace Assistant
             this.displayTab.Controls.Add(this.tabControl4);
             this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(519, 318);
+            this.displayTab.Size = new System.Drawing.Size(519, 322);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             //
@@ -2078,7 +2087,7 @@ namespace Assistant
             this.tabControl4.Location = new System.Drawing.Point(6, 3);
             this.tabControl4.Name = "tabControl4";
             this.tabControl4.SelectedIndex = 0;
-            this.tabControl4.Size = new System.Drawing.Size(510, 312);
+            this.tabControl4.Size = new System.Drawing.Size(510, 314);
             this.tabControl4.TabIndex = 51;
             //
             // subDisplayTab
@@ -2093,7 +2102,7 @@ namespace Assistant
             this.subDisplayTab.Location = new System.Drawing.Point(4, 24);
             this.subDisplayTab.Name = "subDisplayTab";
             this.subDisplayTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subDisplayTab.Size = new System.Drawing.Size(502, 284);
+            this.subDisplayTab.Size = new System.Drawing.Size(502, 286);
             this.subDisplayTab.TabIndex = 0;
             this.subDisplayTab.Text = "Display";
             //
@@ -2276,7 +2285,7 @@ namespace Assistant
             this.subCountersTab.Location = new System.Drawing.Point(4, 22);
             this.subCountersTab.Name = "subCountersTab";
             this.subCountersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subCountersTab.Size = new System.Drawing.Size(502, 286);
+            this.subCountersTab.Size = new System.Drawing.Size(502, 288);
             this.subCountersTab.TabIndex = 1;
             this.subCountersTab.Text = "Counters";
             //
@@ -2399,7 +2408,7 @@ namespace Assistant
             this.dressTab.Controls.Add(this.groupBox5);
             this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(519, 318);
+            this.dressTab.Size = new System.Drawing.Size(519, 322);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             //
@@ -2559,7 +2568,7 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.skillList);
             this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(519, 318);
+            this.skillsTab.Size = new System.Drawing.Size(519, 322);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             //
@@ -2712,7 +2721,7 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB3);
             this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(519, 318);
+            this.agentsTab.Size = new System.Drawing.Size(519, 322);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             //
@@ -2803,7 +2812,7 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.groupBox8);
             this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(519, 318);
+            this.hotkeysTab.Size = new System.Drawing.Size(519, 322);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2944,7 +2953,7 @@ namespace Assistant
             this.macrosTab.Controls.Add(this.tabControl2);
             this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(519, 318);
+            this.macrosTab.Size = new System.Drawing.Size(519, 322);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             //
@@ -2955,7 +2964,7 @@ namespace Assistant
             this.tabControl2.Location = new System.Drawing.Point(6, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(510, 309);
+            this.tabControl2.Size = new System.Drawing.Size(510, 314);
             this.tabControl2.TabIndex = 13;
             //
             // subMacrosTab
@@ -2970,7 +2979,7 @@ namespace Assistant
             this.subMacrosTab.Location = new System.Drawing.Point(4, 24);
             this.subMacrosTab.Name = "subMacrosTab";
             this.subMacrosTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosTab.Size = new System.Drawing.Size(502, 281);
+            this.subMacrosTab.Size = new System.Drawing.Size(502, 286);
             this.subMacrosTab.TabIndex = 0;
             this.subMacrosTab.Text = "Macros";
             //
@@ -3096,7 +3105,7 @@ namespace Assistant
             this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 283);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             //
@@ -3239,7 +3248,7 @@ namespace Assistant
             this.mapTab.Controls.Add(this.groupBox14);
             this.mapTab.Location = new System.Drawing.Point(4, 44);
             this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(519, 318);
+            this.mapTab.Size = new System.Drawing.Size(519, 322);
             this.mapTab.TabIndex = 13;
             this.mapTab.Text = "Maps";
             //
@@ -3351,7 +3360,7 @@ namespace Assistant
             this.videoTab.Controls.Add(this.groupBox9);
             this.videoTab.Location = new System.Drawing.Point(4, 44);
             this.videoTab.Name = "videoTab";
-            this.videoTab.Size = new System.Drawing.Size(519, 318);
+            this.videoTab.Size = new System.Drawing.Size(519, 322);
             this.videoTab.TabIndex = 11;
             this.videoTab.Text = "Video Capture";
             //
@@ -3618,7 +3627,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.dispTime);
             this.screenshotTab.Location = new System.Drawing.Point(4, 44);
             this.screenshotTab.Name = "screenshotTab";
-            this.screenshotTab.Size = new System.Drawing.Size(519, 318);
+            this.screenshotTab.Size = new System.Drawing.Size(519, 322);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
             //
@@ -3785,7 +3794,7 @@ namespace Assistant
             this.advancedTab.Controls.Add(this.features);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
-            this.advancedTab.Size = new System.Drawing.Size(519, 318);
+            this.advancedTab.Size = new System.Drawing.Size(519, 322);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             //
@@ -3899,7 +3908,7 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.aboutVer);
             this.aboutTab.Location = new System.Drawing.Point(4, 44);
             this.aboutTab.Name = "aboutTab";
-            this.aboutTab.Size = new System.Drawing.Size(519, 318);
+            this.aboutTab.Size = new System.Drawing.Size(519, 322);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
             //
@@ -4008,7 +4017,7 @@ namespace Assistant
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            this.ClientSize = new System.Drawing.Size(530, 368);
+            this.ClientSize = new System.Drawing.Size(530, 372);
             this.Controls.Add(this.tabs);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -4026,17 +4035,16 @@ namespace Assistant
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.tabs.ResumeLayout(false);
             this.generalTab.ResumeLayout(false);
+            this.subGeneralTab.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.groupBox16.ResumeLayout(false);
             this.groupBox16.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tabFilterSounds.ResumeLayout(false);
-            this.tabFilterMobiles.ResumeLayout(false);
-            this.tabFilterMobiles.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.subFiltersTab.ResumeLayout(false);
+            this.subFiltersTab.PerformLayout();
             this.moreOptTab.ResumeLayout(false);
-            this.tabControl3.ResumeLayout(false);
+            this.optionsTabCtrl.ResumeLayout(false);
             this.subOptionsSpeechTab.ResumeLayout(false);
             this.subOptionsSpeechTab.PerformLayout();
             this.subOptionsTargetTab.ResumeLayout(false);
@@ -4100,9 +4108,15 @@ namespace Assistant
         protected override void WndProc(ref Message msg)
         {
             if (msg.Msg == ClientCommunication.WM_UONETEVENT)
-                msg.Result = (IntPtr)(ClientCommunication.OnMessage(this, (uint)msg.WParam.ToInt32(), msg.LParam.ToInt32()) ? 1 : 0);
-            else if (Config.GetBool("EnableUOAAPI") && msg.Msg >= (int)ClientCommunication.UOAMessage.First && msg.Msg <= (int)ClientCommunication.UOAMessage.Last)
-                msg.Result = (IntPtr)ClientCommunication.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(), msg.LParam.ToInt32());
+                msg.Result =
+                    (IntPtr) (ClientCommunication.OnMessage(this, (uint) msg.WParam.ToInt32(), msg.LParam.ToInt32())
+                        ? 1
+                        : 0);
+            else if (Config.GetBool("EnableUOAAPI") && msg.Msg >= (int) ClientCommunication.UOAMessage.First &&
+                     msg.Msg <= (int) ClientCommunication.UOAMessage.Last)
+                msg.Result =
+                    (IntPtr) ClientCommunication.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(),
+                        msg.LParam.ToInt32());
             else
                 base.WndProc(ref msg);
         }
@@ -4163,7 +4177,7 @@ namespace Assistant
             m_Tip.SetToolTip(titleStr, Language.GetString(LocString.TitleBarTip));
 
             SplashScreen.End();
-	    }
+        }
 
         private bool m_Initializing = false;
 
@@ -4175,7 +4189,7 @@ namespace Assistant
             //this.opacity.Size = new System.Drawing.Size(156, 16);
 
             opacity.Value = Config.GetInt("Opacity");
-            this.Opacity = ((float)opacity.Value) / 100.0;
+            this.Opacity = ((float) opacity.Value) / 100.0;
             opacityLabel.Text = Language.Format(LocString.OpacityA1, opacity.Value);
 
             this.TopMost = alwaysTop.Checked = Config.GetBool("AlwaysOnTop");
@@ -4340,7 +4354,7 @@ namespace Assistant
             logSkillChanges.Checked = Config.GetBool("LogSkillChanges");
 
             lightLevelBar.Value = lightLevelBar.Maximum - Config.GetInt("LightLevel");
-            double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
+            double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
             lightLevel.Text = $"Light: {percent}%";
 
             captureMibs.Checked = Config.GetBool("CaptureMibs");
@@ -4393,28 +4407,6 @@ namespace Assistant
             filterDrakeGraphics.Checked = Config.GetBool("FilterDrakeGraphics");
             LoadAnimationLists();
 
-            int animIndex = 0;
-            foreach (AnimData animData in _animationData)
-            {
-                if (animData.body.Equals(Config.GetInt("DragonGraphic").ToString()))
-                {
-                    dragonAnimationList.SelectedIndex = animIndex;
-                    break;
-                }
-                animIndex++;
-            }
-
-            animIndex = 0;
-            foreach (AnimData animData in _animationData)
-            {
-                if (animData.body.Equals(Config.GetInt("DrakeGraphic").ToString()))
-                {
-                    drakeAnimationList.SelectedIndex = animIndex;
-                    break;
-                }
-                animIndex++;
-            }
-
             showDamageDealt.Checked = Config.GetBool("ShowDamageDealt");
             damageDealtOverhead.Checked = Config.GetBool("ShowDamageDealtOverhead");
             showDamageTaken.Checked = Config.GetBool("ShowDamageTaken");
@@ -4454,7 +4446,8 @@ namespace Assistant
 
                 foreach (AnimData animData in items)
                 {
-                    Frame[] frames = Animations.GetAnimation(Convert.ToInt32(animData.body), 0, 1, ref hue, false, false);
+                    Frame[] frames =
+                        Animations.GetAnimation(Convert.ToInt32(animData.body), 0, 1, ref hue, false, false);
 
                     if (frames != null)
                     {
@@ -4462,8 +4455,31 @@ namespace Assistant
                         dragonAnimationList.Items.Add(animData.name);
                         drakeAnimationList.Items.Add(animData.name);
                     }
-
                 }
+            }
+
+            int animIndex = 0;
+            foreach (AnimData animData in _animationData)
+            {
+                if (animData.body.Equals(Config.GetInt("DragonGraphic").ToString()))
+                {
+                    dragonAnimationList.SelectedIndex = animIndex;
+                    break;
+                }
+
+                animIndex++;
+            }
+
+            animIndex = 0;
+            foreach (AnimData animData in _animationData)
+            {
+                if (animData.body.Equals(Config.GetInt("DrakeGraphic").ToString()))
+                {
+                    drakeAnimationList.SelectedIndex = animIndex;
+                    break;
+                }
+
+                animIndex++;
             }
         }
 
@@ -4545,7 +4561,7 @@ namespace Assistant
 
             foreach (TreeNode node in hotkeyTree.Nodes)
             {
-                _hotkeyTreeViewCache.Nodes.Add((TreeNode)node.Clone());
+                _hotkeyTreeViewCache.Nodes.Add((TreeNode) node.Clone());
             }
         }
 
@@ -4555,7 +4571,7 @@ namespace Assistant
 
             foreach (TreeNode node in macroTree.Nodes)
             {
-                _macroTreeViewCache.Nodes.Add((TreeNode)node.Clone());
+                _macroTreeViewCache.Nodes.Add((TreeNode) node.Clone());
             }
         }
 
@@ -4567,6 +4583,7 @@ namespace Assistant
         private class StatsTimer : Timer
         {
             MainForm m_Form;
+
             public StatsTimer(MainForm form) : base(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5))
             {
                 m_Form = form;
@@ -4593,27 +4610,28 @@ namespace Assistant
 
             int time = 0;
             if (ClientCommunication.ConnectionStart != DateTime.MinValue)
-                time = (int)((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
+                time = (int) ((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
 
             if (String.IsNullOrEmpty(statusBox.SelectedText))
             {
                 statusBox.Lines = Language.Format(LocString.RazorStatus1,
-                     m_Ver,
-                     Utility.FormatSize(System.GC.GetTotalMemory(false)),
-                     Utility.FormatSize(m_OutPrev), Utility.FormatSize((long)((m_OutPrev - ps))),
-                     Utility.FormatSize(m_InPrev), Utility.FormatSize((long)((m_InPrev - pr))),
-                     Utility.FormatTime(time),
-                     (World.Player != null ? (uint)World.Player.Serial : 0),
-                     (World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0),
-                     World.Items.Count,
-                     World.Mobiles.Count).Split('\n');
+                    m_Ver,
+                    Utility.FormatSize(System.GC.GetTotalMemory(false)),
+                    Utility.FormatSize(m_OutPrev), Utility.FormatSize((long) ((m_OutPrev - ps))),
+                    Utility.FormatSize(m_InPrev), Utility.FormatSize((long) ((m_InPrev - pr))),
+                    Utility.FormatTime(time),
+                    (World.Player != null ? (uint) World.Player.Serial : 0),
+                    (World.Player != null && World.Player.Backpack != null ? (uint) World.Player.Backpack.Serial : 0),
+                    World.Items.Count,
+                    World.Mobiles.Count).Split('\n');
 
                 if (World.Player != null)
                     statusBox.AppendText(
-                            $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}");
+                        $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}");
             }
 
-            if (PacketHandlers.PlayCharTime < DateTime.UtcNow && PacketHandlers.PlayCharTime + TimeSpan.FromSeconds(30) < DateTime.UtcNow)
+            if (PacketHandlers.PlayCharTime < DateTime.UtcNow &&
+                PacketHandlers.PlayCharTime + TimeSpan.FromSeconds(30) < DateTime.UtcNow)
             {
                 if (Config.GetBool("Negotiate"))
                 {
@@ -4629,7 +4647,7 @@ namespace Assistant
                         {
                             allAllowed = false;
 
-                            text.Append(Language.GetString((LocString)(((int)LocString.FeatureDescBase) + i)));
+                            text.Append(Language.GetString((LocString) (((int) LocString.FeatureDescBase) + i)));
                             text.Append(' ');
                             text.Append(Language.GetString(LocString.NotAllowed));
                             text.Append("\r\n");
@@ -4682,7 +4700,7 @@ namespace Assistant
                 using (StreamWriter sw = File.AppendText(skillLog))
                 {
                     sw.WriteLine(
-                        $"{DateTime.Now},{(SkillName)skill.Index},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
+                        $"{DateTime.Now},{(SkillName) skill.Index},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
                 }
             }
 
@@ -4732,7 +4750,7 @@ namespace Assistant
                 {
                     Skill sk = World.Player.Skills[i];
                     Total += sk.Base;
-                    items[0] = Language.Skill2Str(i);//((SkillName)i).ToString();
+                    items[0] = Language.Skill2Str(i); //((SkillName)i).ToString();
                     items[1] = String.Format("{0:F1}", sk.Value);
                     items[2] = String.Format("{0:F1}", sk.Base);
                     items[3] = String.Format("{0}{1:F1}", (sk.Delta > 0 ? "+" : ""), sk.Delta);
@@ -4747,13 +4765,14 @@ namespace Assistant
                 //Config.SetProperty( "SkillListAsc", false );
                 SortSkills();
             }
+
             skillList.EndUpdate();
             baseTotal.Text = String.Format("{0:F1}", Total);
         }
 
         private void OnFilterCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
         {
-            ((Filter)filters.Items[e.Index]).OnCheckChanged(e.NewValue);
+            ((Filter) filters.Items[e.Index]).OnCheckChanged(e.NewValue);
         }
 
         private void incomingMob_CheckedChanged(object sender, System.EventArgs e)
@@ -4767,6 +4786,7 @@ namespace Assistant
         }
 
         private ContextMenu m_SkillMenu;
+
         private void skillList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -4782,14 +4802,14 @@ namespace Assistant
                 {
                     m_SkillMenu = new ContextMenu(new MenuItem[]
                     {
-                              new MenuItem( Language.GetString( LocString.SetSLUp ), new EventHandler( onSetSkillLockUP ) ),
-                              new MenuItem( Language.GetString( LocString.SetSLDown ), new EventHandler( onSetSkillLockDOWN ) ),
-                              new MenuItem( Language.GetString( LocString.SetSLLocked ), new EventHandler( onSetSkillLockLOCKED ) )
+                        new MenuItem(Language.GetString(LocString.SetSLUp), new EventHandler(onSetSkillLockUP)),
+                        new MenuItem(Language.GetString(LocString.SetSLDown), new EventHandler(onSetSkillLockDOWN)),
+                        new MenuItem(Language.GetString(LocString.SetSLLocked), new EventHandler(onSetSkillLockLOCKED))
                     });
                 }
 
                 for (int i = 0; i < 3; i++)
-                    m_SkillMenu.MenuItems[i].Checked = ((int)s.Lock) == i;
+                    m_SkillMenu.MenuItems[i].Checked = ((int) s.Lock) == i;
 
                 m_SkillMenu.Show(skillList, new Point(e.X, e.Y));
             }
@@ -4831,7 +4851,6 @@ namespace Assistant
             catch
             {
             }
-
         }
 
         private void OnSkillColClick(object sender, System.Windows.Forms.ColumnClickEventArgs e)
@@ -4867,6 +4886,7 @@ namespace Assistant
                 skillList.Sorting = SortOrder.None;
                 skillList.Sort();
             }
+
             skillList.EndUpdate();
             skillList.Refresh();
         }
@@ -4874,8 +4894,16 @@ namespace Assistant
         private class LVDoubleComparer : IComparer
         {
             public static readonly LVDoubleComparer Instance = new LVDoubleComparer();
-            public static int Column { set { Instance.m_Col = value; } }
-            public static bool Asc { set { Instance.m_Asc = value; } }
+
+            public static int Column
+            {
+                set { Instance.m_Col = value; }
+            }
+
+            public static bool Asc
+            {
+                set { Instance.m_Asc = value; }
+            }
 
             private int m_Col;
             private bool m_Asc;
@@ -4893,8 +4921,8 @@ namespace Assistant
 
                 try
                 {
-                    double dx = Convert.ToDouble(((ListViewItem)x).SubItems[m_Col].Text);
-                    double dy = Convert.ToDouble(((ListViewItem)y).SubItems[m_Col].Text);
+                    double dx = Convert.ToDouble(((ListViewItem) x).SubItems[m_Col].Text);
+                    double dy = Convert.ToDouble(((ListViewItem) y).SubItems[m_Col].Text);
 
                     if (dx > dy)
                         return m_Asc ? -1 : 1;
@@ -4905,7 +4933,7 @@ namespace Assistant
                 }
                 catch
                 {
-                    return ((ListViewItem)x).Text.CompareTo(((ListViewItem)y).Text) * (m_Asc ? 1 : -1);
+                    return ((ListViewItem) x).Text.CompareTo(((ListViewItem) y).Text) * (m_Asc ? 1 : -1);
                 }
             }
         }
@@ -4926,13 +4954,14 @@ namespace Assistant
             if (locks.SelectedIndex == -1 || World.Player == null)
                 return;
 
-            LockType type = (LockType)locks.SelectedIndex;
+            LockType type = (LockType) locks.SelectedIndex;
 
             for (short i = 0; i < Skill.Count; i++)
             {
                 World.Player.Skills[i].Lock = type;
                 ClientCommunication.SendToServer(new SetSkillLock(i, type));
             }
+
             ClientCommunication.SendToClient(new SkillsList());
             RedrawSkills();
         }
@@ -4960,7 +4989,7 @@ namespace Assistant
                         break;
 
                     case DialogResult.OK:
-                        c.Set((ushort)ac.ItemID, ac.Hue, ac.NameStr, ac.FmtStr, ac.DisplayImage);
+                        c.Set((ushort) ac.ItemID, ac.Hue, ac.NameStr, ac.FmtStr, ac.DisplayImage);
                         break;
                 }
             }
@@ -4972,7 +5001,8 @@ namespace Assistant
 
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                Counter.Register(new Counter(dlg.NameStr, dlg.FmtStr, (ushort)dlg.ItemID, (int)dlg.Hue, dlg.DisplayImage));
+                Counter.Register(new Counter(dlg.NameStr, dlg.FmtStr, (ushort) dlg.ItemID, (int) dlg.Hue,
+                    dlg.DisplayImage));
                 Counter.Redraw(counters);
             }
         }
@@ -4995,7 +5025,7 @@ namespace Assistant
         {
             if (e.Index >= 0 && e.Index < Counter.List.Count && !Counter.SupressChecks)
             {
-                ((Counter)(counters.Items[e.Index].Tag)).SetEnabled(e.NewValue == CheckState.Checked);
+                ((Counter) (counters.Items[e.Index].Tag)).SetEnabled(e.NewValue == CheckState.Checked);
                 ClientCommunication.RequestTitlebarUpdate();
                 counters.Sort();
                 //counters.Refresh();
@@ -5040,13 +5070,15 @@ namespace Assistant
             if (profiles.SelectedIndex < 0 || !m_ProfileConfirmLoad)
                 return;
 
-            string name = (string)profiles.Items[profiles.SelectedIndex];
-            if (MessageBox.Show(this, Language.Format(LocString.ProfLoadQ, name), "Load?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            string name = (string) profiles.Items[profiles.SelectedIndex];
+            if (MessageBox.Show(this, Language.Format(LocString.ProfLoadQ, name), "Load?", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Config.Save();
                 if (!Config.LoadProfile(name))
                 {
-                    MessageBox.Show(this, Language.GetString(LocString.ProfLoadE), "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(this, Language.GetString(LocString.ProfLoadE), "Load Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -5054,6 +5086,7 @@ namespace Assistant
                     if (World.Player != null)
                         Config.SetProfileFor(World.Player);
                 }
+
                 ClientCommunication.RequestTitlebarUpdate();
             }
             else
@@ -5061,12 +5094,13 @@ namespace Assistant
                 m_ProfileConfirmLoad = false;
                 for (int i = 0; i < profiles.Items.Count; i++)
                 {
-                    if ((string)profiles.Items[i] == Config.CurrentProfile.Name)
+                    if ((string) profiles.Items[i] == Config.CurrentProfile.Name)
                     {
                         profiles.SelectedIndex = i;
                         break;
                     }
                 }
+
                 m_ProfileConfirmLoad = true;
             }
         }
@@ -5082,11 +5116,12 @@ namespace Assistant
                 return;
             }
 
-            string remove = (string)profiles.Items[profiles.SelectedIndex];
+            string remove = (string) profiles.Items[profiles.SelectedIndex];
 
             if (remove == "default")
             {
-                MessageBox.Show(this, Language.GetString(LocString.NoDelete), "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, Language.GetString(LocString.NoDelete), "Not Allowed", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
@@ -5100,12 +5135,13 @@ namespace Assistant
                 Config.CurrentProfile.MakeDefault();
                 Config.CurrentProfile.Name = "default";
             }
+
             InitConfig();
 
             m_ProfileConfirmLoad = false;
             for (int i = 0; i < profiles.Items.Count; i++)
             {
-                if ((string)profiles.Items[i] == "default")
+                if ((string) profiles.Items[i] == "default")
                 {
                     profiles.SelectedIndex = i;
                     m_ProfileConfirmLoad = true;
@@ -5145,7 +5181,7 @@ namespace Assistant
                 string lwr = str.ToLower();
                 for (int i = 0; i < profiles.Items.Count; i++)
                 {
-                    if (lwr == ((string)profiles.Items[i]).ToLower())
+                    if (lwr == ((string) profiles.Items[i]).ToLower())
                     {
                         if (MessageBox.Show(this, Language.GetString(LocString.ProfExists), "Load Profile?",
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -5185,14 +5221,8 @@ namespace Assistant
 
         public bool CanClose
         {
-            get
-            {
-                return m_CanClose;
-            }
-            set
-            {
-                m_CanClose = value;
-            }
+            get { return m_CanClose; }
+            set { m_CanClose = value; }
         }
 
         private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -5207,6 +5237,7 @@ namespace Assistant
                 PacketPlayer.Stop();
                 AVIRec.Stop();
             }
+
             //if ( Engine.NoPatch )
             //	e.Cancel = MessageBox.Show( this, "Are you sure you want to close Razor?\n(This will not close the UO client.)", "Close Razor?", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.No;
         }
@@ -5227,12 +5258,12 @@ namespace Assistant
                         name = name.Substring(0, 16) + "...";
 
                     sb.AppendFormat("{0,-20} {1,5:F1} {2,5:F1} {4:F1} {5,5:F1}\n",
-                         name,
-                         vi.SubItems[1].Text,
-                         vi.SubItems[2].Text,
-                         Utility.ToInt32(vi.SubItems[3].Text, 0) < 0 ? "" : "+",
-                         vi.SubItems[3].Text,
-                         vi.SubItems[4].Text);
+                        name,
+                        vi.SubItems[1].Text,
+                        vi.SubItems[2].Text,
+                        Utility.ToInt32(vi.SubItems[3].Text, 0) < 0 ? "" : "+",
+                        vi.SubItems[3].Text,
+                        vi.SubItems[4].Text);
                 }
             }
 
@@ -5249,7 +5280,8 @@ namespace Assistant
             for (int i = 0; i < Skill.Count; i++)
             {
                 Skill sk = World.Player.Skills[i];
-                sb.AppendFormat("{0,-20} {1,-5:F1} {2,-5:F1} {3}{4,-5:F1} {5,-5:F1}\n", (SkillName)i, sk.Value, sk.Base, sk.Delta > 0 ? "+" : "", sk.Delta, sk.Cap);
+                sb.AppendFormat("{0,-20} {1,-5:F1} {2,-5:F1} {3}{4,-5:F1} {5,-5:F1}\n", (SkillName) i, sk.Value,
+                    sk.Base, sk.Delta > 0 ? "+" : "", sk.Delta, sk.Cap);
             }
 
             if (sb.Length > 0)
@@ -5272,9 +5304,10 @@ namespace Assistant
 
         private void removeDress_Click(object sender, System.EventArgs e)
         {
-            DressList dress = (DressList)dressList.SelectedItem;
+            DressList dress = (DressList) dressList.SelectedItem;
 
-            if (dress != null && MessageBox.Show(this, Language.GetString(LocString.DelDressQ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (dress != null && MessageBox.Show(this, Language.GetString(LocString.DelDressQ), "Confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 dress.Items.Clear();
                 dressList.Items.Remove(dress);
@@ -5286,14 +5319,14 @@ namespace Assistant
 
         private void dressNow_Click(object sender, System.EventArgs e)
         {
-            DressList dress = (DressList)dressList.SelectedItem;
+            DressList dress = (DressList) dressList.SelectedItem;
             if (dress != null && World.Player != null)
                 dress.Dress();
         }
 
         private void undressList_Click(object sender, System.EventArgs e)
         {
-            DressList dress = (DressList)dressList.SelectedItem;
+            DressList dress = (DressList) dressList.SelectedItem;
             if (dress != null && World.Player != null && World.Player.Backpack != null)
                 dress.Undress();
         }
@@ -5311,7 +5344,7 @@ namespace Assistant
             ShowMe();
             if (serial.IsItem)
             {
-                DressList list = (DressList)dressList.SelectedItem;
+                DressList list = (DressList) dressList.SelectedItem;
 
                 if (list == null)
                     return;
@@ -5328,7 +5361,7 @@ namespace Assistant
 
         private void dressDelSel_Click(object sender, System.EventArgs e)
         {
-            DressList list = (DressList)dressList.SelectedItem;
+            DressList list = (DressList) dressList.SelectedItem;
             if (list == null)
                 return;
 
@@ -5336,7 +5369,8 @@ namespace Assistant
             if (sel < 0 || sel >= list.Items.Count)
                 return;
 
-            if (MessageBox.Show(this, Language.GetString(LocString.DelDressItemQ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show(this, Language.GetString(LocString.DelDressItemQ), "Confirm", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 try
                 {
@@ -5351,7 +5385,7 @@ namespace Assistant
 
         private void clearDress_Click(object sender, System.EventArgs e)
         {
-            DressList list = (DressList)dressList.SelectedItem;
+            DressList list = (DressList) dressList.SelectedItem;
             if (list == null)
                 return;
 
@@ -5364,12 +5398,13 @@ namespace Assistant
         }
 
         private DressList undressBagList = null;
+
         private void undressBag_Click(object sender, System.EventArgs e)
         {
             if (World.Player == null)
                 return;
 
-            DressList list = (DressList)dressList.SelectedItem;
+            DressList list = (DressList) dressList.SelectedItem;
             if (list == null)
                 return;
 
@@ -5408,7 +5443,7 @@ namespace Assistant
 
         private void dressList_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            DressList list = (DressList)dressList.SelectedItem;
+            DressList list = (DressList) dressList.SelectedItem;
 
             dressItems.BeginUpdate();
             dressItems.Items.Clear();
@@ -5418,7 +5453,7 @@ namespace Assistant
                 {
                     if (list.Items[i] is Serial)
                     {
-                        Serial serial = (Serial)list.Items[i];
+                        Serial serial = (Serial) list.Items[i];
                         Item item = World.FindItem(serial);
 
                         if (item != null)
@@ -5432,12 +5467,13 @@ namespace Assistant
                     }
                 }
             }
+
             dressItems.EndUpdate();
         }
 
         private void dressUseCur_Click(object sender, System.EventArgs e)
         {
-            DressList list = (DressList)dressList.SelectedItem;
+            DressList list = (DressList) dressList.SelectedItem;
             if (World.Player == null)
                 return;
             if (list == null)
@@ -5445,10 +5481,12 @@ namespace Assistant
 
             for (int i = 0; i < World.Player.Contains.Count; i++)
             {
-                Item item = (Item)World.Player.Contains[i];
-                if (item.Layer <= Layer.LastUserValid && item.Layer != Layer.Backpack && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair)
+                Item item = (Item) World.Player.Contains[i];
+                if (item.Layer <= Layer.LastUserValid && item.Layer != Layer.Backpack && item.Layer != Layer.Hair &&
+                    item.Layer != Layer.FacialHair)
                     list.Items.Add(item.Serial);
             }
+
             dressList.SelectedItem = null;
             dressList.SelectedItem = list;
         }
@@ -5459,7 +5497,7 @@ namespace Assistant
 
             if (e.Node == null || !(e.Node.Tag is KeyData))
                 return;
-            KeyData hk = (KeyData)e.Node.Tag;
+            KeyData hk = (KeyData) e.Node.Tag;
 
             try
             {
@@ -5483,7 +5521,7 @@ namespace Assistant
                         break;
                     default:
                         if (hk.Key > 0 && hk.Key < 256)
-                            key.Text = (((Keys)hk.Key).ToString());
+                            key.Text = (((Keys) hk.Key).ToString());
                         else
                             key.Text = ("");
                         break;
@@ -5499,10 +5537,13 @@ namespace Assistant
             chkShift.Checked = (hk.Mod & ModKeys.Shift) != 0;
             chkPass.Checked = hk.SendToUO;
 
-            if ((hk.LocName >= (int)LocString.DrinkHeal && hk.LocName <= (int)LocString.DrinkAg && !ClientCommunication.AllowBit(FeatureBit.PotionHotkeys)) ||
-                 (hk.LocName >= (int)LocString.TargCloseRed && hk.LocName <= (int)LocString.TargCloseCriminal && !ClientCommunication.AllowBit(FeatureBit.ClosestTargets)) ||
-                 (((hk.LocName >= (int)LocString.TargRandRed && hk.LocName <= (int)LocString.TargRandNFriend) ||
-                 (hk.LocName >= (int)LocString.TargRandEnemyHuman && hk.LocName <= (int)LocString.TargRandCriminal)) && !ClientCommunication.AllowBit(FeatureBit.RandomTargets)))
+            if ((hk.LocName >= (int) LocString.DrinkHeal && hk.LocName <= (int) LocString.DrinkAg &&
+                 !ClientCommunication.AllowBit(FeatureBit.PotionHotkeys)) ||
+                (hk.LocName >= (int) LocString.TargCloseRed && hk.LocName <= (int) LocString.TargCloseCriminal &&
+                 !ClientCommunication.AllowBit(FeatureBit.ClosestTargets)) ||
+                (((hk.LocName >= (int) LocString.TargRandRed && hk.LocName <= (int) LocString.TargRandNFriend) ||
+                  (hk.LocName >= (int) LocString.TargRandEnemyHuman && hk.LocName <= (int) LocString.TargRandCriminal)
+                 ) && !ClientCommunication.AllowBit(FeatureBit.RandomTargets)))
             {
                 LockControl(chkCtrl);
                 LockControl(chkAlt);
@@ -5560,7 +5601,8 @@ namespace Assistant
             bool block = false;
             if (g != null && g != hk)
             {
-                if (MessageBox.Show(this, Language.Format(LocString.KeyUsed, g.DispName, hk.DispName), "Hot Key Conflict", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show(this, Language.Format(LocString.KeyUsed, g.DispName, hk.DispName),
+                        "Hot Key Conflict", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     g.Key = 0;
                     g.Mod = ModKeys.None;
@@ -5620,7 +5662,7 @@ namespace Assistant
 
         private void key_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            m_LastKV = (int)e.KeyCode;
+            m_LastKV = (int) e.KeyCode;
             key.Text = e.KeyCode.ToString();
 
             e.Handled = true;
@@ -5806,7 +5848,8 @@ namespace Assistant
         {
             try
             {
-                Agent.Select(agentList.SelectedIndex, agentList, agentSubList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6);
+                Agent.Select(agentList.SelectedIndex, agentList, agentSubList, agentGroup, agentB1, agentB2, agentB3,
+                    agentB4, agentB5, agentB6);
             }
             catch
             {
@@ -5900,7 +5943,8 @@ namespace Assistant
             System.Drawing.Point pt = this.Location;
 
             Rectangle screen = Screen.GetWorkingArea(this);
-            if (this.WindowState != FormWindowState.Minimized && pt.X + this.Width / 2 >= screen.Left && pt.Y + this.Height / 2 >= screen.Top && pt.X <= screen.Right && pt.Y <= screen.Bottom)
+            if (this.WindowState != FormWindowState.Minimized && pt.X + this.Width / 2 >= screen.Left &&
+                pt.Y + this.Height / 2 >= screen.Top && pt.X <= screen.Right && pt.Y <= screen.Bottom)
             {
                 if (IsNear(pt.X + this.Width, screen.Right))
                     pt.X = screen.Right - this.Width;
@@ -5913,8 +5957,8 @@ namespace Assistant
                     pt.Y = screen.Top;
 
                 this.Location = pt;
-                Config.SetProperty("WindowX", (int)pt.X);
-                Config.SetProperty("WindowY", (int)pt.Y);
+                Config.SetProperty("WindowX", (int) pt.X);
+                Config.SetProperty("WindowY", (int) pt.Y);
             }
         }
 
@@ -5923,7 +5967,7 @@ namespace Assistant
             int o = opacity.Value;
             Config.SetProperty("Opacity", o);
             opacityLabel.Text = String.Format("Opacity: {0}%", o);
-            this.Opacity = ((double)o) / 100.0;
+            this.Opacity = ((double) o) / 100.0;
         }
 
         private void dispDelta_CheckedChanged(object sender, System.EventArgs e)
@@ -5964,7 +6008,8 @@ namespace Assistant
         {
             if (logPackets.Checked)
             {
-                if (m_Initializing || MessageBox.Show(this, Language.GetString(LocString.PacketLogWarn), "Caution!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                if (m_Initializing || MessageBox.Show(this, Language.GetString(LocString.PacketLogWarn), "Caution!",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     Packet.Logging = true;
                 else
                     logPackets.Checked = false;
@@ -6001,22 +6046,23 @@ namespace Assistant
         private void showWelcome_CheckedChanged(object sender, System.EventArgs e)
         {
             Config.SetAppSetting("ShowWelcome", (showWelcome.Checked ? 1 : 0).ToString());
-
         }
 
         private ContextMenu m_DressItemsMenu = null;
+
         private void dressItems_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                m_DressItemsMenu = new ContextMenu(new MenuItem[] { new MenuItem(Language.GetString(LocString.Conv2Type), new EventHandler(OnMakeType)) });
+                m_DressItemsMenu = new ContextMenu(new MenuItem[]
+                    {new MenuItem(Language.GetString(LocString.Conv2Type), new EventHandler(OnMakeType))});
                 m_DressItemsMenu.Show(dressItems, new Point(e.X, e.Y));
             }
         }
 
         private void OnMakeType(object sender, System.EventArgs e)
         {
-            DressList list = (DressList)dressList.SelectedItem;
+            DressList list = (DressList) dressList.SelectedItem;
             if (list == null)
                 return;
             int sel = dressItems.SelectedIndex;
@@ -6025,7 +6071,7 @@ namespace Assistant
 
             if (list.Items[sel] is Serial)
             {
-                Serial s = (Serial)list.Items[sel];
+                Serial s = (Serial) list.Items[sel];
                 Item item = World.FindItem(s);
                 if (item != null)
                 {
@@ -6037,24 +6083,30 @@ namespace Assistant
             }
         }
 
-        private static char[] m_InvalidNameChars = new char[] { '/', '\\', ';', '?', ':', '*' };
+        private static char[] m_InvalidNameChars = new char[] {'/', '\\', ';', '?', ':', '*'};
+
         private void newMacro_Click(object sender, System.EventArgs e)
         {
             if (InputBox.Show(this, Language.GetString(LocString.NewMacro), Language.GetString(LocString.EnterAName)))
             {
                 string name = InputBox.GetString();
-                if (name == null || name == "" || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 || name.IndexOfAny(m_InvalidNameChars) != -1)
+                if (name == null || name == "" || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+                    name.IndexOfAny(m_InvalidNameChars) != -1)
                 {
-                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars), Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 TreeNode node = GetMacroDirNode();
-                string path = (node == null || !(node.Tag is string)) ? Config.GetUserDirectory("Macros") : (string)node.Tag;
+                string path = (node == null || !(node.Tag is string))
+                    ? Config.GetUserDirectory("Macros")
+                    : (string) node.Tag;
                 path = Path.Combine(path, name + ".macro");
                 if (File.Exists(path))
                 {
-                    MessageBox.Show(this, Language.GetString(LocString.MacroExists), Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, Language.GetString(LocString.MacroExists),
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -6065,11 +6117,14 @@ namespace Assistant
                     // TODO: Instead of contains, do we want to look at the first X number of characters
                     if (Clipboard.GetText().Contains("Assistant.Macros."))
                     {
-                        createFromClipboard = MessageBox.Show(this, Language.GetString(LocString.NewClipboardMacro), "Create new macro from clipboard?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+                        createFromClipboard = MessageBox.Show(this, Language.GetString(LocString.NewClipboardMacro),
+                                                  "Create new macro from clipboard?", MessageBoxButtons.YesNo,
+                                                  MessageBoxIcon.Question) == DialogResult.Yes;
 
                         if (createFromClipboard)
                         {
-                            string[] macroCommands = Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                            string[] macroCommands = Clipboard.GetText()
+                                .Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None);
 
                             File.WriteAllLines(path, macroCommands);
 
@@ -6087,8 +6142,6 @@ namespace Assistant
                     {
                         File.CreateText(path).Close();
                     }
-
-
                 }
                 catch
                 {
@@ -6116,7 +6169,7 @@ namespace Assistant
             if (macroTree.SelectedNode == null || !(macroTree.SelectedNode.Tag is Macro))
                 return null;
             else
-                return (Macro)macroTree.SelectedNode.Tag;
+                return (Macro) macroTree.SelectedNode.Tag;
         }
 
         public void playMacro_Click(object sender, System.EventArgs e)
@@ -6166,7 +6219,8 @@ namespace Assistant
 
                 bool rec = true;
                 if (m.Actions.Count > 0)
-                    rec = MessageBox.Show(this, Language.GetString(LocString.MacroConfRec), "Overwrite?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+                    rec = MessageBox.Show(this, Language.GetString(LocString.MacroConfRec), "Overwrite?",
+                              MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
 
                 if (rec)
                 {
@@ -6210,6 +6264,7 @@ namespace Assistant
         }
 
         private ContextMenu m_MacroContextMenu = null;
+
         private void macroTree_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
@@ -6217,16 +6272,16 @@ namespace Assistant
                 if (m_MacroContextMenu == null)
                 {
                     m_MacroContextMenu = new ContextMenu(new MenuItem[]
-                         {
-                                   new MenuItem( "Add Category", new EventHandler( Macro_AddCategory ) ),
-                                   new MenuItem( "Delete Category", new EventHandler( Macro_DeleteCategory ) ),
-                                   new MenuItem( "Move to Category", new EventHandler( Macro_Move2Category ) ),
-                                  new MenuItem( "-" ),
-                            new MenuItem( "Copy to Clipboard", new EventHandler( Macro_CopyToClipboard ) ),
-                                  new MenuItem( "Rename Macro", new EventHandler( Macro_Rename ) ),
-                                  new MenuItem( "Open Externally", new EventHandler( Open_Externally ) ),
-                            new MenuItem( "-" ),
-                                   new MenuItem( "Refresh Macro List", new EventHandler( Macro_RefreshList ) )
+                    {
+                        new MenuItem("Add Category", new EventHandler(Macro_AddCategory)),
+                        new MenuItem("Delete Category", new EventHandler(Macro_DeleteCategory)),
+                        new MenuItem("Move to Category", new EventHandler(Macro_Move2Category)),
+                        new MenuItem("-"),
+                        new MenuItem("Copy to Clipboard", new EventHandler(Macro_CopyToClipboard)),
+                        new MenuItem("Rename Macro", new EventHandler(Macro_Rename)),
+                        new MenuItem("Open Externally", new EventHandler(Open_Externally)),
+                        new MenuItem("-"),
+                        new MenuItem("Refresh Macro List", new EventHandler(Macro_RefreshList))
                     });
                 }
 
@@ -6264,9 +6319,11 @@ namespace Assistant
                 return;
 
             string path = InputBox.GetString();
-            if (path == null || path == "" || path.IndexOfAny(Path.GetInvalidPathChars()) != -1 || path.IndexOfAny(m_InvalidNameChars) != -1)
+            if (path == null || path == "" || path.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+                path.IndexOfAny(m_InvalidNameChars) != -1)
             {
-                MessageBox.Show(this, Language.GetString(LocString.InvalidChars), "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, Language.GetString(LocString.InvalidChars), "Invalid Path", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
 
@@ -6277,12 +6334,13 @@ namespace Assistant
                 if (node == null || !(node.Tag is string))
                     path = Path.Combine(Config.GetUserDirectory("Macros"), path);
                 else
-                    path = Path.Combine((string)node.Tag, path);
+                    path = Path.Combine((string) node.Tag, path);
                 Engine.EnsureDirectory(path);
             }
             catch
             {
-                MessageBox.Show(this, Language.Format(LocString.CanCreateDir, path), "Unabled to Create Directory", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, Language.Format(LocString.CanCreateDir, path), "Unabled to Create Directory",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -6311,7 +6369,8 @@ namespace Assistant
             }
             catch
             {
-                MessageBox.Show(this, Language.GetString(LocString.CantDelDir), "Unable to Delete Directory", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, Language.GetString(LocString.CantDelDir), "Unable to Delete Directory",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -6340,8 +6399,9 @@ namespace Assistant
             try
             {
                 File.Move(sel.Filename, InputDropdown.GetString().Equals("<None>")
-                        ? Path.Combine(Config.GetUserDirectory("Macros"), $"{Path.GetFileName(sel.Filename)}")
-                       : Path.Combine(Config.GetUserDirectory("Macros"), $"{InputDropdown.GetString()}/{Path.GetFileName(sel.Filename)}"));
+                    ? Path.Combine(Config.GetUserDirectory("Macros"), $"{Path.GetFileName(sel.Filename)}")
+                    : Path.Combine(Config.GetUserDirectory("Macros"),
+                        $"{InputDropdown.GetString()}/{Path.GetFileName(sel.Filename)}"));
             }
             catch
             {
@@ -6372,7 +6432,8 @@ namespace Assistant
             }
             catch
             {
-                MessageBox.Show(this, Language.GetString(LocString.ReadError), "Copy Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, Language.GetString(LocString.ReadError), "Copy Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -6382,7 +6443,8 @@ namespace Assistant
             if (sel == null)
                 return;
 
-            if (InputBox.Show(this, Language.GetString(LocString.MacroRename), Language.GetString(LocString.EnterAName)))
+            if (InputBox.Show(this, Language.GetString(LocString.MacroRename),
+                Language.GetString(LocString.EnterAName)))
             {
                 string name = InputBox.GetString();
                 if (string.IsNullOrEmpty(name) || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
@@ -6400,7 +6462,8 @@ namespace Assistant
 
                 if (File.Exists(newMacro))
                 {
-                    MessageBox.Show(this, Language.GetString(LocString.MacroExists), Language.GetString(LocString.Invalid),
+                    MessageBox.Show(this, Language.GetString(LocString.MacroExists),
+                        Language.GetString(LocString.Invalid),
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -6426,8 +6489,6 @@ namespace Assistant
 
                 RedrawMacros();
             }
-
-
         }
 
         private void Open_Externally(object sender, EventArgs args)
@@ -6442,7 +6503,8 @@ namespace Assistant
             }
             catch (Exception)
             {
-                MessageBox.Show(this, Language.GetString(LocString.UnableToOpenMacro), Language.GetString(LocString.ReadError),
+                MessageBox.Show(this, Language.GetString(LocString.UnableToOpenMacro),
+                    Language.GetString(LocString.ReadError),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -6507,7 +6569,8 @@ namespace Assistant
             if (m == MacroManager.Current)
                 return;
 
-            if (m.Actions.Count <= 0 || MessageBox.Show(this, Language.Format(LocString.DelConf, m.ToString()), "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (m.Actions.Count <= 0 || MessageBox.Show(this, Language.Format(LocString.DelConf, m.ToString()),
+                    "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 try
                 {
@@ -6593,16 +6656,16 @@ namespace Assistant
                 menu.MenuItems.Add("-");
                 menu.MenuItems.Add(Language.GetString(LocString.Constructs), new MenuItem[]
                 {
-                     new MenuItem(Language.GetString(LocString.InsWait), new EventHandler(onMacroInsPause)),
-                     new MenuItem(Language.GetString(LocString.InsLT), new EventHandler(onMacroInsertSetLT)),
-                     new MenuItem(Language.GetString(LocString.InsComment), new EventHandler(onMacroInsertComment)),
-                     new MenuItem("-"),
-                     new MenuItem(Language.GetString(LocString.InsIF), new EventHandler(onMacroInsertIf)),
-                     new MenuItem(Language.GetString(LocString.InsELSE), new EventHandler(onMacroInsertElse)),
-                     new MenuItem(Language.GetString(LocString.InsENDIF), new EventHandler(onMacroInsertEndIf)),
-                     new MenuItem("-"),
-                     new MenuItem(Language.GetString(LocString.InsFOR), new EventHandler(onMacroInsertFor)),
-                     new MenuItem(Language.GetString(LocString.InsENDFOR), new EventHandler(onMacroInsertEndFor))
+                    new MenuItem(Language.GetString(LocString.InsWait), new EventHandler(onMacroInsPause)),
+                    new MenuItem(Language.GetString(LocString.InsLT), new EventHandler(onMacroInsertSetLT)),
+                    new MenuItem(Language.GetString(LocString.InsComment), new EventHandler(onMacroInsertComment)),
+                    new MenuItem("-"),
+                    new MenuItem(Language.GetString(LocString.InsIF), new EventHandler(onMacroInsertIf)),
+                    new MenuItem(Language.GetString(LocString.InsELSE), new EventHandler(onMacroInsertElse)),
+                    new MenuItem(Language.GetString(LocString.InsENDIF), new EventHandler(onMacroInsertEndIf)),
+                    new MenuItem("-"),
+                    new MenuItem(Language.GetString(LocString.InsFOR), new EventHandler(onMacroInsertFor)),
+                    new MenuItem(Language.GetString(LocString.InsENDFOR), new EventHandler(onMacroInsertEndFor))
                 });
 
                 menu.Show(actionList, new Point(e.X, e.Y));
@@ -6655,17 +6718,15 @@ namespace Assistant
                         {
                             new MacroInsertWait(a).ShowDialog(Engine.MainWindow);
                         }
-
-
                     }
                 }
             }
-
         }
 
         private void onMacroPlayHere(object sender, EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+            ;
             if (m == null)
                 return;
 
@@ -6715,7 +6776,8 @@ namespace Assistant
 
         private void onMacroInsertElse(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+            ;
             if (m == null)
                 return;
 
@@ -6729,7 +6791,8 @@ namespace Assistant
 
         private void onMacroInsertEndIf(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+            ;
             if (m == null)
                 return;
 
@@ -6774,14 +6837,15 @@ namespace Assistant
 
         private void OnMacroActionMoveUp(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+            ;
             if (m == null)
                 return;
 
             int move = actionList.SelectedIndex;
             if (move > 0 && move < m.Actions.Count)
             {
-                MacroAction a = (MacroAction)m.Actions[move - 1];
+                MacroAction a = (MacroAction) m.Actions[move - 1];
                 m.Actions[move - 1] = m.Actions[move];
                 m.Actions[move] = a;
 
@@ -6792,14 +6856,15 @@ namespace Assistant
 
         private void OnMacroActionMoveDown(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+            ;
             if (m == null)
                 return;
 
             int move = actionList.SelectedIndex;
             if (move + 1 < m.Actions.Count)
             {
-                MacroAction a = (MacroAction)m.Actions[move + 1];
+                MacroAction a = (MacroAction) m.Actions[move + 1];
                 m.Actions[move + 1] = m.Actions[move];
                 m.Actions[move] = a;
 
@@ -6811,14 +6876,15 @@ namespace Assistant
 
         private void OnMacroKeyMoveUp()
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+            ;
             if (m == null)
                 return;
 
             int move = actionList.SelectedIndex;
             if (move > 0 && move < m.Actions.Count)
             {
-                MacroAction a = (MacroAction)m.Actions[move - 1];
+                MacroAction a = (MacroAction) m.Actions[move - 1];
                 m.Actions[move - 1] = m.Actions[move];
                 m.Actions[move] = a;
 
@@ -6828,14 +6894,15 @@ namespace Assistant
 
         private void OnMacroKeyMoveDown()
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+            ;
             if (m == null)
                 return;
 
             int move = actionList.SelectedIndex;
             if (move + 1 < m.Actions.Count)
             {
-                MacroAction a = (MacroAction)m.Actions[move + 1];
+                MacroAction a = (MacroAction) m.Actions[move + 1];
                 m.Actions[move + 1] = m.Actions[move];
                 m.Actions[move] = a;
 
@@ -6916,7 +6983,8 @@ namespace Assistant
 
         private void onMacroActionDelete(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+
             if (m == null)
                 return;
 
@@ -6924,7 +6992,8 @@ namespace Assistant
             if (a < 0 || a >= m.Actions.Count)
                 return;
 
-            if (MessageBox.Show(this, Language.Format(LocString.DelConf, m.Actions[a].ToString()), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show(this, Language.Format(LocString.DelConf, m.Actions[a].ToString()), "Confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 m.Actions.RemoveAt(a);
                 actionList.Items.RemoveAt(a);
@@ -6933,7 +7002,8 @@ namespace Assistant
 
         private void onMacroBegRecHere(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+
             if (m == null)
                 return;
 
@@ -6949,7 +7019,8 @@ namespace Assistant
 
         private void onMacroInsPause(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+
             if (m == null)
                 return;
 
@@ -6964,7 +7035,8 @@ namespace Assistant
 
         private void onMacroReload(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+
             if (m == null)
                 return;
 
@@ -6974,7 +7046,8 @@ namespace Assistant
 
         private void onMacroSave(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+
             if (m == null)
                 return;
 
@@ -6984,7 +7057,8 @@ namespace Assistant
 
         private void onMacroInsertSetLT(object sender, EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+
             if (m == null)
                 return;
 
@@ -6998,7 +7072,8 @@ namespace Assistant
 
         private void loopMacro_CheckedChanged(object sender, System.EventArgs e)
         {
-            Macro m = GetMacroSel(); ;
+            Macro m = GetMacroSel();
+
             if (m == null)
                 return;
             m.Loop = loopMacro.Checked;
@@ -7106,10 +7181,13 @@ namespace Assistant
         {
             try
             {
-                if (MessageBox.Show(this, "Are you sure you want to delete this from Imgur? It will permanently be removed and cannot be undone.", "Delete Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                if (MessageBox.Show(this,
+                        "Are you sure you want to delete this from Imgur? It will permanently be removed and cannot be undone.",
+                        "Delete Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                     return;
 
-                using (var w = new WebClient()) //HttpClient would be preferred, but I didn't want to add a new package to Razor
+                using (var w = new WebClient()
+                ) //HttpClient would be preferred, but I didn't want to add a new package to Razor
                 {
                     string clientID = "b241fb37ce1e0e9";
                     w.Headers.Add("Authorization", "Client-ID " + clientID);
@@ -7132,13 +7210,12 @@ namespace Assistant
                     {
                         throw new Exception("Unable to delete image");
                     }
-
-
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Error deleting image on Imgur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, ex.Message, "Error deleting image on Imgur", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
         }
@@ -7180,7 +7257,8 @@ namespace Assistant
             string file = Path.Combine(Config.GetString("CapPath"), screensList.SelectedItem.ToString());
             if (!File.Exists(file))
             {
-                MessageBox.Show(this, Language.Format(LocString.FileNotFoundA1, file), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, Language.Format(LocString.FileNotFoundA1, file), "File Not Found",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 screensList.Items.RemoveAt(screensList.SelectedIndex);
                 screensList.SelectedIndex = -1;
                 return;
@@ -7208,7 +7286,6 @@ namespace Assistant
                 menu.MenuItems.Add("Delete ALL", new EventHandler(ClearScreensDirectory));
 
 
-
                 menu.Show(screensList, new Point(e.X, e.Y));
             }
         }
@@ -7219,7 +7296,7 @@ namespace Assistant
             if (sel == -1)
                 return;
 
-            string file = Path.Combine(Config.GetString("CapPath"), (string)screensList.SelectedItem);
+            string file = Path.Combine(Config.GetString("CapPath"), (string) screensList.SelectedItem);
 
 
             // This is .NET 4.0, can't use async Task.Run
@@ -7236,7 +7313,7 @@ namespace Assistant
                     w.Headers.Add("Authorization", "Client-ID " + clientID);
                     var values = new NameValueCollection
                     {
-                        { "image", Convert.ToBase64String(File.ReadAllBytes(file)) }
+                        {"image", Convert.ToBase64String(File.ReadAllBytes(file))}
                     };
 
                     byte[] response = w.UploadValues("https://api.imgur.com/3/upload", values);
@@ -7247,14 +7324,15 @@ namespace Assistant
                     {
                         m_LastImgurUrl = jsonResponse["data"].link.Value;
 
-                        imgurUploads.Invoke((MethodInvoker)delegate
+                        imgurUploads.Invoke((MethodInvoker) delegate
                         {
                             // Running on the UI thread
                             LogImgurUpload(m_LastImgurUrl, jsonResponse["data"].deletehash.Value);
 
                             if (Config.GetBool("ScreenshotUploadNotifications"))
                             {
-                                m_NotifyIcon.ShowBalloonTip(2000, "Screenshot Uploaded", "Click here to view in your browser.", ToolTipIcon.Info);
+                                m_NotifyIcon.ShowBalloonTip(2000, "Screenshot Uploaded",
+                                    "Click here to view in your browser.", ToolTipIcon.Info);
                                 m_NotifyIcon.BalloonTipClicked += new EventHandler(razorNotify_BalloonTipClicked);
                             }
 
@@ -7277,10 +7355,10 @@ namespace Assistant
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Error Uploading to Imgur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, ex.Message, "Error Uploading to Imgur", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
-
         }
 
         private string m_LastImgurUrl;
@@ -7327,11 +7405,9 @@ namespace Assistant
                 }
 
                 ReloadImgurUploadList();
-
             }
             catch (Exception ex)
             {
-
             }
         }
 
@@ -7341,8 +7417,9 @@ namespace Assistant
             if (sel == -1)
                 return;
 
-            string file = Path.Combine(Config.GetString("CapPath"), (string)screensList.SelectedItem);
-            if (MessageBox.Show(this, Language.Format(LocString.DelConf, file), "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            string file = Path.Combine(Config.GetString("CapPath"), (string) screensList.SelectedItem);
+            if (MessageBox.Show(this, Language.Format(LocString.DelConf, file), "Delete Confirmation",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
 
             screensList.SelectedIndex = -1;
@@ -7362,13 +7439,15 @@ namespace Assistant
                 MessageBox.Show(this, ex.Message, "Unable to Delete", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             ReloadScreenShotsList();
         }
 
         private void ClearScreensDirectory(object sender, System.EventArgs e)
         {
             string dir = Config.GetString("CapPath");
-            if (MessageBox.Show(this, Language.Format(LocString.Confirm, dir), "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (MessageBox.Show(this, Language.Format(LocString.Confirm, dir), "Delete Confirmation",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
 
             string[] files = Directory.GetFiles(dir, "*.jpg");
@@ -7388,7 +7467,9 @@ namespace Assistant
             }
 
             if (failed > 0)
-                MessageBox.Show(this, Language.Format(LocString.FileDelError, failed, failed != 1 ? "s" : "", sb.ToString()), "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this,
+                    Language.Format(LocString.FileDelError, failed, failed != 1 ? "s" : "", sb.ToString()), "Warning",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             ReloadScreenShotsList();
         }
 
@@ -7406,17 +7487,19 @@ namespace Assistant
         {
             try
             {
-                System.Diagnostics.Process.Start(site);//"iexplore", site );
+                System.Diagnostics.Process.Start(site); //"iexplore", site );
             }
             catch
             {
-                MessageBox.Show(String.Format("Unable to open browser to '{0}'", site), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(String.Format("Unable to open browser to '{0}'", site), "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
         private void donate_Click(object sender, System.EventArgs e)
         {
-            LaunchBrowser("https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD");
+            LaunchBrowser(
+                "https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD");
         }
 
         private void undressConflicts_CheckedChanged(object sender, System.EventArgs e)
@@ -7431,7 +7514,8 @@ namespace Assistant
                 systray.Checked = false;
                 Config.SetProperty("Systray", false);
                 if (!this.ShowInTaskbar)
-                    MessageBox.Show(this, Language.GetString(LocString.NextRestart), "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(this, Language.GetString(LocString.NextRestart), "Notice", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
             }
         }
 
@@ -7442,7 +7526,8 @@ namespace Assistant
                 taskbar.Checked = false;
                 Config.SetProperty("Systray", true);
                 if (this.ShowInTaskbar)
-                    MessageBox.Show(this, Language.GetString(LocString.NextRestart), "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(this, Language.GetString(LocString.NextRestart), "Notice", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
             }
         }
 
@@ -7461,7 +7546,8 @@ namespace Assistant
                 if (Config.GetBool("ShowInRazorTitleBar") && !string.IsNullOrEmpty(razorTitleBar.Text))
                 {
                     Text = razorTitleBar.Text.Replace("{name}", World.Player.Name).Replace("{shard}", World.ShardName)
-                        .Replace("{version}", Engine.Version).Replace("{profile}", Config.CurrentProfile.Name).Replace("{account}", World.AccountName);
+                        .Replace("{version}", Engine.Version).Replace("{profile}", Config.CurrentProfile.Name)
+                        .Replace("{account}", World.AccountName);
                 }
                 else
                 {
@@ -7486,7 +7572,8 @@ namespace Assistant
                 if (World.Player != null)
                     if (Config.GetBool("ShowInRazorTitleBar") && !string.IsNullOrEmpty(razorTitleBar.Text))
                     {
-                        m_NotifyIcon.Text = razorTitleBar.Text.Replace("{name}", World.Player.Name).Replace("{shard}", World.ShardName)
+                        m_NotifyIcon.Text = razorTitleBar.Text.Replace("{name}", World.Player.Name)
+                            .Replace("{shard}", World.ShardName)
                             .Replace("{version}", Engine.Version);
                     }
                     else
@@ -7573,12 +7660,14 @@ namespace Assistant
         {
             if (rememberPwds.Checked && !Config.GetBool("RememberPwds"))
             {
-                if (MessageBox.Show(this, Language.GetString(LocString.PWWarn), "Security Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                if (MessageBox.Show(this, Language.GetString(LocString.PWWarn), "Security Warning",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
                     rememberPwds.Checked = false;
                     return;
                 }
             }
+
             Config.SetProperty("RememberPwds", rememberPwds.Checked);
         }
 
@@ -7589,7 +7678,8 @@ namespace Assistant
             {
                 if (!Language.Load(lang))
                 {
-                    MessageBox.Show(this, "Unable to load that language.", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(this, "Unable to load that language.", "Load Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
                     langSel.SelectedItem = Language.Current;
                 }
                 else
@@ -7633,11 +7723,13 @@ namespace Assistant
 
         private void clientPrio_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            string str = (string)clientPrio.SelectedItem;
+            string str = (string) clientPrio.SelectedItem;
             Config.SetProperty("ClientPrio", str);
             try
             {
-                ClientCommunication.ClientProcess.PriorityClass = (System.Diagnostics.ProcessPriorityClass)Enum.Parse(typeof(System.Diagnostics.ProcessPriorityClass), str, true);
+                ClientCommunication.ClientProcess.PriorityClass =
+                    (System.Diagnostics.ProcessPriorityClass) Enum.Parse(
+                        typeof(System.Diagnostics.ProcessPriorityClass), str, true);
             }
             catch
             {
@@ -7654,7 +7746,8 @@ namespace Assistant
             Config.SetProperty("OldStatBar", preAOSstatbar.Checked);
             ClientCommunication.RequestStatbarPatch(preAOSstatbar.Checked);
             if (World.Player != null && !m_Initializing)
-                MessageBox.Show(this, "Close and re-open your status bar for the change to take effect.", "Status Window Note", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(this, "Close and re-open your status bar for the change to take effect.",
+                    "Status Window Note", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void smartLT_CheckedChanged(object sender, System.EventArgs e)
@@ -7671,7 +7764,7 @@ namespace Assistant
         {
             if (e.KeyCode == Keys.Delete)
             {
-                DressList list = (DressList)dressList.SelectedItem;
+                DressList list = (DressList) dressList.SelectedItem;
                 if (list == null)
                     return;
 
@@ -7679,7 +7772,8 @@ namespace Assistant
                 if (sel < 0 || sel >= list.Items.Count)
                     return;
 
-                if (MessageBox.Show(this, Language.GetString(LocString.DelDressItemQ), "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show(this, Language.GetString(LocString.DelDressItemQ), "Confirm",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
@@ -7720,7 +7814,7 @@ namespace Assistant
         private void recFolder_Click(object sender, System.EventArgs e)
         {
             FolderBrowserDialog folder = new FolderBrowserDialog();
-            folder.Description = "Select Recording Folder";//Language.GetString( LocString.SelRecFolder );
+            folder.Description = "Select Recording Folder"; //Language.GetString( LocString.SelRecFolder );
             folder.SelectedPath = Config.GetString("RecFolder");
             folder.ShowNewFolderButton = true;
 
@@ -7793,10 +7887,17 @@ namespace Assistant
                 double res = 1.00;
                 switch (Config.GetInt("AviRes"))
                 {
-                    case 1: res = 0.75; break;
-                    case 2: res = 0.50; break;
-                    case 3: res = 0.25; break;
+                    case 1:
+                        res = 0.75;
+                        break;
+                    case 2:
+                        res = 0.50;
+                        break;
+                    case 3:
+                        res = 0.25;
+                        break;
                 }
+
                 if (AVIRec.Record(Config.GetInt("AviFPS"), res))
                 {
                     recAVI.Text = "Stop Rec";
@@ -7883,7 +7984,8 @@ namespace Assistant
                 if (x > 100 && x < 2000 && y > 100 && y < 2000)
                     ClientCommunication.SetGameSize(x, y);
                 else
-                    MessageBox.Show(Engine.MainWindow, Language.GetString(LocString.ForceSizeBad), "Bad Size", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    MessageBox.Show(Engine.MainWindow, Language.GetString(LocString.ForceSizeBad), "Bad Size",
+                        MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
 
@@ -7898,7 +8000,8 @@ namespace Assistant
                 int y = Utility.ToInt32(forceSizeY.Text, 600);
 
                 if (x < 100 || y < 100 || x > 2000 || y > 2000)
-                    MessageBox.Show(this, Language.GetString(LocString.ForceSizeBad), "Bad Size", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    MessageBox.Show(this, Language.GetString(LocString.ForceSizeBad), "Bad Size", MessageBoxButtons.OK,
+                        MessageBoxIcon.Stop);
                 else
                     ClientCommunication.SetGameSize(x, y);
             }
@@ -7908,8 +8011,8 @@ namespace Assistant
             }
 
             if (!m_Initializing)
-                MessageBox.Show(this, Language.GetString(LocString.ApplyOptionsRequired), "Additional Step", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                MessageBox.Show(this, Language.GetString(LocString.ApplyOptionsRequired), "Additional Step",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void forceSizeX_TextChanged(object sender, System.EventArgs e)
@@ -7985,7 +8088,8 @@ namespace Assistant
 
         private void lockBox_Click(object sender, System.EventArgs e)
         {
-            MessageBox.Show(this, Language.GetString(LocString.FeatureDisabledText), Language.GetString(LocString.FeatureDisabled), MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            MessageBox.Show(this, Language.GetString(LocString.FeatureDisabledText),
+                Language.GetString(LocString.FeatureDisabled), MessageBoxButtons.OK, MessageBoxIcon.Stop);
         }
 
         private ArrayList m_LockBoxes = new ArrayList();
@@ -8000,7 +8104,8 @@ namespace Assistant
                     {
                         int y_off = (locked.Size.Height - 16) / 2;
                         int x_off = 0;
-                        System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MainForm));
+                        System.Resources.ResourceManager resources =
+                            new System.Resources.ResourceManager(typeof(MainForm));
                         PictureBox newLockBox = new PictureBox();
 
                         if (locked is TextBox)
@@ -8016,7 +8121,8 @@ namespace Assistant
 
                         newLockBox.TabIndex = locked.TabIndex;
                         newLockBox.TabStop = locked.TabStop;
-                        newLockBox.Location = new System.Drawing.Point(locked.Location.X + x_off, locked.Location.Y + y_off);
+                        newLockBox.Location =
+                            new System.Drawing.Point(locked.Location.X + x_off, locked.Location.Y + y_off);
                         newLockBox.Name = locked.Name + "LockBox";
                         newLockBox.Tag = locked;
                         newLockBox.Visible = true;
@@ -8071,8 +8177,9 @@ namespace Assistant
 
                 box.Parent.Controls.Remove(box);
                 if (box.Tag is Control)
-                    ((Control)box.Tag).Enabled = true;
+                    ((Control) box.Tag).Enabled = true;
             }
+
             m_LockBoxes.Clear();
         }
 
@@ -8086,8 +8193,9 @@ namespace Assistant
 
                 box.Parent.Controls.Remove(box);
                 if (box.Tag is Control)
-                    ((Control)box.Tag).Enabled = true;
+                    ((Control) box.Tag).Enabled = true;
             }
+
             m_LockBoxes.Clear();
 
             if (!ClientCommunication.AllowBit(FeatureBit.SmartLT))
@@ -8154,7 +8262,6 @@ namespace Assistant
 
         private void btcLabel_Click(object sender, EventArgs e)
         {
-
         }
 
         private void cloneProfile_Click(object sender, EventArgs e)
@@ -8162,13 +8269,14 @@ namespace Assistant
             if (profiles.SelectedIndex < 0)
                 return;
 
-            string profileToClone = (string)profiles.Items[profiles.SelectedIndex];
+            string profileToClone = (string) profiles.Items[profiles.SelectedIndex];
 
             if (InputBox.Show(this, Language.GetString(LocString.EnterProfileName),
                 Language.GetString(LocString.EnterAName)))
             {
                 string newProfileName = InputBox.GetString();
-                if (string.IsNullOrEmpty(newProfileName) || newProfileName.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+                if (string.IsNullOrEmpty(newProfileName) ||
+                    newProfileName.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
                     newProfileName.IndexOfAny(m_InvalidNameChars) != -1)
                 {
                     MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
@@ -8176,10 +8284,10 @@ namespace Assistant
                     return;
                 }
 
-                File.Copy(Path.Combine(Config.GetUserDirectory("Profiles"), $"{profileToClone}.xml"), Path.Combine(Config.GetUserDirectory("Profiles"), $"{newProfileName}.xml"));
+                File.Copy(Path.Combine(Config.GetUserDirectory("Profiles"), $"{profileToClone}.xml"),
+                    Path.Combine(Config.GetUserDirectory("Profiles"), $"{newProfileName}.xml"));
 
                 profiles.Items.Add(newProfileName);
-
             }
         }
 
@@ -8194,12 +8302,12 @@ namespace Assistant
                 {
                     foreach (TreeNode _childNode in _parentNode.Nodes) // lets not filter on the sub-ones either
                     {
-
-                        foreach (TreeNode _subChildNode in _childNode.Nodes) // we want all these sub child nodes to be filters
+                        foreach (TreeNode _subChildNode in _childNode.Nodes
+                        ) // we want all these sub child nodes to be filters
                         {
                             if (_subChildNode.Text.ToLower().Contains(filterHotkeys.Text.ToLower()))
                             {
-                                this.hotkeyTree.Nodes.Add((TreeNode)_subChildNode.Clone());
+                                this.hotkeyTree.Nodes.Add((TreeNode) _subChildNode.Clone());
                             }
 
                             if (_subChildNode.Nodes.Count > 0) // Just in case
@@ -8208,13 +8316,11 @@ namespace Assistant
                                 {
                                     if (_subSubChildNode.Text.ToLower().Contains(filterHotkeys.Text.ToLower()))
                                     {
-                                        this.hotkeyTree.Nodes.Add((TreeNode)_subSubChildNode.Clone());
+                                        this.hotkeyTree.Nodes.Add((TreeNode) _subSubChildNode.Clone());
                                     }
                                 }
                             }
                         }
-
-
                     }
                 }
             }
@@ -8222,6 +8328,7 @@ namespace Assistant
             {
                 HotKey.RebuildList(hotkeyTree);
             }
+
             //enables redrawing tree after all objects have been added
             this.hotkeyTree.EndUpdate();
         }
@@ -8235,10 +8342,9 @@ namespace Assistant
             {
                 foreach (TreeNode _parentNode in _macroTreeViewCache.Nodes) // We won't filter on the top parent domain
                 {
-
                     if (_parentNode.Text.ToLower().Contains(filterMacros.Text.ToLower()))
                     {
-                        macroTree.Nodes.Add((TreeNode)_parentNode.Clone());
+                        macroTree.Nodes.Add((TreeNode) _parentNode.Clone());
                     }
 
                     if (_parentNode.Nodes.Count > 0) // Just in case
@@ -8247,17 +8353,17 @@ namespace Assistant
                         {
                             if (_subSubChildNode.Text.ToLower().Contains(filterMacros.Text.ToLower()))
                             {
-                                this.macroTree.Nodes.Add((TreeNode)_subSubChildNode.Clone());
+                                this.macroTree.Nodes.Add((TreeNode) _subSubChildNode.Clone());
                             }
                         }
                     }
                 }
-
             }
             else
             {
                 MacroManager.DisplayTo(macroTree);
             }
+
             //enables redrawing tree after all objects have been added
             this.macroTree.EndUpdate();
         }
@@ -8272,11 +8378,12 @@ namespace Assistant
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Unable to open directory", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, ex.Message, "Unable to open directory", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
-        private void backupDataDir_Click(object sender, EventArgs e)
+        private void createBackup_Click(object sender, EventArgs e)
         {
             try
             {
@@ -8315,22 +8422,23 @@ namespace Assistant
                 Directory.CreateDirectory($"{backupDir}\\Profiles");
 
                 foreach (string newPath in Directory.GetFiles($"{Config.GetUserDirectory()}\\Profiles", "*.*",
-                     SearchOption.AllDirectories))
+                    SearchOption.AllDirectories))
                 {
                     File.Copy(newPath,
                         newPath.Replace($"{Config.GetUserDirectory()}\\Profiles",
                             $"{backupDir}\\Profiles"), true);
                 }
 
-                MessageBox.Show(this, $"Backup created: {backupDir}", "Razor Backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(this, $"Backup created: {backupDir}", "Razor Backup", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
                 Config.SetAppSetting("BackupTime", DateTime.Now.ToString());
                 lastBackup.Text = $"Last Backup: {Config.GetAppSetting<string>("BackupTime")}";
-
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Unable to create backup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, ex.Message, "Unable to create backup", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
@@ -8348,26 +8456,30 @@ namespace Assistant
             {
                 Gfx = gfx,
                 Serial = serial,
-                Type = (byte)(ground ? 1 : 0),
+                Type = (byte) (ground ? 1 : 0),
                 X = pt.X,
                 Y = pt.Y,
                 Z = pt.Z
             };
 
-            if (InputBox.Show(this, Language.GetString(LocString.NewAbsoluteTargetVar), Language.GetString(LocString.EnterAName)))
+            if (InputBox.Show(this, Language.GetString(LocString.NewAbsoluteTargetVar),
+                Language.GetString(LocString.EnterAName)))
             {
                 string name = InputBox.GetString();
 
-                foreach (AbsoluteTargetVariables.AbsoluteTargetVariable at in AbsoluteTargetVariables.AbsoluteTargetList)
+                foreach (AbsoluteTargetVariables.AbsoluteTargetVariable at in AbsoluteTargetVariables.AbsoluteTargetList
+                )
                 {
                     if (at.Name.ToLower().Equals(name.ToLower()))
                     {
-                        MessageBox.Show(this, "Pick a unique Absolute Target name and try again", "New Absolute Target Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this, "Pick a unique Absolute Target name and try again",
+                            "New Absolute Target Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
 
-                AbsoluteTargetVariables.AbsoluteTargetList.Add(new AbsoluteTargetVariables.AbsoluteTargetVariable(name, t));
+                AbsoluteTargetVariables.AbsoluteTargetList.Add(
+                    new AbsoluteTargetVariables.AbsoluteTargetVariable(name, t));
 
                 // Save and reload the macros and vars
                 MacroManager.DisplayMacroVariables(0, macroVariables);
@@ -8378,8 +8490,8 @@ namespace Assistant
 
         private void OnDoubleClickAddTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
         {
-
-            if (InputBox.Show(this, Language.GetString(LocString.NewAbsoluteTargetVar), Language.GetString(LocString.EnterAName)))
+            if (InputBox.Show(this, Language.GetString(LocString.NewAbsoluteTargetVar),
+                Language.GetString(LocString.EnterAName)))
             {
                 string name = InputBox.GetString();
 
@@ -8387,12 +8499,14 @@ namespace Assistant
                 {
                     if (dbt.Name.ToLower().Equals(name.ToLower()))
                     {
-                        MessageBox.Show(this, "Pick a unique DoubleClick variable name and try again", "New DoubleClick Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this, "Pick a unique DoubleClick variable name and try again",
+                            "New DoubleClick Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
 
-                DoubleClickVariables.DoubleClickTargetList.Add(new DoubleClickVariables.DoubleClickVariable(name, serial, gfx));
+                DoubleClickVariables.DoubleClickTargetList.Add(
+                    new DoubleClickVariables.DoubleClickVariable(name, serial, gfx));
 
                 // Save and reload the macros and vars
                 MacroManager.DisplayMacroVariables(1, macroVariables);
@@ -8407,7 +8521,7 @@ namespace Assistant
             {
                 Gfx = gfx,
                 Serial = serial,
-                Type = (byte)(ground ? 1 : 0),
+                Type = (byte) (ground ? 1 : 0),
                 X = pt.X,
                 Y = pt.Y,
                 Z = pt.Z
@@ -8423,7 +8537,6 @@ namespace Assistant
 
         private void OnDoubleClickVariableReTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
         {
-
             DoubleClickVariables.DoubleClickTargetList[macroVariables.SelectedIndex].Serial = serial;
             DoubleClickVariables.DoubleClickTargetList[macroVariables.SelectedIndex].Gfx = gfx;
 
@@ -8480,7 +8593,7 @@ namespace Assistant
                 ClientCommunication.SendToClient(new GlobalLightLevel(selectedLightLevel));
                 ClientCommunication.SendToClient(new PersonalLightLevel(World.Player));
 
-                double percent = Math.Round((lightLevelBar.Value / (double)lightLevelBar.Maximum) * 100.0);
+                double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
 
                 lightLevel.Text = $"Light: {percent}%";
 
@@ -8559,8 +8672,10 @@ namespace Assistant
 
             Config.Save();
 
-            string profileToClone = (string)profiles.Items[profiles.SelectedIndex];
-            MessageBox.Show(SplashScreen.Instance, $"Saved current settings to profile {Path.Combine(Config.GetUserDirectory("Profiles"), $"{profileToClone}.xml")}", "Save Profile", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string profileToClone = (string) profiles.Items[profiles.SelectedIndex];
+            MessageBox.Show(SplashScreen.Instance,
+                $"Saved current settings to profile {Path.Combine(Config.GetUserDirectory("Profiles"), $"{profileToClone}.xml")}",
+                "Save Profile", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void stealthOverhead_CheckedChanged(object sender, EventArgs e)
@@ -8721,7 +8836,6 @@ namespace Assistant
 
         private void OnAgentImport(object sender, System.EventArgs e)
         {
-
         }
 
         private void showContainerLabels_CheckedChanged(object sender, EventArgs e)
@@ -8806,7 +8920,8 @@ namespace Assistant
 
             if (lightLevel > Config.GetInt("MinLightLevel"))
             {
-                MessageBox.Show(this, $"Selected maximum light level {lightLevel} exceeds minimum light level {Config.GetInt("MinLightLevel")}",
+                MessageBox.Show(this,
+                    $"Selected maximum light level {lightLevel} exceeds minimum light level {Config.GetInt("MinLightLevel")}",
                     "Set Max Light Level", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
@@ -8821,7 +8936,8 @@ namespace Assistant
 
             if (lightLevel < Config.GetInt("MaxLightLevel"))
             {
-                MessageBox.Show(this, $"Selected minimum light level {lightLevel} exceeds maximum light level {Config.GetInt("MaxLightLevel")}",
+                MessageBox.Show(this,
+                    $"Selected minimum light level {lightLevel} exceeds maximum light level {Config.GetInt("MaxLightLevel")}",
                     "Set Min Light Level", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
@@ -8894,11 +9010,13 @@ namespace Assistant
             switch (macroVariableList.SelectedIndex)
             {
                 case 0:
-                    string[] absTarName = { AbsoluteTargetVariables.AbsoluteTargetList[macroVariables.SelectedIndex].Name };
+                    string[] absTarName =
+                        {AbsoluteTargetVariables.AbsoluteTargetList[macroVariables.SelectedIndex].Name};
                     m.Actions.Insert(a + 1, new AbsoluteTargetVariableAction(absTarName));
                     break;
                 case 1:
-                    string[] targetName = { DoubleClickVariables.DoubleClickTargetList[macroVariables.SelectedIndex].Name };
+                    string[] targetName =
+                        {DoubleClickVariables.DoubleClickTargetList[macroVariables.SelectedIndex].Name};
                     m.Actions.Insert(a + 1, new DoubleClickVariableAction(targetName));
                     break;
             }
@@ -8914,7 +9032,7 @@ namespace Assistant
             if (macroVariables.SelectedIndex < 0)
                 return;
 
-            switch(macroVariableList.SelectedIndex)
+            switch (macroVariableList.SelectedIndex)
             {
                 case 0:
                     Targeting.OneTimeTarget(OnAbsoluteTargetListReTarget);
@@ -8958,7 +9076,6 @@ namespace Assistant
         private void filterDragonGraphics_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("FilterDragonGraphics", filterDragonGraphics.Checked);
-
         }
 
         private void dragonAnimationList_SelectedIndexChanged(object sender, EventArgs e)
@@ -8966,7 +9083,8 @@ namespace Assistant
             if (dragonAnimationList.SelectedIndex < 0)
                 return;
 
-            Config.SetProperty("DragonGraphic", Convert.ToInt32(_animationData[dragonAnimationList.SelectedIndex].body));
+            Config.SetProperty("DragonGraphic",
+                Convert.ToInt32(_animationData[dragonAnimationList.SelectedIndex].body));
         }
 
         private void drakeAnimationList_SelectedIndexChanged(object sender, EventArgs e)
@@ -9042,7 +9160,8 @@ namespace Assistant
             sb.AppendLine("{profile} - Selected profile name");
             sb.AppendLine("{account} - Account name");
 
-            MessageBox.Show(this, sb.ToString(), "Razor Title Bar Variables", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, sb.ToString(), "Razor Title Bar Variables", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         private void linkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -9110,6 +9229,11 @@ namespace Assistant
             {
                 Config.SetAppSetting("BackupPath", folder.SelectedPath);
             }
+        }
+
+        private void openBackupFolder_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
