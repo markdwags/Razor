@@ -31,14 +31,10 @@ namespace Assistant
         /// </summary>
         private System.ComponentModel.Container components = null;
         private System.Windows.Forms.Button browse;
-        private System.Windows.Forms.Button makeDef;
 
         private System.Windows.Forms.CheckBox showAtStart;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox langSel;
-        private System.Windows.Forms.CheckBox useEnc;
-        private System.Windows.Forms.Button dataBrowse;
-        private System.Windows.Forms.GroupBox groupBox3;
 
         public string ClientPath { get { return m_ClientPath; } }
         public ClientLaunch Client { get { return m_Launch; } }
@@ -49,8 +45,10 @@ namespace Assistant
         private string m_ClientPath = "";
         private ClientLaunch m_Launch = ClientLaunch.Custom;
         private TextBox uoClient;
-        private TextBox dataDir;
         private Label serverInfo;
+        private TextBox dataDir;
+        private Button dataBrowse;
+        private Label label2;
         private string m_DataDir = "";
 
         public WelcomeForm()
@@ -90,44 +88,42 @@ namespace Assistant
             this.showAtStart = new System.Windows.Forms.CheckBox();
             this.serverList = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dataDir = new System.Windows.Forms.TextBox();
+            this.dataBrowse = new System.Windows.Forms.Button();
             this.uoClient = new System.Windows.Forms.TextBox();
-            this.useEnc = new System.Windows.Forms.CheckBox();
-            this.makeDef = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.serverInfo = new System.Windows.Forms.Label();
             this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.label5 = new System.Windows.Forms.Label();
             this.langSel = new System.Windows.Forms.ComboBox();
-            this.dataBrowse = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dataDir = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(8, 20);
+            this.label1.Location = new System.Drawing.Point(8, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 19);
+            this.label1.Size = new System.Drawing.Size(101, 19);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Load Client:";
+            this.label1.Text = "Load UO Client:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // browse
             // 
-            this.browse.Location = new System.Drawing.Point(289, 16);
+            this.browse.Location = new System.Drawing.Point(308, 17);
             this.browse.Name = "browse";
-            this.browse.Size = new System.Drawing.Size(64, 23);
+            this.browse.Size = new System.Drawing.Size(64, 24);
             this.browse.TabIndex = 2;
             this.browse.Text = "Browse...";
             this.browse.Click += new System.EventHandler(this.browse_Click);
             // 
             // patchEncy
             // 
-            this.patchEncy.Location = new System.Drawing.Point(8, 45);
+            this.patchEncy.Location = new System.Drawing.Point(11, 76);
             this.patchEncy.Name = "patchEncy";
-            this.patchEncy.Size = new System.Drawing.Size(171, 20);
+            this.patchEncy.Size = new System.Drawing.Size(152, 20);
             this.patchEncy.TabIndex = 3;
             this.patchEncy.Text = "Patch client encryption";
             this.patchEncy.CheckedChanged += new System.EventHandler(this.patchEncy_CheckedChanged);
@@ -135,9 +131,9 @@ namespace Assistant
             // okay
             // 
             this.okay.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okay.Location = new System.Drawing.Point(9, 257);
+            this.okay.Location = new System.Drawing.Point(317, 201);
             this.okay.Name = "okay";
-            this.okay.Size = new System.Drawing.Size(72, 34);
+            this.okay.Size = new System.Drawing.Size(72, 43);
             this.okay.TabIndex = 6;
             this.okay.Text = "&Launch";
             this.okay.Click += new System.EventHandler(this.okay_Click);
@@ -145,9 +141,9 @@ namespace Assistant
             // quit
             // 
             this.quit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.quit.Location = new System.Drawing.Point(89, 257);
+            this.quit.Location = new System.Drawing.Point(239, 201);
             this.quit.Name = "quit";
-            this.quit.Size = new System.Drawing.Size(72, 34);
+            this.quit.Size = new System.Drawing.Size(72, 43);
             this.quit.TabIndex = 7;
             this.quit.Text = "&Quit";
             this.quit.Click += new System.EventHandler(this.quit_Click);
@@ -162,7 +158,7 @@ namespace Assistant
             // 
             // showAtStart
             // 
-            this.showAtStart.Location = new System.Drawing.Point(187, 265);
+            this.showAtStart.Location = new System.Drawing.Point(12, 201);
             this.showAtStart.Name = "showAtStart";
             this.showAtStart.Size = new System.Drawing.Size(176, 20);
             this.showAtStart.TabIndex = 10;
@@ -173,59 +169,68 @@ namespace Assistant
             // 
             this.serverList.Location = new System.Drawing.Point(52, 16);
             this.serverList.Name = "serverList";
-            this.serverList.Size = new System.Drawing.Size(284, 23);
+            this.serverList.Size = new System.Drawing.Size(319, 23);
             this.serverList.TabIndex = 11;
             this.serverList.SelectedIndexChanged += new System.EventHandler(this.serverList_SelectedIndexChanged);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.dataDir);
+            this.groupBox1.Controls.Add(this.dataBrowse);
             this.groupBox1.Controls.Add(this.uoClient);
-            this.groupBox1.Controls.Add(this.useEnc);
-            this.groupBox1.Controls.Add(this.makeDef);
             this.groupBox1.Controls.Add(this.browse);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.patchEncy);
-            this.groupBox1.Location = new System.Drawing.Point(4, 4);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(359, 97);
+            this.groupBox1.Size = new System.Drawing.Size(379, 111);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Client Options";
             // 
+            // dataDir
+            // 
+            this.dataDir.Location = new System.Drawing.Point(100, 47);
+            this.dataDir.Name = "dataDir";
+            this.dataDir.ReadOnly = true;
+            this.dataDir.Size = new System.Drawing.Size(202, 23);
+            this.dataDir.TabIndex = 24;
+            // 
+            // dataBrowse
+            // 
+            this.dataBrowse.Location = new System.Drawing.Point(308, 47);
+            this.dataBrowse.Name = "dataBrowse";
+            this.dataBrowse.Size = new System.Drawing.Size(63, 23);
+            this.dataBrowse.TabIndex = 23;
+            this.dataBrowse.Text = "Browse...";
+            this.dataBrowse.Click += new System.EventHandler(this.dataBrowse_Click);
+            // 
             // uoClient
             // 
-            this.uoClient.Location = new System.Drawing.Point(81, 16);
+            this.uoClient.Location = new System.Drawing.Point(100, 18);
             this.uoClient.Name = "uoClient";
             this.uoClient.ReadOnly = true;
             this.uoClient.Size = new System.Drawing.Size(202, 23);
             this.uoClient.TabIndex = 6;
             // 
-            // useEnc
+            // label2
             // 
-            this.useEnc.Location = new System.Drawing.Point(8, 68);
-            this.useEnc.Name = "useEnc";
-            this.useEnc.Size = new System.Drawing.Size(140, 20);
-            this.useEnc.TabIndex = 5;
-            this.useEnc.Text = "Use OSI Encryption";
-            this.useEnc.CheckedChanged += new System.EventHandler(this.useEnc_CheckedChanged);
-            // 
-            // makeDef
-            // 
-            this.makeDef.Location = new System.Drawing.Point(169, 56);
-            this.makeDef.Name = "makeDef";
-            this.makeDef.Size = new System.Drawing.Size(184, 35);
-            this.makeDef.TabIndex = 4;
-            this.makeDef.Text = "Make These Settings Default";
-            this.makeDef.Click += new System.EventHandler(this.makeDef_Click);
+            this.label2.Location = new System.Drawing.Point(8, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(101, 19);
+            this.label2.TabIndex = 25;
+            this.label2.Text = "UO Data Folder:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.serverInfo);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.serverList);
-            this.groupBox2.Location = new System.Drawing.Point(4, 161);
+            this.groupBox2.Location = new System.Drawing.Point(12, 129);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(344, 66);
+            this.groupBox2.Size = new System.Drawing.Size(379, 66);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Server";
@@ -233,11 +238,11 @@ namespace Assistant
             // serverInfo
             // 
             this.serverInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.serverInfo.Font = new System.Drawing.Font("Segoe UI Semilight", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serverInfo.ForeColor = System.Drawing.Color.MidnightBlue;
             this.serverInfo.Location = new System.Drawing.Point(52, 42);
             this.serverInfo.Name = "serverInfo";
-            this.serverInfo.Size = new System.Drawing.Size(284, 21);
+            this.serverInfo.Size = new System.Drawing.Size(319, 21);
             this.serverInfo.TabIndex = 12;
             this.serverInfo.Text = "login.server.com,2593";
             this.serverInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -246,12 +251,12 @@ namespace Assistant
             // 
             this.openFile.DefaultExt = "exe";
             this.openFile.FileName = "client.exe";
-            this.openFile.Filter = "Executable Files|*.exe";
-            this.openFile.Title = "Select Client";
+            this.openFile.Filter = "UO Client|client.exe";
+            this.openFile.Title = "Select UO Client";
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(210, 236);
+            this.label5.Location = new System.Drawing.Point(12, 224);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(90, 20);
             this.label5.TabIndex = 17;
@@ -260,47 +265,18 @@ namespace Assistant
             // langSel
             // 
             this.langSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.langSel.Location = new System.Drawing.Point(276, 233);
+            this.langSel.Location = new System.Drawing.Point(80, 221);
             this.langSel.Name = "langSel";
-            this.langSel.Size = new System.Drawing.Size(72, 23);
+            this.langSel.Size = new System.Drawing.Size(95, 23);
             this.langSel.TabIndex = 18;
             this.langSel.SelectedIndexChanged += new System.EventHandler(this.langSel_SelectedIndexChanged);
-            // 
-            // dataBrowse
-            // 
-            this.dataBrowse.Location = new System.Drawing.Point(272, 18);
-            this.dataBrowse.Name = "dataBrowse";
-            this.dataBrowse.Size = new System.Drawing.Size(64, 23);
-            this.dataBrowse.TabIndex = 21;
-            this.dataBrowse.Text = "Browse...";
-            this.dataBrowse.Click += new System.EventHandler(this.dataBrowse_Click);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.dataDir);
-            this.groupBox3.Controls.Add(this.dataBrowse);
-            this.groupBox3.Location = new System.Drawing.Point(4, 107);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(344, 48);
-            this.groupBox3.TabIndex = 23;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "UO Data Directory";
-            // 
-            // dataDir
-            // 
-            this.dataDir.Location = new System.Drawing.Point(7, 19);
-            this.dataDir.Name = "dataDir";
-            this.dataDir.ReadOnly = true;
-            this.dataDir.Size = new System.Drawing.Size(261, 23);
-            this.dataDir.TabIndex = 22;
             // 
             // WelcomeForm
             // 
             this.AcceptButton = this.okay;
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.CancelButton = this.quit;
-            this.ClientSize = new System.Drawing.Size(367, 300);
-            this.Controls.Add(this.groupBox3);
+            this.ClientSize = new System.Drawing.Size(401, 252);
             this.Controls.Add(this.langSel);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox2);
@@ -321,8 +297,6 @@ namespace Assistant
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -497,8 +471,7 @@ namespace Assistant
             IsValidClientAndDataDir();
 
             patchEncy.Checked = Config.GetAppSetting<int>("PatchEncy") != 0;
-            useEnc.Checked = Config.GetAppSetting<int>("ServerEnc") != 0;
-
+            
             LoginCFG_SE lse = new LoginCFG_SE();
             Custom_SE cse;
 
@@ -587,19 +560,14 @@ namespace Assistant
                 PathElipsis pe = new PathElipsis(openFile.FileName);
 
                 uoClient.Text = pe.GetPath();
+                
+                dataDir.Text = m_DataDir = Path.GetDirectoryName(uoClient.Text);
+
+                Config.SetAppSetting("UODataDir", dataDir.Text);
+                Config.SetAppSetting("UOClient", uoClient.Text);
 
                 IsValidClientAndDataDir();
             }
-        }
-
-        private void makeDef_Click(object sender, System.EventArgs e)
-        {
-
-            Config.SetAppSetting("PatchEncy", patchEncy.Checked ? "1" : "0");
-            Config.SetAppSetting("ServerEnc", useEnc.Checked ? "1" : "0");
-
-            MessageBox.Show(this, Language.GetString(LocString.SaveOK), "Done", MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
         }
 
         private void serverList_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -611,6 +579,8 @@ namespace Assistant
 
         private void okay_Click(object sender, System.EventArgs e)
         {
+            Config.SetAppSetting("PatchEncy", patchEncy.Checked ? "1" : "0");
+
             m_PatchEncy = patchEncy.Checked;
 
             m_Launch = ClientLaunch.TwoD;
@@ -737,11 +707,6 @@ namespace Assistant
             }
         }
 
-        private void useEnc_CheckedChanged(object sender, System.EventArgs e)
-        {
-            ClientCommunication.ServerEncrypted = useEnc.Checked;
-        }
-
         private void dataBrowse_Click(object sender, System.EventArgs e)
         {
             FolderBrowserDialog folder = new FolderBrowserDialog();
@@ -759,10 +724,6 @@ namespace Assistant
 
                 IsValidClientAndDataDir();
             }
-        }
-
-        private void dataDir_TextChanged(object sender, System.EventArgs e)
-        {
         }
 
         private void WelcomeForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -788,5 +749,6 @@ namespace Assistant
             okay.Enabled = true;
             return true;
         }
+
     }
 }

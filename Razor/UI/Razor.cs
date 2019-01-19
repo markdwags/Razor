@@ -878,7 +878,7 @@ namespace Assistant
             // lastBackup
             //
             this.lastBackup.AutoSize = true;
-            this.lastBackup.Location = new System.Drawing.Point(27, 61);
+            this.lastBackup.Location = new System.Drawing.Point(6, 62);
             this.lastBackup.Name = "lastBackup";
             this.lastBackup.Size = new System.Drawing.Size(176, 15);
             this.lastBackup.TabIndex = 73;
@@ -966,7 +966,7 @@ namespace Assistant
             //
             this.opacity.AutoSize = false;
             this.opacity.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this.opacity.Location = new System.Drawing.Point(324, 197);
+            this.opacity.Location = new System.Drawing.Point(324, 201);
             this.opacity.Maximum = 100;
             this.opacity.Minimum = 10;
             this.opacity.Name = "opacity";
@@ -988,7 +988,7 @@ namespace Assistant
             //
             // opacityLabel
             //
-            this.opacityLabel.Location = new System.Drawing.Point(238, 197);
+            this.opacityLabel.Location = new System.Drawing.Point(238, 201);
             this.opacityLabel.Name = "opacityLabel";
             this.opacityLabel.Size = new System.Drawing.Size(89, 19);
             this.opacityLabel.TabIndex = 65;
@@ -1018,7 +1018,7 @@ namespace Assistant
             //
             // saveProfile
             //
-            this.saveProfile.Location = new System.Drawing.Point(62, 54);
+            this.saveProfile.Location = new System.Drawing.Point(63, 56);
             this.saveProfile.Name = "saveProfile";
             this.saveProfile.Size = new System.Drawing.Size(50, 30);
             this.saveProfile.TabIndex = 4;
@@ -1027,7 +1027,7 @@ namespace Assistant
             //
             // cloneProfile
             //
-            this.cloneProfile.Location = new System.Drawing.Point(118, 54);
+            this.cloneProfile.Location = new System.Drawing.Point(119, 56);
             this.cloneProfile.Name = "cloneProfile";
             this.cloneProfile.Size = new System.Drawing.Size(50, 30);
             this.cloneProfile.TabIndex = 3;
@@ -1036,7 +1036,7 @@ namespace Assistant
             //
             // delProfile
             //
-            this.delProfile.Location = new System.Drawing.Point(174, 54);
+            this.delProfile.Location = new System.Drawing.Point(175, 56);
             this.delProfile.Name = "delProfile";
             this.delProfile.Size = new System.Drawing.Size(50, 30);
             this.delProfile.TabIndex = 2;
@@ -1045,7 +1045,7 @@ namespace Assistant
             //
             // newProfile
             //
-            this.newProfile.Location = new System.Drawing.Point(6, 54);
+            this.newProfile.Location = new System.Drawing.Point(7, 56);
             this.newProfile.Name = "newProfile";
             this.newProfile.Size = new System.Drawing.Size(50, 30);
             this.newProfile.TabIndex = 1;
@@ -1055,11 +1055,12 @@ namespace Assistant
             // profiles
             //
             this.profiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.profiles.ItemHeight = 15;
+            this.profiles.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profiles.ItemHeight = 20;
             this.profiles.Location = new System.Drawing.Point(6, 22);
             this.profiles.MaxDropDownItems = 5;
             this.profiles.Name = "profiles";
-            this.profiles.Size = new System.Drawing.Size(217, 23);
+            this.profiles.Size = new System.Drawing.Size(217, 28);
             this.profiles.TabIndex = 0;
             this.profiles.SelectedIndexChanged += new System.EventHandler(this.profiles_SelectedIndexChanged);
             //
@@ -3017,11 +3018,12 @@ namespace Assistant
             //
             // loopMacro
             //
-            this.loopMacro.Location = new System.Drawing.Point(230, 242);
+            this.loopMacro.Location = new System.Drawing.Point(233, 242);
             this.loopMacro.Name = "loopMacro";
-            this.loopMacro.Size = new System.Drawing.Size(62, 24);
+            this.loopMacro.Size = new System.Drawing.Size(57, 24);
             this.loopMacro.TabIndex = 4;
             this.loopMacro.Text = "Loop";
+            this.loopMacro.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.loopMacro.CheckedChanged += new System.EventHandler(this.loopMacro_CheckedChanged);
             //
             // recMacro

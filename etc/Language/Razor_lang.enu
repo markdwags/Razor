@@ -4,21 +4,18 @@
 
 [controls]
 WelcomeForm::Text=Welcome to Razor!
-WelcomeForm::groupBox3=UO Data Directory
 WelcomeForm::dataBrowse=Browse...
 WelcomeForm::label5=Language:
 WelcomeForm::groupBox2=Server
 WelcomeForm::label3=Server:
 WelcomeForm::label4=Port:
 WelcomeForm::groupBox1=Client Options
-WelcomeForm::useEnc=Use OSI Encryption
-WelcomeForm::makeDef=Make These Settings Default
 WelcomeForm::browse=Browse...
-WelcomeForm::label1=Load Client:
+WelcomeForm::label1=Load UO Client:
 WelcomeForm::patchEncy=Patch client encryption
 WelcomeForm::showAtStart=Show this when Razor starts
 WelcomeForm::quit=&Quit
-WelcomeForm::okay=&OK
+WelcomeForm::okay=&Launch
 
 MainForm::Text=Razor v{0}
 MainForm::generalTab=General
