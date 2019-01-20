@@ -850,7 +850,7 @@ namespace Assistant
             this.groupBox16.Controls.Add(this.createBackup);
             this.groupBox16.Location = new System.Drawing.Point(6, 139);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(229, 124);
+            this.groupBox16.Size = new System.Drawing.Size(229, 125);
             this.groupBox16.TabIndex = 74;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Backup Profiles && Macros";
@@ -912,7 +912,7 @@ namespace Assistant
             //
             // systray
             //
-            this.systray.Location = new System.Drawing.Point(298, 93);
+            this.systray.Location = new System.Drawing.Point(371, 89);
             this.systray.Name = "systray";
             this.systray.Size = new System.Drawing.Size(88, 23);
             this.systray.TabIndex = 69;
@@ -921,7 +921,7 @@ namespace Assistant
             //
             // taskbar
             //
-            this.taskbar.Location = new System.Drawing.Point(298, 70);
+            this.taskbar.Location = new System.Drawing.Point(301, 89);
             this.taskbar.Name = "taskbar";
             this.taskbar.Size = new System.Drawing.Size(79, 23);
             this.taskbar.TabIndex = 68;
@@ -939,7 +939,7 @@ namespace Assistant
             //
             // label7
             //
-            this.label7.Location = new System.Drawing.Point(238, 159);
+            this.label7.Location = new System.Drawing.Point(241, 159);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(68, 18);
             this.label7.TabIndex = 70;
@@ -947,7 +947,7 @@ namespace Assistant
             //
             // label11
             //
-            this.label11.Location = new System.Drawing.Point(238, 74);
+            this.label11.Location = new System.Drawing.Point(241, 93);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(54, 16);
             this.label11.TabIndex = 67;
@@ -955,7 +955,7 @@ namespace Assistant
             //
             // showWelcome
             //
-            this.showWelcome.Location = new System.Drawing.Point(241, 16);
+            this.showWelcome.Location = new System.Drawing.Point(244, 28);
             this.showWelcome.Name = "showWelcome";
             this.showWelcome.Size = new System.Drawing.Size(152, 23);
             this.showWelcome.TabIndex = 66;
@@ -966,11 +966,11 @@ namespace Assistant
             //
             this.opacity.AutoSize = false;
             this.opacity.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this.opacity.Location = new System.Drawing.Point(324, 201);
+            this.opacity.Location = new System.Drawing.Point(327, 201);
             this.opacity.Maximum = 100;
             this.opacity.Minimum = 10;
             this.opacity.Name = "opacity";
-            this.opacity.Size = new System.Drawing.Size(174, 21);
+            this.opacity.Size = new System.Drawing.Size(169, 21);
             this.opacity.TabIndex = 64;
             this.opacity.TickFrequency = 0;
             this.opacity.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -979,7 +979,7 @@ namespace Assistant
             //
             // alwaysTop
             //
-            this.alwaysTop.Location = new System.Drawing.Point(241, 41);
+            this.alwaysTop.Location = new System.Drawing.Point(244, 57);
             this.alwaysTop.Name = "alwaysTop";
             this.alwaysTop.Size = new System.Drawing.Size(162, 23);
             this.alwaysTop.TabIndex = 63;
@@ -988,7 +988,7 @@ namespace Assistant
             //
             // opacityLabel
             //
-            this.opacityLabel.Location = new System.Drawing.Point(238, 201);
+            this.opacityLabel.Location = new System.Drawing.Point(241, 201);
             this.opacityLabel.Name = "opacityLabel";
             this.opacityLabel.Size = new System.Drawing.Size(89, 19);
             this.opacityLabel.TabIndex = 65;
@@ -996,7 +996,7 @@ namespace Assistant
             //
             // label9
             //
-            this.label9.Location = new System.Drawing.Point(238, 130);
+            this.label9.Location = new System.Drawing.Point(241, 130);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(129, 18);
             this.label9.TabIndex = 72;
@@ -1571,16 +1571,16 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             //
             // autoFriend
             //
-            this.autoFriend.Location = new System.Drawing.Point(279, 12);
+            this.autoFriend.Location = new System.Drawing.Point(265, 12);
             this.autoFriend.Name = "autoFriend";
             this.autoFriend.Size = new System.Drawing.Size(217, 20);
             this.autoFriend.TabIndex = 92;
@@ -1589,7 +1589,7 @@ namespace Assistant
             //
             // showtargtext
             //
-            this.showtargtext.Location = new System.Drawing.Point(9, 195);
+            this.showtargtext.Location = new System.Drawing.Point(9, 170);
             this.showtargtext.Name = "showtargtext";
             this.showtargtext.Size = new System.Drawing.Size(212, 20);
             this.showtargtext.TabIndex = 91;
@@ -1599,7 +1599,7 @@ namespace Assistant
             // showAttackTargetNewOnly
             //
             this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showAttackTargetNewOnly.Location = new System.Drawing.Point(190, 221);
+            this.showAttackTargetNewOnly.Location = new System.Drawing.Point(190, 196);
             this.showAttackTargetNewOnly.Name = "showAttackTargetNewOnly";
             this.showAttackTargetNewOnly.Size = new System.Drawing.Size(121, 44);
             this.showAttackTargetNewOnly.TabIndex = 90;
@@ -1609,7 +1609,7 @@ namespace Assistant
             //
             // showTextTargetIndicator
             //
-            this.showTextTargetIndicator.Location = new System.Drawing.Point(9, 246);
+            this.showTextTargetIndicator.Location = new System.Drawing.Point(9, 221);
             this.showTextTargetIndicator.Name = "showTextTargetIndicator";
             this.showTextTargetIndicator.Size = new System.Drawing.Size(232, 19);
             this.showTextTargetIndicator.TabIndex = 89;
@@ -1619,7 +1619,7 @@ namespace Assistant
             //
             // showAttackTarget
             //
-            this.showAttackTarget.Location = new System.Drawing.Point(9, 221);
+            this.showAttackTarget.Location = new System.Drawing.Point(9, 196);
             this.showAttackTarget.Name = "showAttackTarget";
             this.showAttackTarget.Size = new System.Drawing.Size(232, 19);
             this.showAttackTarget.TabIndex = 88;
@@ -1630,7 +1630,7 @@ namespace Assistant
             // showTargetMessagesOverChar
             //
             this.showTargetMessagesOverChar.AutoSize = true;
-            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(9, 170);
+            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(265, 38);
             this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
             this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
             this.showTargetMessagesOverChar.TabIndex = 74;
@@ -1810,11 +1810,11 @@ namespace Assistant
             // stealthOverhead
             //
             this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stealthOverhead.Location = new System.Drawing.Point(397, 55);
+            this.stealthOverhead.Location = new System.Drawing.Point(389, 64);
             this.stealthOverhead.Name = "stealthOverhead";
-            this.stealthOverhead.Size = new System.Drawing.Size(96, 36);
+            this.stealthOverhead.Size = new System.Drawing.Size(99, 20);
             this.stealthOverhead.TabIndex = 117;
-            this.stealthOverhead.Text = "Show overhead";
+            this.stealthOverhead.Text = "Overhead";
             this.stealthOverhead.UseVisualStyleBackColor = true;
             this.stealthOverhead.CheckedChanged += new System.EventHandler(this.stealthOverhead_CheckedChanged);
             //
@@ -2837,7 +2837,7 @@ namespace Assistant
             // hkStatus
             //
             this.hkStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hkStatus.Location = new System.Drawing.Point(337, 172);
+            this.hkStatus.Location = new System.Drawing.Point(337, 206);
             this.hkStatus.Name = "hkStatus";
             this.hkStatus.Size = new System.Drawing.Size(175, 64);
             this.hkStatus.TabIndex = 7;
@@ -3756,7 +3756,7 @@ namespace Assistant
             this.screensList.ItemHeight = 15;
             this.screensList.Location = new System.Drawing.Point(8, 36);
             this.screensList.Name = "screensList";
-            this.screensList.Size = new System.Drawing.Size(243, 92);
+            this.screensList.Size = new System.Drawing.Size(252, 92);
             this.screensList.Sorted = true;
             this.screensList.TabIndex = 1;
             this.screensList.SelectedIndexChanged += new System.EventHandler(this.screensList_SelectedIndexChanged);
@@ -3815,7 +3815,7 @@ namespace Assistant
             //
             this.disableSmartCPU.Location = new System.Drawing.Point(392, 156);
             this.disableSmartCPU.Name = "disableSmartCPU";
-            this.disableSmartCPU.Size = new System.Drawing.Size(119, 21);
+            this.disableSmartCPU.Size = new System.Drawing.Size(119, 22);
             this.disableSmartCPU.TabIndex = 74;
             this.disableSmartCPU.Text = "Disable SmartCPU";
             this.disableSmartCPU.UseVisualStyleBackColor = true;
@@ -3893,7 +3893,7 @@ namespace Assistant
             this.features.Name = "features";
             this.features.ReadOnly = true;
             this.features.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.features.Size = new System.Drawing.Size(274, 79);
+            this.features.Size = new System.Drawing.Size(271, 79);
             this.features.TabIndex = 65;
             this.features.Visible = false;
             //
@@ -3930,7 +3930,7 @@ namespace Assistant
             //
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(74, 182);
+            this.label24.Location = new System.Drawing.Point(74, 212);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(384, 17);
             this.label24.TabIndex = 22;
@@ -3940,7 +3940,7 @@ namespace Assistant
             //
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(93, 96);
+            this.label20.Location = new System.Drawing.Point(93, 126);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(343, 17);
             this.label20.TabIndex = 21;
@@ -3949,9 +3949,9 @@ namespace Assistant
             // linkLabel1
             //
             this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.Location = new System.Drawing.Point(9, 64);
+            this.linkLabel1.Location = new System.Drawing.Point(6, 94);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(503, 20);
+            this.linkLabel1.Size = new System.Drawing.Size(506, 20);
             this.linkLabel1.TabIndex = 20;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "http://www.uorenaissance.com";
@@ -3962,7 +3962,7 @@ namespace Assistant
             //
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(52, 165);
+            this.label23.Location = new System.Drawing.Point(52, 195);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(422, 17);
             this.label23.TabIndex = 19;
@@ -3971,9 +3971,9 @@ namespace Assistant
             // aboutSubInfo
             //
             this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutSubInfo.Location = new System.Drawing.Point(8, 45);
+            this.aboutSubInfo.Location = new System.Drawing.Point(6, 75);
             this.aboutSubInfo.Name = "aboutSubInfo";
-            this.aboutSubInfo.Size = new System.Drawing.Size(504, 19);
+            this.aboutSubInfo.Size = new System.Drawing.Size(506, 19);
             this.aboutSubInfo.TabIndex = 17;
             this.aboutSubInfo.Text = "UO Renaissance Community Edition";
             this.aboutSubInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3981,9 +3981,9 @@ namespace Assistant
             // linkMain
             //
             this.linkMain.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkMain.Location = new System.Drawing.Point(30, 113);
+            this.linkMain.Location = new System.Drawing.Point(6, 143);
             this.linkMain.Name = "linkMain";
-            this.linkMain.Size = new System.Drawing.Size(459, 20);
+            this.linkMain.Size = new System.Drawing.Size(506, 20);
             this.linkMain.TabIndex = 16;
             this.linkMain.TabStop = true;
             this.linkMain.Text = "http://www.uor-razor.com";
@@ -4003,9 +4003,9 @@ namespace Assistant
             // aboutVer
             //
             this.aboutVer.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutVer.Location = new System.Drawing.Point(12, 10);
+            this.aboutVer.Location = new System.Drawing.Point(6, 40);
             this.aboutVer.Name = "aboutVer";
-            this.aboutVer.Size = new System.Drawing.Size(500, 35);
+            this.aboutVer.Size = new System.Drawing.Size(506, 35);
             this.aboutVer.TabIndex = 14;
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
