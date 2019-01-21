@@ -97,19 +97,32 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.TargetRandom, new HotKeyCallback(TargetRandAnyone));
 
             HotKey.Add(HKCategory.Targets, LocString.TargRandRed, new HotKeyCallback(TargetRandRed));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandNFriend, new HotKeyCallback(TargetRandNonFriendly));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandFriend, new HotKeyCallback(TargetRandFriendly));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandBlue, new HotKeyCallback(TargetRandInnocent));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandGrey, new HotKeyCallback(TargetRandGrey));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandGreyMonster, new HotKeyCallback(TargetRandGreyMonster));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandEnemy, new HotKeyCallback(TargetRandEnemy));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandEnemyMonster, new HotKeyCallback(TargetRandEnemyMonster));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandCriminal, new HotKeyCallback(TargetRandCriminal));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomRedHuman, new HotKeyCallback(TargetRandRedHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomRedMonster, new HotKeyCallback(TargetRandRedMonster));
 
-            HotKey.Add(HKCategory.Targets, LocString.TargRandEnemyHuman, new HotKeyCallback(TargetRandEnemyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandGreyHuman, new HotKeyCallback(TargetRandGreyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandNFriend, new HotKeyCallback(TargetRandNonFriendly));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyHuman, new HotKeyCallback(TargetRandNonFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyMonster, new HotKeyCallback(TargetRandNonFriendlyMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargRandFriend, new HotKeyCallback(TargetRandFriendly));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyHuman, new HotKeyCallback(TargetRandFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyMonster, new HotKeyCallback(TargetRandFriendlyMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargRandBlue, new HotKeyCallback(TargetRandInnocent));
             HotKey.Add(HKCategory.Targets, LocString.TargRandInnocentHuman, new HotKeyCallback(TargetRandInnocentHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomInnocentMonster, new HotKeyCallback(TargetRandInnocentMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargRandGrey, new HotKeyCallback(TargetRandGrey));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandGreyHuman, new HotKeyCallback(TargetRandGreyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandGreyMonster, new HotKeyCallback(TargetRandGreyMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargRandEnemy, new HotKeyCallback(TargetRandEnemy));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandEnemyHuman, new HotKeyCallback(TargetRandEnemyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandEnemyMonster, new HotKeyCallback(TargetRandEnemyMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargRandCriminal, new HotKeyCallback(TargetRandCriminal));
             HotKey.Add(HKCategory.Targets, LocString.TargRandCriminalHuman, new HotKeyCallback(TargetRandCriminalHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomCriminalMonster, new HotKeyCallback(TargetRandCriminalMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.AttackLastComb, new HotKeyCallback(AttackLastComb));
             HotKey.Add(HKCategory.Targets, LocString.AttackLastTarg, new HotKeyCallback(AttackLastTarg));
@@ -123,22 +136,35 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetEnemyHumanoid, new HotKeyCallback(PrevTargetEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetHumanoid, new HotKeyCallback(PrevTargetHumanoid));
 
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseRed, new HotKeyCallback(TargetCloseRed));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseNFriend, new HotKeyCallback(TargetCloseNonFriendly));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseFriend, new HotKeyCallback(TargetCloseFriendly));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseBlue, new HotKeyCallback(TargetCloseInnocent));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseGrey, new HotKeyCallback(TargetCloseGrey));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseGreyMonster, new HotKeyCallback(TargetCloseGreyMonster));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseEnemy, new HotKeyCallback(TargetCloseEnemy));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseCriminal, new HotKeyCallback(TargetCloseCriminal));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosest, new HotKeyCallback(TargetClosest));
 
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseRed, new HotKeyCallback(TargetCloseRed));
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseRedHumanoid, new HotKeyCallback(TargetCloseRedHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseRedMonster, new HotKeyCallback(TargetCloseRedMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseNFriend, new HotKeyCallback(TargetCloseNonFriendly));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestNFriendlyHuman, new HotKeyCallback(TargetCloseNonFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestNFriendlyMonster, new HotKeyCallback(TargetCloseNonFriendlyMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseFriend, new HotKeyCallback(TargetCloseFriendly));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestFriendlyHuman, new HotKeyCallback(TargetCloseFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestFriendlyMonster, new HotKeyCallback(TargetCloseFriendlyMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseBlue, new HotKeyCallback(TargetCloseInnocent));
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseInnocentHuman, new HotKeyCallback(TargetCloseInnocentHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestInnocentMonster, new HotKeyCallback(TargetCloseInnocentMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseGrey, new HotKeyCallback(TargetCloseGrey));
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseGreyHuman, new HotKeyCallback(TargetCloseGreyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseGreyMonster, new HotKeyCallback(TargetCloseGreyMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseCriminal, new HotKeyCallback(TargetCloseCriminal));
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseCriminalHuman, new HotKeyCallback(TargetCloseCriminalHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestCriminalMonster, new HotKeyCallback(TargetCloseCriminalMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseEnemy, new HotKeyCallback(TargetCloseEnemy));
             HotKey.Add(HKCategory.Targets, LocString.TargCloseEnemyHuman, new HotKeyCallback(TargetCloseEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.TargCloseEnemyMonster, new HotKeyCallback(TargetCloseEnemyMonster));
-
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseGreyHuman, new HotKeyCallback(TargetCloseGreyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseInnocentHuman, new HotKeyCallback(TargetCloseInnocentHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseCriminalHuman, new HotKeyCallback(TargetCloseCriminalHumanoid));
-
         }
 
         private static void CombatantChange(PacketReader p, PacketHandlerEventArgs e)
@@ -372,9 +398,29 @@ namespace Assistant
             RandomTarget((int) TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
         }
 
+        public static void TargetRandNonFriendlyHumanoid()
+        {
+            RandomHumanoidTarget((int)TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+        }
+
+        public static void TargetRandNonFriendlyMonster()
+        {
+            RandomMonsterTarget((int)TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+        }
+
         public static void TargetRandFriendly()
         {
             RandomTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+        }
+
+        public static void TargetRandFriendlyHumanoid()
+        {
+            RandomHumanoidTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+        }
+
+        public static void TargetRandFriendlyMonster()
+        {
+            RandomMonsterTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
         }
 
         public static void TargetRandEnemy()
@@ -395,6 +441,16 @@ namespace Assistant
         public static void TargetRandRed()
         {
             RandomTarget((int)TargetType.Murderer);
+        }
+
+        public static void TargetRandRedHumanoid()
+        {
+            RandomHumanoidTarget((int)TargetType.Murderer);
+        }
+
+        public static void TargetRandRedMonster()
+        {
+            RandomMonsterTarget((int)TargetType.Murderer);
         }
 
         public static void TargetRandGrey()
@@ -421,6 +477,10 @@ namespace Assistant
         {
             RandomHumanoidTarget((int)TargetType.Criminal);
         }
+        public static void TargetRandCriminalMonster()
+        {
+            RandomMonsterTarget((int)TargetType.Criminal);
+        }
 
         public static void TargetRandInnocent()
         {
@@ -430,6 +490,11 @@ namespace Assistant
         public static void TargetRandInnocentHumanoid()
         {
             RandomHumanoidTarget((int)TargetType.Innocent);
+        }
+
+        public static void TargetRandInnocentMonster()
+        {
+            RandomMonsterTarget((int)TargetType.Innocent);
         }
 
         public static void TargetRandAnyone()
@@ -542,67 +607,107 @@ namespace Assistant
 
         public static void TargetCloseNonFriendly()
         {
-            ClosestTarget(3, 4, 5, 6);
+            ClosestTarget((int) TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+        }
+
+        public static void TargetCloseNonFriendlyHumanoid()
+        {
+            ClosestHumanoidTarget((int)TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+        }
+
+        public static void TargetCloseNonFriendlyMonster()
+        {
+            ClosestMonsterTarget((int)TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
         }
 
         public static void TargetCloseFriendly()
         {
-            ClosestTarget(0, 1, 2);
+            ClosestTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+        }
+
+        public static void TargetCloseFriendlyHumanoid()
+        {
+            ClosestTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+        }
+
+        public static void TargetCloseFriendlyMonster()
+        {
+            ClosestTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
         }
 
         public static void TargetCloseEnemy()
         {
-            ClosestTarget(5);
+            ClosestTarget((int)TargetType.Enemy);
         }
 
         public static void TargetCloseEnemyHumanoid()
         {
-            ClosestHumanoidTarget(5);
+            ClosestHumanoidTarget((int)TargetType.Enemy);
         }
 
         public static void TargetCloseEnemyMonster()
         {
-            ClosestMonsterTarget(5);
+            ClosestMonsterTarget((int)TargetType.Enemy);
         }
 
         public static void TargetCloseRed()
         {
-            ClosestTarget(6);
+            ClosestTarget((int)TargetType.Murderer);
+        }
+
+        public static void TargetCloseRedMonster()
+        {
+            ClosestMonsterTarget((int)TargetType.Murderer);
+        }
+
+        public static void TargetCloseRedHumanoid()
+        {
+            ClosestHumanoidTarget((int)TargetType.Murderer);
         }
 
         public static void TargetCloseGrey()
         {
-            ClosestTarget(3, 4);
+            ClosestTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
         }
 
         public static void TargetCloseGreyMonster()
         {
-            ClosestMonsterTarget(3, 4);
+            ClosestMonsterTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
         }
 
         public static void TargetCloseGreyHumanoid()
         {
-            ClosestHumanoidTarget(3, 4);
+            ClosestHumanoidTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
         }
 
         public static void TargetCloseCriminal()
         {
-            ClosestTarget(4);
+            ClosestTarget((int)TargetType.Criminal);
         }
 
         public static void TargetCloseCriminalHumanoid()
         {
-            ClosestHumanoidTarget(4);
+            ClosestHumanoidTarget((int)TargetType.Criminal);
+        }
+
+        public static void TargetCloseCriminalMonster()
+        {
+            ClosestHumanoidTarget((int)TargetType.Criminal);
         }
 
         public static void TargetCloseInnocent()
         {
-            ClosestTarget(1);
+            ClosestTarget((int)TargetType.Innocent);
         }
 
         public static void TargetCloseInnocentHumanoid()
         {
-            ClosestHumanoidTarget(1);
+            ClosestHumanoidTarget((int)TargetType.Innocent);
+        }
+
+        public static void TargetCloseInnocentMonster()
+        {
+            ClosestMonsterTarget((int)TargetType.Innocent);
         }
 
         public static void TargetClosest()

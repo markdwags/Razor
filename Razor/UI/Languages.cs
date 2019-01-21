@@ -448,6 +448,23 @@ namespace Assistant
         DisableHotkeys,
         ClientDataMismatch,
         TargetRandom,
+        TargCloseRedMonster,
+        TargCloseRedHumanoid,
+        TargClosest,
+        TargRandomRedHuman,
+        TargRandomRedMonster,
+        TargRandomNFriendlyHuman,
+        TargRandomNFriendlyMonster,
+        TargRandomFriendlyHuman,
+        TargRandomFriendlyMonster,
+        TargRandomInnocentMonster,
+        TargRandomCriminalMonster,
+        TargClosestNFriendlyHuman,
+        TargClosestNFriendlyMonster,
+        TargClosestFriendlyHuman,
+        TargClosestFriendlyMonster,
+        TargClosestInnocentMonster,
+        TargClosestCriminalMonster,
 
         __End
     }
