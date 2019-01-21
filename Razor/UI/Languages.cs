@@ -447,6 +447,7 @@ namespace Assistant
         EnableHotkeys,
         DisableHotkeys,
         ClientDataMismatch,
+        TargetRandom,
 
         __End
     }
