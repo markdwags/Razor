@@ -837,6 +837,11 @@ namespace Assistant
                 Config.SetAppSetting("UODataDir", dataDir.Text);
 
                 IsValidClientAndDataDir();
+
+                if (!dataDir.Text.Equals(Path.GetDirectoryName(uoClient.Text)))
+                {
+                    MessageBox.Show(Language.GetString(LocString.ClientDataMismatch), "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 

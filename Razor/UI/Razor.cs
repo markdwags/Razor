@@ -848,7 +848,7 @@ namespace Assistant
             this.groupBox16.Controls.Add(this.setBackupFolder);
             this.groupBox16.Controls.Add(this.lastBackup);
             this.groupBox16.Controls.Add(this.createBackup);
-            this.groupBox16.Location = new System.Drawing.Point(6, 139);
+            this.groupBox16.Location = new System.Drawing.Point(6, 107);
             this.groupBox16.Name = "groupBox16";
             this.groupBox16.Size = new System.Drawing.Size(229, 125);
             this.groupBox16.TabIndex = 74;
@@ -1011,7 +1011,7 @@ namespace Assistant
             this.groupBox4.Controls.Add(this.profiles);
             this.groupBox4.Location = new System.Drawing.Point(6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(229, 127);
+            this.groupBox4.Size = new System.Drawing.Size(229, 95);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Profiles";

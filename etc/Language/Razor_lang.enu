@@ -703,3 +703,4 @@ InputBox::ok=&OK
 1996=Toogle Damage Tracker
 1997=>> Enable Razor HotKeys
 1998=>> Disable Razor HotKeys
+1999=Your UO data directory and UO client path do not match. This can cause issues such as missing animations and graphics.

@@ -446,6 +446,7 @@ namespace Assistant
         DamageTracker,
         EnableHotkeys,
         DisableHotkeys,
+        ClientDataMismatch,
 
         __End
     }
