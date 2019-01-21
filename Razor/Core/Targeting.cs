@@ -71,6 +71,18 @@ namespace Assistant
              0x9F, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xB4, 0x4C, 0x4D, 0x3D
          };
 
+        private enum TargetType
+        {
+            Invalid, // invalid/across server line
+            Innocent, //Blue
+            GuildAlly, //Green,
+            Attackable, //Attackable but not criminal (gray)
+            Criminal, //gray
+            Enemy, //orange
+            Murderer //red
+        }
+
+
         public static void Initialize()
         {
             PacketHandler.RegisterClientToServerViewer(0x6C, new PacketViewerCallback(TargetResponse));
@@ -354,67 +366,67 @@ namespace Assistant
 
         public static void TargetRandNonFriendly()
         {
-            RandomTarget(3, 4, 5, 6);
+            RandomTarget((int) TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
         }
 
         public static void TargetRandFriendly()
         {
-            RandomTarget(0, 1, 2);
+            RandomTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
         }
 
         public static void TargetRandEnemy()
         {
-            RandomTarget(5);
+            RandomTarget((int)TargetType.Enemy);
         }
 
         public static void TargetRandEnemyMonster()
         {
-            RandomMonsterTarget(5);
+            RandomMonsterTarget((int)TargetType.Enemy);
         }
 
         public static void TargetRandEnemyHumanoid()
         {
-            RandomHumanoidTarget(5);
+            RandomHumanoidTarget((int)TargetType.Enemy);
         }
 
         public static void TargetRandRed()
         {
-            RandomTarget(6);
+            RandomTarget((int)TargetType.Murderer);
         }
 
         public static void TargetRandGrey()
         {
-            RandomTarget(3, 4);
+            RandomTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
         }
 
         public static void TargetRandGreyMonster()
         {
-            RandomMonsterTarget(3, 4);
+            RandomMonsterTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
         }
 
         public static void TargetRandGreyHumanoid()
         {
-            RandomHumanoidTarget(3, 4);
+            RandomHumanoidTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
         }
 
         public static void TargetRandCriminal()
         {
-            RandomTarget(4);
+            RandomTarget((int)TargetType.Criminal);
         }
 
         public static void TargetRandCriminalHumanoid()
         {
-            RandomHumanoidTarget(4);
+            RandomHumanoidTarget((int)TargetType.Criminal);
         }
 
         public static void TargetRandInnocent()
         {
-            RandomTarget(1);
+            RandomTarget((int)TargetType.Innocent);
         }
 
         public static void TargetRandInnocentHumanoid()
         {
-            RandomHumanoidTarget(1);
+            RandomHumanoidTarget((int)TargetType.Innocent);
         }
 
         public static void TargetRandAnyone()
