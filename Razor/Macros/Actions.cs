@@ -2804,5 +2804,175 @@ namespace Assistant.Macros
             return String.Format("ContextMenu: {1} ({0})", ent, m_Idx);
         }
     }
+
+    public class PromptAction : MacroAction
+    {
+        private string m_Response;
+
+        public PromptAction(string[] args)
+        {
+            m_Response = args[1];
+        }
+
+        public PromptAction(string response)
+        {
+            m_Response = response;
+        }
+
+        public override bool Perform()
+        {
+            if (m_Response.Length > 1)
+            {
+                World.Player.ResponsePrompt(m_Response);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public override string Serialize()
+        {
+            return DoSerialize(m_Response);
+        }
+
+        public override string ToString()
+        {
+            return $"PromptAction: {m_Response}";
+        }
+
+        private MenuItem[] m_MenuItems;
+
+        public override MenuItem[] GetContextMenuItems()
+        {
+            if (this.m_MenuItems == null)
+                this.m_MenuItems = (MenuItem[])new MacroMenuItem[1]
+                {
+          new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
+                };
+            return this.m_MenuItems;
+        }
+
+        private void Edit(object[] args)
+        {
+            if (InputBox.Show(Language.GetString(LocString.EnterNewText), "Input Box", this.m_Response))
+                m_Response = InputBox.GetString();
+
+            Parent?.Update();
+        }
+    }
+
+    public class WaitForPromptAction : MacroWaitAction
+    {
+        private uint m_PromptID;
+        private bool m_Strict;
+
+        public WaitForPromptAction()
+        {
+            m_PromptID = 0;
+            m_Strict = false;
+        }
+
+        public WaitForPromptAction(uint gid)
+        {
+            m_PromptID = gid;
+            m_Strict = false;
+        }
+
+        public WaitForPromptAction(string[] args)
+        {
+            m_PromptID = Convert.ToUInt32(args[1]);
+            try
+            {
+                m_Strict = Convert.ToBoolean(args[2]);
+            }
+            catch
+            {
+                m_Strict = false;
+            }
+
+            try
+            {
+                m_Timeout = TimeSpan.FromSeconds(Convert.ToDouble(args[3]));
+            }
+            catch
+            {
+            }
+        }
+
+        public override bool Perform()
+        {
+            return !PerformWait();
+        }
+
+        public override bool PerformWait()
+        {
+            return !(World.Player.HasPrompt && (World.Player.PromptID == m_PromptID || !m_Strict || m_PromptID == 0));
+        }
+
+        public override string ToString()
+        {
+            //if (m_PromptID == 0 || !m_Strict)
+            //    return Language.GetString(LocString.WaitAnyGump);
+            //else
+            //    return Language.Format(LocString.WaitGumpA1, m_GumpID);
+
+            if (m_PromptID == 0 || !m_Strict)
+                return "Wait For Prompt (Any)";
+
+            return $"Wait For Prompt ({m_PromptID})";
+        }
+
+        public override string Serialize()
+        {
+            return DoSerialize(m_PromptID, m_Strict, m_Timeout.TotalSeconds);
+        }
+
+        public override bool CheckMatch(MacroAction a)
+        {
+            if (a is WaitForGumpAction)
+            {
+                if (m_PromptID == 0 || ((WaitForPromptAction)a).m_PromptID == m_PromptID)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private MenuItem[] m_MenuItems;
+        public override MenuItem[] GetContextMenuItems()
+        {
+            if (m_MenuItems == null)
+            {
+                m_MenuItems = new MacroMenuItem[]
+                {
+                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
+                         new MacroMenuItem( LocString.Null, new MacroMenuCallback( ToggleStrict ) ),
+                         this.EditTimeoutMenuItem
+                };
+            }
+
+            if (!m_Strict)
+                m_MenuItems[1].Text = $"Change to \"Wait For Prompt ({m_PromptID})\"";
+            else
+                m_MenuItems[1].Text = $"Change to \"Wait For Prompt (Any)\"";
+
+            m_MenuItems[1].Enabled = m_PromptID != 0 || m_Strict;
+
+            return m_MenuItems;
+        }
+
+        private void Edit(object[] args)
+        {
+            new MacroInsertWait(this).ShowDialog(Engine.MainWindow);
+        }
+
+        private void ToggleStrict(object[] args)
+        {
+            m_Strict = !m_Strict;
+            if (m_Parent != null)
+                m_Parent.Update();
+        }
+    }
 }
 

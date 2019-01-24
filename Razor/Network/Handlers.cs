@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom;
 using System.IO;
 using System.Text;
 using System.Collections;
@@ -41,6 +42,7 @@ namespace Assistant
             PacketHandler.RegisterClientToServerViewer(0xB1, new PacketViewerCallback(ClientGumpResponse));
             PacketHandler.RegisterClientToServerFilter(0xBF, new PacketFilterCallback(ExtendedClientCommand));
             //PacketHandler.RegisterClientToServerViewer( 0xD6, new PacketViewerCallback( BatchQueryProperties ) );
+            PacketHandler.RegisterClientToServerFilter(0xC2, new PacketFilterCallback(UnicodePromptSend));
             PacketHandler.RegisterClientToServerViewer(0xD7, new PacketViewerCallback(ClientEncodedPacket));
             PacketHandler.RegisterClientToServerViewer(0xF8, new PacketViewerCallback(CreateCharacter));
 
@@ -85,6 +87,7 @@ namespace Assistant
             PacketHandler.RegisterServerToClientViewer(0xBC, new PacketViewerCallback(ChangeSeason));
             PacketHandler.RegisterServerToClientViewer(0xBF, new PacketViewerCallback(ExtendedPacket));
             PacketHandler.RegisterServerToClientFilter(0xC1, new PacketFilterCallback(OnLocalizedMessage));
+            PacketHandler.RegisterServerToClientFilter(0xC2, new PacketFilterCallback(UnicodePromptReceived));
             PacketHandler.RegisterServerToClientFilter(0xC8, new PacketFilterCallback(SetUpdateRange));
             PacketHandler.RegisterServerToClientFilter(0xCC, new PacketFilterCallback(OnLocalizedMessageAffix));
             PacketHandler.RegisterServerToClientViewer(0xD6, new PacketViewerCallback(EncodedPacket));//0xD6 "encoded" packets
@@ -2999,6 +3002,57 @@ namespace Assistant
             {
                 args.Block = true;
             }
+        }
+        private static void UnicodePromptSend(Packet p, PacketHandlerEventArgs args)
+        {
+            if (World.Player == null)
+                return;
+
+            //uint serial = p.ReadUInt32();
+            //uint id = p.ReadUInt32();
+            //uint type = p.ReadUInt32();
+
+            uint serial = p.ReadUInt32();
+            uint id = p.ReadUInt32();
+            uint type = p.ReadUInt32();
+
+            string lang = p.ReadStringSafe(4);
+            string text = p.ReadUnicodeStringLESafe();
+
+            World.Player.HasPrompt = false;
+            World.Player.PromptSenderSerial = serial;
+            World.Player.PromptID = id;
+            World.Player.PromptType = type;
+            World.Player.PromptInputText = text;
+
+            if (MacroManager.AcceptActions && !string.IsNullOrEmpty(World.Player.PromptInputText))
+            {
+                MacroManager.Action(new PromptAction(World.Player.PromptInputText));
+            }
+        }
+
+        private static void UnicodePromptReceived(Packet p, PacketHandlerEventArgs args)
+        {
+            if (World.Player == null)
+                return;
+
+            uint serial = p.ReadUInt32();
+            uint id = p.ReadUInt32();
+            uint type = p.ReadUInt32();
+
+            World.Player.HasPrompt = true;
+            World.Player.PromptSenderSerial = serial;
+            World.Player.PromptID = id;
+            World.Player.PromptType = type;
+
+            if (MacroManager.AcceptActions)
+            {
+                MacroManager.Action(new WaitForPromptAction(id));
+            }
+                //args.Block = true;
+
+            //string lang = p.ReadStringSafe(4);
+            //string message = p.ReadUnicodeStringSafe();
         }
     }
 }

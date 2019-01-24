@@ -1000,6 +1000,26 @@ namespace Assistant
         public ushort CurrentMenuI;
         public bool HasMenu;
 
+        public bool HasPrompt;
+        public uint PromptSenderSerial;
+        public uint PromptID;
+        public uint PromptType;
+        public string PromptInputText;
+
+        public void CancelPrompt()
+        {
+            ClientCommunication.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 0, Language.CliLocName, string.Empty));
+            World.Player.HasPrompt = false;
+        }
+
+        public void ResponsePrompt(string text)
+        {
+            ClientCommunication.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 1, Language.CliLocName, text));
+
+            PromptInputText = text;
+            World.Player.HasPrompt = false;
+        }
+
         private ushort m_SpeechHue;
         public ushort SpeechHue { get { return m_SpeechHue; } set { m_SpeechHue = value; } }
 
