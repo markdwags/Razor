@@ -225,7 +225,7 @@ namespace Assistant.Macros
 
         private void OnReTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
         {
-            if (serial.IsItem)
+            if (serial.IsItem || serial.IsMobile)
             {
                 m_Serial = serial;
                 m_Gfx = gfx;

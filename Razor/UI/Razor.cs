@@ -877,12 +877,12 @@ namespace Assistant
             //
             // lastBackup
             //
-            this.lastBackup.AutoSize = true;
-            this.lastBackup.Location = new System.Drawing.Point(6, 62);
+            this.lastBackup.Location = new System.Drawing.Point(6, 55);
             this.lastBackup.Name = "lastBackup";
-            this.lastBackup.Size = new System.Drawing.Size(176, 15);
+            this.lastBackup.Size = new System.Drawing.Size(217, 23);
             this.lastBackup.TabIndex = 73;
             this.lastBackup.Text = "Last Backup: 01/01/2019 5:54PM";
+            this.lastBackup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             //
             // createBackup
             //
@@ -1580,7 +1580,7 @@ namespace Assistant
             //
             // autoFriend
             //
-            this.autoFriend.Location = new System.Drawing.Point(265, 12);
+            this.autoFriend.Location = new System.Drawing.Point(260, 12);
             this.autoFriend.Name = "autoFriend";
             this.autoFriend.Size = new System.Drawing.Size(217, 20);
             this.autoFriend.TabIndex = 92;
@@ -1630,7 +1630,7 @@ namespace Assistant
             // showTargetMessagesOverChar
             //
             this.showTargetMessagesOverChar.AutoSize = true;
-            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(265, 38);
+            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(260, 38);
             this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
             this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
             this.showTargetMessagesOverChar.TabIndex = 74;
@@ -1768,7 +1768,7 @@ namespace Assistant
             //
             // rememberPwds
             //
-            this.rememberPwds.Location = new System.Drawing.Point(256, 12);
+            this.rememberPwds.Location = new System.Drawing.Point(260, 12);
             this.rememberPwds.Name = "rememberPwds";
             this.rememberPwds.Size = new System.Drawing.Size(148, 20);
             this.rememberPwds.TabIndex = 121;
@@ -1778,7 +1778,7 @@ namespace Assistant
             // showStaticWalls
             //
             this.showStaticWalls.AutoSize = true;
-            this.showStaticWalls.Location = new System.Drawing.Point(256, 246);
+            this.showStaticWalls.Location = new System.Drawing.Point(260, 246);
             this.showStaticWalls.Name = "showStaticWalls";
             this.showStaticWalls.Size = new System.Drawing.Size(153, 19);
             this.showStaticWalls.TabIndex = 119;
@@ -1790,7 +1790,7 @@ namespace Assistant
             //
             this.showStaticWallLabels.AutoSize = true;
             this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showStaticWallLabels.Location = new System.Drawing.Point(417, 247);
+            this.showStaticWallLabels.Location = new System.Drawing.Point(421, 247);
             this.showStaticWallLabels.Name = "showStaticWallLabels";
             this.showStaticWallLabels.Size = new System.Drawing.Size(55, 17);
             this.showStaticWallLabels.TabIndex = 120;
@@ -1800,7 +1800,7 @@ namespace Assistant
             //
             // autoAcceptParty
             //
-            this.autoAcceptParty.Location = new System.Drawing.Point(256, 38);
+            this.autoAcceptParty.Location = new System.Drawing.Point(260, 38);
             this.autoAcceptParty.Name = "autoAcceptParty";
             this.autoAcceptParty.Size = new System.Drawing.Size(232, 20);
             this.autoAcceptParty.TabIndex = 118;
@@ -1810,7 +1810,7 @@ namespace Assistant
             // stealthOverhead
             //
             this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stealthOverhead.Location = new System.Drawing.Point(389, 64);
+            this.stealthOverhead.Location = new System.Drawing.Point(393, 64);
             this.stealthOverhead.Name = "stealthOverhead";
             this.stealthOverhead.Size = new System.Drawing.Size(99, 20);
             this.stealthOverhead.TabIndex = 117;
@@ -1820,7 +1820,7 @@ namespace Assistant
             //
             // forceSizeX
             //
-            this.forceSizeX.Location = new System.Drawing.Point(383, 217);
+            this.forceSizeX.Location = new System.Drawing.Point(387, 217);
             this.forceSizeX.Name = "forceSizeX";
             this.forceSizeX.Size = new System.Drawing.Size(34, 23);
             this.forceSizeX.TabIndex = 111;
@@ -1828,7 +1828,7 @@ namespace Assistant
             //
             // forceSizeY
             //
-            this.forceSizeY.Location = new System.Drawing.Point(439, 218);
+            this.forceSizeY.Location = new System.Drawing.Point(443, 218);
             this.forceSizeY.Name = "forceSizeY";
             this.forceSizeY.Size = new System.Drawing.Size(33, 23);
             this.forceSizeY.TabIndex = 112;
@@ -1836,7 +1836,7 @@ namespace Assistant
             //
             // blockHealPoison
             //
-            this.blockHealPoison.Location = new System.Drawing.Point(256, 193);
+            this.blockHealPoison.Location = new System.Drawing.Point(260, 193);
             this.blockHealPoison.Name = "blockHealPoison";
             this.blockHealPoison.Size = new System.Drawing.Size(201, 20);
             this.blockHealPoison.TabIndex = 116;
@@ -1845,7 +1845,7 @@ namespace Assistant
             //
             // potionEquip
             //
-            this.potionEquip.Location = new System.Drawing.Point(256, 167);
+            this.potionEquip.Location = new System.Drawing.Point(260, 169);
             this.potionEquip.Name = "potionEquip";
             this.potionEquip.Size = new System.Drawing.Size(232, 20);
             this.potionEquip.TabIndex = 115;
@@ -1854,7 +1854,7 @@ namespace Assistant
             //
             // spellUnequip
             //
-            this.spellUnequip.Location = new System.Drawing.Point(256, 141);
+            this.spellUnequip.Location = new System.Drawing.Point(260, 141);
             this.spellUnequip.Name = "spellUnequip";
             this.spellUnequip.Size = new System.Drawing.Size(213, 20);
             this.spellUnequip.TabIndex = 108;
@@ -1863,7 +1863,7 @@ namespace Assistant
             //
             // autoOpenDoors
             //
-            this.autoOpenDoors.Location = new System.Drawing.Point(256, 115);
+            this.autoOpenDoors.Location = new System.Drawing.Point(260, 115);
             this.autoOpenDoors.Name = "autoOpenDoors";
             this.autoOpenDoors.Size = new System.Drawing.Size(190, 20);
             this.autoOpenDoors.TabIndex = 110;
@@ -1872,7 +1872,7 @@ namespace Assistant
             //
             // alwaysStealth
             //
-            this.alwaysStealth.Location = new System.Drawing.Point(256, 89);
+            this.alwaysStealth.Location = new System.Drawing.Point(260, 89);
             this.alwaysStealth.Name = "alwaysStealth";
             this.alwaysStealth.Size = new System.Drawing.Size(190, 20);
             this.alwaysStealth.TabIndex = 109;
@@ -1881,7 +1881,7 @@ namespace Assistant
             //
             // chkStealth
             //
-            this.chkStealth.Location = new System.Drawing.Point(256, 64);
+            this.chkStealth.Location = new System.Drawing.Point(260, 64);
             this.chkStealth.Name = "chkStealth";
             this.chkStealth.Size = new System.Drawing.Size(190, 20);
             this.chkStealth.TabIndex = 107;
@@ -1891,7 +1891,7 @@ namespace Assistant
             // label18
             //
             this.label18.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(423, 220);
+            this.label18.Location = new System.Drawing.Point(427, 220);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(10, 18);
             this.label18.TabIndex = 114;
@@ -1900,7 +1900,7 @@ namespace Assistant
             //
             // gameSize
             //
-            this.gameSize.Location = new System.Drawing.Point(256, 219);
+            this.gameSize.Location = new System.Drawing.Point(260, 219);
             this.gameSize.Name = "gameSize";
             this.gameSize.Size = new System.Drawing.Size(118, 18);
             this.gameSize.TabIndex = 113;
@@ -2039,7 +2039,7 @@ namespace Assistant
             //
             // autoStackRes
             //
-            this.autoStackRes.Location = new System.Drawing.Point(9, 39);
+            this.autoStackRes.Location = new System.Drawing.Point(9, 37);
             this.autoStackRes.Name = "autoStackRes";
             this.autoStackRes.Size = new System.Drawing.Size(228, 20);
             this.autoStackRes.TabIndex = 93;
@@ -2153,7 +2153,7 @@ namespace Assistant
             // trackDps
             //
             this.trackDps.AutoSize = true;
-            this.trackDps.Location = new System.Drawing.Point(275, 129);
+            this.trackDps.Location = new System.Drawing.Point(273, 178);
             this.trackDps.Name = "trackDps";
             this.trackDps.Size = new System.Drawing.Size(146, 19);
             this.trackDps.TabIndex = 53;
@@ -2164,7 +2164,7 @@ namespace Assistant
             // trackIncomingGold
             //
             this.trackIncomingGold.AutoSize = true;
-            this.trackIncomingGold.Location = new System.Drawing.Point(275, 104);
+            this.trackIncomingGold.Location = new System.Drawing.Point(273, 152);
             this.trackIncomingGold.Name = "trackIncomingGold";
             this.trackIncomingGold.Size = new System.Drawing.Size(223, 19);
             this.trackIncomingGold.TabIndex = 52;
@@ -2174,7 +2174,7 @@ namespace Assistant
             //
             // showNotoHue
             //
-            this.showNotoHue.Location = new System.Drawing.Point(275, 47);
+            this.showNotoHue.Location = new System.Drawing.Point(6, 177);
             this.showNotoHue.Name = "showNotoHue";
             this.showNotoHue.Size = new System.Drawing.Size(221, 20);
             this.showNotoHue.TabIndex = 51;
@@ -2183,7 +2183,7 @@ namespace Assistant
             //
             // highlightSpellReags
             //
-            this.highlightSpellReags.Location = new System.Drawing.Point(275, 21);
+            this.highlightSpellReags.Location = new System.Drawing.Point(6, 151);
             this.highlightSpellReags.Name = "highlightSpellReags";
             this.highlightSpellReags.Size = new System.Drawing.Size(205, 20);
             this.highlightSpellReags.TabIndex = 50;
@@ -2197,7 +2197,7 @@ namespace Assistant
             this.groupBox3.Controls.Add(this.showInBar);
             this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(263, 195);
+            this.groupBox3.Size = new System.Drawing.Size(490, 139);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Title Bar Display";
@@ -2248,7 +2248,7 @@ namespace Assistant
             "{physresist}",
             "{poisonresist}",
             "{tithe}"});
-            this.titleBarParams.Location = new System.Drawing.Point(153, 12);
+            this.titleBarParams.Location = new System.Drawing.Point(380, 19);
             this.titleBarParams.Name = "titleBarParams";
             this.titleBarParams.Size = new System.Drawing.Size(104, 23);
             this.titleBarParams.TabIndex = 5;
@@ -2257,17 +2257,17 @@ namespace Assistant
             // titleStr
             //
             this.titleStr.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.titleStr.Location = new System.Drawing.Point(6, 41);
+            this.titleStr.Location = new System.Drawing.Point(6, 48);
             this.titleStr.Multiline = true;
             this.titleStr.Name = "titleStr";
             this.titleStr.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.titleStr.Size = new System.Drawing.Size(251, 148);
+            this.titleStr.Size = new System.Drawing.Size(478, 85);
             this.titleStr.TabIndex = 4;
             this.titleStr.TextChanged += new System.EventHandler(this.titleStr_TextChanged);
             //
             // showInBar
             //
-            this.showInBar.Location = new System.Drawing.Point(6, 15);
+            this.showInBar.Location = new System.Drawing.Point(11, 22);
             this.showInBar.Name = "showInBar";
             this.showInBar.Size = new System.Drawing.Size(141, 20);
             this.showInBar.TabIndex = 3;
@@ -2283,10 +2283,10 @@ namespace Assistant
             this.subCountersTab.Controls.Add(this.titlebarImages);
             this.subCountersTab.Controls.Add(this.checkNewConts);
             this.subCountersTab.Controls.Add(this.groupBox2);
-            this.subCountersTab.Location = new System.Drawing.Point(4, 22);
+            this.subCountersTab.Location = new System.Drawing.Point(4, 24);
             this.subCountersTab.Name = "subCountersTab";
             this.subCountersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subCountersTab.Size = new System.Drawing.Size(502, 288);
+            this.subCountersTab.Size = new System.Drawing.Size(502, 286);
             this.subCountersTab.TabIndex = 1;
             this.subCountersTab.Text = "Counters";
             //
@@ -2821,7 +2821,7 @@ namespace Assistant
             //
             this.filterHotkeys.Location = new System.Drawing.Point(50, 8);
             this.filterHotkeys.Name = "filterHotkeys";
-            this.filterHotkeys.Size = new System.Drawing.Size(148, 23);
+            this.filterHotkeys.Size = new System.Drawing.Size(281, 23);
             this.filterHotkeys.TabIndex = 9;
             this.filterHotkeys.TextChanged += new System.EventHandler(this.filterHotkeys_TextChanged);
             //
@@ -3104,10 +3104,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.absoluteTargetGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             //
@@ -4040,7 +4040,6 @@ namespace Assistant
             this.subGeneralTab.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox16.ResumeLayout(false);
-            this.groupBox16.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.subFiltersTab.ResumeLayout(false);
