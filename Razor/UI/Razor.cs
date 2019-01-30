@@ -20,6 +20,7 @@ using Assistant.Core;
 using Newtonsoft.Json.Linq;
 using Ultima;
 using ContainerLabels = Assistant.UI.ContainerLabels;
+using Exception = System.Exception;
 using OverheadMessages = Assistant.UI.OverheadMessages;
 
 namespace Assistant
@@ -1072,10 +1073,10 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
             //
@@ -1571,10 +1572,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             //
@@ -2365,6 +2366,7 @@ namespace Assistant
             this.counters.TabIndex = 11;
             this.counters.UseCompatibleStateImageBehavior = false;
             this.counters.View = System.Windows.Forms.View.Details;
+            this.counters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.counters_ItemCheck);
             //
             // cntName
             //
@@ -3104,10 +3106,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.absoluteTargetGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             //
@@ -4444,6 +4446,8 @@ namespace Assistant
                 List<AnimData> items = JsonConvert.DeserializeObject<List<AnimData>>(json);
 
                 _animationData.Clear();
+                dragonAnimationList.Items.Clear();
+                drakeAnimationList.Items.Clear();
 
                 foreach (AnimData animData in items)
                 {
@@ -9081,19 +9085,36 @@ namespace Assistant
 
         private void dragonAnimationList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (dragonAnimationList.SelectedIndex < 0)
-                return;
+            try
+            {
+                if (dragonAnimationList.SelectedIndex < 0)
+                    return;
 
-            Config.SetProperty("DragonGraphic",
-                Convert.ToInt32(_animationData[dragonAnimationList.SelectedIndex].body));
+                Config.SetProperty("DragonGraphic",
+                    Convert.ToInt32(_animationData[dragonAnimationList.SelectedIndex].body));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Unable to find animation in file", "Animation Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void drakeAnimationList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (drakeAnimationList.SelectedIndex < 0)
-                return;
+            try
+            {
+                if (drakeAnimationList.SelectedIndex < 0)
+                    return;
 
-            Config.SetProperty("DrakeGraphic", Convert.ToInt32(_animationData[drakeAnimationList.SelectedIndex].body));
+                Config.SetProperty("DrakeGraphic",
+                    Convert.ToInt32(_animationData[drakeAnimationList.SelectedIndex].body));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Unable to find animation in file", "Animation Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void trackDps_CheckedChanged(object sender, EventArgs e)
@@ -9234,7 +9255,14 @@ namespace Assistant
 
         private void openBackupFolder_Click(object sender, EventArgs e)
         {
+            try
+            {
+                Process.Start(Config.GetAppSetting<string>("BackupPath"));
+            }
+            catch (Exception ex)
+            {
 
+            }
         }
     }
 }

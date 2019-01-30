@@ -95,24 +95,24 @@ namespace Assistant
             this.selectServerLbl = new System.Windows.Forms.Label();
             this.serverList = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.langSel = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.showAtStart = new System.Windows.Forms.CheckBox();
             this.dataDir = new System.Windows.Forms.TextBox();
             this.dataBrowse = new System.Windows.Forms.Button();
             this.uoClient = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.openFile = new System.Windows.Forms.OpenFileDialog();
-            this.saveServer = new System.Windows.Forms.Button();
-            this.removeServer = new System.Windows.Forms.Button();
-            this.serverHostLbl = new System.Windows.Forms.Label();
-            this.portLabel = new System.Windows.Forms.Label();
-            this.serverHost = new System.Windows.Forms.TextBox();
-            this.serverPort = new System.Windows.Forms.TextBox();
-            this.serverNameLbl = new System.Windows.Forms.Label();
-            this.serverName = new System.Windows.Forms.TextBox();
             this.newServer = new System.Windows.Forms.Button();
-            this.langSel = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.showAtStart = new System.Windows.Forms.CheckBox();
+            this.serverName = new System.Windows.Forms.TextBox();
+            this.serverNameLbl = new System.Windows.Forms.Label();
+            this.serverPort = new System.Windows.Forms.TextBox();
+            this.serverHost = new System.Windows.Forms.TextBox();
+            this.portLabel = new System.Windows.Forms.Label();
+            this.serverHostLbl = new System.Windows.Forms.Label();
+            this.removeServer = new System.Windows.Forms.Button();
+            this.saveServer = new System.Windows.Forms.Button();
+            this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -176,10 +176,10 @@ namespace Assistant
             // serverList
             // 
             this.serverList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.serverList.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serverList.Location = new System.Drawing.Point(101, 19);
             this.serverList.Name = "serverList";
-            this.serverList.Size = new System.Drawing.Size(269, 28);
+            this.serverList.Size = new System.Drawing.Size(269, 25);
             this.serverList.TabIndex = 5;
             this.serverList.SelectedIndexChanged += new System.EventHandler(this.serverList_SelectedIndexChanged);
             // 
@@ -201,6 +201,30 @@ namespace Assistant
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Client Options";
+            // 
+            // langSel
+            // 
+            this.langSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.langSel.Location = new System.Drawing.Point(77, 101);
+            this.langSel.Name = "langSel";
+            this.langSel.Size = new System.Drawing.Size(110, 23);
+            this.langSel.TabIndex = 27;
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(9, 104);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(90, 20);
+            this.label5.TabIndex = 28;
+            this.label5.Text = "Language:";
+            // 
+            // showAtStart
+            // 
+            this.showAtStart.Location = new System.Drawing.Point(11, 76);
+            this.showAtStart.Name = "showAtStart";
+            this.showAtStart.Size = new System.Drawing.Size(176, 20);
+            this.showAtStart.TabIndex = 26;
+            this.showAtStart.Text = "Show this when Razor starts";
             // 
             // dataDir
             // 
@@ -256,72 +280,24 @@ namespace Assistant
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Server";
             // 
-            // openFile
+            // newServer
             // 
-            this.openFile.DefaultExt = "exe";
-            this.openFile.FileName = "client.exe";
-            this.openFile.Filter = "UO Client|client.exe";
-            this.openFile.Title = "Select UO Client";
+            this.newServer.Location = new System.Drawing.Point(135, 50);
+            this.newServer.Name = "newServer";
+            this.newServer.Size = new System.Drawing.Size(62, 27);
+            this.newServer.TabIndex = 20;
+            this.newServer.Text = "New";
+            this.newServer.UseVisualStyleBackColor = true;
+            this.newServer.Click += new System.EventHandler(this.newServer_Click);
             // 
-            // saveServer
+            // serverName
             // 
-            this.saveServer.Enabled = false;
-            this.saveServer.Location = new System.Drawing.Point(267, 53);
-            this.saveServer.Name = "saveServer";
-            this.saveServer.Size = new System.Drawing.Size(63, 27);
-            this.saveServer.TabIndex = 9;
-            this.saveServer.Text = "Save";
-            this.saveServer.UseVisualStyleBackColor = true;
-            this.saveServer.Click += new System.EventHandler(this.saveServer_Click);
-            // 
-            // removeServer
-            // 
-            this.removeServer.Location = new System.Drawing.Point(198, 53);
-            this.removeServer.Name = "removeServer";
-            this.removeServer.Size = new System.Drawing.Size(63, 27);
-            this.removeServer.TabIndex = 10;
-            this.removeServer.Text = "Remove";
-            this.removeServer.UseVisualStyleBackColor = true;
-            this.removeServer.Click += new System.EventHandler(this.removeServer_Click);
-            // 
-            // serverHostLbl
-            // 
-            this.serverHostLbl.AutoSize = true;
-            this.serverHostLbl.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverHostLbl.Location = new System.Drawing.Point(7, 118);
-            this.serverHostLbl.Name = "serverHostLbl";
-            this.serverHostLbl.Size = new System.Drawing.Size(85, 15);
-            this.serverHostLbl.TabIndex = 15;
-            this.serverHostLbl.Text = "Server Host/IP:";
-            // 
-            // portLabel
-            // 
-            this.portLabel.AutoSize = true;
-            this.portLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.portLabel.Location = new System.Drawing.Point(269, 118);
-            this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(32, 15);
-            this.portLabel.TabIndex = 16;
-            this.portLabel.Text = "Port:";
-            // 
-            // serverHost
-            // 
-            this.serverHost.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverHost.Location = new System.Drawing.Point(100, 115);
-            this.serverHost.Name = "serverHost";
-            this.serverHost.Size = new System.Drawing.Size(163, 22);
-            this.serverHost.TabIndex = 7;
-            this.serverHost.TextChanged += new System.EventHandler(this.serverHost_TextChanged);
-            // 
-            // serverPort
-            // 
-            this.serverPort.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverPort.Location = new System.Drawing.Point(307, 116);
-            this.serverPort.Name = "serverPort";
-            this.serverPort.Size = new System.Drawing.Size(63, 22);
-            this.serverPort.TabIndex = 8;
-            this.serverPort.Text = "2593";
-            this.serverPort.TextChanged += new System.EventHandler(this.serverPort_TextChanged);
+            this.serverName.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverName.Location = new System.Drawing.Point(100, 86);
+            this.serverName.Name = "serverName";
+            this.serverName.Size = new System.Drawing.Size(270, 22);
+            this.serverName.TabIndex = 6;
+            this.serverName.TextChanged += new System.EventHandler(this.serverName_TextChanged);
             // 
             // serverNameLbl
             // 
@@ -333,48 +309,72 @@ namespace Assistant
             this.serverNameLbl.TabIndex = 19;
             this.serverNameLbl.Text = "Server Name:";
             // 
-            // serverName
+            // serverPort
             // 
-            this.serverName.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverName.Location = new System.Drawing.Point(100, 86);
-            this.serverName.Name = "serverName";
-            this.serverName.Size = new System.Drawing.Size(270, 22);
-            this.serverName.TabIndex = 6;
-            this.serverName.TextChanged += new System.EventHandler(this.serverName_TextChanged);
+            this.serverPort.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverPort.Location = new System.Drawing.Point(307, 116);
+            this.serverPort.Name = "serverPort";
+            this.serverPort.Size = new System.Drawing.Size(63, 22);
+            this.serverPort.TabIndex = 8;
+            this.serverPort.Text = "2593";
+            this.serverPort.TextChanged += new System.EventHandler(this.serverPort_TextChanged);
             // 
-            // newServer
+            // serverHost
             // 
-            this.newServer.Location = new System.Drawing.Point(130, 53);
-            this.newServer.Name = "newServer";
-            this.newServer.Size = new System.Drawing.Size(62, 27);
-            this.newServer.TabIndex = 20;
-            this.newServer.Text = "New";
-            this.newServer.UseVisualStyleBackColor = true;
-            this.newServer.Click += new System.EventHandler(this.newServer_Click);
+            this.serverHost.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverHost.Location = new System.Drawing.Point(100, 115);
+            this.serverHost.Name = "serverHost";
+            this.serverHost.Size = new System.Drawing.Size(163, 22);
+            this.serverHost.TabIndex = 7;
+            this.serverHost.TextChanged += new System.EventHandler(this.serverHost_TextChanged);
             // 
-            // langSel
+            // portLabel
             // 
-            this.langSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.langSel.Location = new System.Drawing.Point(77, 101);
-            this.langSel.Name = "langSel";
-            this.langSel.Size = new System.Drawing.Size(110, 23);
-            this.langSel.TabIndex = 27;
+            this.portLabel.AutoSize = true;
+            this.portLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.portLabel.Location = new System.Drawing.Point(269, 118);
+            this.portLabel.Name = "portLabel";
+            this.portLabel.Size = new System.Drawing.Size(32, 15);
+            this.portLabel.TabIndex = 16;
+            this.portLabel.Text = "Port:";
             // 
-            // label5
+            // serverHostLbl
             // 
-            this.label5.Location = new System.Drawing.Point(9, 104);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(90, 20);
-            this.label5.TabIndex = 28;
-            this.label5.Text = "Language:";
+            this.serverHostLbl.AutoSize = true;
+            this.serverHostLbl.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverHostLbl.Location = new System.Drawing.Point(7, 118);
+            this.serverHostLbl.Name = "serverHostLbl";
+            this.serverHostLbl.Size = new System.Drawing.Size(85, 15);
+            this.serverHostLbl.TabIndex = 15;
+            this.serverHostLbl.Text = "Server Host/IP:";
             // 
-            // showAtStart
+            // removeServer
             // 
-            this.showAtStart.Location = new System.Drawing.Point(11, 76);
-            this.showAtStart.Name = "showAtStart";
-            this.showAtStart.Size = new System.Drawing.Size(176, 20);
-            this.showAtStart.TabIndex = 26;
-            this.showAtStart.Text = "Show this when Razor starts";
+            this.removeServer.Location = new System.Drawing.Point(203, 50);
+            this.removeServer.Name = "removeServer";
+            this.removeServer.Size = new System.Drawing.Size(63, 27);
+            this.removeServer.TabIndex = 10;
+            this.removeServer.Text = "Remove";
+            this.removeServer.UseVisualStyleBackColor = true;
+            this.removeServer.Click += new System.EventHandler(this.removeServer_Click);
+            // 
+            // saveServer
+            // 
+            this.saveServer.Enabled = false;
+            this.saveServer.Location = new System.Drawing.Point(272, 50);
+            this.saveServer.Name = "saveServer";
+            this.saveServer.Size = new System.Drawing.Size(63, 27);
+            this.saveServer.TabIndex = 9;
+            this.saveServer.Text = "Save";
+            this.saveServer.UseVisualStyleBackColor = true;
+            this.saveServer.Click += new System.EventHandler(this.saveServer_Click);
+            // 
+            // openFile
+            // 
+            this.openFile.DefaultExt = "exe";
+            this.openFile.FileName = "client.exe";
+            this.openFile.Filter = "UO Client|client.exe";
+            this.openFile.Title = "Select UO Client";
             // 
             // WelcomeForm
             // 
