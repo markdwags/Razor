@@ -349,6 +349,7 @@ namespace Assistant
         private Button openBackupFolder;
         private TextBox targetIndictorFormat;
         private Label lblTargetFormat;
+        private CheckBox nextPrevIgnoresFriends;
         private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -489,6 +490,9 @@ namespace Assistant
             this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.subOptionsTargetTab = new System.Windows.Forms.TabPage();
+            this.nextPrevIgnoresFriends = new System.Windows.Forms.CheckBox();
+            this.lblTargetFormat = new System.Windows.Forms.Label();
+            this.targetIndictorFormat = new System.Windows.Forms.TextBox();
             this.autoFriend = new System.Windows.Forms.CheckBox();
             this.showtargtext = new System.Windows.Forms.CheckBox();
             this.showAttackTargetNewOnly = new System.Windows.Forms.CheckBox();
@@ -722,8 +726,6 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.targetIndictorFormat = new System.Windows.Forms.TextBox();
-            this.lblTargetFormat = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1077,10 +1079,10 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
             //
@@ -1560,6 +1562,7 @@ namespace Assistant
             // subOptionsTargetTab
             //
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsTargetTab.Controls.Add(this.nextPrevIgnoresFriends);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
             this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
             this.subOptionsTargetTab.Controls.Add(this.autoFriend);
@@ -1584,6 +1587,35 @@ namespace Assistant
             this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
+            //
+            // nextPrevIgnoresFriends
+            //
+            this.nextPrevIgnoresFriends.AutoSize = true;
+            this.nextPrevIgnoresFriends.Location = new System.Drawing.Point(260, 63);
+            this.nextPrevIgnoresFriends.Name = "nextPrevIgnoresFriends";
+            this.nextPrevIgnoresFriends.Size = new System.Drawing.Size(203, 19);
+            this.nextPrevIgnoresFriends.TabIndex = 95;
+            this.nextPrevIgnoresFriends.Text = "Next/Prev Target ignores \'Friends\'";
+            this.nextPrevIgnoresFriends.UseVisualStyleBackColor = true;
+            this.nextPrevIgnoresFriends.CheckedChanged += new System.EventHandler(this.nextPrevIgnoresFriends_CheckedChanged);
+            //
+            // lblTargetFormat
+            //
+            this.lblTargetFormat.AutoSize = true;
+            this.lblTargetFormat.Location = new System.Drawing.Point(34, 249);
+            this.lblTargetFormat.Name = "lblTargetFormat";
+            this.lblTargetFormat.Size = new System.Drawing.Size(48, 15);
+            this.lblTargetFormat.TabIndex = 94;
+            this.lblTargetFormat.Text = "Format:";
+            //
+            // targetIndictorFormat
+            //
+            this.targetIndictorFormat.Location = new System.Drawing.Point(88, 246);
+            this.targetIndictorFormat.Name = "targetIndictorFormat";
+            this.targetIndictorFormat.Size = new System.Drawing.Size(107, 23);
+            this.targetIndictorFormat.TabIndex = 93;
+            this.targetIndictorFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.targetIndictorFormat.TextChanged += new System.EventHandler(this.targetIndictorFormat_TextChanged);
             //
             // autoFriend
             //
@@ -1767,9 +1799,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             //
@@ -4034,24 +4066,6 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
-            // targetIndictorFormat
-            //
-            this.targetIndictorFormat.Location = new System.Drawing.Point(88, 246);
-            this.targetIndictorFormat.Name = "targetIndictorFormat";
-            this.targetIndictorFormat.Size = new System.Drawing.Size(107, 23);
-            this.targetIndictorFormat.TabIndex = 93;
-            this.targetIndictorFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.targetIndictorFormat.TextChanged += new System.EventHandler(this.targetIndictorFormat_TextChanged);
-            //
-            // lblTargetFormat
-            //
-            this.lblTargetFormat.AutoSize = true;
-            this.lblTargetFormat.Location = new System.Drawing.Point(34, 249);
-            this.lblTargetFormat.Name = "lblTargetFormat";
-            this.lblTargetFormat.Size = new System.Drawing.Size(48, 15);
-            this.lblTargetFormat.TabIndex = 94;
-            this.lblTargetFormat.Text = "Format:";
-            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4457,6 +4471,8 @@ namespace Assistant
             lastBackup.Text = $"Last Backup: {Config.GetAppSetting<string>("BackupTime")}";
 
             targetIndictorFormat.Text = Config.GetString("TargetIndicatorFormat");
+
+            nextPrevIgnoresFriends.Checked = Config.GetBool("NextPrevTargetIgnoresFriends");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
@@ -9310,6 +9326,11 @@ namespace Assistant
             }
 
             Config.SetProperty("TargetIndicatorFormat", targetIndictorFormat.Text);
+        }
+
+        private void nextPrevIgnoresFriends_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("NextPrevTargetIgnoresFriends", nextPrevIgnoresFriends.Checked);
         }
     }
 }

@@ -131,12 +131,12 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.NextTarget, new HotKeyCallback(NextTarget));
             HotKey.Add(HKCategory.Targets, LocString.NextTargetEnemyHumanoid, new HotKeyCallback(NextTargetEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.NextTargetHumanoid, new HotKeyCallback(NextTargetHumanoid));
-            //HotKey.Add(HKCategory.Targets, LocString.NextTargetMonster, new HotKeyCallback(NextTargetMonster));
+            HotKey.Add(HKCategory.Targets, LocString.NextTargetMonster, new HotKeyCallback(NextTargetMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.PrevTarget, new HotKeyCallback(PrevTarget));
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetEnemyHumanoid, new HotKeyCallback(PrevTargetEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetHumanoid, new HotKeyCallback(PrevTargetHumanoid));
-            //HotKey.Add(HKCategory.Targets, LocString.PrevTargetMonster, new HotKeyCallback(PrevTargetMonster));
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetMonster, new HotKeyCallback(PrevTargetMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargClosest, new HotKeyCallback(TargetClosest));
 
@@ -1325,9 +1325,26 @@ namespace Assistant
         private static int m_NextPrevTargIdx = 0;
         public static void NextTarget()
         {
-            List<Mobile> list = World.MobilesInRange(12);
+            List<Mobile> mobiles = World.MobilesInRange(12);
             TargetInfo targ = new TargetInfo();
             Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+
+            List<Mobile> list = new List<Mobile>();
+
+            if (Config.GetBool("NextPrevTargetIgnoresFriends"))
+            {
+                foreach (Mobile mobile in mobiles)
+                {
+                    if (!FriendsAgent.IsFriend(mobile))
+                    {
+                        list.Add(mobile);
+                    }
+                }
+            }
+            else
+            {
+                list = mobiles;
+            }
 
             if (list.Count <= 0)
             {
@@ -1396,7 +1413,16 @@ namespace Assistant
             foreach (Mobile mob in mobiles)
             {
                 if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
-                    list.Add(mob);
+                {
+                    if (Config.GetBool("NextPrevTargetIgnoresFriends") && !FriendsAgent.IsFriend(mob))
+                    {
+                        list.Add(mob);
+                    }
+                    else
+                    {
+                        list.Add(mob);
+                    }
+                }
             }
 
             if (list.Count <= 0)
@@ -1472,7 +1498,14 @@ namespace Assistant
                 {
                     if (mob.Notoriety == 5) // Check if they are red
                     {
-                        list.Add(mob);
+                        if (Config.GetBool("NextPrevTargetIgnoresFriends") && !FriendsAgent.IsFriend(mob))
+                        {
+                            list.Add(mob);
+                        }
+                        else
+                        {
+                            list.Add(mob);
+                        }
                     }
                 }
             }
@@ -1537,12 +1570,96 @@ namespace Assistant
                ClearQueue();
            }*/
         }
-        
-        public static void PrevTarget()
+
+        private static int m_NextPrevTargMonsterIdx = 0;
+        public static void NextTargetMonster()
         {
-            List<Mobile> list = World.MobilesInRange(12);
+            List<Mobile> mobiles = World.MobilesInRange(12);
+            List<Mobile> list = new List<Mobile>();
+
+            foreach (Mobile mob in mobiles)
+            {
+                if (mob.IsMonster)
+                    list.Add(mob);
+            }
+
+            if (list.Count <= 0)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
             TargetInfo targ = new TargetInfo();
             Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+
+            for (int i = 0; i < 3; i++)
+            {
+                m_NextPrevTargMonsterIdx++;
+
+                if (m_NextPrevTargMonsterIdx >= list.Count)
+                    m_NextPrevTargMonsterIdx = 0;
+
+                m = list[m_NextPrevTargMonsterIdx];
+
+                if (m != null && m != World.Player && m != old)
+                    break;
+                else
+                    m = null;
+            }
+
+            if (m == null)
+                m = old;
+
+            if (m == null)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
+            m_LastGroundTarg = m_LastTarget = targ;
+
+            m_LastHarmTarg = m_LastBeneTarg = targ;
+
+            if (m_HasTarget)
+                targ.Flags = m_CurFlags;
+            else
+                targ.Type = 0;
+
+            targ.Gfx = m.Body;
+            targ.Serial = m.Serial;
+            targ.X = m.Position.X;
+            targ.Y = m.Position.Y;
+            targ.Z = m.Position.Z;
+
+            ClientCommunication.SendToClient(new ChangeCombatant(m));
+            m_LastCombatant = m.Serial;
+            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+
+            OverheadTargetMessage(targ);
+        }
+
+        public static void PrevTarget()
+        {
+            List<Mobile> mobiles = World.MobilesInRange(12);
+            TargetInfo targ = new TargetInfo();
+            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+
+            List<Mobile> list = new List<Mobile>();
+
+            if (Config.GetBool("NextPrevTargetIgnoresFriends"))
+            {
+                foreach (Mobile mobile in mobiles)
+                {
+                    if (!FriendsAgent.IsFriend(mobile))
+                    {
+                        list.Add(mobile);
+                    }
+                }
+            }
+            else
+            {
+                list = mobiles;
+            }
 
             if (list.Count <= 0)
             {
@@ -1604,7 +1721,16 @@ namespace Assistant
             foreach (Mobile mob in mobiles)
             {
                 if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
-                    list.Add(mob);
+                {
+                    if (Config.GetBool("NextPrevTargetIgnoresFriends") && !FriendsAgent.IsFriend(mob))
+                    {
+                        list.Add(mob);
+                    }
+                    else
+                    {
+                        list.Add(mob);
+                    }
+                }
             }
 
             if (list.Count <= 0)
@@ -1679,7 +1805,14 @@ namespace Assistant
                 {
                     if (mob.Notoriety == 5) // Check if they are red
                     {
-                        list.Add(mob);
+                        if (Config.GetBool("NextPrevTargetIgnoresFriends") && !FriendsAgent.IsFriend(mob))
+                        {
+                            list.Add(mob);
+                        }
+                        else
+                        {
+                            list.Add(mob);
+                        }
                     }
                 }
             }
@@ -1701,6 +1834,72 @@ namespace Assistant
                     m_NextPrevTargEnemyHumanoidIdx = list.Count - 1;
 
                 m = list[m_NextPrevTargEnemyHumanoidIdx];
+
+                if (m != null && m != World.Player && m != old)
+                    break;
+                else
+                    m = null;
+            }
+
+            if (m == null)
+                m = old;
+
+            if (m == null)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
+            m_LastGroundTarg = m_LastTarget = targ;
+
+            m_LastHarmTarg = m_LastBeneTarg = targ;
+
+            if (m_HasTarget)
+                targ.Flags = m_CurFlags;
+            else
+                targ.Type = 0;
+
+            targ.Gfx = m.Body;
+            targ.Serial = m.Serial;
+            targ.X = m.Position.X;
+            targ.Y = m.Position.Y;
+            targ.Z = m.Position.Z;
+
+            ClientCommunication.SendToClient(new ChangeCombatant(m));
+            m_LastCombatant = m.Serial;
+            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+
+            OverheadTargetMessage(targ);
+        }
+
+        public static void PrevTargetMonster()
+        {
+            List<Mobile> mobiles = World.MobilesInRange(12);
+            List<Mobile> list = new List<Mobile>();
+            
+            foreach (Mobile mob in mobiles)
+            {
+                if (mob.IsMonster)
+                    list.Add(mob);
+            }
+
+            if (list.Count <= 0)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
+
+            TargetInfo targ = new TargetInfo();
+            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+
+            for (int i = 0; i < 3; i++)
+            {
+                m_NextPrevTargMonsterIdx--;
+
+                if (m_NextPrevTargMonsterIdx < 0)
+                    m_NextPrevTargMonsterIdx = list.Count - 1;
+
+                m = list[m_NextPrevTargMonsterIdx];
 
                 if (m != null && m != World.Player && m != old)
                     break;

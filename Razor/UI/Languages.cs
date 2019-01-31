@@ -465,6 +465,8 @@ namespace Assistant
         TargClosestFriendlyMonster,
         TargClosestInnocentMonster,
         TargClosestCriminalMonster,
+        NextTargetMonster,
+        PrevTargetMonster,
 
         __End
     }

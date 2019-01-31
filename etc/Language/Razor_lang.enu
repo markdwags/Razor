@@ -722,3 +722,5 @@ InputBox::ok=&OK
 2015=Target Closest Friendly Monster
 2016=Target Closest Innocent Monster
 2017=Target Closest Criminal Monster
+2018=Next Monster Target
+2019=Previous Monster Target

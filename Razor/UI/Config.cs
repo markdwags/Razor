@@ -225,6 +225,8 @@ namespace Assistant
 
             AddProperty("TargetIndicatorFormat", "* Target *");
 
+            AddProperty("NextPrevTargetIgnoresFriends", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
