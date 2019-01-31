@@ -347,6 +347,8 @@ namespace Assistant
         private ComboBox dragonAnimationList;
         private CheckBox filterDragonGraphics;
         private Button openBackupFolder;
+        private TextBox targetIndictorFormat;
+        private Label lblTargetFormat;
         private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -720,6 +722,8 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.targetIndictorFormat = new System.Windows.Forms.TextBox();
+            this.lblTargetFormat = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1073,10 +1077,10 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
             //
@@ -1556,6 +1560,8 @@ namespace Assistant
             // subOptionsTargetTab
             //
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
+            this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
             this.subOptionsTargetTab.Controls.Add(this.autoFriend);
             this.subOptionsTargetTab.Controls.Add(this.showtargtext);
             this.subOptionsTargetTab.Controls.Add(this.showAttackTargetNewOnly);
@@ -1572,10 +1578,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             //
@@ -1600,7 +1606,7 @@ namespace Assistant
             // showAttackTargetNewOnly
             //
             this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showAttackTargetNewOnly.Location = new System.Drawing.Point(190, 196);
+            this.showAttackTargetNewOnly.Location = new System.Drawing.Point(195, 196);
             this.showAttackTargetNewOnly.Name = "showAttackTargetNewOnly";
             this.showAttackTargetNewOnly.Size = new System.Drawing.Size(121, 44);
             this.showAttackTargetNewOnly.TabIndex = 90;
@@ -2294,10 +2300,10 @@ namespace Assistant
             this.subCountersTab.Controls.Add(this.titlebarImages);
             this.subCountersTab.Controls.Add(this.checkNewConts);
             this.subCountersTab.Controls.Add(this.groupBox2);
-            this.subCountersTab.Location = new System.Drawing.Point(4, 24);
+            this.subCountersTab.Location = new System.Drawing.Point(4, 22);
             this.subCountersTab.Name = "subCountersTab";
             this.subCountersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subCountersTab.Size = new System.Drawing.Size(502, 286);
+            this.subCountersTab.Size = new System.Drawing.Size(502, 288);
             this.subCountersTab.TabIndex = 1;
             this.subCountersTab.Text = "Counters";
             //
@@ -4028,6 +4034,24 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
+            // targetIndictorFormat
+            //
+            this.targetIndictorFormat.Location = new System.Drawing.Point(88, 246);
+            this.targetIndictorFormat.Name = "targetIndictorFormat";
+            this.targetIndictorFormat.Size = new System.Drawing.Size(107, 23);
+            this.targetIndictorFormat.TabIndex = 93;
+            this.targetIndictorFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.targetIndictorFormat.TextChanged += new System.EventHandler(this.targetIndictorFormat_TextChanged);
+            //
+            // lblTargetFormat
+            //
+            this.lblTargetFormat.AutoSize = true;
+            this.lblTargetFormat.Location = new System.Drawing.Point(34, 249);
+            this.lblTargetFormat.Name = "lblTargetFormat";
+            this.lblTargetFormat.Size = new System.Drawing.Size(48, 15);
+            this.lblTargetFormat.TabIndex = 94;
+            this.lblTargetFormat.Text = "Format:";
+            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4431,6 +4455,8 @@ namespace Assistant
             enableUOAAPI.Checked = Config.GetBool("EnableUOAAPI");
 
             lastBackup.Text = $"Last Backup: {Config.GetAppSetting<string>("BackupTime")}";
+
+            targetIndictorFormat.Text = Config.GetString("TargetIndicatorFormat");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
@@ -9273,6 +9299,17 @@ namespace Assistant
             {
 
             }
+        }
+
+        private void targetIndictorFormat_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(targetIndictorFormat.Text))
+            {
+                Config.SetProperty("TargetIndicatorFormat", "* Target *");
+                targetIndictorFormat.Text = "* Target *";
+            }
+
+            Config.SetProperty("TargetIndicatorFormat", targetIndictorFormat.Text);
         }
     }
 }

@@ -2017,7 +2017,7 @@ namespace Assistant
                 if (m == null)
                     return;
 
-                m.OverheadMessage(10, "* Target *");
+                m.OverheadMessage(10, Config.GetString("TargetIndicatorFormat"));
             }
 
             _lastTarget = info;

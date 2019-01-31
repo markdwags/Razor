@@ -147,9 +147,9 @@ namespace Assistant
             // okay
             // 
             this.okay.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okay.Location = new System.Drawing.Point(319, 306);
+            this.okay.Location = new System.Drawing.Point(309, 306);
             this.okay.Name = "okay";
-            this.okay.Size = new System.Drawing.Size(72, 43);
+            this.okay.Size = new System.Drawing.Size(82, 43);
             this.okay.TabIndex = 14;
             this.okay.Text = "&Launch";
             this.okay.Click += new System.EventHandler(this.okay_Click);
@@ -157,16 +157,16 @@ namespace Assistant
             // quit
             // 
             this.quit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.quit.Location = new System.Drawing.Point(241, 306);
+            this.quit.Location = new System.Drawing.Point(231, 306);
             this.quit.Name = "quit";
             this.quit.Size = new System.Drawing.Size(72, 43);
-            this.quit.TabIndex = 13;
+            this.quit.TabIndex = 18;
             this.quit.Text = "&Quit";
             this.quit.Click += new System.EventHandler(this.quit_Click);
             // 
             // selectServerLbl
             // 
-            this.selectServerLbl.Location = new System.Drawing.Point(8, 24);
+            this.selectServerLbl.Location = new System.Drawing.Point(9, 22);
             this.selectServerLbl.Name = "selectServerLbl";
             this.selectServerLbl.Size = new System.Drawing.Size(79, 19);
             this.selectServerLbl.TabIndex = 9;
@@ -292,10 +292,10 @@ namespace Assistant
             // 
             // serverName
             // 
-            this.serverName.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serverName.Location = new System.Drawing.Point(100, 86);
             this.serverName.Name = "serverName";
-            this.serverName.Size = new System.Drawing.Size(270, 22);
+            this.serverName.Size = new System.Drawing.Size(270, 23);
             this.serverName.TabIndex = 6;
             this.serverName.TextChanged += new System.EventHandler(this.serverName_TextChanged);
             // 
@@ -311,20 +311,20 @@ namespace Assistant
             // 
             // serverPort
             // 
-            this.serverPort.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverPort.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serverPort.Location = new System.Drawing.Point(307, 116);
             this.serverPort.Name = "serverPort";
-            this.serverPort.Size = new System.Drawing.Size(63, 22);
+            this.serverPort.Size = new System.Drawing.Size(63, 23);
             this.serverPort.TabIndex = 8;
             this.serverPort.Text = "2593";
             this.serverPort.TextChanged += new System.EventHandler(this.serverPort_TextChanged);
             // 
             // serverHost
             // 
-            this.serverHost.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverHost.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serverHost.Location = new System.Drawing.Point(100, 115);
             this.serverHost.Name = "serverHost";
-            this.serverHost.Size = new System.Drawing.Size(163, 22);
+            this.serverHost.Size = new System.Drawing.Size(163, 23);
             this.serverHost.TabIndex = 7;
             this.serverHost.TextChanged += new System.EventHandler(this.serverHost_TextChanged);
             // 

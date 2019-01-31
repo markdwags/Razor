@@ -223,6 +223,8 @@ namespace Assistant
             AddProperty("UOAMPath", string.Empty);
             AddProperty("UltimaMapperPath", string.Empty);
 
+            AddProperty("TargetIndicatorFormat", "* Target *");
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

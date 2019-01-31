@@ -17,7 +17,7 @@ WelcomeForm::label1=Load UO Client:
 WelcomeForm::patchEncy=Patch client encryption
 WelcomeForm::showAtStart=Show this when Razor starts
 WelcomeForm::quit=&Quit
-WelcomeForm::okay=&Launch
+WelcomeForm::okay=&Launch UO
 
 MainForm::Text=Razor v{0}
 MainForm::generalTab=General
