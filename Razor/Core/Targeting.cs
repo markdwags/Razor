@@ -105,8 +105,8 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyMonster, new HotKeyCallback(TargetRandNonFriendlyMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargRandFriend, new HotKeyCallback(TargetRandFriendly));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyHuman, new HotKeyCallback(TargetRandFriendlyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyMonster, new HotKeyCallback(TargetRandFriendlyMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomFriendlyHuman, new HotKeyCallback(TargetRandFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomFriendlyMonster, new HotKeyCallback(TargetRandFriendlyMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargRandBlue, new HotKeyCallback(TargetRandInnocent));
             HotKey.Add(HKCategory.Targets, LocString.TargRandInnocentHuman, new HotKeyCallback(TargetRandInnocentHumanoid));
@@ -131,10 +131,12 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.NextTarget, new HotKeyCallback(NextTarget));
             HotKey.Add(HKCategory.Targets, LocString.NextTargetEnemyHumanoid, new HotKeyCallback(NextTargetEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.NextTargetHumanoid, new HotKeyCallback(NextTargetHumanoid));
+            //HotKey.Add(HKCategory.Targets, LocString.NextTargetMonster, new HotKeyCallback(NextTargetMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.PrevTarget, new HotKeyCallback(PrevTarget));
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetEnemyHumanoid, new HotKeyCallback(PrevTargetEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetHumanoid, new HotKeyCallback(PrevTargetHumanoid));
+            //HotKey.Add(HKCategory.Targets, LocString.PrevTargetMonster, new HotKeyCallback(PrevTargetMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargClosest, new HotKeyCallback(TargetClosest));
 
