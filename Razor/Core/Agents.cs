@@ -2693,6 +2693,7 @@ namespace Assistant
 
             HotKey.Add(HKCategory.Targets, LocString.AddFriend, new HotKeyCallback(AddToFriendsList));
             HotKey.Add(HKCategory.Targets, LocString.RemoveFriend, new HotKeyCallback(RemoveFromFriendsList));
+            HotKey.Add(HKCategory.Targets, LocString.AddAllMobileFriends, new HotKeyCallback(AddAllMobileFriends));
 
             Agent.OnMobileCreated += new MobileCreatedEventHandler(OPLCheckFriend);
         }
@@ -2753,6 +2754,26 @@ namespace Assistant
         {
             World.Player.SendMessage(MsgLevel.Force, LocString.TargFriendRem);
             Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnRemoveTarget));
+        }
+
+        public void AddAllMobileFriends()
+        {
+            List<Mobile> mobiles = World.MobilesInRange(12);
+
+            foreach (Mobile mobile in mobiles)
+            {
+                if (!m_Chars.Contains(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial)
+                {
+                    m_Chars.Add(mobile.Serial);
+
+                    Add2List(mobile.Serial);
+
+                    World.Player.SendMessage(MsgLevel.Force, $"Added {mobile.Name}");
+
+                    mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
+                    mobile.OPLChanged();
+                }
+            }
         }
 
         public override void OnButtonPress(int num)

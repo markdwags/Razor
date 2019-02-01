@@ -467,6 +467,7 @@ namespace Assistant
         TargClosestCriminalMonster,
         NextTargetMonster,
         PrevTargetMonster,
+        AddAllMobileFriends,
 
         __End
     }
