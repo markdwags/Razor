@@ -468,6 +468,15 @@ namespace Assistant
         NextTargetMonster,
         PrevTargetMonster,
         AddAllMobileFriends,
+        AllCome,
+        AllFollowMe,
+        AllFollow,
+        AllGuardMe,
+        AllGuard,
+        AllKill,
+        AllStay,
+        AllStop,
+        PetCommands,
 
         __End
     }

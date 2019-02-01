@@ -61,7 +61,10 @@ namespace Assistant
         // more # oriented, CAUTION!
         BushidoC = SpellOffset + 40,
         NinjisuC = SpellOffset + 50,
-        SpellWeaveC = SpellOffset + 60
+        SpellWeaveC = SpellOffset + 60,
+
+        // pet commands
+        PetCommands = 780 //1749
     }
 
     public class KeyData
@@ -411,6 +414,7 @@ namespace Assistant
 
             TreeNode misc = MakeNode("Misc", HKCategory.Misc);
             MakeNode(misc, "Special Moves", HKSubCat.SpecialMoves);
+            MakeNode(misc, "Pet Commands", HKSubCat.PetCommands);
         }
 
         public static void RebuildList(TreeView tree)

@@ -34,6 +34,15 @@ namespace Assistant.HotKeys
             HotKey.Add(HKCategory.Misc, LocString.PartyAccept, new HotKeyCallback(PartyAccept));
             HotKey.Add(HKCategory.Misc, LocString.PartyDecline, new HotKeyCallback(PartyDecline));
 
+            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllCome, new HotKeyCallback(PetAllCome));
+            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllFollowMe, new HotKeyCallback(PetAllFollowMe));
+            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllFollow, new HotKeyCallback(PetAllFollow));
+            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllGuardMe, new HotKeyCallback(PetAllGuardMe));
+            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllGuard, new HotKeyCallback(PetAllGuard));
+            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllKill, new HotKeyCallback(PetAllKill));
+            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllStay, new HotKeyCallback(PetAllStay));
+            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllStop, new HotKeyCallback(PetAllStop));
+
             HotKeyCallbackState call = new HotKeyCallbackState(OnUseItem);
             HotKey.Add(HKCategory.Items, LocString.UseBandage, call, (ushort) 3617);
             HotKey.Add(HKCategory.Items, HKSubCat.Potions, LocString.DrinkHeal, call, (ushort) 3852);
@@ -66,6 +75,52 @@ namespace Assistant.HotKeys
 
         }
 
+        private enum PetCommands
+        {
+            AllCome,
+            AllFollowMe,
+            AllFollow,
+            AllGuardMe,
+            AllGuard,
+            AllKill,
+            AllStay,
+            AllStop
+        }
+
+        private static void PetAllCome()
+        {
+            World.Player.Say(Language.GetString(LocString.AllCome));
+        }
+
+        private static void PetAllFollowMe()
+        {
+            World.Player.Say(Language.GetString(LocString.AllFollowMe));
+        }
+        private static void PetAllFollow()
+        {
+            World.Player.Say(Language.GetString(LocString.AllFollow));
+        }
+        private static void PetAllGuardMe()
+        {
+            World.Player.Say(Language.GetString(LocString.AllGuardMe));
+        }
+        private static void PetAllGuard()
+        {
+            World.Player.Say(Language.GetString(LocString.AllGuard));
+        }
+        private static void PetAllKill()
+        {
+            World.Player.Say(Language.GetString(LocString.AllKill));
+        }
+        private static void PetAllStay()
+        {
+            World.Player.Say(Language.GetString(LocString.AllStay));
+        }
+        private static void PetAllStop()
+        {
+            World.Player.Say(Language.GetString(LocString.AllStop));
+        }
+       
         private static void CaptureBod()
         {
             try
