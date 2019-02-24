@@ -147,9 +147,9 @@ namespace Assistant
             // okay
             // 
             this.okay.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okay.Location = new System.Drawing.Point(309, 306);
+            this.okay.Location = new System.Drawing.Point(269, 306);
             this.okay.Name = "okay";
-            this.okay.Size = new System.Drawing.Size(82, 43);
+            this.okay.Size = new System.Drawing.Size(122, 43);
             this.okay.TabIndex = 14;
             this.okay.Text = "&Launch";
             this.okay.Click += new System.EventHandler(this.okay_Click);
@@ -157,9 +157,9 @@ namespace Assistant
             // quit
             // 
             this.quit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.quit.Location = new System.Drawing.Point(231, 306);
+            this.quit.Location = new System.Drawing.Point(12, 323);
             this.quit.Name = "quit";
-            this.quit.Size = new System.Drawing.Size(72, 43);
+            this.quit.Size = new System.Drawing.Size(62, 26);
             this.quit.TabIndex = 18;
             this.quit.Text = "&Quit";
             this.quit.Click += new System.EventHandler(this.quit_Click);
