@@ -47,6 +47,7 @@
             this.asciiStyle = new System.Windows.Forms.RadioButton();
             this.label3 = new System.Windows.Forms.Label();
             this.setColorHue = new System.Windows.Forms.Button();
+            this.editOverheadMessage = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cancelOverheadMessages
@@ -89,11 +90,11 @@
             // 
             // removeOverheadMessage
             // 
-            this.removeOverheadMessage.Location = new System.Drawing.Point(15, 307);
+            this.removeOverheadMessage.Location = new System.Drawing.Point(106, 307);
             this.removeOverheadMessage.Name = "removeOverheadMessage";
-            this.removeOverheadMessage.Size = new System.Drawing.Size(110, 28);
+            this.removeOverheadMessage.Size = new System.Drawing.Size(85, 28);
             this.removeOverheadMessage.TabIndex = 28;
-            this.removeOverheadMessage.Text = "Remove Selected";
+            this.removeOverheadMessage.Text = "Remove";
             this.removeOverheadMessage.UseVisualStyleBackColor = true;
             this.removeOverheadMessage.Click += new System.EventHandler(this.removeOverheadMessage_Click);
             // 
@@ -122,7 +123,7 @@
             // cliLocOriginal
             // 
             this.cliLocOriginal.Text = "Original Text";
-            this.cliLocOriginal.Width = 103;
+            this.cliLocOriginal.Width = 168;
             // 
             // cliLocOverheadMessage
             // 
@@ -210,7 +211,7 @@
             // 
             // setColorHue
             // 
-            this.setColorHue.Location = new System.Drawing.Point(131, 307);
+            this.setColorHue.Location = new System.Drawing.Point(197, 307);
             this.setColorHue.Name = "setColorHue";
             this.setColorHue.Size = new System.Drawing.Size(110, 28);
             this.setColorHue.TabIndex = 46;
@@ -218,11 +219,22 @@
             this.setColorHue.UseVisualStyleBackColor = true;
             this.setColorHue.Click += new System.EventHandler(this.setColorHue_Click);
             // 
+            // editOverheadMessage
+            // 
+            this.editOverheadMessage.Location = new System.Drawing.Point(15, 307);
+            this.editOverheadMessage.Name = "editOverheadMessage";
+            this.editOverheadMessage.Size = new System.Drawing.Size(85, 28);
+            this.editOverheadMessage.TabIndex = 47;
+            this.editOverheadMessage.Text = "Edit";
+            this.editOverheadMessage.UseVisualStyleBackColor = true;
+            this.editOverheadMessage.Click += new System.EventHandler(this.editOverheadMessage_Click);
+            // 
             // OverheadMessages
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(456, 368);
+            this.Controls.Add(this.editOverheadMessage);
             this.Controls.Add(this.setColorHue);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.unicodeStyle);
@@ -269,5 +281,6 @@
         private System.Windows.Forms.RadioButton asciiStyle;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button setColorHue;
+        private System.Windows.Forms.Button editOverheadMessage;
     }
 }

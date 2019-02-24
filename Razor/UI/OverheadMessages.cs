@@ -246,5 +246,35 @@ namespace Assistant.UI
 
             return hue;
         }
+
+        private void editOverheadMessage_Click(object sender, EventArgs e)
+        {
+            if (cliLocSearchView.SelectedItems.Count < 0)
+                return;
+
+            ListViewItem selectedItem = cliLocOverheadView.SelectedItems[0];
+            string oldMessage = selectedItem.SubItems[1].Text;
+
+            //ListViewItem item = new ListViewItem(newItemText);
+
+            if (InputBox.Show(this, "Enter Overhead Text", "Enter text to display overhead", oldMessage))
+            {
+                string newMessage = InputBox.GetString();
+
+                if (string.IsNullOrEmpty(newMessage))
+                    return;
+
+                selectedItem.SubItems[1].Text = newMessage;
+
+                foreach (Core.OverheadMessages.OverheadMessage list in Core.OverheadMessages.OverheadMessageList)
+                {
+                    if (list.MessageOverhead.Equals(oldMessage))
+                    {
+                        list.MessageOverhead = newMessage;
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
