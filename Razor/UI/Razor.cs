@@ -4487,6 +4487,9 @@ namespace Assistant
 
             stealthStepsFormat.Text = Config.GetString("StealthStepsFormat");
 
+            showStaticWalls.Checked = Config.GetBool("ShowStaticWalls");
+            showStaticWallLabels.Checked = Config.GetBool("ShowStaticWallLabels");
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
 
