@@ -28,13 +28,18 @@ namespace Assistant
             {
                 m_Count++;
 
+                string message = Config.GetString("StealthStepsFormat").Replace("{step}", m_Count.ToString());
+
+                if (string.IsNullOrEmpty(message))
+                    message = $"Steps: {m_Count}";
+
                 if (Config.GetBool("StealthOverhead"))
                 {
-                    World.Player.OverheadMessage(LocString.StealthSteps, m_Count);
+                    World.Player.OverheadMessage(message);
                 }
                 else
                 {
-                    World.Player.SendMessage(MsgLevel.Error, LocString.StealthSteps, m_Count);
+                    World.Player.SendMessage(MsgLevel.Error, message);
                 }   
 
                 if (m_Count > 30)
@@ -46,17 +51,6 @@ namespace Assistant
         {
             m_Hidden = true;
             m_Count = 0;
-            if (Config.GetBool("CountStealthSteps") && World.Player != null)
-            {
-                if (Config.GetBool("StealthOverhead"))
-                {
-                    World.Player.OverheadMessage(LocString.StealthStart);
-                }
-                else
-                {
-                    World.Player.SendMessage(MsgLevel.Error, LocString.StealthStart);
-                }
-            }   
         }
 
         public static void Unhide()

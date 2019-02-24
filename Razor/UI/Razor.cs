@@ -270,7 +270,6 @@ namespace Assistant
         private CheckBox potionEquip;
         private CheckBox spellUnequip;
         private CheckBox autoOpenDoors;
-        private CheckBox alwaysStealth;
         private CheckBox chkStealth;
         private Label label18;
         private CheckBox gameSize;
@@ -350,6 +349,8 @@ namespace Assistant
         private TextBox targetIndictorFormat;
         private Label lblTargetFormat;
         private CheckBox nextPrevIgnoresFriends;
+        private Label lblStealthFormat;
+        private TextBox stealthStepsFormat;
         private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -521,7 +522,6 @@ namespace Assistant
             this.potionEquip = new System.Windows.Forms.CheckBox();
             this.spellUnequip = new System.Windows.Forms.CheckBox();
             this.autoOpenDoors = new System.Windows.Forms.CheckBox();
-            this.alwaysStealth = new System.Windows.Forms.CheckBox();
             this.chkStealth = new System.Windows.Forms.CheckBox();
             this.label18 = new System.Windows.Forms.Label();
             this.gameSize = new System.Windows.Forms.CheckBox();
@@ -726,6 +726,8 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.stealthStepsFormat = new System.Windows.Forms.TextBox();
+            this.lblStealthFormat = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1767,6 +1769,8 @@ namespace Assistant
             // subOptionsMiscTab
             //
             this.subOptionsMiscTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsMiscTab.Controls.Add(this.lblStealthFormat);
+            this.subOptionsMiscTab.Controls.Add(this.stealthStepsFormat);
             this.subOptionsMiscTab.Controls.Add(this.rememberPwds);
             this.subOptionsMiscTab.Controls.Add(this.showStaticWalls);
             this.subOptionsMiscTab.Controls.Add(this.showStaticWallLabels);
@@ -1778,7 +1782,6 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.potionEquip);
             this.subOptionsMiscTab.Controls.Add(this.spellUnequip);
             this.subOptionsMiscTab.Controls.Add(this.autoOpenDoors);
-            this.subOptionsMiscTab.Controls.Add(this.alwaysStealth);
             this.subOptionsMiscTab.Controls.Add(this.chkStealth);
             this.subOptionsMiscTab.Controls.Add(this.label18);
             this.subOptionsMiscTab.Controls.Add(this.gameSize);
@@ -1799,9 +1802,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             //
@@ -1908,15 +1911,6 @@ namespace Assistant
             this.autoOpenDoors.TabIndex = 110;
             this.autoOpenDoors.Text = "Automatically open doors";
             this.autoOpenDoors.CheckedChanged += new System.EventHandler(this.autoOpenDoors_CheckedChanged);
-            //
-            // alwaysStealth
-            //
-            this.alwaysStealth.Location = new System.Drawing.Point(260, 89);
-            this.alwaysStealth.Name = "alwaysStealth";
-            this.alwaysStealth.Size = new System.Drawing.Size(190, 20);
-            this.alwaysStealth.TabIndex = 109;
-            this.alwaysStealth.Text = "Always show stealth steps ";
-            this.alwaysStealth.CheckedChanged += new System.EventHandler(this.alwaysStealth_CheckedChanged);
             //
             // chkStealth
             //
@@ -4066,6 +4060,24 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
+            // stealthStepsFormat
+            //
+            this.stealthStepsFormat.Location = new System.Drawing.Point(334, 86);
+            this.stealthStepsFormat.Name = "stealthStepsFormat";
+            this.stealthStepsFormat.Size = new System.Drawing.Size(114, 23);
+            this.stealthStepsFormat.TabIndex = 122;
+            this.stealthStepsFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.stealthStepsFormat.TextChanged += new System.EventHandler(this.stealthStepsFormat_TextChanged);
+            //
+            // lblStealthFormat
+            //
+            this.lblStealthFormat.AutoSize = true;
+            this.lblStealthFormat.Location = new System.Drawing.Point(280, 89);
+            this.lblStealthFormat.Name = "lblStealthFormat";
+            this.lblStealthFormat.Size = new System.Drawing.Size(48, 15);
+            this.lblStealthFormat.TabIndex = 123;
+            this.lblStealthFormat.Text = "Format:";
+            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4305,7 +4317,6 @@ namespace Assistant
             screenPath.Text = Config.GetString("CapPath");
             dispTime.Checked = Config.GetBool("CapTimeStamp");
             blockDis.Checked = Config.GetBool("BlockDismount");
-            alwaysStealth.Checked = Config.GetBool("AlwaysStealth");
             autoOpenDoors.Checked = Config.GetBool("AutoOpenDoors");
 
             objectDelay.Checked = Config.GetBool("ObjectDelayEnabled");
@@ -4473,6 +4484,8 @@ namespace Assistant
             targetIndictorFormat.Text = Config.GetString("TargetIndicatorFormat");
 
             nextPrevIgnoresFriends.Checked = Config.GetBool("NextPrevTargetIgnoresFriends");
+
+            stealthStepsFormat.Text = Config.GetString("StealthStepsFormat");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
@@ -7993,11 +8006,6 @@ namespace Assistant
             Config.SetProperty("AutoFriend", autoFriend.Checked);
         }
 
-        private void alwaysStealth_CheckedChanged(object sender, System.EventArgs e)
-        {
-            Config.SetProperty("AlwaysStealth", alwaysStealth.Checked);
-        }
-
         private void autoOpenDoors_CheckedChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("AutoOpenDoors", autoOpenDoors.Checked);
@@ -9331,6 +9339,11 @@ namespace Assistant
         private void nextPrevIgnoresFriends_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("NextPrevTargetIgnoresFriends", nextPrevIgnoresFriends.Checked);
+        }
+
+        private void stealthStepsFormat_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("StealthStepsFormat", stealthStepsFormat.Text);
         }
     }
 }

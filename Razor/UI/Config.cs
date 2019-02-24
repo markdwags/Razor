@@ -52,7 +52,6 @@ namespace Assistant
             AddProperty("WindowX", (int)400);
             AddProperty("WindowY", (int)400);
             AddProperty("CountStealthSteps", true);
-            AddProperty("AlwaysStealth", false);
 
             AddProperty("SysColor", (int)0x03B1);
             AddProperty("WarningColor", (int)0x0025);
@@ -226,6 +225,8 @@ namespace Assistant
             AddProperty("TargetIndicatorFormat", "* Target *");
 
             AddProperty("NextPrevTargetIgnoresFriends", false);
+
+            AddProperty("StealthStepsFormat", "Steps: {step}");
 
             Counter.Default();
             Filter.DisableAll();

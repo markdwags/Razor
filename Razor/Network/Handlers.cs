@@ -1480,7 +1480,7 @@ namespace Assistant
 
                 if (!wasHidden && !m.Visible)
                 {
-                    if (Config.GetBool("AlwaysStealth"))
+                    if (Config.GetBool("CountStealthSteps"))
                         StealthSteps.Hide();
                 }
                 else if (wasHidden && m.Visible)
@@ -1563,7 +1563,7 @@ namespace Assistant
 
                 if (!wasHidden && !m.Visible)
                 {
-                    if (Config.GetBool("AlwaysStealth"))
+                    if (Config.GetBool("CountStealthSteps"))
                         StealthSteps.Hide();
                 }
                 else if (wasHidden && m.Visible)
