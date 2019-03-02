@@ -120,8 +120,8 @@ namespace Assistant
             AddProperty("ForcePort", 0);
 
             AddProperty("ForceSizeEnabled", false);
-            AddProperty("ForceSizeX", 800);
-            AddProperty("ForceSizeY", 600);
+            AddProperty("ForceSizeX", 1000);
+            AddProperty("ForceSizeY", 800);
 
             AddProperty("FlipVidH", false);
             AddProperty("FlipVidV", false);
@@ -227,6 +227,8 @@ namespace Assistant
             AddProperty("NextPrevTargetIgnoresFriends", false);
 
             AddProperty("StealthStepsFormat", "Steps: {step}");
+
+            AddProperty("ShowFriendOverhead", false);
 
             Counter.Default();
             Filter.DisableAll();

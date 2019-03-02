@@ -477,6 +477,7 @@ namespace Assistant
         AllStay,
         AllStop,
         PetCommands,
+        Friend,
 
         __End
     }

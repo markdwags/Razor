@@ -351,6 +351,7 @@ namespace Assistant
         private CheckBox nextPrevIgnoresFriends;
         private Label lblStealthFormat;
         private TextBox stealthStepsFormat;
+        private CheckBox showFriendOverhead;
         private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -511,6 +512,8 @@ namespace Assistant
             this.smartLT = new System.Windows.Forms.CheckBox();
             this.queueTargets = new System.Windows.Forms.CheckBox();
             this.subOptionsMiscTab = new System.Windows.Forms.TabPage();
+            this.lblStealthFormat = new System.Windows.Forms.Label();
+            this.stealthStepsFormat = new System.Windows.Forms.TextBox();
             this.rememberPwds = new System.Windows.Forms.CheckBox();
             this.showStaticWalls = new System.Windows.Forms.CheckBox();
             this.showStaticWallLabels = new System.Windows.Forms.CheckBox();
@@ -726,8 +729,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
-            this.stealthStepsFormat = new System.Windows.Forms.TextBox();
-            this.lblStealthFormat = new System.Windows.Forms.Label();
+            this.showFriendOverhead = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1165,6 +1167,7 @@ namespace Assistant
             // subOptionsSpeechTab
             //
             this.subOptionsSpeechTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsSpeechTab.Controls.Add(this.showFriendOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.damageTakenOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.showDamageTaken);
             this.subOptionsSpeechTab.Controls.Add(this.damageDealtOverhead);
@@ -1807,6 +1810,24 @@ namespace Assistant
             this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
+            //
+            // lblStealthFormat
+            //
+            this.lblStealthFormat.AutoSize = true;
+            this.lblStealthFormat.Location = new System.Drawing.Point(280, 89);
+            this.lblStealthFormat.Name = "lblStealthFormat";
+            this.lblStealthFormat.Size = new System.Drawing.Size(48, 15);
+            this.lblStealthFormat.TabIndex = 123;
+            this.lblStealthFormat.Text = "Format:";
+            //
+            // stealthStepsFormat
+            //
+            this.stealthStepsFormat.Location = new System.Drawing.Point(334, 86);
+            this.stealthStepsFormat.Name = "stealthStepsFormat";
+            this.stealthStepsFormat.Size = new System.Drawing.Size(114, 23);
+            this.stealthStepsFormat.TabIndex = 122;
+            this.stealthStepsFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.stealthStepsFormat.TextChanged += new System.EventHandler(this.stealthStepsFormat_TextChanged);
             //
             // rememberPwds
             //
@@ -4060,23 +4081,15 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
-            // stealthStepsFormat
+            // showFriendOverhead
             //
-            this.stealthStepsFormat.Location = new System.Drawing.Point(334, 86);
-            this.stealthStepsFormat.Name = "stealthStepsFormat";
-            this.stealthStepsFormat.Size = new System.Drawing.Size(114, 23);
-            this.stealthStepsFormat.TabIndex = 122;
-            this.stealthStepsFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.stealthStepsFormat.TextChanged += new System.EventHandler(this.stealthStepsFormat_TextChanged);
-            //
-            // lblStealthFormat
-            //
-            this.lblStealthFormat.AutoSize = true;
-            this.lblStealthFormat.Location = new System.Drawing.Point(280, 89);
-            this.lblStealthFormat.Name = "lblStealthFormat";
-            this.lblStealthFormat.Size = new System.Drawing.Size(48, 15);
-            this.lblStealthFormat.TabIndex = 123;
-            this.lblStealthFormat.Text = "Format:";
+            this.showFriendOverhead.Location = new System.Drawing.Point(260, 260);
+            this.showFriendOverhead.Name = "showFriendOverhead";
+            this.showFriendOverhead.Size = new System.Drawing.Size(184, 23);
+            this.showFriendOverhead.TabIndex = 129;
+            this.showFriendOverhead.Text = "Show [Friend] overhead";
+            this.showFriendOverhead.UseVisualStyleBackColor = true;
+            this.showFriendOverhead.CheckedChanged += new System.EventHandler(this.showFriendOverhead_CheckedChanged);
             //
             // MainForm
             //
@@ -4489,6 +4502,8 @@ namespace Assistant
 
             showStaticWalls.Checked = Config.GetBool("ShowStaticWalls");
             showStaticWallLabels.Checked = Config.GetBool("ShowStaticWallLabels");
+
+            showFriendOverhead.Checked = Config.GetBool("ShowFriendOverhead");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
@@ -9347,6 +9362,11 @@ namespace Assistant
         private void stealthStepsFormat_TextChanged(object sender, EventArgs e)
         {
             Config.SetProperty("StealthStepsFormat", stealthStepsFormat.Text);
+        }
+
+        private void showFriendOverhead_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowFriendOverhead", showFriendOverhead.Checked);
         }
     }
 }

@@ -1289,18 +1289,24 @@ namespace Assistant
                 m.OverheadMessage(Config.GetInt("SysColor"), "[Ignored]");
             }
 
+            if (Config.GetBool("ShowFriendOverhead") && FriendsAgent.IsFriend(m))
+            {
+                m.OverheadMessage(0x03F, $"[{Language.GetString(LocString.Friend)}]");
+            }
+
             if (Config.GetBool("SmartLastTarget") && ClientCommunication.AllowBit(FeatureBit.SmartLT))
             {
                 bool harm = m_LastHarmTarg != null && m_LastHarmTarg.Serial == m.Serial;
                 bool bene = m_LastBeneTarg != null && m_LastBeneTarg.Serial == m.Serial;
+
                 if (harm)
-                    m.OverheadMessage(0x90, String.Format("[{0}]", Language.GetString(LocString.HarmfulTarget)));
+                    m.OverheadMessage(0x90, $"[{Language.GetString(LocString.HarmfulTarget)}]");
                 if (bene)
-                    m.OverheadMessage(0x3F, String.Format("[{0}]", Language.GetString(LocString.BeneficialTarget)));
+                    m.OverheadMessage(0x3F, $"[{Language.GetString(LocString.BeneficialTarget)}]");
             }
 
             if (m_LastTarget != null && m_LastTarget.Serial == m.Serial)
-                m.OverheadMessage(0x3B2, String.Format("[{0}]", Language.GetString(LocString.LastTarget)));
+                m.OverheadMessage(0x3B2, $"[{Language.GetString(LocString.LastTarget)}]");
         }
 
         public static bool IsLastTarget(Mobile m)
