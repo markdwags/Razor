@@ -9,8 +9,6 @@ namespace Assistant.HotKeys
         public static void Initialize()
         {
             HotKey.Add(HKCategory.Misc, LocString.Resync, new HotKeyCallback(Resync));
-            HotKey.Add(HKCategory.Misc, LocString.RecStart, new HotKeyCallback(PacketPlayer.Record));
-            HotKey.Add(HKCategory.Misc, LocString.VidStop, new HotKeyCallback(PacketPlayer.Stop));
 
             HotKey.Add(HKCategory.Misc, LocString.GoldPerHotkey, new HotKeyCallback(ToggleGoldPer));
             HotKey.Add(HKCategory.Misc, LocString.DamageTracker, new HotKeyCallback(ToggleDamage));

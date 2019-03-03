@@ -591,65 +591,6 @@ namespace Assistant
             }
         }
 
-        public static byte[] HandleRPVContainerContentUpdate(Packet p)
-        {
-            // This function will ignore the item if the container item has not been sent to the client yet.
-            // We can do this because we can't really count on getting all of the container info anyway.
-            // (So we'd need to request the container be updated, so why bother with the extra stuff required to find the container once its been sent?)
-            bool isPostKR = false, decided = false;
-
-            Serial serial = p.ReadUInt32();
-            ushort itemid = p.ReadUInt16();
-            itemid = (ushort)(itemid + p.ReadSByte()); // signed, itemID offset
-            ushort amount = p.ReadUInt16();
-            if (amount == 0)
-                amount = 1;
-            Point3D pos = new Point3D(p.ReadUInt16(), p.ReadUInt16(), 0);
-            byte gridPos = 0;
-            if (!decided)
-            {
-                byte nextByte = p.ReadByte();
-
-                isPostKR = ((nextByte & 0x40) == 0);
-                decided = true;
-
-                if (isPostKR == Engine.UsePostKRPackets)
-                    return p.Compile(); // not need to change anything
-
-                p.Seek(-1, SeekOrigin.Current);
-            }
-
-            if (isPostKR)
-                gridPos = p.ReadByte();
-
-            Serial cser = p.ReadUInt32();
-            ushort hue = p.ReadUInt16();
-
-            Item i = World.FindItem(serial);
-            if (i == null)
-            {
-                if (!serial.IsItem)
-                    return p.Compile();
-
-                World.AddItem(i = new Item(serial));
-                i.IsNew = i.AutoStack = true;
-            }
-
-            i.ItemID = itemid;
-            i.Amount = amount;
-            i.Position = pos;
-            i.GridNum = gridPos;
-            i.Hue = hue;
-            i.Container = cser;
-
-            if (i.IsNew)
-                Item.UpdateContainers();
-            if (!SearchExemptionAgent.IsExempt(i) && (i.IsChildOf(World.Player.Backpack) || i.IsChildOf(World.Player.Quiver)))
-                Counter.Count(i);
-
-            return new ContainerItem(i, Engine.UsePostKRPackets).Compile();
-        }
-
         private static void ContainerContentUpdate(Packet p, PacketHandlerEventArgs args)
         {
             // This function will ignore the item if the container item has not been sent to the client yet.
@@ -727,75 +668,6 @@ namespace Assistant
                 Item.UpdateContainers();
             }
         }
-
-        public static byte[] HandleRPVContainerContent(Packet p)
-        {
-            bool isPostKR = false, decided = false; ;
-            int count = p.ReadUInt16();
-
-            List<Item> list = new List<Item>();
-
-            for (int i = 0; i < count; i++)
-            {
-                Serial serial = p.ReadUInt32();
-                // serial is purposely not checked to be valid, sometimes buy lists dont have "valid" item serials (and we are okay with that).
-                Item item = World.FindItem(serial);
-                if (item == null)
-                {
-                    World.AddItem(item = new Item(serial));
-                    item.IsNew = true;
-                    item.AutoStack = false;
-                }
-                else
-                {
-                    item.CancelRemove();
-                }
-
-                //if ( !DragDropManager.EndHolding( serial ) )
-                //	continue;
-
-                item.ItemID = p.ReadUInt16();
-                item.ItemID = (ushort)(item.ItemID + p.ReadSByte());// signed, itemID offset
-                item.Amount = p.ReadUInt16();
-                if (item.Amount == 0)
-                    item.Amount = 1;
-                item.Position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), 0);
-
-                if (!decided)
-                {
-                    byte nextByte = p.ReadByte();
-
-                    isPostKR = ((nextByte & 0x40) == 0);
-                    decided = true;
-
-                    if (isPostKR == Engine.UsePostKRPackets)
-                        return p.Compile(); // not need to change anything
-
-                    p.Seek(-1, SeekOrigin.Current);
-                }
-
-                if (isPostKR)
-                    item.GridNum = p.ReadByte();
-
-                Serial cont = p.ReadUInt32();
-                item.Hue = p.ReadUInt16();
-                if (SearchExemptionAgent.Contains(item))
-                {
-                    p.Seek(-2, System.IO.SeekOrigin.Current);
-                    p.Write((short)Config.GetInt("ExemptColor"));
-                }
-
-                item.Container = cont; // must be done after hue is set (for counters)
-                if (!SearchExemptionAgent.IsExempt(item) && (item.IsChildOf(World.Player.Backpack) || item.IsChildOf(World.Player.Quiver)))
-                    Counter.Count(item);
-
-                list.Add(item);
-            }
-            Item.UpdateContainers();
-
-            return new ContainerContent(list, Engine.UsePostKRPackets).Compile();
-        }
-
         private static void ContainerContent(Packet p, PacketHandlerEventArgs args)
         {
             int count = p.ReadUInt16();
@@ -2708,9 +2580,6 @@ namespace Assistant
 
         private static void MovementDemand(PacketReader p, PacketHandlerEventArgs args)
         {
-            if (PacketPlayer.Playing)
-                ClientCommunication.ForceSendToClient(new MobileUpdate(World.Player));
-
             World.Player.ProcessMove((Direction)p.ReadByte());
         }
 

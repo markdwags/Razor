@@ -282,8 +282,8 @@ namespace Assistant
         Friends,
 
         // 1350 to 1359 reserved for PacketPlayer stop messages
-        PacketPlayerStop = 1350,
-        PacketPlayerStopLast = 1359,
+        Reserved0 = 1350,
+        Reserved1 = 1359,
 
         TargFriendAdd,
         TargFriendRem,

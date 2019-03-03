@@ -158,13 +158,13 @@ namespace Assistant
         public static bool HasClientFilter(int packetID)
         {
             List<PacketFilterCallback> list;
-            return (m_ClientFilters.TryGetValue(packetID, out list) && list != null && list.Count > 0) || PacketPlayer.Recording || PacketPlayer.Playing;
+            return (m_ClientFilters.TryGetValue(packetID, out list) && list != null && list.Count > 0);
         }
 
         public static bool HasServerFilter(int packetID)
         {
             List<PacketFilterCallback> list;
-            return (m_ServerFilters.TryGetValue(packetID, out list) && list != null && list.Count > 0) || PacketPlayer.Recording;
+            return (m_ServerFilters.TryGetValue(packetID, out list) && list != null && list.Count > 0);
         }
 
         private static PacketHandlerEventArgs m_Args = new PacketHandlerEventArgs();

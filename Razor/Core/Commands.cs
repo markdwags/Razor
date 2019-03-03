@@ -18,8 +18,6 @@ namespace Assistant
             Command.Register("Ping", Ping);
             Command.Register("Help", Command.ListCommands);
             Command.Register("Echo", Echo);
-            Command.Register("GetSerial", GetSerial);
-            Command.Register("RPVInfo", GetRPVInfo);
             Command.Register("Macro", MacroCmd);
             Command.Register("Hue", GetItemHue);
             Command.Register("Item", GetItemHue);
@@ -50,17 +48,6 @@ namespace Assistant
             }
         }
 
-        private static void GetRPVInfo(string[] param)
-        {
-            if (string.IsNullOrEmpty(PacketPlayer.CurrentOpenedInfo))
-                return;
-
-            ClientCommunication.ForceSendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x25, 3,
-                Language.CliLocName, "System", "Current PacketVideo File Information:"));
-            ClientCommunication.ForceSendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x25, 3,
-                Language.CliLocName, "System", PacketPlayer.CurrentOpenedInfo));
-        }
-
         private static void DamageTrackerReport(string[] param)
         {
             if (DamageTracker.Running)
@@ -81,16 +68,6 @@ namespace Assistant
                 Language.CliLocName, "System", "Setting season.."));
 
             ClientCommunication.ForceSendToClient(new SeasonChange(Convert.ToInt32(param[0]), true));
-        }
-
-        private static void GetSerial(string[] param)
-        {
-            if (PacketPlayer.Playing)
-            {
-                ClientCommunication.ForceSendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x25, 3,
-                    Language.CliLocName, "System", "Target a player to get their serial number."));
-                ClientCommunication.ForceSendToClient(new Target(Targeting.LocalTargID, false));
-            }
         }
 
         private static void GetItemHue(string[] param)

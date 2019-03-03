@@ -134,9 +134,6 @@
     <Compile Include="Core\Agents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\AVIRec.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\BuffsTimer.cs" />
     <Compile Include="Core\BuffsDebuffs.cs" />
     <Compile Include="Core\BodCapture.cs" />
@@ -266,9 +263,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\ObjectPropertyList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\PacketRec.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\PasswordMemory.cs">
