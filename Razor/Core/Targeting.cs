@@ -1420,9 +1420,12 @@ namespace Assistant
             {
                 if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
                 {
-                    if (Config.GetBool("NextPrevTargetIgnoresFriends") && !FriendsAgent.IsFriend(mob))
+                    if (Config.GetBool("NextPrevTargetIgnoresFriends"))
                     {
-                        list.Add(mob);
+                        if (FriendsAgent.IsFriend(mob) == false)
+                        {
+                            list.Add(mob);
+                        }
                     }
                     else
                     {
@@ -1504,9 +1507,12 @@ namespace Assistant
                 {
                     if (mob.Notoriety == 5) // Check if they are red
                     {
-                        if (Config.GetBool("NextPrevTargetIgnoresFriends") && !FriendsAgent.IsFriend(mob))
+                        if (Config.GetBool("NextPrevTargetIgnoresFriends"))
                         {
-                            list.Add(mob);
+                            if (FriendsAgent.IsFriend(mob) == false)
+                            {
+                                list.Add(mob);
+                            }
                         }
                         else
                         {
@@ -1728,9 +1734,12 @@ namespace Assistant
             {
                 if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
                 {
-                    if (Config.GetBool("NextPrevTargetIgnoresFriends") && !FriendsAgent.IsFriend(mob))
+                    if (Config.GetBool("NextPrevTargetIgnoresFriends"))
                     {
-                        list.Add(mob);
+                        if (FriendsAgent.IsFriend(mob) == false)
+                        {
+                            list.Add(mob);
+                        }
                     }
                     else
                     {
@@ -1811,9 +1820,12 @@ namespace Assistant
                 {
                     if (mob.Notoriety == 5) // Check if they are red
                     {
-                        if (Config.GetBool("NextPrevTargetIgnoresFriends") && !FriendsAgent.IsFriend(mob))
+                        if (Config.GetBool("NextPrevTargetIgnoresFriends"))
                         {
-                            list.Add(mob);
+                            if (FriendsAgent.IsFriend(mob) == false)
+                            {
+                                list.Add(mob);
+                            }
                         }
                         else
                         {
