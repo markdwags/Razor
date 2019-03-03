@@ -327,6 +327,7 @@ namespace Assistant
         private Label lblStealthFormat;
         private TextBox stealthStepsFormat;
         private CheckBox showFriendOverhead;
+        private CheckBox dispDeltaOverhead;
         private TreeView _macroTreeViewCache = new TreeView();
 
         [DllImport("User32.dll")]
@@ -675,6 +676,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.dispDeltaOverhead = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1086,9 +1088,9 @@ namespace Assistant
             // moreOptTab
             //
             this.moreOptTab.Controls.Add(this.optionsTabCtrl);
-            this.moreOptTab.Location = new System.Drawing.Point(4, 24);
+            this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(519, 342);
+            this.moreOptTab.Size = new System.Drawing.Size(519, 322);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             //
@@ -1535,10 +1537,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             //
@@ -1754,9 +1756,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             //
@@ -2078,9 +2080,9 @@ namespace Assistant
             // displayTab
             //
             this.displayTab.Controls.Add(this.tabControl4);
-            this.displayTab.Location = new System.Drawing.Point(4, 24);
+            this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
-            this.displayTab.Size = new System.Drawing.Size(519, 342);
+            this.displayTab.Size = new System.Drawing.Size(519, 322);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             //
@@ -2421,9 +2423,9 @@ namespace Assistant
             //
             this.dressTab.Controls.Add(this.groupBox6);
             this.dressTab.Controls.Add(this.groupBox5);
-            this.dressTab.Location = new System.Drawing.Point(4, 24);
+            this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(519, 342);
+            this.dressTab.Size = new System.Drawing.Size(519, 322);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             //
@@ -2571,6 +2573,7 @@ namespace Assistant
             //
             // skillsTab
             //
+            this.skillsTab.Controls.Add(this.dispDeltaOverhead);
             this.skillsTab.Controls.Add(this.logSkillChanges);
             this.skillsTab.Controls.Add(this.dispDelta);
             this.skillsTab.Controls.Add(this.skillCopyAll);
@@ -2581,18 +2584,17 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.setlocks);
             this.skillsTab.Controls.Add(this.resetDelta);
             this.skillsTab.Controls.Add(this.skillList);
-            this.skillsTab.Location = new System.Drawing.Point(4, 24);
+            this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(519, 342);
+            this.skillsTab.Size = new System.Drawing.Size(519, 322);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             //
             // logSkillChanges
             //
-            this.logSkillChanges.AutoSize = true;
-            this.logSkillChanges.Location = new System.Drawing.Point(378, 206);
+            this.logSkillChanges.Location = new System.Drawing.Point(356, 157);
             this.logSkillChanges.Name = "logSkillChanges";
-            this.logSkillChanges.Size = new System.Drawing.Size(116, 19);
+            this.logSkillChanges.Size = new System.Drawing.Size(156, 19);
             this.logSkillChanges.TabIndex = 13;
             this.logSkillChanges.Text = "Log skill changes";
             this.logSkillChanges.UseVisualStyleBackColor = true;
@@ -2600,27 +2602,27 @@ namespace Assistant
             //
             // dispDelta
             //
-            this.dispDelta.Location = new System.Drawing.Point(378, 158);
+            this.dispDelta.Location = new System.Drawing.Point(356, 182);
             this.dispDelta.Name = "dispDelta";
-            this.dispDelta.Size = new System.Drawing.Size(134, 42);
+            this.dispDelta.Size = new System.Drawing.Size(156, 19);
             this.dispDelta.TabIndex = 11;
-            this.dispDelta.Text = "Display skill and stat changes";
+            this.dispDelta.Text = "Show skill/stat changes";
             this.dispDelta.CheckedChanged += new System.EventHandler(this.dispDelta_CheckedChanged);
             //
             // skillCopyAll
             //
-            this.skillCopyAll.Location = new System.Drawing.Point(378, 119);
+            this.skillCopyAll.Location = new System.Drawing.Point(356, 119);
             this.skillCopyAll.Name = "skillCopyAll";
-            this.skillCopyAll.Size = new System.Drawing.Size(134, 32);
+            this.skillCopyAll.Size = new System.Drawing.Size(156, 32);
             this.skillCopyAll.TabIndex = 9;
             this.skillCopyAll.Text = "Copy All";
             this.skillCopyAll.Click += new System.EventHandler(this.skillCopyAll_Click);
             //
             // skillCopySel
             //
-            this.skillCopySel.Location = new System.Drawing.Point(378, 81);
+            this.skillCopySel.Location = new System.Drawing.Point(356, 81);
             this.skillCopySel.Name = "skillCopySel";
-            this.skillCopySel.Size = new System.Drawing.Size(134, 32);
+            this.skillCopySel.Size = new System.Drawing.Size(156, 32);
             this.skillCopySel.TabIndex = 8;
             this.skillCopySel.Text = "Copy Selected";
             this.skillCopySel.Click += new System.EventHandler(this.skillCopySel_Click);
@@ -2628,21 +2630,21 @@ namespace Assistant
             // baseTotal
             //
             this.baseTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.baseTotal.Location = new System.Drawing.Point(405, 287);
+            this.baseTotal.Location = new System.Drawing.Point(428, 290);
             this.baseTotal.Name = "baseTotal";
             this.baseTotal.ReadOnly = true;
-            this.baseTotal.Size = new System.Drawing.Size(75, 23);
+            this.baseTotal.Size = new System.Drawing.Size(84, 23);
             this.baseTotal.TabIndex = 7;
             this.baseTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             //
             // label1
             //
-            this.label1.Location = new System.Drawing.Point(405, 261);
+            this.label1.Location = new System.Drawing.Point(356, 289);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 23);
             this.label1.TabIndex = 6;
             this.label1.Text = "Base Total:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             //
             // locks
             //
@@ -2658,18 +2660,18 @@ namespace Assistant
             //
             // setlocks
             //
-            this.setlocks.Location = new System.Drawing.Point(378, 43);
+            this.setlocks.Location = new System.Drawing.Point(356, 43);
             this.setlocks.Name = "setlocks";
-            this.setlocks.Size = new System.Drawing.Size(84, 32);
+            this.setlocks.Size = new System.Drawing.Size(106, 32);
             this.setlocks.TabIndex = 4;
             this.setlocks.Text = "Set all locks:";
             this.setlocks.Click += new System.EventHandler(this.OnSetSkillLocks);
             //
             // resetDelta
             //
-            this.resetDelta.Location = new System.Drawing.Point(378, 5);
+            this.resetDelta.Location = new System.Drawing.Point(356, 5);
             this.resetDelta.Name = "resetDelta";
-            this.resetDelta.Size = new System.Drawing.Size(134, 32);
+            this.resetDelta.Size = new System.Drawing.Size(156, 32);
             this.resetDelta.TabIndex = 3;
             this.resetDelta.Text = "Reset  +/-";
             this.resetDelta.Click += new System.EventHandler(this.OnResetSkillDelta);
@@ -2687,7 +2689,7 @@ namespace Assistant
             this.skillList.FullRowSelect = true;
             this.skillList.Location = new System.Drawing.Point(8, 5);
             this.skillList.Name = "skillList";
-            this.skillList.Size = new System.Drawing.Size(364, 307);
+            this.skillList.Size = new System.Drawing.Size(342, 307);
             this.skillList.TabIndex = 1;
             this.skillList.UseCompatibleStateImageBehavior = false;
             this.skillList.View = System.Windows.Forms.View.Details;
@@ -2697,7 +2699,7 @@ namespace Assistant
             // skillHDRName
             //
             this.skillHDRName.Text = "Skill Name";
-            this.skillHDRName.Width = 93;
+            this.skillHDRName.Width = 112;
             //
             // skillHDRvalue
             //
@@ -2734,9 +2736,9 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB1);
             this.agentsTab.Controls.Add(this.agentB2);
             this.agentsTab.Controls.Add(this.agentB3);
-            this.agentsTab.Location = new System.Drawing.Point(4, 24);
+            this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(519, 342);
+            this.agentsTab.Size = new System.Drawing.Size(519, 322);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             //
@@ -2825,9 +2827,9 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.hotkeyTree);
             this.hotkeysTab.Controls.Add(this.dohotkey);
             this.hotkeysTab.Controls.Add(this.groupBox8);
-            this.hotkeysTab.Location = new System.Drawing.Point(4, 24);
+            this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(519, 342);
+            this.hotkeysTab.Size = new System.Drawing.Size(519, 322);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             //
@@ -2966,9 +2968,9 @@ namespace Assistant
             // macrosTab
             //
             this.macrosTab.Controls.Add(this.tabControl2);
-            this.macrosTab.Location = new System.Drawing.Point(4, 24);
+            this.macrosTab.Location = new System.Drawing.Point(4, 44);
             this.macrosTab.Name = "macrosTab";
-            this.macrosTab.Size = new System.Drawing.Size(519, 342);
+            this.macrosTab.Size = new System.Drawing.Size(519, 322);
             this.macrosTab.TabIndex = 7;
             this.macrosTab.Text = "Macros";
             //
@@ -3772,6 +3774,18 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             //
+            // dispDeltaOverhead
+            //
+            this.dispDeltaOverhead.AutoSize = true;
+            this.dispDeltaOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dispDeltaOverhead.Location = new System.Drawing.Point(441, 207);
+            this.dispDeltaOverhead.Name = "dispDeltaOverhead";
+            this.dispDeltaOverhead.Size = new System.Drawing.Size(71, 17);
+            this.dispDeltaOverhead.TabIndex = 14;
+            this.dispDeltaOverhead.Text = "Overhead";
+            this.dispDeltaOverhead.UseVisualStyleBackColor = true;
+            this.dispDeltaOverhead.CheckedChanged += new System.EventHandler(this.dispDeltaOverhead_CheckedChanged);
+            //
             // MainForm
             //
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4169,6 +4183,8 @@ namespace Assistant
             showStaticWallLabels.Checked = Config.GetBool("ShowStaticWallLabels");
 
             showFriendOverhead.Checked = Config.GetBool("ShowFriendOverhead");
+
+            dispDeltaOverhead.Checked = Config.GetBool("DisplaySkillChangesOverhead");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             ClientCommunication.SetSmartCPU(false);
@@ -8883,6 +8899,11 @@ namespace Assistant
         private void showFriendOverhead_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowFriendOverhead", showFriendOverhead.Checked);
+        }
+
+        private void dispDeltaOverhead_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("DisplaySkillChangesOverhead", dispDeltaOverhead.Checked);
         }
     }
 }

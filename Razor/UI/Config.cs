@@ -221,6 +221,8 @@ namespace Assistant
             AddProperty("StealthStepsFormat", "Steps: {step}");
 
             AddProperty("ShowFriendOverhead", false);
+            
+            AddProperty("DisplaySkillChangesOverhead", false);
 
             Counter.Default();
             Filter.DisableAll();

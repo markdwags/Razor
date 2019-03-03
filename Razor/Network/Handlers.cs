@@ -860,8 +860,22 @@ namespace Assistant
                             skill.FixedCap = p.ReadUInt16();
                             Engine.MainWindow.UpdateSkill(skill);
 
+                            //Your skill in {0} has changed by {4}{5:F1}, it is now {3:F1} ({1}{2:F1}).
                             if (Config.GetBool("DisplaySkillChanges") && skill.FixedBase != old)
-                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName)i, skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value, skill.FixedBase - old > 0 ? "+" : "", ((double)(skill.FixedBase - old)) / 10.0);
+                            {
+                                if (Config.GetBool("DisplaySkillChangesOverhead"))
+                                {
+                                    World.Player.OverheadMessage(LocString.SkillChangeOverhead, (SkillName) i,
+                                        skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
+                                        skill.FixedBase - old > 0 ? "+" : "",
+                                        (skill.FixedBase - old) / 10.0);
+                                }
+                                else
+                                {
+                                    //                                                                    0                    1                    2            3                        4                                        5
+                                    World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName)i, skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value, skill.FixedBase - old > 0 ? "+" : "", ((double)(skill.FixedBase - old)) / 10.0);
+                                }
+                            }
 
                             ClientCommunication.PostSkillUpdate(i, skill.FixedBase);
                         }
@@ -885,8 +899,21 @@ namespace Assistant
                             skill.Lock = (LockType)p.ReadByte();
                             skill.FixedCap = 100;
                             Engine.MainWindow.UpdateSkill(skill);
+
                             if (Config.GetBool("DisplaySkillChanges") && skill.FixedBase != old)
-                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName)i, skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value, ((double)(skill.FixedBase - old)) / 10.0, skill.FixedBase - old > 0 ? "+" : "");
+                            {
+                                if (Config.GetBool("DisplaySkillChangesOverhead"))
+                                {
+                                    World.Player.OverheadMessage(LocString.SkillChangeOverhead, (SkillName)i,
+                                        skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
+                                        skill.FixedBase - old > 0 ? "+" : "",
+                                        (skill.FixedBase - old) / 10.0);
+                                }
+                                else
+                                {
+                                    World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName)i, skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value, ((double)(skill.FixedBase - old)) / 10.0, skill.FixedBase - old > 0 ? "+" : "");
+                                }
+                            }
 
                             ClientCommunication.PostSkillUpdate(i, skill.FixedBase);
                         }
@@ -1258,17 +1285,42 @@ namespace Assistant
                 player.Dex = p.ReadUInt16();
                 player.Int = p.ReadUInt16();
 
+                //Your strength has changed by {0}{1}, it is now {2}.
                 if (player.Str != oStr && oStr != 0 && Config.GetBool("DisplaySkillChanges"))
-                    World.Player.SendMessage(MsgLevel.Force, LocString.StrChanged, player.Str - oStr > 0 ? "+" : "",
-                        player.Str - oStr, player.Str);
+                {
+                    if (Config.GetBool("DisplaySkillChangesOverhead"))
+                    {
+                        World.Player.OverheadMessage(LocString.StrChangeOverhead, player.Str - oStr > 0 ? "+" : "", player.Str - oStr, player.Str);
+                    }
+                    else
+                    {
+                        World.Player.SendMessage(MsgLevel.Force, LocString.StrChanged, player.Str - oStr > 0 ? "+" : "", player.Str - oStr, player.Str);
+                    }
+                }
 
                 if (player.Dex != oDex && oDex != 0 && Config.GetBool("DisplaySkillChanges"))
-                    World.Player.SendMessage(MsgLevel.Force, LocString.DexChanged, player.Dex - oDex > 0 ? "+" : "",
-                        player.Dex - oDex, player.Dex);
+                {
+                    if (Config.GetBool("DisplaySkillChangesOverhead"))
+                    {
+                        World.Player.OverheadMessage(LocString.DexChangeOverhead, player.Dex - oDex > 0 ? "+" : "", player.Dex - oDex, player.Dex);
+                    }
+                    else
+                    {
+                        World.Player.SendMessage(MsgLevel.Force, LocString.DexChanged, player.Dex - oDex > 0 ? "+" : "", player.Dex - oDex, player.Dex);
+                    }
+                }
 
                 if (player.Int != oInt && oInt != 0 && Config.GetBool("DisplaySkillChanges"))
-                    World.Player.SendMessage(MsgLevel.Force, LocString.IntChanged, player.Int - oInt > 0 ? "+" : "",
-                        player.Int - oInt, player.Int);
+                {
+                    if (Config.GetBool("DisplaySkillChangesOverhead"))
+                    {
+                        World.Player.OverheadMessage(LocString.IntChangeOverhead, player.Int - oInt > 0 ? "+" : "", player.Int - oInt, player.Int);
+                    }
+                    else
+                    {
+                        World.Player.SendMessage(MsgLevel.Force, LocString.IntChanged, player.Int - oInt > 0 ? "+" : "", player.Int - oInt, player.Int);
+                    }
+                }
 
                 player.Stam = p.ReadUInt16();
                 player.StamMax = p.ReadUInt16();

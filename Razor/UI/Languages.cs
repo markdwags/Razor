@@ -478,6 +478,10 @@ namespace Assistant
         AllStop,
         PetCommands,
         Friend,
+        StrChangeOverhead,
+        DexChangeOverhead,
+        IntChangeOverhead,
+        SkillChangeOverhead,
 
         __End
     }
