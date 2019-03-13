@@ -6,18 +6,20 @@ namespace Assistant
 {
 	public enum MessageType
 	{
-		Regular = 0x00,
-		System = 0x01,
-		Emote = 0x02,
-		Label = 0x06,
-		Focus = 0x07,
-		Whisper = 0x08,
-		Yell = 0x09,
-		Spell = 0x0A,
-		Encoded = 0xC0,
+	    Regular = 0x00,
+	    System = 0x01,
+	    Emote = 0x02,
+	    Label = 0x06,
+	    Focus = 0x07,
+	    Whisper = 0x08,
+	    Yell = 0x09,
+	    Spell = 0x0A,
+	    Guild = 0x0D,
+	    Alliance = 0x0E,
+	    Encoded = 0xC0,
 
-		Special = 0x20
-	}
+	    Special = 0x20
+     }
 
 	public sealed class QueryPartyLocs : Packet
 	{

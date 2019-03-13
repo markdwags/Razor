@@ -382,6 +382,9 @@ namespace Assistant.Macros
                             if (waitLen >= TimeSpan.FromSeconds(4.0) && Engine.MainWindow.WaitDisplay != null)
                             {
                                 StringBuilder sb = new StringBuilder(Language.GetString(LocString.WaitingTimeout));
+
+                                sb.AppendLine("\n");
+
                                 int s = (int)(m_Wait.Timeout - waitLen).TotalSeconds;
                                 int m = 0;
 

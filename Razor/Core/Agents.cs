@@ -2764,14 +2764,21 @@ namespace Assistant
             {
                 if (!m_Chars.Contains(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial)
                 {
-                    m_Chars.Add(mobile.Serial);
+                    if (!m_Chars.Contains(mobile.Serial))
+                    {
+                        m_Chars.Add(mobile.Serial);
 
-                    Add2List(mobile.Serial);
+                        Add2List(mobile.Serial);
 
-                    World.Player.SendMessage(MsgLevel.Force, $"Added {mobile.Name}");
+                        World.Player.SendMessage(MsgLevel.Force, $"{mobile.Name} added");
 
-                    mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
-                    mobile.OPLChanged();
+                        mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
+                        mobile.OPLChanged();
+                    }
+                    else
+                    {
+                        World.Player.SendMessage(MsgLevel.Warning, $"{mobile.Name} already added");
+                    }
                 }
             }
         }
@@ -2853,9 +2860,10 @@ namespace Assistant
 
             if (!location && serial.IsMobile && serial != World.Player.Serial)
             {
-                World.Player.SendMessage(MsgLevel.Force, LocString.FriendAdded);
                 if (!m_Chars.Contains(serial))
                 {
+                    World.Player.SendMessage(MsgLevel.Force, LocString.FriendAdded);
+
                     m_Chars.Add(serial);
 
                     Add2List(serial);
@@ -2865,6 +2873,15 @@ namespace Assistant
                     {
                         m.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
                         m.OPLChanged();
+                    }
+                }
+                else
+                {
+                    Mobile m = World.FindMobile(serial);
+
+                    if (m != null)
+                    {
+                        World.Player.SendMessage(MsgLevel.Warning, $"{m.Name} already added");
                     }
                 }
             }

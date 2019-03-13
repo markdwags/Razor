@@ -4215,15 +4215,26 @@ namespace Assistant
 
                 foreach (AnimData animData in items)
                 {
-                    Frame[] frames =
-                        Animations.GetAnimation(Convert.ToInt32(animData.body), 0, 1, ref hue, false, false);
+                    try
+                    {
+                        Frame[] frames =
+                            Animations.GetAnimation(Convert.ToInt32(animData.body), 0, 1, ref hue, false, false);
 
-                    if (frames != null)
+                        if (frames != null)
+                        {
+                            _animationData.Add(animData);
+                            dragonAnimationList.Items.Add(animData.name);
+                            drakeAnimationList.Items.Add(animData.name);
+                        }
+                    }
+                    catch //Unable to verify animation, lets add it anyway
                     {
                         _animationData.Add(animData);
                         dragonAnimationList.Items.Add(animData.name);
                         drakeAnimationList.Items.Add(animData.name);
                     }
+
+                    
                 }
             }
 
