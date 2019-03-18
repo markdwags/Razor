@@ -1384,9 +1384,6 @@ namespace Assistant
 
             Point3D position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
-            if (World.Player.Position != Point3D.Zero && !Utility.InRange(World.Player.Position, position, World.Player.VisRange))
-                return;
-
             Mobile m = World.FindMobile(serial);
             if (m == null)
                 World.AddMobile(m = new Mobile(serial));
