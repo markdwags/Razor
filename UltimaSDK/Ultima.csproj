@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5D66ACE6-B2A4-400F-B5A5-24525959AC5C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ultima</RootNamespace>
+    <AssemblyName>Ultima</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ultima\AnimationEdit.cs" />
+    <Compile Include="Ultima\Animations.cs" />
+    <Compile Include="Ultima\Animdata.cs" />
+    <Compile Include="Ultima\Art.cs" />
+    <Compile Include="Ultima\ASCIIFont.cs" />
+    <Compile Include="Ultima\CalibrationInfo.cs" />
+    <Compile Include="Ultima\Client.cs" />
+    <Compile Include="Ultima\ClientHandles.cs" />
+    <Compile Include="Ultima\FileIndex.cs" />
+    <Compile Include="Ultima\Files.cs" />
+    <Compile Include="Ultima\Gumps.cs" />
+    <Compile Include="Ultima\Hues.cs" />
+    <Compile Include="Ultima\Light.cs" />
+    <Compile Include="Ultima\LocationPointer.cs" />
+    <Compile Include="Ultima\Map.cs" />
+    <Compile Include="Ultima\MultiMap.cs" />
+    <Compile Include="Ultima\Multis.cs" />
+    <Compile Include="Ultima\NativeMethods.cs" />
+    <Compile Include="Ultima\ProcessStream.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ultima\RadarCol.cs" />
+    <Compile Include="Ultima\SkillGroups.cs" />
+    <Compile Include="Ultima\Skills.cs" />
+    <Compile Include="Ultima\Sound.cs" />
+    <Compile Include="Ultima\SpeechList.cs" />
+    <Compile Include="Ultima\StringEntry.cs" />
+    <Compile Include="Ultima\StringList.cs" />
+    <Compile Include="Ultima\Textures.cs" />
+    <Compile Include="Ultima\TileData.cs" />
+    <Compile Include="Ultima\TileList.cs" />
+    <Compile Include="Ultima\TileMatrix.cs" />
+    <Compile Include="Ultima\TileMatrixPatch.cs" />
+    <Compile Include="Ultima\UnicodeFont.cs" />
+    <Compile Include="Ultima\Verdata.cs" />
+    <Compile Include="Ultima\WindowProcessStream.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
