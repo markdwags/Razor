@@ -1010,7 +1010,7 @@ namespace Assistant
                         try
                         {
                             m.OverheadMessageFrom(HealthHues[((percent + 5) / 10) % HealthHues.Length],
-                                 Language.Format(LocString.sStatsA1, m.Name),
+                                 m.Name ?? string.Empty,
                                  Config.GetString("HealthFmt"), percent);
                         }
                         catch
@@ -1049,7 +1049,7 @@ namespace Assistant
                         try
                         {
                             m.OverheadMessageFrom(0x63,
-                                 Language.Format(LocString.sStatsA1, m.Name),
+                                 m.Name ?? string.Empty,
                                  Config.GetString("PartyStatFmt"), manaPercent, stamPercent);
                         }
                         catch
