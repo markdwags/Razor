@@ -69,7 +69,7 @@ namespace Assistant
 
             AddProperty("AutoOpenCorpses", false);
             AddProperty("CorpseRange", (int)2);
-            
+
             AddProperty("BlockDismount", false);
 
             AddProperty("AutoCap", false);
@@ -104,7 +104,7 @@ namespace Assistant
             AddProperty("LastTargTextFlags", true);
             //AddProperty("SmartCPU", false);
             AddProperty("LTHilight", (int)0);
-            
+
             AddProperty("AutoFriend", false);
 
             AddProperty("AutoOpenDoors", true);
@@ -117,7 +117,7 @@ namespace Assistant
             AddProperty("ForceSizeEnabled", false);
             AddProperty("ForceSizeX", 1000);
             AddProperty("ForceSizeY", 800);
-            
+
             AddProperty("PotionEquip", false);
             AddProperty("BlockHealPoison", false);
 
@@ -143,10 +143,10 @@ namespace Assistant
             AddProperty("StepThroughMacro", false);
 
             // Map options
-	        AddProperty("ShowPlayerPosition", true);
+	        /*AddProperty("ShowPlayerPosition", true);
 	        AddProperty("TrackPlayerPosition", true);
 	        AddProperty("ShowPartyMemberPositions", true);
-	        AddProperty("TiltMap", true);
+	        AddProperty("TiltMap", true);*/
 
             AddProperty("ShowTargetSelfLastClearOverhead", true);
             AddProperty("ShowOverheadMessages", false);
@@ -183,7 +183,7 @@ namespace Assistant
 
             AddProperty("RealSeason", false);
             AddProperty("Season", 5);
-            
+
             AddProperty("BlockTradeRequests", false);
             AddProperty("BlockPartyInvites", false);
             AddProperty("AutoAcceptParty", false);
@@ -221,7 +221,7 @@ namespace Assistant
             AddProperty("StealthStepsFormat", "Steps: {step}");
 
             AddProperty("ShowFriendOverhead", false);
-            
+
             AddProperty("DisplaySkillChangesOverhead", false);
 
             Counter.Default();

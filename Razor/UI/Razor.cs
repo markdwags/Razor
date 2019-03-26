@@ -252,12 +252,8 @@ namespace Assistant
         private CheckBox showDamageTaken;
         private CheckBox damageDealtOverhead;
         private CheckBox showDamageDealt;
-        private Button openUOPS;
-        private GroupBox groupMapPoints;
-        private CheckedListBox mapPins;
         private GroupBox groupBox14;
         private Button boatControl;
-        private GroupBox groupBox13;
         private GroupBox groupBox15;
         private Button openUOAM;
         private Button openUltimaMapper;
@@ -637,8 +633,6 @@ namespace Assistant
             this.groupBox14 = new System.Windows.Forms.GroupBox();
             this.captureMibs = new System.Windows.Forms.CheckBox();
             this.boatControl = new System.Windows.Forms.Button();
-            this.groupBox13 = new System.Windows.Forms.GroupBox();
-            this.openUOPS = new System.Windows.Forms.Button();
             this.screenshotTab = new System.Windows.Forms.TabPage();
             this.imgurUploads = new System.Windows.Forms.ListBox();
             this.screenShotClipboard = new System.Windows.Forms.CheckBox();
@@ -3275,12 +3269,12 @@ namespace Assistant
             this.groupBox15.Controls.Add(this.openUOAM);
             this.groupBox15.Controls.Add(this.openUltimaMapper);
             this.groupBox15.Controls.Add(this.btnMap);
-            this.groupBox15.Location = new System.Drawing.Point(298, 112);
+            this.groupBox15.Location = new System.Drawing.Point(19, 7);
             this.groupBox15.Name = "groupBox15";
             this.groupBox15.Size = new System.Drawing.Size(214, 200);
             this.groupBox15.TabIndex = 69;
             this.groupBox15.TabStop = false;
-            this.groupBox15.Text = "Other";
+            this.groupBox15.Text = "Maps";
             //
             // openUOAM
             //
@@ -3313,9 +3307,9 @@ namespace Assistant
             //
             this.groupBox14.Controls.Add(this.captureMibs);
             this.groupBox14.Controls.Add(this.boatControl);
-            this.groupBox14.Location = new System.Drawing.Point(298, 7);
+            this.groupBox14.Location = new System.Drawing.Point(261, 7);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(214, 99);
+            this.groupBox14.Size = new System.Drawing.Size(214, 200);
             this.groupBox14.TabIndex = 68;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Boat Control";
@@ -3339,34 +3333,6 @@ namespace Assistant
             this.boatControl.Text = "Open Boat Control";
             this.boatControl.UseVisualStyleBackColor = true;
             this.boatControl.Click += new System.EventHandler(this.boatControl_Click);
-            //
-            // groupBox13
-            //
-            this.groupBox13.Location = new System.Drawing.Point(292, 0);
-            this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(214, 99);
-            this.groupBox13.TabIndex = 68;
-            this.groupBox13.TabStop = false;
-            this.groupBox13.Text = "Boat Control";
-            //
-            // openUOPS
-            //
-            this.openUOPS.Location = new System.Drawing.Point(78, 17);
-            this.openUOPS.Name = "openUOPS";
-            this.openUOPS.Size = new System.Drawing.Size(134, 32);
-            this.openUOPS.TabIndex = 66;
-            this.openUOPS.Text = "Open UOPS";
-            this.openUOPS.UseVisualStyleBackColor = true;
-            this.openUOPS.Click += new System.EventHandler(this.openUOPS_Click);
-            //
-            // mapPins
-            //
-            this.mapPins.CheckOnClick = true;
-            this.mapPins.FormattingEnabled = true;
-            this.mapPins.Location = new System.Drawing.Point(6, 22);
-            this.mapPins.Name = "mapPins";
-            this.mapPins.Size = new System.Drawing.Size(256, 166);
-            this.mapPins.TabIndex = 63;
             //
             // screenshotTab
             //
@@ -4097,6 +4063,11 @@ namespace Assistant
             stepThroughMacro.Checked = Config.GetBool("StepThroughMacro");
 
             //hotKeyStop.Checked = Config.GetBool("HotKeyStop");
+
+            /*showPartyMemberPositions.Checked = Config.GetBool("ShowPartyMemberPositions");
+           trackPlayerPosition.Checked = Config.GetBool("TrackPlayerPosition");
+           showPlayerPosition.Checked = Config.GetBool("ShowPlayerPosition");
+           tiltMap.Checked = Config.GetBool("TiltMap");*/
 
             showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
             showOverheadMessages.Checked = Config.GetBool("ShowOverheadMessages");
