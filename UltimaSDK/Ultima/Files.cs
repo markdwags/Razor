@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using Microsoft.SqlServer.Server;
+
 using Microsoft.Win32;
 
 namespace Ultima
