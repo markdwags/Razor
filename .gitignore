@@ -1,5 +1,6 @@
 # Visual Studio
 *.vs
+*.vscode
 *.vcxproj.user
 *.csproj.user
 .vscode
