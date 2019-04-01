@@ -2,19 +2,23 @@
 
 # Razor: An Ultima Online Assistant
 
+For release notes, download links and other information go to http://www.uor-razor.com.
+
 ## UO:R Community Edition
 
-The purpose of this fork of Razor is continue development on Razor that focuses on "quality of life" improvements to Razor while keeping the spirit of Razor intact.
+The purpose and goal of this project is to revive and continue development of the abandoned Razor project and focus on "quality of life" improvements while keeping the spirit of Razor intact.
 
-This version is tagged the **UO:R Community Edition** simply due to the fact that most of the feedback, ideas and testing as come from the **[UO Renaissance](http://www.uorenaissance.com/)** community.  I am not associated with the staff or administration of this shard, I am simply a player and a fan of the UO era this shard represents.
+This version is Razor is also designed to work with [ClassicUO](https://github.com/andreakarasho/ClassicUO).
 
-This version of Razor is based off of 1.0.13.13 (well technically 1.4.0.3, but the differences between them are based on the .NET version they were upgraded to).
+## History
 
-**TL;DR:** If you use Razor today, regardless of the Ultima Online server you play on, this version should also work.
+Razor was originally designed by Bryan Pass, known as Zippy in the RunUO community as a replacement to UOAssist. Based on commit notes, active development on Razor ceased some time in the early 2010's with the source code being released in 2014.
 
-## Contact
+The code initially didn't include Crypt.dll and Loader.dll which are required to full integration with UO. At some point, the code was released into the same GitHub repo.
 
-For more discussion about this version of Razor
+This version of Razor is based off of 1.4.0.3, which is simply version 1.0.13.13 updated from .NET 2.0 to .NET 4.0. Another version of Razor exists (the 1.0.14.x versions) and is/was maintained by another private shard that make some enhancements, notable around targeting. This version of Razor has incorporated the majority of changes you can find in those versions.
 
-* Visit [this thread](http://uorforum.com/threads/improving-razor-razor-development.33134/) on the UO:R Forums for discussion.
-* If you'd like to talk on IRC, find me at irc.chat4all.org:6667 in **#Razor** and/or **#Renaissance**
+The original project was last updated May 2nd, 2014 and while over 50 forks exist on GitHub, none have been active or have made significant changes except for a few exceptions.
+
+  * **@jaedan** (which this version is based on) who updated the project to compile and work in Visual Studio 2017 and made improvements to Crypt.dll that enabled this project to move forward.
+  * **@uoitalia** who made several performance changes from generic to non-generic collections that I incorporated in the first release.
