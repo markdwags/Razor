@@ -424,6 +424,7 @@ namespace Assistant
         SetSellAgentHotBag,
         AddUseOnceContainer,
         ChickenSounds,
+        Reserved3,
         ScavengerEnableDisable,
         ScavengerSetHotBag,
         ScavengerAddTarget,

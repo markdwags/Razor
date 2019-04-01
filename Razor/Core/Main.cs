@@ -409,7 +409,7 @@ namespace Assistant
             SplashScreen.Message = LocString.LoadingLastProfile;
             Config.LoadCharList();
             if (!Config.LoadLastProfile())
-                MessageBox.Show(SplashScreen.Instance,
+                MessageBox.Show(
                     "The selected profile could not be loaded, using default instead.", "Profile Load Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
