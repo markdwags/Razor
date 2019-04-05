@@ -152,7 +152,6 @@
     <ClInclude Include="table.h" />
     <ClInclude Include="twofish.h" />
     <ClInclude Include="uo_huffman.h" />
-    <ClInclude Include="UOArt.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Crypt.def" />
