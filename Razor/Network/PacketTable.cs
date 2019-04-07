@@ -289,10 +289,10 @@ namespace Assistant
             return (_packetsTable[id] == -1);
         }
 
-        public static void AdjustPacketSizeByVersion(Version version)
+        public static void AdjustPacketSizeByVersion( Version version )
         {
             /* TODO: This should really be 5.0.0.a */
-            if (version.Major >= 5)
+            if ( version >= new Version( 5, 0, 0, 0 ) )
             {
                 _packetsTable[0x0B] = 0x07;
                 _packetsTable[0x16] = -1;
@@ -305,12 +305,12 @@ namespace Assistant
                 _packetsTable[0x31] = 0x01;
             }
 
-            if (version.Major >= 5 && version.Build >= 9)
+            if ( version >= new Version( 5, 0, 9, 0 ) )
                 _packetsTable[0xE1] = -1;
             else
                 _packetsTable[0xE1] = 0x09;
 
-            if (version.Major >= 6 && version.Build >= 13)
+            if ( version >= new Version( 6, 0, 13, 0 ) )
             {
                 _packetsTable[0xE3] = -1;
                 _packetsTable[0xE6] = 0x05;
@@ -329,7 +329,7 @@ namespace Assistant
                 _packetsTable[0xEA] = -1;
             }
 
-            if (version.Major >= 6 && version.Build >= 17)
+            if ( version >= new Version( 6, 0, 17, 0 ) )
             {
                 _packetsTable[0x08] = 0x0F;
                 _packetsTable[0x25] = 0x15;
@@ -340,7 +340,7 @@ namespace Assistant
                 _packetsTable[0x25] = 0x14;
             }
 
-            if (version.Major >= 6 && version.Build >= 6)
+            if ( version >= new Version( 6, 0, 6, 0 ) )
             {
                 _packetsTable[0xEE] = 0x2000;
                 _packetsTable[0xEF] = 0x2000;
@@ -353,12 +353,12 @@ namespace Assistant
                 _packetsTable[0xF1] = -1;
             }
 
-            if (version.Major >= 6 && version.Build >= 14 && version.Revision >= 2)
+            if ( version >= new Version( 6, 0, 14, 2 ) )
                 _packetsTable[0xB9] = 0x05;
             else
                 _packetsTable[0xB9] = 0x03;
 
-            if (version.Major >= 7)
+            if ( version >= new Version( 7, 0, 0, 0 ) )
             {
                 _packetsTable[0xEE] = 0x0A; //0x2000;
                 _packetsTable[0xEF] = 0x15; //0x2000;
@@ -369,7 +369,7 @@ namespace Assistant
                 _packetsTable[0xEF] = 0x15;
             }
 
-            if (version.Major >= 7 && version.Build >= 9)
+            if ( version >= new Version( 7, 0, 9, 0 ) )
             {
                 _packetsTable[0x24] = 0x09;
                 _packetsTable[0x99] = 0x1E;
@@ -388,7 +388,7 @@ namespace Assistant
                 _packetsTable[0xF2] = -1;
             }
 
-            if (version.Major >= 7 && version.Build >= 18)
+            if ( version >= new Version( 7, 0, 18, 0 ) )
                 _packetsTable[0x00] = 0x6A;
             else
                 _packetsTable[0x00] = 0x68;
