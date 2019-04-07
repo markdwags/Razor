@@ -1834,8 +1834,6 @@ namespace Assistant.Macros
 
         private static uint WM_KEYDOWN = 0x100, WM_KEYUP = 0x101;
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         public static DateTime LastWalkTime { get { return m_LastWalk; } set { m_LastWalk = value; } }
 
@@ -1909,7 +1907,7 @@ namespace Assistant.Macros
                         break;
                 }
               
-                SendMessage(ClientCommunication.FindUOWindow(), WM_KEYDOWN, (IntPtr)direction, (IntPtr)1);
+                NativeMethods.SendMessage( ClientCommunication.FindUOWindow(), WM_KEYDOWN, (IntPtr)direction, (IntPtr)1);
 
                 return false;
             }

@@ -7337,7 +7337,7 @@ namespace Assistant
         {
             // Fuck windows, seriously.
 
-            ClientCommunication.BringToFront(this.Handle);
+            NativeMethods.BringToFront(this.Handle);
             if (Config.GetBool("AlwaysOnTop"))
                 this.TopMost = true;
             if (WindowState != FormWindowState.Normal)

@@ -49,24 +49,7 @@ namespace Assistant
             {
                 if (m_ClientVersion == null || m_ClientVersion.Major < 2)
                 {
-                    string[] split = ClientCommunication.GetUOVersion().Split('.');
-
-                    if (split.Length < 3)
-                        return new Version(4, 0, 0, 0);
-
-                    int rev = 0;
-
-                    if (split.Length > 3)
-                        rev = Utility.ToInt32(split[3], 0);
-
-                    m_ClientVersion = new Version(
-                        Utility.ToInt32(split[0], 0),
-                        Utility.ToInt32(split[1], 0),
-                        Utility.ToInt32(split[2], 0),
-                        rev);
-
-                    if (m_ClientVersion.Major == 0) // sanity check if the client returns 0.0.0.0
-                        m_ClientVersion = new Version(4, 0, 0, 0);
+                    m_ClientVersion = ClientCommunication.Instance.GetUOVersion();
                 }
 
                 return m_ClientVersion;
@@ -232,6 +215,7 @@ namespace Assistant
         [STAThread]
         public static void Main(string[] Args)
         {
+            ClientCommunication.Init( true );
             Application.EnableVisualStyles();
             m_Running = true;
             Thread.CurrentThread.Name = "Razor Main Thread";

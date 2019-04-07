@@ -247,9 +247,12 @@
     <Compile Include="Core\MsgQueue.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Network\ClientComm.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Network\ClientComm\CUOClientCommunication.cs" />
+    <Compile Include="Network\ClientComm\OSIClientCommunication.cs" />
     <Compile Include="Network\Handlers.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -436,6 +439,8 @@
     <Content Include="Boat\Images\southeast.png" />
     <Content Include="Boat\Images\southwest.png" />
     <Content Include="Boat\Images\west.png" />
+    <Content Include="cuoapi.dll" />
+    <Content Include="cuoapi.pdb" />
     <Content Include="UI\Lock.ico" />
     <Content Include="UI\UOPS.ico" />
   </ItemGroup>
