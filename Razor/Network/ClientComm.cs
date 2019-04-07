@@ -39,7 +39,7 @@ namespace Assistant
 		public static readonly uint MaxBit			= 16;
 	}
 
-    public unsafe sealed class ClientCommunication
+	public unsafe sealed class ClientCommunication
 	{
 		public enum UONetMessage
 		{
@@ -124,7 +124,7 @@ namespace Assistant
 		internal static unsafe extern void SetDataPath(string path);
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern void CalibratePosition( uint x, uint y, uint z, byte dir );
-        [DllImport( "Crypt.dll" )]
+		[DllImport( "Crypt.dll" )]
 		private static unsafe extern void SetServer( uint ip, ushort port );
 		[DllImport( "Crypt.dll" )]
 		internal static unsafe extern string GetUOVersion();
@@ -163,7 +163,7 @@ namespace Assistant
 
 		[DllImport( "user32.dll" )]
 		internal static extern uint PostMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
-        [DllImport( "user32.dll" )]
+		[DllImport( "user32.dll" )]
 		internal static extern bool SetForegroundWindow( IntPtr hWnd );
 
 		[DllImport( "kernel32.dll" )]
@@ -183,9 +183,9 @@ namespace Assistant
 		}
 
 		private static Queue<Packet> m_SendQueue = new Queue<Packet>();
-        private static Queue<Packet> m_RecvQueue = new Queue<Packet>();
+		private static Queue<Packet> m_RecvQueue = new Queue<Packet>();
 
-        private static bool m_QueueRecv;
+		private static bool m_QueueRecv;
 		private static bool m_QueueSend;
 
 		private static Buffer *m_InRecv;
@@ -236,19 +236,19 @@ namespace Assistant
 			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.NotoHue, (IntPtr)hue );
 		}
 
-	    public static void SetSmartCPU(bool enabled)
-	    {
-	        if (enabled)
-	            try { ClientCommunication.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch { }
+		public static void SetSmartCPU(bool enabled)
+		{
+			if (enabled)
+				try { ClientCommunication.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch { }
 
-	        PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SmartCPU, (IntPtr)(enabled ? 1 : 0));
-        }
+			PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SmartCPU, (IntPtr)(enabled ? 1 : 0));
+		}
 
 		public static void SetGameSize( int x, int y )
 		{
 			PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x&0xFFFF)|((y&0xFFFF)<<16)) );
-            //PostMessageA(FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x & 0xFFFF) | ((y & 0xFFFF) << 16)));
-        }
+			//PostMessageA(FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x & 0xFFFF) | ((y & 0xFFFF) << 16)));
+		}
 
 		public static Loader_Error LaunchClient( string client )
 		{
@@ -280,7 +280,7 @@ namespace Assistant
 				{
 					ClientProc = Process.GetProcessById( (int)pid );
 
-                    /*if ( ClientProc != null && !Config.GetBool( "SmartCPU" ) )
+					/*if ( ClientProc != null && !Config.GetBool( "SmartCPU" ) )
 						ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );*/
 				}
 				catch
@@ -305,6 +305,9 @@ namespace Assistant
 			InitError error;
 			int flags = 0;
 
+			if (m_Ready)
+				return false; // double init
+
 			if ( Config.GetBool( "Negotiate" ) )
 				flags |= 0x04;
 
@@ -314,48 +317,16 @@ namespace Assistant
 			if ( ServerEncrypted )
 				flags |= 0x10;
 
-			//ClientProc.WaitForInputIdle();
 			WaitForWindow( ClientProc.Id );
 
 			error = (InitError)InstallLibrary( mainWindow, ClientProc.Id, flags );
-
 			if ( error != InitError.SUCCESS )
 			{
 				FatalInit( error );
 				return false;
 			}
 
-			byte *baseAddr = (byte*)GetSharedAddress().ToPointer();
-
-			m_InRecv = (Buffer*)baseAddr;
-			m_OutRecv = (Buffer*)(baseAddr+sizeof(Buffer));
-			m_InSend = (Buffer*)(baseAddr+sizeof(Buffer)*2);
-			m_OutSend = (Buffer*)(baseAddr+sizeof(Buffer)*3);
-			m_TitleStr = (byte*)(baseAddr+sizeof(Buffer)*4);
-
-			SetServer( m_ServerIP, m_ServerPort );
-
-			CommMutex = new Mutex();
-#pragma warning disable 618
-			CommMutex.Handle = GetCommMutex();
-#pragma warning restore 618
-
-			try
-			{
-				string path = Ultima.Files.GetFilePath("art.mul");
-				if ( path != null && path != string.Empty )
-					SetDataPath( Path.GetDirectoryName( path ) );
-				else
-					SetDataPath(Path.GetDirectoryName(Ultima.Files.Directory));
-			}
-			catch
-			{
-				SetDataPath( "" );
-			}
-
-			if ( Config.GetBool( "OldStatBar" ) )
-				ClientCommunication.RequestStatbarPatch( true );
-
+			// When InstallLibrary finishes, we get a UONETEVENT saying it's ready.
 			return true;
 		}
 
@@ -429,152 +400,152 @@ namespace Assistant
 		private static StringBuilder m_TBBuilder = new StringBuilder();
 		private static string m_LastPlayerName = "";
 
-	    private static void UpdateTitleBar()
-	    {
-	        if (!m_Ready)
-	            return;
+		private static void UpdateTitleBar()
+		{
+			if (!m_Ready)
+				return;
 
-	        if (World.Player != null && Config.GetBool("TitleBarDisplay"))
-	        {
-	            // reuse the same sb each time for less damn allocations
-	            m_TBBuilder.Remove(0, m_TBBuilder.Length);
-	            m_TBBuilder.Insert(0, Config.GetString("TitleBarText"));
-	            StringBuilder sb = m_TBBuilder;
-	            //StringBuilder sb = new StringBuilder( Config.GetString( "TitleBarText" ) ); // m_TitleCapacity
+			if (World.Player != null && Config.GetBool("TitleBarDisplay"))
+			{
+				// reuse the same sb each time for less damn allocations
+				m_TBBuilder.Remove(0, m_TBBuilder.Length);
+				m_TBBuilder.Insert(0, Config.GetString("TitleBarText"));
+				StringBuilder sb = m_TBBuilder;
+				//StringBuilder sb = new StringBuilder( Config.GetString( "TitleBarText" ) ); // m_TitleCapacity
 
-	            PlayerData p = World.Player;
+				PlayerData p = World.Player;
 
-	            if (p.Name != m_LastPlayerName)
-	            {
-	                m_LastPlayerName = p.Name;
+				if (p.Name != m_LastPlayerName)
+				{
+					m_LastPlayerName = p.Name;
 
-	                Engine.MainWindow.UpdateTitle();
-	            }
+					Engine.MainWindow.UpdateTitle();
+				}
 
-	            sb.Replace(@"{char}",
-	                Config.GetBool("ShowNotoHue") ? $"~#{p.GetNotorietyColor() & 0x00FFFFFF:X6}{p.Name}~#~" : p.Name);
+				sb.Replace(@"{char}",
+					Config.GetBool("ShowNotoHue") ? $"~#{p.GetNotorietyColor() & 0x00FFFFFF:X6}{p.Name}~#~" : p.Name);
 
-	            sb.Replace(@"{shard}", World.ShardName);
+				sb.Replace(@"{shard}", World.ShardName);
 
-	            sb.Replace(@"{crimtime}", p.CriminalTime != 0 ? $"~^C0C0C0{p.CriminalTime}~#~" : "-");
+				sb.Replace(@"{crimtime}", p.CriminalTime != 0 ? $"~^C0C0C0{p.CriminalTime}~#~" : "-");
 
-	            sb.Replace(@"{str}", p.Str.ToString());
-	            sb.Replace(@"{hpmax}", p.HitsMax.ToString());
+				sb.Replace(@"{str}", p.Str.ToString());
+				sb.Replace(@"{hpmax}", p.HitsMax.ToString());
 
-	            sb.Replace(@"{hp}", p.Poisoned ? $"~#FF8000{p.Hits}~#~" : EncodeColorStat(p.Hits, p.HitsMax));
+				sb.Replace(@"{hp}", p.Poisoned ? $"~#FF8000{p.Hits}~#~" : EncodeColorStat(p.Hits, p.HitsMax));
 
-	            sb.Replace(@"{dex}", World.Player.Dex.ToString());
-	            sb.Replace(@"{stammax}", World.Player.StamMax.ToString());
-	            sb.Replace(@"{stam}", EncodeColorStat(p.Stam, p.StamMax));
-	            sb.Replace(@"{int}", World.Player.Int.ToString());
-	            sb.Replace(@"{manamax}", World.Player.ManaMax.ToString());
-	            sb.Replace(@"{mana}", EncodeColorStat(p.Mana, p.ManaMax));
+				sb.Replace(@"{dex}", World.Player.Dex.ToString());
+				sb.Replace(@"{stammax}", World.Player.StamMax.ToString());
+				sb.Replace(@"{stam}", EncodeColorStat(p.Stam, p.StamMax));
+				sb.Replace(@"{int}", World.Player.Int.ToString());
+				sb.Replace(@"{manamax}", World.Player.ManaMax.ToString());
+				sb.Replace(@"{mana}", EncodeColorStat(p.Mana, p.ManaMax));
 
-	            sb.Replace(@"{ar}", p.AR.ToString());
-	            sb.Replace(@"{tithe}", p.Tithe.ToString());
+				sb.Replace(@"{ar}", p.AR.ToString());
+				sb.Replace(@"{tithe}", p.Tithe.ToString());
 
-	            sb.Replace(@"{physresist}", p.AR.ToString());
-	            sb.Replace(@"{fireresist}", p.FireResistance.ToString());
-	            sb.Replace(@"{coldresist}", p.ColdResistance.ToString());
-	            sb.Replace(@"{poisonresist}", p.PoisonResistance.ToString());
-	            sb.Replace(@"{energyresist}", p.EnergyResistance.ToString());
+				sb.Replace(@"{physresist}", p.AR.ToString());
+				sb.Replace(@"{fireresist}", p.FireResistance.ToString());
+				sb.Replace(@"{coldresist}", p.ColdResistance.ToString());
+				sb.Replace(@"{poisonresist}", p.PoisonResistance.ToString());
+				sb.Replace(@"{energyresist}", p.EnergyResistance.ToString());
 
-	            sb.Replace(@"{luck}", p.Luck.ToString());
+				sb.Replace(@"{luck}", p.Luck.ToString());
 
-	            sb.Replace(@"{damage}", String.Format("{0}-{1}", p.DamageMin, p.DamageMax));
+				sb.Replace(@"{damage}", String.Format("{0}-{1}", p.DamageMin, p.DamageMax));
 
-	            sb.Replace(@"{weight}",
-	                World.Player.Weight >= World.Player.MaxWeight
-	                    ? $"~#FF0000{World.Player.Weight}~#~"
-	                    : World.Player.Weight.ToString());
+				sb.Replace(@"{weight}",
+					World.Player.Weight >= World.Player.MaxWeight
+						? $"~#FF0000{World.Player.Weight}~#~"
+						: World.Player.Weight.ToString());
 
-	            sb.Replace(@"{maxweight}", World.Player.MaxWeight.ToString());
+				sb.Replace(@"{maxweight}", World.Player.MaxWeight.ToString());
 
-	            sb.Replace(@"{followers}", World.Player.Followers.ToString());
-	            sb.Replace(@"{followersmax}", World.Player.FollowersMax.ToString());
+				sb.Replace(@"{followers}", World.Player.Followers.ToString());
+				sb.Replace(@"{followersmax}", World.Player.FollowersMax.ToString());
 
-	            sb.Replace(@"{gold}", World.Player.Gold.ToString());
+				sb.Replace(@"{gold}", World.Player.Gold.ToString());
 
-	            sb.Replace(@"{gps}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerSecond:N2}" : "-");
-	            sb.Replace(@"{gpm}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerMinute:N2}" : "-");
-	            sb.Replace(@"{gph}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerHour:N2}" : "-");
-	            sb.Replace(@"{goldtotal}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldSinceStart}" : "-");
-                 sb.Replace(@"{goldtotalmin}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.TotalMinutes:N2} min" : "-");
+				sb.Replace(@"{gps}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerSecond:N2}" : "-");
+				sb.Replace(@"{gpm}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerMinute:N2}" : "-");
+				sb.Replace(@"{gph}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerHour:N2}" : "-");
+				sb.Replace(@"{goldtotal}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldSinceStart}" : "-");
+				 sb.Replace(@"{goldtotalmin}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.TotalMinutes:N2} min" : "-");
 
-                 sb.Replace(@"{bandage}", BandageTimer.Running ? $"~#FF8000{BandageTimer.Count}~#~" : "-");
+				 sb.Replace(@"{bandage}", BandageTimer.Running ? $"~#FF8000{BandageTimer.Count}~#~" : "-");
 
-	            sb.Replace(@"{skill}", SkillTimer.Running ? $"{SkillTimer.Count}" : "-");
-	            sb.Replace(@"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-");
+				sb.Replace(@"{skill}", SkillTimer.Running ? $"{SkillTimer.Count}" : "-");
+				sb.Replace(@"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-");
 
-	            sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
-                //ClientCommunication.ConnectionStart != DateTime.MinValue )
-                //time = (int)((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
-                 sb.Replace(@"{uptime}", ConnectionStart != DateTime.MinValue ? Utility.FormatTime((int)((DateTime.UtcNow - ConnectionStart).TotalSeconds)) : "-");
+				sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
+				//ClientCommunication.ConnectionStart != DateTime.MinValue )
+				//time = (int)((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
+				 sb.Replace(@"{uptime}", ConnectionStart != DateTime.MinValue ? Utility.FormatTime((int)((DateTime.UtcNow - ConnectionStart).TotalSeconds)) : "-");
 
-	            sb.Replace(@"{dps}", DamageTracker.Running ? $"{DamageTracker.DamagePerSecond:N2}" : "-");
-	            sb.Replace(@"{maxdps}", DamageTracker.Running ? $"{DamageTracker.MaxDamagePerSecond:N2}" : "-");
-                 sb.Replace(@"{maxdamagedealt}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageDealt}" : "-");
-	            sb.Replace(@"{maxdamagetaken}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageTaken}" : "-");
-                 sb.Replace(@"{totaldamagedealt}", DamageTracker.Running ? $"{DamageTracker.TotalDamageDealt}" : "-");
-	            sb.Replace(@"{totaldamagetaken}", DamageTracker.Running ? $"{DamageTracker.TotalDamageTaken}" : "-");
+				sb.Replace(@"{dps}", DamageTracker.Running ? $"{DamageTracker.DamagePerSecond:N2}" : "-");
+				sb.Replace(@"{maxdps}", DamageTracker.Running ? $"{DamageTracker.MaxDamagePerSecond:N2}" : "-");
+				 sb.Replace(@"{maxdamagedealt}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageDealt}" : "-");
+				sb.Replace(@"{maxdamagetaken}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageTaken}" : "-");
+				 sb.Replace(@"{totaldamagedealt}", DamageTracker.Running ? $"{DamageTracker.TotalDamageDealt}" : "-");
+				sb.Replace(@"{totaldamagetaken}", DamageTracker.Running ? $"{DamageTracker.TotalDamageTaken}" : "-");
 
 
-                string buffList = string.Empty;
+				string buffList = string.Empty;
 
-	            if (BuffsTimer.Running)
-	            {
-	                StringBuilder buffs = new StringBuilder();
-	                foreach (BuffsDebuffs buff in World.Player.BuffsDebuffs)
-	                {
-	                    int timeLeft = 0;
+				if (BuffsTimer.Running)
+				{
+					StringBuilder buffs = new StringBuilder();
+					foreach (BuffsDebuffs buff in World.Player.BuffsDebuffs)
+					{
+						int timeLeft = 0;
 
-	                    if (buff.Duration > 0)
-	                    {
-	                        TimeSpan diff = DateTime.UtcNow - buff.Timestamp;
-	                        timeLeft = buff.Duration - (int)diff.TotalSeconds;
-                         }
+						if (buff.Duration > 0)
+						{
+							TimeSpan diff = DateTime.UtcNow - buff.Timestamp;
+							timeLeft = buff.Duration - (int)diff.TotalSeconds;
+						 }
 
-	                    buffs.Append(timeLeft <= 0
-	                        ? $"{buff.ClilocMessage1}, "
-	                        : $"{buff.ClilocMessage1} ({timeLeft}), ");
-	                }
+						buffs.Append(timeLeft <= 0
+							? $"{buff.ClilocMessage1}, "
+							: $"{buff.ClilocMessage1} ({timeLeft}), ");
+					}
 
-	                buffs.Length = buffs.Length - 2;
-                     buffList = buffs.ToString();
-                     sb.Replace(@"{buffsdebuffs}", buffList);
+					buffs.Length = buffs.Length - 2;
+					 buffList = buffs.ToString();
+					 sb.Replace(@"{buffsdebuffs}", buffList);
 
-                 }
-	            else
-	            {
-	                sb.Replace(@"{buffsdebuffs}", "-");
-                     buffList = string.Empty;
-                 }
+				 }
+				else
+				{
+					sb.Replace(@"{buffsdebuffs}", "-");
+					 buffList = string.Empty;
+				 }
 
-                 string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
-	                (int) (p.GetStatusCode()),
-	                (int) (World.Player.HitsMax == 0 ? 0 : (double) World.Player.Hits / World.Player.HitsMax * 99),
-	                (int) (World.Player.ManaMax == 0 ? 0 : (double) World.Player.Mana / World.Player.ManaMax * 99),
-	                (int) (World.Player.StamMax == 0 ? 0 : (double) World.Player.Stam / World.Player.StamMax * 99));
+				 string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
+					(int) (p.GetStatusCode()),
+					(int) (World.Player.HitsMax == 0 ? 0 : (double) World.Player.Hits / World.Player.HitsMax * 99),
+					(int) (World.Player.ManaMax == 0 ? 0 : (double) World.Player.Mana / World.Player.ManaMax * 99),
+					(int) (World.Player.StamMax == 0 ? 0 : (double) World.Player.Stam / World.Player.StamMax * 99));
 
-	            sb.Replace(@"{statbar}", $"~SR{statStr}");
-	            sb.Replace(@"{mediumstatbar}", $"~SL{statStr}");
-	            sb.Replace(@"{largestatbar}", $"~SX{statStr}");
+				sb.Replace(@"{statbar}", $"~SR{statStr}");
+				sb.Replace(@"{mediumstatbar}", $"~SL{statStr}");
+				sb.Replace(@"{largestatbar}", $"~SX{statStr}");
 
-	            bool dispImg = Config.GetBool("TitlebarImages");
-	            for (int i = 0; i < Counter.List.Count; i++)
-	            {
-	                Counter c = Counter.List[i];
-	                if (c.Enabled)
-	                    sb.Replace($"{{{c.Format}}}", c.GetTitlebarString(dispImg && c.DisplayImage));
-	            }
+				bool dispImg = Config.GetBool("TitlebarImages");
+				for (int i = 0; i < Counter.List.Count; i++)
+				{
+					Counter c = Counter.List[i];
+					if (c.Enabled)
+						sb.Replace($"{{{c.Format}}}", c.GetTitlebarString(dispImg && c.DisplayImage));
+				}
 
-	            SetTitleStr(sb.ToString());
-	        }
-	        else
-	        {
-	            SetTitleStr("");
-	        }
-	    }
+				SetTitleStr(sb.ToString());
+			}
+			else
+			{
+				SetTitleStr("");
+			}
+		}
 
 		private static void SetTitleStr( string str )
 		{
@@ -631,16 +602,16 @@ namespace Assistant
 			Macros.MacroManager.Stop();
 			ActionQueue.Stop();
 			Counter.Reset();
-               GoldPerHourTimer.Stop();
-		    DamageTracker.Stop();
-               BandageTimer.Stop();
-               GateTimer.Stop();
-               BuffsTimer.Stop();
+			   GoldPerHourTimer.Stop();
+			DamageTracker.Stop();
+			   BandageTimer.Stop();
+			   GateTimer.Stop();
+			   BuffsTimer.Stop();
 			StealthSteps.Unhide();
 			Engine.MainWindow.OnLogout();
 			if( Engine.MainWindow.MapWindow != null )
 				Engine.MainWindow.MapWindow.Close();
-            PacketHandlers.Party.Clear();
+			PacketHandlers.Party.Clear();
 			PacketHandlers.IgnoreGumps.Clear();
 			Config.Save();
 
@@ -667,16 +638,39 @@ namespace Assistant
 						}
 					}
 
+					byte* baseAddr = (byte*)GetSharedAddress().ToPointer();
+
+					m_InRecv = (Buffer*)baseAddr;
+					m_OutRecv = (Buffer*)(baseAddr + sizeof(Buffer));
+					m_InSend = (Buffer*)(baseAddr + sizeof(Buffer) * 2);
+					m_OutSend = (Buffer*)(baseAddr + sizeof(Buffer) * 3);
+					m_TitleStr = (byte*)(baseAddr + sizeof(Buffer) * 4);
+
+					SetServer(m_ServerIP, m_ServerPort);
+
+					CommMutex = new Mutex();
+#pragma warning disable 618
+					CommMutex.Handle = GetCommMutex();
+#pragma warning restore 618
+
 					try
 					{
-						SetDataPath(Ultima.Files.Directory);
+						string path = Ultima.Files.GetFilePath("art.mul");
+						if (path != null && path != string.Empty)
+							SetDataPath(Path.GetDirectoryName(path));
+						else
+							SetDataPath(Path.GetDirectoryName(Ultima.Files.Directory));
 					}
 					catch
 					{
-						SetDataPath( "" );
+						SetDataPath("");
 					}
 
+					if (Config.GetBool("OldStatBar"))
+						ClientCommunication.RequestStatbarPatch(true);
+
 					m_Ready = true;
+					Engine.MainWindow.MainForm_EndLoad();
 					break;
 
 				case UONetMessage.NotReady:
@@ -777,7 +771,7 @@ namespace Assistant
 						}
 					}
 
-                    break;
+					break;
 
 				case UONetMessage.DLL_Error:
 				{
@@ -999,8 +993,8 @@ namespace Assistant
 					}
 					case PacketPath.ServerToClient:
 					{
-					    blocked = PacketHandler.OnServerPacket(buff[0], pr, p);
-                             break;
+						blocked = PacketHandler.OnServerPacket(buff[0], pr, p);
+							 break;
 					}
 				}
 
@@ -1021,17 +1015,17 @@ namespace Assistant
 						CopyToBuffer( outBuff, buff, len );
 				}
 
-			    while (queue.Count > 0)
-			    {
-			        p = (Packet)queue.Dequeue();
-			        byte[] data = p.Compile();
-			        fixed (byte* ptr = data)
-			        {
-			            CopyToBuffer(outBuff, ptr, data.Length);
-			            Packet.Log((PacketPath)(((int)path) + 1), ptr, data.Length);
-			        }
-			    }
-            }
+				while (queue.Count > 0)
+				{
+					p = (Packet)queue.Dequeue();
+					byte[] data = p.Compile();
+					fixed (byte* ptr = data)
+					{
+						CopyToBuffer(outBuff, ptr, data.Length);
+						Packet.Log((PacketPath)(((int)path) + 1), ptr, data.Length);
+					}
+				}
+			}
 			CommMutex.ReleaseMutex();
 		}
 

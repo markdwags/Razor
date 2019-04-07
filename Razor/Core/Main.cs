@@ -489,7 +489,7 @@ namespace Assistant
                 ClientCommunication.SetConnectionInfo(IPAddress.Any, 0);
             }
 
-            Ultima.Multis.PostHSFormat = UsePostHSChanges;
+
 
             if (Utility.Random(4) != 0)
                 SplashScreen.Message = LocString.WaitingForClient;

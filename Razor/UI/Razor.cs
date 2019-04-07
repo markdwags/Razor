@@ -3767,7 +3767,7 @@ namespace Assistant
             this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
             this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
-            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Load += new System.EventHandler(this.MainForm_StartLoad);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.Move += new System.EventHandler(this.MainForm_Move);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
@@ -3854,42 +3854,41 @@ namespace Assistant
             m_CanClose = false;
         }
 
-        private void MainForm_Load(object sender, System.EventArgs e)
+        private void MainForm_StartLoad(object sender, System.EventArgs e)
         {
-            //ClientCommunication.SetCustomNotoHue( 0x2 );
-
+            Hide();
             Timer.Control = timerTimer;
-
             new StatsTimer(this).Start();
-
-            this.Hide();
             Language.LoadControlNames(this);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
             systray.Checked = m_NotifyIcon.Visible = st;
 
-            //this.Text = String.Format( this.Text, Engine.Version );
             UpdateTitle();
 
-            if (!ClientCommunication.InstallHooks(this.Handle)) // WaitForInputIdle done here
+            Engine.ActiveWindow = this;
+
+            DisableCloseButton();
+
+            if (!ClientCommunication.InstallHooks(this.Handle))
             {
                 m_CanClose = true;
                 SplashScreen.End();
                 this.Close();
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
-                return;
             }
+        }
+
+        public void MainForm_EndLoad()
+        {
+            Ultima.Multis.PostHSFormat = Engine.UsePostHSChanges;
 
             SplashScreen.Message = LocString.Welcome;
             InitConfig();
 
-            this.Show();
-            this.BringToFront();
-
-            Engine.ActiveWindow = this;
-
-            DisableCloseButton();
+            Show();
+            BringToFront();
 
             tabs_IndexChanged(this, null); // load first tab
 
