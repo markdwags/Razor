@@ -2,6 +2,7 @@
 *.vs
 *.vcxproj.user
 *.csproj.user
+.vscode
 packages/
 
 # Build Output
