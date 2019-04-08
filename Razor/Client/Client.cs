@@ -40,7 +40,10 @@ namespace Assistant
 
         internal static void Init(bool isOSI)
         {
-            Instance = new OSIClient();
+            if (isOSI)
+                Instance = new OSIClient();
+            else
+                Instance = new ClassicUOClient();
         }
 
         public const int WM_USER = 0x400;

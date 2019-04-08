@@ -128,6 +128,7 @@
     <Compile Include="Boat\BoatWindow.Designer.cs">
       <DependentUpon>BoatWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Client\ClassicUO.cs" />
     <Compile Include="Client\OSI.cs" />
     <Compile Include="Core\ActionQueue.cs">
       <SubType>Code</SubType>
