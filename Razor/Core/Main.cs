@@ -16,7 +16,7 @@ namespace Assistant
         {
             if (e.IsTerminating)
             {
-                Client.Close();
+                Client.Instance.Close();
                 m_Running = false;
 
                 new MessageDialog("Unhandled Exception", !e.IsTerminating, e.ExceptionObject.ToString()).ShowDialog(
@@ -232,6 +232,7 @@ namespace Assistant
         [STAThread]
         public static void Main(string[] Args)
         {
+            Client.Init(true);
             Application.EnableVisualStyles();
             m_Running = true;
             Thread.CurrentThread.Name = "Razor Main Thread";
@@ -257,9 +258,9 @@ namespace Assistant
             int attPID = -1;
             string dataDir;
 
-            Client.ClientEncrypted = false;
+            Client.Instance.ClientEncrypted = false;
 
-            Client.ServerEncrypted = false;
+            Client.Instance.ServerEncrypted = false;
 
             Config.SetAppSetting("PatchEncy", "1");
 
@@ -278,13 +279,13 @@ namespace Assistant
                 }
                 else if (arg == "--clientenc")
                 {
-                    Client.ClientEncrypted = true;
+                    Client.Instance.ClientEncrypted = true;
                     advCmdLine = true;
                     patch = false;
                 }
                 else if (arg == "--serverenc")
                 {
-                    Client.ServerEncrypted = true;
+                    Client.Instance.ServerEncrypted = true;
                     advCmdLine = true;
                 }
                 else if (arg == "--welcome")
@@ -332,8 +333,8 @@ namespace Assistant
 
             if (attPID > 0 && !advCmdLine)
             {
-                Client.ServerEncrypted = false;
-                Client.ClientEncrypted = false;
+                Client.Instance.ServerEncrypted = false;
+                Client.Instance.ClientEncrypted = false;
             }
 
             if (!Language.Load("ENU"))
@@ -415,7 +416,7 @@ namespace Assistant
 
             if (attPID == -1)
             {
-                Client.SetConnectionInfo(IPAddress.None, -1);
+                Client.Instance.SetConnectionInfo(IPAddress.None, -1);
 
                 Client.Loader_Error result = Client.Loader_Error.UNKNOWN_ERROR;
 
@@ -427,10 +428,10 @@ namespace Assistant
                     clientPath = Ultima.Files.GetFilePath("uotd.exe");
 
                 if (!advCmdLine)
-                    Client.ClientEncrypted = patch;
+                    Client.Instance.ClientEncrypted = patch;
 
                 if (clientPath != null && File.Exists(clientPath))
-                    result = Client.LaunchClient(clientPath);
+                    result = Client.Instance.LaunchClient(clientPath);
 
                 if (result != Client.Loader_Error.SUCCESS)
                 {
@@ -461,7 +462,7 @@ namespace Assistant
                     return;
                 }
 
-                Client.SetConnectionInfo(ip, port);
+                Client.Instance.SetConnectionInfo(ip, port);
             }
             else
             {
@@ -469,7 +470,7 @@ namespace Assistant
                 bool result = false;
                 try
                 {
-                    result = Client.Attach(attPID);
+                    result = Client.Instance.Attach(attPID);
                 }
                 catch (Exception e)
                 {
@@ -486,7 +487,7 @@ namespace Assistant
                     return;
                 }
 
-                Client.SetConnectionInfo(IPAddress.Any, 0);
+                Client.Instance.SetConnectionInfo(IPAddress.Any, 0);
             }
 
 
@@ -501,7 +502,7 @@ namespace Assistant
 
             m_Running = false;
 
-            Client.Close();
+            Client.Instance.Close();
             Counter.Save();
             Macros.MacroManager.Save();
             Config.Save();

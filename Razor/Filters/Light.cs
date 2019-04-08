@@ -40,8 +40,8 @@ namespace Assistant.Filters
 				World.Player.LocalLightLevel = 0;
 				World.Player.GlobalLightLevel = 0;
 
-				Client.SendToClient( new GlobalLightLevel( 0 ) );
-				Client.SendToClient( new PersonalLightLevel( World.Player ) );
+				Client.Instance.SendToClient( new GlobalLightLevel( 0 ) );
+				Client.Instance.SendToClient( new PersonalLightLevel( World.Player ) );
 			}
 		}
 
@@ -54,8 +54,8 @@ namespace Assistant.Filters
 	            World.Player.LocalLightLevel = 6;
 	            World.Player.GlobalLightLevel = 2;
 
-	            Client.SendToClient(new GlobalLightLevel(26));
-	            Client.SendToClient(new PersonalLightLevel(World.Player));
+	            Client.Instance.SendToClient(new GlobalLightLevel(26));
+	            Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
 	        }
 	    }
 

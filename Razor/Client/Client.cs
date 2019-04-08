@@ -41,6 +41,13 @@ namespace Assistant
 
 	public unsafe sealed class Client
 	{
+		public static Client Instance;
+
+		internal static void Init(bool isOSI)
+		{
+			Instance = new Client();
+		}
+
 		public enum UONetMessage
 		{
 			Send = 1,
@@ -145,31 +152,31 @@ namespace Assistant
 		[DllImport( "Loader.dll" )]
 		private static unsafe extern uint Load( string exe, string dll, string func, void *dllData, int dataLen, out uint pid );
 
-        private static Queue<Packet> m_SendQueue = new Queue<Packet>();
-		private static Queue<Packet> m_RecvQueue = new Queue<Packet>();
+		private Queue<Packet> m_SendQueue = new Queue<Packet>();
+		private Queue<Packet> m_RecvQueue = new Queue<Packet>();
 
-		private static bool m_QueueRecv;
-		private static bool m_QueueSend;
+		private bool m_QueueRecv;
+		private bool m_QueueSend;
 
-		private static Buffer *m_InRecv;
-		private static Buffer *m_OutRecv;
-		private static Buffer *m_InSend;
-		private static Buffer *m_OutSend;
-		private static byte *m_TitleStr;
-		private static Mutex CommMutex;
-		private static Process ClientProc;
+		private Buffer *m_InRecv;
+		private Buffer *m_OutRecv;
+		private Buffer *m_InSend;
+		private Buffer *m_OutSend;
+		private byte *m_TitleStr;
+		private Mutex CommMutex;
+		private Process ClientProc;
 
-		private static bool m_Ready = false;
-		private static string m_LastStr = "";
-		private static DateTime m_ConnStart;
-		private static Timer m_TBTimer;
-		private static IPAddress m_LastConnection;
+		private bool m_Ready = false;
+		private string m_LastStr = "";
+		private DateTime m_ConnStart;
+		private Timer m_TBTimer;
+		private IPAddress m_LastConnection;
 
-		public static DateTime ConnectionStart { get{ return m_ConnStart; } }
-		public static IPAddress LastConnection{ get{ return m_LastConnection; } }
-		public static Process ClientProcess{ get{ return ClientProc; } }
+		public DateTime ConnectionStart { get{ return m_ConnStart; } }
+		public IPAddress LastConnection{ get{ return m_LastConnection; } }
+		public Process ClientProcess{ get{ return ClientProc; } }
 
-		public static bool ClientRunning
+		public bool ClientRunning
 		{
 			get
 			{
@@ -184,35 +191,35 @@ namespace Assistant
 			}
 		}
 
-		public static void SetMapWndHandle( Form mapWnd )
+		public void SetMapWndHandle( Form mapWnd )
 		{
 			Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetMapHWnd, mapWnd.Handle );
 		}
 
-		public static void RequestStatbarPatch( bool preAOS )
+		public void RequestStatbarPatch( bool preAOS )
 		{
-            Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.StatBar, preAOS ? (IntPtr)1 : IntPtr.Zero );
+			Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.StatBar, preAOS ? (IntPtr)1 : IntPtr.Zero );
 		}
 
-		public static void SetCustomNotoHue( int hue )
+		public void SetCustomNotoHue( int hue )
 		{
-            Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.NotoHue, (IntPtr)hue );
+			Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.NotoHue, (IntPtr)hue );
 		}
 
-		public static void SetSmartCPU(bool enabled)
+		public void SetSmartCPU(bool enabled)
 		{
 			if (enabled)
-				try { Client.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch { }
+				try { ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch { }
 
-            Platform.PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SmartCPU, (IntPtr)(enabled ? 1 : 0));
+			Platform.PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SmartCPU, (IntPtr)(enabled ? 1 : 0));
 		}
 
-		public static void SetGameSize( int x, int y )
+		public void SetGameSize( int x, int y )
 		{
-            Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x&0xFFFF)|((y&0xFFFF)<<16)) );
+			Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SetGameSize, (IntPtr)((x&0xFFFF)|((y&0xFFFF)<<16)) );
 		}
 
-		public static Loader_Error LaunchClient( string client )
+		public Loader_Error LaunchClient( string client )
 		{
 			/*string dir = Directory.GetCurrentDirectory();
 			Directory.SetCurrentDirectory( Path.GetDirectoryName( client ) );
@@ -256,13 +263,13 @@ namespace Assistant
 				return err;
 		}
 
-		private static bool m_ClientEnc = false;
-		internal static bool ClientEncrypted { get { return m_ClientEnc; } set { m_ClientEnc = value; } }
+		private bool m_ClientEnc = false;
+		internal bool ClientEncrypted { get { return m_ClientEnc; } set { m_ClientEnc = value; } }
 
-		private static bool m_ServerEnc = false;
-		internal static bool ServerEncrypted { get { return m_ServerEnc; } set { m_ServerEnc = value; } }
+		private bool m_ServerEnc = false;
+		internal bool ServerEncrypted { get { return m_ServerEnc; } set { m_ServerEnc = value; } }
 
-		internal static bool InstallHooks( IntPtr mainWindow )
+		internal bool InstallHooks( IntPtr mainWindow )
 		{
 			InitError error;
 			int flags = 0;
@@ -279,7 +286,7 @@ namespace Assistant
 			if ( ServerEncrypted )
 				flags |= 0x10;
 
-            WaitForWindow( ClientProc.Id );
+			WaitForWindow( ClientProc.Id );
 
 			error = (InitError)InstallLibrary( mainWindow, ClientProc.Id, flags );
 			if ( error != InitError.SUCCESS )
@@ -292,10 +299,10 @@ namespace Assistant
 			return true;
 		}
 
-		private static uint m_ServerIP;
-		private static ushort m_ServerPort;
+		private uint m_ServerIP;
+		private ushort m_ServerPort;
 
-		internal static void SetConnectionInfo( IPAddress addr, int port )
+		internal void SetConnectionInfo( IPAddress addr, int port )
 		{
 #pragma warning disable 618
 			m_ServerIP = (uint)addr.Address;
@@ -303,27 +310,27 @@ namespace Assistant
 			m_ServerPort = (ushort)port;
 		}
 
-		public static void SetNegotiate( bool negotiate )
+		public void SetNegotiate( bool negotiate )
 		{
-            Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.Negotiate, (IntPtr)(negotiate ? 1 : 0) );
+			Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.Negotiate, (IntPtr)(negotiate ? 1 : 0) );
 		}
 
-		public static bool Attach( int pid )
+		public bool Attach( int pid )
 		{
 			ClientProc = null;
 			ClientProc = Process.GetProcessById( pid );
 			return ClientProc != null;
 		}
 
-		public static void Close()
+		public void Close()
 		{
-            Shutdown( true );
+			Shutdown( true );
 			if ( ClientProc != null && !ClientProc.HasExited )
 				ClientProc.CloseMainWindow();
 			ClientProc = null;
 		}
 
-		private static string EncodeColorStat( int val, int max )
+		private string EncodeColorStat( int val, int max )
 		{
 			double perc = ((double)val)/((double)max);
 
@@ -335,7 +342,7 @@ namespace Assistant
 				return val.ToString();
 		}
 
-		public static void RequestTitlebarUpdate()
+		public void RequestTitlebarUpdate()
 		{
 			// throttle updates, since things like counters might request 1000000 million updates/sec
 			if ( m_TBTimer == null )
@@ -353,16 +360,16 @@ namespace Assistant
 
 			protected override void OnTick()
 			{
-				UpdateTitleBar();
+				Instance.UpdateTitleBar();
 			}
 		}
 
 
 		//private static int m_TitleCapacity = 0;
-		private static StringBuilder m_TBBuilder = new StringBuilder();
-		private static string m_LastPlayerName = "";
+		private StringBuilder m_TBBuilder = new StringBuilder();
+		private string m_LastPlayerName = "";
 
-		private static void UpdateTitleBar()
+		private void UpdateTitleBar()
 		{
 			if (!m_Ready)
 				return;
@@ -509,7 +516,7 @@ namespace Assistant
 			}
 		}
 
-		private static void SetTitleStr( string str )
+		private void SetTitleStr( string str )
 		{
 			if ( m_LastStr == str )
 				return;
@@ -524,15 +531,15 @@ namespace Assistant
 			if ( clen > 0 )
 			{
 				fixed( byte *array = copy )
-                    Platform.memcpy( m_TitleStr, array, clen );
+					Platform.memcpy( m_TitleStr, array, clen );
 			}
 			*(m_TitleStr+clen) = 0;
 			CommMutex.ReleaseMutex();
 
-            Platform.PostMessage( FindUOWindow(), WM_CUSTOMTITLE, IntPtr.Zero, IntPtr.Zero );
+			Platform.PostMessage( FindUOWindow(), WM_CUSTOMTITLE, IntPtr.Zero, IntPtr.Zero );
 		}
 
-		private static void FatalInit( InitError error )
+		private void FatalInit( InitError error )
 		{
 			StringBuilder sb = new StringBuilder( Language.GetString( LocString.InitError ) );
 			sb.AppendFormat( "{0}\n", error );
@@ -541,7 +548,7 @@ namespace Assistant
 			MessageBox.Show( Engine.ActiveWindow, sb.ToString(), "Init Error", MessageBoxButtons.OK, MessageBoxIcon.Stop );
 		}
 
-		private static void OnLogout( bool fake )
+		private void OnLogout( bool fake )
 		{
 			if ( !fake )
 			{
@@ -575,8 +582,8 @@ namespace Assistant
 			//TranslateEnabled = false;
 		}
 
-		//private static DateTime m_LastActivate;
-		internal static bool OnMessage( MainForm razor, uint wParam, int lParam )
+		//private DateTime m_LastActivate;
+		internal bool OnMessage( MainForm razor, uint wParam, int lParam )
 		{
 			bool retVal = true;
 
@@ -603,7 +610,7 @@ namespace Assistant
 					m_OutSend = (Buffer*)(baseAddr + sizeof(Buffer) * 3);
 					m_TitleStr = (byte*)(baseAddr + sizeof(Buffer) * 4);
 
-                    SetServer(m_ServerIP, m_ServerPort);
+					SetServer(m_ServerIP, m_ServerPort);
 
 					CommMutex = new Mutex();
 #pragma warning disable 618
@@ -614,17 +621,17 @@ namespace Assistant
 					{
 						string path = Ultima.Files.GetFilePath("art.mul");
 						if (path != null && path != string.Empty)
-                            SetDataPath(Path.GetDirectoryName(path));
+							SetDataPath(Path.GetDirectoryName(path));
 						else
-                            SetDataPath(Path.GetDirectoryName(Ultima.Files.Directory));
+							SetDataPath(Path.GetDirectoryName(Ultima.Files.Directory));
 					}
 					catch
 					{
-                        SetDataPath("");
+						SetDataPath("");
 					}
 
 					if (Config.GetBool("OldStatBar"))
-						Client.RequestStatbarPatch(true);
+						RequestStatbarPatch(true);
 
 					m_Ready = true;
 					Engine.MainWindow.MainForm_EndLoad();
@@ -719,7 +726,7 @@ namespace Assistant
 						if ( lParam != 0 && !razor.MapWindow.TopMost )
 						{
 							razor.MapWindow.TopMost = true;
-                            Platform.SetForegroundWindow( FindUOWindow() );
+							Platform.SetForegroundWindow( FindUOWindow() );
 						}
 						else if ( lParam == 0 && razor.MapWindow.TopMost )
 						{
@@ -773,7 +780,7 @@ namespace Assistant
 			public ushort z;
 		};
 
-		internal static unsafe bool OnCopyData(IntPtr wparam, IntPtr lparam)
+		internal unsafe bool OnCopyData(IntPtr wparam, IntPtr lparam)
 		{
 			CopyData copydata = (CopyData)Marshal.PtrToStructure(lparam, typeof(CopyData));
 
@@ -797,7 +804,7 @@ namespace Assistant
 			return false;
 		}
 
-		internal static void SendToServer( Packet p )
+		internal void SendToServer( Packet p )
 		{
 			if ( !m_Ready )
 				return;
@@ -812,7 +819,7 @@ namespace Assistant
 			}
 		}
 
-		internal static void SendToServer( PacketReader pr )
+		internal void SendToServer( PacketReader pr )
 		{
 			if ( !m_Ready )
 				return;
@@ -820,7 +827,7 @@ namespace Assistant
 			SendToServer( MakePacketFrom( pr ) );
 		}
 
-		internal static void SendToClient( Packet p )
+		internal void SendToClient( Packet p )
 		{
 			if ( !m_Ready || p.Length <= 0 )
 				return;
@@ -835,7 +842,7 @@ namespace Assistant
 			}
 		}
 
-		internal static void ForceSendToClient( Packet p )
+		internal void ForceSendToClient( Packet p )
 		{
 			byte[] data = p.Compile();
 
@@ -848,7 +855,7 @@ namespace Assistant
 			CommMutex.ReleaseMutex();
 		}
 
-		private static void ForceSendToServer( Packet p )
+		private void ForceSendToServer( Packet p )
 		{
 			if ( p == null || p.Length <= 0 )
 				return;
@@ -865,28 +872,28 @@ namespace Assistant
 			CommMutex.ReleaseMutex();
 		}
 
-		private static void InitSendFlush()
+		private void InitSendFlush()
 		{
 			if ( m_OutSend->Length == 0 )
-                Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.Send, IntPtr.Zero );
+				Platform.PostMessage( FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.Send, IntPtr.Zero );
 		}
 
-		private static void CopyToBuffer( Buffer *buffer, byte *data, int len )
+		private void CopyToBuffer( Buffer *buffer, byte *data, int len )
 		{
-            //if ( buffer->Length + buffer->Start + len >= SHARED_BUFF_SIZE )
-            //	throw new NullReferenceException( String.Format( "Buffer OVERFLOW in CopyToBuffer [{0} + {1}] <- {2}", buffer->Start, buffer->Length, len ) );
+			//if ( buffer->Length + buffer->Start + len >= SHARED_BUFF_SIZE )
+			//	throw new NullReferenceException( String.Format( "Buffer OVERFLOW in CopyToBuffer [{0} + {1}] <- {2}", buffer->Start, buffer->Length, len ) );
 
-            Platform.memcpy( (&buffer->Buff0) + buffer->Start + buffer->Length, data, len );
+			Platform.memcpy( (&buffer->Buff0) + buffer->Start + buffer->Length, data, len );
 			buffer->Length += len;
 		}
 
-		private static Packet MakePacketFrom( PacketReader pr )
+		private Packet MakePacketFrom( PacketReader pr )
 		{
 			byte[] data = pr.CopyBytes( 0, pr.Length );
 			return new Packet( data, pr.Length, pr.DynamicLength );
 		}
 
-		private static void HandleComm( Buffer *inBuff, Buffer *outBuff, Queue<Packet> queue, PacketPath path )
+		private void HandleComm( Buffer *inBuff, Buffer *outBuff, Queue<Packet> queue, PacketPath path )
 		{
 			CommMutex.WaitOne();
 			while ( inBuff->Length > 0 )
@@ -927,7 +934,7 @@ namespace Assistant
 				{
 					byte[] temp = new byte[len];
 					fixed ( byte *ptr = temp )
-                        Platform.memcpy( ptr, buff, len );
+						Platform.memcpy( ptr, buff, len );
 					p = new Packet( temp, len, PacketsTable.IsDynLength(buff[0]) );
 				}
 
@@ -978,14 +985,14 @@ namespace Assistant
 			CommMutex.ReleaseMutex();
 		}
 
-		private static void OnRecv()
+		private void OnRecv()
 		{
 			m_QueueRecv = true;
 			HandleComm( m_InRecv, m_OutRecv, m_RecvQueue, PacketPath.ServerToClient );
 			m_QueueRecv = false;
 		}
 
-		private static void OnSend()
+		private void OnSend()
 		{
 			m_QueueSend = true;
 			HandleComm( m_InSend, m_OutSend, m_SendQueue, PacketPath.ClientToServer );

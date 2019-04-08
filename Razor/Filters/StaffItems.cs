@@ -74,7 +74,7 @@ namespace Assistant.Filters
 				foreach ( Item i in World.Items.Values )
 				{
 					if ( IsStaffItem( i ) )
-						Client.SendToClient( new RemoveObject( i ) );
+						Client.Instance.SendToClient( new RemoveObject( i ) );
 				}
 			}
 		}
@@ -88,7 +88,7 @@ namespace Assistant.Filters
 				foreach ( Item i in World.Items.Values )
 				{
 					if ( IsStaffItem( i ) )
-						Client.SendToClient( new WorldItem( i ) );
+						Client.Instance.SendToClient( new WorldItem( i ) );
 				}
 			}
 		}

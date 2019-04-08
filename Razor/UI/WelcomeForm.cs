@@ -727,7 +727,7 @@ namespace Assistant
 
                     if (addr == "login.ultimaonline.com")
                     {
-                        Assistant.Client.ServerEncrypted = true;
+                        Assistant.Client.Instance.ServerEncrypted = true;
                     }
 
                     if (port == 0)
