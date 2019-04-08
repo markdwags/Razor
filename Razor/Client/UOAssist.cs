@@ -266,7 +266,7 @@ namespace Assistant
 					}
 				case UOAMessage.GET_UO_HWND:
 					{
-						return Client.FindUOWindow().ToInt32();
+						return Client.Instance.GetWindowHandle().ToInt32();
 					}
 				case UOAMessage.GET_POISON:
 					{

@@ -128,7 +128,7 @@ namespace Assistant.MapUO
 					{
 						Engine.MainWindow.MapWindow.Hide();
 						Engine.MainWindow.BringToFront();
-						Platform.BringToFront( Client.FindUOWindow() );
+						Platform.BringToFront( Client.Instance.GetWindowHandle() );
 					}
 					else
 					{
@@ -340,7 +340,7 @@ namespace Assistant.MapUO
 				e.Cancel = true;
 				this.Hide();
 				Engine.MainWindow.BringToFront();
-				Platform.BringToFront( Client.FindUOWindow() );
+				Platform.BringToFront(Client.Instance.GetWindowHandle());
 			}
 		}
 

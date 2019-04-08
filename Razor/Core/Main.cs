@@ -49,7 +49,7 @@ namespace Assistant
             {
                 if (m_ClientVersion == null || m_ClientVersion.Major < 2)
                 {
-                    string[] split = Client.GetUOVersion().Split('.');
+                    string[] split = Client.Instance.GetClientVersion().Split('.');
 
                     if (split.Length < 3)
                         return new Version(4, 0, 0, 0);
