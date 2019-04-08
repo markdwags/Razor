@@ -1,4 +1,4 @@
-LIBRARY	WinUtil
+LIBRARY	Platform
 
 EXPORTS
 	CaptureScreen

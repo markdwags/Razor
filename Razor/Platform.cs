@@ -8,13 +8,13 @@ namespace Assistant
 {
     internal static unsafe class Platform
     {
-        [DllImport( "WinUtil.dll" )]
+        [DllImport( "Platform.dll" )]
         internal static unsafe extern IntPtr CaptureScreen( IntPtr handle, bool isFullScreen, string msgStr );
-        [DllImport( "WinUtil.dll" )]
+        [DllImport( "Platform.dll" )]
         internal static unsafe extern void BringToFront( IntPtr hWnd );
-        [DllImport( "WinUtil.dll" )]
+        [DllImport( "Platform.dll" )]
         internal static unsafe extern int HandleNegotiate( ulong word );
-        [DllImport( "WinUtil.dll" )]
+        [DllImport( "Platform.dll" )]
         internal static unsafe extern bool AllowBit( ulong bit );
 
         [DllImport( "msvcrt.dll" )]
