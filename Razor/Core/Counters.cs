@@ -195,7 +195,7 @@ namespace Assistant
 							m_Count = 0;
 
 						//Engine.MainWindow.RefreshCounters();
-						Client.RequestTitlebarUpdate();
+						Client.Instance.RequestTitlebarUpdate();
 					}
 					
 					m_LVI.SubItems[1].Text = m_Count.ToString();

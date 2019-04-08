@@ -90,13 +90,13 @@ namespace Assistant
         public void OnCast(PacketReader p)
         {
             Cast();
-            Client.SendToServer(p);
+            Client.Instance.SendToServer(p);
         }
 
         public void OnCast(Packet p)
         {
             Cast();
-            Client.SendToServer(p);
+            Client.Instance.SendToServer(p);
         }
 
         private void Cast()
@@ -158,7 +158,7 @@ namespace Assistant
                 m_UnflagTimer.Start();
             }
 
-            Client.RequestTitlebarUpdate();
+            Client.Instance.RequestTitlebarUpdate();
             UOAssist.PostSpellCast(this.Number);
 
             if (World.Player != null)
@@ -181,7 +181,7 @@ namespace Assistant
             {
                 for (int i = 0; i < Counter.List.Count; i++)
                     ((Counter) Counter.List[i]).Flag = false;
-                Client.RequestTitlebarUpdate();
+                Client.Instance.RequestTitlebarUpdate();
             }
         }
 
@@ -280,7 +280,7 @@ namespace Assistant
             {
                 if (World.Player.Poisoned || World.Player.Hits < World.Player.HitsMax)
                     Targeting.TargetSelf(true);
-                Client.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
+                Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
                 s.Cast();
             }
         }
@@ -305,7 +305,7 @@ namespace Assistant
             {
                 if (World.Player.Poisoned || World.Player.Hits < World.Player.HitsMax)
                     Targeting.TargetSelf(true);
-                Client.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
+                Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
                 s.Cast();
             }
         }
@@ -316,8 +316,8 @@ namespace Assistant
 
             if (item != null)
             {
-                Client.SendToServer(new LiftRequest(item, 1)); // unequip
-                Client.SendToServer(new EquipRequest(item.Serial, World.Player, item.Layer)); // Equip
+                Client.Instance.SendToServer(new LiftRequest(item, 1)); // unequip
+                Client.Instance.SendToServer(new EquipRequest(item.Serial, World.Player, item.Layer)); // Equip
             }
         }
 

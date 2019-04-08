@@ -52,7 +52,7 @@ namespace Assistant.MapUO
 			//
 
 			this.Map.FullUpdate();
-			Client.SetMapWndHandle( this );
+			Client.Instance.SetMapWndHandle( this );
 		}
 
 		public class MapMenuItem : MenuItem
@@ -135,7 +135,7 @@ namespace Assistant.MapUO
 						Engine.MainWindow.MapWindow.Show();
 						Engine.MainWindow.MapWindow.BringToFront();
 						Engine.MainWindow.MapWindow.TopMost = true;
-						Client.SetMapWndHandle( Engine.MainWindow.MapWindow );
+						Client.Instance.SetMapWndHandle( Engine.MainWindow.MapWindow );
 					}
 				}
 			}
@@ -269,7 +269,7 @@ namespace Assistant.MapUO
 			protected override void OnTick()
 			{
 				// never send this packet to encrypted servers (could lead to OSI detecting razor)
-				if ( Client.ServerEncrypted )
+				if ( Client.Instance.ServerEncrypted )
 				{
 					Stop();
 					return;
@@ -311,7 +311,7 @@ namespace Assistant.MapUO
 					if ( send )
 					{
 						PacketHandlers.SpecialPartySent++;
-						Client.SendToServer( new QueryPartyLocs() );
+						Client.Instance.SendToServer( new QueryPartyLocs() );
 					}
 				}
 				else
@@ -324,12 +324,12 @@ namespace Assistant.MapUO
 		private void RequestPartyLocations()
 		{
 			if ( World.Player != null && PacketHandlers.Party.Count > 0 )
-				Client.SendToServer(new QueryPartyLocs());
+				Client.Instance.SendToServer(new QueryPartyLocs());
 		}
 
 		public void UpdateMap()
 		{
-			Client.SetMapWndHandle( this );
+			Client.Instance.SetMapWndHandle( this );
 			this.Map.UpdateMap();
 		}
 

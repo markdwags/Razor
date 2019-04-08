@@ -61,7 +61,7 @@ namespace Assistant
         {
             m_Seq = (byte)Utility.Random(256);
             m_Start = DateTime.UtcNow;
-            Client.SendToServer(new PingPacket(m_Seq));
+            Client.Instance.SendToServer(new PingPacket(m_Seq));
         }
     }
 }

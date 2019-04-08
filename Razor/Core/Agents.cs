@@ -209,7 +209,7 @@ namespace Assistant
 
                 if (item.Serial == serial)
                 {
-                    Client.SendToClient(new UnicodeMessage(item.Serial, item.ItemID, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.Format(LocString.UseOnceHBA1, i + 1)));
+                    Client.Instance.SendToClient(new UnicodeMessage(item.Serial, item.ItemID, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.Format(LocString.UseOnceHBA1, i + 1)));
                     break;
                 }
             }
@@ -541,7 +541,7 @@ namespace Assistant
                     gfx = c.ItemID.Value;
                 }
 
-                Client.SendToClient(new UnicodeMessage(m_HotBag, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.GetString(LocString.SellHB)));
+                Client.Instance.SendToClient(new UnicodeMessage(m_HotBag, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.GetString(LocString.SellHB)));
             }
         }
 
@@ -616,7 +616,7 @@ namespace Assistant
 
             if (list.Count > 0)
             {
-                Client.SendToServer(new VendorSellResponse(vendor, list));
+                Client.Instance.SendToServer(new VendorSellResponse(vendor, list));
                 World.Player.SendMessage(MsgLevel.Force, LocString.SellTotals, sold, total);
                 args.Block = true;
             }
@@ -907,7 +907,7 @@ namespace Assistant
                     gfx = c.ItemID.Value;
                 }
 
-                Client.SendToClient(new UnicodeMessage(m_Cont, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.Format(LocString.OrganizerHBA1, m_Num)));
+                Client.Instance.SendToClient(new UnicodeMessage(m_Cont, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.Format(LocString.OrganizerHBA1, m_Num)));
             }
         }
 
@@ -1337,7 +1337,7 @@ namespace Assistant
                 Item item = World.FindItem(serial);
                 if (item != null)
                 {
-                    Client.SendToClient(new ContainerItem(item));
+                    Client.Instance.SendToClient(new ContainerItem(item));
                     m_SubList.Items.Add(item.ToString());
                 }
                 else
@@ -1379,7 +1379,7 @@ namespace Assistant
                         Item item = World.FindItem(serial);
                         if (item != null)
                         {
-                            Client.SendToClient(new ContainerItem(item));
+                            Client.Instance.SendToClient(new ContainerItem(item));
                         }
 
                         return;
@@ -1514,7 +1514,7 @@ namespace Assistant
                     gfx = c.ItemID.Value;
                 }
 
-                Client.SendToClient(new UnicodeMessage(m_Bag, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.GetString(LocString.ScavengerHB)));
+                Client.Instance.SendToClient(new UnicodeMessage(m_Bag, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.GetString(LocString.ScavengerHB)));
             }
         }
 
@@ -2002,7 +2002,7 @@ namespace Assistant
             if (buyList.Count > 0)
             {
                 args.Block = true;
-                Client.SendToServer(new VendorBuyResponse(serial, buyList));
+                Client.Instance.SendToServer(new VendorBuyResponse(serial, buyList));
                 World.Player.SendMessage(MsgLevel.Force, LocString.BuyTotals, total, cost);
             }
             if (lowGoldWarn)
@@ -2270,7 +2270,7 @@ namespace Assistant
                     gfx = c.ItemID.Value;
                 }
 
-                Client.SendToClient(new UnicodeMessage(m_HotBag, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.Format(LocString.RestockHBA1, m_Num)));
+                Client.Instance.SendToClient(new UnicodeMessage(m_HotBag, gfx, Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.Format(LocString.RestockHBA1, m_Num)));
             }
         }
 

@@ -179,13 +179,13 @@ namespace Assistant
         private static void AttackLastComb()
         {
             if (m_LastCombatant.IsMobile)
-                Client.SendToServer(new AttackReq(m_LastCombatant));
+                Client.Instance.SendToServer(new AttackReq(m_LastCombatant));
         }
 
         private static void AttackLastTarg()
         {
             if (m_LastTarget != null && m_LastTarget.Serial.IsMobile)
-                Client.SendToServer(new AttackReq(m_LastTarget.Serial));
+                Client.Instance.SendToServer(new AttackReq(m_LastTarget.Serial));
         }
 
         private static void OnClearQueue()
@@ -240,7 +240,7 @@ namespace Assistant
             m_OnCancel = onCancel;
 
             m_ClientTarget = m_HasTarget = true;
-            Client.SendToClient(new Target(LocalTargID, ground));
+            Client.Instance.SendToClient(new Target(LocalTargID, ground));
             ClearQueue();
         }
 
@@ -248,7 +248,7 @@ namespace Assistant
         {
             m_ClientTarget = m_HasTarget = false;
 
-            Client.SendToClient(new CancelTarget(LocalTargID));
+            Client.Instance.SendToClient(new CancelTarget(LocalTargID));
             EndIntercept();
         }
 
@@ -295,7 +295,7 @@ namespace Assistant
             if (serial.IsMobile)
             {
                 LastTargetChanged();
-                Client.SendToClient(new ChangeCombatant(serial));
+                Client.Instance.SendToClient(new ChangeCombatant(serial));
                 m_LastCombatant = serial;
             }
         }
@@ -365,7 +365,7 @@ namespace Assistant
                     if (m != null)
                     {
                         if (lth)
-                            Client.SendToClient(new MobileIncoming(m));
+                            Client.Instance.SendToClient(new MobileIncoming(m));
 
                         RemoveTextFlags(m);
                     }
@@ -381,7 +381,7 @@ namespace Assistant
                     if (m != null)
                     {
                         if (IsLastTarget(m) && lth)
-                            Client.SendToClient(new MobileIncoming(m));
+                            Client.Instance.SendToClient(new MobileIncoming(m));
 
                         CheckLastTargetRange(m);
 
@@ -890,7 +890,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.SendToClient(new ChangeCombatant(m));
+            Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
             
@@ -975,7 +975,7 @@ namespace Assistant
             }
             else
             {
-                Client.SendToServer(new TargetResponse(m_CurrentID, World.Player));
+                Client.Instance.SendToServer(new TargetResponse(m_CurrentID, World.Player));
             }
 
             return true;
@@ -1108,7 +1108,7 @@ namespace Assistant
             if (m_Intercept)
                 OneTimeResponse(targ);
             else
-                Client.SendToServer(new TargetResponse(targ));
+                Client.Instance.SendToServer(new TargetResponse(targ));
             return true;
         }
 
@@ -1150,7 +1150,7 @@ namespace Assistant
 
             if (m_HasTarget)
             {
-                Client.SendToServer(new TargetCancelResponse(m_CurrentID));
+                Client.Instance.SendToServer(new TargetCancelResponse(m_CurrentID));
                 m_HasTarget = false;
             }
         }
@@ -1160,7 +1160,7 @@ namespace Assistant
             if (m_ClientTarget)
             {
                 m_FilterCancel.Add((uint)m_CurrentID);
-                Client.SendToClient(new CancelTarget(m_CurrentID));
+                Client.Instance.SendToClient(new CancelTarget(m_CurrentID));
                 m_ClientTarget = false;
             }
         }
@@ -1175,7 +1175,7 @@ namespace Assistant
             {
                 info.TargID = m_CurrentID;
                 m_LastGroundTarg = m_LastTarget = info;
-                Client.SendToServer(new TargetResponse(info));
+                Client.Instance.SendToServer(new TargetResponse(info));
             }
 
             CancelClientTarget();
@@ -1397,7 +1397,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.SendToClient(new ChangeCombatant(m));
+            Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
@@ -1482,7 +1482,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.SendToClient(new ChangeCombatant(m));
+            Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
@@ -1570,7 +1570,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.SendToClient(new ChangeCombatant(m));
+            Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
@@ -1643,7 +1643,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.SendToClient(new ChangeCombatant(m));
+            Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
@@ -1718,7 +1718,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.SendToClient(new ChangeCombatant(m));
+            Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
@@ -1796,7 +1796,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.SendToClient(new ChangeCombatant(m));
+            Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
@@ -1883,7 +1883,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.SendToClient(new ChangeCombatant(m));
+            Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
@@ -1949,7 +1949,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.SendToClient(new ChangeCombatant(m));
+            Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
@@ -2199,7 +2199,7 @@ namespace Assistant
             {
                 CancelClientTarget();
                 m_ClientTarget = m_HasTarget = true;
-                Client.SendToClient(new Target(m_CurrentID, m_AllowGround, m_CurFlags));
+                Client.Instance.SendToClient(new Target(m_CurrentID, m_AllowGround, m_CurFlags));
             }
         }
 

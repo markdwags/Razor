@@ -47,7 +47,7 @@ namespace Assistant.Core
             }
 
             DamageTrackerTimer.Start();
-            Client.RequestTitlebarUpdate();
+            Client.Instance.RequestTitlebarUpdate();
 
             if (World.Player != null)
                 World.Player.SendMessage(MsgLevel.Force, "-- [Damage Tracking Started] ---");
@@ -59,7 +59,7 @@ namespace Assistant.Core
                 return;
 
             DamageTrackerTimer.Stop();
-            Client.RequestTitlebarUpdate();
+            Client.Instance.RequestTitlebarUpdate();
 
             if (World.Player != null)
             {
@@ -118,7 +118,7 @@ namespace Assistant.Core
                 if (DamagePerSecond > MaxDamagePerSecond)
                     MaxDamagePerSecond = DamagePerSecond;
 
-                Client.RequestTitlebarUpdate();
+                Client.Instance.RequestTitlebarUpdate();
             }
         }
 

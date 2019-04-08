@@ -193,7 +193,7 @@ namespace Assistant
 				return;
 
 			Callback = new HueEntryCallback( HueResp );
-			Client.SendToClient( new HuePicker() );
+			Client.Instance.SendToClient( new HuePicker() );
 			World.Player.SendMessage( MsgLevel.Force, LocString.SelHue );
 		}
 		

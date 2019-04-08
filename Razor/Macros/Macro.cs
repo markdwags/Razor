@@ -135,7 +135,7 @@ namespace Assistant.Macros
         public void Reset()
         {
             if (m_Playing && World.Player != null && DragDropManager.Holding != null && DragDropManager.Holding == LiftAction.LastLift)
-                Client.SendToServer(new DropRequest(DragDropManager.Holding, World.Player.Serial));
+                Client.Instance.SendToServer(new DropRequest(DragDropManager.Holding, World.Player.Serial));
 
             m_Wait = null;
 

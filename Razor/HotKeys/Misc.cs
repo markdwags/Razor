@@ -147,7 +147,7 @@ namespace Assistant.HotKeys
         {
             if (PacketHandlers.PartyLeader != Serial.Zero)
             {
-                Client.SendToServer(new AcceptParty(PacketHandlers.PartyLeader));
+                Client.Instance.SendToServer(new AcceptParty(PacketHandlers.PartyLeader));
                 PacketHandlers.PartyLeader = Serial.Zero;
             }
         }
@@ -156,7 +156,7 @@ namespace Assistant.HotKeys
         {
             if (PacketHandlers.PartyLeader != Serial.Zero)
             {
-                Client.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
+                Client.Instance.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
                 PacketHandlers.PartyLeader = Serial.Zero;
             }
         }
@@ -176,7 +176,7 @@ namespace Assistant.HotKeys
             foreach (Mobile m in World.MobilesInRange())
             {
                 if (m != World.Player)
-                    Client.SendToServer(new SingleClick(m));
+                    Client.Instance.SendToServer(new SingleClick(m));
 
                 if (textFlags)
                     Targeting.CheckTextFlags(m);
@@ -185,7 +185,7 @@ namespace Assistant.HotKeys
             foreach (Item i in World.Items.Values)
             {
                 if (i.IsCorpse)
-                    Client.SendToServer(new SingleClick(i));
+                    Client.Instance.SendToServer(new SingleClick(i));
             }
         }
 
@@ -194,7 +194,7 @@ namespace Assistant.HotKeys
             foreach (Item i in World.Items.Values)
             {
                 if (i.IsCorpse)
-                    Client.SendToServer(new SingleClick(i));
+                    Client.Instance.SendToServer(new SingleClick(i));
             }
         }
 
@@ -205,7 +205,7 @@ namespace Assistant.HotKeys
             foreach (Mobile m in World.MobilesInRange())
             {
                 if (m != World.Player)
-                    Client.SendToServer(new SingleClick(m));
+                    Client.Instance.SendToServer(new SingleClick(m));
 
                 if (textFlags)
                     Targeting.CheckTextFlags(m);
@@ -215,7 +215,7 @@ namespace Assistant.HotKeys
         private static void LastSkill()
         {
             if (World.Player != null && World.Player.LastSkill != -1)
-                Client.SendToServer(new UseSkill(World.Player.LastSkill));
+                Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
         }
 
         private static void LastObj()
@@ -242,7 +242,7 @@ namespace Assistant.HotKeys
             {
                 m_LastSync = DateTime.UtcNow;
 
-                Client.SendToServer(new ResyncReq());
+                Client.Instance.SendToServer(new ResyncReq());
             }
         }
 
