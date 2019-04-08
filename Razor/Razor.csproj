@@ -247,6 +247,7 @@
     <Compile Include="Core\MsgQueue.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Platform.cs" />
     <Compile Include="Network\ClientComm.cs">
       <SubType>Code</SubType>
     </Compile>

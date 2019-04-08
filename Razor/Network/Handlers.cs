@@ -997,7 +997,7 @@ namespace Assistant
                     UOAssist.PostHitsUpdate();
                 }
 
-                if (ClientCommunication.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowHealth"))
+                if (Platform.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowHealth"))
                 {
                     int percent = (int)(m.Hits * 100 / (m.HitsMax == 0 ? (ushort)1 : m.HitsMax));
 
@@ -1035,7 +1035,7 @@ namespace Assistant
                     UOAssist.PostStamUpdate();
                 }
 
-                if (m != World.Player && ClientCommunication.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowPartyStats"))
+                if (m != World.Player && Platform.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowPartyStats"))
                 {
                     int stamPercent = (int)(m.Stam * 100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
                     int manaPercent = (int)(m.Mana * 100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
@@ -1074,7 +1074,7 @@ namespace Assistant
                     UOAssist.PostManaUpdate();
                 }
 
-                if (m != World.Player && ClientCommunication.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowPartyStats"))
+                if (m != World.Player && Platform.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowPartyStats"))
                 {
                     int stamPercent = (int)(m.Stam * 100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
                     int manaPercent = (int)(m.Mana * 100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
@@ -2257,7 +2257,7 @@ namespace Assistant
                     {
                         ulong features = p.ReadRawUInt64();
 
-                        if (ClientCommunication.HandleNegotiate(features) != 0)
+                        if (Platform.HandleNegotiate(features) != 0)
                         {
                             ClientCommunication.SendToServer(new RazorNegotiateResponse());
                             Engine.MainWindow.UpdateControlLocks();

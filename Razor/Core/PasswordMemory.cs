@@ -23,7 +23,7 @@ namespace Assistant
 		{
 			byte[] buff = ASCIIEncoding.ASCII.GetBytes( source );
 			int kidx = 0;
-			string key = ClientCommunication.GetWindowsUserName();
+			string key = Platform.GetWindowsUserName();
 			if ( key == String.Empty )
 				return String.Empty;
 			StringBuilder sb = new StringBuilder( source.Length * 2 + 2 );
@@ -44,7 +44,7 @@ namespace Assistant
 			if ( source.Length > 2 && source[0] == '1' && source[1] == '+' )
 			{
 				buff = new byte[(source.Length-2)/2];
-				string key = ClientCommunication.GetWindowsUserName();
+				string key = Platform.GetWindowsUserName();
 				if ( key == String.Empty )
 					return String.Empty;
 				int kidx = 0;
