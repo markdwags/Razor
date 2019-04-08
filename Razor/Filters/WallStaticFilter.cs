@@ -26,42 +26,42 @@ namespace Assistant.Filters
                 case 0x0082:
                     wall.ItemID = WallStaticIDStone;
                     wall.Hue = (ushort)WallColor.Stone;
-                    ClientCommunication.SendToClient(new WorldItem(wall));
+                    Client.SendToClient(new WorldItem(wall));
                     if (Config.GetBool("ShowStaticWallLabels"))
-                        ClientCommunication.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Stone, 3, Language.CliLocName, wall.Name, "[Wall Of Stone]"));
+                        Client.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Stone, 3, Language.CliLocName, wall.Name, "[Wall Of Stone]"));
                     return true;
                 case 0x3996:
                 case 0x398C:
                     wall.ItemID = WallStaticID;
                     wall.Hue = (ushort)WallColor.Fire;
-                    ClientCommunication.SendToClient(new WorldItem(wall));
+                    Client.SendToClient(new WorldItem(wall));
                     if (Config.GetBool("ShowStaticWallLabels"))
-                        ClientCommunication.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Fire, 3, Language.CliLocName, wall.Name, "[Fire Field]"));
+                        Client.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Fire, 3, Language.CliLocName, wall.Name, "[Fire Field]"));
                     return true;
                 case 0x3915:
                 case 0x3920:
                 case 0x3922:
                     wall.ItemID = WallStaticID;
                     wall.Hue = (ushort)WallColor.Poison;
-                    ClientCommunication.SendToClient(new WorldItem(wall));
+                    Client.SendToClient(new WorldItem(wall));
                     if (Config.GetBool("ShowStaticWallLabels"))
-                        ClientCommunication.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Poison, 3, Language.CliLocName, wall.Name, "[Poison Field]"));
+                        Client.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Poison, 3, Language.CliLocName, wall.Name, "[Poison Field]"));
                     return true;
                 case 0x3967:
                 case 0x3979:
                     wall.ItemID = WallStaticID;
                     wall.Hue = (ushort)WallColor.Paralyze;
-                    ClientCommunication.SendToClient(new WorldItem(wall));
+                    Client.SendToClient(new WorldItem(wall));
                     if (Config.GetBool("ShowStaticWallLabels"))
-                        ClientCommunication.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Paralyze, 3, Language.CliLocName, wall.Name, "[Paralyze Field]"));
+                        Client.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Paralyze, 3, Language.CliLocName, wall.Name, "[Paralyze Field]"));
                     return true;
                 case 0x3946:
                 case 0x3956:
                     wall.ItemID = WallStaticID;
                     wall.Hue = (ushort)WallColor.Energy;
-                    ClientCommunication.SendToClient(new WorldItem(wall));
+                    Client.SendToClient(new WorldItem(wall));
                     if (Config.GetBool("ShowStaticWallLabels"))
-                        ClientCommunication.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Energy, 3, Language.CliLocName, wall.Name, "[Energy Field]"));
+                        Client.SendToClient(new UnicodeMessage(wall.Serial, wall.ItemID, MessageType.Regular, (ushort)WallColor.Energy, 3, Language.CliLocName, wall.Name, "[Energy Field]"));
                     return true;
                 default:
                     return false;

@@ -16,7 +16,7 @@ namespace Assistant
         {
             if (e.IsTerminating)
             {
-                ClientCommunication.Close();
+                Client.Close();
                 m_Running = false;
 
                 new MessageDialog("Unhandled Exception", !e.IsTerminating, e.ExceptionObject.ToString()).ShowDialog(
@@ -49,7 +49,7 @@ namespace Assistant
             {
                 if (m_ClientVersion == null || m_ClientVersion.Major < 2)
                 {
-                    string[] split = ClientCommunication.GetUOVersion().Split('.');
+                    string[] split = Client.GetUOVersion().Split('.');
 
                     if (split.Length < 3)
                         return new Version(4, 0, 0, 0);
@@ -257,9 +257,9 @@ namespace Assistant
             int attPID = -1;
             string dataDir;
 
-            ClientCommunication.ClientEncrypted = false;
+            Client.ClientEncrypted = false;
 
-            ClientCommunication.ServerEncrypted = false;
+            Client.ServerEncrypted = false;
 
             Config.SetAppSetting("PatchEncy", "1");
 
@@ -278,13 +278,13 @@ namespace Assistant
                 }
                 else if (arg == "--clientenc")
                 {
-                    ClientCommunication.ClientEncrypted = true;
+                    Client.ClientEncrypted = true;
                     advCmdLine = true;
                     patch = false;
                 }
                 else if (arg == "--serverenc")
                 {
-                    ClientCommunication.ServerEncrypted = true;
+                    Client.ServerEncrypted = true;
                     advCmdLine = true;
                 }
                 else if (arg == "--welcome")
@@ -332,8 +332,8 @@ namespace Assistant
 
             if (attPID > 0 && !advCmdLine)
             {
-                ClientCommunication.ServerEncrypted = false;
-                ClientCommunication.ClientEncrypted = false;
+                Client.ServerEncrypted = false;
+                Client.ClientEncrypted = false;
             }
 
             if (!Language.Load("ENU"))
@@ -415,9 +415,9 @@ namespace Assistant
 
             if (attPID == -1)
             {
-                ClientCommunication.SetConnectionInfo(IPAddress.None, -1);
+                Client.SetConnectionInfo(IPAddress.None, -1);
 
-                ClientCommunication.Loader_Error result = ClientCommunication.Loader_Error.UNKNOWN_ERROR;
+                Client.Loader_Error result = Client.Loader_Error.UNKNOWN_ERROR;
 
                 SplashScreen.Message = LocString.LoadingClient;
 
@@ -427,12 +427,12 @@ namespace Assistant
                     clientPath = Ultima.Files.GetFilePath("uotd.exe");
 
                 if (!advCmdLine)
-                    ClientCommunication.ClientEncrypted = patch;
+                    Client.ClientEncrypted = patch;
 
                 if (clientPath != null && File.Exists(clientPath))
-                    result = ClientCommunication.LaunchClient(clientPath);
+                    result = Client.LaunchClient(clientPath);
 
-                if (result != ClientCommunication.Loader_Error.SUCCESS)
+                if (result != Client.Loader_Error.SUCCESS)
                 {
                     if (clientPath == null && File.Exists(clientPath))
                         MessageBox.Show(SplashScreen.Instance,
@@ -461,7 +461,7 @@ namespace Assistant
                     return;
                 }
 
-                ClientCommunication.SetConnectionInfo(ip, port);
+                Client.SetConnectionInfo(ip, port);
             }
             else
             {
@@ -469,7 +469,7 @@ namespace Assistant
                 bool result = false;
                 try
                 {
-                    result = ClientCommunication.Attach(attPID);
+                    result = Client.Attach(attPID);
                 }
                 catch (Exception e)
                 {
@@ -486,7 +486,7 @@ namespace Assistant
                     return;
                 }
 
-                ClientCommunication.SetConnectionInfo(IPAddress.Any, 0);
+                Client.SetConnectionInfo(IPAddress.Any, 0);
             }
 
 
@@ -501,7 +501,7 @@ namespace Assistant
 
             m_Running = false;
 
-            ClientCommunication.Close();
+            Client.Close();
             Counter.Save();
             Macros.MacroManager.Save();
             Config.Save();

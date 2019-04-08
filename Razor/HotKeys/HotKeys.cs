@@ -300,7 +300,7 @@ namespace Assistant
 
         public static bool KeyDown(Keys k)
         {
-            return (GetAsyncKeyState((int) k) & 0xFF00) != 0; //|| ClientCommunication.IsKeyDown( (int)k );
+            return (GetAsyncKeyState((int) k) & 0xFF00) != 0; //|| Client.IsKeyDown( (int)k );
         }
 
         public static void Initialize()
