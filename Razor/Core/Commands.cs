@@ -36,10 +36,10 @@ namespace Assistant
             {
                 m_LastSync = DateTime.UtcNow;
 
-                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", "Updating and resyncing with server"));
 
-                ClientCommunication.SendToServer(new ResyncReq());
+                Client.SendToServer(new ResyncReq());
             }
         }
 
@@ -51,24 +51,24 @@ namespace Assistant
 
         private static void SetWeather(string[] param)
         {
-            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Setting weather.."));
 
-            ClientCommunication.SendToClient(new SetWeather(Convert.ToInt32(param[0]), Convert.ToInt32(param[1])));
+            Client.SendToClient(new SetWeather(Convert.ToInt32(param[0]), Convert.ToInt32(param[1])));
         }
 
         private static void SetSeason(string[] param)
         {
-            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Setting season.."));
 
-            ClientCommunication.ForceSendToClient(new SeasonChange(Convert.ToInt32(param[0]), true));
+            Client.ForceSendToClient(new SeasonChange(Convert.ToInt32(param[0]), true));
         }
 
         private static void GetItemHue(string[] param)
         {
             Targeting.OneTimeTarget(OnGetItemHueTarget);
-            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Select an item to get the hue value"));
         }
 
@@ -77,10 +77,10 @@ namespace Assistant
             Item item = World.FindItem(serial);
             if (item != null)
             {
-                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", $"Item: '{item.Name}' '{item.ItemID.Value}'"));
 
-                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", $"Hue: '{item.Hue}'"));
             }
 
@@ -89,7 +89,7 @@ namespace Assistant
         private static void GetMobile(string[] param)
         {
             Targeting.OneTimeTarget(OnGetMobileTarget);
-            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Select a mobile to get information on"));
         }
 
@@ -99,10 +99,10 @@ namespace Assistant
 
             if (mobile != null)
             {
-                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", $"Name: '{mobile.Name}'"));
 
-                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", $"Serial: '{mobile.Serial}' Hue: '{mobile.Hue}' IsGhost: '{mobile.IsGhost}' IsHuman: '{mobile.IsHuman}' IsMonster: '{mobile.IsMonster}'"));
             }
 
@@ -114,13 +114,13 @@ namespace Assistant
             StringBuilder sb = new StringBuilder("Note To Self: ");
             for (int i = 0; i < param.Length; i++)
                 sb.Append(param[i]);
-            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", sb.ToString()));
         }
 
         private static void ClearItems(string[] param)
         {
-            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Clearing all items from memory cache"));
 
             World.Items.Clear();
@@ -128,7 +128,7 @@ namespace Assistant
 
             Item.UpdateContainers();
 
-            ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "All items in memory cache have been cleared"));
 
         }

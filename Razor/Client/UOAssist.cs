@@ -222,7 +222,7 @@ namespace Assistant
 							return 0;
 
 						if ((wParam & 0x00010000) != 0)
-							ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3, Language.CliLocName, "System", sb.ToString()));
+							Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3, Language.CliLocName, "System", sb.ToString()));
 						else
 							World.Player.OverheadMessage(hue, sb.ToString());
 						GlobalDeleteAtom((ushort)lParam);
@@ -266,7 +266,7 @@ namespace Assistant
 					}
 				case UOAMessage.GET_UO_HWND:
 					{
-						return ClientCommunication.FindUOWindow().ToInt32();
+						return Client.FindUOWindow().ToInt32();
 					}
 				case UOAMessage.GET_POISON:
 					{
@@ -276,7 +276,7 @@ namespace Assistant
 					{
 						if (World.Player == null || wParam < 0 || wParam > World.Player.Skills.Length || lParam < 0 || lParam >= 3)
 							return 0;
-						ClientCommunication.SendToServer(new SetSkillLock(wParam, (LockType)lParam));
+						Client.SendToServer(new SetSkillLock(wParam, (LockType)lParam));
 						return 1;
 					}
 				case UOAMessage.GET_ACCT_ID:

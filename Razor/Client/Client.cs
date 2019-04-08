@@ -39,7 +39,7 @@ namespace Assistant
 		public static readonly uint MaxBit			= 16;
 	}
 
-	public unsafe sealed class ClientCommunication
+	public unsafe sealed class Client
 	{
 		public enum UONetMessage
 		{
@@ -202,7 +202,7 @@ namespace Assistant
 		public static void SetSmartCPU(bool enabled)
 		{
 			if (enabled)
-				try { ClientCommunication.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch { }
+				try { Client.ClientProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.Normal; } catch { }
 
             Platform.PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr)UONetMessage.SmartCPU, (IntPtr)(enabled ? 1 : 0));
 		}
@@ -440,8 +440,8 @@ namespace Assistant
 				sb.Replace(@"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-");
 
 				sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
-				//ClientCommunication.ConnectionStart != DateTime.MinValue )
-				//time = (int)((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
+				//Client.ConnectionStart != DateTime.MinValue )
+				//time = (int)((DateTime.UtcNow - Client.ConnectionStart).TotalSeconds);
 				 sb.Replace(@"{uptime}", ConnectionStart != DateTime.MinValue ? Utility.FormatTime((int)((DateTime.UtcNow - ConnectionStart).TotalSeconds)) : "-");
 
 				sb.Replace(@"{dps}", DamageTracker.Running ? $"{DamageTracker.DamagePerSecond:N2}" : "-");
@@ -624,7 +624,7 @@ namespace Assistant
 					}
 
 					if (Config.GetBool("OldStatBar"))
-						ClientCommunication.RequestStatbarPatch(true);
+						Client.RequestStatbarPatch(true);
 
 					m_Ready = true;
 					Engine.MainWindow.MainForm_EndLoad();

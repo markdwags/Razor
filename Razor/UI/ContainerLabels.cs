@@ -329,7 +329,7 @@ namespace Assistant.UI
 
             World.Player.SendMessage(MsgLevel.Force, "Opening container");
 
-            ClientCommunication.SendToServer(new DoubleClick(container.Serial));
+            Client.SendToServer(new DoubleClick(container.Serial));
         }
 
         private void setAlias_Click(object sender, EventArgs e)

@@ -156,7 +156,7 @@ namespace Assistant
 
 		private static void ToggleWarPeace()
 		{
-			ClientCommunication.SendToServer( new SetWarMode( !World.Player.Warmode ) );
+			Client.SendToServer( new SetWarMode( !World.Player.Warmode ) );
 		}
 
 		private static void OnStun()
@@ -164,7 +164,7 @@ namespace Assistant
 			if ( m_LastToggle+TimeSpan.FromSeconds( 0.5 ) < DateTime.UtcNow )
 			{
 				m_LastToggle = DateTime.UtcNow;
-				ClientCommunication.SendToServer( new StunRequest() );
+				Client.SendToServer( new StunRequest() );
 			}
 		}
 
@@ -173,7 +173,7 @@ namespace Assistant
 			if ( m_LastToggle+TimeSpan.FromSeconds( 0.5 ) < DateTime.UtcNow )
 			{
 				m_LastToggle = DateTime.UtcNow;
-				ClientCommunication.SendToServer( new DisarmRequest() );
+				Client.SendToServer( new DisarmRequest() );
 			}
 		}
 
@@ -205,8 +205,8 @@ namespace Assistant
 
 			if ( a != AOSAbility.Invalid )
 			{
-				ClientCommunication.SendToServer( new UseAbility( a ) );
-				ClientCommunication.SendToClient( ClearAbility.Instance );
+				Client.SendToServer( new UseAbility( a ) );
+				Client.SendToClient( ClearAbility.Instance );
 				World.Player.SendMessage( LocString.SettingAOSAb, a );
 			}
 		}
@@ -228,16 +228,16 @@ namespace Assistant
 
 			if ( a != AOSAbility.Invalid )
 			{
-				ClientCommunication.SendToServer( new UseAbility( a ) );
-				ClientCommunication.SendToClient( ClearAbility.Instance );
+				Client.SendToServer( new UseAbility( a ) );
+				Client.SendToClient( ClearAbility.Instance );
 				World.Player.SendMessage( LocString.SettingAOSAb, a );
 			}
 		}
 
 		public static void ClearAbilities()
 		{
-			ClientCommunication.SendToServer( new UseAbility( AOSAbility.Clear ) );
-			ClientCommunication.SendToClient( ClearAbility.Instance );
+			Client.SendToServer( new UseAbility( AOSAbility.Clear ) );
+			Client.SendToClient( ClearAbility.Instance );
 			World.Player.SendMessage( LocString.AOSAbCleared );
 		}
 	}

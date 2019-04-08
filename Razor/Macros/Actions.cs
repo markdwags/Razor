@@ -770,8 +770,8 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            ClientCommunication.SendToClient(new CloseGump(World.Player.CurrentGumpI));
-            ClientCommunication.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, m_ButtonID, m_Switches, m_TextEntries));
+            Client.SendToClient(new CloseGump(World.Player.CurrentGumpI));
+            Client.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, m_ButtonID, m_Switches, m_TextEntries));
             World.Player.HasGump = false;
             return true;
         }
@@ -849,7 +849,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            ClientCommunication.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, m_Index, m_ItemID, m_Hue));
+            Client.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, m_Index, m_ItemID, m_Hue));
             World.Player.HasMenu = false;
             return true;
         }
@@ -1441,7 +1441,7 @@ namespace Assistant.Macros
                 hue = World.Player.SpeechHue;
             }
             
-            ClientCommunication.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech));
+            Client.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech));
             return true;
         }
 
@@ -1529,7 +1529,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            ClientCommunication.SendToServer(new UseSkill(m_Skill));
+            Client.SendToServer(new UseSkill(m_Skill));
             return true;
         }
 
@@ -1676,7 +1676,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            ClientCommunication.SendToServer(new UseAbility(m_Ability));
+            Client.SendToServer(new UseAbility(m_Ability));
             return true;
         }
 
@@ -1869,9 +1869,9 @@ namespace Assistant.Macros
                 //m_LastSeq = World.Player.WalkSequence;
                 m_LastWalk = DateTime.UtcNow;
 
-                //ClientCommunication.SendToClient(new MobileUpdate(World.Player));
-                //ClientCommunication.SendToClient(new ForceWalk(m_Dir));
-                //ClientCommunication.SendToServer(new WalkRequest(m_Dir, World.Player.WalkSequence));
+                //Client.SendToClient(new MobileUpdate(World.Player));
+                //Client.SendToClient(new ForceWalk(m_Dir));
+                //Client.SendToServer(new WalkRequest(m_Dir, World.Player.WalkSequence));
                 //World.Player.MoveReq(m_Dir, World.Player.WalkSequence);
 
                 int direction;
@@ -1907,7 +1907,7 @@ namespace Assistant.Macros
                         break;
                 }
               
-                Platform.SendMessage( ClientCommunication.FindUOWindow(), WM_KEYDOWN, (IntPtr)direction, (IntPtr)1);
+                Platform.SendMessage( Client.FindUOWindow(), WM_KEYDOWN, (IntPtr)direction, (IntPtr)1);
 
                 return false;
             }
@@ -2781,8 +2781,8 @@ namespace Assistant.Macros
             if (s == Serial.Zero && World.Player != null)
                 s = World.Player.Serial;
 
-            ClientCommunication.SendToServer(new ContextMenuRequest(s));
-            ClientCommunication.SendToServer(new ContextMenuResponse(s, m_Idx));
+            Client.SendToServer(new ContextMenuRequest(s));
+            Client.SendToServer(new ContextMenuResponse(s, m_Idx));
             return true;
         }
 

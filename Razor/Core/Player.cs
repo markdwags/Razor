@@ -612,7 +612,7 @@ namespace Assistant
                 {
                     if (i.IsDoor && i.Position.X == x && i.Position.Y == y && i.Position.Z - 15 <= z && i.Position.Z + 15 >= z)
                     {
-                        ClientCommunication.SendToServer(new OpenDoorMacro());
+                        Client.SendToServer(new OpenDoorMacro());
                         break;
                     }
                 }
@@ -724,7 +724,7 @@ namespace Assistant
                 if (m_CriminalTime != null)
                     m_CriminalTime.Stop();
                 m_CriminalStart = DateTime.MinValue;
-                ClientCommunication.RequestTitlebarUpdate();
+                Client.RequestTitlebarUpdate();
             }
             else if ((cur == 3 || cur == 4) && (old != 3 && old != 4 && old != 0))
             {
@@ -741,7 +741,7 @@ namespace Assistant
                 if (m_CriminalTime == null)
                     m_CriminalTime = new CriminalTimer(this);
                 m_CriminalTime.Start();
-                ClientCommunication.RequestTitlebarUpdate();
+                Client.RequestTitlebarUpdate();
             }
         }
 
@@ -755,7 +755,7 @@ namespace Assistant
 
             protected override void OnTick()
             {
-                ClientCommunication.RequestTitlebarUpdate();
+                Client.RequestTitlebarUpdate();
             }
         }
 
@@ -816,7 +816,7 @@ namespace Assistant
                         break;
                 }
 
-                ClientCommunication.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3, Language.CliLocName, "System", text));
+                Client.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3, Language.CliLocName, "System", text));
 
                 PacketHandlers.SysMessages.Add(text);
 
@@ -831,11 +831,11 @@ namespace Assistant
 
             if (keywords.Count == 1 && (int) keywords[0] == 0)
             {
-                ClientCommunication.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Regular, hue, 3, Language.CliLocName, keywords, msg));
+                Client.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Regular, hue, 3, Language.CliLocName, keywords, msg));
             }
             else
             {
-                ClientCommunication.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Encoded, hue, 3, Language.CliLocName, keywords, msg));
+                Client.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Encoded, hue, 3, Language.CliLocName, keywords, msg));
             }
         }
 
@@ -861,13 +861,13 @@ namespace Assistant
 
         public void CancelPrompt()
         {
-            ClientCommunication.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 0, Language.CliLocName, string.Empty));
+            Client.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 0, Language.CliLocName, string.Empty));
             World.Player.HasPrompt = false;
         }
 
         public void ResponsePrompt(string text)
         {
-            ClientCommunication.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 1, Language.CliLocName, text));
+            Client.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 1, Language.CliLocName, text));
 
             PromptInputText = text;
             World.Player.HasPrompt = false;
@@ -930,7 +930,7 @@ namespace Assistant
 
             protected override void OnTick()
             {
-                ClientCommunication.ForceSendToClient(new SeasonChange(World.Player.Season, true));
+                Client.ForceSendToClient(new SeasonChange(World.Player.Season, true));
                 m_SeasonTimer.Stop();
             }
         }

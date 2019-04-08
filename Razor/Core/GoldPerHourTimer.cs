@@ -42,13 +42,13 @@ namespace Assistant
             }
 
             m_Timer.Start();
-            ClientCommunication.RequestTitlebarUpdate();
+            Client.RequestTitlebarUpdate();
         }
 
         public static void Stop()
         {
             m_Timer.Stop();
-            ClientCommunication.RequestTitlebarUpdate();
+            Client.RequestTitlebarUpdate();
         }
 
         private class InternalTimer : Timer
@@ -90,7 +90,7 @@ namespace Assistant
 
                 TotalMinutes = span.TotalMinutes;
 
-                ClientCommunication.RequestTitlebarUpdate();
+                Client.RequestTitlebarUpdate();
 
                 m_PrevGoldAmount = (int) World.Player.Gold;
             }

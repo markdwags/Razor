@@ -3837,10 +3837,10 @@ namespace Assistant
 
         protected override void WndProc(ref Message msg)
         {
-            if (msg.Msg == ClientCommunication.WM_UONETEVENT)
-                msg.Result = (IntPtr)(ClientCommunication.OnMessage(this, (uint)msg.WParam.ToInt32(), msg.LParam.ToInt32()) ? 1 : 0);
-            else if (msg.Msg == ClientCommunication.WM_COPYDATA)
-                msg.Result = (IntPtr)(ClientCommunication.OnCopyData(msg.WParam, msg.LParam) ? 1 : 0);
+            if (msg.Msg == Client.WM_UONETEVENT)
+                msg.Result = (IntPtr)(Client.OnMessage(this, (uint)msg.WParam.ToInt32(), msg.LParam.ToInt32()) ? 1 : 0);
+            else if (msg.Msg == Client.WM_COPYDATA)
+                msg.Result = (IntPtr)(Client.OnCopyData(msg.WParam, msg.LParam) ? 1 : 0);
             else if (Config.GetBool("EnableUOAAPI") &&  msg.Msg >= (int)UOAssist.UOAMessage.First && msg.Msg <= (int)UOAssist.UOAMessage.Last)
                 msg.Result = (IntPtr)UOAssist.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(), msg.LParam.ToInt32());
             else
@@ -3871,7 +3871,7 @@ namespace Assistant
 
             DisableCloseButton();
 
-            if (!ClientCommunication.InstallHooks(this.Handle))
+            if (!Client.InstallHooks(this.Handle))
             {
                 m_CanClose = true;
                 SplashScreen.End();
@@ -3963,12 +3963,12 @@ namespace Assistant
             if (Config.GetInt("LTHilight") != 0)
             {
                 InitPreviewHue(lthilight, "LTHilight");
-                //ClientCommunication.SetCustomNotoHue( Config.GetInt( "LTHilight" ) );
+                //Client.SetCustomNotoHue( Config.GetInt( "LTHilight" ) );
                 lthilight.Checked = setLTHilight.Enabled = true;
             }
             else
             {
-                //ClientCommunication.SetCustomNotoHue( 0 );
+                //Client.SetCustomNotoHue( 0 );
                 lthilight.Checked = setLTHilight.Enabled = false;
             }
 
@@ -4155,7 +4155,7 @@ namespace Assistant
             dispDeltaOverhead.Checked = Config.GetBool("DisplaySkillChangesOverhead");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
-            ClientCommunication.SetSmartCPU(false);
+            Client.SetSmartCPU(false);
 
             m_Initializing = false;
         }
@@ -4345,20 +4345,20 @@ namespace Assistant
 
         private void UpdateRazorStatus()
         {
-            if (!ClientCommunication.ClientRunning)
+            if (!Client.ClientRunning)
                 Close();
 
             uint ps = m_OutPrev;
             uint pr = m_InPrev;
-            m_OutPrev = ClientCommunication.TotalOut();
-            m_InPrev = ClientCommunication.TotalIn();
+            m_OutPrev = Client.TotalOut();
+            m_InPrev = Client.TotalIn();
 
             if (tabs.SelectedTab != advancedTab)
                 return;
 
             int time = 0;
-            if (ClientCommunication.ConnectionStart != DateTime.MinValue)
-                time = (int) ((DateTime.UtcNow - ClientCommunication.ConnectionStart).TotalSeconds);
+            if (Client.ConnectionStart != DateTime.MinValue)
+                time = (int) ((DateTime.UtcNow - Client.ConnectionStart).TotalSeconds);
 
             if (String.IsNullOrEmpty(statusBox.SelectedText))
             {
@@ -4589,12 +4589,12 @@ namespace Assistant
 
             try
             {
-                ClientCommunication.SendToServer(new SetSkillLock(s.Index, lockType));
+                Client.SendToServer(new SetSkillLock(s.Index, lockType));
 
                 s.Lock = lockType;
                 UpdateSkill(s);
 
-                ClientCommunication.SendToClient(new SkillUpdate(s));
+                Client.SendToClient(new SkillUpdate(s));
             }
             catch
             {
@@ -4707,10 +4707,10 @@ namespace Assistant
             for (short i = 0; i < Skill.Count; i++)
             {
                 World.Player.Skills[i].Lock = type;
-                ClientCommunication.SendToServer(new SetSkillLock(i, type));
+                Client.SendToServer(new SetSkillLock(i, type));
             }
 
-            ClientCommunication.SendToClient(new SkillsList());
+            Client.SendToClient(new SkillsList());
             RedrawSkills();
         }
 
@@ -4759,14 +4759,14 @@ namespace Assistant
         {
             titleStr.Enabled = showInBar.Checked;
             Config.SetProperty("TitleBarDisplay", showInBar.Checked);
-            ClientCommunication.RequestTitlebarUpdate();
+            Client.RequestTitlebarUpdate();
         }
 
         private void titleStr_TextChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("TitleBarText", titleStr.Text.TrimEnd());
             if (Config.GetBool("TitleBarDisplay"))
-                ClientCommunication.RequestTitlebarUpdate();
+                Client.RequestTitlebarUpdate();
         }
 
         private void counters_ItemCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
@@ -4774,7 +4774,7 @@ namespace Assistant
             if (e.Index >= 0 && e.Index < Counter.List.Count && !Counter.SupressChecks)
             {
                 ((Counter) (counters.Items[e.Index].Tag)).SetEnabled(e.NewValue == CheckState.Checked);
-                ClientCommunication.RequestTitlebarUpdate();
+                Client.RequestTitlebarUpdate();
                 counters.Sort();
                 //counters.Refresh();
             }
@@ -4835,7 +4835,7 @@ namespace Assistant
                         Config.SetProfileFor(World.Player);
                 }
 
-                ClientCommunication.RequestTitlebarUpdate();
+                Client.RequestTitlebarUpdate();
             }
             else
             {
@@ -4948,7 +4948,7 @@ namespace Assistant
                                     Config.SetProfileFor(World.Player);
                             }
 
-                            ClientCommunication.RequestTitlebarUpdate();
+                            Client.RequestTitlebarUpdate();
                         }
 
                         m_ProfileConfirmLoad = true;
@@ -4975,7 +4975,7 @@ namespace Assistant
 
         private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!m_CanClose && ClientCommunication.ClientRunning)
+            if (!m_CanClose && Client.ClientRunning)
             {
                 DisableCloseButton();
                 e.Cancel = true;
@@ -5471,7 +5471,7 @@ namespace Assistant
             if (!(setLTHilight.Enabled = lthilight.Checked))
             {
                 Config.SetProperty("LTHilight", 0);
-                ClientCommunication.SetCustomNotoHue(0);
+                Client.SetCustomNotoHue(0);
                 lthilight.BackColor = SystemColors.Control;
                 lthilight.ForeColor = SystemColors.ControlText;
             }
@@ -5551,7 +5551,7 @@ namespace Assistant
         private void setLTHilight_Click(object sender, System.EventArgs e)
         {
             if (SetHue(lthilight, "LTHilight"))
-                ClientCommunication.SetCustomNotoHue(Config.GetInt("LTHilight"));
+                Client.SetCustomNotoHue(Config.GetInt("LTHilight"));
         }
 
         private void setBeneHue_Click(object sender, System.EventArgs e)
@@ -5767,7 +5767,7 @@ namespace Assistant
         {
             Config.SetProperty("ShowNotoHue", showNotoHue.Checked);
             if (showNotoHue.Checked)
-                ClientCommunication.RequestTitlebarUpdate();
+                Client.RequestTitlebarUpdate();
         }
 
         private void recount_Click(object sender, System.EventArgs e)
@@ -7374,13 +7374,13 @@ namespace Assistant
         private void titlebarImages_CheckedChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("TitlebarImages", titlebarImages.Checked);
-            ClientCommunication.RequestTitlebarUpdate();
+            Client.RequestTitlebarUpdate();
         }
 
         private void highlightSpellReags_CheckedChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("HighlightReagents", highlightSpellReags.Checked);
-            ClientCommunication.RequestTitlebarUpdate();
+            Client.RequestTitlebarUpdate();
         }
 
         private void actionStatusMsg_CheckedChanged(object sender, System.EventArgs e)
@@ -7470,7 +7470,7 @@ namespace Assistant
             Config.SetProperty("ClientPrio", str);
             try
             {
-                ClientCommunication.ClientProcess.PriorityClass =
+                Client.ClientProcess.PriorityClass =
                     (System.Diagnostics.ProcessPriorityClass) Enum.Parse(
                         typeof(System.Diagnostics.ProcessPriorityClass), str, true);
             }
@@ -7487,7 +7487,7 @@ namespace Assistant
         private void preAOSstatbar_CheckedChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("OldStatBar", preAOSstatbar.Checked);
-            ClientCommunication.RequestStatbarPatch(preAOSstatbar.Checked);
+            Client.RequestStatbarPatch(preAOSstatbar.Checked);
             if (World.Player != null && !m_Initializing)
                 MessageBox.Show(this, "Close and re-open your status bar for the change to take effect.",
                     "Status Window Note", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -7576,7 +7576,7 @@ namespace Assistant
                 y = Config.GetInt("ForceSizeY");
 
                 if (x > 100 && x < 2000 && y > 100 && y < 2000)
-                    ClientCommunication.SetGameSize(x, y);
+                    Client.SetGameSize(x, y);
                 else
                     MessageBox.Show(Engine.MainWindow, Language.GetString(LocString.ForceSizeBad), "Bad Size",
                         MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -7597,11 +7597,11 @@ namespace Assistant
                     MessageBox.Show(this, Language.GetString(LocString.ForceSizeBad), "Bad Size", MessageBoxButtons.OK,
                         MessageBoxIcon.Stop);
                 else
-                    ClientCommunication.SetGameSize(x, y);
+                    Client.SetGameSize(x, y);
             }
             else
             {
-                ClientCommunication.SetGameSize(800, 600);
+                Client.SetGameSize(800, 600);
             }
 
             if (!m_Initializing)
@@ -7656,7 +7656,7 @@ namespace Assistant
             if (!m_Initializing)
             {
                 Config.SetProperty("Negotiate", negotiate.Checked);
-                ClientCommunication.SetNegotiate(negotiate.Checked);
+                Client.SetNegotiate(negotiate.Checked);
             }
         }
 
@@ -7832,8 +7832,8 @@ namespace Assistant
             {
                 if (MapWindow == null)
                     MapWindow = new Assistant.MapUO.MapWindow();
-                //SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
-                //MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
+                //SetParent( MapWindow.Handle, Client.FindUOWindow() );
+                //MapWindow.Owner = (Form)Form.FromHandle( Client.FindUOWindow() );
                 MapWindow.Show();
                 MapWindow.BringToFront();
             }
@@ -8172,7 +8172,7 @@ namespace Assistant
 
         private void disableSmartCPU_Click(object sender, EventArgs e)
         {
-            ClientCommunication.SetSmartCPU(false);
+            Client.SetSmartCPU(false);
         }
 
         private void lightLevelBar_Scroll(object sender, EventArgs e)
@@ -8184,8 +8184,8 @@ namespace Assistant
                 World.Player.LocalLightLevel = 0;
                 World.Player.GlobalLightLevel = selectedLightLevel;
 
-                ClientCommunication.SendToClient(new GlobalLightLevel(selectedLightLevel));
-                ClientCommunication.SendToClient(new PersonalLightLevel(World.Player));
+                Client.SendToClient(new GlobalLightLevel(selectedLightLevel));
+                Client.SendToClient(new PersonalLightLevel(World.Player));
 
                 double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
 
@@ -8232,8 +8232,8 @@ namespace Assistant
             {
                 if (MapWindow == null)
                     MapWindow = new Assistant.MapUO.MapWindow();
-                //SetParent( MapWindow.Handle, ClientCommunication.FindUOWindow() );
-                //MapWindow.Owner = (Form)Form.FromHandle( ClientCommunication.FindUOWindow() );
+                //SetParent( MapWindow.Handle, Client.FindUOWindow() );
+                //MapWindow.Owner = (Form)Form.FromHandle( Client.FindUOWindow() );
                 MapWindow.Show();
                 MapWindow.BringToFront();
             }*/
@@ -8489,7 +8489,7 @@ namespace Assistant
 
             if (seasonList.SelectedIndex < 5)
             {
-                ClientCommunication.ForceSendToClient(new SeasonChange(seasonList.SelectedIndex, true));
+                Client.ForceSendToClient(new SeasonChange(seasonList.SelectedIndex, true));
             }
         }
 

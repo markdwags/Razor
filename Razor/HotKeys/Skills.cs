@@ -44,7 +44,7 @@ namespace Assistant.HotKeys
         private static void OnHotKey(ref object state)
         {
             int sk = (int) state;
-            ClientCommunication.SendToServer(new UseSkill(sk));
+            Client.SendToServer(new UseSkill(sk));
             if (World.Player != null)
             {
                 World.Player.LastSkill = sk;

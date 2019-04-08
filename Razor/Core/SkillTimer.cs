@@ -32,13 +32,13 @@ namespace Assistant
             }
 
             m_Timer.Start();
-            ClientCommunication.RequestTitlebarUpdate();
+            Client.RequestTitlebarUpdate();
         }
 
         public static void Stop()
         {
             m_Timer.Stop();
-            ClientCommunication.RequestTitlebarUpdate();
+            Client.RequestTitlebarUpdate();
         }
 
         private class InternalTimer : Timer
@@ -55,7 +55,7 @@ namespace Assistant
                     Stop();
                 }
 
-                ClientCommunication.RequestTitlebarUpdate();
+                Client.RequestTitlebarUpdate();
             }
         }
     }
