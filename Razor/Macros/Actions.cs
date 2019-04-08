@@ -1834,8 +1834,6 @@ namespace Assistant.Macros
 
         private static uint WM_KEYDOWN = 0x100, WM_KEYUP = 0x101;
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         public static DateTime LastWalkTime { get { return m_LastWalk; } set { m_LastWalk = value; } }
 
@@ -1909,7 +1907,7 @@ namespace Assistant.Macros
                         break;
                 }
               
-                SendMessage(ClientCommunication.FindUOWindow(), WM_KEYDOWN, (IntPtr)direction, (IntPtr)1);
+                Platform.SendMessage( ClientCommunication.FindUOWindow(), WM_KEYDOWN, (IntPtr)direction, (IntPtr)1);
 
                 return false;
             }
@@ -2478,7 +2476,7 @@ namespace Assistant.Macros
 
                 case IfVarType.Poisoned:
                     {
-                        if (ClientCommunication.AllowBit(FeatureBit.BlockHealPoisoned))
+                        if (Platform.AllowBit(FeatureBit.BlockHealPoisoned))
                             return World.Player.Poisoned;
                         else
                             return false;
@@ -2658,7 +2656,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            if (ClientCommunication.AllowBit(FeatureBit.LoopingMacros) || m_Key.DispName.IndexOf(Language.GetString(LocString.PlayA1).Replace(@"{0}", "")) == -1)
+            if (Platform.AllowBit(FeatureBit.LoopingMacros) || m_Key.DispName.IndexOf(Language.GetString(LocString.PlayA1).Replace(@"{0}", "")) == -1)
                 m_Key.Callback();
             return true;
         }

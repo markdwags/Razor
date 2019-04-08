@@ -4391,7 +4391,7 @@ namespace Assistant
 
                     for (uint i = 0; i < FeatureBit.MaxBit; i++)
                     {
-                        if (!ClientCommunication.AllowBit(i))
+                        if (!Platform.AllowBit(i))
                         {
                             allAllowed = false;
 
@@ -5281,12 +5281,12 @@ namespace Assistant
             chkPass.Checked = hk.SendToUO;
 
             if ((hk.LocName >= (int) LocString.DrinkHeal && hk.LocName <= (int) LocString.DrinkAg &&
-                 !ClientCommunication.AllowBit(FeatureBit.PotionHotkeys)) ||
+                 !Platform.AllowBit(FeatureBit.PotionHotkeys)) ||
                 (hk.LocName >= (int) LocString.TargCloseRed && hk.LocName <= (int) LocString.TargCloseCriminal &&
-                 !ClientCommunication.AllowBit(FeatureBit.ClosestTargets)) ||
+                 !Platform.AllowBit(FeatureBit.ClosestTargets)) ||
                 (((hk.LocName >= (int) LocString.TargRandRed && hk.LocName <= (int) LocString.TargRandNFriend) ||
                   (hk.LocName >= (int) LocString.TargRandEnemyHuman && hk.LocName <= (int) LocString.TargRandCriminal)
-                 ) && !ClientCommunication.AllowBit(FeatureBit.RandomTargets)))
+                 ) && !Platform.AllowBit(FeatureBit.RandomTargets)))
             {
                 LockControl(chkCtrl);
                 LockControl(chkAlt);
@@ -7337,7 +7337,7 @@ namespace Assistant
         {
             // Fuck windows, seriously.
 
-            ClientCommunication.BringToFront(this.Handle);
+            Platform.BringToFront(this.Handle);
             if (Config.GetBool("AlwaysOnTop"))
                 this.TopMost = true;
             if (WindowState != FormWindowState.Normal)
@@ -7792,28 +7792,28 @@ namespace Assistant
 
             m_LockBoxes.Clear();
 
-            if (!ClientCommunication.AllowBit(FeatureBit.SmartLT))
+            if (!Platform.AllowBit(FeatureBit.SmartLT))
                 LockControl(this.smartLT);
 
-            if (!ClientCommunication.AllowBit(FeatureBit.RangeCheckLT))
+            if (!Platform.AllowBit(FeatureBit.RangeCheckLT))
                 LockControl(this.rangeCheckLT);
 
-            if (!ClientCommunication.AllowBit(FeatureBit.AutoOpenDoors))
+            if (!Platform.AllowBit(FeatureBit.AutoOpenDoors))
                 LockControl(this.autoOpenDoors);
 
-            if (!ClientCommunication.AllowBit(FeatureBit.UnequipBeforeCast))
+            if (!Platform.AllowBit(FeatureBit.UnequipBeforeCast))
                 LockControl(this.spellUnequip);
 
-            if (!ClientCommunication.AllowBit(FeatureBit.AutoPotionEquip))
+            if (!Platform.AllowBit(FeatureBit.AutoPotionEquip))
                 LockControl(this.potionEquip);
 
-            if (!ClientCommunication.AllowBit(FeatureBit.BlockHealPoisoned))
+            if (!Platform.AllowBit(FeatureBit.BlockHealPoisoned))
                 LockControl(this.blockHealPoison);
 
-            if (!ClientCommunication.AllowBit(FeatureBit.LoopingMacros))
+            if (!Platform.AllowBit(FeatureBit.LoopingMacros))
                 LockControl(this.loopMacro);
 
-            if (!ClientCommunication.AllowBit(FeatureBit.OverheadHealth))
+            if (!Platform.AllowBit(FeatureBit.OverheadHealth))
             {
                 LockControl(this.showHealthOH);
                 LockControl(this.healthFmt);
@@ -8177,7 +8177,7 @@ namespace Assistant
 
         private void lightLevelBar_Scroll(object sender, EventArgs e)
         {
-            if (ClientCommunication.AllowBit(FeatureBit.LightFilter) && World.Player != null)
+            if (Platform.AllowBit(FeatureBit.LightFilter) && World.Player != null)
             {
                 byte selectedLightLevel = Convert.ToByte(lightLevelBar.Maximum - lightLevelBar.Value);
 
