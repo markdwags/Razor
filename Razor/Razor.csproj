@@ -248,7 +248,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Platform.cs" />
-    <Compile Include="Network\ClientComm.cs">
+    <Compile Include="Client\Client.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\Handlers.cs">
@@ -276,7 +276,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Network\PacketTable.cs" />
-    <Compile Include="Network\UOAssist.cs" />
+    <Compile Include="Client\UOAssist.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
