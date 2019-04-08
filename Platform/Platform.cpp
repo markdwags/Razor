@@ -1,4 +1,4 @@
-#include "WinUtil.h"
+#include "Platform.h"
 
 HINSTANCE hInstance = NULL;
 HICON hRazorIcon = NULL;
