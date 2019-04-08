@@ -323,7 +323,7 @@ namespace Assistant
 			ClientProc = null;
 		}
 
-		public static string EncodeColorStat( int val, int max )
+		private static string EncodeColorStat( int val, int max )
 		{
 			double perc = ((double)val)/((double)max);
 
@@ -541,11 +541,6 @@ namespace Assistant
 			MessageBox.Show( Engine.ActiveWindow, sb.ToString(), "Init Error", MessageBoxButtons.OK, MessageBoxIcon.Stop );
 		}
 
-		public static void OnLogout()
-		{
-			OnLogout( true );
-		}
-
 		private static void OnLogout( bool fake )
 		{
 			if ( !fake )
@@ -664,7 +659,7 @@ namespace Assistant
 					OnLogout( false );
 					break;
 				case UONetMessage.Close:
-					OnLogout();
+					OnLogout(true);
 					ClientProc = null;
 					Engine.MainWindow.CanClose = true;
 					Engine.MainWindow.Close();
@@ -840,14 +835,6 @@ namespace Assistant
 			}
 		}
 
-		internal static void SendToClient( PacketReader pr )
-		{
-			if ( !m_Ready )
-				return;
-
-			SendToClient( MakePacketFrom( pr ) );
-		}
-
 		internal static void ForceSendToClient( Packet p )
 		{
 			byte[] data = p.Compile();
@@ -861,7 +848,7 @@ namespace Assistant
 			CommMutex.ReleaseMutex();
 		}
 
-		internal static void ForceSendToServer( Packet p )
+		private static void ForceSendToServer( Packet p )
 		{
 			if ( p == null || p.Length <= 0 )
 				return;
@@ -893,7 +880,7 @@ namespace Assistant
 			buffer->Length += len;
 		}
 
-		internal static Packet MakePacketFrom( PacketReader pr )
+		private static Packet MakePacketFrom( PacketReader pr )
 		{
 			byte[] data = pr.CopyBytes( 0, pr.Length );
 			return new Packet( data, pr.Length, pr.DynamicLength );
