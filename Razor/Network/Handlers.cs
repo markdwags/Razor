@@ -910,7 +910,7 @@ namespace Assistant
             UOAssist.PostLogin((int)serial.Value);
             Engine.MainWindow.UpdateTitle(); // update player name & shard name
 
-            Client.CalibratePosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
+            Client.Instance.SetPosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
 
             if (World.Player != null)
                 World.Player.SetSeason();
@@ -969,7 +969,7 @@ namespace Assistant
 
                 if (m == World.Player)
                 {
-                    Client.CalibratePosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
+                    Client.Instance.SetPosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
 
                     if (wasPoisoned != m.Poisoned || (oldNoto != m.Notoriety && Config.GetBool("ShowNotoHue")))
                         Client.Instance.RequestTitlebarUpdate();
@@ -1346,7 +1346,7 @@ namespace Assistant
 
             if (m == World.Player)
             {
-                Client.CalibratePosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
+                Client.Instance.SetPosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
 
                 if (!wasHidden && !m.Visible)
                 {

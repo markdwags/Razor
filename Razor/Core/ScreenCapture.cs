@@ -69,7 +69,7 @@ namespace Assistant
 			
 			try
 			{
-				IntPtr hBmp = Platform.CaptureScreen( Client.FindUOWindow(), Config.GetBool( "CapFullScreen" ), timestamp );
+				IntPtr hBmp = Platform.CaptureScreen(Client.Instance.GetWindowHandle(), Config.GetBool( "CapFullScreen" ), timestamp );
 				using ( Image img = Image.FromHbitmap( hBmp ) )
 					img.Save( filename, GetFormat( type ) );
 				DeleteObject( hBmp );

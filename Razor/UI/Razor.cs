@@ -4350,8 +4350,8 @@ namespace Assistant
 
             uint ps = m_OutPrev;
             uint pr = m_InPrev;
-            m_OutPrev = Client.TotalOut();
-            m_InPrev = Client.TotalIn();
+            m_OutPrev = Client.Instance.TotalDataOut();
+            m_InPrev = Client.Instance.TotalDataIn();
 
             if (tabs.SelectedTab != advancedTab)
                 return;

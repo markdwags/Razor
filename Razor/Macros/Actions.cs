@@ -1832,9 +1832,6 @@ namespace Assistant.Macros
             Up = 0x26, // up
         }
 
-        private static uint WM_KEYDOWN = 0x100, WM_KEYUP = 0x101;
-
-
         public static DateTime LastWalkTime { get { return m_LastWalk; } set { m_LastWalk = value; } }
 
         public WalkAction(string[] args)
@@ -1906,8 +1903,8 @@ namespace Assistant.Macros
                         direction = (int)KeyboardDir.Up;
                         break;
                 }
-              
-                Platform.SendMessage( Client.FindUOWindow(), WM_KEYDOWN, (IntPtr)direction, (IntPtr)1);
+
+                Client.Instance.KeyPress(direction);
 
                 return false;
             }
