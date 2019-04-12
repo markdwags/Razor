@@ -98,11 +98,16 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="cuoapi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>cuoapi.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -314,6 +319,7 @@
     <Compile Include="UI\Config.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Ext.cs" />
     <Compile Include="UI\HueEntry.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -460,7 +466,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Razor.manifest" />
   </ItemGroup>
