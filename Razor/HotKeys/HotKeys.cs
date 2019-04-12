@@ -294,13 +294,11 @@ namespace Assistant
                 UpdateStatus();
             }
         }
-
-        [DllImport("user32.dll")]
-        private static extern ushort GetAsyncKeyState(int key);
+        
 
         public static bool KeyDown(Keys k)
         {
-            return (GetAsyncKeyState((int) k) & 0xFF00) != 0; //|| Client.IsKeyDown( (int)k );
+            return (Platform.GetAsyncKeyState((int) k) & 0xFF00) != 0; //|| Client.IsKeyDown( (int)k );
         }
 
         public static void Initialize()
