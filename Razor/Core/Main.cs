@@ -6,7 +6,9 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
+using CUO_API;
 
 namespace Assistant
 {
@@ -506,6 +508,95 @@ namespace Assistant
             Counter.Save();
             Macros.MacroManager.Save();
             Config.Save();
+        }
+        
+        private static string _rootPath = null;
+        public static string RootPath => _rootPath ?? (_rootPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Engine)).Location));
+        
+        public static unsafe void Install(PluginHeader* plugin)
+        {        
+            Client.Init(false);
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
+            {
+            string[] fields = e.Name.Split(',');
+                string name = fields[0];
+                string culture = fields[2];
+
+                if (name.EndsWith(".resources") && !culture.EndsWith("neutral"))
+                {
+                    return null;
+                }
+                AssemblyName askedassembly = new AssemblyName(e.Name);
+
+                bool isdll = File.Exists(Path.Combine(RootPath, askedassembly.Name + ".dll"));
+
+                return Assembly.LoadFile(Path.Combine(RootPath, askedassembly.Name + (isdll ? ".dll" : ".exe")));
+
+            };
+
+            //ClientVersion = (ClientVersions)plugin->ClientVersion;
+
+            if (!Client.Instance.InstallHooks((IntPtr)plugin))
+            {
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+                return;
+            }
+
+            string clientPath = ((OnGetUOFilePath)Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath,typeof(OnGetUOFilePath)))();
+
+            Thread t = new Thread(() =>
+            {
+                m_Running = true;
+                Thread.CurrentThread.Name = "Razor Main Thread";
+
+#if !DEBUG
+			    AppDomain.CurrentDomain.UnhandledException +=
+                    new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
+#endif
+
+                Ultima.Files.SetMulPath(clientPath);
+                Ultima.Multis.PostHSFormat = UsePostHSChanges;
+
+                if (!Language.Load("ENU"))
+                {
+                    MessageBox.Show(
+                        "Fatal Error: Unable to load required file Language/Razor_lang.enu\nRazor cannot continue.",
+                        "No ENU Language Pack", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    return;
+                }
+
+                string defLang = Config.GetAppSetting<string>("DefaultLanguage");
+                if (defLang != null && !Language.Load(defLang))
+                    MessageBox.Show(
+                        String.Format(
+                            "WARNING: Razor was unable to load the file Language/Razor_lang.{0}\nENU will be used instead.",
+                            defLang), "Language ENU Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+
+                Language.LoadCliLoc();
+
+                Initialize(typeof(Assistant.Engine).Assembly); //Assembly.GetExecutingAssembly()
+
+                Config.LoadCharList();
+                if (!Config.LoadLastProfile())
+                    MessageBox.Show(
+                        "The selected profile could not be loaded, using default instead.", "Profile Load Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                m_MainWnd = new MainForm();
+                Application.Run(m_MainWnd);
+                m_Running = false;
+
+                Counter.Save();
+                Macros.MacroManager.Save();
+                Config.Save();
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.IsBackground = true;
+            t.Start();
         }
 
         /*public static string GetDirectory( string relPath )
