@@ -43,8 +43,10 @@ namespace Assistant
         {
             if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
                 Win32Platform.BringToFront( window );
+            else
+                LinuxPlatform.BringToFront( window );
         }
-       
+
         [DllImport( "User32.dll" )]
         private static extern IntPtr GetSystemMenu( IntPtr wnd, bool reset );
 
