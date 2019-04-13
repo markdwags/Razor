@@ -514,7 +514,7 @@ namespace Assistant
         public static string RootPath => _rootPath ?? (_rootPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Engine)).Location));
         
         public static unsafe void Install(PluginHeader* plugin)
-        {        
+        {
             Client.Init(false);
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
             {
@@ -536,7 +536,7 @@ namespace Assistant
 
             //ClientVersion = (ClientVersions)plugin->ClientVersion;
 
-            if (!Client.Instance.InstallHooks((IntPtr)plugin))
+            if (!(Client.Instance as ClassicUOClient).Install(plugin))
             {
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
                 return;

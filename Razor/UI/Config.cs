@@ -871,7 +871,7 @@ namespace Assistant
 
         public static string GetInstallDirectory(string name)
         {
-            string dir = AppDomain.CurrentDomain.BaseDirectory;
+            string dir = Engine.RootPath;
 
             if (name.Length > 0)
             {
