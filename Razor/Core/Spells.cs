@@ -101,7 +101,7 @@ namespace Assistant
 
         private void Cast()
         {
-            if (Config.GetBool("SpellUnequip") && Platform.AllowBit(FeatureBit.UnequipBeforeCast))
+            if (Config.GetBool("SpellUnequip") && Client.Instance.AllowBit(FeatureBit.UnequipBeforeCast))
             {
                 Item pack = World.Player.Backpack;
                 if (pack != null)
@@ -247,7 +247,7 @@ namespace Assistant
         {
             Spell s = null;
 
-            if (!Platform.AllowBit(FeatureBit.BlockHealPoisoned))
+            if (!Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
             {
                 if (World.Player.Hits + 30 < World.Player.HitsMax && World.Player.Mana >= 12)
                     s = Get(4, 5); // greater heal
@@ -256,7 +256,7 @@ namespace Assistant
             }
             else
             {
-                if (World.Player.Poisoned && Platform.AllowBit(FeatureBit.BlockHealPoisoned))
+                if (World.Player.Poisoned && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                 {
                     s = Get(2, 3); // cure 
                 }
@@ -289,7 +289,7 @@ namespace Assistant
         {
             Spell s = null;
 
-            if (!Platform.AllowBit(FeatureBit.BlockHealPoisoned))
+            if (!Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
             {
                 s = Get(1, 4); // mini heal
             }

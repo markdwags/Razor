@@ -4379,7 +4379,7 @@ namespace Assistant
             }
 
             if (PacketHandlers.PlayCharTime < DateTime.UtcNow &&
-                PacketHandlers.PlayCharTime + TimeSpan.FromSeconds(30) < DateTime.UtcNow)
+                PacketHandlers.PlayCharTime + TimeSpan.FromSeconds(5) < DateTime.UtcNow)
             {
                 if (Config.GetBool("Negotiate"))
                 {
@@ -4389,9 +4389,9 @@ namespace Assistant
                     text.Append(Language.GetString(LocString.NegotiateTitle));
                     text.Append("\r\n");
 
-                    for (uint i = 0; i < FeatureBit.MaxBit; i++)
+                    for (int i = 0; i < FeatureBit.MaxBit; i++)
                     {
-                        if (!Platform.AllowBit(i))
+                        if (!Client.Instance.AllowBit(i))
                         {
                             allAllowed = false;
 
@@ -5281,12 +5281,12 @@ namespace Assistant
             chkPass.Checked = hk.SendToUO;
 
             if ((hk.LocName >= (int) LocString.DrinkHeal && hk.LocName <= (int) LocString.DrinkAg &&
-                 !Platform.AllowBit(FeatureBit.PotionHotkeys)) ||
+                 !Client.Instance.AllowBit(FeatureBit.PotionHotkeys)) ||
                 (hk.LocName >= (int) LocString.TargCloseRed && hk.LocName <= (int) LocString.TargCloseCriminal &&
-                 !Platform.AllowBit(FeatureBit.ClosestTargets)) ||
+                 !Client.Instance.AllowBit(FeatureBit.ClosestTargets)) ||
                 (((hk.LocName >= (int) LocString.TargRandRed && hk.LocName <= (int) LocString.TargRandNFriend) ||
                   (hk.LocName >= (int) LocString.TargRandEnemyHuman && hk.LocName <= (int) LocString.TargRandCriminal)
-                 ) && !Platform.AllowBit(FeatureBit.RandomTargets)))
+                 ) && !Client.Instance.AllowBit(FeatureBit.RandomTargets)))
             {
                 LockControl(chkCtrl);
                 LockControl(chkAlt);
@@ -7792,28 +7792,28 @@ namespace Assistant
 
             m_LockBoxes.Clear();
 
-            if (!Platform.AllowBit(FeatureBit.SmartLT))
+            if (!Client.Instance.AllowBit(FeatureBit.SmartLT))
                 LockControl(this.smartLT);
 
-            if (!Platform.AllowBit(FeatureBit.RangeCheckLT))
+            if (!Client.Instance.AllowBit(FeatureBit.RangeCheckLT))
                 LockControl(this.rangeCheckLT);
 
-            if (!Platform.AllowBit(FeatureBit.AutoOpenDoors))
+            if (!Client.Instance.AllowBit(FeatureBit.AutoOpenDoors))
                 LockControl(this.autoOpenDoors);
 
-            if (!Platform.AllowBit(FeatureBit.UnequipBeforeCast))
+            if (!Client.Instance.AllowBit(FeatureBit.UnequipBeforeCast))
                 LockControl(this.spellUnequip);
 
-            if (!Platform.AllowBit(FeatureBit.AutoPotionEquip))
+            if (!Client.Instance.AllowBit(FeatureBit.AutoPotionEquip))
                 LockControl(this.potionEquip);
 
-            if (!Platform.AllowBit(FeatureBit.BlockHealPoisoned))
+            if (!Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                 LockControl(this.blockHealPoison);
 
-            if (!Platform.AllowBit(FeatureBit.LoopingMacros))
+            if (!Client.Instance.AllowBit(FeatureBit.LoopingMacros))
                 LockControl(this.loopMacro);
 
-            if (!Platform.AllowBit(FeatureBit.OverheadHealth))
+            if (!Client.Instance.AllowBit(FeatureBit.OverheadHealth))
             {
                 LockControl(this.showHealthOH);
                 LockControl(this.healthFmt);
@@ -8177,7 +8177,7 @@ namespace Assistant
 
         private void lightLevelBar_Scroll(object sender, EventArgs e)
         {
-            if (Platform.AllowBit(FeatureBit.LightFilter) && World.Player != null)
+            if (Client.Instance.AllowBit(FeatureBit.LightFilter) && World.Player != null)
             {
                 byte selectedLightLevel = Convert.ToByte(lightLevelBar.Maximum - lightLevelBar.Value);
 
