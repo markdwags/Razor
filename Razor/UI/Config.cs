@@ -847,14 +847,14 @@ namespace Assistant
         {
             string appDir = GetInstallDirectory();
 
-            if (!Directory.Exists($"{appDir}\\Macros"))
+            if (!Directory.Exists( Path.Combine( appDir, "Macros" )))
             {
-                Directory.CreateDirectory($"{appDir}\\Macros");
+                Directory.CreateDirectory( Path.Combine( appDir, "Macros"));
             }
 
-            if (!Directory.Exists($"{appDir}\\Profiles"))
+            if (!Directory.Exists(Path.Combine(appDir,"Profiles")))
             {
-                Directory.CreateDirectory($"{appDir}\\Profiles");
+                Directory.CreateDirectory( Path.Combine( appDir, "Profiles" ));
             }
 
             name = name.Length > 0 ? Path.Combine(appDir, name) : appDir;
