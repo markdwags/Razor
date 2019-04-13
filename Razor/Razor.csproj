@@ -442,6 +442,9 @@
     <Content Include="Boat\Images\southeast.png" />
     <Content Include="Boat\Images\southwest.png" />
     <Content Include="Boat\Images\west.png" />
+    <Content Include="cuoapi.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="UI\Lock.ico" />
     <Content Include="UI\UOPS.ico" />
   </ItemGroup>

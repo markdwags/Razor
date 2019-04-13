@@ -77,17 +77,17 @@ namespace Assistant
 
         public override bool ServerEncrypted { get; set; }
 
-        public unsafe override bool InstallHooks(IntPtr pluginPtr)
+        public unsafe bool Install( PluginHeader* header)
         {
-            var header = (PluginHeader*) pluginPtr;
-             _sendToClient = (OnPacketSendRecv)Marshal.GetDelegateForFunctionPointer(header->Recv,typeof(OnPacketSendRecv));
-            _sendToServer = (OnPacketSendRecv)Marshal.GetDelegateForFunctionPointer(header->Send,typeof(OnPacketSendRecv));
-            _getPacketLength = (OnGetPacketLength)Marshal.GetDelegateForFunctionPointer(header->GetPacketLength,typeof(OnGetPacketLength));
-            _getPlayerPosition = (OnGetPlayerPosition)Marshal.GetDelegateForFunctionPointer(header->GetPlayerPosition,typeof(OnGetPlayerPosition));
-            _castSpell = (OnCastSpell)Marshal.GetDelegateForFunctionPointer(header->CastSpell,typeof(OnCastSpell));
-            _getStaticImage = (OnGetStaticImage)Marshal.GetDelegateForFunctionPointer(header->GetStaticImage,typeof(OnGetStaticImage));
+            _sendToClient = (OnPacketSendRecv)Marshal.GetDelegateForFunctionPointer( header->Recv, typeof( OnPacketSendRecv ) );
+            _sendToServer = (OnPacketSendRecv)Marshal.GetDelegateForFunctionPointer( header->Send, typeof( OnPacketSendRecv ) );
+            _getPacketLength = (OnGetPacketLength)Marshal.GetDelegateForFunctionPointer( header->GetPacketLength, typeof( OnGetPacketLength ) );
+            _getPlayerPosition = (OnGetPlayerPosition)Marshal.GetDelegateForFunctionPointer( header->GetPlayerPosition, typeof( OnGetPlayerPosition ) );
+            _castSpell = (OnCastSpell)Marshal.GetDelegateForFunctionPointer( header->CastSpell, typeof( OnCastSpell ) );
+            _getStaticImage = (OnGetStaticImage)Marshal.GetDelegateForFunctionPointer( header->GetStaticImage, typeof( OnGetStaticImage ) );
 
-            m_ClientVersion = new Version(header->ClientVersion << 24,header->ClientVersion << 16, header->ClientVersion << 8,(byte)header->ClientVersion).ToString(); 
+            m_ClientVersion = new Version( (byte)(header->ClientVersion >> 24), (byte)(header->ClientVersion >> 16), (byte)(header->ClientVersion >> 8), (byte)header->ClientVersion ).ToString();
+            m_ClientRunning = true;
             m_ClientWindow = header->HWND;
 
             _recv = OnRecv;
@@ -102,19 +102,26 @@ namespace Assistant
             //_onFocusGained = OnFocusGained;
             //_onFocusLost = OnFocusLost;
 
-            header->OnRecv = Marshal.GetFunctionPointerForDelegate(_recv);
-            header->OnSend = Marshal.GetFunctionPointerForDelegate(_send);
-            header->OnHotkeyPressed = Marshal.GetFunctionPointerForDelegate(_onHotkeyPressed);
-            header->OnMouse = Marshal.GetFunctionPointerForDelegate(_onMouse);
-            header->OnPlayerPositionChanged = Marshal.GetFunctionPointerForDelegate(_onUpdatePlayerPosition);
-            header->OnClientClosing = Marshal.GetFunctionPointerForDelegate(_onClientClose);
-            header->OnInitialize = Marshal.GetFunctionPointerForDelegate(_onInitialize);
-            header->OnConnected = Marshal.GetFunctionPointerForDelegate(_onConnected);
-            header->OnDisconnected = Marshal.GetFunctionPointerForDelegate(_onDisconnected);
-            header->OnFocusGained = Marshal.GetFunctionPointerForDelegate(_onFocusGained);
-            header->OnFocusLost = Marshal.GetFunctionPointerForDelegate(_onFocusLost);
+            header->OnRecv = Marshal.GetFunctionPointerForDelegate( _recv );
+            header->OnSend = Marshal.GetFunctionPointerForDelegate( _send );
+            header->OnHotkeyPressed = Marshal.GetFunctionPointerForDelegate( _onHotkeyPressed );
+            header->OnMouse = Marshal.GetFunctionPointerForDelegate( _onMouse );
+            header->OnPlayerPositionChanged = Marshal.GetFunctionPointerForDelegate( _onUpdatePlayerPosition );
+            header->OnClientClosing = Marshal.GetFunctionPointerForDelegate( _onClientClose );
+            header->OnInitialize = Marshal.GetFunctionPointerForDelegate( _onInitialize );
+            header->OnConnected = Marshal.GetFunctionPointerForDelegate( _onConnected );
+            header->OnDisconnected = Marshal.GetFunctionPointerForDelegate( _onDisconnected );
+            //header->OnFocusGained = Marshal.GetFunctionPointerForDelegate( _onFocusGained );
+            //header->OnFocusLost = Marshal.GetFunctionPointerForDelegate( _onFocusLost );
 
-			return true;
+            return true;
+        }
+        public unsafe override bool InstallHooks(IntPtr pluginPtr)
+        {
+          //  Engine.MainWindow.SafeAction( (s) => {
+                Engine.MainWindow.MainForm_EndLoad();
+          //  } );
+            return true;
         }
         
         private void OnPlayerPositionChanged(int x, int y, int z)
