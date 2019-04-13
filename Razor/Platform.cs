@@ -6,27 +6,8 @@ using System.Text;
 
 namespace Assistant
 {
-    /*static bool Negotiated = false;
-static uint8_t AuthBits[16] = {};
-
-DLLFUNCTION bool AllowBit(uint64_t bit)
-{
-	bit &= 0x0000003F; // limited to 64 bits
-	return Negotiated || (AuthBits[7 - (bit / 8)] & (1 << (bit % 8))) == 0;
-}
-
-DLLFUNCTION void HandleNegotiate(uint64_t features)
-{
-	memcpy(AuthBits, &features, 16);
-	Negotiated = true;
-}*/
-
     internal static unsafe class Win32Platform
     {
-        [DllImport( "Platform.dll" )]
-        internal static unsafe extern bool AllowBit( ulong bit );
-        [DllImport( "Platform.dll" )]
-        internal static unsafe extern int HandleNegotiate( ulong word );
         [DllImport( "Platform.dll" )]
         internal static unsafe extern IntPtr CaptureScreen( IntPtr handle, bool isFullScreen, string msgStr );
         [DllImport( "Platform.dll" )]
@@ -34,38 +15,31 @@ DLLFUNCTION void HandleNegotiate(uint64_t features)
         [DllImport( "user32.dll" )]
         internal static extern ushort GetAsyncKeyState( int key );
     }
-    internal static unsafe class LinuxPlatform
-    {
-        private static byte[] m_AllowedBits = new byte[16];
-        private static bool m_Negotiated = false;
-        internal static bool AllowBit( ulong bit )
-        {
-            bit &= 0x0000003F;
-            var val = ( 1 << (int)( bit % 8 ) );
-            return m_Negotiated || ( m_AllowedBits[7 - ( bit / 8 )] & val ) == 0;
-        }
 
-        internal static int HandleNegotiate( ulong word )
-        {
-            m_AllowedBits = BitConverter.GetBytes( word );
-            m_Negotiated = true;
-            return 0;
-        }
-
-        internal static void BringToFront( IntPtr window )
-        {
-
-        }
-    }
     internal static unsafe class Platform
-    {
-        internal static ushort GetAsyncKeyState( int key )
-        {
-            if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
-                return Win32Platform.GetAsyncKeyState( key );
-            else
-                return 0;
-        }
+    { 
+        [DllImport( "msvcrt.dll" )]
+        internal static unsafe extern void memcpy( void* to, void* from, int len );
+        [DllImport( "User32.dll" )]
+        private static extern IntPtr GetSystemMenu( IntPtr wnd, bool reset );
+        [DllImport( "User32.dll" )]
+        private static extern IntPtr EnableMenuItem( IntPtr menu, uint item, uint options );
+        [DllImport( "user32.dll" )]
+        internal static extern bool SetForegroundWindow( IntPtr hWnd );
+        [DllImport( "kernel32.dll" )]
+        internal static extern uint GlobalGetAtomName( ushort atom, StringBuilder buff, int bufLen );
+        [DllImport( "Advapi32.dll" )]
+        internal static extern int GetUserNameA( StringBuilder buff, int* len );
+
+
+        /*Mono Wraps Post/Send to the native equiv so no need to provide wrappers for these*/
+        [DllImport( "user32.dll" )]
+        internal static extern uint PostMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
+        [DllImport( "user32.dll" )]
+        internal static extern IntPtr SendMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
+
+
+
         internal static IntPtr CaptureScreen( IntPtr handle, bool isFullScreen, string msgStr )
         {
             if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
@@ -77,50 +51,15 @@ DLLFUNCTION void HandleNegotiate(uint64_t features)
         {
             if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
                 Win32Platform.BringToFront( window );
-            else
-                LinuxPlatform.BringToFront( window );
         }
-        internal static bool AllowBit(ulong bit)
+
+        internal static ushort GetAsyncKeyState( int key )
         {
             if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
-                return Win32Platform.AllowBit( bit ); 
+                return Win32Platform.GetAsyncKeyState( key );
             else
-                return LinuxPlatform.AllowBit( bit );
+                return 0;
         }
-
-        internal static int HandleNegotiate( ulong word )
-        {
-            if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
-                return Win32Platform.HandleNegotiate( word );
-            else
-                return LinuxPlatform.HandleNegotiate( word );
-
-        }
-
-        [DllImport( "User32.dll" )]
-        private static extern IntPtr GetSystemMenu( IntPtr wnd, bool reset );
-
-        [DllImport( "User32.dll" )]
-        private static extern IntPtr EnableMenuItem( IntPtr menu, uint item, uint options );
-
-        [DllImport( "msvcrt.dll" )]
-        internal static unsafe extern void memcpy( void* to, void* from, int len );
-
-        [DllImport( "user32.dll" )]
-        internal static extern uint PostMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
-        [DllImport( "user32.dll" )]
-        internal static extern bool SetForegroundWindow( IntPtr hWnd );
-
-        [DllImport( "kernel32.dll" )]
-        internal static extern uint GlobalGetAtomName( ushort atom, StringBuilder buff, int bufLen );
-
-        [DllImport( "Advapi32.dll" )]
-        internal static extern int GetUserNameA( StringBuilder buff, int* len );
-
-        [DllImport( "user32.dll" )]
-        internal static extern IntPtr SendMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
-        
-
 
         public static string GetWindowsUserName()
         {
@@ -138,7 +77,7 @@ DLLFUNCTION void HandleNegotiate(uint64_t features)
             {
                 IntPtr menu = GetSystemMenu( handle, false );
                 EnableMenuItem( menu, 0xF060, 0x00000002 ); //menu, SC_CLOSE, MF_BYCOMMAND|MF_GRAYED
-            }         
+            }
         }
     }
 }

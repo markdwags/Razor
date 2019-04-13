@@ -319,7 +319,7 @@ namespace Assistant.HotKeys
 
             ushort id = (ushort) state;
             if (id == 3852 && World.Player.Poisoned && Config.GetBool("BlockHealPoison") &&
-                Platform.AllowBit(FeatureBit.BlockHealPoisoned))
+                Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
             {
                 World.Player.SendMessage(MsgLevel.Force, LocString.HealPoisonBlocked);
                 return;
@@ -341,7 +341,7 @@ namespace Assistant.HotKeys
 
         private static bool UseItem(Item cont, ushort find)
         {
-            if (!Platform.AllowBit(FeatureBit.PotionHotkeys))
+            if (!Client.Instance.AllowBit(FeatureBit.PotionHotkeys))
                 return false;
 
             for (int i = 0; i < cont.Contains.Count; i++)
