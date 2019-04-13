@@ -12,11 +12,6 @@ namespace Assistant
         internal static unsafe extern IntPtr CaptureScreen( IntPtr handle, bool isFullScreen, string msgStr );
         [DllImport( "Platform.dll" )]
         internal static unsafe extern void BringToFront( IntPtr hWnd );
-        [DllImport( "Platform.dll" )]
-        internal static unsafe extern int HandleNegotiate( ulong word );
-        [DllImport( "Platform.dll" )]
-        internal static unsafe extern bool AllowBit( ulong bit );
-
         [DllImport( "msvcrt.dll" )]
         internal static unsafe extern void memcpy( void* to, void* from, int len );
 
