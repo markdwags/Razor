@@ -326,11 +326,7 @@ namespace Assistant
         private Label label24;
         private TreeView _macroTreeViewCache = new TreeView();
 
-        [DllImport("User32.dll")]
-        private static extern IntPtr GetSystemMenu(IntPtr wnd, bool reset);
 
-        [DllImport("User32.dll")]
-        private static extern IntPtr EnableMenuItem(IntPtr menu, uint item, uint options);
 
         public Label WaitDisplay
         {
@@ -3849,8 +3845,7 @@ namespace Assistant
 
         private void DisableCloseButton()
         {
-            IntPtr menu = GetSystemMenu(this.Handle, false);
-            EnableMenuItem(menu, 0xF060, 0x00000002); //menu, SC_CLOSE, MF_BYCOMMAND|MF_GRAYED
+            Platform.DisableCloseButton( this.Handle );
             m_CanClose = false;
         }
 
@@ -3888,10 +3883,8 @@ namespace Assistant
 
             SplashScreen.Message = LocString.Welcome;
             InitConfig();
-
             Show();
             BringToFront();
-
             tabs_IndexChanged(this, null); // load first tab
 
             m_ProfileConfirmLoad = false;
@@ -3904,6 +3897,7 @@ namespace Assistant
             m_Tip.SetToolTip(titleStr, Language.GetString(LocString.TitleBarTip));
 
             SplashScreen.End();
+
         }
 
         private bool m_Initializing = false;
@@ -4172,7 +4166,7 @@ namespace Assistant
         {
             int hue = 0;
 
-            using (StreamReader r = new StreamReader($"{Config.GetInstallDirectory()}\\animdata.json"))
+            using (StreamReader r = new StreamReader(Path.Combine(Config.GetInstallDirectory(),"animdata.json")))
             {
                 string json = r.ReadToEnd();
                 List<AnimData> items = JsonConvert.DeserializeObject<List<AnimData>>(json);
