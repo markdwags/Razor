@@ -61,39 +61,40 @@ DLLFUNCTION void HandleNegotiate(uint64_t features)
     {
         internal static ushort GetAsyncKeyState( int key )
         {
-            if ( Environment.OSVersion.Platform == PlatformID.Unix )
-                return 0;
+            if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
+                return Win32Platform.GetAsyncKeyState( key );
             else
-                return Win32Platform.GetAsyncKeyState(key);
+                return 0;
         }
         internal static IntPtr CaptureScreen( IntPtr handle, bool isFullScreen, string msgStr )
         {
-            if ( Environment.OSVersion.Platform == PlatformID.Unix )
-                return IntPtr.Zero;
-            else
+            if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
                 return Win32Platform.CaptureScreen( handle, isFullScreen, msgStr );
+            else
+                return IntPtr.Zero;
         }
         internal static void BringToFront( IntPtr window )
         {
-            if ( Environment.OSVersion.Platform == PlatformID.Unix )
-                LinuxPlatform.BringToFront( window );
-            else
+            if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
                 Win32Platform.BringToFront( window );
+            else
+                LinuxPlatform.BringToFront( window );
         }
         internal static bool AllowBit(ulong bit)
         {
-            if ( Environment.OSVersion.Platform == PlatformID.Unix )
-                return LinuxPlatform.AllowBit(bit);
+            if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
+                return Win32Platform.AllowBit( bit ); 
             else
-                return Win32Platform.AllowBit( bit );
+                return LinuxPlatform.AllowBit( bit );
         }
 
         internal static int HandleNegotiate( ulong word )
         {
-            if ( Environment.OSVersion.Platform == PlatformID.Unix )
-                return LinuxPlatform.HandleNegotiate( word );
-            else
+            if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
                 return Win32Platform.HandleNegotiate( word );
+            else
+                return LinuxPlatform.HandleNegotiate( word );
+
         }
 
         [DllImport( "User32.dll" )]
