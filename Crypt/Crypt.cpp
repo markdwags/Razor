@@ -378,7 +378,7 @@ Position g_TestPosition = {};
 Position g_LastPosition = {};
 void *g_ClientMem = nullptr;
 
-VOID CALLBACK CheckPosition(HWND hwnd, UINT Message, UINT TimerId, DWORD dwTime)
+static void CheckPosition()
 {
 	if (g_ClientMem == nullptr) {
 		if (strncmp(pShared->UOVersion, "5.0.8.3", sizeof(pShared->UOVersion)) == 0) {
@@ -440,6 +440,14 @@ VOID CALLBACK CheckPosition(HWND hwnd, UINT Message, UINT TimerId, DWORD dwTime)
 
 		g_LastPosition = pos;
 	}
+}
+
+VOID CALLBACK OnTick(HWND hwnd, UINT Message, UINT TimerId, DWORD dwTime) {
+	/* Scan client memory for position updates */
+	CheckPosition();
+
+	/* Post a message to Razor to indicate a game loop tick.*/
+	PostMessage(hRazorWnd, WM_UONETEVENT, ON_TICK, 0);
 }
 
 SIZE *SizePtr = NULL;
@@ -1639,6 +1647,10 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 				strncpy( pShared->UOVersion, NativeGetUOVersion(), 16 );
 		}
 
+		/* Start a timer that will call a callback each tick. We use this to implement
+		 * timers as well as scan client memory for position updates. */
+		SetTimer(hUOWindow, (UINT_PTR)0xAA, 25, OnTick);
+
 		break;
 
 	case WM_UONETEVENT:
@@ -1680,10 +1692,6 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		switch ((UONET_MESSAGE_COPYDATA)copydata->dwData) {
 		case UONET_MESSAGE_COPYDATA::POSITION:
 			g_TestPosition = *(Position *)copydata->lpData;
-
-			/* Start (or restart) a timer that will keep searching client memory for the given position.
-			 * Once found, it will broadcast updates to the position any time it changes. */
-			SetTimer(hUOWindow, (UINT_PTR)0xAA, 50, CheckPosition);
 			break;
 
 		}

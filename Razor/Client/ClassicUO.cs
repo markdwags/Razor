@@ -211,10 +211,12 @@ namespace Assistant
             });
             return true;
         }
+
         private void Tick()
         {
+            Timer.Slice();
         }
-        
+
         private void OnPlayerPositionChanged(int x, int y, int z)
         {
             World.Player.Position = new Point3D(x, y, z);
