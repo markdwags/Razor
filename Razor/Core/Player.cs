@@ -604,7 +604,7 @@ namespace Assistant
                 !IsGhost &&
                 ((int)(Direction & Direction.Mask)) % 2 == 0 &&
                 Config.GetBool("AutoOpenDoors") &&
-                Platform.AllowBit(FeatureBit.AutoOpenDoors))
+                Client.Instance.AllowBit(FeatureBit.AutoOpenDoors))
             {
                 int x = Position.X, y = Position.Y, z = Position.Z;
 
@@ -987,7 +987,7 @@ namespace Assistant
             if (s != Serial.Zero)
             {
                 Item free = null, pack = World.Player.Backpack;
-                if (s.IsItem && pack != null && Config.GetBool("PotionEquip") && Platform.AllowBit(FeatureBit.AutoPotionEquip))
+                if (s.IsItem && pack != null && Config.GetBool("PotionEquip") && Client.Instance.AllowBit(FeatureBit.AutoPotionEquip))
                 {
                     Item i = World.FindItem(s);
                     if (i != null && i.IsPotion && i.ItemID != 3853) // dont unequip for exploison potions

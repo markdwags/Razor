@@ -14,5 +14,3 @@
 
 DLLFUNCTION HBITMAP CaptureScreen(HWND hUOWindow, BOOL full, const char *msg);
 DLLFUNCTION void BringToFront(HWND hWnd);
-DLLFUNCTION bool AllowBit(uint64_t bit);
-DLLFUNCTION void HandleNegotiate(uint64_t features);

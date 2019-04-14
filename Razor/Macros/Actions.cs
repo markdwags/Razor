@@ -2475,7 +2475,7 @@ namespace Assistant.Macros
 
                 case IfVarType.Poisoned:
                     {
-                        if (Platform.AllowBit(FeatureBit.BlockHealPoisoned))
+                        if (Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                             return World.Player.Poisoned;
                         else
                             return false;
@@ -2655,7 +2655,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            if (Platform.AllowBit(FeatureBit.LoopingMacros) || m_Key.DispName.IndexOf(Language.GetString(LocString.PlayA1).Replace(@"{0}", "")) == -1)
+            if (Client.Instance.AllowBit(FeatureBit.LoopingMacros) || m_Key.DispName.IndexOf(Language.GetString(LocString.PlayA1).Replace(@"{0}", "")) == -1)
                 m_Key.Callback();
             return true;
         }

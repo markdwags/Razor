@@ -560,6 +560,16 @@ InputBox::ok=&OK
 1416=Random Targets
 1417=Closest Targets
 1418=Overhead Health/Stats Display
+1419=Autoloot Agent
+1420=Bone cutter Agent
+1421=Advanced Macros
+1422=Auto remount
+1423=Automatic Bandage
+1424=Enemy Target Sharing
+1425=Filter Seasons
+1426=Spell Target Sharing
+1427=Humanoid Health Checks
+1428=Journal speech checks
 // up to 1465: reserved
 1466=Feature Disallowed by Server
 1467=This feature is not allowed by the current game server.\nYou may choose to ignore the server's allowed features on the "Options" tab.\n\nTo see a list of disallowed features, check the "Help & Status" tab.

@@ -40,7 +40,7 @@ namespace Assistant.Macros
 
         public bool Loop
         {
-            get { return m_Loop && Platform.AllowBit(FeatureBit.LoopingMacros); }
+            get { return m_Loop && Client.Instance.AllowBit(FeatureBit.LoopingMacros); }
             set { m_Loop = value; }
         }
 
@@ -507,7 +507,7 @@ namespace Assistant.Macros
                                 action = (MacroAction)m_Actions[m_CurrentAction];
                         }
                     }
-                    else if (action is EndForAction && Platform.AllowBit(FeatureBit.LoopingMacros))
+                    else if (action is EndForAction && Client.Instance.AllowBit(FeatureBit.LoopingMacros))
                     {
                         int ca = m_CurrentAction - 1;
                         int forcount = 0;
