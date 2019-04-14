@@ -4,8 +4,11 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+
 using Assistant.Core;
 using Assistant.Macros;
+using Assistant.UI;
 using Ultima;
 
 namespace Assistant
@@ -608,13 +611,9 @@ namespace Assistant
                 /* Check if one more tile in the direction we just moved is a door */
                 Utility.Offset(Direction, ref x, ref y);
 
-                foreach (Item i in World.Items.Values)
+                if (World.Items.Values.Any(s => s.IsDoor && s.Position.X == x && s.Position.Y == y && s.Position.Z - 15 <= z && s.Position.Z + 15 >= z))
                 {
-                    if (i.IsDoor && i.Position.X == x && i.Position.Y == y && i.Position.Z - 15 <= z && i.Position.Z + 15 >= z)
-                    {
-                        Client.Instance.SendToServer(new OpenDoorMacro());
-                        break;
-                    }
+                    Client.Instance.SendToServer(new OpenDoorMacro());
                 }
             }
         }
@@ -661,7 +660,7 @@ namespace Assistant
             ilist = null;
 
             if (Engine.MainWindow != null && Engine.MainWindow.MapWindow != null)
-                Engine.MainWindow.MapWindow.PlayerMoved();
+                Engine.MainWindow.SafeAction(f => f.MapWindow.PlayerMoved());
 
             base.OnPositionChanging(oldPos);
         }
@@ -698,8 +697,7 @@ namespace Assistant
             UOAssist.PostMapChange(cur);
 
             if (Engine.MainWindow != null && Engine.MainWindow.MapWindow != null)
-                Engine.MainWindow.MapWindow.PlayerMoved();
-
+                Engine.MainWindow.SafeAction(s => s.MapWindow.PlayerMoved());
         }
 
         /*public override void OnMapChange( byte old, byte cur )

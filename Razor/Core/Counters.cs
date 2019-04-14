@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
 
+using Assistant.UI;
 
 namespace Assistant
 {
@@ -449,7 +450,7 @@ namespace Assistant
 		{
 			m_List.Add( c );
 			m_NeedXMLSave = true;
-			Engine.MainWindow.RedrawCounters();
+			Engine.MainWindow.SafeAction(s => s.RedrawCounters());
 		}
 
 		public static void Uncount( Item item )

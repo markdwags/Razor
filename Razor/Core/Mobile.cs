@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
+using Assistant.UI;
+
 namespace Assistant
 {
     [Flags]
@@ -483,7 +485,7 @@ namespace Assistant
         public override void OnPositionChanging(Point3D oldPos)
         {
             if (this != World.Player && Engine.MainWindow.MapWindow != null)
-                Engine.MainWindow.MapWindow.CheckLocalUpdate(this);
+                Engine.MainWindow.SafeAction(s => s.MapWindow.CheckLocalUpdate(this));
 
             base.OnPositionChanging(oldPos);
         }

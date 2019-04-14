@@ -1600,52 +1600,6 @@ bool CheckParent( HWND hCheck, HWND hComp )
 	return ( hCheck == hComp );
 }
 
-vector<DWORD> addrList;
-void FindList( DWORD val, unsigned short size )
-{
-	if ( size == 0xFFFF )
-	{
-		addrList.clear();
-		return;
-	}
-
-	if ( size > 4 || size < 1 ) size = 4;
-
-	MemFinder mf;
-
-	mf.AddEntry( &val, size, 0x7FFF, 0x00400000 );
-
-	mf.Execute();
-
-	DWORD addr;
-	if ( addrList.size() == 0 )
-	{
-		for(int i=0;i<0x7FFF;i++)
-		{
-			addr = mf.GetAddress( &val, size, i );
-			if ( addr )
-				addrList.push_back( addr );
-			else
-				break;
-		}
-	}
-	else
-	{
-		vector<DWORD> newList;
-		for(unsigned int i=0;i<addrList.size();i++)
-		{
-			if ( memcmp( (void*)addrList[i], &val, size ) == 0 )
-				newList.push_back( addrList[i] );
-		}
-
-		addrList = newList;
-	}
-
-	PostMessage( hRazorWnd, WM_UONETEVENT, MAKELONG(FINDDATA,0), addrList.size() );
-	for(unsigned int i=0;i<addrList.size() && i < 10;i++)
-		PostMessage( hRazorWnd, WM_UONETEVENT, MAKELONG(FINDDATA,i+1), addrList[i] );
-}
-
 void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg )
 {
 	HWND hFore;
@@ -1703,10 +1657,6 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 		case SETWNDSIZE:
 			DesiredSize.cx = LOWORD(lParam);
 			DesiredSize.cy = HIWORD(lParam);
-			break;
-
-		case FINDDATA:
-			FindList( (DWORD)lParam, HIWORD(wParam) );
 			break;
 
 		case SMART_CPU:

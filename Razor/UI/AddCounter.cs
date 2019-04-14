@@ -4,6 +4,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 
+using Assistant.UI;
+
 namespace Assistant
 {
 	/// <summary>
@@ -297,7 +299,7 @@ namespace Assistant
 
 		private void OnTarget( bool loc, Serial serial, Point3D p, ushort graphic )
 		{
-			Engine.MainWindow.ShowMe();
+			Engine.MainWindow.SafeAction(s => s.ShowMe());
 			this.BringToFront();
 			this.Show();
 			this.Focus();

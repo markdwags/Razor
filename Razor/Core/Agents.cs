@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.UI;
 
 namespace Assistant
 {
@@ -110,11 +111,11 @@ namespace Assistant
             {
                 buttons[i].Visible = false;
                 buttons[i].Text = "";
-                Engine.MainWindow.UnlockControl(buttons[i]);
+                Engine.MainWindow.SafeAction(s => s.UnlockControl(buttons[i]));
             }
             grp.Visible = false;
             subList.Visible = false;
-            Engine.MainWindow.UnlockControl(subList);
+            Engine.MainWindow.SafeAction(s => s.UnlockControl(subList));
 
             Agent a = null;
             if (idx >= 0 && idx < m_List.Count)
@@ -249,10 +250,10 @@ namespace Assistant
             {
                 for (int i = 0; i < buttons.Length; i++)
                 {
-                    Engine.MainWindow.LockControl(buttons[i]);
+                    Engine.MainWindow.SafeAction(s => s.LockControl(buttons[i]));
                 }
 
-                Engine.MainWindow.LockControl(subList);
+                Engine.MainWindow.SafeAction(s => s.LockControl(subList));
             }
         }
 
@@ -311,7 +312,7 @@ namespace Assistant
         {
             if (Config.GetBool("AlwaysOnTop"))
             {
-                Engine.MainWindow.ShowMe();
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
             }
 
             if (!location && serial.IsItem)
@@ -338,7 +339,7 @@ namespace Assistant
 
         private void OnTargetRemove(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (!location && serial.IsItem)
             {
                 for (int i = 0; i < m_Items.Count; i++)
@@ -379,10 +380,10 @@ namespace Assistant
         {
             if (Config.GetBool("AlwaysOnTop"))
             {
-                Engine.MainWindow.ShowMe();
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
             }
 
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (!location && serial.IsItem)
             {
                 Item i = World.FindItem(serial);
@@ -657,10 +658,10 @@ namespace Assistant
             {
                 for (int i = 0; i < buttons.Length; i++)
                 {
-                    Engine.MainWindow.LockControl(buttons[i]);
+                    Engine.MainWindow.SafeAction(s => s.LockControl(buttons[i]));
                 }
 
-                Engine.MainWindow.LockControl(subList);
+                Engine.MainWindow.SafeAction(s => s.LockControl(subList));
             }
         }
 
@@ -736,7 +737,7 @@ namespace Assistant
 
         private void OnTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (!location && serial.IsItem)
             {
                 m_Items.Add(gfx);
@@ -746,7 +747,7 @@ namespace Assistant
 
         private void OnHBTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (!location && serial.IsItem)
             {
                 m_HotBag = serial;
@@ -769,7 +770,7 @@ namespace Assistant
 
         /*private void OnHBTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe(););
 
             Item hb = World.FindItem(m_HotBag);
             if (hb != null)
@@ -1081,7 +1082,7 @@ namespace Assistant
         {
             if (Engine.MainWindow != null)
             {
-                Engine.MainWindow.ShowMe();
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
             }
 
             if (!location && serial.IsItem && World.Player != null)
@@ -1111,7 +1112,7 @@ namespace Assistant
         {
             if (Engine.MainWindow != null)
             {
-                Engine.MainWindow.ShowMe();
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
             }
 
             if (!location && serial > 0 && serial <= 0x7FFFFF00)
@@ -1329,7 +1330,7 @@ namespace Assistant
 
         private void OnTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (!location && serial.IsItem)
             {
                 m_Items.Add(serial);
@@ -1351,7 +1352,7 @@ namespace Assistant
 
         private void OnTargetType(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             if (!serial.IsItem)
             {
@@ -1365,7 +1366,7 @@ namespace Assistant
 
         private void OnTargetRemove(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (!location && serial.IsItem)
             {
                 for (int i = 0; i < m_Items.Count; i++)
@@ -1618,7 +1619,7 @@ namespace Assistant
 
         private void OnTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             if (location || !serial.IsItem)
             {
@@ -1647,7 +1648,7 @@ namespace Assistant
 
         private void OnTargetBag(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             if (location || !serial.IsItem)
             {
@@ -2081,10 +2082,10 @@ namespace Assistant
             {
                 for (int i = 0; i < buttons.Length; i++)
                 {
-                    Engine.MainWindow.LockControl(buttons[i]);
+                    Engine.MainWindow.SafeAction(s => s.LockControl(buttons[i]));
                 }
 
-                Engine.MainWindow.LockControl(subList);
+                Engine.MainWindow.SafeAction(s => s.LockControl(subList));
             }
         }
 
@@ -2153,7 +2154,7 @@ namespace Assistant
 
         private void OnTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             if (!location && !serial.IsMobile)
             {
@@ -2311,10 +2312,10 @@ namespace Assistant
             {
                 for (int i = 0; i < buttons.Length; i++)
                 {
-                    Engine.MainWindow.LockControl(buttons[i]);
+                    Engine.MainWindow.SafeAction(s => s.LockControl(buttons[i]));
                 }
 
-                Engine.MainWindow.LockControl(subList);
+                Engine.MainWindow.SafeAction(s => s.LockControl(subList));
             }
         }
 
@@ -2415,7 +2416,7 @@ namespace Assistant
 
         private void OnHBTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             Item hb = World.FindItem(m_HotBag);
             if (hb != null)
@@ -2609,7 +2610,7 @@ namespace Assistant
 
             World.Player.SendMessage(MsgLevel.Force, LocString.ItemAdded);
 
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
         }
 
         public override void Save(XmlTextWriter xml)
@@ -2856,7 +2857,7 @@ namespace Assistant
 
         private void OnAddTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             if (!location && serial.IsMobile && serial != World.Player.Serial)
             {
@@ -2917,7 +2918,7 @@ namespace Assistant
 
         private void OnRemoveTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             if (!location && serial.IsMobile && serial != World.Player.Serial)
             {
@@ -3169,7 +3170,7 @@ namespace Assistant
 
         private void OnAddTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             if (!location && serial.IsMobile && serial != World.Player.Serial)
             {
@@ -3220,7 +3221,7 @@ namespace Assistant
 
         private void OnRemoveTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.ShowMe();
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
 
             if (!location && serial.IsMobile && serial != World.Player.Serial)
             {

@@ -12,6 +12,10 @@ using Assistant.Core;
 using Microsoft.Win32;
 using Assistant.Filters;
 using Assistant.Macros;
+using Assistant.UI;
+
+using ContainerLabels = Assistant.Core.ContainerLabels;
+using OverheadMessages = Assistant.Core.OverheadMessages;
 
 namespace Assistant
 {
@@ -673,7 +677,7 @@ namespace Assistant
                 m_Chars[player.Serial] = (m_Current != null ? m_Current.Name : "default");
             }
 
-            Engine.MainWindow.SelectProfile(m_Current != null ? m_Current.Name : "default");
+            Engine.MainWindow.SafeAction(s => s.SelectProfile(m_Current != null ? m_Current.Name : "default"));
         }
 
         public static void SetProfileFor(PlayerData player)

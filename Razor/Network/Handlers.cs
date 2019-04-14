@@ -10,6 +10,10 @@ using Assistant.Core;
 using Assistant.Filters;
 using Assistant.Macros;
 
+using Assistant.UI;
+using OverheadMessages = Assistant.Core.OverheadMessages;
+using ContainerLabels = Assistant.Core.ContainerLabels;
+
 namespace Assistant
 {
     public class PacketHandlers
@@ -389,7 +393,7 @@ namespace Assistant
             PlayCharTime = DateTime.UtcNow;
 
             if (Engine.MainWindow != null)
-                Engine.MainWindow.UpdateControlLocks();
+                Engine.MainWindow.SafeAction(s => s.UpdateControlLocks());
         }
 
         private static void PlayCharacter(PacketReader p, PacketHandlerEventArgs args)
@@ -400,7 +404,7 @@ namespace Assistant
             PlayCharTime = DateTime.UtcNow;
 
             if (Engine.MainWindow != null)
-                Engine.MainWindow.UpdateControlLocks();
+                Engine.MainWindow.SafeAction(s => s.UpdateControlLocks());
 
             //Client.TranslateLogin( World.OrigPlayerName, World.ShardName );
         }
@@ -725,7 +729,7 @@ namespace Assistant
                 Skill skill = World.Player.Skills[i];
 
                 skill.Lock = (LockType)p.ReadByte();
-                Engine.MainWindow.UpdateSkill(skill);
+                Engine.MainWindow.SafeAction(s => s.UpdateSkill(skill));
             }
         }
 
@@ -766,7 +770,7 @@ namespace Assistant
                         }
 
                         World.Player.SkillsSent = true;
-                        Engine.MainWindow.RedrawSkills();
+                        Engine.MainWindow.SafeAction(s => s.RedrawSkills());
                         break;
                     }
 
@@ -798,7 +802,7 @@ namespace Assistant
                         }
 
                         World.Player.SkillsSent = true;
-                        Engine.MainWindow.RedrawSkills();
+                        Engine.MainWindow.SafeAction(s => s.RedrawSkills());
                         break;
                     }
 
@@ -818,7 +822,7 @@ namespace Assistant
                             skill.FixedBase = p.ReadUInt16();
                             skill.Lock = (LockType)p.ReadByte();
                             skill.FixedCap = p.ReadUInt16();
-                            Engine.MainWindow.UpdateSkill(skill);
+                            Engine.MainWindow.SafeAction(s => s.UpdateSkill(skill));
 
                             //Your skill in {0} has changed by {4}{5:F1}, it is now {3:F1} ({1}{2:F1}).
                             if (Config.GetBool("DisplaySkillChanges") && skill.FixedBase != old)
@@ -858,8 +862,7 @@ namespace Assistant
                             skill.FixedBase = p.ReadUInt16();
                             skill.Lock = (LockType)p.ReadByte();
                             skill.FixedCap = 100;
-                            Engine.MainWindow.UpdateSkill(skill);
-
+                            Engine.MainWindow.SafeAction(s => s.UpdateSkill(skill));
                             if (Config.GetBool("DisplaySkillChanges") && skill.FixedBase != old)
                             {
                                 if (Config.GetBool("DisplaySkillChangesOverhead"))
@@ -908,7 +911,7 @@ namespace Assistant
 
             Client.Instance.RequestTitlebarUpdate();
             UOAssist.PostLogin((int)serial.Value);
-            Engine.MainWindow.UpdateTitle(); // update player name & shard name
+            Engine.MainWindow.SafeAction(s => s.UpdateTitle()); // update player name & shard name
 
             Client.Instance.SetPosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
 
@@ -1007,7 +1010,7 @@ namespace Assistant
                         try
                         {
                             m.OverheadMessageFrom(HealthHues[((percent + 5) / 10) % HealthHues.Length],
-                                 Language.Format(LocString.sStatsA1, m.Name),
+                                 m.Name ?? string.Empty,
                                  Config.GetString("HealthFmt"), percent);
                         }
                         catch
@@ -1046,7 +1049,7 @@ namespace Assistant
                         try
                         {
                             m.OverheadMessageFrom(0x63,
-                                 Language.Format(LocString.sStatsA1, m.Name),
+                                 m.Name ?? string.Empty,
                                  Config.GetString("PartyStatFmt"), manaPercent, stamPercent);
                         }
                         catch
@@ -1310,7 +1313,7 @@ namespace Assistant
                 UOAssist.PostStamUpdate();
                 UOAssist.PostManaUpdate();
 
-                Engine.MainWindow.UpdateTitle(); // update player name
+                Engine.MainWindow.SafeAction(s => s.UpdateTitle()); // update player name
             }
         }
 
@@ -2249,7 +2252,7 @@ namespace Assistant
                         }
 
                         if (Engine.MainWindow.MapWindow != null)
-                            Engine.MainWindow.MapWindow.UpdateMap();
+                            Engine.MainWindow.SafeAction(s => s.MapWindow.UpdateMap());
 
                         break;
                     }
@@ -2259,7 +2262,8 @@ namespace Assistant
 
                         Client.Instance.SetFeatures(features);
                         Client.Instance.SendToServer(new RazorNegotiateResponse());
-                        Engine.MainWindow.UpdateControlLocks();
+                        Engine.MainWindow.SafeAction(s => s.UpdateControlLocks());
+
                         break;
                     }
             }
@@ -2355,7 +2359,7 @@ namespace Assistant
 
 
             if (Engine.MainWindow.MapWindow != null)
-                Engine.MainWindow.MapWindow.UpdateMap();
+                Engine.MainWindow.SafeAction(s => s.MapWindow.UpdateMap());
         }
 
         private static void PartyAutoDecline()

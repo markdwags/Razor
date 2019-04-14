@@ -14,7 +14,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>
@@ -43,9 +43,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

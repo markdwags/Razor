@@ -296,9 +296,6 @@
     <Compile Include="Core\StealthSteps.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Stuff.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\Targeting.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -314,6 +311,7 @@
     <Compile Include="UI\Config.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Ext.cs" />
     <Compile Include="UI\HueEntry.cs">
       <SubType>Form</SubType>
     </Compile>

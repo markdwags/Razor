@@ -32,7 +32,6 @@ namespace Assistant
             NotoHue = 13,
             DLL_Error = 14,
             SetGameSize = 19,
-            FindData = 20,
             SmartCPU = 21,
             Negotiate = 22,
             SetMapHWnd = 23
@@ -698,10 +697,6 @@ namespace Assistant
                         MessageBox.Show(Engine.ActiveWindow, "An Error has occured : \n" + error, "Error Reported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     }
-
-                case UONetMessage.FindData:
-                    FindData.Message((wParam & 0xFFFF0000) >> 16, lParam);
-                    break;
 
                 // Unknown
                 default:
