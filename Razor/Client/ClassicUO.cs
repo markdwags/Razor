@@ -19,6 +19,7 @@ namespace Assistant
         public override IPAddress LastConnection { get; }
         public override Process ClientProcess => m_ClientProcess;
         public override bool ClientRunning => m_ClientRunning;
+        private uint m_In, m_Out;
 
 
         private DateTime m_ConnectionStart;
@@ -131,6 +132,7 @@ namespace Assistant
 
         private unsafe bool OnRecv(byte[] data, int length)
         {
+            m_In += (uint)length;
             fixed (byte* ptr = data)
             {
                 PacketReader p = new PacketReader(ptr, length, PacketsTable.IsDynLength(data[0]));
@@ -142,6 +144,7 @@ namespace Assistant
 
         private unsafe bool OnSend(byte[] data, int length)
         {
+            m_Out += (uint)length;
             fixed (byte* ptr = data)
             {
                 PacketReader p = new PacketReader(ptr, length, PacketsTable.IsDynLength( data[0] ) ); ;
@@ -198,7 +201,7 @@ namespace Assistant
         }
         private void OnConnected()
         {
-            m_ConnectionStart = DateTime.Now;
+            m_ConnectionStart = DateTime.UtcNow;
            
         }
         private void OnClientClosing()
@@ -299,12 +302,12 @@ namespace Assistant
 
         public override uint TotalDataIn()
         {
-            return 0;
+            return m_In;
         }
 
         public override uint TotalDataOut()
         {
-            return 0;
+            return m_Out;
         }
     }
 }
