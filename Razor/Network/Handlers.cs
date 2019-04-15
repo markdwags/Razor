@@ -737,7 +737,6 @@ namespace Assistant
         {
             if (World.Player == null || World.Player.Skills == null || Engine.MainWindow == null)
                 return;
-            p.Position = 3;
             byte type = p.ReadByte();
 
             switch (type)

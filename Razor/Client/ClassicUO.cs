@@ -133,7 +133,7 @@ namespace Assistant
         {
             fixed (byte* ptr = data)
             {
-                PacketReader p = new PacketReader(ptr, length, PacketsTable.GetPacketLength(ptr,length) < 0);
+                PacketReader p = new PacketReader(ptr, length, PacketsTable.IsDynLength(data[0]));
                 Packet packet = new Packet(data, length, p.DynamicLength);
 
                 return !PacketHandler.OnServerPacket(p.PacketID, p, packet);
@@ -144,7 +144,7 @@ namespace Assistant
         {
             fixed (byte* ptr = data)
             {
-                PacketReader p = new PacketReader(ptr, length, PacketsTable.GetPacketLength(ptr,length) < 0);
+                PacketReader p = new PacketReader(ptr, length, PacketsTable.IsDynLength( data[0] ) ); ;
                 Packet packet = new Packet(data, length, p.DynamicLength);
 
                 return !PacketHandler.OnClientPacket(p.PacketID, p, packet);
