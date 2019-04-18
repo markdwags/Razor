@@ -4423,12 +4423,13 @@ namespace Assistant
 
             if (Config.GetBool("LogSkillChanges"))
             {
-                string skillLog =
-                    $"{Config.GetInstallDirectory()}\\SkillLog\\{World.Player.Name}_{World.Player.Serial}_SkillLog.csv";
+                string skillLog = Path.Combine( Config.GetInstallDirectory(), "SkillLog" );
+                skillLog = Path.Combine( skillLog, $"{World.Player.Name}_{World.Player.Serial}_SkillLog.csv" );
+                   
 
-                if (!Directory.Exists($"{Config.GetInstallDirectory()}\\SkillLog"))
+                if (!Directory.Exists(Path.GetDirectoryName( skillLog )) )
                 {
-                    Directory.CreateDirectory($"{Config.GetInstallDirectory()}\\SkillLog");
+                    Directory.CreateDirectory( Path.GetDirectoryName( skillLog ) );
                 }
 
                 if (!File.Exists(skillLog))
@@ -7976,7 +7977,7 @@ namespace Assistant
             try
             {
                 string backupTime = $"{DateTime.Now:yyyyMMdd-HHmmss}";
-                string backupDir = $"{Config.GetAppSetting<string>("BackupPath")}\\{backupTime}";
+                string backupDir = Path.Combine( Config.GetAppSetting<string>( "BackupPath" ), backupTime ); ;
 
                 if (string.IsNullOrEmpty(backupDir))
                     return;
@@ -7987,34 +7988,36 @@ namespace Assistant
                 }
 
                 // Backup the macros
-                Directory.CreateDirectory($"{backupDir}\\Macros");
+                Directory.CreateDirectory(Path.Combine(backupDir,"Macros"));
 
                 // Create folders
-                foreach (string dirPath in Directory.GetDirectories($"{Config.GetUserDirectory()}\\Macros", "*",
+                var macrosDirectory = Path.Combine( Config.GetUserDirectory(), "Macros" );
+                foreach (string dirPath in Directory.GetDirectories( macrosDirectory, "*",
                     SearchOption.AllDirectories))
                 {
-                    Directory.CreateDirectory(dirPath.Replace($"{Config.GetUserDirectory()}\\Macros",
-                        $"{backupDir}\\Macros"));
+                    Directory.CreateDirectory(dirPath.Replace( macrosDirectory,
+                        Path.Combine( backupDir, "Macros" ) ) );
                 }
 
                 // Copy macros
-                foreach (string newPath in Directory.GetFiles($"{Config.GetUserDirectory()}\\Macros", "*.*",
+                foreach (string newPath in Directory.GetFiles( macrosDirectory, "*.*",
                     SearchOption.AllDirectories))
                 {
                     File.Copy(newPath,
-                        newPath.Replace($"{Config.GetUserDirectory()}\\Macros",
-                            $"{backupDir}\\Macros"), true);
+                        newPath.Replace( macrosDirectory,
+                            Path.Combine( backupDir, "Macros" ) ), true);
                 }
 
                 // Backup the profiles
-                Directory.CreateDirectory($"{backupDir}\\Profiles");
+                Directory.CreateDirectory( Path.Combine( backupDir, "Profiles" ) );
+                var profilesDirectory = Path.Combine( Config.GetUserDirectory(), "Profiles" );
 
-                foreach (string newPath in Directory.GetFiles($"{Config.GetUserDirectory()}\\Profiles", "*.*",
+                foreach ( string newPath in Directory.GetFiles( profilesDirectory, "*.*",
                     SearchOption.AllDirectories))
                 {
                     File.Copy(newPath,
-                        newPath.Replace($"{Config.GetUserDirectory()}\\Profiles",
-                            $"{backupDir}\\Profiles"), true);
+                        newPath.Replace( profilesDirectory,
+                            Path.Combine( backupDir, "Profiles" )), true);
                 }
 
                 MessageBox.Show(this, $"Backup created: {backupDir}", "Razor Backup", MessageBoxButtons.OK,
