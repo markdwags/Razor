@@ -216,8 +216,10 @@ namespace Ultima
             foreach (string file in m_Files)
             {
                 string filePath = Path.Combine(m_RootDir, file);
-                if (File.Exists(filePath))
+                if ( File.Exists( filePath ) )
                     m_MulPath[file] = file;
+                else if ( File.Exists( Path.Combine( m_RootDir, char.ToUpper( file[0] ) + file.Substring( 1 ) ) ) )
+                    m_MulPath[file] = Path.Combine( m_RootDir, char.ToUpper( file[0] ) + file.Substring( 1 ) );
                 else
                     m_MulPath[file] = "";
             }
