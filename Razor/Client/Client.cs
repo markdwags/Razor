@@ -330,6 +330,11 @@ namespace Assistant
             }
         }
 
+        public Packet MakePacketFrom(PacketReader pr)
+        {
+            byte[] data = pr.CopyBytes(0, pr.Length);
+            return new Packet(data, pr.Length, pr.DynamicLength);
+        }
     }
 
 }

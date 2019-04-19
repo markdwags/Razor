@@ -647,12 +647,6 @@ namespace Assistant
             buffer->Length += len;
         }
 
-        private Packet MakePacketFrom(PacketReader pr)
-        {
-            byte[] data = pr.CopyBytes(0, pr.Length);
-            return new Packet(data, pr.Length, pr.DynamicLength);
-        }
-
         private void HandleComm(Buffer* inBuff, Buffer* outBuff, Queue<Packet> queue, PacketPath path)
         {
             CommMutex.WaitOne();

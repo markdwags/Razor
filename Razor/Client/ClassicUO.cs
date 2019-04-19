@@ -278,7 +278,7 @@ namespace Assistant
 
         public override void SendToServer(PacketReader pr)
         {
-
+            SendToServer(MakePacketFrom(pr));
         }
 
         public override void SendToClient(Packet p)
