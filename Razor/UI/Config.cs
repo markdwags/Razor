@@ -3,17 +3,14 @@ using System.Xml;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Windows.Forms;
 using Assistant.Core;
-using Microsoft.Win32;
 using Assistant.Filters;
 using Assistant.Macros;
 using Assistant.UI;
-
 using ContainerLabels = Assistant.Core.ContainerLabels;
 using OverheadMessages = Assistant.Core.OverheadMessages;
 
@@ -45,34 +42,34 @@ namespace Assistant
             AddProperty("TitleBarDisplay", true);
             AddProperty("AutoSearch", true);
             AddProperty("NoSearchPouches", true);
-            AddProperty("CounterWarnAmount", (int)5);
+            AddProperty("CounterWarnAmount", (int) 5);
             AddProperty("CounterWarn", true);
-            AddProperty("ObjectDelay", (int)600);
+            AddProperty("ObjectDelay", (int) 600);
             AddProperty("ObjectDelayEnabled", true);
             AddProperty("AlwaysOnTop", false);
             AddProperty("SortCounters", true);
-            AddProperty("QueueActions", true);
-            AddProperty("QueueTargets", true);
-            AddProperty("WindowX", (int)400);
-            AddProperty("WindowY", (int)400);
+            AddProperty("QueueActions", false);
+            AddProperty("QueueTargets", false);
+            AddProperty("WindowX", (int) 400);
+            AddProperty("WindowY", (int) 400);
             AddProperty("CountStealthSteps", true);
 
-            AddProperty("SysColor", (int)0x03B1);
-            AddProperty("WarningColor", (int)0x0025);
-            AddProperty("ExemptColor", (int)0x0480);
-            AddProperty("SpeechHue", (int)0x03B1);
-            AddProperty("BeneficialSpellHue", (int)0x0005);
-            AddProperty("HarmfulSpellHue", (int)0x0025);
-            AddProperty("NeutralSpellHue", (int)0x03B1);
+            AddProperty("SysColor", (int) 0x03B1);
+            AddProperty("WarningColor", (int) 0x0025);
+            AddProperty("ExemptColor", (int) 0x0480);
+            AddProperty("SpeechHue", (int) 0x03B1);
+            AddProperty("BeneficialSpellHue", (int) 0x0005);
+            AddProperty("HarmfulSpellHue", (int) 0x0025);
+            AddProperty("NeutralSpellHue", (int) 0x03B1);
             AddProperty("ForceSpeechHue", false);
             AddProperty("ForceSpellHue", false);
             AddProperty("SpellFormat", @"{power} [{spell}]");
 
             AddProperty("ShowNotoHue", true);
-            AddProperty("Opacity", (int)100);
+            AddProperty("Opacity", (int) 100);
 
             AddProperty("AutoOpenCorpses", false);
-            AddProperty("CorpseRange", (int)2);
+            AddProperty("CorpseRange", (int) 2);
 
             AddProperty("BlockDismount", false);
 
@@ -88,17 +85,17 @@ namespace Assistant
             AddProperty("Systray", false);
             AddProperty("TitlebarImages", true);
 
-            AddProperty("SellAgentMax", (int)99);
-            AddProperty("SkillListCol", (int)-1);
+            AddProperty("SellAgentMax", (int) 99);
+            AddProperty("SkillListCol", (int) -1);
             AddProperty("SkillListAsc", false);
 
-            AddProperty("AutoStack", false);
+            AddProperty("AutoStack", true);
             AddProperty("ActionStatusMsg", true);
             AddProperty("RememberPwds", false);
 
-            AddProperty("SpellUnequip", false);
+            AddProperty("SpellUnequip", true);
             AddProperty("RangeCheckLT", true);
-            AddProperty("LTRange", (int)12);
+            AddProperty("LTRange", (int) 12);
 
             AddProperty("ClientPrio", "Normal");
             AddProperty("FilterSnoopMsg", true);
@@ -107,7 +104,7 @@ namespace Assistant
             AddProperty("SmartLastTarget", false);
             AddProperty("LastTargTextFlags", true);
             //AddProperty("SmartCPU", false);
-            AddProperty("LTHilight", (int)0);
+            AddProperty("LTHilight", (int) 0);
 
             AddProperty("AutoFriend", false);
 
@@ -123,7 +120,7 @@ namespace Assistant
             AddProperty("ForceSizeY", 800);
 
             AddProperty("PotionEquip", false);
-            AddProperty("BlockHealPoison", false);
+            AddProperty("BlockHealPoison", true);
 
             AddProperty("SmoothWalk", false);
 
@@ -136,21 +133,20 @@ namespace Assistant
 
             AddProperty("LogPacketsByDefault", false);
 
-            AddProperty("ShowHealth", false);
+            AddProperty("ShowHealth", true);
             AddProperty("HealthFmt", "[{0}%]");
-            AddProperty("ShowPartyStats", false);
+            AddProperty("ShowPartyStats", true);
             AddProperty("PartyStatFmt", "[{0}% / {1}%]");
 
-            AddProperty("JsonApi", false);
             AddProperty("HotKeyStop", false);
             AddProperty("DiffTargetByType", false);
             AddProperty("StepThroughMacro", false);
 
             // Map options
-	        /*AddProperty("ShowPlayerPosition", true);
-	        AddProperty("TrackPlayerPosition", true);
-	        AddProperty("ShowPartyMemberPositions", true);
-	        AddProperty("TiltMap", true);*/
+            /*AddProperty("ShowPlayerPosition", true);
+            AddProperty("TrackPlayerPosition", true);
+            AddProperty("ShowPartyMemberPositions", true);
+            AddProperty("TiltMap", true);*/
 
             AddProperty("ShowTargetSelfLastClearOverhead", true);
             AddProperty("ShowOverheadMessages", false);
@@ -166,7 +162,7 @@ namespace Assistant
             AddProperty("LogSkillChanges", false);
             AddProperty("StealthOverhead", false);
 
-	        AddProperty("ShowBuffDebuffOverhead", false);
+            AddProperty("ShowBuffDebuffOverhead", true);
             AddProperty("BuffDebuffFormat", "[{action}{name}]");
 
             AddProperty("BlockOpenCorpsesTwice", false);
@@ -242,10 +238,7 @@ namespace Assistant
 
         public string Name
         {
-            get
-            {
-                return m_Name;
-            }
+            get { return m_Name; }
             set
             {
                 if (value != null && value.Trim() != "")
@@ -288,7 +281,8 @@ namespace Assistant
             }
             catch
             {
-                MessageBox.Show(Engine.ActiveWindow, Language.Format(LocString.ProfileCorrupt, file), "Profile Load Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(Engine.ActiveWindow, Language.Format(LocString.ProfileCorrupt, file),
+                    "Profile Load Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return false;
             }
 
@@ -331,7 +325,8 @@ namespace Assistant
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(Engine.ActiveWindow, Language.Format(LocString.ProfileLoadEx, e.ToString()), "Profile Load Exception", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(Engine.ActiveWindow, Language.Format(LocString.ProfileLoadEx, e.ToString()),
+                        "Profile Load Exception", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
 
@@ -354,19 +349,46 @@ namespace Assistant
                 try
                 {
                     int x, y;
-                    switch ((int)m_Props["ForceSize"])
+                    switch ((int) m_Props["ForceSize"])
                     {
-                        case 1: x = 960; y = 600; break;
-                        case 2: x = 1024; y = 768; break;
-                        case 3: x = 1152; y = 864; break;
-                        case 4: x = 1280; y = 720; break;
-                        case 5: x = 1280; y = 768; break;
-                        case 6: x = 1280; y = 800; break;
-                        case 7: x = 1280; y = 960; break;
-                        case 8: x = 1280; y = 1024; break;
+                        case 1:
+                            x = 960;
+                            y = 600;
+                            break;
+                        case 2:
+                            x = 1024;
+                            y = 768;
+                            break;
+                        case 3:
+                            x = 1152;
+                            y = 864;
+                            break;
+                        case 4:
+                            x = 1280;
+                            y = 720;
+                            break;
+                        case 5:
+                            x = 1280;
+                            y = 768;
+                            break;
+                        case 6:
+                            x = 1280;
+                            y = 800;
+                            break;
+                        case 7:
+                            x = 1280;
+                            y = 960;
+                            break;
+                        case 8:
+                            x = 1280;
+                            y = 1024;
+                            break;
 
                         case 0:
-                        default: x = 800; y = 600; break;
+                        default:
+                            x = 800;
+                            y = 600;
+                            break;
                     }
 
                     SetProperty("ForceSizeX", x);
@@ -456,6 +478,7 @@ namespace Assistant
                     xml.WriteAttributeString("type", de.Value.GetType().FullName);
                     xml.WriteString(de.Value.ToString());
                 }
+
                 xml.WriteEndElement();
             }
 
@@ -504,7 +527,8 @@ namespace Assistant
             xml.Close();
         }
 
-        private static Type[] ctorTypes = new Type[] { typeof(string) };
+        private static Type[] ctorTypes = new Type[] {typeof(string)};
+
         private object GetObjectFromString(string val, Type type)
         {
             if (type == typeof(string))
@@ -517,7 +541,7 @@ namespace Assistant
                 {
                     ConstructorInfo ctor = type.GetConstructor(ctorTypes);
                     if (ctor != null)
-                        return ctor.Invoke(new object[] { val });
+                        return ctor.Invoke(new object[] {val});
                 }
                 catch
                 {
@@ -630,7 +654,8 @@ namespace Assistant
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(Path.Combine(Config.GetUserDirectory("Profiles"), "chars.lst")))
+                using (StreamWriter writer =
+                    new StreamWriter(Path.Combine(Config.GetUserDirectory("Profiles"), "chars.lst")))
                 {
                     foreach (KeyValuePair<Serial, string> de in m_Chars)
                     {
@@ -710,6 +735,7 @@ namespace Assistant
                     p.MakeDefault();
                     p.Save();
                 }
+
                 LastProfileName = "default";
             }
 
@@ -719,6 +745,7 @@ namespace Assistant
                     m_Current.Unload();
                 m_Current = p;
             }
+
             return !failed;
         }
 
@@ -755,7 +782,7 @@ namespace Assistant
                 if (!string.IsNullOrWhiteSpace(appSetting))
                 {
                     var converter = TypeDescriptor.GetConverter(typeof(T));
-                    return (T)(converter.ConvertFromInvariantString(appSetting));
+                    return (T) (converter.ConvertFromInvariantString(appSetting));
                 }
 
                 return default(T);
@@ -783,24 +810,23 @@ namespace Assistant
 
         public static bool GetBool(string name)
         {
-            return (bool)CurrentProfile.GetProperty(name);
+            return (bool) CurrentProfile.GetProperty(name);
         }
 
         public static string GetString(string name)
         {
-            return (string)CurrentProfile.GetProperty(name);
+            return (string) CurrentProfile.GetProperty(name);
         }
 
         public static int GetInt(string name)
         {
-            return (int)CurrentProfile.GetProperty(name);
+            return (int) CurrentProfile.GetProperty(name);
         }
 
         public static bool SetAppSetting(string key, string value)
         {
             try
             {
-
                 Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 config.AppSettings.Settings.Remove(key);
                 config.AppSettings.Settings.Add(key, value);
@@ -826,11 +852,13 @@ namespace Assistant
 
             string[] files = Directory.GetFiles(oldDir);
             foreach (string f in files)
-                File.Copy(Path.Combine(oldDir, Path.GetFileName(f)), Path.Combine(newDir, Path.GetFileName(f)), overWrite);
+                File.Copy(Path.Combine(oldDir, Path.GetFileName(f)), Path.Combine(newDir, Path.GetFileName(f)),
+                    overWrite);
 
             string[] dirs = Directory.GetDirectories(oldDir);
             foreach (string d in dirs)
-                RecursiveCopy(Path.Combine(oldDir, Path.GetDirectoryName(d)), Path.Combine(newDir, Path.GetDirectoryName(d)), overWrite);
+                RecursiveCopy(Path.Combine(oldDir, Path.GetDirectoryName(d)),
+                    Path.Combine(newDir, Path.GetDirectoryName(d)), overWrite);
         }
 
         public static void CopyUserFiles(string appDir, string name)
@@ -840,25 +868,27 @@ namespace Assistant
 
         public static void ImportProfilesMacros(string appDataSource)
         {
-            RecursiveCopy(Path.Combine(appDataSource, "Profiles"), Path.Combine(GetInstallDirectory(), "Profiles"), true);
+            RecursiveCopy(Path.Combine(appDataSource, "Profiles"), Path.Combine(GetInstallDirectory(), "Profiles"),
+                true);
 
             RecursiveCopy(Path.Combine(appDataSource, "Macros"), Path.Combine(GetInstallDirectory(), "Macros"), true);
 
-            File.Copy(Path.Combine(appDataSource, "counters.xml"), Path.Combine(GetInstallDirectory(), "counters.xml"), true);
+            File.Copy(Path.Combine(appDataSource, "counters.xml"), Path.Combine(GetInstallDirectory(), "counters.xml"),
+                true);
         }
 
         public static string GetUserDirectory(string name)
         {
             string appDir = GetInstallDirectory();
 
-            if (!Directory.Exists( Path.Combine( appDir, "Macros" )))
+            if (!Directory.Exists(Path.Combine(appDir, "Macros")))
             {
-                Directory.CreateDirectory( Path.Combine( appDir, "Macros"));
+                Directory.CreateDirectory(Path.Combine(appDir, "Macros"));
             }
 
-            if (!Directory.Exists(Path.Combine(appDir,"Profiles")))
+            if (!Directory.Exists(Path.Combine(appDir, "Profiles")))
             {
-                Directory.CreateDirectory( Path.Combine( appDir, "Profiles" ));
+                Directory.CreateDirectory(Path.Combine(appDir, "Profiles"));
             }
 
             name = name.Length > 0 ? Path.Combine(appDir, name) : appDir;
