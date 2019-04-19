@@ -731,3 +731,7 @@ InputBox::ok=&OK
 2032=Dex: {0}{1} - {2}
 2033=Int: {0}{1} - {2}
 2034=[{0}] {4}{5:F1} {3:F1} ({1}{2:F1})
+2035=Grab Item
+2036=Set Grab Item HotBag
+2037=Target item to grab
+2038=(Grab Item HotBag)

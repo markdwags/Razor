@@ -224,6 +224,8 @@ namespace Assistant
 
             AddProperty("DisplaySkillChangesOverhead", false);
 
+            AddProperty("GrabHotBag", "0");
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

@@ -483,6 +483,10 @@ namespace Assistant
         DexChangeOverhead,
         IntChangeOverhead,
         SkillChangeOverhead,
+        GrabItem,
+        SetGrabItemHotBag,
+        GrabItemTarget,
+        GrabHB,
 
         __End
     }

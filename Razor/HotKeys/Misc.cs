@@ -6,6 +6,8 @@ namespace Assistant.HotKeys
 {
     public class UseHotKeys
     {
+        private static Serial _grabHotBag = Serial.Zero;
+
         public static void Initialize()
         {
             HotKey.Add(HKCategory.Misc, LocString.Resync, new HotKeyCallback(Resync));
@@ -31,9 +33,10 @@ namespace Assistant.HotKeys
 
             HotKey.Add(HKCategory.Misc, LocString.PartyAccept, new HotKeyCallback(PartyAccept));
             HotKey.Add(HKCategory.Misc, LocString.PartyDecline, new HotKeyCallback(PartyDecline));
-
+            
             HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllCome, new HotKeyCallback(PetAllCome));
-            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllFollowMe, new HotKeyCallback(PetAllFollowMe));
+            HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllFollowMe,
+                new HotKeyCallback(PetAllFollowMe));
             HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllFollow, new HotKeyCallback(PetAllFollow));
             HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllGuardMe, new HotKeyCallback(PetAllGuardMe));
             HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllGuard, new HotKeyCallback(PetAllGuard));
@@ -51,6 +54,14 @@ namespace Assistant.HotKeys
             HotKey.Add(HKCategory.Items, HKSubCat.Potions, LocString.DrinkStr, call, (ushort) 3849);
             HotKey.Add(HKCategory.Items, HKSubCat.Potions, LocString.DrinkAg, call, (ushort) 3848);
             HotKey.Add(HKCategory.Items, HKSubCat.Potions, LocString.DrinkApple, new HotKeyCallback(OnDrinkApple));
+
+
+            // Set the packet handler for single click and establish hotkeys for grab item
+            PacketHandler.RegisterClientToServerViewer(0x09, new PacketViewerCallback(OnGrabItemSingleClick));
+            HotKey.Add(HKCategory.Misc, LocString.GrabItem, new HotKeyCallback(GrabItem));
+            HotKey.Add(HKCategory.Misc, LocString.SetGrabItemHotBag, new HotKeyCallback(SetGrabItemHotBag));
+
+            _grabHotBag = Convert.ToUInt32(Config.GetString("GrabHotBag"));
         }
 
         private static void ToggleGoldPer()
@@ -70,7 +81,6 @@ namespace Assistant.HotKeys
         private static void ToggleDamage()
         {
             Engine.MainWindow.ToggleDamageTracker(!DamageTracker.Running);
-
         }
 
         private enum PetCommands
@@ -94,31 +104,37 @@ namespace Assistant.HotKeys
         {
             World.Player.Say(Language.GetString(LocString.AllFollowMe));
         }
+
         private static void PetAllFollow()
         {
             World.Player.Say(Language.GetString(LocString.AllFollow));
         }
+
         private static void PetAllGuardMe()
         {
             World.Player.Say(Language.GetString(LocString.AllGuardMe));
         }
+
         private static void PetAllGuard()
         {
             World.Player.Say(Language.GetString(LocString.AllGuard));
         }
+
         private static void PetAllKill()
         {
             World.Player.Say(Language.GetString(LocString.AllKill));
         }
+
         private static void PetAllStay()
         {
             World.Player.Say(Language.GetString(LocString.AllStay));
         }
+
         private static void PetAllStop()
         {
             World.Player.Say(Language.GetString(LocString.AllStop));
         }
-       
+
         private static void CaptureBod()
         {
             try
@@ -138,8 +154,6 @@ namespace Assistant.HotKeys
             {
                 World.Player.SendMessage(MsgLevel.Force, "Unable to capture BOD, probably unknown format");
             }
-
-            
         }
 
 
@@ -361,6 +375,74 @@ namespace Assistant.HotKeys
             }
 
             return false;
+        }
+
+        private static void GrabItem()
+        {
+            World.Player.SendMessage(MsgLevel.Force, LocString.GrabItemTarget);
+            Targeting.OneTimeTarget(OnGrabItem);
+        }
+
+        private static void OnGrabItem(bool loc, Serial serial, Point3D pt, ushort itemId)
+        {
+            Item item = World.FindItem(serial);
+
+            if (item != null && item.Serial.IsItem && item.Movable && item.Visible)
+            {
+                Item hotbag = World.FindItem(_grabHotBag) ?? World.Player.Backpack;
+
+                DragDropManager.DragDrop(item, item.Amount, hotbag);
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Error, "Invalid or inaccessible item.", false);
+            }
+        }
+
+        private static void SetGrabItemHotBag()
+        {
+            World.Player.SendMessage(MsgLevel.Force, LocString.SetGrabItemHotBag);
+            Targeting.OneTimeTarget(OnSetGrabItemHotBag);
+        }
+
+        private static void OnSetGrabItemHotBag(bool loc, Serial serial, Point3D pt, ushort itemId)
+        {
+            if (!loc && serial.IsItem)
+            {
+                Item hb = World.FindItem(serial);
+
+                if (hb != null)
+                {
+                    _grabHotBag = serial;
+                    Config.SetProperty("GrabHotBag", serial.Value.ToString());
+
+                    hb.ObjPropList.Add(Language.GetString(LocString.GrabHB));
+                    hb.OPLChanged();
+
+                    World.Player.SendMessage(MsgLevel.Force, "Grab Item HotBag Set");
+                }
+                else
+                {
+                    _grabHotBag = Serial.Zero;
+                    Config.SetProperty("GrabHotBag", "0");
+                }
+            }
+        }
+
+        private static void OnGrabItemSingleClick(PacketReader pvSrc, PacketHandlerEventArgs args)
+        {
+            Serial serial = pvSrc.ReadUInt32();
+            if (_grabHotBag == serial)
+            {
+                ushort gfx = 0;
+                Item c = World.FindItem(_grabHotBag);
+                if (c != null)
+                {
+                    gfx = c.ItemID.Value;
+                }
+
+                Client.Instance.SendToClient(new UnicodeMessage(_grabHotBag, gfx, MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.GetString(LocString.GrabHB)));
+            }
         }
     }
 }
