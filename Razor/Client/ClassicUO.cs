@@ -32,6 +32,10 @@ namespace Assistant
         private static OnGetPlayerPosition _getPlayerPosition;
         private static OnCastSpell _castSpell;
         private static OnGetStaticImage _getStaticImage;
+        private static OnTick _tick;
+        private static RequestMove _requestMove;
+        private static OnSetTitle _setTitle;
+
 
         private static OnHotkey _onHotkeyPressed;
         private static OnMouse _onMouse;
@@ -86,11 +90,12 @@ namespace Assistant
             _getPlayerPosition = (OnGetPlayerPosition)Marshal.GetDelegateForFunctionPointer( header->GetPlayerPosition, typeof( OnGetPlayerPosition ) );
             _castSpell = (OnCastSpell)Marshal.GetDelegateForFunctionPointer( header->CastSpell, typeof( OnCastSpell ) );
             _getStaticImage = (OnGetStaticImage)Marshal.GetDelegateForFunctionPointer( header->GetStaticImage, typeof( OnGetStaticImage ) );
-
+            _requestMove = (RequestMove)Marshal.GetDelegateForFunctionPointer( header->RequestMove, typeof( RequestMove ) );
+            _setTitle = (OnSetTitle)Marshal.GetDelegateForFunctionPointer( header->SetTitle, typeof( OnSetTitle ) );
             m_ClientVersion = new Version( (byte)(header->ClientVersion >> 24), (byte)(header->ClientVersion >> 16), (byte)(header->ClientVersion >> 8), (byte)header->ClientVersion ).ToString();
             m_ClientRunning = true;
             m_ClientWindow = header->HWND;
-
+            _tick = Tick;
             _recv = OnRecv;
             _send = OnSend;
             _onHotkeyPressed = OnHotKeyHandler;
@@ -102,7 +107,7 @@ namespace Assistant
             _onDisconnected = OnDisconnected;
             //_onFocusGained = OnFocusGained;
             //_onFocusLost = OnFocusLost;
-
+            header->Tick = Marshal.GetFunctionPointerForDelegate( _tick );
             header->OnRecv = Marshal.GetFunctionPointerForDelegate( _recv );
             header->OnSend = Marshal.GetFunctionPointerForDelegate( _send );
             header->OnHotkeyPressed = Marshal.GetFunctionPointerForDelegate( _onHotkeyPressed );
@@ -123,6 +128,10 @@ namespace Assistant
                 Engine.MainWindow.MainForm_EndLoad();
           //  } );
             return true;
+        }
+        private void Tick()
+        {
+            Application.DoEvents();
         }
         
         private void OnPlayerPositionChanged(int x, int y, int z)
@@ -244,9 +253,12 @@ namespace Assistant
 
         }
 
-        public override void RequestTitlebarUpdate()
-        {
 
+        public override void SetTitleStr( string str )
+        {
+            return;
+            //TODO strip item/color codes from string.
+            _setTitle( str );
         }
 
         public override bool OnMessage(MainForm razor, uint wParam, int lParam)
@@ -285,11 +297,6 @@ namespace Assistant
 
         }
 
-        public override void KeyPress(int keyCode)
-        {
-
-        }
-
         public override string GetClientVersion()
         {
             return m_ClientVersion;
@@ -308,6 +315,11 @@ namespace Assistant
         public override uint TotalDataOut()
         {
             return m_Out;
+        }
+
+        internal override void RequestMove( Direction m_Dir )
+        {
+            _requestMove( (int)m_Dir, true );
         }
     }
 }

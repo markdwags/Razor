@@ -543,17 +543,15 @@ namespace Assistant
             }
 
             string clientPath = ((OnGetUOFilePath)Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath,typeof(OnGetUOFilePath)))();
-
-            Thread t = new Thread(() =>
-            {
-                m_Running = true;
-                Thread.CurrentThread.Name = "Razor Main Thread";
+           // Thread t = new Thread(() =>
+           // {
+            m_Running = true;
+           //  Thread.CurrentThread.Name = "Razor Main Thread";
 
 #if !DEBUG
 			    AppDomain.CurrentDomain.UnhandledException +=
                     new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
 #endif
-
                 Ultima.Files.SetMulPath(clientPath);
                 Ultima.Multis.PostHSFormat = UsePostHSChanges;
 
@@ -587,16 +585,17 @@ namespace Assistant
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 m_MainWnd = new MainForm();
-                Application.Run(m_MainWnd);
-                m_Running = false;
+             m_MainWnd.Show();
+            /*  Application.Run(m_MainWnd);
+              m_Running = false;
 
-                Counter.Save();
-                Macros.MacroManager.Save();
-                Config.Save();
-            });
-            t.SetApartmentState(ApartmentState.STA);
-            t.IsBackground = true;
-            t.Start();
+              Counter.Save();
+              Macros.MacroManager.Save();
+              Config.Save();
+          });
+          t.SetApartmentState(ApartmentState.STA);
+          t.IsBackground = true;
+          t.Start();*/
         }
 
         /*public static string GetDirectory( string relPath )

@@ -8,11 +8,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>UI\App.ico</ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
     <AssemblyName>Razor</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -21,13 +17,8 @@
     <RootNamespace>Assistant</RootNamespace>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <StartupObject>Assistant.Engine</StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <PublishUrl>E:\Programming\razor-markdwags\Build\</PublishUrl>
     <Install>true</Install>
@@ -96,14 +87,12 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cuoapi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>cuoapi.dll</HintPath>
+    <Reference Include="cuoapi, Version=1.2.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\cuoapi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

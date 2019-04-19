@@ -1823,17 +1823,6 @@ namespace Assistant.Macros
         private Direction m_Dir;
         private static DateTime m_LastWalk = DateTime.MinValue;
 
-        private enum KeyboardDir {
-            North = 0x21, //page up
-            Right = 0x27, // right
-            East = 0x22, // page down
-            Down = 0x28, // down
-            South = 0x23, // end
-            Left = 0x25, // left
-            West = 0x24, // home
-            Up = 0x26, // up
-        }
-
         public static DateTime LastWalkTime { get { return m_LastWalk; } set { m_LastWalk = value; } }
 
         public WalkAction(string[] args)
@@ -1873,41 +1862,7 @@ namespace Assistant.Macros
                 //Client.Instance.SendToServer(new WalkRequest(m_Dir, World.Player.WalkSequence));
                 //World.Player.MoveReq(m_Dir, World.Player.WalkSequence);
 
-                int direction;
-
-                switch (m_Dir)
-                {
-                    case Direction.Down:
-                        direction = (int) KeyboardDir.Down;
-                        break;
-                    case Direction.East:
-                        direction = (int)KeyboardDir.East;
-                        break;
-                    case Direction.Left:
-                        direction = (int)KeyboardDir.Left;
-                        break;
-                    case Direction.North:
-                        direction = (int)KeyboardDir.North;
-                        break;
-                    case Direction.Right:
-                        direction = (int)KeyboardDir.Right;
-                        break;
-                    case Direction.South:
-                        direction = (int)KeyboardDir.South;
-                        break;
-                    case Direction.Up:
-                        direction = (int)KeyboardDir.Up;
-                        break;
-                    case Direction.West:
-                        direction = (int)KeyboardDir.West;
-                        break;
-                    default:
-                        direction = (int)KeyboardDir.Up;
-                        break;
-                }
-
-                Client.Instance.KeyPress(direction);
-
+                Client.Instance.RequestMove( m_Dir );
                 return false;
             }
         }
