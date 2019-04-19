@@ -360,6 +360,40 @@
     <Compile Include="Core\ZLib.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UltimaSDK\AnimationEdit.cs" />
+    <Compile Include="UltimaSDK\Animations.cs" />
+    <Compile Include="UltimaSDK\Animdata.cs" />
+    <Compile Include="UltimaSDK\Art.cs" />
+    <Compile Include="UltimaSDK\ASCIIFont.cs" />
+    <Compile Include="UltimaSDK\CalibrationInfo.cs" />
+    <Compile Include="UltimaSDK\Client.cs" />
+    <Compile Include="UltimaSDK\ClientHandles.cs" />
+    <Compile Include="UltimaSDK\FileIndex.cs" />
+    <Compile Include="UltimaSDK\Files.cs" />
+    <Compile Include="UltimaSDK\Gumps.cs" />
+    <Compile Include="UltimaSDK\Hues.cs" />
+    <Compile Include="UltimaSDK\Light.cs" />
+    <Compile Include="UltimaSDK\LocationPointer.cs" />
+    <Compile Include="UltimaSDK\Map.cs" />
+    <Compile Include="UltimaSDK\MultiMap.cs" />
+    <Compile Include="UltimaSDK\Multis.cs" />
+    <Compile Include="UltimaSDK\NativeMethods.cs" />
+    <Compile Include="UltimaSDK\ProcessStream.cs" />
+    <Compile Include="UltimaSDK\RadarCol.cs" />
+    <Compile Include="UltimaSDK\SkillGroups.cs" />
+    <Compile Include="UltimaSDK\Skills.cs" />
+    <Compile Include="UltimaSDK\Sound.cs" />
+    <Compile Include="UltimaSDK\SpeechList.cs" />
+    <Compile Include="UltimaSDK\StringEntry.cs" />
+    <Compile Include="UltimaSDK\StringList.cs" />
+    <Compile Include="UltimaSDK\Textures.cs" />
+    <Compile Include="UltimaSDK\TileData.cs" />
+    <Compile Include="UltimaSDK\TileList.cs" />
+    <Compile Include="UltimaSDK\TileMatrix.cs" />
+    <Compile Include="UltimaSDK\TileMatrixPatch.cs" />
+    <Compile Include="UltimaSDK\UnicodeFont.cs" />
+    <Compile Include="UltimaSDK\Verdata.cs" />
+    <Compile Include="UltimaSDK\WindowProcessStream.cs" />
     <EmbeddedResource Include="Boat\BoatWindow.resx">
       <DependentUpon>BoatWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -458,12 +492,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Razor.manifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\UltimaSDK\Ultima.csproj">
-      <Project>{5d66ace6-b2a4-400f-b5a5-24525959ac5c}</Project>
-      <Name>Ultima</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
