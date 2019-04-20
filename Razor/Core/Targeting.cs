@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assistant.Macros;
 
 namespace Assistant
@@ -21,6 +21,7 @@ namespace Assistant
         public const uint LocalTargID = 0x7FFFFFFF; // uid for target sent from razor
 
         public delegate void TargetResponseCallback(bool location, Serial serial, Point3D p, ushort gfxid);
+
         public delegate void CancelTargetCallback();
 
         private static CancelTargetCallback m_OnCancel;
@@ -45,31 +46,40 @@ namespace Assistant
         private static Serial m_LastCombatant;
 
         private delegate bool QueueTarget();
+
         private static QueueTarget TargetSelfAction = new QueueTarget(DoTargetSelf);
         private static QueueTarget LastTargetAction = new QueueTarget(DoLastTarget);
         private static QueueTarget m_QueueTarget;
 
 
         private static uint m_SpellTargID = 0;
-        public static uint SpellTargetID { get { return m_SpellTargID; } set { m_SpellTargID = value; } }
+
+        public static uint SpellTargetID
+        {
+            get { return m_SpellTargID; }
+            set { m_SpellTargID = value; }
+        }
 
         private static List<uint> m_FilterCancel = new List<uint>();
 
-        public static bool HasTarget { get { return m_HasTarget; } }
+        public static bool HasTarget
+        {
+            get { return m_HasTarget; }
+        }
 
         private static List<ushort> m_MonsterIds = new List<ushort>()
-         {
-             0x1, 0x2, 0x3, 0x4, 0x7, 0x8, 0x9, 0xC, 0xD, 0xE, 0xF,
-             0x10, 0x11, 0x12, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C,
-             0x1E, 0x1F, 0x21, 0x23, 0x24, 0x25, 0x27, 0x29, 0x2A, 0x2C,
-             0x2D, 0x2F, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38,
-             0x39, 0x3B, 0x3C, 0x3D, 0x42, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49,
-             0x4B, 0x4F, 0x50, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x59, 0x5A,
-             0x5B, 0x5C, 0x5D, 0x5E, 0x60, 0x61, 0x62, 0x69, 0x6A, 0x6B, 0x6C,
-             0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x87, 0x88, 0x89,
-             0x8A, 0x8B, 0x8C, 0x8E, 0x8F, 0x91, 0x93, 0x96, 0x99, 0x9B, 0x9E,
-             0x9F, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xB4, 0x4C, 0x4D, 0x3D
-         };
+        {
+            0x1, 0x2, 0x3, 0x4, 0x7, 0x8, 0x9, 0xC, 0xD, 0xE, 0xF,
+            0x10, 0x11, 0x12, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C,
+            0x1E, 0x1F, 0x21, 0x23, 0x24, 0x25, 0x27, 0x29, 0x2A, 0x2C,
+            0x2D, 0x2F, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38,
+            0x39, 0x3B, 0x3C, 0x3D, 0x42, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49,
+            0x4B, 0x4F, 0x50, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x59, 0x5A,
+            0x5B, 0x5C, 0x5D, 0x5E, 0x60, 0x61, 0x62, 0x69, 0x6A, 0x6B, 0x6C,
+            0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x87, 0x88, 0x89,
+            0x8A, 0x8B, 0x8C, 0x8E, 0x8F, 0x91, 0x93, 0x96, 0x99, 0x9B, 0x9E,
+            0x9F, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xB4, 0x4C, 0x4D, 0x3D
+        };
 
         private enum TargetType
         {
@@ -101,16 +111,22 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.TargRandomRedMonster, new HotKeyCallback(TargetRandRedMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargRandNFriend, new HotKeyCallback(TargetRandNonFriendly));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyHuman, new HotKeyCallback(TargetRandNonFriendlyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyMonster, new HotKeyCallback(TargetRandNonFriendlyMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyHuman,
+                new HotKeyCallback(TargetRandNonFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomNFriendlyMonster,
+                new HotKeyCallback(TargetRandNonFriendlyMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargRandFriend, new HotKeyCallback(TargetRandFriendly));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandomFriendlyHuman, new HotKeyCallback(TargetRandFriendlyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandomFriendlyMonster, new HotKeyCallback(TargetRandFriendlyMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomFriendlyHuman,
+                new HotKeyCallback(TargetRandFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomFriendlyMonster,
+                new HotKeyCallback(TargetRandFriendlyMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargRandBlue, new HotKeyCallback(TargetRandInnocent));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandInnocentHuman, new HotKeyCallback(TargetRandInnocentHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandomInnocentMonster, new HotKeyCallback(TargetRandInnocentMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandInnocentHuman,
+                new HotKeyCallback(TargetRandInnocentHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomInnocentMonster,
+                new HotKeyCallback(TargetRandInnocentMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargRandGrey, new HotKeyCallback(TargetRandGrey));
             HotKey.Add(HKCategory.Targets, LocString.TargRandGreyHuman, new HotKeyCallback(TargetRandGreyHumanoid));
@@ -121,22 +137,40 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.TargRandEnemyMonster, new HotKeyCallback(TargetRandEnemyMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargRandCriminal, new HotKeyCallback(TargetRandCriminal));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandCriminalHuman, new HotKeyCallback(TargetRandCriminalHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargRandomCriminalMonster, new HotKeyCallback(TargetRandCriminalMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandCriminalHuman,
+                new HotKeyCallback(TargetRandCriminalHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomCriminalMonster,
+                new HotKeyCallback(TargetRandCriminalMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.AttackLastComb, new HotKeyCallback(AttackLastComb));
             HotKey.Add(HKCategory.Targets, LocString.AttackLastTarg, new HotKeyCallback(AttackLastTarg));
             HotKey.Add(HKCategory.Targets, LocString.CancelTarget, new HotKeyCallback(CancelTarget));
 
             HotKey.Add(HKCategory.Targets, LocString.NextTarget, new HotKeyCallback(NextTarget));
-            HotKey.Add(HKCategory.Targets, LocString.NextTargetEnemyHumanoid, new HotKeyCallback(NextTargetEnemyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.NextTargetEnemyHumanoid,
+                new HotKeyCallback(NextTargetEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.NextTargetHumanoid, new HotKeyCallback(NextTargetHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.NextTargetMonster, new HotKeyCallback(NextTargetMonster));
 
+            HotKey.Add(HKCategory.Targets, LocString.NextTargetCriminalHumanoid,
+                new HotKeyCallback(NextTargetCriminalHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.NextTargetMurdererHumanoid,
+                new HotKeyCallback(NextTargetMurdererHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.NextTargetInnocentHumanoid,
+                new HotKeyCallback(NextTargetInnocentHumanoid));
+
             HotKey.Add(HKCategory.Targets, LocString.PrevTarget, new HotKeyCallback(PrevTarget));
-            HotKey.Add(HKCategory.Targets, LocString.PrevTargetEnemyHumanoid, new HotKeyCallback(PrevTargetEnemyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetEnemyHumanoid,
+                new HotKeyCallback(PrevTargetEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetHumanoid, new HotKeyCallback(PrevTargetHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetMonster, new HotKeyCallback(PrevTargetMonster));
+
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetCriminalHumanoid,
+                new HotKeyCallback(PrevTargetCriminalHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetMurdererHumanoid,
+                new HotKeyCallback(PrevTargetMurdererHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetInnocentHumanoid,
+                new HotKeyCallback(PrevTargetInnocentHumanoid));
 
             HotKey.Add(HKCategory.Targets, LocString.TargClosest, new HotKeyCallback(TargetClosest));
 
@@ -145,28 +179,37 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.TargCloseRedMonster, new HotKeyCallback(TargetCloseRedMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargCloseNFriend, new HotKeyCallback(TargetCloseNonFriendly));
-            HotKey.Add(HKCategory.Targets, LocString.TargClosestNFriendlyHuman, new HotKeyCallback(TargetCloseNonFriendlyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargClosestNFriendlyMonster, new HotKeyCallback(TargetCloseNonFriendlyMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestNFriendlyHuman,
+                new HotKeyCallback(TargetCloseNonFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestNFriendlyMonster,
+                new HotKeyCallback(TargetCloseNonFriendlyMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargCloseFriend, new HotKeyCallback(TargetCloseFriendly));
-            HotKey.Add(HKCategory.Targets, LocString.TargClosestFriendlyHuman, new HotKeyCallback(TargetCloseFriendlyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargClosestFriendlyMonster, new HotKeyCallback(TargetCloseFriendlyMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestFriendlyHuman,
+                new HotKeyCallback(TargetCloseFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestFriendlyMonster,
+                new HotKeyCallback(TargetCloseFriendlyMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargCloseBlue, new HotKeyCallback(TargetCloseInnocent));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseInnocentHuman, new HotKeyCallback(TargetCloseInnocentHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargClosestInnocentMonster, new HotKeyCallback(TargetCloseInnocentMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseInnocentHuman,
+                new HotKeyCallback(TargetCloseInnocentHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestInnocentMonster,
+                new HotKeyCallback(TargetCloseInnocentMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargCloseGrey, new HotKeyCallback(TargetCloseGrey));
             HotKey.Add(HKCategory.Targets, LocString.TargCloseGreyHuman, new HotKeyCallback(TargetCloseGreyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.TargCloseGreyMonster, new HotKeyCallback(TargetCloseGreyMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargCloseCriminal, new HotKeyCallback(TargetCloseCriminal));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseCriminalHuman, new HotKeyCallback(TargetCloseCriminalHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargClosestCriminalMonster, new HotKeyCallback(TargetCloseCriminalMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseCriminalHuman,
+                new HotKeyCallback(TargetCloseCriminalHumanoid));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestCriminalMonster,
+                new HotKeyCallback(TargetCloseCriminalMonster));
 
             HotKey.Add(HKCategory.Targets, LocString.TargCloseEnemy, new HotKeyCallback(TargetCloseEnemy));
             HotKey.Add(HKCategory.Targets, LocString.TargCloseEnemyHuman, new HotKeyCallback(TargetCloseEnemyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.TargCloseEnemyMonster, new HotKeyCallback(TargetCloseEnemyMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargCloseEnemyMonster,
+                new HotKeyCallback(TargetCloseEnemyMonster));
         }
 
         private static void CombatantChange(PacketReader p, PacketHandlerEventArgs e)
@@ -253,12 +296,14 @@ namespace Assistant
         }
 
         private static bool m_LTWasSet;
+
         public static void TargetSetLastTarget()
         {
             if (World.Player != null)
             {
                 m_LTWasSet = false;
-                OneTimeTarget(false, new TargetResponseCallback(OnSetLastTarget), new CancelTargetCallback(OnSLTCancel));
+                OneTimeTarget(false, new TargetResponseCallback(OnSetLastTarget),
+                    new CancelTargetCallback(OnSLTCancel));
                 World.Player.SendMessage(MsgLevel.Force, LocString.TargSetLT);
             }
         }
@@ -281,7 +326,7 @@ namespace Assistant
             m_LastTarget.Flags = 0;
             m_LastTarget.Gfx = gfxid;
             m_LastTarget.Serial = serial;
-            m_LastTarget.Type = (byte)(location ? 1 : 0);
+            m_LastTarget.Type = (byte) (location ? 1 : 0);
             m_LastTarget.X = p.X;
             m_LastTarget.Y = p.Y;
             m_LastTarget.Z = p.Z;
@@ -393,110 +438,117 @@ namespace Assistant
             }
         }
 
-        public static bool LTWasSet { get { return m_LTWasSet; } }
+        public static bool LTWasSet
+        {
+            get { return m_LTWasSet; }
+        }
 
         public static void TargetRandNonFriendly()
         {
-            RandomTarget((int) TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+            RandomTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
+                (int) TargetType.Murderer);
         }
 
         public static void TargetRandNonFriendlyHumanoid()
         {
-            RandomHumanoidTarget((int)TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+            RandomHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
+                (int) TargetType.Murderer);
         }
 
         public static void TargetRandNonFriendlyMonster()
         {
-            RandomMonsterTarget((int)TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+            RandomMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
+                (int) TargetType.Murderer);
         }
 
         public static void TargetRandFriendly()
         {
-            RandomTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+            RandomTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
         public static void TargetRandFriendlyHumanoid()
         {
-            RandomHumanoidTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+            RandomHumanoidTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
         public static void TargetRandFriendlyMonster()
         {
-            RandomMonsterTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+            RandomMonsterTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
         public static void TargetRandEnemy()
         {
-            RandomTarget((int)TargetType.Enemy);
+            RandomTarget((int) TargetType.Enemy);
         }
 
         public static void TargetRandEnemyMonster()
         {
-            RandomMonsterTarget((int)TargetType.Enemy);
+            RandomMonsterTarget((int) TargetType.Enemy);
         }
 
         public static void TargetRandEnemyHumanoid()
         {
-            RandomHumanoidTarget((int)TargetType.Enemy);
+            RandomHumanoidTarget((int) TargetType.Enemy);
         }
 
         public static void TargetRandRed()
         {
-            RandomTarget((int)TargetType.Murderer);
+            RandomTarget((int) TargetType.Murderer);
         }
 
         public static void TargetRandRedHumanoid()
         {
-            RandomHumanoidTarget((int)TargetType.Murderer);
+            RandomHumanoidTarget((int) TargetType.Murderer);
         }
 
         public static void TargetRandRedMonster()
         {
-            RandomMonsterTarget((int)TargetType.Murderer);
+            RandomMonsterTarget((int) TargetType.Murderer);
         }
 
         public static void TargetRandGrey()
         {
-            RandomTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
+            RandomTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
         public static void TargetRandGreyMonster()
         {
-            RandomMonsterTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
+            RandomMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
         public static void TargetRandGreyHumanoid()
         {
-            RandomHumanoidTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
+            RandomHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
         public static void TargetRandCriminal()
         {
-            RandomTarget((int)TargetType.Criminal);
+            RandomTarget((int) TargetType.Criminal);
         }
 
         public static void TargetRandCriminalHumanoid()
         {
-            RandomHumanoidTarget((int)TargetType.Criminal);
+            RandomHumanoidTarget((int) TargetType.Criminal);
         }
+
         public static void TargetRandCriminalMonster()
         {
-            RandomMonsterTarget((int)TargetType.Criminal);
+            RandomMonsterTarget((int) TargetType.Criminal);
         }
 
         public static void TargetRandInnocent()
         {
-            RandomTarget((int)TargetType.Innocent);
+            RandomTarget((int) TargetType.Innocent);
         }
 
         public static void TargetRandInnocentHumanoid()
         {
-            RandomHumanoidTarget((int)TargetType.Innocent);
+            RandomHumanoidTarget((int) TargetType.Innocent);
         }
 
         public static void TargetRandInnocentMonster()
         {
-            RandomMonsterTarget((int)TargetType.Innocent);
+            RandomMonsterTarget((int) TargetType.Innocent);
         }
 
         public static void TargetRandAnyone()
@@ -513,8 +565,8 @@ namespace Assistant
             foreach (Mobile m in World.MobilesInRange(12))
             {
                 if ((!FriendsAgent.IsFriend(m) || (noto.Length > 0 && noto[0] == 0)) &&
-                     !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
-                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
+                    !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                 {
                     for (int i = 0; i < noto.Length; i++)
                     {
@@ -531,7 +583,7 @@ namespace Assistant
             }
 
             if (list.Count > 0)
-                SetLastTargetTo((Mobile)list[Utility.Random(list.Count)]);
+                SetLastTargetTo((Mobile) list[Utility.Random(list.Count)]);
             else
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
         }
@@ -548,8 +600,8 @@ namespace Assistant
                     continue;
 
                 if ((!FriendsAgent.IsFriend(m) || (noto.Length > 0 && noto[0] == 0)) &&
-                     !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
-                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
+                    !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                 {
                     for (int i = 0; i < noto.Length; i++)
                     {
@@ -609,107 +661,110 @@ namespace Assistant
 
         public static void TargetCloseNonFriendly()
         {
-            ClosestTarget((int) TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+            ClosestTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
+                (int) TargetType.Murderer);
         }
 
         public static void TargetCloseNonFriendlyHumanoid()
         {
-            ClosestHumanoidTarget((int)TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+            ClosestHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
+                (int) TargetType.Murderer);
         }
 
         public static void TargetCloseNonFriendlyMonster()
         {
-            ClosestMonsterTarget((int)TargetType.Attackable, (int)TargetType.Criminal, (int)TargetType.Enemy, (int)TargetType.Murderer);
+            ClosestMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
+                (int) TargetType.Murderer);
         }
 
         public static void TargetCloseFriendly()
         {
-            ClosestTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+            ClosestTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
         public static void TargetCloseFriendlyHumanoid()
         {
-            ClosestTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+            ClosestTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
         public static void TargetCloseFriendlyMonster()
         {
-            ClosestTarget((int)TargetType.Invalid, (int)TargetType.Innocent, (int)TargetType.GuildAlly);
+            ClosestTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
         public static void TargetCloseEnemy()
         {
-            ClosestTarget((int)TargetType.Enemy);
+            ClosestTarget((int) TargetType.Enemy);
         }
 
         public static void TargetCloseEnemyHumanoid()
         {
-            ClosestHumanoidTarget((int)TargetType.Enemy);
+            ClosestHumanoidTarget((int) TargetType.Enemy);
         }
 
         public static void TargetCloseEnemyMonster()
         {
-            ClosestMonsterTarget((int)TargetType.Enemy);
+            ClosestMonsterTarget((int) TargetType.Enemy);
         }
 
         public static void TargetCloseRed()
         {
-            ClosestTarget((int)TargetType.Murderer);
+            ClosestTarget((int) TargetType.Murderer);
         }
 
         public static void TargetCloseRedMonster()
         {
-            ClosestMonsterTarget((int)TargetType.Murderer);
+            ClosestMonsterTarget((int) TargetType.Murderer);
         }
 
         public static void TargetCloseRedHumanoid()
         {
-            ClosestHumanoidTarget((int)TargetType.Murderer);
+            ClosestHumanoidTarget((int) TargetType.Murderer);
         }
 
         public static void TargetCloseGrey()
         {
-            ClosestTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
+            ClosestTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
         public static void TargetCloseGreyMonster()
         {
-            ClosestMonsterTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
+            ClosestMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
         public static void TargetCloseGreyHumanoid()
         {
-            ClosestHumanoidTarget((int)TargetType.Attackable, (int)TargetType.Criminal);
+            ClosestHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
         public static void TargetCloseCriminal()
         {
-            ClosestTarget((int)TargetType.Criminal);
+            ClosestTarget((int) TargetType.Criminal);
         }
 
         public static void TargetCloseCriminalHumanoid()
         {
-            ClosestHumanoidTarget((int)TargetType.Criminal);
+            ClosestHumanoidTarget((int) TargetType.Criminal);
         }
 
         public static void TargetCloseCriminalMonster()
         {
-            ClosestHumanoidTarget((int)TargetType.Criminal);
+            ClosestHumanoidTarget((int) TargetType.Criminal);
         }
 
         public static void TargetCloseInnocent()
         {
-            ClosestTarget((int)TargetType.Innocent);
+            ClosestTarget((int) TargetType.Innocent);
         }
 
         public static void TargetCloseInnocentHumanoid()
         {
-            ClosestHumanoidTarget((int)TargetType.Innocent);
+            ClosestHumanoidTarget((int) TargetType.Innocent);
         }
 
         public static void TargetCloseInnocentMonster()
         {
-            ClosestMonsterTarget((int)TargetType.Innocent);
+            ClosestMonsterTarget((int) TargetType.Innocent);
         }
 
         public static void TargetClosest()
@@ -726,8 +781,8 @@ namespace Assistant
             foreach (Mobile m in World.MobilesInRange(12))
             {
                 if ((!FriendsAgent.IsFriend(m) || (noto.Length > 0 && noto[0] == 0)) &&
-                     !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
-                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
+                    !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                 {
                     for (int i = 0; i < noto.Length; i++)
                     {
@@ -775,8 +830,8 @@ namespace Assistant
                     continue;
 
                 if ((!FriendsAgent.IsFriend(m) || (noto.Length > 0 && noto[0] == 0)) &&
-                     !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
-                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
+                    !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                 {
                     for (int i = 0; i < noto.Length; i++)
                     {
@@ -893,7 +948,7 @@ namespace Assistant
             Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
-            
+
             OverheadTargetMessage(targ);
 
             bool wasSmart = Config.GetBool("SmartLastTarget");
@@ -1089,7 +1144,8 @@ namespace Assistant
                 }
             }
 
-            if (Config.GetBool("RangeCheckLT") && Client.Instance.AllowBit(FeatureBit.RangeCheckLT) && (pos == Point3D.Zero || !Utility.InRange(World.Player.Position, pos, Config.GetInt("LTRange"))))
+            if (Config.GetBool("RangeCheckLT") && Client.Instance.AllowBit(FeatureBit.RangeCheckLT) &&
+                (pos == Point3D.Zero || !Utility.InRange(World.Player.Position, pos, Config.GetInt("LTRange"))))
             {
                 if (Config.GetBool("QueueTargets"))
                     m_QueueTarget = LastTargetAction;
@@ -1136,7 +1192,8 @@ namespace Assistant
                         MacroManager.Action(new AbsoluteTargetAction(info));
 
                     if (m_OnTarget != null)
-                        m_OnTarget(info.Type == 1 ? true : false, info.Serial, new Point3D(info.X, info.Y, info.Z), info.Gfx);
+                        m_OnTarget(info.Type == 1 ? true : false, info.Serial, new Point3D(info.X, info.Y, info.Z),
+                            info.Gfx);
                 }
             }
 
@@ -1159,7 +1216,7 @@ namespace Assistant
         {
             if (m_ClientTarget)
             {
-                m_FilterCancel.Add((uint)m_CurrentID);
+                m_FilterCancel.Add((uint) m_CurrentID);
                 Client.Instance.SendToClient(new CancelTarget(m_CurrentID));
                 m_ClientTarget = false;
             }
@@ -1205,7 +1262,7 @@ namespace Assistant
             info.X = pt.X;
             info.Y = pt.Y;
             info.Z = pt.Z;
-            info.Gfx = (ushort)(gfx & 0x3FFF);
+            info.Gfx = (ushort) (gfx & 0x3FFF);
 
             Target(info);
         }
@@ -1247,7 +1304,7 @@ namespace Assistant
         {
             if (o is Item)
             {
-                Item item = (Item)o;
+                Item item = (Item) o;
                 TargetInfo info = new TargetInfo();
                 info.Type = 0;
                 info.Flags = 0;
@@ -1260,7 +1317,7 @@ namespace Assistant
             }
             else if (o is Mobile)
             {
-                Mobile m = (Mobile)o;
+                Mobile m = (Mobile) o;
                 TargetInfo info = new TargetInfo();
                 info.Type = 0;
                 info.Flags = 0;
@@ -1273,17 +1330,16 @@ namespace Assistant
             }
             else if (o is Serial)
             {
-                Target((Serial)o);
+                Target((Serial) o);
             }
             else if (o is TargetInfo)
             {
-                Target((TargetInfo)o);
+                Target((TargetInfo) o);
             }
         }
 
         public static void CheckTextFlags(Mobile m)
         {
-
             if (IgnoreAgent.IsIgnored(m.Serial))
             {
                 m.OverheadMessage(Config.GetInt("SysColor"), "[Ignored]");
@@ -1328,632 +1384,204 @@ namespace Assistant
             return false;
         }
 
-        private static int m_NextPrevTargIdx = 0;
-        public static void NextTarget()
+        /// <summary>
+        /// Index used to keep track of the current Next/Prev target
+        /// </summary>
+        private static int _nextPrevTargetIndex;
+
+        /// <summary>
+        /// Handles the common Next/Prev logic based on a list of targets passed in already filtered by the calling
+        /// functions conditions.
+        /// </summary>
+        /// <param name="targets">The list of targets (already filtered)</param>
+        /// <param name="nextTarget">next target true, previous target false</param>
+        public static void NextPrevTarget(List<Mobile> targets, bool nextTarget)
         {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-            TargetInfo targ = new TargetInfo();
-            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+            Mobile mobile = null, old = World.FindMobile(m_LastTarget?.Serial ?? Serial.Zero);
+            TargetInfo target = new TargetInfo();
 
-            List<Mobile> list = new List<Mobile>();
+            if (targets.Count <= 0)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
+            }
 
+            // Remove all friends or party members (if the options are enabled) from being targeted
             if (Config.GetBool("NextPrevTargetIgnoresFriends"))
             {
-                foreach (Mobile mobile in mobiles)
-                {
-                    if (!FriendsAgent.IsFriend(mobile))
-                    {
-                        list.Add(mobile);
-                    }
-                }
-            }
-            else
-            {
-                list = mobiles;
+                targets.RemoveAll(FriendsAgent.IsFriend);
             }
 
-            if (list.Count <= 0)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
+            // Loop through 3 times and break out if you can't get a target for some reason
             for (int i = 0; i < 3; i++)
             {
-                m_NextPrevTargIdx++;
+                if (nextTarget)
+                {
+                    _nextPrevTargetIndex++;
 
-                if (m_NextPrevTargIdx >= list.Count)
-                    m_NextPrevTargIdx = 0;
-
-                m = (Mobile)list[m_NextPrevTargIdx];
-
-                if (m != null && m != World.Player && m != old)
-                    break;
+                    if (_nextPrevTargetIndex >= targets.Count)
+                        _nextPrevTargetIndex = 0;
+                }
                 else
-                    m = null;
+                {
+                    _nextPrevTargetIndex--;
+
+                    if (_nextPrevTargetIndex < 0)
+                        _nextPrevTargetIndex = targets.Count - 1;
+                }
+                
+                try
+                {
+                    mobile = targets[_nextPrevTargetIndex];
+                }
+                catch
+                {
+                    mobile = null;
+                }
+
+                if (mobile != null && mobile != World.Player && mobile != old)
+                {
+                    break;
+                }
+
+                mobile = null;
             }
 
-            if (m == null)
-                m = old;
+            if (mobile == null)
+                mobile = old;
 
-            if (m == null)
+            if (mobile == null)
             {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
                 return;
             }
 
-            m_LastGroundTarg = m_LastTarget = targ;
+            m_LastGroundTarg = m_LastTarget = target;
 
-            m_LastHarmTarg = m_LastBeneTarg = targ;
+            m_LastHarmTarg = m_LastBeneTarg = target;
 
             if (m_HasTarget)
-                targ.Flags = m_CurFlags;
+                target.Flags = m_CurFlags;
             else
-                targ.Type = 0;
+                target.Type = 0;
 
-            targ.Gfx = m.Body;
-            targ.Serial = m.Serial;
-            targ.X = m.Position.X;
-            targ.Y = m.Position.Y;
-            targ.Z = m.Position.Z;
+            target.Gfx = mobile.Body;
+            target.Serial = mobile.Serial;
+            target.X = mobile.Position.X;
+            target.Y = mobile.Position.Y;
+            target.Z = mobile.Position.Z;
 
-            Client.Instance.SendToClient(new ChangeCombatant(m));
-            m_LastCombatant = m.Serial;
+            Client.Instance.SendToClient(new ChangeCombatant(mobile));
+
+            m_LastCombatant = mobile.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
-            OverheadTargetMessage(targ);
-
-            /*if ( m_HasTarget )
-            {
-                 DoLastTarget();
-                 ClearQueue();
-            }*/
+            OverheadTargetMessage(target);
         }
 
-        private static int m_NextPrevTargHumanoidIdx = 0;
+        public static void NextTarget()
+        {
+            List<Mobile> mobiles = World.MobilesInRange();
+
+            NextPrevTarget(mobiles, true);
+        }
+
         public static void NextTargetHumanoid()
         {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-            List<Mobile> list = new List<Mobile>();
+            List<Mobile> mobiles = World.MobilesInRange().Where(x => x.IsHuman).ToList();
 
-            foreach (Mobile mob in mobiles)
-            {
-                if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
-                {
-                    if (Config.GetBool("NextPrevTargetIgnoresFriends"))
-                    {
-                        if (FriendsAgent.IsFriend(mob) == false)
-                        {
-                            list.Add(mob);
-                        }
-                    }
-                    else
-                    {
-                        list.Add(mob);
-                    }
-                }
-            }
-
-            if (list.Count <= 0)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            TargetInfo targ = new TargetInfo();
-            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
-
-            for (int i = 0; i < 3; i++)
-            {
-                m_NextPrevTargHumanoidIdx++;
-
-                if (m_NextPrevTargHumanoidIdx >= list.Count)
-                    m_NextPrevTargHumanoidIdx = 0;
-
-                m = (Mobile)list[m_NextPrevTargHumanoidIdx];
-
-                if (m != null && m != World.Player && m != old)
-                    break;
-                else
-                    m = null;
-            }
-
-            if (m == null)
-                m = old;
-
-            if (m == null)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            m_LastGroundTarg = m_LastTarget = targ;
-
-            m_LastHarmTarg = m_LastBeneTarg = targ;
-
-            if (m_HasTarget)
-                targ.Flags = m_CurFlags;
-            else
-                targ.Type = 0;
-
-            targ.Gfx = m.Body;
-            targ.Serial = m.Serial;
-            targ.X = m.Position.X;
-            targ.Y = m.Position.Y;
-            targ.Z = m.Position.Z;
-
-            Client.Instance.SendToClient(new ChangeCombatant(m));
-            m_LastCombatant = m.Serial;
-            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
-
-            OverheadTargetMessage(targ);
-
-            /*if ( m_HasTarget )
-            {
-                 DoLastTarget();
-                 ClearQueue();
-            }*/
+            NextPrevTarget(mobiles, true);
         }
 
-        private static int m_NextPrevTargEnemyHumanoidIdx = 0;
         public static void NextTargetEnemyHumanoid()
         {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-            List<Mobile> list = new List<Mobile>();
+            List<Mobile> mobiles = World.MobilesInRange().Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Enemy)
+                .ToList();
 
-            foreach (Mobile mob in mobiles)
-            {
-                if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
-                {
-                    if (mob.Notoriety == 5) // Check if they are red
-                    {
-                        if (Config.GetBool("NextPrevTargetIgnoresFriends"))
-                        {
-                            if (FriendsAgent.IsFriend(mob) == false)
-                            {
-                                list.Add(mob);
-                            }
-                        }
-                        else
-                        {
-                            list.Add(mob);
-                        }
-                    }
-                }
-            }
-
-            if (list.Count <= 0)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            TargetInfo targ = new TargetInfo();
-            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
-
-            for (int i = 0; i < 3; i++)
-            {
-                m_NextPrevTargEnemyHumanoidIdx++;
-
-                if (m_NextPrevTargEnemyHumanoidIdx >= list.Count)
-                    m_NextPrevTargEnemyHumanoidIdx = 0;
-
-                m = list[m_NextPrevTargEnemyHumanoidIdx];
-
-                if (m != null && m != World.Player && m != old)
-                    break;
-                else
-                    m = null;
-            }
-
-            if (m == null)
-                m = old;
-
-            if (m == null)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            m_LastGroundTarg = m_LastTarget = targ;
-
-            m_LastHarmTarg = m_LastBeneTarg = targ;
-
-            if (m_HasTarget)
-                targ.Flags = m_CurFlags;
-            else
-                targ.Type = 0;
-
-            targ.Gfx = m.Body;
-            targ.Serial = m.Serial;
-            targ.X = m.Position.X;
-            targ.Y = m.Position.Y;
-            targ.Z = m.Position.Z;
-
-            Client.Instance.SendToClient(new ChangeCombatant(m));
-            m_LastCombatant = m.Serial;
-            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
-
-            OverheadTargetMessage(targ);
-
-            /*if ( m_HasTarget )
-           {
-               DoLastTarget();
-               ClearQueue();
-           }*/
+            NextPrevTarget(mobiles, true);
         }
 
-        private static int m_NextPrevTargMonsterIdx = 0;
         public static void NextTargetMonster()
         {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-            List<Mobile> list = new List<Mobile>();
+            List<Mobile> mobiles = World.MobilesInRange().Where(x => x.IsMonster).ToList();
 
-            foreach (Mobile mob in mobiles)
-            {
-                if (mob.IsMonster)
-                    list.Add(mob);
-            }
-
-            if (list.Count <= 0)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            TargetInfo targ = new TargetInfo();
-            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
-
-            for (int i = 0; i < 3; i++)
-            {
-                m_NextPrevTargMonsterIdx++;
-
-                if (m_NextPrevTargMonsterIdx >= list.Count)
-                    m_NextPrevTargMonsterIdx = 0;
-
-                m = list[m_NextPrevTargMonsterIdx];
-
-                if (m != null && m != World.Player && m != old)
-                    break;
-                else
-                    m = null;
-            }
-
-            if (m == null)
-                m = old;
-
-            if (m == null)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            m_LastGroundTarg = m_LastTarget = targ;
-
-            m_LastHarmTarg = m_LastBeneTarg = targ;
-
-            if (m_HasTarget)
-                targ.Flags = m_CurFlags;
-            else
-                targ.Type = 0;
-
-            targ.Gfx = m.Body;
-            targ.Serial = m.Serial;
-            targ.X = m.Position.X;
-            targ.Y = m.Position.Y;
-            targ.Z = m.Position.Z;
-
-            Client.Instance.SendToClient(new ChangeCombatant(m));
-            m_LastCombatant = m.Serial;
-            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
-
-            OverheadTargetMessage(targ);
+            NextPrevTarget(mobiles, true);
         }
 
         public static void PrevTarget()
         {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-            TargetInfo targ = new TargetInfo();
-            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+            List<Mobile> mobiles = World.MobilesInRange();
 
-            List<Mobile> list = new List<Mobile>();
-
-            if (Config.GetBool("NextPrevTargetIgnoresFriends"))
-            {
-                foreach (Mobile mobile in mobiles)
-                {
-                    if (!FriendsAgent.IsFriend(mobile))
-                    {
-                        list.Add(mobile);
-                    }
-                }
-            }
-            else
-            {
-                list = mobiles;
-            }
-
-            if (list.Count <= 0)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                m_NextPrevTargIdx--;
-
-                if (m_NextPrevTargIdx < 0)
-                    m_NextPrevTargIdx = list.Count - 1;
-
-                m = (Mobile)list[m_NextPrevTargIdx];
-
-                if (m != null && m != World.Player && m != old)
-                    break;
-                else
-                    m = null;
-            }
-
-            if (m == null)
-                m = old;
-
-            if (m == null)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            m_LastGroundTarg = m_LastTarget = targ;
-
-            m_LastHarmTarg = m_LastBeneTarg = targ;
-
-            if (m_HasTarget)
-                targ.Flags = m_CurFlags;
-            else
-                targ.Type = 0;
-
-            targ.Gfx = m.Body;
-            targ.Serial = m.Serial;
-            targ.X = m.Position.X;
-            targ.Y = m.Position.Y;
-            targ.Z = m.Position.Z;
-
-            Client.Instance.SendToClient(new ChangeCombatant(m));
-            m_LastCombatant = m.Serial;
-            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
-
-            OverheadTargetMessage(targ);
+            NextPrevTarget(mobiles, false);
         }
-        
+
         public static void PrevTargetHumanoid()
         {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-            List<Mobile> list = new List<Mobile>();
+            List<Mobile> mobiles = World.MobilesInRange().Where(x => x.IsHuman).ToList();
 
-            foreach (Mobile mob in mobiles)
-            {
-                if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
-                {
-                    if (Config.GetBool("NextPrevTargetIgnoresFriends"))
-                    {
-                        if (FriendsAgent.IsFriend(mob) == false)
-                        {
-                            list.Add(mob);
-                        }
-                    }
-                    else
-                    {
-                        list.Add(mob);
-                    }
-                }
-            }
-
-            if (list.Count <= 0)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            TargetInfo targ = new TargetInfo();
-            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
-
-            for (int i = 0; i < 3; i++)
-            {
-                m_NextPrevTargHumanoidIdx--;
-
-                if (m_NextPrevTargHumanoidIdx < 0)
-                    m_NextPrevTargHumanoidIdx = list.Count - 1;
-
-                m = (Mobile)list[m_NextPrevTargHumanoidIdx];
-
-                if (m != null && m != World.Player && m != old)
-                    break;
-                else
-                    m = null;
-            }
-
-            if (m == null)
-                m = old;
-
-            if (m == null)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            m_LastGroundTarg = m_LastTarget = targ;
-
-            m_LastHarmTarg = m_LastBeneTarg = targ;
-
-            if (m_HasTarget)
-                targ.Flags = m_CurFlags;
-            else
-                targ.Type = 0;
-
-            targ.Gfx = m.Body;
-            targ.Serial = m.Serial;
-            targ.X = m.Position.X;
-            targ.Y = m.Position.Y;
-            targ.Z = m.Position.Z;
-
-            Client.Instance.SendToClient(new ChangeCombatant(m));
-            m_LastCombatant = m.Serial;
-            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
-
-            OverheadTargetMessage(targ);
-
-            /*if ( m_HasTarget )
-            {
-                 DoLastTarget();
-                 ClearQueue();
-            }*/
+            NextPrevTarget(mobiles, false);
         }
-        
+
         public static void PrevTargetEnemyHumanoid()
         {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-            List<Mobile> list = new List<Mobile>();
+            List<Mobile> mobiles = World.MobilesInRange().Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Enemy)
+                .ToList();
 
-            foreach (Mobile mob in mobiles)
-            {
-                if (mob.Body == 0x0190 || mob.Body == 0x0191 || mob.Body == 0x025D || mob.Body == 0x025E)
-                {
-                    if (mob.Notoriety == 5) // Check if they are red
-                    {
-                        if (Config.GetBool("NextPrevTargetIgnoresFriends"))
-                        {
-                            if (FriendsAgent.IsFriend(mob) == false)
-                            {
-                                list.Add(mob);
-                            }
-                        }
-                        else
-                        {
-                            list.Add(mob);
-                        }
-                    }
-                }
-            }
-
-            if (list.Count <= 0)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            TargetInfo targ = new TargetInfo();
-            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
-
-            for (int i = 0; i < 3; i++)
-            {
-                m_NextPrevTargEnemyHumanoidIdx--;
-
-                if (m_NextPrevTargEnemyHumanoidIdx < 0)
-                    m_NextPrevTargEnemyHumanoidIdx = list.Count - 1;
-
-                m = list[m_NextPrevTargEnemyHumanoidIdx];
-
-                if (m != null && m != World.Player && m != old)
-                    break;
-                else
-                    m = null;
-            }
-
-            if (m == null)
-                m = old;
-
-            if (m == null)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
-            m_LastGroundTarg = m_LastTarget = targ;
-
-            m_LastHarmTarg = m_LastBeneTarg = targ;
-
-            if (m_HasTarget)
-                targ.Flags = m_CurFlags;
-            else
-                targ.Type = 0;
-
-            targ.Gfx = m.Body;
-            targ.Serial = m.Serial;
-            targ.X = m.Position.X;
-            targ.Y = m.Position.Y;
-            targ.Z = m.Position.Z;
-
-            Client.Instance.SendToClient(new ChangeCombatant(m));
-            m_LastCombatant = m.Serial;
-            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
-
-            OverheadTargetMessage(targ);
+            NextPrevTarget(mobiles, false);
         }
 
         public static void PrevTargetMonster()
         {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-            List<Mobile> list = new List<Mobile>();
-            
-            foreach (Mobile mob in mobiles)
-            {
-                if (mob.IsMonster)
-                    list.Add(mob);
-            }
+            List<Mobile> mobiles = World.MobilesInRange().Where(x => x.IsMonster).ToList();
 
-            if (list.Count <= 0)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
+            NextPrevTarget(mobiles, false);
+        }
 
-            TargetInfo targ = new TargetInfo();
-            Mobile m = null, old = World.FindMobile(m_LastTarget == null ? Serial.Zero : m_LastTarget.Serial);
+        public static void NextTargetCriminalHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Criminal).ToList();
 
-            for (int i = 0; i < 3; i++)
-            {
-                m_NextPrevTargMonsterIdx--;
+            NextPrevTarget(mobiles, true);
+        }
 
-                if (m_NextPrevTargMonsterIdx < 0)
-                    m_NextPrevTargMonsterIdx = list.Count - 1;
+        public static void NextTargetMurdererHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Murderer).ToList();
+            NextPrevTarget(mobiles, true);
+        }
 
-                m = list[m_NextPrevTargMonsterIdx];
+        public static void NextTargetInnocentHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Innocent).ToList();
 
-                if (m != null && m != World.Player && m != old)
-                    break;
-                else
-                    m = null;
-            }
+            NextPrevTarget(mobiles, true);
+        }
 
-            if (m == null)
-                m = old;
+        public static void PrevTargetCriminalHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Criminal).ToList();
 
-            if (m == null)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
+            NextPrevTarget(mobiles, false);
+        }
 
-            m_LastGroundTarg = m_LastTarget = targ;
+        public static void PrevTargetMurdererHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Murderer).ToList();
 
-            m_LastHarmTarg = m_LastBeneTarg = targ;
+            NextPrevTarget(mobiles, false);
+        }
 
-            if (m_HasTarget)
-                targ.Flags = m_CurFlags;
-            else
-                targ.Type = 0;
+        public static void PrevTargetInnocentHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && x.Notoriety == (int)TargetType.Innocent).ToList();
 
-            targ.Gfx = m.Body;
-            targ.Serial = m.Serial;
-            targ.X = m.Position.X;
-            targ.Y = m.Position.Y;
-            targ.Z = m.Position.Z;
-
-            Client.Instance.SendToClient(new ChangeCombatant(m));
-            m_LastCombatant = m.Serial;
-            World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
-
-            OverheadTargetMessage(targ);
+            NextPrevTarget(mobiles, false);
         }
 
         public static void CheckLastTargetRange(Mobile m)
@@ -1961,7 +1589,8 @@ namespace Assistant
             if (World.Player == null)
                 return;
 
-            if (m_HasTarget && m != null && m_LastTarget != null && m.Serial == m_LastTarget.Serial && m_QueueTarget == LastTargetAction)
+            if (m_HasTarget && m != null && m_LastTarget != null && m.Serial == m_LastTarget.Serial &&
+                m_QueueTarget == LastTargetAction)
             {
                 if (Config.GetBool("RangeCheckLT") && Client.Instance.AllowBit(FeatureBit.RangeCheckLT))
                 {
@@ -1979,7 +1608,9 @@ namespace Assistant
             if (World.Player == null)
                 return false;
 
-            if (targID == m_SpellTargID && ser.IsMobile && (World.Player.LastSpell == Spell.ToID(1, 4) || World.Player.LastSpell == Spell.ToID(4, 5)) && Config.GetBool("BlockHealPoison") && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+            if (targID == m_SpellTargID && ser.IsMobile &&
+                (World.Player.LastSpell == Spell.ToID(1, 4) || World.Player.LastSpell == Spell.ToID(4, 5)) &&
+                Config.GetBool("BlockHealPoison") && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
             {
                 Mobile m = World.FindMobile(ser);
 
@@ -2033,7 +1664,7 @@ namespace Assistant
                         ResendTarget();
                     }
                 }
-                else if (m_FilterCancel.Contains((uint)info.TargID) || info.TargID == LocalTargID)
+                else if (m_FilterCancel.Contains((uint) info.TargID) || info.TargID == LocalTargID)
                 {
                     args.Block = true;
                 }
@@ -2106,7 +1737,7 @@ namespace Assistant
             {
                 if (Macros.MacroManager.AcceptActions)
                 {
-                    KeyData hk = HotKey.Get((int)LocString.TargetSelf);
+                    KeyData hk = HotKey.Get((int) LocString.TargetSelf);
                     if (hk != null)
                         MacroManager.Action(new HotKeyAction(hk));
                     else
@@ -2132,7 +1763,7 @@ namespace Assistant
             m_AllowGround = p.ReadBoolean(); // allow ground
             m_CurrentID = p.ReadUInt32(); // target uid
             m_CurFlags = p.ReadByte(); // flags
-                                       // the rest of the packet is 0s
+            // the rest of the packet is 0s
 
             // check for a server cancel command
             if (!m_AllowGround && m_CurrentID == 0 && m_CurFlags == 3)
@@ -2144,16 +1775,19 @@ namespace Assistant
                     EndIntercept();
                     World.Player.SendMessage(MsgLevel.Error, LocString.OTTCancel);
                 }
+
                 return;
             }
 
-            if (Spell.LastCastTime + TimeSpan.FromSeconds(3.0) > DateTime.UtcNow && Spell.LastCastTime + TimeSpan.FromSeconds(0.5) <= DateTime.UtcNow && m_SpellTargID == 0)
+            if (Spell.LastCastTime + TimeSpan.FromSeconds(3.0) > DateTime.UtcNow &&
+                Spell.LastCastTime + TimeSpan.FromSeconds(0.5) <= DateTime.UtcNow && m_SpellTargID == 0)
                 m_SpellTargID = m_CurrentID;
 
             m_HasTarget = true;
             m_ClientTarget = false;
 
-            if (m_QueueTarget == null && Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForTargetAction()))
+            if (m_QueueTarget == null && Macros.MacroManager.AcceptActions &&
+                MacroManager.Action(new WaitForTargetAction()))
             {
                 args.Block = true;
             }
@@ -2188,7 +1822,7 @@ namespace Assistant
                     EndIntercept();
                     World.Player.SendMessage(MsgLevel.Error, LocString.OTTCancel);
 
-                    m_FilterCancel.Add((uint)prevID);
+                    m_FilterCancel.Add((uint) prevID);
                 }
             }
         }
@@ -2222,7 +1856,8 @@ namespace Assistant
                 if (m == null)
                     return;
 
-                World.Player.OverheadMessage(FriendsAgent.IsFriend(m) ? 63 : m.GetNotorietyColorInt(), $"Target: {m.Name}");
+                World.Player.OverheadMessage(FriendsAgent.IsFriend(m) ? 63 : m.GetNotorietyColorInt(),
+                    $"Target: {m.Name}");
             }
 
             if (Config.GetBool("ShowTextTargetIndicator") && info.Serial != 0 && info.Serial.IsMobile)

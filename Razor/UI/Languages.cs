@@ -487,6 +487,12 @@ namespace Assistant
         SetGrabItemHotBag,
         GrabItemTarget,
         GrabHB,
+        NextTargetCriminalHumanoid,
+        NextTargetMurdererHumanoid,
+        NextTargetInnocentHumanoid,
+        PrevTargetCriminalHumanoid,
+        PrevTargetMurdererHumanoid,
+        PrevTargetInnocentHumanoid,
 
         __End
     }
