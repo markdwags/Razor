@@ -602,7 +602,7 @@ namespace Assistant
 
             m_CliLocName = "enu";
             string filename = Path.Combine(Config.GetInstallDirectory("Language"),
-                String.Format("Razor_lang.{0}", lang));
+                String.Format("Razor_lang.{0}", lang.ToLower()));
             if (!File.Exists(filename))
                 return false;
             m_Current = lang;
