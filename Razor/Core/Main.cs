@@ -617,6 +617,8 @@ namespace Assistant
 
             for (int i = 0; i < types.Length; i++)
             {
+                if ( types[i].Namespace == "Ultima" )
+                    continue;
                 MethodInfo init = types[i].GetMethod("Initialize", BindingFlags.Static | BindingFlags.Public);
 
                 if (init != null)
