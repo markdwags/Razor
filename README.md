@@ -1,5 +1,8 @@
 ![Razor Logo](https://imgur.com/jTtHLVF.png)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/1815mo6is2t8fl1o?svg=true)](https://ci.appveyor.com/project/markdwags/razor)
+
+
 # Razor: An Ultima Online Assistant
 
 Razor is a free tool designed to help with simple tasks while playing Ultima Online.
@@ -10,33 +13,64 @@ The purpose and goal of this project is to revive and continue development of th
 
 For release notes, download links and other information go to http://www.uor-razor.com.
 
-This version is currently being refactored to work with [ClassicUO](https://github.com/andreakarasho/ClassicUO).
+This version is currently being refactored to integrate with both the standard Ultima Online client (5.x & 7.x) and the open source [ClassicUO](https://github.com/andreakarasho/ClassicUO).
 
 ## History
 
 Razor was originally designed by Bryan Pass, known as Zippy in the RunUO community as a replacement to UOAssist. Based on commit notes, active development on Razor ceased some time in the early 2010's with the source code being released in 2014.
 
-The code initially didn't include Crypt.dll and Loader.dll which are required to full integration with UO. At some point, the code was released into the same GitHub repo.
+The code initially didn't include Crypt.dll and Loader.dll which are required to full integration with UO. At some point, the code was released into the same [GitHub repo](https://github.com/msturgill/razor).
 
 This version of Razor is based off of 1.4.0.3, which is simply version 1.0.13.13 updated from .NET 2.0 to .NET 4.0. Another version of Razor exists (the 1.0.14.x versions) and is/was maintained by another private shard that make some enhancements, notable around targeting. This version of Razor has incorporated the majority of changes you can find in those versions.
 
 The original project was last updated May 2nd, 2014 and while over 50 forks exist on GitHub, none have been active or have made significant changes except for a few exceptions.
 
-  * **Jaedan** (which this version is based on) who updated the project to compile and work in Visual Studio 2017 and made improvements to Crypt.dll that enabled this project to move forward.
-  * **uoitalia** who made several performance changes from generic to non-generic collections that I incorporated in the first release.
+  * [Jaedan](https://github.com/jaedan) (which this version is based on) who updated the project to compile and work in Visual Studio 2017 and made improvements to Crypt.dll that enabled this project to move forward.
+  * [uoitalia](https://github.com/uoitalia) who made several performance changes from generic to non-generic collections that I incorporated in the first release.
+
+## Versions
+
+* **1.5.0.0** to **1.5.0.16** only support the standard Ultima Online client.
+* **1.5.0.17** has major changes to how Razor determines player position and only supports the standard Ultima Online client.
+* **1.6.x.x** support both the standard client and [ClassicUO](https://github.com/andreakarasho/ClassicUO).
 
 ## Installing
 
 This version of Razor doesn't use the Windows Registry or %AppData%\Razor to store configuration, macros and profiles. In other words, it's portable. To install, follow these simple steps:
 
-  * Download the latest release
-  * Extract into any location (ie: C:\UO\Razor)
-  * (Optional) If you have an existing version of Razor, copy the Profiles and Macros folders from %AppData%\Razor into the folder you extracted the zip above to. If you have custom counters, also copy counters.xml over.
-  * Right-Click on the Razor shortcut or Razor.exe, go to Properties. On the Compatibility tab, select Run this program in compatibility mode for and select Windows XP SP2.
-  * Run Razor either via the shortcut or clicking the Razor.exe directly.
-  * Razor should prompt to Run As Administrator. You must allow this for Razor to function correctly.  
+### Standard Client & ClassicUO Client
 
-If you need more help with Razor, [please go here](http://uor-razor.com/help) and review the documentation.
+* Download the latest release
+* Extract into any location (ie: C:\UO\Razor)
+* (Optional) If you have an existing version of Razor, copy the Profiles and Macros folders from %AppData%\Razor into the folder you extracted the zip above to. If you have custom counters, also copy counters.xml over.
+
+### If using the standard client
+
+* Right-Click on the Razor shortcut or Razor.exe, go to Properties. On the Compatibility tab, select Run this program in compatibility mode for and select Windows XP SP2.
+* Run Razor either via the shortcut or clicking the Razor.exe directly.
+* Razor should prompt to Run As Administrator. You must allow this for Razor to function correctly.  
+
+### If using ClassicUO
+
+* Go to the folder where you have ClassicUO installed and edit settings.json. 
+
+```json
+  "plugins": [
+    ".\\Assistant\\Razor.exe"
+  ]
+```
+
+* Find the section above and edit the path to point to where you extract Razor in the above step. For example, if I extracted it to **C:\UO\Razor** my settings.json would look like this:
+
+```json
+  "plugins": [
+    "C:\\UO\\Razor\\Razor.exe"
+  ]
+```
+
+* When you launch ClassicUO, Razor will load up during the startup process.
+
+If you need more help with using Razor, [please go here](http://uor-razor.com/help) and review the documentation.
 
 ## Contributing
 
