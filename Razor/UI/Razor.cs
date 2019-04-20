@@ -5883,7 +5883,8 @@ namespace Assistant
                 }
                 catch
                 {
-                    return;
+                    // access issue or other issue, create empty macro and move on
+                    File.CreateText(path).Close();
                 }
 
                 Macro m = new Macro(path);
