@@ -493,6 +493,13 @@ namespace Assistant
         PrevTargetCriminalHumanoid,
         PrevTargetMurdererHumanoid,
         PrevTargetInnocentHumanoid,
+        CriminalTargets,
+        EnemyTargets,
+        FriendlyTargets,
+        GreyTargets,
+        InnocentTargets,
+        MurdererTargets,
+        NonFriendlyTargets,
 
         __End
     }

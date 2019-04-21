@@ -64,7 +64,15 @@ namespace Assistant
         SpellWeaveC = SpellOffset + 60,
 
         // pet commands
-        PetCommands = 780 //1749
+        PetCommands = 780, //1749
+        
+        SubTargetCriminal = 796,
+        SubTargetEnemy,
+        SubTargetFriendly,
+        SubTargetGrey,
+        SubTargetInnocent,
+        SubTargetMurderer,
+        SubTargetNonFriendly,
     }
 
     public class KeyData
@@ -385,7 +393,15 @@ namespace Assistant
 
             MakeNode(items, "Potions", HKSubCat.Potions);
 
-            MakeNode("Targets", HKCategory.Targets);
+            TreeNode targets = MakeNode("Targets", HKCategory.Targets);
+
+            MakeNode(targets, "Criminal Targets", HKSubCat.SubTargetCriminal);
+            MakeNode(targets, "Enemy Targets", HKSubCat.SubTargetEnemy);
+            MakeNode(targets, "Friendly Targets", HKSubCat.SubTargetFriendly);
+            MakeNode(targets, "Grey Targets", HKSubCat.SubTargetGrey);
+            MakeNode(targets, "Innocent Targets", HKSubCat.SubTargetInnocent);
+            MakeNode(targets, "Murderer Targets", HKSubCat.SubTargetMurderer);
+            MakeNode(targets, "Non-Friendly Targets", HKSubCat.SubTargetNonFriendly);
 
             MakeNode("Agents", HKCategory.Agents);
 
