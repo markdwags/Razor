@@ -7331,9 +7331,16 @@ namespace Assistant
 
         public void ShowMe()
         {
-            // Fuck windows, seriously.
-
-            Platform.BringToFront(this.Handle);
+            // In CUO, this can cause an error. 
+            try
+            {
+                Platform.BringToFront(Handle);
+            }
+            catch
+            {
+                BringToFront();
+            }
+            
             if (Config.GetBool("AlwaysOnTop"))
                 this.TopMost = true;
             if (WindowState != FormWindowState.Normal)

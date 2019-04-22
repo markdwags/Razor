@@ -864,7 +864,9 @@ namespace Assistant
     {
         public static void Initialize()
         {
-            for (int i = 1; i <= Config.GetAppSetting<int>("MaxOrganizerAgents"); i++)
+            int maxAgents = Config.GetAppSetting<int>("MaxOrganizerAgents") == 0 ? 20 : Config.GetAppSetting<int>("MaxOrganizerAgents");
+
+            for (int i = 1; i <= maxAgents; i++)
             {
                 Agent.Add(new OrganizerAgent(i));
             }
@@ -1846,7 +1848,9 @@ namespace Assistant
             PacketHandler.RegisterServerToClientViewer(0x74, new PacketViewerCallback(ExtBuyInfo));
             PacketHandler.RegisterServerToClientViewer(0x24, new PacketViewerCallback(DisplayBuy));
 
-            for (int i = 1; i <= Config.GetAppSetting<int>("MaxBuyAgents"); i++)
+            int maxAgents = Config.GetAppSetting<int>("MaxBuyAgents") == 0 ? 20 : Config.GetAppSetting<int>("MaxBuyAgents");
+
+            for (int i = 1; i <= maxAgents; i++)
             {
                 BuyAgent b = new BuyAgent(i);
                 m_Instances.Add(b);
@@ -2226,7 +2230,9 @@ namespace Assistant
     {
         public static void Initialize()
         {
-            for (int i = 1; i <= Config.GetAppSetting<int>("MaxRestockAgents"); i++)
+            int maxAgents = Config.GetAppSetting<int>("MaxRestockAgents") == 0 ? 20 : Config.GetAppSetting<int>("MaxRestockAgents");
+
+            for (int i = 1; i <= maxAgents; i++)
             {
                 Agent.Add(new RestockAgent(i));
             }
