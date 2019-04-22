@@ -1,9 +1,8 @@
 ![Razor Logo](https://imgur.com/jTtHLVF.png)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/1815mo6is2t8fl1o?svg=true)](https://ci.appveyor.com/project/markdwags/razor)
+[![Build status](https://ci.appveyor.com/api/projects/status/1815mo6is2t8fl1o?svg=true)](https://ci.appveyor.com/project/markdwags/razor) [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 
-
-# Razor: An Ultima Online Assistant
+ # Razor: An Ultima Online Assistant
 
 Razor is a free tool designed to help with simple tasks while playing Ultima Online.
 
@@ -56,7 +55,7 @@ This version of Razor doesn't use the Windows Registry or %AppData%\Razor to sto
 
 ```json
   "plugins": [
-    ".\\Assistant\\Razor.exe"
+    ".\\Assistant\\Razor.dll"
   ]
 ```
 
