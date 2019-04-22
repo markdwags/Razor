@@ -500,6 +500,12 @@ namespace Assistant
         InnocentTargets,
         MurdererTargets,
         NonFriendlyTargets,
+        NextTargetFriendlyHumanoid,
+        NextTargetGreyHumanoid,
+        NextTargetNonFriendlyHumanoid,
+        PrevTargetFriendlyHumanoid,
+        PrevTargetGreyHumanoid,
+        PrevTargetNonFriendlyHumanoid,
 
         __End
     }

@@ -158,12 +158,25 @@ namespace Assistant
                 new HotKeyCallback(NextTargetMurdererHumanoid));
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.NextTargetInnocentHumanoid,
                 new HotKeyCallback(NextTargetInnocentHumanoid));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.NextTargetFriendlyHumanoid,
+                new HotKeyCallback(NextTargetFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.NextTargetGreyHumanoid,
+                new HotKeyCallback(NextTargetGreyHumanoid));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.NextTargetNonFriendlyHumanoid,
+                new HotKeyCallback(NextTargetNonFriendlyHumanoid));
 
             HotKey.Add(HKCategory.Targets, LocString.PrevTarget, new HotKeyCallback(PrevTarget));
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.PrevTargetEnemyHumanoid,
                 new HotKeyCallback(PrevTargetEnemyHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetHumanoid, new HotKeyCallback(PrevTargetHumanoid));
             HotKey.Add(HKCategory.Targets, LocString.PrevTargetMonster, new HotKeyCallback(PrevTargetMonster));
+
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.PrevTargetFriendlyHumanoid,
+                new HotKeyCallback(PrevTargetFriendlyHumanoid));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.PrevTargetGreyHumanoid,
+                new HotKeyCallback(PrevTargetGreyHumanoid));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.PrevTargetNonFriendlyHumanoid,
+                new HotKeyCallback(PrevTargetNonFriendlyHumanoid));
 
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.PrevTargetCriminalHumanoid,
                 new HotKeyCallback(PrevTargetCriminalHumanoid));
@@ -1400,16 +1413,16 @@ namespace Assistant
             Mobile mobile = null, old = World.FindMobile(m_LastTarget?.Serial ?? Serial.Zero);
             TargetInfo target = new TargetInfo();
 
-            if (targets.Count <= 0)
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-                return;
-            }
-
             // Remove all friends or party members (if the options are enabled) from being targeted
             if (Config.GetBool("NextPrevTargetIgnoresFriends"))
             {
                 targets.RemoveAll(FriendsAgent.IsFriend);
+            }
+
+            if (targets.Count <= 0)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+                return;
             }
 
             // Loop through 3 times and break out if you can't get a target for some reason
@@ -1579,7 +1592,67 @@ namespace Assistant
         public static void PrevTargetInnocentHumanoid()
         {
             List<Mobile> mobiles = World.MobilesInRange()
-                .Where(x => x.IsHuman && x.Notoriety == (int)TargetType.Innocent).ToList();
+                .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Innocent).ToList();
+
+            NextPrevTarget(mobiles, false);
+        }
+
+        public static void NextTargetFriendlyHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Innocent ||
+                                          x.Notoriety == (int) TargetType.Invalid ||
+                                          x.Notoriety == (int) TargetType.GuildAlly)).ToList();
+
+            NextPrevTarget(mobiles, true);
+        }
+
+        public static void NextTargetGreyHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
+                                          x.Notoriety == (int) TargetType.Criminal)).ToList();
+
+            NextPrevTarget(mobiles, true);
+        }
+
+        public static void NextTargetNonFriendlyHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
+                                          x.Notoriety == (int) TargetType.Criminal ||
+                                          x.Notoriety == (int) TargetType.Enemy ||
+                                          x.Notoriety == (int) TargetType.Murderer)).ToList();
+
+            NextPrevTarget(mobiles, true);
+        }
+
+        public static void PrevTargetFriendlyHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && (x.Notoriety == (int)TargetType.Innocent ||
+                                          x.Notoriety == (int)TargetType.Invalid ||
+                                          x.Notoriety == (int)TargetType.GuildAlly)).ToList();
+
+            NextPrevTarget(mobiles, false);
+        }
+
+        public static void PrevTargetGreyHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && (x.Notoriety == (int)TargetType.Attackable ||
+                                          x.Notoriety == (int)TargetType.Criminal)).ToList();
+
+            NextPrevTarget(mobiles, false);
+        }
+
+        public static void PrevTargetNonFriendlyHumanoid()
+        {
+            List<Mobile> mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && (x.Notoriety == (int)TargetType.Attackable ||
+                                          x.Notoriety == (int)TargetType.Criminal ||
+                                          x.Notoriety == (int)TargetType.Enemy ||
+                                          x.Notoriety == (int)TargetType.Murderer)).ToList();
 
             NextPrevTarget(mobiles, false);
         }

@@ -748,3 +748,10 @@ InputBox::ok=&OK
 2049=> Innocent Targets
 2050=> Murderer Targets
 2051=> Non-Friendly Targets
+2052=Next Friendly Humanoid Target
+2053=Next Grey Humanoid Target
+2054=Next Non-Friendly Humanoid Target
+2055=Previous Friendly Humanoid Target
+2056=Previous Grey Humanoid Target
+2057=Previous Non-Friendly Humanoid Target
+ 
