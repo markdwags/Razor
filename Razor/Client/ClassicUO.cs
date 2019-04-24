@@ -253,11 +253,46 @@ namespace Assistant
 
         }
 
+        public override void UpdateTitleBar()
+        {
+            if (!ClientRunning)
+                return;
+
+            if (World.Player != null && Config.GetBool("TitleBarDisplay"))
+            {
+                ResetTitleBarBuilder();
+
+                TitleBarBuilder.Replace(@"{char}", World.Player.Name);
+
+                TitleBarBuilder.Replace(@"{crimtime}", World.Player.CriminalTime != 0 ? $"{World.Player.CriminalTime}" : "-");
+
+                TitleBarBuilder.Replace(@"{hp}", $"{World.Player.Hits}");
+
+                TitleBarBuilder.Replace(@"{weight}", World.Player.Weight.ToString());
+
+                TitleBarBuilder.Replace(@"{bandage}", BandageTimer.Running ? $"{BandageTimer.Count}" : "-");
+
+                TitleBarBuilder.Replace(@"{statbar}", string.Empty);
+                TitleBarBuilder.Replace(@"{mediumstatbar}", string.Empty);
+                TitleBarBuilder.Replace(@"{largestatbar}", string.Empty);
+                
+                foreach (Counter c in Counter.List)
+                {
+                    if (c.Enabled)
+                        TitleBarBuilder.Replace($"{{{c.Format}}}", c.GetTitlebarString(false, false));
+                }
+
+                base.UpdateTitleBar();
+            }
+            else
+            {
+                SetTitleStr(string.Empty);
+            }
+        }
+
 
         public override void SetTitleStr( string str )
         {
-            return;
-            //TODO strip item/color codes from string.
             _setTitle( str );
         }
 

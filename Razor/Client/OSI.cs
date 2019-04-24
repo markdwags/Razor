@@ -273,12 +273,69 @@ namespace Assistant
             ClientProc = null;
         }
 
-     
+        private string EncodeColorStat(int val, int max)
+        {
+            double perc = ((double)val) / ((double)max);
+
+            if (perc <= 0.25)
+                return String.Format("~#FF0000{0}~#~", val);
+
+            if (perc <= 0.75)
+                return String.Format("~#FFFF00{0}~#~", val);
+
+            return val.ToString();
+        }
+        
+        public override void UpdateTitleBar()
+        {
+            if (!ClientRunning)
+                return;
+
+            if (World.Player != null && Config.GetBool("TitleBarDisplay"))
+            {
+                ResetTitleBarBuilder();
+
+                TitleBarBuilder.Replace(@"{char}",
+                    Config.GetBool("ShowNotoHue") ? $"~#{World.Player.GetNotorietyColor() & 0x00FFFFFF:X6}{World.Player.Name}~#~" : World.Player.Name);
+
+                TitleBarBuilder.Replace(@"{crimtime}", World.Player.CriminalTime != 0 ? $"~^C0C0C0{World.Player.CriminalTime}~#~" : "-");
+
+                TitleBarBuilder.Replace(@"{hp}", World.Player.Poisoned ? $"~#FF8000{World.Player.Hits}~#~" : EncodeColorStat(World.Player.Hits, World.Player.HitsMax));
+
+                TitleBarBuilder.Replace(@"{weight}",
+                    World.Player.Weight >= World.Player.MaxWeight
+                        ? $"~#FF0000{World.Player.Weight}~#~"
+                        : World.Player.Weight.ToString());
+
+                TitleBarBuilder.Replace(@"{bandage}", BandageTimer.Running ? $"~#FF8000{BandageTimer.Count}~#~" : "-");
+
+                string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
+                    (int)(World.Player.GetStatusCode()),
+                    (int)(World.Player.HitsMax == 0 ? 0 : (double)World.Player.Hits / World.Player.HitsMax * 99),
+                    (int)(World.Player.ManaMax == 0 ? 0 : (double)World.Player.Mana / World.Player.ManaMax * 99),
+                    (int)(World.Player.StamMax == 0 ? 0 : (double)World.Player.Stam / World.Player.StamMax * 99));
+
+                TitleBarBuilder.Replace(@"{statbar}", $"~SR{statStr}");
+                TitleBarBuilder.Replace(@"{mediumstatbar}", $"~SL{statStr}");
+                TitleBarBuilder.Replace(@"{largestatbar}", $"~SX{statStr}");
+
+                bool dispImg = Config.GetBool("TitlebarImages");
+                for (int i = 0; i < Counter.List.Count; i++)
+                {
+                    Counter c = Counter.List[i];
+                    if (c.Enabled)
+                        TitleBarBuilder.Replace($"{{{c.Format}}}", c.GetTitlebarString(dispImg && c.DisplayImage, true));
+                }
+
+                base.UpdateTitleBar();
+            }
+            else
+            {
+                SetTitleStr(string.Empty);
+            }
+        }
 
         private const int WM_CUSTOMTITLE = Client.WM_USER + 2;
-
-      
-        
 
         public override void SetTitleStr(string str)
         {

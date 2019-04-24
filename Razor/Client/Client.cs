@@ -171,163 +171,116 @@ namespace Assistant
         }
 
         private Timer m_TBTimer;
-        private StringBuilder m_TBBuilder = new StringBuilder();
+        public StringBuilder TitleBarBuilder = new StringBuilder();
         private string m_LastPlayerName = "";
-        private string EncodeColorStat( int val, int max )
-        {
-            double perc = ( (double)val ) / ( (double)max );
 
-            if ( perc <= 0.25 )
-                return String.Format( "~#FF0000{0}~#~", val );
-            else if ( perc <= 0.75 )
-                return String.Format( "~#FFFF00{0}~#~", val );
-            else
-                return val.ToString();
+        public void ResetTitleBarBuilder()
+        {
+            // reuse the same sb each time for less damn allocations
+            TitleBarBuilder.Remove(0, TitleBarBuilder.Length);
+            TitleBarBuilder.Insert(0, $"{Config.GetString("TitleBarText")}");
         }
-        private void UpdateTitleBar()
+
+        public virtual void UpdateTitleBar()
         {
             if ( !ClientRunning )
                 return;
 
-            if ( World.Player != null && Config.GetBool( "TitleBarDisplay" ) )
+            StringBuilder sb = TitleBarBuilder;
+
+            PlayerData p = World.Player;
+
+            if (p.Name != m_LastPlayerName)
             {
-                // reuse the same sb each time for less damn allocations
-                m_TBBuilder.Remove( 0, m_TBBuilder.Length );
-                m_TBBuilder.Insert( 0, Config.GetString( "TitleBarText" ) );
-                StringBuilder sb = m_TBBuilder;
-                //StringBuilder sb = new StringBuilder( Config.GetString( "TitleBarText" ) ); // m_TitleCapacity
+                m_LastPlayerName = p.Name;
 
-                PlayerData p = World.Player;
+                Engine.MainWindow.UpdateTitle();
+            }
 
-                if ( p.Name != m_LastPlayerName )
+            sb.Replace(@"{shard}", World.ShardName);
+
+            sb.Replace(@"{str}", p.Str.ToString());
+            sb.Replace(@"{hpmax}", p.HitsMax.ToString());
+
+            sb.Replace(@"{dex}", World.Player.Dex.ToString());
+            sb.Replace(@"{stammax}", World.Player.StamMax.ToString());
+
+            sb.Replace(@"{int}", World.Player.Int.ToString());
+            sb.Replace(@"{manamax}", World.Player.ManaMax.ToString());
+
+            sb.Replace(@"{ar}", p.AR.ToString());
+            sb.Replace(@"{tithe}", p.Tithe.ToString());
+
+            sb.Replace(@"{physresist}", p.AR.ToString());
+            sb.Replace(@"{fireresist}", p.FireResistance.ToString());
+            sb.Replace(@"{coldresist}", p.ColdResistance.ToString());
+            sb.Replace(@"{poisonresist}", p.PoisonResistance.ToString());
+            sb.Replace(@"{energyresist}", p.EnergyResistance.ToString());
+
+            sb.Replace(@"{luck}", p.Luck.ToString());
+
+            sb.Replace(@"{damage}", String.Format("{0}-{1}", p.DamageMin, p.DamageMax));
+
+            sb.Replace(@"{maxweight}", World.Player.MaxWeight.ToString());
+
+            sb.Replace(@"{followers}", World.Player.Followers.ToString());
+            sb.Replace(@"{followersmax}", World.Player.FollowersMax.ToString());
+
+            sb.Replace(@"{gold}", World.Player.Gold.ToString());
+
+            sb.Replace(@"{gps}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerSecond:N2}" : "-");
+            sb.Replace(@"{gpm}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerMinute:N2}" : "-");
+            sb.Replace(@"{gph}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerHour:N2}" : "-");
+            sb.Replace(@"{goldtotal}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldSinceStart}" : "-");
+            sb.Replace(@"{goldtotalmin}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.TotalMinutes:N2} min" : "-");
+
+            sb.Replace(@"{skill}", SkillTimer.Running ? $"{SkillTimer.Count}" : "-");
+            sb.Replace(@"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-");
+
+            sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
+            //Client.ConnectionStart != DateTime.MinValue )
+            //time = (int)((DateTime.UtcNow - Client.ConnectionStart).TotalSeconds);
+            sb.Replace(@"{uptime}", ConnectionStart != DateTime.MinValue ? Utility.FormatTime((int)((DateTime.UtcNow - ConnectionStart).TotalSeconds)) : "-");
+
+            sb.Replace(@"{dps}", DamageTracker.Running ? $"{DamageTracker.DamagePerSecond:N2}" : "-");
+            sb.Replace(@"{maxdps}", DamageTracker.Running ? $"{DamageTracker.MaxDamagePerSecond:N2}" : "-");
+            sb.Replace(@"{maxdamagedealt}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageDealt}" : "-");
+            sb.Replace(@"{maxdamagetaken}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageTaken}" : "-");
+            sb.Replace(@"{totaldamagedealt}", DamageTracker.Running ? $"{DamageTracker.TotalDamageDealt}" : "-");
+            sb.Replace(@"{totaldamagetaken}", DamageTracker.Running ? $"{DamageTracker.TotalDamageTaken}" : "-");
+
+
+            string buffList = string.Empty;
+
+            if (BuffsTimer.Running)
+            {
+                StringBuilder buffs = new StringBuilder();
+                foreach (BuffsDebuffs buff in World.Player.BuffsDebuffs)
                 {
-                    m_LastPlayerName = p.Name;
+                    int timeLeft = 0;
 
-                    Engine.MainWindow.UpdateTitle();
-                }
-                sb.Replace( @"{char}",
-                    Config.GetBool( "ShowNotoHue" ) ? $"~#{p.GetNotorietyColor() & 0x00FFFFFF:X6}{p.Name}~#~" : p.Name );
-
-                sb.Replace( @"{shard}", World.ShardName );
-
-                sb.Replace( @"{crimtime}", p.CriminalTime != 0 ? $"~^C0C0C0{p.CriminalTime}~#~" : "-" );
-
-                sb.Replace( @"{str}", p.Str.ToString() );
-                sb.Replace( @"{hpmax}", p.HitsMax.ToString() );
-
-                sb.Replace( @"{hp}", p.Poisoned ? $"~#FF8000{p.Hits}~#~" : EncodeColorStat( p.Hits, p.HitsMax ) );
-
-                sb.Replace( @"{dex}", World.Player.Dex.ToString() );
-                sb.Replace( @"{stammax}", World.Player.StamMax.ToString() );
-                sb.Replace( @"{stam}", EncodeColorStat( p.Stam, p.StamMax ) );
-                sb.Replace( @"{int}", World.Player.Int.ToString() );
-                sb.Replace( @"{manamax}", World.Player.ManaMax.ToString() );
-                sb.Replace( @"{mana}", EncodeColorStat( p.Mana, p.ManaMax ) );
-
-                sb.Replace( @"{ar}", p.AR.ToString() );
-                sb.Replace( @"{tithe}", p.Tithe.ToString() );
-
-                sb.Replace( @"{physresist}", p.AR.ToString() );
-                sb.Replace( @"{fireresist}", p.FireResistance.ToString() );
-                sb.Replace( @"{coldresist}", p.ColdResistance.ToString() );
-                sb.Replace( @"{poisonresist}", p.PoisonResistance.ToString() );
-                sb.Replace( @"{energyresist}", p.EnergyResistance.ToString() );
-
-                sb.Replace( @"{luck}", p.Luck.ToString() );
-
-                sb.Replace( @"{damage}", String.Format( "{0}-{1}", p.DamageMin, p.DamageMax ) );
-
-                sb.Replace( @"{weight}",
-                    World.Player.Weight >= World.Player.MaxWeight
-                        ? $"~#FF0000{World.Player.Weight}~#~"
-                        : World.Player.Weight.ToString() );
-
-                sb.Replace( @"{maxweight}", World.Player.MaxWeight.ToString() );
-
-                sb.Replace( @"{followers}", World.Player.Followers.ToString() );
-                sb.Replace( @"{followersmax}", World.Player.FollowersMax.ToString() );
-
-                sb.Replace( @"{gold}", World.Player.Gold.ToString() );
-
-                sb.Replace( @"{gps}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerSecond:N2}" : "-" );
-                sb.Replace( @"{gpm}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerMinute:N2}" : "-" );
-                sb.Replace( @"{gph}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldPerHour:N2}" : "-" );
-                sb.Replace( @"{goldtotal}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.GoldSinceStart}" : "-" );
-                sb.Replace( @"{goldtotalmin}", GoldPerHourTimer.Running ? $"{GoldPerHourTimer.TotalMinutes:N2} min" : "-" );
-
-                sb.Replace( @"{bandage}", BandageTimer.Running ? $"~#FF8000{BandageTimer.Count}~#~" : "-" );
-
-                sb.Replace( @"{skill}", SkillTimer.Running ? $"{SkillTimer.Count}" : "-" );
-                sb.Replace( @"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-" );
-
-                sb.Replace( @"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-" );
-                //Client.ConnectionStart != DateTime.MinValue )
-                //time = (int)((DateTime.UtcNow - Client.ConnectionStart).TotalSeconds);
-                sb.Replace( @"{uptime}", ConnectionStart != DateTime.MinValue ? Utility.FormatTime( (int)( ( DateTime.UtcNow - ConnectionStart ).TotalSeconds ) ) : "-" );
-
-                sb.Replace( @"{dps}", DamageTracker.Running ? $"{DamageTracker.DamagePerSecond:N2}" : "-" );
-                sb.Replace( @"{maxdps}", DamageTracker.Running ? $"{DamageTracker.MaxDamagePerSecond:N2}" : "-" );
-                sb.Replace( @"{maxdamagedealt}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageDealt}" : "-" );
-                sb.Replace( @"{maxdamagetaken}", DamageTracker.Running ? $"{DamageTracker.MaxSingleDamageTaken}" : "-" );
-                sb.Replace( @"{totaldamagedealt}", DamageTracker.Running ? $"{DamageTracker.TotalDamageDealt}" : "-" );
-                sb.Replace( @"{totaldamagetaken}", DamageTracker.Running ? $"{DamageTracker.TotalDamageTaken}" : "-" );
-
-
-                string buffList = string.Empty;
-
-                if ( BuffsTimer.Running )
-                {
-                    StringBuilder buffs = new StringBuilder();
-                    foreach ( BuffsDebuffs buff in World.Player.BuffsDebuffs )
+                    if (buff.Duration > 0)
                     {
-                        int timeLeft = 0;
-
-                        if ( buff.Duration > 0 )
-                        {
-                            TimeSpan diff = DateTime.UtcNow - buff.Timestamp;
-                            timeLeft = buff.Duration - (int)diff.TotalSeconds;
-                        }
-
-                        buffs.Append( timeLeft <= 0
-                            ? $"{buff.ClilocMessage1}, "
-                            : $"{buff.ClilocMessage1} ({timeLeft}), " );
+                        TimeSpan diff = DateTime.UtcNow - buff.Timestamp;
+                        timeLeft = buff.Duration - (int)diff.TotalSeconds;
                     }
 
-                    buffs.Length = buffs.Length - 2;
-                    buffList = buffs.ToString();
-                    sb.Replace( @"{buffsdebuffs}", buffList );
-
-                }
-                else
-                {
-                    sb.Replace( @"{buffsdebuffs}", "-" );
-                    buffList = string.Empty;
+                    buffs.Append(timeLeft <= 0
+                        ? $"{buff.ClilocMessage1}, "
+                        : $"{buff.ClilocMessage1} ({timeLeft}), ");
                 }
 
-                string statStr = String.Format( "{0}{1:X2}{2:X2}{3:X2}",
-                   (int)( p.GetStatusCode() ),
-                   (int)( World.Player.HitsMax == 0 ? 0 : (double)World.Player.Hits / World.Player.HitsMax * 99 ),
-                   (int)( World.Player.ManaMax == 0 ? 0 : (double)World.Player.Mana / World.Player.ManaMax * 99 ),
-                   (int)( World.Player.StamMax == 0 ? 0 : (double)World.Player.Stam / World.Player.StamMax * 99 ) );
+                buffs.Length = buffs.Length - 2;
+                buffList = buffs.ToString();
+                sb.Replace(@"{buffsdebuffs}", buffList);
 
-                sb.Replace( @"{statbar}", $"~SR{statStr}" );
-                sb.Replace( @"{mediumstatbar}", $"~SL{statStr}" );
-                sb.Replace( @"{largestatbar}", $"~SX{statStr}" );
-
-                bool dispImg = Config.GetBool( "TitlebarImages" );
-                for ( int i = 0; i < Counter.List.Count; i++ )
-                {
-                    Counter c = Counter.List[i];
-                    if ( c.Enabled )
-                        sb.Replace( $"{{{c.Format}}}", c.GetTitlebarString( dispImg && c.DisplayImage ) );
-                }
-
-                SetTitleStr( sb.ToString() );
             }
             else
             {
-                SetTitleStr( "" );
+                sb.Replace(@"{buffsdebuffs}", "-");
             }
+
+            SetTitleStr(sb.ToString());
         }
 
         public Packet MakePacketFrom(PacketReader pr)
