@@ -15,6 +15,8 @@ namespace Assistant
         internal static unsafe extern void BringToFront( IntPtr hWnd );
         [DllImport( "user32.dll" )]
         internal static extern ushort GetAsyncKeyState( int key );
+        [DllImport( "user32.dll" )]
+        internal static extern bool SetForegroundWindow( IntPtr hWnd );
     }
     internal static unsafe class LinuxPlatform
     {
@@ -66,6 +68,12 @@ namespace Assistant
                 return 0;
             }
         }
+
+        internal static bool SetForegroundWindow( IntPtr hWnd )
+        {
+            XRaiseWindow( Display, hWnd );
+            return true;
+        }
     }
     internal static unsafe class Platform
     {
@@ -92,6 +100,15 @@ namespace Assistant
             else
                 LinuxPlatform.BringToFront( window );
         }
+        internal static bool SetForegroundWindow( IntPtr hWnd )
+        {
+            if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
+                return Win32Platform.SetForegroundWindow( hWnd );
+            else if ( Environment.OSVersion.Platform == PlatformID.Unix )
+                return LinuxPlatform.SetForegroundWindow( hWnd );
+            else
+                return false;
+        }
 
         [DllImport( "User32.dll" )]
         private static extern IntPtr GetSystemMenu( IntPtr wnd, bool reset );
@@ -105,8 +122,7 @@ namespace Assistant
 
         [DllImport( "user32.dll" )]
         internal static extern uint PostMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
-        [DllImport( "user32.dll" )]
-        internal static extern bool SetForegroundWindow( IntPtr hWnd );
+
 
         [DllImport( "kernel32.dll" )]
         internal static extern uint GlobalGetAtomName( ushort atom, StringBuilder buff, int bufLen );
