@@ -18,9 +18,53 @@ namespace Assistant
     }
     internal static unsafe class LinuxPlatform
     {
+        [DllImport( "libX11" )]
+        private static extern IntPtr XOpenDisplay( IntPtr display );
+        [DllImport( "libX11" )]
+        private static extern IntPtr XCloseDisplay( IntPtr display );
+        [DllImport( "libX11" )]
+        private static extern int XRaiseWindow( IntPtr display, IntPtr window );
+        [DllImport( "libX11" )]
+        private static extern int XGetInputFocus( IntPtr display, IntPtr window, IntPtr focus_return );
+        [DllImport( "libX11" )]
+        private static extern int XQueryKeymap( IntPtr display, byte[] keys );
+        [DllImport( "libX11" )]
+        private static extern int XKeysymToKeycode( IntPtr display, int key );
+
+        private static IntPtr m_Display;
+        private static IntPtr Display
+        {
+            get
+            {
+                if ( m_Display == IntPtr.Zero )
+                    m_Display = XOpenDisplay( IntPtr.Zero );
+                return m_Display;
+            }
+        }
         internal static void BringToFront( IntPtr window )
         {
+            XRaiseWindow( Display, window );
+        }
 
+        internal static ushort GetAsyncKeyState( int key )
+        {
+            try
+            {
+                var szKey = new byte[32];
+                int res = XQueryKeymap( Display, szKey );
+                //foreach(var xx in szKey)
+                //Console.WriteLine(xx + "-");
+                int code = XKeysymToKeycode( Display, (int)key );
+                bool pressed = ( szKey[code >> 3] & ( 1 << ( code & 7 ) ) ) == 0;
+                var r = szKey[code / 8];
+                var s = ( 1 << ( code % 8 ) );
+                var x = r & s;
+                return r == s ? (ushort)0xFF00 : (ushort)0 ;
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
     internal static unsafe class Platform
@@ -29,6 +73,8 @@ namespace Assistant
         {
             if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
                 return Win32Platform.GetAsyncKeyState( key );
+            else if ( Environment.OSVersion.Platform == PlatformID.Unix )
+                return LinuxPlatform.GetAsyncKeyState( key );
             else
                 return 0;
         }
