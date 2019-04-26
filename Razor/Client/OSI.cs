@@ -301,6 +301,8 @@ namespace Assistant
                 TitleBarBuilder.Replace(@"{crimtime}", World.Player.CriminalTime != 0 ? $"~^C0C0C0{World.Player.CriminalTime}~#~" : "-");
 
                 TitleBarBuilder.Replace(@"{hp}", World.Player.Poisoned ? $"~#FF8000{World.Player.Hits}~#~" : EncodeColorStat(World.Player.Hits, World.Player.HitsMax));
+                TitleBarBuilder.Replace(@"{mana}", EncodeColorStat(World.Player.Mana, World.Player.ManaMax));
+                TitleBarBuilder.Replace(@"{stam}", EncodeColorStat(World.Player.Stam, World.Player.StamMax));
 
                 TitleBarBuilder.Replace(@"{weight}",
                     World.Player.Weight >= World.Player.MaxWeight

@@ -267,6 +267,8 @@ namespace Assistant
                 TitleBarBuilder.Replace(@"{crimtime}", World.Player.CriminalTime != 0 ? $"{World.Player.CriminalTime}" : "-");
 
                 TitleBarBuilder.Replace(@"{hp}", $"{World.Player.Hits}");
+                TitleBarBuilder.Replace(@"{mana}", $"{World.Player.Mana}");
+                TitleBarBuilder.Replace(@"{stam}", $"{World.Player.Stam}");
 
                 TitleBarBuilder.Replace(@"{weight}", World.Player.Weight.ToString());
 
@@ -364,7 +366,8 @@ namespace Assistant
                 if (!Engine.MainWindow.TopMost)
                 {
                     Engine.MainWindow.TopMost = true;
-                    Platform.SetForegroundWindow(GetWindowHandle());
+                    //Platform.SetForegroundWindow(GetWindowHandle());
+                    Engine.MainWindow.BringToFront();
                 }
             }
 
