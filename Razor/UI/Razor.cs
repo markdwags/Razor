@@ -324,6 +324,8 @@ namespace Assistant
         private CheckBox showFriendOverhead;
         private CheckBox dispDeltaOverhead;
         private Label label24;
+        private LinkLabel linkGitHub;
+        private Label label5;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -657,6 +659,8 @@ namespace Assistant
             this.statusBox = new System.Windows.Forms.TextBox();
             this.features = new System.Windows.Forms.TextBox();
             this.aboutTab = new System.Windows.Forms.TabPage();
+            this.linkGitHub = new System.Windows.Forms.LinkLabel();
+            this.label5 = new System.Windows.Forms.Label();
             this.linkHelp = new System.Windows.Forms.LinkLabel();
             this.label24 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
@@ -3631,6 +3635,8 @@ namespace Assistant
             // 
             // aboutTab
             // 
+            this.aboutTab.Controls.Add(this.linkGitHub);
+            this.aboutTab.Controls.Add(this.label5);
             this.aboutTab.Controls.Add(this.linkHelp);
             this.aboutTab.Controls.Add(this.label24);
             this.aboutTab.Controls.Add(this.label20);
@@ -3645,6 +3651,28 @@ namespace Assistant
             this.aboutTab.Size = new System.Drawing.Size(519, 322);
             this.aboutTab.TabIndex = 9;
             this.aboutTab.Text = "About";
+            // 
+            // linkGitHub
+            // 
+            this.linkGitHub.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkGitHub.Location = new System.Drawing.Point(6, 163);
+            this.linkGitHub.Name = "linkGitHub";
+            this.linkGitHub.Size = new System.Drawing.Size(506, 20);
+            this.linkGitHub.TabIndex = 25;
+            this.linkGitHub.TabStop = true;
+            this.linkGitHub.Text = "https://github.com/markdwags/Razor";
+            this.linkGitHub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGitHub_LinkClicked);
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(8, 259);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(503, 20);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "Cross-platform implementation by DarkLotus";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkHelp
             // 
@@ -3661,9 +3689,9 @@ namespace Assistant
             // label24
             // 
             this.label24.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(55, 212);
+            this.label24.Location = new System.Drawing.Point(9, 239);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(419, 21);
+            this.label24.Size = new System.Drawing.Size(503, 20);
             this.label24.TabIndex = 22;
             this.label24.Text = "Major design changes including ClassicUO integration by Jaedan";
             this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3692,13 +3720,13 @@ namespace Assistant
             // 
             // label23
             // 
-            this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(52, 195);
+            this.label23.Location = new System.Drawing.Point(6, 219);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(422, 17);
+            this.label23.Size = new System.Drawing.Size(506, 20);
             this.label23.TabIndex = 19;
-            this.label23.Text = "Razor was designed by Zippy, modified for UO Renaissance by Quick";
+            this.label23.Text = "Razor was designed by Zippy, modified and maintained by Quick";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // aboutSubInfo
             // 
@@ -8888,6 +8916,11 @@ namespace Assistant
         private void dispDeltaOverhead_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("DisplaySkillChangesOverhead", dispDeltaOverhead.Checked);
+        }
+
+        private void linkGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/markdwags/Razor");
         }
     }
 }
