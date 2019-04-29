@@ -105,8 +105,8 @@ namespace Assistant
             _onInitialize = OnInitialize;
             _onConnected = OnConnected;
             _onDisconnected = OnDisconnected;
-            _onFocusGained = OnFocusGained;
-            _onFocusLost = OnFocusLost;
+            //_onFocusGained = OnFocusGained;
+            //_onFocusLost = OnFocusLost;
             header->Tick = Marshal.GetFunctionPointerForDelegate( _tick );
             header->OnRecv = Marshal.GetFunctionPointerForDelegate( _recv );
             header->OnSend = Marshal.GetFunctionPointerForDelegate( _send );
@@ -117,8 +117,8 @@ namespace Assistant
             header->OnInitialize = Marshal.GetFunctionPointerForDelegate( _onInitialize );
             header->OnConnected = Marshal.GetFunctionPointerForDelegate( _onConnected );
             header->OnDisconnected = Marshal.GetFunctionPointerForDelegate( _onDisconnected );
-            header->OnFocusGained = Marshal.GetFunctionPointerForDelegate( _onFocusGained );
-            header->OnFocusLost = Marshal.GetFunctionPointerForDelegate( _onFocusLost );
+            //header->OnFocusGained = Marshal.GetFunctionPointerForDelegate( _onFocusGained );
+            //header->OnFocusLost = Marshal.GetFunctionPointerForDelegate( _onFocusLost );
 
             return true;
         }
@@ -366,18 +366,17 @@ namespace Assistant
                 if (!Engine.MainWindow.TopMost)
                 {
                     Engine.MainWindow.TopMost = true;
-                    //Platform.SetForegroundWindow(GetWindowHandle());
-                    Engine.MainWindow.BringToFront();
+                    Platform.SetForegroundWindow(GetWindowHandle());
                 }
             }
 
             // always use smartness for the map window
             if (Engine.MainWindow.MapWindow != null && Engine.MainWindow.MapWindow.Visible)
             {
-                if (Engine.MainWindow.MapWindow.TopMost)
+                if (!Engine.MainWindow.MapWindow.TopMost)
                 {
-                    Engine.MainWindow.MapWindow.TopMost = false;
-                    Engine.MainWindow.MapWindow.SendToBack();
+                    Engine.MainWindow.MapWindow.TopMost = true;
+                    Engine.MainWindow.MapWindow.BringToFront();
                 }
             }
         }
