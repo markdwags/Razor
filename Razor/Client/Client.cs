@@ -136,6 +136,8 @@ namespace Assistant
 
         public abstract void ForceSendToClient(Packet p);
 
+        public abstract void ForceSendToServer(Packet p);
+
         public abstract void SetPosition(uint x, uint y, uint z, byte dir);
 
         public abstract string GetClientVersion();

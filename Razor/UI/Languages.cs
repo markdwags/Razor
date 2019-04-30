@@ -506,6 +506,8 @@ namespace Assistant
         PrevTargetFriendlyHumanoid,
         PrevTargetGreyHumanoid,
         PrevTargetNonFriendlyHumanoid,
+        ToggleWar,
+        TogglePeace,
 
         __End
     }

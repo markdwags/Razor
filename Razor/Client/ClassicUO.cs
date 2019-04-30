@@ -329,6 +329,11 @@ namespace Assistant
             _sendToClient(p.Compile(), (int)p.Length);
         }
 
+        public override void ForceSendToServer(Packet p)
+        {
+            _sendToServer(p.Compile(), (int)p.Length);
+        }
+
         public override void SetPosition(uint x, uint y, uint z, byte dir)
         {
 

@@ -674,7 +674,7 @@ namespace Assistant
             CommMutex.ReleaseMutex();
         }
 
-        private void ForceSendToServer(Packet p)
+        public override void ForceSendToServer(Packet p)
         {
             if (p == null || p.Length <= 0)
                 return;

@@ -754,4 +754,5 @@ InputBox::ok=&OK
 2055=Previous Friendly Humanoid Target
 2056=Previous Grey Humanoid Target
 2057=Previous Non-Friendly Humanoid Target
- 
+2058=Toggle War Only
+2059=Toggle Peace Only
