@@ -13,12 +13,16 @@ Write-Host "v1.0"
 Write-Host "Author: Quick (https://github.com/markdwags/Razor)"
 Write-Host ""
 
+# Set the directory to be the one the command was issued in
+$WorkingDir = $(Get-Location).Path
+cd $WorkingDir
+
 Write-Host "This script will install the latest developer versions of ClassicUO and Razor. It can be ran to install for the first time, or to ensure your current versions of ClassicUO and Razor are on the latest developer preview builds.
 
 NOTE: This script will perform the following steps, so please review first:
 
-1) Download the latest ClassicUO dev preview build to: $PSScriptRoot
-2) Download the latest Razor dev preview to: $PSScriptRoot\Razor\
+1) Download the latest ClassicUO dev preview build to: $WorkingDir
+2) Download the latest Razor dev preview to: $WorkingDir\Razor\
 3) Help with setting up the initial settings.json file if it doesn't exist
 
 WARNING: This script will overwrite ALL files related to ClassicUO and Razor. Backup this folder if you want to preserve this install.
