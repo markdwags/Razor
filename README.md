@@ -29,13 +29,30 @@ The original project was last updated May 2nd, 2014 and while over 50 forks exis
 
 ## Versions
 
+All version of Razor doesn't use the Windows Registry or %AppData%\Razor to store configuration, macros and profiles. In other words, it's portable.
+
 * **1.5.0.0** to **1.5.0.16** only support the standard Ultima Online client.
 * **1.5.0.17** has major changes to how Razor determines player position and only supports the standard Ultima Online client.
 * **1.6.x.x** support both the standard client and [ClassicUO](https://github.com/andreakarasho/ClassicUO).
 
-## Installing
+## Install: New ClassicUO with Razor Install
 
-This version of Razor doesn't use the Windows Registry or %AppData%\Razor to store configuration, macros and profiles. In other words, it's portable. To install, follow these simple steps:
+These steps assume that you already have obtained and installed the Ultima Online game asset files in the local system and want to install ClassicUO and Razor for the first time.
+
+* Create a new folder on your local computer (ie: C:\Games\ClassicUO)
+* Open PowerShell prompt and go to folder you created
+* Execute the following PowerShell commands
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(
+'https://raw.githubusercontent.com/markdwags/Razor/master/InstallClassicUOAndRazor.ps1'))
+```
+
+* Follow the on-screen prompts to set up the ClassicUO settings.json file first the first time.
+
+## Install: Existing ClassicUO and/or Standard Client
+
+These steps assume that you already have obtained and installed the Ultima Online game asset files in the local system and are already using ClassicUO or the standard client.
 
 ### Standard Client & ClassicUO Client
 
@@ -69,7 +86,9 @@ This version of Razor doesn't use the Windows Registry or %AppData%\Razor to sto
 
 * When you launch ClassicUO, Razor will load up during the startup process.
 
-If you need more help with using Razor, [please go here](http://uor-razor.com/help) and review the documentation.
+## Help
+
+If you need more help with using Razor, [please go here](http://uor-razor.com/help) and review the documentation or use the link above to join Discord.
 
 ## Contributing
 
@@ -77,4 +96,4 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## License
 
-This work is released under the GPLv3 license. This project does not distribute any copyrighted game assets. In order to run this application you'll need to legally obtain a copy of the Ultima Online Classic Client. See the [LICENSE.md](LICENSE.md) file for details.
+This work is released under the GPLv3 license. This project does not distribute any copyrighted game assets. In order to run this application you'll need to legally obtain a copy of the Ultima Online Classic Client. See the [LICENSE](LICENSE) file for details.
