@@ -1,0 +1,21 @@
+site_name: Razor - Ultima Online Assistant Tool
+site_description: Help guide for using the Ultima Online assistant client called Razor
+site_author: Maintained by Quick, many contributed over the years
+google_analytics: ['UA-20537997-5', 'uor-razor.com']
+nav:
+- Home: index.md
+- Overview:
+    - General: general.md
+    - Options: options.md    
+    - Display/Counters: displaycounters.md
+    - Arm/Dress: armdress.md
+    - Skills: skills.md
+    - Agents: agents.md
+    - Hot Keys: hotkeys.md
+    - Macros: macros.md
+    - Map: map.md    
+    - Screen Shots: screenshots.md
+    - Advanced: advanced.md
+- Help / Guides: help.md
+- UOA API: uoaapi.md
+theme: readthedocs

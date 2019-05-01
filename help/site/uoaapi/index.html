@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Maintained by Quick, many contributed over the years">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>UOA API - Razor - Ultima Online Assistant Tool</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "UOA API";
+    var mkdocs_page_input_path = "uoaapi.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-20537997-5', 'uor-razor.com');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Razor - Ultima Online Assistant Tool</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Overview</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../general/">General</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../options/">Options</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../displaycounters/">Display/Counters</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../armdress/">Arm/Dress</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../skills/">Skills</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../agents/">Agents</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../hotkeys/">Hot Keys</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../macros/">Macros</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../map/">Map</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../screenshots/">Screen Shots</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../advanced/">Advanced</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../help/">Help / Guides</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">UOA API</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#uoa-api-uoassist-api">UOA API (UOAssist API)</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#messages-received">Messages Received</a></li>
+        
+            <li><a class="toctree-l3" href="#messages-sent">Messages Sent</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Razor - Ultima Online Assistant Tool</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>UOA API</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="uoa-api-uoassist-api">UOA API (UOAssist API)</h1>
+<p>Razor supports the <strong>UO Assist API</strong> to allow basic integration into Razor. This information was pulled from <a href="http://web.archive.org/web/20100419122932/http://www.tugsoft.com/uoassist/thirdpartydev.asp">here</a>. It has been slightly modified.</p>
+<h2 id="messages-received">Messages Received</h2>
+<p>Messages that Razor will process  (WM_USER = 0x0400 or 1024)</p>
+<h3 id="request-data-wm_user200">Request Data  (WM_USER+200)</h3>
+<p>This is used to register your application with Razor.  Once your application is registered Razor will begin sending your application the messages described below.</p>
+<ul>
+<li>Parameters: WPARAM = The window handle where you want messages sent.  LPARAM = flags  ( 1 = get house notifications, NOTE all notification with a lesser notify value than the house notification will go to all windows that have requested information)</li>
+<li>Returns 2 on unhook, 1 on success, 0 on failure (failure means all slots full) .  </li>
+<li>Notes:  If you have registered a window and wish to unregister just send the message with the window handle again. </li>
+</ul>
+<h3 id="count-resources-wm_user201">Count Resources  (WM_USER+201)</h3>
+<p>This will prompt Razor to begin counting resources. </p>
+<ul>
+<li>Parameters:  NONE</li>
+<li>Returns 1 on successful start or 0 on stop.</li>
+<li>Notes:  If resources are already being counted the count will be stopped.</li>
+</ul>
+<p>UPDATE 7/13/99:   currently it will always return 0 - this MAY be changed in the future but for now it will be zero</p>
+<h3 id="get-coords-wm_user202">Get Coords (WM_USER+202)</h3>
+<p>Gets the current location of the character.</p>
+<ul>
+<li>Parameters:  NONE</li>
+<li>Returns: X in the loword and Y in the hiword.  (x=LOWORD(retVal); y=HIWORD(retVal);)</li>
+<li>Notes:  You MUST use SendMessage for the return value to be valid.</li>
+</ul>
+<h3 id="get-skill-wm_user203">Get Skill (WM_USER+203)</h3>
+<p>Gets the current skill level of specified skill.</p>
+<ul>
+<li>Parameters: WPARAM = skill number ( 0 based )  LPARAM (when 0 the return will be the 'display' value, when 1 it will be the 'base' value, 2 = get lock value, 3 = get skill name  ).</li>
+<li>Returns:  Skill level * 10.  Meaning if the skill level was 19.4 you would get 194 returned.  Or if lock value was requested the return is 0 = up, 1 = down, 2 = locked.  If the skill name is requested the value is a global atom that you will need to free.</li>
+<li>Notes:  You MUST use SendMessage for the return value to be valid.</li>
+</ul>
+<h3 id="get-stat-wm_user204">Get Stat (WM_USER+204)</h3>
+<p>Gets the stat and its related attribute.</p>
+<ul>
+<li>Parameters: WPARAM = stat to get   (str = 0, int = 1, dex = 2, weight = 3, 4 = Max HP, 5 = tithing points)</li>
+<li>Returns: Requested stat (str,int,dex, weight, max hp) in the loword and (hp,mana,stam, max weight, current hp) in hiword.   You MUST use SendMessage for the return value to be valid.</li>
+</ul>
+<h3 id="set-active-macro-wm_user-205">Set Active Macro (WM_USER + 205)</h3>
+<p><code>NOTE: This is not enabled in Razor</code></p>
+<p>Sets the active macro</p>
+<ul>
+<li>Parameters: WPARAM = macro (zero based  0-7)</li>
+</ul>
+<h3 id="play-macro-wm_user206">Play macro (WM_USER+206)</h3>
+<p>Plays/Stops active macro</p>
+<ul>
+<li>Parameters: None</li>
+<li>Returns: 0 - macro stopped  1 - macro playing</li>
+</ul>
+<h3 id="display-text-wm_user207">Display text (WM_USER+207)</h3>
+<p>Displays text on the game screen</p>
+<ul>
+<li>Parameters: WPARAM loword = color  hiword = (0- over characters head 1- system message)
+                    LPARAM = global atom that contains string - Razor frees the atom after using it (See Windows SDK on ATOMS)</li>
+<li>Returns 0 - failure either the user isn't logged in or the atom wasn't found,    1 - success</li>
+</ul>
+<p>NOTE: Razor will only read strings 255 characters or less, I didn't actually test to see if uo can handle strings that long so if you plan to use long strings you should test that out first.</p>
+<h3 id="request-houseboat-information-wm_user208">Request house/boat information (WM_USER+208)</h3>
+<p>Requests the information on house(s)/boat(s) in the nearby area.</p>
+<ul>
+<li>Parameters: None</li>
+<li>Returns:  0 - failure (not logged into game) 1 - success</li>
+</ul>
+<p>NOTE:  You should make sure you are set to receive updates from Razor first.</p>
+<h3 id="add-command-line-command-wm_user209">Add command line command (WM_USER+209)</h3>
+<p>Add a command line command to Razor.  When the user types the command (prefix is '-') you can receive a notification and the parameters the user enters using this feature.  For example if you add the command 'broadcast' and the user types in '-broadcast run away' your window will receive a message with 'run away' as the parameters (in a global ATOM).</p>
+<ul>
+<li>Parameters: WPARAM - HWND of the window to receive the message. LPARAM - ATOM of the command (NOTE: spaces won't work correct)</li>
+<li>Returns On failure  0 - All command space has been used,  1 - the command ATOM was not found (must be a global atom)<ul>
+<li>On success - returns the value of the message your window will receive (should be &gt;= WM_USER + 400). The message you will receive will be like this:<ul>
+<li>MessageID = return value from add call (remember to use SendMessage)</li>
+<li>WPARAM =  NULL - either a global atom couldn't be create or no parameters were entered</li>
+<li>or a global ATOM that contains the parameters (You must delete the ATOM yourself)(See Windows SDK on ATOMS)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>NOTE: Commands are not case sensitive.  If you add a command '/command' the user will have to type -/command in order for you to get the message.  To remove a command send the command again with a zero as the WPARAM.</p>
+<h3 id="get-user-id-wm_user210">Get User ID (WM_USER+210)</h3>
+<p>You must use send message on this one.  It returns a ID that Razor can use to identify the user (NOTE: it is not the actual user ID used by the servers).  This is used to add a player to your party.</p>
+<ul>
+<li>Returns 0 if no user is logged in or a value if a user is logged into the game.</li>
+</ul>
+<h3 id="get-shard-name-wm_user211">Get Shard Name (WM_USER+211)</h3>
+<ul>
+<li>Returns 0 if no user is logged into the game or if a global atom could not be created.</li>
+<li>Returns a global atom with the shard name in it. </li>
+</ul>
+<p>You must use SendMessage for this message.</p>
+<h3 id="add-user-to-party-wm_user212">Add user to party (WM_USER+212)</h3>
+<ul>
+<li>Parameters: WPARAM - User ID obtained from Get User ID message.</li>
+<li>Returns 0 on success, 1 on error (will not work if a macro is playing)  You must use send message if you want the return value.</li>
+</ul>
+<h3 id="get-uo-window-handle-wm_user-213">Get UO window handle (WM_USER + 213)</h3>
+<ul>
+<li>Parameters: None</li>
+<li>Returns the HWND of the UO window.  NOTE - you must use SendMessage to get the correct value.</li>
+</ul>
+<h3 id="get-poison-status-wm_user-214">Get poison status  (WM_USER + 214)</h3>
+<ul>
+<li>Parameters: None</li>
+<li>Returns  1 if poisoned or 0 if not poisoned.  NOTE - you must use SendMessage to get the correct value.</li>
+</ul>
+<h3 id="set-skill-lock-wm_user-215">Set skill lock (WM_USER + 215)</h3>
+<ul>
+<li>Parameters:  WPARAM = zero based skill number, LPARAM = lock direction  [0 = up, 1 = down, 2 = locked]</li>
+<li>Returns 0 on success, 1 on failure (will fail with invalid param(s) or not logged into game).  NOTE: when the lock value is set Razor requests the current skill values from the server.  So don't set locks in rapid succession for a long period of time or you may lag yourself out.</li>
+</ul>
+<h3 id="get-account-identifier-wm_user-216">Get account identifier (WM_USER + 216)</h3>
+<ul>
+<li>Parameters:  None currently</li>
+<li>Returns 0 if no character is logged into game otherwise a identifier for the account</li>
+</ul>
+<h2 id="messages-sent">Messages Sent</h2>
+<p>Messages Razor will send to apps that have registered a valid window.</p>
+<h3 id="resource-count-finished-wm_user301">Resource Count Finished    (WM_USER+301)</h3>
+<p>This message is sent when resource counting has finished.</p>
+<ul>
+<li>Parameters : WPARAM is defined below and LPARAM is the count<ul>
+<li>BloodMoss = 1</li>
+<li>BlackPearl = 2</li>
+<li>Garlic = 3</li>
+<li>Ginseng = 4</li>
+<li>Mandrake Root = 5</li>
+<li>NightShade = 6</li>
+<li>Sulfurous Ash = 7</li>
+<li>Spider Silk = 8</li>
+<li>User1 = 9</li>
+<li>User2 = 10    </li>
+<li>User3 = 11</li>
+<li>User4 = 12</li>
+<li>User5 = 13</li>
+<li>User6 = 14</li>
+<li>Batwing = 100</li>
+<li>DaemonBlood = 101</li>
+<li>GraveDust = 102</li>
+<li>NoxCrystal = 103</li>
+<li>PigIron = 104</li>
+<li>Tithing = 200</li>
+</ul>
+</li>
+</ul>
+<h3 id="spell-was-attempted-wm_user302">Spell was attempted  (WM_USER+302)</h3>
+<p>This message is sent when a spell is attempted.  It is not known if the spell will fail or timeout or be cancelled.</p>
+<ul>
+<li>Parameters:  WPARAM is the spell being cast (1 based)</li>
+</ul>
+<h3 id="logon-wm_user303">Logon (WM_USER+303)</h3>
+<p>Sent when a character logs into the game</p>
+<ul>
+<li>Parameters:  WPARAM is a character identifier (number value).</li>
+</ul>
+<h3 id="magery-skill-level-wm_user304">Magery skill level (WM_USER+304)</h3>
+<p>Sent a few seconds after entering game and then whenever the skills window is opened or the skill level changes.</p>
+<ul>
+<li>Parameters: WPARAM is set to the whole number of the skill.  LPARAM is set to the tenth's.</li>
+</ul>
+<h3 id="current-int-and-mana-level-wm_user305">Current Int and Mana Level (WM_USER+305)</h3>
+<p>Sent whenever new information is sent from the server.</p>
+<ul>
+<li>Parameters: WPARAM has Intel and LPARAM has current mana level.</li>
+</ul>
+<h3 id="skill-level-wm_user306">Skill Level (WM_USER+306)</h3>
+<p>Sent a few seconds after entering the game and then whenever the skills window is opened or a skill level changes.</p>
+<ul>
+<li>Parameters: WPARAM is skillnum (0 based).  LPARAM is skill level * 10. Meaning if the skill is 19.4 you will get 194</li>
+</ul>
+<h3 id="macro-finished-wm_user307">Macro Finished (WM_USER+307)</h3>
+<p>Send when a macro finishes playing through one pass.</p>
+<h3 id="logout-wm_user308">Logout (WM_USER+308)</h3>
+<p>Sent when a character logs out of the game.</p>
+<h3 id="current-max-hp-and-hp-level-wm_user309">Current Max HP and HP Level (WM_USER+309)</h3>
+<p>Sent whenever new information is sent from the server.</p>
+<ul>
+<li>Parameters: WPARAM has Max HP and LPARAM has current hit point level. (NOTE this changed 8/2001 because of changes OSI made to how max hp are calculated [no longer str = max hp]).</li>
+</ul>
+<h3 id="current-dex-and-stamina-level-wm_user310">Current Dex and Stamina Level (WM_USER+310)</h3>
+<p>Sent whenever new information is sent from the server.</p>
+<ul>
+<li>Parameters: WPARAM has Dex and LPARAM has current stamina level.</li>
+</ul>
+<h3 id="add-houseboat-wm_user311-you-must-set-flag-1-to-get-this-message">Add House/boat (WM_USER+311)  [You must set flag 1 to get this message]</h3>
+<p>Sent whenever a house comes into update range.</p>
+<ul>
+<li>
+<p>Parameters:    WPARAM - X in the loword and Y in the hiword.  (x=LOWORD(wParam); y=HIWORD(wParam);)
+                      LPARAM - house type</p>
+</li>
+<li>
+<p>Types:</p>
+<ul>
+<li>0x4000=small boat (n)</li>
+<li>0x4001=small boat (e)</li>
+<li>0x4002= small boat (s)</li>
+<li>0x4003=small boat (w)</li>
+<li>0x4004=small dragon boat (n)</li>
+<li>0x4005=small boat (e)</li>
+<li>0x4006=small boat (s)</li>
+<li>0x4007=small boat (w)</li>
+<li>0x4008=medium boat (n)</li>
+<li>0x4009=medium boat (e)</li>
+<li>0x400a=medium boat (s)</li>
+<li>0x400b=medium boat (w)</li>
+<li>0x400c=medium dragon boat (n)</li>
+<li>0x400d=medium boat (e)</li>
+<li>0x400e=medium boat (s)</li>
+<li>0x400f=medium boat (w)</li>
+<li>0x4010=large boat (n) </li>
+<li>0x4011=large boat (e)</li>
+<li>0x4012=large boat (s)</li>
+<li>0x4013=large boat (w)</li>
+<li>0x4014=large dragon boat (n)</li>
+<li>0x4015=large boat (e)</li>
+<li>0x4016=large boat (s)</li>
+<li>0x4017=large boat (w)</li>
+<li>0x4064=small plaster</li>
+<li>0x4066=small field stone</li>
+<li>0x4068=small brick</li>
+<li>0x406a=small wood</li>
+<li>0x406c=small wood and plaster</li>
+<li>0x406e=small hut</li>
+<li>0x4070=blue tent</li>
+<li>0x4072=green tent</li>
+<li>0x4074=large house</li>
+<li>0x4076=two story (wood &amp; plaster)</li>
+<li>0x4078=two story (plaster)</li>
+<li>0x407a=tower</li>
+<li>0x407c=keep</li>
+<li>0x407e=castle</li>
+<li>0x408c=generic shop</li>
+<li>0x4096=marble patio</li>
+<li>0x4098=small tower</li>
+<li>0x409a=log cabin</li>
+<li>0x409c=sandstone patio</li>
+<li>0x409e=villa</li>
+<li>0x40a0=stone shop</li>
+<li>0x40a2=marble shop</li>
+<li>0x5388=minax's fortress</li>
+</ul>
+</li>
+</ul>
+<h3 id="delete-houseboat-wm_user312-you-must-set-flag-1-to-get-this-message">Delete House/Boat (WM_USER+312) [You must set flag 1 to get this message]</h3>
+<p>Sent when a boat moves or is dry docked or disappears (same with house)</p>
+<ul>
+<li>Parameters:    WPARAM - X in the loword and Y in the hiword.  (x=LOWORD(wParam); y=HIWORD(wParam);) LPARAM - house type</li>
+</ul>
+<h3 id="facetland-info-wm_user313-you-must-set-flag-1-to-get-this-message">Facet/land info (WM_USER+313) [You must set flag 1 to get this message]</h3>
+<p>Sent when the client receives information on which facet/world you are on.  This happens when you switch facets/worlds and can at other times as well</p>
+<ul>
+<li>Parameters:    WPARAM -  0 = Felucca  1 = Trammel  2 = Ilshenar</li>
+</ul>
+<h3 id="power-hour-entered-wm_user314">Power hour entered (WM_USER+314)</h3>
+<p><code>NOTE: Not used by Razor</code></p>
+<p>Sent when the client receives the 'You are in your power hour!' message.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../help/" class="btn btn-neutral" title="Help / Guides"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../help/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
