@@ -100,7 +100,7 @@ if ($(Test-Path ".\settings.json" -PathType Leaf) -eq $False) {
   $cuoSettings."clientversion" = $client
 
   # Set plugin location to point to Razor
-  $cuoSettings."plugins"[0] = "$PSScriptRoot\Razor\Razor.exe"
+  $cuoSettings."plugins"[0] = "$WorkingDir\Razor\Razor.exe"
 
   # Save the settings back to the file
   Write-Host "Saving input to settings.json"  
