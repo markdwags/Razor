@@ -9,13 +9,6 @@ using Newtonsoft.Json;
 
 namespace Assistant
 {
-    public enum ClientLaunch
-    {
-        TwoD,
-        ThirdDawn,
-        Custom
-    }
-
     public class WelcomeForm : System.Windows.Forms.Form
     {
         private System.Windows.Forms.Label label1;
@@ -34,13 +27,11 @@ namespace Assistant
         private System.Windows.Forms.Button browse;
 
         public string ClientPath { get { return m_ClientPath; } }
-        public ClientLaunch Client { get { return m_Launch; } }
         public bool PatchEncryption { get { return m_PatchEncy; } }
         public string DataDirectory { get { if (m_DataDir == "" || m_DataDir == "(Auto Detect)") m_DataDir = null; return m_DataDir; } }
 
         private bool m_PatchEncy = false;
         private string m_ClientPath = "";
-        private ClientLaunch m_Launch = ClientLaunch.Custom;
         private TextBox uoClient;
         private TextBox dataDir;
         private Button dataBrowse;
@@ -712,7 +703,6 @@ namespace Assistant
 
             m_PatchEncy = patchEncy.Checked;
 
-            m_Launch = ClientLaunch.TwoD;
             m_ClientPath = uoClient.Text;
 
             ServerEntry se = null;

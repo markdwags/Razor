@@ -255,7 +255,6 @@ namespace Assistant
 
             bool patch = Config.GetAppSetting<int>("PatchEncy") != 0;
             bool showWelcome = Config.GetAppSetting<int>("ShowWelcome") != 0;
-            ClientLaunch launch = ClientLaunch.TwoD;
 
             string dataDir;
 
@@ -340,22 +339,7 @@ namespace Assistant
             string clientPath = "";
 
             // welcome only needed when not loaded by a launcher (ie uogateway)
-            if (!showWelcome)
-            {
-                int cli = Config.GetAppSetting<int>("DefClient");
-                if (cli < 0 || cli > 1)
-                {
-                    launch = ClientLaunch.Custom;
-                    clientPath = Config.GetAppSetting<string>($"Client{cli - 1}");
-                    if (string.IsNullOrEmpty(clientPath))
-                        showWelcome = true;
-                }
-                else
-                {
-                    launch = (ClientLaunch) cli;
-                }
-            }
-            else
+            if (showWelcome)
             {
                 SplashScreen.End();
 
@@ -364,10 +348,7 @@ namespace Assistant
                 if (welcome.ShowDialog() == DialogResult.Cancel)
                     return;
                 patch = welcome.PatchEncryption;
-                launch = welcome.Client;
                 dataDir = welcome.DataDirectory;
-                if (launch == ClientLaunch.Custom)
-                    clientPath = welcome.ClientPath;
 
                 SplashScreen.Start();
                 m_ActiveWnd = SplashScreen.Instance;
@@ -381,9 +362,6 @@ namespace Assistant
             Language.LoadCliLoc();
 
             SplashScreen.Message = LocString.Initializing;
-
-            //m_TimerThread = new Thread( new ThreadStart( Timer.TimerThread.TimerMain ) );
-            //m_TimerThread.Name = "Razor Timers";
 
             Initialize(typeof(Assistant.Engine).Assembly); //Assembly.GetExecutingAssembly()
 
@@ -400,10 +378,7 @@ namespace Assistant
 
             SplashScreen.Message = LocString.LoadingClient;
 
-            if (launch == ClientLaunch.TwoD)
-                clientPath = Ultima.Files.GetFilePath("client.exe");
-            else if (launch == ClientLaunch.ThirdDawn)
-                clientPath = Ultima.Files.GetFilePath("uotd.exe");
+            clientPath = Ultima.Files.GetFilePath("client.exe");
 
             if (!advCmdLine)
                 Client.Instance.ClientEncrypted = patch;
@@ -415,13 +390,13 @@ namespace Assistant
             {
                 if (clientPath == null && File.Exists(clientPath))
                     MessageBox.Show(SplashScreen.Instance,
-                        String.Format("Unable to find the client specified.\n{0}: \"{1}\"", launch.ToString(),
+                        String.Format("Unable to find the client specified.\n\"{0}\"",
                             clientPath != null ? clientPath : "-null-"), "Could Not Start Client",
                         MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 else
                     MessageBox.Show(SplashScreen.Instance,
-                        String.Format("Unable to launch the client specified. (Error: {2})\n{0}: \"{1}\"",
-                            launch.ToString(), clientPath != null ? clientPath : "-null-", result),
+                        String.Format("Unable to launch the client specified. (Error: {1})\n \"{0}\"",
+                            clientPath != null ? clientPath : "-null-", result),
                         "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 SplashScreen.End();
                 return;
