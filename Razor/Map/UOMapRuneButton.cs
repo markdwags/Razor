@@ -21,7 +21,8 @@ namespace Assistant.MapUO
             this.m_RuneSpot = runeSpot;
             this.m_X = x;
             this.m_Y = y;
-            this.m_Icon = Ultima.Art.GetStatic(7956);
+            if(Environment.OSVersion.Platform == PlatformID.Win32NT)
+                this.m_Icon = Ultima.Art.GetStatic(7956);
         }
         public static ArrayList Load(string path)
         {
