@@ -17,7 +17,9 @@ namespace Assistant
     {
         public static unsafe void Install(PluginHeader* plugin)
         {
-            Client.Init(false);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
             {
                 string[] fields = e.Name.Split(',');
@@ -36,68 +38,58 @@ namespace Assistant
 
             };
 
-            //ClientVersion = (ClientVersions)plugin->ClientVersion;
+            SplashScreen.Start();
+            m_ActiveWnd = SplashScreen.Instance;
+
+            Client.Init(false);
 
             if (!(Client.Instance as ClassicUOClient).Install(plugin))
             {
-                System.Diagnostics.Process.GetCurrentProcess().Kill();
+                Process.GetCurrentProcess().Kill();
                 return;
             }
 
-            string clientPath = ((OnGetUOFilePath)Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(OnGetUOFilePath)))();
-            // Thread t = new Thread(() =>
-            // {
-            m_Running = true;
-            //  Thread.CurrentThread.Name = "Razor Main Thread";
-
-#if !DEBUG
-			    AppDomain.CurrentDomain.UnhandledException +=
-                    new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
-#endif
-            Ultima.Files.SetMulPath(clientPath);
-            Ultima.Multis.PostHSFormat = UsePostHSChanges;
-
+            /* Load localization files */
             if (!Language.Load("ENU"))
             {
+                SplashScreen.End();
                 MessageBox.Show(
-                    "Fatal Error: Unable to load required file Language/Razor_lang.enu\nRazor cannot continue.",
-                    "No ENU Language Pack", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    String.Format(
+                        "WARNING: Razor was unable to load the file Language/Razor_lang.ENU\n."),
+                        "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string defLang = Config.GetAppSetting<string>("DefaultLanguage");
-            if (defLang != null && !Language.Load(defLang))
-                MessageBox.Show(
-                    String.Format(
-                        "WARNING: Razor was unable to load the file Language/Razor_lang.{0}\nENU will be used instead.",
-                        defLang), "Language ENU Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            m_Running = true;
 
+            string clientPath = ((OnGetUOFilePath)Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(OnGetUOFilePath)))();
+
+            Ultima.Files.SetMulPath(clientPath);
+            Ultima.Multis.PostHSFormat = UsePostHSChanges;
+            Client.Instance.ClientEncrypted = false;
+            Client.Instance.ServerEncrypted = false;
 
             Language.LoadCliLoc();
 
-            Initialize(typeof(Assistant.Engine).Assembly); //Assembly.GetExecutingAssembly()
+            /* Initialize engine */
+            SplashScreen.Message = LocString.Initializing;
+            Initialize(typeof(Engine).Assembly);
 
+            /* Load Profile */
+            SplashScreen.Message = LocString.LoadingLastProfile;
             Config.LoadCharList();
             if (!Config.LoadLastProfile())
                 MessageBox.Show(
                     "The selected profile could not be loaded, using default instead.", "Profile Load Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            SplashScreen.Message = LocString.WaitingForClient;
 
             m_MainWnd = new MainForm();
-            m_MainWnd.Show();
-            /*  Application.Run(m_MainWnd);
-              m_Running = false;
 
-              Counter.Save();
-              Macros.MacroManager.Save();
-              Config.Save();
-          });
-          t.SetApartmentState(ApartmentState.STA);
-          t.IsBackground = true;
-          t.Start();*/
+            SplashScreen.End();
+
+            m_MainWnd.Show();
         }
     }
 
@@ -310,6 +302,7 @@ namespace Assistant
             Console.WriteLine("Closing Razor instance");
             Console.BackgroundColor = last;
             Console.ForegroundColor = lastFore;
+            Engine.Close();
         }
         private void OnInitialize()
         {
