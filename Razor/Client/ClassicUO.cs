@@ -1,15 +1,13 @@
-﻿using Assistant.Core;
+﻿using Assistant.UI;
+using CUO_API;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using CUO_API;
-using System.Reflection;
 
 namespace Assistant
 {
@@ -85,11 +83,15 @@ namespace Assistant
 
             SplashScreen.Message = LocString.WaitingForClient;
 
-            m_MainWnd = new MainForm();
-
             SplashScreen.End();
 
-            m_MainWnd.Show();
+            Thread t = new Thread(() =>
+            {
+                RunUI();
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.IsBackground = true;
+            t.Start();
         }
     }
 
@@ -204,14 +206,13 @@ namespace Assistant
         }
         public unsafe override bool InstallHooks(IntPtr pluginPtr)
         {
-          //  Engine.MainWindow.SafeAction( (s) => {
+            Engine.MainWindow.SafeAction((s) => {
                 Engine.MainWindow.MainForm_EndLoad();
-          //  } );
+            });
             return true;
         }
         private void Tick()
         {
-            Application.DoEvents();
         }
         
         private void OnPlayerPositionChanged(int x, int y, int z)
