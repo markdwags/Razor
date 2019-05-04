@@ -229,18 +229,8 @@ namespace Assistant
             get { return DateTime.UtcNow.AddHours(Differential); }
         }
 
-        [STAThread]
-        public static void Main(string[] Args)
+        public static void Load()
         {
-            Application.EnableVisualStyles();
-            Thread.CurrentThread.Name = "Razor UI Thread";
-
-#if !DEBUG
-			AppDomain.CurrentDomain.UnhandledException +=
- new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
-			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
-#endif
-
             /* Load localization files */
             string defLang = Config.GetAppSetting<string>("DefaultLanguage");
             if (defLang == null)
@@ -257,25 +247,11 @@ namespace Assistant
                 return;
             }
 
-            /* Show welcome screen */
-            if (Config.GetAppSetting<int>("ShowWelcome") != 0)
-            {
-                SplashScreen.End();
-
-                WelcomeForm welcome = new WelcomeForm();
-                m_ActiveWnd = welcome;
-                if (welcome.ShowDialog() == DialogResult.Cancel)
-                    return;
-
-                SplashScreen.Start();
-                m_ActiveWnd = SplashScreen.Instance;
-            }
-
-            Client.Init(true);
             m_Running = true;
 
             /* Load settings from configuration file */
             Ultima.Files.SetMulPath(Config.GetAppSetting<string>("UODataDir"));
+            Ultima.Multis.PostHSFormat = UsePostHSChanges;
             Client.Instance.ClientEncrypted = Config.GetAppSetting<int>("ClientEncrypted") == 1;
             Client.Instance.ServerEncrypted = Config.GetAppSetting<int>("ServerEncrypted") == 1;
 
@@ -332,16 +308,74 @@ namespace Assistant
             Client.Instance.SetConnectionInfo(ip, port);
 
             SplashScreen.Message = LocString.WaitingForClient;
+        }
 
-            m_MainWnd = new MainForm();
-            Application.Run(m_MainWnd);
-
+        public static void Close()
+        {
             m_Running = false;
 
             Client.Instance.Close();
             Counter.Save();
             Macros.MacroManager.Save();
             Config.Save();
+        }
+
+        public static void RunUI()
+        {
+            Thread.CurrentThread.Name = "Razor UI Thread";
+
+            m_MainWnd = new MainForm();
+            m_MainWnd.Show();
+            Application.Run(m_MainWnd);
+        }
+
+        [STAThread]
+        public static void Main(string[] Args)
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+#if !DEBUG
+			AppDomain.CurrentDomain.UnhandledException +=
+ new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
+			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
+#endif
+
+            /* Load localization files */
+            string defLang = Config.GetAppSetting<string>("DefaultLanguage");
+            if (defLang == null)
+            {
+                defLang = "ENU";
+            }
+
+            if (!Language.Load(defLang))
+            {
+                MessageBox.Show(
+                    String.Format(
+                        "WARNING: Razor was unable to load the file Language/Razor_lang.{0}\n.",
+                        defLang), "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            /* Show welcome screen */
+            if (Config.GetAppSetting<int>("ShowWelcome") != 0)
+            {
+                SplashScreen.End();
+
+                WelcomeForm welcome = new WelcomeForm();
+                m_ActiveWnd = welcome;
+                if (welcome.ShowDialog() == DialogResult.Cancel)
+                    return;
+
+                SplashScreen.Start();
+                m_ActiveWnd = SplashScreen.Instance;
+            }
+
+            Client.Init(true);
+
+            Load();
+            RunUI();
+            Close();
         }
         
         private static string _rootPath = null;
