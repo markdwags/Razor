@@ -8904,21 +8904,35 @@ namespace Assistant
         public void DisableCUOFeatures()
         {
             forceSizeX.Enabled = false;
+            forceSizeX.Text = "0";
+
             forceSizeY.Enabled = false;
+            forceSizeY.Text = "0";
+
             gameSize.Enabled = false;
+            gameSize.Checked = false;
 
             seasonList.Enabled = false;
             realSeason.Enabled = false;
+            realSeason.Checked = false;
 
             rememberPwds.Enabled = false;
+            rememberPwds.Checked = false;
 
             highlightSpellReags.Enabled = false;
+            highlightSpellReags.Checked = false;
+
             showNotoHue.Enabled = false;
+            showNotoHue.Checked = false;
 
             titlebarImages.Enabled = false;
+            titlebarImages.Checked = false;
 
             showWelcome.Enabled = false;
+            showWelcome.Checked = false;
+
             alwaysTop.Enabled = false;
+            alwaysTop.Checked = false;
         }
     }
 }
