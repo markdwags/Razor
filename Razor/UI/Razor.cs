@@ -8916,6 +8916,9 @@ namespace Assistant
             showNotoHue.Enabled = false;
 
             titlebarImages.Enabled = false;
+
+            showWelcome.Enabled = false;
+            alwaysTop.Enabled = false;
         }
     }
 }
