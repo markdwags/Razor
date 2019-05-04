@@ -26,10 +26,6 @@ namespace Assistant
         private System.ComponentModel.Container components = null;
         private System.Windows.Forms.Button browse;
 
-        public string ClientPath { get { return m_ClientPath; } }
-        public bool PatchEncryption { get { return m_PatchEncy; } }
-        public string DataDirectory { get { if (m_DataDir == "" || m_DataDir == "(Auto Detect)") m_DataDir = null; return m_DataDir; } }
-
         private bool m_PatchEncy = false;
         private string m_ClientPath = "";
         private TextBox uoClient;
@@ -567,7 +563,7 @@ namespace Assistant
 
             IsValidClientAndDataDir();
 
-            patchEncy.Checked = Config.GetAppSetting<int>("PatchEncy") != 0;
+            patchEncy.Checked = Config.GetAppSetting<int>("ClientEncrypted") != 0;
             
             LoginCFG_SE lse = new LoginCFG_SE();
             Custom_SE cse;
@@ -699,9 +695,7 @@ namespace Assistant
 
         private void okay_Click(object sender, System.EventArgs e)
         {
-            Config.SetAppSetting("PatchEncy", patchEncy.Checked ? "1" : "0");
-
-            m_PatchEncy = patchEncy.Checked;
+            Config.SetAppSetting("ClientEncrypted", patchEncy.Checked ? "1" : "0");
 
             m_ClientPath = uoClient.Text;
 
@@ -717,7 +711,7 @@ namespace Assistant
 
                     if (addr == "login.ultimaonline.com")
                     {
-                        Assistant.Client.Instance.ServerEncrypted = true;
+                        Config.SetAppSetting("ServerEncrypted", "1");
                     }
 
                     if (port == 0)

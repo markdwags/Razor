@@ -199,8 +199,6 @@ namespace Assistant
             }
         }
 
-        public static string ShardList { get; private set; }
-
         private static MainForm m_MainWnd;
 
         private static Form m_ActiveWnd;
@@ -234,10 +232,8 @@ namespace Assistant
         [STAThread]
         public static void Main(string[] Args)
         {
-            Client.Init(true);
             Application.EnableVisualStyles();
-            m_Running = true;
-            Thread.CurrentThread.Name = "Razor Main Thread";
+            Thread.CurrentThread.Name = "Razor UI Thread";
 
 #if !DEBUG
 			AppDomain.CurrentDomain.UnhandledException +=
@@ -245,101 +241,24 @@ namespace Assistant
 			Directory.SetCurrentDirectory( Config.GetInstallDirectory() );
 #endif
 
-            try
+            /* Load localization files */
+            string defLang = Config.GetAppSetting<string>("DefaultLanguage");
+            if (defLang == null)
             {
-                Engine.ShardList = Config.GetAppSetting<string>("ShardList");
-            }
-            catch
-            {
-            }
-
-            bool patch = Config.GetAppSetting<int>("PatchEncy") != 0;
-            bool showWelcome = Config.GetAppSetting<int>("ShowWelcome") != 0;
-
-            string dataDir;
-
-            Client.Instance.ClientEncrypted = false;
-
-            Client.Instance.ServerEncrypted = false;
-
-            Config.SetAppSetting("PatchEncy", "1");
-
-            patch = true;
-
-            dataDir = null;
-
-            bool advCmdLine = false;
-
-            for (int i = 0; i < Args.Length; i++)
-            {
-                string arg = Args[i].ToLower();
-                if (arg == "--nopatch")
-                {
-                    patch = false;
-                }
-                else if (arg == "--clientenc")
-                {
-                    Client.Instance.ClientEncrypted = true;
-                    advCmdLine = true;
-                    patch = false;
-                }
-                else if (arg == "--serverenc")
-                {
-                    Client.Instance.ServerEncrypted = true;
-                    advCmdLine = true;
-                }
-                else if (arg == "--welcome")
-                {
-                    showWelcome = true;
-                }
-                else if (arg == "--nowelcome")
-                {
-                    showWelcome = false;
-                }
-                else if (arg == "--uodata" && i + 1 < Args.Length)
-                {
-                    i++;
-                    dataDir = Args[i];
-                }
-                else if (arg == "--server" && i + 1 < Args.Length)
-                {
-                    i++;
-                    string[] split = Args[i].Split(',', ':', ';', ' ');
-                    if (split.Length >= 2)
-                    {
-                        Config.SetAppSetting("LastServer", split[0]);
-                        Config.SetAppSetting("LastPort", split[1]);
-
-                        showWelcome = false;
-                    }
-                }
-                else if (arg == "--debug")
-                {
-                    ScavengerAgent.Debug = true;
-                    DragDropManager.Debug = true;
-                }
+                defLang = "ENU";
             }
 
-            if (!Language.Load("ENU"))
+            if (!Language.Load(defLang))
             {
-                SplashScreen.End();
                 MessageBox.Show(
-                    "Fatal Error: Unable to load required file Language/Razor_lang.enu\nRazor cannot continue.",
-                    "No Language Pack", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    String.Format(
+                        "WARNING: Razor was unable to load the file Language/Razor_lang.{0}\n.",
+                        defLang), "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string defLang = Config.GetAppSetting<string>("DefaultLanguage");
-            if (defLang != null && !Language.Load(defLang))
-                MessageBox.Show(
-                    String.Format(
-                        "WARNING: Razor was unable to load the file Language/Razor_lang.{0}\nENU will be used instead.",
-                        defLang), "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-            string clientPath = "";
-
-            // welcome only needed when not loaded by a launcher (ie uogateway)
-            if (showWelcome)
+            /* Show welcome screen */
+            if (Config.GetAppSetting<int>("ShowWelcome") != 0)
             {
                 SplashScreen.End();
 
@@ -347,24 +266,26 @@ namespace Assistant
                 m_ActiveWnd = welcome;
                 if (welcome.ShowDialog() == DialogResult.Cancel)
                     return;
-                patch = welcome.PatchEncryption;
-                dataDir = welcome.DataDirectory;
 
                 SplashScreen.Start();
                 m_ActiveWnd = SplashScreen.Instance;
             }
 
-            if (dataDir != null && Directory.Exists(dataDir))
-            {
-                Ultima.Files.SetMulPath(dataDir);
-            }
+            Client.Init(true);
+            m_Running = true;
+
+            /* Load settings from configuration file */
+            Ultima.Files.SetMulPath(Config.GetAppSetting<string>("UODataDir"));
+            Client.Instance.ClientEncrypted = Config.GetAppSetting<int>("ClientEncrypted") == 1;
+            Client.Instance.ServerEncrypted = Config.GetAppSetting<int>("ServerEncrypted") == 1;
 
             Language.LoadCliLoc();
 
+            /* Initialize engine */
             SplashScreen.Message = LocString.Initializing;
+            Initialize(typeof(Engine).Assembly);
 
-            Initialize(typeof(Assistant.Engine).Assembly); //Assembly.GetExecutingAssembly()
-
+            /* Load Profile */
             SplashScreen.Message = LocString.LoadingLastProfile;
             Config.LoadCharList();
             if (!Config.LoadLastProfile())
@@ -372,29 +293,23 @@ namespace Assistant
                     "The selected profile could not be loaded, using default instead.", "Profile Load Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            Client.Instance.SetConnectionInfo(IPAddress.None, -1);
-
-            Client.Loader_Error result = Client.Loader_Error.UNKNOWN_ERROR;
-
+            /* Start client */
             SplashScreen.Message = LocString.LoadingClient;
+            string clientPath = Ultima.Files.GetFilePath("client.exe");
+            if (clientPath == null || !File.Exists(clientPath))
+            {
+                MessageBox.Show(SplashScreen.Instance,
+                    String.Format("Unable to find the client specified.\n\"{0}\"",
+                        clientPath != null ? clientPath : "-null-"), "Could Not Find Client",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                SplashScreen.End();
+                return;
+            }
 
-            clientPath = Ultima.Files.GetFilePath("client.exe");
-
-            if (!advCmdLine)
-                Client.Instance.ClientEncrypted = patch;
-
-            if (clientPath != null && File.Exists(clientPath))
-                result = Client.Instance.LaunchClient(clientPath);
-
+            var result = Client.Instance.LaunchClient(clientPath);
             if (result != Client.Loader_Error.SUCCESS)
             {
-                if (clientPath == null && File.Exists(clientPath))
-                    MessageBox.Show(SplashScreen.Instance,
-                        String.Format("Unable to find the client specified.\n\"{0}\"",
-                            clientPath != null ? clientPath : "-null-"), "Could Not Start Client",
-                        MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                else
-                    MessageBox.Show(SplashScreen.Instance,
+                MessageBox.Show(SplashScreen.Instance,
                         String.Format("Unable to launch the client specified. (Error: {1})\n \"{0}\"",
                             clientPath != null ? clientPath : "-null-", result),
                         "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -405,7 +320,6 @@ namespace Assistant
             string addr = Config.GetAppSetting<string>("LastServer");
             int port = Config.GetAppSetting<int>("LastPort");
 
-            // if these are null then the registry entry does not exist (old razor version)
             IPAddress ip = Resolve(addr);
             if (ip == IPAddress.None || port == 0)
             {
@@ -417,10 +331,7 @@ namespace Assistant
 
             Client.Instance.SetConnectionInfo(ip, port);
 
-            if (Utility.Random(4) != 0)
-                SplashScreen.Message = LocString.WaitingForClient;
-            else
-                SplashScreen.Message = LocString.RememberDonate;
+            SplashScreen.Message = LocString.WaitingForClient;
 
             m_MainWnd = new MainForm();
             Application.Run(m_MainWnd);
