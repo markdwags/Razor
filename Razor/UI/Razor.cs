@@ -8933,6 +8933,9 @@ namespace Assistant
 
             alwaysTop.Enabled = false;
             alwaysTop.Checked = false;
+
+            incomingMob.Enabled = false;
+            incomingMob.Checked = false;
         }
     }
 }
