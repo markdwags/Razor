@@ -125,7 +125,7 @@ namespace Assistant
         private TextBox features;
         private CheckBox negotiate;
         private Label aboutSubInfo;
-        private Label label23;
+        private Label lblCredits1;
         private LinkLabel linkLabel1;
         private Label label20;
         private Button disableSmartCPU;
@@ -323,9 +323,9 @@ namespace Assistant
         private TextBox stealthStepsFormat;
         private CheckBox showFriendOverhead;
         private CheckBox dispDeltaOverhead;
-        private Label label24;
+        private Label lblCredits2;
         private LinkLabel linkGitHub;
-        private Label label5;
+        private Label lblCredits3;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -660,12 +660,12 @@ namespace Assistant
             this.features = new System.Windows.Forms.TextBox();
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.linkGitHub = new System.Windows.Forms.LinkLabel();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblCredits3 = new System.Windows.Forms.Label();
             this.linkHelp = new System.Windows.Forms.LinkLabel();
-            this.label24 = new System.Windows.Forms.Label();
+            this.lblCredits2 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.label23 = new System.Windows.Forms.Label();
+            this.lblCredits1 = new System.Windows.Forms.Label();
             this.aboutSubInfo = new System.Windows.Forms.Label();
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
@@ -3636,12 +3636,12 @@ namespace Assistant
             // aboutTab
             // 
             this.aboutTab.Controls.Add(this.linkGitHub);
-            this.aboutTab.Controls.Add(this.label5);
+            this.aboutTab.Controls.Add(this.lblCredits3);
             this.aboutTab.Controls.Add(this.linkHelp);
-            this.aboutTab.Controls.Add(this.label24);
+            this.aboutTab.Controls.Add(this.lblCredits2);
             this.aboutTab.Controls.Add(this.label20);
             this.aboutTab.Controls.Add(this.linkLabel1);
-            this.aboutTab.Controls.Add(this.label23);
+            this.aboutTab.Controls.Add(this.lblCredits1);
             this.aboutTab.Controls.Add(this.aboutSubInfo);
             this.aboutTab.Controls.Add(this.linkMain);
             this.aboutTab.Controls.Add(this.label21);
@@ -3664,15 +3664,15 @@ namespace Assistant
             this.linkGitHub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGitHub_LinkClicked);
             // 
-            // label5
+            // lblCredits3
             // 
-            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(8, 259);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(503, 20);
-            this.label5.TabIndex = 24;
-            this.label5.Text = "Cross-platform implementation by DarkLotus";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCredits3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCredits3.Location = new System.Drawing.Point(8, 259);
+            this.lblCredits3.Name = "lblCredits3";
+            this.lblCredits3.Size = new System.Drawing.Size(503, 20);
+            this.lblCredits3.TabIndex = 24;
+            this.lblCredits3.Text = "Cross-platform implementation by DarkLotus";
+            this.lblCredits3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkHelp
             // 
@@ -3686,15 +3686,15 @@ namespace Assistant
             this.linkHelp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkHelp_LinkClicked);
             // 
-            // label24
+            // lblCredits2
             // 
-            this.label24.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(9, 239);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(503, 20);
-            this.label24.TabIndex = 22;
-            this.label24.Text = "Major design changes including ClassicUO integration by Jaedan";
-            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCredits2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCredits2.Location = new System.Drawing.Point(9, 239);
+            this.lblCredits2.Name = "lblCredits2";
+            this.lblCredits2.Size = new System.Drawing.Size(503, 20);
+            this.lblCredits2.TabIndex = 22;
+            this.lblCredits2.Text = "Major design changes including ClassicUO integration by Jaedan";
+            this.lblCredits2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label20
             // 
@@ -3718,15 +3718,15 @@ namespace Assistant
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
-            // label23
+            // lblCredits1
             // 
-            this.label23.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(6, 219);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(506, 20);
-            this.label23.TabIndex = 19;
-            this.label23.Text = "Razor was designed by Zippy, modified and maintained by Quick";
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCredits1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCredits1.Location = new System.Drawing.Point(6, 219);
+            this.lblCredits1.Name = "lblCredits1";
+            this.lblCredits1.Size = new System.Drawing.Size(506, 20);
+            this.lblCredits1.TabIndex = 19;
+            this.lblCredits1.Text = "Razor was designed by Zippy, modified and maintained by Quick";
+            this.lblCredits1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // aboutSubInfo
             // 
