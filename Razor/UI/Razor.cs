@@ -129,7 +129,6 @@ namespace Assistant
         private LinkLabel linkLabel1;
         private Label label20;
         private Button disableSmartCPU;
-        private TabPage mapTab;
         private CheckBox logSkillChanges;
         private CheckBox screenShotOpenBrowser;
         private CheckBox screenShotNotification;
@@ -251,12 +250,6 @@ namespace Assistant
         private CheckBox showDamageTaken;
         private CheckBox damageDealtOverhead;
         private CheckBox showDamageDealt;
-        private GroupBox groupBox14;
-        private Button boatControl;
-        private GroupBox groupBox15;
-        private Button openUOAM;
-        private Button openUltimaMapper;
-        private Button btnMap;
         private CheckBox rememberPwds;
         private TabControl tabControl4;
         private TabPage subDisplayTab;
@@ -285,7 +278,6 @@ namespace Assistant
         private Button delCounter;
         private Button addCounter;
         private Button recount;
-        private CheckBox captureMibs;
         private TabControl subGeneralTab;
         private TabPage tabPage1;
         private TabPage subFiltersTab;
@@ -326,6 +318,12 @@ namespace Assistant
         private Label lblCredits2;
         private LinkLabel linkGitHub;
         private Label lblCredits3;
+        private GroupBox groupBox15;
+        private Button openUOAM;
+        private Button openUltimaMapper;
+        private Button btnMap;
+        private Button boatControl;
+        private CheckBox captureMibs;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -388,6 +386,11 @@ namespace Assistant
             this.generalTab = new System.Windows.Forms.TabPage();
             this.subGeneralTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.boatControl = new System.Windows.Forms.Button();
+            this.openUOAM = new System.Windows.Forms.Button();
+            this.openUltimaMapper = new System.Windows.Forms.Button();
+            this.btnMap = new System.Windows.Forms.Button();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.openBackupFolder = new System.Windows.Forms.Button();
             this.setBackupFolder = new System.Windows.Forms.Button();
@@ -555,6 +558,7 @@ namespace Assistant
             this.dressList = new System.Windows.Forms.ListBox();
             this.undressConflicts = new System.Windows.Forms.CheckBox();
             this.skillsTab = new System.Windows.Forms.TabPage();
+            this.captureMibs = new System.Windows.Forms.CheckBox();
             this.dispDeltaOverhead = new System.Windows.Forms.CheckBox();
             this.logSkillChanges = new System.Windows.Forms.CheckBox();
             this.dispDelta = new System.Windows.Forms.CheckBox();
@@ -624,14 +628,6 @@ namespace Assistant
             this.removeMacroVariable = new System.Windows.Forms.Button();
             this.addMacroVariable = new System.Windows.Forms.Button();
             this.macroVariables = new System.Windows.Forms.ListBox();
-            this.mapTab = new System.Windows.Forms.TabPage();
-            this.groupBox15 = new System.Windows.Forms.GroupBox();
-            this.openUOAM = new System.Windows.Forms.Button();
-            this.openUltimaMapper = new System.Windows.Forms.Button();
-            this.btnMap = new System.Windows.Forms.Button();
-            this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.captureMibs = new System.Windows.Forms.CheckBox();
-            this.boatControl = new System.Windows.Forms.Button();
             this.screenshotTab = new System.Windows.Forms.TabPage();
             this.imgurUploads = new System.Windows.Forms.ListBox();
             this.screenShotClipboard = new System.Windows.Forms.CheckBox();
@@ -675,6 +671,7 @@ namespace Assistant
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox15.SuspendLayout();
             this.groupBox16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
             this.groupBox4.SuspendLayout();
@@ -706,9 +703,6 @@ namespace Assistant
             this.macroActGroup.SuspendLayout();
             this.subMacrosOptionsTab.SuspendLayout();
             this.absoluteTargetGroup.SuspendLayout();
-            this.mapTab.SuspendLayout();
-            this.groupBox15.SuspendLayout();
-            this.groupBox14.SuspendLayout();
             this.screenshotTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
@@ -731,7 +725,6 @@ namespace Assistant
             this.tabs.Controls.Add(this.agentsTab);
             this.tabs.Controls.Add(this.hotkeysTab);
             this.tabs.Controls.Add(this.macrosTab);
-            this.tabs.Controls.Add(this.mapTab);
             this.tabs.Controls.Add(this.screenshotTab);
             this.tabs.Controls.Add(this.advancedTab);
             this.tabs.Controls.Add(this.aboutTab);
@@ -768,6 +761,7 @@ namespace Assistant
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.groupBox15);
             this.tabPage1.Controls.Add(this.groupBox16);
             this.tabPage1.Controls.Add(this.clientPrio);
             this.tabPage1.Controls.Add(this.systray);
@@ -788,6 +782,56 @@ namespace Assistant
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             // 
+            // groupBox15
+            // 
+            this.groupBox15.Controls.Add(this.boatControl);
+            this.groupBox15.Controls.Add(this.openUOAM);
+            this.groupBox15.Controls.Add(this.openUltimaMapper);
+            this.groupBox15.Controls.Add(this.btnMap);
+            this.groupBox15.Location = new System.Drawing.Point(6, 232);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(490, 48);
+            this.groupBox15.TabIndex = 77;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "Maps / Boat";
+            // 
+            // boatControl
+            // 
+            this.boatControl.Location = new System.Drawing.Point(388, 16);
+            this.boatControl.Name = "boatControl";
+            this.boatControl.Size = new System.Drawing.Size(96, 26);
+            this.boatControl.TabIndex = 70;
+            this.boatControl.Text = "Boat Control";
+            this.boatControl.UseVisualStyleBackColor = true;
+            this.boatControl.Click += new System.EventHandler(this.boatControl_Click);
+            // 
+            // openUOAM
+            // 
+            this.openUOAM.Location = new System.Drawing.Point(238, 16);
+            this.openUOAM.Name = "openUOAM";
+            this.openUOAM.Size = new System.Drawing.Size(107, 26);
+            this.openUOAM.TabIndex = 69;
+            this.openUOAM.Text = "UOAM";
+            this.openUOAM.Click += new System.EventHandler(this.openUOAM_Click);
+            // 
+            // openUltimaMapper
+            // 
+            this.openUltimaMapper.Location = new System.Drawing.Point(122, 16);
+            this.openUltimaMapper.Name = "openUltimaMapper";
+            this.openUltimaMapper.Size = new System.Drawing.Size(107, 26);
+            this.openUltimaMapper.TabIndex = 68;
+            this.openUltimaMapper.Text = "Ultima Mapper";
+            this.openUltimaMapper.Click += new System.EventHandler(this.openUltimaMapper_Click);
+            // 
+            // btnMap
+            // 
+            this.btnMap.Location = new System.Drawing.Point(6, 16);
+            this.btnMap.Name = "btnMap";
+            this.btnMap.Size = new System.Drawing.Size(107, 26);
+            this.btnMap.TabIndex = 67;
+            this.btnMap.Text = "UOPS";
+            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
+            // 
             // groupBox16
             // 
             this.groupBox16.Controls.Add(this.openBackupFolder);
@@ -796,14 +840,14 @@ namespace Assistant
             this.groupBox16.Controls.Add(this.createBackup);
             this.groupBox16.Location = new System.Drawing.Point(6, 107);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(229, 125);
+            this.groupBox16.Size = new System.Drawing.Size(229, 119);
             this.groupBox16.TabIndex = 74;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Backup Profiles && Macros";
             // 
             // openBackupFolder
             // 
-            this.openBackupFolder.Location = new System.Drawing.Point(119, 88);
+            this.openBackupFolder.Location = new System.Drawing.Point(119, 81);
             this.openBackupFolder.Name = "openBackupFolder";
             this.openBackupFolder.Size = new System.Drawing.Size(104, 30);
             this.openBackupFolder.TabIndex = 75;
@@ -813,7 +857,7 @@ namespace Assistant
             // 
             // setBackupFolder
             // 
-            this.setBackupFolder.Location = new System.Drawing.Point(6, 88);
+            this.setBackupFolder.Location = new System.Drawing.Point(6, 81);
             this.setBackupFolder.Name = "setBackupFolder";
             this.setBackupFolder.Size = new System.Drawing.Size(107, 30);
             this.setBackupFolder.TabIndex = 74;
@@ -912,7 +956,7 @@ namespace Assistant
             // 
             this.opacity.AutoSize = false;
             this.opacity.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this.opacity.Location = new System.Drawing.Point(327, 201);
+            this.opacity.Location = new System.Drawing.Point(327, 194);
             this.opacity.Maximum = 100;
             this.opacity.Minimum = 10;
             this.opacity.Name = "opacity";
@@ -934,7 +978,7 @@ namespace Assistant
             // 
             // opacityLabel
             // 
-            this.opacityLabel.Location = new System.Drawing.Point(241, 201);
+            this.opacityLabel.Location = new System.Drawing.Point(241, 196);
             this.opacityLabel.Name = "opacityLabel";
             this.opacityLabel.Size = new System.Drawing.Size(89, 19);
             this.opacityLabel.TabIndex = 65;
@@ -2567,6 +2611,7 @@ namespace Assistant
             // 
             // skillsTab
             // 
+            this.skillsTab.Controls.Add(this.captureMibs);
             this.skillsTab.Controls.Add(this.dispDeltaOverhead);
             this.skillsTab.Controls.Add(this.logSkillChanges);
             this.skillsTab.Controls.Add(this.dispDelta);
@@ -2583,6 +2628,16 @@ namespace Assistant
             this.skillsTab.Size = new System.Drawing.Size(519, 322);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
+            // 
+            // captureMibs
+            // 
+            this.captureMibs.Location = new System.Drawing.Point(356, 230);
+            this.captureMibs.Name = "captureMibs";
+            this.captureMibs.Size = new System.Drawing.Size(153, 19);
+            this.captureMibs.TabIndex = 70;
+            this.captureMibs.Text = "Capture MIBs to file";
+            this.captureMibs.UseVisualStyleBackColor = true;
+            this.captureMibs.CheckedChanged += new System.EventHandler(this.captureMibs_CheckedChanged);
             // 
             // dispDeltaOverhead
             // 
@@ -3265,87 +3320,6 @@ namespace Assistant
             this.macroVariables.Size = new System.Drawing.Size(153, 199);
             this.macroVariables.TabIndex = 1;
             // 
-            // mapTab
-            // 
-            this.mapTab.BackColor = System.Drawing.SystemColors.Control;
-            this.mapTab.Controls.Add(this.groupBox15);
-            this.mapTab.Controls.Add(this.groupBox14);
-            this.mapTab.Location = new System.Drawing.Point(4, 44);
-            this.mapTab.Name = "mapTab";
-            this.mapTab.Size = new System.Drawing.Size(519, 322);
-            this.mapTab.TabIndex = 13;
-            this.mapTab.Text = "Maps";
-            // 
-            // groupBox15
-            // 
-            this.groupBox15.Controls.Add(this.openUOAM);
-            this.groupBox15.Controls.Add(this.openUltimaMapper);
-            this.groupBox15.Controls.Add(this.btnMap);
-            this.groupBox15.Location = new System.Drawing.Point(19, 7);
-            this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(214, 200);
-            this.groupBox15.TabIndex = 69;
-            this.groupBox15.TabStop = false;
-            this.groupBox15.Text = "Maps";
-            // 
-            // openUOAM
-            // 
-            this.openUOAM.Location = new System.Drawing.Point(37, 48);
-            this.openUOAM.Name = "openUOAM";
-            this.openUOAM.Size = new System.Drawing.Size(147, 32);
-            this.openUOAM.TabIndex = 69;
-            this.openUOAM.Text = "Open UOAM";
-            this.openUOAM.Click += new System.EventHandler(this.openUOAM_Click);
-            // 
-            // openUltimaMapper
-            // 
-            this.openUltimaMapper.Location = new System.Drawing.Point(37, 86);
-            this.openUltimaMapper.Name = "openUltimaMapper";
-            this.openUltimaMapper.Size = new System.Drawing.Size(147, 34);
-            this.openUltimaMapper.TabIndex = 68;
-            this.openUltimaMapper.Text = "Open Ultima Mapper";
-            this.openUltimaMapper.Click += new System.EventHandler(this.openUltimaMapper_Click);
-            // 
-            // btnMap
-            // 
-            this.btnMap.Location = new System.Drawing.Point(37, 126);
-            this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(147, 34);
-            this.btnMap.TabIndex = 67;
-            this.btnMap.Text = "Open UOPS";
-            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
-            // 
-            // groupBox14
-            // 
-            this.groupBox14.Controls.Add(this.captureMibs);
-            this.groupBox14.Controls.Add(this.boatControl);
-            this.groupBox14.Location = new System.Drawing.Point(261, 7);
-            this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(214, 200);
-            this.groupBox14.TabIndex = 68;
-            this.groupBox14.TabStop = false;
-            this.groupBox14.Text = "Boat Control";
-            // 
-            // captureMibs
-            // 
-            this.captureMibs.Location = new System.Drawing.Point(6, 57);
-            this.captureMibs.Name = "captureMibs";
-            this.captureMibs.Size = new System.Drawing.Size(202, 37);
-            this.captureMibs.TabIndex = 69;
-            this.captureMibs.Text = "Capture MIB coordinates when opening";
-            this.captureMibs.UseVisualStyleBackColor = true;
-            this.captureMibs.CheckedChanged += new System.EventHandler(this.captureMibs_CheckedChanged);
-            // 
-            // boatControl
-            // 
-            this.boatControl.Location = new System.Drawing.Point(37, 17);
-            this.boatControl.Name = "boatControl";
-            this.boatControl.Size = new System.Drawing.Size(147, 32);
-            this.boatControl.TabIndex = 61;
-            this.boatControl.Text = "Open Boat Control";
-            this.boatControl.UseVisualStyleBackColor = true;
-            this.boatControl.Click += new System.EventHandler(this.boatControl_Click);
-            // 
             // screenshotTab
             // 
             this.screenshotTab.Controls.Add(this.imgurUploads);
@@ -3799,6 +3773,7 @@ namespace Assistant
             this.generalTab.ResumeLayout(false);
             this.subGeneralTab.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.groupBox15.ResumeLayout(false);
             this.groupBox16.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
             this.groupBox4.ResumeLayout(false);
@@ -3843,9 +3818,6 @@ namespace Assistant
             this.subMacrosOptionsTab.ResumeLayout(false);
             this.subMacrosOptionsTab.PerformLayout();
             this.absoluteTargetGroup.ResumeLayout(false);
-            this.mapTab.ResumeLayout(false);
-            this.groupBox15.ResumeLayout(false);
-            this.groupBox14.ResumeLayout(false);
             this.screenshotTab.ResumeLayout(false);
             this.screenshotTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).EndInit();

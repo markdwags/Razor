@@ -21,7 +21,7 @@ WelcomeForm::okay=&Launch UO
 
 MainForm::Text=Razor v{0}
 MainForm::generalTab=General
-MainForm::btnMap=Open UO Map System
+MainForm::btnMap=UOPS
 MainForm::systray=System Tray
 MainForm::taskbar=Taskbar
 MainForm::smartCPU=Use smart CPU usage reduction

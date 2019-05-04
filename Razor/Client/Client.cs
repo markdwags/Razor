@@ -47,9 +47,12 @@ namespace Assistant
     public abstract class Client
     {
         public static Client Instance;
+        public static  bool IsOSI;
 
         internal static void Init(bool isOSI)
         {
+            IsOSI = isOSI;
+
             if (isOSI)
                 Instance = new OSIClient();
             else
