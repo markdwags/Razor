@@ -95,10 +95,16 @@ namespace Assistant
         }
         internal static void BringToFront( IntPtr window )
         {
-            if ( Environment.OSVersion.Platform == PlatformID.Win32NT )
-                Win32Platform.BringToFront( window );
-            else
-                LinuxPlatform.BringToFront( window );
+            try
+            {
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                    Win32Platform.BringToFront(window);
+                else
+                    LinuxPlatform.BringToFront(window);
+            }
+            catch
+            {
+            }
         }
         internal static bool SetForegroundWindow( IntPtr hWnd )
         {

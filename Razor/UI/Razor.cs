@@ -4179,6 +4179,9 @@ namespace Assistant
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
+            if (!Client.IsOSI)
+                DisableCUOFeatures();
+
             m_Initializing = false;
         }
 
@@ -8921,6 +8924,26 @@ namespace Assistant
         private void linkGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://github.com/markdwags/Razor");
+        }
+
+        /// <summary>
+        /// Quickly disable UI elements not used when ClassicUO is the client
+        /// </summary>
+        public void DisableCUOFeatures()
+        {
+            forceSizeX.Enabled = false;
+            forceSizeY.Enabled = false;
+            gameSize.Enabled = false;
+
+            seasonList.Enabled = false;
+            realSeason.Enabled = false;
+
+            rememberPwds.Enabled = false;
+
+            highlightSpellReags.Enabled = false;
+            showNotoHue.Enabled = false;
+
+            titlebarImages.Enabled = false;
         }
     }
 }
