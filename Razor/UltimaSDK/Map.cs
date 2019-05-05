@@ -141,7 +141,7 @@ namespace Ultima
 		/// <returns></returns>
 		public Bitmap GetImage(int x, int y, int width, int height, bool statics)
 		{
-			Bitmap bmp = new Bitmap(width << 3, height << 3, PixelFormat.Format16bppRgb555);
+			Bitmap bmp = new Bitmap(width << 3, height << 3, PixelFormat.Format32bppRgb);
 
 			GetImage(x, y, width, height, bmp, statics);
 
@@ -153,11 +153,11 @@ namespace Ultima
 		private bool IsCached_NoPatch;
 		private bool IsCached_NoStatics_NoPatch;
 
-		private short[][][] m_Cache;
-		private short[][][] m_Cache_NoStatics;
-		private short[][][] m_Cache_NoPatch;
-		private short[][][] m_Cache_NoStatics_NoPatch;
-		private short[] m_Black;
+		private int[][][] m_Cache;
+		private int[][][] m_Cache_NoStatics;
+		private int[][][] m_Cache_NoPatch;
+		private int[][][] m_Cache_NoStatics_NoPatch;
+		private int[] m_Black;
 
 		public bool IsCached(bool statics)
 		{
@@ -184,11 +184,11 @@ namespace Ultima
 			if (x < 0 || y < 0 || x >= matrix.BlockWidth || y >= matrix.BlockHeight)
 			{
 				if (m_Black == null)
-					m_Black = new short[64];
+					m_Black = new int[64];
 				return;
 			}
 
-			short[][][] cache;
+            int[][][] cache;
 			if (Map.UseDiff)
 			{
 				if (statics)
@@ -211,21 +211,21 @@ namespace Ultima
 				if (Map.UseDiff)
 				{
 					if (statics)
-						m_Cache = cache = new short[m_Tiles.BlockHeight][][];
+						m_Cache = cache = new int[m_Tiles.BlockHeight][][];
 					else
-						m_Cache_NoStatics = cache = new short[m_Tiles.BlockHeight][][];
+						m_Cache_NoStatics = cache = new int[m_Tiles.BlockHeight][][];
 				}
 				else
 				{
 					if (statics)
-						m_Cache_NoPatch = cache = new short[m_Tiles.BlockHeight][][];
+						m_Cache_NoPatch = cache = new int[m_Tiles.BlockHeight][][];
 					else
-						m_Cache_NoStatics_NoPatch = cache = new short[m_Tiles.BlockHeight][][];
+						m_Cache_NoStatics_NoPatch = cache = new int[m_Tiles.BlockHeight][][];
 				}
 			}
 
 			if (cache[y] == null)
-				cache[y] = new short[m_Tiles.BlockWidth][];
+				cache[y] = new int[m_Tiles.BlockWidth][];
 
 			if (cache[y][x] == null)
 				cache[y][x] = RenderBlock(x, y, statics, Map.UseDiff);
@@ -233,19 +233,19 @@ namespace Ultima
 			m_Tiles.CloseStreams();
 		}
 
-		public short[] GetRenderedBlock(int x, int y, bool statics)
+		public int[] GetRenderedBlock(int x, int y, bool statics)
 		{
 			TileMatrix matrix = this.Tiles;
 
 			if (x < 0 || y < 0 || x >= matrix.BlockWidth || y >= matrix.BlockHeight)
 			{
 				if (m_Black == null)
-					m_Black = new short[64];
+					m_Black = new int[64];
 
 				return m_Black;
 			}
 
-			short[][][] cache;
+            int[][][] cache;
 			if (Map.UseDiff)
 				cache = (statics ? m_Cache : m_Cache_NoStatics);
 			else
@@ -256,33 +256,56 @@ namespace Ultima
 				if (Map.UseDiff)
 				{
 					if (statics)
-						m_Cache = cache = new short[m_Tiles.BlockHeight][][];
+						m_Cache = cache = new int[m_Tiles.BlockHeight][][];
 					else
-						m_Cache_NoStatics = cache = new short[m_Tiles.BlockHeight][][];
+						m_Cache_NoStatics = cache = new int[m_Tiles.BlockHeight][][];
 				}
 				else
 				{
 					if (statics)
-						m_Cache_NoPatch = cache = new short[m_Tiles.BlockHeight][][];
+						m_Cache_NoPatch = cache = new int[m_Tiles.BlockHeight][][];
 					else
-						m_Cache_NoStatics_NoPatch = cache = new short[m_Tiles.BlockHeight][][];
+						m_Cache_NoStatics_NoPatch = cache = new int[m_Tiles.BlockHeight][][];
 				}
 			}
 
 			if (cache[y] == null)
-				cache[y] = new short[m_Tiles.BlockWidth][];
+				cache[y] = new int[m_Tiles.BlockWidth][];
 
-			short[] data = cache[y][x];
+            int[] data = cache[y][x];
 
 			if (data == null)
 				cache[y][x] = data = RenderBlock(x, y, statics, Map.UseDiff);
 
 			return data;
 		}
+        public static Int32 u16Tou32( Int16 color )
+        {
+            Int32 red = (Int32)( ( ( color >> 0xA ) & 0x1F ) * 8.225806f );
+            Int32 green = (Int32)( ( ( color >> 0x5 ) & 0x1F ) * 8.225806f );
+            Int32 blue = (Int32)( ( color & 0x1F ) * 8.225806f );
 
-		private unsafe short[] RenderBlock(int x, int y, bool drawStatics, bool diff)
+            if ( red < 0 )
+                red = 0;
+            else if ( red > 0xFF )
+                red = 0xFF;
+
+            if ( green < 0 )
+                green = 0;
+            else if ( green > 0xFF )
+                green = 255;
+
+            if ( blue < 0 )
+                blue = 0;
+            else if ( blue > 0xFF )
+                blue = 0xFF;
+
+            return ( ( red << 0x10 ) | ( green << 0x8 ) | blue );
+        }
+
+        private unsafe int[] RenderBlock(int x, int y, bool drawStatics, bool diff)
 		{
-			short[] data = new short[64];
+			int[] data = new int[64];
 
 			Tile[] tiles = m_Tiles.GetLandBlock(x, y, diff);
 
@@ -294,9 +317,9 @@ namespace Ultima
 					{
 						Tile* pTiles = ptTiles;
 
-						fixed (short* pData = data)
+						fixed ( int* pData = data)
 						{
-							short* pvData = pData;
+                            int* pvData = pData;
 
 							if (drawStatics)
 							{
@@ -379,14 +402,14 @@ namespace Ultima
 											try
 											{
 												if (highstatic)
-													*pvData++ = pColors[highID + 0x4000];
+													*pvData++ = u16Tou32(pColors[highID + 0x4000]);
 												else
-													*pvData++ = pColors[highID];
+													*pvData++ = u16Tou32( pColors[highID]);
 											}
 											catch { }
 										}
 										else
-											*pvData++ = Hues.GetHue(highHue - 1).Colors[(pColors[highID + 0x4000] >> 10) & 0x1F];
+											*pvData++ = u16Tou32(Hues.GetHue(highHue - 1).Colors[(pColors[highID + 0x4000] >> 10) & 0x1F]);
 
 										++pTiles;
 									}
@@ -397,7 +420,7 @@ namespace Ultima
 								Tile* pEnd = pTiles + 64;
 
 								while (pTiles < pEnd)
-									*pvData++ = pColors[(pTiles++)->m_ID];
+									*pvData++ = u16Tou32( pColors[(pTiles++)->m_ID]);
 							}
 						}
 					}
@@ -431,7 +454,7 @@ namespace Ultima
 		/// <param name="statics"></param>
 		public unsafe void GetImage(int x, int y, int width, int height, Bitmap bmp, bool statics)
 		{
-			BitmapData bd = bmp.LockBits(new Rectangle(0, 0, width << 3, height << 3), ImageLockMode.WriteOnly, PixelFormat.Format16bppRgb555);
+			BitmapData bd = bmp.LockBits(new Rectangle(0, 0, width << 3, height << 3), ImageLockMode.WriteOnly, PixelFormat.Format32bppRgb );
 			int stride = bd.Stride;
 			int blockStride = stride << 3;
 
@@ -451,9 +474,9 @@ namespace Ultima
 
 				for (int ox = 0, bx = x; ox < width; ++ox, ++bx)
 				{
-					short[] data = GetRenderedBlock(bx, by, statics);
+                    int[] data = GetRenderedBlock(bx, by, statics);
 
-					fixed (short* pData = data)
+					fixed ( int* pData = data)
 					{
 						int* pvData = (int*)pData;
 
@@ -462,41 +485,71 @@ namespace Ultima
 						*pRow0++ = *pvData++;
 						*pRow0++ = *pvData++;
 
+
+                        *pRow0++ = *pvData++;
+                        *pRow0++ = *pvData++;
+                        *pRow0++ = *pvData++;
+                        *pRow0++ = *pvData++;
+
+                        *pRow1++ = *pvData++;
 						*pRow1++ = *pvData++;
 						*pRow1++ = *pvData++;
 						*pRow1++ = *pvData++;
-						*pRow1++ = *pvData++;
+                        *pRow1++ = *pvData++;
+                        *pRow1++ = *pvData++;
+                        *pRow1++ = *pvData++;
+                        *pRow1++ = *pvData++;
 
+                        *pRow2++ = *pvData++;
 						*pRow2++ = *pvData++;
 						*pRow2++ = *pvData++;
 						*pRow2++ = *pvData++;
-						*pRow2++ = *pvData++;
+                        *pRow2++ = *pvData++;
+                        *pRow2++ = *pvData++;
+                        *pRow2++ = *pvData++;
+                        *pRow2++ = *pvData++;
 
+                        *pRow3++ = *pvData++;
 						*pRow3++ = *pvData++;
 						*pRow3++ = *pvData++;
 						*pRow3++ = *pvData++;
-						*pRow3++ = *pvData++;
+                        *pRow3++ = *pvData++;
+                        *pRow3++ = *pvData++;
+                        *pRow3++ = *pvData++;
+                        *pRow3++ = *pvData++;
 
+                        *pRow4++ = *pvData++;
 						*pRow4++ = *pvData++;
 						*pRow4++ = *pvData++;
 						*pRow4++ = *pvData++;
-						*pRow4++ = *pvData++;
+                        *pRow4++ = *pvData++;
+                        *pRow4++ = *pvData++;
+                        *pRow4++ = *pvData++;
+                        *pRow4++ = *pvData++;
+                        *pRow5++ = *pvData++;
+						*pRow5++ = *pvData++;
+						*pRow5++ = *pvData++;
+						*pRow5++ = *pvData++; *pRow5++ = *pvData++;
+                        *pRow5++ = *pvData++;
+                        *pRow5++ = *pvData++;
+                        *pRow5++ = *pvData++;
 
-						*pRow5++ = *pvData++;
-						*pRow5++ = *pvData++;
-						*pRow5++ = *pvData++;
-						*pRow5++ = *pvData++;
+                        *pRow6++ = *pvData++;
+						*pRow6++ = *pvData++;
+						*pRow6++ = *pvData++;
+						*pRow6++ = *pvData++; *pRow6++ = *pvData++;
+                        *pRow6++ = *pvData++;
+                        *pRow6++ = *pvData++;
+                        *pRow6++ = *pvData++;
 
-						*pRow6++ = *pvData++;
-						*pRow6++ = *pvData++;
-						*pRow6++ = *pvData++;
-						*pRow6++ = *pvData++;
-
+                        *pRow7++ = *pvData++;
 						*pRow7++ = *pvData++;
 						*pRow7++ = *pvData++;
-						*pRow7++ = *pvData++;
-						*pRow7++ = *pvData++;
-					}
+						*pRow7++ = *pvData++; *pRow7++ = *pvData++;
+                        *pRow7++ = *pvData++;
+                        *pRow7++ = *pvData++;
+                        *pRow7++ = *pvData++;
+                    }
 				}
 			}
 
