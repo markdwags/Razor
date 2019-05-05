@@ -129,14 +129,18 @@ namespace Assistant
             // 
             // opList
             // 
-            this.opList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.opList.Items.AddRange(new object[] {
-            "<=",
-            ">="});
-            this.opList.Location = new System.Drawing.Point(179, 9);
-            this.opList.Name = "opList";
-            this.opList.Size = new System.Drawing.Size(53, 23);
-            this.opList.TabIndex = 11;
+		  this.opList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+		  this.opList.Items.AddRange(new object[]
+		  {
+		      "<=",
+		      ">=",
+		      "<",
+		      ">"
+  		  });
+		  this.opList.Location = new System.Drawing.Point(179, 9);
+		  this.opList.Name = "opList";
+		  this.opList.Size = new System.Drawing.Size(53, 23);
+		  this.opList.TabIndex = 11;
             // 
             // label1
             // 

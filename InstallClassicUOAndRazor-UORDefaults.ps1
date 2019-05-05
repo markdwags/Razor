@@ -64,38 +64,16 @@ if ($(Test-Path "$WorkingDir\settings.json" -PathType Leaf) -eq $False) {
   Write-Host "*** PLEASE CLICK THE OK WHEN PROMPTED BY CLASSICUO ***"
   Start-Process -FilePath "$WorkingDir\ClassicUO.exe" -Wait
 
-  Write-Host "Setting up settings.json"  
-  Write-Host "*** HIT ENTER TO ACCEPT DEFAULT VALUES ***"
-
-  # User input for the various data points for settings.json
-  $serverhost = Read-Host -Prompt "> Enter the host/ip of the UO server (default: login.uorenaissance.com)"
-  if ([string]::IsNullOrEmpty($serverhost)) {
-    $serverhost = "login.uorenaissance.com"
-  }
-
-  $port = Read-Host -Prompt "> Enter the port of the UO server (default: 2593)"
-  if ([string]::IsNullOrEmpty($port)) {
-    $port = 2593
-  }
-
-  $path = Read-Host -Prompt "> Enter the path to your Ultima Online files (default: C:\Ultima Online)" 
-  if ([string]::IsNullOrEmpty($path)) {
-    $path = "C:\Ultima Online"
-  }
-
-  $client = Read-Host -Prompt "> Enter the client version you are using (default: 5.0.8.3)"
-  if ([string]::IsNullOrEmpty($client)) {
-    $client = "5.0.8.3"
-  }
-
+  Write-Host "Setting up settings.json"
+  
   # Update the default settings.json file to point to where we installed Razor
   $cuoSettings = Get-Content "$WorkingDir\settings.json" -Raw | ConvertFrom-Json
 
   # Set the values based on the input from above
-  $cuoSettings."ip" = $serverhost
-  $cuoSettings."port" = [int]$port
-  $cuoSettings."ultimaonlinedirectory" = $path
-  $cuoSettings."clientversion" = $client
+  $cuoSettings."ip" = "login.uorenaissance.com"
+  $cuoSettings."port" = 2593
+  $cuoSettings."ultimaonlinedirectory" = "C:\Ultima Online"
+  $cuoSettings."clientversion" = "5.0.8.3"
 
   # Set plugin location to point to Razor
   $cuoSettings."plugins"[0] = "$WorkingDir\Razor\Razor.exe"

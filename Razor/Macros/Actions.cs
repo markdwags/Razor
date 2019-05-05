@@ -2316,6 +2316,7 @@ namespace Assistant.Macros
             Counter = 50
         }
 
+        // 0 <=,1 >=,2 <,3 >
         private sbyte m_Direction;
         private object m_Value;
         private IfVarType m_Var;
@@ -2333,7 +2334,7 @@ namespace Assistant.Macros
             try
             {
                 m_Direction = Convert.ToSByte(args[2]);
-                if (m_Direction > 1)
+                if (m_Direction > 3)
                     m_Direction = 0;
             }
             catch
@@ -2394,35 +2395,69 @@ namespace Assistant.Macros
                 case IfVarType.Weight:
                     {
                         int val = (int)m_Value;
-                        if (m_Direction > 0)
+
+                        switch (m_Direction)
                         {
-                            // if stat >= m_Value
-                            switch (m_Var)
-                            {
-                                case IfVarType.Hits:
-                                    return World.Player.Hits >= val;
-                                case IfVarType.Mana:
-                                    return World.Player.Mana >= val;
-                                case IfVarType.Stamina:
-                                    return World.Player.Stam >= val;
-                                case IfVarType.Weight:
-                                    return World.Player.Weight >= val;
-                            }
-                        }
-                        else
-                        {
-                            // if stat <= m_Value
-                            switch (m_Var)
-                            {
-                                case IfVarType.Hits:
-                                    return World.Player.Hits <= val;
-                                case IfVarType.Mana:
-                                    return World.Player.Mana <= val;
-                                case IfVarType.Stamina:
-                                    return World.Player.Stam <= val;
-                                case IfVarType.Weight:
-                                    return World.Player.Weight <= val;
-                            }
+                            case 0:
+                                // if stat <= m_Value
+                                switch (m_Var)
+                                {
+                                    case IfVarType.Hits:
+                                        return World.Player.Hits <= val;
+                                    case IfVarType.Mana:
+                                        return World.Player.Mana <= val;
+                                    case IfVarType.Stamina:
+                                        return World.Player.Stam <= val;
+                                    case IfVarType.Weight:
+                                        return World.Player.Weight <= val;
+                                }
+
+                                break;
+                            case 1:
+                                // if stat >= m_Value
+                                switch (m_Var)
+                                {
+                                    case IfVarType.Hits:
+                                        return World.Player.Hits >= val;
+                                    case IfVarType.Mana:
+                                        return World.Player.Mana >= val;
+                                    case IfVarType.Stamina:
+                                        return World.Player.Stam >= val;
+                                    case IfVarType.Weight:
+                                        return World.Player.Weight >= val;
+                                }
+
+                                break;
+                            case 2:
+                                // if stat < m_Value
+                                switch (m_Var)
+                                {
+                                    case IfVarType.Hits:
+                                        return World.Player.Hits < val;
+                                    case IfVarType.Mana:
+                                        return World.Player.Mana < val;
+                                    case IfVarType.Stamina:
+                                        return World.Player.Stam < val;
+                                    case IfVarType.Weight:
+                                        return World.Player.Weight < val;
+                                }
+
+                                break;
+                            case 3:
+                                // if stat > m_Value
+                                switch (m_Var)
+                                {
+                                    case IfVarType.Hits:
+                                        return World.Player.Hits > val;
+                                    case IfVarType.Mana:
+                                        return World.Player.Mana > val;
+                                    case IfVarType.Stamina:
+                                        return World.Player.Stam > val;
+                                    case IfVarType.Weight:
+                                        return World.Player.Weight > val;
+                                }
+
+                                break;
                         }
 
                         return false;
@@ -2484,14 +2519,40 @@ namespace Assistant.Macros
                         if (m_CountObj == null || !m_CountObj.Enabled)
                             return false;
 
-                        if (m_Direction > 0)
-                            return m_CountObj.Amount >= (int)m_Value;
-                        else
-                            return m_CountObj.Amount <= (int)m_Value;
+                        switch (m_Direction)
+                        {
+                            case 0:
+                                return m_CountObj.Amount <= (int)m_Value;
+                            case 1:
+                                return m_CountObj.Amount >= (int)m_Value;
+                            case 2:
+                                return m_CountObj.Amount < (int)m_Value;
+                            case 3:
+                                return m_CountObj.Amount > (int)m_Value;
+                            default:
+                                return m_CountObj.Amount <= (int)m_Value;
+                        }
                     }
 
                 default:
                     return false;
+            }
+        }
+
+        private string DirectionString()
+        {
+            switch (m_Direction)
+            {
+                case 0:
+                    return "<=";
+                case 1:
+                    return ">=";
+                case 2:
+                    return "<";
+                case 3:
+                    return ">";
+                default:
+                    return "<=";
             }
         }
 
@@ -2503,7 +2564,7 @@ namespace Assistant.Macros
                 case IfVarType.Mana:
                 case IfVarType.Stamina:
                 case IfVarType.Weight:
-                    return String.Format("If ( {0} {1} {2} )", m_Var, m_Direction > 0 ? ">=" : "<=", m_Value);
+                    return String.Format("If ( {0} {1} {2} )", m_Var, DirectionString(), m_Value);
                 case IfVarType.Poisoned:
                     return "If ( Poisoned )";
                 case IfVarType.SysMessage:
@@ -2520,7 +2581,7 @@ namespace Assistant.Macros
                 case IfVarType.LHandEmpty:
                     return "If ( L-Hand Empty )";
                 case IfVarType.Counter:
-                    return String.Format("If ( \"{0} count\" {1} {2} )", m_Counter, m_Direction > 0 ? ">=" : "<=", m_Value);
+                    return String.Format("If ( \"{0} count\" {1} {2} )", m_Counter, DirectionString(), m_Value);
                 default:
                     return "If ( ??? )";
             }
