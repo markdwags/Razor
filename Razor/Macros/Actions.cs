@@ -2358,6 +2358,13 @@ namespace Assistant.Macros
             m_Value = val;
         }
 
+        public IfAction(IfVarType var, sbyte dir, string val)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+        }
+
         public IfAction(IfVarType var, sbyte dir, int val, string counter)
         {
             m_Var = var;
@@ -2393,146 +2400,166 @@ namespace Assistant.Macros
                 case IfVarType.Mana:
                 case IfVarType.Stamina:
                 case IfVarType.Weight:
+                {
+                    int val = 0;
+
+                    if (m_Value is string strVal)
                     {
-                        int val = (int)m_Value;
-
-                        switch (m_Direction)
+                        if (strVal.Equals("{maxhp}"))
                         {
-                            case 0:
-                                // if stat <= m_Value
-                                switch (m_Var)
-                                {
-                                    case IfVarType.Hits:
-                                        return World.Player.Hits <= val;
-                                    case IfVarType.Mana:
-                                        return World.Player.Mana <= val;
-                                    case IfVarType.Stamina:
-                                        return World.Player.Stam <= val;
-                                    case IfVarType.Weight:
-                                        return World.Player.Weight <= val;
-                                }
-
-                                break;
-                            case 1:
-                                // if stat >= m_Value
-                                switch (m_Var)
-                                {
-                                    case IfVarType.Hits:
-                                        return World.Player.Hits >= val;
-                                    case IfVarType.Mana:
-                                        return World.Player.Mana >= val;
-                                    case IfVarType.Stamina:
-                                        return World.Player.Stam >= val;
-                                    case IfVarType.Weight:
-                                        return World.Player.Weight >= val;
-                                }
-
-                                break;
-                            case 2:
-                                // if stat < m_Value
-                                switch (m_Var)
-                                {
-                                    case IfVarType.Hits:
-                                        return World.Player.Hits < val;
-                                    case IfVarType.Mana:
-                                        return World.Player.Mana < val;
-                                    case IfVarType.Stamina:
-                                        return World.Player.Stam < val;
-                                    case IfVarType.Weight:
-                                        return World.Player.Weight < val;
-                                }
-
-                                break;
-                            case 3:
-                                // if stat > m_Value
-                                switch (m_Var)
-                                {
-                                    case IfVarType.Hits:
-                                        return World.Player.Hits > val;
-                                    case IfVarType.Mana:
-                                        return World.Player.Mana > val;
-                                    case IfVarType.Stamina:
-                                        return World.Player.Stam > val;
-                                    case IfVarType.Weight:
-                                        return World.Player.Weight > val;
-                                }
-
-                                break;
+                            val = World.Player.HitsMax;
                         }
-
-                        return false;
+                        else if (strVal.Equals("{maxstam}"))
+                        {
+                            val = World.Player.StamMax;
+                        }
+                        else if (strVal.Equals("{maxmana}"))
+                        {
+                            val = World.Player.ManaMax;
+                        }
                     }
+                    else
+                    {
+                        val = (int) m_Value;
+                    }
+
+                    switch (m_Direction)
+                    {
+                        case 0:
+                            // if stat <= m_Value
+                            switch (m_Var)
+                            {
+                                case IfVarType.Hits:
+                                    return World.Player.Hits <= val;
+                                case IfVarType.Mana:
+                                    return World.Player.Mana <= val;
+                                case IfVarType.Stamina:
+                                    return World.Player.Stam <= val;
+                                case IfVarType.Weight:
+                                    return World.Player.Weight <= val;
+                            }
+
+                            break;
+                        case 1:
+                            // if stat >= m_Value
+                            switch (m_Var)
+                            {
+                                case IfVarType.Hits:
+                                    return World.Player.Hits >= val;
+                                case IfVarType.Mana:
+                                    return World.Player.Mana >= val;
+                                case IfVarType.Stamina:
+                                    return World.Player.Stam >= val;
+                                case IfVarType.Weight:
+                                    return World.Player.Weight >= val;
+                            }
+
+                            break;
+                        case 2:
+                            // if stat < m_Value
+                            switch (m_Var)
+                            {
+                                case IfVarType.Hits:
+                                    return World.Player.Hits < val;
+                                case IfVarType.Mana:
+                                    return World.Player.Mana < val;
+                                case IfVarType.Stamina:
+                                    return World.Player.Stam < val;
+                                case IfVarType.Weight:
+                                    return World.Player.Weight < val;
+                            }
+
+                            break;
+                        case 3:
+                            // if stat > m_Value
+                            switch (m_Var)
+                            {
+                                case IfVarType.Hits:
+                                    return World.Player.Hits > val;
+                                case IfVarType.Mana:
+                                    return World.Player.Mana > val;
+                                case IfVarType.Stamina:
+                                    return World.Player.Stam > val;
+                                case IfVarType.Weight:
+                                    return World.Player.Weight > val;
+                            }
+
+                            break;
+                    }
+
+                    return false;
+                }
 
                 case IfVarType.Poisoned:
-                    {
-                        if (Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
-                            return World.Player.Poisoned;
-                        else
-                            return false;
-                    }
+                {
+                    if (Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                        return World.Player.Poisoned;
+                    else
+                        return false;
+                }
 
                 case IfVarType.SysMessage:
+                {
+                    string text = (string) m_Value;
+                    for (int i = PacketHandlers.SysMessages.Count - 1; i >= 0; i--)
                     {
-                        string text = (string)m_Value;
-                        for (int i = PacketHandlers.SysMessages.Count - 1; i >= 0; i--)
+                        string sys = PacketHandlers.SysMessages[i];
+                        if (sys.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1)
                         {
-                            string sys = PacketHandlers.SysMessages[i];
-                            if (sys.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1)
-                            {
-                                PacketHandlers.SysMessages.RemoveRange(0, i + 1);
-                                return true;
-                            }
+                            PacketHandlers.SysMessages.RemoveRange(0, i + 1);
+                            return true;
                         }
-
-                        return false;
                     }
+
+                    return false;
+                }
 
                 case IfVarType.Mounted:
-                    {
-                        return World.Player.GetItemOnLayer(Layer.Mount) != null;
-                    }
+                {
+                    return World.Player.GetItemOnLayer(Layer.Mount) != null;
+                }
 
                 case IfVarType.RHandEmpty:
-                    {
-                        return World.Player.GetItemOnLayer(Layer.RightHand) == null;
-                    }
+                {
+                    return World.Player.GetItemOnLayer(Layer.RightHand) == null;
+                }
 
                 case IfVarType.LHandEmpty:
-                    {
-                        return World.Player.GetItemOnLayer(Layer.LeftHand) == null;
-                    }
+                {
+                    return World.Player.GetItemOnLayer(Layer.LeftHand) == null;
+                }
 
                 case IfVarType.Counter:
+                {
+                    if (m_CountObj == null)
                     {
-                        if (m_CountObj == null)
+                        foreach (Assistant.Counter c in Assistant.Counter.List)
                         {
-                            foreach (Assistant.Counter c in Assistant.Counter.List)
+                            if (c.Name == m_Counter)
                             {
-                                if (c.Name == m_Counter)
-                                {
-                                    m_CountObj = c;
-                                    break;
-                                }
+                                m_CountObj = c;
+                                break;
                             }
                         }
-
-                        if (m_CountObj == null || !m_CountObj.Enabled)
-                            return false;
-
-                        switch (m_Direction)
-                        {
-                            case 0:
-                                return m_CountObj.Amount <= (int)m_Value;
-                            case 1:
-                                return m_CountObj.Amount >= (int)m_Value;
-                            case 2:
-                                return m_CountObj.Amount < (int)m_Value;
-                            case 3:
-                                return m_CountObj.Amount > (int)m_Value;
-                            default:
-                                return m_CountObj.Amount <= (int)m_Value;
-                        }
                     }
+
+                    if (m_CountObj == null || !m_CountObj.Enabled)
+                        return false;
+
+                    switch (m_Direction)
+                    {
+                        case 0:
+                            return m_CountObj.Amount <= (int) m_Value;
+                        case 1:
+                            return m_CountObj.Amount >= (int) m_Value;
+                        case 2:
+                            return m_CountObj.Amount < (int) m_Value;
+                        case 3:
+                            return m_CountObj.Amount > (int) m_Value;
+                        default:
+                            return m_CountObj.Amount <= (int) m_Value;
+                    }
+                }
 
                 default:
                     return false;

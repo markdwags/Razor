@@ -1,85 +1,87 @@
 using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
 using Assistant.Macros;
 
 namespace Assistant
 {
-	/// <summary>
-	/// Summary description for MacroInsertIf.
-	/// </summary>
-	public class MacroInsertIf : System.Windows.Forms.Form
-	{
-		private Macro m_Macro;
-		private int m_Idx;
-		private MacroAction m_Action;
+    /// <summary>
+    /// Summary description for MacroInsertIf.
+    /// </summary>
+    public class MacroInsertIf : System.Windows.Forms.Form
+    {
+        private Macro m_Macro;
+        private int m_Idx;
+        private MacroAction m_Action;
 
-		private System.Windows.Forms.Button insert;
-		private System.Windows.Forms.TextBox txtAmount;
-		private System.Windows.Forms.Button cancel;
-		private System.Windows.Forms.ComboBox varList;
-		private System.Windows.Forms.ComboBox opList;
-		private System.Windows.Forms.Label label1;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private System.Windows.Forms.Button insert;
+        private System.Windows.Forms.TextBox txtAmount;
+        private System.Windows.Forms.Button cancel;
+        private System.Windows.Forms.ComboBox varList;
+        private System.Windows.Forms.ComboBox opList;
+        private System.Windows.Forms.Label label1;
+        private ComboBox ifVariables;
 
-		public MacroInsertIf( Macro m, int idx )
-		{
-			m_Macro = m;
-			m_Idx = idx;
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
-			
-			foreach ( Counter c in Counter.List )
-				varList.Items.Add( c.Name );
-		}
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
 
-		public MacroInsertIf( MacroAction a )
-		{
-			m_Action = a;
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
+        public MacroInsertIf(Macro m, int idx)
+        {
+            m_Macro = m;
+            m_Idx = idx;
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
 
-			foreach ( Counter c in Counter.List )
-				varList.Items.Add( c.Name );
-		}
+            foreach (Counter c in Counter.List)
+                varList.Items.Add(c.Name);
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        public MacroInsertIf(MacroAction a)
+        {
+            m_Action = a;
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+            foreach (Counter c in Counter.List)
+                varList.Items.Add(c.Name);
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.insert = new System.Windows.Forms.Button();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.varList = new System.Windows.Forms.ComboBox();
             this.cancel = new System.Windows.Forms.Button();
             this.opList = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.ifVariables = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // insert
@@ -129,18 +131,16 @@ namespace Assistant
             // 
             // opList
             // 
-		  this.opList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-		  this.opList.Items.AddRange(new object[]
-		  {
-		      "<=",
-		      ">=",
-		      "<",
-		      ">"
-  		  });
-		  this.opList.Location = new System.Drawing.Point(179, 9);
-		  this.opList.Name = "opList";
-		  this.opList.Size = new System.Drawing.Size(53, 23);
-		  this.opList.TabIndex = 11;
+            this.opList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.opList.Items.AddRange(new object[] {
+            "<=",
+            ">=",
+            "<",
+            ">"});
+            this.opList.Location = new System.Drawing.Point(179, 9);
+            this.opList.Name = "opList";
+            this.opList.Size = new System.Drawing.Size(53, 23);
+            this.opList.TabIndex = 11;
             // 
             // label1
             // 
@@ -151,11 +151,26 @@ namespace Assistant
             this.label1.TabIndex = 12;
             this.label1.Text = "If:";
             // 
+            // ifVariables
+            // 
+            this.ifVariables.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ifVariables.FormattingEnabled = true;
+            this.ifVariables.Items.AddRange(new object[] {
+            "{maxhp}",
+            "{maxstam}",
+            "{maxmana}"});
+            this.ifVariables.Location = new System.Drawing.Point(288, 44);
+            this.ifVariables.Name = "ifVariables";
+            this.ifVariables.Size = new System.Drawing.Size(104, 23);
+            this.ifVariables.TabIndex = 14;
+            this.ifVariables.SelectedIndexChanged += new System.EventHandler(this.ifVariables_SelectedIndexChanged);
+            // 
             // MacroInsertIf
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.ClientSize = new System.Drawing.Size(404, 77);
             this.ControlBox = false;
+            this.Controls.Add(this.ifVariables);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.opList);
             this.Controls.Add(this.cancel);
@@ -172,95 +187,141 @@ namespace Assistant
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
 
-		private void cancel_Click(object sender, System.EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
+        #endregion
 
-		private void insert_Click(object sender, System.EventArgs e)
-		{
-			MacroAction a = null;
+        private void cancel_Click(object sender, System.EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
 
-			try
-			{
-				if ( varList.SelectedIndex == (int)IfAction.IfVarType.SysMessage )
-					a = new IfAction( (IfAction.IfVarType)varList.SelectedIndex, txtAmount.Text );
-				else if ( varList.SelectedIndex >= (int)IfAction.IfVarType.BeginCountersMarker )
-					a = new IfAction( IfAction.IfVarType.Counter, (sbyte)opList.SelectedIndex, Utility.ToInt32( txtAmount.Text, 0 ), varList.SelectedItem as string );
-				else
-					a = new IfAction( (IfAction.IfVarType)varList.SelectedIndex, (sbyte)opList.SelectedIndex, Utility.ToInt32( txtAmount.Text, 0 ) );
-			}
-			catch
-			{
-				return;
-			}
+        private void insert_Click(object sender, System.EventArgs e)
+        {
+            MacroAction a = null;
 
-			if ( m_Action == null )
-				m_Macro.Insert( m_Idx+1, a );
-			else
-				m_Action.Parent.Convert( m_Action, a );
-			this.DialogResult = DialogResult.OK;
-			this.Close();
-		}
+            try
+            {
+                if (varList.SelectedIndex == (int) IfAction.IfVarType.SysMessage)
+                {
+                    a = new IfAction((IfAction.IfVarType) varList.SelectedIndex, txtAmount.Text);
+                }
+                else if (varList.SelectedIndex >= (int) IfAction.IfVarType.BeginCountersMarker)
+                {
+                    a = new IfAction(IfAction.IfVarType.Counter, (sbyte) opList.SelectedIndex,
+                        Utility.ToInt32(txtAmount.Text, 0), varList.SelectedItem as string);
+                }
+                else
+                {
+                    a = txtAmount.Text.Contains("{") // using an if variable
+                        ? new IfAction((IfAction.IfVarType) varList.SelectedIndex, (sbyte) opList.SelectedIndex,
+                            txtAmount.Text)
+                        : new IfAction((IfAction.IfVarType) varList.SelectedIndex, (sbyte) opList.SelectedIndex,
+                            Utility.ToInt32(txtAmount.Text, 0));
+                }
+            }
+            catch
+            {
+                return;
+            }
 
-		private void MacroInsertIf_Load(object sender, System.EventArgs e)
-		{
-			Language.LoadControlNames( this );
+            if (m_Action == null)
+                m_Macro.Insert(m_Idx + 1, a);
+            else
+                m_Action.Parent.Convert(m_Action, a);
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
 
-			if ( m_Action is IfAction )
-			{
-				try { varList.SelectedIndex = (int)((IfAction)m_Action).Variable; } catch {}
-				try { opList.SelectedIndex = (int)((IfAction)m_Action).Op; } catch {}
-				try
-				{
-					if ( varList.SelectedIndex != 3 && ( varList.SelectedIndex <= 5 || varList.SelectedIndex >= (int)IfAction.IfVarType.BeginCountersMarker ) )
-						txtAmount.Text = ((IfAction)m_Action).Value.ToString();
-				}
-				catch
-				{
-				}
+        private void MacroInsertIf_Load(object sender, System.EventArgs e)
+        {
+            Language.LoadControlNames(this);
 
-				if ( ((IfAction)m_Action).Counter != null && ((IfAction)m_Action).Variable == IfAction.IfVarType.Counter )
-					try { varList.SelectedItem = ((IfAction)m_Action).Counter; } catch {}
-			}
-		}
+            if (m_Action is IfAction)
+            {
+                try
+                {
+                    varList.SelectedIndex = (int) ((IfAction) m_Action).Variable;
+                }
+                catch
+                {
+                }
 
-		private void varList_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			try
-			{
-				opList.Visible = varList.SelectedIndex < 3 || varList.SelectedIndex == 5 || varList.SelectedIndex >= (int)IfAction.IfVarType.BeginCountersMarker;
-				txtAmount.Visible = varList.SelectedIndex != 3 && ( varList.SelectedIndex <= 5 || varList.SelectedIndex >= (int)IfAction.IfVarType.BeginCountersMarker );
-			}
-			catch
-			{
-			}
+                try
+                {
+                    opList.SelectedIndex = (int) ((IfAction) m_Action).Op;
+                }
+                catch
+                {
+                }
 
-			/*if ( !opList.Visible )
-			{
-				if ( txtAmount.Visible )
-				{
-					//varList.Size = new System.Drawing.Size(80, 21);
+                try
+                {
+                    if (varList.SelectedIndex != 3 && (varList.SelectedIndex <= 5 ||
+                                                       varList.SelectedIndex >=
+                                                       (int) IfAction.IfVarType.BeginCountersMarker))
+                        txtAmount.Text = ((IfAction) m_Action).Value.ToString();
+                }
+                catch
+                {
+                }
 
-					//txtAmount.Location = new System.Drawing.Point(104, 9);
-					//txtAmount.Size = new System.Drawing.Size(120, 20);
-				}
-				else
-				{
-					//varList.Size = new System.Drawing.Size(200, 21);
-				}
-			}
-			else
-			{
-				varList.Size = new System.Drawing.Size(80, 21);
+                if (((IfAction) m_Action).Counter != null &&
+                    ((IfAction) m_Action).Variable == IfAction.IfVarType.Counter)
+                    try
+                    {
+                        varList.SelectedItem = ((IfAction) m_Action).Counter;
+                    }
+                    catch
+                    {
+                    }
+            }
+        }
 
-				txtAmount.Location = new System.Drawing.Point(144, 9);
-				txtAmount.Size = new System.Drawing.Size(80, 20);
-			}*/
-		}
-	}
+        private void varList_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            try
+            {
+                opList.Visible = varList.SelectedIndex < 3 || varList.SelectedIndex == 5 ||
+                                 varList.SelectedIndex >= (int) IfAction.IfVarType.BeginCountersMarker;
+                txtAmount.Visible = varList.SelectedIndex != 3 &&
+                                    (varList.SelectedIndex <= 5 || varList.SelectedIndex >=
+                                     (int) IfAction.IfVarType.BeginCountersMarker);
+            }
+            catch
+            {
+            }
+
+            /*if ( !opList.Visible )
+            {
+                if ( txtAmount.Visible )
+                {
+                    //varList.Size = new System.Drawing.Size(80, 21);
+
+                    //txtAmount.Location = new System.Drawing.Point(104, 9);
+                    //txtAmount.Size = new System.Drawing.Size(120, 20);
+                }
+                else
+                {
+                    //varList.Size = new System.Drawing.Size(200, 21);
+                }
+            }
+            else
+            {
+                varList.Size = new System.Drawing.Size(80, 21);
+
+                txtAmount.Location = new System.Drawing.Point(144, 9);
+                txtAmount.Size = new System.Drawing.Size(80, 20);
+            }*/
+        }
+
+        private void ifVariables_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ifVariables.SelectedItem.ToString().Substring(0, 1).Equals("{") && ifVariables.Focused)
+            {
+                txtAmount.Text = $"{ifVariables.SelectedItem}";
+            }
+        }
+    }
 }
