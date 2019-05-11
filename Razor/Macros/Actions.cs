@@ -2343,9 +2343,20 @@ namespace Assistant.Macros
             }
 
             if (m_Var != IfVarType.SysMessage)
-                m_Value = Convert.ToInt32(args[3]);
+            {
+                if (args[3] is string strVal)
+                {
+                    m_Value = strVal;
+                }
+                else
+                {
+                    m_Value = Convert.ToInt32(args[3]);
+                }
+            }
             else
+            {
                 m_Value = args[3].ToLower();
+            }   
 
             if (m_Var == IfVarType.Counter)
                 m_Counter = args[4];
