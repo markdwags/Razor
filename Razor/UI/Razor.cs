@@ -17,6 +17,7 @@ using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Assistant.Core;
+using Assistant.UI;
 using Newtonsoft.Json.Linq;
 using Ultima;
 using ContainerLabels = Assistant.UI.ContainerLabels;
@@ -4350,8 +4351,12 @@ namespace Assistant
             m_OutPrev = Client.Instance.TotalDataOut();
             m_InPrev = Client.Instance.TotalDataIn();
 
-            if (tabs.SelectedTab != advancedTab)
-                return;
+            tabs.SafeAction(s => {
+                if (s.SelectedTab != advancedTab)
+                {
+                    return;
+                }
+            });
 
             int time = 0;
             if (Client.Instance.ConnectionStart != DateTime.MinValue)
@@ -4359,20 +4364,21 @@ namespace Assistant
 
             if (String.IsNullOrEmpty(statusBox.SelectedText))
             {
-                statusBox.Lines = Language.Format(LocString.RazorStatus1,
+                statusBox.SafeAction(x => x.Lines = Language.Format(LocString.RazorStatus1,
                     m_Ver,
                     Utility.FormatSize(System.GC.GetTotalMemory(false)),
-                    Utility.FormatSize(m_OutPrev), Utility.FormatSize((long) ((m_OutPrev - ps))),
-                    Utility.FormatSize(m_InPrev), Utility.FormatSize((long) ((m_InPrev - pr))),
+                    Utility.FormatSize(m_OutPrev), Utility.FormatSize((long)((m_OutPrev - ps))),
+                    Utility.FormatSize(m_InPrev), Utility.FormatSize((long)((m_InPrev - pr))),
                     Utility.FormatTime(time),
-                    (World.Player != null ? (uint) World.Player.Serial : 0),
-                    (World.Player != null && World.Player.Backpack != null ? (uint) World.Player.Backpack.Serial : 0),
+                    (World.Player != null ? (uint)World.Player.Serial : 0),
+                    (World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0),
                     World.Items.Count,
-                    World.Mobiles.Count).Split('\n');
+                    World.Mobiles.Count).Split('\n'));
 
                 if (World.Player != null)
-                    statusBox.AppendText(
-                        $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}");
+                    statusBox.SafeAction(x =>
+                        x.AppendText(
+                            $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}"));
             }
 
             if (PacketHandlers.PlayCharTime < DateTime.UtcNow &&
@@ -4404,12 +4410,12 @@ namespace Assistant
 
                     text.Append("\r\n");
 
-                    features.Visible = true;
-                    features.Text = text.ToString();
+                    features.SafeAction(x => x.Visible = true);
+                    features.SafeAction(x => x.Text = text.ToString());
                 }
                 else
                 {
-                    features.Visible = false;
+                    features.SafeAction(x => x.Visible = false);
                 }
             }
         }
