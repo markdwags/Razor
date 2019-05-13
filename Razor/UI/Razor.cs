@@ -4351,7 +4351,8 @@ namespace Assistant
             m_OutPrev = Client.Instance.TotalDataOut();
             m_InPrev = Client.Instance.TotalDataIn();
 
-            tabs.SafeAction(s => {
+            tabs.SafeAction(s =>
+            {
                 if (s.SelectedTab != advancedTab)
                 {
                     return;
@@ -4362,24 +4363,30 @@ namespace Assistant
             if (Client.Instance.ConnectionStart != DateTime.MinValue)
                 time = (int) ((DateTime.UtcNow - Client.Instance.ConnectionStart).TotalSeconds);
 
-            if (String.IsNullOrEmpty(statusBox.SelectedText))
-            {
-                statusBox.SafeAction(x => x.Lines = Language.Format(LocString.RazorStatus1,
-                    m_Ver,
-                    Utility.FormatSize(System.GC.GetTotalMemory(false)),
-                    Utility.FormatSize(m_OutPrev), Utility.FormatSize((long)((m_OutPrev - ps))),
-                    Utility.FormatSize(m_InPrev), Utility.FormatSize((long)((m_InPrev - pr))),
-                    Utility.FormatTime(time),
-                    (World.Player != null ? (uint)World.Player.Serial : 0),
-                    (World.Player != null && World.Player.Backpack != null ? (uint)World.Player.Backpack.Serial : 0),
-                    World.Items.Count,
-                    World.Mobiles.Count).Split('\n'));
 
-                if (World.Player != null)
-                    statusBox.SafeAction(x =>
-                        x.AppendText(
-                            $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}"));
-            }
+            statusBox.SafeAction(s =>
+            {
+                if (string.IsNullOrEmpty(s.SelectedText))
+                {
+                    s.Lines = Language.Format(LocString.RazorStatus1,
+                        m_Ver,
+                        Utility.FormatSize(System.GC.GetTotalMemory(false)),
+                        Utility.FormatSize(m_OutPrev), Utility.FormatSize((long) ((m_OutPrev - ps))),
+                        Utility.FormatSize(m_InPrev), Utility.FormatSize((long) ((m_InPrev - pr))),
+                        Utility.FormatTime(time),
+                        (World.Player != null ? (uint) World.Player.Serial : 0),
+                        (World.Player != null && World.Player.Backpack != null
+                            ? (uint) World.Player.Backpack.Serial
+                            : 0),
+                        World.Items.Count,
+                        World.Mobiles.Count).Split('\n');
+
+                    if (World.Player != null)
+                        statusBox.SafeAction(x =>
+                            x.AppendText(
+                                $"\r\nCoordinates: {World.Player.Position.X} {World.Player.Position.Y} {World.Player.Position.Z}"));
+                }
+            });
 
             if (PacketHandlers.PlayCharTime < DateTime.UtcNow &&
                 PacketHandlers.PlayCharTime + TimeSpan.FromSeconds(5) < DateTime.UtcNow)
