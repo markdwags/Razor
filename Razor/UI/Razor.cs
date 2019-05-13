@@ -325,6 +325,7 @@ namespace Assistant
         private Button btnMap;
         private Button boatControl;
         private CheckBox captureMibs;
+        private CheckBox macroActionDelay;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -668,6 +669,7 @@ namespace Assistant
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
             this.timerTimer = new System.Windows.Forms.Timer(this.components);
+            this.macroActionDelay = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -3176,16 +3178,17 @@ namespace Assistant
             // subMacrosOptionsTab
             // 
             this.subMacrosOptionsTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subMacrosOptionsTab.Controls.Add(this.macroActionDelay);
             this.subMacrosOptionsTab.Controls.Add(this.rangeCheckDoubleClick);
             this.subMacrosOptionsTab.Controls.Add(this.rangeCheckTargetByType);
             this.subMacrosOptionsTab.Controls.Add(this.nextMacroAction);
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.absoluteTargetGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -3751,6 +3754,17 @@ namespace Assistant
             this.timerTimer.Interval = 5;
             this.timerTimer.Tick += new System.EventHandler(this.timerTimer_Tick);
             // 
+            // macroActionDelay
+            // 
+            this.macroActionDelay.AutoSize = true;
+            this.macroActionDelay.Location = new System.Drawing.Point(272, 158);
+            this.macroActionDelay.Name = "macroActionDelay";
+            this.macroActionDelay.Size = new System.Drawing.Size(207, 19);
+            this.macroActionDelay.TabIndex = 16;
+            this.macroActionDelay.Text = "Default macro action delay (50ms)";
+            this.macroActionDelay.UseVisualStyleBackColor = true;
+            this.macroActionDelay.CheckedChanged += new System.EventHandler(this.macroActionDelay_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4148,6 +4162,8 @@ namespace Assistant
             showFriendOverhead.Checked = Config.GetBool("ShowFriendOverhead");
 
             dispDeltaOverhead.Checked = Config.GetBool("DisplaySkillChangesOverhead");
+
+            macroActionDelay.Checked = Config.GetBool("MacroActionDelay");
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -8949,6 +8965,25 @@ namespace Assistant
 
             incomingMob.Enabled = false;
             incomingMob.Checked = false;
+
+            filterDragonGraphics.Enabled = false;
+            filterDragonGraphics.Checked = false;
+            dragonAnimationList.Enabled = false;
+
+            filterDrakeGraphics.Enabled = false;
+            filterDrakeGraphics.Checked = false;
+            drakeAnimationList.Enabled = false;
+        }
+
+        private void macroActionDelay_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("MacroActionDelay", macroActionDelay.Checked);
+
+            if (m_Initializing)
+                return;
+
+            MessageBox.Show(this, Language.GetString(LocString.NextRestart), "Notice", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
     }
 }

@@ -225,6 +225,9 @@ namespace Assistant
             AddProperty("DisplaySkillChangesOverhead", false);
 
             AddProperty("GrabHotBag", "0");
+            
+            // Enable it for OSI client by default, CUO turn it off
+            AddProperty("MacroActionDelay", Client.IsOSI);
 
             Counter.Default();
             Filter.DisableAll();

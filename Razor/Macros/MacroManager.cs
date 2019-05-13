@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
-
 using Assistant.UI;
 
 namespace Assistant.Macros
@@ -23,7 +22,6 @@ namespace Assistant.Macros
 
             string path = Config.GetUserDirectory("Macros");
             Recurse(null, path);
-
         }
 
         static MacroManager()
@@ -31,6 +29,7 @@ namespace Assistant.Macros
             m_MacroList = new List<Macro>();
             m_Timer = new MacroTimer();
         }
+
         /// <summary>
         /// Saves all the macros and absolute target lists
         /// </summary>
@@ -44,118 +43,142 @@ namespace Assistant.Macros
             }
         }
 
-        public static List<Macro> List { get{ return m_MacroList; } }
-        public static bool Recording{ get{ return m_Current != null && m_Current.Recording; } }
-		public static bool Playing{ get{ return m_Current != null && m_Current.Playing && m_Timer != null && m_Timer.Running; } }
-        public static bool StepThrough { get { return m_Current != null && m_Current.StepThrough && m_Current.Playing; } }
-        public static Macro Current{ get{ return m_Current; } }
-		public static bool AcceptActions{ get { return Recording || ( Playing && m_Current.Waiting ); } }
-		//public static bool IsWaiting{ get{ return Playing && m_Current != null && m_Current.Waiting; } }
+        public static List<Macro> List
+        {
+            get { return m_MacroList; }
+        }
 
-		public static void Add( Macro m )
-		{
-			HotKey.Add( HKCategory.Macros, HKSubCat.None, Language.Format( LocString.PlayA1, m ), new HotKeyCallbackState( HotKeyPlay ), m );
-		    m_MacroList.Add( m );
-		}
+        public static bool Recording
+        {
+            get { return m_Current != null && m_Current.Recording; }
+        }
 
-		public static void Remove( Macro m )
-		{
-			HotKey.Remove( Language.Format( LocString.PlayA1, m ) );
-		    m_MacroList.Remove( m );
-		}
+        public static bool Playing
+        {
+            get { return m_Current != null && m_Current.Playing && m_Timer != null && m_Timer.Running; }
+        }
 
-		public static void RecordAt( Macro m, int at )
-		{
-			if ( m_Current != null )
-				m_Current.Stop();
-			m_Current = m;
-			m_Current.RecordAt( at );
-		}
+        public static bool StepThrough
+        {
+            get { return m_Current != null && m_Current.StepThrough && m_Current.Playing; }
+        }
 
-		public static void Record( Macro m )
-		{
-			if ( m_Current != null )
-				m_Current.Stop();
-			m_Current = m;
-			m_Current.Record();
-		}
+        public static Macro Current
+        {
+            get { return m_Current; }
+        }
 
-		public static void PlayAt( Macro m, int at )
-		{
-			if ( m_Current != null )
-			{
-				if ( m_Current.Playing && m_Current.Loop && !m.Loop )
-					m_PrevPlay = m_Current;
-				else
-					m_PrevPlay = null;
+        public static bool AcceptActions
+        {
+            get { return Recording || (Playing && m_Current.Waiting); }
+        }
+        //public static bool IsWaiting{ get{ return Playing && m_Current != null && m_Current.Waiting; } }
 
-				m_Current.Stop();
-			}
-			else
-			{
-				m_PrevPlay = null;
-			}
+        public static void Add(Macro m)
+        {
+            HotKey.Add(HKCategory.Macros, HKSubCat.None, Language.Format(LocString.PlayA1, m),
+                new HotKeyCallbackState(HotKeyPlay), m);
+            m_MacroList.Add(m);
+        }
 
-			LiftAction.LastLift = null;
-			m_Current = m;
-			m_Current.PlayAt( at );
+        public static void Remove(Macro m)
+        {
+            HotKey.Remove(Language.Format(LocString.PlayA1, m));
+            m_MacroList.Remove(m);
+        }
 
-			m_Timer.Macro = m_Current;
+        public static void RecordAt(Macro m, int at)
+        {
+            if (m_Current != null)
+                m_Current.Stop();
+            m_Current = m;
+            m_Current.RecordAt(at);
+        }
 
-		    if (!Config.GetBool("StepThroughMacro"))
-		    {
-		        m_Timer.Start();
-		    }
+        public static void Record(Macro m)
+        {
+            if (m_Current != null)
+                m_Current.Stop();
+            m_Current = m;
+            m_Current.Record();
+        }
 
-			if ( Engine.MainWindow.WaitDisplay != null )
-				Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "");
-		}
+        public static void PlayAt(Macro m, int at)
+        {
+            if (m_Current != null)
+            {
+                if (m_Current.Playing && m_Current.Loop && !m.Loop)
+                    m_PrevPlay = m_Current;
+                else
+                    m_PrevPlay = null;
 
-		private static void HotKeyPlay( ref object state )
-		{
-			HotKeyPlay( state as Macro );
-		}
-
-		public static void HotKeyPlay( Macro m )
-		{
-			if ( m != null )
-			{
-				Play( m );
-				World.Player.SendMessage( LocString.PlayingA1, m );
-				Engine.MainWindow.SafeAction(s => s.PlayMacro( m ));
-			}
-		}
-
-		public static void Play( Macro m )
-		{
-			if ( m_Current != null )
-			{
-				if ( m_Current.Playing && m_Current.Loop && !m.Loop )
-					m_PrevPlay = m_Current;
-				else
-					m_PrevPlay = null;
-
-				m_Current.Stop();
-			}
-			else
-			{
-				m_PrevPlay = null;
-			}
-
-			LiftAction.LastLift = null;
-			m_Current = m;
-			m_Current.Play();
-
-			m_Timer.Macro = m_Current;
-
-		    if (!Config.GetBool("StepThroughMacro"))
-		    {
-		        m_Timer.Start();
+                m_Current.Stop();
+            }
+            else
+            {
+                m_PrevPlay = null;
             }
 
-			if ( Engine.MainWindow.WaitDisplay != null )
-				Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "");
-		}
+            LiftAction.LastLift = null;
+            m_Current = m;
+            m_Current.PlayAt(at);
+
+            m_Timer.Macro = m_Current;
+
+            if (!Config.GetBool("StepThroughMacro"))
+            {
+                m_Timer.Start();
+            }
+
+            if (Engine.MainWindow.WaitDisplay != null)
+                Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "");
+        }
+
+        private static void HotKeyPlay(ref object state)
+        {
+            HotKeyPlay(state as Macro);
+        }
+
+        public static void HotKeyPlay(Macro m)
+        {
+            if (m != null)
+            {
+                Play(m);
+                World.Player.SendMessage(LocString.PlayingA1, m);
+                Engine.MainWindow.SafeAction(s => s.PlayMacro(m));
+            }
+        }
+
+        public static void Play(Macro m)
+        {
+            if (m_Current != null)
+            {
+                if (m_Current.Playing && m_Current.Loop && !m.Loop)
+                    m_PrevPlay = m_Current;
+                else
+                    m_PrevPlay = null;
+
+                m_Current.Stop();
+            }
+            else
+            {
+                m_PrevPlay = null;
+            }
+
+            LiftAction.LastLift = null;
+            m_Current = m;
+            m_Current.Play();
+
+            m_Timer.Macro = m_Current;
+
+            if (!Config.GetBool("StepThroughMacro"))
+            {
+                m_Timer.Start();
+            }
+
+            if (Engine.MainWindow.WaitDisplay != null)
+                Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "");
+        }
 
         public static void PlayNext()
         {
@@ -163,8 +186,6 @@ namespace Assistant.Macros
                 return;
 
             m_Timer.PerformNextAction();
-
-
         }
 
         private static void HotKeyPause()
@@ -173,34 +194,35 @@ namespace Assistant.Macros
         }
 
         private static void HotKeyStop()
-		{
-			Stop();
-		}
+        {
+            Stop();
+        }
 
-		public static void Stop()
-		{
-			Stop( false );
-		}
+        public static void Stop()
+        {
+            Stop(false);
+        }
 
-		public static void Stop( bool restartPrev )
-		{
-			m_Timer.Stop();
-			if ( m_Current != null )
-			{
-				m_Current.Stop();
-				m_Current = null;
-			}
-			UOAssist.PostMacroStop();
-			
-			if ( Engine.MainWindow.WaitDisplay != null )
-				Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "");
+        public static void Stop(bool restartPrev)
+        {
+            m_Timer.Stop();
+            if (m_Current != null)
+            {
+                m_Current.Stop();
+                m_Current = null;
+            }
 
-			Engine.MainWindow.SafeAction(s => s.OnMacroStop());
-			
-			//if ( restartPrev )
-			//	Play( m_PrevPlay );
-			m_PrevPlay = null;
-		}
+            UOAssist.PostMacroStop();
+
+            if (Engine.MainWindow.WaitDisplay != null)
+                Engine.MainWindow.SafeAction(s => s.WaitDisplay.Text = "");
+
+            Engine.MainWindow.SafeAction(s => s.OnMacroStop());
+
+            //if ( restartPrev )
+            //	Play( m_PrevPlay );
+            m_PrevPlay = null;
+        }
 
         public static void Pause()
         {
@@ -222,7 +244,7 @@ namespace Assistant.Macros
                 World.Player.SendMessage(LocString.MacroResuming);
             }
             else
-            {   
+            {
                 // pause
                 m_Timer.Stop();
 
@@ -235,15 +257,15 @@ namespace Assistant.Macros
             }
         }
 
-        public static void DisplayTo( TreeView tree )
-		{
-			tree.BeginUpdate();
-			tree.Nodes.Clear();
-			Recurse( tree.Nodes, Config.GetUserDirectory( "Macros" ) );
-			tree.EndUpdate();
-			tree.Refresh();
-			tree.Update();
-		}
+        public static void DisplayTo(TreeView tree)
+        {
+            tree.BeginUpdate();
+            tree.Nodes.Clear();
+            Recurse(tree.Nodes, Config.GetUserDirectory("Macros"));
+            tree.EndUpdate();
+            tree.Refresh();
+            tree.Update();
+        }
 
         public static void DisplayMacroVariables(int index, ListBox list)
         {
@@ -288,149 +310,156 @@ namespace Assistant.Macros
             list.Update();
         }
 
-        private static void Recurse( TreeNodeCollection nodes, string path )
-		{
-			try
-			{
-				string[] macros = Directory.GetFiles( path, "*.macro" );
-				for (int i=0;i<macros.Length;i++)
-				{ 
-					Macro m = null;
-					for(int j=0;j<m_MacroList.Count;j++)
-					{
-						Macro check = m_MacroList[j];
+        private static void Recurse(TreeNodeCollection nodes, string path)
+        {
+            try
+            {
+                string[] macros = Directory.GetFiles(path, "*.macro");
+                for (int i = 0; i < macros.Length; i++)
+                {
+                    Macro m = null;
+                    for (int j = 0; j < m_MacroList.Count; j++)
+                    {
+                        Macro check = m_MacroList[j];
 
-						if ( check.Filename == macros[i] )
-						{
-							m = check;
-							break;
-						}
-					}
+                        if (check.Filename == macros[i])
+                        {
+                            m = check;
+                            break;
+                        }
+                    }
 
-					if ( m == null )
-						Add( m = new Macro( macros[i] ) );
+                    if (m == null)
+                        Add(m = new Macro(macros[i]));
 
-					if ( nodes != null )
-					{
-						TreeNode node = new TreeNode( Path.GetFileNameWithoutExtension( m.Filename ) );
-						node.Tag = m;
-						nodes.Add( node );
-					}
-				}
-			}
-			catch
-			{
-			}
+                    if (nodes != null)
+                    {
+                        TreeNode node = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename));
+                        node.Tag = m;
+                        nodes.Add(node);
+                    }
+                }
+            }
+            catch
+            {
+            }
 
-			try
-			{
-				string[] dirs = Directory.GetDirectories( path );
-				for (int i=0;i<dirs.Length;i++)
-				{
-					if ( dirs[i] != "" && dirs[i] != "." && dirs[i] != ".." )
-					{
-						if ( nodes != null )
-						{
-							TreeNode node = new TreeNode( String.Format( "[{0}]", Path.GetFileName( dirs[i] ) ) );
-							node.Tag = dirs[i];
-							nodes.Add( node );
-							Recurse( node.Nodes, dirs[i] );
-						}
-						else
-						{
-							Recurse( null, dirs[i] );
-						}
-					}
-				}
-			}
-			catch
-			{
-			}
-		}
+            try
+            {
+                string[] dirs = Directory.GetDirectories(path);
+                for (int i = 0; i < dirs.Length; i++)
+                {
+                    if (dirs[i] != "" && dirs[i] != "." && dirs[i] != "..")
+                    {
+                        if (nodes != null)
+                        {
+                            TreeNode node = new TreeNode(String.Format("[{0}]", Path.GetFileName(dirs[i])));
+                            node.Tag = dirs[i];
+                            nodes.Add(node);
+                            Recurse(node.Nodes, dirs[i]);
+                        }
+                        else
+                        {
+                            Recurse(null, dirs[i]);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
 
-		public static void Select( Macro m, ListBox actionList, Button play, Button rec, CheckBox loop )
-		{
-			if ( m == null )
-				return;
+        public static void Select(Macro m, ListBox actionList, Button play, Button rec, CheckBox loop)
+        {
+            if (m == null)
+                return;
 
-			m.DisplayTo( actionList );
+            m.DisplayTo(actionList);
 
-			if ( Recording )
-			{
-				play.Enabled = false;
-				play.Text = "Play";
-				rec.Enabled = true;
-				rec.Text = "Stop";
-			}
-			else
-			{
-				play.Enabled = true;
-				if ( m.Playing )
-				{
-					play.Text = "Stop";
-					rec.Enabled = false;
-				}
-				else
-				{
-					play.Text = "Play";
-					rec.Enabled = true;
-				}
-				rec.Text = "Record";
-				loop.Checked = m.Loop;
-			}
-		}
+            if (Recording)
+            {
+                play.Enabled = false;
+                play.Text = "Play";
+                rec.Enabled = true;
+                rec.Text = "Stop";
+            }
+            else
+            {
+                play.Enabled = true;
+                if (m.Playing)
+                {
+                    play.Text = "Stop";
+                    rec.Enabled = false;
+                }
+                else
+                {
+                    play.Text = "Play";
+                    rec.Enabled = true;
+                }
 
-		public static bool Action( MacroAction a )
-		{
-			if ( m_Current != null )
-				return m_Current.Action( a );
-			else
-				return false;
-		}
+                rec.Text = "Record";
+                loop.Checked = m.Loop;
+            }
+        }
 
-		private class MacroTimer : Timer
-		{
-			private Macro m_Macro;
-			
-			public MacroTimer() : base( TimeSpan.FromMilliseconds( 50 ), TimeSpan.FromMilliseconds( 50 ) )
-			{
-			}
+        public static bool Action(MacroAction a)
+        {
+            if (m_Current != null)
+                return m_Current.Action(a);
+            else
+                return false;
+        }
 
-			public Macro Macro { get { return m_Macro; } set { m_Macro = value; } }
+        private class MacroTimer : Timer
+        {
+            private Macro m_Macro;
 
-		    public void PerformNextAction()
-		    {
+            // The default Razor delay has always been 50ms, but for CUO, that delay isn't needed since it isn't
+            // passing messages back and forth.
+            public MacroTimer() : base(TimeSpan.FromMilliseconds(Config.GetBool("MacroActionDelay") ? 50 : 0),
+                TimeSpan.FromMilliseconds(Config.GetBool("MacroActionDelay") ? 50 : 0))
+            {
+            }
+
+            public Macro Macro
+            {
+                get { return m_Macro; }
+                set { m_Macro = value; }
+            }
+
+            public void PerformNextAction()
+            {
                 ExecuteNextAction();
             }
 
-			protected override void OnTick()
-			{
-			    ExecuteNextAction();
-			}
-
-		    private void ExecuteNextAction()
-		    {
-		        try
-		        {
-		            if (m_Macro == null || World.Player == null)
-		            {
-		                this.Stop();
-		                MacroManager.Stop();
-		            }
-		            else if (!m_Macro.ExecNext())
-		            {
-		                this.Stop();
-		                MacroManager.Stop(true);
-		                World.Player.SendMessage(LocString.MacroFinished, m_Macro);
-		            }
-		        }
-		        catch
-		        {
-		            this.Stop();
-		            MacroManager.Stop();
-		        }
+            protected override void OnTick()
+            {
+                ExecuteNextAction();
             }
-		}
-	}
-}
 
+            private void ExecuteNextAction()
+            {
+                try
+                {
+                    if (m_Macro == null || World.Player == null)
+                    {
+                        this.Stop();
+                        MacroManager.Stop();
+                    }
+                    else if (!m_Macro.ExecNext())
+                    {
+                        this.Stop();
+                        MacroManager.Stop(true);
+                        World.Player.SendMessage(LocString.MacroFinished, m_Macro);
+                    }
+                }
+                catch
+                {
+                    this.Stop();
+                    MacroManager.Stop();
+                }
+            }
+        }
+    }
+}
