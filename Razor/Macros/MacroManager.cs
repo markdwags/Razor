@@ -392,7 +392,7 @@ namespace Assistant.Macros
 		{
 			private Macro m_Macro;
 			
-			public MacroTimer() : base( TimeSpan.FromMilliseconds( 0 ), TimeSpan.FromMilliseconds( 0 ) )
+			public MacroTimer() : base( TimeSpan.FromMilliseconds( 50 ), TimeSpan.FromMilliseconds( 50 ) )
 			{
 			}
 
