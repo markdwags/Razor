@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using System.Text;
 using System.Xml;
 
+using Assistant.UI;
+
 namespace Assistant
 {
     [Flags]
@@ -378,8 +380,12 @@ namespace Assistant
                     msg = Language.GetString(LocString.HKDisabled);
             }
 
-            if (m_Status != null)
-                m_Status.Text = msg;
+            m_Status.SafeAction(s =>
+            {
+                if (s != null)
+                    s.Text = msg;
+            });
+           
             return msg;
         }
 

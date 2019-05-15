@@ -95,6 +95,7 @@ namespace Assistant
 			MoveToData();
 		}
 
+
 		public void EnsureCapacity( int capacity )
 		{
 			m_Stream = new MemoryStream( capacity );

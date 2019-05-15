@@ -8966,13 +8966,13 @@ namespace Assistant
             incomingMob.Enabled = false;
             incomingMob.Checked = false;
 
-            filterDragonGraphics.Enabled = false;
-            filterDragonGraphics.Checked = false;
-            dragonAnimationList.Enabled = false;
+            //filterDragonGraphics.Enabled = false;
+            //filterDragonGraphics.Checked = false;
+            //dragonAnimationList.Enabled = false;
 
-            filterDrakeGraphics.Enabled = false;
-            filterDrakeGraphics.Checked = false;
-            drakeAnimationList.Enabled = false;
+            //filterDrakeGraphics.Enabled = false;
+            //filterDrakeGraphics.Checked = false;
+            //drakeAnimationList.Enabled = false;
         }
 
         private void macroActionDelay_CheckedChanged(object sender, EventArgs e)
