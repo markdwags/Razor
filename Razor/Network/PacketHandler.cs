@@ -123,6 +123,7 @@ namespace Assistant
             return result;
         }
 
+
         public static bool OnClientPacket(int id, PacketReader pr, Packet p)
         {
             bool result = false;

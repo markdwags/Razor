@@ -90,7 +90,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cuoapi, Version=1.2.0.0, Culture=neutral">
+    <Reference Include="cuoapi, Version=1.3.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\cuoapi.dll</HintPath>
     </Reference>
