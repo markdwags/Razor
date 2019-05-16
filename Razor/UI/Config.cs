@@ -218,6 +218,8 @@ namespace Assistant
 
             AddProperty("NextPrevTargetIgnoresFriends", false);
 
+            AddProperty("CastOnClosest", true);
+
             AddProperty("StealthStepsFormat", "Steps: {step}");
 
             AddProperty("ShowFriendOverhead", false);

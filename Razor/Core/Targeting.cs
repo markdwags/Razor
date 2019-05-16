@@ -785,6 +785,38 @@ namespace Assistant
             ClosestTarget();
         }
 
+        public static void SetClosestLastTarget(Mobile closest)
+        {
+            if (!Config.GetBool("CastOnClosest"))
+            {
+                Client.Instance.SendToClient(new ChangeCombatant(closest));
+
+                m_LastCombatant = closest.Serial;
+                World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
+                TargetInfo target = new TargetInfo();
+
+                m_LastGroundTarg = m_LastTarget = target;
+                m_LastHarmTarg = m_LastBeneTarg = target;
+
+                if (m_HasTarget)
+                    target.Flags = m_CurFlags;
+                else
+                    target.Type = 0;
+
+                target.Gfx = closest.Body;
+                target.Serial = closest.Serial;
+                target.X = closest.Position.X;
+                target.Y = closest.Position.Y;
+                target.Z = closest.Position.Z;
+
+                OverheadTargetMessage(target);
+            }
+            else
+            {
+                SetLastTargetTo(closest);
+            }
+        }
+
         public static void ClosestTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
@@ -826,7 +858,7 @@ namespace Assistant
             }
 
             if (closest != null)
-                SetLastTargetTo(closest);
+                SetClosestLastTarget(closest);
             else
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
         }
@@ -875,7 +907,7 @@ namespace Assistant
             }
 
             if (closest != null)
-                SetLastTargetTo(closest);
+                SetClosestLastTarget(closest);
             else
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
         }
@@ -924,7 +956,7 @@ namespace Assistant
             }
 
             if (closest != null)
-                SetLastTargetTo(closest);
+                SetClosestLastTarget(closest);
             else
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
         }

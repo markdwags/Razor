@@ -312,6 +312,7 @@ namespace Assistant
         private TextBox targetIndictorFormat;
         private Label lblTargetFormat;
         private CheckBox nextPrevIgnoresFriends;
+        private CheckBox castOnClosest;
         private Label lblStealthFormat;
         private TextBox stealthStepsFormat;
         private CheckBox showFriendOverhead;
@@ -464,6 +465,7 @@ namespace Assistant
             this.label3 = new System.Windows.Forms.Label();
             this.subOptionsTargetTab = new System.Windows.Forms.TabPage();
             this.nextPrevIgnoresFriends = new System.Windows.Forms.CheckBox();
+            this.castOnClosest = new System.Windows.Forms.CheckBox();
             this.lblTargetFormat = new System.Windows.Forms.Label();
             this.targetIndictorFormat = new System.Windows.Forms.TextBox();
             this.autoFriend = new System.Windows.Forms.CheckBox();
@@ -1560,6 +1562,7 @@ namespace Assistant
             // 
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
             this.subOptionsTargetTab.Controls.Add(this.nextPrevIgnoresFriends);
+            this.subOptionsTargetTab.Controls.Add(this.castOnClosest);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
             this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
             this.subOptionsTargetTab.Controls.Add(this.autoFriend);
@@ -1595,6 +1598,17 @@ namespace Assistant
             this.nextPrevIgnoresFriends.Text = "Next/Prev Target ignores \'Friends\'";
             this.nextPrevIgnoresFriends.UseVisualStyleBackColor = true;
             this.nextPrevIgnoresFriends.CheckedChanged += new System.EventHandler(this.nextPrevIgnoresFriends_CheckedChanged);
+            // 
+            // castOnClosest
+            // 
+            this.castOnClosest.AutoSize = true;
+            this.castOnClosest.Location = new System.Drawing.Point(260, 88);
+            this.castOnClosest.Name = "closestNoCast";
+            this.castOnClosest.Size = new System.Drawing.Size(203, 19);
+            this.castOnClosest.TabIndex = 95;
+            this.castOnClosest.Text = "Cast Spell on Target Closest";
+            this.castOnClosest.UseVisualStyleBackColor = true;
+            this.castOnClosest.CheckedChanged += new System.EventHandler(this.castOnClosest_CheckedChanged);
             // 
             // lblTargetFormat
             // 
@@ -4153,6 +4167,8 @@ namespace Assistant
             targetIndictorFormat.Text = Config.GetString("TargetIndicatorFormat");
 
             nextPrevIgnoresFriends.Checked = Config.GetBool("NextPrevTargetIgnoresFriends");
+
+            castOnClosest.Checked = Config.GetBool("CastOnClosest");
 
             stealthStepsFormat.Text = Config.GetString("StealthStepsFormat");
 
@@ -8905,6 +8921,11 @@ namespace Assistant
         private void nextPrevIgnoresFriends_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("NextPrevTargetIgnoresFriends", nextPrevIgnoresFriends.Checked);
+        }
+
+        private void castOnClosest_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("CastOnClosest", castOnClosest.Checked);
         }
 
         private void stealthStepsFormat_TextChanged(object sender, EventArgs e)
