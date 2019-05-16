@@ -796,7 +796,7 @@ namespace Assistant
                 TargetInfo target = new TargetInfo();
 
                 m_LastGroundTarg = m_LastTarget = target;
-                m_LastHarmTarg = m_LastBeneTarg = target;
+                m_LastHarmTarg = target;
 
                 if (m_HasTarget)
                     target.Flags = m_CurFlags;
