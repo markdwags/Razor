@@ -34,7 +34,8 @@ namespace Assistant
             SetGameSize = 19,
             SmartCPU = 21,
             Negotiate = 22,
-            SetMapHWnd = 23
+            SetMapHWnd = 23,
+            OnTick = 24,
         }
 
         public enum UONetMessageCopyData
@@ -573,6 +574,11 @@ namespace Assistant
                         MessageBox.Show(Engine.ActiveWindow, "An Error has occured : \n" + error, "Error Reported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     }
+
+                case UONetMessage.OnTick:
+                    // Game engine tick
+                    Timer.Slice();
+                    break;
 
                 // Unknown
                 default:
