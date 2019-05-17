@@ -240,6 +240,7 @@ namespace Assistant
                     (ushort) s.GetID());
             HotKey.Add(HKCategory.Spells, LocString.HealOrCureSelf, new HotKeyCallback(HealOrCureSelf));
             HotKey.Add(HKCategory.Spells, LocString.MiniHealOrCureSelf, new HotKeyCallback(MiniHealOrCureSelf));
+            HotKey.Add(HKCategory.Spells, LocString.GHealOrCureSelf, new HotKeyCallback(GHealOrCureSelf));
             HotKey.Add(HKCategory.Spells, LocString.Interrupt, new HotKeyCallback(Interrupt));
         }
 
@@ -306,6 +307,31 @@ namespace Assistant
                 if (World.Player.Poisoned || World.Player.Hits < World.Player.HitsMax)
                     Targeting.TargetSelf(true);
                 Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
+                s.Cast();
+            }
+        }
+
+        public static void GHealOrCureSelf()
+        {
+            Spell s = null;
+
+            if (!Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+            {
+                s = Get(4, 5); // gheal
+            }
+            else
+            {
+                if (World.Player.Poisoned)
+                    s = Get(2, 3); // cure
+                else
+                    s = Get(4, 5); // gheal
+            }
+
+            if (s != null)
+            {
+                if (World.Player.Poisoned || World.Player.Hits < World.Player.HitsMax)
+                    Targeting.TargetSelf(true);
+                Client.Instance.SendToServer(new CastSpellFromMacro((ushort)s.GetID()));
                 s.Cast();
             }
         }

@@ -508,6 +508,7 @@ namespace Assistant
         PrevTargetNonFriendlyHumanoid,
         ToggleWar,
         TogglePeace,
+        GHealOrCureSelf,
 
         __End
     }
