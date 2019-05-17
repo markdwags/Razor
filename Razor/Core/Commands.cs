@@ -260,7 +260,7 @@ namespace Assistant
             get { return m_List; }
         }
 
-        public static void OnSpeech(Packet pvSrc, PacketHandlerEventArgs args)
+        public static void OnSpeech(PacketReader pvSrc, PacketHandlerEventArgs args)
         {
             MessageType type = (MessageType)pvSrc.ReadByte();
             ushort hue = pvSrc.ReadUInt16();

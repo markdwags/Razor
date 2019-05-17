@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Assistant
 {
     public delegate void PacketViewerCallback(PacketReader p, PacketHandlerEventArgs args);
-    public delegate void PacketFilterCallback(Packet p, PacketHandlerEventArgs args);
+    public delegate void PacketFilterCallback(PacketReader p, PacketHandlerEventArgs args);
 
     public class PacketHandlerEventArgs
     {
@@ -103,7 +103,7 @@ namespace Assistant
                 list.Remove(callback);
         }
 
-        public static bool OnServerPacket(int id, PacketReader pr, Packet p)
+        public static bool OnServerPacket(int id, PacketReader pr)
         {
             bool result = false;
             if (pr != null)
@@ -113,18 +113,18 @@ namespace Assistant
                     result = ProcessViewers(list, pr);
             }
 
-            if (p != null)
+            if (pr != null)
             {
                 List<PacketFilterCallback> list;
                 if (m_ServerFilters.TryGetValue(id, out list) && list != null && list.Count > 0)
-                    result |= ProcessFilters(list, p);
+                    result |= ProcessFilters(list, pr);
             }
 
             return result;
         }
 
 
-        public static bool OnClientPacket(int id, PacketReader pr, Packet p)
+        public static bool OnClientPacket(int id, PacketReader pr)
         {
             bool result = false;
             if (pr != null)
@@ -134,11 +134,11 @@ namespace Assistant
                     result = ProcessViewers(list, pr);
             }
 
-            if (p != null)
+            if (pr != null)
             {
                 List<PacketFilterCallback> list;
                 if (m_ClientFilters.TryGetValue(id, out list) && list != null && list.Count > 0)
-                    result |= ProcessFilters(list, p);
+                    result |= ProcessFilters(list, pr);
             }
 
             return result;
@@ -195,7 +195,7 @@ namespace Assistant
             return m_Args.Block;
         }
 
-        private static bool ProcessFilters(List<PacketFilterCallback> list, Packet p)
+        private static bool ProcessFilters(List<PacketFilterCallback> list, PacketReader p)
         {
             m_Args.Reinit();
 

@@ -62,6 +62,8 @@ namespace Assistant
 		private bool m_DynSize;
 		private byte m_PacketID;
 
+        public bool IsDynSize => m_DynSize;
+
 		public Packet()
 		{
 			m_Stream = new MemoryStream();
@@ -847,6 +849,8 @@ namespace Assistant
 			return m_Pos;
 		}
 
+        public byte* Data => m_Data;
+
 		public int Length { get { return m_Length; } }
 		public bool DynamicLength { get { return m_Dyn; } }
 
@@ -1211,5 +1215,186 @@ namespace Assistant
 		public int Position{ get{ return m_Pos; } set{ m_Pos = value; } }
 
 		public bool AtEnd { get { return m_Pos >= m_Length; } }
-	}
+
+
+        public void Write(byte b)
+        {
+            m_Data[m_Pos++] = b;
+        }
+
+        public void Write(sbyte b) => Write((byte) b);
+
+        public void Write(bool b) => Write((byte) (b ? 1 : 0));
+
+        public void Write(ushort v)
+        {
+            Write((byte)(v >> 8));
+            Write((byte)v);
+        }
+
+        public void Write(short v) => Write((ushort) v);
+
+        public void Write(uint v)
+        {
+            Write((byte)(v >> 24));
+            Write((byte)(v >> 16));
+            Write((byte)(v >> 8));
+            Write((byte)v);
+        }
+
+        public void Write(int v) => Write((uint) v);
+
+        public void Write(byte[] buffer, int offset, int size)
+        {
+            for (int i = offset; i < size; i++)
+            {
+                Write(buffer[i]);
+            }
+        }
+
+        public void WriteAsciiFixed(string value, int size)
+        {
+            if (value == null)
+                value = String.Empty;
+
+            byte[] buffer = Encoding.ASCII.GetBytes(value);
+
+            if (buffer.Length >= size)
+            {
+                Write(buffer, 0, size);
+            }
+            else
+            {
+                Write(buffer, 0, buffer.Length);
+
+                byte[] pad = new byte[size - buffer.Length];
+
+                Write(pad, 0, pad.Length);
+            }
+        }
+
+        public void WriteAsciiNull(string value)
+        {
+            if (value == null)
+                value = String.Empty;
+
+            byte[] buffer = Encoding.ASCII.GetBytes(value);
+
+            Write(buffer, 0, buffer.Length);
+            Write((byte) 0);
+        }
+
+        private static byte[] m_Buffer = new byte[4];
+
+        public void WriteLittleUniNull(string value)
+        {
+            if (value == null)
+                value = String.Empty;
+
+            byte[] buffer = Encoding.Unicode.GetBytes(value);
+
+            Write(buffer, 0, buffer.Length);
+
+            m_Buffer[0] = 0;
+            m_Buffer[1] = 0;
+            Write(m_Buffer, 0, 2);
+        }
+
+        public void WriteLittleUniFixed(string value, int size)
+        {
+            if (value == null)
+                value = String.Empty;
+
+            size *= 2;
+
+            byte[] buffer = Encoding.Unicode.GetBytes(value);
+
+            if (buffer.Length >= size)
+            {
+                Write(buffer, 0, size);
+            }
+            else
+            {
+                Write(buffer, 0, buffer.Length);
+
+                byte[] pad = new byte[size - buffer.Length];
+
+                Write(pad, 0, pad.Length);
+            }
+        }
+
+        public void WriteBigUniNull(string value)
+        {
+            if (value == null)
+                value = String.Empty;
+
+            byte[] buffer = Encoding.BigEndianUnicode.GetBytes(value);
+
+            Write(buffer, 0, buffer.Length);
+
+            m_Buffer[0] = 0;
+            m_Buffer[1] = 0;
+            Write(m_Buffer, 0, 2);
+        }
+
+        public void WriteBigUniFixed(string value, int size)
+        {
+            if (value == null)
+                value = String.Empty;
+
+            size *= 2;
+
+            byte[] buffer = Encoding.BigEndianUnicode.GetBytes(value);
+
+            if (buffer.Length >= size)
+            {
+                Write(buffer, 0, size);
+            }
+            else
+            {
+                Write(buffer, 0, buffer.Length);
+
+                byte[] pad = new byte[size - buffer.Length];
+
+                Write(pad, 0, pad.Length);
+            }
+        }
+
+        public void WriteUTF8Fixed(string value, int size)
+        {
+            if (value == null)
+                value = String.Empty;
+
+            size *= 2;
+
+            byte[] buffer = Encoding.UTF8.GetBytes(value);
+
+            if (buffer.Length >= size)
+            {
+                Write(buffer, 0, size);
+            }
+            else
+            {
+                Write(buffer, 0, buffer.Length);
+
+                byte[] pad = new byte[size - buffer.Length];
+
+                Write(pad, 0, pad.Length);
+            }
+        }
+
+        public void WriteUTF8Null(string value)
+        {
+            if (value == null)
+                value = String.Empty;
+
+            byte[] buffer = Encoding.UTF8.GetBytes(value);
+
+            Write(buffer, 0, buffer.Length);
+            m_Buffer[0] = 0;
+            m_Buffer[1] = 0;
+            Write(m_Buffer, 0, 2);
+        }
+
+    }
 }

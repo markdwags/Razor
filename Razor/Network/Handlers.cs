@@ -116,7 +116,7 @@ namespace Assistant
             }*/
         }
 
-        private static void SetUpdateRange(Packet p, PacketHandlerEventArgs args)
+        private static void SetUpdateRange(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player != null)
                 World.Player.VisRange = p.ReadByte();
@@ -163,7 +163,7 @@ namespace Assistant
             }*/
         }
 
-        private static void ServOPLHash(Packet p, PacketHandlerEventArgs args)
+        private static void ServOPLHash(PacketReader p, PacketHandlerEventArgs args)
         {
             /*Serial s = p.ReadUInt32();
             int hash = p.ReadInt32();
@@ -248,7 +248,7 @@ namespace Assistant
             }
         }
 
-        private static void ExtendedClientCommand(Packet p, PacketHandlerEventArgs args)
+        private static void ExtendedClientCommand(PacketReader p, PacketHandlerEventArgs args)
         {
             ushort ext = p.ReadUInt16();
             switch (ext)
@@ -540,7 +540,7 @@ namespace Assistant
                 args.Block = DragDropManager.Drop(i, dser, newPos);
         }
 
-        private static void MovementRequest(Packet p, PacketHandlerEventArgs args)
+        private static void MovementRequest(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player != null)
             {
@@ -555,7 +555,7 @@ namespace Assistant
             }
         }
 
-        private static void ContainerContentUpdate(Packet p, PacketHandlerEventArgs args)
+        private static void ContainerContentUpdate(PacketReader p, PacketHandlerEventArgs args)
         {
             // This function will ignore the item if the container item has not been sent to the client yet.
             // We can do this because we can't really count on getting all of the container info anyway.
@@ -632,7 +632,7 @@ namespace Assistant
                 Item.UpdateContainers();
             }
         }
-        private static void ContainerContent(Packet p, PacketHandlerEventArgs args)
+        private static void ContainerContent(PacketReader p, PacketHandlerEventArgs args)
         {
             int count = p.ReadUInt16();
 
@@ -678,7 +678,7 @@ namespace Assistant
             Item.UpdateContainers();
         }
 
-        private static void EquipmentUpdate(Packet p, PacketHandlerEventArgs args)
+        private static void EquipmentUpdate(PacketReader p, PacketHandlerEventArgs args)
         {
             Serial serial = p.ReadUInt32();
 
@@ -918,7 +918,7 @@ namespace Assistant
                 World.Player.SetSeason();
         }
 
-        private static void MobileMoving(Packet p, PacketHandlerEventArgs args)
+        private static void MobileMoving(PacketReader p, PacketHandlerEventArgs args)
         {
             Mobile m = World.FindMobile(p.ReadUInt32());
 
@@ -1316,7 +1316,7 @@ namespace Assistant
             }
         }
 
-        private static void MobileUpdate(Packet p, PacketHandlerEventArgs args)
+        private static void MobileUpdate(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player == null)
                 return;
@@ -1367,7 +1367,7 @@ namespace Assistant
             Item.UpdateContainers();
         }
 
-        private static void MobileIncoming(Packet p, PacketHandlerEventArgs args)
+        private static void MobileIncoming(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player == null)
                 return;
@@ -1787,7 +1787,7 @@ namespace Assistant
 
         public static List<string> SysMessages = new List<string>();
 
-        public static void HandleSpeech(Packet p, PacketHandlerEventArgs args, Serial ser, ushort body, MessageType type, ushort hue, ushort font, string lang, string name, string text)
+        public static void HandleSpeech(PacketReader p, PacketHandlerEventArgs args, Serial ser, ushort body, MessageType type, ushort hue, ushort font, string lang, string name, string text)
         {
             if (World.Player == null)
                 return;
@@ -1926,7 +1926,7 @@ namespace Assistant
             }
         }
 
-        public static void AsciiSpeech(Packet p, PacketHandlerEventArgs args)
+        public static void AsciiSpeech(PacketReader p, PacketHandlerEventArgs args)
         {
             // 0, 1, 2
             Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
@@ -1958,7 +1958,7 @@ namespace Assistant
             }
         }
 
-        public static void UnicodeSpeech(Packet p, PacketHandlerEventArgs args)
+        public static void UnicodeSpeech(PacketReader p, PacketHandlerEventArgs args)
         {
             // 0, 1, 2
             Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
@@ -1973,7 +1973,7 @@ namespace Assistant
             HandleSpeech(p, args, serial, body, type, hue, font, lang, name, text);
         }
 
-        private static void OnLocalizedMessage(Packet p, PacketHandlerEventArgs args)
+        private static void OnLocalizedMessage(PacketReader p, PacketHandlerEventArgs args)
         {
             // 0, 1, 2
             Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
@@ -2008,7 +2008,7 @@ namespace Assistant
             }
         }
 
-        private static void OnLocalizedMessageAffix(Packet p, PacketHandlerEventArgs phea)
+        private static void OnLocalizedMessageAffix(PacketReader p, PacketHandlerEventArgs phea)
         {
             // 0, 1, 2
             Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
@@ -2393,7 +2393,7 @@ namespace Assistant
 
         private static string m_LastPW = "";
 
-        private static void ServerListLogin(Packet p, PacketHandlerEventArgs args)
+        private static void ServerListLogin(PacketReader p, PacketHandlerEventArgs args)
         {
             m_LastPW = "";
             if (!Config.GetBool("RememberPwds"))
@@ -2418,7 +2418,7 @@ namespace Assistant
             }
         }
 
-        private static void GameLogin(Packet p, PacketHandlerEventArgs args)
+        private static void GameLogin(PacketReader p, PacketHandlerEventArgs args)
         {
             int authID = p.ReadInt32();
 
@@ -2475,7 +2475,7 @@ namespace Assistant
             }
         }
 
-        private static void ServerAddress(Packet p, PacketHandlerEventArgs args)
+        private static void ServerAddress(PacketReader p, PacketHandlerEventArgs args)
         {
             int port = Config.GetInt("ForcePort");
             if (port != 0)
@@ -2825,7 +2825,7 @@ namespace Assistant
             }
         }
 
-        private static void AttackRequest(Packet p, PacketHandlerEventArgs args)
+        private static void AttackRequest(PacketReader p, PacketHandlerEventArgs args)
         {
             if (Config.GetBool("ShowAttackTargetOverhead"))
             {
@@ -2847,7 +2847,7 @@ namespace Assistant
                 args.Block = true;
             }
         }
-        private static void UnicodePromptSend(Packet p, PacketHandlerEventArgs args)
+        private static void UnicodePromptSend(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player == null)
                 return;
@@ -2875,7 +2875,7 @@ namespace Assistant
             }
         }
 
-        private static void UnicodePromptReceived(Packet p, PacketHandlerEventArgs args)
+        private static void UnicodePromptReceived(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player == null)
                 return;

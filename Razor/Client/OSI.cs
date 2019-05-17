@@ -95,8 +95,8 @@ namespace Assistant
         [DllImport("Loader.dll")]
         private static unsafe extern uint Load(string exe, string dll, string func, void* dllData, int dataLen, out uint pid);
 
-        private Queue<Packet> m_SendQueue = new Queue<Packet>();
-        private Queue<Packet> m_RecvQueue = new Queue<Packet>();
+        private Queue<PacketReader> m_SendQueue = new Queue<PacketReader>();
+        private Queue<PacketReader> m_RecvQueue = new Queue<PacketReader>();
 
         private bool m_QueueRecv;
         private bool m_QueueSend;
@@ -623,7 +623,7 @@ namespace Assistant
             return false;
         }
 
-        public override void SendToServer(Packet p)
+        public override unsafe void SendToServer(Packet p)
         {
             if (!m_Ready)
                 return;
@@ -634,7 +634,8 @@ namespace Assistant
             }
             else
             {
-                m_SendQueue.Enqueue(p);
+                fixed (byte* ptr = p.Compile())
+                    m_SendQueue.Enqueue(new PacketReader(ptr, (int) p.Length, p.IsDynSize));
             }
         }
 
@@ -657,7 +658,8 @@ namespace Assistant
             }
             else
             {
-                m_RecvQueue.Enqueue(p);
+                fixed (byte* ptr = p.Compile())
+                    m_RecvQueue.Enqueue(new PacketReader(ptr, (int)p.Length, p.IsDynSize));
             }
         }
 
@@ -706,7 +708,7 @@ namespace Assistant
             buffer->Length += len;
         }
 
-        private void HandleComm(Buffer* inBuff, Buffer* outBuff, Queue<Packet> queue, PacketPath path)
+        private void HandleComm(Buffer* inBuff, Buffer* outBuff, Queue<PacketReader> queue, PacketPath path)
         {
             CommMutex.WaitOne();
             while (inBuff->Length > 0)
@@ -735,20 +737,23 @@ namespace Assistant
                         break;
                 }
 
-                Packet p = null;
+                //Packet p = null;
                 PacketReader pr = null;
+                pr = new PacketReader(buff, len, PacketsTable.IsDynLength(buff[0]));
+
+
                 if (viewer)
                 {
                     pr = new PacketReader(buff, len, PacketsTable.IsDynLength(buff[0]));
-                    if (filter)
-                        p = MakePacketFrom(pr);
+                    //if (filter)
+                    //    p = MakePacketFrom(pr);
                 }
                 else if (filter)
                 {
-                    byte[] temp = new byte[len];
-                    fixed (byte* ptr = temp)
-                        Platform.memcpy(ptr, buff, len);
-                    p = new Packet(temp, len, PacketsTable.IsDynLength(buff[0]));
+                    //byte[] temp = new byte[len];
+                    //fixed (byte* ptr = temp)
+                    //    Platform.memcpy(ptr, buff, len);
+                    //p = new Packet(temp, len, PacketsTable.IsDynLength(buff[0]));
                 }
 
                 bool blocked = false;
@@ -757,24 +762,24 @@ namespace Assistant
                     // yes it should be this way
                     case PacketPath.ClientToServer:
                         {
-                            blocked = PacketHandler.OnClientPacket(buff[0], pr, p);
+                            blocked = PacketHandler.OnClientPacket(buff[0], pr);
                             break;
                         }
                     case PacketPath.ServerToClient:
                         {
-                            blocked = PacketHandler.OnServerPacket(buff[0], pr, p);
+                            blocked = PacketHandler.OnServerPacket(buff[0], pr);
                             break;
                         }
                 }
 
                 if (filter)
                 {
-                    byte[] data = p.Compile();
-                    fixed (byte* ptr = data)
+                    //byte[] data = p.Compile();
+                    //fixed (byte* ptr = data)
                     {
-                        Packet.Log(path, ptr, data.Length, blocked);
+                        Packet.Log(path, pr.Data, pr.Length, blocked);
                         if (!blocked)
-                            CopyToBuffer(outBuff, ptr, data.Length);
+                            CopyToBuffer(outBuff, pr.Data, pr.Length);
                     }
                 }
                 else
@@ -786,12 +791,12 @@ namespace Assistant
 
                 while (queue.Count > 0)
                 {
-                    p = (Packet)queue.Dequeue();
-                    byte[] data = p.Compile();
-                    fixed (byte* ptr = data)
+                    pr = queue.Dequeue();
+                    //byte[] data = p.Compile();
+                    //fixed (byte* ptr = data)
                     {
-                        CopyToBuffer(outBuff, ptr, data.Length);
-                        Packet.Log((PacketPath)(((int)path) + 1), ptr, data.Length);
+                        CopyToBuffer(outBuff, pr.Data, pr.Length);
+                        Packet.Log((PacketPath)(((int)path) + 1), pr.Data, pr.Length);
                     }
                 }
             }
