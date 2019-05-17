@@ -129,7 +129,7 @@ namespace Assistant
         private static OnDisconnected _onDisconnected;
         private static OnFocusGained _onFocusGained;
         private static OnFocusLost _onFocusLost;
-        private IntPtr m_ClientWindow;
+        private IntPtr m_ClientWindow; 
 
         public override void SetMapWndHandle(Form mapWnd)
         {
