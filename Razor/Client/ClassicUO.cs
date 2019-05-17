@@ -109,7 +109,8 @@ namespace Assistant
         private bool m_ClientRunning = false;
         private string m_ClientVersion;
         
-        private static OnPacketSendRecv _sendToClient, _sendToServer, _recv, _send;
+        private static OnPacketSendRecv  _recv, _send;
+        private static OnPluginPacketSendRecv _sendToClient, _sendToServer;
         private static OnGetPacketLength _getPacketLength;
         private static OnGetPlayerPosition _getPlayerPosition;
         private static OnCastSpell _castSpell;
@@ -166,8 +167,8 @@ namespace Assistant
 
         public unsafe bool Install( PluginHeader* header)
         {
-            _sendToClient = (OnPacketSendRecv)Marshal.GetDelegateForFunctionPointer( header->Recv, typeof( OnPacketSendRecv ) );
-            _sendToServer = (OnPacketSendRecv)Marshal.GetDelegateForFunctionPointer( header->Send, typeof( OnPacketSendRecv ) );
+            _sendToClient = (OnPluginPacketSendRecv)Marshal.GetDelegateForFunctionPointer( header->Recv, typeof(OnPluginPacketSendRecv) );
+            _sendToServer = (OnPluginPacketSendRecv)Marshal.GetDelegateForFunctionPointer( header->Send, typeof(OnPluginPacketSendRecv) );
             _getPacketLength = (OnGetPacketLength)Marshal.GetDelegateForFunctionPointer( header->GetPacketLength, typeof( OnGetPacketLength ) );
             _getPlayerPosition = (OnGetPlayerPosition)Marshal.GetDelegateForFunctionPointer( header->GetPlayerPosition, typeof( OnGetPlayerPosition ) );
             _castSpell = (OnCastSpell)Marshal.GetDelegateForFunctionPointer( header->CastSpell, typeof( OnCastSpell ) );
@@ -222,65 +223,30 @@ namespace Assistant
             World.Player.Position = new Point3D(x, y, z);
         }
 
-        private unsafe bool OnRecv(ref byte[] data, ref int length)
+        private unsafe bool OnRecv(IntPtr ptr, int length)
         {
             m_In += (uint)length;
-            fixed (byte* ptr = data)
+            //fixed (byte* ptr = data)
+            byte* data = (byte*) ptr;
             {
-                bool result = true;
                 byte id = data[0];
 
-                PacketReader reader = null;
-                Packet packet = null;
-                bool isView = PacketHandler.HasServerViewer(id);
-                bool isFilter = PacketHandler.HasServerFilter(id);
-
-                if (isView)
-                {
-                    reader = new PacketReader(ptr, length, PacketsTable.IsDynLength(id));
-                    result = !PacketHandler.OnServerPacket(id, reader, packet);
-                }
-                else if (isFilter)
-                {
-                    packet = new Packet(data, length, PacketsTable.IsDynLength(id));
-                    result = !PacketHandler.OnServerPacket(id, reader, packet);
-
-                    data = packet.Compile();
-                    length = (int) packet.Length;
-                }
-
-                return result;
+                PacketReader reader = new PacketReader(data, length, PacketsTable.IsDynLength(id));
+                return !PacketHandler.OnServerPacket(id, reader);
             }
         }
 
-        private unsafe bool OnSend(ref byte[] data, ref int length)
+        private unsafe bool OnSend(IntPtr ptr, int length)
         {
             m_Out += (uint)length;
-            fixed (byte* ptr = data)
+            //fixed (byte* ptr = data)
+            byte* data = (byte*)ptr;
             {
-                bool result = true;
                 byte id = data[0];
 
-                PacketReader reader = null;
-                Packet packet = null;
-                bool isView = PacketHandler.HasClientViewer(id);
-                bool isFilter = PacketHandler.HasClientFilter(id);
+                PacketReader reader = new PacketReader(data, length, PacketsTable.IsDynLength(id));
 
-                if (isView)
-                {
-                    reader = new PacketReader(ptr, length, PacketsTable.IsDynLength(id));
-                    result = !PacketHandler.OnClientPacket(id, reader, packet);
-                }
-                else if (isFilter)
-                {
-                    packet = new Packet(data, length, PacketsTable.IsDynLength(id));
-                    result = !PacketHandler.OnClientPacket(id, reader, packet);
-
-                    data = packet.Compile();
-                    length = (int)packet.Length;
-                }
-
-                return result;
+                return !PacketHandler.OnClientPacket(id, reader);
             }
         }
         private void OnMouseHandler(int button, int wheel)
@@ -434,7 +400,7 @@ namespace Assistant
         {
             byte[] data = p.Compile();
             int length = (int) p.Length;
-            _sendToServer(ref data, ref length);
+            _sendToServer(data, length);
         }
 
         public override void SendToServer(PacketReader pr)
@@ -447,7 +413,7 @@ namespace Assistant
             byte[] data = p.Compile();
             int length = (int)p.Length;
 
-            _sendToClient(ref data, ref length);
+            _sendToClient(data, length);
 
         }
 
@@ -456,7 +422,7 @@ namespace Assistant
             byte[] data = p.Compile();
             int length = (int)p.Length;
 
-            _sendToClient(ref data, ref length);
+            _sendToClient(data, length);
         }
 
         public override void ForceSendToServer(Packet p)
@@ -464,7 +430,7 @@ namespace Assistant
             byte[] data = p.Compile();
             int length = (int)p.Length;
 
-            _sendToServer(ref data, ref length);
+            _sendToServer(data, length);
         }
 
         public override void SetPosition(uint x, uint y, uint z, byte dir)
