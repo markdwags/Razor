@@ -380,13 +380,11 @@ namespace Assistant
                     msg = Language.GetString(LocString.HKDisabled);
             }
 
-
-
             m_Status?.SafeAction(s =>
             {
                 s.Text = msg;
             });
-           
+
             return msg;
         }
 
