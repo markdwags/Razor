@@ -85,6 +85,7 @@ namespace Assistant
             PacketHandler.RegisterServerToClientViewer(0xB0, new PacketViewerCallback(SendGump));
             PacketHandler.RegisterServerToClientViewer(0xB9, new PacketViewerCallback(Features));
             PacketHandler.RegisterServerToClientViewer(0xBC, new PacketViewerCallback(ChangeSeason));
+            PacketHandler.RegisterServerToClientFilter(0xBE, new PacketFilterCallback(OnAssistVersion));
             PacketHandler.RegisterServerToClientViewer(0xBF, new PacketViewerCallback(ExtendedPacket));
             PacketHandler.RegisterServerToClientFilter(0xC1, new PacketFilterCallback(OnLocalizedMessage));
             PacketHandler.RegisterServerToClientFilter(0xC2, new PacketFilterCallback(UnicodePromptReceived));
@@ -2101,6 +2102,13 @@ namespace Assistant
                 World.Player.SetSeason(season);
             }
 
+        }
+
+        private static void OnAssistVersion(Packet p, PacketHandlerEventArgs args)
+        {
+            args.Block = true;
+
+            Client.Instance.ForceSendToServer(new AssistVersion());
         }
 
         private static void ExtendedPacket(PacketReader p, PacketHandlerEventArgs args)
