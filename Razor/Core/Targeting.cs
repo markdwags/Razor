@@ -240,8 +240,24 @@ namespace Assistant
 
         private static void AttackLastTarg()
         {
-            if (m_LastTarget != null && m_LastTarget.Serial.IsMobile)
-                Client.Instance.SendToServer(new AttackReq(m_LastTarget.Serial));
+            
+            TargetInfo targ;
+            if (Config.GetBool("SmartLastTarget") && Client.Instance.AllowBit(FeatureBit.SmartLT))
+            {
+                // If Smart Targetting is being used we'll assume that the user would like to attack the harmful target.
+                targ = m_LastHarmTarg;
+
+                // If there is no last harmful target, then we'll attack the last target.
+                if (targ == null)
+                    targ = m_LastTarget;
+            }
+            else
+            {
+                targ = m_LastTarget;
+            }
+
+            if (targ != null && targ.Serial.IsMobile)
+                Client.Instance.SendToServer(new AttackReq(targ.Serial));
         }
 
         private static void OnClearQueue()
