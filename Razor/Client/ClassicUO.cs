@@ -298,9 +298,13 @@ namespace Assistant
         }
         private bool OnHotKeyHandler(int key, int mod, bool ispressed)
         {
+            int keycode = key;
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                keycode = Win32Platform.MapKey(key);
+
             if (ispressed)
             {
-                return HotKey.OnKeyDown((int)(key | mod));;
+                return HotKey.OnKeyDown((int)(keycode | mod));;
             }
             return true;
         }
