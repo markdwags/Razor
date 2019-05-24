@@ -35,6 +35,9 @@ namespace Assistant
         private static TargetInfo m_LastBeneTarg;
         private static TargetInfo m_LastHarmTarg;
 
+
+        private static bool m_FromGrabHotKey;
+
         private static bool m_AllowGround;
         private static uint m_CurrentID;
         private static byte m_CurFlags;
@@ -65,6 +68,11 @@ namespace Assistant
         public static bool HasTarget
         {
             get { return m_HasTarget; }
+        }
+
+        public static bool FromGrabHotKey
+        {
+            get { return m_FromGrabHotKey; }
         }
 
         private static List<ushort> m_MonsterIds = new List<ushort>()
@@ -263,6 +271,13 @@ namespace Assistant
             OneTimeTarget(false, onTarget, null);
         }
 
+        internal static void OneTimeTarget(TargetResponseCallback onTarget, bool fromGrab)
+        {
+            m_FromGrabHotKey = fromGrab;
+
+            OneTimeTarget(false, onTarget, null);
+        }
+
         internal static void OneTimeTarget(bool ground, TargetResponseCallback onTarget)
         {
             OneTimeTarget(ground, onTarget, null);
@@ -302,7 +317,7 @@ namespace Assistant
 
         internal static void CancelOneTimeTarget()
         {
-            m_ClientTarget = m_HasTarget = false;
+            m_ClientTarget = m_HasTarget = m_FromGrabHotKey = false;
 
             Client.Instance.SendToClient(new CancelTarget(LocalTargID));
             EndIntercept();
@@ -978,6 +993,7 @@ namespace Assistant
             m_Intercept = false;
             m_OnTarget = null;
             m_OnCancel = null;
+            m_FromGrabHotKey = false;
         }
 
         public static void TargetSelf()
@@ -1026,6 +1042,7 @@ namespace Assistant
 
             CancelClientTarget();
             m_HasTarget = false;
+            m_FromGrabHotKey = false;
 
             if (m_Intercept)
             {
@@ -1218,6 +1235,8 @@ namespace Assistant
             OnClearQueue();
             CancelClientTarget();
 
+            m_FromGrabHotKey = false;
+
             if (m_HasTarget)
             {
                 Client.Instance.SendToServer(new TargetCancelResponse(m_CurrentID));
@@ -1250,6 +1269,7 @@ namespace Assistant
 
             CancelClientTarget();
             m_HasTarget = false;
+            m_FromGrabHotKey = false;
         }
 
         public static void Target(Point3D pt)
@@ -1719,6 +1739,7 @@ namespace Assistant
             if (info.X == 0xFFFF && info.X == 0xFFFF && (info.Serial <= 0 || info.Serial >= 0x80000000))
             {
                 m_HasTarget = false;
+                m_FromGrabHotKey = false;
 
                 if (m_Intercept)
                 {
@@ -1755,6 +1776,7 @@ namespace Assistant
                     Timer.DelayedCallbackState(TimeSpan.Zero, m_OneTimeRespCallback, info).Start();
 
                     m_HasTarget = false;
+                    m_FromGrabHotKey = false;
                     args.Block = true;
 
                     if (m_PreviousID != 0)
@@ -1842,6 +1864,8 @@ namespace Assistant
             if (!m_AllowGround && m_CurrentID == 0 && m_CurFlags == 3)
             {
                 m_HasTarget = false;
+                m_FromGrabHotKey = false;
+
                 m_ClientTarget = false;
                 if (m_Intercept)
                 {

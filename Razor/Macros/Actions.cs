@@ -1125,6 +1125,9 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
+            if (Targeting.FromGrabHotKey)
+                return false;
+
             ArrayList list = new ArrayList();
             if (m_Mobile)
             {

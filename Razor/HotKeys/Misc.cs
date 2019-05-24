@@ -380,18 +380,12 @@ namespace Assistant.HotKeys
 
         private static void GrabItem()
         {
-            if (MacroManager.Playing)
-                return;
-
             World.Player.SendMessage(MsgLevel.Force, LocString.GrabItemTarget);
-            Targeting.OneTimeTarget(OnGrabItem);
+            Targeting.OneTimeTarget(OnGrabItem, true);
         }
 
         private static void OnGrabItem(bool loc, Serial serial, Point3D pt, ushort itemId)
         {
-            if (MacroManager.Playing)
-                return;
-
             Item item = World.FindItem(serial);
 
             if (item != null && item.Serial.IsItem && item.Movable && item.Visible)
