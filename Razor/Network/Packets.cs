@@ -1690,6 +1690,20 @@ namespace Assistant
                 WriteLittleUniNull(text);
         }
     }
+
+    internal sealed class AssistVersion : Packet
+    {
+        internal AssistVersion()
+            : base(0xBE)
+        {
+            var version = typeof(AssistVersion).Assembly.GetName().Version.ToString();
+
+            EnsureCapacity(3 + version.Length);
+
+            WriteAsciiNull(version);
+
+        }
+    }
 }
 
 
