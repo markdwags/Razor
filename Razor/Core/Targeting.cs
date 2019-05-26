@@ -110,7 +110,10 @@ namespace Assistant
             HotKey.Add(HKCategory.Targets, LocString.LastTarget, new HotKeyCallback(LastTarget));
             HotKey.Add(HKCategory.Targets, LocString.TargetSelf, new HotKeyCallback(TargetSelf));
             HotKey.Add(HKCategory.Targets, LocString.ClearTargQueue, new HotKeyCallback(OnClearQueue));
+
             HotKey.Add(HKCategory.Targets, LocString.SetLT, new HotKeyCallback(TargetSetLastTarget));
+            HotKey.Add(HKCategory.Targets, LocString.SetLastBeneficial, new HotKeyCallback(SetLastTargetBeneficial));
+            HotKey.Add(HKCategory.Targets, LocString.SetLastHarmful, new HotKeyCallback(SetLastTargetHarmful));
 
             HotKey.Add(HKCategory.Targets, LocString.TargetRandom, new HotKeyCallback(TargetRandAnyone));
 
@@ -379,8 +382,6 @@ namespace Assistant
 
             World.Player.SendMessage(MsgLevel.Force, LocString.LTSet);
 
-            //OverheadTargetMessage(m_LastTarget);
-
             if (serial.IsMobile)
             {
                 LastTargetChanged();
@@ -389,7 +390,121 @@ namespace Assistant
             }
         }
 
+        private static bool m_LTBeneWasSet;
+
+        /// <summary>
+        /// Sets the beneficial target
+        /// </summary>
+        private static void SetLastTargetBeneficial()
+        {
+            if (!Config.GetBool("SmartLastTarget"))
+            {
+                World.Player.SendMessage(MsgLevel.Error, "Smart Targeting is disabled");
+                return;
+            }
+
+            if (World.Player != null)
+            {
+                m_LTBeneWasSet = false;
+                OneTimeTarget(false, OnSetLastTargetBeneficial, OnSLTBeneficialCancel);
+                World.Player.SendMessage(MsgLevel.Force, LocString.TargSetLT);
+            }
+        }
+
+        private static void OnSLTBeneficialCancel()
+        {
+            if (m_LastBeneTarg != null)
+                m_LTBeneWasSet = true;
+        }
+
+        private static void OnSetLastTargetBeneficial(bool location, Serial serial, Point3D p, ushort gfxid)
+        {
+            if (serial == World.Player.Serial)
+            {
+                OnSLTBeneficialCancel();
+                return;
+            }
+
+            m_LastBeneTarg = new TargetInfo
+            {
+                Flags = 0,
+                Gfx = gfxid,
+                Serial = serial,
+                Type = (byte) (location ? 1 : 0),
+                X = p.X,
+                Y = p.Y,
+                Z = p.Z
+            };
+
+            m_LTBeneWasSet = true;
+
+            World.Player.SendMessage(MsgLevel.Force, LocString.SetLTBene);
+
+            if (serial.IsMobile)
+            {
+                LastBeneficialTargetChanged();
+            }
+        }
+
+        private static bool m_LTHarmWasSet;
+
+        /// <summary>
+        /// Sets the harmful target
+        /// </summary>
+        private static void SetLastTargetHarmful()
+        {
+            if (!Config.GetBool("SmartLastTarget"))
+            {
+                World.Player.SendMessage(MsgLevel.Error, "Smart Targeting is disabled");
+                return;
+            }
+
+            if (World.Player != null)
+            {
+                m_LTHarmWasSet = false;
+                OneTimeTarget(false, OnSetLastTargetHarmful, OnSLTHarmfulCancel);
+                World.Player.SendMessage(MsgLevel.Force, LocString.TargSetLT);
+            }
+        }
+
+        private static void OnSLTHarmfulCancel()
+        {
+            if (m_LastTarget != null)
+                m_LTHarmWasSet = true;
+        }
+
+        private static void OnSetLastTargetHarmful(bool location, Serial serial, Point3D p, ushort gfxid)
+        {
+            if (serial == World.Player.Serial)
+            {
+                OnSLTHarmfulCancel();
+                return;
+            }
+
+            m_LastHarmTarg = new TargetInfo
+            {
+                Flags = 0,
+                Gfx = gfxid,
+                Serial = serial,
+                Type = (byte) (location ? 1 : 0),
+                X = p.X,
+                Y = p.Y,
+                Z = p.Z
+            };
+
+            m_LTHarmWasSet = true;
+
+            World.Player.SendMessage(MsgLevel.Force, LocString.SetLTHarm);
+
+            if (serial.IsMobile)
+            {
+                LastHarmfulTargetChanged();
+            }
+        }
+
         private static Serial m_OldLT = Serial.Zero;
+        private static Serial m_OldBeneficialLT = Serial.Zero;
+        private static Serial m_OldHarmfulLT = Serial.Zero;
 
         private static void RemoveTextFlags(UOEntity m)
         {
@@ -481,6 +596,79 @@ namespace Assistant
                 m_OldLT = m_LastTarget.Serial;
             }
         }
+
+        private static void LastBeneficialTargetChanged()
+        {
+            if (m_LastBeneTarg != null)
+            {
+                if (m_OldBeneficialLT.IsItem)
+                {
+                    RemoveTextFlags(World.FindItem(m_OldBeneficialLT));
+                }
+                else
+                {
+                    Mobile m = World.FindMobile(m_OldBeneficialLT);
+                    if (m != null)
+                    {
+                        RemoveTextFlags(m);
+                    }
+                }
+
+                if (m_LastBeneTarg.Serial.IsItem)
+                {
+                    AddTextFlags(World.FindItem(m_LastBeneTarg.Serial));
+                }
+                else
+                {
+                    Mobile m = World.FindMobile(m_LastBeneTarg.Serial);
+                    if (m != null)
+                    {
+                        CheckLastTargetRange(m);
+
+                        AddTextFlags(m);
+                    }
+                }
+
+                m_OldBeneficialLT = m_LastBeneTarg.Serial;
+            }
+        }
+
+        private static void LastHarmfulTargetChanged()
+        {
+            if (m_LastHarmTarg != null)
+            {
+                if (m_OldHarmfulLT.IsItem)
+                {
+                    RemoveTextFlags(World.FindItem(m_OldHarmfulLT));
+                }
+                else
+                {
+                    Mobile m = World.FindMobile(m_OldHarmfulLT);
+                    if (m != null)
+                    {
+                        RemoveTextFlags(m);
+                    }
+                }
+
+                if (m_LastHarmTarg.Serial.IsItem)
+                {
+                    AddTextFlags(World.FindItem(m_LastHarmTarg.Serial));
+                }
+                else
+                {
+                    Mobile m = World.FindMobile(m_LastHarmTarg.Serial);
+                    if (m != null)
+                    {
+                        CheckLastTargetRange(m);
+
+                        AddTextFlags(m);
+                    }
+                }
+
+                m_OldHarmfulLT = m_LastHarmTarg.Serial;
+            }
+        }
+
 
         public static bool LTWasSet
         {
@@ -1432,7 +1620,7 @@ namespace Assistant
 
             return false;
         }
-
+        
         /// <summary>
         /// Index used to keep track of the current Next/Prev target
         /// </summary>
@@ -1837,6 +2025,8 @@ namespace Assistant
                         m_LastBeneTarg = info;
 
                     LastTargetChanged();
+                    LastBeneficialTargetChanged();
+                    LastHarmfulTargetChanged();
                 }
 
                 m_LastGroundTarg = info; // ground target is the true last target

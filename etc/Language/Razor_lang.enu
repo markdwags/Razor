@@ -757,3 +757,7 @@ InputBox::ok=&OK
 2058=Toggle War Only
 2059=Toggle Peace Only
 2060=> Greater Heal/Cure Self
+2061=Set Last Target (Beneficial)
+2062=Set Last Target (Harmful)
+2063=Last Beneficial Target Set
+2064=Last Harmful Target Set

@@ -509,6 +509,10 @@ namespace Assistant
         ToggleWar,
         TogglePeace,
         GHealOrCureSelf,
+        SetLastBeneficial,
+        SetLastHarmful,
+        SetLTBene,
+        SetLTHarm,
 
         __End
     }
