@@ -513,6 +513,10 @@ namespace Assistant
         SetLastHarmful,
         SetLTBene,
         SetLTHarm,
+        TargClosestFriend,
+        TargRandomFriend,
+        NextTargetFriend,
+        PrevTargetFriend,
 
         __End
     }

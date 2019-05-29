@@ -103,137 +103,184 @@ namespace Assistant
 
         public static void Initialize()
         {
-            PacketHandler.RegisterClientToServerViewer(0x6C, new PacketViewerCallback(TargetResponse));
-            PacketHandler.RegisterServerToClientViewer(0x6C, new PacketViewerCallback(NewTarget));
-            PacketHandler.RegisterServerToClientViewer(0xAA, new PacketViewerCallback(CombatantChange));
+            PacketHandler.RegisterClientToServerViewer(0x6C, TargetResponse);
+            PacketHandler.RegisterServerToClientViewer(0x6C, NewTarget);
+            PacketHandler.RegisterServerToClientViewer(0xAA, CombatantChange);
 
-            HotKey.Add(HKCategory.Targets, LocString.LastTarget, new HotKeyCallback(LastTarget));
-            HotKey.Add(HKCategory.Targets, LocString.TargetSelf, new HotKeyCallback(TargetSelf));
-            HotKey.Add(HKCategory.Targets, LocString.ClearTargQueue, new HotKeyCallback(OnClearQueue));
+            HotKey.Add(HKCategory.Targets, LocString.LastTarget, LastTarget);
+            HotKey.Add(HKCategory.Targets, LocString.TargetSelf, TargetSelf);
+            HotKey.Add(HKCategory.Targets, LocString.ClearTargQueue, OnClearQueue);
 
-            HotKey.Add(HKCategory.Targets, LocString.SetLT, new HotKeyCallback(TargetSetLastTarget));
-            HotKey.Add(HKCategory.Targets, LocString.SetLastBeneficial, new HotKeyCallback(SetLastTargetBeneficial));
-            HotKey.Add(HKCategory.Targets, LocString.SetLastHarmful, new HotKeyCallback(SetLastTargetHarmful));
+            HotKey.Add(HKCategory.Targets, LocString.SetLT, TargetSetLastTarget);
+            HotKey.Add(HKCategory.Targets, LocString.SetLastBeneficial, SetLastTargetBeneficial);
+            HotKey.Add(HKCategory.Targets, LocString.SetLastHarmful, SetLastTargetHarmful);
 
-            HotKey.Add(HKCategory.Targets, LocString.TargetRandom, new HotKeyCallback(TargetRandAnyone));
+            HotKey.Add(HKCategory.Targets, LocString.AttackLastComb, AttackLastComb);
+            HotKey.Add(HKCategory.Targets, LocString.AttackLastTarg, AttackLastTarg);
+            HotKey.Add(HKCategory.Targets, LocString.CancelTarget, CancelTarget);
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargRandRed, new HotKeyCallback(TargetRandRed));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargRandomRedHuman, new HotKeyCallback(TargetRandRedHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargRandomRedMonster, new HotKeyCallback(TargetRandRedMonster));
+            InitRandomTarget();
+            InitNextPrevTargets();
+            InitClosestTargets();
+        }
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargRandNFriend, new HotKeyCallback(TargetRandNonFriendly));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargRandomNFriendlyHuman,
-                new HotKeyCallback(TargetRandNonFriendlyHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargRandomNFriendlyMonster,
-                new HotKeyCallback(TargetRandNonFriendlyMonster));
+        private static void InitClosestTargets()
+        {
+            HotKey.Add(HKCategory.Targets, LocString.TargClosest, TargetClosest);
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargRandFriend, new HotKeyCallback(TargetRandFriendly));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargRandomFriendlyHuman,
-                new HotKeyCallback(TargetRandFriendlyHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargRandomFriendlyMonster,
-                new HotKeyCallback(TargetRandFriendlyMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargClosestFriend, TargetClosestFriend);
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargRandBlue, new HotKeyCallback(TargetRandInnocent));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargRandInnocentHuman,
-                new HotKeyCallback(TargetRandInnocentHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargRandomInnocentMonster,
-                new HotKeyCallback(TargetRandInnocentMonster));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargCloseRed,
+                TargetCloseRed);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargCloseRedHumanoid,
+                TargetCloseRedHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargCloseRedMonster,
+                TargetCloseRedMonster);
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargRandGrey, new HotKeyCallback(TargetRandGrey));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargRandGreyHuman, new HotKeyCallback(TargetRandGreyHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargRandGreyMonster, new HotKeyCallback(TargetRandGreyMonster));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargCloseNFriend,
+                TargetCloseNonFriendly);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargClosestNFriendlyHuman,
+                TargetCloseNonFriendlyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargClosestNFriendlyMonster,
+                TargetCloseNonFriendlyMonster);
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargRandEnemy, new HotKeyCallback(TargetRandEnemy));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargRandEnemyHuman, new HotKeyCallback(TargetRandEnemyHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargRandEnemyMonster, new HotKeyCallback(TargetRandEnemyMonster));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargCloseFriend,
+                TargetCloseFriendly);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargClosestFriendlyHuman,
+                TargetCloseFriendlyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargClosestFriendlyMonster,
+                TargetCloseFriendlyMonster);
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargRandCriminal, new HotKeyCallback(TargetRandCriminal));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargRandCriminalHuman,
-                new HotKeyCallback(TargetRandCriminalHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargRandomCriminalMonster,
-                new HotKeyCallback(TargetRandCriminalMonster));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargCloseBlue,
+                TargetCloseInnocent);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargCloseInnocentHuman,
+                TargetCloseInnocentHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargClosestInnocentMonster,
+                TargetCloseInnocentMonster);
 
-            HotKey.Add(HKCategory.Targets, LocString.AttackLastComb, new HotKeyCallback(AttackLastComb));
-            HotKey.Add(HKCategory.Targets, LocString.AttackLastTarg, new HotKeyCallback(AttackLastTarg));
-            HotKey.Add(HKCategory.Targets, LocString.CancelTarget, new HotKeyCallback(CancelTarget));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargCloseGrey,
+                TargetCloseGrey);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargCloseGreyHuman,
+                TargetCloseGreyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargCloseGreyMonster,
+                TargetCloseGreyMonster);
 
-            HotKey.Add(HKCategory.Targets, LocString.NextTarget, new HotKeyCallback(NextTarget));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargCloseCriminal,
+                TargetCloseCriminal);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargCloseCriminalHuman,
+                TargetCloseCriminalHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargClosestCriminalMonster,
+                TargetCloseCriminalMonster);
+
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargCloseEnemy,
+                TargetCloseEnemy);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargCloseEnemyHuman,
+                TargetCloseEnemyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargCloseEnemyMonster,
+                TargetCloseEnemyMonster);
+        }
+
+        private static void InitNextPrevTargets()
+        {
+            //Next targets
+            HotKey.Add(HKCategory.Targets, LocString.NextTarget, NextTarget);
+
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.NextTargetEnemyHumanoid,
-                new HotKeyCallback(NextTargetEnemyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.NextTargetHumanoid, new HotKeyCallback(NextTargetHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.NextTargetMonster, new HotKeyCallback(NextTargetMonster));
+                NextTargetEnemyHumanoid);
+            HotKey.Add(HKCategory.Targets, LocString.NextTargetHumanoid, NextTargetHumanoid);
+            HotKey.Add(HKCategory.Targets, LocString.NextTargetMonster, NextTargetMonster);
+            HotKey.Add(HKCategory.Targets, LocString.NextTargetFriend, NextTargetFriend);
 
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.NextTargetCriminalHumanoid,
-                new HotKeyCallback(NextTargetCriminalHumanoid));
+                NextTargetCriminalHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.NextTargetMurdererHumanoid,
-                new HotKeyCallback(NextTargetMurdererHumanoid));
+                NextTargetMurdererHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.NextTargetInnocentHumanoid,
-                new HotKeyCallback(NextTargetInnocentHumanoid));
+                NextTargetInnocentHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.NextTargetFriendlyHumanoid,
-                new HotKeyCallback(NextTargetFriendlyHumanoid));
+                NextTargetFriendlyHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.NextTargetGreyHumanoid,
-                new HotKeyCallback(NextTargetGreyHumanoid));
+                NextTargetGreyHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.NextTargetNonFriendlyHumanoid,
-                new HotKeyCallback(NextTargetNonFriendlyHumanoid));
+                NextTargetNonFriendlyHumanoid);
 
-            HotKey.Add(HKCategory.Targets, LocString.PrevTarget, new HotKeyCallback(PrevTarget));
+            //Previous targets
+            HotKey.Add(HKCategory.Targets, LocString.PrevTarget, PrevTarget);
+
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.PrevTargetEnemyHumanoid,
-                new HotKeyCallback(PrevTargetEnemyHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.PrevTargetHumanoid, new HotKeyCallback(PrevTargetHumanoid));
-            HotKey.Add(HKCategory.Targets, LocString.PrevTargetMonster, new HotKeyCallback(PrevTargetMonster));
+                PrevTargetEnemyHumanoid);
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetHumanoid, PrevTargetHumanoid);
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetMonster, PrevTargetMonster);
+            HotKey.Add(HKCategory.Targets, LocString.PrevTargetFriend, PrevTargetFriend);
 
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.PrevTargetFriendlyHumanoid,
-                new HotKeyCallback(PrevTargetFriendlyHumanoid));
+                PrevTargetFriendlyHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.PrevTargetGreyHumanoid,
-                new HotKeyCallback(PrevTargetGreyHumanoid));
+                PrevTargetGreyHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.PrevTargetNonFriendlyHumanoid,
-                new HotKeyCallback(PrevTargetNonFriendlyHumanoid));
+                PrevTargetNonFriendlyHumanoid);
 
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.PrevTargetCriminalHumanoid,
-                new HotKeyCallback(PrevTargetCriminalHumanoid));
+                PrevTargetCriminalHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.PrevTargetMurdererHumanoid,
-                new HotKeyCallback(PrevTargetMurdererHumanoid));
+                PrevTargetMurdererHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.PrevTargetInnocentHumanoid,
-                new HotKeyCallback(PrevTargetInnocentHumanoid));
+                PrevTargetInnocentHumanoid);
+        }
 
-            HotKey.Add(HKCategory.Targets, LocString.TargClosest, new HotKeyCallback(TargetClosest));
+        private static void InitRandomTarget()
+        {
+            HotKey.Add(HKCategory.Targets, LocString.TargetRandom, TargetRandAnyone);
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargCloseRed, new HotKeyCallback(TargetCloseRed));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargCloseRedHumanoid, new HotKeyCallback(TargetCloseRedHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargCloseRedMonster, new HotKeyCallback(TargetCloseRedMonster));
+            HotKey.Add(HKCategory.Targets, LocString.TargRandomFriend, TargetRandFriend);
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargCloseNFriend, new HotKeyCallback(TargetCloseNonFriendly));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargClosestNFriendlyHuman,
-                new HotKeyCallback(TargetCloseNonFriendlyHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargClosestNFriendlyMonster,
-                new HotKeyCallback(TargetCloseNonFriendlyMonster));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargRandRed,
+                TargetRandRed);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargRandomRedHuman,
+                TargetRandRedHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetMurderer, LocString.TargRandomRedMonster,
+                TargetRandRedMonster);
 
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargCloseFriend, new HotKeyCallback(TargetCloseFriendly));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargClosestFriendlyHuman,
-                new HotKeyCallback(TargetCloseFriendlyHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargClosestFriendlyMonster,
-                new HotKeyCallback(TargetCloseFriendlyMonster));
-
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargCloseBlue, new HotKeyCallback(TargetCloseInnocent));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargCloseInnocentHuman,
-                new HotKeyCallback(TargetCloseInnocentHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargClosestInnocentMonster,
-                new HotKeyCallback(TargetCloseInnocentMonster));
-
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargCloseGrey, new HotKeyCallback(TargetCloseGrey));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargCloseGreyHuman, new HotKeyCallback(TargetCloseGreyHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargCloseGreyMonster, new HotKeyCallback(TargetCloseGreyMonster));
-
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargCloseCriminal, new HotKeyCallback(TargetCloseCriminal));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargCloseCriminalHuman,
-                new HotKeyCallback(TargetCloseCriminalHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargClosestCriminalMonster,
-                new HotKeyCallback(TargetCloseCriminalMonster));
-
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargCloseEnemy, new HotKeyCallback(TargetCloseEnemy));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargCloseEnemyHuman, new HotKeyCallback(TargetCloseEnemyHumanoid));
-            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargCloseEnemyMonster,
-                new HotKeyCallback(TargetCloseEnemyMonster));
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargRandNFriend,
+                TargetRandNonFriendly);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargRandomNFriendlyHuman,
+                TargetRandNonFriendlyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.TargRandomNFriendlyMonster,
+                TargetRandNonFriendlyMonster);
+           
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargRandFriend,
+                TargetRandFriendly);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargRandomFriendlyHuman,
+                TargetRandFriendlyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.TargRandomFriendlyMonster,
+                TargetRandFriendlyMonster);
+         
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargRandBlue,
+                TargetRandInnocent);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargRandInnocentHuman,
+                TargetRandInnocentHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetInnocent, LocString.TargRandomInnocentMonster,
+                TargetRandInnocentMonster);
+        
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargRandGrey, TargetRandGrey);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargRandGreyHuman,
+                TargetRandGreyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.TargRandGreyMonster,
+                TargetRandGreyMonster);
+         
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargRandEnemy,
+                TargetRandEnemy);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargRandEnemyHuman,
+                TargetRandEnemyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetEnemy, LocString.TargRandEnemyMonster,
+                TargetRandEnemyMonster);
+         
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargRandCriminal,
+                TargetRandCriminal);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargRandCriminalHuman,
+                TargetRandCriminalHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetCriminal, LocString.TargRandomCriminalMonster,
+                TargetRandCriminalMonster);
         }
 
         private static void CombatantChange(PacketReader p, PacketHandlerEventArgs e)
@@ -783,6 +830,11 @@ namespace Assistant
             RandomMonsterTarget((int) TargetType.Innocent);
         }
 
+        public static void TargetRandFriend()
+        {
+            RandomFriendTarget();
+        }
+
         public static void TargetRandAnyone()
         {
             RandomTarget();
@@ -890,6 +942,27 @@ namespace Assistant
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
         }
 
+        public static void RandomFriendTarget()
+        {
+            if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
+                return;
+
+            List<Mobile> list = new List<Mobile>();
+            foreach (Mobile m in World.MobilesInRange(12))
+            {
+                if ((FriendsAgent.IsFriend(m) &&
+                     !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange"))))
+                {
+                    list.Add(m);
+                }
+            }
+
+            if (list.Count > 0)
+                SetLastTargetTo((Mobile) list[Utility.Random(list.Count)]);
+            else
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+        }
 
         public static void TargetCloseNonFriendly()
         {
@@ -997,6 +1070,11 @@ namespace Assistant
         public static void TargetCloseInnocentMonster()
         {
             ClosestMonsterTarget((int) TargetType.Innocent);
+        }
+
+        public static void TargetClosestFriend()
+        {
+            ClosestFriendTarget();
         }
 
         public static void TargetClosest()
@@ -1125,6 +1203,41 @@ namespace Assistant
 
                     if (noto.Length == 0)
                         list.Add(m);
+                }
+            }
+
+            Mobile closest = null;
+            double closestDist = double.MaxValue;
+
+            foreach (Mobile m in list)
+            {
+                double dist = Utility.DistanceSqrt(m.Position, World.Player.Position);
+
+                if (dist < closestDist || closest == null)
+                {
+                    closestDist = dist;
+                    closest = m;
+                }
+            }
+
+            if (closest != null)
+                SetLastTargetTo(closest);
+            else
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+        }
+
+        public static void ClosestFriendTarget()
+        {
+            if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
+                return;
+
+            List<Mobile> list = new List<Mobile>();
+            foreach (Mobile m in World.MobilesInRange(12))
+            {
+                if (FriendsAgent.IsFriend(m) && !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
+                {
+                    list.Add(m);
                 }
             }
 
@@ -1745,6 +1858,13 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
+        public static void NextTargetFriend()
+        {
+            List<Mobile> mobiles = World.MobilesInRange().Where(FriendsAgent.IsFriend).ToList();
+
+            NextPrevTarget(mobiles, true);
+        }
+
         public static void PrevTarget()
         {
             List<Mobile> mobiles = World.MobilesInRange();
@@ -1770,6 +1890,12 @@ namespace Assistant
         public static void PrevTargetMonster()
         {
             List<Mobile> mobiles = World.MobilesInRange().Where(x => x.IsMonster).ToList();
+
+            NextPrevTarget(mobiles, false);
+        }
+        public static void PrevTargetFriend()
+        {
+            List<Mobile> mobiles = World.MobilesInRange().Where(FriendsAgent.IsFriend).ToList();
 
             NextPrevTarget(mobiles, false);
         }

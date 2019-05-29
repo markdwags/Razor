@@ -761,3 +761,7 @@ InputBox::ok=&OK
 2062=Set Last Target (Harmful)
 2063=Last Beneficial Target Set
 2064=Last Harmful Target Set
+2065=Target Closest Friend
+2066=Target Random Friend
+2067=Next Friend Target
+2068=Previous Friend Target
