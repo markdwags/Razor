@@ -3912,12 +3912,15 @@ namespace Assistant
         {
             m_Initializing = true;
 
-            this.opacity.AutoSize = false;
-            //this.opacity.Size = new System.Drawing.Size(156, 16);
+            opacity.SafeAction(s =>
+            {
+                s.Value = Config.GetInt("Opacity");
+                s.AutoSize = false;
+            });
 
-            opacity.Value = Config.GetInt("Opacity");
             this.Opacity = ((float) opacity.Value) / 100.0;
-            opacityLabel.Text = Language.Format(LocString.OpacityA1, opacity.Value);
+
+            opacityLabel.SafeAction(s => { s.Text = Language.Format(LocString.OpacityA1, opacity.Value); });
 
             this.TopMost = alwaysTop.Checked = Config.GetBool("AlwaysOnTop");
             this.Location = new System.Drawing.Point(Config.GetInt("WindowX"), Config.GetInt("WindowY"));
@@ -3928,171 +3931,245 @@ namespace Assistant
                 this.Location = new System.Drawing.Point(400, 400);
             }
 
-            spellUnequip.Checked = Config.GetBool("SpellUnequip");
-            ltRange.Enabled = rangeCheckLT.Checked = Config.GetBool("RangeCheckLT");
-            ltRange.Text = Config.GetInt("LTRange").ToString();
+            spellUnequip.SafeAction(s => { });
 
-            counters.BeginUpdate();
-            if (Config.GetBool("SortCounters"))
+            spellUnequip.SafeAction(s => { s.Checked = Config.GetBool("SpellUnequip"); });
+
+            ltRange.SafeAction(s =>
             {
-                counters.Sorting = SortOrder.None;
-                counters.ListViewItemSorter = CounterLVIComparer.Instance;
-                counters.Sort();
-            }
-            else
+                s.Enabled = rangeCheckLT.Checked = Config.GetBool("RangeCheckLT");
+                s.Text = Config.GetInt("LTRange").ToString();
+            });
+
+            counters.SafeAction(s =>
             {
-                counters.ListViewItemSorter = null;
-                counters.Sorting = SortOrder.Ascending;
-            }
+                s.BeginUpdate();
 
-            counters.EndUpdate();
-            counters.Refresh();
+                if (Config.GetBool("SortCounters"))
+                {
+                    s.Sorting = SortOrder.None;
+                    s.ListViewItemSorter = CounterLVIComparer.Instance;
+                    s.Sort();
+                }
+                else
+                {
+                    s.ListViewItemSorter = null;
+                    s.Sorting = SortOrder.Ascending;
+                }
 
-            incomingMob.Checked = Config.GetBool("ShowMobNames");
-            incomingCorpse.Checked = Config.GetBool("ShowCorpseNames");
-            checkNewConts.Checked = Config.GetBool("AutoSearch");
-            excludePouches.Checked = Config.GetBool("NoSearchPouches");
-            excludePouches.Enabled = checkNewConts.Checked;
-            warnNum.Enabled = warnCount.Checked = Config.GetBool("CounterWarn");
-            warnNum.Text = Config.GetInt("CounterWarnAmount").ToString();
-            QueueActions.Checked = Config.GetBool("QueueActions");
-            queueTargets.Checked = Config.GetBool("QueueTargets");
-            chkForceSpeechHue.Checked = setSpeechHue.Enabled = Config.GetBool("ForceSpeechHue");
-            chkForceSpellHue.Checked = setBeneHue.Enabled =
-                setNeuHue.Enabled = setHarmHue.Enabled = Config.GetBool("ForceSpellHue");
-            if (Config.GetInt("LTHilight") != 0)
+                s.EndUpdate();
+                s.Refresh();
+            });
+
+            incomingMob.SafeAction(s => { s.Checked = Config.GetBool("ShowMobNames"); });
+
+            incomingCorpse.SafeAction(s => { s.Checked = Config.GetBool("ShowCorpseNames"); });
+
+            checkNewConts.SafeAction(s => { s.Checked = Config.GetBool("AutoSearch"); });
+
+
+            excludePouches.SafeAction(s =>
             {
-                InitPreviewHue(lthilight, "LTHilight");
-                //Client.SetCustomNotoHue( Config.GetInt( "LTHilight" ) );
-                lthilight.Checked = setLTHilight.Enabled = true;
-            }
-            else
+                s.Checked = Config.GetBool("NoSearchPouches");
+                s.Enabled = checkNewConts.Checked;
+            });
+
+            warnNum.SafeAction(s =>
             {
-                //Client.SetCustomNotoHue( 0 );
-                lthilight.Checked = setLTHilight.Enabled = false;
-            }
+                warnNum.Enabled = warnCount.Checked = Config.GetBool("CounterWarn");
+                warnNum.Text = Config.GetInt("CounterWarnAmount").ToString();
+            });
 
-            txtSpellFormat.Text = Config.GetString("SpellFormat");
-            txtObjDelay.Text = Config.GetInt("ObjectDelay").ToString();
-            chkStealth.Checked = Config.GetBool("CountStealthSteps");
+            QueueActions.SafeAction(s => { s.Checked = Config.GetBool("QueueActions"); });
 
-            screenAutoCap.Checked = Config.GetBool("AutoCap");
-            radioUO.Checked = !(radioFull.Checked = Config.GetBool("CapFullScreen"));
-            screenPath.Text = Config.GetString("CapPath");
-            dispTime.Checked = Config.GetBool("CapTimeStamp");
-            blockDis.Checked = Config.GetBool("BlockDismount");
-            autoOpenDoors.Checked = Config.GetBool("AutoOpenDoors");
+            queueTargets.SafeAction(s => { s.Checked = Config.GetBool("QueueTargets"); });
 
-            objectDelay.Checked = Config.GetBool("ObjectDelayEnabled");
-            txtObjDelay.Enabled = Config.GetBool("ObjectDelayEnabled");
+            chkForceSpeechHue.SafeAction(s => { s.Checked = setSpeechHue.Enabled = Config.GetBool("ForceSpeechHue"); });
 
-            msglvl.SelectedIndex = Config.GetInt("MessageLevel");
-
-            try
+            chkForceSpellHue.SafeAction(s =>
             {
-                imgFmt.SelectedItem = Config.GetString("ImageFormat");
-            }
-            catch
+                chkForceSpellHue.Checked = setBeneHue.Enabled =
+                    setNeuHue.Enabled = setHarmHue.Enabled = Config.GetBool("ForceSpellHue");
+            });
+
+            lthilight.SafeAction(s =>
             {
-                imgFmt.SelectedIndex = 0;
-                Config.SetProperty("ImageFormat", "jpg");
-            }
+                if (Config.GetInt("LTHilight") != 0)
+                {
+                    InitPreviewHue(s, "LTHilight");
+                    s.Checked = setLTHilight.Enabled = true;
+                }
+                else
+                {
+                    s.Checked = setLTHilight.Enabled = false;
+                }
+            });
 
-            InitPreviewHue(lblExHue, "ExemptColor");
-            InitPreviewHue(lblMsgHue, "SysColor");
-            InitPreviewHue(lblWarnHue, "WarningColor");
-            InitPreviewHue(chkForceSpeechHue, "SpeechHue");
-            InitPreviewHue(lblBeneHue, "BeneficialSpellHue");
-            InitPreviewHue(lblHarmHue, "HarmfulSpellHue");
-            InitPreviewHue(lblNeuHue, "NeutralSpellHue");
+            txtSpellFormat.SafeAction(s => { s.Text = Config.GetString("SpellFormat"); });
 
-            undressConflicts.Checked = Config.GetBool("UndressConflicts");
-            taskbar.Checked = !(systray.Checked = Config.GetBool("Systray"));
-            titlebarImages.Checked = Config.GetBool("TitlebarImages");
-            highlightSpellReags.Checked = Config.GetBool("HighlightReagents");
+            txtObjDelay.SafeAction(s => { s.Text = Config.GetInt("ObjectDelay").ToString(); });
 
-            dispDelta.Checked = Config.GetBool("DisplaySkillChanges");
-            titleStr.Enabled = showInBar.Checked = Config.GetBool("TitleBarDisplay");
-            titleStr.Text = Config.GetString("TitleBarText");
+            chkStealth.SafeAction(s => { s.Checked = Config.GetBool("CountStealthSteps"); });
 
-            showNotoHue.Checked = Config.GetBool("ShowNotoHue");
+            screenAutoCap.SafeAction(s => { s.Checked = Config.GetBool("AutoCap"); });
 
-            corpseRange.Enabled = openCorpses.Checked = Config.GetBool("AutoOpenCorpses");
-            corpseRange.Text = Config.GetInt("CorpseRange").ToString();
+            radioUO.SafeAction(s => { s.Checked = !(radioFull.Checked = Config.GetBool("CapFullScreen")); });
 
-            actionStatusMsg.Checked = Config.GetBool("ActionStatusMsg");
-            autoStackRes.Checked = Config.GetBool("AutoStack");
+            screenPath.SafeAction(s => { s.Text = Config.GetString("CapPath"); });
 
-            rememberPwds.Checked = Config.GetBool("RememberPwds");
-            filterSnoop.Checked = Config.GetBool("FilterSnoopMsg");
+            dispTime.SafeAction(s => { s.Checked = Config.GetBool("CapTimeStamp"); });
 
-            preAOSstatbar.Checked = Config.GetBool("OldStatBar");
-            showtargtext.Checked = Config.GetBool("LastTargTextFlags");
-            smartLT.Checked = Config.GetBool("SmartLastTarget");
+            blockDis.SafeAction(s => { s.Checked = Config.GetBool("BlockDismount"); });
 
-            autoFriend.Checked = Config.GetBool("AutoFriend");
+            autoOpenDoors.SafeAction(s => { s.Checked = Config.GetBool("AutoOpenDoors"); });
 
-            try
+            objectDelay.SafeAction(s => { s.Checked = Config.GetBool("ObjectDelayEnabled"); });
+
+            txtObjDelay.SafeAction(s => { s.Enabled = Config.GetBool("ObjectDelayEnabled"); });
+
+            msglvl.SafeAction(s => { s.SelectedIndex = Config.GetInt("MessageLevel"); });
+
+            imgFmt.SafeAction(s =>
             {
-                clientPrio.SelectedItem = Config.GetString("ClientPrio");
-            }
-            catch
+                try
+                {
+                    s.SelectedItem = Config.GetString("ImageFormat");
+                }
+                catch
+                {
+                    s.SelectedIndex = 0;
+                    Config.SetProperty("ImageFormat", "jpg");
+                }
+            });
+
+            lblExHue.SafeAction(s => { InitPreviewHue(s, "ExemptColor"); });
+            
+            lblMsgHue.SafeAction(s => { InitPreviewHue(s, "SysColor"); });
+
+            lblWarnHue.SafeAction(s => { InitPreviewHue(s, "WarningColor"); });
+
+            chkForceSpeechHue.SafeAction(s => { InitPreviewHue(s, "SpeechHue"); });
+
+            lblBeneHue.SafeAction(s => { InitPreviewHue(s, "BeneficialSpellHue"); });
+
+            lblHarmHue.SafeAction(s => { InitPreviewHue(s, "HarmfulSpellHue"); });
+
+            lblNeuHue.SafeAction(s => { InitPreviewHue(s, "NeutralSpellHue"); });
+            
+            undressConflicts.SafeAction(s => { s.Checked = Config.GetBool("UndressConflicts"); });
+
+            taskbar.SafeAction(s => { s.Checked = !(systray.Checked = Config.GetBool("Systray")); });
+
+            titlebarImages.SafeAction(s => { s.Checked = Config.GetBool("TitlebarImages"); });
+
+            highlightSpellReags.SafeAction(s => { s.Checked = Config.GetBool("HighlightReagents"); });
+
+            dispDelta.SafeAction(s => { s.Checked = Config.GetBool("DisplaySkillChanges"); });
+
+            titleStr.SafeAction(s =>
             {
-                clientPrio.SelectedItem = "Normal";
-            }
+                s.Enabled = showInBar.Checked = Config.GetBool("TitleBarDisplay");
+                s.Text = Config.GetString("TitleBarText");
+            });
 
-            forceSizeX.Text = Config.GetInt("ForceSizeX").ToString();
-            forceSizeY.Text = Config.GetInt("ForceSizeY").ToString();
+            showNotoHue.SafeAction(s => { s.Checked = Config.GetBool("ShowNotoHue"); });
 
-            gameSize.Checked = Config.GetBool("ForceSizeEnabled");
+            corpseRange.SafeAction(s =>
+            {
+                s.Enabled = openCorpses.Checked = Config.GetBool("AutoOpenCorpses");
+                s.Text = Config.GetInt("CorpseRange").ToString();
+            });
 
-            potionEquip.Checked = Config.GetBool("PotionEquip");
-            blockHealPoison.Checked = Config.GetBool("BlockHealPoison");
+            actionStatusMsg.SafeAction(s => { s.Checked = Config.GetBool("ActionStatusMsg"); });
 
-            negotiate.Checked = Config.GetBool("Negotiate");
+            autoStackRes.SafeAction(s => { s.Checked = Config.GetBool("AutoStack"); });
 
-            logPackets.Checked = Config.GetBool("LogPacketsByDefault");
+            rememberPwds.SafeAction(s => { s.Checked = Config.GetBool("RememberPwds"); });
 
-            healthFmt.Enabled = showHealthOH.Checked = Config.GetBool("ShowHealth");
-            healthFmt.Text = Config.GetString("HealthFmt");
-            chkPartyOverhead.Checked = Config.GetBool("ShowPartyStats");
+            filterSnoop.SafeAction(s => { s.Checked = Config.GetBool("FilterSnoopMsg"); });
 
-            dressList.SelectedIndex = -1;
-            hotkeyTree.SelectedNode = null;
+            preAOSstatbar.SafeAction(s => { s.Checked = Config.GetBool("OldStatBar"); });
 
-            targetByTypeDifferent.Checked = Config.GetBool("DiffTargetByType");
-            stepThroughMacro.Checked = Config.GetBool("StepThroughMacro");
+            showtargtext.SafeAction(s => { s.Checked = Config.GetBool("LastTargTextFlags"); });
 
-            //hotKeyStop.Checked = Config.GetBool("HotKeyStop");
+            smartLT.SafeAction(s => { s.Checked = Config.GetBool("SmartLastTarget"); });
 
-            /*showPartyMemberPositions.Checked = Config.GetBool("ShowPartyMemberPositions");
-           trackPlayerPosition.Checked = Config.GetBool("TrackPlayerPosition");
-           showPlayerPosition.Checked = Config.GetBool("ShowPlayerPosition");
-           tiltMap.Checked = Config.GetBool("TiltMap");*/
+            autoFriend.SafeAction(s => { s.Checked = Config.GetBool("AutoFriend"); });
 
-            showTargetMessagesOverChar.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
-            showOverheadMessages.Checked = Config.GetBool("ShowOverheadMessages");
+            clientPrio.SafeAction(s =>
+            {
+                try
+                {
+                    s.SelectedItem = Config.GetString("ClientPrio");
+                }
+                catch
+                {
+                    s.SelectedItem = "Normal";
+                }
+            });
 
-            logSkillChanges.Checked = Config.GetBool("LogSkillChanges");
+            forceSizeX.SafeAction(s => { s.Text = Config.GetInt("ForceSizeX").ToString(); });
 
-            lightLevelBar.Value = lightLevelBar.Maximum - Config.GetInt("LightLevel");
+            forceSizeY.SafeAction(s => { s.Text = Config.GetInt("ForceSizeY").ToString(); });
+
+            gameSize.SafeAction(s => { s.Checked = Config.GetBool("ForceSizeEnabled"); });
+
+            potionEquip.SafeAction(s => { s.Checked = Config.GetBool("PotionEquip"); });
+
+            blockHealPoison.SafeAction(s => { s.Checked = Config.GetBool("BlockHealPoison"); });
+
+            negotiate.SafeAction(s => { s.Checked = Config.GetBool("Negotiate"); });
+
+            logPackets.SafeAction(s => { s.Checked = Config.GetBool("LogPacketsByDefault"); });
+
+            healthFmt.SafeAction(s =>
+            {
+                s.Enabled = showHealthOH.Checked = Config.GetBool("ShowHealth");
+                s.Text = Config.GetString("HealthFmt");
+            });
+
+            chkPartyOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowPartyStats"); });
+
+            dressList.SafeAction(s => { s.SelectedIndex = -1; });
+
+            hotkeyTree.SafeAction(s => { s.SelectedNode = null; });
+
+            targetByTypeDifferent.SafeAction(s => { s.Checked = Config.GetBool("DiffTargetByType"); });
+
+            stepThroughMacro.SafeAction(s => { s.Checked = Config.GetBool("StepThroughMacro"); });
+
+            showTargetMessagesOverChar.SafeAction(s =>
+            {
+                s.Checked = Config.GetBool("ShowTargetSelfLastClearOverhead");
+            });
+
+            showOverheadMessages.SafeAction(s => { s.Checked = Config.GetBool("ShowOverheadMessages"); });
+
+            logSkillChanges.SafeAction(s => { s.Checked = Config.GetBool("LogSkillChanges"); });
+
+            lightLevelBar.SafeAction(s => { s.Value = s.Maximum - Config.GetInt("LightLevel"); });
+
             double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
-            lightLevel.Text = $"Light: {percent}%";
 
-            captureMibs.Checked = Config.GetBool("CaptureMibs");
+            lightLevel.SafeAction(s => { s.Text = $"Light: {percent}%"; });
 
-            stealthOverhead.Checked = Config.GetBool("StealthOverhead");
+            captureMibs.SafeAction(s => { s.Checked = Config.GetBool("CaptureMibs"); });
 
-            blockOpenCorpsesTwice.Checked = Config.GetBool("BlockOpenCorpsesTwice");
+            stealthOverhead.SafeAction(s => { s.Checked = Config.GetBool("StealthOverhead"); });
 
-            screenShotOpenBrowser.Checked = Config.GetBool("ScreenshotUploadOpenBrowser");
-            screenShotClipboard.Checked = Config.GetBool("ScreenshotUploadClipboard");
-            screenShotNotification.Checked = Config.GetBool("ScreenshotUploadNotifications");
+            blockOpenCorpsesTwice.SafeAction(s => { s.Checked = Config.GetBool("BlockOpenCorpsesTwice"); });
 
-            showContainerLabels.Checked = Config.GetBool("ShowContainerLabels");
+            screenShotOpenBrowser.SafeAction(s => { s.Checked = Config.GetBool("ScreenshotUploadOpenBrowser"); });
 
-            realSeason.Checked = Config.GetBool("RealSeason");
-            seasonList.SelectedIndex = Config.GetInt("Season");
+            screenShotClipboard.SafeAction(s => { s.Checked = Config.GetBool("ScreenshotUploadClipboard"); });
+
+            screenShotNotification.SafeAction(s => { s.Checked = Config.GetBool("ScreenshotUploadNotifications"); });
+
+            showContainerLabels.SafeAction(s => { s.Checked = Config.GetBool("ShowContainerLabels"); });
+
+            realSeason.SafeAction(s => { s.Checked = Config.GetBool("RealSeason"); });
+
+            seasonList.SafeAction(s => { s.SelectedIndex = Config.GetInt("Season"); });
 
             if (screenShotNotification.Checked)
             {
@@ -4105,56 +4182,67 @@ namespace Assistant
                 systray.Checked = m_NotifyIcon.Visible = st;
             }
 
-            showAttackTarget.Checked = Config.GetBool("ShowAttackTargetOverhead");
-            showBuffDebuffOverhead.Checked = Config.GetBool("ShowBuffDebuffOverhead");
+            showAttackTarget.SafeAction(s => { s.Checked = Config.GetBool("ShowAttackTargetOverhead"); });
 
-            buffDebuffFormat.Text = Config.GetString("BuffDebuffFormat");
+            showBuffDebuffOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffOverhead"); });
 
-            rangeCheckTargetByType.Checked = Config.GetBool("RangeCheckTargetByType");
-            rangeCheckDoubleClick.Checked = Config.GetBool("RangeCheckDoubleClick");
+            buffDebuffFormat.SafeAction(s => { s.Text = Config.GetString("BuffDebuffFormat"); });
 
-            blockTradeRequests.Checked = Config.GetBool("BlockTradeRequests");
-            blockPartyInvites.Checked = Config.GetBool("BlockPartyInvites");
+            rangeCheckTargetByType.SafeAction(s => { s.Checked = Config.GetBool("RangeCheckTargetByType"); });
 
-            autoAcceptParty.Checked = Config.GetBool("AutoAcceptParty");
+            rangeCheckDoubleClick.SafeAction(s => { s.Checked = Config.GetBool("RangeCheckDoubleClick"); });
 
-            minMaxLightLevel.Checked = Config.GetBool("MinMaxLightLevelEnabled");
+            blockTradeRequests.SafeAction(s => { s.Checked = Config.GetBool("BlockTradeRequests"); });
 
-            showTextTargetIndicator.Checked = Config.GetBool("ShowTextTargetIndicator");
-            showAttackTargetNewOnly.Checked = Config.GetBool("ShowAttackTargetNewOnly");
+            blockPartyInvites.SafeAction(s => { s.Checked = Config.GetBool("BlockPartyInvites"); });
 
-            macroVariableList.SelectedIndex = 0;
+            autoAcceptParty.SafeAction(s => { s.Checked = Config.GetBool("AutoAcceptParty"); });
 
-            filterDragonGraphics.Checked = Config.GetBool("FilterDragonGraphics");
-            filterDrakeGraphics.Checked = Config.GetBool("FilterDrakeGraphics");
+            minMaxLightLevel.SafeAction(s => { s.Checked = Config.GetBool("MinMaxLightLevelEnabled"); });
+
+            showTextTargetIndicator.SafeAction(s => { s.Checked = Config.GetBool("ShowTextTargetIndicator"); });
+
+            showAttackTargetNewOnly.SafeAction(s => { s.Checked = Config.GetBool("ShowAttackTargetNewOnly"); });
+
+            macroVariableList.SafeAction(s => { s.SelectedIndex = 0; });
+
+            filterDragonGraphics.SafeAction(s => { s.Checked = Config.GetBool("FilterDragonGraphics"); });
+
+            filterDrakeGraphics.SafeAction(s => { s.Checked = Config.GetBool("FilterDrakeGraphics"); });
+
             LoadAnimationLists();
 
-            showDamageDealt.Checked = Config.GetBool("ShowDamageDealt");
-            damageDealtOverhead.Checked = Config.GetBool("ShowDamageDealtOverhead");
-            showDamageTaken.Checked = Config.GetBool("ShowDamageTaken");
-            damageDealtOverhead.Checked = Config.GetBool("ShowDamageTakenOverhead");
+            showDamageDealt.SafeAction(s => { s.Checked = Config.GetBool("ShowDamageDealt"); });
 
-            razorTitleBar.Text = Config.GetString("RazorTitleBarText");
-            showInRazorTitleBar.Checked = Config.GetBool("ShowInRazorTitleBar");
+            damageDealtOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowDamageDealtOverhead"); });
 
-            enableUOAAPI.Checked = Config.GetBool("EnableUOAAPI");
+            showDamageTaken.SafeAction(s => { s.Checked = Config.GetBool("ShowDamageTaken"); });
 
-            lastBackup.Text = $"Last Backup: {Config.GetAppSetting<string>("BackupTime")}";
+            damageDealtOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowDamageTakenOverhead"); });
 
-            targetIndictorFormat.Text = Config.GetString("TargetIndicatorFormat");
+            razorTitleBar.SafeAction(s => { s.Text = Config.GetString("RazorTitleBarText"); });
 
-            nextPrevIgnoresFriends.Checked = Config.GetBool("NextPrevTargetIgnoresFriends");
+            showInRazorTitleBar.SafeAction(s => { s.Checked = Config.GetBool("ShowInRazorTitleBar"); });
 
-            stealthStepsFormat.Text = Config.GetString("StealthStepsFormat");
+            enableUOAAPI.SafeAction(s => { s.Checked = Config.GetBool("EnableUOAAPI"); });
 
-            showStaticWalls.Checked = Config.GetBool("ShowStaticWalls");
-            showStaticWallLabels.Checked = Config.GetBool("ShowStaticWallLabels");
+            lastBackup.SafeAction(s => { s.Text = $"Last Backup: {Config.GetAppSetting<string>("BackupTime")}"; });
 
-            showFriendOverhead.Checked = Config.GetBool("ShowFriendOverhead");
+            targetIndictorFormat.SafeAction(s => { s.Text = Config.GetString("TargetIndicatorFormat"); });
 
-            dispDeltaOverhead.Checked = Config.GetBool("DisplaySkillChangesOverhead");
+            nextPrevIgnoresFriends.SafeAction(s => { s.Checked = Config.GetBool("NextPrevTargetIgnoresFriends"); });
 
-            macroActionDelay.Checked = Config.GetBool("MacroActionDelay");
+            stealthStepsFormat.SafeAction(s => { s.Text = Config.GetString("StealthStepsFormat"); });
+
+            showStaticWalls.SafeAction(s => { s.Checked = Config.GetBool("ShowStaticWalls"); });
+
+            showStaticWallLabels.SafeAction(s => { s.Checked = Config.GetBool("ShowStaticWallLabels"); });
+
+            showFriendOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowFriendOverhead"); });
+
+            dispDeltaOverhead.SafeAction(s => { s.Checked = Config.GetBool("DisplaySkillChangesOverhead"); });
+
+            macroActionDelay.SafeAction(s => { s.Checked = Config.GetBool("MacroActionDelay"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -8917,47 +9005,73 @@ namespace Assistant
         /// </summary>
         public void DisableCUOFeatures()
         {
-            forceSizeX.Enabled = false;
-            forceSizeX.Text = "0";
+            forceSizeX.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Text = "0";
+            });
 
-            forceSizeY.Enabled = false;
-            forceSizeY.Text = "0";
+            forceSizeY.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Text = "0";
+            });
 
-            gameSize.Enabled = false;
-            gameSize.Checked = false;
+            gameSize.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Checked = false;
+            });
 
-            seasonList.Enabled = false;
-            realSeason.Enabled = false;
-            realSeason.Checked = false;
+            seasonList.SafeAction(s => { s.Enabled = false; });
 
-            rememberPwds.Enabled = false;
-            rememberPwds.Checked = false;
+            realSeason.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Checked = false;
+            });
 
-            highlightSpellReags.Enabled = false;
-            highlightSpellReags.Checked = false;
+            rememberPwds.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Checked = false;
+            });
 
-            showNotoHue.Enabled = false;
-            showNotoHue.Checked = false;
+            highlightSpellReags.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Checked = false;
+            });
 
-            titlebarImages.Enabled = false;
-            titlebarImages.Checked = false;
+            showNotoHue.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Checked = false;
+            });
 
-            showWelcome.Enabled = false;
-            showWelcome.Checked = false;
+            titlebarImages.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Checked = false;
+            });
 
-            alwaysTop.Enabled = false;
-            alwaysTop.Checked = false;
+            showWelcome.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Checked = false;
+            });
 
-            incomingMob.Enabled = false;
-            incomingMob.Checked = false;
+            alwaysTop.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Checked = false;
+            });
 
-            //filterDragonGraphics.Enabled = false;
-            //filterDragonGraphics.Checked = false;
-            //dragonAnimationList.Enabled = false;
-
-            //filterDrakeGraphics.Enabled = false;
-            //filterDrakeGraphics.Checked = false;
-            //drakeAnimationList.Enabled = false;
+            incomingMob.SafeAction(s =>
+            {
+                s.Enabled = false;
+                s.Checked = false;
+            });
         }
 
         private void macroActionDelay_CheckedChanged(object sender, EventArgs e)
