@@ -229,6 +229,8 @@ namespace Assistant
             // Enable it for OSI client by default, CUO turn it off
             AddProperty("MacroActionDelay", Client.IsOSI);
 
+            AddProperty("AutoOpenDoorWhenHidden", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

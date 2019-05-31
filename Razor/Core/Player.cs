@@ -616,9 +616,10 @@ namespace Assistant
 
         private void AutoOpenDoors(bool onDirChange)
         {
-            if (Body != 0x03DB &&
-                !IsGhost &&
-                ((int)(Direction & Direction.Mask)) % 2 == 0 &&
+            if (!Visible && !Config.GetBool("AutoOpenDoorWhenHidden"))
+                return;
+
+            if (Body != 0x03DB && !IsGhost && ((int) (Direction & Direction.Mask)) % 2 == 0 &&
                 Config.GetBool("AutoOpenDoors") &&
                 Client.Instance.AllowBit(FeatureBit.AutoOpenDoors))
             {
@@ -627,7 +628,9 @@ namespace Assistant
                 /* Check if one more tile in the direction we just moved is a door */
                 Utility.Offset(Direction, ref x, ref y);
 
-                if (World.Items.Values.Any(s => s.IsDoor && s.Position.X == x && s.Position.Y == y && s.Position.Z - 15 <= z && s.Position.Z + 15 >= z))
+                if (World.Items.Values.Any(s =>
+                    s.IsDoor && s.Position.X == x && s.Position.Y == y && s.Position.Z - 15 <= z &&
+                    s.Position.Z + 15 >= z))
                 {
                     if (Client.IsOSI)
                     {
@@ -645,7 +648,6 @@ namespace Assistant
                         {
                             Client.Instance.SendToServer(new OpenDoorMacro());
                         }
-                        
                     }
                 }
             }
