@@ -4,8 +4,9 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-
+using System.Timers;
 using Assistant.Core;
 using Assistant.Macros;
 using Assistant.UI;
@@ -598,7 +599,22 @@ namespace Assistant
             }
         }
 
-        private void AutoOpenDoors()
+        private class DoorOpenTimer : Timer
+        {
+            // Fire off once in 5ms
+            public DoorOpenTimer() : base(TimeSpan.FromMilliseconds(5), 1)
+            {
+            }
+
+            protected override void OnTick()
+            {
+                Client.Instance.SendToServer(new OpenDoorMacro());
+            }
+        }
+        
+        private readonly DoorOpenTimer _doorTimer = new DoorOpenTimer();
+
+        private void AutoOpenDoors(bool onDirChange)
         {
             if (Body != 0x03DB &&
                 !IsGhost &&
@@ -613,18 +629,34 @@ namespace Assistant
 
                 if (World.Items.Values.Any(s => s.IsDoor && s.Position.X == x && s.Position.Y == y && s.Position.Z - 15 <= z && s.Position.Z + 15 >= z))
                 {
-                    Client.Instance.SendToServer(new OpenDoorMacro());
+                    if (Client.IsOSI)
+                    {
+                        Client.Instance.SendToServer(new OpenDoorMacro());
+                    }
+                    else
+                    {
+                        // ClassicUO requires a slight pause before attempting to
+                        // open a door after a direction change
+                        if (onDirChange)
+                        {
+                            _doorTimer.Start();
+                        }
+                        else
+                        {
+                            Client.Instance.SendToServer(new OpenDoorMacro());
+                        }
+                        
+                    }
                 }
             }
         }
-
 
         public override void OnPositionChanging(Point3D oldPos)
         {
             if (!IsGhost)
                 StealthSteps.OnMove();
 
-            AutoOpenDoors();
+            AutoOpenDoors(false);
 
             List<Mobile> mlist = new List<Mobile>(World.Mobiles.Values);
             for (int i = 0; i < mlist.Count; i++)
@@ -667,7 +699,7 @@ namespace Assistant
 
         public override void OnDirectionChanging(Direction oldDir)
         {
-            AutoOpenDoors();
+            AutoOpenDoors(true);
         }
 
         public override void OnMapChange(byte old, byte cur)
