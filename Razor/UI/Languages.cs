@@ -517,6 +517,8 @@ namespace Assistant
         TargRandomFriend,
         NextTargetFriend,
         PrevTargetFriend,
+        UseRightHand,
+        UseLeftHand,
 
         __End
     }

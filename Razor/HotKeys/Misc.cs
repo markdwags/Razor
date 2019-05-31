@@ -31,6 +31,8 @@ namespace Assistant.HotKeys
             HotKey.Add(HKCategory.Items, LocString.BandageSelf, new HotKeyCallback(BandageSelf));
             HotKey.Add(HKCategory.Items, LocString.BandageLT, new HotKeyCallback(BandageLastTarg));
             HotKey.Add(HKCategory.Items, LocString.UseHand, new HotKeyCallback(UseItemInHand));
+            HotKey.Add(HKCategory.Items, LocString.UseRightHand, new HotKeyCallback(UseItemInRightHand));
+            HotKey.Add(HKCategory.Items, LocString.UseLeftHand, new HotKeyCallback(UseItemInLeftHand));
 
             HotKey.Add(HKCategory.Misc, LocString.PartyAccept, new HotKeyCallback(PartyAccept));
             HotKey.Add(HKCategory.Misc, LocString.PartyDecline, new HotKeyCallback(PartyDecline));
@@ -349,6 +351,22 @@ namespace Assistant.HotKeys
             Item item = World.Player.GetItemOnLayer(Layer.RightHand);
             if (item == null)
                 item = World.Player.GetItemOnLayer(Layer.LeftHand);
+
+            if (item != null)
+                PlayerData.DoubleClick(item);
+        }
+
+        private static void UseItemInRightHand()
+        {
+            Item item = World.Player.GetItemOnLayer(Layer.RightHand);
+          
+            if (item != null)
+                PlayerData.DoubleClick(item);
+        }
+
+        private static void UseItemInLeftHand()
+        {
+            Item item = World.Player.GetItemOnLayer(Layer.LeftHand);
 
             if (item != null)
                 PlayerData.DoubleClick(item);
