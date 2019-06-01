@@ -326,6 +326,7 @@ namespace Assistant
         private CheckBox captureMibs;
         private CheckBox macroActionDelay;
         private CheckBox autoOpenDoorWhenHidden;
+        private CheckBox disableMacroPlayFinish;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -483,6 +484,7 @@ namespace Assistant
             this.smartLT = new System.Windows.Forms.CheckBox();
             this.queueTargets = new System.Windows.Forms.CheckBox();
             this.subOptionsMiscTab = new System.Windows.Forms.TabPage();
+            this.autoOpenDoorWhenHidden = new System.Windows.Forms.CheckBox();
             this.lblStealthFormat = new System.Windows.Forms.Label();
             this.stealthStepsFormat = new System.Windows.Forms.TextBox();
             this.rememberPwds = new System.Windows.Forms.CheckBox();
@@ -669,7 +671,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.autoOpenDoorWhenHidden = new System.Windows.Forms.CheckBox();
+            this.disableMacroPlayFinish = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1578,10 +1580,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
@@ -1798,11 +1800,21 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
+            // 
+            // autoOpenDoorWhenHidden
+            // 
+            this.autoOpenDoorWhenHidden.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoOpenDoorWhenHidden.Location = new System.Drawing.Point(393, 115);
+            this.autoOpenDoorWhenHidden.Name = "autoOpenDoorWhenHidden";
+            this.autoOpenDoorWhenHidden.Size = new System.Drawing.Size(95, 20);
+            this.autoOpenDoorWhenHidden.TabIndex = 124;
+            this.autoOpenDoorWhenHidden.Text = "When hidden";
+            this.autoOpenDoorWhenHidden.CheckedChanged += new System.EventHandler(this.autoDoorWhenHidden_CheckedChanged);
             // 
             // lblStealthFormat
             // 
@@ -3179,6 +3191,7 @@ namespace Assistant
             // subMacrosOptionsTab
             // 
             this.subMacrosOptionsTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subMacrosOptionsTab.Controls.Add(this.disableMacroPlayFinish);
             this.subMacrosOptionsTab.Controls.Add(this.macroActionDelay);
             this.subMacrosOptionsTab.Controls.Add(this.rangeCheckDoubleClick);
             this.subMacrosOptionsTab.Controls.Add(this.rangeCheckTargetByType);
@@ -3186,10 +3199,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.absoluteTargetGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -3760,15 +3773,16 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // autoOpenDoorWhenHidden
+            // disableMacroPlayFinish
             // 
-            this.autoOpenDoorWhenHidden.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoOpenDoorWhenHidden.Location = new System.Drawing.Point(393, 115);
-            this.autoOpenDoorWhenHidden.Name = "autoOpenDoorWhenHidden";
-            this.autoOpenDoorWhenHidden.Size = new System.Drawing.Size(95, 20);
-            this.autoOpenDoorWhenHidden.TabIndex = 124;
-            this.autoOpenDoorWhenHidden.Text = "When hidden";
-            this.autoOpenDoorWhenHidden.CheckedChanged += new System.EventHandler(this.autoDoorWhenHidden_CheckedChanged);
+            this.disableMacroPlayFinish.AutoSize = true;
+            this.disableMacroPlayFinish.Location = new System.Drawing.Point(272, 183);
+            this.disableMacroPlayFinish.Name = "disableMacroPlayFinish";
+            this.disableMacroPlayFinish.Size = new System.Drawing.Size(204, 19);
+            this.disableMacroPlayFinish.TabIndex = 17;
+            this.disableMacroPlayFinish.Text = "Disable Playing/Finished Message";
+            this.disableMacroPlayFinish.UseVisualStyleBackColor = true;
+            this.disableMacroPlayFinish.CheckedChanged += new System.EventHandler(this.disableMacroPlayFinish_CheckedChanged);
             // 
             // MainForm
             // 
@@ -4258,6 +4272,8 @@ namespace Assistant
             macroActionDelay.SafeAction(s => { s.Checked = Config.GetBool("MacroActionDelay"); });
 
             autoOpenDoorWhenHidden.SafeAction(s => { s.Checked = Config.GetBool("AutoOpenDoorWhenHidden"); });
+
+            disableMacroPlayFinish.SafeAction(s => { s.Checked = Config.GetBool("DisableMacroPlayFinish"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -9103,6 +9119,11 @@ namespace Assistant
         private void autoDoorWhenHidden_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("AutoOpenDoorWhenHidden", autoOpenDoorWhenHidden.Checked);
+        }
+
+        private void disableMacroPlayFinish_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("DisableMacroPlayFinish", disableMacroPlayFinish.Checked);
         }
     }
 }

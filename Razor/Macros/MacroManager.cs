@@ -144,7 +144,10 @@ namespace Assistant.Macros
             if (m != null)
             {
                 Play(m);
-                World.Player.SendMessage(LocString.PlayingA1, m);
+
+                if (!Config.GetBool("DisableMacroPlayFinish"))
+                    World.Player.SendMessage(LocString.PlayingA1, m);
+
                 Engine.MainWindow.SafeAction(s => s.PlayMacro(m));
             }
         }
@@ -451,7 +454,9 @@ namespace Assistant.Macros
                     {
                         this.Stop();
                         MacroManager.Stop(true);
-                        World.Player.SendMessage(LocString.MacroFinished, m_Macro);
+
+                        if (!Config.GetBool("DisableMacroPlayFinish"))
+                            World.Player.SendMessage(LocString.MacroFinished, m_Macro);
                     }
                 }
                 catch

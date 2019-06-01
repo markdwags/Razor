@@ -231,6 +231,8 @@ namespace Assistant
 
             AddProperty("AutoOpenDoorWhenHidden", false);
 
+            AddProperty("DisableMacroPlayFinish", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
