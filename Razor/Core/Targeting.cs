@@ -1756,6 +1756,8 @@ namespace Assistant
                 targets.RemoveAll(FriendsAgent.IsFriend);
             }
 
+            targets.RemoveAll(x => x.Blessed || x.IsGhost || x.Serial == World.Player.Serial);
+
             if (targets.Count <= 0)
             {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
