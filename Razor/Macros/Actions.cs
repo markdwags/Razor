@@ -1518,6 +1518,75 @@ namespace Assistant.Macros
         }
     }
 
+    public class OverheadMessageAction : MacroAction
+    {
+        private ushort _hue;
+        private string _message;
+
+        public OverheadMessageAction(string[] args)
+        {
+            _hue = Convert.ToUInt16(args[1]);
+
+            List<string> message = new List<string>();
+
+            for (int i = 2; i < args.Length; i++)
+            {
+                message.Add(args[i]);
+            }
+
+            _message = string.Join(" ", message);
+        }
+
+        public OverheadMessageAction(ushort hue, string message)
+        {
+            _hue = hue;
+            _message = message;
+        }
+
+        public override bool Perform()
+        {
+            if (_message.Length > 0)
+            {
+                World.Player.OverheadMessage(_hue, _message);
+            }
+
+            return true;
+        }
+
+        public override string Serialize()
+        {
+            ArrayList list = new ArrayList(2) {_hue, _message};
+
+            return DoSerialize((object[])list.ToArray(typeof(object)));
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"Overhead ({_hue}): ");
+            sb.Append(_message);
+            return sb.ToString();
+        }
+
+        private MenuItem[] _menuItems;
+
+        public override MenuItem[] GetContextMenuItems()
+        {
+            return _menuItems ?? (_menuItems = new MacroMenuItem[1]
+            {
+                new MacroMenuItem(LocString.Edit, Edit)
+            });
+        }
+
+        private void Edit(object[] args)
+        {
+            if (InputBox.Show(Language.GetString(LocString.EnterNewText), "Input Box", _message))
+                _message = InputBox.GetString();
+
+            Parent?.Update();
+        }
+    }
+
     public class UseSkillAction : MacroAction
     {
         private int m_Skill;

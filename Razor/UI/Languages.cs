@@ -519,6 +519,7 @@ namespace Assistant
         PrevTargetFriend,
         UseRightHand,
         UseLeftHand,
+        InsertOverheadMessage,
 
         __End
     }

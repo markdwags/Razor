@@ -6534,6 +6534,7 @@ namespace Assistant
                     new MenuItem(Language.GetString(LocString.InsWait), new EventHandler(onMacroInsPause)),
                     new MenuItem(Language.GetString(LocString.InsLT), new EventHandler(onMacroInsertSetLT)),
                     new MenuItem(Language.GetString(LocString.InsComment), new EventHandler(onMacroInsertComment)),
+                    new MenuItem(Language.GetString(LocString.InsertOverheadMessage), new EventHandler(onMacroInsertOverheadMessage)),
                     new MenuItem("-"),
                     new MenuItem(Language.GetString(LocString.InsIF), new EventHandler(onMacroInsertIf)),
                     new MenuItem(Language.GetString(LocString.InsELSE), new EventHandler(onMacroInsertElse)),
@@ -6630,6 +6631,23 @@ namespace Assistant
             if (InputBox.Show(Language.GetString(LocString.InsComment)))
             {
                 m.Actions.Insert(a + 1, new MacroComment(InputBox.GetString()));
+                RedrawActionList(m);
+            }
+        }
+
+        private void onMacroInsertOverheadMessage(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
+
+            if (InputBox.Show(Language.GetString(LocString.InsertOverheadMessage)))
+            {
+                m.Actions.Insert(a + 1, new OverheadMessageAction((ushort)Config.GetInt("SysColor"), InputBox.GetString()));
                 RedrawActionList(m);
             }
         }
