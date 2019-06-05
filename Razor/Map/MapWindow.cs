@@ -345,11 +345,19 @@ namespace Assistant.MapUO
 		{
 			if ( Assistant.Engine.Running )
 			{
-				e.Cancel = true;
-				this.Hide();
-				Engine.MainWindow.BringToFront();
-				Platform.BringToFront(Client.Instance.GetWindowHandle());
-			}
+				//e.Cancel = true;
+				//this.Hide();
+				//Engine.MainWindow.BringToFront();
+				//Platform.BringToFront(Client.Instance.GetWindowHandle());
+
+			    Engine.MainWindow.SafeAction(s =>
+			    {
+			        s.MapWindow.Hide();
+			        s.BringToFront();
+
+			        s.MapWindow = null;
+			    });
+            }
 		}
 
 		public void PlayerMoved()

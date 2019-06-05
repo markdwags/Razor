@@ -7406,9 +7406,9 @@ namespace Assistant
             {
                 systray.Checked = false;
                 Config.SetProperty("Systray", false);
-                if (!this.ShowInTaskbar)
+                /*if (!this.ShowInTaskbar)
                     MessageBox.Show(this, Language.GetString(LocString.NextRestart), "Notice", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                        MessageBoxIcon.Information);*/
             }
         }
 
@@ -7418,9 +7418,9 @@ namespace Assistant
             {
                 taskbar.Checked = false;
                 Config.SetProperty("Systray", true);
-                if (this.ShowInTaskbar)
+                /*if (this.ShowInTaskbar)
                     MessageBox.Show(this, Language.GetString(LocString.NextRestart), "Notice", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                        MessageBoxIcon.Information);*/
             }
         }
 
@@ -9110,11 +9110,11 @@ namespace Assistant
                 s.Checked = false;
             });
 
-            alwaysTop.SafeAction(s =>
-            {
-                s.Enabled = false;
-                s.Checked = false;
-            });
+            //alwaysTop.SafeAction(s =>
+            //{
+            //    s.Enabled = false;
+            //    s.Checked = false;
+            //});
 
             incomingMob.SafeAction(s =>
             {

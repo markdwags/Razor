@@ -187,8 +187,8 @@ namespace Assistant
             _onInitialize = OnInitialize;
             _onConnected = OnConnected;
             _onDisconnected = OnDisconnected;
-            //_onFocusGained = OnFocusGained;
-            //_onFocusLost = OnFocusLost;
+            _onFocusGained = OnFocusGained;
+            _onFocusLost = OnFocusLost;
             header->Tick = Marshal.GetFunctionPointerForDelegate( _tick );
             header->OnRecv = Marshal.GetFunctionPointerForDelegate( _recv );
             header->OnSend = Marshal.GetFunctionPointerForDelegate( _send );
@@ -199,8 +199,8 @@ namespace Assistant
             header->OnInitialize = Marshal.GetFunctionPointerForDelegate( _onInitialize );
             header->OnConnected = Marshal.GetFunctionPointerForDelegate( _onConnected );
             header->OnDisconnected = Marshal.GetFunctionPointerForDelegate( _onDisconnected );
-            //header->OnFocusGained = Marshal.GetFunctionPointerForDelegate( _onFocusGained );
-            //header->OnFocusLost = Marshal.GetFunctionPointerForDelegate( _onFocusLost );
+            header->OnFocusGained = Marshal.GetFunctionPointerForDelegate( _onFocusGained );
+            header->OnFocusLost = Marshal.GetFunctionPointerForDelegate( _onFocusLost );
 
             return true;
         }
@@ -503,6 +503,9 @@ namespace Assistant
 
         public void OnFocusGained()
         {
+            if (Engine.MainWindow == null)
+                return;
+
             if (Config.GetBool("AlwaysOnTop"))
             {
                 if (!Engine.MainWindow.TopMost)
@@ -525,6 +528,9 @@ namespace Assistant
 
         public void OnFocusLost()
         {
+            if (Engine.MainWindow == null)
+                return;
+
             if (Config.GetBool("AlwaysOnTop"))
             {
                 if (Engine.MainWindow.TopMost)
