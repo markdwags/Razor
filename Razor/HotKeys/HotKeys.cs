@@ -322,8 +322,16 @@ namespace Assistant
         private static void OnToggleEnableDisable()
         {
             m_Enabled = !m_Enabled;
+
+            MsgLevel type = MsgLevel.Warning;
+
+            if (m_Enabled)
+            {
+                type = MsgLevel.Info;
+            }
+
             if (World.Player != null)
-                World.Player.SendMessage(MsgLevel.Warning, UpdateStatus());
+                World.Player.SendMessage(type, UpdateStatus());
         }
 
         private static void OnToggleEnable()
@@ -337,7 +345,7 @@ namespace Assistant
             {
                 m_Enabled = !m_Enabled;
                 if (World.Player != null)
-                    World.Player.SendMessage(MsgLevel.Warning, UpdateStatus());
+                    World.Player.SendMessage(MsgLevel.Info, UpdateStatus());
             }
         }
 
