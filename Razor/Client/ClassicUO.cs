@@ -510,8 +510,9 @@ namespace Assistant
             {
                 if (!Engine.MainWindow.TopMost)
                 {
-                    Engine.MainWindow.TopMost = true;
                     Platform.SetForegroundWindow(GetWindowHandle());
+
+                    Engine.MainWindow.SafeAction(s => { s.TopMost = true; });
                 }
             }
 
@@ -520,8 +521,11 @@ namespace Assistant
             {
                 if (!Engine.MainWindow.MapWindow.TopMost)
                 {
-                    Engine.MainWindow.MapWindow.TopMost = true;
-                    Engine.MainWindow.MapWindow.BringToFront();
+                    Engine.MainWindow.MapWindow.SafeAction(s =>
+                    {
+                        s.TopMost = true;
+                        s.BringToFront();
+                    });
                 }
             }
         }
@@ -535,8 +539,11 @@ namespace Assistant
             {
                 if (Engine.MainWindow.TopMost)
                 {
-                    Engine.MainWindow.TopMost = false;
-                    Engine.MainWindow.SendToBack();
+                    Engine.MainWindow.SafeAction(s =>
+                    {
+                        s.TopMost = false;
+                        s.SendToBack();
+                    });
                 }
             }
 
@@ -545,8 +552,11 @@ namespace Assistant
             {
                 if (Engine.MainWindow.MapWindow.TopMost)
                 {
-                    Engine.MainWindow.MapWindow.TopMost = false;
-                    Engine.MainWindow.MapWindow.SendToBack();
+                    Engine.MainWindow.MapWindow.SafeAction(s =>
+                    {
+                        s.TopMost = false;
+                        s.SendToBack();
+                    });
                 }
             }
         }

@@ -341,24 +341,17 @@ namespace Assistant.MapUO
 			this.Map.UpdateMap();
 		}
 
-		private void MapWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if ( Assistant.Engine.Running )
-			{
-				//e.Cancel = true;
-				//this.Hide();
-				//Engine.MainWindow.BringToFront();
-				//Platform.BringToFront(Client.Instance.GetWindowHandle());
-
-			    Engine.MainWindow.SafeAction(s =>
-			    {
-			        s.MapWindow.Hide();
-			        s.BringToFront();
-
-			        s.MapWindow = null;
-			    });
-            }
-		}
+	    private void MapWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+	    {
+	        if (Engine.Running)
+	        {
+	            Engine.MainWindow.MapWindow.SafeAction(s =>
+	            {
+	                e.Cancel = true;
+	                s.Hide();
+	            });
+	        }
+	    }
 
 		public void PlayerMoved()
 		{

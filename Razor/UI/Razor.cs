@@ -7988,11 +7988,13 @@ namespace Assistant
             if (World.Player != null)
             {
                 if (MapWindow == null)
-                    MapWindow = new Assistant.MapUO.MapWindow();
-                //SetParent( MapWindow.Handle, Client.FindUOWindow() );
-                //MapWindow.Owner = (Form)Form.FromHandle( Client.FindUOWindow() );
-                MapWindow.Show();
-                MapWindow.BringToFront();
+                    MapWindow = new MapUO.MapWindow();
+
+                MapWindow.SafeAction(s =>
+                {
+                    s.Show();
+                    s.BringToFront();
+                });
             }
         }
 
