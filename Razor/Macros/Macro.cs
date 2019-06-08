@@ -349,7 +349,7 @@ namespace Assistant.Macros
                         if (Loop)
                         {
                             if (Engine.MainWindow.WaitDisplay != null)
-                                Engine.MainWindow.WaitDisplay.Text = "";
+                                Engine.MainWindow.WaitDisplay.SafeAction(s => s.Text = string.Empty);
                             m_CurrentAction = -1;
                             m_IfStatus.Clear();
                             PauseB4Loop.Perform();
@@ -369,7 +369,7 @@ namespace Assistant.Macros
                         {
                             m_Wait = null; // done waiting
                             if (Engine.MainWindow.WaitDisplay != null)
-                                Engine.MainWindow.WaitDisplay.Text = "";
+                                Engine.MainWindow.WaitDisplay.SafeAction(s => s.Text = string.Empty);
                         }
                         else
                         {
@@ -394,7 +394,8 @@ namespace Assistant.Macros
                                 }
 
                                 sb.AppendFormat("{0:00}:{1:00}", m, s);
-                                Engine.MainWindow.WaitDisplay.Text = sb.ToString();
+
+                                Engine.MainWindow.WaitDisplay.SafeAction(w => w.Text = sb.ToString());
                             }
                             return true; // keep waiting
                         }
@@ -547,7 +548,7 @@ namespace Assistant.Macros
                 else
                 {
                     if (Engine.MainWindow.WaitDisplay != null)
-                        Engine.MainWindow.WaitDisplay.Text = "";
+                        Engine.MainWindow.WaitDisplay.SafeAction(s => s.Text = string.Empty);
 
                     if (Loop)
                     {
