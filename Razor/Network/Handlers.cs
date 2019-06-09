@@ -1942,8 +1942,7 @@ namespace Assistant
             {
                 args.Block = true;
 
-                p.Seek(3, SeekOrigin.Begin);
-                p.WriteAsciiFixed("", (int)p.Length - 3);
+                Client.Instance.SendToServer(new ACKTalk());
             }
             else
             {

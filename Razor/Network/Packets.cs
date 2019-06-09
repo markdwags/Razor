@@ -1020,7 +1020,52 @@ namespace Assistant
 		}
 	}
 
-	public sealed class WorldItem : Packet
+    public sealed class ACKTalk : Packet
+    {
+        public ACKTalk() : base(0x03)
+        {
+            EnsureCapacity(40);
+            Write((byte) 0x20);
+            Write((byte) 0x00);
+            Write((byte) 0x34);
+            Write((byte) 0x00);
+            Write((byte) 0x03);
+            Write((byte) 0xdb);
+            Write((byte) 0x13);
+            Write((byte) 0x14);
+            Write((byte) 0x3f);
+            Write((byte) 0x45);
+            Write((byte) 0x2c);
+            Write((byte) 0x58);
+            Write((byte) 0x0f);
+            Write((byte) 0x5d);
+            Write((byte) 0x44);
+            Write((byte) 0x2e);
+            Write((byte) 0x50);
+            Write((byte) 0x11);
+            Write((byte) 0xdf);
+            Write((byte) 0x75);
+            Write((byte) 0x5c);
+            Write((byte) 0xe0);
+            Write((byte) 0x3e);
+            Write((byte) 0x71);
+            Write((byte) 0x4f);
+            Write((byte) 0x31);
+            Write((byte) 0x34);
+            Write((byte) 0x05);
+            Write((byte) 0x4e);
+            Write((byte) 0x18);
+            Write((byte) 0x1e);
+            Write((byte) 0x72);
+            Write((byte) 0x0f);
+            Write((byte) 0x59);
+            Write((byte) 0xad);
+            Write((byte) 0xf5);
+            Write((byte) 0x00);
+        }
+    }
+
+    public sealed class WorldItem : Packet
 	{
 		public WorldItem( Item item ) : base( 0x1A )
 		{
