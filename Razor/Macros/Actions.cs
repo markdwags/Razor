@@ -2484,9 +2484,9 @@ namespace Assistant.Macros
                 case IfVarType.Stamina:
                 case IfVarType.Weight:
                 {
-                    int val = 0;
+                    bool isNumeric = int.TryParse((string) m_Value, out int val);
 
-                    if (m_Value is string strVal)
+                    if (!isNumeric && m_Value is string strVal)
                     {
                         if (strVal.Equals("{maxhp}"))
                         {
@@ -2500,10 +2500,10 @@ namespace Assistant.Macros
                         {
                             val = World.Player.ManaMax;
                         }
-                    }
-                    else
-                    {
-                        val = (int) m_Value;
+                        else
+                        {
+                            val = 0;
+                        }
                     }
 
                     switch (m_Direction)
