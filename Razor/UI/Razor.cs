@@ -7488,12 +7488,18 @@ namespace Assistant
             // In CUO, this can cause an error.
             try
             {
+                Platform.SetForegroundWindow(Handle);
                 Platform.BringToFront(Handle);
             }
             catch
             {
                 BringToFront();
             }
+            try
+            {
+                this.Show();
+            }
+            catch { }
 
             if (Config.GetBool("AlwaysOnTop"))
                 this.TopMost = true;
