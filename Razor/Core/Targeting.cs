@@ -1750,7 +1750,7 @@ namespace Assistant
         /// <param name="targets">The list of targets (already filtered)</param>
         /// <param name="nextTarget">next target true, previous target false</param>
         /// <param name="removeFriends"></param>
-        public static void NextPrevTarget(List<Mobile> targets, bool nextTarget)
+        public static void NextPrevTarget(List<Mobile> targets, bool nextTarget, bool isFriend = false)
         {
             if (targets.Count <= 0)
             {
@@ -1822,9 +1822,12 @@ namespace Assistant
             target.Y = mobile.Position.Y;
             target.Z = mobile.Position.Z;
 
-            Client.Instance.SendToClient(new ChangeCombatant(mobile));
+            if (!isFriend)
+            {
+                Client.Instance.SendToClient(new ChangeCombatant(mobile));
+                m_LastCombatant = mobile.Serial;
+            }
 
-            m_LastCombatant = mobile.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
             OverheadTargetMessage(target);
@@ -1870,7 +1873,7 @@ namespace Assistant
             List<Mobile> mobiles = World.MobilesInRange().Where(x =>
                 IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
 
-            NextPrevTarget(mobiles, true);
+            NextPrevTarget(mobiles, true, true);
         }
 
         public static void PrevTarget()
@@ -1914,7 +1917,7 @@ namespace Assistant
                 IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost &&
                 x.Serial != World.Player.Serial).ToList();
 
-            NextPrevTarget(mobiles, false);
+            NextPrevTarget(mobiles, false, true);
         }
 
         public static void NextTargetCriminalHumanoid()
@@ -2297,14 +2300,14 @@ namespace Assistant
             }
         }
 
-        private static TargetInfo _lastTarget = new TargetInfo();
+        private static TargetInfo _lastOverheadMessageTarget = new TargetInfo();
 
         public static void OverheadTargetMessage(TargetInfo info)
         {
             if (info == null)
                 return;
 
-            if (Config.GetBool("ShowAttackTargetNewOnly") && info.Serial == _lastTarget.Serial)
+            if (Config.GetBool("ShowAttackTargetNewOnly") && info.Serial == _lastOverheadMessageTarget.Serial)
                 return;
 
             Mobile m = null;
@@ -2332,7 +2335,7 @@ namespace Assistant
                 m.OverheadMessage(10, Config.GetString("TargetIndicatorFormat"));
             }
 
-            _lastTarget = info;
+            _lastOverheadMessageTarget = info;
         }
     }
 }
