@@ -9140,11 +9140,11 @@ namespace Assistant
             //    s.Checked = false;
             //});
 
-            incomingMob.SafeAction(s =>
+            /*incomingMob.SafeAction(s =>
             {
                 s.Enabled = false;
                 s.Checked = false;
-            });
+            });*/
         }
 
         private void macroActionDelay_CheckedChanged(object sender, EventArgs e)
