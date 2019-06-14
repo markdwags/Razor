@@ -8411,12 +8411,13 @@ namespace Assistant
         {
             if (_overMessagesForm != null)
             {
-                _overMessagesForm.Show();
+                _overMessagesForm.SafeAction(s => s.Show());
             }
             else
             {
                 _overMessagesForm = new OverheadMessages();
-                _overMessagesForm.Show();
+
+                _overMessagesForm.SafeAction(s => s.Show());
             }
         }
 

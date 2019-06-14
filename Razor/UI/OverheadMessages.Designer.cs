@@ -256,6 +256,7 @@
             this.Name = "OverheadMessages";
             this.Text = "Overhead Messages";
             this.Load += new System.EventHandler(this.OverheadMessages_Load);
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.OverheadMessages_Closing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

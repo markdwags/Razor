@@ -163,18 +163,12 @@ namespace Assistant.UI
 
             Config.Save();
 
-            /*// Apply the format to the message after its been saved
-            foreach (Core.OverheadMessages.OverheadMessage message in Core.OverheadMessages.OverheadMessageList)
-            {
-                message.MessageOverhead = overheadFormat.Text.Replace("{msg}", message.MessageOverhead);
-            }*/
-
-            Hide();
+            this.SafeAction(s => s.Hide());
         }
 
         private void cancelOverheadMessages_Click(object sender, EventArgs e)
         {
-            Hide();
+            this.SafeAction(s => s.Hide());
         }
 
         private void setColorHue_Click(object sender, EventArgs e)
@@ -275,6 +269,15 @@ namespace Assistant.UI
                     }
                 }
             }
+        }
+
+        private void OverheadMessages_Closing(object sender, CancelEventArgs e)
+        {
+            this.SafeAction(s =>
+                {
+                    e.Cancel = true;
+                    s.Hide();
+                });
         }
     }
 }
