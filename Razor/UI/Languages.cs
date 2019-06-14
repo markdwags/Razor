@@ -520,6 +520,7 @@ namespace Assistant
         UseRightHand,
         UseLeftHand,
         InsertOverheadMessage,
+        InsertWaitForTarget,
 
         __End
     }

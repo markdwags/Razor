@@ -6535,6 +6535,7 @@ namespace Assistant
                     new MenuItem(Language.GetString(LocString.InsLT), new EventHandler(onMacroInsertSetLT)),
                     new MenuItem(Language.GetString(LocString.InsComment), new EventHandler(onMacroInsertComment)),
                     new MenuItem(Language.GetString(LocString.InsertOverheadMessage), new EventHandler(onMacroInsertOverheadMessage)),
+                    new MenuItem(Language.GetString(LocString.InsertWaitForTarget), new EventHandler(onMacroInsertWaitForTarget)),
                     new MenuItem("-"),
                     new MenuItem(Language.GetString(LocString.InsIF), new EventHandler(onMacroInsertIf)),
                     new MenuItem(Language.GetString(LocString.InsELSE), new EventHandler(onMacroInsertElse)),
@@ -6650,6 +6651,20 @@ namespace Assistant
                 m.Actions.Insert(a + 1, new OverheadMessageAction((ushort)Config.GetInt("SysColor"), InputBox.GetString()));
                 RedrawActionList(m);
             }
+        }
+
+        private void onMacroInsertWaitForTarget(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
+
+            m.Actions.Insert(a + 1, new WaitForTargetAction());
+            RedrawActionList(m);
         }
 
         private void onMacroInsertIf(object sender, System.EventArgs e)

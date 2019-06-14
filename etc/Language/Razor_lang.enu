@@ -768,3 +768,4 @@ InputBox::ok=&OK
 2069=Use Item in Right Hand
 2070=Use Item in Left Hand
 2071=Insert Overhead Message
+2072=Insert Wait For Target
