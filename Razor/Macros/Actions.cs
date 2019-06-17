@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -2484,7 +2485,17 @@ namespace Assistant.Macros
                 case IfVarType.Stamina:
                 case IfVarType.Weight:
                 {
-                    bool isNumeric = int.TryParse((string) m_Value, out int val);
+                    bool isNumeric = true;
+                    int val;
+
+                    if (m_Value is string value)
+                    {
+                        isNumeric = int.TryParse(value, out val);
+                    }
+                    else
+                    {
+                        val = Convert.ToInt32(m_Value);
+                    }
 
                     if (!isNumeric && m_Value is string strVal)
                     {
