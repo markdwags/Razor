@@ -1979,8 +1979,8 @@ namespace Assistant
             List<Mobile> mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Innocent ||
                                           x.Notoriety == (int) TargetType.Invalid ||
-                                          x.Notoriety == (int) TargetType.GuildAlly &&
-                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)).ToList();
+                                          x.Notoriety == (int) TargetType.GuildAlly) &&
+                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -1989,8 +1989,8 @@ namespace Assistant
         {
             List<Mobile> mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
-                                          x.Notoriety == (int) TargetType.Criminal && 
-                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)).ToList();
+                                          x.Notoriety == (int) TargetType.Criminal) && 
+                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -2001,9 +2001,9 @@ namespace Assistant
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
                                           x.Notoriety == (int) TargetType.Criminal ||
                                           x.Notoriety == (int) TargetType.Enemy ||
-                                          x.Notoriety == (int) TargetType.Murderer &&
+                                          x.Notoriety == (int) TargetType.Murderer) &&
                                           !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial
-                                          )).ToList();
+                                          ).ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -2013,8 +2013,8 @@ namespace Assistant
             List<Mobile> mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Innocent ||
                                           x.Notoriety == (int) TargetType.Invalid ||
-                                          x.Notoriety == (int) TargetType.GuildAlly &&
-                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)).ToList();
+                                          x.Notoriety == (int) TargetType.GuildAlly) &&
+                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
 
             NextPrevTarget(mobiles, false);
         }
@@ -2023,8 +2023,8 @@ namespace Assistant
         {
             List<Mobile> mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
-                                          x.Notoriety == (int) TargetType.Criminal && 
-                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)).ToList();
+                                          x.Notoriety == (int) TargetType.Criminal) && 
+                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
 
             NextPrevTarget(mobiles, false);
         }
@@ -2035,8 +2035,8 @@ namespace Assistant
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
                                           x.Notoriety == (int) TargetType.Criminal ||
                                           x.Notoriety == (int) TargetType.Enemy ||
-                                          x.Notoriety == (int) TargetType.Murderer &&
-                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)).ToList();
+                                          x.Notoriety == (int) TargetType.Murderer) &&
+                                          !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
 
             NextPrevTarget(mobiles, false);
         }
