@@ -1971,6 +1971,11 @@ namespace Assistant
             string text = p.ReadUnicodeStringSafe();
 
             HandleSpeech(p, args, serial, body, type, hue, font, lang, name, text);
+
+            if (!serial.IsValid)
+            {
+                BandageTimer.OnAsciiMessage(text);
+            }
         }
 
         private static void OnLocalizedMessage(Packet p, PacketHandlerEventArgs args)
