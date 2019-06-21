@@ -233,6 +233,13 @@ namespace Assistant
 
             AddProperty("DisableMacroPlayFinish", false);
 
+            AddProperty("ShowBandageTimer", false);
+            AddProperty("ShowBandageTimerFormat", "Bandage: {count}s");
+            AddProperty("ShowBandageTimerLocation", 0);
+            AddProperty("OnlyShowBandageTimerEvery", false);
+            AddProperty("OnlyShowBandageTimerSeconds", 1);
+            AddProperty("ShowBandageTimerHue", 88);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

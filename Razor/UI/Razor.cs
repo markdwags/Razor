@@ -251,7 +251,7 @@ namespace Assistant
         private CheckBox damageDealtOverhead;
         private CheckBox showDamageDealt;
         private CheckBox rememberPwds;
-        private TabControl tabControl4;
+        private TabControl displayCountersTabCtrl;
         private TabPage subDisplayTab;
         private GroupBox groupBox11;
         private Button razorTitleBarKey;
@@ -327,6 +327,14 @@ namespace Assistant
         private CheckBox macroActionDelay;
         private CheckBox autoOpenDoorWhenHidden;
         private CheckBox disableMacroPlayFinish;
+        private TabPage subBandageTimerTab;
+        private CheckBox onlyShowBandageTimerSeconds;
+        private TextBox bandageTimerFormat;
+        private CheckBox showBandageTimer;
+        private ComboBox bandageTimerLocation;
+        private TextBox bandageTimerSeconds;
+        private Label lblBandageCountFormat;
+        private Button setBandageHue;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -519,7 +527,7 @@ namespace Assistant
             this.openCorpses = new System.Windows.Forms.CheckBox();
             this.blockDis = new System.Windows.Forms.CheckBox();
             this.displayTab = new System.Windows.Forms.TabPage();
-            this.tabControl4 = new System.Windows.Forms.TabControl();
+            this.displayCountersTabCtrl = new System.Windows.Forms.TabControl();
             this.subDisplayTab = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.razorTitleBarKey = new System.Windows.Forms.Button();
@@ -546,6 +554,13 @@ namespace Assistant
             this.delCounter = new System.Windows.Forms.Button();
             this.addCounter = new System.Windows.Forms.Button();
             this.recount = new System.Windows.Forms.Button();
+            this.subBandageTimerTab = new System.Windows.Forms.TabPage();
+            this.bandageTimerLocation = new System.Windows.Forms.ComboBox();
+            this.bandageTimerSeconds = new System.Windows.Forms.TextBox();
+            this.lblBandageCountFormat = new System.Windows.Forms.Label();
+            this.onlyShowBandageTimerSeconds = new System.Windows.Forms.CheckBox();
+            this.bandageTimerFormat = new System.Windows.Forms.TextBox();
+            this.showBandageTimer = new System.Windows.Forms.CheckBox();
             this.dressTab = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.clearDress = new System.Windows.Forms.Button();
@@ -620,6 +635,7 @@ namespace Assistant
             this.delMacro = new System.Windows.Forms.Button();
             this.newMacro = new System.Windows.Forms.Button();
             this.subMacrosOptionsTab = new System.Windows.Forms.TabPage();
+            this.disableMacroPlayFinish = new System.Windows.Forms.CheckBox();
             this.macroActionDelay = new System.Windows.Forms.CheckBox();
             this.rangeCheckDoubleClick = new System.Windows.Forms.CheckBox();
             this.rangeCheckTargetByType = new System.Windows.Forms.CheckBox();
@@ -671,7 +687,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.disableMacroPlayFinish = new System.Windows.Forms.CheckBox();
+            this.setBandageHue = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -688,12 +704,13 @@ namespace Assistant
             this.subOptionsMiscTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
             this.displayTab.SuspendLayout();
-            this.tabControl4.SuspendLayout();
+            this.displayCountersTabCtrl.SuspendLayout();
             this.subDisplayTab.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.subCountersTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.subBandageTimerTab.SuspendLayout();
             this.dressTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -2133,22 +2150,23 @@ namespace Assistant
             // 
             // displayTab
             // 
-            this.displayTab.Controls.Add(this.tabControl4);
+            this.displayTab.Controls.Add(this.displayCountersTabCtrl);
             this.displayTab.Location = new System.Drawing.Point(4, 44);
             this.displayTab.Name = "displayTab";
             this.displayTab.Size = new System.Drawing.Size(519, 322);
             this.displayTab.TabIndex = 1;
             this.displayTab.Text = "Display/Counters";
             // 
-            // tabControl4
+            // displayCountersTabCtrl
             // 
-            this.tabControl4.Controls.Add(this.subDisplayTab);
-            this.tabControl4.Controls.Add(this.subCountersTab);
-            this.tabControl4.Location = new System.Drawing.Point(6, 3);
-            this.tabControl4.Name = "tabControl4";
-            this.tabControl4.SelectedIndex = 0;
-            this.tabControl4.Size = new System.Drawing.Size(510, 314);
-            this.tabControl4.TabIndex = 51;
+            this.displayCountersTabCtrl.Controls.Add(this.subDisplayTab);
+            this.displayCountersTabCtrl.Controls.Add(this.subCountersTab);
+            this.displayCountersTabCtrl.Controls.Add(this.subBandageTimerTab);
+            this.displayCountersTabCtrl.Location = new System.Drawing.Point(6, 3);
+            this.displayCountersTabCtrl.Name = "displayCountersTabCtrl";
+            this.displayCountersTabCtrl.SelectedIndex = 0;
+            this.displayCountersTabCtrl.Size = new System.Drawing.Size(510, 314);
+            this.displayCountersTabCtrl.TabIndex = 51;
             // 
             // subDisplayTab
             // 
@@ -2472,6 +2490,81 @@ namespace Assistant
             this.recount.TabIndex = 2;
             this.recount.Text = "Recount";
             this.recount.Click += new System.EventHandler(this.recount_Click);
+            // 
+            // subBandageTimerTab
+            // 
+            this.subBandageTimerTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subBandageTimerTab.Controls.Add(this.setBandageHue);
+            this.subBandageTimerTab.Controls.Add(this.bandageTimerLocation);
+            this.subBandageTimerTab.Controls.Add(this.bandageTimerSeconds);
+            this.subBandageTimerTab.Controls.Add(this.onlyShowBandageTimerSeconds);
+            this.subBandageTimerTab.Controls.Add(this.bandageTimerFormat);
+            this.subBandageTimerTab.Controls.Add(this.showBandageTimer);
+            this.subBandageTimerTab.Controls.Add(this.lblBandageCountFormat);
+            this.subBandageTimerTab.Location = new System.Drawing.Point(4, 24);
+            this.subBandageTimerTab.Name = "subBandageTimerTab";
+            this.subBandageTimerTab.Size = new System.Drawing.Size(502, 286);
+            this.subBandageTimerTab.TabIndex = 2;
+            this.subBandageTimerTab.Text = "Bandage Timer";
+            // 
+            // bandageTimerLocation
+            // 
+            this.bandageTimerLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.bandageTimerLocation.FormattingEnabled = true;
+            this.bandageTimerLocation.Items.AddRange(new object[] {
+            "Overhead",
+            "System Messages"});
+            this.bandageTimerLocation.Location = new System.Drawing.Point(145, 10);
+            this.bandageTimerLocation.Name = "bandageTimerLocation";
+            this.bandageTimerLocation.Size = new System.Drawing.Size(118, 23);
+            this.bandageTimerLocation.TabIndex = 56;
+            this.bandageTimerLocation.SelectedIndexChanged += new System.EventHandler(this.bandageTimerLocation_SelectedIndexChanged);
+            // 
+            // bandageTimerSeconds
+            // 
+            this.bandageTimerSeconds.Location = new System.Drawing.Point(180, 71);
+            this.bandageTimerSeconds.Name = "bandageTimerSeconds";
+            this.bandageTimerSeconds.Size = new System.Drawing.Size(48, 23);
+            this.bandageTimerSeconds.TabIndex = 55;
+            this.bandageTimerSeconds.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.bandageTimerSeconds.TextChanged += new System.EventHandler(this.bandageTimerSeconds_TextChanged);
+            // 
+            // lblBandageCountFormat
+            // 
+            this.lblBandageCountFormat.Location = new System.Drawing.Point(21, 41);
+            this.lblBandageCountFormat.Name = "lblBandageCountFormat";
+            this.lblBandageCountFormat.Size = new System.Drawing.Size(159, 23);
+            this.lblBandageCountFormat.TabIndex = 54;
+            this.lblBandageCountFormat.Text = "Format && Hue:";
+            this.lblBandageCountFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // onlyShowBandageTimerSeconds
+            // 
+            this.onlyShowBandageTimerSeconds.Location = new System.Drawing.Point(9, 72);
+            this.onlyShowBandageTimerSeconds.Name = "onlyShowBandageTimerSeconds";
+            this.onlyShowBandageTimerSeconds.Size = new System.Drawing.Size(205, 20);
+            this.onlyShowBandageTimerSeconds.TabIndex = 53;
+            this.onlyShowBandageTimerSeconds.Text = "Only show every X seconds:";
+            this.onlyShowBandageTimerSeconds.CheckedChanged += new System.EventHandler(this.onlyShowBandageTimerSeconds_CheckedChanged);
+            // 
+            // bandageTimerFormat
+            // 
+            this.bandageTimerFormat.Location = new System.Drawing.Point(113, 41);
+            this.bandageTimerFormat.Name = "bandageTimerFormat";
+            this.bandageTimerFormat.Size = new System.Drawing.Size(150, 23);
+            this.bandageTimerFormat.TabIndex = 52;
+            this.bandageTimerFormat.Text = "Bandage: {count}s";
+            this.bandageTimerFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.bandageTimerFormat.TextChanged += new System.EventHandler(this.bandageTimerFormat_TextChanged);
+            // 
+            // showBandageTimer
+            // 
+            this.showBandageTimer.Location = new System.Drawing.Point(9, 11);
+            this.showBandageTimer.Name = "showBandageTimer";
+            this.showBandageTimer.Size = new System.Drawing.Size(205, 20);
+            this.showBandageTimer.TabIndex = 51;
+            this.showBandageTimer.Text = "Show bandage timer";
+            this.showBandageTimer.CheckedChanged += new System.EventHandler(this.showBandageTimer_CheckedChanged);
             // 
             // dressTab
             // 
@@ -3199,12 +3292,23 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.absoluteTargetGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
+            // 
+            // disableMacroPlayFinish
+            // 
+            this.disableMacroPlayFinish.AutoSize = true;
+            this.disableMacroPlayFinish.Location = new System.Drawing.Point(272, 183);
+            this.disableMacroPlayFinish.Name = "disableMacroPlayFinish";
+            this.disableMacroPlayFinish.Size = new System.Drawing.Size(204, 19);
+            this.disableMacroPlayFinish.TabIndex = 17;
+            this.disableMacroPlayFinish.Text = "Disable Playing/Finished Message";
+            this.disableMacroPlayFinish.UseVisualStyleBackColor = true;
+            this.disableMacroPlayFinish.CheckedChanged += new System.EventHandler(this.disableMacroPlayFinish_CheckedChanged);
             // 
             // macroActionDelay
             // 
@@ -3773,16 +3877,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // disableMacroPlayFinish
+            // setBandageHue
             // 
-            this.disableMacroPlayFinish.AutoSize = true;
-            this.disableMacroPlayFinish.Location = new System.Drawing.Point(272, 183);
-            this.disableMacroPlayFinish.Name = "disableMacroPlayFinish";
-            this.disableMacroPlayFinish.Size = new System.Drawing.Size(204, 19);
-            this.disableMacroPlayFinish.TabIndex = 17;
-            this.disableMacroPlayFinish.Text = "Disable Playing/Finished Message";
-            this.disableMacroPlayFinish.UseVisualStyleBackColor = true;
-            this.disableMacroPlayFinish.CheckedChanged += new System.EventHandler(this.disableMacroPlayFinish_CheckedChanged);
+            this.setBandageHue.Location = new System.Drawing.Point(269, 41);
+            this.setBandageHue.Name = "setBandageHue";
+            this.setBandageHue.Size = new System.Drawing.Size(67, 23);
+            this.setBandageHue.TabIndex = 57;
+            this.setBandageHue.Text = "Set Hue";
+            this.setBandageHue.UseVisualStyleBackColor = true;
+            this.setBandageHue.Click += new System.EventHandler(this.setBandageHue_Click);
             // 
             // MainForm
             // 
@@ -3823,7 +3926,7 @@ namespace Assistant
             this.subOptionsMiscTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).EndInit();
             this.displayTab.ResumeLayout(false);
-            this.tabControl4.ResumeLayout(false);
+            this.displayCountersTabCtrl.ResumeLayout(false);
             this.subDisplayTab.ResumeLayout(false);
             this.subDisplayTab.PerformLayout();
             this.groupBox11.ResumeLayout(false);
@@ -3833,6 +3936,8 @@ namespace Assistant
             this.subCountersTab.ResumeLayout(false);
             this.subCountersTab.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.subBandageTimerTab.ResumeLayout(false);
+            this.subBandageTimerTab.PerformLayout();
             this.dressTab.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -4274,6 +4379,14 @@ namespace Assistant
             autoOpenDoorWhenHidden.SafeAction(s => { s.Checked = Config.GetBool("AutoOpenDoorWhenHidden"); });
 
             disableMacroPlayFinish.SafeAction(s => { s.Checked = Config.GetBool("DisableMacroPlayFinish"); });
+
+
+            showBandageTimer.SafeAction(s => { s.Checked = Config.GetBool("ShowBandageTimer"); });
+            bandageTimerLocation.SafeAction(s => { s.SelectedIndex = Config.GetInt("ShowBandageTimerLocation"); });
+            onlyShowBandageTimerSeconds.SafeAction(s => { s.Checked = Config.GetBool("OnlyShowBandageTimerEvery"); });
+            bandageTimerSeconds.SafeAction(s => { s.Text = Config.GetInt("OnlyShowBandageTimerSeconds").ToString(); });
+            bandageTimerFormat.SafeAction(s => { s.Text = Config.GetString("ShowBandageTimerFormat"); });
+            lblBandageCountFormat.SafeAction(s => { InitPreviewHue(s, "ShowBandageTimerHue"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -9166,6 +9279,36 @@ namespace Assistant
         private void disableMacroPlayFinish_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("DisableMacroPlayFinish", disableMacroPlayFinish.Checked);
+        }
+
+        private void showBandageTimer_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBandageTimer", showBandageTimer.Checked);
+        }
+
+        private void bandageTimerLocation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBandageTimerLocation", bandageTimerLocation.SelectedIndex);
+        }
+
+        private void onlyShowBandageTimerSeconds_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("OnlyShowBandageTimerEvery", onlyShowBandageTimerSeconds.Checked);
+        }
+
+        private void bandageTimerSeconds_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("OnlyShowBandageTimerSeconds", Utility.ToInt32(bandageTimerSeconds.Text.Trim(), 1));
+        }
+
+        private void bandageTimerFormat_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBandageTimerFormat", bandageTimerFormat.Text);
+        }
+
+        private void setBandageHue_Click(object sender, EventArgs e)
+        {
+            SetHue(lblBandageCountFormat, "ShowBandageTimerHue");
         }
     }
 }

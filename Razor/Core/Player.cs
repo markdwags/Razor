@@ -811,10 +811,10 @@ namespace Assistant
             SendMessage(MsgLevel.Info, Language.GetString(loc));
         }
 
-        /*internal void SendMessage( int hue, LocString loc, params object[] args )
+        internal void SendMessage( int hue, string text )
         {
-             SendMessage( hue, Language.Format( loc, args ) );
-        }*/
+            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3, Language.CliLocName, "System", text));
+        }
 
         internal void SendMessage(MsgLevel lvl, string format, params object[] args)
         {
