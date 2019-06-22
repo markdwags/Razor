@@ -203,7 +203,6 @@ namespace Assistant
         private CheckBox smartLT;
         private CheckBox queueTargets;
         private CheckBox showtargtext;
-        private CheckBox autoFriend;
         private Button containerLabels;
         private CheckBox showContainerLabels;
         private Button overHeadMessages;
@@ -235,7 +234,6 @@ namespace Assistant
         private CheckBox blockDis;
         private CheckBox showStaticWalls;
         private CheckBox showStaticWallLabels;
-        private CheckBox autoAcceptParty;
         private CheckBox stealthOverhead;
         private TextBox forceSizeX;
         private TextBox forceSizeY;
@@ -310,10 +308,8 @@ namespace Assistant
         private Button openBackupFolder;
         private TextBox targetIndictorFormat;
         private Label lblTargetFormat;
-        private CheckBox nextPrevIgnoresFriends;
         private Label lblStealthFormat;
         private TextBox stealthStepsFormat;
-        private CheckBox showFriendOverhead;
         private CheckBox dispDeltaOverhead;
         private Label lblCredits2;
         private LinkLabel linkGitHub;
@@ -335,6 +331,20 @@ namespace Assistant
         private TextBox bandageTimerSeconds;
         private Label lblBandageCountFormat;
         private Button setBandageHue;
+        private TabPage subOptionsFriendsTab;
+        private GroupBox friendsGroupBox;
+        private CheckBox friendsListEnabled;
+        private Button friendClearList;
+        private Button friendRemoveSelected;
+        private Button friendAddTarget;
+        private ListBox friendsList;
+        private ComboBox friendsGroup;
+        private Button friendsGroupRemove;
+        private Button friendsGroupAdd;
+        private CheckBox showFriendOverhead;
+        private CheckBox autoAcceptParty;
+        private CheckBox nextPrevIgnoresFriends;
+        private CheckBox autoFriend;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -342,6 +352,16 @@ namespace Assistant
         public Label WaitDisplay
         {
             get { return waitDisp; }
+        }
+        
+        public ComboBox FriendsGroup
+        {
+            get { return friendsGroup; }
+        }
+
+        public ListBox FriendsList
+        {
+            get { return friendsList; }
         }
 
         public MainForm()
@@ -433,7 +453,6 @@ namespace Assistant
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
-            this.showFriendOverhead = new System.Windows.Forms.CheckBox();
             this.damageTakenOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageTaken = new System.Windows.Forms.CheckBox();
             this.damageDealtOverhead = new System.Windows.Forms.CheckBox();
@@ -472,10 +491,8 @@ namespace Assistant
             this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.subOptionsTargetTab = new System.Windows.Forms.TabPage();
-            this.nextPrevIgnoresFriends = new System.Windows.Forms.CheckBox();
             this.lblTargetFormat = new System.Windows.Forms.Label();
             this.targetIndictorFormat = new System.Windows.Forms.TextBox();
-            this.autoFriend = new System.Windows.Forms.CheckBox();
             this.showtargtext = new System.Windows.Forms.CheckBox();
             this.showAttackTargetNewOnly = new System.Windows.Forms.CheckBox();
             this.showTextTargetIndicator = new System.Windows.Forms.CheckBox();
@@ -498,7 +515,6 @@ namespace Assistant
             this.rememberPwds = new System.Windows.Forms.CheckBox();
             this.showStaticWalls = new System.Windows.Forms.CheckBox();
             this.showStaticWallLabels = new System.Windows.Forms.CheckBox();
-            this.autoAcceptParty = new System.Windows.Forms.CheckBox();
             this.stealthOverhead = new System.Windows.Forms.CheckBox();
             this.forceSizeX = new System.Windows.Forms.TextBox();
             this.forceSizeY = new System.Windows.Forms.TextBox();
@@ -526,6 +542,20 @@ namespace Assistant
             this.label4 = new System.Windows.Forms.Label();
             this.openCorpses = new System.Windows.Forms.CheckBox();
             this.blockDis = new System.Windows.Forms.CheckBox();
+            this.subOptionsFriendsTab = new System.Windows.Forms.TabPage();
+            this.showFriendOverhead = new System.Windows.Forms.CheckBox();
+            this.autoAcceptParty = new System.Windows.Forms.CheckBox();
+            this.nextPrevIgnoresFriends = new System.Windows.Forms.CheckBox();
+            this.autoFriend = new System.Windows.Forms.CheckBox();
+            this.friendsGroupBox = new System.Windows.Forms.GroupBox();
+            this.friendsGroupRemove = new System.Windows.Forms.Button();
+            this.friendsGroupAdd = new System.Windows.Forms.Button();
+            this.friendsListEnabled = new System.Windows.Forms.CheckBox();
+            this.friendClearList = new System.Windows.Forms.Button();
+            this.friendRemoveSelected = new System.Windows.Forms.Button();
+            this.friendAddTarget = new System.Windows.Forms.Button();
+            this.friendsList = new System.Windows.Forms.ListBox();
+            this.friendsGroup = new System.Windows.Forms.ComboBox();
             this.displayTab = new System.Windows.Forms.TabPage();
             this.displayCountersTabCtrl = new System.Windows.Forms.TabControl();
             this.subDisplayTab = new System.Windows.Forms.TabPage();
@@ -555,12 +585,13 @@ namespace Assistant
             this.addCounter = new System.Windows.Forms.Button();
             this.recount = new System.Windows.Forms.Button();
             this.subBandageTimerTab = new System.Windows.Forms.TabPage();
+            this.setBandageHue = new System.Windows.Forms.Button();
             this.bandageTimerLocation = new System.Windows.Forms.ComboBox();
             this.bandageTimerSeconds = new System.Windows.Forms.TextBox();
-            this.lblBandageCountFormat = new System.Windows.Forms.Label();
             this.onlyShowBandageTimerSeconds = new System.Windows.Forms.CheckBox();
             this.bandageTimerFormat = new System.Windows.Forms.TextBox();
             this.showBandageTimer = new System.Windows.Forms.CheckBox();
+            this.lblBandageCountFormat = new System.Windows.Forms.Label();
             this.dressTab = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.clearDress = new System.Windows.Forms.Button();
@@ -687,7 +718,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.setBandageHue = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -703,6 +733,8 @@ namespace Assistant
             this.subOptionsTargetTab.SuspendLayout();
             this.subOptionsMiscTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
+            this.subOptionsFriendsTab.SuspendLayout();
+            this.friendsGroupBox.SuspendLayout();
             this.displayTab.SuspendLayout();
             this.displayCountersTabCtrl.SuspendLayout();
             this.subDisplayTab.SuspendLayout();
@@ -1159,6 +1191,7 @@ namespace Assistant
             this.optionsTabCtrl.Controls.Add(this.subOptionsSpeechTab);
             this.optionsTabCtrl.Controls.Add(this.subOptionsTargetTab);
             this.optionsTabCtrl.Controls.Add(this.subOptionsMiscTab);
+            this.optionsTabCtrl.Controls.Add(this.subOptionsFriendsTab);
             this.optionsTabCtrl.Location = new System.Drawing.Point(6, 3);
             this.optionsTabCtrl.Name = "optionsTabCtrl";
             this.optionsTabCtrl.SelectedIndex = 0;
@@ -1168,7 +1201,6 @@ namespace Assistant
             // subOptionsSpeechTab
             // 
             this.subOptionsSpeechTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subOptionsSpeechTab.Controls.Add(this.showFriendOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.damageTakenOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.showDamageTaken);
             this.subOptionsSpeechTab.Controls.Add(this.damageDealtOverhead);
@@ -1212,16 +1244,6 @@ namespace Assistant
             this.subOptionsSpeechTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsSpeechTab.TabIndex = 0;
             this.subOptionsSpeechTab.Text = "Speech & Messages  ";
-            // 
-            // showFriendOverhead
-            // 
-            this.showFriendOverhead.Location = new System.Drawing.Point(260, 260);
-            this.showFriendOverhead.Name = "showFriendOverhead";
-            this.showFriendOverhead.Size = new System.Drawing.Size(184, 23);
-            this.showFriendOverhead.TabIndex = 129;
-            this.showFriendOverhead.Text = "Show [Friend] overhead";
-            this.showFriendOverhead.UseVisualStyleBackColor = true;
-            this.showFriendOverhead.CheckedChanged += new System.EventHandler(this.showFriendOverhead_CheckedChanged);
             // 
             // damageTakenOverhead
             // 
@@ -1578,10 +1600,8 @@ namespace Assistant
             // subOptionsTargetTab
             // 
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subOptionsTargetTab.Controls.Add(this.nextPrevIgnoresFriends);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
             this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
-            this.subOptionsTargetTab.Controls.Add(this.autoFriend);
             this.subOptionsTargetTab.Controls.Add(this.showtargtext);
             this.subOptionsTargetTab.Controls.Add(this.showAttackTargetNewOnly);
             this.subOptionsTargetTab.Controls.Add(this.showTextTargetIndicator);
@@ -1597,23 +1617,12 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
-            // 
-            // nextPrevIgnoresFriends
-            // 
-            this.nextPrevIgnoresFriends.AutoSize = true;
-            this.nextPrevIgnoresFriends.Location = new System.Drawing.Point(260, 63);
-            this.nextPrevIgnoresFriends.Name = "nextPrevIgnoresFriends";
-            this.nextPrevIgnoresFriends.Size = new System.Drawing.Size(203, 19);
-            this.nextPrevIgnoresFriends.TabIndex = 95;
-            this.nextPrevIgnoresFriends.Text = "Next/Prev Target ignores \'Friends\'";
-            this.nextPrevIgnoresFriends.UseVisualStyleBackColor = true;
-            this.nextPrevIgnoresFriends.CheckedChanged += new System.EventHandler(this.nextPrevIgnoresFriends_CheckedChanged);
             // 
             // lblTargetFormat
             // 
@@ -1632,15 +1641,6 @@ namespace Assistant
             this.targetIndictorFormat.TabIndex = 93;
             this.targetIndictorFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.targetIndictorFormat.TextChanged += new System.EventHandler(this.targetIndictorFormat_TextChanged);
-            // 
-            // autoFriend
-            // 
-            this.autoFriend.Location = new System.Drawing.Point(260, 12);
-            this.autoFriend.Name = "autoFriend";
-            this.autoFriend.Size = new System.Drawing.Size(217, 20);
-            this.autoFriend.TabIndex = 92;
-            this.autoFriend.Text = "Treat party members as \'Friends\'";
-            this.autoFriend.CheckedChanged += new System.EventHandler(this.autoFriend_CheckedChanged);
             // 
             // showtargtext
             // 
@@ -1789,7 +1789,6 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.rememberPwds);
             this.subOptionsMiscTab.Controls.Add(this.showStaticWalls);
             this.subOptionsMiscTab.Controls.Add(this.showStaticWallLabels);
-            this.subOptionsMiscTab.Controls.Add(this.autoAcceptParty);
             this.subOptionsMiscTab.Controls.Add(this.stealthOverhead);
             this.subOptionsMiscTab.Controls.Add(this.forceSizeX);
             this.subOptionsMiscTab.Controls.Add(this.forceSizeY);
@@ -1882,15 +1881,6 @@ namespace Assistant
             this.showStaticWallLabels.Text = "Labels";
             this.showStaticWallLabels.UseVisualStyleBackColor = true;
             this.showStaticWallLabels.CheckedChanged += new System.EventHandler(this.showStaticWallLabels_CheckedChanged);
-            // 
-            // autoAcceptParty
-            // 
-            this.autoAcceptParty.Location = new System.Drawing.Point(260, 38);
-            this.autoAcceptParty.Name = "autoAcceptParty";
-            this.autoAcceptParty.Size = new System.Drawing.Size(232, 20);
-            this.autoAcceptParty.TabIndex = 118;
-            this.autoAcceptParty.Text = "Auto-accept party invites from friends";
-            this.autoAcceptParty.CheckedChanged += new System.EventHandler(this.autoAcceptParty_CheckedChanged);
             // 
             // stealthOverhead
             // 
@@ -2147,6 +2137,155 @@ namespace Assistant
             this.blockDis.TabIndex = 94;
             this.blockDis.Text = "Block dismount in war mode";
             this.blockDis.CheckedChanged += new System.EventHandler(this.blockDis_CheckedChanged);
+            // 
+            // subOptionsFriendsTab
+            // 
+            this.subOptionsFriendsTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsFriendsTab.Controls.Add(this.showFriendOverhead);
+            this.subOptionsFriendsTab.Controls.Add(this.autoAcceptParty);
+            this.subOptionsFriendsTab.Controls.Add(this.nextPrevIgnoresFriends);
+            this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
+            this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
+            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
+            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsFriendsTab.TabIndex = 3;
+            this.subOptionsFriendsTab.Text = "Friends";
+            // 
+            // showFriendOverhead
+            // 
+            this.showFriendOverhead.Location = new System.Drawing.Point(262, 93);
+            this.showFriendOverhead.Name = "showFriendOverhead";
+            this.showFriendOverhead.Size = new System.Drawing.Size(184, 23);
+            this.showFriendOverhead.TabIndex = 130;
+            this.showFriendOverhead.Text = "Show [Friend] overhead";
+            this.showFriendOverhead.UseVisualStyleBackColor = true;
+            this.showFriendOverhead.CheckedChanged += new System.EventHandler(this.showFriendOverhead_CheckedChanged);
+            // 
+            // autoAcceptParty
+            // 
+            this.autoAcceptParty.Location = new System.Drawing.Point(262, 67);
+            this.autoAcceptParty.Name = "autoAcceptParty";
+            this.autoAcceptParty.Size = new System.Drawing.Size(232, 20);
+            this.autoAcceptParty.TabIndex = 119;
+            this.autoAcceptParty.Text = "Auto-accept party invites from friends";
+            this.autoAcceptParty.CheckedChanged += new System.EventHandler(this.autoAcceptParty_CheckedChanged);
+            // 
+            // nextPrevIgnoresFriends
+            // 
+            this.nextPrevIgnoresFriends.AutoSize = true;
+            this.nextPrevIgnoresFriends.Location = new System.Drawing.Point(262, 42);
+            this.nextPrevIgnoresFriends.Name = "nextPrevIgnoresFriends";
+            this.nextPrevIgnoresFriends.Size = new System.Drawing.Size(203, 19);
+            this.nextPrevIgnoresFriends.TabIndex = 97;
+            this.nextPrevIgnoresFriends.Text = "Next/Prev Target ignores \'Friends\'";
+            this.nextPrevIgnoresFriends.UseVisualStyleBackColor = true;
+            this.nextPrevIgnoresFriends.CheckedChanged += new System.EventHandler(this.nextPrevIgnoresFriends_CheckedChanged);
+            // 
+            // autoFriend
+            // 
+            this.autoFriend.Location = new System.Drawing.Point(262, 16);
+            this.autoFriend.Name = "autoFriend";
+            this.autoFriend.Size = new System.Drawing.Size(217, 20);
+            this.autoFriend.TabIndex = 96;
+            this.autoFriend.Text = "Treat party members as \'Friends\'";
+            this.autoFriend.CheckedChanged += new System.EventHandler(this.autoFriend_CheckedChanged);
+            // 
+            // friendsGroupBox
+            // 
+            this.friendsGroupBox.Controls.Add(this.friendsGroupRemove);
+            this.friendsGroupBox.Controls.Add(this.friendsGroupAdd);
+            this.friendsGroupBox.Controls.Add(this.friendsListEnabled);
+            this.friendsGroupBox.Controls.Add(this.friendClearList);
+            this.friendsGroupBox.Controls.Add(this.friendRemoveSelected);
+            this.friendsGroupBox.Controls.Add(this.friendAddTarget);
+            this.friendsGroupBox.Controls.Add(this.friendsList);
+            this.friendsGroupBox.Controls.Add(this.friendsGroup);
+            this.friendsGroupBox.Location = new System.Drawing.Point(3, 3);
+            this.friendsGroupBox.Name = "friendsGroupBox";
+            this.friendsGroupBox.Size = new System.Drawing.Size(253, 280);
+            this.friendsGroupBox.TabIndex = 0;
+            this.friendsGroupBox.TabStop = false;
+            this.friendsGroupBox.Text = "Friends Groups/Lists:";
+            // 
+            // friendsGroupRemove
+            // 
+            this.friendsGroupRemove.Location = new System.Drawing.Point(181, 22);
+            this.friendsGroupRemove.Name = "friendsGroupRemove";
+            this.friendsGroupRemove.Size = new System.Drawing.Size(21, 23);
+            this.friendsGroupRemove.TabIndex = 11;
+            this.friendsGroupRemove.Text = "-";
+            this.friendsGroupRemove.UseVisualStyleBackColor = true;
+            this.friendsGroupRemove.Click += new System.EventHandler(this.friendsGroupRemove_Click);
+            // 
+            // friendsGroupAdd
+            // 
+            this.friendsGroupAdd.Location = new System.Drawing.Point(154, 22);
+            this.friendsGroupAdd.Name = "friendsGroupAdd";
+            this.friendsGroupAdd.Size = new System.Drawing.Size(21, 23);
+            this.friendsGroupAdd.TabIndex = 10;
+            this.friendsGroupAdd.Text = "+";
+            this.friendsGroupAdd.UseVisualStyleBackColor = true;
+            this.friendsGroupAdd.Click += new System.EventHandler(this.friendsGroupAdd_Click);
+            // 
+            // friendsListEnabled
+            // 
+            this.friendsListEnabled.AutoSize = true;
+            this.friendsListEnabled.Location = new System.Drawing.Point(217, 26);
+            this.friendsListEnabled.Name = "friendsListEnabled";
+            this.friendsListEnabled.Size = new System.Drawing.Size(15, 14);
+            this.friendsListEnabled.TabIndex = 9;
+            this.friendsListEnabled.UseVisualStyleBackColor = true;
+            this.friendsListEnabled.CheckedChanged += new System.EventHandler(this.friendsListEnabled_CheckedChanged);
+            // 
+            // friendClearList
+            // 
+            this.friendClearList.Location = new System.Drawing.Point(168, 241);
+            this.friendClearList.Name = "friendClearList";
+            this.friendClearList.Size = new System.Drawing.Size(79, 33);
+            this.friendClearList.TabIndex = 8;
+            this.friendClearList.Text = "Clear List";
+            this.friendClearList.UseVisualStyleBackColor = true;
+            this.friendClearList.Click += new System.EventHandler(this.friendClearList_Click);
+            // 
+            // friendRemoveSelected
+            // 
+            this.friendRemoveSelected.Location = new System.Drawing.Point(94, 241);
+            this.friendRemoveSelected.Name = "friendRemoveSelected";
+            this.friendRemoveSelected.Size = new System.Drawing.Size(68, 33);
+            this.friendRemoveSelected.TabIndex = 7;
+            this.friendRemoveSelected.Text = "Remove";
+            this.friendRemoveSelected.UseVisualStyleBackColor = true;
+            this.friendRemoveSelected.Click += new System.EventHandler(this.friendRemoveSelected_Click);
+            // 
+            // friendAddTarget
+            // 
+            this.friendAddTarget.Location = new System.Drawing.Point(6, 241);
+            this.friendAddTarget.Name = "friendAddTarget";
+            this.friendAddTarget.Size = new System.Drawing.Size(82, 33);
+            this.friendAddTarget.TabIndex = 5;
+            this.friendAddTarget.Text = "Add (Target)";
+            this.friendAddTarget.UseVisualStyleBackColor = true;
+            this.friendAddTarget.Click += new System.EventHandler(this.friendAddTarget_Click);
+            // 
+            // friendsList
+            // 
+            this.friendsList.FormattingEnabled = true;
+            this.friendsList.ItemHeight = 15;
+            this.friendsList.Location = new System.Drawing.Point(6, 51);
+            this.friendsList.Name = "friendsList";
+            this.friendsList.Size = new System.Drawing.Size(241, 184);
+            this.friendsList.TabIndex = 4;
+            // 
+            // friendsGroup
+            // 
+            this.friendsGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.friendsGroup.FormattingEnabled = true;
+            this.friendsGroup.Location = new System.Drawing.Point(6, 22);
+            this.friendsGroup.Name = "friendsGroup";
+            this.friendsGroup.Size = new System.Drawing.Size(143, 23);
+            this.friendsGroup.TabIndex = 3;
+            this.friendsGroup.SelectedIndexChanged += new System.EventHandler(this.friendsGroup_SelectedIndexChanged);
             // 
             // displayTab
             // 
@@ -2501,11 +2640,21 @@ namespace Assistant
             this.subBandageTimerTab.Controls.Add(this.bandageTimerFormat);
             this.subBandageTimerTab.Controls.Add(this.showBandageTimer);
             this.subBandageTimerTab.Controls.Add(this.lblBandageCountFormat);
-            this.subBandageTimerTab.Location = new System.Drawing.Point(4, 24);
+            this.subBandageTimerTab.Location = new System.Drawing.Point(4, 22);
             this.subBandageTimerTab.Name = "subBandageTimerTab";
-            this.subBandageTimerTab.Size = new System.Drawing.Size(502, 286);
+            this.subBandageTimerTab.Size = new System.Drawing.Size(502, 288);
             this.subBandageTimerTab.TabIndex = 2;
             this.subBandageTimerTab.Text = "Bandage Timer";
+            // 
+            // setBandageHue
+            // 
+            this.setBandageHue.Location = new System.Drawing.Point(269, 41);
+            this.setBandageHue.Name = "setBandageHue";
+            this.setBandageHue.Size = new System.Drawing.Size(67, 23);
+            this.setBandageHue.TabIndex = 57;
+            this.setBandageHue.Text = "Set Hue";
+            this.setBandageHue.UseVisualStyleBackColor = true;
+            this.setBandageHue.Click += new System.EventHandler(this.setBandageHue_Click);
             // 
             // bandageTimerLocation
             // 
@@ -2528,15 +2677,6 @@ namespace Assistant
             this.bandageTimerSeconds.TabIndex = 55;
             this.bandageTimerSeconds.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.bandageTimerSeconds.TextChanged += new System.EventHandler(this.bandageTimerSeconds_TextChanged);
-            // 
-            // lblBandageCountFormat
-            // 
-            this.lblBandageCountFormat.Location = new System.Drawing.Point(21, 41);
-            this.lblBandageCountFormat.Name = "lblBandageCountFormat";
-            this.lblBandageCountFormat.Size = new System.Drawing.Size(159, 23);
-            this.lblBandageCountFormat.TabIndex = 54;
-            this.lblBandageCountFormat.Text = "Format && Hue:";
-            this.lblBandageCountFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // onlyShowBandageTimerSeconds
             // 
@@ -2565,6 +2705,15 @@ namespace Assistant
             this.showBandageTimer.TabIndex = 51;
             this.showBandageTimer.Text = "Show bandage timer";
             this.showBandageTimer.CheckedChanged += new System.EventHandler(this.showBandageTimer_CheckedChanged);
+            // 
+            // lblBandageCountFormat
+            // 
+            this.lblBandageCountFormat.Location = new System.Drawing.Point(21, 41);
+            this.lblBandageCountFormat.Name = "lblBandageCountFormat";
+            this.lblBandageCountFormat.Size = new System.Drawing.Size(159, 23);
+            this.lblBandageCountFormat.TabIndex = 54;
+            this.lblBandageCountFormat.Text = "Format && Hue:";
+            this.lblBandageCountFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // dressTab
             // 
@@ -3877,16 +4026,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // setBandageHue
-            // 
-            this.setBandageHue.Location = new System.Drawing.Point(269, 41);
-            this.setBandageHue.Name = "setBandageHue";
-            this.setBandageHue.Size = new System.Drawing.Size(67, 23);
-            this.setBandageHue.TabIndex = 57;
-            this.setBandageHue.Text = "Set Hue";
-            this.setBandageHue.UseVisualStyleBackColor = true;
-            this.setBandageHue.Click += new System.EventHandler(this.setBandageHue_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -3925,6 +4064,10 @@ namespace Assistant
             this.subOptionsMiscTab.ResumeLayout(false);
             this.subOptionsMiscTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).EndInit();
+            this.subOptionsFriendsTab.ResumeLayout(false);
+            this.subOptionsFriendsTab.PerformLayout();
+            this.friendsGroupBox.ResumeLayout(false);
+            this.friendsGroupBox.PerformLayout();
             this.displayTab.ResumeLayout(false);
             this.displayCountersTabCtrl.ResumeLayout(false);
             this.subDisplayTab.ResumeLayout(false);
@@ -4537,6 +4680,15 @@ namespace Assistant
                     MacroManager.Current.DisplayTo(actionList);
 
                 macroActGroup.Visible = macroTree.SelectedNode != null;
+            }
+            else if (tabs.SelectedTab == moreOptTab)
+            {
+                FriendsManager.Redraw();
+
+                if (friendsGroup.Items.Count > 0)
+                {
+                    friendsGroup.SelectedIndex = 0;
+                }
             }
         }
 
@@ -9308,7 +9460,128 @@ namespace Assistant
 
         private void setBandageHue_Click(object sender, EventArgs e)
         {
-            SetHue(lblBandageCountFormat, "ShowBandageTimerHue");
+            lblBandageCountFormat.SafeAction(s =>
+            {
+                SetHue(s, "ShowBandageTimerHue");
+            });
+        }
+
+        private void friendAddTarget_Click(object sender, EventArgs e)
+        {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            FriendsManager.OnTargetAddFriend();
+        }
+
+        private void friendRemoveSelected_Click(object sender, EventArgs e)
+        {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            if (FriendsManager.RemoveFriend(friendsList.SelectedIndex))
+            {
+                friendsList.Items.RemoveAt(friendsList.SelectedIndex);
+            }
+        }
+
+        private void friendsGroupAdd_Click(object sender, EventArgs e)
+        {
+            if (InputBox.Show(this, "Add Friend Group", "Enter the name of this new Friend Group"))
+            {
+                string name = InputBox.GetString();
+
+                if (!string.IsNullOrEmpty(name) && !FriendsManager.IsFriendsGroup(name))
+                {
+                    FriendsManager.AddFriendGroup(name);
+                }
+                else
+                {
+                    MessageBox.Show(this, "Invalid name, or friends group already exists", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                    
+            }
+        }
+
+        private void friendsGroupRemove_Click(object sender, EventArgs e)
+        {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            if (FriendsManager.DeleteFriendGroup(friendsGroup.Text))
+            {
+                friendsGroup.Items.Clear();
+
+                foreach (var friendGroup in FriendsManager.FriendGroups)
+                {
+                    friendsGroup.Items.Add(friendGroup.GroupName);
+                }
+
+                if (friendsGroup.Items.Count > 0)
+                {
+                    friendsGroup.SelectedIndex = 0;
+                }
+                    
+            }
+        }
+        private void friendsGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+
+            friendsList.BeginUpdate();
+            friendsList.Items.Clear();
+
+            foreach (var friendGroup in FriendsManager.FriendGroups)
+            {
+                if (friendGroup.GroupName.Equals(friendsGroup.Text))
+                {
+                    friendsListEnabled.Checked = friendGroup.Enabled;
+
+                    foreach (var friend in friendGroup.Friends)
+                    {
+                        friendsList.Items.Add($"{friend.Name} ({friend.Serial})");
+                    }
+
+                    break;
+                }
+            }
+
+            friendsList.EndUpdate();
+        }
+
+        private void friendClearList_Click(object sender, EventArgs e)
+        {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            if (MessageBox.Show(this, Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                friendsList.BeginUpdate();
+                friendsList.Items.Clear();
+
+                foreach (var friendGroup in FriendsManager.FriendGroups)
+                {
+                    if (friendGroup.GroupName.Equals(friendsGroup.Text))
+                    {
+                        friendGroup.Friends.Clear();
+
+                        break;
+                    }
+                }
+
+                friendsList.EndUpdate();
+            }
+        }
+
+        private void friendsListEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            FriendsManager.EnableFriendsGroup(friendsGroup.Text, friendsListEnabled.Checked);
         }
     }
 }

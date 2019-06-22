@@ -356,6 +356,8 @@ namespace Assistant
             ContainerLabels.Load(root["containerlabels"]);
             AbsoluteTargetVariables.Load(root["absolutetargets"]);
             DoubleClickVariables.Load(root["doubleclickvariables"]);
+            FriendsManager.Load(root["friends"]);
+
 
             GoldPerHourTimer.Stop();
             DamageTracker.Stop();
@@ -536,6 +538,10 @@ namespace Assistant
 
             xml.WriteStartElement("doubleclickvariables");
             DoubleClickVariables.Save(xml);
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("friends");
+            FriendsManager.Save(xml);
             xml.WriteEndElement();
 
             xml.WriteEndElement(); // end profile section
