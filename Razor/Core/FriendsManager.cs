@@ -7,14 +7,14 @@ using Assistant.UI;
 
 namespace Assistant.Core
 {
-    public class FriendsManager
+    public static class FriendsManager
     {
-        private static readonly FriendsManager FriendsHelper = new FriendsManager();
+        //private static readonly FriendsManager FriendsHelper = new FriendsManager();
 
-        public static bool IsFriend(Mobile mobile)
+        /*public static bool IsFriend(Mobile mobile)
         {
             return FriendsHelper.IsFriend(mobile.Serial);
-        }
+        }*/
 
         public static void OnTargetAddFriend()
         {
@@ -22,10 +22,10 @@ namespace Assistant.Core
             Targeting.OneTimeTarget(OnAddTarget);
         }
 
-        public FriendsManager()
+        /*public FriendsManager()
         {
             FriendGroups = new List<FriendGroup>();
-        }
+        }*/
 
         public class Friend
         {
@@ -46,33 +46,40 @@ namespace Assistant.Core
 
         }
 
-        public static List<FriendGroup> FriendGroups = FriendGroups = new List<FriendGroup>();
+        public static List<FriendGroup> FriendGroups = new List<FriendGroup>();
 
         //private static List<Friend> _friendsList { get; set; }
 
-        /*public static FriendsManager()
+        /*public FriendsManager()
         {
             //_friendsList = new List<Friend>();
             //FriendGroups = new List<FriendGroup>();
 
-            /*HotKey.Add(HKCategory.Targets, LocString.AddFriend, new HotKeyCallback(AddToFriendsList));
-            HotKey.Add(HKCategory.Targets, LocString.RemoveFriend, new HotKeyCallback(RemoveFromFriendsList));
-            HotKey.Add(HKCategory.Targets, LocString.AddAllMobileFriends, new HotKeyCallback(AddAllMobileFriends));#1#
+            //HotKey.Add(HKCategory.Targets, LocString.AddFriend, new HotKeyCallback(AddToFriendsList));
+            //HotKey.Add(HKCategory.Targets, LocString.RemoveFriend, new HotKeyCallback(RemoveFromFriendsList));
+            //HotKey.Add(HKCategory.Targets, LocString.AddAllMobileFriends, new HotKeyCallback(AddAllMobileFriends));
         }*/
 
-        private bool IsFriend(Serial ser)
+        public static bool IsFriend(Serial serial)
         {
+            bool isFriend = false;
+
             foreach (var friendGroup in FriendGroups)
             {
                 if (friendGroup.Enabled)
                 {
-                    return friendGroup.Friends.Any(f => f.Serial == ser) || (Config.GetBool("AutoFriend") && PacketHandlers.Party.Contains(ser));
+                    if (friendGroup.Friends.Any(f => f.Serial == serial) ||
+                        (Config.GetBool("AutoFriend") && PacketHandlers.Party.Contains(serial)))
+                    {
+                        isFriend = true;
+                        break;
+                    }
                 }
             }
 
-            return false;
+            return isFriend;
         }
-
+        
         public static void EnableFriendsGroup(string name, bool enabled)
         {
             foreach (FriendGroup friendGroup in FriendGroups)
@@ -102,7 +109,7 @@ namespace Assistant.Core
         {
             foreach (var friendGroup in FriendGroups)
             {
-                if (friendGroup.GroupName.Equals(group) && FriendsHelper.IsFriend(friendSerial) == false)
+                if (friendGroup.GroupName.Equals(group) && IsFriend(friendSerial) == false)
                 {
                     Friend newFriend = new Friend
                     {
@@ -161,7 +168,7 @@ namespace Assistant.Core
             return false;
         }
 
-        public void ClearFriendGroup(string group)
+        public static void ClearFriendGroup(string group)
         {
             foreach (var friendGroup in FriendGroups)
             {

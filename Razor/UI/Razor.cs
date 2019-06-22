@@ -345,6 +345,9 @@ namespace Assistant
         private CheckBox autoAcceptParty;
         private CheckBox nextPrevIgnoresFriends;
         private CheckBox autoFriend;
+        private Label friendFormat;
+        private TextBox friendOverheadFormat;
+        private Button setFriendsFormatHue;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -543,6 +546,9 @@ namespace Assistant
             this.openCorpses = new System.Windows.Forms.CheckBox();
             this.blockDis = new System.Windows.Forms.CheckBox();
             this.subOptionsFriendsTab = new System.Windows.Forms.TabPage();
+            this.setFriendsFormatHue = new System.Windows.Forms.Button();
+            this.friendFormat = new System.Windows.Forms.Label();
+            this.friendOverheadFormat = new System.Windows.Forms.TextBox();
             this.showFriendOverhead = new System.Windows.Forms.CheckBox();
             this.autoAcceptParty = new System.Windows.Forms.CheckBox();
             this.nextPrevIgnoresFriends = new System.Windows.Forms.CheckBox();
@@ -2141,16 +2147,48 @@ namespace Assistant
             // subOptionsFriendsTab
             // 
             this.subOptionsFriendsTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsFriendsTab.Controls.Add(this.setFriendsFormatHue);
+            this.subOptionsFriendsTab.Controls.Add(this.friendOverheadFormat);
             this.subOptionsFriendsTab.Controls.Add(this.showFriendOverhead);
             this.subOptionsFriendsTab.Controls.Add(this.autoAcceptParty);
             this.subOptionsFriendsTab.Controls.Add(this.nextPrevIgnoresFriends);
             this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
             this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
+            this.subOptionsFriendsTab.Controls.Add(this.friendFormat);
             this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
             this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsFriendsTab.TabIndex = 3;
             this.subOptionsFriendsTab.Text = "Friends";
+            // 
+            // setFriendsFormatHue
+            // 
+            this.setFriendsFormatHue.Location = new System.Drawing.Point(434, 121);
+            this.setFriendsFormatHue.Name = "setFriendsFormatHue";
+            this.setFriendsFormatHue.Size = new System.Drawing.Size(59, 24);
+            this.setFriendsFormatHue.TabIndex = 133;
+            this.setFriendsFormatHue.Text = "Set Hue";
+            this.setFriendsFormatHue.UseVisualStyleBackColor = true;
+            this.setFriendsFormatHue.Click += new System.EventHandler(this.setFriendsFormatHue_Click);
+            // 
+            // friendFormat
+            // 
+            this.friendFormat.Location = new System.Drawing.Point(272, 122);
+            this.friendFormat.Name = "friendFormat";
+            this.friendFormat.Size = new System.Drawing.Size(145, 23);
+            this.friendFormat.TabIndex = 132;
+            this.friendFormat.Text = "Format:";
+            this.friendFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // friendOverheadFormat
+            // 
+            this.friendOverheadFormat.Location = new System.Drawing.Point(326, 122);
+            this.friendOverheadFormat.Name = "friendOverheadFormat";
+            this.friendOverheadFormat.Size = new System.Drawing.Size(102, 23);
+            this.friendOverheadFormat.TabIndex = 131;
+            this.friendOverheadFormat.Text = "[Friend]";
+            this.friendOverheadFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.friendOverheadFormat.TextChanged += new System.EventHandler(this.friendOverheadFormat_TextChanged);
             // 
             // showFriendOverhead
             // 
@@ -2274,8 +2312,10 @@ namespace Assistant
             this.friendsList.ItemHeight = 15;
             this.friendsList.Location = new System.Drawing.Point(6, 51);
             this.friendsList.Name = "friendsList";
+            this.friendsList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.friendsList.Size = new System.Drawing.Size(241, 184);
             this.friendsList.TabIndex = 4;
+            this.friendsList.SelectedIndexChanged += new System.EventHandler(this.friendsList_SelectedIndexChanged);
             // 
             // friendsGroup
             // 
@@ -4530,6 +4570,10 @@ namespace Assistant
             bandageTimerSeconds.SafeAction(s => { s.Text = Config.GetInt("OnlyShowBandageTimerSeconds").ToString(); });
             bandageTimerFormat.SafeAction(s => { s.Text = Config.GetString("ShowBandageTimerFormat"); });
             lblBandageCountFormat.SafeAction(s => { InitPreviewHue(s, "ShowBandageTimerHue"); });
+            
+            friendOverheadFormat.SafeAction(s => { s.Text = Config.GetString("FriendOverheadFormat"); });
+
+            friendFormat.SafeAction(s => { InitPreviewHue(s, "FriendOverheadFormatHue"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -9456,6 +9500,14 @@ namespace Assistant
         private void bandageTimerFormat_TextChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowBandageTimerFormat", bandageTimerFormat.Text);
+
+            if (string.IsNullOrEmpty(friendOverheadFormat.Text))
+            {
+                Config.SetProperty("ShowBandageTimerFormat", "Bandage: {count}s");
+                bandageTimerFormat.Text = "Bandage: {count}s";
+            }
+
+            Config.SetProperty("ShowBandageTimerFormat", bandageTimerFormat.Text);
         }
 
         private void setBandageHue_Click(object sender, EventArgs e)
@@ -9582,6 +9634,31 @@ namespace Assistant
                 return;
 
             FriendsManager.EnableFriendsGroup(friendsGroup.Text, friendsListEnabled.Checked);
+        }
+
+        private void friendOverheadFormat_TextChanged(object sender, EventArgs e)
+        {
+            //FriendOverheadFormat
+            if (string.IsNullOrEmpty(friendOverheadFormat.Text))
+            {
+                Config.SetProperty("FriendOverheadFormat", "[Friend]");
+                targetIndictorFormat.Text = "[Friend]";
+            }
+
+            Config.SetProperty("FriendOverheadFormat", friendOverheadFormat.Text);
+        }
+
+        private void setFriendsFormatHue_Click(object sender, EventArgs e)
+        {
+            friendFormat.SafeAction(s =>
+            {
+                SetHue(s, "FriendOverheadFormatHue");
+            });
+        }
+
+        private void friendsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

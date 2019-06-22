@@ -2674,9 +2674,9 @@ namespace Assistant
         }
     }
 
-    public class FriendsAgent : Agent
+    /*public class OldFriendsAgent : Agent
     {
-        private static readonly FriendsAgent m_Instance = new FriendsAgent();
+        private static readonly OldFriendsAgent m_Instance = new OldFriendsAgent();
         public static void Initialize()
         {
             Agent.Add(m_Instance);
@@ -2693,7 +2693,7 @@ namespace Assistant
         private bool m_Enabled;
         private Button m_EnableBTN;
 
-        public FriendsAgent()
+        public OldFriendsAgent()
         {
             m_Chars = new List<Serial>();
             m_Names = new Dictionary<Serial, string>();
@@ -3006,7 +3006,7 @@ namespace Assistant
                 }
             }
         }
-    }
+    }*/
 
     public class IgnoreAgent : Agent
     {

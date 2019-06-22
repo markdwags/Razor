@@ -201,6 +201,11 @@ namespace Assistant
                 Mobile m = World.FindMobile(ser);
                 if (m != null)
                     Targeting.CheckTextFlags(m);
+
+                if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
+                {
+                    m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"), $"{Config.GetString("FriendOverheadFormat")}");
+                }
             }
         }
 
@@ -1398,6 +1403,11 @@ namespace Assistant
             if (Config.GetBool("LastTargTextFlags"))
                 Targeting.CheckTextFlags(m);
 
+            if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
+            {
+                m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"), $"{Config.GetString("FriendOverheadFormat")}");
+            }
+
             int ltHue = Config.GetInt("LTHilight");
             bool isLT;
             if (ltHue != 0)
@@ -2346,7 +2356,7 @@ namespace Assistant
                         if (Config.GetBool("AutoAcceptParty"))
                         {
                             Mobile leaderMobile = World.FindMobile(PartyLeader);
-                            if (leaderMobile != null && FriendsAgent.IsFriend(leaderMobile))
+                            if (leaderMobile != null && FriendsManager.IsFriend(leaderMobile.Serial))
                             {
                                 if (PartyLeader != Serial.Zero)
                                 {
@@ -2847,7 +2857,7 @@ namespace Assistant
 
                 if (m == null) return;
 
-                World.Player.OverheadMessage(FriendsAgent.IsFriend(m) ? 63 : m.GetNotorietyColorInt(),
+                World.Player.OverheadMessage(FriendsManager.IsFriend(m.Serial) ? 63 : m.GetNotorietyColorInt(),
                     $"Attack: {m.Name}");
             }
         }
