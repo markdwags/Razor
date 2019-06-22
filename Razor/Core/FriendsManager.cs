@@ -128,6 +128,48 @@ namespace Assistant.Core
             return false;
         }
 
+        public static void AddAllMobileAsFriends(string group)
+        {
+            List<Mobile> mobiles = World.MobilesInRange(12);
+
+            foreach (Mobile mobile in mobiles)
+            {
+                if (!IsFriend(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial)
+                {
+                    if (AddFriend(Engine.MainWindow.FriendsGroup.Text, mobile.Name, mobile.Serial))
+                    {
+                        World.Player.SendMessage(MsgLevel.Force, LocString.FriendAdded);
+
+                        mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
+                        mobile.OPLChanged();
+
+                        World.Player.SendMessage(MsgLevel.Warning, $"Added {mobile.Name} to '{group}'");
+                    }
+                }
+            }
+        }
+
+        public static void AddAllHumanoidsAsFriends(string group)
+        {
+            List<Mobile> mobiles = World.MobilesInRange(12);
+
+            foreach (Mobile mobile in mobiles)
+            {
+                if (!IsFriend(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial && mobile.IsHuman)
+                {
+                    if (AddFriend(Engine.MainWindow.FriendsGroup.Text, mobile.Name, mobile.Serial))
+                    {
+                        World.Player.SendMessage(MsgLevel.Force, LocString.FriendAdded);
+
+                        mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
+                        mobile.OPLChanged();
+
+                        World.Player.SendMessage(MsgLevel.Warning, $"Added {mobile.Name} to '{group}'");
+                    }
+                }
+            }
+        }
+
         private static void OnAddTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
             Engine.MainWindow.SafeAction(s => s.ShowMe());

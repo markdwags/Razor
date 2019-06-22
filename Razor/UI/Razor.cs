@@ -547,7 +547,6 @@ namespace Assistant
             this.blockDis = new System.Windows.Forms.CheckBox();
             this.subOptionsFriendsTab = new System.Windows.Forms.TabPage();
             this.setFriendsFormatHue = new System.Windows.Forms.Button();
-            this.friendFormat = new System.Windows.Forms.Label();
             this.friendOverheadFormat = new System.Windows.Forms.TextBox();
             this.showFriendOverhead = new System.Windows.Forms.CheckBox();
             this.autoAcceptParty = new System.Windows.Forms.CheckBox();
@@ -562,6 +561,7 @@ namespace Assistant
             this.friendAddTarget = new System.Windows.Forms.Button();
             this.friendsList = new System.Windows.Forms.ListBox();
             this.friendsGroup = new System.Windows.Forms.ComboBox();
+            this.friendFormat = new System.Windows.Forms.Label();
             this.displayTab = new System.Windows.Forms.TabPage();
             this.displayCountersTabCtrl = new System.Windows.Forms.TabControl();
             this.subDisplayTab = new System.Windows.Forms.TabPage();
@@ -1691,7 +1691,7 @@ namespace Assistant
             // showTargetMessagesOverChar
             // 
             this.showTargetMessagesOverChar.AutoSize = true;
-            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(260, 38);
+            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(261, 13);
             this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
             this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
             this.showTargetMessagesOverChar.TabIndex = 74;
@@ -1831,7 +1831,7 @@ namespace Assistant
             // autoOpenDoorWhenHidden
             // 
             this.autoOpenDoorWhenHidden.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoOpenDoorWhenHidden.Location = new System.Drawing.Point(393, 115);
+            this.autoOpenDoorWhenHidden.Location = new System.Drawing.Point(393, 88);
             this.autoOpenDoorWhenHidden.Name = "autoOpenDoorWhenHidden";
             this.autoOpenDoorWhenHidden.Size = new System.Drawing.Size(95, 20);
             this.autoOpenDoorWhenHidden.TabIndex = 124;
@@ -1841,7 +1841,7 @@ namespace Assistant
             // lblStealthFormat
             // 
             this.lblStealthFormat.AutoSize = true;
-            this.lblStealthFormat.Location = new System.Drawing.Point(280, 89);
+            this.lblStealthFormat.Location = new System.Drawing.Point(280, 62);
             this.lblStealthFormat.Name = "lblStealthFormat";
             this.lblStealthFormat.Size = new System.Drawing.Size(48, 15);
             this.lblStealthFormat.TabIndex = 123;
@@ -1849,7 +1849,7 @@ namespace Assistant
             // 
             // stealthStepsFormat
             // 
-            this.stealthStepsFormat.Location = new System.Drawing.Point(334, 86);
+            this.stealthStepsFormat.Location = new System.Drawing.Point(334, 59);
             this.stealthStepsFormat.Name = "stealthStepsFormat";
             this.stealthStepsFormat.Size = new System.Drawing.Size(114, 23);
             this.stealthStepsFormat.TabIndex = 122;
@@ -1868,7 +1868,7 @@ namespace Assistant
             // showStaticWalls
             // 
             this.showStaticWalls.AutoSize = true;
-            this.showStaticWalls.Location = new System.Drawing.Point(260, 246);
+            this.showStaticWalls.Location = new System.Drawing.Point(260, 219);
             this.showStaticWalls.Name = "showStaticWalls";
             this.showStaticWalls.Size = new System.Drawing.Size(153, 19);
             this.showStaticWalls.TabIndex = 119;
@@ -1880,7 +1880,7 @@ namespace Assistant
             // 
             this.showStaticWallLabels.AutoSize = true;
             this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showStaticWallLabels.Location = new System.Drawing.Point(421, 247);
+            this.showStaticWallLabels.Location = new System.Drawing.Point(421, 220);
             this.showStaticWallLabels.Name = "showStaticWallLabels";
             this.showStaticWallLabels.Size = new System.Drawing.Size(55, 17);
             this.showStaticWallLabels.TabIndex = 120;
@@ -1891,7 +1891,7 @@ namespace Assistant
             // stealthOverhead
             // 
             this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stealthOverhead.Location = new System.Drawing.Point(393, 64);
+            this.stealthOverhead.Location = new System.Drawing.Point(393, 37);
             this.stealthOverhead.Name = "stealthOverhead";
             this.stealthOverhead.Size = new System.Drawing.Size(99, 20);
             this.stealthOverhead.TabIndex = 117;
@@ -1901,7 +1901,7 @@ namespace Assistant
             // 
             // forceSizeX
             // 
-            this.forceSizeX.Location = new System.Drawing.Point(387, 217);
+            this.forceSizeX.Location = new System.Drawing.Point(387, 190);
             this.forceSizeX.Name = "forceSizeX";
             this.forceSizeX.Size = new System.Drawing.Size(34, 23);
             this.forceSizeX.TabIndex = 111;
@@ -1909,7 +1909,7 @@ namespace Assistant
             // 
             // forceSizeY
             // 
-            this.forceSizeY.Location = new System.Drawing.Point(443, 218);
+            this.forceSizeY.Location = new System.Drawing.Point(443, 191);
             this.forceSizeY.Name = "forceSizeY";
             this.forceSizeY.Size = new System.Drawing.Size(33, 23);
             this.forceSizeY.TabIndex = 112;
@@ -1917,7 +1917,7 @@ namespace Assistant
             // 
             // blockHealPoison
             // 
-            this.blockHealPoison.Location = new System.Drawing.Point(260, 193);
+            this.blockHealPoison.Location = new System.Drawing.Point(260, 166);
             this.blockHealPoison.Name = "blockHealPoison";
             this.blockHealPoison.Size = new System.Drawing.Size(201, 20);
             this.blockHealPoison.TabIndex = 116;
@@ -1926,7 +1926,7 @@ namespace Assistant
             // 
             // potionEquip
             // 
-            this.potionEquip.Location = new System.Drawing.Point(260, 169);
+            this.potionEquip.Location = new System.Drawing.Point(260, 140);
             this.potionEquip.Name = "potionEquip";
             this.potionEquip.Size = new System.Drawing.Size(232, 20);
             this.potionEquip.TabIndex = 115;
@@ -1935,7 +1935,7 @@ namespace Assistant
             // 
             // spellUnequip
             // 
-            this.spellUnequip.Location = new System.Drawing.Point(260, 141);
+            this.spellUnequip.Location = new System.Drawing.Point(260, 114);
             this.spellUnequip.Name = "spellUnequip";
             this.spellUnequip.Size = new System.Drawing.Size(213, 20);
             this.spellUnequip.TabIndex = 108;
@@ -1944,7 +1944,7 @@ namespace Assistant
             // 
             // autoOpenDoors
             // 
-            this.autoOpenDoors.Location = new System.Drawing.Point(260, 115);
+            this.autoOpenDoors.Location = new System.Drawing.Point(260, 88);
             this.autoOpenDoors.Name = "autoOpenDoors";
             this.autoOpenDoors.Size = new System.Drawing.Size(118, 20);
             this.autoOpenDoors.TabIndex = 110;
@@ -1953,7 +1953,7 @@ namespace Assistant
             // 
             // chkStealth
             // 
-            this.chkStealth.Location = new System.Drawing.Point(260, 64);
+            this.chkStealth.Location = new System.Drawing.Point(260, 37);
             this.chkStealth.Name = "chkStealth";
             this.chkStealth.Size = new System.Drawing.Size(190, 20);
             this.chkStealth.TabIndex = 107;
@@ -1963,7 +1963,7 @@ namespace Assistant
             // label18
             // 
             this.label18.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(427, 220);
+            this.label18.Location = new System.Drawing.Point(427, 193);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(10, 18);
             this.label18.TabIndex = 114;
@@ -1972,7 +1972,7 @@ namespace Assistant
             // 
             // gameSize
             // 
-            this.gameSize.Location = new System.Drawing.Point(260, 219);
+            this.gameSize.Location = new System.Drawing.Point(260, 192);
             this.gameSize.Name = "gameSize";
             this.gameSize.Size = new System.Drawing.Size(118, 18);
             this.gameSize.TabIndex = 113;
@@ -2171,15 +2171,6 @@ namespace Assistant
             this.setFriendsFormatHue.UseVisualStyleBackColor = true;
             this.setFriendsFormatHue.Click += new System.EventHandler(this.setFriendsFormatHue_Click);
             // 
-            // friendFormat
-            // 
-            this.friendFormat.Location = new System.Drawing.Point(272, 122);
-            this.friendFormat.Name = "friendFormat";
-            this.friendFormat.Size = new System.Drawing.Size(145, 23);
-            this.friendFormat.TabIndex = 132;
-            this.friendFormat.Text = "Format:";
-            this.friendFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // friendOverheadFormat
             // 
             this.friendOverheadFormat.Location = new System.Drawing.Point(326, 122);
@@ -2305,6 +2296,7 @@ namespace Assistant
             this.friendAddTarget.Text = "Add (Target)";
             this.friendAddTarget.UseVisualStyleBackColor = true;
             this.friendAddTarget.Click += new System.EventHandler(this.friendAddTarget_Click);
+            this.friendAddTarget.MouseDown += new System.Windows.Forms.MouseEventHandler(this.friendAddTarget_MouseDown);
             // 
             // friendsList
             // 
@@ -2312,10 +2304,9 @@ namespace Assistant
             this.friendsList.ItemHeight = 15;
             this.friendsList.Location = new System.Drawing.Point(6, 51);
             this.friendsList.Name = "friendsList";
-            this.friendsList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.friendsList.Size = new System.Drawing.Size(241, 184);
             this.friendsList.TabIndex = 4;
-            this.friendsList.SelectedIndexChanged += new System.EventHandler(this.friendsList_SelectedIndexChanged);
+            this.friendsList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.friendsList_KeyDown);
             // 
             // friendsGroup
             // 
@@ -2326,6 +2317,15 @@ namespace Assistant
             this.friendsGroup.Size = new System.Drawing.Size(143, 23);
             this.friendsGroup.TabIndex = 3;
             this.friendsGroup.SelectedIndexChanged += new System.EventHandler(this.friendsGroup_SelectedIndexChanged);
+            // 
+            // friendFormat
+            // 
+            this.friendFormat.Location = new System.Drawing.Point(272, 122);
+            this.friendFormat.Name = "friendFormat";
+            this.friendFormat.Size = new System.Drawing.Size(145, 23);
+            this.friendFormat.TabIndex = 132;
+            this.friendFormat.Text = "Format:";
+            this.friendFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // displayTab
             // 
@@ -9528,7 +9528,7 @@ namespace Assistant
 
         private void friendRemoveSelected_Click(object sender, EventArgs e)
         {
-            if (friendsGroup.SelectedIndex < 0)
+            if (friendsGroup.SelectedIndex < 0 || friendsList.SelectedIndex < 0)
                 return;
 
             if (FriendsManager.RemoveFriend(friendsList.SelectedIndex))
@@ -9656,9 +9656,40 @@ namespace Assistant
             });
         }
 
-        private void friendsList_SelectedIndexChanged(object sender, EventArgs e)
+        private void friendAddTarget_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
 
+            ContextMenu menu = new ContextMenu();
+            menu.MenuItems.Add(Language.GetString(LocString.AddAllMobileFriends), new EventHandler(onAddAllMobilesAsFriends));
+            menu.MenuItems.Add(Language.GetString(LocString.AddAllHumanoidsAsFriends), new EventHandler(onAddAllHumanoidsAsFriends));
+
+            menu.Show(friendAddTarget, new Point(e.X, e.Y));
+        }
+
+        private void onAddAllMobilesAsFriends(object sender, System.EventArgs e)
+        {
+            FriendsManager.AddAllMobileAsFriends(friendsGroup.Text);
+        }
+
+        private void onAddAllHumanoidsAsFriends(object sender, System.EventArgs e)
+        {
+            FriendsManager.AddAllHumanoidsAsFriends(friendsGroup.Text);
+        }
+
+        private void friendsList_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (friendsList.SelectedIndex < 0 || friendsGroup.SelectedIndex < 0)
+                    return;
+
+                if (FriendsManager.RemoveFriend(friendsList.SelectedIndex))
+                {
+                    friendsList.Items.RemoveAt(friendsList.SelectedIndex);
+                }
+            }
         }
     }
 }

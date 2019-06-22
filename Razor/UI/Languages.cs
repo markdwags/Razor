@@ -521,6 +521,7 @@ namespace Assistant
         UseLeftHand,
         InsertOverheadMessage,
         InsertWaitForTarget,
+        AddAllHumanoidsAsFriends,
 
         __End
     }
