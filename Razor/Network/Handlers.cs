@@ -195,17 +195,18 @@ namespace Assistant
         {
             Serial ser = p.ReadUInt32();
 
+            Mobile m = World.FindMobile(ser);
+
+            if (m == null)
+                return;
+
             // if you modify this, don't forget to modify the allnames hotkey
             if (Config.GetBool("LastTargTextFlags"))
-            {
-                Mobile m = World.FindMobile(ser);
-                if (m != null)
-                    Targeting.CheckTextFlags(m);
+                Targeting.CheckTextFlags(m);
 
-                if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
-                {
-                    m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"), $"{Config.GetString("FriendOverheadFormat")}");
-                }
+            if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
+            {
+                m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"), $"{Config.GetString("FriendOverheadFormat")}");
             }
         }
 

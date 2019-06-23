@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using Assistant.UI;
 
@@ -9,24 +8,11 @@ namespace Assistant.Core
 {
     public static class FriendsManager
     {
-        //private static readonly FriendsManager FriendsHelper = new FriendsManager();
-
-        /*public static bool IsFriend(Mobile mobile)
-        {
-            return FriendsHelper.IsFriend(mobile.Serial);
-        }*/
-
         public static void OnTargetAddFriend()
         {
             World.Player.SendMessage(MsgLevel.Force, LocString.TargFriendAdd);
             Targeting.OneTimeTarget(OnAddTarget);
         }
-
-        /*public FriendsManager()
-        {
-            FriendGroups = new List<FriendGroup>();
-        }*/
-
         public class Friend
         {
             public string Name { get; set; }
@@ -47,18 +33,6 @@ namespace Assistant.Core
         }
 
         public static List<FriendGroup> FriendGroups = new List<FriendGroup>();
-
-        //private static List<Friend> _friendsList { get; set; }
-
-        /*public FriendsManager()
-        {
-            //_friendsList = new List<Friend>();
-            //FriendGroups = new List<FriendGroup>();
-
-            //HotKey.Add(HKCategory.Targets, LocString.AddFriend, new HotKeyCallback(AddToFriendsList));
-            //HotKey.Add(HKCategory.Targets, LocString.RemoveFriend, new HotKeyCallback(RemoveFromFriendsList));
-            //HotKey.Add(HKCategory.Targets, LocString.AddAllMobileFriends, new HotKeyCallback(AddAllMobileFriends));
-        }*/
 
         public static bool IsFriend(Serial serial)
         {
@@ -105,7 +79,7 @@ namespace Assistant.Core
             return false;
         }
 
-        private static bool AddFriend(string group, string friendName, Serial friendSerial)
+        public static bool AddFriend(string group, string friendName, Serial friendSerial)
         {
             foreach (var friendGroup in FriendGroups)
             {
@@ -226,7 +200,6 @@ namespace Assistant.Core
         {
             if (FriendGroups.RemoveAll(g => g.GroupName.Equals(group)) > 0)
             {
-                //ReloadFriendGroups();
                 return true;
             }
 

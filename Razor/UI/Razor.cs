@@ -2307,6 +2307,7 @@ namespace Assistant
             this.friendsList.Size = new System.Drawing.Size(241, 184);
             this.friendsList.TabIndex = 4;
             this.friendsList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.friendsList_KeyDown);
+            this.friendsList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.friendsList_MouseDown);
             // 
             // friendsGroup
             // 
@@ -9573,7 +9574,10 @@ namespace Assistant
                 {
                     friendsGroup.SelectedIndex = 0;
                 }
-                    
+                else
+                {
+                    friendsList.Items.Clear();
+                }
             }
         }
         private void friendsGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -9690,6 +9694,68 @@ namespace Assistant
                     friendsList.Items.RemoveAt(friendsList.SelectedIndex);
                 }
             }
+        }
+
+        private void friendsList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            if (e.Button == MouseButtons.Right)
+            {
+                ContextMenu menu = new ContextMenu();
+                menu.MenuItems.Add("Import friends from clipboard", new EventHandler(onImportFriends));
+                menu.MenuItems.Add("Export friends to clipboard", new EventHandler(onExportFriends));
+
+                menu.Show(friendsList, new Point(e.X, e.Y));
+            }
+        }
+
+        private void onImportFriends(object sender, System.EventArgs e)
+        {
+            if (Clipboard.GetText().Contains("!Razor.Friends.Import"))
+            {
+                List<string> friendsImport = Clipboard.GetText()
+                    .Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).ToList();
+
+                friendsImport.RemoveAt(0);
+
+                foreach (string import in friendsImport)
+                {
+                    if (string.IsNullOrEmpty(import))
+                        continue;
+
+                    string[] friend = import.Split('#');
+
+                    FriendsManager.AddFriend(friendsGroup.Text, friend[0], Serial.Parse(friend[1]));
+                }
+
+                Clipboard.Clear();
+            }
+        }
+        private void onExportFriends(object sender, System.EventArgs e)
+        {
+            if (friendsGroup.SelectedIndex < 0 || friendsList.Items.Count == 0)
+                return;
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("!Razor.Friends.Import");
+
+            foreach (FriendsManager.FriendGroup friendGroup in FriendsManager.FriendGroups)
+            {
+                if (friendGroup.GroupName.Equals(friendsGroup.Text))
+                {
+                    foreach (FriendsManager.Friend friend in friendGroup.Friends)
+                    {
+                        sb.AppendLine($"{friend.Name}#{friend.Serial}");
+                    }
+
+                    break;
+                }
+            }
+
+            Clipboard.SetDataObject(sb.ToString(), true);
         }
     }
 }
