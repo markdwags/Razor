@@ -9521,6 +9521,9 @@ namespace Assistant
 
         private void friendAddTarget_Click(object sender, EventArgs e)
         {
+            if (World.Player == null)
+                return;
+
             if (friendsGroup.SelectedIndex < 0)
                 return;
 
