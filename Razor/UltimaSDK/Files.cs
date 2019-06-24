@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 
 using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 
 namespace Ultima
 {
@@ -326,6 +327,18 @@ namespace Ultima
         private static string LoadDirectory()
         {
             string dir = ConfigurationManager.AppSettings["UODataDir"];
+            
+            // Use the value in settings.json if they're using ClassicUO
+            if (!Assistant.Client.IsOSI)
+            {
+                // Check in the root of this process for the file
+                if (File.Exists("settings.json"))
+                {
+                    dynamic cuoJson = JObject.Parse(File.ReadAllText("settings.json"));
+                    dir = cuoJson.ultimaonlinedirectory.ToString();
+
+                }
+            }
 
             if (string.IsNullOrEmpty(dir) || !System.IO.Directory.Exists(dir)) // If the path in the config looks bad, try the registry as a fallback
             {
