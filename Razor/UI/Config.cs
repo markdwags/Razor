@@ -243,6 +243,8 @@ namespace Assistant
             AddProperty("FriendOverheadFormat", "[Friend]");
             AddProperty("FriendOverheadFormatHue", 0x03F);
 
+            AddProperty("TargetIndicatorHue", 10);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

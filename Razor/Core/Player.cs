@@ -27,7 +27,8 @@ namespace Assistant
         Info = 0,
         Warning = 1,
         Error = 2,
-        Force = 3
+        Force = 3,
+        Friend = 4
     }
 
     public class Skill
@@ -842,7 +843,9 @@ namespace Assistant
                     case MsgLevel.Warning:
                         hue = Config.GetInt("WarningColor");
                         break;
-
+                    case MsgLevel.Friend:
+                        hue = Config.GetInt("FriendOverheadFormatHue");
+                        break;
                     default:
                         hue = Config.GetInt("SysColor");
                         break;

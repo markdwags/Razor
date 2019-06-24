@@ -348,6 +348,7 @@ namespace Assistant
         private Label friendFormat;
         private TextBox friendOverheadFormat;
         private Button setFriendsFormatHue;
+        private Button setTargetIndicatorHue;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -355,16 +356,6 @@ namespace Assistant
         public Label WaitDisplay
         {
             get { return waitDisp; }
-        }
-        
-        public ComboBox FriendsGroup
-        {
-            get { return friendsGroup; }
-        }
-
-        public ListBox FriendsList
-        {
-            get { return friendsList; }
         }
 
         public MainForm()
@@ -494,7 +485,7 @@ namespace Assistant
             this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.subOptionsTargetTab = new System.Windows.Forms.TabPage();
-            this.lblTargetFormat = new System.Windows.Forms.Label();
+            this.setTargetIndicatorHue = new System.Windows.Forms.Button();
             this.targetIndictorFormat = new System.Windows.Forms.TextBox();
             this.showtargtext = new System.Windows.Forms.CheckBox();
             this.showAttackTargetNewOnly = new System.Windows.Forms.CheckBox();
@@ -511,6 +502,7 @@ namespace Assistant
             this.label6 = new System.Windows.Forms.Label();
             this.smartLT = new System.Windows.Forms.CheckBox();
             this.queueTargets = new System.Windows.Forms.CheckBox();
+            this.lblTargetFormat = new System.Windows.Forms.Label();
             this.subOptionsMiscTab = new System.Windows.Forms.TabPage();
             this.autoOpenDoorWhenHidden = new System.Windows.Forms.CheckBox();
             this.lblStealthFormat = new System.Windows.Forms.Label();
@@ -1606,7 +1598,7 @@ namespace Assistant
             // subOptionsTargetTab
             // 
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
+            this.subOptionsTargetTab.Controls.Add(this.setTargetIndicatorHue);
             this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
             this.subOptionsTargetTab.Controls.Add(this.showtargtext);
             this.subOptionsTargetTab.Controls.Add(this.showAttackTargetNewOnly);
@@ -1623,6 +1615,7 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
+            this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
             this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
@@ -1630,18 +1623,19 @@ namespace Assistant
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
-            // lblTargetFormat
+            // setTargetIndicatorHue
             // 
-            this.lblTargetFormat.AutoSize = true;
-            this.lblTargetFormat.Location = new System.Drawing.Point(34, 249);
-            this.lblTargetFormat.Name = "lblTargetFormat";
-            this.lblTargetFormat.Size = new System.Drawing.Size(48, 15);
-            this.lblTargetFormat.TabIndex = 94;
-            this.lblTargetFormat.Text = "Format:";
+            this.setTargetIndicatorHue.Location = new System.Drawing.Point(177, 246);
+            this.setTargetIndicatorHue.Name = "setTargetIndicatorHue";
+            this.setTargetIndicatorHue.Size = new System.Drawing.Size(59, 23);
+            this.setTargetIndicatorHue.TabIndex = 134;
+            this.setTargetIndicatorHue.Text = "Set Hue";
+            this.setTargetIndicatorHue.UseVisualStyleBackColor = true;
+            this.setTargetIndicatorHue.Click += new System.EventHandler(this.setTargetIndicatorHue_Click);
             // 
             // targetIndictorFormat
             // 
-            this.targetIndictorFormat.Location = new System.Drawing.Point(88, 246);
+            this.targetIndictorFormat.Location = new System.Drawing.Point(64, 246);
             this.targetIndictorFormat.Name = "targetIndictorFormat";
             this.targetIndictorFormat.Size = new System.Drawing.Size(107, 23);
             this.targetIndictorFormat.TabIndex = 93;
@@ -1785,6 +1779,15 @@ namespace Assistant
             this.queueTargets.TabIndex = 35;
             this.queueTargets.Text = "Queue LastTarget and TargetSelf";
             this.queueTargets.CheckedChanged += new System.EventHandler(this.queueTargets_CheckedChanged);
+            // 
+            // lblTargetFormat
+            // 
+            this.lblTargetFormat.Location = new System.Drawing.Point(10, 246);
+            this.lblTargetFormat.Name = "lblTargetFormat";
+            this.lblTargetFormat.Size = new System.Drawing.Size(140, 23);
+            this.lblTargetFormat.TabIndex = 94;
+            this.lblTargetFormat.Text = "Format:";
+            this.lblTargetFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // subOptionsMiscTab
             // 
@@ -4576,6 +4579,8 @@ namespace Assistant
 
             friendFormat.SafeAction(s => { InitPreviewHue(s, "FriendOverheadFormatHue"); });
 
+            lblTargetFormat.SafeAction(s => { InitPreviewHue(s, "TargetIndicatorHue"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -4728,6 +4733,7 @@ namespace Assistant
             }
             else if (tabs.SelectedTab == moreOptTab)
             {
+                FriendsManager.SetControls(friendsGroup, friendsList);
                 FriendsManager.Redraw();
 
                 if (friendsGroup.Items.Count > 0)
@@ -9518,18 +9524,7 @@ namespace Assistant
                 SetHue(s, "ShowBandageTimerHue");
             });
         }
-
-        private void friendAddTarget_Click(object sender, EventArgs e)
-        {
-            if (World.Player == null)
-                return;
-
-            if (friendsGroup.SelectedIndex < 0)
-                return;
-
-            FriendsManager.OnTargetAddFriend();
-        }
-
+        
         private void friendRemoveSelected_Click(object sender, EventArgs e)
         {
             if (friendsGroup.SelectedIndex < 0 || friendsList.SelectedIndex < 0)
@@ -9665,23 +9660,45 @@ namespace Assistant
 
         private void friendAddTarget_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            if (World.Player == null)
+                return;
+
             if (friendsGroup.SelectedIndex < 0)
                 return;
 
-            ContextMenu menu = new ContextMenu();
-            menu.MenuItems.Add(Language.GetString(LocString.AddAllMobileFriends), new EventHandler(onAddAllMobilesAsFriends));
-            menu.MenuItems.Add(Language.GetString(LocString.AddAllHumanoidsAsFriends), new EventHandler(onAddAllHumanoidsAsFriends));
+            if ((e.Button & MouseButtons.Right) != 0)
+            {
+                ContextMenu menu = new ContextMenu();
+                menu.MenuItems.Add(Language.GetString(LocString.AddAllMobileFriends), new EventHandler(onAddAllMobilesAsFriends));
+                menu.MenuItems.Add(Language.GetString(LocString.AddAllHumanoidsAsFriends), new EventHandler(onAddAllHumanoidsAsFriends));
 
-            menu.Show(friendAddTarget, new Point(e.X, e.Y));
+                menu.Show(friendAddTarget, new Point(e.X, e.Y));
+            }
+            else
+            {
+                FriendsManager.OnTargetAddFriend();
+            }
         }
 
         private void onAddAllMobilesAsFriends(object sender, System.EventArgs e)
         {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            if (World.Player == null)
+                return;
+
             FriendsManager.AddAllMobileAsFriends(friendsGroup.Text);
         }
 
         private void onAddAllHumanoidsAsFriends(object sender, System.EventArgs e)
         {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            if (World.Player == null)
+                return;
+
             FriendsManager.AddAllHumanoidsAsFriends(friendsGroup.Text);
         }
 
@@ -9759,6 +9776,19 @@ namespace Assistant
             }
 
             Clipboard.SetDataObject(sb.ToString(), true);
+        }
+
+        private void setTargetIndicatorHue_Click(object sender, EventArgs e)
+        {
+            lblTargetFormat.SafeAction(s =>
+            {
+                SetHue(s, "TargetIndicatorHue");
+            });
+        }
+
+        private void friendAddTarget_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
