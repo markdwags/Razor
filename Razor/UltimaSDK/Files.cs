@@ -329,7 +329,18 @@ namespace Ultima
 
             // If they're using the ClassicUO client, pull the UO data dir from the plugin
             if (!Assistant.Client.IsOSI)
-                dir = Assistant.Client.Instance.GetUoFilePath();
+            {
+                //dir = Assistant.Client.Instance.GetUoFilePath();
+
+                // Check in the root of this process for the file
+                if (File.Exists("settings.json"))
+                {
+                    dynamic cuoJson = JObject.Parse(File.ReadAllText("settings.json"));
+                    dir = cuoJson.ultimaonlinedirectory.ToString();
+                }
+            }
+
+                
 
             if (string.IsNullOrEmpty(dir) || !System.IO.Directory.Exists(dir)
             ) // If the path in the config looks bad, try the registry as a fallback
