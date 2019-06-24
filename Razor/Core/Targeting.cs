@@ -1867,7 +1867,7 @@ namespace Assistant
         public static void NextTargetFriend()
         {
             List<Mobile> mobiles = World.MobilesInRange().Where(x =>
-                IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                FriendsManager.IsFriend(x.Serial) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
 
             NextPrevTarget(mobiles, true, true);
         }
@@ -1910,7 +1910,7 @@ namespace Assistant
         public static void PrevTargetFriend()
         {
             List<Mobile> mobiles = World.MobilesInRange().Where(x =>
-                IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost &&
+                FriendsManager.IsFriend(x.Serial) && !x.Blessed && !x.IsGhost &&
                 x.Serial != World.Player.Serial).ToList();
 
             NextPrevTarget(mobiles, false, true);
