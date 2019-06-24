@@ -4732,6 +4732,7 @@ namespace Assistant
             }
             else if (tabs.SelectedTab == moreOptTab)
             {
+                FriendsManager.SetControls(friendsGroup, friendsList);
                 FriendsManager.Redraw();
             }
         }
