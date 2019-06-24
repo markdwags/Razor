@@ -347,6 +347,8 @@ namespace Assistant
             {
                 defLang = "ENU";
             }
+            
+            Client.Init(true);
 
             if (!Language.Load(defLang))
             {
@@ -370,8 +372,6 @@ namespace Assistant
                 SplashScreen.Start();
                 m_ActiveWnd = SplashScreen.Instance;
             }
-
-            Client.Init(true);
 
             Load();
             RunUI();

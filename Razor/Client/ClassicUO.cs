@@ -103,7 +103,6 @@ namespace Assistant
         public override bool ClientRunning => m_ClientRunning;
         private uint m_In, m_Out;
 
-
         private DateTime m_ConnectionStart;
         private Process m_ClientProcess = null;
         private bool m_ClientRunning = false;
@@ -117,6 +116,7 @@ namespace Assistant
         private static OnTick _tick;
         private static RequestMove _requestMove;
         private static OnSetTitle _setTitle;
+        private static OnGetUOFilePath _uoFilePath;
 
 
         private static OnHotkey _onHotkeyPressed;
@@ -174,6 +174,7 @@ namespace Assistant
             _getStaticImage = (OnGetStaticImage)Marshal.GetDelegateForFunctionPointer( header->GetStaticImage, typeof( OnGetStaticImage ) );
             _requestMove = (RequestMove)Marshal.GetDelegateForFunctionPointer( header->RequestMove, typeof( RequestMove ) );
             _setTitle = (OnSetTitle)Marshal.GetDelegateForFunctionPointer( header->SetTitle, typeof( OnSetTitle ) );
+            _uoFilePath = (OnGetUOFilePath)Marshal.GetDelegateForFunctionPointer(header->GetUOFilePath, typeof(OnGetUOFilePath));
             m_ClientVersion = new Version( (byte)(header->ClientVersion >> 24), (byte)(header->ClientVersion >> 16), (byte)(header->ClientVersion >> 8), (byte)header->ClientVersion ).ToString();
             m_ClientRunning = true;
             m_ClientWindow = header->HWND;
@@ -479,6 +480,11 @@ namespace Assistant
         public override string GetClientVersion()
         {
             return m_ClientVersion;
+        }
+
+        public override string GetUoFilePath()
+        {
+            return _uoFilePath();
         }
 
         public override IntPtr GetWindowHandle()

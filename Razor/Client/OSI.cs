@@ -1,6 +1,7 @@
 ﻿using Assistant.Core;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -835,6 +836,10 @@ namespace Assistant
             return GetUOVersion();
         }
 
+        public override string GetUoFilePath()
+        {
+            return ConfigurationManager.AppSettings["UODataDir"];
+        }
 
         public override IntPtr GetWindowHandle()
         {
