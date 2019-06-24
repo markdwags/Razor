@@ -2166,7 +2166,7 @@ namespace Assistant
             // 
             // setFriendsFormatHue
             // 
-            this.setFriendsFormatHue.Location = new System.Drawing.Point(435, 114);
+            this.setFriendsFormatHue.Location = new System.Drawing.Point(438, 115);
             this.setFriendsFormatHue.Name = "setFriendsFormatHue";
             this.setFriendsFormatHue.Size = new System.Drawing.Size(59, 24);
             this.setFriendsFormatHue.TabIndex = 133;
@@ -2176,7 +2176,7 @@ namespace Assistant
             // 
             // friendOverheadFormat
             // 
-            this.friendOverheadFormat.Location = new System.Drawing.Point(327, 115);
+            this.friendOverheadFormat.Location = new System.Drawing.Point(330, 116);
             this.friendOverheadFormat.Name = "friendOverheadFormat";
             this.friendOverheadFormat.Size = new System.Drawing.Size(102, 23);
             this.friendOverheadFormat.TabIndex = 131;
@@ -2186,7 +2186,7 @@ namespace Assistant
             // 
             // showFriendOverhead
             // 
-            this.showFriendOverhead.Location = new System.Drawing.Point(263, 86);
+            this.showFriendOverhead.Location = new System.Drawing.Point(267, 90);
             this.showFriendOverhead.Name = "showFriendOverhead";
             this.showFriendOverhead.Size = new System.Drawing.Size(184, 23);
             this.showFriendOverhead.TabIndex = 130;
@@ -2196,9 +2196,9 @@ namespace Assistant
             // 
             // autoAcceptParty
             // 
-            this.autoAcceptParty.Location = new System.Drawing.Point(263, 60);
+            this.autoAcceptParty.Location = new System.Drawing.Point(267, 64);
             this.autoAcceptParty.Name = "autoAcceptParty";
-            this.autoAcceptParty.Size = new System.Drawing.Size(232, 20);
+            this.autoAcceptParty.Size = new System.Drawing.Size(230, 20);
             this.autoAcceptParty.TabIndex = 119;
             this.autoAcceptParty.Text = "Auto-accept party invites from friends";
             this.autoAcceptParty.CheckedChanged += new System.EventHandler(this.autoAcceptParty_CheckedChanged);
@@ -2206,7 +2206,7 @@ namespace Assistant
             // nextPrevIgnoresFriends
             // 
             this.nextPrevIgnoresFriends.AutoSize = true;
-            this.nextPrevIgnoresFriends.Location = new System.Drawing.Point(263, 35);
+            this.nextPrevIgnoresFriends.Location = new System.Drawing.Point(267, 39);
             this.nextPrevIgnoresFriends.Name = "nextPrevIgnoresFriends";
             this.nextPrevIgnoresFriends.Size = new System.Drawing.Size(203, 19);
             this.nextPrevIgnoresFriends.TabIndex = 97;
@@ -2216,7 +2216,7 @@ namespace Assistant
             // 
             // autoFriend
             // 
-            this.autoFriend.Location = new System.Drawing.Point(263, 9);
+            this.autoFriend.Location = new System.Drawing.Point(267, 13);
             this.autoFriend.Name = "autoFriend";
             this.autoFriend.Size = new System.Drawing.Size(217, 20);
             this.autoFriend.TabIndex = 96;
@@ -2227,24 +2227,24 @@ namespace Assistant
             // 
             this.friendsGroupBox.Controls.Add(this.friendsGroupRemove);
             this.friendsGroupBox.Controls.Add(this.friendsGroupAdd);
-            this.friendsGroupBox.Controls.Add(this.friendsListEnabled);
             this.friendsGroupBox.Controls.Add(this.friendClearList);
             this.friendsGroupBox.Controls.Add(this.friendRemoveSelected);
             this.friendsGroupBox.Controls.Add(this.friendAddTarget);
             this.friendsGroupBox.Controls.Add(this.friendsList);
             this.friendsGroupBox.Controls.Add(this.friendsGroup);
+            this.friendsGroupBox.Controls.Add(this.friendsListEnabled);
             this.friendsGroupBox.Location = new System.Drawing.Point(3, 3);
             this.friendsGroupBox.Name = "friendsGroupBox";
-            this.friendsGroupBox.Size = new System.Drawing.Size(253, 280);
+            this.friendsGroupBox.Size = new System.Drawing.Size(258, 280);
             this.friendsGroupBox.TabIndex = 0;
             this.friendsGroupBox.TabStop = false;
             this.friendsGroupBox.Text = "Friends Groups && Lists";
             // 
             // friendsGroupRemove
             // 
-            this.friendsGroupRemove.Location = new System.Drawing.Point(181, 22);
+            this.friendsGroupRemove.Location = new System.Drawing.Point(157, 21);
             this.friendsGroupRemove.Name = "friendsGroupRemove";
-            this.friendsGroupRemove.Size = new System.Drawing.Size(21, 23);
+            this.friendsGroupRemove.Size = new System.Drawing.Size(21, 25);
             this.friendsGroupRemove.TabIndex = 11;
             this.friendsGroupRemove.Text = "-";
             this.friendsGroupRemove.UseVisualStyleBackColor = true;
@@ -2252,9 +2252,9 @@ namespace Assistant
             // 
             // friendsGroupAdd
             // 
-            this.friendsGroupAdd.Location = new System.Drawing.Point(154, 22);
+            this.friendsGroupAdd.Location = new System.Drawing.Point(130, 21);
             this.friendsGroupAdd.Name = "friendsGroupAdd";
-            this.friendsGroupAdd.Size = new System.Drawing.Size(21, 23);
+            this.friendsGroupAdd.Size = new System.Drawing.Size(21, 25);
             this.friendsGroupAdd.TabIndex = 10;
             this.friendsGroupAdd.Text = "+";
             this.friendsGroupAdd.UseVisualStyleBackColor = true;
@@ -2262,17 +2262,17 @@ namespace Assistant
             // 
             // friendsListEnabled
             // 
-            this.friendsListEnabled.AutoSize = true;
-            this.friendsListEnabled.Location = new System.Drawing.Point(217, 26);
+            this.friendsListEnabled.Location = new System.Drawing.Point(184, 23);
             this.friendsListEnabled.Name = "friendsListEnabled";
-            this.friendsListEnabled.Size = new System.Drawing.Size(15, 14);
+            this.friendsListEnabled.Size = new System.Drawing.Size(69, 20);
             this.friendsListEnabled.TabIndex = 9;
+            this.friendsListEnabled.Text = "Enabled";
             this.friendsListEnabled.UseVisualStyleBackColor = true;
             this.friendsListEnabled.CheckedChanged += new System.EventHandler(this.friendsListEnabled_CheckedChanged);
             // 
             // friendClearList
             // 
-            this.friendClearList.Location = new System.Drawing.Point(168, 241);
+            this.friendClearList.Location = new System.Drawing.Point(174, 241);
             this.friendClearList.Name = "friendClearList";
             this.friendClearList.Size = new System.Drawing.Size(79, 33);
             this.friendClearList.TabIndex = 8;
@@ -2284,7 +2284,7 @@ namespace Assistant
             // 
             this.friendRemoveSelected.Location = new System.Drawing.Point(94, 241);
             this.friendRemoveSelected.Name = "friendRemoveSelected";
-            this.friendRemoveSelected.Size = new System.Drawing.Size(68, 33);
+            this.friendRemoveSelected.Size = new System.Drawing.Size(74, 33);
             this.friendRemoveSelected.TabIndex = 7;
             this.friendRemoveSelected.Text = "Remove";
             this.friendRemoveSelected.UseVisualStyleBackColor = true;
@@ -2306,7 +2306,7 @@ namespace Assistant
             this.friendsList.ItemHeight = 15;
             this.friendsList.Location = new System.Drawing.Point(6, 51);
             this.friendsList.Name = "friendsList";
-            this.friendsList.Size = new System.Drawing.Size(241, 184);
+            this.friendsList.Size = new System.Drawing.Size(247, 184);
             this.friendsList.TabIndex = 4;
             this.friendsList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.friendsList_KeyDown);
             this.friendsList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.friendsList_MouseDown);
@@ -2317,13 +2317,13 @@ namespace Assistant
             this.friendsGroup.FormattingEnabled = true;
             this.friendsGroup.Location = new System.Drawing.Point(6, 22);
             this.friendsGroup.Name = "friendsGroup";
-            this.friendsGroup.Size = new System.Drawing.Size(143, 23);
+            this.friendsGroup.Size = new System.Drawing.Size(118, 23);
             this.friendsGroup.TabIndex = 3;
             this.friendsGroup.SelectedIndexChanged += new System.EventHandler(this.friendsGroup_SelectedIndexChanged);
             // 
             // friendFormat
             // 
-            this.friendFormat.Location = new System.Drawing.Point(273, 115);
+            this.friendFormat.Location = new System.Drawing.Point(276, 116);
             this.friendFormat.Name = "friendFormat";
             this.friendFormat.Size = new System.Drawing.Size(145, 23);
             this.friendFormat.TabIndex = 132;
@@ -4110,7 +4110,6 @@ namespace Assistant
             this.subOptionsFriendsTab.ResumeLayout(false);
             this.subOptionsFriendsTab.PerformLayout();
             this.friendsGroupBox.ResumeLayout(false);
-            this.friendsGroupBox.PerformLayout();
             this.displayTab.ResumeLayout(false);
             this.displayCountersTabCtrl.ResumeLayout(false);
             this.subDisplayTab.ResumeLayout(false);
@@ -4179,6 +4178,8 @@ namespace Assistant
             Hide();
             new StatsTimer(this).Start();
             Language.LoadControlNames(this);
+            
+            FriendsManager.SetControls(friendsGroup, friendsList);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -4732,8 +4733,7 @@ namespace Assistant
             }
             else if (tabs.SelectedTab == moreOptTab)
             {
-                FriendsManager.SetControls(friendsGroup, friendsList);
-                FriendsManager.Redraw();
+                FriendsManager.RedrawGroup();
             }
         }
 
@@ -9524,10 +9524,8 @@ namespace Assistant
             if (friendsGroup.SelectedIndex < 0 || friendsList.SelectedIndex < 0)
                 return;
 
-            if (FriendsManager.RemoveFriend(friendsList.SelectedIndex))
-            {
-                friendsList.Items.RemoveAt(friendsList.SelectedIndex);
-            }
+            FriendsManager.RemoveFriend((FriendsManager.FriendGroup) friendsGroup.SelectedItem,
+                friendsList.SelectedIndex);
         }
 
         private void friendsGroupAdd_Click(object sender, EventArgs e)
@@ -9536,7 +9534,7 @@ namespace Assistant
             {
                 string name = InputBox.GetString();
 
-                if (!string.IsNullOrEmpty(name) && !FriendsManager.IsFriendsGroup(name))
+                if (!string.IsNullOrEmpty(name) && !FriendsManager.FriendsGroupExists(name))
                 {
                     FriendsManager.AddFriendGroup(name);
                 }
@@ -9553,50 +9551,36 @@ namespace Assistant
             if (friendsGroup.SelectedIndex < 0)
                 return;
 
-            if (FriendsManager.DeleteFriendGroup(friendsGroup.Text))
+            if (MessageBox.Show(this, Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                friendsGroup.Items.Clear();
+                if (FriendsManager.DeleteFriendGroup((FriendsManager.FriendGroup)friendsGroup.SelectedItem))
+                {
+                    FriendsManager.RedrawGroup();
 
-                foreach (var friendGroup in FriendsManager.FriendGroups)
-                {
-                    friendsGroup.Items.Add(friendGroup.GroupName);
-                }
-
-                if (friendsGroup.Items.Count > 0)
-                {
-                    friendsGroup.SelectedIndex = 0;
-                }
-                else
-                {
-                    friendsList.Items.Clear();
+                    if (friendsGroup.Items.Count > 0)
+                    {
+                        friendsGroup.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        friendsList.Items.Clear();
+                    }
                 }
             }
+
+            
         }
         private void friendsGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (friendsGroup.SelectedIndex < 0)
                 return;
 
+            var friendGroup = (FriendsManager.FriendGroup) friendsGroup.SelectedItem;
 
-            friendsList.BeginUpdate();
-            friendsList.Items.Clear();
+            friendsListEnabled.Checked = friendGroup.Enabled;
 
-            foreach (var friendGroup in FriendsManager.FriendGroups)
-            {
-                if (friendGroup.GroupName.Equals(friendsGroup.Text))
-                {
-                    friendsListEnabled.Checked = friendGroup.Enabled;
-
-                    foreach (var friend in friendGroup.Friends)
-                    {
-                        friendsList.Items.Add($"{friend.Name} ({friend.Serial})");
-                    }
-
-                    break;
-                }
-            }
-
-            friendsList.EndUpdate();
+            FriendsManager.RedrawList(friendGroup);
         }
 
         private void friendClearList_Click(object sender, EventArgs e)
@@ -9607,20 +9591,10 @@ namespace Assistant
             if (MessageBox.Show(this, Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                friendsList.BeginUpdate();
-                friendsList.Items.Clear();
+                FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup)friendsGroup.SelectedItem;
+                friendGroup.Friends.Clear();
 
-                foreach (var friendGroup in FriendsManager.FriendGroups)
-                {
-                    if (friendGroup.GroupName.Equals(friendsGroup.Text))
-                    {
-                        friendGroup.Friends.Clear();
-
-                        break;
-                    }
-                }
-
-                friendsList.EndUpdate();
+                FriendsManager.RedrawList(friendGroup);
             }
         }
 
@@ -9629,7 +9603,7 @@ namespace Assistant
             if (friendsGroup.SelectedIndex < 0)
                 return;
 
-            FriendsManager.EnableFriendsGroup(friendsGroup.Text, friendsListEnabled.Checked);
+            FriendsManager.EnableFriendsGroup((FriendsManager.FriendGroup)friendsGroup.SelectedItem, friendsListEnabled.Checked);
         }
 
         private void friendOverheadFormat_TextChanged(object sender, EventArgs e)
@@ -9670,7 +9644,7 @@ namespace Assistant
             }
             else
             {
-                FriendsManager.OnTargetAddFriend();
+                FriendsManager.OnTargetAddFriend((FriendsManager.FriendGroup)friendsGroup.SelectedItem);
             }
         }
 
@@ -9682,7 +9656,8 @@ namespace Assistant
             if (World.Player == null)
                 return;
 
-            FriendsManager.AddAllMobileAsFriends(friendsGroup.Text);
+            FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup)friendsGroup.SelectedItem;
+            friendGroup.AddAllMobileAsFriends();
         }
 
         private void onAddAllHumanoidsAsFriends(object sender, System.EventArgs e)
@@ -9693,7 +9668,8 @@ namespace Assistant
             if (World.Player == null)
                 return;
 
-            FriendsManager.AddAllHumanoidsAsFriends(friendsGroup.Text);
+            FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup)friendsGroup.SelectedItem;
+            friendGroup.AddAllHumanoidsAsFriends();
         }
 
         private void friendsList_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -9703,10 +9679,7 @@ namespace Assistant
                 if (friendsList.SelectedIndex < 0 || friendsGroup.SelectedIndex < 0)
                     return;
 
-                if (FriendsManager.RemoveFriend(friendsList.SelectedIndex))
-                {
-                    friendsList.Items.RemoveAt(friendsList.SelectedIndex);
-                }
+                FriendsManager.RemoveFriend((FriendsManager.FriendGroup)friendsList.SelectedItem, friendsList.SelectedIndex);
             }
         }
 
@@ -9746,7 +9719,9 @@ namespace Assistant
 
                         string[] friend = import.Split('#');
 
-                        FriendsManager.AddFriend(friendsGroup.Text, friend[0], Serial.Parse(friend[1]));
+                        FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup) friendsGroup.SelectedItem;
+
+                        friendGroup.AddFriend(friend[0], Serial.Parse(friend[1]));
                     }
 
                     Clipboard.Clear();
@@ -9766,18 +9741,14 @@ namespace Assistant
 
             sb.AppendLine("!Razor.Friends.Import");
 
-            foreach (FriendsManager.FriendGroup friendGroup in FriendsManager.FriendGroups)
-            {
-                if (friendGroup.GroupName.Equals(friendsGroup.Text))
-                {
-                    foreach (FriendsManager.Friend friend in friendGroup.Friends)
-                    {
-                        sb.AppendLine($"{friend.Name}#{friend.Serial}");
-                    }
+            
+            FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup)friendsGroup.SelectedItem;
 
-                    break;
-                }
+            foreach (FriendsManager.Friend friend in friendGroup.Friends)
+            {
+                sb.AppendLine($"{friend.Name}#{friend.Serial}");
             }
+
 
             Clipboard.SetDataObject(sb.ToString(), true);
         }

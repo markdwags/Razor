@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
@@ -12,16 +13,18 @@ namespace Assistant.Core
         private static ComboBox _friendGroups;
         private static ListBox _friendList;
 
+        private static List<FriendGroup> FriendGroups = new List<FriendGroup>();
+
         public static void SetControls(ComboBox friendsGroup, ListBox friendsList)
         {
             _friendGroups = friendsGroup;
             _friendList = friendsList;
         }
 
-        public static void OnTargetAddFriend()
+        public static void OnTargetAddFriend(FriendGroup group)
         {
             World.Player.SendMessage(MsgLevel.Friend, LocString.TargFriendAdd);
-            Targeting.OneTimeTarget(OnAddTarget);
+            Targeting.OneTimeTarget(group.OnAddFriendTarget);
         }
 
         public class Friend
@@ -46,13 +49,133 @@ namespace Assistant.Core
                 Friends = new List<Friend>();
             }
 
+            public void AddHotKeys()
+            {
+                HotKey.Add(HKCategory.Misc, HKSubCat.None, $"Friend Add Target To: {GroupName}", AddFriendToGroup);
+                HotKey.Add(HKCategory.Misc, HKSubCat.None, $"Friend Toggle Group: {GroupName}", ToggleFriendGroup);
+                HotKey.Add(HKCategory.Misc, HKSubCat.None, $"Friend Add All Mobiles: {GroupName}", AddAllMobileAsFriends);
+                HotKey.Add(HKCategory.Misc, HKSubCat.None, $"Friend Add All Humanoids: {GroupName}", AddAllHumanoidsAsFriends);
+            }
+
+            public void RemoveHotKeys()
+            {
+                HotKey.Remove($"Friend Add Target To: {GroupName}");
+                HotKey.Remove($"Friend Toggle Group: {GroupName}");
+                HotKey.Remove($"Friend Add All Mobiles: {GroupName}");
+                HotKey.Remove($"Friend Add All Humanoids: {GroupName}");
+            }
+
+            private void AddFriendToGroup()
+            {
+                World.Player.SendMessage(MsgLevel.Friend, $"Target friend to add to group '{GroupName}'");
+                Targeting.OneTimeTarget(OnAddFriendTarget);
+            }
+
+            private void ToggleFriendGroup()
+            {
+                if (Enabled)
+                {
+                    World.Player.SendMessage(MsgLevel.Warning, $"Friend group '{GroupName}' ({Friends.Count} friends) has been 'Disabled'");
+                    Enabled = false;
+                }
+                else
+                {
+                    World.Player.SendMessage(MsgLevel.Info, $"Friend group '{GroupName}' ({Friends.Count} friends) has been 'Enabled'");
+                    Enabled = true;
+                }
+            }
+
             public override string ToString()
             {
                 return $"{GroupName}";
             }
-        }
 
-        public static List<FriendGroup> FriendGroups = new List<FriendGroup>();
+            public void OnAddFriendTarget(bool location, Serial serial, Point3D loc, ushort gfx)
+            {
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
+
+                if (!location && serial.IsMobile && serial != World.Player.Serial)
+                {
+                    Mobile m = World.FindMobile(serial);
+
+                    if (m == null)
+                        return;
+
+                    if (AddFriend(m.Name, serial))
+                    {
+                        m.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
+                        m.OPLChanged();
+                    }
+                    else
+                    {
+                        World.Player.SendMessage(MsgLevel.Warning, $"'{m.Name}' is already in '{GroupName}'");
+                    }
+                }
+            }
+
+            public bool AddFriend(string friendName, Serial friendSerial)
+            {
+                if (Friends.Any(f => f.Serial == friendSerial) == false)
+                {
+                    Friend newFriend = new Friend
+                    {
+                        Name = friendName,
+                        Serial = friendSerial
+                    };
+
+                    Friends.Add(newFriend);
+
+                    if (_friendGroups.SelectedItem == this)
+                    {
+                        RedrawList(this);
+                    }
+
+                    World.Player.SendMessage(MsgLevel.Friend, $"Added '{friendName}' to '{GroupName}'");
+
+                    return true;
+                }
+             
+                return false;
+            }
+
+            public void AddAllMobileAsFriends()
+            {
+                List<Mobile> mobiles = World.MobilesInRange(12);
+
+                foreach (Mobile mobile in mobiles)
+                {
+                    if (!IsFriend(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial)
+                    {
+                        if (AddFriend(mobile.Name, mobile.Serial))
+                        {
+                            mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
+                            mobile.OPLChanged();
+                        }
+                    }
+                }
+            }
+
+            public void AddAllHumanoidsAsFriends()
+            {
+                List<Mobile> mobiles = World.MobilesInRange(12);
+
+                foreach (Mobile mobile in mobiles)
+                {
+                    if (!IsFriend(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial &&
+                        mobile.IsHuman)
+                    {
+                        if (AddFriend(mobile.Name, mobile.Serial))
+                        {
+                            mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
+                            mobile.OPLChanged();
+                        }
+                    }
+                }
+            }
+
+
+
+        }
 
         public static bool IsFriend(Serial serial)
         {
@@ -75,11 +198,11 @@ namespace Assistant.Core
             return isFriend;
         }
 
-        public static void EnableFriendsGroup(string name, bool enabled)
+        public static void EnableFriendsGroup(FriendGroup group, bool enabled)
         {
             foreach (FriendGroup friendGroup in FriendGroups)
             {
-                if (friendGroup.GroupName.Equals(name))
+                if (friendGroup == group)
                 {
                     friendGroup.Enabled = enabled;
                     return;
@@ -87,11 +210,11 @@ namespace Assistant.Core
             }
         }
 
-        public static bool IsFriendsGroup(string name)
+        public static bool FriendsGroupExists(string group)
         {
             foreach (FriendGroup friendGroup in FriendGroups)
             {
-                if (friendGroup.GroupName.ToLower().Equals(name.ToLower()))
+                if (friendGroup.GroupName.ToLower().Equals(group.ToLower()))
                 {
                     return true;
                 }
@@ -100,96 +223,28 @@ namespace Assistant.Core
             return false;
         }
 
-        public static bool AddFriend(string group, string friendName, Serial friendSerial)
+        public static bool IsFriendsGroupEnabled(FriendGroup group)
         {
-            foreach (var friendGroup in FriendGroups)
+            foreach (FriendGroup friendGroup in FriendGroups)
             {
-                if (friendGroup.GroupName.Equals(group) && IsFriend(friendSerial) == false)
+                if (friendGroup == group)
                 {
-                    Friend newFriend = new Friend
-                    {
-                        Name = friendName,
-                        Serial = friendSerial
-                    };
-
-                    friendGroup.Friends.Add(newFriend);
-
-                    _friendList.Items.Add(newFriend);
-
-                    World.Player.SendMessage(MsgLevel.Friend, $"Added '{friendName}' to '{group}'");
-
-                    return true;
+                    return friendGroup.Enabled;
                 }
             }
 
             return false;
         }
 
-        public static void AddAllMobileAsFriends(string group)
-        {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-
-            foreach (Mobile mobile in mobiles)
-            {
-                if (!IsFriend(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial)
-                {
-                    if (AddFriend(_friendGroups.Text, mobile.Name, mobile.Serial))
-                    {
-                        mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
-                        mobile.OPLChanged();
-                    }
-                }
-            }
-        }
-
-        public static void AddAllHumanoidsAsFriends(string group)
-        {
-            List<Mobile> mobiles = World.MobilesInRange(12);
-
-            foreach (Mobile mobile in mobiles)
-            {
-                if (!IsFriend(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial &&
-                    mobile.IsHuman)
-                {
-                    if (AddFriend(_friendGroups.Text, mobile.Name, mobile.Serial))
-                    {
-                        mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
-                        mobile.OPLChanged();
-                    }
-                }
-            }
-        }
-
-        private static void OnAddTarget(bool location, Serial serial, Point3D loc, ushort gfx)
-        {
-            Engine.MainWindow.SafeAction(s => s.ShowMe());
-
-            if (!location && serial.IsMobile && serial != World.Player.Serial)
-            {
-                Mobile m = World.FindMobile(serial);
-
-                if (m == null)
-                    return;
-
-                if (AddFriend(_friendGroups.Text, m.Name, serial))
-                {
-                    m.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
-                    m.OPLChanged();
-                }
-                else
-                {
-                    World.Player.SendMessage(MsgLevel.Warning, $"'{m.Name}' is already on a friends list");
-                }
-            }
-        }
-
-        public static bool RemoveFriend(int index)
+        public static bool RemoveFriend(FriendGroup group, int index)
         {
             foreach (var friendGroup in FriendGroups)
             {
-                if (friendGroup.GroupName.Equals(_friendGroups.Text))
+                if (friendGroup == group)
                 {
                     friendGroup.Friends.RemoveAt(index);
+
+                    RedrawList(group);
 
                     return true;
                 }
@@ -210,14 +265,17 @@ namespace Assistant.Core
             }
         }
 
-        public static bool DeleteFriendGroup(string group)
+        public static bool DeleteFriendGroup(FriendGroup group)
         {
-            if (FriendGroups.RemoveAll(g => g.GroupName.Equals(group)) > 0)
+            foreach (FriendGroup friendGroup in FriendGroups)
             {
-                return true;
+                if (friendGroup == group)
+                {
+                    friendGroup.RemoveHotKeys();
+                }
             }
 
-            return false;
+            return FriendGroups.Remove(group);
         }
 
         public static void AddFriendGroup(string group)
@@ -229,21 +287,11 @@ namespace Assistant.Core
                 Friends = new List<Friend>()
             };
 
-            _friendGroups.Items.Add(group);
+            friendGroup.AddHotKeys();
 
             FriendGroups.Add(friendGroup);
-        }
 
-        public static void ReloadFriendGroups()
-        {
-            _friendGroups.Items.Clear();
-
-            foreach (var friendGroup in FriendGroups)
-            {
-                _friendGroups.Items.Add(friendGroup.GroupName);
-            }
-
-            _friendGroups.SelectedIndex = 0;
+            RedrawGroup();
         }
 
         public static void Save(XmlTextWriter xml)
@@ -280,15 +328,24 @@ namespace Assistant.Core
                         Enabled = Convert.ToBoolean(el.GetAttribute("enabled"))
                     };
 
+                    friendGroup.AddHotKeys();
+                    
                     foreach (XmlElement friendEl in el.GetElementsByTagName("friend"))
                     {
-                        Friend friend = new Friend
+                        try
                         {
-                            Name = friendEl.GetAttribute("name"),
-                            Serial = Serial.Parse(friendEl.GetAttribute("serial"))
-                        };
+                            Friend friend = new Friend
+                            {
+                                Name = friendEl.GetAttribute("name"),
+                                Serial = Serial.Parse(friendEl.GetAttribute("serial"))
+                            };
 
-                        friendGroup.Friends.Add(friend);
+                            friendGroup.Friends.Add(friend);
+                        }
+                        catch
+                        {
+                            // ignore this bad record, most likely a bad serial
+                        }
                     }
 
                     FriendGroups.Add(friendGroup);
@@ -301,15 +358,15 @@ namespace Assistant.Core
 
         public static void ClearAll()
         {
-            if (FriendGroups == null)
+            foreach (FriendGroup friendGroup in FriendGroups)
             {
-                FriendGroups = new List<FriendGroup>();
+                friendGroup.RemoveHotKeys();
             }
 
             FriendGroups.Clear();
         }
 
-        public static void Redraw()
+        public static void RedrawGroup()
         {
             _friendGroups.BeginUpdate();
             _friendGroups.Items.Clear();
@@ -325,6 +382,19 @@ namespace Assistant.Core
             {
                 _friendGroups.SelectedIndex = 0;
             }
+        }
+
+        public static void RedrawList(FriendGroup group)
+        {
+            _friendList.BeginUpdate();
+            _friendList.Items.Clear();
+
+            foreach (Friend friend in group.Friends)
+            {
+                _friendList.Items.Add(friend);
+            }
+
+            _friendList.EndUpdate();
         }
     }
 }
