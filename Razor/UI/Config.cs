@@ -255,6 +255,7 @@ namespace Assistant
             ContainerLabels.ClearAll();
             AbsoluteTargetVariables.ClearAll();
             DoubleClickVariables.ClearAll();
+            FriendsManager.ClearAll();
         }
 
         public string Name

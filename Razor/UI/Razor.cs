@@ -2166,7 +2166,7 @@ namespace Assistant
             // 
             // setFriendsFormatHue
             // 
-            this.setFriendsFormatHue.Location = new System.Drawing.Point(434, 121);
+            this.setFriendsFormatHue.Location = new System.Drawing.Point(435, 114);
             this.setFriendsFormatHue.Name = "setFriendsFormatHue";
             this.setFriendsFormatHue.Size = new System.Drawing.Size(59, 24);
             this.setFriendsFormatHue.TabIndex = 133;
@@ -2176,7 +2176,7 @@ namespace Assistant
             // 
             // friendOverheadFormat
             // 
-            this.friendOverheadFormat.Location = new System.Drawing.Point(326, 122);
+            this.friendOverheadFormat.Location = new System.Drawing.Point(327, 115);
             this.friendOverheadFormat.Name = "friendOverheadFormat";
             this.friendOverheadFormat.Size = new System.Drawing.Size(102, 23);
             this.friendOverheadFormat.TabIndex = 131;
@@ -2186,7 +2186,7 @@ namespace Assistant
             // 
             // showFriendOverhead
             // 
-            this.showFriendOverhead.Location = new System.Drawing.Point(262, 93);
+            this.showFriendOverhead.Location = new System.Drawing.Point(263, 86);
             this.showFriendOverhead.Name = "showFriendOverhead";
             this.showFriendOverhead.Size = new System.Drawing.Size(184, 23);
             this.showFriendOverhead.TabIndex = 130;
@@ -2196,7 +2196,7 @@ namespace Assistant
             // 
             // autoAcceptParty
             // 
-            this.autoAcceptParty.Location = new System.Drawing.Point(262, 67);
+            this.autoAcceptParty.Location = new System.Drawing.Point(263, 60);
             this.autoAcceptParty.Name = "autoAcceptParty";
             this.autoAcceptParty.Size = new System.Drawing.Size(232, 20);
             this.autoAcceptParty.TabIndex = 119;
@@ -2206,7 +2206,7 @@ namespace Assistant
             // nextPrevIgnoresFriends
             // 
             this.nextPrevIgnoresFriends.AutoSize = true;
-            this.nextPrevIgnoresFriends.Location = new System.Drawing.Point(262, 42);
+            this.nextPrevIgnoresFriends.Location = new System.Drawing.Point(263, 35);
             this.nextPrevIgnoresFriends.Name = "nextPrevIgnoresFriends";
             this.nextPrevIgnoresFriends.Size = new System.Drawing.Size(203, 19);
             this.nextPrevIgnoresFriends.TabIndex = 97;
@@ -2216,7 +2216,7 @@ namespace Assistant
             // 
             // autoFriend
             // 
-            this.autoFriend.Location = new System.Drawing.Point(262, 16);
+            this.autoFriend.Location = new System.Drawing.Point(263, 9);
             this.autoFriend.Name = "autoFriend";
             this.autoFriend.Size = new System.Drawing.Size(217, 20);
             this.autoFriend.TabIndex = 96;
@@ -2238,7 +2238,7 @@ namespace Assistant
             this.friendsGroupBox.Size = new System.Drawing.Size(253, 280);
             this.friendsGroupBox.TabIndex = 0;
             this.friendsGroupBox.TabStop = false;
-            this.friendsGroupBox.Text = "Friends Groups/Lists:";
+            this.friendsGroupBox.Text = "Friends Groups && Lists";
             // 
             // friendsGroupRemove
             // 
@@ -2298,7 +2298,6 @@ namespace Assistant
             this.friendAddTarget.TabIndex = 5;
             this.friendAddTarget.Text = "Add (Target)";
             this.friendAddTarget.UseVisualStyleBackColor = true;
-            this.friendAddTarget.Click += new System.EventHandler(this.friendAddTarget_Click);
             this.friendAddTarget.MouseDown += new System.Windows.Forms.MouseEventHandler(this.friendAddTarget_MouseDown);
             // 
             // friendsList
@@ -2324,7 +2323,7 @@ namespace Assistant
             // 
             // friendFormat
             // 
-            this.friendFormat.Location = new System.Drawing.Point(272, 122);
+            this.friendFormat.Location = new System.Drawing.Point(273, 115);
             this.friendFormat.Name = "friendFormat";
             this.friendFormat.Size = new System.Drawing.Size(145, 23);
             this.friendFormat.TabIndex = 132;
@@ -4733,13 +4732,7 @@ namespace Assistant
             }
             else if (tabs.SelectedTab == moreOptTab)
             {
-                FriendsManager.SetControls(friendsGroup, friendsList);
                 FriendsManager.Redraw();
-
-                if (friendsGroup.Items.Count > 0)
-                {
-                    friendsGroup.SelectedIndex = 0;
-                }
             }
         }
 
@@ -9724,8 +9717,8 @@ namespace Assistant
             if (e.Button == MouseButtons.Right)
             {
                 ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add("Import friends from clipboard", new EventHandler(onImportFriends));
-                menu.MenuItems.Add("Export friends to clipboard", new EventHandler(onExportFriends));
+                menu.MenuItems.Add("Import 'Friends' from clipboard", new EventHandler(onImportFriends));
+                menu.MenuItems.Add("Export 'Friends' to clipboard", new EventHandler(onExportFriends));
 
                 menu.Show(friendsList, new Point(e.X, e.Y));
             }
@@ -9733,26 +9726,36 @@ namespace Assistant
 
         private void onImportFriends(object sender, System.EventArgs e)
         {
-            if (Clipboard.GetText().Contains("!Razor.Friends.Import"))
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            try
             {
-                List<string> friendsImport = Clipboard.GetText()
-                    .Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).ToList();
-
-                friendsImport.RemoveAt(0);
-
-                foreach (string import in friendsImport)
+                if (Clipboard.GetText().Contains("!Razor.Friends.Import"))
                 {
-                    if (string.IsNullOrEmpty(import))
-                        continue;
+                    List<string> friendsImport = Clipboard.GetText()
+                        .Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None).ToList();
 
-                    string[] friend = import.Split('#');
+                    friendsImport.RemoveAt(0);
 
-                    FriendsManager.AddFriend(friendsGroup.Text, friend[0], Serial.Parse(friend[1]));
+                    foreach (string import in friendsImport)
+                    {
+                        if (string.IsNullOrEmpty(import))
+                            continue;
+
+                        string[] friend = import.Split('#');
+
+                        FriendsManager.AddFriend(friendsGroup.Text, friend[0], Serial.Parse(friend[1]));
+                    }
+
+                    Clipboard.Clear();
                 }
-
-                Clipboard.Clear();
+            }
+            catch
+            {
             }
         }
+
         private void onExportFriends(object sender, System.EventArgs e)
         {
             if (friendsGroup.SelectedIndex < 0 || friendsList.Items.Count == 0)
@@ -9786,9 +9789,5 @@ namespace Assistant
             });
         }
 
-        private void friendAddTarget_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

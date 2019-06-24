@@ -56,18 +56,19 @@ namespace Assistant.Core
 
         public static bool IsFriend(Serial serial)
         {
+            // Check if they have treat party as friends enabled and check the party if so
+            if (Config.GetBool("AutoFriend") && PacketHandlers.Party.Contains(serial))
+                return true;
+
             bool isFriend = false;
 
+            // Loop through each friends group that is enabled
             foreach (var friendGroup in FriendGroups)
             {
-                if (friendGroup.Enabled)
+                if (friendGroup.Enabled && friendGroup.Friends.Any(f => f.Serial == serial))
                 {
-                    if (friendGroup.Friends.Any(f => f.Serial == serial) ||
-                        (Config.GetBool("AutoFriend") && PacketHandlers.Party.Contains(serial)))
-                    {
-                        isFriend = true;
-                        break;
-                    }
+                    isFriend = true;
+                    break;
                 }
             }
 
@@ -115,6 +116,8 @@ namespace Assistant.Core
 
                     _friendList.Items.Add(newFriend);
 
+                    World.Player.SendMessage(MsgLevel.Friend, $"Added '{friendName}' to '{group}'");
+
                     return true;
                 }
             }
@@ -132,8 +135,6 @@ namespace Assistant.Core
                 {
                     if (AddFriend(_friendGroups.Text, mobile.Name, mobile.Serial))
                     {
-                        World.Player.SendMessage(MsgLevel.Friend, $"Added '{mobile.Name}' to '{group}'");
-
                         mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
                         mobile.OPLChanged();
                     }
@@ -152,8 +153,6 @@ namespace Assistant.Core
                 {
                     if (AddFriend(_friendGroups.Text, mobile.Name, mobile.Serial))
                     {
-                        World.Player.SendMessage(MsgLevel.Friend, $"Added {mobile.Name} to '{group}'");
-
                         mobile.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
                         mobile.OPLChanged();
                     }
@@ -174,8 +173,6 @@ namespace Assistant.Core
 
                 if (AddFriend(_friendGroups.Text, m.Name, serial))
                 {
-                    World.Player.SendMessage(MsgLevel.Friend, $"Added {m.Name} to '{_friendGroups.Text}'");
-
                     m.ObjPropList.Add(Language.GetString(LocString.RazorFriend));
                     m.OPLChanged();
                 }
@@ -323,6 +320,11 @@ namespace Assistant.Core
             }
 
             _friendGroups.EndUpdate();
+
+            if (_friendGroups.Items.Count > 0)
+            {
+                _friendGroups.SelectedIndex = 0;
+            }
         }
     }
 }
