@@ -595,12 +595,11 @@ namespace Assistant
             return FindNode(parent, tag, false);
         }
 
-        public static bool OnKeyDown(int key)
+        public static bool OnKeyDown(int key, ModKeys mod )
         {
             if (World.Player == null)
                 return true;
-
-            ModKeys cur = ModKeys.None;
+            ModKeys cur = mod;
             if (KeyDown(Keys.ControlKey))
                 cur |= ModKeys.Control;
             if (KeyDown(Keys.Menu))
