@@ -933,7 +933,7 @@ namespace Assistant
             if (m == null)
             {
                 World.AddMobile(m = new Mobile(serial));
-                //World.RequestMobileStatus(m);
+                World.RequestMobileStatus(m);
             }
 
             if (m != null)
