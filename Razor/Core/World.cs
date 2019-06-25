@@ -72,7 +72,12 @@ namespace Assistant
 			m_Mobiles[mob.Serial] = mob;
 		}
 
-		internal static void RemoveMobile( Mobile mob )
+        internal static void RequestMobileStatus(Mobile m)
+        {
+            Client.Instance.SendToServer(new StatusQuery(m));
+        }
+
+        internal static void RemoveMobile( Mobile mob )
 		{
 			m_Mobiles.Remove( mob.Serial );
 		}

@@ -927,7 +927,14 @@ namespace Assistant
 
         private static void MobileMoving(Packet p, PacketHandlerEventArgs args)
         {
-            Mobile m = World.FindMobile(p.ReadUInt32());
+            Serial serial = p.ReadUInt32();
+            Mobile m = World.FindMobile(serial);
+
+            if (m == null)
+            {
+                World.AddMobile(m = new Mobile(serial));
+                //World.RequestMobileStatus(m);
+            }
 
             if (m != null)
             {
