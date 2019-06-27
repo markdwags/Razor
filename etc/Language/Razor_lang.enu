@@ -174,7 +174,7 @@ MainForm::blockOpenCorpsesTwice=Block opening corpses twice
 MainForm::trackDps=Enable damage tracker
 MainForm::filterSystemMessages=Filter repeating system messages
 MainForm::filterRazorMessages=Filter repeating Razor messages
-MainForm::filterOverheadMessages=Filter repeating Razor messages
+MainForm::filterOverheadMessages=Filter repeating overhead messages
 
 HueEntry::Text=Select a Hue
 HueEntry::cancel=Cancel
