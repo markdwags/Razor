@@ -851,12 +851,20 @@ namespace Assistant
                         break;
                 }
 
-                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3, Language.CliLocName, "System", text));
-
                 PacketHandlers.SysMessages.Add(text);
 
                 if (PacketHandlers.SysMessages.Count >= 25)
                     PacketHandlers.SysMessages.RemoveRange(0, 10);
+
+                if (Config.GetBool("FilterRazorMessages"))
+                {
+                    if (!MessageQueue.Enqueue(0xFFFFFFFF, null, 0, MessageType.Regular, (ushort) hue, 3, Language.CliLocName, "System", text))
+                    {
+                        return;
+                    }
+                }
+
+                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3, Language.CliLocName, "System", text));
             }
         }
 

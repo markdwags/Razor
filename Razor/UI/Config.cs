@@ -244,6 +244,11 @@ namespace Assistant
             AddProperty("FriendOverheadFormatHue", 0x03F);
 
             AddProperty("TargetIndicatorHue", 10);
+            
+            AddProperty("FilterSystemMessages", false);
+            AddProperty("FilterRazorMessages", false);
+            AddProperty("FilterDelay", 3.5);
+            AddProperty("FilterOverheadMessages", false);
 
             Counter.Default();
             Filter.DisableAll();
@@ -849,6 +854,11 @@ namespace Assistant
         public static int GetInt(string name)
         {
             return (int) CurrentProfile.GetProperty(name);
+        }
+
+        public static double GetDouble(string name)
+        {
+            return (double)CurrentProfile.GetProperty(name);
         }
 
         public static bool SetAppSetting(string key, string value)

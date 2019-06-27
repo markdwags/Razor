@@ -1942,6 +1942,14 @@ namespace Assistant
                     if (SysMessages.Count >= 25)
                         SysMessages.RemoveRange(0, 10);
                 }
+                
+                if (Config.GetBool("FilterSystemMessages") && ser == Serial.MinusOne || ser == Serial.Zero)
+                {
+                    if (!MessageQueue.Enqueue(ser, null, body, type, hue, font, lang, name, text))
+                    {
+                        args.Block = true;
+                    }
+                }
             }
         }
 

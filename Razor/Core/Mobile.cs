@@ -550,6 +550,14 @@ namespace Assistant
 
         internal void OverheadMessageFrom(int hue, string from, string text, bool ascii)
         {
+            if (Config.GetBool("FilterOverheadMessages"))
+            {
+                if (!MessageQueue.Enqueue(this, hue, "O", text))
+                {
+                    return;
+                }
+            }
+
             if (ascii)
             {
                 Client.Instance.SendToClient(new AsciiMessage(Serial, m_Body, MessageType.Regular, hue, 3, from, text));

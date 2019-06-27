@@ -185,7 +185,6 @@ namespace Assistant
         private CheckBox chkForceSpeechHue;
         private Label label3;
         private TabPage subOptionsTargetTab;
-        private CheckBox filterSnoop;
         private CheckBox incomingMob;
         private CheckBox incomingCorpse;
         private CheckBox showAttackTargetNewOnly;
@@ -349,6 +348,13 @@ namespace Assistant
         private TextBox friendOverheadFormat;
         private Button setFriendsFormatHue;
         private Button setTargetIndicatorHue;
+        private CheckBox filterRazorMessages;
+        private CheckBox filterSystemMessages;
+        private CheckBox filterSnoop;
+        private Label lblFilterDelaySeconds;
+        private Label lblFilterDelay;
+        private TextBox filterDelaySeconds;
+        private CheckBox filterOverheadMessages;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -439,6 +445,12 @@ namespace Assistant
             this.newProfile = new System.Windows.Forms.Button();
             this.profiles = new System.Windows.Forms.ComboBox();
             this.subFiltersTab = new System.Windows.Forms.TabPage();
+            this.lblFilterDelaySeconds = new System.Windows.Forms.Label();
+            this.lblFilterDelay = new System.Windows.Forms.Label();
+            this.filterDelaySeconds = new System.Windows.Forms.TextBox();
+            this.filterRazorMessages = new System.Windows.Forms.CheckBox();
+            this.filterSystemMessages = new System.Windows.Forms.CheckBox();
+            this.filterSnoop = new System.Windows.Forms.CheckBox();
             this.drakeAnimationList = new System.Windows.Forms.ComboBox();
             this.filterDrakeGraphics = new System.Windows.Forms.CheckBox();
             this.dragonAnimationList = new System.Windows.Forms.ComboBox();
@@ -462,7 +474,6 @@ namespace Assistant
             this.showContainerLabels = new System.Windows.Forms.CheckBox();
             this.overHeadMessages = new System.Windows.Forms.Button();
             this.showOverheadMessages = new System.Windows.Forms.CheckBox();
-            this.filterSnoop = new System.Windows.Forms.CheckBox();
             this.incomingMob = new System.Windows.Forms.CheckBox();
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.setLTHilight = new System.Windows.Forms.Button();
@@ -547,12 +558,12 @@ namespace Assistant
             this.friendsGroupBox = new System.Windows.Forms.GroupBox();
             this.friendsGroupRemove = new System.Windows.Forms.Button();
             this.friendsGroupAdd = new System.Windows.Forms.Button();
-            this.friendsListEnabled = new System.Windows.Forms.CheckBox();
             this.friendClearList = new System.Windows.Forms.Button();
             this.friendRemoveSelected = new System.Windows.Forms.Button();
             this.friendAddTarget = new System.Windows.Forms.Button();
             this.friendsList = new System.Windows.Forms.ListBox();
             this.friendsGroup = new System.Windows.Forms.ComboBox();
+            this.friendsListEnabled = new System.Windows.Forms.CheckBox();
             this.friendFormat = new System.Windows.Forms.Label();
             this.displayTab = new System.Windows.Forms.TabPage();
             this.displayCountersTabCtrl = new System.Windows.Forms.TabControl();
@@ -716,6 +727,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.filterOverheadMessages = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1109,17 +1121,78 @@ namespace Assistant
             // subFiltersTab
             // 
             this.subFiltersTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subFiltersTab.Controls.Add(this.filterOverheadMessages);
+            this.subFiltersTab.Controls.Add(this.lblFilterDelaySeconds);
+            this.subFiltersTab.Controls.Add(this.lblFilterDelay);
+            this.subFiltersTab.Controls.Add(this.filterDelaySeconds);
+            this.subFiltersTab.Controls.Add(this.filterRazorMessages);
+            this.subFiltersTab.Controls.Add(this.filterSystemMessages);
+            this.subFiltersTab.Controls.Add(this.filterSnoop);
             this.subFiltersTab.Controls.Add(this.drakeAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDrakeGraphics);
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
+            // 
+            // lblFilterDelaySeconds
+            // 
+            this.lblFilterDelaySeconds.Location = new System.Drawing.Point(346, 222);
+            this.lblFilterDelaySeconds.Name = "lblFilterDelaySeconds";
+            this.lblFilterDelaySeconds.Size = new System.Drawing.Size(59, 18);
+            this.lblFilterDelaySeconds.TabIndex = 110;
+            this.lblFilterDelaySeconds.Text = "seconds";
+            // 
+            // lblFilterDelay
+            // 
+            this.lblFilterDelay.AutoSize = true;
+            this.lblFilterDelay.Location = new System.Drawing.Point(230, 222);
+            this.lblFilterDelay.Name = "lblFilterDelay";
+            this.lblFilterDelay.Size = new System.Drawing.Size(68, 15);
+            this.lblFilterDelay.TabIndex = 109;
+            this.lblFilterDelay.Text = "Filter Delay:";
+            // 
+            // filterDelaySeconds
+            // 
+            this.filterDelaySeconds.Location = new System.Drawing.Point(304, 219);
+            this.filterDelaySeconds.Name = "filterDelaySeconds";
+            this.filterDelaySeconds.Size = new System.Drawing.Size(36, 23);
+            this.filterDelaySeconds.TabIndex = 108;
+            this.filterDelaySeconds.Text = "3.5";
+            this.filterDelaySeconds.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.filterDelaySeconds.TextChanged += new System.EventHandler(this.filterDelaySeconds_TextChanged);
+            // 
+            // filterRazorMessages
+            // 
+            this.filterRazorMessages.Location = new System.Drawing.Point(209, 166);
+            this.filterRazorMessages.Name = "filterRazorMessages";
+            this.filterRazorMessages.Size = new System.Drawing.Size(220, 20);
+            this.filterRazorMessages.TabIndex = 107;
+            this.filterRazorMessages.Text = "Filter repeating Razor messages";
+            this.filterRazorMessages.CheckedChanged += new System.EventHandler(this.filterRazorMessages_CheckedChanged);
+            // 
+            // filterSystemMessages
+            // 
+            this.filterSystemMessages.Location = new System.Drawing.Point(209, 140);
+            this.filterSystemMessages.Name = "filterSystemMessages";
+            this.filterSystemMessages.Size = new System.Drawing.Size(220, 20);
+            this.filterSystemMessages.TabIndex = 106;
+            this.filterSystemMessages.Text = "Filter repeating system messages";
+            this.filterSystemMessages.CheckedChanged += new System.EventHandler(this.filterSystemMessages_CheckedChanged);
+            // 
+            // filterSnoop
+            // 
+            this.filterSnoop.Location = new System.Drawing.Point(209, 114);
+            this.filterSnoop.Name = "filterSnoop";
+            this.filterSnoop.Size = new System.Drawing.Size(220, 20);
+            this.filterSnoop.TabIndex = 105;
+            this.filterSnoop.Text = "Filter snooping messages";
+            this.filterSnoop.CheckedChanged += new System.EventHandler(this.filterSnoop_CheckedChanged);
             // 
             // drakeAnimationList
             // 
@@ -1214,7 +1287,6 @@ namespace Assistant
             this.subOptionsSpeechTab.Controls.Add(this.showContainerLabels);
             this.subOptionsSpeechTab.Controls.Add(this.overHeadMessages);
             this.subOptionsSpeechTab.Controls.Add(this.showOverheadMessages);
-            this.subOptionsSpeechTab.Controls.Add(this.filterSnoop);
             this.subOptionsSpeechTab.Controls.Add(this.incomingMob);
             this.subOptionsSpeechTab.Controls.Add(this.incomingCorpse);
             this.subOptionsSpeechTab.Controls.Add(this.setLTHilight);
@@ -1246,7 +1318,7 @@ namespace Assistant
             // damageTakenOverhead
             // 
             this.damageTakenOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.damageTakenOverhead.Location = new System.Drawing.Point(394, 237);
+            this.damageTakenOverhead.Location = new System.Drawing.Point(394, 209);
             this.damageTakenOverhead.Name = "damageTakenOverhead";
             this.damageTakenOverhead.Size = new System.Drawing.Size(77, 19);
             this.damageTakenOverhead.TabIndex = 128;
@@ -1257,7 +1329,7 @@ namespace Assistant
             // showDamageTaken
             // 
             this.showDamageTaken.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.showDamageTaken.Location = new System.Drawing.Point(260, 237);
+            this.showDamageTaken.Location = new System.Drawing.Point(260, 209);
             this.showDamageTaken.Name = "showDamageTaken";
             this.showDamageTaken.Size = new System.Drawing.Size(139, 19);
             this.showDamageTaken.TabIndex = 127;
@@ -1268,7 +1340,7 @@ namespace Assistant
             // damageDealtOverhead
             // 
             this.damageDealtOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.damageDealtOverhead.Location = new System.Drawing.Point(394, 212);
+            this.damageDealtOverhead.Location = new System.Drawing.Point(394, 184);
             this.damageDealtOverhead.Name = "damageDealtOverhead";
             this.damageDealtOverhead.Size = new System.Drawing.Size(77, 19);
             this.damageDealtOverhead.TabIndex = 126;
@@ -1279,7 +1351,7 @@ namespace Assistant
             // showDamageDealt
             // 
             this.showDamageDealt.AutoSize = true;
-            this.showDamageDealt.Location = new System.Drawing.Point(260, 212);
+            this.showDamageDealt.Location = new System.Drawing.Point(260, 184);
             this.showDamageDealt.Name = "showDamageDealt";
             this.showDamageDealt.Size = new System.Drawing.Size(130, 19);
             this.showDamageDealt.TabIndex = 125;
@@ -1319,7 +1391,7 @@ namespace Assistant
             // 
             // healthFmt
             // 
-            this.healthFmt.Location = new System.Drawing.Point(377, 162);
+            this.healthFmt.Location = new System.Drawing.Point(377, 134);
             this.healthFmt.Name = "healthFmt";
             this.healthFmt.Size = new System.Drawing.Size(53, 23);
             this.healthFmt.TabIndex = 89;
@@ -1329,7 +1401,7 @@ namespace Assistant
             // 
             // label10
             // 
-            this.label10.Location = new System.Drawing.Point(283, 163);
+            this.label10.Location = new System.Drawing.Point(283, 135);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(115, 18);
             this.label10.TabIndex = 88;
@@ -1338,7 +1410,7 @@ namespace Assistant
             // 
             // showHealthOH
             // 
-            this.showHealthOH.Location = new System.Drawing.Point(260, 140);
+            this.showHealthOH.Location = new System.Drawing.Point(260, 112);
             this.showHealthOH.Name = "showHealthOH";
             this.showHealthOH.Size = new System.Drawing.Size(231, 20);
             this.showHealthOH.TabIndex = 87;
@@ -1347,7 +1419,7 @@ namespace Assistant
             // 
             // chkPartyOverhead
             // 
-            this.chkPartyOverhead.Location = new System.Drawing.Point(260, 186);
+            this.chkPartyOverhead.Location = new System.Drawing.Point(260, 158);
             this.chkPartyOverhead.Name = "chkPartyOverhead";
             this.chkPartyOverhead.Size = new System.Drawing.Size(238, 20);
             this.chkPartyOverhead.TabIndex = 90;
@@ -1357,7 +1429,7 @@ namespace Assistant
             // containerLabels
             // 
             this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.containerLabels.Location = new System.Drawing.Point(438, 115);
+            this.containerLabels.Location = new System.Drawing.Point(438, 87);
             this.containerLabels.Name = "containerLabels";
             this.containerLabels.Size = new System.Drawing.Size(33, 19);
             this.containerLabels.TabIndex = 86;
@@ -1368,7 +1440,7 @@ namespace Assistant
             // showContainerLabels
             // 
             this.showContainerLabels.AutoSize = true;
-            this.showContainerLabels.Location = new System.Drawing.Point(260, 115);
+            this.showContainerLabels.Location = new System.Drawing.Point(260, 87);
             this.showContainerLabels.Name = "showContainerLabels";
             this.showContainerLabels.Size = new System.Drawing.Size(141, 19);
             this.showContainerLabels.TabIndex = 85;
@@ -1379,7 +1451,7 @@ namespace Assistant
             // overHeadMessages
             // 
             this.overHeadMessages.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.overHeadMessages.Location = new System.Drawing.Point(438, 90);
+            this.overHeadMessages.Location = new System.Drawing.Point(438, 62);
             this.overHeadMessages.Name = "overHeadMessages";
             this.overHeadMessages.Size = new System.Drawing.Size(33, 19);
             this.overHeadMessages.TabIndex = 84;
@@ -1390,7 +1462,7 @@ namespace Assistant
             // showOverheadMessages
             // 
             this.showOverheadMessages.AutoSize = true;
-            this.showOverheadMessages.Location = new System.Drawing.Point(260, 90);
+            this.showOverheadMessages.Location = new System.Drawing.Point(260, 62);
             this.showOverheadMessages.Name = "showOverheadMessages";
             this.showOverheadMessages.Size = new System.Drawing.Size(161, 19);
             this.showOverheadMessages.TabIndex = 83;
@@ -1398,18 +1470,9 @@ namespace Assistant
             this.showOverheadMessages.UseVisualStyleBackColor = true;
             this.showOverheadMessages.CheckedChanged += new System.EventHandler(this.showMessagesOverhead_CheckedChanged);
             // 
-            // filterSnoop
-            // 
-            this.filterSnoop.Location = new System.Drawing.Point(260, 12);
-            this.filterSnoop.Name = "filterSnoop";
-            this.filterSnoop.Size = new System.Drawing.Size(220, 20);
-            this.filterSnoop.TabIndex = 73;
-            this.filterSnoop.Text = "Filter Snooping Messages";
-            this.filterSnoop.CheckedChanged += new System.EventHandler(this.filterSnoop_CheckedChanged);
-            // 
             // incomingMob
             // 
-            this.incomingMob.Location = new System.Drawing.Point(260, 38);
+            this.incomingMob.Location = new System.Drawing.Point(260, 10);
             this.incomingMob.Name = "incomingMob";
             this.incomingMob.Size = new System.Drawing.Size(211, 20);
             this.incomingMob.TabIndex = 71;
@@ -1418,7 +1481,7 @@ namespace Assistant
             // 
             // incomingCorpse
             // 
-            this.incomingCorpse.Location = new System.Drawing.Point(260, 64);
+            this.incomingCorpse.Location = new System.Drawing.Point(260, 36);
             this.incomingCorpse.Name = "incomingCorpse";
             this.incomingCorpse.Size = new System.Drawing.Size(238, 20);
             this.incomingCorpse.TabIndex = 72;
@@ -1616,10 +1679,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
@@ -2158,9 +2221,9 @@ namespace Assistant
             this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
             this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
             this.subOptionsFriendsTab.Controls.Add(this.friendFormat);
-            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
-            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsFriendsTab.TabIndex = 3;
             this.subOptionsFriendsTab.Text = "Friends";
             // 
@@ -2260,16 +2323,6 @@ namespace Assistant
             this.friendsGroupAdd.UseVisualStyleBackColor = true;
             this.friendsGroupAdd.Click += new System.EventHandler(this.friendsGroupAdd_Click);
             // 
-            // friendsListEnabled
-            // 
-            this.friendsListEnabled.Location = new System.Drawing.Point(184, 23);
-            this.friendsListEnabled.Name = "friendsListEnabled";
-            this.friendsListEnabled.Size = new System.Drawing.Size(69, 20);
-            this.friendsListEnabled.TabIndex = 9;
-            this.friendsListEnabled.Text = "Enabled";
-            this.friendsListEnabled.UseVisualStyleBackColor = true;
-            this.friendsListEnabled.CheckedChanged += new System.EventHandler(this.friendsListEnabled_CheckedChanged);
-            // 
             // friendClearList
             // 
             this.friendClearList.Location = new System.Drawing.Point(174, 241);
@@ -2320,6 +2373,16 @@ namespace Assistant
             this.friendsGroup.Size = new System.Drawing.Size(118, 23);
             this.friendsGroup.TabIndex = 3;
             this.friendsGroup.SelectedIndexChanged += new System.EventHandler(this.friendsGroup_SelectedIndexChanged);
+            // 
+            // friendsListEnabled
+            // 
+            this.friendsListEnabled.Location = new System.Drawing.Point(184, 23);
+            this.friendsListEnabled.Name = "friendsListEnabled";
+            this.friendsListEnabled.Size = new System.Drawing.Size(69, 20);
+            this.friendsListEnabled.TabIndex = 9;
+            this.friendsListEnabled.Text = "Enabled";
+            this.friendsListEnabled.UseVisualStyleBackColor = true;
+            this.friendsListEnabled.CheckedChanged += new System.EventHandler(this.friendsListEnabled_CheckedChanged);
             // 
             // friendFormat
             // 
@@ -4069,6 +4132,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // filterOverheadMessages
+            // 
+            this.filterOverheadMessages.Location = new System.Drawing.Point(209, 192);
+            this.filterOverheadMessages.Name = "filterOverheadMessages";
+            this.filterOverheadMessages.Size = new System.Drawing.Size(220, 20);
+            this.filterOverheadMessages.TabIndex = 111;
+            this.filterOverheadMessages.Text = "Filter repeating overhead messages";
+            this.filterOverheadMessages.CheckedChanged += new System.EventHandler(this.filterOverheadMessages_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4580,6 +4652,11 @@ namespace Assistant
             friendFormat.SafeAction(s => { InitPreviewHue(s, "FriendOverheadFormatHue"); });
 
             lblTargetFormat.SafeAction(s => { InitPreviewHue(s, "TargetIndicatorHue"); });
+
+            filterSystemMessages.SafeAction(s => { s.Checked = Config.GetBool("FilterSystemMessages"); });
+            filterRazorMessages.SafeAction(s => { s.Checked = Config.GetBool("FilterRazorMessages"); });
+            filterDelaySeconds.SafeAction(s => { s.Text = Config.GetDouble("FilterDelay").ToString(); });
+            filterOverheadMessages.SafeAction(s => { s.Checked = Config.GetBool("FilterOverheadMessages"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -9761,5 +9838,30 @@ namespace Assistant
             });
         }
 
+        private void filterSystemMessages_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("FilterSystemMessages", filterSystemMessages.Checked);
+        }
+
+        private void filterRazorMessages_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("FilterRazorMessages", filterRazorMessages.Checked);
+        }
+
+        private void filterDelaySeconds_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("FilterDelay", Utility.ToDouble(filterDelaySeconds.Text.Trim(), 3.5));
+
+            if (Config.GetDouble("FilterDelay") < 0 || Config.GetDouble("FilterDelay") > 20)
+            {
+                Config.SetProperty("FilterDelay", 3.5);
+                filterDelaySeconds.SafeAction(s => s.Text = "3.5");
+            }
+        }
+
+        private void filterOverheadMessages_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("FilterOverheadMessages", filterOverheadMessages.Checked);
+        }
     }
 }

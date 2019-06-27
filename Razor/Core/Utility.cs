@@ -326,5 +326,20 @@ namespace Assistant
 				return def;
 			}
 		}
-	}
+
+	    public static double ToDouble(string str, double def)
+	    {
+	        if (str == null)
+	            return def;
+
+	        try
+	        {
+	            return Convert.ToDouble(str);
+	        }
+	        catch
+	        {
+	            return def;
+	        }
+	    }
+    }
 }
