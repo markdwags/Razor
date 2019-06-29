@@ -522,7 +522,20 @@ namespace Assistant
         InsertOverheadMessage,
         InsertWaitForTarget,
         AddAllHumanoidsAsFriends,
-
+        NextTargetEnemyMonster,
+        NextTargetCriminalMonster,
+        NextTargetMurdererMonster,
+        NextTargetInnocentMonster,
+        PrevTargetCriminalMonster,
+        PrevTargetMurdererMonster,
+        PrevTargetInnocentMonster,
+        NextTargetFriendlyMonster,
+        NextTargetGreyMonster,
+        NextTargetNonFriendlyMonster,
+        PrevTargetEnemyMonster,
+        PrevTargetFriendlyMonster,
+        PrevTargetGreyMonster,
+        PrevTargetNonFriendlyMonster,
         __End
     }
 

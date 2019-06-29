@@ -181,6 +181,8 @@
     <Compile Include="Core\DressList.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\TargetingClosest.cs" />
+    <Compile Include="Core\TargetingNextPrevious.cs" />
     <Compile Include="Filters\Death.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -324,6 +326,7 @@
     <Compile Include="Core\Timer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\TargetingRandom.cs" />
     <Compile Include="UI\AddCounter.cs">
       <SubType>Form</SubType>
     </Compile>
