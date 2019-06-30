@@ -355,6 +355,7 @@ namespace Assistant
         private Label lblFilterDelay;
         private TextBox filterDelaySeconds;
         private CheckBox filterOverheadMessages;
+        private CheckBox nextPrevSmartTarget;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -445,6 +446,7 @@ namespace Assistant
             this.newProfile = new System.Windows.Forms.Button();
             this.profiles = new System.Windows.Forms.ComboBox();
             this.subFiltersTab = new System.Windows.Forms.TabPage();
+            this.filterOverheadMessages = new System.Windows.Forms.CheckBox();
             this.lblFilterDelaySeconds = new System.Windows.Forms.Label();
             this.lblFilterDelay = new System.Windows.Forms.Label();
             this.filterDelaySeconds = new System.Windows.Forms.TextBox();
@@ -496,6 +498,7 @@ namespace Assistant
             this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.subOptionsTargetTab = new System.Windows.Forms.TabPage();
+            this.nextPrevSmartTarget = new System.Windows.Forms.CheckBox();
             this.setTargetIndicatorHue = new System.Windows.Forms.Button();
             this.targetIndictorFormat = new System.Windows.Forms.TextBox();
             this.showtargtext = new System.Windows.Forms.CheckBox();
@@ -727,7 +730,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.filterOverheadMessages = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1133,12 +1135,21 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
+            // 
+            // filterOverheadMessages
+            // 
+            this.filterOverheadMessages.Location = new System.Drawing.Point(209, 192);
+            this.filterOverheadMessages.Name = "filterOverheadMessages";
+            this.filterOverheadMessages.Size = new System.Drawing.Size(220, 20);
+            this.filterOverheadMessages.TabIndex = 111;
+            this.filterOverheadMessages.Text = "Filter repeating overhead messages";
+            this.filterOverheadMessages.CheckedChanged += new System.EventHandler(this.filterOverheadMessages_CheckedChanged);
             // 
             // lblFilterDelaySeconds
             // 
@@ -1661,6 +1672,7 @@ namespace Assistant
             // subOptionsTargetTab
             // 
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsTargetTab.Controls.Add(this.nextPrevSmartTarget);
             this.subOptionsTargetTab.Controls.Add(this.setTargetIndicatorHue);
             this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
             this.subOptionsTargetTab.Controls.Add(this.showtargtext);
@@ -1685,6 +1697,17 @@ namespace Assistant
             this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
+            // 
+            // nextPrevSmartTarget
+            // 
+            this.nextPrevSmartTarget.AutoSize = true;
+            this.nextPrevSmartTarget.Location = new System.Drawing.Point(261, 38);
+            this.nextPrevSmartTarget.Name = "nextPrevSmartTarget";
+            this.nextPrevSmartTarget.Size = new System.Drawing.Size(234, 19);
+            this.nextPrevSmartTarget.TabIndex = 135;
+            this.nextPrevSmartTarget.Text = "Next/Previous does not set smart target";
+            this.nextPrevSmartTarget.UseVisualStyleBackColor = true;
+            this.nextPrevSmartTarget.CheckedChanged += new System.EventHandler(this.nextPrevSmartTarget_CheckedChanged);
             // 
             // setTargetIndicatorHue
             // 
@@ -4132,15 +4155,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // filterOverheadMessages
-            // 
-            this.filterOverheadMessages.Location = new System.Drawing.Point(209, 192);
-            this.filterOverheadMessages.Name = "filterOverheadMessages";
-            this.filterOverheadMessages.Size = new System.Drawing.Size(220, 20);
-            this.filterOverheadMessages.TabIndex = 111;
-            this.filterOverheadMessages.Text = "Filter repeating overhead messages";
-            this.filterOverheadMessages.CheckedChanged += new System.EventHandler(this.filterOverheadMessages_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4657,6 +4671,8 @@ namespace Assistant
             filterRazorMessages.SafeAction(s => { s.Checked = Config.GetBool("FilterRazorMessages"); });
             filterDelaySeconds.SafeAction(s => { s.Text = Config.GetDouble("FilterDelay").ToString(); });
             filterOverheadMessages.SafeAction(s => { s.Checked = Config.GetBool("FilterOverheadMessages"); });
+
+            nextPrevSmartTarget.SafeAction(s => { s.Checked = Config.GetBool("NextPrevIgnoreSmartTarget"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -9862,6 +9878,11 @@ namespace Assistant
         private void filterOverheadMessages_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("FilterOverheadMessages", filterOverheadMessages.Checked);
+        }
+
+        private void nextPrevSmartTarget_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("NextPrevIgnoreSmartTarget", nextPrevSmartTarget.Checked);
         }
     }
 }

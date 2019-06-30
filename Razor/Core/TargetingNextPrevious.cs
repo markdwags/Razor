@@ -161,7 +161,10 @@ namespace Assistant
 
             m_LastGroundTarg = m_LastTarget = target;
 
-            m_LastHarmTarg = m_LastBeneTarg = target;
+            if (!Config.GetBool("NextPrevIgnoreSmartTarget"))
+            {
+                m_LastHarmTarg = m_LastBeneTarg = target;
+            }
 
             if (m_HasTarget)
                 target.Flags = m_CurFlags;

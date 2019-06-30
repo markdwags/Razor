@@ -250,6 +250,8 @@ namespace Assistant
             AddProperty("FilterDelay", 3.5);
             AddProperty("FilterOverheadMessages", false);
 
+            AddProperty("NextPrevIgnoreSmartTarget", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
