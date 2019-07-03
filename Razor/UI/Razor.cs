@@ -355,7 +355,7 @@ namespace Assistant
         private Label lblFilterDelay;
         private TextBox filterDelaySeconds;
         private CheckBox filterOverheadMessages;
-        private CheckBox nextPrevSmartTarget;
+        private CheckBox onlyNextPrevBeneficial;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -498,7 +498,7 @@ namespace Assistant
             this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.subOptionsTargetTab = new System.Windows.Forms.TabPage();
-            this.nextPrevSmartTarget = new System.Windows.Forms.CheckBox();
+            this.onlyNextPrevBeneficial = new System.Windows.Forms.CheckBox();
             this.setTargetIndicatorHue = new System.Windows.Forms.Button();
             this.targetIndictorFormat = new System.Windows.Forms.TextBox();
             this.showtargtext = new System.Windows.Forms.CheckBox();
@@ -1672,7 +1672,7 @@ namespace Assistant
             // subOptionsTargetTab
             // 
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subOptionsTargetTab.Controls.Add(this.nextPrevSmartTarget);
+            this.subOptionsTargetTab.Controls.Add(this.onlyNextPrevBeneficial);
             this.subOptionsTargetTab.Controls.Add(this.setTargetIndicatorHue);
             this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
             this.subOptionsTargetTab.Controls.Add(this.showtargtext);
@@ -1698,16 +1698,16 @@ namespace Assistant
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
-            // nextPrevSmartTarget
+            // onlyNextPrevBeneficial
             // 
-            this.nextPrevSmartTarget.AutoSize = true;
-            this.nextPrevSmartTarget.Location = new System.Drawing.Point(261, 38);
-            this.nextPrevSmartTarget.Name = "nextPrevSmartTarget";
-            this.nextPrevSmartTarget.Size = new System.Drawing.Size(234, 19);
-            this.nextPrevSmartTarget.TabIndex = 135;
-            this.nextPrevSmartTarget.Text = "Next/Previous does not set smart target";
-            this.nextPrevSmartTarget.UseVisualStyleBackColor = true;
-            this.nextPrevSmartTarget.CheckedChanged += new System.EventHandler(this.nextPrevSmartTarget_CheckedChanged);
+            this.onlyNextPrevBeneficial.AutoSize = true;
+            this.onlyNextPrevBeneficial.Location = new System.Drawing.Point(261, 38);
+            this.onlyNextPrevBeneficial.Name = "onlyNextPrevBeneficial";
+            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(225, 19);
+            this.onlyNextPrevBeneficial.TabIndex = 135;
+            this.onlyNextPrevBeneficial.Text = "Only \'Next/Prev Friend\' sets Beneficial";
+            this.onlyNextPrevBeneficial.UseVisualStyleBackColor = true;
+            this.onlyNextPrevBeneficial.CheckedChanged += new System.EventHandler(this.onlyNextPrevBeneficial_CheckedChanged);
             // 
             // setTargetIndicatorHue
             // 
@@ -4672,7 +4672,7 @@ namespace Assistant
             filterDelaySeconds.SafeAction(s => { s.Text = Config.GetDouble("FilterDelay").ToString(); });
             filterOverheadMessages.SafeAction(s => { s.Checked = Config.GetBool("FilterOverheadMessages"); });
 
-            nextPrevSmartTarget.SafeAction(s => { s.Checked = Config.GetBool("NextPrevIgnoreSmartTarget"); });
+            onlyNextPrevBeneficial.SafeAction(s => { s.Checked = Config.GetBool("OnlyNextPrevBeneficial"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -9880,9 +9880,9 @@ namespace Assistant
             Config.SetProperty("FilterOverheadMessages", filterOverheadMessages.Checked);
         }
 
-        private void nextPrevSmartTarget_CheckedChanged(object sender, EventArgs e)
+        private void onlyNextPrevBeneficial_CheckedChanged(object sender, EventArgs e)
         {
-            Config.SetProperty("NextPrevIgnoreSmartTarget", nextPrevSmartTarget.Checked);
+            Config.SetProperty("OnlyNextPrevBeneficial", onlyNextPrevBeneficial.Checked);
         }
     }
 }

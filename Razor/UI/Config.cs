@@ -250,7 +250,7 @@ namespace Assistant
             AddProperty("FilterDelay", 3.5);
             AddProperty("FilterOverheadMessages", false);
 
-            AddProperty("NextPrevIgnoreSmartTarget", false);
+            AddProperty("OnlyNextPrevBeneficial", false);
 
             Counter.Default();
             Filter.DisableAll();

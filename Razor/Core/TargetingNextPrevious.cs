@@ -104,7 +104,7 @@ namespace Assistant
         /// </summary>
         /// <param name="targets">The list of targets (already filtered)</param>
         /// <param name="nextTarget">next target true, previous target false</param>
-        /// <param name="removeFriends"></param>
+        /// <param name="isFriend"></param>
         private static void NextPrevTarget(List<Mobile> targets, bool nextTarget, bool isFriend = false)
         {
             if (targets.Count <= 0)
@@ -160,10 +160,18 @@ namespace Assistant
             }
 
             m_LastGroundTarg = m_LastTarget = target;
-
-            if (!Config.GetBool("NextPrevIgnoreSmartTarget"))
+            
+            if (Config.GetBool("OnlyNextPrevBeneficial") && isFriend)
             {
-                m_LastHarmTarg = m_LastBeneTarg = target;
+                m_LastBeneTarg = target;
+            }
+            else if (Config.GetBool("OnlyNextPrevBeneficial") && !isFriend)
+            {
+                m_LastHarmTarg = target;
+            }
+            else
+            {
+                m_LastBeneTarg = m_LastHarmTarg = target;
             }
 
             if (m_HasTarget)

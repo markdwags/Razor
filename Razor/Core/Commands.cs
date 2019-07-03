@@ -303,10 +303,12 @@ namespace Assistant
             }
 
             text = text.Trim();
+            
+            char commandToggle = Client.IsOSI ? '-' : '>';
 
             if (text.Length > 0)
             {
-                if (text[0] != '-')
+                if (text[0] != commandToggle)
                 {
                     Macros.MacroManager.Action(new Macros.SpeechAction(type, hue, font, lang, keys, text));
                 }
