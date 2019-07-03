@@ -198,7 +198,7 @@ namespace Assistant
 
         private static void NextTarget()
         {
-            var mobiles = World.MobilesInRange();
+            var mobiles = World.MobilesInRange().Where(x => !IsNextPrevFriend(x)).ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -252,7 +252,7 @@ namespace Assistant
 
         private static void PrevTarget()
         {
-            var mobiles = World.MobilesInRange();
+            var mobiles = World.MobilesInRange().Where(x => !IsNextPrevFriend(x)).ToList();
 
             NextPrevTarget(mobiles, false);
         }
