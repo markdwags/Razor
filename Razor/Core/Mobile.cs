@@ -162,13 +162,40 @@ namespace Assistant
             }
             set
             {
-                if (value != null)
+                if (!string.IsNullOrEmpty(value) && value != m_Name)
                 {
-                    string trim = value.Trim();
+                    string trim = ClilocConversion(value);
                     if (trim.Length > 0)
+                    {
                         m_Name = trim;
+                    }
                 }
             }
+        }
+
+        private static StringBuilder _InternalSB = new StringBuilder(32);
+        private static string ClilocConversion(string old)
+        {
+            _InternalSB.Clear();
+            string[] arr = old.Split(' ');
+            for (int i = 0; i < arr.Length; i++)
+            {
+                string ss = arr[i];
+                if (ss.Length > 1 && ss.StartsWith("#"))
+                {
+                    if (int.TryParse(ss.Substring(1), out int x))
+                    {
+                        ss = Language.GetCliloc(x);
+                        if (string.IsNullOrEmpty(ss))
+                        {
+                            ss = arr[i];
+                        }
+                    }
+                }
+                _InternalSB.Append(ss);
+                _InternalSB.Append(' ');
+            }
+            return _InternalSB.ToString().Trim();
         }
 
         public ushort Body
