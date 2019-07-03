@@ -190,7 +190,7 @@ namespace Assistant
 
         private static void NextTarget()
         {
-            var mobiles = World.MobilesInRange();
+            var mobiles = World.MobilesInRange().Where(x => !IsNextPrevFriend(x)).ToList();
 
             NextPrevTarget(mobiles, true);
         }
