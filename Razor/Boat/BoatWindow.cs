@@ -71,7 +71,7 @@ namespace Assistant.Boat
 
             if (World.Player != null)
             {
-                World.Player.Say(World.Player.SpeechHue, boatCommand);
+                World.Player.Say(boatCommand);
             }
         }
        

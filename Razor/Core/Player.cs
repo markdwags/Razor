@@ -884,7 +884,7 @@ namespace Assistant
 
         internal void Say(string msg)
         {
-            Say(World.Player.SpeechHue, msg);
+            Say(Config.GetInt("SpeechHue"), msg);
         }
 
         public uint CurrentGumpS, CurrentGumpI;
