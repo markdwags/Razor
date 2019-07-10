@@ -45,7 +45,7 @@ These steps assume that you already have obtained and installed the Ultima Onlin
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(
-'https://raw.githubusercontent.com/markdwags/Razor/master/InstallClassicUOAndRazor.ps1'))
+'https://raw.githubusercontent.com/markdwags/Razor/master/InstallClassicUOAndRazor-NoDefaults.ps1'))
 ```
 
 * Follow the on-screen prompts to set up the ClassicUO settings.json file first the first time.
