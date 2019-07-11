@@ -944,12 +944,7 @@ namespace Assistant
             if (Config.GetInt("Season") < 5)
             {
                 byte season = (byte)Config.GetInt("Season");
-
-                if (Config.GetBool("RealSeason"))
-                {
-                    season = World.Player.WhichSeason();
-                }
-
+                
                 World.Player.Season = season;
                 World.Player.DefaultSeason = defaultSeason;
 
@@ -976,25 +971,6 @@ namespace Assistant
                 Client.Instance.ForceSendToClient(new SeasonChange(World.Player.Season, true));
                 m_SeasonTimer.Stop();
             }
-        }
-
-        public byte WhichSeason()
-        {
-            DateTime now = DateTime.UtcNow;
-
-            /* Astronomically Spring begins on March 21st, the 80th day of the year.
-               * Summer begins on the 172nd day, Autumn, the 266th and Winter the 355th.
-               * Of course, on a leap year add one day to each, 81, 173, 267 and 356. */
-
-            int doy = now.DayOfYear - Convert.ToInt32((DateTime.IsLeapYear(now.Year)) && now.DayOfYear > 59);
-
-            if (doy < 80 || doy >= 355) return (byte)SeasonFlag.Winter;
-
-            if (doy >= 80 && doy < 172) return (byte)SeasonFlag.Spring;
-
-            if (doy >= 172 && doy < 266) return (byte)SeasonFlag.Summer;
-
-            return (byte)SeasonFlag.Fall;
         }
 
         public ushort Features { get { return m_Features; } set { m_Features = value; } }

@@ -181,7 +181,6 @@ namespace Assistant
             AddProperty("ContainerLabelColor", 88);
             AddProperty("ContainerLabelStyle", 1);
 
-            AddProperty("RealSeason", false);
             AddProperty("Season", 5);
 
             AddProperty("BlockTradeRequests", false);

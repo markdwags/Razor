@@ -216,7 +216,6 @@ namespace Assistant
         private TabPage subOptionsMiscTab;
         private Button setMinLightLevel;
         private Button setMaxLightLevel;
-        private CheckBox realSeason;
         private ComboBox seasonList;
         private Label lblSeason;
         private Label lightLevel;
@@ -536,7 +535,6 @@ namespace Assistant
             this.gameSize = new System.Windows.Forms.CheckBox();
             this.setMinLightLevel = new System.Windows.Forms.Button();
             this.setMaxLightLevel = new System.Windows.Forms.Button();
-            this.realSeason = new System.Windows.Forms.CheckBox();
             this.seasonList = new System.Windows.Forms.ComboBox();
             this.lblSeason = new System.Windows.Forms.Label();
             this.lightLevel = new System.Windows.Forms.Label();
@@ -1896,7 +1894,6 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.gameSize);
             this.subOptionsMiscTab.Controls.Add(this.setMinLightLevel);
             this.subOptionsMiscTab.Controls.Add(this.setMaxLightLevel);
-            this.subOptionsMiscTab.Controls.Add(this.realSeason);
             this.subOptionsMiscTab.Controls.Add(this.seasonList);
             this.subOptionsMiscTab.Controls.Add(this.lblSeason);
             this.subOptionsMiscTab.Controls.Add(this.lightLevel);
@@ -1911,9 +1908,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -2085,16 +2082,6 @@ namespace Assistant
             this.setMaxLightLevel.TabIndex = 104;
             this.setMaxLightLevel.Text = "Set Max";
             this.setMaxLightLevel.Click += new System.EventHandler(this.setMaxLightLevel_Click);
-            // 
-            // realSeason
-            // 
-            this.realSeason.Font = new System.Drawing.Font("Segoe UI Semilight", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.realSeason.Location = new System.Drawing.Point(181, 197);
-            this.realSeason.Name = "realSeason";
-            this.realSeason.Size = new System.Drawing.Size(49, 20);
-            this.realSeason.TabIndex = 103;
-            this.realSeason.Text = "Real";
-            this.realSeason.CheckedChanged += new System.EventHandler(this.realSeason_CheckedChanged);
             // 
             // seasonList
             // 
@@ -4571,8 +4558,6 @@ namespace Assistant
             screenShotNotification.SafeAction(s => { s.Checked = Config.GetBool("ScreenshotUploadNotifications"); });
 
             showContainerLabels.SafeAction(s => { s.Checked = Config.GetBool("ShowContainerLabels"); });
-
-            realSeason.SafeAction(s => { s.Checked = Config.GetBool("RealSeason"); });
 
             seasonList.SafeAction(s => { s.SelectedIndex = Config.GetInt("Season"); });
 
@@ -9039,25 +9024,7 @@ namespace Assistant
                 _containerLabelsForm.Show();
             }
         }
-
-        private void realSeason_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.SetProperty("RealSeason", realSeason.Checked);
-
-            if (realSeason.Checked)
-            {
-                seasonList.Enabled = false;
-
-                if (World.Player != null)
-                    seasonList.SelectedIndex = World.Player.WhichSeason();
-            }
-            else
-            {
-                seasonList.Enabled = true;
-                seasonList.SelectedIndex = Config.GetInt("Season");
-            }
-        }
-
+        
         private void seasonList_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Season Flag:
@@ -9498,15 +9465,7 @@ namespace Assistant
                 s.Enabled = false;
                 s.Checked = false;
             });
-
-            seasonList.SafeAction(s => { s.Enabled = false; });
-
-            realSeason.SafeAction(s =>
-            {
-                s.Enabled = false;
-                s.Checked = false;
-            });
-
+           
             rememberPwds.SafeAction(s =>
             {
                 s.Enabled = false;
@@ -9537,17 +9496,17 @@ namespace Assistant
                 s.Checked = false;
             });
 
-            //alwaysTop.SafeAction(s =>
-            //{
-            //    s.Enabled = false;
-            //    s.Checked = false;
-            //});
-
-            /*incomingMob.SafeAction(s =>
+            showHealthOH.SafeAction(s =>
             {
                 s.Enabled = false;
                 s.Checked = false;
-            });*/
+            });
+
+            healthFmt.SafeAction(s =>
+            {
+                s.Enabled = false;
+            });
+
         }
 
         private void macroActionDelay_CheckedChanged(object sender, EventArgs e)
