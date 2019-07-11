@@ -217,7 +217,7 @@ namespace Assistant
                 if (_previousHour != DateTime.UtcNow.Hour)
                 {
                     _previousHour = DateTime.UtcNow.Hour;
-                    _Differential = Engine.MistedDateTime.Subtract(DateTime.UtcNow).Hours;
+                    _Differential = DateTimeOffset.Now.Offset.Hours;
                 }
 
                 return _Differential;
