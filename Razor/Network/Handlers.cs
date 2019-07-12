@@ -277,9 +277,17 @@ namespace Assistant
 
                         if (ent != null && ent.ContextMenu != null)
                         {
-                            ushort menu;// = (ushort)ent.ContextMenu[idx];
-                            if (ent.ContextMenu.TryGetValue(idx, out menu) && menu != 0 && MacroManager.AcceptActions)
-                                MacroManager.Action(new ContextMenuAction(ent, idx, menu));
+                            if (MacroManager.AcceptActions)
+                            {
+                                try
+                                {
+                                    MacroManager.Action(new ContextMenuAction(ent, idx, ent.ContextMenu[idx].Value));
+                                }
+                                catch
+                                {
+                                    // ignored
+                                }
+                            }
                         }
 
                         break;
