@@ -259,8 +259,8 @@ namespace Assistant
             PasswordMemory.ClearAll();
             OverheadMessages.ClearAll();
             ContainerLabels.ClearAll();
-            AbsoluteTargetVariables.ClearAll();
-            DoubleClickVariables.ClearAll();
+            MacroVariables.ClearAll();
+            //DoubleClickVariables.ClearAll();
             FriendsManager.ClearAll();
         }
 
@@ -366,8 +366,8 @@ namespace Assistant
             PasswordMemory.Load(root["passwords"]);
             OverheadMessages.Load(root["overheadmessages"]);
             ContainerLabels.Load(root["containerlabels"]);
-            AbsoluteTargetVariables.Load(root["absolutetargets"]);
-            DoubleClickVariables.Load(root["doubleclickvariables"]);
+            MacroVariables.Load(root["macrovariables"]);
+            //DoubleClickVariables.Load(root["doubleclickvariables"]);
             FriendsManager.Load(root["friends"]);
 
 
@@ -544,13 +544,13 @@ namespace Assistant
             ContainerLabels.Save(xml);
             xml.WriteEndElement();
 
-            xml.WriteStartElement("absolutetargets");
-            AbsoluteTargetVariables.Save(xml);
+            xml.WriteStartElement("macrovariables");
+            MacroVariables.Save(xml);
             xml.WriteEndElement();
 
-            xml.WriteStartElement("doubleclickvariables");
-            DoubleClickVariables.Save(xml);
-            xml.WriteEndElement();
+            //xml.WriteStartElement("doubleclickvariables");
+            //DoubleClickVariables.Save(xml);
+            //xml.WriteEndElement();
 
             xml.WriteStartElement("friends");
             FriendsManager.Save(xml);

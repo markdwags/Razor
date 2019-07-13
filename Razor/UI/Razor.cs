@@ -145,8 +145,8 @@ namespace Assistant
         private Button nextMacroAction;
         private CheckBox stepThroughMacro;
         private CheckBox targetByTypeDifferent;
-        private GroupBox absoluteTargetGroup;
-        private ComboBox macroVariableList;
+        private GroupBox macroVariableGroup;
+        private ComboBox macroVariableTypeList;
         private Button retargetMacroVariable;
         private Button insertMacroVariable;
         private Button removeMacroVariable;
@@ -683,8 +683,8 @@ namespace Assistant
             this.nextMacroAction = new System.Windows.Forms.Button();
             this.stepThroughMacro = new System.Windows.Forms.CheckBox();
             this.targetByTypeDifferent = new System.Windows.Forms.CheckBox();
-            this.absoluteTargetGroup = new System.Windows.Forms.GroupBox();
-            this.macroVariableList = new System.Windows.Forms.ComboBox();
+            this.macroVariableGroup = new System.Windows.Forms.GroupBox();
+            this.macroVariableTypeList = new System.Windows.Forms.ComboBox();
             this.retargetMacroVariable = new System.Windows.Forms.Button();
             this.insertMacroVariable = new System.Windows.Forms.Button();
             this.removeMacroVariable = new System.Windows.Forms.Button();
@@ -766,7 +766,7 @@ namespace Assistant
             this.subMacrosTab.SuspendLayout();
             this.macroActGroup.SuspendLayout();
             this.subMacrosOptionsTab.SuspendLayout();
-            this.absoluteTargetGroup.SuspendLayout();
+            this.macroVariableGroup.SuspendLayout();
             this.screenshotTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
@@ -1689,10 +1689,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
@@ -1701,7 +1701,7 @@ namespace Assistant
             this.onlyNextPrevBeneficial.AutoSize = true;
             this.onlyNextPrevBeneficial.Location = new System.Drawing.Point(261, 38);
             this.onlyNextPrevBeneficial.Name = "onlyNextPrevBeneficial";
-            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(225, 19);
+            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(226, 19);
             this.onlyNextPrevBeneficial.TabIndex = 135;
             this.onlyNextPrevBeneficial.Text = "Only \'Next/Prev Friend\' sets Beneficial";
             this.onlyNextPrevBeneficial.UseVisualStyleBackColor = true;
@@ -1771,7 +1771,7 @@ namespace Assistant
             this.showTargetMessagesOverChar.AutoSize = true;
             this.showTargetMessagesOverChar.Location = new System.Drawing.Point(261, 13);
             this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
-            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
+            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(224, 19);
             this.showTargetMessagesOverChar.TabIndex = 74;
             this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
             this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
@@ -1908,9 +1908,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -2699,6 +2699,7 @@ namespace Assistant
             this.cntCount});
             this.counters.GridLines = true;
             this.counters.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.counters.HideSelection = false;
             this.counters.LabelWrap = false;
             this.counters.Location = new System.Drawing.Point(6, 18);
             this.counters.MultiSelect = false;
@@ -3122,6 +3123,7 @@ namespace Assistant
             this.skillHDRcap,
             this.skillHDRlock});
             this.skillList.FullRowSelect = true;
+            this.skillList.HideSelection = false;
             this.skillList.Location = new System.Drawing.Point(8, 5);
             this.skillList.Name = "skillList";
             this.skillList.Size = new System.Drawing.Size(342, 307);
@@ -3556,11 +3558,11 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.nextMacroAction);
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
-            this.subMacrosOptionsTab.Controls.Add(this.absoluteTargetGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
+            this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -3591,7 +3593,7 @@ namespace Assistant
             this.rangeCheckDoubleClick.AutoSize = true;
             this.rangeCheckDoubleClick.Location = new System.Drawing.Point(272, 78);
             this.rangeCheckDoubleClick.Name = "rangeCheckDoubleClick";
-            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(208, 19);
+            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(207, 19);
             this.rangeCheckDoubleClick.TabIndex = 15;
             this.rangeCheckDoubleClick.Text = "Range check on \'DoubleClickType\'";
             this.rangeCheckDoubleClick.UseVisualStyleBackColor = true;
@@ -3602,7 +3604,7 @@ namespace Assistant
             this.rangeCheckTargetByType.AutoSize = true;
             this.rangeCheckTargetByType.Location = new System.Drawing.Point(272, 53);
             this.rangeCheckTargetByType.Name = "rangeCheckTargetByType";
-            this.rangeCheckTargetByType.Size = new System.Drawing.Size(190, 19);
+            this.rangeCheckTargetByType.Size = new System.Drawing.Size(188, 19);
             this.rangeCheckTargetByType.TabIndex = 14;
             this.rangeCheckTargetByType.Text = "Range check on \'TargetByType\'";
             this.rangeCheckTargetByType.UseVisualStyleBackColor = true;
@@ -3624,7 +3626,7 @@ namespace Assistant
             this.stepThroughMacro.AutoSize = true;
             this.stepThroughMacro.Location = new System.Drawing.Point(272, 118);
             this.stepThroughMacro.Name = "stepThroughMacro";
-            this.stepThroughMacro.Size = new System.Drawing.Size(135, 19);
+            this.stepThroughMacro.Size = new System.Drawing.Size(134, 19);
             this.stepThroughMacro.TabIndex = 12;
             this.stepThroughMacro.Text = "Step Through Macro";
             this.stepThroughMacro.UseVisualStyleBackColor = true;
@@ -3635,43 +3637,43 @@ namespace Assistant
             this.targetByTypeDifferent.AutoSize = true;
             this.targetByTypeDifferent.Location = new System.Drawing.Point(272, 28);
             this.targetByTypeDifferent.Name = "targetByTypeDifferent";
-            this.targetByTypeDifferent.Size = new System.Drawing.Size(183, 19);
+            this.targetByTypeDifferent.Size = new System.Drawing.Size(181, 19);
             this.targetByTypeDifferent.TabIndex = 11;
             this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
             this.targetByTypeDifferent.UseVisualStyleBackColor = true;
             this.targetByTypeDifferent.CheckedChanged += new System.EventHandler(this.targetByTypeDifferent_CheckedChanged);
             // 
-            // absoluteTargetGroup
+            // macroVariableGroup
             // 
-            this.absoluteTargetGroup.Controls.Add(this.macroVariableList);
-            this.absoluteTargetGroup.Controls.Add(this.retargetMacroVariable);
-            this.absoluteTargetGroup.Controls.Add(this.insertMacroVariable);
-            this.absoluteTargetGroup.Controls.Add(this.removeMacroVariable);
-            this.absoluteTargetGroup.Controls.Add(this.addMacroVariable);
-            this.absoluteTargetGroup.Controls.Add(this.macroVariables);
-            this.absoluteTargetGroup.Location = new System.Drawing.Point(6, 6);
-            this.absoluteTargetGroup.Name = "absoluteTargetGroup";
-            this.absoluteTargetGroup.Size = new System.Drawing.Size(240, 269);
-            this.absoluteTargetGroup.TabIndex = 6;
-            this.absoluteTargetGroup.TabStop = false;
-            this.absoluteTargetGroup.Text = "Macro Variables:";
+            this.macroVariableGroup.Controls.Add(this.macroVariableTypeList);
+            this.macroVariableGroup.Controls.Add(this.retargetMacroVariable);
+            this.macroVariableGroup.Controls.Add(this.insertMacroVariable);
+            this.macroVariableGroup.Controls.Add(this.removeMacroVariable);
+            this.macroVariableGroup.Controls.Add(this.addMacroVariable);
+            this.macroVariableGroup.Controls.Add(this.macroVariables);
+            this.macroVariableGroup.Location = new System.Drawing.Point(6, 6);
+            this.macroVariableGroup.Name = "macroVariableGroup";
+            this.macroVariableGroup.Size = new System.Drawing.Size(240, 269);
+            this.macroVariableGroup.TabIndex = 6;
+            this.macroVariableGroup.TabStop = false;
+            this.macroVariableGroup.Text = "Macro Variables:";
             // 
-            // macroVariableList
+            // macroVariableTypeList
             // 
-            this.macroVariableList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.macroVariableList.FormattingEnabled = true;
-            this.macroVariableList.Items.AddRange(new object[] {
-            "Absolute Targets",
-            "DoubleClick Targets"});
-            this.macroVariableList.Location = new System.Drawing.Point(6, 22);
-            this.macroVariableList.Name = "macroVariableList";
-            this.macroVariableList.Size = new System.Drawing.Size(153, 23);
-            this.macroVariableList.TabIndex = 6;
-            this.macroVariableList.SelectedIndexChanged += new System.EventHandler(this.macroVariableList_SelectedIndexChanged);
+            this.macroVariableTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.macroVariableTypeList.FormattingEnabled = true;
+            this.macroVariableTypeList.Items.AddRange(new object[] {
+            "Absolute Target",
+            "DoubleClick Target"});
+            this.macroVariableTypeList.Location = new System.Drawing.Point(79, 18);
+            this.macroVariableTypeList.Name = "macroVariableTypeList";
+            this.macroVariableTypeList.Size = new System.Drawing.Size(153, 23);
+            this.macroVariableTypeList.TabIndex = 6;
+            this.macroVariableTypeList.SelectedIndexChanged += new System.EventHandler(this.macroVariableTypeList_SelectedIndexChanged);
             // 
             // retargetMacroVariable
             // 
-            this.retargetMacroVariable.Location = new System.Drawing.Point(165, 84);
+            this.retargetMacroVariable.Location = new System.Drawing.Point(6, 80);
             this.retargetMacroVariable.Name = "retargetMacroVariable";
             this.retargetMacroVariable.Size = new System.Drawing.Size(67, 25);
             this.retargetMacroVariable.TabIndex = 5;
@@ -3681,17 +3683,17 @@ namespace Assistant
             // 
             // insertMacroVariable
             // 
-            this.insertMacroVariable.Location = new System.Drawing.Point(165, 53);
+            this.insertMacroVariable.Location = new System.Drawing.Point(6, 18);
             this.insertMacroVariable.Name = "insertMacroVariable";
             this.insertMacroVariable.Size = new System.Drawing.Size(67, 25);
             this.insertMacroVariable.TabIndex = 4;
-            this.insertMacroVariable.Text = "Insert";
+            this.insertMacroVariable.Text = "Insert as...";
             this.insertMacroVariable.UseVisualStyleBackColor = true;
             this.insertMacroVariable.Click += new System.EventHandler(this.insertMacroVariable_Click);
             // 
             // removeMacroVariable
             // 
-            this.removeMacroVariable.Location = new System.Drawing.Point(165, 115);
+            this.removeMacroVariable.Location = new System.Drawing.Point(6, 111);
             this.removeMacroVariable.Name = "removeMacroVariable";
             this.removeMacroVariable.Size = new System.Drawing.Size(67, 25);
             this.removeMacroVariable.TabIndex = 3;
@@ -3701,7 +3703,7 @@ namespace Assistant
             // 
             // addMacroVariable
             // 
-            this.addMacroVariable.Location = new System.Drawing.Point(165, 22);
+            this.addMacroVariable.Location = new System.Drawing.Point(6, 49);
             this.addMacroVariable.Name = "addMacroVariable";
             this.addMacroVariable.Size = new System.Drawing.Size(67, 25);
             this.addMacroVariable.TabIndex = 2;
@@ -3713,9 +3715,9 @@ namespace Assistant
             // 
             this.macroVariables.FormattingEnabled = true;
             this.macroVariables.ItemHeight = 15;
-            this.macroVariables.Location = new System.Drawing.Point(6, 53);
+            this.macroVariables.Location = new System.Drawing.Point(81, 47);
             this.macroVariables.Name = "macroVariables";
-            this.macroVariables.Size = new System.Drawing.Size(153, 199);
+            this.macroVariables.Size = new System.Drawing.Size(153, 214);
             this.macroVariables.TabIndex = 1;
             // 
             // screenshotTab
@@ -4214,7 +4216,7 @@ namespace Assistant
             this.macroActGroup.ResumeLayout(false);
             this.subMacrosOptionsTab.ResumeLayout(false);
             this.subMacrosOptionsTab.PerformLayout();
-            this.absoluteTargetGroup.ResumeLayout(false);
+            this.macroVariableGroup.ResumeLayout(false);
             this.screenshotTab.ResumeLayout(false);
             this.screenshotTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).EndInit();
@@ -4594,7 +4596,7 @@ namespace Assistant
 
             showAttackTargetNewOnly.SafeAction(s => { s.Checked = Config.GetBool("ShowAttackTargetNewOnly"); });
 
-            macroVariableList.SafeAction(s => { s.SelectedIndex = 0; });
+            macroVariableTypeList.SafeAction(s => { s.SelectedIndex = 0; });
 
             filterDragonGraphics.SafeAction(s => { s.Checked = Config.GetBool("FilterDragonGraphics"); });
 
@@ -6807,7 +6809,7 @@ namespace Assistant
 
             RebuildMacroCache();
 
-            MacroManager.DisplayMacroVariables(macroVariableList.SelectedIndex, macroVariables);
+            MacroManager.DisplayMacroVariables(macroVariables);
         }
 
         private void macroTree_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
@@ -8614,7 +8616,7 @@ namespace Assistant
             }
         }
 
-        private void OnAbsoluteTargetListAddTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        private void OnMacroVariableAddTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
         {
             TargetInfo t = new TargetInfo
             {
@@ -8626,60 +8628,33 @@ namespace Assistant
                 Z = pt.Z
             };
 
-            if (InputBox.Show(this, Language.GetString(LocString.NewAbsoluteTargetVar),
+            if (InputBox.Show(this, Language.GetString(LocString.NewMacroVariable),
                 Language.GetString(LocString.EnterAName)))
             {
                 string name = InputBox.GetString();
 
-                foreach (AbsoluteTargetVariables.AbsoluteTargetVariable at in AbsoluteTargetVariables.AbsoluteTargetList
+                foreach (MacroVariables.MacroVariable mV in MacroVariables.MacroVariableList
                 )
                 {
-                    if (at.Name.ToLower().Equals(name.ToLower()))
+                    if (mV.Name.ToLower().Equals(name.ToLower()))
                     {
-                        MessageBox.Show(this, "Pick a unique Absolute Target name and try again",
-                            "New Absolute Target Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this, "Pick a unique Macro Variable name and try again",
+                            "New Macro Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
 
-                AbsoluteTargetVariables.AbsoluteTargetList.Add(
-                    new AbsoluteTargetVariables.AbsoluteTargetVariable(name, t));
+                MacroVariables.MacroVariableList.Add(
+                    new MacroVariables.MacroVariable(name, t));
 
                 // Save and reload the macros and vars
-                MacroManager.DisplayMacroVariables(0, macroVariables);
+                MacroManager.DisplayMacroVariables(macroVariables);
             }
 
             Engine.MainWindow.ShowMe();
         }
 
-        private void OnDoubleClickAddTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
-        {
-            if (InputBox.Show(this, Language.GetString(LocString.NewAbsoluteTargetVar),
-                Language.GetString(LocString.EnterAName)))
-            {
-                string name = InputBox.GetString();
-
-                foreach (DoubleClickVariables.DoubleClickVariable dbt in DoubleClickVariables.DoubleClickTargetList)
-                {
-                    if (dbt.Name.ToLower().Equals(name.ToLower()))
-                    {
-                        MessageBox.Show(this, "Pick a unique DoubleClick variable name and try again",
-                            "New DoubleClick Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                }
-
-                DoubleClickVariables.DoubleClickTargetList.Add(
-                    new DoubleClickVariables.DoubleClickVariable(name, serial, gfx));
-
-                // Save and reload the macros and vars
-                MacroManager.DisplayMacroVariables(1, macroVariables);
-            }
-
-            Engine.MainWindow.ShowMe();
-        }
-
-        private void OnAbsoluteTargetListReTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        private void OnMacroVariableReTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
         {
             TargetInfo t = new TargetInfo
             {
@@ -8691,21 +8666,10 @@ namespace Assistant
                 Z = pt.Z
             };
 
-            AbsoluteTargetVariables.AbsoluteTargetList[macroVariables.SelectedIndex].TargetInfo = t;
+            MacroVariables.MacroVariableList[macroVariables.SelectedIndex].TargetInfo = t;
 
             // Save and reload the macros and vars
-            MacroManager.DisplayAbsoluteTargetsTo(macroVariables);
-
-            Engine.MainWindow.ShowMe();
-        }
-
-        private void OnDoubleClickVariableReTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
-        {
-            DoubleClickVariables.DoubleClickTargetList[macroVariables.SelectedIndex].Serial = serial;
-            DoubleClickVariables.DoubleClickTargetList[macroVariables.SelectedIndex].Gfx = gfx;
-
-            // Save and reload the macros and vars
-            MacroManager.DisplayDoubleClickTo(macroVariables);
+            MacroManager.DisplayMacroVariables(macroVariables);
 
             Engine.MainWindow.ShowMe();
         }
@@ -9123,15 +9087,15 @@ namespace Assistant
             if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
                 return;
 
-            switch (macroVariableList.SelectedIndex)
-            {
-                case 0:
-                    Targeting.OneTimeTarget(OnAbsoluteTargetListAddTarget);
-                    break;
-                case 1:
-                    Targeting.OneTimeTarget(OnDoubleClickAddTarget);
-                    break;
-            }
+            //switch (macroVariableTypeList.SelectedIndex)
+            //{
+            //    case 0:
+                    Targeting.OneTimeTarget(OnMacroVariableAddTarget);
+            //        break;
+            //    case 1:
+            //        Targeting.OneTimeTarget(OnDoubleClickAddTarget);
+            //        break;
+            //}
 
 
             World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
@@ -9154,17 +9118,15 @@ namespace Assistant
                 return;
             }
 
-            switch (macroVariableList.SelectedIndex)
+            string[] macroVariableName = { MacroVariables.MacroVariableList[macroVariables.SelectedIndex].Name };
+
+            switch (macroVariableTypeList.SelectedIndex)
             {
                 case 0:
-                    string[] absTarName =
-                        {AbsoluteTargetVariables.AbsoluteTargetList[macroVariables.SelectedIndex].Name};
-                    m.Actions.Insert(a + 1, new AbsoluteTargetVariableAction(absTarName));
+                    m.Actions.Insert(a + 1, new AbsoluteTargetVariableAction(macroVariableName));
                     break;
                 case 1:
-                    string[] targetName =
-                        {DoubleClickVariables.DoubleClickTargetList[macroVariables.SelectedIndex].Name};
-                    m.Actions.Insert(a + 1, new DoubleClickVariableAction(targetName));
+                    m.Actions.Insert(a + 1, new DoubleClickVariableAction(macroVariableName));
                     break;
             }
 
@@ -9179,15 +9141,7 @@ namespace Assistant
             if (macroVariables.SelectedIndex < 0)
                 return;
 
-            switch (macroVariableList.SelectedIndex)
-            {
-                case 0:
-                    Targeting.OneTimeTarget(OnAbsoluteTargetListReTarget);
-                    break;
-                case 1:
-                    Targeting.OneTimeTarget(OnDoubleClickVariableReTarget);
-                    break;
-            }
+            Targeting.OneTimeTarget(OnMacroVariableReTarget);
 
             World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
         }
@@ -9200,24 +9154,16 @@ namespace Assistant
             if (macroVariables.SelectedIndex < 0)
                 return;
 
-            switch (macroVariableList.SelectedIndex)
-            {
-                case 0:
-                    AbsoluteTargetVariables.AbsoluteTargetList.RemoveAt(macroVariables.SelectedIndex);
-                    break;
-                case 1:
-                    DoubleClickVariables.DoubleClickTargetList.RemoveAt(macroVariables.SelectedIndex);
-                    break;
-            }
+            MacroVariables.MacroVariableList.RemoveAt(macroVariables.SelectedIndex);
 
             // Save and reload the macros and vars
             MacroManager.Save();
-            MacroManager.DisplayMacroVariables(macroVariableList.SelectedIndex, macroVariables);
+            MacroManager.DisplayMacroVariables(macroVariables);
         }
 
-        private void macroVariableList_SelectedIndexChanged(object sender, EventArgs e)
+        private void macroVariableTypeList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MacroManager.DisplayMacroVariables(macroVariableList.SelectedIndex, macroVariables);
+            //MacroManager.DisplayMacroVariables(macroVariables);
         }
 
         private void filterDragonGraphics_CheckedChanged(object sender, EventArgs e)

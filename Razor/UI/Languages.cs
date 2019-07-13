@@ -401,7 +401,7 @@ namespace Assistant
         CopyClipboardMacro = 1951,
         DeerSounds,
         MacroRename,
-        NewAbsoluteTargetVar,
+        NewMacroVariable,
 
         TargCloseGreyMonster,
         TargCloseEnemyMonster,

@@ -989,11 +989,11 @@ namespace Assistant.Macros
         {
             _target = null;
 
-            foreach (AbsoluteTargetVariables.AbsoluteTargetVariable at in AbsoluteTargetVariables.AbsoluteTargetList)
+            foreach (MacroVariables.MacroVariable mV in MacroVariables.MacroVariableList)
             {
-                if (at.Name.Equals(_variableName))
+                if (mV.Name.Equals(_variableName))
                 {
-                    _target = at.TargetInfo;
+                    _target = mV.TargetInfo;
                     break;
                 }
             }
@@ -1065,7 +1065,6 @@ namespace Assistant.Macros
     public class DoubleClickVariableAction : MacroAction
     {
         private Serial _serial;
-        private ushort _gfx;
         private readonly string _variableName;
 
         public DoubleClickVariableAction(string[] args)
@@ -1077,11 +1076,11 @@ namespace Assistant.Macros
         {
             _serial = Serial.Zero;
 
-            foreach (DoubleClickVariables.DoubleClickVariable dblClick in DoubleClickVariables.DoubleClickTargetList)
+            foreach (MacroVariables.MacroVariable mV in MacroVariables.MacroVariableList)
             {
-                if (dblClick.Name.Equals(_variableName))
+                if (mV.Name.Equals(_variableName))
                 {
-                    _serial = dblClick.Serial;
+                    _serial = mV.TargetInfo.Serial;
                     break;
                 }
             }

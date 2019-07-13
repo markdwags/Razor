@@ -6,27 +6,27 @@ using System.Xml;
 
 namespace Assistant.Macros
 {
-    public class AbsoluteTargetVariables
+    public class MacroVariables
     {
-        public class AbsoluteTargetVariable
+        public class MacroVariable
         {
             public TargetInfo TargetInfo { get; set; }
             public string Name { get; set; }
 
-            public AbsoluteTargetVariable(string targetVarName, TargetInfo t)
+            public MacroVariable(string targetVarName, TargetInfo t)
             {
                 TargetInfo = t;
                 Name = targetVarName;
             }
         }
 
-        public static List<AbsoluteTargetVariable> AbsoluteTargetList = new List<AbsoluteTargetVariable>();
+        public static List<MacroVariable> MacroVariableList = new List<MacroVariable>();
 
         public static void Save(XmlTextWriter xml)
         {
-            foreach (AbsoluteTargetVariable target in AbsoluteTargetList)
+            foreach (MacroVariable target in MacroVariableList)
             {
-                xml.WriteStartElement("absolutetarget");
+                xml.WriteStartElement("macrovariable");
                 xml.WriteAttributeString("type", target.TargetInfo.Type.ToString());
                 xml.WriteAttributeString("flags", target.TargetInfo.Flags.ToString());
                 xml.WriteAttributeString("serial", target.TargetInfo.Serial.ToString());
@@ -45,7 +45,7 @@ namespace Assistant.Macros
 
             try
             {
-                foreach (XmlElement el in node.GetElementsByTagName("absolutetarget"))
+                foreach (XmlElement el in node.GetElementsByTagName("macrovariable"))
                 {
                     TargetInfo target = new TargetInfo
                     {
@@ -58,8 +58,8 @@ namespace Assistant.Macros
                         Gfx = Convert.ToUInt16(el.GetAttribute("gfx"))
                     };
 
-                    AbsoluteTargetVariable absoluteTarget = new AbsoluteTargetVariable(el.GetAttribute("name"), target);
-                    AbsoluteTargetList.Add(absoluteTarget);
+                    MacroVariable macroVariable = new MacroVariable(el.GetAttribute("name"), target);
+                    MacroVariableList.Add(macroVariable);
                 }
             }
             catch (Exception ex)
@@ -69,7 +69,7 @@ namespace Assistant.Macros
 
         public static void ClearAll()
         {
-            AbsoluteTargetList.Clear();
+            MacroVariableList.Clear();
         }
     }
 }
