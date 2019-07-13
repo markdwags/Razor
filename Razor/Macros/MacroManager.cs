@@ -31,7 +31,7 @@ namespace Assistant.Macros
         }
 
         /// <summary>
-        /// Saves all the macros and absolute target lists
+        /// Saves all the macros and variable lists
         /// </summary>
         public static void Save()
         {
@@ -270,42 +270,14 @@ namespace Assistant.Macros
             tree.Update();
         }
 
-        public static void DisplayMacroVariables(int index, ListBox list)
-        {
-            switch (index)
-            {
-                case 0:
-                    DisplayAbsoluteTargetsTo(list);
-                    break;
-                case 1:
-                    DisplayDoubleClickTo(list);
-                    break;
-            }
-        }
-
-        public static void DisplayAbsoluteTargetsTo(ListBox list)
+        public static void DisplayMacroVariables(ListBox list)
         {
             list.BeginUpdate();
             list.Items.Clear();
 
-            foreach (AbsoluteTargetVariables.AbsoluteTargetVariable at in AbsoluteTargetVariables.AbsoluteTargetList)
+            foreach (MacroVariables.MacroVariable at in MacroVariables.MacroVariableList)
             {
                 list.Items.Add($"${at.Name} ({at.TargetInfo.Serial})");
-            }
-
-            list.EndUpdate();
-            list.Refresh();
-            list.Update();
-        }
-
-        public static void DisplayDoubleClickTo(ListBox list)
-        {
-            list.BeginUpdate();
-            list.Items.Clear();
-
-            foreach (DoubleClickVariables.DoubleClickVariable dbt in DoubleClickVariables.DoubleClickTargetList)
-            {
-                list.Items.Add($"${dbt.Name} ({dbt.Serial})");
             }
 
             list.EndUpdate();
