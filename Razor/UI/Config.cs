@@ -260,7 +260,6 @@ namespace Assistant
             OverheadMessages.ClearAll();
             ContainerLabels.ClearAll();
             MacroVariables.ClearAll();
-            //DoubleClickVariables.ClearAll();
             FriendsManager.ClearAll();
         }
 
@@ -367,7 +366,12 @@ namespace Assistant
             OverheadMessages.Load(root["overheadmessages"]);
             ContainerLabels.Load(root["containerlabels"]);
             MacroVariables.Load(root["macrovariables"]);
-            //DoubleClickVariables.Load(root["doubleclickvariables"]);
+            //imports previous absolutetargets and doubleclickvariables if present in profile
+            if ((root.SelectSingleNode("absolutetargets")!=null) || (root.SelectSingleNode("doubleclickvariables") != null))
+            {
+                MacroVariables.Import(root);
+            }
+
             FriendsManager.Load(root["friends"]);
 
 
@@ -547,10 +551,6 @@ namespace Assistant
             xml.WriteStartElement("macrovariables");
             MacroVariables.Save(xml);
             xml.WriteEndElement();
-
-            //xml.WriteStartElement("doubleclickvariables");
-            //DoubleClickVariables.Save(xml);
-            //xml.WriteEndElement();
 
             xml.WriteStartElement("friends");
             FriendsManager.Save(xml);

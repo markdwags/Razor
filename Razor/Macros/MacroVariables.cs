@@ -67,6 +67,57 @@ namespace Assistant.Macros
             }
         }
 
+        public static void Import(XmlElement node)
+        {
+            //import absolutetargets and doubleclickvariables to macrovariables
+
+            try
+            {
+                foreach (XmlElement el in node["absolutetargets"].GetElementsByTagName("absolutetarget"))
+                {
+                    TargetInfo target = new TargetInfo
+                    {
+                        Type = Convert.ToByte(el.GetAttribute("type")),
+                        Flags = Convert.ToByte(el.GetAttribute("flags")),
+                        Serial = Convert.ToUInt32(Serial.Parse(el.GetAttribute("serial"))),
+                        X = Convert.ToUInt16(el.GetAttribute("x")),
+                        Y = Convert.ToUInt16(el.GetAttribute("y")),
+                        Z = Convert.ToUInt16(el.GetAttribute("z")),
+                        Gfx = Convert.ToUInt16(el.GetAttribute("gfx"))
+                    };
+
+                    MacroVariable macroVariable = new MacroVariable(el.GetAttribute("name"), target);
+                    MacroVariableList.Add(macroVariable);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            try
+            {
+                foreach (XmlElement el in node["doubleclickvariables"].GetElementsByTagName("doubleclickvariable"))
+                {
+                    TargetInfo target = new TargetInfo
+                    {
+                        Type = 0,
+                        Flags = 0,
+                        Serial = Convert.ToUInt32(Serial.Parse(el.GetAttribute("serial"))),
+                        X = 0,
+                        Y = 0,
+                        Z = 0,
+                        Gfx = Convert.ToUInt16(el.GetAttribute("gfx"))
+                    };
+
+                    MacroVariable macroVariable = new MacroVariable(el.GetAttribute("name"), target);
+                    MacroVariableList.Add(macroVariable);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
         public static void ClearAll()
         {
             MacroVariableList.Clear();
