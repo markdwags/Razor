@@ -141,7 +141,7 @@ namespace Assistant
         private static void AttackLastTarg()
         {
             TargetInfo targ;
-            if (Config.GetBool("SmartLastTarget") && Client.Instance.AllowBit(FeatureBit.SmartLT))
+            if (IsSmartTargetingEnabled())
             {
                 // If Smart Targetting is being used we'll assume that the user would like to attack the harmful target.
                 targ = m_LastHarmTarg;
@@ -285,7 +285,7 @@ namespace Assistant
         /// </summary>
         private static void SetLastTargetBeneficial()
         {
-            if (!Config.GetBool("SmartLastTarget"))
+            if (!IsSmartTargetingEnabled())
             {
                 World.Player.SendMessage(MsgLevel.Error, "Smart Targeting is disabled");
                 return;
@@ -341,7 +341,7 @@ namespace Assistant
         /// </summary>
         private static void SetLastTargetHarmful()
         {
-            if (!Config.GetBool("SmartLastTarget"))
+            if (!IsSmartTargetingEnabled())
             {
                 World.Player.SendMessage(MsgLevel.Error, "Smart Targeting is disabled");
                 return;
@@ -415,7 +415,7 @@ namespace Assistant
             {
                 bool oplchanged = false;
 
-                if (Config.GetBool("SmartLastTarget"))
+                if (IsSmartTargetingEnabled())
                 {
                     if (m_LastHarmTarg != null && m_LastHarmTarg.Serial == m.Serial)
                     {
@@ -723,7 +723,7 @@ namespace Assistant
         public static bool DoLastTarget()
         {
             TargetInfo targ;
-            if (Config.GetBool("SmartLastTarget") && Client.Instance.AllowBit(FeatureBit.SmartLT))
+            if (IsSmartTargetingEnabled())
             {
                 if (m_AllowGround && m_LastGroundTarg != null)
                     targ = m_LastGroundTarg;
@@ -999,7 +999,7 @@ namespace Assistant
                 m.OverheadMessage(Config.GetInt("SysColor"), "[Ignored]");
             }
 
-            if (Config.GetBool("SmartLastTarget") && Client.Instance.AllowBit(FeatureBit.SmartLT))
+            if (IsSmartTargetingEnabled())
             {
                 bool harm = m_LastHarmTarg != null && m_LastHarmTarg.Serial == m.Serial;
                 bool bene = m_LastBeneTarg != null && m_LastBeneTarg.Serial == m.Serial;
@@ -1018,7 +1018,7 @@ namespace Assistant
         {
             if (m != null)
             {
-                if (Config.GetBool("SmartLastTarget") && Client.Instance.AllowBit(FeatureBit.SmartLT))
+                if (IsSmartTargetingEnabled())
                 {
                     if (m_LastHarmTarg != null && m_LastHarmTarg.Serial == m.Serial)
                         return true;
@@ -1330,6 +1330,11 @@ namespace Assistant
             }
 
             _lastOverheadMessageTarget = info;
+        }
+
+        private static bool IsSmartTargetingEnabled()
+        {
+            return Config.GetBool("SmartLastTarget") && Client.Instance.AllowBit(FeatureBit.SmartLT);
         }
     }
 }

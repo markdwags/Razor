@@ -199,7 +199,6 @@ namespace Assistant
         private CheckBox actionStatusMsg;
         private Label label8;
         private Label label6;
-        private CheckBox smartLT;
         private CheckBox queueTargets;
         private CheckBox showtargtext;
         private Button containerLabels;
@@ -354,7 +353,11 @@ namespace Assistant
         private Label lblFilterDelay;
         private TextBox filterDelaySeconds;
         private CheckBox filterOverheadMessages;
+        private GroupBox groupSmartTarget;
+        private CheckBox nonFriendlyHarmfulOnly;
+        private CheckBox friendBeneficialOnly;
         private CheckBox onlyNextPrevBeneficial;
+        private CheckBox smartLT;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -497,7 +500,11 @@ namespace Assistant
             this.chkForceSpeechHue = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.subOptionsTargetTab = new System.Windows.Forms.TabPage();
+            this.groupSmartTarget = new System.Windows.Forms.GroupBox();
+            this.nonFriendlyHarmfulOnly = new System.Windows.Forms.CheckBox();
+            this.friendBeneficialOnly = new System.Windows.Forms.CheckBox();
             this.onlyNextPrevBeneficial = new System.Windows.Forms.CheckBox();
+            this.smartLT = new System.Windows.Forms.CheckBox();
             this.setTargetIndicatorHue = new System.Windows.Forms.Button();
             this.targetIndictorFormat = new System.Windows.Forms.TextBox();
             this.showtargtext = new System.Windows.Forms.CheckBox();
@@ -513,7 +520,6 @@ namespace Assistant
             this.actionStatusMsg = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.smartLT = new System.Windows.Forms.CheckBox();
             this.queueTargets = new System.Windows.Forms.CheckBox();
             this.lblTargetFormat = new System.Windows.Forms.Label();
             this.subOptionsMiscTab = new System.Windows.Forms.TabPage();
@@ -741,6 +747,7 @@ namespace Assistant
             this.optionsTabCtrl.SuspendLayout();
             this.subOptionsSpeechTab.SuspendLayout();
             this.subOptionsTargetTab.SuspendLayout();
+            this.groupSmartTarget.SuspendLayout();
             this.subOptionsMiscTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
             this.subOptionsFriendsTab.SuspendLayout();
@@ -1670,7 +1677,7 @@ namespace Assistant
             // subOptionsTargetTab
             // 
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subOptionsTargetTab.Controls.Add(this.onlyNextPrevBeneficial);
+            this.subOptionsTargetTab.Controls.Add(this.groupSmartTarget);
             this.subOptionsTargetTab.Controls.Add(this.setTargetIndicatorHue);
             this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
             this.subOptionsTargetTab.Controls.Add(this.showtargtext);
@@ -1686,7 +1693,6 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.actionStatusMsg);
             this.subOptionsTargetTab.Controls.Add(this.label8);
             this.subOptionsTargetTab.Controls.Add(this.label6);
-            this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
             this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
@@ -1696,16 +1702,59 @@ namespace Assistant
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
+            // groupSmartTarget
+            // 
+            this.groupSmartTarget.Controls.Add(this.nonFriendlyHarmfulOnly);
+            this.groupSmartTarget.Controls.Add(this.friendBeneficialOnly);
+            this.groupSmartTarget.Controls.Add(this.onlyNextPrevBeneficial);
+            this.groupSmartTarget.Controls.Add(this.smartLT);
+            this.groupSmartTarget.Location = new System.Drawing.Point(257, 11);
+            this.groupSmartTarget.Name = "groupSmartTarget";
+            this.groupSmartTarget.Size = new System.Drawing.Size(239, 126);
+            this.groupSmartTarget.TabIndex = 138;
+            this.groupSmartTarget.TabStop = false;
+            this.groupSmartTarget.Text = "Smart Targeting:";
+            // 
+            // nonFriendlyHarmfulOnly
+            // 
+            this.nonFriendlyHarmfulOnly.Location = new System.Drawing.Point(6, 98);
+            this.nonFriendlyHarmfulOnly.Name = "nonFriendlyHarmfulOnly";
+            this.nonFriendlyHarmfulOnly.Size = new System.Drawing.Size(232, 19);
+            this.nonFriendlyHarmfulOnly.TabIndex = 141;
+            this.nonFriendlyHarmfulOnly.Text = "\'Next/Prev Non-Friendly\' harmful only";
+            this.nonFriendlyHarmfulOnly.UseVisualStyleBackColor = true;
+            this.nonFriendlyHarmfulOnly.CheckedChanged += new System.EventHandler(this.nonFriendlyHarmfulOnly_CheckedChanged);
+            // 
+            // friendBeneficialOnly
+            // 
+            this.friendBeneficialOnly.AutoSize = true;
+            this.friendBeneficialOnly.Location = new System.Drawing.Point(6, 73);
+            this.friendBeneficialOnly.Name = "friendBeneficialOnly";
+            this.friendBeneficialOnly.Size = new System.Drawing.Size(232, 19);
+            this.friendBeneficialOnly.TabIndex = 140;
+            this.friendBeneficialOnly.Text = "\'Next/Prev Friendly\' sets beneficial only";
+            this.friendBeneficialOnly.UseVisualStyleBackColor = true;
+            this.friendBeneficialOnly.CheckedChanged += new System.EventHandler(this.friendBeneficialOnly_CheckedChanged);
+            // 
             // onlyNextPrevBeneficial
             // 
             this.onlyNextPrevBeneficial.AutoSize = true;
-            this.onlyNextPrevBeneficial.Location = new System.Drawing.Point(261, 38);
+            this.onlyNextPrevBeneficial.Location = new System.Drawing.Point(6, 48);
             this.onlyNextPrevBeneficial.Name = "onlyNextPrevBeneficial";
-            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(225, 19);
-            this.onlyNextPrevBeneficial.TabIndex = 135;
-            this.onlyNextPrevBeneficial.Text = "Only \'Next/Prev Friend\' sets Beneficial";
+            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(223, 19);
+            this.onlyNextPrevBeneficial.TabIndex = 139;
+            this.onlyNextPrevBeneficial.Text = "\'Next/Prev Friend\' sets beneficial only";
             this.onlyNextPrevBeneficial.UseVisualStyleBackColor = true;
             this.onlyNextPrevBeneficial.CheckedChanged += new System.EventHandler(this.onlyNextPrevBeneficial_CheckedChanged);
+            // 
+            // smartLT
+            // 
+            this.smartLT.Location = new System.Drawing.Point(6, 22);
+            this.smartLT.Name = "smartLT";
+            this.smartLT.Size = new System.Drawing.Size(212, 20);
+            this.smartLT.TabIndex = 138;
+            this.smartLT.Text = "Use Smart Last Target";
+            this.smartLT.CheckedChanged += new System.EventHandler(this.smartLT_CheckedChanged);
             // 
             // setTargetIndicatorHue
             // 
@@ -1769,7 +1818,7 @@ namespace Assistant
             // showTargetMessagesOverChar
             // 
             this.showTargetMessagesOverChar.AutoSize = true;
-            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(261, 13);
+            this.showTargetMessagesOverChar.Location = new System.Drawing.Point(9, 118);
             this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
             this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
             this.showTargetMessagesOverChar.TabIndex = 74;
@@ -1846,15 +1895,6 @@ namespace Assistant
             this.label6.TabIndex = 55;
             this.label6.Text = "ms";
             // 
-            // smartLT
-            // 
-            this.smartLT.Location = new System.Drawing.Point(9, 116);
-            this.smartLT.Name = "smartLT";
-            this.smartLT.Size = new System.Drawing.Size(212, 20);
-            this.smartLT.TabIndex = 61;
-            this.smartLT.Text = "Use smart last target";
-            this.smartLT.CheckedChanged += new System.EventHandler(this.smartLT_CheckedChanged);
-            // 
             // queueTargets
             // 
             this.queueTargets.Location = new System.Drawing.Point(9, 12);
@@ -1908,9 +1948,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -3665,7 +3705,7 @@ namespace Assistant
             "DoubleClick Target"});
             this.macroVariableTypeList.Location = new System.Drawing.Point(79, 22);
             this.macroVariableTypeList.Name = "macroVariableTypeList";
-            this.macroVariableTypeList.Size = new System.Drawing.Size(153, 25);
+            this.macroVariableTypeList.Size = new System.Drawing.Size(153, 23);
             this.macroVariableTypeList.TabIndex = 6;
             this.macroVariableTypeList.SelectedIndexChanged += new System.EventHandler(this.macroVariableTypeList_SelectedIndexChanged);
             // 
@@ -4177,6 +4217,8 @@ namespace Assistant
             this.subOptionsSpeechTab.PerformLayout();
             this.subOptionsTargetTab.ResumeLayout(false);
             this.subOptionsTargetTab.PerformLayout();
+            this.groupSmartTarget.ResumeLayout(false);
+            this.groupSmartTarget.PerformLayout();
             this.subOptionsMiscTab.ResumeLayout(false);
             this.subOptionsMiscTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).EndInit();
@@ -4658,6 +4700,8 @@ namespace Assistant
             filterOverheadMessages.SafeAction(s => { s.Checked = Config.GetBool("FilterOverheadMessages"); });
 
             onlyNextPrevBeneficial.SafeAction(s => { s.Checked = Config.GetBool("OnlyNextPrevBeneficial"); });
+            friendBeneficialOnly.SafeAction(s => { s.Checked = Config.GetBool("FriendlyBeneficialOnly"); });
+            nonFriendlyHarmfulOnly.SafeAction(s => { s.Checked = Config.GetBool("NonFriendlyHarmfulOnly"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -7676,8 +7720,9 @@ namespace Assistant
 
                 ReloadImgurUploadList();
             }
-            catch (Exception ex)
+            catch
             {
+                //ignore
             }
         }
 
@@ -7702,7 +7747,7 @@ namespace Assistant
 
                 ReloadImgurUploadList();
             }
-            catch (Exception ex)
+            catch
             {
             }
         }
@@ -9179,7 +9224,7 @@ namespace Assistant
                 Config.SetProperty("DragonGraphic",
                     Convert.ToInt32(_animationData[dragonAnimationList.SelectedIndex].body));
             }
-            catch (Exception ex)
+            catch
             {
                 MessageBox.Show(this, "Unable to find animation in file", "Animation Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -9196,7 +9241,7 @@ namespace Assistant
                 Config.SetProperty("DrakeGraphic",
                     Convert.ToInt32(_animationData[drakeAnimationList.SelectedIndex].body));
             }
-            catch (Exception ex)
+            catch
             {
                 MessageBox.Show(this, "Unable to find animation in file", "Animation Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -9345,9 +9390,8 @@ namespace Assistant
             {
                 Process.Start(Config.GetAppSetting<string>("BackupPath"));
             }
-            catch (Exception ex)
+            catch
             {
-
             }
         }
 
@@ -9786,6 +9830,16 @@ namespace Assistant
         private void onlyNextPrevBeneficial_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("OnlyNextPrevBeneficial", onlyNextPrevBeneficial.Checked);
+        }
+
+        private void friendBeneficialOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("FriendlyBeneficialOnly", friendBeneficialOnly.Checked);
+        }
+
+        private void nonFriendlyHarmfulOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("NonFriendlyHarmfulOnly", nonFriendlyHarmfulOnly.Checked);
         }
     }
 }

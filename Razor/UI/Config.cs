@@ -250,6 +250,8 @@ namespace Assistant
             AddProperty("FilterOverheadMessages", false);
 
             AddProperty("OnlyNextPrevBeneficial", false);
+            AddProperty("FriendlyBeneficialOnly", false);
+            AddProperty("NonFriendlyHarmfulOnly", false);
 
             Counter.Default();
             Filter.DisableAll();

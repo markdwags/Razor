@@ -104,8 +104,11 @@ namespace Assistant
         /// </summary>
         /// <param name="targets">The list of targets (already filtered)</param>
         /// <param name="nextTarget">next target true, previous target false</param>
-        /// <param name="isFriend"></param>
-        private static void NextPrevTarget(List<Mobile> targets, bool nextTarget, bool isFriend = false)
+        /// <param name="isFriend">Indicates this was the Next/Prev Friend hot key</param>
+        /// <param name="isFriendly"></param>
+        /// <param name="isNonFriendly"></param>
+        private static void NextPrevTarget(List<Mobile> targets, bool nextTarget, bool isFriend = false,
+            bool isFriendly = false, bool isNonFriendly = false)
         {
             if (targets.Count <= 0)
             {
@@ -113,10 +116,8 @@ namespace Assistant
                 return;
             }
 
-
             Mobile mobile = null, old = World.FindMobile(m_LastTarget?.Serial ?? Serial.Zero);
             var target = new TargetInfo();
-
 
             // Loop through 3 times and break out if you can't get a target for some reason
             for (var i = 0; i < 3; i++)
@@ -160,14 +161,21 @@ namespace Assistant
             }
 
             m_LastGroundTarg = m_LastTarget = target;
-            
-            if (Config.GetBool("OnlyNextPrevBeneficial") && isFriend)
+
+            if (IsSmartTargetingEnabled())
             {
-                m_LastBeneTarg = target;
-            }
-            else if (Config.GetBool("OnlyNextPrevBeneficial") && !isFriend)
-            {
-                m_LastHarmTarg = target;
+                if ((Config.GetBool("OnlyNextPrevBeneficial") && isFriend) || (Config.GetBool("FriendlyBeneficialOnly") && isFriendly))
+                {
+                    m_LastBeneTarg = target;
+                }
+                else if ((Config.GetBool("OnlyNextPrevBeneficial") && !isFriend) || (Config.GetBool("NonFriendlyHarmfulOnly") && isNonFriendly))
+                {
+                    m_LastHarmTarg = target;
+                }
+                else
+                {
+                    m_LastBeneTarg = m_LastHarmTarg = target;
+                }
             }
             else
             {
@@ -421,7 +429,7 @@ namespace Assistant
                             !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
                 .ToList();
 
-            NextPrevTarget(mobiles, true);
+            NextPrevTarget(mobiles, true, false, true);
         }
 
         private static void NextTargetFriendlyMonster()
@@ -433,7 +441,7 @@ namespace Assistant
                             !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
                 .ToList();
 
-            NextPrevTarget(mobiles, true);
+            NextPrevTarget(mobiles, true, false, true);
         }
 
         private static void NextTargetGreyHumanoid()
@@ -468,7 +476,7 @@ namespace Assistant
                             !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial
                 ).ToList();
 
-            NextPrevTarget(mobiles, true);
+            NextPrevTarget(mobiles, true, false, false, true);
         }
 
         private static void NextTargetNonFriendlyMonster()
@@ -481,7 +489,7 @@ namespace Assistant
                             !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial
                 ).ToList();
 
-            NextPrevTarget(mobiles, true);
+            NextPrevTarget(mobiles, true, false, false, true);
         }
 
         private static void PrevTargetFriendlyHumanoid()
@@ -493,7 +501,7 @@ namespace Assistant
                             !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
                 .ToList();
 
-            NextPrevTarget(mobiles, false);
+            NextPrevTarget(mobiles, false, false, true);
         }
 
         private static void PrevTargetFriendlyMonster()
@@ -505,7 +513,7 @@ namespace Assistant
                             !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
                 .ToList();
 
-            NextPrevTarget(mobiles, false);
+            NextPrevTarget(mobiles, false, false, true);
         }
 
         private static void PrevTargetGreyHumanoid()
@@ -540,7 +548,7 @@ namespace Assistant
                             !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
                 .ToList();
 
-            NextPrevTarget(mobiles, false);
+            NextPrevTarget(mobiles, false, false, false, true);
         }
 
         private static void PrevTargetNonFriendlyMonster()
@@ -553,7 +561,7 @@ namespace Assistant
                             !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
                 .ToList();
 
-            NextPrevTarget(mobiles, false);
+            NextPrevTarget(mobiles, false, false, false, true);
         }
     }
 }
