@@ -1689,10 +1689,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.smartLT);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
@@ -1701,7 +1701,7 @@ namespace Assistant
             this.onlyNextPrevBeneficial.AutoSize = true;
             this.onlyNextPrevBeneficial.Location = new System.Drawing.Point(261, 38);
             this.onlyNextPrevBeneficial.Name = "onlyNextPrevBeneficial";
-            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(226, 19);
+            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(225, 19);
             this.onlyNextPrevBeneficial.TabIndex = 135;
             this.onlyNextPrevBeneficial.Text = "Only \'Next/Prev Friend\' sets Beneficial";
             this.onlyNextPrevBeneficial.UseVisualStyleBackColor = true;
@@ -1771,7 +1771,7 @@ namespace Assistant
             this.showTargetMessagesOverChar.AutoSize = true;
             this.showTargetMessagesOverChar.Location = new System.Drawing.Point(261, 13);
             this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
-            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(224, 19);
+            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
             this.showTargetMessagesOverChar.TabIndex = 74;
             this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
             this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
@@ -1908,9 +1908,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -2699,7 +2699,6 @@ namespace Assistant
             this.cntCount});
             this.counters.GridLines = true;
             this.counters.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.counters.HideSelection = false;
             this.counters.LabelWrap = false;
             this.counters.Location = new System.Drawing.Point(6, 18);
             this.counters.MultiSelect = false;
@@ -3123,7 +3122,6 @@ namespace Assistant
             this.skillHDRcap,
             this.skillHDRlock});
             this.skillList.FullRowSelect = true;
-            this.skillList.HideSelection = false;
             this.skillList.Location = new System.Drawing.Point(8, 5);
             this.skillList.Name = "skillList";
             this.skillList.Size = new System.Drawing.Size(342, 307);
@@ -3559,10 +3557,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -3593,7 +3591,7 @@ namespace Assistant
             this.rangeCheckDoubleClick.AutoSize = true;
             this.rangeCheckDoubleClick.Location = new System.Drawing.Point(272, 78);
             this.rangeCheckDoubleClick.Name = "rangeCheckDoubleClick";
-            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(207, 19);
+            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(208, 19);
             this.rangeCheckDoubleClick.TabIndex = 15;
             this.rangeCheckDoubleClick.Text = "Range check on \'DoubleClickType\'";
             this.rangeCheckDoubleClick.UseVisualStyleBackColor = true;
@@ -3604,7 +3602,7 @@ namespace Assistant
             this.rangeCheckTargetByType.AutoSize = true;
             this.rangeCheckTargetByType.Location = new System.Drawing.Point(272, 53);
             this.rangeCheckTargetByType.Name = "rangeCheckTargetByType";
-            this.rangeCheckTargetByType.Size = new System.Drawing.Size(188, 19);
+            this.rangeCheckTargetByType.Size = new System.Drawing.Size(190, 19);
             this.rangeCheckTargetByType.TabIndex = 14;
             this.rangeCheckTargetByType.Text = "Range check on \'TargetByType\'";
             this.rangeCheckTargetByType.UseVisualStyleBackColor = true;
@@ -3626,7 +3624,7 @@ namespace Assistant
             this.stepThroughMacro.AutoSize = true;
             this.stepThroughMacro.Location = new System.Drawing.Point(272, 118);
             this.stepThroughMacro.Name = "stepThroughMacro";
-            this.stepThroughMacro.Size = new System.Drawing.Size(134, 19);
+            this.stepThroughMacro.Size = new System.Drawing.Size(135, 19);
             this.stepThroughMacro.TabIndex = 12;
             this.stepThroughMacro.Text = "Step Through Macro";
             this.stepThroughMacro.UseVisualStyleBackColor = true;
@@ -3637,7 +3635,7 @@ namespace Assistant
             this.targetByTypeDifferent.AutoSize = true;
             this.targetByTypeDifferent.Location = new System.Drawing.Point(272, 28);
             this.targetByTypeDifferent.Name = "targetByTypeDifferent";
-            this.targetByTypeDifferent.Size = new System.Drawing.Size(181, 19);
+            this.targetByTypeDifferent.Size = new System.Drawing.Size(183, 19);
             this.targetByTypeDifferent.TabIndex = 11;
             this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
             this.targetByTypeDifferent.UseVisualStyleBackColor = true;
@@ -3665,15 +3663,15 @@ namespace Assistant
             this.macroVariableTypeList.Items.AddRange(new object[] {
             "Absolute Target",
             "DoubleClick Target"});
-            this.macroVariableTypeList.Location = new System.Drawing.Point(79, 18);
+            this.macroVariableTypeList.Location = new System.Drawing.Point(79, 22);
             this.macroVariableTypeList.Name = "macroVariableTypeList";
-            this.macroVariableTypeList.Size = new System.Drawing.Size(153, 23);
+            this.macroVariableTypeList.Size = new System.Drawing.Size(153, 25);
             this.macroVariableTypeList.TabIndex = 6;
             this.macroVariableTypeList.SelectedIndexChanged += new System.EventHandler(this.macroVariableTypeList_SelectedIndexChanged);
             // 
             // retargetMacroVariable
             // 
-            this.retargetMacroVariable.Location = new System.Drawing.Point(6, 80);
+            this.retargetMacroVariable.Location = new System.Drawing.Point(6, 84);
             this.retargetMacroVariable.Name = "retargetMacroVariable";
             this.retargetMacroVariable.Size = new System.Drawing.Size(67, 25);
             this.retargetMacroVariable.TabIndex = 5;
@@ -3683,7 +3681,7 @@ namespace Assistant
             // 
             // insertMacroVariable
             // 
-            this.insertMacroVariable.Location = new System.Drawing.Point(6, 18);
+            this.insertMacroVariable.Location = new System.Drawing.Point(6, 22);
             this.insertMacroVariable.Name = "insertMacroVariable";
             this.insertMacroVariable.Size = new System.Drawing.Size(67, 25);
             this.insertMacroVariable.TabIndex = 4;
@@ -3693,7 +3691,7 @@ namespace Assistant
             // 
             // removeMacroVariable
             // 
-            this.removeMacroVariable.Location = new System.Drawing.Point(6, 111);
+            this.removeMacroVariable.Location = new System.Drawing.Point(6, 115);
             this.removeMacroVariable.Name = "removeMacroVariable";
             this.removeMacroVariable.Size = new System.Drawing.Size(67, 25);
             this.removeMacroVariable.TabIndex = 3;
@@ -3703,7 +3701,7 @@ namespace Assistant
             // 
             // addMacroVariable
             // 
-            this.addMacroVariable.Location = new System.Drawing.Point(6, 49);
+            this.addMacroVariable.Location = new System.Drawing.Point(6, 53);
             this.addMacroVariable.Name = "addMacroVariable";
             this.addMacroVariable.Size = new System.Drawing.Size(67, 25);
             this.addMacroVariable.TabIndex = 2;
@@ -3715,9 +3713,9 @@ namespace Assistant
             // 
             this.macroVariables.FormattingEnabled = true;
             this.macroVariables.ItemHeight = 15;
-            this.macroVariables.Location = new System.Drawing.Point(81, 47);
+            this.macroVariables.Location = new System.Drawing.Point(79, 53);
             this.macroVariables.Name = "macroVariables";
-            this.macroVariables.Size = new System.Drawing.Size(153, 214);
+            this.macroVariables.Size = new System.Drawing.Size(153, 199);
             this.macroVariables.TabIndex = 1;
             // 
             // screenshotTab
