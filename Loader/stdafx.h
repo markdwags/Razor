@@ -9,9 +9,11 @@
 #pragma warning(disable: 4312)
 #pragma warning(disable: 4800)
 #pragma warning(disable: 4530)
-#pragma pack(1)
 
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 // Windows Header Files:
 #include <windows.h>
+
+#pragma pack(1)
+
 #include <stdio.h>
