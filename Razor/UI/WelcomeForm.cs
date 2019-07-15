@@ -212,6 +212,7 @@ namespace Assistant
             this.showAtStart.Size = new System.Drawing.Size(176, 20);
             this.showAtStart.TabIndex = 26;
             this.showAtStart.Text = "Show this when Razor starts";
+            this.showAtStart.CheckedChanged += new System.EventHandler(this.showAtStart_CheckedChanged);
             // 
             // dataDir
             // 
@@ -695,8 +696,6 @@ namespace Assistant
 
         private void okay_Click(object sender, System.EventArgs e)
         {
-            Config.SetAppSetting("ClientEncrypted", patchEncy.Checked ? "1" : "0");
-
             m_ClientPath = uoClient.Text;
 
             ServerEntry se = null;
@@ -803,6 +802,7 @@ namespace Assistant
                 if (MessageBox.Show(this, Language.GetString(LocString.NoPatchWarning), Language.GetString(LocString.Confirm), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                     patchEncy.Checked = true;
             }
+            Config.SetAppSetting("ClientEncrypted", patchEncy.Checked ? "1" : "0");
         }
 
         private void dataBrowse_Click(object sender, System.EventArgs e)
