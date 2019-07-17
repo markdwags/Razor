@@ -13,7 +13,8 @@ namespace Assistant.UI
 {
     public partial class OverheadMessages : Form
     {
-        private List<Core.OverheadMessages.OverheadMessage> NewOverheadEntries = new List<Core.OverheadMessages.OverheadMessage>();
+        private List<Core.OverheadMessages.OverheadMessage> NewOverheadEntries =
+            new List<Core.OverheadMessages.OverheadMessage>();
 
         public OverheadMessages()
         {
@@ -34,7 +35,8 @@ namespace Assistant.UI
                 else
                     item.SubItems[1].BackColor = SystemColors.Control;
 
-                item.SubItems[1].ForeColor = (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+                item.SubItems[1].ForeColor =
+                    (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
 
                 item.UseItemStyleForSubItems = false;
 
@@ -69,6 +71,17 @@ namespace Assistant.UI
                     cliLocSearchView.Items.Add(item);
                 }
             }
+
+            if (cliLocSearchView.Items.Count == 0)
+            {
+                if (MessageBox.Show(this,
+                        $"Unable to find that message. Would you still like to setup an overhead message with '{cliLocTextSearch.Text}' anyway?",
+                        "Overhead Messages",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    setOverheadMessage.PerformClick();
+                }
+            }
         }
 
         private void setOverheadMessage_Click(object sender, EventArgs e)
@@ -91,7 +104,9 @@ namespace Assistant.UI
 
             ListViewItem item = new ListViewItem(newItemText);
 
-            if (InputBox.Show(this, "Enter Overhead Text", "Enter text to display overhead"))
+            if (InputBox.Show(this,
+                "Enter text to display overhead",
+                newItemText))
             {
                 string overheadMessage = InputBox.GetString();
 
@@ -102,9 +117,10 @@ namespace Assistant.UI
                 else
                     item.SubItems[1].BackColor = SystemColors.Control;
 
-                item.SubItems[1].ForeColor = (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+                item.SubItems[1].ForeColor =
+                    (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
                 item.UseItemStyleForSubItems = false;
-                
+
                 cliLocOverheadView.Items.Add(item);
 
                 NewOverheadEntries.Add(new Core.OverheadMessages.OverheadMessage
@@ -127,7 +143,8 @@ namespace Assistant.UI
         private void saveOverheadMessages_Click(object sender, EventArgs e)
         {
             //Core.OverheadMessages.ClearAll();
-            List<Core.OverheadMessages.OverheadMessage> newOverheadMessageList = new List<Core.OverheadMessages.OverheadMessage>();
+            List<Core.OverheadMessages.OverheadMessage> newOverheadMessageList =
+                new List<Core.OverheadMessages.OverheadMessage>();
 
 
             // Keep it simple, reset to default if it isn't what we like
@@ -148,7 +165,7 @@ namespace Assistant.UI
             }
 
             foreach (ListViewItem item in cliLocOverheadView.Items)
-            {  
+            {
                 Core.OverheadMessages.OverheadMessage message = new Core.OverheadMessages.OverheadMessage
                 {
                     SearchMessage = item.SubItems[0].Text,
@@ -159,7 +176,8 @@ namespace Assistant.UI
                 newOverheadMessageList.Add(message);
             }
 
-            Core.OverheadMessages.OverheadMessageList = new List<Core.OverheadMessages.OverheadMessage>(newOverheadMessageList);
+            Core.OverheadMessages.OverheadMessageList =
+                new List<Core.OverheadMessages.OverheadMessage>(newOverheadMessageList);
 
             Config.Save();
 
@@ -195,7 +213,9 @@ namespace Assistant.UI
                 else
                     selectedItem.SubItems[1].BackColor = Color.White;
 
-                selectedItem.SubItems[1].ForeColor = (selectedItem.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+                selectedItem.SubItems[1].ForeColor = (selectedItem.SubItems[1].BackColor.GetBrightness() < 0.35
+                    ? Color.White
+                    : Color.Black);
 
                 foreach (Core.OverheadMessages.OverheadMessage list in Core.OverheadMessages.OverheadMessageList)
                 {
@@ -214,7 +234,6 @@ namespace Assistant.UI
                         break;
                     }
                 }
-
             }
         }
 
@@ -274,10 +293,10 @@ namespace Assistant.UI
         private void OverheadMessages_Closing(object sender, CancelEventArgs e)
         {
             this.SafeAction(s =>
-                {
-                    e.Cancel = true;
-                    s.Hide();
-                });
+            {
+                e.Cancel = true;
+                s.Hide();
+            });
         }
     }
 }
