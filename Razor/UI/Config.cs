@@ -363,6 +363,7 @@ namespace Assistant
             Counter.LoadProfile(root["counters"]);
             Agent.LoadProfile(root["agents"]);
             DressList.Load(root["dresslists"]);
+            FriendsManager.Load(root["friends"]);
             HotKey.Load(root["hotkeys"]);
             PasswordMemory.Load(root["passwords"]);
             OverheadMessages.Load(root["overheadmessages"]);
@@ -373,9 +374,6 @@ namespace Assistant
             {
                 MacroVariables.Import(root);
             }
-
-            FriendsManager.Load(root["friends"]);
-
 
             GoldPerHourTimer.Stop();
             DamageTracker.Stop();
