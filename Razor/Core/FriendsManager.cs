@@ -51,10 +51,10 @@ namespace Assistant.Core
 
             public void AddHotKeys()
             {
-                HotKey.Add(HKCategory.Misc, HKSubCat.None, $"Friend Add Target To: {GroupName}", AddFriendToGroup);
-                HotKey.Add(HKCategory.Misc, HKSubCat.None, $"Friend Toggle Group: {GroupName}", ToggleFriendGroup);
-                HotKey.Add(HKCategory.Misc, HKSubCat.None, $"Friend Add All Mobiles: {GroupName}", AddAllMobileAsFriends);
-                HotKey.Add(HKCategory.Misc, HKSubCat.None, $"Friend Add All Humanoids: {GroupName}", AddAllHumanoidsAsFriends);
+                HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Friend Add Target To: {GroupName}", AddFriendToGroup);
+                HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Friend Toggle Group: {GroupName}", ToggleFriendGroup);
+                HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Friend Add All Mobiles: {GroupName}", AddAllMobileAsFriends);
+                HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Friend Add All Humanoids: {GroupName}", AddAllHumanoidsAsFriends);
             }
 
             public void RemoveHotKeys()

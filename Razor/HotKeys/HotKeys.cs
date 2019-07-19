@@ -33,8 +33,8 @@ namespace Assistant
         Macros,
         Spells,
         Skills,
-
-        Misc
+        Misc,
+        Friends
     }
 
     public enum HKSubCat
@@ -442,6 +442,8 @@ namespace Assistant
             TreeNode misc = MakeNode("Misc", HKCategory.Misc);
             MakeNode(misc, "Special Moves", HKSubCat.SpecialMoves);
             MakeNode(misc, "Pet Commands", HKSubCat.PetCommands);
+
+            MakeNode("Friends", HKCategory.Friends);
         }
 
         public static void RebuildList(TreeView tree)
