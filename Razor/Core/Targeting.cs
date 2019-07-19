@@ -141,14 +141,14 @@ namespace Assistant
         private static void AttackLastTarg()
         {
             TargetInfo targ;
+
             if (IsSmartTargetingEnabled())
             {
-                // If Smart Targetting is being used we'll assume that the user would like to attack the harmful target.
-                targ = m_LastHarmTarg;
+                // Let's see if the harmful target is in range
+                Mobile m = World.FindMobile(m_LastHarmTarg.Serial);
 
-                // If there is no last harmful target, then we'll attack the last target.
-                if (targ == null)
-                    targ = m_LastTarget;
+                // If Smart Targeting is being used we'll assume that the user would like to attack the harmful target.
+                targ = m == null ? m_LastTarget : m_LastHarmTarg;
             }
             else
             {
@@ -157,6 +157,8 @@ namespace Assistant
 
             if (targ != null && targ.Serial.IsMobile)
                 Client.Instance.SendToServer(new AttackReq(targ.Serial));
+            else
+                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
         }
 
         private static void OnClearQueue()
