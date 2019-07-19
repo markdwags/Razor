@@ -295,7 +295,7 @@ namespace Assistant
             {
                 m_LTBeneWasSet = false;
                 OneTimeTarget(false, OnSetLastTargetBeneficial, OnSLTBeneficialCancel);
-                World.Player.SendMessage(MsgLevel.Force, LocString.TargSetLT);
+                World.Player.SendMessage(MsgLevel.Force, LocString.NewBeneficialTarget);
             }
         }
 
@@ -351,7 +351,7 @@ namespace Assistant
             {
                 m_LTHarmWasSet = false;
                 OneTimeTarget(false, OnSetLastTargetHarmful, OnSLTHarmfulCancel);
-                World.Player.SendMessage(MsgLevel.Force, LocString.TargSetLT);
+                World.Player.SendMessage(MsgLevel.Force, LocString.NewHarmfulTarget);
             }
         }
 

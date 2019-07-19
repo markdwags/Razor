@@ -421,7 +421,6 @@ InputBox::ok=&OK
 1207=Are you sure you want to delete this?
 1208=Select a folder to store Razor's screen shots.
 1209=Hot Keys
-
 1210=Items
 1211=Targets
 1212=Agents
@@ -787,3 +786,5 @@ InputBox::ok=&OK
 2085=Previous Friendly Monster Target
 2086=Previous Grey Monster Target
 2087=Previous Non-Friendly Monster Target
+2088=Target a new 'Beneficial Target'
+2089=Target a new 'Harmful Target'

@@ -536,6 +536,8 @@ namespace Assistant
         PrevTargetFriendlyMonster,
         PrevTargetGreyMonster,
         PrevTargetNonFriendlyMonster,
+        NewBeneficialTarget,
+        NewHarmfulTarget,
         __End
     }
 
