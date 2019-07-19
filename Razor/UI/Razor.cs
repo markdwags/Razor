@@ -205,8 +205,6 @@ namespace Assistant
         private CheckBox showContainerLabels;
         private Button overHeadMessages;
         private CheckBox showOverheadMessages;
-        private Label lblBuffDebuff;
-        private TextBox buffDebuffFormat;
         private CheckBox showBuffDebuffOverhead;
         private TextBox healthFmt;
         private Label label10;
@@ -358,6 +356,7 @@ namespace Assistant
         private CheckBox friendBeneficialOnly;
         private CheckBox onlyNextPrevBeneficial;
         private CheckBox smartLT;
+        private Button buffDebuffOptions;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -467,8 +466,6 @@ namespace Assistant
             this.showDamageTaken = new System.Windows.Forms.CheckBox();
             this.damageDealtOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageDealt = new System.Windows.Forms.CheckBox();
-            this.lblBuffDebuff = new System.Windows.Forms.Label();
-            this.buffDebuffFormat = new System.Windows.Forms.TextBox();
             this.showBuffDebuffOverhead = new System.Windows.Forms.CheckBox();
             this.healthFmt = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -734,6 +731,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.buffDebuffOptions = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1140,10 +1138,10 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
             // 
@@ -1288,12 +1286,11 @@ namespace Assistant
             // subOptionsSpeechTab
             // 
             this.subOptionsSpeechTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsSpeechTab.Controls.Add(this.buffDebuffOptions);
             this.subOptionsSpeechTab.Controls.Add(this.damageTakenOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.showDamageTaken);
             this.subOptionsSpeechTab.Controls.Add(this.damageDealtOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.showDamageDealt);
-            this.subOptionsSpeechTab.Controls.Add(this.lblBuffDebuff);
-            this.subOptionsSpeechTab.Controls.Add(this.buffDebuffFormat);
             this.subOptionsSpeechTab.Controls.Add(this.showBuffDebuffOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.healthFmt);
             this.subOptionsSpeechTab.Controls.Add(this.label10);
@@ -1374,25 +1371,6 @@ namespace Assistant
             this.showDamageDealt.Text = "Show damage dealt";
             this.showDamageDealt.UseVisualStyleBackColor = true;
             this.showDamageDealt.CheckedChanged += new System.EventHandler(this.showDamageDealt_CheckedChanged);
-            // 
-            // lblBuffDebuff
-            // 
-            this.lblBuffDebuff.Location = new System.Drawing.Point(9, 258);
-            this.lblBuffDebuff.Name = "lblBuffDebuff";
-            this.lblBuffDebuff.Size = new System.Drawing.Size(115, 18);
-            this.lblBuffDebuff.TabIndex = 93;
-            this.lblBuffDebuff.Text = "Buff/Debuff Format:";
-            this.lblBuffDebuff.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // buffDebuffFormat
-            // 
-            this.buffDebuffFormat.Location = new System.Drawing.Point(130, 257);
-            this.buffDebuffFormat.Name = "buffDebuffFormat";
-            this.buffDebuffFormat.Size = new System.Drawing.Size(111, 23);
-            this.buffDebuffFormat.TabIndex = 92;
-            this.buffDebuffFormat.Text = "[{action}{name}]";
-            this.buffDebuffFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.buffDebuffFormat.TextChanged += new System.EventHandler(this.buffDebuffFormat_TextChanged);
             // 
             // showBuffDebuffOverhead
             // 
@@ -2271,9 +2249,9 @@ namespace Assistant
             this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
             this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
             this.subOptionsFriendsTab.Controls.Add(this.friendFormat);
-            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
-            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsFriendsTab.TabIndex = 3;
             this.subOptionsFriendsTab.Text = "Friends";
             // 
@@ -4182,6 +4160,17 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // buffDebuffOptions
+            // 
+            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buffDebuffOptions.Location = new System.Drawing.Point(208, 236);
+            this.buffDebuffOptions.Name = "buffDebuffOptions";
+            this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
+            this.buffDebuffOptions.TabIndex = 129;
+            this.buffDebuffOptions.Text = "...";
+            this.buffDebuffOptions.UseVisualStyleBackColor = true;
+            this.buffDebuffOptions.Click += new System.EventHandler(this.BuffDebuffOptions_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4617,8 +4606,6 @@ namespace Assistant
             showAttackTarget.SafeAction(s => { s.Checked = Config.GetBool("ShowAttackTargetOverhead"); });
 
             showBuffDebuffOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffOverhead"); });
-
-            buffDebuffFormat.SafeAction(s => { s.Text = Config.GetString("BuffDebuffFormat"); });
 
             rangeCheckTargetByType.SafeAction(s => { s.Checked = Config.GetBool("RangeCheckTargetByType"); });
 
@@ -8890,18 +8877,6 @@ namespace Assistant
             Config.SetProperty("ShowBuffDebuffOverhead", showBuffDebuffOverhead.Checked);
         }
 
-        private void buffDebuffFormat_TextChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(buffDebuffFormat.Text))
-            {
-                Config.SetProperty("BuffDebuffFormat", "[{action}{name}]");
-            }
-            else
-            {
-                Config.SetProperty("BuffDebuffFormat", buffDebuffFormat.Text);
-            }
-        }
-
         private void blockOpenCorpsesTwice_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("BlockOpenCorpsesTwice", blockOpenCorpsesTwice.Checked);
@@ -9840,6 +9815,21 @@ namespace Assistant
         private void nonFriendlyHarmfulOnly_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("NonFriendlyHarmfulOnly", nonFriendlyHarmfulOnly.Checked);
+        }
+
+        private BuffDebuff _buffDebugOptionsForm = null;
+
+        private void BuffDebuffOptions_Click(object sender, EventArgs e)
+        {
+            if (_buffDebugOptionsForm != null)
+            {
+                _buffDebugOptionsForm.Show();
+            }
+            else
+            {
+                _buffDebugOptionsForm = new BuffDebuff();
+                _buffDebugOptionsForm.Show();
+            }
         }
     }
 }

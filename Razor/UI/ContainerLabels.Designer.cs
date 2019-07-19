@@ -238,6 +238,7 @@
             this.Load += new System.EventHandler(this.ContainerLabels_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.ContainerLabels_Closing);
 
         }
 

@@ -108,7 +108,7 @@ namespace Assistant.UI
 
             Config.Save();
 
-            Hide();
+            this.SafeAction(s => s.Hide());
         }
 
         private void removeContainerLabel_Click(object sender, EventArgs e)
@@ -121,7 +121,7 @@ namespace Assistant.UI
 
         private void cancelOverheadMessages_Click(object sender, EventArgs e)
         {
-            Hide();
+            this.SafeAction(s => s.Hide());
         }
 
         private void addContainLabel_Click(object sender, EventArgs e)
@@ -364,6 +364,14 @@ namespace Assistant.UI
                     }
                 }
             }
+        }
+        private void ContainerLabels_Closing(object sender, CancelEventArgs e)
+        {
+            this.SafeAction(s =>
+            {
+                e.Cancel = true;
+                s.Hide();
+            });
         }
     }
 }

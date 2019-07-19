@@ -2835,9 +2835,9 @@ namespace Assistant
                         {
                             World.Player.BuffsDebuffs.Add(buffInfo);
 
-                            if (Config.GetBool("ShowBuffDebuffOverhead"))
+                            if (Config.GetBool("ShowBuffDebuffOverhead") && !BuffsTimer.IsFiltered(buffInfo.ClilocMessage1))
                             {
-                                World.Player.OverheadMessage(88, format.Replace("{action}", "+").Replace("{name}", buffInfo.ClilocMessage1));
+                                World.Player.OverheadMessage(Config.GetInt("BuffHue"), format.Replace("{action}", "+").Replace("{name}", buffInfo.ClilocMessage1).Replace("{duration}", buffInfo.Duration.ToString()));
                             }
                         }
 
@@ -2849,7 +2849,9 @@ namespace Assistant
                             if (Config.GetBool("ShowBuffDebuffOverhead"))
                             {
                                 string buffRemoveInfo = World.Player.BuffsDebuffs.Where(b => b.BuffIcon == buff).Select(x => x.ClilocMessage1).FirstOrDefault();
-                                World.Player.OverheadMessage(338, format.Replace("{action}", "-").Replace("{name}", buffRemoveInfo));
+
+                                if (!BuffsTimer.IsFiltered(buffRemoveInfo))
+                                    World.Player.OverheadMessage(Config.GetInt("DebuffHue"), format.Replace("{action}", "-").Replace("{name}", buffRemoveInfo).Replace("{duration}", string.Empty));
                             }
 
                             World.Player.BuffsDebuffs.RemoveAll(b => b.BuffIcon == buff);

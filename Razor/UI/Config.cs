@@ -163,7 +163,7 @@ namespace Assistant
             AddProperty("StealthOverhead", false);
 
             AddProperty("ShowBuffDebuffOverhead", true);
-            AddProperty("BuffDebuffFormat", "[{action}{name}]");
+            AddProperty("BuffDebuffFormat", "[{action}{name} ({duration}s)]");
 
             AddProperty("BlockOpenCorpsesTwice", false);
 
@@ -252,6 +252,13 @@ namespace Assistant
             AddProperty("OnlyNextPrevBeneficial", false);
             AddProperty("FriendlyBeneficialOnly", false);
             AddProperty("NonFriendlyHarmfulOnly", false);
+
+            AddProperty("BuffDebuffSeconds", 20);
+            AddProperty("BuffHue", 88);
+            AddProperty("DebuffHue", 338);
+            AddProperty("DisplayBuffDebuffEvery", false);
+            AddProperty("BuffDebuffFilter", string.Empty);
+            AddProperty("BuffDebuffEveryXSeconds", false);
 
             Counter.Default();
             Filter.DisableAll();
