@@ -992,8 +992,14 @@ namespace Assistant
             }
         }
 
+        private static DateTime _lastFlagCheck = DateTime.UtcNow;
+        private static Serial _lastFlagCheckSerial;
+
         public static void CheckTextFlags(Mobile m)
         {
+            if (DateTime.UtcNow - _lastFlagCheck < TimeSpan.FromMilliseconds(250) && m.Serial == _lastFlagCheckSerial)
+                return;
+
             if (IgnoreAgent.IsIgnored(m.Serial))
             {
                 m.OverheadMessage(Config.GetInt("SysColor"), "[Ignored]");
@@ -1012,6 +1018,9 @@ namespace Assistant
 
             if (m_LastTarget != null && m_LastTarget.Serial == m.Serial)
                 m.OverheadMessage(0x3B2, $"[{Language.GetString(LocString.LastTarget)}]");
+
+            _lastFlagCheck = DateTime.UtcNow;
+            _lastFlagCheckSerial = m.Serial;
         }
 
         public static bool IsLastTarget(Mobile m)
