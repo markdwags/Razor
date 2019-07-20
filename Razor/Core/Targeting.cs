@@ -141,11 +141,13 @@ namespace Assistant
         private static void AttackLastTarg()
         {
             TargetInfo targ;
+            Mobile m = null;
 
             if (IsSmartTargetingEnabled())
             {
                 // Let's see if the harmful target is in range
-                Mobile m = World.FindMobile(m_LastHarmTarg.Serial);
+                if (m_LastHarmTarg != null)
+                    m = World.FindMobile(m_LastHarmTarg.Serial);
 
                 // If Smart Targeting is being used we'll assume that the user would like to attack the harmful target.
                 targ = m == null ? m_LastTarget : m_LastHarmTarg;
@@ -994,8 +996,14 @@ namespace Assistant
             }
         }
 
+        private static DateTime _lastFlagCheck = DateTime.UtcNow;
+
         public static void CheckTextFlags(Mobile m)
         {
+            // Prevent single clicks
+            if (DateTime.UtcNow - _lastFlagCheck < TimeSpan.FromMilliseconds(500))
+                return;
+
             if (IgnoreAgent.IsIgnored(m.Serial))
             {
                 m.OverheadMessage(Config.GetInt("SysColor"), "[Ignored]");
@@ -1014,6 +1022,8 @@ namespace Assistant
 
             if (m_LastTarget != null && m_LastTarget.Serial == m.Serial)
                 m.OverheadMessage(0x3B2, $"[{Language.GetString(LocString.LastTarget)}]");
+
+            _lastFlagCheck = DateTime.UtcNow;
         }
 
         public static bool IsLastTarget(Mobile m)
