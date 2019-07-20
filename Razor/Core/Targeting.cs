@@ -997,11 +997,12 @@ namespace Assistant
         }
 
         private static DateTime _lastFlagCheck = DateTime.UtcNow;
+        private static Serial _lastFlagCheckSerial;
 
         public static void CheckTextFlags(Mobile m)
         {
-            // Prevent single clicks
-            if (DateTime.UtcNow - _lastFlagCheck < TimeSpan.FromMilliseconds(500))
+            // Prevent multiple single clicks on the same mobile serial
+            if (DateTime.UtcNow - _lastFlagCheck < TimeSpan.FromMilliseconds(500) && m.Serial == _lastFlagCheckSerial)
                 return;
 
             if (IgnoreAgent.IsIgnored(m.Serial))
@@ -1024,6 +1025,7 @@ namespace Assistant
                 m.OverheadMessage(0x3B2, $"[{Language.GetString(LocString.LastTarget)}]");
 
             _lastFlagCheck = DateTime.UtcNow;
+            _lastFlagCheckSerial = m.Serial;
         }
 
         public static bool IsLastTarget(Mobile m)
