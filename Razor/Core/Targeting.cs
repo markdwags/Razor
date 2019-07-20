@@ -141,16 +141,14 @@ namespace Assistant
         private static void AttackLastTarg()
         {
             TargetInfo targ;
-            Mobile m = null;
-
             if (IsSmartTargetingEnabled())
             {
-                // Let's see if the harmful target is in range
-                if (m_LastHarmTarg != null)
-                    m = World.FindMobile(m_LastHarmTarg.Serial);
+                // If Smart Targetting is being used we'll assume that the user would like to attack the harmful target.
+                targ = m_LastHarmTarg;
 
-                // If Smart Targeting is being used we'll assume that the user would like to attack the harmful target.
-                targ = m == null ? m_LastTarget : m_LastHarmTarg;
+                // If there is no last harmful target, then we'll attack the last target.
+                if (targ == null)
+                    targ = m_LastTarget;
             }
             else
             {
@@ -159,8 +157,6 @@ namespace Assistant
 
             if (targ != null && targ.Serial.IsMobile)
                 Client.Instance.SendToServer(new AttackReq(targ.Serial));
-            else
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
         }
 
         private static void OnClearQueue()
@@ -996,15 +992,8 @@ namespace Assistant
             }
         }
 
-        private static DateTime _lastFlagCheck = DateTime.UtcNow;
-        private static Serial _lastFlagCheckSerial;
-
         public static void CheckTextFlags(Mobile m)
         {
-            // Prevent multiple single clicks on the same mobile serial
-            if (DateTime.UtcNow - _lastFlagCheck < TimeSpan.FromMilliseconds(500) && m.Serial == _lastFlagCheckSerial)
-                return;
-
             if (IgnoreAgent.IsIgnored(m.Serial))
             {
                 m.OverheadMessage(Config.GetInt("SysColor"), "[Ignored]");
@@ -1023,9 +1012,6 @@ namespace Assistant
 
             if (m_LastTarget != null && m_LastTarget.Serial == m.Serial)
                 m.OverheadMessage(0x3B2, $"[{Language.GetString(LocString.LastTarget)}]");
-
-            _lastFlagCheck = DateTime.UtcNow;
-            _lastFlagCheckSerial = m.Serial;
         }
 
         public static bool IsLastTarget(Mobile m)
