@@ -106,6 +106,13 @@ if ($(Test-Path "$WorkingDir\settings.json" -PathType Leaf) -eq $False) {
 
     do {
         $path = Read-Host -Prompt "> Enter the path to your Ultima Online files (ie: C:\Ultima Online)" 
+
+        # Do a basic check to ensure its the right folder
+        if ($(Test-Path "$path\art.mul" -PathType Leaf) -eq $false) {
+            Write-Host "** That folder doesn't contain art.mul, a core Ultima Online client file. You most likely didn't enter the correct folder. Please use the folder that contains UO art/sound files." -ForegroundColor Red
+            $path = ""
+        }
+
     } until ([string]::IsNullOrEmpty($path) -eq $false)
   
     # Update the default settings.json file to point to where we installed Razor
@@ -153,6 +160,7 @@ if ($(Test-Path "$Home\Desktop\ClassicUO.lnk" -PathType Leaf) -eq $False) {
         $WshShell = New-Object -comObject WScript.Shell
         $shortcut = $WshShell.CreateShortcut("$Home\Desktop\ClassicUO.lnk")
         $shortcut.TargetPath = "$WorkingDir\ClassicUO.exe"
+        $shortcut.WorkingDirectory = "$WorkingDir"
         $shortcut.Save()
     }  
 }
