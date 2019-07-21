@@ -99,6 +99,12 @@ namespace Assistant
 
             protected override void OnTick()
             {
+                if (World.Player != null && World.Player.IsGhost)
+                {
+                    BandageTimer.Stop();
+                    return;
+                }
+
                 m_Count++;
 
                 if (Config.GetBool("ShowBandageTimer"))
