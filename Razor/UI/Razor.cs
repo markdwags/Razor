@@ -5634,22 +5634,26 @@ namespace Assistant
             if (loc)
                 return;
 
-            ShowMe();
-            if (serial.IsItem)
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
+
+            dressList.SafeAction(s =>
             {
-                DressList list = (DressList) dressList.SelectedItem;
+                if (serial.IsItem)
+                {
+                    DressList list = (DressList)s.SelectedItem;
 
-                if (list == null)
-                    return;
+                    if (list == null)
+                        return;
 
-                list.Items.Add(serial);
-                Item item = World.FindItem(serial);
+                    list.Items.Add(serial);
+                    Item item = World.FindItem(serial);
 
-                if (item == null)
-                    dressItems.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
-                else
-                    dressItems.Items.Add(item.ToString());
-            }
+                    if (item == null)
+                        s.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
+                    else
+                        s.Items.Add(item.ToString());
+                }
+            });
         }
 
         private void dressDelSel_Click(object sender, System.EventArgs e)
@@ -5667,8 +5671,11 @@ namespace Assistant
             {
                 try
                 {
-                    list.Items.RemoveAt(sel);
-                    dressItems.Items.RemoveAt(sel);
+                    dressItems.SafeAction(s =>
+                    {
+                        list.Items.RemoveAt(sel);
+                        dressItems.Items.RemoveAt(sel);
+                    });
                 }
                 catch
                 {
@@ -5685,8 +5692,10 @@ namespace Assistant
             if (MessageBox.Show(this, Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                list.Items.Clear();
-                dressItems.Items.Clear();
+                dressItems.SafeAction(s => {
+                    list.Items.Clear();
+                    dressItems.Items.Clear();
+                });
             }
         }
 
@@ -6080,43 +6089,65 @@ namespace Assistant
 
         private void setExHue_Click(object sender, System.EventArgs e)
         {
-            SetHue(lblExHue, "ExemptColor");
+            lblExHue.SafeAction(s => {
+                SetHue(s, "ExemptColor");
+            });
         }
 
         private void setMsgHue_Click(object sender, System.EventArgs e)
         {
-            SetHue(lblMsgHue, "SysColor");
+            lblMsgHue.SafeAction(s =>
+            {
+                SetHue(s, "SysColor");
+            });
         }
 
         private void setWarnHue_Click(object sender, System.EventArgs e)
         {
-            SetHue(lblWarnHue, "WarningColor");
+            lblWarnHue.SafeAction(s =>
+            {
+                SetHue(s, "WarningColor");
+            });
         }
 
         private void setSpeechHue_Click(object sender, System.EventArgs e)
         {
-            SetHue(chkForceSpeechHue, "SpeechHue");
+            chkForceSpeechHue.SafeAction(s =>
+            {
+                SetHue(chkForceSpeechHue, "SpeechHue");
+            });
         }
 
         private void setLTHilight_Click(object sender, System.EventArgs e)
         {
-            if (SetHue(lthilight, "LTHilight"))
-                Client.Instance.SetCustomNotoHue(Config.GetInt("LTHilight"));
+            lthilight.SafeAction(s => {
+                if (SetHue(s, "LTHilight"))
+                    Client.Instance.SetCustomNotoHue(Config.GetInt("LTHilight"));
+            });
         }
 
         private void setBeneHue_Click(object sender, System.EventArgs e)
         {
-            SetHue(lblBeneHue, "BeneficialSpellHue");
+            lblBeneHue.SafeAction(s =>
+            {
+                SetHue(lblBeneHue, "BeneficialSpellHue");
+            });
         }
 
         private void setHarmHue_Click(object sender, System.EventArgs e)
         {
-            SetHue(lblHarmHue, "HarmfulSpellHue");
+            lblHarmHue.SafeAction(s =>
+            {
+                SetHue(s, "HarmfulSpellHue");
+            });
         }
 
         private void setNeuHue_Click(object sender, System.EventArgs e)
         {
-            SetHue(lblNeuHue, "NeutralSpellHue");
+            lblNeuHue.SafeAction(s =>
+            {
+                SetHue(s, "NeutralSpellHue");
+            });
         }
 
         private void QueueActions_CheckedChanged(object sender, System.EventArgs e)
