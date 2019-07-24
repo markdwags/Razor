@@ -357,6 +357,7 @@ namespace Assistant
         private CheckBox onlyNextPrevBeneficial;
         private CheckBox smartLT;
         private Button buffDebuffOptions;
+        private Button targetIndictorKey;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -462,6 +463,7 @@ namespace Assistant
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
+            this.buffDebuffOptions = new System.Windows.Forms.Button();
             this.damageTakenOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageTaken = new System.Windows.Forms.CheckBox();
             this.damageDealtOverhead = new System.Windows.Forms.CheckBox();
@@ -731,7 +733,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.buffDebuffOptions = new System.Windows.Forms.Button();
+            this.targetIndictorKey = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1138,10 +1140,10 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
             // 
@@ -1327,6 +1329,17 @@ namespace Assistant
             this.subOptionsSpeechTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsSpeechTab.TabIndex = 0;
             this.subOptionsSpeechTab.Text = "Speech & Messages  ";
+            // 
+            // buffDebuffOptions
+            // 
+            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buffDebuffOptions.Location = new System.Drawing.Point(208, 236);
+            this.buffDebuffOptions.Name = "buffDebuffOptions";
+            this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
+            this.buffDebuffOptions.TabIndex = 129;
+            this.buffDebuffOptions.Text = "...";
+            this.buffDebuffOptions.UseVisualStyleBackColor = true;
+            this.buffDebuffOptions.Click += new System.EventHandler(this.BuffDebuffOptions_Click);
             // 
             // damageTakenOverhead
             // 
@@ -1655,6 +1668,7 @@ namespace Assistant
             // subOptionsTargetTab
             // 
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsTargetTab.Controls.Add(this.targetIndictorKey);
             this.subOptionsTargetTab.Controls.Add(this.groupSmartTarget);
             this.subOptionsTargetTab.Controls.Add(this.setTargetIndicatorHue);
             this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
@@ -1926,9 +1940,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -2249,9 +2263,9 @@ namespace Assistant
             this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
             this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
             this.subOptionsFriendsTab.Controls.Add(this.friendFormat);
-            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
-            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsFriendsTab.TabIndex = 3;
             this.subOptionsFriendsTab.Text = "Friends";
             // 
@@ -4160,16 +4174,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // buffDebuffOptions
+            // targetIndictorKey
             // 
-            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buffDebuffOptions.Location = new System.Drawing.Point(208, 236);
-            this.buffDebuffOptions.Name = "buffDebuffOptions";
-            this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
-            this.buffDebuffOptions.TabIndex = 129;
-            this.buffDebuffOptions.Text = "...";
-            this.buffDebuffOptions.UseVisualStyleBackColor = true;
-            this.buffDebuffOptions.Click += new System.EventHandler(this.BuffDebuffOptions_Click);
+            this.targetIndictorKey.Location = new System.Drawing.Point(242, 246);
+            this.targetIndictorKey.Name = "targetIndictorKey";
+            this.targetIndictorKey.Size = new System.Drawing.Size(16, 23);
+            this.targetIndictorKey.TabIndex = 139;
+            this.targetIndictorKey.Text = "?";
+            this.targetIndictorKey.UseVisualStyleBackColor = true;
+            this.targetIndictorKey.Click += new System.EventHandler(this.TargetIndictorKey_Click);
             // 
             // MainForm
             // 
@@ -9861,6 +9874,16 @@ namespace Assistant
                 _buffDebugOptionsForm = new BuffDebuff();
                 _buffDebugOptionsForm.Show();
             }
+        }
+
+        private void TargetIndictorKey_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("You can insert these variables into the target indicator format box.");
+            sb.AppendLine(string.Empty);
+            sb.AppendLine("{name} - The name of the target");
+            MessageBox.Show(this, sb.ToString(), "Target Indicator Format", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
     }
 }

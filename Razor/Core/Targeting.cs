@@ -1335,7 +1335,8 @@ namespace Assistant
                 if (m == null)
                     return;
 
-                m.OverheadMessage(Config.GetInt("TargetIndicatorHue"), Config.GetString("TargetIndicatorFormat"));
+                m.OverheadMessage(Config.GetInt("TargetIndicatorHue"),
+                    Config.GetString("TargetIndicatorFormat").Replace("{name}", m.Name));
             }
 
             _lastOverheadMessageTarget = info;
