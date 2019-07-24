@@ -49,8 +49,8 @@ namespace Assistant
                 {
                     Stop();
 
-                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageStart"))
-                        ShowBandagingStatusMessage(Config.GetString("BandageStartMessage"));
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageEnd"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageEndMessage"));
                 }
             }
             else
