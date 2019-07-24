@@ -285,7 +285,7 @@ namespace Assistant.HotKeys
                 else
                 {
                     Targeting.LastTarget(true); //force a targetself to be queued
-                    BandageTimer.Start();
+                    //BandageTimer.Start(); // Bandage timer will be started automatically after the "You begin applying the bandages." message
                 }
             }
         }
@@ -303,7 +303,7 @@ namespace Assistant.HotKeys
                 {
                     Targeting.ClearQueue();
                     Targeting.TargetSelf(true); //force a targetself to be queued
-                    BandageTimer.Start();
+                    //BandageTimer.Start(); // Bandage timer will be started automatically after the "You begin applying the bandages." message
                 }
             }
         }

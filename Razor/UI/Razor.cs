@@ -205,6 +205,8 @@ namespace Assistant
         private CheckBox showContainerLabels;
         private Button overHeadMessages;
         private CheckBox showOverheadMessages;
+        private Label lblBuffDebuff;
+        private TextBox buffDebuffFormat;
         private CheckBox showBuffDebuffOverhead;
         private TextBox healthFmt;
         private Label label10;
@@ -356,8 +358,10 @@ namespace Assistant
         private CheckBox friendBeneficialOnly;
         private CheckBox onlyNextPrevBeneficial;
         private CheckBox smartLT;
-        private Button buffDebuffOptions;
-        private Button targetIndictorKey;
+        private TextBox bandageEndMessage;
+        private TextBox bandageStartMessage;
+        private CheckBox showBandageEnd;
+        private CheckBox showBandageStart;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -463,11 +467,12 @@ namespace Assistant
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
-            this.buffDebuffOptions = new System.Windows.Forms.Button();
             this.damageTakenOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageTaken = new System.Windows.Forms.CheckBox();
             this.damageDealtOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageDealt = new System.Windows.Forms.CheckBox();
+            this.lblBuffDebuff = new System.Windows.Forms.Label();
+            this.buffDebuffFormat = new System.Windows.Forms.TextBox();
             this.showBuffDebuffOverhead = new System.Windows.Forms.CheckBox();
             this.healthFmt = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -733,7 +738,10 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.targetIndictorKey = new System.Windows.Forms.Button();
+            this.showBandageStart = new System.Windows.Forms.CheckBox();
+            this.showBandageEnd = new System.Windows.Forms.CheckBox();
+            this.bandageStartMessage = new System.Windows.Forms.TextBox();
+            this.bandageEndMessage = new System.Windows.Forms.TextBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1288,11 +1296,12 @@ namespace Assistant
             // subOptionsSpeechTab
             // 
             this.subOptionsSpeechTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subOptionsSpeechTab.Controls.Add(this.buffDebuffOptions);
             this.subOptionsSpeechTab.Controls.Add(this.damageTakenOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.showDamageTaken);
             this.subOptionsSpeechTab.Controls.Add(this.damageDealtOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.showDamageDealt);
+            this.subOptionsSpeechTab.Controls.Add(this.lblBuffDebuff);
+            this.subOptionsSpeechTab.Controls.Add(this.buffDebuffFormat);
             this.subOptionsSpeechTab.Controls.Add(this.showBuffDebuffOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.healthFmt);
             this.subOptionsSpeechTab.Controls.Add(this.label10);
@@ -1329,17 +1338,6 @@ namespace Assistant
             this.subOptionsSpeechTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsSpeechTab.TabIndex = 0;
             this.subOptionsSpeechTab.Text = "Speech & Messages  ";
-            // 
-            // buffDebuffOptions
-            // 
-            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buffDebuffOptions.Location = new System.Drawing.Point(208, 236);
-            this.buffDebuffOptions.Name = "buffDebuffOptions";
-            this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
-            this.buffDebuffOptions.TabIndex = 129;
-            this.buffDebuffOptions.Text = "...";
-            this.buffDebuffOptions.UseVisualStyleBackColor = true;
-            this.buffDebuffOptions.Click += new System.EventHandler(this.BuffDebuffOptions_Click);
             // 
             // damageTakenOverhead
             // 
@@ -1384,6 +1382,25 @@ namespace Assistant
             this.showDamageDealt.Text = "Show damage dealt";
             this.showDamageDealt.UseVisualStyleBackColor = true;
             this.showDamageDealt.CheckedChanged += new System.EventHandler(this.showDamageDealt_CheckedChanged);
+            // 
+            // lblBuffDebuff
+            // 
+            this.lblBuffDebuff.Location = new System.Drawing.Point(9, 258);
+            this.lblBuffDebuff.Name = "lblBuffDebuff";
+            this.lblBuffDebuff.Size = new System.Drawing.Size(115, 18);
+            this.lblBuffDebuff.TabIndex = 93;
+            this.lblBuffDebuff.Text = "Buff/Debuff Format:";
+            this.lblBuffDebuff.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // buffDebuffFormat
+            // 
+            this.buffDebuffFormat.Location = new System.Drawing.Point(130, 257);
+            this.buffDebuffFormat.Name = "buffDebuffFormat";
+            this.buffDebuffFormat.Size = new System.Drawing.Size(111, 23);
+            this.buffDebuffFormat.TabIndex = 92;
+            this.buffDebuffFormat.Text = "[{action}{name}]";
+            this.buffDebuffFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.buffDebuffFormat.TextChanged += new System.EventHandler(this.buffDebuffFormat_TextChanged);
             // 
             // showBuffDebuffOverhead
             // 
@@ -1668,7 +1685,6 @@ namespace Assistant
             // subOptionsTargetTab
             // 
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subOptionsTargetTab.Controls.Add(this.targetIndictorKey);
             this.subOptionsTargetTab.Controls.Add(this.groupSmartTarget);
             this.subOptionsTargetTab.Controls.Add(this.setTargetIndicatorHue);
             this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
@@ -1687,10 +1703,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
@@ -1940,9 +1956,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -2781,6 +2797,10 @@ namespace Assistant
             // subBandageTimerTab
             // 
             this.subBandageTimerTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subBandageTimerTab.Controls.Add(this.bandageEndMessage);
+            this.subBandageTimerTab.Controls.Add(this.bandageStartMessage);
+            this.subBandageTimerTab.Controls.Add(this.showBandageEnd);
+            this.subBandageTimerTab.Controls.Add(this.showBandageStart);
             this.subBandageTimerTab.Controls.Add(this.setBandageHue);
             this.subBandageTimerTab.Controls.Add(this.bandageTimerLocation);
             this.subBandageTimerTab.Controls.Add(this.bandageTimerSeconds);
@@ -2788,9 +2808,9 @@ namespace Assistant
             this.subBandageTimerTab.Controls.Add(this.bandageTimerFormat);
             this.subBandageTimerTab.Controls.Add(this.showBandageTimer);
             this.subBandageTimerTab.Controls.Add(this.lblBandageCountFormat);
-            this.subBandageTimerTab.Location = new System.Drawing.Point(4, 22);
+            this.subBandageTimerTab.Location = new System.Drawing.Point(4, 24);
             this.subBandageTimerTab.Name = "subBandageTimerTab";
-            this.subBandageTimerTab.Size = new System.Drawing.Size(502, 288);
+            this.subBandageTimerTab.Size = new System.Drawing.Size(502, 286);
             this.subBandageTimerTab.TabIndex = 2;
             this.subBandageTimerTab.Text = "Bandage Timer";
             // 
@@ -4174,15 +4194,47 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // targetIndictorKey
+            // showBandageStart
             // 
-            this.targetIndictorKey.Location = new System.Drawing.Point(242, 246);
-            this.targetIndictorKey.Name = "targetIndictorKey";
-            this.targetIndictorKey.Size = new System.Drawing.Size(16, 23);
-            this.targetIndictorKey.TabIndex = 139;
-            this.targetIndictorKey.Text = "?";
-            this.targetIndictorKey.UseVisualStyleBackColor = true;
-            this.targetIndictorKey.Click += new System.EventHandler(this.TargetIndictorKey_Click);
+            this.showBandageStart.AutoSize = true;
+            this.showBandageStart.Location = new System.Drawing.Point(9, 100);
+            this.showBandageStart.Name = "showBandageStart";
+            this.showBandageStart.Size = new System.Drawing.Size(190, 19);
+            this.showBandageStart.TabIndex = 58;
+            this.showBandageStart.Text = "Show bandaging start message";
+            this.showBandageStart.UseVisualStyleBackColor = true;
+            this.showBandageStart.CheckedChanged += new System.EventHandler(this.ShowBandageStart_CheckedChanged);
+            // 
+            // showBandageEnd
+            // 
+            this.showBandageEnd.AutoSize = true;
+            this.showBandageEnd.Location = new System.Drawing.Point(9, 125);
+            this.showBandageEnd.Name = "showBandageEnd";
+            this.showBandageEnd.Size = new System.Drawing.Size(187, 19);
+            this.showBandageEnd.TabIndex = 60;
+            this.showBandageEnd.Text = "Show bandaging end message";
+            this.showBandageEnd.UseVisualStyleBackColor = true;
+            this.showBandageEnd.CheckedChanged += new System.EventHandler(this.ShowBandageEnd_CheckedChanged);
+            // 
+            // bandageStartMessage
+            // 
+            this.bandageStartMessage.Location = new System.Drawing.Point(205, 98);
+            this.bandageStartMessage.Name = "bandageStartMessage";
+            this.bandageStartMessage.Size = new System.Drawing.Size(146, 23);
+            this.bandageStartMessage.TabIndex = 61;
+            this.bandageStartMessage.Text = "Bandage: Starting";
+            this.bandageStartMessage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.bandageStartMessage.TextChanged += new System.EventHandler(this.BandageStartMessage_TextChanged);
+            // 
+            // bandageEndMessage
+            // 
+            this.bandageEndMessage.Location = new System.Drawing.Point(205, 123);
+            this.bandageEndMessage.Name = "bandageEndMessage";
+            this.bandageEndMessage.Size = new System.Drawing.Size(146, 23);
+            this.bandageEndMessage.TabIndex = 62;
+            this.bandageEndMessage.Text = "Bandage: Ending";
+            this.bandageEndMessage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.bandageEndMessage.TextChanged += new System.EventHandler(this.BandageEndMessage_TextChanged);
             // 
             // MainForm
             // 
@@ -4620,6 +4672,8 @@ namespace Assistant
 
             showBuffDebuffOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffOverhead"); });
 
+            buffDebuffFormat.SafeAction(s => { s.Text = Config.GetString("BuffDebuffFormat"); });
+
             rangeCheckTargetByType.SafeAction(s => { s.Checked = Config.GetBool("RangeCheckTargetByType"); });
 
             rangeCheckDoubleClick.SafeAction(s => { s.Checked = Config.GetBool("RangeCheckDoubleClick"); });
@@ -4702,6 +4756,11 @@ namespace Assistant
             onlyNextPrevBeneficial.SafeAction(s => { s.Checked = Config.GetBool("OnlyNextPrevBeneficial"); });
             friendBeneficialOnly.SafeAction(s => { s.Checked = Config.GetBool("FriendlyBeneficialOnly"); });
             nonFriendlyHarmfulOnly.SafeAction(s => { s.Checked = Config.GetBool("NonFriendlyHarmfulOnly"); });
+            
+            showBandageStart.SafeAction(s => { s.Checked = Config.GetBool("ShowBandageStart"); });
+            showBandageEnd.SafeAction(s => { s.Checked = Config.GetBool("ShowBandageEnd"); });
+            bandageStartMessage.SafeAction(s => { s.Text = Config.GetString("BandageStartMessage"); });
+            bandageEndMessage.SafeAction(s => { s.Text = Config.GetString("BandageEndMessage"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -5647,26 +5706,22 @@ namespace Assistant
             if (loc)
                 return;
 
-            Engine.MainWindow.SafeAction(s => s.ShowMe());
-
-            dressList.SafeAction(s =>
+            ShowMe();
+            if (serial.IsItem)
             {
-                if (serial.IsItem)
-                {
-                    DressList list = (DressList)s.SelectedItem;
+                DressList list = (DressList) dressList.SelectedItem;
 
-                    if (list == null)
-                        return;
+                if (list == null)
+                    return;
 
-                    list.Items.Add(serial);
-                    Item item = World.FindItem(serial);
+                list.Items.Add(serial);
+                Item item = World.FindItem(serial);
 
-                    if (item == null)
-                        s.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
-                    else
-                        s.Items.Add(item.ToString());
-                }
-            });
+                if (item == null)
+                    dressItems.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
+                else
+                    dressItems.Items.Add(item.ToString());
+            }
         }
 
         private void dressDelSel_Click(object sender, System.EventArgs e)
@@ -5684,11 +5739,8 @@ namespace Assistant
             {
                 try
                 {
-                    dressItems.SafeAction(s =>
-                    {
-                        list.Items.RemoveAt(sel);
-                        dressItems.Items.RemoveAt(sel);
-                    });
+                    list.Items.RemoveAt(sel);
+                    dressItems.Items.RemoveAt(sel);
                 }
                 catch
                 {
@@ -5705,10 +5757,8 @@ namespace Assistant
             if (MessageBox.Show(this, Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                dressItems.SafeAction(s => {
-                    list.Items.Clear();
-                    dressItems.Items.Clear();
-                });
+                list.Items.Clear();
+                dressItems.Items.Clear();
             }
         }
 
@@ -6102,65 +6152,43 @@ namespace Assistant
 
         private void setExHue_Click(object sender, System.EventArgs e)
         {
-            lblExHue.SafeAction(s => {
-                SetHue(s, "ExemptColor");
-            });
+            SetHue(lblExHue, "ExemptColor");
         }
 
         private void setMsgHue_Click(object sender, System.EventArgs e)
         {
-            lblMsgHue.SafeAction(s =>
-            {
-                SetHue(s, "SysColor");
-            });
+            SetHue(lblMsgHue, "SysColor");
         }
 
         private void setWarnHue_Click(object sender, System.EventArgs e)
         {
-            lblWarnHue.SafeAction(s =>
-            {
-                SetHue(s, "WarningColor");
-            });
+            SetHue(lblWarnHue, "WarningColor");
         }
 
         private void setSpeechHue_Click(object sender, System.EventArgs e)
         {
-            chkForceSpeechHue.SafeAction(s =>
-            {
-                SetHue(chkForceSpeechHue, "SpeechHue");
-            });
+            SetHue(chkForceSpeechHue, "SpeechHue");
         }
 
         private void setLTHilight_Click(object sender, System.EventArgs e)
         {
-            lthilight.SafeAction(s => {
-                if (SetHue(s, "LTHilight"))
-                    Client.Instance.SetCustomNotoHue(Config.GetInt("LTHilight"));
-            });
+            if (SetHue(lthilight, "LTHilight"))
+                Client.Instance.SetCustomNotoHue(Config.GetInt("LTHilight"));
         }
 
         private void setBeneHue_Click(object sender, System.EventArgs e)
         {
-            lblBeneHue.SafeAction(s =>
-            {
-                SetHue(lblBeneHue, "BeneficialSpellHue");
-            });
+            SetHue(lblBeneHue, "BeneficialSpellHue");
         }
 
         private void setHarmHue_Click(object sender, System.EventArgs e)
         {
-            lblHarmHue.SafeAction(s =>
-            {
-                SetHue(s, "HarmfulSpellHue");
-            });
+            SetHue(lblHarmHue, "HarmfulSpellHue");
         }
 
         private void setNeuHue_Click(object sender, System.EventArgs e)
         {
-            lblNeuHue.SafeAction(s =>
-            {
-                SetHue(s, "NeutralSpellHue");
-            });
+            SetHue(lblNeuHue, "NeutralSpellHue");
         }
 
         private void QueueActions_CheckedChanged(object sender, System.EventArgs e)
@@ -8921,6 +8949,18 @@ namespace Assistant
             Config.SetProperty("ShowBuffDebuffOverhead", showBuffDebuffOverhead.Checked);
         }
 
+        private void buffDebuffFormat_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(buffDebuffFormat.Text))
+            {
+                Config.SetProperty("BuffDebuffFormat", "[{action}{name}]");
+            }
+            else
+            {
+                Config.SetProperty("BuffDebuffFormat", buffDebuffFormat.Text);
+            }
+        }
+
         private void blockOpenCorpsesTwice_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("BlockOpenCorpsesTwice", blockOpenCorpsesTwice.Checked);
@@ -9861,29 +9901,36 @@ namespace Assistant
             Config.SetProperty("NonFriendlyHarmfulOnly", nonFriendlyHarmfulOnly.Checked);
         }
 
-        private BuffDebuff _buffDebugOptionsForm = null;
-
-        private void BuffDebuffOptions_Click(object sender, EventArgs e)
+        private void ShowBandageStart_CheckedChanged(object sender, EventArgs e)
         {
-            if (_buffDebugOptionsForm != null)
-            {
-                _buffDebugOptionsForm.Show();
-            }
-            else
-            {
-                _buffDebugOptionsForm = new BuffDebuff();
-                _buffDebugOptionsForm.Show();
-            }
+            Config.SetProperty("ShowBandageStart", showBandageStart.Checked);
         }
 
-        private void TargetIndictorKey_Click(object sender, EventArgs e)
+        private void ShowBandageEnd_CheckedChanged(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("You can insert these variables into the target indicator format box.");
-            sb.AppendLine(string.Empty);
-            sb.AppendLine("{name} - The name of the target");
-            MessageBox.Show(this, sb.ToString(), "Target Indicator Format", MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            Config.SetProperty("ShowBandageEnd", showBandageEnd.Checked);
+        }
+
+        private void BandageStartMessage_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(bandageStartMessage.Text))
+            {
+                Config.SetProperty("BandageStartMessage", "Bandage: Starting");
+                bandageStartMessage.SafeAction(s => s.Text = "Bandage: Starting");
+            }
+
+            Config.SetProperty("BandageStartMessage", bandageStartMessage.Text);
+        }
+
+        private void BandageEndMessage_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(bandageEndMessage.Text))
+            {
+                Config.SetProperty("BandageEndMessage", "Bandage: Ending");
+                bandageEndMessage.SafeAction(s => s.Text = "Bandage: Ending");
+            }
+
+            Config.SetProperty("BandageEndMessage", bandageEndMessage.Text);
         }
     }
 }

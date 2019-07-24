@@ -252,6 +252,11 @@ namespace Assistant
             AddProperty("OnlyNextPrevBeneficial", false);
             AddProperty("FriendlyBeneficialOnly", false);
             AddProperty("NonFriendlyHarmfulOnly", false);
+            
+            AddProperty("ShowBandageStart", false);
+            AddProperty("BandageStartMessage", "Bandage: Starting");
+            AddProperty("ShowBandageEnd", false);
+            AddProperty("BandageEndMessage", "Bandage: Ending");
 
             AddProperty("BuffDebuffSeconds", 20);
             AddProperty("BuffHue", 88);

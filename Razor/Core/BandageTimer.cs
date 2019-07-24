@@ -46,7 +46,23 @@ namespace Assistant
             {
                 if (num == 500955 || (num >= 500962 && num <= 500969) || (num >= 503252 && num <= 503261) ||
                     num == 1010058 || num == 1010648 || num == 1010650 || num == 1060088 || num == 1060167)
+                {
                     Stop();
+
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageStart"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageStartMessage"));
+                }
+            }
+            else
+            {
+                // Start timer as soon as there is the "You begin applying the bandages." message
+                if (num == 500956)
+                {
+                    Start();
+
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageStart"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageStartMessage"));
+                }
             }
         }
 
@@ -54,13 +70,38 @@ namespace Assistant
         {
             if (Running)
             {
+                if (msg == "You heal what little damage you had." || msg == "You heal what little damage the patient had.")
+                {
+                    Stop();
+
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageEnd"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageEndMessage"));
+
+                    return;
+                }
+
                 foreach (var t in m_ClilocNums)
                 {
                     if (Language.GetCliloc(t) == msg)
                     {
                         Stop();
+
+                        if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageEnd"))
+                            ShowBandagingStatusMessage(Config.GetString("BandageEndMessage"));
+
                         break;
                     }
+                }
+            }
+            else
+            {
+                // Start timer as soon as there is the "You begin applying the bandages." message
+                if (msg == "You begin applying the bandages.")
+                {
+                    Start();
+
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageStart"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageStartMessage"));
                 }
             }
         }
@@ -91,6 +132,18 @@ namespace Assistant
             Client.Instance.RequestTitlebarUpdate();
         }
 
+        public static void ShowBandagingStatusMessage(string msg)
+        {
+            if (Config.GetInt("ShowBandageTimerLocation") == 0)
+            {
+                World.Player.OverheadMessage(Config.GetInt("ShowBandageTimerHue"), msg);
+            }
+            else
+            {
+                World.Player.SendMessage(Config.GetInt("ShowBandageTimerHue"), msg);
+            }
+        }
+
         private class InternalTimer : Timer
         {
             public InternalTimer() : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
@@ -113,16 +166,7 @@ namespace Assistant
                                          m_Count % Config.GetInt("OnlyShowBandageTimerSeconds") != 0);
 
                     if (showMessage)
-                    {
-                        if (Config.GetInt("ShowBandageTimerLocation") == 0)
-                        {
-                            World.Player.OverheadMessage(Config.GetInt("ShowBandageTimerHue"), Config.GetString("ShowBandageTimerFormat").Replace("{count}", m_Count.ToString()));
-                        }
-                        else
-                        {
-                            World.Player.SendMessage(Config.GetInt("ShowBandageTimerHue"), Config.GetString("ShowBandageTimerFormat").Replace("{count}", m_Count.ToString()));
-                        }
-                    }
+                        ShowBandagingStatusMessage(Config.GetString("ShowBandageTimerFormat").Replace("{count}", m_Count.ToString()));
                 }
 
                 if (m_Count > 30)
