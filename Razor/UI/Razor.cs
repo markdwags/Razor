@@ -358,6 +358,10 @@ namespace Assistant
         private CheckBox friendBeneficialOnly;
         private CheckBox onlyNextPrevBeneficial;
         private CheckBox smartLT;
+        private TextBox bandageEndMessage;
+        private TextBox bandageStartMessage;
+        private CheckBox showBandageEnd;
+        private CheckBox showBandageStart;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -734,6 +738,10 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.showBandageStart = new System.Windows.Forms.CheckBox();
+            this.showBandageEnd = new System.Windows.Forms.CheckBox();
+            this.bandageStartMessage = new System.Windows.Forms.TextBox();
+            this.bandageEndMessage = new System.Windows.Forms.TextBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1695,10 +1703,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
@@ -2789,6 +2797,10 @@ namespace Assistant
             // subBandageTimerTab
             // 
             this.subBandageTimerTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subBandageTimerTab.Controls.Add(this.bandageEndMessage);
+            this.subBandageTimerTab.Controls.Add(this.bandageStartMessage);
+            this.subBandageTimerTab.Controls.Add(this.showBandageEnd);
+            this.subBandageTimerTab.Controls.Add(this.showBandageStart);
             this.subBandageTimerTab.Controls.Add(this.setBandageHue);
             this.subBandageTimerTab.Controls.Add(this.bandageTimerLocation);
             this.subBandageTimerTab.Controls.Add(this.bandageTimerSeconds);
@@ -2796,9 +2808,9 @@ namespace Assistant
             this.subBandageTimerTab.Controls.Add(this.bandageTimerFormat);
             this.subBandageTimerTab.Controls.Add(this.showBandageTimer);
             this.subBandageTimerTab.Controls.Add(this.lblBandageCountFormat);
-            this.subBandageTimerTab.Location = new System.Drawing.Point(4, 22);
+            this.subBandageTimerTab.Location = new System.Drawing.Point(4, 24);
             this.subBandageTimerTab.Name = "subBandageTimerTab";
-            this.subBandageTimerTab.Size = new System.Drawing.Size(502, 288);
+            this.subBandageTimerTab.Size = new System.Drawing.Size(502, 286);
             this.subBandageTimerTab.TabIndex = 2;
             this.subBandageTimerTab.Text = "Bandage Timer";
             // 
@@ -4182,6 +4194,48 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // showBandageStart
+            // 
+            this.showBandageStart.AutoSize = true;
+            this.showBandageStart.Location = new System.Drawing.Point(9, 100);
+            this.showBandageStart.Name = "showBandageStart";
+            this.showBandageStart.Size = new System.Drawing.Size(190, 19);
+            this.showBandageStart.TabIndex = 58;
+            this.showBandageStart.Text = "Show bandaging start message";
+            this.showBandageStart.UseVisualStyleBackColor = true;
+            this.showBandageStart.CheckedChanged += new System.EventHandler(this.ShowBandageStart_CheckedChanged);
+            // 
+            // showBandageEnd
+            // 
+            this.showBandageEnd.AutoSize = true;
+            this.showBandageEnd.Location = new System.Drawing.Point(9, 125);
+            this.showBandageEnd.Name = "showBandageEnd";
+            this.showBandageEnd.Size = new System.Drawing.Size(187, 19);
+            this.showBandageEnd.TabIndex = 60;
+            this.showBandageEnd.Text = "Show bandaging end message";
+            this.showBandageEnd.UseVisualStyleBackColor = true;
+            this.showBandageEnd.CheckedChanged += new System.EventHandler(this.ShowBandageEnd_CheckedChanged);
+            // 
+            // bandageStartMessage
+            // 
+            this.bandageStartMessage.Location = new System.Drawing.Point(205, 98);
+            this.bandageStartMessage.Name = "bandageStartMessage";
+            this.bandageStartMessage.Size = new System.Drawing.Size(146, 23);
+            this.bandageStartMessage.TabIndex = 61;
+            this.bandageStartMessage.Text = "Bandage: Starting";
+            this.bandageStartMessage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.bandageStartMessage.TextChanged += new System.EventHandler(this.BandageStartMessage_TextChanged);
+            // 
+            // bandageEndMessage
+            // 
+            this.bandageEndMessage.Location = new System.Drawing.Point(205, 123);
+            this.bandageEndMessage.Name = "bandageEndMessage";
+            this.bandageEndMessage.Size = new System.Drawing.Size(146, 23);
+            this.bandageEndMessage.TabIndex = 62;
+            this.bandageEndMessage.Text = "Bandage: Ending";
+            this.bandageEndMessage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.bandageEndMessage.TextChanged += new System.EventHandler(this.BandageEndMessage_TextChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4702,6 +4756,11 @@ namespace Assistant
             onlyNextPrevBeneficial.SafeAction(s => { s.Checked = Config.GetBool("OnlyNextPrevBeneficial"); });
             friendBeneficialOnly.SafeAction(s => { s.Checked = Config.GetBool("FriendlyBeneficialOnly"); });
             nonFriendlyHarmfulOnly.SafeAction(s => { s.Checked = Config.GetBool("NonFriendlyHarmfulOnly"); });
+            
+            showBandageStart.SafeAction(s => { s.Checked = Config.GetBool("ShowBandageStart"); });
+            showBandageEnd.SafeAction(s => { s.Checked = Config.GetBool("ShowBandageEnd"); });
+            bandageStartMessage.SafeAction(s => { s.Text = Config.GetString("BandageStartMessage"); });
+            bandageEndMessage.SafeAction(s => { s.Text = Config.GetString("BandageEndMessage"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -9840,6 +9899,38 @@ namespace Assistant
         private void nonFriendlyHarmfulOnly_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("NonFriendlyHarmfulOnly", nonFriendlyHarmfulOnly.Checked);
+        }
+
+        private void ShowBandageStart_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBandageStart", showBandageStart.Checked);
+        }
+
+        private void ShowBandageEnd_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBandageEnd", showBandageEnd.Checked);
+        }
+
+        private void BandageStartMessage_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(bandageStartMessage.Text))
+            {
+                Config.SetProperty("BandageStartMessage", "Bandage: Starting");
+                bandageStartMessage.SafeAction(s => s.Text = "Bandage: Starting");
+            }
+
+            Config.SetProperty("BandageStartMessage", bandageStartMessage.Text);
+        }
+
+        private void BandageEndMessage_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(bandageEndMessage.Text))
+            {
+                Config.SetProperty("BandageEndMessage", "Bandage: Ending");
+                bandageEndMessage.SafeAction(s => s.Text = "Bandage: Ending");
+            }
+
+            Config.SetProperty("BandageEndMessage", bandageEndMessage.Text);
         }
     }
 }

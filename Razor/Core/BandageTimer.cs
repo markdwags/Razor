@@ -49,8 +49,8 @@ namespace Assistant
                 {
                     Stop();
 
-                    if (Config.GetBool("ShowBandageTimer"))
-                        ShowBandagingStatusMessage("Bandaging done!");
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageStart"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageStartMessage"));
                 }
             }
             else
@@ -60,8 +60,8 @@ namespace Assistant
                 {
                     Start();
 
-                    if (Config.GetBool("ShowBandageTimer"))
-                        ShowBandagingStatusMessage("Bandaging started...");
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageStart"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageStartMessage"));
                 }
             }
         }
@@ -74,8 +74,8 @@ namespace Assistant
                 {
                     Stop();
 
-                    if (Config.GetBool("ShowBandageTimer"))
-                        ShowBandagingStatusMessage("Bandaging done!");
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageEnd"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageEndMessage"));
 
                     return;
                 }
@@ -86,8 +86,8 @@ namespace Assistant
                     {
                         Stop();
 
-                        if (Config.GetBool("ShowBandageTimer"))
-                            ShowBandagingStatusMessage("Bandaging done!");
+                        if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageEnd"))
+                            ShowBandagingStatusMessage(Config.GetString("BandageEndMessage"));
 
                         break;
                     }
@@ -100,8 +100,8 @@ namespace Assistant
                 {
                     Start();
 
-                    if (Config.GetBool("ShowBandageTimer"))
-                        ShowBandagingStatusMessage("Bandaging started...");
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageStart"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageStartMessage"));
                 }
             }
         }
