@@ -638,6 +638,84 @@ namespace Assistant
             get { return m_ButtonPoint; }
             set { m_ButtonPoint = value; }
         }
+
+        private static List<Layer> _layers = new List<Layer>
+        {
+            Layer.Backpack,
+            Layer.Invalid,
+            Layer.FirstValid,
+            Layer.RightHand,
+            Layer.LeftHand,
+            Layer.Shoes,
+            Layer.Pants,
+            Layer.Shirt,
+            Layer.Head,
+            Layer.Neck,
+            Layer.Gloves,
+            Layer.InnerTorso,
+            Layer.MiddleTorso,
+            Layer.Arms,
+            Layer.Cloak,
+            Layer.OuterTorso,
+            Layer.OuterLegs,
+            Layer.InnerLegs,
+            Layer.LastUserValid,
+            Layer.Mount,
+            Layer.LastValid,
+            Layer.Hair
+        };
+
+        internal void ResetLayerHue()
+        {
+            if (IsGhost)
+                return;
+
+            foreach (Layer l in _layers)
+            {
+                Item i = GetItemOnLayer(l);
+
+                if (i == null)
+                    continue;
+
+                if (i.ItemID == 0x204E && i.Hue == 0x08FD) // death shroud
+                    i.ItemID = 0x1F03;
+
+                Client.Instance.SendToClient(new EquipmentItem(i, i.Hue, Serial));
+            }
+        }
+
+        internal void SetLayerHue(int hue)
+        {
+            if (IsGhost)
+                return;
+            
+            foreach (Layer l in _layers)
+            {
+                Item i = GetItemOnLayer(l);
+                if (i == null)
+                    continue;
+
+                Client.Instance.SendToClient(new EquipmentItem(i, (ushort)hue, Serial));
+            }
+        }
+
+        internal Packet SetMobileHue(Packet p, int hue)
+        {
+            if (IsGhost)
+                return p;
+
+            p = WriteHueToPacket(p, (ushort) hue);
+
+            return p;
+        }
+
+        private static Packet WriteHueToPacket(Packet p, ushort color)
+        {
+            p.Seek(-3, SeekOrigin.Current);
+            p.Write((short)color);
+            p.Seek(+1, SeekOrigin.Current);
+            return p;
+        }
     }
 }
 
