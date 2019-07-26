@@ -350,6 +350,8 @@ namespace Assistant.Core
 
                     FriendGroups.Add(friendGroup);
                 }
+
+                RedrawAll();
             }
             catch
             {
@@ -364,6 +366,20 @@ namespace Assistant.Core
             }
 
             FriendGroups.Clear();
+        }
+
+        private static void RedrawAll()
+        {
+            RedrawGroup();
+
+            if (_friendGroups.Items.Count > 0)
+            {
+                RedrawList((FriendGroup)_friendGroups.Items[0]);
+            }
+            else
+            {
+                RedrawList(null); // we just want to clear the list
+            }
         }
 
         public static void RedrawGroup()
@@ -389,9 +405,12 @@ namespace Assistant.Core
             _friendList.BeginUpdate();
             _friendList.Items.Clear();
 
-            foreach (Friend friend in group.Friends)
+            if (group != null)
             {
-                _friendList.Items.Add(friend);
+                foreach (Friend friend in group.Friends)
+                {
+                    _friendList.Items.Add(friend);
+                }
             }
 
             _friendList.EndUpdate();
