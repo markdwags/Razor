@@ -4338,6 +4338,7 @@ namespace Assistant
             Language.LoadControlNames(this);
             
             FriendsManager.SetControls(friendsGroup, friendsList);
+            DressList.SetControls(dressList, dressItems);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -4857,7 +4858,7 @@ namespace Assistant
             {
                 int sel = dressList.SelectedIndex;
                 dressItems.Items.Clear();
-                DressList.Redraw(dressList);
+                DressList.Redraw();
                 if (sel >= 0 && sel < dressList.Items.Count)
                     dressList.SelectedIndex = sel;
             }
