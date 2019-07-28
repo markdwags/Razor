@@ -1042,7 +1042,43 @@ namespace Assistant
             return false;
         }
 
-      
+        public static bool IsBeneficialTarget(Mobile m)
+        {
+            if (m != null)
+            {
+                if (IsSmartTargetingEnabled())
+                {
+                    if (m_LastBeneTarg != null && m_LastBeneTarg.Serial == m.Serial)
+                        return true;
+                }
+                else
+                {
+                    if (m_LastTarget != null && m_LastTarget.Serial == m.Serial)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsHarmfulTarget(Mobile m)
+        {
+            if (m != null)
+            {
+                if (IsSmartTargetingEnabled())
+                {
+                    if (m_LastHarmTarg != null && m_LastHarmTarg.Serial == m.Serial)
+                        return true;
+                }
+                else
+                {
+                    if (m_LastTarget != null && m_LastTarget.Serial == m.Serial)
+                        return true;
+                }
+            }
+
+            return false;
+        }
 
         public static void CheckLastTargetRange(Mobile m)
         {
