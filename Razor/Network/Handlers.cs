@@ -2644,8 +2644,9 @@ namespace Assistant
             if (World.Player == null)
                 return;
 
-            uint currentGumpS = p.ReadUInt32();
-            uint currentGumpId = p.ReadUInt32();
+            World.Player.CurrentGumpS = p.ReadUInt32();
+            World.Player.CurrentGumpI = p.ReadUInt32();
+            //World.Player.HasGump = true;
 
             if (Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
@@ -2712,10 +2713,6 @@ namespace Assistant
                 World.Player.CurrentGumpRawData = layout; // Get raw data of current gump
             }
             catch { }
-
-            World.Player.CurrentGumpS = currentGumpS;
-            World.Player.CurrentGumpI = currentGumpId;
-            //World.Player.HasGump = true;
         }
 
         private static bool TryParseGump(string gumpData, out string[] pieces)
