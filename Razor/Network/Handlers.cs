@@ -2715,7 +2715,7 @@ namespace Assistant
 
             World.Player.CurrentGumpS = currentGumpS;
             World.Player.CurrentGumpI = currentGumpId;
-            World.Player.HasGump = true;
+            //World.Player.HasGump = true;
         }
 
         private static bool TryParseGump(string gumpData, out string[] pieces)

@@ -9753,7 +9753,7 @@ namespace Assistant
                 if (friendsList.SelectedIndex < 0 || friendsGroup.SelectedIndex < 0)
                     return;
 
-                FriendsManager.RemoveFriend((FriendsManager.FriendGroup)friendsList.SelectedItem, friendsList.SelectedIndex);
+                FriendsManager.RemoveFriend((FriendsManager.FriendGroup)friendsGroup.SelectedItem, friendsList.SelectedIndex);
             }
         }
 
