@@ -466,6 +466,7 @@ namespace Assistant
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
+            this.buffDebuffOptions = new System.Windows.Forms.Button();
             this.damageTakenOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageTaken = new System.Windows.Forms.CheckBox();
             this.damageDealtOverhead = new System.Windows.Forms.CheckBox();
@@ -739,7 +740,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.buffDebuffOptions = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1335,6 +1335,17 @@ namespace Assistant
             this.subOptionsSpeechTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsSpeechTab.TabIndex = 0;
             this.subOptionsSpeechTab.Text = "Speech & Messages  ";
+            // 
+            // buffDebuffOptions
+            // 
+            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buffDebuffOptions.Location = new System.Drawing.Point(208, 236);
+            this.buffDebuffOptions.Name = "buffDebuffOptions";
+            this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
+            this.buffDebuffOptions.TabIndex = 129;
+            this.buffDebuffOptions.Text = "...";
+            this.buffDebuffOptions.UseVisualStyleBackColor = true;
+            this.buffDebuffOptions.Click += new System.EventHandler(this.BuffDebuffOptions_Click);
             // 
             // damageTakenOverhead
             // 
@@ -2257,9 +2268,9 @@ namespace Assistant
             this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
             this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
             this.subOptionsFriendsTab.Controls.Add(this.friendFormat);
-            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
-            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsFriendsTab.TabIndex = 3;
             this.subOptionsFriendsTab.Text = "Friends";
             // 
@@ -4214,17 +4225,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // buffDebuffOptions
-            // 
-            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buffDebuffOptions.Location = new System.Drawing.Point(208, 236);
-            this.buffDebuffOptions.Name = "buffDebuffOptions";
-            this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
-            this.buffDebuffOptions.TabIndex = 129;
-            this.buffDebuffOptions.Text = "...";
-            this.buffDebuffOptions.UseVisualStyleBackColor = true;
-            this.buffDebuffOptions.Click += new System.EventHandler(this.BuffDebuffOptions_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5650,8 +5650,12 @@ namespace Assistant
                     return;
                 DressList list = new DressList(str);
                 DressList.Add(list);
-                dressList.Items.Add(list);
-                dressList.SelectedItem = list;
+
+                dressList.SafeAction(s =>
+                {
+                    s.Items.Add(list);
+                    s.SelectedItem = list;
+                });
             }
         }
 
@@ -5663,9 +5667,15 @@ namespace Assistant
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 dress.Items.Clear();
-                dressList.Items.Remove(dress);
-                dressList.SelectedIndex = -1;
-                dressItems.Items.Clear();
+
+                dressList.SafeAction(s =>
+                {
+                    s.Items.Remove(dress);
+                    s.SelectedIndex = -1;
+                });
+                
+                dressItems.SafeAction(s => s.Items.Clear());
+
                 DressList.Remove(dress);
             }
         }
@@ -5705,10 +5715,13 @@ namespace Assistant
                 list.Items.Add(serial);
                 Item item = World.FindItem(serial);
 
-                if (item == null)
-                    dressItems.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
-                else
-                    dressItems.Items.Add(item.ToString());
+                dressList.SafeAction(s =>
+                {
+                    if (item == null)
+                        s.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
+                    else
+                        s.Items.Add(item.ToString());
+                });
             }
         }
 
@@ -5728,7 +5741,7 @@ namespace Assistant
                 try
                 {
                     list.Items.RemoveAt(sel);
-                    dressItems.Items.RemoveAt(sel);
+                    dressItems.SafeAction(s => s.Items.RemoveAt(sel));
                 }
                 catch
                 {
@@ -5746,7 +5759,7 @@ namespace Assistant
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 list.Items.Clear();
-                dressItems.Items.Clear();
+                dressItems.SafeAction(s => s.Items.Clear());
             }
         }
 
@@ -5840,8 +5853,11 @@ namespace Assistant
                     list.Items.Add(item.Serial);
             }
 
-            dressList.SelectedItem = null;
-            dressList.SelectedItem = list;
+            dressList.SafeAction(s =>
+            {
+                s.SelectedItem = null;
+                s.SelectedItem = list;
+            });
         }
 
         private void hotkeyTree_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
@@ -9635,11 +9651,11 @@ namespace Assistant
 
                     if (friendsGroup.Items.Count > 0)
                     {
-                        friendsGroup.SelectedIndex = 0;
+                        friendsGroup.SafeAction(s => s.SelectedIndex = 0);
                     }
                     else
                     {
-                        friendsList.Items.Clear();
+                        friendsList.SafeAction(s => s.Items.Clear());
                     }
                 }
             }
@@ -9653,7 +9669,7 @@ namespace Assistant
 
             var friendGroup = (FriendsManager.FriendGroup) friendsGroup.SelectedItem;
 
-            friendsListEnabled.Checked = friendGroup.Enabled;
+            friendsListEnabled.SafeAction(s => s.Checked = friendsGroup.Enabled);
 
             FriendsManager.RedrawList(friendGroup);
         }
@@ -9687,7 +9703,7 @@ namespace Assistant
             if (string.IsNullOrEmpty(friendOverheadFormat.Text))
             {
                 Config.SetProperty("FriendOverheadFormat", "[Friend]");
-                targetIndictorFormat.Text = "[Friend]";
+                targetIndictorFormat.SafeAction(s => s.Text = "[Friend]");
             }
 
             Config.SetProperty("FriendOverheadFormat", friendOverheadFormat.Text);

@@ -51,18 +51,44 @@ namespace Assistant.Core
 
             public void AddHotKeys()
             {
-                HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Friend Add Target To: {GroupName}", AddFriendToGroup);
-                HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Friend Toggle Group: {GroupName}", ToggleFriendGroup);
-                HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Friend Add All Mobiles: {GroupName}", AddAllMobileAsFriends);
-                HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Friend Add All Humanoids: {GroupName}", AddAllHumanoidsAsFriends);
+                if (Engine.MainWindow == null)
+                {
+                    HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add Target To: {GroupName}", AddFriendToGroup);
+                    HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Toggle Group: {GroupName}", ToggleFriendGroup);
+                    HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Mobiles: {GroupName}", AddAllMobileAsFriends);
+                    HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Humanoids: {GroupName}", AddAllHumanoidsAsFriends);
+                }
+                else
+                {
+                    Engine.MainWindow.SafeAction(s =>
+                    {
+                        HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add Target To: {GroupName}", AddFriendToGroup);
+                        HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Toggle Group: {GroupName}", ToggleFriendGroup);
+                        HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Mobiles: {GroupName}", AddAllMobileAsFriends);
+                        HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Humanoids: {GroupName}", AddAllHumanoidsAsFriends);
+                    });
+                }
             }
 
             public void RemoveHotKeys()
             {
-                HotKey.Remove($"Friend Add Target To: {GroupName}");
-                HotKey.Remove($"Friend Toggle Group: {GroupName}");
-                HotKey.Remove($"Friend Add All Mobiles: {GroupName}");
-                HotKey.Remove($"Friend Add All Humanoids: {GroupName}");
+                if (Engine.MainWindow == null)
+                {
+                    HotKey.Remove($"Add Target To: {GroupName}");
+                    HotKey.Remove($"Toggle Group: {GroupName}");
+                    HotKey.Remove($"Add All Mobiles: {GroupName}");
+                    HotKey.Remove($"Add All Humanoids: {GroupName}");
+                }
+                else
+                {
+                    Engine.MainWindow.SafeAction(s =>
+                    {
+                        HotKey.Remove($"Add Target To: {GroupName}");
+                        HotKey.Remove($"Toggle Group: {GroupName}");
+                        HotKey.Remove($"Add All Mobiles: {GroupName}");
+                        HotKey.Remove($"Add All Humanoids: {GroupName}");
+                    });
+                }
             }
 
             private void AddFriendToGroup()
@@ -353,8 +379,9 @@ namespace Assistant.Core
 
                 RedrawAll();
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
             }
         }
 
@@ -384,36 +411,42 @@ namespace Assistant.Core
 
         public static void RedrawGroup()
         {
-            _friendGroups.BeginUpdate();
-            _friendGroups.Items.Clear();
-
-            foreach (FriendGroup friendGroup in FriendGroups)
+            _friendGroups.SafeAction(s =>
             {
-                _friendGroups.Items.Add(friendGroup);
-            }
+                s.BeginUpdate();
+                s.Items.Clear();
 
-            _friendGroups.EndUpdate();
+                foreach (FriendGroup friendGroup in FriendGroups)
+                {
+                    s.Items.Add(friendGroup);
+                }
 
-            if (_friendGroups.Items.Count > 0)
-            {
-                _friendGroups.SelectedIndex = 0;
-            }
+                s.EndUpdate();
+
+                if (s.Items.Count > 0)
+                {
+                    s.SelectedIndex = 0;
+                }
+            });
         }
 
         public static void RedrawList(FriendGroup group)
         {
-            _friendList.BeginUpdate();
-            _friendList.Items.Clear();
-
-            if (group != null)
+            _friendList.SafeAction(s =>
             {
-                foreach (Friend friend in group.Friends)
-                {
-                    _friendList.Items.Add(friend);
-                }
-            }
+                s.BeginUpdate();
+                s.Items.Clear();
 
-            _friendList.EndUpdate();
+                if (group != null)
+                {
+                    foreach (Friend friend in group.Friends)
+                    {
+                        s.Items.Add(friend);
+                    }
+                }
+
+                s.EndUpdate();
+            });
         }
     }
 }

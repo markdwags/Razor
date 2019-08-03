@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Xml;
 using System.Windows.Forms;
+using Assistant.UI;
 
 namespace Assistant
 {
@@ -19,16 +20,16 @@ namespace Assistant
 
         public static void Redraw()
         {
-            _dressList.Items.Clear();
-            _dressItems.Items.Clear();
+            _dressList.SafeAction(s => s.Items.Clear());
+            _dressItems.SafeAction(s => s.Items.Clear());
 
-            _dressList.Items.AddRange((object[]) m_List.ToArray(typeof(object)));
+            _dressList.SafeAction(s => s.Items.AddRange((object[]) m_List.ToArray(typeof(object))));
         }
 
         public static void ClearAll()
         {
-            _dressList?.Items.Clear();
-            _dressItems?.Items.Clear();
+            _dressList?.SafeAction(s => s.Items.Clear());
+            _dressItems?.SafeAction(s => s.Items.Clear());
 
             while (m_List.Count > 0)
                 Remove((DressList) m_List[0]);
@@ -146,21 +147,50 @@ namespace Assistant
 
         public static void Add(DressList list)
         {
-            m_List.Add(list);
-            HotKey.Add(HKCategory.Dress, HKSubCat.None, $"Dress: {list.Name}",
-                new HotKeyCallback(list.Dress));
-            HotKey.Add(HKCategory.Dress, HKSubCat.None, $"Undress: {list.Name}",
-                new HotKeyCallback(list.Undress));
-            HotKey.Add(HKCategory.Dress, HKSubCat.None, $"Toggle: {list.Name}",
-                new HotKeyCallback(list.Toggle));
+            if (Engine.MainWindow == null)
+            {
+                m_List.Add(list);
+                HotKey.Add(HKCategory.Dress, HKSubCat.None, $"Dress: {list.Name}",
+                    new HotKeyCallback(list.Dress));
+                HotKey.Add(HKCategory.Dress, HKSubCat.None, $"Undress: {list.Name}",
+                    new HotKeyCallback(list.Undress));
+                HotKey.Add(HKCategory.Dress, HKSubCat.None, $"Toggle: {list.Name}",
+                    new HotKeyCallback(list.Toggle));
+            }
+            else
+            {
+                Engine.MainWindow.SafeAction(s =>
+                {
+                    m_List.Add(list);
+                    HotKey.Add(HKCategory.Dress, HKSubCat.None, $"Dress: {list.Name}",
+                        new HotKeyCallback(list.Dress));
+                    HotKey.Add(HKCategory.Dress, HKSubCat.None, $"Undress: {list.Name}",
+                        new HotKeyCallback(list.Undress));
+                    HotKey.Add(HKCategory.Dress, HKSubCat.None, $"Toggle: {list.Name}",
+                        new HotKeyCallback(list.Toggle));
+                });
+            }
         }
 
         public static void Remove(DressList list)
         {
-            m_List.Remove(list);
-            HotKey.Remove($"Dress: {list.Name}");
-            HotKey.Remove($"Undress: {list.Name}");
-            HotKey.Remove($"Toggle: {list.Name}");
+            if (Engine.MainWindow == null)
+            {
+                m_List.Remove(list);
+                HotKey.Remove($"Dress: {list.Name}");
+                HotKey.Remove($"Undress: {list.Name}");
+                HotKey.Remove($"Toggle: {list.Name}");
+            }
+            else
+            {
+                Engine.MainWindow.SafeAction(s =>
+                {
+                    m_List.Remove(list);
+                    HotKey.Remove($"Dress: {list.Name}");
+                    HotKey.Remove($"Undress: {list.Name}");
+                    HotKey.Remove($"Toggle: {list.Name}");
+                });
+            }
         }
 
         private ArrayList m_Items;
