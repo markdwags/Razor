@@ -5715,7 +5715,7 @@ namespace Assistant
                 list.Items.Add(serial);
                 Item item = World.FindItem(serial);
 
-                dressList.SafeAction(s =>
+                dressItems.SafeAction(s =>
                 {
                     if (item == null)
                         s.Items.Add(Language.Format(LocString.OutOfRangeA1, serial));
