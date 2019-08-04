@@ -28,12 +28,12 @@ namespace Assistant
                 {
                     return null;
                 }
+
                 AssemblyName askedassembly = new AssemblyName(e.Name);
 
                 bool isdll = File.Exists(Path.Combine(RootPath, askedassembly.Name + ".dll"));
 
                 return Assembly.LoadFile(Path.Combine(RootPath, askedassembly.Name + (isdll ? ".dll" : ".exe")));
-
             };
 
             SplashScreen.Start();
@@ -54,13 +54,15 @@ namespace Assistant
                 MessageBox.Show(
                     String.Format(
                         "WARNING: Razor was unable to load the file Language/Razor_lang.ENU\n."),
-                        "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             m_Running = true;
 
-            string clientPath = ((OnGetUOFilePath)Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(OnGetUOFilePath)))();
+            string clientPath =
+                ((OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(OnGetUOFilePath))
+                )();
 
             Ultima.Files.SetMulPath(clientPath);
             Ultima.Multis.PostHSFormat = UsePostHSChanges;
@@ -85,10 +87,7 @@ namespace Assistant
 
             SplashScreen.End();
 
-            Thread t = new Thread(() =>
-            {
-                RunUI();
-            });
+            Thread t = new Thread(() => { RunUI(); });
             t.SetApartmentState(ApartmentState.STA);
             t.IsBackground = true;
             t.Start();
@@ -107,7 +106,7 @@ namespace Assistant
         private Process m_ClientProcess = null;
         private bool m_ClientRunning = false;
         private string m_ClientVersion;
-        
+
         private static OnPacketSendRecv _sendToClient, _sendToServer, _recv, _send;
         private static OnGetPacketLength _getPacketLength;
         private static OnGetPlayerPosition _getPlayerPosition;
@@ -132,27 +131,22 @@ namespace Assistant
 
         public override void SetMapWndHandle(Form mapWnd)
         {
-
         }
 
         public override void RequestStatbarPatch(bool preAOS)
         {
-
         }
 
         public override void SetCustomNotoHue(int hue)
         {
-
         }
 
         public override void SetSmartCPU(bool enabled)
         {
-
         }
 
         public override void SetGameSize(int x, int y)
         {
-
         }
 
         public override Loader_Error LaunchClient(string client)
@@ -164,18 +158,29 @@ namespace Assistant
 
         public override bool ServerEncrypted { get; set; }
 
-        public unsafe bool Install( PluginHeader* header)
+        public unsafe bool Install(PluginHeader* header)
         {
-            _sendToClient = (OnPacketSendRecv)Marshal.GetDelegateForFunctionPointer( header->Recv, typeof( OnPacketSendRecv ) );
-            _sendToServer = (OnPacketSendRecv)Marshal.GetDelegateForFunctionPointer( header->Send, typeof( OnPacketSendRecv ) );
-            _getPacketLength = (OnGetPacketLength)Marshal.GetDelegateForFunctionPointer( header->GetPacketLength, typeof( OnGetPacketLength ) );
-            _getPlayerPosition = (OnGetPlayerPosition)Marshal.GetDelegateForFunctionPointer( header->GetPlayerPosition, typeof( OnGetPlayerPosition ) );
-            _castSpell = (OnCastSpell)Marshal.GetDelegateForFunctionPointer( header->CastSpell, typeof( OnCastSpell ) );
-            _getStaticImage = (OnGetStaticImage)Marshal.GetDelegateForFunctionPointer( header->GetStaticImage, typeof( OnGetStaticImage ) );
-            _requestMove = (RequestMove)Marshal.GetDelegateForFunctionPointer( header->RequestMove, typeof( RequestMove ) );
-            _setTitle = (OnSetTitle)Marshal.GetDelegateForFunctionPointer( header->SetTitle, typeof( OnSetTitle ) );
-            _uoFilePath = (OnGetUOFilePath)Marshal.GetDelegateForFunctionPointer(header->GetUOFilePath, typeof(OnGetUOFilePath));
-            m_ClientVersion = new Version( (byte)(header->ClientVersion >> 24), (byte)(header->ClientVersion >> 16), (byte)(header->ClientVersion >> 8), (byte)header->ClientVersion ).ToString();
+            _sendToClient =
+                (OnPacketSendRecv) Marshal.GetDelegateForFunctionPointer(header->Recv, typeof(OnPacketSendRecv));
+            _sendToServer =
+                (OnPacketSendRecv) Marshal.GetDelegateForFunctionPointer(header->Send, typeof(OnPacketSendRecv));
+            _getPacketLength =
+                (OnGetPacketLength) Marshal.GetDelegateForFunctionPointer(header->GetPacketLength,
+                    typeof(OnGetPacketLength));
+            _getPlayerPosition =
+                (OnGetPlayerPosition) Marshal.GetDelegateForFunctionPointer(header->GetPlayerPosition,
+                    typeof(OnGetPlayerPosition));
+            _castSpell = (OnCastSpell) Marshal.GetDelegateForFunctionPointer(header->CastSpell, typeof(OnCastSpell));
+            _getStaticImage =
+                (OnGetStaticImage) Marshal.GetDelegateForFunctionPointer(header->GetStaticImage,
+                    typeof(OnGetStaticImage));
+            _requestMove =
+                (RequestMove) Marshal.GetDelegateForFunctionPointer(header->RequestMove, typeof(RequestMove));
+            _setTitle = (OnSetTitle) Marshal.GetDelegateForFunctionPointer(header->SetTitle, typeof(OnSetTitle));
+            _uoFilePath =
+                (OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(header->GetUOFilePath, typeof(OnGetUOFilePath));
+            m_ClientVersion = new Version((byte) (header->ClientVersion >> 24), (byte) (header->ClientVersion >> 16),
+                (byte) (header->ClientVersion >> 8), (byte) header->ClientVersion).ToString();
             m_ClientRunning = true;
             m_ClientWindow = header->HWND;
             _tick = Tick;
@@ -190,26 +195,25 @@ namespace Assistant
             _onDisconnected = OnDisconnected;
             _onFocusGained = OnFocusGained;
             _onFocusLost = OnFocusLost;
-            header->Tick = Marshal.GetFunctionPointerForDelegate( _tick );
-            header->OnRecv = Marshal.GetFunctionPointerForDelegate( _recv );
-            header->OnSend = Marshal.GetFunctionPointerForDelegate( _send );
-            header->OnHotkeyPressed = Marshal.GetFunctionPointerForDelegate( _onHotkeyPressed );
-            header->OnMouse = Marshal.GetFunctionPointerForDelegate( _onMouse );
-            header->OnPlayerPositionChanged = Marshal.GetFunctionPointerForDelegate( _onUpdatePlayerPosition );
-            header->OnClientClosing = Marshal.GetFunctionPointerForDelegate( _onClientClose );
-            header->OnInitialize = Marshal.GetFunctionPointerForDelegate( _onInitialize );
-            header->OnConnected = Marshal.GetFunctionPointerForDelegate( _onConnected );
-            header->OnDisconnected = Marshal.GetFunctionPointerForDelegate( _onDisconnected );
-            header->OnFocusGained = Marshal.GetFunctionPointerForDelegate( _onFocusGained );
-            header->OnFocusLost = Marshal.GetFunctionPointerForDelegate( _onFocusLost );
+            header->Tick = Marshal.GetFunctionPointerForDelegate(_tick);
+            header->OnRecv = Marshal.GetFunctionPointerForDelegate(_recv);
+            header->OnSend = Marshal.GetFunctionPointerForDelegate(_send);
+            header->OnHotkeyPressed = Marshal.GetFunctionPointerForDelegate(_onHotkeyPressed);
+            header->OnMouse = Marshal.GetFunctionPointerForDelegate(_onMouse);
+            header->OnPlayerPositionChanged = Marshal.GetFunctionPointerForDelegate(_onUpdatePlayerPosition);
+            header->OnClientClosing = Marshal.GetFunctionPointerForDelegate(_onClientClose);
+            header->OnInitialize = Marshal.GetFunctionPointerForDelegate(_onInitialize);
+            header->OnConnected = Marshal.GetFunctionPointerForDelegate(_onConnected);
+            header->OnDisconnected = Marshal.GetFunctionPointerForDelegate(_onDisconnected);
+            header->OnFocusGained = Marshal.GetFunctionPointerForDelegate(_onFocusGained);
+            header->OnFocusLost = Marshal.GetFunctionPointerForDelegate(_onFocusLost);
 
             return true;
         }
+
         public unsafe override bool InstallHooks(IntPtr pluginPtr)
         {
-            Engine.MainWindow.SafeAction((s) => {
-                Engine.MainWindow.MainForm_EndLoad();
-            });
+            Engine.MainWindow.SafeAction((s) => { Engine.MainWindow.MainForm_EndLoad(); });
             return true;
         }
 
@@ -225,7 +229,7 @@ namespace Assistant
 
         private unsafe bool OnRecv(ref byte[] data, ref int length)
         {
-            m_In += (uint)length;
+            m_In += (uint) length;
             fixed (byte* ptr = data)
             {
                 bool result = true;
@@ -256,7 +260,7 @@ namespace Assistant
 
         private unsafe bool OnSend(ref byte[] data, ref int length)
         {
-            m_Out += (uint)length;
+            m_Out += (uint) length;
             fixed (byte* ptr = data)
             {
                 bool result = true;
@@ -278,12 +282,13 @@ namespace Assistant
                     result = !PacketHandler.OnClientPacket(id, reader, packet);
 
                     data = packet.Compile();
-                    length = (int)packet.Length;
+                    length = (int) packet.Length;
                 }
 
                 return result;
             }
         }
+
         private void OnMouseHandler(int button, int wheel)
         {
             if (button > 4)
@@ -314,22 +319,25 @@ namespace Assistant
             KMOD_MODE = 0x4000,
             KMOD_RESERVED = 0x8000
         }
+
         private bool OnHotKeyHandler(int key, int mod, bool ispressed)
         {
-            if ( ispressed)
+            if (ispressed)
             {
                 ModKeys cur = ModKeys.None;
-                SDL_Keymod keymod = (SDL_Keymod)mod;
-                if ( keymod.HasFlag(SDL_Keymod.KMOD_LCTRL) || keymod.HasFlag(SDL_Keymod.KMOD_RCTRL ))
+                SDL_Keymod keymod = (SDL_Keymod) mod;
+                if (keymod.HasFlag(SDL_Keymod.KMOD_LCTRL) || keymod.HasFlag(SDL_Keymod.KMOD_RCTRL))
                     cur |= ModKeys.Control;
-                if ( keymod.HasFlag( SDL_Keymod.KMOD_LALT ) || keymod.HasFlag( SDL_Keymod.KMOD_RALT ))
+                if (keymod.HasFlag(SDL_Keymod.KMOD_LALT) || keymod.HasFlag(SDL_Keymod.KMOD_RALT))
                     cur |= ModKeys.Alt;
-                if ( keymod.HasFlag( SDL_Keymod.KMOD_LSHIFT ) || keymod.HasFlag( SDL_Keymod.KMOD_RSHIFT ))
+                if (keymod.HasFlag(SDL_Keymod.KMOD_LSHIFT) || keymod.HasFlag(SDL_Keymod.KMOD_RSHIFT))
                     cur |= ModKeys.Shift;
-                return HotKey.OnKeyDown( Win32Platform.MapKey( key ), cur );
+                return HotKey.OnKeyDown(Win32Platform.MapKey(key), cur);
             }
+
             return true;
         }
+
         private void OnDisconnected()
         {
             PacketHandlers.Party.Clear();
@@ -355,11 +363,12 @@ namespace Assistant
             PacketHandlers.IgnoreGumps.Clear();
             Config.Save();
         }
+
         private void OnConnected()
         {
             m_ConnectionStart = DateTime.UtcNow;
-           
         }
+
         private void OnClientClosing()
         {
             var last = Console.BackgroundColor;
@@ -371,6 +380,7 @@ namespace Assistant
             Console.ForegroundColor = lastFore;
             Engine.Close();
         }
+
         private void OnInitialize()
         {
             var last = Console.BackgroundColor;
@@ -381,14 +391,13 @@ namespace Assistant
             Console.BackgroundColor = last;
             Console.ForegroundColor = lastFore;
         }
+
         public override void SetConnectionInfo(IPAddress addr, int port)
         {
-
         }
 
         public override void SetNegotiate(bool negotiate)
         {
-
         }
 
         public override bool Attach(int pid)
@@ -398,7 +407,6 @@ namespace Assistant
 
         public override void Close()
         {
-
         }
 
         public override void UpdateTitleBar()
@@ -412,7 +420,8 @@ namespace Assistant
 
                 TitleBarBuilder.Replace(@"{char}", World.Player.Name);
 
-                TitleBarBuilder.Replace(@"{crimtime}", World.Player.CriminalTime != 0 ? $"{World.Player.CriminalTime}" : "-");
+                TitleBarBuilder.Replace(@"{crimtime}",
+                    World.Player.CriminalTime != 0 ? $"{World.Player.CriminalTime}" : "-");
 
                 TitleBarBuilder.Replace(@"{hp}", $"{World.Player.Hits}");
                 TitleBarBuilder.Replace(@"{mana}", $"{World.Player.Mana}");
@@ -425,7 +434,7 @@ namespace Assistant
                 TitleBarBuilder.Replace(@"{statbar}", string.Empty);
                 TitleBarBuilder.Replace(@"{mediumstatbar}", string.Empty);
                 TitleBarBuilder.Replace(@"{largestatbar}", string.Empty);
-                
+
                 foreach (Counter c in Counter.List)
                 {
                     if (c.Enabled)
@@ -441,9 +450,9 @@ namespace Assistant
         }
 
 
-        public override void SetTitleStr( string str )
+        public override void SetTitleStr(string str)
         {
-            _setTitle( str );
+            _setTitle(str);
         }
 
         public override bool OnMessage(MainForm razor, uint wParam, int lParam)
@@ -471,16 +480,15 @@ namespace Assistant
         public override void SendToClient(Packet p)
         {
             byte[] data = p.Compile();
-            int length = (int)p.Length;
+            int length = (int) p.Length;
 
             _sendToClient(ref data, ref length);
-
         }
 
         public override void ForceSendToClient(Packet p)
         {
             byte[] data = p.Compile();
-            int length = (int)p.Length;
+            int length = (int) p.Length;
 
             _sendToClient(ref data, ref length);
         }
@@ -488,14 +496,13 @@ namespace Assistant
         public override void ForceSendToServer(Packet p)
         {
             byte[] data = p.Compile();
-            int length = (int)p.Length;
+            int length = (int) p.Length;
 
             _sendToServer(ref data, ref length);
         }
 
         public override void SetPosition(uint x, uint y, uint z, byte dir)
         {
-
         }
 
         public override string GetClientVersion()
@@ -523,9 +530,9 @@ namespace Assistant
             return m_Out;
         }
 
-        internal override void RequestMove( Direction m_Dir )
+        internal override void RequestMove(Direction m_Dir)
         {
-            _requestMove( (int)m_Dir, true );
+            _requestMove((int) m_Dir, true);
         }
 
         public void OnFocusGained()
@@ -539,7 +546,7 @@ namespace Assistant
                 {
                     Platform.SetForegroundWindow(GetWindowHandle());
 
-                    Engine.MainWindow.SafeAction(s => 
+                    Engine.MainWindow.SafeAction(s =>
                     {
                         s.TopMost = true;
                         s.BringToFront();

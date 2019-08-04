@@ -18,18 +18,12 @@ namespace Assistant.UI
 
         private void SetBuffHue_Click(object sender, EventArgs e)
         {
-            lblBuffHue.SafeAction(s =>
-            {
-                SetHue(s, "BuffHue");
-            });
+            lblBuffHue.SafeAction(s => { SetHue(s, "BuffHue"); });
         }
 
         private void SetDebuffHue_Click(object sender, EventArgs e)
         {
-            lblDebuffHue.SafeAction(s =>
-            {
-                SetHue(s, "DebuffHue");
-            });
+            lblDebuffHue.SafeAction(s => { SetHue(s, "DebuffHue"); });
         }
 
         private void SetHue(Control ctrl, string cfg)
@@ -90,7 +84,8 @@ namespace Assistant.UI
 
         private void AddFilter_Click(object sender, EventArgs e)
         {
-            if (InputBox.Show(this, "Filter Buff/Debuff", "Enter part or the whole name of the buff to filter it from showing overhead"))
+            if (InputBox.Show(this, "Filter Buff/Debuff",
+                "Enter part or the whole name of the buff to filter it from showing overhead"))
             {
                 string name = InputBox.GetString();
 

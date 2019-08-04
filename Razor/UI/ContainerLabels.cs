@@ -15,7 +15,8 @@ namespace Assistant.UI
     public partial class ContainerLabels : Form
     {
         // Used to track new entries in the form's life
-        private List<Core.ContainerLabels.ContainerLabel> NewContainerEntries = new List<Core.ContainerLabels.ContainerLabel>();
+        private List<Core.ContainerLabels.ContainerLabel> NewContainerEntries =
+            new List<Core.ContainerLabels.ContainerLabel>();
 
         public ContainerLabels()
         {
@@ -38,7 +39,8 @@ namespace Assistant.UI
                 else
                     item.SubItems[2].BackColor = SystemColors.Control;
 
-                item.SubItems[2].ForeColor = (item.SubItems[2].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+                item.SubItems[2].ForeColor =
+                    (item.SubItems[2].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
 
                 item.UseItemStyleForSubItems = false;
 
@@ -72,7 +74,8 @@ namespace Assistant.UI
 
         private void saveContainerLabels_Click(object sender, EventArgs e)
         {
-            List<Core.ContainerLabels.ContainerLabel> newContainerLabelList = new List<Core.ContainerLabels.ContainerLabel>();
+            List<Core.ContainerLabels.ContainerLabel> newContainerLabelList =
+                new List<Core.ContainerLabels.ContainerLabel>();
 
             // Keep it simple, reset to default if it isn't what we like
             if (string.IsNullOrEmpty(containerLabelFormat.Text) || !containerLabelFormat.Text.Contains("{label}"))
@@ -85,7 +88,8 @@ namespace Assistant.UI
             if (asciiStyle.Checked)
             {
                 Config.SetProperty("ContainerLabelStyle", 0);
-            } else
+            }
+            else
             {
                 Config.SetProperty("ContainerLabelStyle", 1);
             }
@@ -104,7 +108,8 @@ namespace Assistant.UI
                 newContainerLabelList.Add(label);
             }
 
-            Core.ContainerLabels.ContainerLabelList = new List<Core.ContainerLabels.ContainerLabel>(newContainerLabelList);
+            Core.ContainerLabels.ContainerLabelList =
+                new List<Core.ContainerLabels.ContainerLabel>(newContainerLabelList);
 
             Config.Save();
 
@@ -139,7 +144,7 @@ namespace Assistant.UI
             {
                 Gfx = gfx,
                 Serial = serial,
-                Type = (byte)(ground ? 1 : 0),
+                Type = (byte) (ground ? 1 : 0),
                 X = pt.X,
                 Y = pt.Y,
                 Z = pt.Z
@@ -159,7 +164,8 @@ namespace Assistant.UI
                     // add it
                     World.Player.SendMessage(MsgLevel.Force, "Container selected, add label text in Razor");
 
-                    if (InputBox.Show(this, Language.GetString(LocString.SetContainerLabel), Language.GetString(LocString.EnterAName)))
+                    if (InputBox.Show(this, Language.GetString(LocString.SetContainerLabel),
+                        Language.GetString(LocString.EnterAName)))
                     {
                         string name = InputBox.GetString();
 
@@ -175,7 +181,9 @@ namespace Assistant.UI
                         else
                             lvItem.SubItems[2].BackColor = SystemColors.Control;
 
-                        lvItem.SubItems[2].ForeColor = (lvItem.SubItems[2].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+                        lvItem.SubItems[2].ForeColor = (lvItem.SubItems[2].BackColor.GetBrightness() < 0.35
+                            ? Color.White
+                            : Color.Black);
 
                         lvItem.UseItemStyleForSubItems = false;
 
@@ -252,7 +260,9 @@ namespace Assistant.UI
                 else
                     selectedItem.SubItems[2].BackColor = Color.White;
 
-                selectedItem.SubItems[2].ForeColor = (selectedItem.SubItems[2].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+                selectedItem.SubItems[2].ForeColor = (selectedItem.SubItems[2].BackColor.GetBrightness() < 0.35
+                    ? Color.White
+                    : Color.Black);
 
                 foreach (Core.ContainerLabels.ContainerLabel list in Core.ContainerLabels.ContainerLabelList)
                 {
@@ -310,12 +320,11 @@ namespace Assistant.UI
 
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                ContextMenu menu = new ContextMenu();                                
+                ContextMenu menu = new ContextMenu();
                 menu.MenuItems.Add("Open Container (if in range)", new EventHandler(OnContainerDoubleClick));
 
                 menu.Show(containerView, new Point(e.X, e.Y));
             }
-
         }
 
         private void OnContainerDoubleClick(object sender, System.EventArgs e)
@@ -365,6 +374,7 @@ namespace Assistant.UI
                 }
             }
         }
+
         private void ContainerLabels_Closing(object sender, CancelEventArgs e)
         {
             this.SafeAction(s =>

@@ -40,7 +40,7 @@ namespace Assistant
                 else
                 {
                     World.Player.SendMessage(MsgLevel.Error, message);
-                }   
+                }
 
                 if (m_Count > 30)
                     Unhide();

@@ -124,7 +124,7 @@ namespace Assistant
             InitClosestTargets();
         }
 
-       
+
         private static void CombatantChange(PacketReader p, PacketHandlerEventArgs e)
         {
             Serial ser = p.ReadUInt32();
@@ -562,7 +562,6 @@ namespace Assistant
         {
             get { return m_LTWasSet; }
         }
-
 
 
         public static void SetLastTargetTo(Mobile m)

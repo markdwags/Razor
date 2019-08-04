@@ -7,81 +7,84 @@ using Assistant.Macros;
 
 namespace Assistant
 {
-	/// <summary>
-	/// Summary description for MacroInsertWait.
-	/// </summary>
-	public class MacroInsertWait : System.Windows.Forms.Form
-	{
-		private Macro m_Macro;
-		private int m_Idx;
-		private MacroAction m_Action;
+    /// <summary>
+    /// Summary description for MacroInsertWait.
+    /// </summary>
+    public class MacroInsertWait : System.Windows.Forms.Form
+    {
+        private Macro m_Macro;
+        private int m_Idx;
+        private MacroAction m_Action;
 
-		private System.Windows.Forms.Button insert;
-		private System.Windows.Forms.RadioButton radioPause;
-		private System.Windows.Forms.TextBox pause;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.RadioButton radioGump;
-		private System.Windows.Forms.RadioButton radioStat;
-		private System.Windows.Forms.TextBox statAmount;
-		private System.Windows.Forms.Button cancel;
-		private System.Windows.Forms.RadioButton radioTarg;
-		private System.Windows.Forms.ComboBox statList;
-		private System.Windows.Forms.ComboBox statOpList;
-		private System.Windows.Forms.RadioButton radioMenu;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private System.Windows.Forms.Button insert;
+        private System.Windows.Forms.RadioButton radioPause;
+        private System.Windows.Forms.TextBox pause;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RadioButton radioGump;
+        private System.Windows.Forms.RadioButton radioStat;
+        private System.Windows.Forms.TextBox statAmount;
+        private System.Windows.Forms.Button cancel;
+        private System.Windows.Forms.RadioButton radioTarg;
+        private System.Windows.Forms.ComboBox statList;
+        private System.Windows.Forms.ComboBox statOpList;
+        private System.Windows.Forms.RadioButton radioMenu;
 
-		public MacroInsertWait( Macro m, int idx )
-		{
-			m_Macro = m;
-			m_Idx = idx;
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
 
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
-		}
+        public MacroInsertWait(Macro m, int idx)
+        {
+            m_Macro = m;
+            m_Idx = idx;
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
 
-		public MacroInsertWait( MacroAction a )
-		{
-			m_Action = a;
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
+            //
+            // TODO: Add any constructor code after InitializeComponent call
+            //
+        }
 
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
-		}
+        public MacroInsertWait(MacroAction a)
+        {
+            m_Action = a;
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+            //
+            // TODO: Add any constructor code after InitializeComponent call
+            //
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.insert = new System.Windows.Forms.Button();
             this.radioPause = new System.Windows.Forms.RadioButton();
             this.pause = new System.Windows.Forms.TextBox();
@@ -167,10 +170,12 @@ namespace Assistant
             // 
             this.statList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.statList.Enabled = false;
-            this.statList.Items.AddRange(new object[] {
-            "Hits",
-            "Mana",
-            "Stamina"});
+            this.statList.Items.AddRange(new object[]
+            {
+                "Hits",
+                "Mana",
+                "Stamina"
+            });
             this.statList.Location = new System.Drawing.Point(85, 119);
             this.statList.Name = "statList";
             this.statList.Size = new System.Drawing.Size(64, 23);
@@ -190,9 +195,11 @@ namespace Assistant
             // 
             this.statOpList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.statOpList.Enabled = false;
-            this.statOpList.Items.AddRange(new object[] {
-            "<=",
-            ">="});
+            this.statOpList.Items.AddRange(new object[]
+            {
+                "<=",
+                ">="
+            });
             this.statOpList.Location = new System.Drawing.Point(155, 119);
             this.statOpList.Name = "statOpList";
             this.statOpList.Size = new System.Drawing.Size(44, 23);
@@ -225,7 +232,8 @@ namespace Assistant
             this.Controls.Add(this.radioPause);
             this.Controls.Add(this.insert);
             this.Controls.Add(this.radioGump);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MacroInsertWait";
             this.ShowInTaskbar = false;
@@ -234,72 +242,74 @@ namespace Assistant
             this.Load += new System.EventHandler(this.MacroInsertWait_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
 
-		}
-		#endregion
+        #endregion
 
-		private void cancel_Click(object sender, System.EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
+        private void cancel_Click(object sender, System.EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
 
-		private void insert_Click(object sender, System.EventArgs e)
-		{
-			MacroAction a = null;
+        private void insert_Click(object sender, System.EventArgs e)
+        {
+            MacroAction a = null;
 
-			if ( radioPause.Checked )
-				a = new PauseAction( TimeSpan.FromMilliseconds( Utility.ToInt32( pause.Text, 1000 ) ) );
-			else if ( radioGump.Checked )
-				a = new WaitForGumpAction( 0 );
-			else if ( radioMenu.Checked )
-				a = new WaitForMenuAction( 0 );
-			else if ( radioTarg.Checked )
-				a = new WaitForTargetAction();
-			else if ( radioStat.Checked && statList.SelectedIndex >= 0 && statList.SelectedIndex < 3 && statOpList.SelectedIndex >= 0 && statOpList.SelectedIndex < statOpList.Items.Count )
-				a = new WaitForStatAction( (IfAction.IfVarType)statList.SelectedIndex, (byte)statOpList.SelectedIndex, Utility.ToInt32( statAmount.Text, 0 ) );
-			
-			if ( a != null )
-			{
-				if ( m_Action == null )
-					m_Macro.Insert( m_Idx+1, a );
-				else
-					m_Action.Parent.Convert( m_Action, a );
-				this.DialogResult = DialogResult.OK;
-				this.Close();
-			}
-		}
+            if (radioPause.Checked)
+                a = new PauseAction(TimeSpan.FromMilliseconds(Utility.ToInt32(pause.Text, 1000)));
+            else if (radioGump.Checked)
+                a = new WaitForGumpAction(0);
+            else if (radioMenu.Checked)
+                a = new WaitForMenuAction(0);
+            else if (radioTarg.Checked)
+                a = new WaitForTargetAction();
+            else if (radioStat.Checked && statList.SelectedIndex >= 0 && statList.SelectedIndex < 3 &&
+                     statOpList.SelectedIndex >= 0 && statOpList.SelectedIndex < statOpList.Items.Count)
+                a = new WaitForStatAction((IfAction.IfVarType) statList.SelectedIndex, (byte) statOpList.SelectedIndex,
+                    Utility.ToInt32(statAmount.Text, 0));
 
-		private void radioStat_CheckedChanged(object sender, System.EventArgs e)
-		{
-			statList.Enabled = statAmount.Enabled = statOpList.Enabled = radioStat.Checked;
-		}
+            if (a != null)
+            {
+                if (m_Action == null)
+                    m_Macro.Insert(m_Idx + 1, a);
+                else
+                    m_Action.Parent.Convert(m_Action, a);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+        }
 
-		private void radioPause_CheckedChanged(object sender, System.EventArgs e)
-		{
-			pause.Enabled = radioPause.Checked;
-		}
+        private void radioStat_CheckedChanged(object sender, System.EventArgs e)
+        {
+            statList.Enabled = statAmount.Enabled = statOpList.Enabled = radioStat.Checked;
+        }
 
-		private void MacroInsertWait_Load(object sender, System.EventArgs e)
-		{
-			Language.LoadControlNames( this );
+        private void radioPause_CheckedChanged(object sender, System.EventArgs e)
+        {
+            pause.Enabled = radioPause.Checked;
+        }
 
-			radioPause.Checked = m_Action is PauseAction;
-			radioGump.Checked = m_Action is WaitForGumpAction;
-			radioMenu.Checked = m_Action is WaitForMenuAction;
-			radioTarg.Checked = m_Action is WaitForTargetAction;
-			radioStat.Checked = m_Action is WaitForStatAction;
+        private void MacroInsertWait_Load(object sender, System.EventArgs e)
+        {
+            Language.LoadControlNames(this);
 
-			if ( radioPause.Checked )
-			{
-				pause.Text = ((int)((PauseAction)m_Action).Timeout.TotalMilliseconds).ToString();
-			}
-			else if ( radioStat.Checked )
-			{
-				statList.SelectedIndex = (int)((WaitForStatAction)m_Action).Stat;
-				statOpList.SelectedIndex = (int)((WaitForStatAction)m_Action).Op;
-				statAmount.Text = ((WaitForStatAction)m_Action).Amount.ToString();
-			}
-		}
-	}
+            radioPause.Checked = m_Action is PauseAction;
+            radioGump.Checked = m_Action is WaitForGumpAction;
+            radioMenu.Checked = m_Action is WaitForMenuAction;
+            radioTarg.Checked = m_Action is WaitForTargetAction;
+            radioStat.Checked = m_Action is WaitForStatAction;
+
+            if (radioPause.Checked)
+            {
+                pause.Text = ((int) ((PauseAction) m_Action).Timeout.TotalMilliseconds).ToString();
+            }
+            else if (radioStat.Checked)
+            {
+                statList.SelectedIndex = (int) ((WaitForStatAction) m_Action).Stat;
+                statOpList.SelectedIndex = (int) ((WaitForStatAction) m_Action).Op;
+                statAmount.Text = ((WaitForStatAction) m_Action).Amount.ToString();
+            }
+        }
+    }
 }

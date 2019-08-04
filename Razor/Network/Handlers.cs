@@ -9,7 +9,6 @@ using System.Text.RegularExpressions;
 using Assistant.Core;
 using Assistant.Filters;
 using Assistant.Macros;
-
 using Assistant.UI;
 using OverheadMessages = Assistant.Core.OverheadMessages;
 using ContainerLabels = Assistant.Core.ContainerLabels;
@@ -19,7 +18,11 @@ namespace Assistant
     public class PacketHandlers
     {
         private static List<Item> m_IgnoreGumps = new List<Item>();
-        public static List<Item> IgnoreGumps { get { return m_IgnoreGumps; } }
+
+        public static List<Item> IgnoreGumps
+        {
+            get { return m_IgnoreGumps; }
+        }
 
         public static void Initialize()
         {
@@ -91,11 +94,13 @@ namespace Assistant
             PacketHandler.RegisterServerToClientFilter(0xC2, new PacketFilterCallback(UnicodePromptReceived));
             PacketHandler.RegisterServerToClientFilter(0xC8, new PacketFilterCallback(SetUpdateRange));
             PacketHandler.RegisterServerToClientFilter(0xCC, new PacketFilterCallback(OnLocalizedMessageAffix));
-            PacketHandler.RegisterServerToClientViewer(0xD6, new PacketViewerCallback(EncodedPacket));//0xD6 "encoded" packets
+            PacketHandler.RegisterServerToClientViewer(0xD6,
+                new PacketViewerCallback(EncodedPacket)); //0xD6 "encoded" packets
             PacketHandler.RegisterServerToClientViewer(0xD8, new PacketViewerCallback(CustomHouseInfo));
             //PacketHandler.RegisterServerToClientFilter( 0xDC, new PacketFilterCallback( ServOPLHash ) );
             PacketHandler.RegisterServerToClientViewer(0xDD, new PacketViewerCallback(CompressedGump));
-            PacketHandler.RegisterServerToClientViewer(0xF0, new PacketViewerCallback(RunUOProtocolExtention)); // Special RunUO protocol extentions (for KUOC/Razor)
+            PacketHandler.RegisterServerToClientViewer(0xF0,
+                new PacketViewerCallback(RunUOProtocolExtention)); // Special RunUO protocol extentions (for KUOC/Razor)
 
             PacketHandler.RegisterServerToClientViewer(0xF3, new PacketViewerCallback(SAWorldItem));
 
@@ -206,15 +211,18 @@ namespace Assistant
 
             if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
             {
-                m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"), $"{Config.GetString("FriendOverheadFormat")}");
+                m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"),
+                    $"{Config.GetString("FriendOverheadFormat")}");
             }
         }
 
         private static void ClientDoubleClick(PacketReader p, PacketHandlerEventArgs args)
         {
             Serial ser = p.ReadUInt32();
-            if (Config.GetBool("BlockDismount") && World.Player != null && ser == World.Player.Serial && World.Player.Warmode && World.Player.GetItemOnLayer(Layer.Mount) != null)
-            { // mount layer = 0x19
+            if (Config.GetBool("BlockDismount") && World.Player != null && ser == World.Player.Serial &&
+                World.Player.Warmode && World.Player.GetItemOnLayer(Layer.Mount) != null)
+            {
+                // mount layer = 0x19
                 World.Player.SendMessage(LocString.DismountBlocked);
                 args.Block = true;
                 return;
@@ -268,67 +276,72 @@ namespace Assistant
             switch (ext)
             {
                 case 0x10: // query object properties
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
+
                 case 0x15: // context menu response
+                {
+                    UOEntity ent = null;
+                    Serial ser = p.ReadUInt32();
+                    ushort idx = p.ReadUInt16();
+
+                    if (ser.IsMobile)
+                        ent = World.FindMobile(ser);
+                    else if (ser.IsItem)
+                        ent = World.FindItem(ser);
+
+                    if (ent != null && ent.ContextMenu != null)
                     {
-                        UOEntity ent = null;
-                        Serial ser = p.ReadUInt32();
-                        ushort idx = p.ReadUInt16();
-
-                        if (ser.IsMobile)
-                            ent = World.FindMobile(ser);
-                        else if (ser.IsItem)
-                            ent = World.FindItem(ser);
-
-                        if (ent != null && ent.ContextMenu != null)
+                        if (MacroManager.AcceptActions)
                         {
-                            if (MacroManager.AcceptActions)
+                            try
                             {
-                                try
-                                {
-                                    MacroManager.Action(new ContextMenuAction(ent, idx, ent.ContextMenu[idx].Value));
-                                }
-                                catch
-                                {
-                                    // ignored
-                                }
+                                MacroManager.Action(new ContextMenuAction(ent, idx, ent.ContextMenu[idx].Value));
+                            }
+                            catch
+                            {
+                                // ignored
                             }
                         }
-
-                        break;
                     }
-                case 0x1C:// cast spell
+
+                    break;
+                }
+
+                case 0x1C: // cast spell
+                {
+                    Serial ser = Serial.MinusOne;
+                    if (p.ReadUInt16() == 1)
+                        ser = p.ReadUInt32();
+                    ushort sid = p.ReadUInt16();
+                    Spell s = Spell.Get(sid);
+                    if (s != null)
                     {
-                        Serial ser = Serial.MinusOne;
-                        if (p.ReadUInt16() == 1)
-                            ser = p.ReadUInt32();
-                        ushort sid = p.ReadUInt16();
-                        Spell s = Spell.Get(sid);
-                        if (s != null)
-                        {
-                            s.OnCast(p);
-                            args.Block = true;
+                        s.OnCast(p);
+                        args.Block = true;
 
-                            if (Macros.MacroManager.AcceptActions)
-                                MacroManager.Action(new ExtCastSpellAction(s, ser));
-                        }
-                        break;
+                        if (Macros.MacroManager.AcceptActions)
+                            MacroManager.Action(new ExtCastSpellAction(s, ser));
                     }
+
+                    break;
+                }
+
                 case 0x24:
+                {
+                    // for the cheatx0r part 2...  anything outside this range indicates some haxing, just hide it with 0x30s
+                    byte b = p.ReadByte();
+                    if (b < 0x25 || b >= 0x5E + 0x25)
                     {
-                        // for the cheatx0r part 2...  anything outside this range indicates some haxing, just hide it with 0x30s
-                        byte b = p.ReadByte();
-                        if (b < 0x25 || b >= 0x5E + 0x25)
-                        {
-                            p.Seek(-1, SeekOrigin.Current);
-                            p.Write((byte)0x30);
-                        }
-                        //using ( StreamWriter w = new StreamWriter( "bf24.txt", true ) )
-                        //	w.WriteLine( "{0} : 0x{1:X2}", Engine.MistedDateTime.ToString( "HH:mm:ss.ffff" ), b );
-                        break;
+                        p.Seek(-1, SeekOrigin.Current);
+                        p.Write((byte) 0x30);
                     }
+
+                    //using ( StreamWriter w = new StreamWriter( "bf24.txt", true ) )
+                    //	w.WriteLine( "{0} : 0x{1:X2}", Engine.MistedDateTime.ToString( "HH:mm:ss.ffff" ), b );
+                    break;
+                }
             }
         }
 
@@ -340,68 +353,78 @@ namespace Assistant
             switch (type)
             {
                 case 0x24: // Use skill
+                {
+                    int skillIndex;
+
+                    try
                     {
-                        int skillIndex;
-
-                        try { skillIndex = Convert.ToInt32(command.Split(' ')[0]); }
-                        catch { break; }
-
-                        if (World.Player != null)
-                            World.Player.LastSkill = skillIndex;
-
-                        if (Macros.MacroManager.AcceptActions)
-                            MacroManager.Action(new UseSkillAction(skillIndex));
-
-                        if (skillIndex == (int)SkillName.Stealth && !World.Player.Visible)
-                            StealthSteps.Hide();
-
-                        SkillTimer.Start();
+                        skillIndex = Convert.ToInt32(command.Split(' ')[0]);
+                    }
+                    catch
+                    {
                         break;
                     }
+
+                    if (World.Player != null)
+                        World.Player.LastSkill = skillIndex;
+
+                    if (Macros.MacroManager.AcceptActions)
+                        MacroManager.Action(new UseSkillAction(skillIndex));
+
+                    if (skillIndex == (int) SkillName.Stealth && !World.Player.Visible)
+                        StealthSteps.Hide();
+
+                    SkillTimer.Start();
+                    break;
+                }
+
                 case 0x27: // Cast spell from book
+                {
+                    try
                     {
-                        try
-                        {
-                            string[] split = command.Split(' ');
+                        string[] split = command.Split(' ');
 
-                            if (split.Length > 0)
-                            {
-                                ushort spellID = Convert.ToUInt16(split[0]);
-                                Serial serial = Convert.ToUInt32(split.Length > 1 ? Utility.ToInt32(split[1], -1) : -1);
-                                Spell s = Spell.Get(spellID);
-                                if (s != null)
-                                {
-                                    s.OnCast(p);
-                                    args.Block = true;
-                                    if (Macros.MacroManager.AcceptActions)
-                                        MacroManager.Action(new BookCastSpellAction(s, serial));
-                                }
-                            }
-                        }
-                        catch
+                        if (split.Length > 0)
                         {
-                        }
-                        break;
-                    }
-                case 0x56: // Cast spell from macro
-                    {
-                        try
-                        {
-                            ushort spellID = Convert.ToUInt16(command);
+                            ushort spellID = Convert.ToUInt16(split[0]);
+                            Serial serial = Convert.ToUInt32(split.Length > 1 ? Utility.ToInt32(split[1], -1) : -1);
                             Spell s = Spell.Get(spellID);
                             if (s != null)
                             {
                                 s.OnCast(p);
                                 args.Block = true;
                                 if (Macros.MacroManager.AcceptActions)
-                                    MacroManager.Action(new MacroCastSpellAction(s));
+                                    MacroManager.Action(new BookCastSpellAction(s, serial));
                             }
                         }
-                        catch
-                        {
-                        }
-                        break;
                     }
+                    catch
+                    {
+                    }
+
+                    break;
+                }
+
+                case 0x56: // Cast spell from macro
+                {
+                    try
+                    {
+                        ushort spellID = Convert.ToUInt16(command);
+                        Spell s = Spell.Get(spellID);
+                        if (s != null)
+                        {
+                            s.OnCast(p);
+                            args.Block = true;
+                            if (Macros.MacroManager.AcceptActions)
+                                MacroManager.Action(new MacroCastSpellAction(s));
+                        }
+                    }
+                    catch
+                    {
+                    }
+
+                    break;
+                }
             }
         }
 
@@ -503,7 +526,7 @@ namespace Assistant
         private static void EquipRequest(PacketReader p, PacketHandlerEventArgs args)
         {
             Serial iser = p.ReadUInt32(); // item being dropped serial
-            Layer layer = (Layer)p.ReadByte();
+            Layer layer = (Layer) p.ReadByte();
             Serial mser = p.ReadUInt32();
 
             Item item = World.FindItem(iser);
@@ -516,7 +539,7 @@ namespace Assistant
                     {
                         layer = item.Layer;
                         if (layer == Layer.Invalid || layer > Layer.LastValid)
-                            layer = (Layer)item.ItemID.ItemData.Quality;
+                            layer = (Layer) item.ItemID.ItemData.Quality;
                     }
                 }
 
@@ -555,7 +578,8 @@ namespace Assistant
                 return;
 
             Item dest = World.FindItem(dser);
-            if (dest != null && dest.IsContainer && World.Player != null && (dest.IsChildOf(World.Player.Backpack) || dest.IsChildOf(World.Player.Quiver)))
+            if (dest != null && dest.IsContainer && World.Player != null &&
+                (dest.IsChildOf(World.Player.Backpack) || dest.IsChildOf(World.Player.Quiver)))
                 i.IsNew = true;
 
             if (Config.GetBool("QueueActions"))
@@ -566,7 +590,7 @@ namespace Assistant
         {
             if (World.Player != null)
             {
-                Direction dir = (Direction)p.ReadByte();
+                Direction dir = (Direction) p.ReadByte();
                 byte seq = p.ReadByte();
 
                 World.Player.Direction = (dir & Direction.Mask);
@@ -584,7 +608,7 @@ namespace Assistant
             // (So we'd need to request the container be updated, so why bother with the extra stuff required to find the container once its been sent?)
             Serial serial = p.ReadUInt32();
             ushort itemid = p.ReadUInt16();
-            itemid = (ushort)(itemid + p.ReadSByte()); // signed, itemID offset
+            itemid = (ushort) (itemid + p.ReadSByte()); // signed, itemID offset
             ushort amount = p.ReadUInt16();
             if (amount == 0)
                 amount = 1;
@@ -624,13 +648,14 @@ namespace Assistant
             if (SearchExemptionAgent.Contains(i))
             {
                 p.Seek(-2, System.IO.SeekOrigin.Current);
-                p.Write((short)Config.GetInt("ExemptColor"));
+                p.Write((short) Config.GetInt("ExemptColor"));
             }
 
             i.Container = cser;
             if (i.IsNew)
                 Item.UpdateContainers();
-            if (!SearchExemptionAgent.IsExempt(i) && (i.IsChildOf(World.Player.Backpack) || i.IsChildOf(World.Player.Quiver)))
+            if (!SearchExemptionAgent.IsExempt(i) &&
+                (i.IsChildOf(World.Player.Backpack) || i.IsChildOf(World.Player.Quiver)))
                 Counter.Count(i);
         }
 
@@ -654,6 +679,7 @@ namespace Assistant
                 Item.UpdateContainers();
             }
         }
+
         private static void ContainerContent(Packet p, PacketHandlerEventArgs args)
         {
             int count = p.ReadUInt16();
@@ -678,7 +704,7 @@ namespace Assistant
                     continue;
 
                 item.ItemID = p.ReadUInt16();
-                item.ItemID = (ushort)(item.ItemID + p.ReadSByte());// signed, itemID offset
+                item.ItemID = (ushort) (item.ItemID + p.ReadSByte()); // signed, itemID offset
                 item.Amount = p.ReadUInt16();
                 if (item.Amount == 0)
                     item.Amount = 1;
@@ -690,13 +716,15 @@ namespace Assistant
                 if (SearchExemptionAgent.Contains(item))
                 {
                     p.Seek(-2, System.IO.SeekOrigin.Current);
-                    p.Write((short)Config.GetInt("ExemptColor"));
+                    p.Write((short) Config.GetInt("ExemptColor"));
                 }
 
                 item.Container = cont; // must be done after hue is set (for counters)
-                if (!SearchExemptionAgent.IsExempt(item) && (item.IsChildOf(World.Player.Backpack) || item.IsChildOf(World.Player.Quiver)))
+                if (!SearchExemptionAgent.IsExempt(item) &&
+                    (item.IsChildOf(World.Player.Backpack) || item.IsChildOf(World.Player.Quiver)))
                     Counter.Count(item);
             }
+
             Item.UpdateContainers();
         }
 
@@ -721,9 +749,9 @@ namespace Assistant
                 return;
 
             ushort iid = p.ReadUInt16();
-            i.ItemID = (ushort)(iid + p.ReadSByte()); // signed, itemID offset
-            i.Layer = (Layer)p.ReadByte();
-            Serial ser = p.ReadUInt32();// cont must be set after hue (for counters)
+            i.ItemID = (ushort) (iid + p.ReadSByte()); // signed, itemID offset
+            i.Layer = (Layer) p.ReadByte();
+            Serial ser = p.ReadUInt32(); // cont must be set after hue (for counters)
             i.Hue = p.ReadUInt16();
 
             i.Container = ser;
@@ -732,7 +760,7 @@ namespace Assistant
             if (ltHue != 0 && Targeting.IsLastTarget(i.Container as Mobile))
             {
                 p.Seek(-2, SeekOrigin.Current);
-                p.Write((ushort)(ltHue & 0x3FFF));
+                p.Write((ushort) (ltHue & 0x3FFF));
             }
 
             if (i.Layer == Layer.Backpack && isNew && Config.GetBool("AutoSearch") && ser == World.Player.Serial)
@@ -750,7 +778,7 @@ namespace Assistant
             {
                 Skill skill = World.Player.Skills[i];
 
-                skill.Lock = (LockType)p.ReadByte();
+                skill.Lock = (LockType) p.ReadByte();
                 Engine.MainWindow.SafeAction(s => s.UpdateSkill(skill));
             }
         }
@@ -763,146 +791,152 @@ namespace Assistant
 
             switch (type)
             {
-                case 0x02://list (with caps, 3.0.8 and up)
+                case 0x02: //list (with caps, 3.0.8 and up)
+                {
+                    int i;
+                    while ((i = p.ReadUInt16()) > 0)
                     {
-                        int i;
-                        while ((i = p.ReadUInt16()) > 0)
+                        if (i > 0 && i <= Skill.Count)
                         {
-                            if (i > 0 && i <= Skill.Count)
-                            {
-                                Skill skill = World.Player.Skills[i - 1];
+                            Skill skill = World.Player.Skills[i - 1];
 
-                                if (skill == null)
-                                    continue;
+                            if (skill == null)
+                                continue;
 
-                                skill.FixedValue = p.ReadUInt16();
-                                skill.FixedBase = p.ReadUInt16();
-                                skill.Lock = (LockType)p.ReadByte();
-                                skill.FixedCap = p.ReadUInt16();
-                                if (!World.Player.SkillsSent)
-                                    skill.Delta = 0;
+                            skill.FixedValue = p.ReadUInt16();
+                            skill.FixedBase = p.ReadUInt16();
+                            skill.Lock = (LockType) p.ReadByte();
+                            skill.FixedCap = p.ReadUInt16();
+                            if (!World.Player.SkillsSent)
+                                skill.Delta = 0;
 
-                                UOAssist.PostSkillUpdate(i - 1, skill.FixedBase);
-                            }
-                            else
-                            {
-                                p.Seek(7, SeekOrigin.Current);
-                            }
+                            UOAssist.PostSkillUpdate(i - 1, skill.FixedBase);
                         }
-
-                        World.Player.SkillsSent = true;
-                        Engine.MainWindow.SafeAction(s => s.RedrawSkills());
-                        break;
+                        else
+                        {
+                            p.Seek(7, SeekOrigin.Current);
+                        }
                     }
+
+                    World.Player.SkillsSent = true;
+                    Engine.MainWindow.SafeAction(s => s.RedrawSkills());
+                    break;
+                }
 
                 case 0x00: // list (without caps, older clients)
+                {
+                    int i;
+                    while ((i = p.ReadUInt16()) > 0)
                     {
-                        int i;
-                        while ((i = p.ReadUInt16()) > 0)
+                        if (i > 0 && i <= Skill.Count)
                         {
-                            if (i > 0 && i <= Skill.Count)
+                            Skill skill = World.Player.Skills[i - 1];
+
+                            if (skill == null)
+                                continue;
+
+                            skill.FixedValue = p.ReadUInt16();
+                            skill.FixedBase = p.ReadUInt16();
+                            skill.Lock = (LockType) p.ReadByte();
+                            skill.FixedCap = 100; //p.ReadUInt16();
+                            if (!World.Player.SkillsSent)
+                                skill.Delta = 0;
+
+                            UOAssist.PostSkillUpdate(i - 1, skill.FixedBase);
+                        }
+                        else
+                        {
+                            p.Seek(5, SeekOrigin.Current);
+                        }
+                    }
+
+                    World.Player.SkillsSent = true;
+                    Engine.MainWindow.SafeAction(s => s.RedrawSkills());
+                    break;
+                }
+
+                case 0xDF: //change (with cap, new clients)
+                {
+                    int i = p.ReadUInt16();
+
+                    if (i >= 0 && i < Skill.Count)
+                    {
+                        Skill skill = World.Player.Skills[i];
+
+                        if (skill == null)
+                            break;
+
+                        ushort old = skill.FixedBase;
+                        skill.FixedValue = p.ReadUInt16();
+                        skill.FixedBase = p.ReadUInt16();
+                        skill.Lock = (LockType) p.ReadByte();
+                        skill.FixedCap = p.ReadUInt16();
+                        Engine.MainWindow.SafeAction(s => s.UpdateSkill(skill));
+
+                        //Your skill in {0} has changed by {4}{5:F1}, it is now {3:F1} ({1}{2:F1}).
+                        if (Config.GetBool("DisplaySkillChanges") && skill.FixedBase != old)
+                        {
+                            if (Config.GetBool("DisplaySkillChangesOverhead"))
                             {
-                                Skill skill = World.Player.Skills[i - 1];
-
-                                if (skill == null)
-                                    continue;
-
-                                skill.FixedValue = p.ReadUInt16();
-                                skill.FixedBase = p.ReadUInt16();
-                                skill.Lock = (LockType)p.ReadByte();
-                                skill.FixedCap = 100;//p.ReadUInt16();
-                                if (!World.Player.SkillsSent)
-                                    skill.Delta = 0;
-
-                                UOAssist.PostSkillUpdate(i - 1, skill.FixedBase);
+                                World.Player.OverheadMessage(LocString.SkillChangeOverhead, (SkillName) i,
+                                    skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
+                                    skill.FixedBase - old > 0 ? "+" : "",
+                                    (skill.FixedBase - old) / 10.0);
                             }
                             else
                             {
-                                p.Seek(5, SeekOrigin.Current);
+                                //                                                                    0                    1                    2            3                        4                                        5
+                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName) i,
+                                    skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
+                                    skill.FixedBase - old > 0 ? "+" : "", ((double) (skill.FixedBase - old)) / 10.0);
                             }
                         }
 
-                        World.Player.SkillsSent = true;
-                        Engine.MainWindow.SafeAction(s => s.RedrawSkills());
-                        break;
+                        UOAssist.PostSkillUpdate(i, skill.FixedBase);
                     }
 
-                case 0xDF: //change (with cap, new clients)
-                    {
-                        int i = p.ReadUInt16();
-
-                        if (i >= 0 && i < Skill.Count)
-                        {
-                            Skill skill = World.Player.Skills[i];
-
-                            if (skill == null)
-                                break;
-
-                            ushort old = skill.FixedBase;
-                            skill.FixedValue = p.ReadUInt16();
-                            skill.FixedBase = p.ReadUInt16();
-                            skill.Lock = (LockType)p.ReadByte();
-                            skill.FixedCap = p.ReadUInt16();
-                            Engine.MainWindow.SafeAction(s => s.UpdateSkill(skill));
-
-                            //Your skill in {0} has changed by {4}{5:F1}, it is now {3:F1} ({1}{2:F1}).
-                            if (Config.GetBool("DisplaySkillChanges") && skill.FixedBase != old)
-                            {
-                                if (Config.GetBool("DisplaySkillChangesOverhead"))
-                                {
-                                    World.Player.OverheadMessage(LocString.SkillChangeOverhead, (SkillName) i,
-                                        skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
-                                        skill.FixedBase - old > 0 ? "+" : "",
-                                        (skill.FixedBase - old) / 10.0);
-                                }
-                                else
-                                {
-                                    //                                                                    0                    1                    2            3                        4                                        5
-                                    World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName)i, skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value, skill.FixedBase - old > 0 ? "+" : "", ((double)(skill.FixedBase - old)) / 10.0);
-                                }
-                            }
-
-                            UOAssist.PostSkillUpdate(i, skill.FixedBase);
-                        }
-                        break;
-                    }
+                    break;
+                }
 
                 case 0xFF: //change (without cap, older clients)
+                {
+                    int i = p.ReadUInt16();
+
+                    if (i >= 0 && i < Skill.Count)
                     {
-                        int i = p.ReadUInt16();
+                        Skill skill = World.Player.Skills[i];
 
-                        if (i >= 0 && i < Skill.Count)
+                        if (skill == null)
+                            break;
+
+                        ushort old = skill.FixedBase;
+                        skill.FixedValue = p.ReadUInt16();
+                        skill.FixedBase = p.ReadUInt16();
+                        skill.Lock = (LockType) p.ReadByte();
+                        skill.FixedCap = 100;
+                        Engine.MainWindow.SafeAction(s => s.UpdateSkill(skill));
+                        if (Config.GetBool("DisplaySkillChanges") && skill.FixedBase != old)
                         {
-                            Skill skill = World.Player.Skills[i];
-
-                            if (skill == null)
-                                break;
-
-                            ushort old = skill.FixedBase;
-                            skill.FixedValue = p.ReadUInt16();
-                            skill.FixedBase = p.ReadUInt16();
-                            skill.Lock = (LockType)p.ReadByte();
-                            skill.FixedCap = 100;
-                            Engine.MainWindow.SafeAction(s => s.UpdateSkill(skill));
-                            if (Config.GetBool("DisplaySkillChanges") && skill.FixedBase != old)
+                            if (Config.GetBool("DisplaySkillChangesOverhead"))
                             {
-                                if (Config.GetBool("DisplaySkillChangesOverhead"))
-                                {
-                                    World.Player.OverheadMessage(LocString.SkillChangeOverhead, (SkillName)i,
-                                        skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
-                                        skill.FixedBase - old > 0 ? "+" : "",
-                                        (skill.FixedBase - old) / 10.0);
-                                }
-                                else
-                                {
-                                    World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName)i, skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value, ((double)(skill.FixedBase - old)) / 10.0, skill.FixedBase - old > 0 ? "+" : "");
-                                }
+                                World.Player.OverheadMessage(LocString.SkillChangeOverhead, (SkillName) i,
+                                    skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
+                                    skill.FixedBase - old > 0 ? "+" : "",
+                                    (skill.FixedBase - old) / 10.0);
                             }
-
-                            UOAssist.PostSkillUpdate(i, skill.FixedBase);
+                            else
+                            {
+                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName) i,
+                                    skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
+                                    ((double) (skill.FixedBase - old)) / 10.0, skill.FixedBase - old > 0 ? "+" : "");
+                            }
                         }
-                        break;
+
+                        UOAssist.PostSkillUpdate(i, skill.FixedBase);
                     }
+
+                    break;
+                }
             }
         }
 
@@ -928,13 +962,14 @@ namespace Assistant
             p.ReadUInt32(); // always 0?
             m.Body = p.ReadUInt16();
             m.Position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadInt16());
-            m.Direction = (Direction)p.ReadByte();
+            m.Direction = (Direction) p.ReadByte();
 
             Client.Instance.RequestTitlebarUpdate();
-            UOAssist.PostLogin((int)serial.Value);
+            UOAssist.PostLogin((int) serial.Value);
             Engine.MainWindow.SafeAction(s => s.UpdateTitle()); // update player name & shard name
 
-            Client.Instance.SetPosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
+            Client.Instance.SetPosition((uint) m.Position.X, (uint) m.Position.Y, (uint) m.Position.Z,
+                (byte) m.Direction);
 
             if (World.Player != null)
                 World.Player.SetSeason();
@@ -969,7 +1004,7 @@ namespace Assistant
                     if (m.Body == 0x3C || m.Body == 0x3D)
                     {
                         p.Seek(-2, SeekOrigin.Current);
-                        p.Write((ushort)Config.GetInt("DrakeGraphic"));
+                        p.Write((ushort) Config.GetInt("DrakeGraphic"));
                     }
                 }
 
@@ -984,13 +1019,13 @@ namespace Assistant
 
                 Targeting.CheckLastTargetRange(m);
 
-                m.Direction = (Direction)p.ReadByte();
+                m.Direction = (Direction) p.ReadByte();
                 m.Hue = p.ReadUInt16();
                 int ltHue = Config.GetInt("LTHilight");
                 if (ltHue != 0 && Targeting.IsLastTarget(m))
                 {
                     p.Seek(-2, SeekOrigin.Current);
-                    p.Write((short)(ltHue | 0x8000));
+                    p.Write((short) (ltHue | 0x8000));
                 }
 
                 bool wasPoisoned = m.Poisoned;
@@ -1000,16 +1035,16 @@ namespace Assistant
 
                 if (m == World.Player)
                 {
-                    Client.Instance.SetPosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
+                    Client.Instance.SetPosition((uint) m.Position.X, (uint) m.Position.Y, (uint) m.Position.Z,
+                        (byte) m.Direction);
 
                     if (wasPoisoned != m.Poisoned || (oldNoto != m.Notoriety && Config.GetBool("ShowNotoHue")))
                         Client.Instance.RequestTitlebarUpdate();
-
                 }
             }
         }
 
-        private static readonly int[] HealthHues = new int[] { 428, 333, 37, 44, 49, 53, 158, 263, 368, 473, 578 };
+        private static readonly int[] HealthHues = new int[] {428, 333, 37, 44, 49, 53, 158, 263, 368, 473, 578};
 
         private static void HitsUpdate(PacketReader p, PacketHandlerEventArgs args)
         {
@@ -1017,7 +1052,7 @@ namespace Assistant
 
             if (m != null)
             {
-                int oldPercent = (int)(m.Hits * 100 / (m.HitsMax == 0 ? (ushort)1 : m.HitsMax));
+                int oldPercent = (int) (m.Hits * 100 / (m.HitsMax == 0 ? (ushort) 1 : m.HitsMax));
 
                 m.HitsMax = p.ReadUInt16();
                 m.Hits = p.ReadUInt16();
@@ -1030,16 +1065,17 @@ namespace Assistant
 
                 if (Client.Instance.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowHealth"))
                 {
-                    int percent = (int)(m.Hits * 100 / (m.HitsMax == 0 ? (ushort)1 : m.HitsMax));
+                    int percent = (int) (m.Hits * 100 / (m.HitsMax == 0 ? (ushort) 1 : m.HitsMax));
 
                     // Limit to people who are on screen and check the previous value so we dont get spammed.
-                    if (oldPercent != percent && World.Player != null && Utility.Distance(World.Player.Position, m.Position) <= 12)
+                    if (oldPercent != percent && World.Player != null &&
+                        Utility.Distance(World.Player.Position, m.Position) <= 12)
                     {
                         try
                         {
                             m.OverheadMessageFrom(HealthHues[((percent + 5) / 10) % HealthHues.Length],
-                                 m.Name ?? string.Empty,
-                                 Config.GetString("HealthFmt"), percent);
+                                m.Name ?? string.Empty,
+                                Config.GetString("HealthFmt"), percent);
                         }
                         catch
                         {
@@ -1055,7 +1091,7 @@ namespace Assistant
 
             if (m != null)
             {
-                int oldPercent = (int)(m.Stam * 100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
+                int oldPercent = (int) (m.Stam * 100 / (m.StamMax == 0 ? (ushort) 1 : m.StamMax));
 
                 m.StamMax = p.ReadUInt16();
                 m.Stam = p.ReadUInt16();
@@ -1066,19 +1102,21 @@ namespace Assistant
                     UOAssist.PostStamUpdate();
                 }
 
-                if (m != World.Player && Client.Instance.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowPartyStats"))
+                if (m != World.Player && Client.Instance.AllowBit(FeatureBit.OverheadHealth) &&
+                    Config.GetBool("ShowPartyStats"))
                 {
-                    int stamPercent = (int)(m.Stam * 100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
-                    int manaPercent = (int)(m.Mana * 100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
+                    int stamPercent = (int) (m.Stam * 100 / (m.StamMax == 0 ? (ushort) 1 : m.StamMax));
+                    int manaPercent = (int) (m.Mana * 100 / (m.ManaMax == 0 ? (ushort) 1 : m.ManaMax));
 
                     // Limit to people who are on screen and check the previous value so we dont get spammed.
-                    if (oldPercent != stamPercent && World.Player != null && Utility.Distance(World.Player.Position, m.Position) <= 12)
+                    if (oldPercent != stamPercent && World.Player != null &&
+                        Utility.Distance(World.Player.Position, m.Position) <= 12)
                     {
                         try
                         {
                             m.OverheadMessageFrom(0x63,
-                                 m.Name ?? string.Empty,
-                                 Config.GetString("PartyStatFmt"), manaPercent, stamPercent);
+                                m.Name ?? string.Empty,
+                                Config.GetString("PartyStatFmt"), manaPercent, stamPercent);
                         }
                         catch
                         {
@@ -1094,7 +1132,7 @@ namespace Assistant
 
             if (m != null)
             {
-                int oldPercent = (int)(m.Mana * 100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
+                int oldPercent = (int) (m.Mana * 100 / (m.ManaMax == 0 ? (ushort) 1 : m.ManaMax));
 
                 m.ManaMax = p.ReadUInt16();
                 m.Mana = p.ReadUInt16();
@@ -1105,19 +1143,21 @@ namespace Assistant
                     UOAssist.PostManaUpdate();
                 }
 
-                if (m != World.Player && Client.Instance.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowPartyStats"))
+                if (m != World.Player && Client.Instance.AllowBit(FeatureBit.OverheadHealth) &&
+                    Config.GetBool("ShowPartyStats"))
                 {
-                    int stamPercent = (int)(m.Stam * 100 / (m.StamMax == 0 ? (ushort)1 : m.StamMax));
-                    int manaPercent = (int)(m.Mana * 100 / (m.ManaMax == 0 ? (ushort)1 : m.ManaMax));
+                    int stamPercent = (int) (m.Stam * 100 / (m.StamMax == 0 ? (ushort) 1 : m.StamMax));
+                    int manaPercent = (int) (m.Mana * 100 / (m.ManaMax == 0 ? (ushort) 1 : m.ManaMax));
 
                     // Limit to people who are on screen and check the previous value so we dont get spammed.
-                    if (oldPercent != manaPercent && World.Player != null && Utility.Distance(World.Player.Position, m.Position) <= 12)
+                    if (oldPercent != manaPercent && World.Player != null &&
+                        Utility.Distance(World.Player.Position, m.Position) <= 12)
                     {
                         try
                         {
                             m.OverheadMessageFrom(0x63,
-                                 Language.Format(LocString.sStatsA1, m.Name),
-                                 Config.GetString("PartyStatFmt"), manaPercent, stamPercent);
+                                Language.Format(LocString.sStatsA1, m.Name),
+                                Config.GetString("PartyStatFmt"), manaPercent, stamPercent);
                         }
                         catch
                         {
@@ -1156,7 +1196,7 @@ namespace Assistant
 
         private static void NewMobileStatus(PacketReader p, PacketHandlerEventArgs args)
         {
-            Mobile m = World.FindMobile((Serial)p.ReadUInt32());
+            Mobile m = World.FindMobile((Serial) p.ReadUInt32());
 
             if (m == null)
                 return;
@@ -1248,7 +1288,7 @@ namespace Assistant
 
             if (m == World.Player && type != 0x00)
             {
-                PlayerData player = (PlayerData)m;
+                PlayerData player = (PlayerData) m;
 
                 player.Female = p.ReadBoolean();
 
@@ -1263,11 +1303,13 @@ namespace Assistant
                 {
                     if (Config.GetBool("DisplaySkillChangesOverhead"))
                     {
-                        World.Player.OverheadMessage(LocString.StrChangeOverhead, player.Str - oStr > 0 ? "+" : "", player.Str - oStr, player.Str);
+                        World.Player.OverheadMessage(LocString.StrChangeOverhead, player.Str - oStr > 0 ? "+" : "",
+                            player.Str - oStr, player.Str);
                     }
                     else
                     {
-                        World.Player.SendMessage(MsgLevel.Force, LocString.StrChanged, player.Str - oStr > 0 ? "+" : "", player.Str - oStr, player.Str);
+                        World.Player.SendMessage(MsgLevel.Force, LocString.StrChanged, player.Str - oStr > 0 ? "+" : "",
+                            player.Str - oStr, player.Str);
                     }
                 }
 
@@ -1275,11 +1317,13 @@ namespace Assistant
                 {
                     if (Config.GetBool("DisplaySkillChangesOverhead"))
                     {
-                        World.Player.OverheadMessage(LocString.DexChangeOverhead, player.Dex - oDex > 0 ? "+" : "", player.Dex - oDex, player.Dex);
+                        World.Player.OverheadMessage(LocString.DexChangeOverhead, player.Dex - oDex > 0 ? "+" : "",
+                            player.Dex - oDex, player.Dex);
                     }
                     else
                     {
-                        World.Player.SendMessage(MsgLevel.Force, LocString.DexChanged, player.Dex - oDex > 0 ? "+" : "", player.Dex - oDex, player.Dex);
+                        World.Player.SendMessage(MsgLevel.Force, LocString.DexChanged, player.Dex - oDex > 0 ? "+" : "",
+                            player.Dex - oDex, player.Dex);
                     }
                 }
 
@@ -1287,11 +1331,13 @@ namespace Assistant
                 {
                     if (Config.GetBool("DisplaySkillChangesOverhead"))
                     {
-                        World.Player.OverheadMessage(LocString.IntChangeOverhead, player.Int - oInt > 0 ? "+" : "", player.Int - oInt, player.Int);
+                        World.Player.OverheadMessage(LocString.IntChangeOverhead, player.Int - oInt > 0 ? "+" : "",
+                            player.Int - oInt, player.Int);
                     }
                     else
                     {
-                        World.Player.SendMessage(MsgLevel.Force, LocString.IntChanged, player.Int - oInt > 0 ? "+" : "", player.Int - oInt, player.Int);
+                        World.Player.SendMessage(MsgLevel.Force, LocString.IntChanged, player.Int - oInt > 0 ? "+" : "",
+                            player.Int - oInt, player.Int);
                     }
                 }
 
@@ -1357,13 +1403,13 @@ namespace Assistant
 
             bool wasHidden = !m.Visible;
 
-            m.Body = (ushort)(p.ReadUInt16() + p.ReadSByte());
+            m.Body = (ushort) (p.ReadUInt16() + p.ReadSByte());
             m.Hue = p.ReadUInt16();
             int ltHue = Config.GetInt("LTHilight");
             if (ltHue != 0 && Targeting.IsLastTarget(m))
             {
                 p.Seek(-2, SeekOrigin.Current);
-                p.Write((ushort)(ltHue | 0x8000));
+                p.Write((ushort) (ltHue | 0x8000));
             }
 
             bool wasPoisoned = m.Poisoned;
@@ -1372,12 +1418,13 @@ namespace Assistant
             ushort x = p.ReadUInt16();
             ushort y = p.ReadUInt16();
             p.ReadUInt16(); //always 0?
-            m.Direction = (Direction)p.ReadByte();
+            m.Direction = (Direction) p.ReadByte();
             m.Position = new Point3D(x, y, p.ReadSByte());
 
             if (m == World.Player)
             {
-                Client.Instance.SetPosition((uint)m.Position.X, (uint)m.Position.Y, (uint)m.Position.Z, (byte)m.Direction);
+                Client.Instance.SetPosition((uint) m.Position.X, (uint) m.Position.Y, (uint) m.Position.Z,
+                    (byte) m.Direction);
 
                 if (!wasHidden && !m.Visible)
                 {
@@ -1428,7 +1475,8 @@ namespace Assistant
 
             if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
             {
-                m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"), $"{Config.GetString("FriendOverheadFormat")}");
+                m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"),
+                    $"{Config.GetString("FriendOverheadFormat")}");
             }
 
             int ltHue = Config.GetInt("LTHilight");
@@ -1441,12 +1489,12 @@ namespace Assistant
             m.Body = body;
             if (m != World.Player)
                 m.Position = position;
-            m.Direction = (Direction)p.ReadByte();
+            m.Direction = (Direction) p.ReadByte();
             m.Hue = p.ReadUInt16();
             if (isLT)
             {
                 p.Seek(-2, SeekOrigin.Current);
-                p.Write((short)(ltHue | 0x8000));
+                p.Write((short) (ltHue | 0x8000));
             }
 
             bool wasPoisoned = m.Poisoned;
@@ -1492,13 +1540,13 @@ namespace Assistant
                 ushort id = p.ReadUInt16();
 
                 if (Engine.UseNewMobileIncoming)
-                    item.ItemID = (ushort)(id & 0xFFFF);
+                    item.ItemID = (ushort) (id & 0xFFFF);
                 else if (Engine.UsePostSAChanges)
-                    item.ItemID = (ushort)(id & 0x7FFF);
+                    item.ItemID = (ushort) (id & 0x7FFF);
                 else
-                    item.ItemID = (ushort)(id & 0x3FFF);
+                    item.ItemID = (ushort) (id & 0x3FFF);
 
-                item.Layer = (Layer)p.ReadByte();
+                item.Layer = (Layer) p.ReadByte();
 
                 if (Engine.UseNewMobileIncoming)
                 {
@@ -1506,7 +1554,7 @@ namespace Assistant
                     if (isLT)
                     {
                         p.Seek(-2, SeekOrigin.Current);
-                        p.Write((short)(ltHue & 0x3FFF));
+                        p.Write((short) (ltHue & 0x3FFF));
                     }
                 }
                 else
@@ -1517,18 +1565,19 @@ namespace Assistant
                         if (isLT)
                         {
                             p.Seek(-2, SeekOrigin.Current);
-                            p.Write((short)(ltHue & 0x3FFF));
+                            p.Write((short) (ltHue & 0x3FFF));
                         }
                     }
                     else
                     {
                         item.Hue = 0;
                         if (isLT)
-                            Client.Instance.SendToClient(new EquipmentItem(item, (ushort)(ltHue & 0x3FFF), m.Serial));
+                            Client.Instance.SendToClient(new EquipmentItem(item, (ushort) (ltHue & 0x3FFF), m.Serial));
                     }
                 }
 
-                if (item.Layer == Layer.Backpack && isNew && Config.GetBool("AutoSearch") && m == World.Player && m != null)
+                if (item.Layer == Layer.Backpack && isNew && Config.GetBool("AutoSearch") && m == World.Player &&
+                    m != null)
                 {
                     m_IgnoreGumps.Add(item);
                     PlayerData.DoubleClick(item);
@@ -1596,7 +1645,7 @@ namespace Assistant
             Counter.Uncount(item);
 
             ushort itemID = p.ReadUInt16();
-            item.ItemID = (ushort)(itemID & 0x7FFF);
+            item.ItemID = (ushort) (itemID & 0x7FFF);
 
             if ((serial & 0x80000000) != 0)
                 item.Amount = p.ReadUInt16();
@@ -1604,7 +1653,7 @@ namespace Assistant
                 item.Amount = 1;
 
             if ((itemID & 0x8000) != 0)
-                item.ItemID = (ushort)(item.ItemID + p.ReadSByte());
+                item.ItemID = (ushort) (item.ItemID + p.ReadSByte());
 
             ushort x = p.ReadUInt16();
             ushort y = p.ReadUInt16();
@@ -1631,12 +1680,14 @@ namespace Assistant
 
             if (isNew && World.Player != null)
             {
-                if (item.ItemID == 0x2006)// corpse itemid = 0x2006
+                if (item.ItemID == 0x2006) // corpse itemid = 0x2006
                 {
                     if (Config.GetBool("ShowCorpseNames"))
                         Client.Instance.SendToServer(new SingleClick(item));
 
-                    if (Config.GetBool("AutoOpenCorpses") && Utility.InRange(item.Position, World.Player.Position, Config.GetInt("CorpseRange")) && World.Player != null && World.Player.Visible)
+                    if (Config.GetBool("AutoOpenCorpses") &&
+                        Utility.InRange(item.Position, World.Player.Position, Config.GetInt("CorpseRange")) &&
+                        World.Player != null && World.Player.Visible)
                     {
                         if (Config.GetBool("BlockOpenCorpsesTwice"))
                         {
@@ -1664,8 +1715,6 @@ namespace Assistant
                             {
                                 World.Player.OpenedCorpses.Add(serial);
                             }
-
-
                         }
                         else
                         {
@@ -1765,7 +1814,7 @@ namespace Assistant
             Counter.Uncount(item);
 
             ushort itemID = p.ReadUInt16();
-            item.ItemID = (ushort)(_artDataID == 0x02 ? itemID | 0x4000 : itemID);
+            item.ItemID = (ushort) (_artDataID == 0x02 ? itemID | 0x4000 : itemID);
 
             item.Direction = p.ReadByte();
 
@@ -1793,11 +1842,13 @@ namespace Assistant
 
             if (isNew && World.Player != null)
             {
-                if (item.ItemID == 0x2006)// corpse itemid = 0x2006
+                if (item.ItemID == 0x2006) // corpse itemid = 0x2006
                 {
                     if (Config.GetBool("ShowCorpseNames"))
                         Client.Instance.SendToServer(new SingleClick(item));
-                    if (Config.GetBool("AutoOpenCorpses") && Utility.InRange(item.Position, World.Player.Position, Config.GetInt("CorpseRange")) && World.Player != null && World.Player.Visible)
+                    if (Config.GetBool("AutoOpenCorpses") &&
+                        Utility.InRange(item.Position, World.Player.Position, Config.GetInt("CorpseRange")) &&
+                        World.Player != null && World.Player.Visible)
                         PlayerData.DoubleClick(item);
                 }
                 else if (item.IsMulti)
@@ -1821,7 +1872,8 @@ namespace Assistant
 
         public static List<string> SysMessages = new List<string>();
 
-        public static void HandleSpeech(Packet p, PacketHandlerEventArgs args, Serial ser, ushort body, MessageType type, ushort hue, ushort font, string lang, string name, string text)
+        public static void HandleSpeech(Packet p, PacketHandlerEventArgs args, Serial ser, ushort body,
+            MessageType type, ushort hue, ushort font, string lang, string name, string text)
         {
             if (World.Player == null)
                 return;
@@ -1843,7 +1895,8 @@ namespace Assistant
 
                     if (newText != null && newText != "" && newText != text)
                     {
-                        Client.Instance.SendToClient(new AsciiMessage(ser, body, MessageType.Spell, s.GetHue(hue), font, name, newText));
+                        Client.Instance.SendToClient(new AsciiMessage(ser, body, MessageType.Spell, s.GetHue(hue), font,
+                            name, newText));
                         //Client.Instance.SendToClient( new UnicodeMessage( ser, body, MessageType.Spell, s.GetHue( hue ), font, Language.CliLocName, name, newText ) );
                         replaced = true;
                         args.Block = true;
@@ -1854,15 +1907,16 @@ namespace Assistant
                 {
                     p.Seek(10, SeekOrigin.Begin);
                     if (s != null)
-                        p.Write((ushort)s.GetHue(hue));
+                        p.Write((ushort) s.GetHue(hue));
                     else
-                        p.Write((ushort)Config.GetInt("NeutralSpellHue"));
+                        p.Write((ushort) Config.GetInt("NeutralSpellHue"));
                 }
             }
             else if (ser.IsMobile && type == MessageType.Label)
             {
                 Mobile m = World.FindMobile(ser);
-                if (m != null /*&& ( m.Name == null || m.Name == "" || m.Name == "(Not Seen)" )*/&& m.Name.IndexOf(text) != 5 && m != World.Player && !(text.StartsWith("(") && text.EndsWith(")")))
+                if (m != null /*&& ( m.Name == null || m.Name == "" || m.Name == "(Not Seen)" )*/ &&
+                    m.Name.IndexOf(text) != 5 && m != World.Player && !(text.StartsWith("(") && text.EndsWith(")")))
                     m.Name = text;
             }
             /*else if ( Spell.Get( text.Trim() ) != null )
@@ -1874,7 +1928,9 @@ namespace Assistant
             {
                 if (ser == Serial.MinusOne && name == "System")
                 {
-                    if (Config.GetBool("FilterSnoopMsg") && text.IndexOf(World.Player.Name) == -1 && text.StartsWith("You notice") && text.IndexOf("attempting to peek into") != -1 && text.IndexOf("belongings") != -1)
+                    if (Config.GetBool("FilterSnoopMsg") && text.IndexOf(World.Player.Name) == -1 &&
+                        text.StartsWith("You notice") && text.IndexOf("attempting to peek into") != -1 &&
+                        text.IndexOf("belongings") != -1)
                     {
                         args.Block = true;
                         return;
@@ -1894,7 +1950,8 @@ namespace Assistant
                         {
                             if (text.IndexOf(message.SearchMessage, StringComparison.OrdinalIgnoreCase) != -1)
                             {
-                                World.Player.OverheadMessage(message.Hue, overheadFormat.Replace("{msg}", message.MessageOverhead));
+                                World.Player.OverheadMessage(message.Hue,
+                                    overheadFormat.Replace("{msg}", message.MessageOverhead));
                                 break;
                             }
                         }
@@ -1911,19 +1968,23 @@ namespace Assistant
                     foreach (ContainerLabels.ContainerLabel label in ContainerLabels.ContainerLabelList)
                     {
                         // Check if its the serial match and if the text matches the name (since we override that for the label)
-                        if (Serial.Parse(label.Id) == ser && (item.DisplayName.Equals(text) || label.Alias.Equals(text, StringComparison.InvariantCultureIgnoreCase)))
+                        if (Serial.Parse(label.Id) == ser &&
+                            (item.DisplayName.Equals(text) ||
+                             label.Alias.Equals(text, StringComparison.InvariantCultureIgnoreCase)))
                         {
-                            string labelDisplay = $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{type}", text)}";
+                            string labelDisplay =
+                                $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{type}", text)}";
 
                             //ContainerLabelStyle
                             if (Config.GetInt("ContainerLabelStyle") == 0)
                             {
-                                Client.Instance.SendToClient(new AsciiMessage(ser, item.ItemID.Value, MessageType.Label, label.Hue, 3, Language.CliLocName, labelDisplay));
-
+                                Client.Instance.SendToClient(new AsciiMessage(ser, item.ItemID.Value, MessageType.Label,
+                                    label.Hue, 3, Language.CliLocName, labelDisplay));
                             }
                             else
                             {
-                                Client.Instance.SendToClient(new UnicodeMessage(ser, item.ItemID.Value, MessageType.Label, label.Hue, 3, Language.CliLocName, "", labelDisplay));
+                                Client.Instance.SendToClient(new UnicodeMessage(ser, item.ItemID.Value,
+                                    MessageType.Label, label.Hue, 3, Language.CliLocName, "", labelDisplay));
                             }
 
                             // block the actual message from coming through since we have it in the label
@@ -1936,9 +1997,11 @@ namespace Assistant
                     }
                 }
 
-                if ((type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper || type == MessageType.Yell) && ser.IsMobile && ser != World.Player.Serial)
+                if ((type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper ||
+                     type == MessageType.Yell) && ser.IsMobile && ser != World.Player.Serial)
                 {
-                    if (ser.IsMobile && IgnoreAgent.IsIgnored(ser)) {
+                    if (ser.IsMobile && IgnoreAgent.IsIgnored(ser))
+                    {
                         args.Block = true;
                         return;
                     }
@@ -1946,7 +2009,7 @@ namespace Assistant
                     if (Config.GetBool("ForceSpeechHue"))
                     {
                         p.Seek(10, SeekOrigin.Begin);
-                        p.Write((ushort)Config.GetInt("SpeechHue"));
+                        p.Write((ushort) Config.GetInt("SpeechHue"));
                     }
                 }
 
@@ -1957,7 +2020,7 @@ namespace Assistant
                     if (SysMessages.Count >= 25)
                         SysMessages.RemoveRange(0, 10);
                 }
-                
+
                 if (Config.GetBool("FilterSystemMessages") && ser == Serial.MinusOne || ser == Serial.Zero)
                 {
                     if (!MessageQueue.Enqueue(ser, null, body, type, hue, font, lang, name, text))
@@ -1973,13 +2036,14 @@ namespace Assistant
             // 0, 1, 2
             Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
             ushort body = p.ReadUInt16(); // 7, 8
-            MessageType type = (MessageType)p.ReadByte(); // 9
+            MessageType type = (MessageType) p.ReadByte(); // 9
             ushort hue = p.ReadUInt16(); // 10, 11
             ushort font = p.ReadUInt16();
             string name = p.ReadStringSafe(30);
             string text = p.ReadStringSafe();
 
-            if (World.Player != null && serial == Serial.Zero && body == 0 && type == MessageType.Regular && hue == 0xFFFF && font == 0xFFFF && name == "SYSTEM")
+            if (World.Player != null && serial == Serial.Zero && body == 0 && type == MessageType.Regular &&
+                hue == 0xFFFF && font == 0xFFFF && name == "SYSTEM")
             {
                 args.Block = true;
 
@@ -1995,7 +2059,6 @@ namespace Assistant
                 }
 
                 GateTimer.OnAsciiMessage(text);
-
             }
         }
 
@@ -2004,7 +2067,7 @@ namespace Assistant
             // 0, 1, 2
             Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
             ushort body = p.ReadUInt16(); // 7, 8
-            MessageType type = (MessageType)p.ReadByte(); // 9
+            MessageType type = (MessageType) p.ReadByte(); // 9
             ushort hue = p.ReadUInt16(); // 10, 11
             ushort font = p.ReadUInt16();
             string lang = p.ReadStringSafe(4);
@@ -2024,7 +2087,7 @@ namespace Assistant
             // 0, 1, 2
             Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
             ushort body = p.ReadUInt16(); // 7, 8
-            MessageType type = (MessageType)p.ReadByte(); // 9
+            MessageType type = (MessageType) p.ReadByte(); // 9
             ushort hue = p.ReadUInt16(); // 10, 11
             ushort font = p.ReadUInt16();
             int num = p.ReadInt32();
@@ -2032,11 +2095,11 @@ namespace Assistant
             string ext_str = p.ReadUnicodeStringLESafe();
 
             if ((num >= 3002011 && num < 3002011 + 64) || // reg spells
-                 (num >= 1060509 && num < 1060509 + 16) || // necro
-                 (num >= 1060585 && num < 1060585 + 10) || // chiv
-                 (num >= 1060493 && num < 1060493 + 10) || // chiv
-                 (num >= 1060595 && num < 1060595 + 6) || // bush
-                 (num >= 1060610 && num < 1060610 + 8)) // ninj
+                (num >= 1060509 && num < 1060509 + 16) || // necro
+                (num >= 1060585 && num < 1060585 + 10) || // chiv
+                (num >= 1060493 && num < 1060493 + 10) || // chiv
+                (num >= 1060595 && num < 1060595 + 6) || // bush
+                (num >= 1060610 && num < 1060610 + 8)) // ninj
             {
                 type = MessageType.Spell;
             }
@@ -2050,7 +2113,8 @@ namespace Assistant
             }
             catch (Exception e)
             {
-                Engine.LogCrash(new Exception(String.Format("Exception in Ultima.dll cliloc: {0}, {1}", num, ext_str), e));
+                Engine.LogCrash(new Exception(String.Format("Exception in Ultima.dll cliloc: {0}, {1}", num, ext_str),
+                    e));
             }
         }
 
@@ -2059,7 +2123,7 @@ namespace Assistant
             // 0, 1, 2
             Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
             ushort body = p.ReadUInt16(); // 7, 8
-            MessageType type = (MessageType)p.ReadByte(); // 9
+            MessageType type = (MessageType) p.ReadByte(); // 9
             ushort hue = p.ReadUInt16(); // 10, 11
             ushort font = p.ReadUInt16();
             int num = p.ReadInt32();
@@ -2069,12 +2133,12 @@ namespace Assistant
             string args = p.ReadUnicodeStringSafe();
 
             if ((num >= 3002011 && num < 3002011 + 64) || // reg spells
-                 (num >= 1060509 && num < 1060509 + 16) || // necro
-                 (num >= 1060585 && num < 1060585 + 10) || // chiv
-                 (num >= 1060493 && num < 1060493 + 10) || // chiv
-                 (num >= 1060595 && num < 1060595 + 6) || // bush
-                 (num >= 1060610 && num < 1060610 + 8)     // ninj
-                 )
+                (num >= 1060509 && num < 1060509 + 16) || // necro
+                (num >= 1060585 && num < 1060585 + 10) || // chiv
+                (num >= 1060493 && num < 1060493 + 10) || // chiv
+                (num >= 1060595 && num < 1060595 + 6) || // bush
+                (num >= 1060610 && num < 1060610 + 8) // ninj
+            )
             {
                 type = MessageType.Spell;
             }
@@ -2097,7 +2161,8 @@ namespace Assistant
             World.Player.HasGump = true;
             //byte[] data = p.CopyBytes( 11, p.Length - 11 );
 
-            if (Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
+            if (Macros.MacroManager.AcceptActions &&
+                MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
         }
 
@@ -2146,7 +2211,6 @@ namespace Assistant
                 byte season = p.ReadByte();
                 World.Player.SetSeason(season);
             }
-
         }
 
         private static void OnAssistVersion(Packet p, PacketHandlerEventArgs args)
@@ -2163,102 +2227,111 @@ namespace Assistant
             switch (type)
             {
                 case 0x04: // close gump
-                    {
-                        // int serial, int tid
-                        if (World.Player != null)
-                            World.Player.HasGump = false;
-                        break;
-                    }
+                {
+                    // int serial, int tid
+                    if (World.Player != null)
+                        World.Player.HasGump = false;
+                    break;
+                }
+
                 case 0x06: // party messages
-                    {
-                        OnPartyMessage(p, args);
-                        break;
-                    }
+                {
+                    OnPartyMessage(p, args);
+                    break;
+                }
+
                 case 0x08: // map change
-                    {
-                        if (World.Player != null)
-                            World.Player.Map = p.ReadByte();
-                        break;
-                    }
+                {
+                    if (World.Player != null)
+                        World.Player.Map = p.ReadByte();
+                    break;
+                }
+
                 case 0x14: // context menu
+                {
+                    p.ReadInt16(); // 0x01
+                    UOEntity ent = null;
+                    Serial ser = p.ReadUInt32();
+                    if (ser.IsMobile)
+                        ent = World.FindMobile(ser);
+                    else if (ser.IsItem)
+                        ent = World.FindItem(ser);
+
+                    if (ent != null)
                     {
-                        p.ReadInt16(); // 0x01
-                        UOEntity ent = null;
-                        Serial ser = p.ReadUInt32();
-                        if (ser.IsMobile)
-                            ent = World.FindMobile(ser);
-                        else if (ser.IsItem)
-                            ent = World.FindItem(ser);
+                        byte count = p.ReadByte();
 
-                        if (ent != null)
+                        try
                         {
-                            byte count = p.ReadByte();
+                            ent.ContextMenu.Clear();
 
-                            try
+                            for (int i = 0; i < count; i++)
                             {
-                                ent.ContextMenu.Clear();
+                                ushort idx = p.ReadUInt16();
+                                ushort num = p.ReadUInt16();
+                                ushort flags = p.ReadUInt16();
+                                ushort color = 0;
 
-                                for (int i = 0; i < count; i++)
-                                {
-                                    ushort idx = p.ReadUInt16();
-                                    ushort num = p.ReadUInt16();
-                                    ushort flags = p.ReadUInt16();
-                                    ushort color = 0;
+                                if ((flags & 0x02) != 0)
+                                    color = p.ReadUInt16();
 
-                                    if ((flags & 0x02) != 0)
-                                        color = p.ReadUInt16();
-
-                                    ent.ContextMenu.Add(idx, num);
-                                }
-                            }
-                            catch
-                            {
+                                ent.ContextMenu.Add(idx, num);
                             }
                         }
-                        break;
+                        catch
+                        {
+                        }
                     }
+
+                    break;
+                }
+
                 case 0x18: // map patches
+                {
+                    if (World.Player != null)
                     {
-                        if (World.Player != null)
+                        int count = p.ReadInt32() * 2;
+                        try
                         {
-                            int count = p.ReadInt32() * 2;
-                            try
-                            {
-                                World.Player.MapPatches = new int[count];
-                                for (int i = 0; i < count; i++)
-                                    World.Player.MapPatches[i] = p.ReadInt32();
-                            }
-                            catch
-                            {
-                            }
+                            World.Player.MapPatches = new int[count];
+                            for (int i = 0; i < count; i++)
+                                World.Player.MapPatches[i] = p.ReadInt32();
                         }
-                        break;
+                        catch
+                        {
+                        }
                     }
+
+                    break;
+                }
+
                 case 0x19: //  stat locks
+                {
+                    if (p.ReadByte() == 0x02)
                     {
-                        if (p.ReadByte() == 0x02)
+                        Mobile m = World.FindMobile(p.ReadUInt32());
+                        if (World.Player == m && m != null)
                         {
-                            Mobile m = World.FindMobile(p.ReadUInt32());
-                            if (World.Player == m && m != null)
-                            {
-                                p.ReadByte();// 0?
+                            p.ReadByte(); // 0?
 
-                                byte locks = p.ReadByte();
+                            byte locks = p.ReadByte();
 
-                                World.Player.StrLock = (LockType)((locks >> 4) & 3);
-                                World.Player.DexLock = (LockType)((locks >> 2) & 3);
-                                World.Player.IntLock = (LockType)(locks & 3);
-                            }
+                            World.Player.StrLock = (LockType) ((locks >> 4) & 3);
+                            World.Player.DexLock = (LockType) ((locks >> 2) & 3);
+                            World.Player.IntLock = (LockType) (locks & 3);
                         }
-                        break;
                     }
+
+                    break;
+                }
+
                 case 0x1D: // Custom House "General Info"
-                    {
-                        Item i = World.FindItem(p.ReadUInt32());
-                        if (i != null)
-                            i.HouseRevision = p.ReadInt32();
-                        break;
-                    }
+                {
+                    Item i = World.FindItem(p.ReadUInt32());
+                    if (i != null)
+                        i.HouseRevision = p.ReadInt32();
+                    break;
+                }
             }
         }
 
@@ -2272,57 +2345,63 @@ namespace Assistant
             switch (p.ReadByte())
             {
                 case 1: // Custom Party information
+                {
+                    Serial serial;
+
+                    PacketHandlers.SpecialPartyReceived++;
+
+                    while ((serial = p.ReadUInt32()) > 0)
                     {
-                        Serial serial;
+                        Mobile mobile = World.FindMobile(serial);
 
-                        PacketHandlers.SpecialPartyReceived++;
+                        short x = p.ReadInt16();
+                        short y = p.ReadInt16();
+                        byte map = p.ReadByte();
 
-                        while ((serial = p.ReadUInt32()) > 0)
+                        if (mobile == null)
                         {
-                            Mobile mobile = World.FindMobile(serial);
-
-                            short x = p.ReadInt16();
-                            short y = p.ReadInt16();
-                            byte map = p.ReadByte();
-
-                            if (mobile == null)
-                            {
-                                World.AddMobile(mobile = new Mobile(serial));
-                                mobile.Visible = false;
-                            }
-
-                            if (mobile.Name == null || mobile.Name.Length <= 0)
-                                mobile.Name = "(Not Seen)";
-
-                            if (!m_Party.Contains(serial))
-                                m_Party.Add(serial);
-
-                            if (map == World.Player.Map)
-                                mobile.Position = new Point3D(x, y, mobile.Position.Z);
-                            else
-                                mobile.Position = Point3D.Zero;
+                            World.AddMobile(mobile = new Mobile(serial));
+                            mobile.Visible = false;
                         }
 
-                        if (Engine.MainWindow.MapWindow != null)
-                            Engine.MainWindow.SafeAction(s => s.MapWindow.UpdateMap());
+                        if (mobile.Name == null || mobile.Name.Length <= 0)
+                            mobile.Name = "(Not Seen)";
 
-                        break;
+                        if (!m_Party.Contains(serial))
+                            m_Party.Add(serial);
+
+                        if (map == World.Player.Map)
+                            mobile.Position = new Point3D(x, y, mobile.Position.Z);
+                        else
+                            mobile.Position = Point3D.Zero;
                     }
+
+                    if (Engine.MainWindow.MapWindow != null)
+                        Engine.MainWindow.SafeAction(s => s.MapWindow.UpdateMap());
+
+                    break;
+                }
+
                 case 0xFE: // Begin Handshake/Features Negotiation
-                    {
-                        ulong features = ((ulong)p.ReadUInt32() << 32) | (ulong)p.ReadUInt32();
+                {
+                    ulong features = ((ulong) p.ReadUInt32() << 32) | (ulong) p.ReadUInt32();
 
-                        Client.Instance.SetFeatures(features);
-                        Client.Instance.SendToServer(new RazorNegotiateResponse());
-                        Engine.MainWindow.SafeAction(s => s.UpdateControlLocks());
+                    Client.Instance.SetFeatures(features);
+                    Client.Instance.SendToServer(new RazorNegotiateResponse());
+                    Engine.MainWindow.SafeAction(s => s.UpdateControlLocks());
 
-                        break;
-                    }
+                    break;
+                }
             }
         }
 
         private static List<Serial> m_Party = new List<Serial>();
-        public static List<Serial> Party { get { return m_Party; } }
+
+        public static List<Serial> Party
+        {
+            get { return m_Party; }
+        }
+
         private static Timer m_PartyDeclineTimer = null;
         public static Serial PartyLeader = Serial.Zero;
 
@@ -2331,82 +2410,86 @@ namespace Assistant
             switch (p.ReadByte())
             {
                 case 0x01: // List
+                {
+                    m_Party.Clear();
+
+                    int count = p.ReadByte();
+                    for (int i = 0; i < count; i++)
                     {
-                        m_Party.Clear();
-
-                        int count = p.ReadByte();
-                        for (int i = 0; i < count; i++)
-                        {
-                            Serial s = p.ReadUInt32();
-                            if (World.Player == null || s != World.Player.Serial)
-                                m_Party.Add(s);
-                        }
-
-                        break;
+                        Serial s = p.ReadUInt32();
+                        if (World.Player == null || s != World.Player.Serial)
+                            m_Party.Add(s);
                     }
+
+                    break;
+                }
+
                 case 0x02: // Remove Member/Re-list
+                {
+                    m_Party.Clear();
+                    int count = p.ReadByte();
+                    Serial remSerial = p.ReadUInt32(); // the serial of who was removed
+
+                    if (World.Player != null)
                     {
-                        m_Party.Clear();
-                        int count = p.ReadByte();
-                        Serial remSerial = p.ReadUInt32(); // the serial of who was removed
-
-                        if (World.Player != null)
-                        {
-                            Mobile rem = World.FindMobile(remSerial);
-                            if (rem != null && !Utility.InRange(World.Player.Position, rem.Position, World.Player.VisRange))
-                                rem.Remove();
-                        }
-
-                        for (int i = 0; i < count; i++)
-                        {
-                            Serial s = p.ReadUInt32();
-                            if (World.Player == null || s != World.Player.Serial)
-                                m_Party.Add(s);
-                        }
-
-                        break;
+                        Mobile rem = World.FindMobile(remSerial);
+                        if (rem != null && !Utility.InRange(World.Player.Position, rem.Position, World.Player.VisRange))
+                            rem.Remove();
                     }
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        Serial s = p.ReadUInt32();
+                        if (World.Player == null || s != World.Player.Serial)
+                            m_Party.Add(s);
+                    }
+
+                    break;
+                }
+
                 case 0x03: // text message
 
                 case 0x04: // 3 = private, 4 = public
-                    {
-                        //Serial from = p.ReadUInt32();
-                        //string text = p.ReadUnicodeStringSafe();
-                        break;
-                    }
+                {
+                    //Serial from = p.ReadUInt32();
+                    //string text = p.ReadUnicodeStringSafe();
+                    break;
+                }
+
                 case 0x07: // party invite
+                {
+                    //Serial leader = p.ReadUInt32();
+                    PartyLeader = p.ReadUInt32();
+
+                    if (Config.GetBool("BlockPartyInvites"))
                     {
-                        //Serial leader = p.ReadUInt32();
-                        PartyLeader = p.ReadUInt32();
+                        Client.Instance.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
+                    }
 
-                        if (Config.GetBool("BlockPartyInvites"))
+                    if (Config.GetBool("AutoAcceptParty"))
+                    {
+                        Mobile leaderMobile = World.FindMobile(PartyLeader);
+                        if (leaderMobile != null && FriendsManager.IsFriend(leaderMobile.Serial))
                         {
-                            Client.Instance.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
-                        }
-
-                        if (Config.GetBool("AutoAcceptParty"))
-                        {
-                            Mobile leaderMobile = World.FindMobile(PartyLeader);
-                            if (leaderMobile != null && FriendsManager.IsFriend(leaderMobile.Serial))
+                            if (PartyLeader != Serial.Zero)
                             {
-                                if (PartyLeader != Serial.Zero)
-                                {
-                                    World.Player.SendMessage($"Auto accepted party invite from: {leaderMobile.Name}");
+                                World.Player.SendMessage($"Auto accepted party invite from: {leaderMobile.Name}");
 
-                                    Client.Instance.SendToServer(new AcceptParty(PartyLeader));
-                                    PartyLeader = Serial.Zero;
-                                }
+                                Client.Instance.SendToServer(new AcceptParty(PartyLeader));
+                                PartyLeader = Serial.Zero;
                             }
                         }
-                        else
-                        {
-                            if (m_PartyDeclineTimer == null)
-                                m_PartyDeclineTimer = Timer.DelayedCallback(TimeSpan.FromSeconds(10.0), new TimerCallback(PartyAutoDecline));
-                            m_PartyDeclineTimer.Start();
-                        }
-
-                        break;
                     }
+                    else
+                    {
+                        if (m_PartyDeclineTimer == null)
+                            m_PartyDeclineTimer = Timer.DelayedCallback(TimeSpan.FromSeconds(10.0),
+                                new TimerCallback(PartyAutoDecline));
+                        m_PartyDeclineTimer.Start();
+                    }
+
+                    break;
+                }
             }
 
 
@@ -2432,15 +2515,15 @@ namespace Assistant
             switch (packetID)
             {
                 case 0x19: // set ability
-                    {
-                        int ability = 0;
-                        if (p.ReadByte() == 0)
-                            ability = p.ReadInt32();
+                {
+                    int ability = 0;
+                    if (p.ReadByte() == 0)
+                        ability = p.ReadInt32();
 
-                        if (ability >= 0 && ability < (int)AOSAbility.Invalid && Macros.MacroManager.AcceptActions)
-                            MacroManager.Action(new SetAbilityAction((AOSAbility)ability));
-                        break;
-                    }
+                    if (ability >= 0 && ability < (int) AOSAbility.Invalid && Macros.MacroManager.AcceptActions)
+                        MacroManager.Action(new SetAbilityAction((AOSAbility) ability));
+                    break;
+                }
             }
         }
 
@@ -2536,16 +2619,17 @@ namespace Assistant
                 try
                 {
                     string[] parts = Config.GetString("ForceIP").Split('.');
-                    p.Write((byte)Convert.ToInt16(parts[0]));
-                    p.Write((byte)Convert.ToInt16(parts[1]));
-                    p.Write((byte)Convert.ToInt16(parts[2]));
-                    p.Write((byte)Convert.ToInt16(parts[3]));
+                    p.Write((byte) Convert.ToInt16(parts[0]));
+                    p.Write((byte) Convert.ToInt16(parts[1]));
+                    p.Write((byte) Convert.ToInt16(parts[2]));
+                    p.Write((byte) Convert.ToInt16(parts[3]));
 
-                    p.Write((ushort)port);
+                    p.Write((ushort) port);
                 }
                 catch
                 {
-                    System.Windows.Forms.MessageBox.Show(Engine.MainWindow, "Error parsing Proxy Settings.", "Force Proxy Error.");
+                    System.Windows.Forms.MessageBox.Show(Engine.MainWindow, "Error parsing Proxy Settings.",
+                        "Force Proxy Error.");
                 }
             }
         }
@@ -2647,7 +2731,6 @@ namespace Assistant
          */
         private static void CompressedGump(PacketReader p, PacketHandlerEventArgs args)
         {
-
             if (World.Player == null)
                 return;
 
@@ -2655,7 +2738,8 @@ namespace Assistant
             World.Player.CurrentGumpI = p.ReadUInt32();
             //World.Player.HasGump = true;
 
-            if (Macros.MacroManager.AcceptActions && MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
+            if (Macros.MacroManager.AcceptActions &&
+                MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
 
             List<string> gumpStrings = new List<string>();
@@ -2680,7 +2764,8 @@ namespace Assistant
                     if (!string.IsNullOrEmpty(value))
                     {
                         int i = int.Parse(value);
-                        if ((i >= 500000 && i <= 503405) || (i >= 1000000 && i <= 1155584) || (i >= 3000000 && i <= 3011032))
+                        if ((i >= 500000 && i <= 503405) || (i >= 1000000 && i <= 1155584) ||
+                            (i >= 3000000 && i <= 3011032))
                             gumpStrings.Add(Language.GetString(i));
                     }
                 }
@@ -2719,7 +2804,9 @@ namespace Assistant
                 World.Player.CurrentGumpStrings.AddRange(gumpStrings);
                 World.Player.CurrentGumpRawData = layout; // Get raw data of current gump
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         private static bool TryParseGump(string gumpData, out string[] pieces)
@@ -2761,7 +2848,6 @@ namespace Assistant
                 string[] gumpParams = Regex.Split(gumpPieces[i], @"\s+");
                 switch (gumpParams[0].ToLower())
                 {
-
                     case "croppedtext":
                         gumpText.Add(gumpLines[int.Parse(gumpParams[6])]);
                         // CroppedText [x] [y] [width] [height] [color] [text-id]
@@ -2794,7 +2880,8 @@ namespace Assistant
 
         private static void ResurrectionGump(PacketReader p, PacketHandlerEventArgs args)
         {
-            if (Config.GetBool("CaptureOwnDeath") && _lastSelfDeathScreenshot + TimeSpan.FromMilliseconds(500) < DateTime.UtcNow)
+            if (Config.GetBool("CaptureOwnDeath") &&
+                _lastSelfDeathScreenshot + TimeSpan.FromMilliseconds(500) < DateTime.UtcNow)
             {
                 ScreenCapManager.DeathCapture(Config.GetDouble("CaptureOwnDeathDelay"));
                 _lastSelfDeathScreenshot = DateTime.UtcNow;
@@ -2809,7 +2896,7 @@ namespace Assistant
 
             if (Enum.IsDefined(typeof(BuffIcon), icon))
             {
-                BuffIcon buff = (BuffIcon)icon;
+                BuffIcon buff = (BuffIcon) icon;
 
                 string format = Config.GetString("BuffDebuffFormat");
                 if (string.IsNullOrEmpty(format))
@@ -2832,9 +2919,9 @@ namespace Assistant
                         BuffsDebuffs buffInfo = new BuffsDebuffs
                         {
                             IconNumber = icon,
-                            BuffIcon = (BuffIcon)icon,
-                            ClilocMessage1 = Language.GetCliloc((int)p.ReadUInt32()),
-                            ClilocMessage2 = Language.GetCliloc((int)p.ReadUInt32()),
+                            BuffIcon = (BuffIcon) icon,
+                            ClilocMessage1 = Language.GetCliloc((int) p.ReadUInt32()),
+                            ClilocMessage2 = Language.GetCliloc((int) p.ReadUInt32()),
                             Duration = duration,
                             Timestamp = DateTime.UtcNow
                         };
@@ -2843,23 +2930,29 @@ namespace Assistant
                         {
                             World.Player.BuffsDebuffs.Add(buffInfo);
 
-                            if (Config.GetBool("ShowBuffDebuffOverhead") && !BuffsTimer.IsFiltered(buffInfo.ClilocMessage1))
+                            if (Config.GetBool("ShowBuffDebuffOverhead") &&
+                                !BuffsTimer.IsFiltered(buffInfo.ClilocMessage1))
                             {
-                                World.Player.OverheadMessage(Config.GetInt("BuffHue"), format.Replace("{action}", "+").Replace("{name}", buffInfo.ClilocMessage1).Replace("{duration}", buffInfo.Duration.ToString()));
+                                World.Player.OverheadMessage(Config.GetInt("BuffHue"),
+                                    format.Replace("{action}", "+").Replace("{name}", buffInfo.ClilocMessage1)
+                                        .Replace("{duration}", buffInfo.Duration.ToString()));
                             }
                         }
 
                         break;
 
                     case 0x0: // remove
-                        if (World.Player != null)// && World.Player.BuffsDebuffs.Any(b => b.BuffIcon == buff))
+                        if (World.Player != null) // && World.Player.BuffsDebuffs.Any(b => b.BuffIcon == buff))
                         {
                             if (Config.GetBool("ShowBuffDebuffOverhead"))
                             {
-                                string buffRemoveInfo = World.Player.BuffsDebuffs.Where(b => b.BuffIcon == buff).Select(x => x.ClilocMessage1).FirstOrDefault();
+                                string buffRemoveInfo = World.Player.BuffsDebuffs.Where(b => b.BuffIcon == buff)
+                                    .Select(x => x.ClilocMessage1).FirstOrDefault();
 
                                 if (!BuffsTimer.IsFiltered(buffRemoveInfo))
-                                    World.Player.OverheadMessage(Config.GetInt("DebuffHue"), format.Replace("{action}", "-").Replace("{name}", buffRemoveInfo).Replace("{duration}", string.Empty));
+                                    World.Player.OverheadMessage(Config.GetInt("DebuffHue"),
+                                        format.Replace("{action}", "-").Replace("{name}", buffRemoveInfo)
+                                            .Replace("{duration}", string.Empty));
                             }
 
                             World.Player.BuffsDebuffs.RemoveAll(b => b.BuffIcon == buff);
@@ -2903,6 +2996,7 @@ namespace Assistant
                 args.Block = true;
             }
         }
+
         private static void UnicodePromptSend(Packet p, PacketHandlerEventArgs args)
         {
             if (World.Player == null)
@@ -2949,7 +3043,7 @@ namespace Assistant
             {
                 MacroManager.Action(new WaitForPromptAction(id));
             }
-                //args.Block = true;
+            //args.Block = true;
 
             //string lang = p.ReadStringSafe(4);
             //string message = p.ReadUnicodeStringSafe();

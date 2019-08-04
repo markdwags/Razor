@@ -20,7 +20,7 @@ namespace Assistant.Core
 
         private static readonly uint _largeBodGumpId = 2703603018;
         private static readonly uint _smallBodGumpId = 1526454082;
-        
+
         private static readonly string _bodFile = $"{Config.GetInstallDirectory()}\\BODs.csv";
 
         public static bool IsBodGump(uint gumpId)
@@ -39,7 +39,8 @@ namespace Assistant.Core
             {
                 foreach (Bod bod in bods)
                 {
-                    sw.WriteLine($"{bod.ItemName},{(bod.IsLarge ? "large": "small")},{bod.Exceptional},{bod.Material},{bod.CurrentAmount},{bod.TotalAmount}");
+                    sw.WriteLine(
+                        $"{bod.ItemName},{(bod.IsLarge ? "large" : "small")},{bod.Exceptional},{bod.Material},{bod.CurrentAmount},{bod.TotalAmount}");
                 }
             }
         }
@@ -120,7 +121,7 @@ namespace Assistant.Core
 
             // Based on the data above, the total amount is always after EXIT in both small and large
             string totalAmount = gumpData[exitIndex + 1];
-           
+
             // BOD requirement data appears at index 4 for both small and large
             int beginningIndex = 4;
 
@@ -166,6 +167,5 @@ namespace Assistant.Core
 
             return bods;
         }
-
     }
 }

@@ -3,76 +3,78 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-
 using Assistant.UI;
 
 namespace Assistant
 {
-	/// <summary>
-	/// Summary description for AddCounter.
-	/// </summary>
-	public class AddCounter : System.Windows.Forms.Form
-	{
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox name;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.TextBox format;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.TextBox itemid;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.TextBox hue;
-		private System.Windows.Forms.Button Add;
-		private System.Windows.Forms.Button cancel;
-		private System.Windows.Forms.Button target;
-		private System.Windows.Forms.Button delete;
-		private System.Windows.Forms.CheckBox dispImg;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+    /// <summary>
+    /// Summary description for AddCounter.
+    /// </summary>
+    public class AddCounter : System.Windows.Forms.Form
+    {
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox name;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox format;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox itemid;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox hue;
+        private System.Windows.Forms.Button Add;
+        private System.Windows.Forms.Button cancel;
+        private System.Windows.Forms.Button target;
+        private System.Windows.Forms.Button delete;
+        private System.Windows.Forms.CheckBox dispImg;
 
-		public AddCounter()
-		{
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
-		}
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
 
-		public AddCounter( Counter c ) : this()
-		{
-			name.Text = c.Name;
-			format.Text = c.Format;
-			itemid.Text = c.ItemID.ToString();
-			hue.Text = c.Hue.ToString();
-			dispImg.Checked = c.DisplayImage;
+        public AddCounter()
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
+        }
 
-			delete.Visible = true;
-			this.Text = "Edit Counter";
-		}
+        public AddCounter(Counter c) : this()
+        {
+            name.Text = c.Name;
+            format.Text = c.Format;
+            itemid.Text = c.ItemID.ToString();
+            hue.Text = c.Hue.ToString();
+            dispImg.Checked = c.DisplayImage;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+            delete.Visible = true;
+            this.Text = "Edit Counter";
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.label1 = new System.Windows.Forms.Label();
             this.name = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -224,7 +226,8 @@ namespace Assistant
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "AddCounter";
             this.ShowInTaskbar = false;
@@ -233,104 +236,109 @@ namespace Assistant
             this.Load += new System.EventHandler(this.AddCounter_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
 
-		}
-		#endregion
+        #endregion
 
-		public string NameStr, FmtStr;
-		public int ItemID, Hue;
-		public bool DisplayImage;
-		private void Add_Click(object sender, System.EventArgs e)
-		{
-			if ( name.Text.Trim().Length > 0 && format.Text.Trim().Length > 0 )
-			{
-				NameStr = name.Text.Trim();
-				FmtStr = format.Text.Trim();
-			}
-			else
-			{
-				MessageBox.Show( this, Language.GetString( LocString.InvalidAbrev ), "Error", MessageBoxButtons.OK, MessageBoxIcon.Information );
-				return;
-			}
+        public string NameStr, FmtStr;
+        public int ItemID, Hue;
+        public bool DisplayImage;
 
-			try
-			{
-				if ( itemid.Text.StartsWith( "0x" ) )
-					ItemID = Convert.ToUInt16( itemid.Text.Substring( 2 ).Trim(), 16 );
-				else
-					ItemID = Convert.ToUInt16( itemid.Text.Trim() );
-			}
-			catch
-			{
-				ItemID = 0;
-			}
+        private void Add_Click(object sender, System.EventArgs e)
+        {
+            if (name.Text.Trim().Length > 0 && format.Text.Trim().Length > 0)
+            {
+                NameStr = name.Text.Trim();
+                FmtStr = format.Text.Trim();
+            }
+            else
+            {
+                MessageBox.Show(this, Language.GetString(LocString.InvalidAbrev), "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
 
-			if ( ItemID == 0 )
-			{
-				MessageBox.Show( this, Language.GetString( LocString.InvalidIID ), "Error", MessageBoxButtons.OK, MessageBoxIcon.Information );
-				return;
-			}
+            try
+            {
+                if (itemid.Text.StartsWith("0x"))
+                    ItemID = Convert.ToUInt16(itemid.Text.Substring(2).Trim(), 16);
+                else
+                    ItemID = Convert.ToUInt16(itemid.Text.Trim());
+            }
+            catch
+            {
+                ItemID = 0;
+            }
 
-			Hue = Utility.ToInt32( hue.Text, -1 );
+            if (ItemID == 0)
+            {
+                MessageBox.Show(this, Language.GetString(LocString.InvalidIID), "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
 
-			if ( Hue < -1 || Hue > 0xFFFF )
-			{
-				MessageBox.Show( this, Language.GetString( LocString.InvalidHue ), "Error", MessageBoxButtons.OK, MessageBoxIcon.Information );
-				Hue = 0;
-				return;
-			}
+            Hue = Utility.ToInt32(hue.Text, -1);
 
-			DisplayImage = dispImg.Checked;
-		}
+            if (Hue < -1 || Hue > 0xFFFF)
+            {
+                MessageBox.Show(this, Language.GetString(LocString.InvalidHue), "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                Hue = 0;
+                return;
+            }
 
-		private void cancel_Click(object sender, System.EventArgs e)
-		{
-			Targeting.CancelOneTimeTarget();
-		}
+            DisplayImage = dispImg.Checked;
+        }
 
-		private void target_Click(object sender, System.EventArgs e)
-		{
-			if ( World.Player != null )
-			{
-				Targeting.OneTimeTarget( new Targeting.TargetResponseCallback( OnTarget ) );
-				World.Player.SendMessage( MsgLevel.Force, LocString.SelItem2Count );
-			}
-		}
+        private void cancel_Click(object sender, System.EventArgs e)
+        {
+            Targeting.CancelOneTimeTarget();
+        }
 
-		private void OnTarget( bool loc, Serial serial, Point3D p, ushort graphic )
-		{
-			Engine.MainWindow.SafeAction(s => s.ShowMe());
-			this.BringToFront();
-			this.Show();
-			this.Focus();
-			if ( loc )
-				return;
+        private void target_Click(object sender, System.EventArgs e)
+        {
+            if (World.Player != null)
+            {
+                Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnTarget));
+                World.Player.SendMessage(MsgLevel.Force, LocString.SelItem2Count);
+            }
+        }
 
-			Item item = World.FindItem( serial );
-			if ( item != null )
-			{
-				itemid.Text = item.ItemID.Value.ToString();
-				hue.Text = item.Hue == 0 ? "-1" : item.Hue.ToString();
-			}
-			else
-			{
-				itemid.Text = graphic.ToString();
-				hue.Text = "-1";
-			}
-		}
+        private void OnTarget(bool loc, Serial serial, Point3D p, ushort graphic)
+        {
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
+            this.BringToFront();
+            this.Show();
+            this.Focus();
+            if (loc)
+                return;
 
-		private void AddCounter_Load(object sender, System.EventArgs e)
-		{
-			Language.LoadControlNames( this );
-		}
+            Item item = World.FindItem(serial);
+            if (item != null)
+            {
+                itemid.Text = item.ItemID.Value.ToString();
+                hue.Text = item.Hue == 0 ? "-1" : item.Hue.ToString();
+            }
+            else
+            {
+                itemid.Text = graphic.ToString();
+                hue.Text = "-1";
+            }
+        }
 
-		private void delete_Click(object sender, System.EventArgs e)
-		{
-			if ( MessageBox.Show( this, "Are you sure you want to delete this counter?", "Delete Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
-			{
-				this.DialogResult = DialogResult.Abort;
-				this.Close();
-			}
-		}
-	}
+        private void AddCounter_Load(object sender, System.EventArgs e)
+        {
+            Language.LoadControlNames(this);
+        }
+
+        private void delete_Click(object sender, System.EventArgs e)
+        {
+            if (MessageBox.Show(this, "Are you sure you want to delete this counter?", "Delete Confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                this.DialogResult = DialogResult.Abort;
+                this.Close();
+            }
+        }
+    }
 }

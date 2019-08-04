@@ -5,7 +5,6 @@ using System.Reflection;
 using System.IO;
 using System.Text;
 using Assistant;
-
 using Assistant.UI;
 
 namespace Assistant.Macros
@@ -30,13 +29,38 @@ namespace Assistant.Macros
             m_IfStatus = new Stack();
         }
 
-        public string Filename { get { return m_Path; } set { m_Path = value; } }
-        public ArrayList Actions { get { return m_Actions; } }
-        public bool Recording { get { return m_Recording; } }
-        public bool Playing { get { return m_Playing; } }
+        public string Filename
+        {
+            get { return m_Path; }
+            set { m_Path = value; }
+        }
+
+        public ArrayList Actions
+        {
+            get { return m_Actions; }
+        }
+
+        public bool Recording
+        {
+            get { return m_Recording; }
+        }
+
+        public bool Playing
+        {
+            get { return m_Playing; }
+        }
+
         public bool StepThrough { get; set; }
-        public bool Waiting { get { return m_Wait != null; } }
-        public int CurrentAction { get { return m_CurrentAction; } }
+
+        public bool Waiting
+        {
+            get { return m_Wait != null; }
+        }
+
+        public int CurrentAction
+        {
+            get { return m_CurrentAction; }
+        }
 
         public bool Loop
         {
@@ -57,7 +81,7 @@ namespace Assistant.Macros
             {
                 s.BeginUpdate();
                 if (m_Actions.Count > 0)
-                    s.Items.AddRange((object[])m_Actions.ToArray(typeof(object)));
+                    s.Items.AddRange((object[]) m_Actions.ToArray(typeof(object)));
                 if (m_Playing && m_CurrentAction >= 0 && m_CurrentAction < m_Actions.Count)
                     s.SelectedIndex = m_CurrentAction;
                 else
@@ -139,7 +163,8 @@ namespace Assistant.Macros
 
         public void Reset()
         {
-            if (m_Playing && World.Player != null && DragDropManager.Holding != null && DragDropManager.Holding == LiftAction.LastLift)
+            if (m_Playing && World.Player != null && DragDropManager.Holding != null &&
+                DragDropManager.Holding == LiftAction.LastLift)
                 Client.Instance.SendToServer(new DropRequest(DragDropManager.Holding, World.Player.Serial));
 
             m_Wait = null;
@@ -149,7 +174,7 @@ namespace Assistant.Macros
             foreach (MacroAction a in m_Actions)
             {
                 if (a is ForAction)
-                    ((ForAction)a).Count = 0;
+                    ((ForAction) a).Count = 0;
             }
         }
 
@@ -197,7 +222,7 @@ namespace Assistant.Macros
 
                 for (int i = 0; i < m_Actions.Count; i++)
                 {
-                    MacroAction a = (MacroAction)m_Actions[i];
+                    MacroAction a = (MacroAction) m_Actions[i];
                     try
                     {
                         writer.WriteLine(a.Serialize());
@@ -209,7 +234,8 @@ namespace Assistant.Macros
             }
         }
 
-        private static Type[] ctorArgs = new Type[1] { typeof(string[]) };
+        private static Type[] ctorArgs = new Type[1] {typeof(string[])};
+
         public void Load()
         {
             m_Actions.Clear();
@@ -246,10 +272,17 @@ namespace Assistant.Macros
                     }
 
                     string[] args = line.Split('|');
-                    object[] invokeArgs = new object[1] { args };
+                    object[] invokeArgs = new object[1] {args};
 
                     Type at = null;
-                    try { at = Type.GetType(args[0], false); } catch { }
+                    try
+                    {
+                        at = Type.GetType(args[0], false);
+                    }
+                    catch
+                    {
+                    }
+
                     if (at == null)
                         continue;
 
@@ -261,10 +294,9 @@ namespace Assistant.Macros
                             if (ctor == null)
                                 continue;
 
-                            MacroAction a = (MacroAction)ctor.Invoke(invokeArgs);
+                            MacroAction a = (MacroAction) ctor.Invoke(invokeArgs);
                             a.Parent = this;
                             m_Actions.Add(a);
-
                         }
                         catch
                         {
@@ -278,10 +310,9 @@ namespace Assistant.Macros
                             if (ctor == null)
                                 continue;
 
-                            MacroAction a = (MacroAction)ctor.Invoke(null);
+                            MacroAction a = (MacroAction) ctor.Invoke(null);
                             a.Parent = this;
                             m_Actions.Add(a);
-
                         }
                         catch
                         {
@@ -289,6 +320,7 @@ namespace Assistant.Macros
                     }
                 }
             }
+
             m_Loaded = true;
         }
 
@@ -327,12 +359,15 @@ namespace Assistant.Macros
             int nextAct = m_CurrentAction + 1;
 
             if (nextAct >= 0 && nextAct < m_Actions.Count)
-                return m_Actions[nextAct] is WaitForTargetAction || m_Actions[nextAct] is WaitForGumpAction || m_Actions[nextAct] is WaitForMenuAction;//|| m_Actions[nextAct] is ElseAction || m_Actions[nextAct] is EndIfAction;
+                return m_Actions[nextAct] is WaitForTargetAction || m_Actions[nextAct] is WaitForGumpAction ||
+                       m_Actions[nextAct] is
+                           WaitForMenuAction; //|| m_Actions[nextAct] is ElseAction || m_Actions[nextAct] is EndIfAction;
             else
                 return false;
         }
 
         private static MacroWaitAction PauseB4Loop = new PauseAction(TimeSpan.FromSeconds(0.1));
+
         //return true to continue the macro, false to stop (macro's over)
         public bool ExecNext()
         {
@@ -379,7 +414,7 @@ namespace Assistant.Macros
 
                                 sb.AppendLine("\n");
 
-                                int s = (int)(m_Wait.Timeout - waitLen).TotalSeconds;
+                                int s = (int) (m_Wait.Timeout - waitLen).TotalSeconds;
                                 int m = 0;
 
                                 if (s > 60)
@@ -397,6 +432,7 @@ namespace Assistant.Macros
 
                                 Engine.MainWindow.WaitDisplay.SafeAction(w => w.Text = sb.ToString());
                             }
+
                             return true; // keep waiting
                         }
                     }
@@ -414,11 +450,11 @@ namespace Assistant.Macros
 
                 if (m_CurrentAction >= 0 && m_CurrentAction < m_Actions.Count)
                 {
-                    MacroAction action = (MacroAction)m_Actions[m_CurrentAction];
+                    MacroAction action = (MacroAction) m_Actions[m_CurrentAction];
 
                     if (action is IfAction)
                     {
-                        bool val = ((IfAction)action).Evaluate();
+                        bool val = ((IfAction) action).Evaluate();
                         m_IfStatus.Push(val);
 
                         if (!val)
@@ -449,7 +485,7 @@ namespace Assistant.Macros
                     }
                     else if (action is ElseAction && m_IfStatus.Count > 0)
                     {
-                        bool val = (bool)m_IfStatus.Peek();
+                        bool val = (bool) m_IfStatus.Peek();
                         if (val)
                         {
                             // the if was true, so skip to an endif
@@ -478,7 +514,7 @@ namespace Assistant.Macros
                     }
                     else if (action is ForAction)
                     {
-                        ForAction fa = (ForAction)action;
+                        ForAction fa = (ForAction) action;
                         fa.Count++;
 
                         if (fa.Count > fa.Max)
@@ -505,7 +541,7 @@ namespace Assistant.Macros
                             }
 
                             if (m_CurrentAction < m_Actions.Count)
-                                action = (MacroAction)m_Actions[m_CurrentAction];
+                                action = (MacroAction) m_Actions[m_CurrentAction];
                         }
                     }
                     else if (action is EndForAction && Client.Instance.AllowBit(FeatureBit.LoopingMacros))
@@ -537,7 +573,7 @@ namespace Assistant.Macros
                     bool isWait = action is MacroWaitAction;
                     if (!action.Perform() && isWait)
                     {
-                        m_Wait = (MacroWaitAction)action;
+                        m_Wait = (MacroWaitAction) action;
                         m_Wait.StartTime = DateTime.UtcNow;
                     }
                     else if (NextIsInstantWait() && !isWait)
@@ -572,8 +608,8 @@ namespace Assistant.Macros
                 new MessageDialog("Macro Exception", true, e.ToString()).Show();
                 return false;
             }
+
             return true;
         }
     }
 }
-

@@ -35,14 +35,15 @@ namespace Assistant.Core
 
             try
             {
-
                 foreach (XmlElement el in node.GetElementsByTagName("overheadmessage"))
                 {
                     OverheadMessage overheadMessage = new OverheadMessage
                     {
                         MessageOverhead = el.GetAttribute("message"),
                         SearchMessage = el.GetAttribute("searchtext"),
-                        Hue = string.IsNullOrEmpty(el.GetAttribute("hue")) ? 68 : Convert.ToInt32(el.GetAttribute("hue"))
+                        Hue = string.IsNullOrEmpty(el.GetAttribute("hue"))
+                            ? 68
+                            : Convert.ToInt32(el.GetAttribute("hue"))
                     };
 
                     OverheadMessageList.Add(overheadMessage);

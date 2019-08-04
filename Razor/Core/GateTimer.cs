@@ -10,7 +10,7 @@ namespace Assistant
 
         private static readonly int[] m_ClilocsStop = {502632};
 
-        private static readonly int[] m_ClilocsRestart = { 501024 };
+        private static readonly int[] m_ClilocsRestart = {501024};
 
         static GateTimer()
         {
@@ -26,7 +26,6 @@ namespace Assistant
         {
             if (Running)
             {
-
                 if (m_ClilocsStop.Any(t => Language.GetCliloc(t) == msg))
                 {
                     Stop();

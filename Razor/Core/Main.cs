@@ -286,9 +286,9 @@ namespace Assistant
             if (result != Client.Loader_Error.SUCCESS)
             {
                 MessageBox.Show(SplashScreen.Instance,
-                        String.Format("Unable to launch the client specified. (Error: {1})\n \"{0}\"",
-                            clientPath != null ? clientPath : "-null-", result),
-                        "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    String.Format("Unable to launch the client specified. (Error: {1})\n \"{0}\"",
+                        clientPath != null ? clientPath : "-null-", result),
+                    "Could Not Start Client", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 SplashScreen.End();
                 return;
             }
@@ -347,7 +347,7 @@ namespace Assistant
             {
                 defLang = "ENU";
             }
-            
+
             Client.Init(true);
 
             if (!Language.Load(defLang))
@@ -377,9 +377,11 @@ namespace Assistant
             RunUI();
             Close();
         }
-        
+
         private static string _rootPath = null;
-        public static string RootPath => _rootPath ?? (_rootPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Engine)).Location));
+
+        public static string RootPath =>
+            _rootPath ?? (_rootPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Engine)).Location));
 
         /*public static string GetDirectory( string relPath )
         {
@@ -400,7 +402,7 @@ namespace Assistant
 
             for (int i = 0; i < types.Length; i++)
             {
-                if ( types[i].Namespace == "Ultima" )
+                if (types[i].Namespace == "Ultima")
                     continue;
                 MethodInfo init = types[i].GetMethod("Initialize", BindingFlags.Static | BindingFlags.Public);
 

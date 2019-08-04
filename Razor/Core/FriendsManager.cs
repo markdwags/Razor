@@ -55,8 +55,10 @@ namespace Assistant.Core
                 {
                     HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add Target To: {GroupName}", AddFriendToGroup);
                     HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Toggle Group: {GroupName}", ToggleFriendGroup);
-                    HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Mobiles: {GroupName}", AddAllMobileAsFriends);
-                    HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Humanoids: {GroupName}", AddAllHumanoidsAsFriends);
+                    HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Mobiles: {GroupName}",
+                        AddAllMobileAsFriends);
+                    HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Humanoids: {GroupName}",
+                        AddAllHumanoidsAsFriends);
                 }
                 else
                 {
@@ -64,8 +66,10 @@ namespace Assistant.Core
                     {
                         HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add Target To: {GroupName}", AddFriendToGroup);
                         HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Toggle Group: {GroupName}", ToggleFriendGroup);
-                        HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Mobiles: {GroupName}", AddAllMobileAsFriends);
-                        HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Humanoids: {GroupName}", AddAllHumanoidsAsFriends);
+                        HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Mobiles: {GroupName}",
+                            AddAllMobileAsFriends);
+                        HotKey.Add(HKCategory.Friends, HKSubCat.None, $"Add All Humanoids: {GroupName}",
+                            AddAllHumanoidsAsFriends);
                     });
                 }
             }
@@ -101,12 +105,14 @@ namespace Assistant.Core
             {
                 if (Enabled)
                 {
-                    World.Player.SendMessage(MsgLevel.Warning, $"Friend group '{GroupName}' ({Friends.Count} friends) has been 'Disabled'");
+                    World.Player.SendMessage(MsgLevel.Warning,
+                        $"Friend group '{GroupName}' ({Friends.Count} friends) has been 'Disabled'");
                     Enabled = false;
                 }
                 else
                 {
-                    World.Player.SendMessage(MsgLevel.Info, $"Friend group '{GroupName}' ({Friends.Count} friends) has been 'Enabled'");
+                    World.Player.SendMessage(MsgLevel.Info,
+                        $"Friend group '{GroupName}' ({Friends.Count} friends) has been 'Enabled'");
                     Enabled = true;
                 }
             }
@@ -160,7 +166,7 @@ namespace Assistant.Core
 
                     return true;
                 }
-             
+
                 return false;
             }
 
@@ -198,9 +204,6 @@ namespace Assistant.Core
                     }
                 }
             }
-
-
-
         }
 
         public static bool IsFriend(Serial serial)
@@ -355,7 +358,7 @@ namespace Assistant.Core
                     };
 
                     friendGroup.AddHotKeys();
-                    
+
                     foreach (XmlElement friendEl in el.GetElementsByTagName("friend"))
                     {
                         try
@@ -401,7 +404,7 @@ namespace Assistant.Core
 
             if (_friendGroups.Items.Count > 0)
             {
-                RedrawList((FriendGroup)_friendGroups.Items[0]);
+                RedrawList((FriendGroup) _friendGroups.Items[0]);
             }
             else
             {

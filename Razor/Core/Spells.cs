@@ -331,7 +331,7 @@ namespace Assistant
             {
                 if (World.Player.Poisoned || World.Player.Hits < World.Player.HitsMax)
                     Targeting.TargetSelf(true);
-                Client.Instance.SendToServer(new CastSpellFromMacro((ushort)s.GetID()));
+                Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
                 s.Cast();
             }
         }

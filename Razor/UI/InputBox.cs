@@ -6,130 +6,135 @@ using System.Windows.Forms;
 
 namespace Assistant
 {
-	/// <summary>
-	/// Summary description for NewProfile.
-	/// </summary>
-	public class InputBox : System.Windows.Forms.Form
-	{
-		private static InputBox m_Instance;
-		public static bool Show( string prompt )
-		{
-			return Show( null, prompt, Language.GetString( LocString.InputReq ), "" );
-		}
+    /// <summary>
+    /// Summary description for NewProfile.
+    /// </summary>
+    public class InputBox : System.Windows.Forms.Form
+    {
+        private static InputBox m_Instance;
 
-		public static bool Show( string prompt, string title )
-		{
-			return Show( null, prompt, title, "" );
-		}
+        public static bool Show(string prompt)
+        {
+            return Show(null, prompt, Language.GetString(LocString.InputReq), "");
+        }
 
-		public static bool Show( string prompt, string title, string def )
-		{
-			return Show( null, prompt, title, def );
-		}
+        public static bool Show(string prompt, string title)
+        {
+            return Show(null, prompt, title, "");
+        }
 
-		public static bool Show( Form parent, string prompt )
-		{
-			return Show( parent, prompt, Language.GetString( LocString.InputReq ), "" );
-		}
+        public static bool Show(string prompt, string title, string def)
+        {
+            return Show(null, prompt, title, def);
+        }
 
-		public static bool Show( Form parent, string prompt, string title )
-		{
-			return Show( parent, prompt, title, "" );
-		}
+        public static bool Show(Form parent, string prompt)
+        {
+            return Show(parent, prompt, Language.GetString(LocString.InputReq), "");
+        }
 
-		public static bool Show( Form parent, string prompt, string title, string def )
-		{
-			if ( m_Instance == null )
-				m_Instance = new InputBox();
-			m_Instance.Prompt.Text = prompt;
-			m_Instance.Text = title;
-			m_Instance.m_String = "";
-			m_Instance.EntryBox.Text = def;
+        public static bool Show(Form parent, string prompt, string title)
+        {
+            return Show(parent, prompt, title, "");
+        }
 
-			if ( parent != null )
-				return m_Instance.ShowDialog() == DialogResult.OK;
-			else
-				return m_Instance.ShowDialog( parent ) == DialogResult.OK;
-		}
+        public static bool Show(Form parent, string prompt, string title, string def)
+        {
+            if (m_Instance == null)
+                m_Instance = new InputBox();
+            m_Instance.Prompt.Text = prompt;
+            m_Instance.Text = title;
+            m_Instance.m_String = "";
+            m_Instance.EntryBox.Text = def;
 
-		public static string GetString()
-		{
-			return m_Instance != null ? m_Instance.m_String : null;
-		}
+            if (parent != null)
+                return m_Instance.ShowDialog() == DialogResult.OK;
+            else
+                return m_Instance.ShowDialog(parent) == DialogResult.OK;
+        }
 
-		public static int GetInt( int def )
-		{
-			try
-			{
-				string conv = m_Instance.m_String;
-				int b = 10;
-				if ( conv[0] == '0' && conv[1] == 'x' )
-				{
-					b = 16;
-					conv = conv.Substring( 2 );
-				}
-				else if ( conv[0] == 'x' || conv[0] == 'X' )
-				{
-					b = 16;
-					conv = conv.Substring( 1 );
-				}
-				return Convert.ToInt32( conv, b );
-			}
-			catch
-			{
-				return def;
-			}
-		}
+        public static string GetString()
+        {
+            return m_Instance != null ? m_Instance.m_String : null;
+        }
 
-		public static int GetInt()
-		{
-			return GetInt( 0 );
-		}
+        public static int GetInt(int def)
+        {
+            try
+            {
+                string conv = m_Instance.m_String;
+                int b = 10;
+                if (conv[0] == '0' && conv[1] == 'x')
+                {
+                    b = 16;
+                    conv = conv.Substring(2);
+                }
+                else if (conv[0] == 'x' || conv[0] == 'X')
+                {
+                    b = 16;
+                    conv = conv.Substring(1);
+                }
 
-		private string m_String;
-		private System.Windows.Forms.Button ok;
-		private System.Windows.Forms.Button cancel;
-		private System.Windows.Forms.Label Prompt;
-		private System.Windows.Forms.TextBox EntryBox;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+                return Convert.ToInt32(conv, b);
+            }
+            catch
+            {
+                return def;
+            }
+        }
 
-		private InputBox()
-		{
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
+        public static int GetInt()
+        {
+            return GetInt(0);
+        }
 
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
-		}
+        private string m_String;
+        private System.Windows.Forms.Button ok;
+        private System.Windows.Forms.Button cancel;
+        private System.Windows.Forms.Label Prompt;
+        private System.Windows.Forms.TextBox EntryBox;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{ 
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        private InputBox()
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
+
+            //
+            // TODO: Add any constructor code after InitializeComponent call
+            //
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.Prompt = new System.Windows.Forms.Label();
             this.EntryBox = new System.Windows.Forms.TextBox();
             this.ok = new System.Windows.Forms.Button();
@@ -181,7 +186,8 @@ namespace Assistant
             this.Controls.Add(this.ok);
             this.Controls.Add(this.EntryBox);
             this.Controls.Add(this.Prompt);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "InputBox";
             this.ShowInTaskbar = false;
@@ -190,51 +196,52 @@ namespace Assistant
             this.Load += new System.EventHandler(this.InputBox_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
 
-		}
-		#endregion
+        #endregion
 
-		private void ok_Click(object sender, System.EventArgs e)
-		{
-			m_String = EntryBox.Text.Trim();
-			this.DialogResult = DialogResult.OK;
-			this.Close();
-		}
+        private void ok_Click(object sender, System.EventArgs e)
+        {
+            m_String = EntryBox.Text.Trim();
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
 
-		private void cancel_Click(object sender, System.EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
+        private void cancel_Click(object sender, System.EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
 
-		private void InputBox_Load(object sender, System.EventArgs e)
-		{
-			Language.LoadControlNames( this );
+        private void InputBox_Load(object sender, System.EventArgs e)
+        {
+            Language.LoadControlNames(this);
 
-			if ( this.Location.X <= 0 || this.Location.Y <= 0 )
-				this.Location = new System.Drawing.Point( Config.GetInt( "WindowX" ), Config.GetInt( "WindowY" ) );
-			
-			this.WindowState = FormWindowState.Normal;
-			this.BringToFront();
-			this.TopMost = true;
+            if (this.Location.X <= 0 || this.Location.Y <= 0)
+                this.Location = new System.Drawing.Point(Config.GetInt("WindowX"), Config.GetInt("WindowY"));
 
-			_ShowTimer = new System.Windows.Forms.Timer();
-			_ShowTimer.Interval = 250;
-			_ShowTimer.Enabled = true;
-			_ShowTimer.Tick += new EventHandler(timer_Tick);
-		}
-		
-		private System.Windows.Forms.Timer _ShowTimer;
-		private void timer_Tick(object sender, EventArgs e)
-		{
-			this.TopMost = false;
-			this.BringToFront();
-			this.Activate();
+            this.WindowState = FormWindowState.Normal;
+            this.BringToFront();
+            this.TopMost = true;
 
-			EntryBox.Focus();
+            _ShowTimer = new System.Windows.Forms.Timer();
+            _ShowTimer.Interval = 250;
+            _ShowTimer.Enabled = true;
+            _ShowTimer.Tick += new EventHandler(timer_Tick);
+        }
 
-			if ( _ShowTimer != null )
-				_ShowTimer.Stop();
-		}
-	}
+        private System.Windows.Forms.Timer _ShowTimer;
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            this.TopMost = false;
+            this.BringToFront();
+            this.Activate();
+
+            EntryBox.Focus();
+
+            if (_ShowTimer != null)
+                _ShowTimer.Stop();
+        }
+    }
 }

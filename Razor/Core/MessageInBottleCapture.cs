@@ -16,7 +16,8 @@ namespace Assistant.Core
 
         public static bool IsMibGump(string layout)
         {
-            return _mibGumpLayout.Any(gumpLayout => layout.IndexOf(gumpLayout, StringComparison.OrdinalIgnoreCase) != -1);
+            return _mibGumpLayout.Any(
+                gumpLayout => layout.IndexOf(gumpLayout, StringComparison.OrdinalIgnoreCase) != -1);
         }
 
         public static void CaptureMibCoordinates(string coords, bool hasXY)

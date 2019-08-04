@@ -164,11 +164,13 @@ namespace Assistant
 
             if (IsSmartTargetingEnabled())
             {
-                if ((Config.GetBool("OnlyNextPrevBeneficial") && isFriend) || (Config.GetBool("FriendlyBeneficialOnly") && isFriendly))
+                if ((Config.GetBool("OnlyNextPrevBeneficial") && isFriend) ||
+                    (Config.GetBool("FriendlyBeneficialOnly") && isFriendly))
                 {
                     m_LastBeneTarg = target;
                 }
-                else if ((Config.GetBool("OnlyNextPrevBeneficial") && !isFriend) || (Config.GetBool("NonFriendlyHarmfulOnly") && isNonFriendly))
+                else if ((Config.GetBool("OnlyNextPrevBeneficial") && !isFriend) ||
+                         (Config.GetBool("NonFriendlyHarmfulOnly") && isNonFriendly))
                 {
                     m_LastHarmTarg = target;
                 }

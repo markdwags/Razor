@@ -30,6 +30,7 @@ namespace Assistant
         }
 
         private static DateTime m_LastSync;
+
         private static void Resync(string[] param)
         {
             if (DateTime.UtcNow - m_LastSync > TimeSpan.FromSeconds(1.0))
@@ -83,7 +84,6 @@ namespace Assistant
                 Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", $"Hue: '{item.Hue}'"));
             }
-
         }
 
         private static void GetMobile(string[] param)
@@ -103,9 +103,9 @@ namespace Assistant
                     Language.CliLocName, "System", $"Name: '{mobile.Name}'"));
 
                 Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                    Language.CliLocName, "System", $"Serial: '{mobile.Serial}' Hue: '{mobile.Hue}' IsGhost: '{mobile.IsGhost}' IsHuman: '{mobile.IsHuman}' IsMonster: '{mobile.IsMonster}'"));
+                    Language.CliLocName, "System",
+                    $"Serial: '{mobile.Serial}' Hue: '{mobile.Hue}' IsGhost: '{mobile.IsGhost}' IsHuman: '{mobile.IsHuman}' IsMonster: '{mobile.IsMonster}'"));
             }
-
         }
 
 
@@ -130,7 +130,6 @@ namespace Assistant
 
             Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "All items in memory cache have been cleared"));
-
         }
 
         private static void AddUseOnce(string[] param)
@@ -138,7 +137,7 @@ namespace Assistant
             string use = Language.GetString(LocString.UseOnce);
             for (int i = 0; i < Agent.List.Count; i++)
             {
-                Agent a = (Agent)Agent.List[i];
+                Agent a = (Agent) Agent.List[i];
                 if (a.Name == use)
                 {
                     a.OnButtonPress(1);
@@ -262,7 +261,7 @@ namespace Assistant
 
         public static void OnSpeech(Packet pvSrc, PacketHandlerEventArgs args)
         {
-            MessageType type = (MessageType)pvSrc.ReadByte();
+            MessageType type = (MessageType) pvSrc.ReadByte();
             ushort hue = pvSrc.ReadUInt16();
             ushort font = pvSrc.ReadUInt16();
             string lang = pvSrc.ReadString(4);
@@ -277,7 +276,7 @@ namespace Assistant
                 int value = pvSrc.ReadInt16();
                 int count = (value & 0xFFF0) >> 4;
                 keys = new ArrayList();
-                keys.Add((ushort)value);
+                keys.Add((ushort) value);
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -303,7 +302,7 @@ namespace Assistant
             }
 
             text = text.Trim();
-            
+
             char commandToggle = Client.IsOSI ? '-' : '>';
 
             if (text.Length > 0)
@@ -319,7 +318,7 @@ namespace Assistant
 
                     if (m_List.ContainsKey(split[0]))
                     {
-                        CommandCallback call = (CommandCallback)m_List[split[0]];
+                        CommandCallback call = (CommandCallback) m_List[split[0]];
                         if (call != null)
                         {
                             string[] param = new String[split.Length - 1];
@@ -334,7 +333,6 @@ namespace Assistant
                     {
                         World.Player.SendMessage(MsgLevel.Force, "Unknown command");
                     }
-                    
                 }
             }
         }

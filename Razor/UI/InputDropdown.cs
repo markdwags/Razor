@@ -12,7 +12,7 @@ namespace Assistant
     public class InputDropdown : System.Windows.Forms.Form
     {
         private static InputDropdown m_Instance;
-        
+
 
         public static bool Show(Form parent, string prompt, string[] dropDownItems)
         {
@@ -21,7 +21,7 @@ namespace Assistant
 
         public static bool Show(Form parent, string prompt, string title)
         {
-            return Show(parent, prompt, new string[] {}, title);
+            return Show(parent, prompt, new string[] { }, title);
         }
 
         public static bool Show(Form parent, string prompt, string[] dropDownItems, string title)
@@ -176,7 +176,8 @@ namespace Assistant
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.ok);
             this.Controls.Add(this.Prompt);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "InputDropdown";
             this.ShowInTaskbar = false;
@@ -184,7 +185,6 @@ namespace Assistant
             this.Text = "Input";
             this.Load += new System.EventHandler(this.InputDropdown_Load);
             this.ResumeLayout(false);
-
         }
 
         #endregion

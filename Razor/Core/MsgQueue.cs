@@ -9,7 +9,8 @@ namespace Assistant
     {
         private class MsgInfo
         {
-            public MsgInfo(Serial ser, Mobile m, ushort body, MessageType type, ushort hue, ushort font, string lang, string name)
+            public MsgInfo(Serial ser, Mobile m, ushort body, MessageType type, ushort hue, ushort font, string lang,
+                string name)
             {
                 Serial = ser;
                 Body = body;
@@ -59,7 +60,7 @@ namespace Assistant
                             {
                                 case "O":
                                     msg.Mobile.OverheadMessage(msg.Hue, msg.Count > 1 ? $"{txt} [{msg.Count}]" : txt);
-                                    
+
                                     break;
                                 case "A":
                                     Client.Instance.SendToClient(new AsciiMessage(msg.Serial, msg.Body, msg.Type,
@@ -72,6 +73,7 @@ namespace Assistant
                                         msg.Count > 1 ? $"{txt} [{msg.Count}]" : txt));
                                     break;
                             }
+
                             msg.Count = 0;
                             msg.NextSend = DateTime.UtcNow + msg.Delay;
                         }
@@ -97,12 +99,14 @@ namespace Assistant
         {
             m_Timer.Start();
         }
+
         public static bool Enqueue(Mobile m, int hue, string lang, string text)
         {
             return Enqueue(0xFFFFFFFF, m, 0, MessageType.Regular, (ushort) hue, 3, lang, "System", text);
         }
 
-        public static bool Enqueue(Serial ser, Mobile mobile, ushort body, MessageType type, ushort hue, ushort font, string lang,
+        public static bool Enqueue(Serial ser, Mobile mobile, ushort body, MessageType type, ushort hue, ushort font,
+            string lang,
             string name, string text)
         {
             MsgInfo m;

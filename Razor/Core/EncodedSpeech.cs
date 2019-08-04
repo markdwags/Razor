@@ -17,8 +17,8 @@ namespace Assistant.Core
 
             internal SpeechEntry(int idKeyword, string keyword)
             {
-                m_KeywordID = (short)idKeyword;
-                m_Keywords = keyword.Split(new char[] { '*' });
+                m_KeywordID = (short) idKeyword;
+                m_Keywords = keyword.Split(new char[] {'*'});
             }
 
             public int CompareTo(SpeechEntry entry)
@@ -27,17 +27,20 @@ namespace Assistant.Core
                 {
                     return -1;
                 }
+
                 if (entry != this)
                 {
                     if (m_KeywordID < entry.m_KeywordID)
                     {
                         return -1;
                     }
+
                     if (m_KeywordID > entry.m_KeywordID)
                     {
                         return 1;
                     }
                 }
+
                 return 0;
             }
         }
@@ -56,7 +59,7 @@ namespace Assistant.Core
         {
             fixed (byte* numRef = buffer)
             {
-                return NativeRead(fs, (void*)(numRef + offset), length);
+                return NativeRead(fs, (void*) (numRef + offset), length);
             }
         }
 
@@ -76,14 +79,14 @@ namespace Assistant.Core
                     List<SpeechEntry> list = new List<SpeechEntry>();
                     FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                     int num = 0;
-                    while ((num = NativeRead(fs, (void*)numRef, 4)) > 0)
+                    while ((num = NativeRead(fs, (void*) numRef, 4)) > 0)
                     {
                         int idKeyword = numRef[1] | (numRef[0] << 8);
                         int bytes = numRef[3] | (numRef[2] << 8);
                         if (bytes > 0)
                         {
-                            NativeRead(fs, (void*)numRef, bytes);
-                            list.Add(new SpeechEntry(idKeyword, new string((sbyte*)numRef, 0, bytes)));
+                            NativeRead(fs, (void*) numRef, bytes);
+                            list.Add(new SpeechEntry(idKeyword, new string((sbyte*) numRef, 0, bytes)));
                         }
                     }
 
@@ -113,6 +116,7 @@ namespace Assistant.Core
                     keywords.Add(entry);
                 }
             }
+
             keywords.Sort();
 
             bool flag = false;
@@ -126,13 +130,13 @@ namespace Assistant.Core
 
                 if (flag)
                 {
-                    keynumber.Add((byte)(keywordID >> 4));
+                    keynumber.Add((byte) (keywordID >> 4));
                     numk = keywordID & 15;
                 }
                 else
                 {
-                    keynumber.Add((byte)((numk << 4) | ((keywordID >> 8) & 15)));
-                    keynumber.Add((byte)keywordID);
+                    keynumber.Add((byte) ((numk << 4) | ((keywordID >> 8) & 15)));
+                    keynumber.Add((byte) keywordID);
                 }
 
                 index++;
@@ -141,7 +145,7 @@ namespace Assistant.Core
 
             if (!flag)
             {
-                keynumber.Add((byte)(numk << 4));
+                keynumber.Add((byte) (numk << 4));
             }
 
             return keynumber;
@@ -160,10 +164,12 @@ namespace Assistant.Core
                     {
                         return false;
                     }
+
                     if (index < 0)
                     {
                         return false;
                     }
+
                     startIndex = index + split[i].Length;
                 }
             }

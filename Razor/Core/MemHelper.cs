@@ -3,28 +3,28 @@ using System.Runtime.InteropServices;
 
 namespace Assistant
 {
-	public class MemoryHelperThinggie : Timer
-	{
-		private static TimeSpan Frequency = TimeSpan.FromMinutes( 2.5 );
+    public class MemoryHelperThinggie : Timer
+    {
+        private static TimeSpan Frequency = TimeSpan.FromMinutes(2.5);
 
-		public static readonly MemoryHelperThinggie Instance = new MemoryHelperThinggie();
+        public static readonly MemoryHelperThinggie Instance = new MemoryHelperThinggie();
 
-		public static void Initialize()
-		{
-            if ( Environment.OSVersion.Platform == PlatformID.Win32NT)
+        public static void Initialize()
+        {
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                 Instance.Start();
-		}
+        }
 
-		private MemoryHelperThinggie() : base( TimeSpan.Zero, Frequency )
-		{
-		}
+        private MemoryHelperThinggie() : base(TimeSpan.Zero, Frequency)
+        {
+        }
 
-		[System.Runtime.InteropServices.DllImport( "Kernel32" )]
-		private static extern uint SetProcessWorkingSetSize( IntPtr hProc, int minSize, int maxSize );
+        [System.Runtime.InteropServices.DllImport("Kernel32")]
+        private static extern uint SetProcessWorkingSetSize(IntPtr hProc, int minSize, int maxSize);
 
-		protected override void OnTick()
-		{
-			SetProcessWorkingSetSize( System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1 );
-		}
-	}
+        protected override void OnTick()
+        {
+            SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
+        }
+    }
 }

@@ -223,7 +223,7 @@ namespace Assistant
             AddProperty("DisplaySkillChangesOverhead", false);
 
             AddProperty("GrabHotBag", "0");
-            
+
             // Enable it for OSI client by default, CUO turn it off
             AddProperty("MacroActionDelay", Client.IsOSI);
 
@@ -242,7 +242,7 @@ namespace Assistant
             AddProperty("FriendOverheadFormatHue", 0x03F);
 
             AddProperty("TargetIndicatorHue", 10);
-            
+
             AddProperty("FilterSystemMessages", false);
             AddProperty("FilterRazorMessages", false);
             AddProperty("FilterDelay", 3.5);
@@ -251,7 +251,7 @@ namespace Assistant
             AddProperty("OnlyNextPrevBeneficial", false);
             AddProperty("FriendlyBeneficialOnly", false);
             AddProperty("NonFriendlyHarmfulOnly", false);
-            
+
             AddProperty("ShowBandageStart", false);
             AddProperty("BandageStartMessage", "Bandage: Starting");
             AddProperty("ShowBandageEnd", false);
@@ -263,7 +263,7 @@ namespace Assistant
             AddProperty("DisplayBuffDebuffEvery", false);
             AddProperty("BuffDebuffFilter", string.Empty);
             AddProperty("BuffDebuffEveryXSeconds", false);
-            
+
             AddProperty("CaptureOthersDeathDelay", 0.5);
             AddProperty("CaptureOwnDeathDelay", 0.5);
             AddProperty("CaptureOthersDeath", false);
@@ -388,7 +388,8 @@ namespace Assistant
             ContainerLabels.Load(root["containerlabels"]);
             MacroVariables.Load(root["macrovariables"]);
             //imports previous absolutetargets and doubleclickvariables if present in profile
-            if ((root.SelectSingleNode("absolutetargets")!=null) || (root.SelectSingleNode("doubleclickvariables") != null))
+            if ((root.SelectSingleNode("absolutetargets") != null) ||
+                (root.SelectSingleNode("doubleclickvariables") != null))
             {
                 MacroVariables.Import(root);
             }
@@ -877,7 +878,7 @@ namespace Assistant
 
         public static double GetDouble(string name)
         {
-            return (double)CurrentProfile.GetProperty(name);
+            return (double) CurrentProfile.GetProperty(name);
         }
 
         public static bool SetAppSetting(string key, string value)

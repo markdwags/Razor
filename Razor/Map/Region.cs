@@ -11,16 +11,17 @@ namespace Assistant.MapUO
         private int m_Width;
         private int m_X;
         private int m_Y;
+
         public Region(string line)
         {
-            string[] textArray1 = line.Split(new char[] { ' ' });
+            string[] textArray1 = line.Split(new char[] {' '});
             this.m_X = int.Parse(textArray1[0]);
             this.m_Y = int.Parse(textArray1[1]);
             this.m_Width = int.Parse(textArray1[2]);
-            this.m_Height = int.Parse(textArray1[3]);          
-        } 
+            this.m_Height = int.Parse(textArray1[3]);
+        }
 
-        public Region(int x, int y, int width, int height )
+        public Region(int x, int y, int width, int height)
         {
             this.m_X = x;
             this.m_Y = y;
@@ -28,7 +29,6 @@ namespace Assistant.MapUO
             this.m_Height = height;
         }
 
- 
 
         public static Region[] Load(string path)
         {
@@ -36,6 +36,7 @@ namespace Assistant.MapUO
             {
                 return new Region[0];
             }
+
             ArrayList list1 = new ArrayList();
             try
             {
@@ -54,7 +55,8 @@ namespace Assistant.MapUO
             catch
             {
             }
-            return (Region[])list1.ToArray(typeof(Region));
+
+            return (Region[]) list1.ToArray(typeof(Region));
         }
 
         public int X
@@ -62,21 +64,23 @@ namespace Assistant.MapUO
             get { return m_X; }
             set { m_X = value; }
         }
+
         public int Y
         {
             get { return m_Y; }
             set { m_Y = value; }
         }
+
         public int Length
         {
             get { return m_Height; }
             set { m_Height = value; }
         }
+
         public int Width
         {
             get { return m_Width; }
             set { m_Width = value; }
         }
-
     }
 }

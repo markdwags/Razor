@@ -37,7 +37,8 @@ namespace Assistant
             if (World.Player != null)
                 playerName = World.Player.Name;
 
-            if (playerName == null || playerName.Trim() == "" || playerName.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+            if (playerName == null || playerName.Trim() == "" ||
+                playerName.IndexOfAny(Path.GetInvalidPathChars()) != -1)
                 playerName = "Unknown";
 
             string imageTimestampTag = Config.GetBool("CapTimeStamp")

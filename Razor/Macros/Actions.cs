@@ -6,18 +6,19 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-
 using Assistant.UI;
 
 namespace Assistant.Macros
 {
     public delegate void MacroMenuCallback(object[] Args);
+
     public class MacroMenuItem : MenuItem
     {
         private MacroMenuCallback m_Call;
         private object[] m_Args;
 
-        public MacroMenuItem(LocString name, MacroMenuCallback call, params object[] args) : base(Language.GetString(name))
+        public MacroMenuItem(LocString name, MacroMenuCallback call, params object[] args) : base(
+            Language.GetString(name))
         {
             base.Click += new EventHandler(OnMenuClick);
             m_Call = call;
@@ -61,7 +62,11 @@ namespace Assistant.Macros
             return null;
         }
 
-        public Macro Parent { get { return m_Parent; } set { m_Parent = value; } }
+        public Macro Parent
+        {
+            get { return m_Parent; }
+            set { m_Parent = value; }
+        }
 
         public abstract bool Perform();
     }
@@ -77,8 +82,17 @@ namespace Assistant.Macros
         }
 
         public abstract bool PerformWait();
-        public TimeSpan Timeout { get { return m_Timeout; } }
-        public DateTime StartTime { get { return m_Start; } set { m_Start = value; } }
+
+        public TimeSpan Timeout
+        {
+            get { return m_Timeout; }
+        }
+
+        public DateTime StartTime
+        {
+            get { return m_Start; }
+            set { m_Start = value; }
+        }
 
         public MacroMenuItem EditTimeoutMenuItem
         {
@@ -92,7 +106,8 @@ namespace Assistant.Macros
 
         private void EditTimeout(object[] args)
         {
-            if (InputBox.Show(Language.GetString(LocString.NewTimeout), Language.GetString(LocString.ChangeTimeout), ((int)(m_Timeout.TotalSeconds)).ToString()))
+            if (InputBox.Show(Language.GetString(LocString.NewTimeout), Language.GetString(LocString.ChangeTimeout),
+                ((int) (m_Timeout.TotalSeconds)).ToString()))
                 m_Timeout = TimeSpan.FromSeconds(InputBox.GetInt(60));
         }
 
@@ -124,7 +139,11 @@ namespace Assistant.Macros
             return ToString();
         }
 
-        public string Comment { get { return m_Comment; } set { m_Comment = value; } }
+        public string Comment
+        {
+            get { return m_Comment; }
+            set { m_Comment = value; }
+        }
 
         public override string ToString()
         {
@@ -135,13 +154,14 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) )
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit))
                 };
             }
 
@@ -150,7 +170,8 @@ namespace Assistant.Macros
 
         private void Edit(object[] args)
         {
-            if (InputBox.Show(Language.GetString(LocString.InsComment), Language.GetString(LocString.InputReq), m_Comment))
+            if (InputBox.Show(Language.GetString(LocString.InsComment), Language.GetString(LocString.InputReq),
+                m_Comment))
             {
                 if (m_Comment == null)
                     m_Comment = "";
@@ -200,14 +221,15 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
-                         new MacroMenuItem( LocString.Conv2DCT, new MacroMenuCallback( ConvertToByType ) )
+                    new MacroMenuItem(LocString.ReTarget, new MacroMenuCallback(ReTarget)),
+                    new MacroMenuItem(LocString.Conv2DCT, new MacroMenuCallback(ConvertToByType))
                 };
             }
 
@@ -290,8 +312,8 @@ namespace Assistant.Macros
                                 list.Add(i);
                             }
                         }
-
                     }
+
                     if (list.Count == 0)
                     {
                         foreach (Item i in World.Items.Values)
@@ -314,7 +336,7 @@ namespace Assistant.Macros
                     }
 
                     if (list.Count > 0)
-                        click = ((Item)list[Utility.Random(list.Count)]).Serial;
+                        click = ((Item) list[Utility.Random(list.Count)]).Serial;
                 }
                 else
                 {
@@ -343,13 +365,14 @@ namespace Assistant.Macros
                 }
 
                 if (list.Count > 0)
-                    click = ((Mobile)list[Utility.Random(list.Count)]).Serial;
+                    click = ((Mobile) list[Utility.Random(list.Count)]).Serial;
             }
 
             if (click != Serial.Zero)
                 PlayerData.DoubleClick(click);
             else
-                World.Player.SendMessage(MsgLevel.Force, LocString.NoItemOfType, m_Item ? ((ItemID)m_Gfx).ToString() : String.Format("(Character) 0x{0:X}", m_Gfx));
+                World.Player.SendMessage(MsgLevel.Force, LocString.NoItemOfType,
+                    m_Item ? ((ItemID) m_Gfx).ToString() : String.Format("(Character) 0x{0:X}", m_Gfx));
             return true;
         }
 
@@ -360,17 +383,19 @@ namespace Assistant.Macros
 
         public override string ToString()
         {
-            return Language.Format(LocString.DClickA1, m_Item ? ((ItemID)m_Gfx).ToString() : String.Format("(Character) 0x{0:X}", m_Gfx));
+            return Language.Format(LocString.DClickA1,
+                m_Item ? ((ItemID) m_Gfx).ToString() : String.Format("(Character) 0x{0:X}", m_Gfx));
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) )
+                    new MacroMenuItem(LocString.ReTarget, new MacroMenuCallback(ReTarget))
                 };
             }
 
@@ -401,7 +426,12 @@ namespace Assistant.Macros
         private ushort m_Gfx;
 
         private static Item m_LastLift;
-        public static Item LastLift { get { return m_LastLift; } set { m_LastLift = value; } }
+
+        public static Item LastLift
+        {
+            get { return m_LastLift; }
+            set { m_LastLift = value; }
+        }
 
         public LiftAction(string[] args)
         {
@@ -432,6 +462,7 @@ namespace Assistant.Macros
             {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.MacroItemOutRange);
             }
+
             return false;
         }
 
@@ -451,15 +482,16 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
-                         new MacroMenuItem( LocString.ConvLiftByType, new MacroMenuCallback( ConvertToByType ) ),
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) )
+                    new MacroMenuItem(LocString.ReTarget, new MacroMenuCallback(ReTarget)),
+                    new MacroMenuItem(LocString.ConvLiftByType, new MacroMenuCallback(ConvertToByType)),
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(EditAmount))
                 };
             }
 
@@ -484,9 +516,10 @@ namespace Assistant.Macros
 
         private void EditAmount(object[] args)
         {
-            if (InputBox.Show(Engine.MainWindow, Language.GetString(LocString.EnterAmount), Language.GetString(LocString.InputReq), m_Amount.ToString()))
+            if (InputBox.Show(Engine.MainWindow, Language.GetString(LocString.EnterAmount),
+                Language.GetString(LocString.InputReq), m_Amount.ToString()))
             {
-                m_Amount = (ushort)InputBox.GetInt(m_Amount);
+                m_Amount = (ushort) InputBox.GetInt(m_Amount);
 
                 if (m_Parent != null)
                     m_Parent.Update();
@@ -518,6 +551,7 @@ namespace Assistant.Macros
         }
 
         private int m_Id;
+
         public override bool Perform()
         {
             Item item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(m_Gfx) : null;
@@ -547,9 +581,10 @@ namespace Assistant.Macros
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, (ItemID)m_Gfx);
+                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, (ItemID) m_Gfx);
                 //MacroManager.Stop();
             }
+
             return false;
         }
 
@@ -564,14 +599,15 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                    new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( EditAmount ) )
+                    new MacroMenuItem(LocString.ReTarget, new MacroMenuCallback(ReTarget)),
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(EditAmount))
                 };
             }
 
@@ -595,9 +631,10 @@ namespace Assistant.Macros
 
         private void EditAmount(object[] args)
         {
-            if (InputBox.Show(Engine.MainWindow, Language.GetString(LocString.EnterAmount), Language.GetString(LocString.InputReq), m_Amount.ToString()))
+            if (InputBox.Show(Engine.MainWindow, Language.GetString(LocString.EnterAmount),
+                Language.GetString(LocString.InputReq), m_Amount.ToString()))
             {
-                m_Amount = (ushort)InputBox.GetInt(m_Amount);
+                m_Amount = (ushort) InputBox.GetInt(m_Amount);
 
                 if (m_Parent != null)
                     m_Parent.Update();
@@ -606,7 +643,7 @@ namespace Assistant.Macros
 
         public override string ToString()
         {
-            return Language.Format(LocString.LiftA10, m_Amount, (ItemID)m_Gfx);
+            return Language.Format(LocString.LiftA10, m_Amount, (ItemID) m_Gfx);
         }
     }
 
@@ -622,7 +659,7 @@ namespace Assistant.Macros
             m_At = Point3D.Parse(args[2]);
             try
             {
-                m_Layer = (Layer)Byte.Parse(args[3]);
+                m_Layer = (Layer) Byte.Parse(args[3]);
             }
             catch
             {
@@ -660,12 +697,13 @@ namespace Assistant.Macros
             {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.MacroNoHold);
             }
+
             return true;
         }
 
         public override string Serialize()
         {
-            return DoSerialize(m_To, m_At, (byte)m_Layer);
+            return DoSerialize(m_To, m_At, (byte) m_Layer);
         }
 
         public override string ToString()
@@ -677,6 +715,7 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_To.IsValid)
@@ -689,7 +728,7 @@ namespace Assistant.Macros
                 {
                     m_MenuItems = new MacroMenuItem[]
                     {
-                              new MacroMenuItem( LocString.ConvRelLoc, new MacroMenuCallback( ConvertToRelLoc ) )
+                        new MacroMenuItem(LocString.ConvRelLoc, new MacroMenuCallback(ConvertToRelLoc))
                     };
                 }
 
@@ -700,7 +739,9 @@ namespace Assistant.Macros
         private void ConvertToRelLoc(object[] args)
         {
             if (!m_To.IsValid && m_Parent != null)
-                m_Parent.Convert(this, new DropRelLocAction((sbyte)(m_At.X - World.Player.Position.X), (sbyte)(m_At.Y - World.Player.Position.Y), (sbyte)(m_At.Z - World.Player.Position.Z)));
+                m_Parent.Convert(this,
+                    new DropRelLocAction((sbyte) (m_At.X - World.Player.Position.X),
+                        (sbyte) (m_At.Y - World.Player.Position.Y), (sbyte) (m_At.Z - World.Player.Position.Z)));
         }
     }
 
@@ -712,21 +753,23 @@ namespace Assistant.Macros
         {
             m_Loc = new sbyte[3]
             {
-                    Convert.ToSByte( args[1] ),
-                    Convert.ToSByte( args[2] ),
-                    Convert.ToSByte( args[3] )
+                Convert.ToSByte(args[1]),
+                Convert.ToSByte(args[2]),
+                Convert.ToSByte(args[3])
             };
         }
 
         public DropRelLocAction(sbyte x, sbyte y, sbyte z)
         {
-            m_Loc = new sbyte[3] { x, y, z };
+            m_Loc = new sbyte[3] {x, y, z};
         }
 
         public override bool Perform()
         {
             if (DragDropManager.Holding != null)
-                DragDropManager.Drop(DragDropManager.Holding, null, new Point3D((ushort)(World.Player.Position.X + m_Loc[0]), (ushort)(World.Player.Position.Y + m_Loc[1]), (short)(World.Player.Position.Z + m_Loc[2])));
+                DragDropManager.Drop(DragDropManager.Holding, null,
+                    new Point3D((ushort) (World.Player.Position.X + m_Loc[0]),
+                        (ushort) (World.Player.Position.Y + m_Loc[1]), (short) (World.Player.Position.Z + m_Loc[2])));
             else
                 World.Player.SendMessage(LocString.MacroNoHold);
             return true;
@@ -774,7 +817,8 @@ namespace Assistant.Macros
         public override bool Perform()
         {
             Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
-            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, m_ButtonID, m_Switches, m_TextEntries));
+            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI,
+                m_ButtonID, m_Switches, m_TextEntries));
             World.Player.HasGump = false;
             return true;
         }
@@ -788,7 +832,7 @@ namespace Assistant.Macros
             list.Add(m_TextEntries.Length);
             for (int i = 0; i < m_TextEntries.Length; i++)
                 list.Add(String.Format("{0}&{1}", m_TextEntries[i].EntryID, m_TextEntries[i].Text));
-            return DoSerialize((object[])list.ToArray(typeof(object)));
+            return DoSerialize((object[]) list.ToArray(typeof(object)));
         }
 
         public override string ToString()
@@ -804,9 +848,10 @@ namespace Assistant.Macros
         public override MenuItem[] GetContextMenuItems()
         {
             if (this.m_MenuItems == null)
-                this.m_MenuItems = (MenuItem[])new MacroMenuItem[]
+                this.m_MenuItems = (MenuItem[]) new MacroMenuItem[]
                 {
-                    new MacroMenuItem(LocString.UseLastGumpResponse, new MacroMenuCallback(this.UseLastResponse), new object[0]),
+                    new MacroMenuItem(LocString.UseLastGumpResponse, new MacroMenuCallback(this.UseLastResponse),
+                        new object[0]),
                     new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
                 };
             return this.m_MenuItems;
@@ -852,7 +897,8 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            Client.Instance.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, m_Index, m_ItemID, m_Hue));
+            Client.Instance.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, m_Index,
+                m_ItemID, m_Hue));
             World.Player.HasMenu = false;
             return true;
         }
@@ -905,7 +951,8 @@ namespace Assistant.Macros
 
         public override string Serialize()
         {
-            return DoSerialize(m_Info.Type, m_Info.Flags, m_Info.Serial.Value, m_Info.X, m_Info.Y, m_Info.Z, m_Info.Gfx);
+            return DoSerialize(m_Info.Type, m_Info.Flags, m_Info.Serial.Value, m_Info.X, m_Info.Y, m_Info.Z,
+                m_Info.Gfx);
         }
 
         public override string ToString()
@@ -914,16 +961,17 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
-                         new MacroMenuItem( LocString.ConvLT, new MacroMenuCallback( ConvertToLastTarget ) ),
-                         new MacroMenuItem( LocString.ConvTargType, new MacroMenuCallback( ConvertToByType ) ),
-                         new MacroMenuItem( LocString.ConvRelLoc, new MacroMenuCallback( ConvertToRelLoc ) )
+                    new MacroMenuItem(LocString.ReTarget, new MacroMenuCallback(ReTarget)),
+                    new MacroMenuItem(LocString.ConvLT, new MacroMenuCallback(ConvertToLastTarget)),
+                    new MacroMenuItem(LocString.ConvTargType, new MacroMenuCallback(ConvertToByType)),
+                    new MacroMenuItem(LocString.ConvRelLoc, new MacroMenuCallback(ConvertToRelLoc))
                 };
             }
 
@@ -940,7 +988,7 @@ namespace Assistant.Macros
         {
             m_Info.Gfx = gfx;
             m_Info.Serial = serial;
-            m_Info.Type = (byte)(ground ? 1 : 0);
+            m_Info.Type = (byte) (ground ? 1 : 0);
             m_Info.X = pt.X;
             m_Info.Y = pt.Y;
             m_Info.Z = pt.Z;
@@ -965,7 +1013,10 @@ namespace Assistant.Macros
         private void ConvertToRelLoc(object[] args)
         {
             if (m_Parent != null)
-                m_Parent.Convert(this, new TargetRelLocAction((sbyte)(m_Info.X - World.Player.Position.X), (sbyte)(m_Info.Y - World.Player.Position.Y)));//, (sbyte)(m_Info.Z - World.Player.Position.Z) ) );
+                m_Parent.Convert(this,
+                    new TargetRelLocAction((sbyte) (m_Info.X - World.Player.Position.X),
+                        (sbyte) (m_Info.Y - World.Player.Position
+                                     .Y))); //, (sbyte)(m_Info.Z - World.Player.Position.Z) ) );
         }
     }
 
@@ -1007,8 +1058,6 @@ namespace Assistant.Macros
             {
                 return false;
             }
-
-
         }
 
         public override string Serialize()
@@ -1167,7 +1216,6 @@ namespace Assistant.Macros
                             list.Add(i);
                         }
                     }
-
                 }
             }
 
@@ -1190,12 +1238,11 @@ namespace Assistant.Macros
                 {
                     Targeting.Target(list[Utility.Random(list.Count)]);
                 }
-
             }
             else
             {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType,
-                    m_Mobile ? String.Format("Character [{0}]", m_Gfx) : ((ItemID)m_Gfx).ToString());
+                    m_Mobile ? String.Format("Character [{0}]", m_Gfx) : ((ItemID) m_Gfx).ToString());
             }
 
             return true;
@@ -1211,18 +1258,19 @@ namespace Assistant.Macros
             if (m_Mobile)
                 return Language.Format(LocString.TargByType, m_Gfx);
             else
-                return Language.Format(LocString.TargByType, (ItemID)m_Gfx);
+                return Language.Format(LocString.TargByType, (ItemID) m_Gfx);
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) ),
-                         new MacroMenuItem( LocString.ConvLT, new MacroMenuCallback( ConvertToLastTarget ) )
+                    new MacroMenuItem(LocString.ReTarget, new MacroMenuCallback(ReTarget)),
+                    new MacroMenuItem(LocString.ConvLT, new MacroMenuCallback(ConvertToLastTarget))
                 };
             }
 
@@ -1242,6 +1290,7 @@ namespace Assistant.Macros
                 m_Mobile = serial.IsMobile;
                 m_Gfx = gfx;
             }
+
             Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (m_Parent != null)
                 m_Parent.Update();
@@ -1272,18 +1321,19 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            ushort x = (ushort)(World.Player.Position.X + m_X);
-            ushort y = (ushort)(World.Player.Position.Y + m_Y);
-            short z = (short)World.Player.Position.Z;
+            ushort x = (ushort) (World.Player.Position.X + m_X);
+            ushort y = (ushort) (World.Player.Position.Y + m_Y);
+            short z = (short) World.Player.Position.Z;
             try
             {
                 Ultima.HuedTile tile = Map.GetTileNear(World.Player.Map, x, y, z);
-                Targeting.Target(new Point3D(x, y, tile.Z), (ushort)tile.ID);
+                Targeting.Target(new Point3D(x, y, tile.Z), (ushort) tile.ID);
             }
             catch (Exception e)
             {
                 World.Player.SendMessage(MsgLevel.Debug, "Error Executing TargetRelLoc: {0}", e.Message);
             }
+
             return true;
         }
 
@@ -1298,13 +1348,14 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.ReTarget, new MacroMenuCallback( ReTarget ) )
+                    new MacroMenuItem(LocString.ReTarget, new MacroMenuCallback(ReTarget))
                 };
             }
 
@@ -1321,8 +1372,8 @@ namespace Assistant.Macros
 
         private void ReTargetResponse(bool ground, Serial serial, Point3D pt, ushort gfx)
         {
-            m_X = (sbyte)(pt.X - World.Player.Position.X);
-            m_Y = (sbyte)(pt.Y - World.Player.Position.Y);
+            m_X = (sbyte) (pt.X - World.Player.Position.X);
+            m_Y = (sbyte) (pt.Y - World.Player.Position.Y);
             // m_Z = (sbyte)(pt.Z - World.Player.Position.Z);
             if (m_Parent != null)
                 m_Parent.Update();
@@ -1337,7 +1388,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            if (!Targeting.DoLastTarget())//Targeting.LastTarget( true );
+            if (!Targeting.DoLastTarget()) //Targeting.LastTarget( true );
                 Targeting.ResendTarget();
             return true;
         }
@@ -1382,7 +1433,7 @@ namespace Assistant.Macros
 
         public SpeechAction(string[] args)
         {
-            m_Type = ((MessageType)Convert.ToInt32(args[1])) & ~MessageType.Encoded;
+            m_Type = ((MessageType) Convert.ToInt32(args[1])) & ~MessageType.Encoded;
             m_Hue = Convert.ToUInt16(args[2]);
             m_Font = Convert.ToUInt16(args[3]);
             m_Lang = args[4];
@@ -1416,10 +1467,10 @@ namespace Assistant.Macros
             {
                 string text = m_Speech.Substring(1);
                 string[] split = text.Split(' ', '\t');
-                CommandCallback call = (CommandCallback)Command.List[split[0]];
+                CommandCallback call = (CommandCallback) Command.List[split[0]];
                 if (call == null && text[0] == '-')
                 {
-                    call = (CommandCallback)Command.List["-"];
+                    call = (CommandCallback) Command.List["-"];
                     if (call != null && split.Length > 1 && split[1] != null && split[1].Length > 1)
                         split[1] = split[1].Substring(1);
                 }
@@ -1432,7 +1483,8 @@ namespace Assistant.Macros
                         if (split[i] != null && split[i].Length > 0)
                             list.Add(split[i]);
                     }
-                    call((string[])list.ToArray(typeof(string)));
+
+                    call((string[]) list.ToArray(typeof(string)));
                     return true;
                 }
             }
@@ -1453,13 +1505,13 @@ namespace Assistant.Macros
         public override string Serialize()
         {
             ArrayList list = new ArrayList(6);
-            list.Add((int)m_Type);
+            list.Add((int) m_Type);
             list.Add(m_Hue);
             list.Add(m_Font);
             list.Add(m_Lang);
             if (m_Keywords != null && m_Keywords.Count > 1)
             {
-                list.Add((int)m_Keywords.Count);
+                list.Add((int) m_Keywords.Count);
                 for (int i = 0; i < m_Keywords.Count; i++)
                     list.Add(m_Keywords[i]);
             }
@@ -1467,9 +1519,10 @@ namespace Assistant.Macros
             {
                 list.Add("0");
             }
+
             list.Add(m_Speech);
 
-            return DoSerialize((object[])list.ToArray(typeof(object)));
+            return DoSerialize((object[]) list.ToArray(typeof(object)));
         }
 
         public override string ToString()
@@ -1492,6 +1545,7 @@ namespace Assistant.Macros
                     sb.Append("Say: ");
                     break;
             }
+
             sb.Append(m_Speech);
             return sb.ToString();
         }
@@ -1501,9 +1555,9 @@ namespace Assistant.Macros
         public override MenuItem[] GetContextMenuItems()
         {
             if (this.m_MenuItems == null)
-                this.m_MenuItems = (MenuItem[])new MacroMenuItem[1]
+                this.m_MenuItems = (MenuItem[]) new MacroMenuItem[1]
                 {
-          new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
                 };
             return this.m_MenuItems;
         }
@@ -1557,7 +1611,7 @@ namespace Assistant.Macros
         {
             ArrayList list = new ArrayList(2) {_hue, _message};
 
-            return DoSerialize((object[])list.ToArray(typeof(object)));
+            return DoSerialize((object[]) list.ToArray(typeof(object)));
         }
 
         public override string ToString()
@@ -1643,7 +1697,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            m_Spell.OnCast(new ExtCastSpell(m_Book, (ushort)m_Spell.GetID()));
+            m_Spell.OnCast(new ExtCastSpell(m_Book, (ushort) m_Spell.GetID()));
             return true;
         }
 
@@ -1683,7 +1737,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            m_Spell.OnCast(new CastSpellFromBook(m_Book, (ushort)m_Spell.GetID()));
+            m_Spell.OnCast(new CastSpellFromBook(m_Book, (ushort) m_Spell.GetID()));
             return true;
         }
 
@@ -1719,7 +1773,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            m_Spell.OnCast(new CastSpellFromMacro((ushort)m_Spell.GetID()));
+            m_Spell.OnCast(new CastSpellFromMacro((ushort) m_Spell.GetID()));
             return true;
         }
 
@@ -1740,7 +1794,7 @@ namespace Assistant.Macros
 
         public SetAbilityAction(string[] args)
         {
-            m_Ability = (AOSAbility)Convert.ToInt32(args[1]);
+            m_Ability = (AOSAbility) Convert.ToInt32(args[1]);
         }
 
         public SetAbilityAction(AOSAbility a)
@@ -1756,7 +1810,7 @@ namespace Assistant.Macros
 
         public override string Serialize()
         {
-            return DoSerialize((int)m_Ability);
+            return DoSerialize((int) m_Ability);
         }
 
         public override string ToString()
@@ -1865,7 +1919,7 @@ namespace Assistant.Macros
             }
             else
             {
-                return !HotKeys.UndressHotKeys.Unequip((Layer)m_Layer);
+                return !HotKeys.UndressHotKeys.Unequip((Layer) m_Layer);
             }
         }
 
@@ -1886,7 +1940,7 @@ namespace Assistant.Macros
             else if (m_Layer == 0)
                 return Language.GetString(LocString.UndressAll);
             else
-                return Language.Format(LocString.UndressLayerA1, (Layer)m_Layer);
+                return Language.Format(LocString.UndressLayerA1, (Layer) m_Layer);
         }
     }
 
@@ -1895,11 +1949,15 @@ namespace Assistant.Macros
         private Direction m_Dir;
         private static DateTime m_LastWalk = DateTime.MinValue;
 
-        public static DateTime LastWalkTime { get { return m_LastWalk; } set { m_LastWalk = value; } }
+        public static DateTime LastWalkTime
+        {
+            get { return m_LastWalk; }
+            set { m_LastWalk = value; }
+        }
 
         public WalkAction(string[] args)
         {
-            m_Dir = (Direction)(Convert.ToByte(args[1])) & Direction.Mask;
+            m_Dir = (Direction) (Convert.ToByte(args[1])) & Direction.Mask;
         }
 
         public WalkAction(Direction dir)
@@ -1934,14 +1992,14 @@ namespace Assistant.Macros
                 //Client.Instance.SendToServer(new WalkRequest(m_Dir, World.Player.WalkSequence));
                 //World.Player.MoveReq(m_Dir, World.Player.WalkSequence);
 
-                Client.Instance.RequestMove( m_Dir );
+                Client.Instance.RequestMove(m_Dir);
                 return false;
             }
         }
 
         public override string Serialize()
         {
-            return DoSerialize((byte)m_Dir);
+            return DoSerialize((byte) m_Dir);
         }
 
         public override string ToString()
@@ -2000,7 +2058,7 @@ namespace Assistant.Macros
         {
             if (a is WaitForMenuAction)
             {
-                if (m_MenuID == 0 || ((WaitForMenuAction)a).m_MenuID == m_MenuID)
+                if (m_MenuID == 0 || ((WaitForMenuAction) a).m_MenuID == m_MenuID)
                     return true;
             }
 
@@ -2008,14 +2066,15 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
-                         this.EditTimeoutMenuItem
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit)),
+                    this.EditTimeoutMenuItem
                 };
             }
 
@@ -2101,7 +2160,7 @@ namespace Assistant.Macros
         {
             if (a is WaitForGumpAction)
             {
-                if (m_GumpID == 0 || ((WaitForGumpAction)a).m_GumpID == m_GumpID)
+                if (m_GumpID == 0 || ((WaitForGumpAction) a).m_GumpID == m_GumpID)
                     return true;
             }
 
@@ -2109,20 +2168,22 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
-                         new MacroMenuItem( LocString.Null, new MacroMenuCallback( ToggleStrict ) ),
-                         this.EditTimeoutMenuItem
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit)),
+                    new MacroMenuItem(LocString.Null, new MacroMenuCallback(ToggleStrict)),
+                    this.EditTimeoutMenuItem
                 };
             }
 
             if (!m_Strict)
-                m_MenuItems[1].Text = String.Format("Change to \"{0}\"", Language.Format(LocString.WaitGumpA1, m_GumpID));
+                m_MenuItems[1].Text =
+                    String.Format("Change to \"{0}\"", Language.Format(LocString.WaitGumpA1, m_GumpID));
             else
                 m_MenuItems[1].Text = String.Format("Change to \"{0}\"", Language.GetString(LocString.WaitAnyGump));
             m_MenuItems[1].Enabled = m_GumpID != 0 || m_Strict;
@@ -2183,14 +2244,15 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
-                         this.EditTimeoutMenuItem
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit)),
+                    this.EditTimeoutMenuItem
                 };
             }
 
@@ -2247,13 +2309,14 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) )
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit))
                 };
             }
 
@@ -2272,13 +2335,24 @@ namespace Assistant.Macros
         private int m_Value;
         private IfAction.IfVarType m_Stat;
 
-        public byte Op { get { return m_Direction; } }
-        public int Amount { get { return m_Value; } }
-        public IfAction.IfVarType Stat { get { return m_Stat; } }
+        public byte Op
+        {
+            get { return m_Direction; }
+        }
+
+        public int Amount
+        {
+            get { return m_Value; }
+        }
+
+        public IfAction.IfVarType Stat
+        {
+            get { return m_Stat; }
+        }
 
         public WaitForStatAction(string[] args)
         {
-            m_Stat = (IfAction.IfVarType)Convert.ToInt32(args[1]);
+            m_Stat = (IfAction.IfVarType) Convert.ToInt32(args[1]);
             m_Direction = Convert.ToByte(args[2]);
             m_Value = Convert.ToInt32(args[3]);
 
@@ -2303,7 +2377,7 @@ namespace Assistant.Macros
 
         public override string Serialize()
         {
-            return DoSerialize((int)m_Stat, m_Direction, m_Value, m_Timeout.TotalSeconds);
+            return DoSerialize((int) m_Stat, m_Direction, m_Value, m_Timeout.TotalSeconds);
         }
 
         public override bool Perform()
@@ -2349,14 +2423,15 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
-                         this.EditTimeoutMenuItem
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit)),
+                    this.EditTimeoutMenuItem
                 };
             }
 
@@ -2395,14 +2470,29 @@ namespace Assistant.Macros
         private string m_Counter;
         private Assistant.Counter m_CountObj;
 
-        public sbyte Op { get { return m_Direction; } }
-        public object Value { get { return m_Value; } }
-        public IfVarType Variable { get { return m_Var; } }
-        public string Counter { get { return m_Counter; } }
+        public sbyte Op
+        {
+            get { return m_Direction; }
+        }
+
+        public object Value
+        {
+            get { return m_Value; }
+        }
+
+        public IfVarType Variable
+        {
+            get { return m_Var; }
+        }
+
+        public string Counter
+        {
+            get { return m_Counter; }
+        }
 
         public IfAction(string[] args)
         {
-            m_Var = (IfVarType)Convert.ToInt32(args[1]);
+            m_Var = (IfVarType) Convert.ToInt32(args[1]);
             try
             {
                 m_Direction = Convert.ToSByte(args[2]);
@@ -2428,7 +2518,7 @@ namespace Assistant.Macros
             else
             {
                 m_Value = args[3].ToLower();
-            }   
+            }
 
             if (m_Var == IfVarType.Counter)
                 m_Counter = args[4];
@@ -2465,9 +2555,9 @@ namespace Assistant.Macros
         public override string Serialize()
         {
             if (m_Var == IfVarType.Counter && m_Counter != null)
-                return DoSerialize((int)m_Var, m_Direction, m_Value, m_Counter);
+                return DoSerialize((int) m_Var, m_Direction, m_Value, m_Counter);
             else
-                return DoSerialize((int)m_Var, m_Direction, m_Value);
+                return DoSerialize((int) m_Var, m_Direction, m_Value);
         }
 
         public override bool Perform()
@@ -2688,12 +2778,13 @@ namespace Assistant.Macros
                 case IfVarType.Poisoned:
                     return "If ( Poisoned )";
                 case IfVarType.SysMessage:
-                    {
-                        string str = (string)m_Value;
-                        if (str.Length > 10)
-                            str = str.Substring(0, 7) + "...";
-                        return String.Format("If ( SysMessage \"{0}\" )", str);
-                    }
+                {
+                    string str = (string) m_Value;
+                    if (str.Length > 10)
+                        str = str.Substring(0, 7) + "...";
+                    return String.Format("If ( SysMessage \"{0}\" )", str);
+                }
+
                 case IfVarType.Mounted:
                     return "If ( Mounted )";
                 case IfVarType.RHandEmpty:
@@ -2708,13 +2799,14 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) )
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit))
                 };
             }
 
@@ -2791,7 +2883,8 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            if (Client.Instance.AllowBit(FeatureBit.LoopingMacros) || m_Key.DispName.IndexOf(Language.GetString(LocString.PlayA1).Replace(@"{0}", "")) == -1)
+            if (Client.Instance.AllowBit(FeatureBit.LoopingMacros) ||
+                m_Key.DispName.IndexOf(Language.GetString(LocString.PlayA1).Replace(@"{0}", "")) == -1)
                 m_Key.Callback();
             return true;
         }
@@ -2811,8 +2904,16 @@ namespace Assistant.Macros
     {
         private int m_Max, m_Count;
 
-        public int Count { get { return m_Count; } set { m_Count = value; } }
-        public int Max { get { return m_Max; } }
+        public int Count
+        {
+            get { return m_Count; }
+            set { m_Count = value; }
+        }
+
+        public int Max
+        {
+            get { return m_Max; }
+        }
 
         public ForAction(string[] args)
         {
@@ -2840,13 +2941,14 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) )
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit))
                 };
             }
 
@@ -2979,9 +3081,9 @@ namespace Assistant.Macros
         public override MenuItem[] GetContextMenuItems()
         {
             if (this.m_MenuItems == null)
-                this.m_MenuItems = (MenuItem[])new MacroMenuItem[1]
+                this.m_MenuItems = (MenuItem[]) new MacroMenuItem[1]
                 {
-          new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
                 };
             return this.m_MenuItems;
         }
@@ -3065,7 +3167,7 @@ namespace Assistant.Macros
         {
             if (a is WaitForGumpAction)
             {
-                if (m_PromptID == 0 || ((WaitForPromptAction)a).m_PromptID == m_PromptID)
+                if (m_PromptID == 0 || ((WaitForPromptAction) a).m_PromptID == m_PromptID)
                     return true;
             }
 
@@ -3073,15 +3175,16 @@ namespace Assistant.Macros
         }
 
         private MenuItem[] m_MenuItems;
+
         public override MenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
                 m_MenuItems = new MacroMenuItem[]
                 {
-                         new MacroMenuItem( LocString.Edit, new MacroMenuCallback( Edit ) ),
-                         new MacroMenuItem( LocString.Null, new MacroMenuCallback( ToggleStrict ) ),
-                         this.EditTimeoutMenuItem
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit)),
+                    new MacroMenuItem(LocString.Null, new MacroMenuCallback(ToggleStrict)),
+                    this.EditTimeoutMenuItem
                 };
             }
 
@@ -3108,4 +3211,3 @@ namespace Assistant.Macros
         }
     }
 }
-

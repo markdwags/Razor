@@ -36,7 +36,7 @@ namespace Assistant.HotKeys
 
             HotKey.Add(HKCategory.Misc, LocString.PartyAccept, new HotKeyCallback(PartyAccept));
             HotKey.Add(HKCategory.Misc, LocString.PartyDecline, new HotKeyCallback(PartyDecline));
-            
+
             HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllCome, new HotKeyCallback(PetAllCome));
             HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllFollowMe,
                 new HotKeyCallback(PetAllFollowMe));
@@ -197,10 +197,11 @@ namespace Assistant.HotKeys
 
                 if (textFlags)
                     Targeting.CheckTextFlags(m);
-                
+
                 if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
                 {
-                    m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"), $"{Config.GetString("FriendOverheadFormat")}");
+                    m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"),
+                        $"{Config.GetString("FriendOverheadFormat")}");
                 }
             }
 
@@ -234,7 +235,8 @@ namespace Assistant.HotKeys
 
                 if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
                 {
-                    m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"), $"{Config.GetString("FriendOverheadFormat")}");
+                    m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"),
+                        $"{Config.GetString("FriendOverheadFormat")}");
                 }
             }
         }
@@ -369,7 +371,7 @@ namespace Assistant.HotKeys
         private static void UseItemInRightHand()
         {
             Item item = World.Player.GetItemOnLayer(Layer.RightHand);
-          
+
             if (item != null)
                 PlayerData.DoubleClick(item);
         }
@@ -470,7 +472,8 @@ namespace Assistant.HotKeys
                     gfx = c.ItemID.Value;
                 }
 
-                Client.Instance.SendToClient(new UnicodeMessage(_grabHotBag, gfx, MessageType.Label, 0x3B2, 3, Language.CliLocName, "", Language.GetString(LocString.GrabHB)));
+                Client.Instance.SendToClient(new UnicodeMessage(_grabHotBag, gfx, MessageType.Label, 0x3B2, 3,
+                    Language.CliLocName, "", Language.GetString(LocString.GrabHB)));
             }
         }
     }

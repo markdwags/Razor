@@ -20,7 +20,7 @@ namespace Assistant
             m_Timer = new InternalTimer();
             m_StartTime = DateTime.UtcNow;
         }
-        
+
         public static bool Running
         {
             get { return m_Timer.Running; }
@@ -69,7 +69,7 @@ namespace Assistant
                 {
                     if (GoldSinceStart + ((int) World.Player.Gold - m_PrevGoldAmount) > m_PrevGoldAmount)
                     {
-                        GoldSinceStart = GoldSinceStart + ((int)World.Player.Gold - m_PrevGoldAmount);
+                        GoldSinceStart = GoldSinceStart + ((int) World.Player.Gold - m_PrevGoldAmount);
 
                         m_PickedUpGold = true;
                     }
@@ -84,9 +84,9 @@ namespace Assistant
 
                 TimeSpan span = DateTime.UtcNow.Subtract(m_StartTime);
 
-                GoldPerSecond = span.Seconds > 0 ? (double)GoldSinceStart / span.TotalSeconds : 0;
-                GoldPerMinute = span.Seconds > 0 ? (double)GoldSinceStart / (span.TotalSeconds / 60.0) : 0;
-                GoldPerHour = span.Seconds > 0 ? (double)GoldSinceStart / (span.TotalSeconds / 3600.0) : 0;
+                GoldPerSecond = span.Seconds > 0 ? (double) GoldSinceStart / span.TotalSeconds : 0;
+                GoldPerMinute = span.Seconds > 0 ? (double) GoldSinceStart / (span.TotalSeconds / 60.0) : 0;
+                GoldPerHour = span.Seconds > 0 ? (double) GoldSinceStart / (span.TotalSeconds / 3600.0) : 0;
 
                 TotalMinutes = span.TotalMinutes;
 

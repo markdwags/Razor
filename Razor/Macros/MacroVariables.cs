@@ -93,6 +93,7 @@ namespace Assistant.Macros
             catch (Exception ex)
             {
             }
+
             try
             {
                 foreach (XmlElement el in node["doubleclickvariables"].GetElementsByTagName("doubleclickvariable"))
@@ -115,7 +116,6 @@ namespace Assistant.Macros
             catch (Exception ex)
             {
             }
-
         }
 
         public static void ClearAll()

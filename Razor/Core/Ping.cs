@@ -15,7 +15,7 @@ namespace Assistant
             if (seq == m_Seq && m_Start != DateTime.MinValue)
             {
                 double ms = (DateTime.UtcNow - m_Start).TotalMilliseconds;
-                
+
                 if (ms < m_Min)
                     m_Min = ms;
                 if (ms > m_Max)
@@ -31,8 +31,10 @@ namespace Assistant
                 {
                     m_Start = DateTime.MinValue;
                     World.Player.SendMessage(MsgLevel.Force, "Ping Result:");
-                    World.Player.SendMessage(MsgLevel.Force, "Min: {0:F1}ms  Max: {1:F1}ms  Avg: {2:F1}ms", m_Min, m_Max, m_Time / ((double)m_Total));
+                    World.Player.SendMessage(MsgLevel.Force, "Min: {0:F1}ms  Max: {1:F1}ms  Avg: {2:F1}ms", m_Min,
+                        m_Max, m_Time / ((double) m_Total));
                 }
+
                 return true;
             }
             else
@@ -53,16 +55,16 @@ namespace Assistant
             m_Min = double.MaxValue;
             m_Max = 0;
 
-            World.Player.SendMessage(MsgLevel.Force, "Pinging server with {0} packets ({1} bytes)...", m_Count, m_Count * 2);
+            World.Player.SendMessage(MsgLevel.Force, "Pinging server with {0} packets ({1} bytes)...", m_Count,
+                m_Count * 2);
             DoPing();
         }
 
         private static void DoPing()
         {
-            m_Seq = (byte)Utility.Random(256);
+            m_Seq = (byte) Utility.Random(256);
             m_Start = DateTime.UtcNow;
             Client.Instance.SendToServer(new PingPacket(m_Seq));
         }
     }
 }
-

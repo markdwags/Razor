@@ -340,7 +340,6 @@ namespace Ultima
                 }
             }
 
-                
 
             if (string.IsNullOrEmpty(dir) || !System.IO.Directory.Exists(dir)
             ) // If the path in the config looks bad, try the registry as a fallback

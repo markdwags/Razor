@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
@@ -369,7 +369,6 @@ namespace Assistant
         private TreeView _macroTreeViewCache = new TreeView();
 
 
-
         public Label WaitDisplay
         {
             get { return waitDisp; }
@@ -422,7 +421,8 @@ namespace Assistant
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources =
+                new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.m_NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.generalTab = new System.Windows.Forms.TabPage();
@@ -602,8 +602,8 @@ namespace Assistant
             this.checkNewConts = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.counters = new System.Windows.Forms.ListView();
-            this.cntName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.cntCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cntName = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
+            this.cntCount = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
             this.delCounter = new System.Windows.Forms.Button();
             this.addCounter = new System.Windows.Forms.Button();
             this.recount = new System.Windows.Forms.Button();
@@ -647,12 +647,12 @@ namespace Assistant
             this.setlocks = new System.Windows.Forms.Button();
             this.resetDelta = new System.Windows.Forms.Button();
             this.skillList = new System.Windows.Forms.ListView();
-            this.skillHDRName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRvalue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRbase = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRdelta = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRcap = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRlock = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRName = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRvalue = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRbase = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRdelta = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRcap = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRlock = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
             this.agentsTab = new System.Windows.Forms.TabPage();
             this.agentB6 = new System.Windows.Forms.Button();
             this.agentB5 = new System.Windows.Forms.Button();
@@ -756,7 +756,7 @@ namespace Assistant
             this.tabPage1.SuspendLayout();
             this.groupBox15.SuspendLayout();
             this.groupBox16.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.opacity)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.subFiltersTab.SuspendLayout();
             this.moreOptTab.SuspendLayout();
@@ -765,7 +765,7 @@ namespace Assistant
             this.subOptionsTargetTab.SuspendLayout();
             this.groupSmartTarget.SuspendLayout();
             this.subOptionsMiscTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.lightLevelBar)).BeginInit();
             this.subOptionsFriendsTab.SuspendLayout();
             this.friendsGroupBox.SuspendLayout();
             this.displayTab.SuspendLayout();
@@ -791,14 +791,14 @@ namespace Assistant
             this.subMacrosOptionsTab.SuspendLayout();
             this.macroVariableGroup.SuspendLayout();
             this.screenshotTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
             this.aboutTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
             // 
-            this.m_NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("m_NotifyIcon.Icon")));
+            this.m_NotifyIcon.Icon = ((System.Drawing.Icon) (resources.GetObject("m_NotifyIcon.Icon")));
             this.m_NotifyIcon.Text = "Razor";
             this.m_NotifyIcon.DoubleClick += new System.EventHandler(this.NotifyIcon_DoubleClick);
             // 
@@ -815,7 +815,8 @@ namespace Assistant
             this.tabs.Controls.Add(this.screenshotTab);
             this.tabs.Controls.Add(this.advancedTab);
             this.tabs.Controls.Add(this.aboutTab);
-            this.tabs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.tabs.Location = new System.Drawing.Point(2, 0);
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
@@ -974,13 +975,15 @@ namespace Assistant
             // clientPrio
             // 
             this.clientPrio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.clientPrio.Items.AddRange(new object[] {
-            "Idle",
-            "BelowNormal",
-            "Normal",
-            "AboveNormal",
-            "High",
-            "Realtime"});
+            this.clientPrio.Items.AddRange(new object[]
+            {
+                "Idle",
+                "BelowNormal",
+                "Normal",
+                "AboveNormal",
+                "High",
+                "Realtime"
+            });
             this.clientPrio.Location = new System.Drawing.Point(371, 127);
             this.clientPrio.Name = "clientPrio";
             this.clientPrio.Size = new System.Drawing.Size(125, 23);
@@ -1132,7 +1135,8 @@ namespace Assistant
             // profiles
             // 
             this.profiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.profiles.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.profiles.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.profiles.ItemHeight = 20;
             this.profiles.Location = new System.Drawing.Point(6, 22);
             this.profiles.MaxDropDownItems = 5;
@@ -1170,7 +1174,8 @@ namespace Assistant
             this.filterOverheadMessages.Size = new System.Drawing.Size(220, 20);
             this.filterOverheadMessages.TabIndex = 111;
             this.filterOverheadMessages.Text = "Filter repeating overhead messages";
-            this.filterOverheadMessages.CheckedChanged += new System.EventHandler(this.filterOverheadMessages_CheckedChanged);
+            this.filterOverheadMessages.CheckedChanged +=
+                new System.EventHandler(this.filterOverheadMessages_CheckedChanged);
             // 
             // lblFilterDelaySeconds
             // 
@@ -1215,7 +1220,8 @@ namespace Assistant
             this.filterSystemMessages.Size = new System.Drawing.Size(220, 20);
             this.filterSystemMessages.TabIndex = 106;
             this.filterSystemMessages.Text = "Filter repeating system messages";
-            this.filterSystemMessages.CheckedChanged += new System.EventHandler(this.filterSystemMessages_CheckedChanged);
+            this.filterSystemMessages.CheckedChanged +=
+                new System.EventHandler(this.filterSystemMessages_CheckedChanged);
             // 
             // filterSnoop
             // 
@@ -1235,7 +1241,8 @@ namespace Assistant
             this.drakeAnimationList.Name = "drakeAnimationList";
             this.drakeAnimationList.Size = new System.Drawing.Size(202, 23);
             this.drakeAnimationList.TabIndex = 104;
-            this.drakeAnimationList.SelectedIndexChanged += new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
+            this.drakeAnimationList.SelectedIndexChanged +=
+                new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
             // 
             // filterDrakeGraphics
             // 
@@ -1257,7 +1264,8 @@ namespace Assistant
             this.dragonAnimationList.Name = "dragonAnimationList";
             this.dragonAnimationList.Size = new System.Drawing.Size(202, 23);
             this.dragonAnimationList.TabIndex = 102;
-            this.dragonAnimationList.SelectedIndexChanged += new System.EventHandler(this.dragonAnimationList_SelectedIndexChanged);
+            this.dragonAnimationList.SelectedIndexChanged +=
+                new System.EventHandler(this.dragonAnimationList_SelectedIndexChanged);
             // 
             // filterDragonGraphics
             // 
@@ -1268,7 +1276,8 @@ namespace Assistant
             this.filterDragonGraphics.TabIndex = 101;
             this.filterDragonGraphics.Text = "Filter dragons";
             this.filterDragonGraphics.UseVisualStyleBackColor = true;
-            this.filterDragonGraphics.CheckedChanged += new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
+            this.filterDragonGraphics.CheckedChanged +=
+                new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
             // 
             // filters
             // 
@@ -1348,7 +1357,8 @@ namespace Assistant
             // 
             // buffDebuffOptions
             // 
-            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.buffDebuffOptions.Location = new System.Drawing.Point(208, 236);
             this.buffDebuffOptions.Name = "buffDebuffOptions";
             this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
@@ -1359,7 +1369,8 @@ namespace Assistant
             // 
             // damageTakenOverhead
             // 
-            this.damageTakenOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.damageTakenOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.damageTakenOverhead.Location = new System.Drawing.Point(394, 209);
             this.damageTakenOverhead.Name = "damageTakenOverhead";
             this.damageTakenOverhead.Size = new System.Drawing.Size(77, 19);
@@ -1381,7 +1392,8 @@ namespace Assistant
             // 
             // damageDealtOverhead
             // 
-            this.damageDealtOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.damageDealtOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.damageDealtOverhead.Location = new System.Drawing.Point(394, 184);
             this.damageDealtOverhead.Name = "damageDealtOverhead";
             this.damageDealtOverhead.Size = new System.Drawing.Size(77, 19);
@@ -1410,7 +1422,8 @@ namespace Assistant
             this.showBuffDebuffOverhead.TabIndex = 91;
             this.showBuffDebuffOverhead.Text = "Show buff/debuff overhead";
             this.showBuffDebuffOverhead.UseVisualStyleBackColor = true;
-            this.showBuffDebuffOverhead.CheckedChanged += new System.EventHandler(this.showBuffDebuffOverhead_CheckedChanged);
+            this.showBuffDebuffOverhead.CheckedChanged +=
+                new System.EventHandler(this.showBuffDebuffOverhead_CheckedChanged);
             // 
             // healthFmt
             // 
@@ -1451,7 +1464,8 @@ namespace Assistant
             // 
             // containerLabels
             // 
-            this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.containerLabels.Location = new System.Drawing.Point(438, 87);
             this.containerLabels.Name = "containerLabels";
             this.containerLabels.Size = new System.Drawing.Size(33, 19);
@@ -1473,7 +1487,8 @@ namespace Assistant
             // 
             // overHeadMessages
             // 
-            this.overHeadMessages.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.overHeadMessages.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.overHeadMessages.Location = new System.Drawing.Point(438, 62);
             this.overHeadMessages.Name = "overHeadMessages";
             this.overHeadMessages.Size = new System.Drawing.Size(33, 19);
@@ -1491,7 +1506,8 @@ namespace Assistant
             this.showOverheadMessages.TabIndex = 83;
             this.showOverheadMessages.Text = "Show overhead messages";
             this.showOverheadMessages.UseVisualStyleBackColor = true;
-            this.showOverheadMessages.CheckedChanged += new System.EventHandler(this.showMessagesOverhead_CheckedChanged);
+            this.showOverheadMessages.CheckedChanged +=
+                new System.EventHandler(this.showMessagesOverhead_CheckedChanged);
             // 
             // incomingMob
             // 
@@ -1730,7 +1746,8 @@ namespace Assistant
             this.nonFriendlyHarmfulOnly.TabIndex = 141;
             this.nonFriendlyHarmfulOnly.Text = "\'Next/Prev Non-Friendly\' harmful only";
             this.nonFriendlyHarmfulOnly.UseVisualStyleBackColor = true;
-            this.nonFriendlyHarmfulOnly.CheckedChanged += new System.EventHandler(this.nonFriendlyHarmfulOnly_CheckedChanged);
+            this.nonFriendlyHarmfulOnly.CheckedChanged +=
+                new System.EventHandler(this.nonFriendlyHarmfulOnly_CheckedChanged);
             // 
             // friendBeneficialOnly
             // 
@@ -1741,7 +1758,8 @@ namespace Assistant
             this.friendBeneficialOnly.TabIndex = 140;
             this.friendBeneficialOnly.Text = "\'Next/Prev Friendly\' sets beneficial only";
             this.friendBeneficialOnly.UseVisualStyleBackColor = true;
-            this.friendBeneficialOnly.CheckedChanged += new System.EventHandler(this.friendBeneficialOnly_CheckedChanged);
+            this.friendBeneficialOnly.CheckedChanged +=
+                new System.EventHandler(this.friendBeneficialOnly_CheckedChanged);
             // 
             // onlyNextPrevBeneficial
             // 
@@ -1752,7 +1770,8 @@ namespace Assistant
             this.onlyNextPrevBeneficial.TabIndex = 139;
             this.onlyNextPrevBeneficial.Text = "\'Next/Prev Friend\' sets beneficial only";
             this.onlyNextPrevBeneficial.UseVisualStyleBackColor = true;
-            this.onlyNextPrevBeneficial.CheckedChanged += new System.EventHandler(this.onlyNextPrevBeneficial_CheckedChanged);
+            this.onlyNextPrevBeneficial.CheckedChanged +=
+                new System.EventHandler(this.onlyNextPrevBeneficial_CheckedChanged);
             // 
             // smartLT
             // 
@@ -1793,14 +1812,16 @@ namespace Assistant
             // 
             // showAttackTargetNewOnly
             // 
-            this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI", 8.25F,
+                System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.showAttackTargetNewOnly.Location = new System.Drawing.Point(195, 196);
             this.showAttackTargetNewOnly.Name = "showAttackTargetNewOnly";
             this.showAttackTargetNewOnly.Size = new System.Drawing.Size(121, 44);
             this.showAttackTargetNewOnly.TabIndex = 90;
             this.showAttackTargetNewOnly.Text = "New targets only";
             this.showAttackTargetNewOnly.UseVisualStyleBackColor = true;
-            this.showAttackTargetNewOnly.CheckedChanged += new System.EventHandler(this.showAttackTargetNewOnly_CheckedChanged);
+            this.showAttackTargetNewOnly.CheckedChanged +=
+                new System.EventHandler(this.showAttackTargetNewOnly_CheckedChanged);
             // 
             // showTextTargetIndicator
             // 
@@ -1810,7 +1831,8 @@ namespace Assistant
             this.showTextTargetIndicator.TabIndex = 89;
             this.showTextTargetIndicator.Text = "Show text target indicator";
             this.showTextTargetIndicator.UseVisualStyleBackColor = true;
-            this.showTextTargetIndicator.CheckedChanged += new System.EventHandler(this.showTextTargetIndicator_CheckedChanged);
+            this.showTextTargetIndicator.CheckedChanged +=
+                new System.EventHandler(this.showTextTargetIndicator_CheckedChanged);
             // 
             // showAttackTarget
             // 
@@ -1831,7 +1853,8 @@ namespace Assistant
             this.showTargetMessagesOverChar.TabIndex = 74;
             this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
             this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
-            this.showTargetMessagesOverChar.CheckedChanged += new System.EventHandler(this.showTargetMessagesOverChar_CheckedChanged);
+            this.showTargetMessagesOverChar.CheckedChanged +=
+                new System.EventHandler(this.showTargetMessagesOverChar_CheckedChanged);
             // 
             // txtObjDelay
             // 
@@ -1963,13 +1986,15 @@ namespace Assistant
             // 
             // autoOpenDoorWhenHidden
             // 
-            this.autoOpenDoorWhenHidden.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoOpenDoorWhenHidden.Font = new System.Drawing.Font("Segoe UI", 8.25F,
+                System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.autoOpenDoorWhenHidden.Location = new System.Drawing.Point(393, 88);
             this.autoOpenDoorWhenHidden.Name = "autoOpenDoorWhenHidden";
             this.autoOpenDoorWhenHidden.Size = new System.Drawing.Size(95, 20);
             this.autoOpenDoorWhenHidden.TabIndex = 124;
             this.autoOpenDoorWhenHidden.Text = "When hidden";
-            this.autoOpenDoorWhenHidden.CheckedChanged += new System.EventHandler(this.autoDoorWhenHidden_CheckedChanged);
+            this.autoOpenDoorWhenHidden.CheckedChanged +=
+                new System.EventHandler(this.autoDoorWhenHidden_CheckedChanged);
             // 
             // lblStealthFormat
             // 
@@ -2012,18 +2037,21 @@ namespace Assistant
             // showStaticWallLabels
             // 
             this.showStaticWallLabels.AutoSize = true;
-            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.showStaticWallLabels.Location = new System.Drawing.Point(421, 220);
             this.showStaticWallLabels.Name = "showStaticWallLabels";
             this.showStaticWallLabels.Size = new System.Drawing.Size(55, 17);
             this.showStaticWallLabels.TabIndex = 120;
             this.showStaticWallLabels.Text = "Labels";
             this.showStaticWallLabels.UseVisualStyleBackColor = true;
-            this.showStaticWallLabels.CheckedChanged += new System.EventHandler(this.showStaticWallLabels_CheckedChanged);
+            this.showStaticWallLabels.CheckedChanged +=
+                new System.EventHandler(this.showStaticWallLabels_CheckedChanged);
             // 
             // stealthOverhead
             // 
-            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.stealthOverhead.Location = new System.Drawing.Point(393, 37);
             this.stealthOverhead.Name = "stealthOverhead";
             this.stealthOverhead.Size = new System.Drawing.Size(99, 20);
@@ -2095,7 +2123,8 @@ namespace Assistant
             // 
             // label18
             // 
-            this.label18.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.label18.Location = new System.Drawing.Point(427, 193);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(10, 18);
@@ -2134,13 +2163,15 @@ namespace Assistant
             // 
             this.seasonList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.seasonList.FormattingEnabled = true;
-            this.seasonList.Items.AddRange(new object[] {
-            "Spring",
-            "Summer",
-            "Fall",
-            "Winter",
-            "Desolation",
-            "(Server Default)"});
+            this.seasonList.Items.AddRange(new object[]
+            {
+                "Spring",
+                "Summer",
+                "Fall",
+                "Winter",
+                "Desolation",
+                "(Server Default)"
+            });
             this.seasonList.Location = new System.Drawing.Point(59, 195);
             this.seasonList.Name = "seasonList";
             this.seasonList.Size = new System.Drawing.Size(111, 23);
@@ -2206,13 +2237,15 @@ namespace Assistant
             // 
             // blockOpenCorpsesTwice
             // 
-            this.blockOpenCorpsesTwice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.blockOpenCorpsesTwice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.blockOpenCorpsesTwice.Location = new System.Drawing.Point(9, 91);
             this.blockOpenCorpsesTwice.Name = "blockOpenCorpsesTwice";
             this.blockOpenCorpsesTwice.Size = new System.Drawing.Size(209, 20);
             this.blockOpenCorpsesTwice.TabIndex = 96;
             this.blockOpenCorpsesTwice.Text = "Block opening corpses twice";
-            this.blockOpenCorpsesTwice.CheckedChanged += new System.EventHandler(this.blockOpenCorpsesTwice_CheckedChanged);
+            this.blockOpenCorpsesTwice.CheckedChanged +=
+                new System.EventHandler(this.blockOpenCorpsesTwice_CheckedChanged);
             // 
             // preAOSstatbar
             // 
@@ -2332,7 +2365,8 @@ namespace Assistant
             this.nextPrevIgnoresFriends.TabIndex = 97;
             this.nextPrevIgnoresFriends.Text = "Next/Prev Target ignores \'Friends\'";
             this.nextPrevIgnoresFriends.UseVisualStyleBackColor = true;
-            this.nextPrevIgnoresFriends.CheckedChanged += new System.EventHandler(this.nextPrevIgnoresFriends_CheckedChanged);
+            this.nextPrevIgnoresFriends.CheckedChanged +=
+                new System.EventHandler(this.nextPrevIgnoresFriends_CheckedChanged);
             // 
             // autoFriend
             // 
@@ -2408,7 +2442,8 @@ namespace Assistant
             this.friendAddTarget.TabIndex = 5;
             this.friendAddTarget.Text = "Add (Target)";
             this.friendAddTarget.UseVisualStyleBackColor = true;
-            this.friendAddTarget.MouseDown += new System.Windows.Forms.MouseEventHandler(this.friendAddTarget_MouseDown);
+            this.friendAddTarget.MouseDown +=
+                new System.Windows.Forms.MouseEventHandler(this.friendAddTarget_MouseDown);
             // 
             // friendsList
             // 
@@ -2521,7 +2556,8 @@ namespace Assistant
             // 
             // razorTitleBar
             // 
-            this.razorTitleBar.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.razorTitleBar.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.razorTitleBar.Location = new System.Drawing.Point(6, 42);
             this.razorTitleBar.Name = "razorTitleBar";
             this.razorTitleBar.Size = new System.Drawing.Size(478, 22);
@@ -2585,67 +2621,71 @@ namespace Assistant
             // 
             this.titleBarParams.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.titleBarParams.FormattingEnabled = true;
-            this.titleBarParams.Items.AddRange(new object[] {
-            "{ar}",
-            "{bandage}",
-            "{char}",
-            "{crimtime}",
-            "{buffsdebuffs}",
-            "{damage}",
-            "-",
-            "{dps}",
-            "{maxdps}",
-            "{maxdamagedealt}",
-            "{maxdamagetaken}",
-            "{totaldamagedealt}",
-            "{totaldamagetaken}",
-            "-",
-            "{dex}",
-            "{followersmax}",
-            "{followers}",
-            "-",
-            "{gold}",
-            "{goldtotal}",
-            "{goldtotalmin}",
-            "{gpm}",
-            "{gps}",
-            "{gph}",
-            "-",
-            "{gate}",
-            "{hpmax}",
-            "{hp}",
-            "{int}",
-            "{largestatbar}",
-            "{manamax}",
-            "{mana}",
-            "{maxweight}",
-            "{mediumstatbar}",
-            "{shard}",
-            "{skill}",
-            "{stammax}",
-            "{stam}",
-            "{statbar}",
-            "{stealthsteps}",
-            "{str}",
-            "{uptime}",
-            "{weight}",
-            "-",
-            "{coldresist}",
-            "{energyresist}",
-            "{fireresist}",
-            "{luck}",
-            "{physresist}",
-            "{poisonresist}",
-            "{tithe}"});
+            this.titleBarParams.Items.AddRange(new object[]
+            {
+                "{ar}",
+                "{bandage}",
+                "{char}",
+                "{crimtime}",
+                "{buffsdebuffs}",
+                "{damage}",
+                "-",
+                "{dps}",
+                "{maxdps}",
+                "{maxdamagedealt}",
+                "{maxdamagetaken}",
+                "{totaldamagedealt}",
+                "{totaldamagetaken}",
+                "-",
+                "{dex}",
+                "{followersmax}",
+                "{followers}",
+                "-",
+                "{gold}",
+                "{goldtotal}",
+                "{goldtotalmin}",
+                "{gpm}",
+                "{gps}",
+                "{gph}",
+                "-",
+                "{gate}",
+                "{hpmax}",
+                "{hp}",
+                "{int}",
+                "{largestatbar}",
+                "{manamax}",
+                "{mana}",
+                "{maxweight}",
+                "{mediumstatbar}",
+                "{shard}",
+                "{skill}",
+                "{stammax}",
+                "{stam}",
+                "{statbar}",
+                "{stealthsteps}",
+                "{str}",
+                "{uptime}",
+                "{weight}",
+                "-",
+                "{coldresist}",
+                "{energyresist}",
+                "{fireresist}",
+                "{luck}",
+                "{physresist}",
+                "{poisonresist}",
+                "{tithe}"
+            });
             this.titleBarParams.Location = new System.Drawing.Point(380, 19);
             this.titleBarParams.Name = "titleBarParams";
             this.titleBarParams.Size = new System.Drawing.Size(104, 23);
             this.titleBarParams.TabIndex = 5;
-            this.titleBarParams.SelectedIndexChanged += new System.EventHandler(this.titleBarParams_SelectedIndexChanged);
+            this.titleBarParams.SelectedIndexChanged +=
+                new System.EventHandler(this.titleBarParams_SelectedIndexChanged);
             // 
             // titleStr
             // 
-            this.titleStr.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.titleStr.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.titleStr.Location = new System.Drawing.Point(6, 48);
             this.titleStr.Multiline = true;
             this.titleStr.Name = "titleStr";
@@ -2741,9 +2781,11 @@ namespace Assistant
             // counters
             // 
             this.counters.CheckBoxes = true;
-            this.counters.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.cntName,
-            this.cntCount});
+            this.counters.Columns.AddRange(new System.Windows.Forms.ColumnHeader[]
+            {
+                this.cntName,
+                this.cntCount
+            });
             this.counters.GridLines = true;
             this.counters.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.counters.LabelWrap = false;
@@ -2869,14 +2911,17 @@ namespace Assistant
             // 
             this.bandageTimerLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.bandageTimerLocation.FormattingEnabled = true;
-            this.bandageTimerLocation.Items.AddRange(new object[] {
-            "Overhead",
-            "System Messages"});
+            this.bandageTimerLocation.Items.AddRange(new object[]
+            {
+                "Overhead",
+                "System Messages"
+            });
             this.bandageTimerLocation.Location = new System.Drawing.Point(145, 10);
             this.bandageTimerLocation.Name = "bandageTimerLocation";
             this.bandageTimerLocation.Size = new System.Drawing.Size(118, 23);
             this.bandageTimerLocation.TabIndex = 56;
-            this.bandageTimerLocation.SelectedIndexChanged += new System.EventHandler(this.bandageTimerLocation_SelectedIndexChanged);
+            this.bandageTimerLocation.SelectedIndexChanged +=
+                new System.EventHandler(this.bandageTimerLocation_SelectedIndexChanged);
             // 
             // bandageTimerSeconds
             // 
@@ -2894,7 +2939,8 @@ namespace Assistant
             this.onlyShowBandageTimerSeconds.Size = new System.Drawing.Size(205, 20);
             this.onlyShowBandageTimerSeconds.TabIndex = 53;
             this.onlyShowBandageTimerSeconds.Text = "Only show every X seconds:";
-            this.onlyShowBandageTimerSeconds.CheckedChanged += new System.EventHandler(this.onlyShowBandageTimerSeconds_CheckedChanged);
+            this.onlyShowBandageTimerSeconds.CheckedChanged +=
+                new System.EventHandler(this.onlyShowBandageTimerSeconds_CheckedChanged);
             // 
             // bandageTimerFormat
             // 
@@ -2971,7 +3017,8 @@ namespace Assistant
             // 
             // undressBag
             // 
-            this.undressBag.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.undressBag.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.undressBag.Location = new System.Drawing.Point(209, 208);
             this.undressBag.Name = "undressBag";
             this.undressBag.Size = new System.Drawing.Size(96, 40);
@@ -3109,7 +3156,8 @@ namespace Assistant
             // dispDeltaOverhead
             // 
             this.dispDeltaOverhead.AutoSize = true;
-            this.dispDeltaOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dispDeltaOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.dispDeltaOverhead.Location = new System.Drawing.Point(441, 207);
             this.dispDeltaOverhead.Name = "dispDeltaOverhead";
             this.dispDeltaOverhead.Size = new System.Drawing.Size(71, 17);
@@ -3157,7 +3205,8 @@ namespace Assistant
             // 
             // baseTotal
             // 
-            this.baseTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.baseTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.baseTotal.Location = new System.Drawing.Point(428, 290);
             this.baseTotal.Name = "baseTotal";
             this.baseTotal.ReadOnly = true;
@@ -3177,10 +3226,12 @@ namespace Assistant
             // locks
             // 
             this.locks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.locks.Items.AddRange(new object[] {
-            "Up",
-            "Down",
-            "Locked"});
+            this.locks.Items.AddRange(new object[]
+            {
+                "Up",
+                "Down",
+                "Locked"
+            });
             this.locks.Location = new System.Drawing.Point(468, 49);
             this.locks.Name = "locks";
             this.locks.Size = new System.Drawing.Size(44, 23);
@@ -3207,13 +3258,15 @@ namespace Assistant
             // skillList
             // 
             this.skillList.AutoArrange = false;
-            this.skillList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.skillHDRName,
-            this.skillHDRvalue,
-            this.skillHDRbase,
-            this.skillHDRdelta,
-            this.skillHDRcap,
-            this.skillHDRlock});
+            this.skillList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[]
+            {
+                this.skillHDRName,
+                this.skillHDRvalue,
+                this.skillHDRbase,
+                this.skillHDRdelta,
+                this.skillHDRcap,
+                this.skillHDRlock
+            });
             this.skillList.FullRowSelect = true;
             this.skillList.Location = new System.Drawing.Point(8, 5);
             this.skillList.Name = "skillList";
@@ -3306,7 +3359,8 @@ namespace Assistant
             // 
             // agentSubList
             // 
-            this.agentSubList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.agentSubList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.agentSubList.IntegralHeight = false;
             this.agentSubList.ItemHeight = 15;
             this.agentSubList.Location = new System.Drawing.Point(6, 15);
@@ -3380,7 +3434,8 @@ namespace Assistant
             // 
             // hkStatus
             // 
-            this.hkStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hkStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.hkStatus.Location = new System.Drawing.Point(337, 206);
             this.hkStatus.Name = "hkStatus";
             this.hkStatus.Size = new System.Drawing.Size(175, 64);
@@ -3666,7 +3721,8 @@ namespace Assistant
             this.disableMacroPlayFinish.TabIndex = 17;
             this.disableMacroPlayFinish.Text = "Disable Playing/Finished Message";
             this.disableMacroPlayFinish.UseVisualStyleBackColor = true;
-            this.disableMacroPlayFinish.CheckedChanged += new System.EventHandler(this.disableMacroPlayFinish_CheckedChanged);
+            this.disableMacroPlayFinish.CheckedChanged +=
+                new System.EventHandler(this.disableMacroPlayFinish_CheckedChanged);
             // 
             // macroActionDelay
             // 
@@ -3688,7 +3744,8 @@ namespace Assistant
             this.rangeCheckDoubleClick.TabIndex = 15;
             this.rangeCheckDoubleClick.Text = "Range check on \'DoubleClickType\'";
             this.rangeCheckDoubleClick.UseVisualStyleBackColor = true;
-            this.rangeCheckDoubleClick.CheckedChanged += new System.EventHandler(this.rangeCheckDoubleClick_CheckedChanged);
+            this.rangeCheckDoubleClick.CheckedChanged +=
+                new System.EventHandler(this.rangeCheckDoubleClick_CheckedChanged);
             // 
             // rangeCheckTargetByType
             // 
@@ -3699,7 +3756,8 @@ namespace Assistant
             this.rangeCheckTargetByType.TabIndex = 14;
             this.rangeCheckTargetByType.Text = "Range check on \'TargetByType\'";
             this.rangeCheckTargetByType.UseVisualStyleBackColor = true;
-            this.rangeCheckTargetByType.CheckedChanged += new System.EventHandler(this.rangeCheckTargetByType_CheckedChanged);
+            this.rangeCheckTargetByType.CheckedChanged +=
+                new System.EventHandler(this.rangeCheckTargetByType_CheckedChanged);
             // 
             // nextMacroAction
             // 
@@ -3732,7 +3790,8 @@ namespace Assistant
             this.targetByTypeDifferent.TabIndex = 11;
             this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
             this.targetByTypeDifferent.UseVisualStyleBackColor = true;
-            this.targetByTypeDifferent.CheckedChanged += new System.EventHandler(this.targetByTypeDifferent_CheckedChanged);
+            this.targetByTypeDifferent.CheckedChanged +=
+                new System.EventHandler(this.targetByTypeDifferent_CheckedChanged);
             // 
             // macroVariableGroup
             // 
@@ -3753,14 +3812,17 @@ namespace Assistant
             // 
             this.macroVariableTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.macroVariableTypeList.FormattingEnabled = true;
-            this.macroVariableTypeList.Items.AddRange(new object[] {
-            "Absolute Target",
-            "DoubleClick Target"});
+            this.macroVariableTypeList.Items.AddRange(new object[]
+            {
+                "Absolute Target",
+                "DoubleClick Target"
+            });
             this.macroVariableTypeList.Location = new System.Drawing.Point(79, 22);
             this.macroVariableTypeList.Name = "macroVariableTypeList";
             this.macroVariableTypeList.Size = new System.Drawing.Size(153, 23);
             this.macroVariableTypeList.TabIndex = 6;
-            this.macroVariableTypeList.SelectedIndexChanged += new System.EventHandler(this.macroVariableTypeList_SelectedIndexChanged);
+            this.macroVariableTypeList.SelectedIndexChanged +=
+                new System.EventHandler(this.macroVariableTypeList_SelectedIndexChanged);
             // 
             // retargetMacroVariable
             // 
@@ -3874,7 +3936,8 @@ namespace Assistant
             this.captureOthersDeathDelay.TabIndex = 58;
             this.captureOthersDeathDelay.Text = "0.5";
             this.captureOthersDeathDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.captureOthersDeathDelay.TextChanged += new System.EventHandler(this.CaptureOthersDeathDelay_TextChanged);
+            this.captureOthersDeathDelay.TextChanged +=
+                new System.EventHandler(this.CaptureOthersDeathDelay_TextChanged);
             // 
             // lblCaptureOthersDeathMs
             // 
@@ -3910,7 +3973,8 @@ namespace Assistant
             this.screenShotNotification.Size = new System.Drawing.Size(216, 20);
             this.screenShotNotification.TabIndex = 13;
             this.screenShotNotification.Text = "Show upload notification";
-            this.screenShotNotification.CheckedChanged += new System.EventHandler(this.screenShotNotification_CheckedChanged);
+            this.screenShotNotification.CheckedChanged +=
+                new System.EventHandler(this.screenShotNotification_CheckedChanged);
             // 
             // screenShotOpenBrowser
             // 
@@ -3919,20 +3983,23 @@ namespace Assistant
             this.screenShotOpenBrowser.Size = new System.Drawing.Size(216, 20);
             this.screenShotOpenBrowser.TabIndex = 12;
             this.screenShotOpenBrowser.Text = "Open link in browser when shared";
-            this.screenShotOpenBrowser.CheckedChanged += new System.EventHandler(this.screenShotOpenBrowser_CheckedChanged);
+            this.screenShotOpenBrowser.CheckedChanged +=
+                new System.EventHandler(this.screenShotOpenBrowser_CheckedChanged);
             // 
             // imgFmt
             // 
             this.imgFmt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.imgFmt.Items.AddRange(new object[] {
-            "jpg",
-            "png",
-            "bmp",
-            "gif",
-            "tif",
-            "wmf",
-            "exif",
-            "emf"});
+            this.imgFmt.Items.AddRange(new object[]
+            {
+                "jpg",
+                "png",
+                "bmp",
+                "gif",
+                "tif",
+                "wmf",
+                "exif",
+                "emf"
+            });
             this.imgFmt.Location = new System.Drawing.Point(102, 134);
             this.imgFmt.Name = "imgFmt";
             this.imgFmt.Size = new System.Drawing.Size(98, 23);
@@ -4094,11 +4161,13 @@ namespace Assistant
             // msglvl
             // 
             this.msglvl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.msglvl.Items.AddRange(new object[] {
-            "Show All",
-            "Warnings & Errors",
-            "Errors Only",
-            "None"});
+            this.msglvl.Items.AddRange(new object[]
+            {
+                "Show All",
+                "Warnings & Errors",
+                "Errors Only",
+                "None"
+            });
             this.msglvl.Location = new System.Drawing.Point(343, 127);
             this.msglvl.Name = "msglvl";
             this.msglvl.Size = new System.Drawing.Size(168, 23);
@@ -4127,7 +4196,8 @@ namespace Assistant
             // 
             this.statusBox.BackColor = System.Drawing.SystemColors.Control;
             this.statusBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.statusBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statusBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.statusBox.HideSelection = false;
             this.statusBox.Location = new System.Drawing.Point(10, 8);
             this.statusBox.Multiline = true;
@@ -4169,7 +4239,8 @@ namespace Assistant
             // 
             // linkGitHub
             // 
-            this.linkGitHub.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkGitHub.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.linkGitHub.Location = new System.Drawing.Point(6, 163);
             this.linkGitHub.Name = "linkGitHub";
             this.linkGitHub.Size = new System.Drawing.Size(506, 20);
@@ -4177,11 +4248,13 @@ namespace Assistant
             this.linkGitHub.TabStop = true;
             this.linkGitHub.Text = "https://github.com/markdwags/Razor";
             this.linkGitHub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGitHub_LinkClicked);
+            this.linkGitHub.LinkClicked +=
+                new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGitHub_LinkClicked);
             // 
             // lblCredits3
             // 
-            this.lblCredits3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCredits3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.lblCredits3.Location = new System.Drawing.Point(8, 259);
             this.lblCredits3.Name = "lblCredits3";
             this.lblCredits3.Size = new System.Drawing.Size(503, 20);
@@ -4191,7 +4264,8 @@ namespace Assistant
             // 
             // linkHelp
             // 
-            this.linkHelp.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkHelp.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.linkHelp.Location = new System.Drawing.Point(434, 10);
             this.linkHelp.Name = "linkHelp";
             this.linkHelp.Size = new System.Drawing.Size(78, 20);
@@ -4199,11 +4273,13 @@ namespace Assistant
             this.linkHelp.TabStop = true;
             this.linkHelp.Text = "Need Help?";
             this.linkHelp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkHelp_LinkClicked);
+            this.linkHelp.LinkClicked +=
+                new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkHelp_LinkClicked);
             // 
             // lblCredits2
             // 
-            this.lblCredits2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCredits2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.lblCredits2.Location = new System.Drawing.Point(9, 239);
             this.lblCredits2.Name = "lblCredits2";
             this.lblCredits2.Size = new System.Drawing.Size(503, 20);
@@ -4214,7 +4290,8 @@ namespace Assistant
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.label20.Location = new System.Drawing.Point(93, 126);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(343, 17);
@@ -4223,7 +4300,8 @@ namespace Assistant
             // 
             // linkLabel1
             // 
-            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.linkLabel1.Location = new System.Drawing.Point(6, 94);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(506, 20);
@@ -4231,11 +4309,13 @@ namespace Assistant
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "http://www.uorenaissance.com";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.linkLabel1.LinkClicked +=
+                new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // lblCredits1
             // 
-            this.lblCredits1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCredits1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.lblCredits1.Location = new System.Drawing.Point(6, 219);
             this.lblCredits1.Name = "lblCredits1";
             this.lblCredits1.Size = new System.Drawing.Size(506, 20);
@@ -4245,7 +4325,8 @@ namespace Assistant
             // 
             // aboutSubInfo
             // 
-            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.aboutSubInfo.Location = new System.Drawing.Point(6, 75);
             this.aboutSubInfo.Name = "aboutSubInfo";
             this.aboutSubInfo.Size = new System.Drawing.Size(506, 19);
@@ -4255,7 +4336,8 @@ namespace Assistant
             // 
             // linkMain
             // 
-            this.linkMain.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkMain.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.linkMain.Location = new System.Drawing.Point(6, 143);
             this.linkMain.Name = "linkMain";
             this.linkMain.Size = new System.Drawing.Size(506, 20);
@@ -4263,12 +4345,15 @@ namespace Assistant
             this.linkMain.TabStop = true;
             this.linkMain.Text = "http://www.uor-razor.com";
             this.linkMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkMain.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.linkMain.LinkClicked +=
+                new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Font = new System.Drawing.Font("Segoe UI Semibold", 9F,
+                ((System.Drawing.FontStyle) ((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))),
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.label21.Location = new System.Drawing.Point(52, 98);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(0, 15);
@@ -4277,7 +4362,8 @@ namespace Assistant
             // 
             // aboutVer
             // 
-            this.aboutVer.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutVer.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.aboutVer.Location = new System.Drawing.Point(6, 40);
             this.aboutVer.Name = "aboutVer";
             this.aboutVer.Size = new System.Drawing.Size(506, 35);
@@ -4290,9 +4376,10 @@ namespace Assistant
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.ClientSize = new System.Drawing.Size(530, 372);
             this.Controls.Add(this.tabs);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -4310,7 +4397,7 @@ namespace Assistant
             this.tabPage1.ResumeLayout(false);
             this.groupBox15.ResumeLayout(false);
             this.groupBox16.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.opacity)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.subFiltersTab.ResumeLayout(false);
             this.subFiltersTab.PerformLayout();
@@ -4324,7 +4411,7 @@ namespace Assistant
             this.groupSmartTarget.PerformLayout();
             this.subOptionsMiscTab.ResumeLayout(false);
             this.subOptionsMiscTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.lightLevelBar)).EndInit();
             this.subOptionsFriendsTab.ResumeLayout(false);
             this.subOptionsFriendsTab.PerformLayout();
             this.friendsGroupBox.ResumeLayout(false);
@@ -4362,13 +4449,12 @@ namespace Assistant
             this.macroVariableGroup.ResumeLayout(false);
             this.screenshotTab.ResumeLayout(false);
             this.screenshotTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.screenPrev)).EndInit();
             this.advancedTab.ResumeLayout(false);
             this.advancedTab.PerformLayout();
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -4376,18 +4462,22 @@ namespace Assistant
         protected override void WndProc(ref Message msg)
         {
             if (msg.Msg == Client.WM_UONETEVENT)
-                msg.Result = (IntPtr)(Client.Instance.OnMessage(this, (uint)msg.WParam.ToInt32(), msg.LParam.ToInt32()) ? 1 : 0);
+                msg.Result =
+                    (IntPtr) (Client.Instance.OnMessage(this, (uint) msg.WParam.ToInt32(), msg.LParam.ToInt32())
+                        ? 1
+                        : 0);
             else if (msg.Msg == Client.WM_COPYDATA)
-                msg.Result = (IntPtr)(Client.Instance.OnCopyData(msg.WParam, msg.LParam) ? 1 : 0);
-            else if (Config.GetBool("EnableUOAAPI") &&  msg.Msg >= (int)UOAssist.UOAMessage.First && msg.Msg <= (int)UOAssist.UOAMessage.Last)
-                msg.Result = (IntPtr)UOAssist.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(), msg.LParam.ToInt32());
+                msg.Result = (IntPtr) (Client.Instance.OnCopyData(msg.WParam, msg.LParam) ? 1 : 0);
+            else if (Config.GetBool("EnableUOAAPI") && msg.Msg >= (int) UOAssist.UOAMessage.First &&
+                     msg.Msg <= (int) UOAssist.UOAMessage.Last)
+                msg.Result = (IntPtr) UOAssist.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(), msg.LParam.ToInt32());
             else
                 base.WndProc(ref msg);
         }
 
         private void DisableCloseButton()
         {
-            Platform.DisableCloseButton( this.Handle );
+            Platform.DisableCloseButton(this.Handle);
             m_CanClose = false;
         }
 
@@ -4396,7 +4486,7 @@ namespace Assistant
             Hide();
             new StatsTimer(this).Start();
             Language.LoadControlNames(this);
-            
+
             FriendsManager.SetControls(friendsGroup, friendsList);
             DressList.SetControls(dressList, dressItems);
 
@@ -4441,7 +4531,6 @@ namespace Assistant
             m_Tip.SetToolTip(titleStr, Language.GetString(LocString.TitleBarTip));
 
             SplashScreen.End();
-
         }
 
         private bool m_Initializing = false;
@@ -4548,7 +4637,7 @@ namespace Assistant
             txtObjDelay.SafeAction(s => { s.Text = Config.GetInt("ObjectDelay").ToString(); });
 
             chkStealth.SafeAction(s => { s.Checked = Config.GetBool("CountStealthSteps"); });
-            
+
             radioUO.SafeAction(s => { s.Checked = !(radioFull.Checked = Config.GetBool("CapFullScreen")); });
 
             screenPath.SafeAction(s => { s.Text = Config.GetString("CapPath"); });
@@ -4579,7 +4668,7 @@ namespace Assistant
             });
 
             lblExHue.SafeAction(s => { InitPreviewHue(s, "ExemptColor"); });
-            
+
             lblMsgHue.SafeAction(s => { InitPreviewHue(s, "SysColor"); });
 
             lblWarnHue.SafeAction(s => { InitPreviewHue(s, "WarningColor"); });
@@ -4591,7 +4680,7 @@ namespace Assistant
             lblHarmHue.SafeAction(s => { InitPreviewHue(s, "HarmfulSpellHue"); });
 
             lblNeuHue.SafeAction(s => { InitPreviewHue(s, "NeutralSpellHue"); });
-            
+
             undressConflicts.SafeAction(s => { s.Checked = Config.GetBool("UndressConflicts"); });
 
             taskbar.SafeAction(s => { s.Checked = !(systray.Checked = Config.GetBool("Systray")); });
@@ -4719,7 +4808,7 @@ namespace Assistant
             showAttackTarget.SafeAction(s => { s.Checked = Config.GetBool("ShowAttackTargetOverhead"); });
 
             showBuffDebuffOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffOverhead"); });
-            
+
             rangeCheckTargetByType.SafeAction(s => { s.Checked = Config.GetBool("RangeCheckTargetByType"); });
 
             rangeCheckDoubleClick.SafeAction(s => { s.Checked = Config.GetBool("RangeCheckDoubleClick"); });
@@ -4787,7 +4876,7 @@ namespace Assistant
             bandageTimerSeconds.SafeAction(s => { s.Text = Config.GetInt("OnlyShowBandageTimerSeconds").ToString(); });
             bandageTimerFormat.SafeAction(s => { s.Text = Config.GetString("ShowBandageTimerFormat"); });
             lblBandageCountFormat.SafeAction(s => { InitPreviewHue(s, "ShowBandageTimerHue"); });
-            
+
             friendOverheadFormat.SafeAction(s => { s.Text = Config.GetString("FriendOverheadFormat"); });
 
             friendFormat.SafeAction(s => { InitPreviewHue(s, "FriendOverheadFormatHue"); });
@@ -4802,13 +4891,14 @@ namespace Assistant
             onlyNextPrevBeneficial.SafeAction(s => { s.Checked = Config.GetBool("OnlyNextPrevBeneficial"); });
             friendBeneficialOnly.SafeAction(s => { s.Checked = Config.GetBool("FriendlyBeneficialOnly"); });
             nonFriendlyHarmfulOnly.SafeAction(s => { s.Checked = Config.GetBool("NonFriendlyHarmfulOnly"); });
-            
+
             showBandageStart.SafeAction(s => { s.Checked = Config.GetBool("ShowBandageStart"); });
             showBandageEnd.SafeAction(s => { s.Checked = Config.GetBool("ShowBandageEnd"); });
             bandageStartMessage.SafeAction(s => { s.Text = Config.GetString("BandageStartMessage"); });
             bandageEndMessage.SafeAction(s => { s.Text = Config.GetString("BandageEndMessage"); });
 
-            captureOthersDeathDelay.SafeAction(s => { s.Text = Config.GetDouble("CaptureOthersDeathDelay").ToString(); });
+            captureOthersDeathDelay.SafeAction(
+                s => { s.Text = Config.GetDouble("CaptureOthersDeathDelay").ToString(); });
             captureOwnDeathDelay.SafeAction(s => { s.Text = Config.GetDouble("CaptureOwnDeathDelay").ToString(); });
             captureOthersDeath.SafeAction(s => { s.Checked = Config.GetBool("CaptureOthersDeath"); });
             captureOwnDeath.SafeAction(s => { s.Checked = Config.GetBool("CaptureOwnDeath"); });
@@ -4834,7 +4924,7 @@ namespace Assistant
         {
             int hue = 0;
 
-            using (StreamReader r = new StreamReader(Path.Combine(Config.GetInstallDirectory(),"animdata.json")))
+            using (StreamReader r = new StreamReader(Path.Combine(Config.GetInstallDirectory(), "animdata.json")))
             {
                 string json = r.ReadToEnd();
                 List<AnimData> items = JsonConvert.DeserializeObject<List<AnimData>>(json);
@@ -4863,8 +4953,6 @@ namespace Assistant
                         dragonAnimationList.Items.Add(animData.name);
                         drakeAnimationList.Items.Add(animData.name);
                     }
-
-
                 }
             }
 
@@ -5107,13 +5195,13 @@ namespace Assistant
 
             if (Config.GetBool("LogSkillChanges"))
             {
-                string skillLog = Path.Combine( Config.GetInstallDirectory(), "SkillLog" );
-                skillLog = Path.Combine( skillLog, $"{World.Player.Name}_{World.Player.Serial}_SkillLog.csv" );
+                string skillLog = Path.Combine(Config.GetInstallDirectory(), "SkillLog");
+                skillLog = Path.Combine(skillLog, $"{World.Player.Name}_{World.Player.Serial}_SkillLog.csv");
 
 
-                if (!Directory.Exists(Path.GetDirectoryName( skillLog )) )
+                if (!Directory.Exists(Path.GetDirectoryName(skillLog)))
                 {
-                    Directory.CreateDirectory( Path.GetDirectoryName( skillLog ) );
+                    Directory.CreateDirectory(Path.GetDirectoryName(skillLog));
                 }
 
                 if (!File.Exists(skillLog))
@@ -5736,7 +5824,7 @@ namespace Assistant
                     s.Items.Remove(dress);
                     s.SelectedIndex = -1;
                 });
-                
+
                 dressItems.SafeAction(s => s.Items.Clear());
 
                 DressList.Remove(dress);
@@ -6566,7 +6654,6 @@ namespace Assistant
                         {
                             File.CreateText(path).Close();
                         }
-
                     }
 
                     // If they didn't create from clipboard, create empty macro
@@ -7092,8 +7179,10 @@ namespace Assistant
                     new MenuItem(Language.GetString(LocString.InsWait), new EventHandler(onMacroInsPause)),
                     new MenuItem(Language.GetString(LocString.InsLT), new EventHandler(onMacroInsertSetLT)),
                     new MenuItem(Language.GetString(LocString.InsComment), new EventHandler(onMacroInsertComment)),
-                    new MenuItem(Language.GetString(LocString.InsertOverheadMessage), new EventHandler(onMacroInsertOverheadMessage)),
-                    new MenuItem(Language.GetString(LocString.InsertWaitForTarget), new EventHandler(onMacroInsertWaitForTarget)),
+                    new MenuItem(Language.GetString(LocString.InsertOverheadMessage),
+                        new EventHandler(onMacroInsertOverheadMessage)),
+                    new MenuItem(Language.GetString(LocString.InsertWaitForTarget),
+                        new EventHandler(onMacroInsertWaitForTarget)),
                     new MenuItem("-"),
                     new MenuItem(Language.GetString(LocString.InsIF), new EventHandler(onMacroInsertIf)),
                     new MenuItem(Language.GetString(LocString.InsELSE), new EventHandler(onMacroInsertElse)),
@@ -7206,7 +7295,8 @@ namespace Assistant
 
             if (InputBox.Show(Language.GetString(LocString.InsertOverheadMessage)))
             {
-                m.Actions.Insert(a + 1, new OverheadMessageAction((ushort)Config.GetInt("SysColor"), InputBox.GetString()));
+                m.Actions.Insert(a + 1,
+                    new OverheadMessageAction((ushort) Config.GetInt("SysColor"), InputBox.GetString()));
                 RedrawActionList(m);
             }
         }
@@ -8058,11 +8148,14 @@ namespace Assistant
             {
                 BringToFront();
             }
+
             try
             {
                 this.Show();
             }
-            catch { }
+            catch
+            {
+            }
 
             if (Config.GetBool("AlwaysOnTop"))
                 this.TopMost = true;
@@ -8290,6 +8383,7 @@ namespace Assistant
             if (file != null)
                 System.Diagnostics.Process.Start(Path.Combine(Config.GetString("CapPath"), file));
         }
+
         private Timer m_ResizeTimer = Timer.DelayedCallback(TimeSpan.FromSeconds(1.0), new TimerCallback(ForceSize));
 
         private static void ForceSize()
@@ -8710,7 +8804,8 @@ namespace Assistant
             try
             {
                 string backupTime = $"{DateTime.Now:yyyyMMdd-HHmmss}";
-                string backupDir = Path.Combine( Config.GetAppSetting<string>( "BackupPath" ), backupTime ); ;
+                string backupDir = Path.Combine(Config.GetAppSetting<string>("BackupPath"), backupTime);
+                ;
 
                 if (string.IsNullOrEmpty(backupDir))
                     return;
@@ -8721,36 +8816,36 @@ namespace Assistant
                 }
 
                 // Backup the macros
-                Directory.CreateDirectory(Path.Combine(backupDir,"Macros"));
+                Directory.CreateDirectory(Path.Combine(backupDir, "Macros"));
 
                 // Create folders
-                var macrosDirectory = Path.Combine( Config.GetUserDirectory(), "Macros" );
-                foreach (string dirPath in Directory.GetDirectories( macrosDirectory, "*",
+                var macrosDirectory = Path.Combine(Config.GetUserDirectory(), "Macros");
+                foreach (string dirPath in Directory.GetDirectories(macrosDirectory, "*",
                     SearchOption.AllDirectories))
                 {
-                    Directory.CreateDirectory(dirPath.Replace( macrosDirectory,
-                        Path.Combine( backupDir, "Macros" ) ) );
+                    Directory.CreateDirectory(dirPath.Replace(macrosDirectory,
+                        Path.Combine(backupDir, "Macros")));
                 }
 
                 // Copy macros
-                foreach (string newPath in Directory.GetFiles( macrosDirectory, "*.*",
+                foreach (string newPath in Directory.GetFiles(macrosDirectory, "*.*",
                     SearchOption.AllDirectories))
                 {
                     File.Copy(newPath,
-                        newPath.Replace( macrosDirectory,
-                            Path.Combine( backupDir, "Macros" ) ), true);
+                        newPath.Replace(macrosDirectory,
+                            Path.Combine(backupDir, "Macros")), true);
                 }
 
                 // Backup the profiles
-                Directory.CreateDirectory( Path.Combine( backupDir, "Profiles" ) );
-                var profilesDirectory = Path.Combine( Config.GetUserDirectory(), "Profiles" );
+                Directory.CreateDirectory(Path.Combine(backupDir, "Profiles"));
+                var profilesDirectory = Path.Combine(Config.GetUserDirectory(), "Profiles");
 
-                foreach ( string newPath in Directory.GetFiles( profilesDirectory, "*.*",
+                foreach (string newPath in Directory.GetFiles(profilesDirectory, "*.*",
                     SearchOption.AllDirectories))
                 {
                     File.Copy(newPath,
-                        newPath.Replace( profilesDirectory,
-                            Path.Combine( backupDir, "Profiles" )), true);
+                        newPath.Replace(profilesDirectory,
+                            Path.Combine(backupDir, "Profiles")), true);
                 }
 
                 MessageBox.Show(this, $"Backup created: {backupDir}", "Razor Backup", MessageBoxButtons.OK,
@@ -9134,7 +9229,7 @@ namespace Assistant
                 _containerLabelsForm.Show();
             }
         }
-        
+
         private void seasonList_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Season Flag:
@@ -9236,7 +9331,7 @@ namespace Assistant
             //switch (macroVariableTypeList.SelectedIndex)
             //{
             //    case 0:
-                    Targeting.OneTimeTarget(OnMacroVariableAddTarget);
+            Targeting.OneTimeTarget(OnMacroVariableAddTarget);
             //        break;
             //    case 1:
             //        Targeting.OneTimeTarget(OnDoubleClickAddTarget);
@@ -9264,7 +9359,7 @@ namespace Assistant
                 return;
             }
 
-            string[] macroVariableName = { MacroVariables.MacroVariableList[macroVariables.SelectedIndex].Name };
+            string[] macroVariableName = {MacroVariables.MacroVariableList[macroVariables.SelectedIndex].Name};
 
             switch (macroVariableTypeList.SelectedIndex)
             {
@@ -9556,7 +9651,7 @@ namespace Assistant
                 s.Enabled = false;
                 s.Checked = false;
             });
-           
+
             rememberPwds.SafeAction(s =>
             {
                 s.Enabled = false;
@@ -9593,11 +9688,7 @@ namespace Assistant
                 s.Checked = false;
             });
 
-            healthFmt.SafeAction(s =>
-            {
-                s.Enabled = false;
-            });
-
+            healthFmt.SafeAction(s => { s.Enabled = false; });
         }
 
         private void macroActionDelay_CheckedChanged(object sender, EventArgs e)
@@ -9656,12 +9747,9 @@ namespace Assistant
 
         private void setBandageHue_Click(object sender, EventArgs e)
         {
-            lblBandageCountFormat.SafeAction(s =>
-            {
-                SetHue(s, "ShowBandageTimerHue");
-            });
+            lblBandageCountFormat.SafeAction(s => { SetHue(s, "ShowBandageTimerHue"); });
         }
-        
+
         private void friendRemoveSelected_Click(object sender, EventArgs e)
         {
             if (friendsGroup.SelectedIndex < 0 || friendsList.SelectedIndex < 0)
@@ -9683,9 +9771,9 @@ namespace Assistant
                 }
                 else
                 {
-                    MessageBox.Show(this, "Invalid name, or friends group already exists", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, "Invalid name, or friends group already exists", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                    
             }
         }
 
@@ -9697,7 +9785,7 @@ namespace Assistant
             if (MessageBox.Show(this, Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (FriendsManager.DeleteFriendGroup((FriendsManager.FriendGroup)friendsGroup.SelectedItem))
+                if (FriendsManager.DeleteFriendGroup((FriendsManager.FriendGroup) friendsGroup.SelectedItem))
                 {
                     FriendsManager.RedrawGroup();
 
@@ -9711,9 +9799,8 @@ namespace Assistant
                     }
                 }
             }
-
-            
         }
+
         private void friendsGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (friendsGroup.SelectedIndex < 0)
@@ -9734,7 +9821,7 @@ namespace Assistant
             if (MessageBox.Show(this, Language.GetString(LocString.Confirm), Language.GetString(LocString.ClearList),
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup)friendsGroup.SelectedItem;
+                FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup) friendsGroup.SelectedItem;
                 friendGroup.Friends.Clear();
 
                 FriendsManager.RedrawList(friendGroup);
@@ -9746,7 +9833,8 @@ namespace Assistant
             if (friendsGroup.SelectedIndex < 0)
                 return;
 
-            FriendsManager.EnableFriendsGroup((FriendsManager.FriendGroup)friendsGroup.SelectedItem, friendsListEnabled.Checked);
+            FriendsManager.EnableFriendsGroup((FriendsManager.FriendGroup) friendsGroup.SelectedItem,
+                friendsListEnabled.Checked);
         }
 
         private void friendOverheadFormat_TextChanged(object sender, EventArgs e)
@@ -9763,10 +9851,7 @@ namespace Assistant
 
         private void setFriendsFormatHue_Click(object sender, EventArgs e)
         {
-            friendFormat.SafeAction(s =>
-            {
-                SetHue(s, "FriendOverheadFormatHue");
-            });
+            friendFormat.SafeAction(s => { SetHue(s, "FriendOverheadFormatHue"); });
         }
 
         private void friendAddTarget_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -9780,14 +9865,16 @@ namespace Assistant
             if ((e.Button & MouseButtons.Right) != 0)
             {
                 ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add(Language.GetString(LocString.AddAllMobileFriends), new EventHandler(onAddAllMobilesAsFriends));
-                menu.MenuItems.Add(Language.GetString(LocString.AddAllHumanoidsAsFriends), new EventHandler(onAddAllHumanoidsAsFriends));
+                menu.MenuItems.Add(Language.GetString(LocString.AddAllMobileFriends),
+                    new EventHandler(onAddAllMobilesAsFriends));
+                menu.MenuItems.Add(Language.GetString(LocString.AddAllHumanoidsAsFriends),
+                    new EventHandler(onAddAllHumanoidsAsFriends));
 
                 menu.Show(friendAddTarget, new Point(e.X, e.Y));
             }
             else
             {
-                FriendsManager.OnTargetAddFriend((FriendsManager.FriendGroup)friendsGroup.SelectedItem);
+                FriendsManager.OnTargetAddFriend((FriendsManager.FriendGroup) friendsGroup.SelectedItem);
             }
         }
 
@@ -9799,7 +9886,7 @@ namespace Assistant
             if (World.Player == null)
                 return;
 
-            FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup)friendsGroup.SelectedItem;
+            FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup) friendsGroup.SelectedItem;
             friendGroup.AddAllMobileAsFriends();
         }
 
@@ -9811,7 +9898,7 @@ namespace Assistant
             if (World.Player == null)
                 return;
 
-            FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup)friendsGroup.SelectedItem;
+            FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup) friendsGroup.SelectedItem;
             friendGroup.AddAllHumanoidsAsFriends();
         }
 
@@ -9822,7 +9909,8 @@ namespace Assistant
                 if (friendsList.SelectedIndex < 0 || friendsGroup.SelectedIndex < 0)
                     return;
 
-                FriendsManager.RemoveFriend((FriendsManager.FriendGroup)friendsGroup.SelectedItem, friendsList.SelectedIndex);
+                FriendsManager.RemoveFriend((FriendsManager.FriendGroup) friendsGroup.SelectedItem,
+                    friendsList.SelectedIndex);
             }
         }
 
@@ -9884,8 +9972,8 @@ namespace Assistant
 
             sb.AppendLine("!Razor.Friends.Import");
 
-            
-            FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup)friendsGroup.SelectedItem;
+
+            FriendsManager.FriendGroup friendGroup = (FriendsManager.FriendGroup) friendsGroup.SelectedItem;
 
             foreach (FriendsManager.Friend friend in friendGroup.Friends)
             {
@@ -9898,10 +9986,7 @@ namespace Assistant
 
         private void setTargetIndicatorHue_Click(object sender, EventArgs e)
         {
-            lblTargetFormat.SafeAction(s =>
-            {
-                SetHue(s, "TargetIndicatorHue");
-            });
+            lblTargetFormat.SafeAction(s => { SetHue(s, "TargetIndicatorHue"); });
         }
 
         private void filterSystemMessages_CheckedChanged(object sender, EventArgs e)

@@ -3,26 +3,31 @@ using Assistant;
 
 namespace Assistant.Filters
 {
-	public class WeatherFilter : Filter
-	{
-		public static void Initialize()
-		{
-			Filter.Register( new WeatherFilter() );
-		}
+    public class WeatherFilter : Filter
+    {
+        public static void Initialize()
+        {
+            Filter.Register(new WeatherFilter());
+        }
 
-		private WeatherFilter()
-		{
-		}
+        private WeatherFilter()
+        {
+        }
 
-		public override byte[] PacketIDs{ get{ return new byte[]{ 0x65 }; } }
+        public override byte[] PacketIDs
+        {
+            get { return new byte[] {0x65}; }
+        }
 
-		public override LocString Name{ get{ return LocString.Weather; } }
+        public override LocString Name
+        {
+            get { return LocString.Weather; }
+        }
 
-		public override void OnFilter( PacketReader p, PacketHandlerEventArgs args )
-		{
-			if ( Client.Instance.AllowBit( FeatureBit.WeatherFilter ) )
-				args.Block = true;
-		}
-	}
+        public override void OnFilter(PacketReader p, PacketHandlerEventArgs args)
+        {
+            if (Client.Instance.AllowBit(FeatureBit.WeatherFilter))
+                args.Block = true;
+        }
+    }
 }
-

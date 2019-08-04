@@ -70,7 +70,8 @@ namespace Assistant
         {
             if (Running)
             {
-                if (msg == "You heal what little damage you had." || msg == "You heal what little damage the patient had.")
+                if (msg == "You heal what little damage you had." ||
+                    msg == "You heal what little damage the patient had.")
                 {
                     Stop();
 
@@ -166,7 +167,8 @@ namespace Assistant
                                          m_Count % Config.GetInt("OnlyShowBandageTimerSeconds") != 0);
 
                     if (showMessage)
-                        ShowBandagingStatusMessage(Config.GetString("ShowBandageTimerFormat").Replace("{count}", m_Count.ToString()));
+                        ShowBandagingStatusMessage(Config.GetString("ShowBandageTimerFormat")
+                            .Replace("{count}", m_Count.ToString()));
                 }
 
                 if (m_Count > 30)

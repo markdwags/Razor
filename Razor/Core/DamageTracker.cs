@@ -75,7 +75,8 @@ namespace Assistant.Core
             World.Player.SendMessage(MsgLevel.Force, "-- [Damage Tracking Stopped] ---");
             World.Player.SendMessage(MsgLevel.Force, $"Total Damage Dealt: {TotalDamageDealt}");
             World.Player.SendMessage(MsgLevel.Force, $"Total Damage Taken: {TotalDamageTaken}");
-            World.Player.SendMessage(MsgLevel.Force, $"Max Single Damage Dealt: {MaxSingleDamageDealt} on '{MaxSingleDamageDealtName}'");
+            World.Player.SendMessage(MsgLevel.Force,
+                $"Max Single Damage Dealt: {MaxSingleDamageDealt} on '{MaxSingleDamageDealtName}'");
             World.Player.SendMessage(MsgLevel.Force, $"Max Single Damage Taken: {MaxSingleDamageTaken}");
             World.Player.SendMessage(MsgLevel.Force, $"Final DPS: {DamagePerSecond:N2}");
             World.Player.SendMessage(MsgLevel.Force, $"Max DPS: {MaxDamagePerSecond:N2}");

@@ -41,7 +41,6 @@ namespace Assistant.Core
 
             try
             {
-
                 foreach (XmlElement el in node.GetElementsByTagName("containerlabel"))
                 {
                     ContainerLabel label = new ContainerLabel

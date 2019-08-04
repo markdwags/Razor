@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text;
 using System.Xml;
-
 using Assistant.UI;
 
 namespace Assistant
@@ -67,7 +66,7 @@ namespace Assistant
 
         // pet commands
         PetCommands = 780, //1749
-        
+
         SubTargetCriminal = 796,
         SubTargetEnemy,
         SubTargetFriendly,
@@ -304,7 +303,7 @@ namespace Assistant
                 UpdateStatus();
             }
         }
-        
+
 
         public static bool KeyDown(Keys k)
         {
@@ -388,10 +387,7 @@ namespace Assistant
                     msg = Language.GetString(LocString.HKDisabled);
             }
 
-            m_Status?.SafeAction(s =>
-            {
-                s.Text = msg;
-            });
+            m_Status?.SafeAction(s => { s.Text = msg; });
 
             return msg;
         }
@@ -597,7 +593,7 @@ namespace Assistant
             return FindNode(parent, tag, false);
         }
 
-        public static bool OnKeyDown(int key, ModKeys mod )
+        public static bool OnKeyDown(int key, ModKeys mod)
         {
             if (World.Player == null)
                 return true;
@@ -617,14 +613,14 @@ namespace Assistant
             }
 
             if (_hotKeyEnableToggle != null && _hotKeyEnableToggle.Key > 0 && _hotKeyEnableToggle.Mod == cur &&
-                (_hotKeyEnableToggle.Key == key || KeyDown((Keys)_hotKeyEnableToggle.Key)))
+                (_hotKeyEnableToggle.Key == key || KeyDown((Keys) _hotKeyEnableToggle.Key)))
             {
                 _hotKeyEnableToggle.Callback();
                 return _hotKeyEnableToggle.SendToUO;
             }
 
             if (_hotKeyDisableToggle != null && _hotKeyDisableToggle.Key > 0 && _hotKeyDisableToggle.Mod == cur &&
-                (_hotKeyDisableToggle.Key == key || KeyDown((Keys)_hotKeyDisableToggle.Key)))
+                (_hotKeyDisableToggle.Key == key || KeyDown((Keys) _hotKeyDisableToggle.Key)))
             {
                 _hotKeyDisableToggle.Callback();
                 return _hotKeyDisableToggle.SendToUO;

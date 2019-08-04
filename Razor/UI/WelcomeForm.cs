@@ -20,10 +20,12 @@ namespace Assistant
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.OpenFileDialog openFile;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.Container components = null;
+
         private System.Windows.Forms.Button browse;
 
         private bool m_PatchEncy = false;
@@ -63,17 +65,20 @@ namespace Assistant
                     components.Dispose();
                 }
             }
+
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
+
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WelcomeForm));
+            System.ComponentModel.ComponentResourceManager resources =
+                new System.ComponentModel.ComponentResourceManager(typeof(WelcomeForm));
             this.label1 = new System.Windows.Forms.Label();
             this.browse = new System.Windows.Forms.Button();
             this.patchEncy = new System.Windows.Forms.CheckBox();
@@ -163,7 +168,8 @@ namespace Assistant
             // serverList
             // 
             this.serverList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.serverList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.serverList.Location = new System.Drawing.Point(101, 19);
             this.serverList.Name = "serverList";
             this.serverList.Size = new System.Drawing.Size(269, 25);
@@ -280,7 +286,8 @@ namespace Assistant
             // 
             // serverName
             // 
-            this.serverName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.serverName.Location = new System.Drawing.Point(100, 86);
             this.serverName.Name = "serverName";
             this.serverName.Size = new System.Drawing.Size(270, 23);
@@ -290,7 +297,8 @@ namespace Assistant
             // serverNameLbl
             // 
             this.serverNameLbl.AutoSize = true;
-            this.serverNameLbl.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverNameLbl.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.serverNameLbl.Location = new System.Drawing.Point(7, 89);
             this.serverNameLbl.Name = "serverNameLbl";
             this.serverNameLbl.Size = new System.Drawing.Size(77, 15);
@@ -299,7 +307,8 @@ namespace Assistant
             // 
             // serverPort
             // 
-            this.serverPort.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverPort.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.serverPort.Location = new System.Drawing.Point(307, 116);
             this.serverPort.Name = "serverPort";
             this.serverPort.Size = new System.Drawing.Size(63, 23);
@@ -309,7 +318,8 @@ namespace Assistant
             // 
             // serverHost
             // 
-            this.serverHost.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverHost.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.serverHost.Location = new System.Drawing.Point(100, 115);
             this.serverHost.Name = "serverHost";
             this.serverHost.Size = new System.Drawing.Size(163, 23);
@@ -319,7 +329,8 @@ namespace Assistant
             // portLabel
             // 
             this.portLabel.AutoSize = true;
-            this.portLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.portLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.portLabel.Location = new System.Drawing.Point(269, 118);
             this.portLabel.Name = "portLabel";
             this.portLabel.Size = new System.Drawing.Size(32, 15);
@@ -329,7 +340,8 @@ namespace Assistant
             // serverHostLbl
             // 
             this.serverHostLbl.AutoSize = true;
-            this.serverHostLbl.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverHostLbl.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.serverHostLbl.Location = new System.Drawing.Point(7, 118);
             this.serverHostLbl.Name = "serverHostLbl";
             this.serverHostLbl.Size = new System.Drawing.Size(85, 15);
@@ -374,9 +386,10 @@ namespace Assistant
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.quit);
             this.Controls.Add(this.okay);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "WelcomeForm";
@@ -389,8 +402,8 @@ namespace Assistant
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
-
         }
+
         #endregion
 
         private class ServerEntry
@@ -486,6 +499,7 @@ namespace Assistant
         {
             public string RealAddress { get; set; }
             public string Name { get; set; }
+
             public Custom_SE(string name, string addr) : base(name, 0)
             {
                 Name = name;
@@ -493,7 +507,7 @@ namespace Assistant
             }
 
             public Custom_SE(string name, string addr, int port)
-                 : base(name, port)
+                : base(name, port)
             {
                 Name = name;
                 RealAddress = addr;
@@ -504,20 +518,35 @@ namespace Assistant
         {
             private string m_Path;
             private string m_Show;
+
             public PathElipsis(string path)
             {
                 m_Path = path;
                 m_Show = GetPathElipsis(path, 23);
             }
 
-            public string GetPath() { return m_Path; }
-            public void SetPath(string value) { m_Path = value; m_Show = GetPathElipsis(m_Path, 23); }
+            public string GetPath()
+            {
+                return m_Path;
+            }
+
+            public void SetPath(string value)
+            {
+                m_Path = value;
+                m_Show = GetPathElipsis(m_Path, 23);
+            }
+
             public override string ToString()
             {
                 return m_Show;
             }
 
-            private static char[] pathChars = new char[] { Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar, Path.PathSeparator, Path.VolumeSeparatorChar };
+            private static char[] pathChars = new char[]
+            {
+                Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar, Path.PathSeparator,
+                Path.VolumeSeparatorChar
+            };
+
             public static string GetPathElipsis(string path, int PathMaxLength)
             {
                 if (path.Length <= PathMaxLength)
@@ -544,6 +573,7 @@ namespace Assistant
                     {
                     }
                 }
+
                 return sb.ToString();
             }
         }
@@ -565,7 +595,7 @@ namespace Assistant
             IsValidClientAndDataDir();
 
             patchEncy.Checked = Config.GetAppSetting<int>("ClientEncrypted") != 0;
-            
+
             LoginCFG_SE lse = new LoginCFG_SE();
             Custom_SE cse;
 
@@ -575,7 +605,7 @@ namespace Assistant
 
             // Load any custom servers they might have added
             NameValueCollection servers =
-                (NameValueCollection)ConfigurationManager.GetSection("Servers");
+                (NameValueCollection) ConfigurationManager.GetSection("Servers");
 
             foreach (string server in servers.AllKeys)
             {
@@ -611,12 +641,14 @@ namespace Assistant
 
             if (Config.GetAppSetting<bool>("ImportProfilesAndMacros"))
             {
-                string appDataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Razor");
+                string appDataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "Razor");
 
                 if (Directory.Exists(appDataDir))
                 {
-                    if (MessageBox.Show(Language.GetString(LocString.ImportFromPrevious), "Import Razor Profiles and Macros",
-                           MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    if (MessageBox.Show(Language.GetString(LocString.ImportFromPrevious),
+                            "Import Razor Profiles and Macros",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         Config.ImportProfilesMacros(appDataDir);
 
@@ -644,6 +676,7 @@ namespace Assistant
         }
 
         private System.Windows.Forms.Timer _ShowTimer;
+
         private void timer_Tick(object sender, EventArgs e)
         {
             this.TopMost = false;
@@ -660,7 +693,7 @@ namespace Assistant
                 PathElipsis pe = new PathElipsis(openFile.FileName);
 
                 uoClient.Text = pe.GetPath();
-                
+
                 dataDir.Text = m_DataDir = Path.GetDirectoryName(uoClient.Text);
 
                 Config.SetAppSetting("UODataDir", dataDir.Text);
@@ -681,7 +714,7 @@ namespace Assistant
                 return;
             }
 
-            Custom_SE server = (Custom_SE)serverList.SelectedItem;
+            Custom_SE server = (Custom_SE) serverList.SelectedItem;
 
             serverName.Enabled = !(serverList.SelectedIndex >= 0 && serverList.SelectedIndex <= 2);
             serverHost.Enabled = !(serverList.SelectedIndex >= 0 && serverList.SelectedIndex <= 2);
@@ -704,9 +737,9 @@ namespace Assistant
             {
                 if (serverList.SelectedItem is Custom_SE)
                 {
-                    int port = ((Custom_SE)serverList.SelectedItem).Port;
+                    int port = ((Custom_SE) serverList.SelectedItem).Port;
 
-                    string addr = ((Custom_SE)serverList.SelectedItem).RealAddress;
+                    string addr = ((Custom_SE) serverList.SelectedItem).RealAddress;
 
                     if (addr == "login.ultimaonline.com")
                     {
@@ -744,8 +777,8 @@ namespace Assistant
             {
                 for (int j = i + 1; j < serverList.Items.Count; j++)
                 {
-                    ServerEntry si = (ServerEntry)serverList.Items[i];
-                    ServerEntry sj = (ServerEntry)serverList.Items[j];
+                    ServerEntry si = (ServerEntry) serverList.Items[i];
+                    ServerEntry sj = (ServerEntry) serverList.Items[j];
                     if (si.Address == sj.Address && si.Port == sj.Port)
                         serverList.Items.RemoveAt(j);
                 }
@@ -754,7 +787,7 @@ namespace Assistant
             int num = 1;
             for (int i = 0; i < serverList.Items.Count; i++)
             {
-                ServerEntry se = (ServerEntry)serverList.Items[i];
+                ServerEntry se = (ServerEntry) serverList.Items[i];
                 if (se is Custom_SE || se is LoginCFG_SE)
                     continue;
 
@@ -784,7 +817,8 @@ namespace Assistant
             {
                 if (!Language.Load(lang))
                 {
-                    MessageBox.Show("There was an error loading that language.", "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("There was an error loading that language.", "Language Load Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     langSel.SelectedItem = Language.Current;
                 }
                 else
@@ -799,9 +833,12 @@ namespace Assistant
         {
             if (!patchEncy.Checked)
             {
-                if (MessageBox.Show(this, Language.GetString(LocString.NoPatchWarning), Language.GetString(LocString.Confirm), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                if (MessageBox.Show(this, Language.GetString(LocString.NoPatchWarning),
+                        Language.GetString(LocString.Confirm), MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                    DialogResult.No)
                     patchEncy.Checked = true;
             }
+
             Config.SetAppSetting("ClientEncrypted", patchEncy.Checked ? "1" : "0");
         }
 
@@ -824,7 +861,8 @@ namespace Assistant
 
                 if (!dataDir.Text.Equals(Path.GetDirectoryName(uoClient.Text)))
                 {
-                    MessageBox.Show(Language.GetString(LocString.ClientDataMismatch), "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(Language.GetString(LocString.ClientDataMismatch), "Warning", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
                 }
             }
         }
@@ -858,7 +896,8 @@ namespace Assistant
             if (string.IsNullOrEmpty(serverName.Text) || string.IsNullOrEmpty(serverHost.Text) ||
                 string.IsNullOrEmpty(serverPort.Text))
             {
-                MessageBox.Show("You must fill out all three fields", "Server Add/Edit", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You must fill out all three fields", "Server Add/Edit", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
 
@@ -869,7 +908,7 @@ namespace Assistant
             }
 
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            AppSettingsSection servers = (AppSettingsSection)config.GetSection("Servers");
+            AppSettingsSection servers = (AppSettingsSection) config.GetSection("Servers");
 
             if (string.IsNullOrEmpty(serverList.Text)) // new entry
             {
@@ -953,7 +992,7 @@ namespace Assistant
                 return;
 
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            AppSettingsSection servers = (AppSettingsSection)config.GetSection("Servers");
+            AppSettingsSection servers = (AppSettingsSection) config.GetSection("Servers");
 
             Dictionary<string, string> entries = new Dictionary<string, string>();
 

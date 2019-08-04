@@ -103,16 +103,18 @@ namespace Assistant
             // varList
             // 
             this.varList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.varList.Items.AddRange(new object[] {
-            "Hits",
-            "Mana",
-            "Stamina",
-            "Poisoned",
-            "SysMessage",
-            "Weight",
-            "Mounted",
-            "R Hand Empty",
-            "L Hand Empty"});
+            this.varList.Items.AddRange(new object[]
+            {
+                "Hits",
+                "Mana",
+                "Stamina",
+                "Poisoned",
+                "SysMessage",
+                "Weight",
+                "Mounted",
+                "R Hand Empty",
+                "L Hand Empty"
+            });
             this.varList.Location = new System.Drawing.Point(30, 9);
             this.varList.Name = "varList";
             this.varList.Size = new System.Drawing.Size(143, 23);
@@ -132,11 +134,13 @@ namespace Assistant
             // opList
             // 
             this.opList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.opList.Items.AddRange(new object[] {
-            "<=",
-            ">=",
-            "<",
-            ">"});
+            this.opList.Items.AddRange(new object[]
+            {
+                "<=",
+                ">=",
+                "<",
+                ">"
+            });
             this.opList.Location = new System.Drawing.Point(179, 9);
             this.opList.Name = "opList";
             this.opList.Size = new System.Drawing.Size(53, 23);
@@ -144,7 +148,8 @@ namespace Assistant
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.label1.Location = new System.Drawing.Point(8, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(16, 20);
@@ -155,10 +160,12 @@ namespace Assistant
             // 
             this.ifVariables.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ifVariables.FormattingEnabled = true;
-            this.ifVariables.Items.AddRange(new object[] {
-            "{maxhp}",
-            "{maxstam}",
-            "{maxmana}"});
+            this.ifVariables.Items.AddRange(new object[]
+            {
+                "{maxhp}",
+                "{maxstam}",
+                "{maxmana}"
+            });
             this.ifVariables.Location = new System.Drawing.Point(288, 44);
             this.ifVariables.Name = "ifVariables";
             this.ifVariables.Size = new System.Drawing.Size(104, 23);
@@ -177,7 +184,8 @@ namespace Assistant
             this.Controls.Add(this.varList);
             this.Controls.Add(this.txtAmount);
             this.Controls.Add(this.insert);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MacroInsertIf";
             this.ShowInTaskbar = false;
@@ -186,7 +194,6 @@ namespace Assistant
             this.Load += new System.EventHandler(this.MacroInsertIf_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
