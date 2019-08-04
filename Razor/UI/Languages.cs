@@ -538,6 +538,7 @@ namespace Assistant
         PrevTargetNonFriendlyMonster,
         NewBeneficialTarget,
         NewHarmfulTarget,
+        BirdSounds,
         __End
     }
 
