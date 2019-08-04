@@ -89,7 +89,7 @@ namespace Assistant
         private System.Windows.Forms.Button setScnPath;
         private System.Windows.Forms.RadioButton radioFull;
         private System.Windows.Forms.RadioButton radioUO;
-        private System.Windows.Forms.CheckBox screenAutoCap;
+        private System.Windows.Forms.CheckBox captureOthersDeath;
         private System.Windows.Forms.TextBox screenPath;
         private System.Windows.Forms.Button capNow;
         private System.Windows.Forms.CheckBox dispTime;
@@ -361,6 +361,11 @@ namespace Assistant
         private CheckBox showBandageEnd;
         private CheckBox showBandageStart;
         private Button buffDebuffOptions;
+        private TextBox captureOthersDeathDelay;
+        private Label lblCaptureOthersDeathMs;
+        private TextBox captureOwnDeathDelay;
+        private Label lblOwnDeathMs;
+        private CheckBox captureOwnDeath;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -703,6 +708,11 @@ namespace Assistant
             this.addMacroVariable = new System.Windows.Forms.Button();
             this.macroVariables = new System.Windows.Forms.ListBox();
             this.screenshotTab = new System.Windows.Forms.TabPage();
+            this.captureOwnDeathDelay = new System.Windows.Forms.TextBox();
+            this.lblOwnDeathMs = new System.Windows.Forms.Label();
+            this.captureOwnDeath = new System.Windows.Forms.CheckBox();
+            this.captureOthersDeathDelay = new System.Windows.Forms.TextBox();
+            this.lblCaptureOthersDeathMs = new System.Windows.Forms.Label();
             this.imgurUploads = new System.Windows.Forms.ListBox();
             this.screenShotClipboard = new System.Windows.Forms.CheckBox();
             this.screenShotNotification = new System.Windows.Forms.CheckBox();
@@ -713,7 +723,7 @@ namespace Assistant
             this.screenPath = new System.Windows.Forms.TextBox();
             this.radioUO = new System.Windows.Forms.RadioButton();
             this.radioFull = new System.Windows.Forms.RadioButton();
-            this.screenAutoCap = new System.Windows.Forms.CheckBox();
+            this.captureOthersDeath = new System.Windows.Forms.CheckBox();
             this.setScnPath = new System.Windows.Forms.Button();
             this.screensList = new System.Windows.Forms.ListBox();
             this.screenPrev = new System.Windows.Forms.PictureBox();
@@ -2268,9 +2278,9 @@ namespace Assistant
             this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
             this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
             this.subOptionsFriendsTab.Controls.Add(this.friendFormat);
-            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
-            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsFriendsTab.TabIndex = 3;
             this.subOptionsFriendsTab.Text = "Friends";
             // 
@@ -3803,6 +3813,11 @@ namespace Assistant
             // 
             // screenshotTab
             // 
+            this.screenshotTab.Controls.Add(this.captureOwnDeathDelay);
+            this.screenshotTab.Controls.Add(this.lblOwnDeathMs);
+            this.screenshotTab.Controls.Add(this.captureOwnDeath);
+            this.screenshotTab.Controls.Add(this.captureOthersDeathDelay);
+            this.screenshotTab.Controls.Add(this.lblCaptureOthersDeathMs);
             this.screenshotTab.Controls.Add(this.imgurUploads);
             this.screenshotTab.Controls.Add(this.screenShotClipboard);
             this.screenshotTab.Controls.Add(this.screenShotNotification);
@@ -3813,7 +3828,7 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.screenPath);
             this.screenshotTab.Controls.Add(this.radioUO);
             this.screenshotTab.Controls.Add(this.radioFull);
-            this.screenshotTab.Controls.Add(this.screenAutoCap);
+            this.screenshotTab.Controls.Add(this.captureOthersDeath);
             this.screenshotTab.Controls.Add(this.setScnPath);
             this.screenshotTab.Controls.Add(this.screensList);
             this.screenshotTab.Controls.Add(this.screenPrev);
@@ -3823,6 +3838,51 @@ namespace Assistant
             this.screenshotTab.Size = new System.Drawing.Size(519, 322);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
+            // 
+            // captureOwnDeathDelay
+            // 
+            this.captureOwnDeathDelay.Location = new System.Drawing.Point(196, 235);
+            this.captureOwnDeathDelay.Name = "captureOwnDeathDelay";
+            this.captureOwnDeathDelay.Size = new System.Drawing.Size(32, 23);
+            this.captureOwnDeathDelay.TabIndex = 61;
+            this.captureOwnDeathDelay.Text = "0.5";
+            this.captureOwnDeathDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.captureOwnDeathDelay.TextChanged += new System.EventHandler(this.CaptureOwnDeathDelay_TextChanged);
+            // 
+            // lblOwnDeathMs
+            // 
+            this.lblOwnDeathMs.Location = new System.Drawing.Point(230, 239);
+            this.lblOwnDeathMs.Name = "lblOwnDeathMs";
+            this.lblOwnDeathMs.Size = new System.Drawing.Size(26, 18);
+            this.lblOwnDeathMs.TabIndex = 60;
+            this.lblOwnDeathMs.Text = "s";
+            // 
+            // captureOwnDeath
+            // 
+            this.captureOwnDeath.Location = new System.Drawing.Point(12, 238);
+            this.captureOwnDeath.Name = "captureOwnDeath";
+            this.captureOwnDeath.Size = new System.Drawing.Size(158, 20);
+            this.captureOwnDeath.TabIndex = 59;
+            this.captureOwnDeath.Text = "Capture your own death";
+            this.captureOwnDeath.CheckedChanged += new System.EventHandler(this.CaptureOwnDeath_CheckedChanged);
+            // 
+            // captureOthersDeathDelay
+            // 
+            this.captureOthersDeathDelay.Location = new System.Drawing.Point(196, 211);
+            this.captureOthersDeathDelay.Name = "captureOthersDeathDelay";
+            this.captureOthersDeathDelay.Size = new System.Drawing.Size(32, 23);
+            this.captureOthersDeathDelay.TabIndex = 58;
+            this.captureOthersDeathDelay.Text = "0.5";
+            this.captureOthersDeathDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.captureOthersDeathDelay.TextChanged += new System.EventHandler(this.CaptureOthersDeathDelay_TextChanged);
+            // 
+            // lblCaptureOthersDeathMs
+            // 
+            this.lblCaptureOthersDeathMs.Location = new System.Drawing.Point(230, 214);
+            this.lblCaptureOthersDeathMs.Name = "lblCaptureOthersDeathMs";
+            this.lblCaptureOthersDeathMs.Size = new System.Drawing.Size(26, 18);
+            this.lblCaptureOthersDeathMs.TabIndex = 57;
+            this.lblCaptureOthersDeathMs.Text = "s";
             // 
             // imgurUploads
             // 
@@ -3845,7 +3905,7 @@ namespace Assistant
             // 
             // screenShotNotification
             // 
-            this.screenShotNotification.Location = new System.Drawing.Point(12, 238);
+            this.screenShotNotification.Location = new System.Drawing.Point(266, 173);
             this.screenShotNotification.Name = "screenShotNotification";
             this.screenShotNotification.Size = new System.Drawing.Size(216, 20);
             this.screenShotNotification.TabIndex = 13;
@@ -3923,14 +3983,14 @@ namespace Assistant
             this.radioFull.Text = "Full Screen";
             this.radioFull.CheckedChanged += new System.EventHandler(this.radioFull_CheckedChanged);
             // 
-            // screenAutoCap
+            // captureOthersDeath
             // 
-            this.screenAutoCap.Location = new System.Drawing.Point(12, 212);
-            this.screenAutoCap.Name = "screenAutoCap";
-            this.screenAutoCap.Size = new System.Drawing.Size(180, 20);
-            this.screenAutoCap.TabIndex = 4;
-            this.screenAutoCap.Text = "Auto Death Screen Capture";
-            this.screenAutoCap.CheckedChanged += new System.EventHandler(this.screenAutoCap_CheckedChanged);
+            this.captureOthersDeath.Location = new System.Drawing.Point(12, 212);
+            this.captureOthersDeath.Name = "captureOthersDeath";
+            this.captureOthersDeath.Size = new System.Drawing.Size(216, 20);
+            this.captureOthersDeath.TabIndex = 4;
+            this.captureOthersDeath.Text = "Capture death of other players";
+            this.captureOthersDeath.CheckedChanged += new System.EventHandler(this.CaptureOthersDeath_CheckedChanged);
             // 
             // setScnPath
             // 
@@ -3958,7 +4018,7 @@ namespace Assistant
             this.screenPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.screenPrev.Location = new System.Drawing.Point(266, 36);
             this.screenPrev.Name = "screenPrev";
-            this.screenPrev.Size = new System.Drawing.Size(246, 153);
+            this.screenPrev.Size = new System.Drawing.Size(246, 131);
             this.screenPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.screenPrev.TabIndex = 0;
             this.screenPrev.TabStop = false;
@@ -4488,9 +4548,7 @@ namespace Assistant
             txtObjDelay.SafeAction(s => { s.Text = Config.GetInt("ObjectDelay").ToString(); });
 
             chkStealth.SafeAction(s => { s.Checked = Config.GetBool("CountStealthSteps"); });
-
-            screenAutoCap.SafeAction(s => { s.Checked = Config.GetBool("AutoCap"); });
-
+            
             radioUO.SafeAction(s => { s.Checked = !(radioFull.Checked = Config.GetBool("CapFullScreen")); });
 
             screenPath.SafeAction(s => { s.Text = Config.GetString("CapPath"); });
@@ -4749,6 +4807,11 @@ namespace Assistant
             showBandageEnd.SafeAction(s => { s.Checked = Config.GetBool("ShowBandageEnd"); });
             bandageStartMessage.SafeAction(s => { s.Text = Config.GetString("BandageStartMessage"); });
             bandageEndMessage.SafeAction(s => { s.Text = Config.GetString("BandageEndMessage"); });
+
+            captureOthersDeathDelay.SafeAction(s => { s.Text = Config.GetDouble("CaptureOthersDeathDelay").ToString(); });
+            captureOwnDeathDelay.SafeAction(s => { s.Text = Config.GetDouble("CaptureOwnDeathDelay").ToString(); });
+            captureOthersDeath.SafeAction(s => { s.Checked = Config.GetBool("CaptureOthersDeath"); });
+            captureOwnDeath.SafeAction(s => { s.Checked = Config.GetBool("CaptureOwnDeath"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -7488,11 +7551,6 @@ namespace Assistant
             agentList.SelectedItem = SearchExemptionAgent.Instance;
         }
 
-        private void screenAutoCap_CheckedChanged(object sender, System.EventArgs e)
-        {
-            Config.SetProperty("AutoCap", screenAutoCap.Checked);
-        }
-
         private void setScnPath_Click(object sender, System.EventArgs e)
         {
             FolderBrowserDialog folder = new FolderBrowserDialog();
@@ -7898,12 +7956,6 @@ namespace Assistant
                 MessageBox.Show(String.Format("Unable to open browser to '{0}'", site), "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
-        }
-
-        private void donate_Click(object sender, System.EventArgs e)
-        {
-            LaunchBrowser(
-                "https://www.paypal.com/xclick/business=zippy%40runuo.com&item_name=Razor&no_shipping=1&no_note=1&tax=0&currency_code=USD");
         }
 
         private void undressConflicts_CheckedChanged(object sender, System.EventArgs e)
@@ -9938,6 +9990,38 @@ namespace Assistant
                 _buffDebuffOptions = new BuffDebuff();
 
                 _buffDebuffOptions.SafeAction(s => s.Show());
+            }
+        }
+
+        private void CaptureOthersDeathDelay_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("CaptureOthersDeathDelay", Utility.ToDouble(captureOthersDeathDelay.Text.Trim(), 0.5));
+
+            if (Config.GetDouble("CaptureOthersDeathDelay") < 0 || Config.GetDouble("CaptureOthersDeathDelay") > 5)
+            {
+                Config.SetProperty("CaptureOthersDeathDelay", 0.5);
+                captureOthersDeathDelay.SafeAction(s => s.Text = "0.5");
+            }
+        }
+
+        private void CaptureOthersDeath_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("CaptureOthersDeath", captureOthersDeath.Checked);
+        }
+
+        private void CaptureOwnDeath_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("CaptureOwnDeath", captureOwnDeath.Checked);
+        }
+
+        private void CaptureOwnDeathDelay_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("CaptureOwnDeathDelay", Utility.ToDouble(captureOwnDeathDelay.Text.Trim(), 0.5));
+
+            if (Config.GetDouble("CaptureOwnDeathDelay") < 0 || Config.GetDouble("CaptureOwnDeathDelay") > 5)
+            {
+                Config.SetProperty("CaptureOwnDeathDelay", 0.5);
+                captureOwnDeathDelay.SafeAction(s => s.Text = "0.5");
             }
         }
     }

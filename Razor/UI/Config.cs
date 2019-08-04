@@ -73,7 +73,6 @@ namespace Assistant
 
             AddProperty("BlockDismount", false);
 
-            AddProperty("AutoCap", false);
             AddProperty("CapFullScreen", false);
             AddProperty("CapPath",
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RazorScreenShots"));
@@ -264,6 +263,11 @@ namespace Assistant
             AddProperty("DisplayBuffDebuffEvery", false);
             AddProperty("BuffDebuffFilter", string.Empty);
             AddProperty("BuffDebuffEveryXSeconds", false);
+            
+            AddProperty("CaptureOthersDeathDelay", 0.5);
+            AddProperty("CaptureOwnDeathDelay", 0.5);
+            AddProperty("CaptureOthersDeath", false);
+            AddProperty("CaptureOwnDeath", false);
 
             Counter.Default();
             Filter.DisableAll();
@@ -271,6 +275,8 @@ namespace Assistant
             HotKey.ClearAll();
             Agent.ClearAll();
             PasswordMemory.ClearAll();
+            FriendsManager.ClearAll();
+            DressList.ClearAll();
             OverheadMessages.ClearAll();
             ContainerLabels.ClearAll();
             MacroVariables.ClearAll();

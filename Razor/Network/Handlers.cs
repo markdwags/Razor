@@ -247,11 +247,18 @@ namespace Assistant
         private static void DeathAnimation(PacketReader p, PacketHandlerEventArgs args)
         {
             Serial killed = p.ReadUInt32();
-            if (Config.GetBool("AutoCap"))
+            Mobile m = World.FindMobile(killed);
+
+            if (Config.GetBool("CaptureOthersDeath"))
             {
-                Mobile m = World.FindMobile(killed);
-                if (m != null && ((m.Body >= 0x0190 && m.Body <= 0x0193) || (m.Body >= 0x025D && m.Body <= 0x0260)) && Utility.Distance(World.Player.Position, m.Position) <= 12)
-                    ScreenCapManager.DeathCapture(0.5);
+                if (m != null && ((m.Body >= 0x0190 && m.Body <= 0x0193) || (m.Body >= 0x025D && m.Body <= 0x0260)) &&
+                    Utility.Distance(World.Player.Position, m.Position) <= 12)
+                {
+                    if (!string.IsNullOrEmpty(m.Name))
+                        ScreenCapManager.LastMobileDeathName = m.Name;
+
+                    ScreenCapManager.DeathCapture(Config.GetDouble("CaptureOthersDeathDelay"));
+                }
             }
         }
 
@@ -2783,14 +2790,14 @@ namespace Assistant
             return gumpText;
         }
 
+        private static DateTime _lastSelfDeathScreenshot = DateTime.MinValue;
+
         private static void ResurrectionGump(PacketReader p, PacketHandlerEventArgs args)
         {
-            if (Config.GetBool("AutoCap"))
+            if (Config.GetBool("CaptureOwnDeath") && _lastSelfDeathScreenshot + TimeSpan.FromMilliseconds(500) < DateTime.UtcNow)
             {
-                ScreenCapManager.DeathCapture(0.10);
-                ScreenCapManager.DeathCapture(0.25);
-                ScreenCapManager.DeathCapture(0.50);
-                ScreenCapManager.DeathCapture(0.75);
+                ScreenCapManager.DeathCapture(Config.GetDouble("CaptureOwnDeathDelay"));
+                _lastSelfDeathScreenshot = DateTime.UtcNow;
             }
         }
 

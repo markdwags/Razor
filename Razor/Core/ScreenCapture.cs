@@ -4,139 +4,146 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-
 using Assistant.UI;
 
 namespace Assistant
 {
-	public class ScreenCapManager
-	{
-		[System.Runtime.InteropServices.DllImport( "Gdi32.dll" )]
-		private static extern IntPtr DeleteObject( IntPtr hGdiObj );
+    public class ScreenCapManager
+    {
+        [System.Runtime.InteropServices.DllImport("Gdi32.dll")]
+        private static extern IntPtr DeleteObject(IntPtr hGdiObj);
 
-		private static TimerCallback m_DoCaptureCall = new TimerCallback( CaptureNow );
-		public static void Initialize()
-		{
-			HotKey.Add( HKCategory.Misc, LocString.TakeSS, new HotKeyCallback( CaptureNow ) );
-		}
+        private static TimerCallback m_DoCaptureCall = new TimerCallback(CaptureNow);
 
-		public static void DeathCapture(double delay)
-		{
-		    Timer.DelayedCallback(TimeSpan.FromSeconds(delay), m_DoCaptureCall).Start();
-          }
+        public static string LastMobileDeathName { get; set; }
 
-		public static void CaptureNow()
-		{
-			string filename;
-			string timestamp;
-			string name = "Unknown";
-			string path = Config.GetString( "CapPath" );
-			string type = Config.GetString( "ImageFormat" ).ToLower();
+        public static void Initialize()
+        {
+            HotKey.Add(HKCategory.Misc, LocString.TakeSS, new HotKeyCallback(CaptureNow));
+        }
 
-			if ( World.Player != null )
-				name = World.Player.Name;
-			if ( name == null || name.Trim() == "" || name.IndexOfAny( Path.GetInvalidPathChars() ) != -1 )
-				name = "Unknown";
+        public static void DeathCapture(double delay)
+        {
+            Timer.DelayedCallback(TimeSpan.FromSeconds(delay), m_DoCaptureCall).Start();
+        }
 
-			if ( Config.GetBool( "CapTimeStamp" ) )
-				timestamp = String.Format( "{0} ({1}) - {2}", name, World.ShardName, Engine.MistedDateTime.ToString( @"M/dd/yy - HH:mm:ss" ) );
-			else
-				timestamp = "";
+        public static void CaptureNow()
+        {
+            string filename;
+            string playerName = "Unknown";
+            string path = Config.GetString("CapPath");
+            string type = Config.GetString("ImageFormat").ToLower();
 
-			name = String.Format( "{0}_{1}", name, Engine.MistedDateTime.ToString( "M-d_HH.mm" ) );
-			try
-			{
-				Engine.EnsureDirectory( path );
-			}
-			catch
-			{
-				try
-				{
+            if (World.Player != null)
+                playerName = World.Player.Name;
+
+            if (playerName == null || playerName.Trim() == "" || playerName.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+                playerName = "Unknown";
+
+            string imageTimestampTag = Config.GetBool("CapTimeStamp")
+                ? $"{playerName} ({World.ShardName}) - {Engine.MistedDateTime:M/dd/yy - HH:mm:ss}"
+                : "";
+
+            playerName = !string.IsNullOrEmpty(LastMobileDeathName)
+                ? $"{playerName}_{LastMobileDeathName}_{Engine.MistedDateTime:M-d_HH.mm}"
+                : $"{playerName}_{Engine.MistedDateTime:M-d_HH.mm}";
+
+            try
+            {
+                Engine.EnsureDirectory(path);
+            }
+            catch
+            {
+                try
+                {
                     path = Config.GetUserDirectory("ScreenShots");
-					Config.SetProperty( "CapPath", path );
-				}
-				catch
-				{
-					path = "";
-				}
-			}
+                    Config.SetProperty("CapPath", path);
+                }
+                catch
+                {
+                    path = "";
+                }
+            }
 
-			int count  = 0;
-			do
-			{
-				filename = Path.Combine( path, String.Format( "{0}{1}.{2}", name, count != 0 ? count.ToString() : "" , type ) );
-				count--; // cause a - to be put in front of the number
-			}
-			while ( File.Exists( filename ) );
+            int count = 0;
+            do
+            {
+                filename = Path.Combine(path,
+                    $"{playerName}{(count != 0 ? count.ToString() : "")}.{type}");
+                count--; // cause a - to be put in front of the number
+            } while (File.Exists(filename));
 
-			try
-			{
-				IntPtr hBmp = Platform.CaptureScreen(Client.Instance.GetWindowHandle(), Config.GetBool( "CapFullScreen" ), timestamp );
-				using ( Image img = Image.FromHbitmap( hBmp ) )
-					img.Save( filename, GetFormat( type ) );
-				DeleteObject( hBmp );
-			}
-			catch
-			{
-			}
+            try
+            {
+                IntPtr hBmp = Platform.CaptureScreen(Client.Instance.GetWindowHandle(), Config.GetBool("CapFullScreen"),
+                    imageTimestampTag);
+                using (Image img = Image.FromHbitmap(hBmp))
+                    img.Save(filename, GetFormat(type));
+                DeleteObject(hBmp);
+            }
+            catch
+            {
+                // ignored
+            }
 
-			Engine.MainWindow.SafeAction(s => s.ReloadScreenShotsList());
-		}
+            LastMobileDeathName = string.Empty;
 
-		private static ImageFormat GetFormat( string fmt )
-		{
-			//string fmt = Config.GetString( "ImageFormat" ).ToLower();
-			if ( fmt == "jpeg" || fmt == "jpg" )
-				return ImageFormat.Jpeg;
-			else if ( fmt == "png" )
-				return ImageFormat.Png;
-			else if ( fmt == "bmp" )
-				return ImageFormat.Bmp;
-			else if ( fmt == "gif" )
-				return ImageFormat.Gif;
-			else if ( fmt == "tiff" || fmt == "tif" )
-				return ImageFormat.Tiff;
-			else if ( fmt == "wmf" )
-				return ImageFormat.Wmf;
-			else if ( fmt == "exif" )
-				return ImageFormat.Exif;
-			else if ( fmt == "emf" )
-				return ImageFormat.Emf;
-			else
-				return ImageFormat.Jpeg;
-		}
+            Engine.MainWindow.SafeAction(s => s.ReloadScreenShotsList());
+        }
 
-		public static void DisplayTo( ListBox list )
-		{
-			string path = Config.GetString( "CapPath" );
-			Engine.EnsureDirectory( path );
+        private static ImageFormat GetFormat(string fmt)
+        {
+            //string fmt = Config.GetString( "ImageFormat" ).ToLower();
+            if (fmt == "jpeg" || fmt == "jpg")
+                return ImageFormat.Jpeg;
+            else if (fmt == "png")
+                return ImageFormat.Png;
+            else if (fmt == "bmp")
+                return ImageFormat.Bmp;
+            else if (fmt == "gif")
+                return ImageFormat.Gif;
+            else if (fmt == "tiff" || fmt == "tif")
+                return ImageFormat.Tiff;
+            else if (fmt == "wmf")
+                return ImageFormat.Wmf;
+            else if (fmt == "exif")
+                return ImageFormat.Exif;
+            else if (fmt == "emf")
+                return ImageFormat.Emf;
+            else
+                return ImageFormat.Jpeg;
+        }
 
-			//list.BeginUpdate();
-			list.Items.Clear();
+        public static void DisplayTo(ListBox list)
+        {
+            string path = Config.GetString("CapPath");
+            Engine.EnsureDirectory(path);
 
-			AddFiles( list, path, "jpeg" );
-			AddFiles( list, path, "jpg" );
-			AddFiles( list, path, "png" );
-			AddFiles( list, path, "bmp" );
-			AddFiles( list, path, "gif" );
-			AddFiles( list, path, "tiff" );
-			AddFiles( list, path, "tif" );
-			AddFiles( list, path, "wmf" );
-			AddFiles( list, path, "exif" );
-			AddFiles( list, path, "emf" );
-			//list.EndUpdate();
-		}
+            //list.BeginUpdate();
+            list.Items.Clear();
 
-		public static void AddFiles( ListBox list, string path, string ext )
-		{
-			if ( list.Items.Count >= 500 )
-				return;
+            AddFiles(list, path, "jpeg");
+            AddFiles(list, path, "jpg");
+            AddFiles(list, path, "png");
+            AddFiles(list, path, "bmp");
+            AddFiles(list, path, "gif");
+            AddFiles(list, path, "tiff");
+            AddFiles(list, path, "tif");
+            AddFiles(list, path, "wmf");
+            AddFiles(list, path, "exif");
+            AddFiles(list, path, "emf");
+            //list.EndUpdate();
+        }
 
-			string[] files = Directory.GetFiles( path, String.Format( "*.{0}", ext ) );
-			for (int i=0;i<files.Length && list.Items.Count < 500;i++)
-				list.Items.Add( Path.GetFileName( files[i] ) );
-		}
+        public static void AddFiles(ListBox list, string path, string ext)
+        {
+            if (list.Items.Count >= 500)
+                return;
 
+            string[] files = Directory.GetFiles(path, String.Format("*.{0}", ext));
+            for (int i = 0; i < files.Length && list.Items.Count < 500; i++)
+                list.Items.Add(Path.GetFileName(files[i]));
+        }
 
 
         public static Image CaptureWindow(IntPtr handle)
@@ -168,6 +175,7 @@ namespace Assistant
             GDI32.DeleteObject(hBitmap);
             return img;
         }
+
         /// <summary>
         /// Captures a screen shot of a specific window, and saves it to a file
         /// </summary>
@@ -179,6 +187,7 @@ namespace Assistant
             Image img = CaptureWindow(handle);
             img.Save(filename, format);
         }
+
         /// <summary>
         /// Captures a screen shot of the entire desktop, and saves it to a file
         /// </summary>
@@ -200,21 +209,26 @@ namespace Assistant
         /// </summary>
         private class GDI32
         {
-
             public const int SRCCOPY = 0x00CC0020; // BitBlt dwRop parameter
+
             [DllImport("gdi32.dll")]
             public static extern bool BitBlt(IntPtr hObject, int nXDest, int nYDest,
                 int nWidth, int nHeight, IntPtr hObjectSource,
                 int nXSrc, int nYSrc, int dwRop);
+
             [DllImport("gdi32.dll")]
             public static extern IntPtr CreateCompatibleBitmap(IntPtr hDC, int nWidth,
                 int nHeight);
+
             [DllImport("gdi32.dll")]
             public static extern IntPtr CreateCompatibleDC(IntPtr hDC);
+
             [DllImport("gdi32.dll")]
             public static extern bool DeleteDC(IntPtr hDC);
+
             [DllImport("gdi32.dll")]
             public static extern bool DeleteObject(IntPtr hObject);
+
             [DllImport("gdi32.dll")]
             public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
         }
@@ -232,16 +246,18 @@ namespace Assistant
                 public int right;
                 public int bottom;
             }
+
             [DllImport("user32.dll")]
             public static extern IntPtr GetDesktopWindow();
+
             [DllImport("user32.dll")]
             public static extern IntPtr GetWindowDC(IntPtr hWnd);
+
             [DllImport("user32.dll")]
             public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
             [DllImport("user32.dll")]
             public static extern IntPtr GetWindowRect(IntPtr hWnd, ref RECT rect);
         }
-
     }
 }
-
