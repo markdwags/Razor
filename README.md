@@ -8,11 +8,13 @@ Razor is a free tool designed to help with simple tasks while playing Ultima Onl
 
 ## UO:R Community Edition
 
-The purpose and goal of this project is to revive and continue development of the abandoned Razor project and focus on "quality of life" improvements while keeping the spirit of Razor intact.
+The purpose and goal of this project is to revive and continue development of the abandoned Razor project and focus on "quality of life" improvements without driving down the path of automation and advanced scripting that is available in other assistants.
+
+This project also attempts to keep the spirit and vision of the original Razor intact the original developers had for Razor.
 
 For release notes, download links and other information go to http://www.uor-razor.com.
 
-This version is currently being refactored to integrate with both the standard Ultima Online client (5.x & 7.x) and the open source [ClassicUO](https://github.com/andreakarasho/ClassicUO).
+This version currently supports both the standard Ultima Online client (5.x & 7.x) and the open source [ClassicUO](https://github.com/andreakarasho/ClassicUO).
 
 ## History
 
