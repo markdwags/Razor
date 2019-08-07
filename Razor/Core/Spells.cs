@@ -347,17 +347,17 @@ namespace Assistant
             }
         }
 
-        internal static Item FindUsedLayer()
+        private static Item FindUsedLayer()
         {
-            Item layeredItem = World.Player.GetItemOnLayer(Layer.Shoes);
+            Item layeredItem = World.Player.GetItemOnLayer(Layer.Shirt);
+            if (layeredItem != null)
+                return layeredItem;
+
+            layeredItem = World.Player.GetItemOnLayer(Layer.Shoes);
             if (layeredItem != null)
                 return layeredItem;
 
             layeredItem = World.Player.GetItemOnLayer(Layer.Pants);
-            if (layeredItem != null)
-                return layeredItem;
-
-            layeredItem = World.Player.GetItemOnLayer(Layer.Shirt);
             if (layeredItem != null)
                 return layeredItem;
 
