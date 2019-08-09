@@ -262,7 +262,7 @@ namespace Assistant.UI
 
         private void editOverheadMessage_Click(object sender, EventArgs e)
         {
-            if (cliLocSearchView.SelectedItems.Count == 0)
+            if (cliLocOverheadView.SelectedItems.Count == 0)
                 return;
 
             ListViewItem selectedItem = cliLocOverheadView.SelectedItems[0];
