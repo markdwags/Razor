@@ -911,6 +911,7 @@ namespace Assistant
         public uint CurrentGumpS, CurrentGumpI;
         public GumpResponseAction LastGumpResponseAction;
         public bool HasGump;
+        public bool HasCompressedGump;
         public List<string> CurrentGumpStrings = new List<string>();
         public string CurrentGumpRawData;
         public uint CurrentMenuS;

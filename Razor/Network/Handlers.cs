@@ -2176,6 +2176,7 @@ namespace Assistant
             int bid = p.ReadInt32();
 
             World.Player.HasGump = false;
+            World.Player.HasCompressedGump = false;
 
             int sc = p.ReadInt32();
             if (sc < 0 || sc > 2000)
@@ -2230,7 +2231,10 @@ namespace Assistant
                 {
                     // int serial, int tid
                     if (World.Player != null)
+                    {
                         World.Player.HasGump = false;
+                        World.Player.HasCompressedGump = false;
+                    }
                     break;
                 }
 
@@ -2736,7 +2740,7 @@ namespace Assistant
 
             World.Player.CurrentGumpS = p.ReadUInt32();
             World.Player.CurrentGumpI = p.ReadUInt32();
-            //World.Player.HasGump = true;
+            World.Player.HasCompressedGump = true;
 
             if (Macros.MacroManager.AcceptActions &&
                 MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))

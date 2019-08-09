@@ -820,6 +820,7 @@ namespace Assistant.Macros
             Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI,
                 m_ButtonID, m_Switches, m_TextEntries));
             World.Player.HasGump = false;
+            World.Player.HasCompressedGump = false;
             return true;
         }
 
@@ -2132,7 +2133,7 @@ namespace Assistant.Macros
 
         public override bool PerformWait()
         {
-            return !(World.Player.HasGump && (World.Player.CurrentGumpI == m_GumpID || !m_Strict || m_GumpID == 0));
+            return !((World.Player.HasGump || World.Player.HasCompressedGump) && (World.Player.CurrentGumpI == m_GumpID || !m_Strict || m_GumpID == 0));
 
             //if (!World.Player.HasGump) // Does the player even have a gump?
             //    return true;
