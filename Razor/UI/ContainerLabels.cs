@@ -44,19 +44,19 @@ namespace Assistant.UI
 
                 item.UseItemStyleForSubItems = false;
 
-                containerView.Items.Add(item);
+                containerView.SafeAction(s => s.Items.Add(item));
             }
 
-            containerLabelFormat.Text = Config.GetString("ContainerLabelFormat");
+            containerLabelFormat.SafeAction(s => s.Text = Config.GetString("ContainerLabelFormat"));
             InitPreviewHue(lblContainerHue, "ContainerLabelColor");
 
             if (Config.GetInt("ContainerLabelStyle") == 0)
             {
-                asciiStyle.Checked = true;
+                asciiStyle.SafeAction(s => s.Checked = true);
             }
             else
             {
-                unicodeStyle.Checked = true;
+                unicodeStyle.SafeAction(s => s.Checked = true);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Assistant.UI
         {
             if (containerView.SelectedItems.Count > 0)
             {
-                containerView.Items.Remove(containerView.SelectedItems[0]);
+                containerView.SafeAction(s => s.Items.Remove(containerView.SelectedItems[0]));
             }
         }
 
@@ -187,7 +187,7 @@ namespace Assistant.UI
 
                         lvItem.UseItemStyleForSubItems = false;
 
-                        containerView.Items.Add(lvItem);
+                        containerView.SafeAction(s => s.Items.Add(lvItem));
 
                         NewContainerEntries.Add(new Core.ContainerLabels.ContainerLabel
                         {

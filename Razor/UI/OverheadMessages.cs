@@ -40,24 +40,24 @@ namespace Assistant.UI
 
                 item.UseItemStyleForSubItems = false;
 
-                cliLocOverheadView.Items.Add(item);
+                cliLocOverheadView.SafeAction(s => s.Items.Add(item));
             }
 
-            overheadFormat.Text = Config.GetString("OverheadFormat");
+            overheadFormat.SafeAction(s => s.Text = Config.GetString("OverheadFormat"));
 
             if (Config.GetInt("OverheadStyle") == 0)
             {
-                asciiStyle.Checked = true;
+                asciiStyle.SafeAction(s => s.Checked = true);
             }
             else
             {
-                unicodeStyle.Checked = true;
+                unicodeStyle.SafeAction(s => s.Checked = true);
             }
         }
 
         private void cliLocSearch_Click(object sender, EventArgs e)
         {
-            cliLocSearchView.Items.Clear();
+            cliLocSearchView.SafeAction(s => s.Items.Clear());
 
             if (string.IsNullOrEmpty(cliLocTextSearch.Text) || cliLocTextSearch.Text.Length < 4)
                 return;
@@ -68,7 +68,8 @@ namespace Assistant.UI
                 {
                     ListViewItem item = new ListViewItem($"{entry.Number}");
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, $"{entry.Text}"));
-                    cliLocSearchView.Items.Add(item);
+
+                    cliLocSearchView.SafeAction(s => s.Items.Add(item));
                 }
             }
 
@@ -121,7 +122,7 @@ namespace Assistant.UI
                     (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
                 item.UseItemStyleForSubItems = false;
 
-                cliLocOverheadView.Items.Add(item);
+                cliLocOverheadView.SafeAction(s => s.Items.Add(item));
 
                 NewOverheadEntries.Add(new Core.OverheadMessages.OverheadMessage
                 {
@@ -136,7 +137,7 @@ namespace Assistant.UI
         {
             if (cliLocOverheadView.SelectedItems.Count > 0)
             {
-                cliLocOverheadView.Items.Remove(cliLocOverheadView.SelectedItems[0]);
+                cliLocOverheadView.SafeAction(s => s.Items.Remove(s.SelectedItems[0]));
             }
         }
 
