@@ -195,6 +195,7 @@
     <Compile Include="Filters\MessageFilter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\MobileFilter.cs" />
     <Compile Include="Filters\SoundFilters.cs">
       <SubType>Code</SubType>
     </Compile>

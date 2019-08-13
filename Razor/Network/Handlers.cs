@@ -990,24 +990,8 @@ namespace Assistant
             {
                 m.Body = p.ReadUInt16();
 
-                if (Config.GetBool("FilterDragonGraphics"))
-                {
-                    if (m.Body == 0xC || m.Body == 0x3B)
-                    {
-                        p.Seek(-2, SeekOrigin.Current);
-                        p.Write((ushort) Config.GetInt("DragonGraphic"));
-                    }
-                }
-
-                if (Config.GetBool("FilterDrakeGraphics"))
-                {
-                    if (m.Body == 0x3C || m.Body == 0x3D)
-                    {
-                        p.Seek(-2, SeekOrigin.Current);
-                        p.Write((ushort) Config.GetInt("DrakeGraphic"));
-                    }
-                }
-
+                MobileFilter.ApplyDragonFilter(p, m);
+                MobileFilter.ApplyDrakeFilter(p, m);
 
                 m.Position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
@@ -1450,21 +1434,16 @@ namespace Assistant
 
             Serial serial = p.ReadUInt32();
             ushort body = p.ReadUInt16();
-
-            if (Config.GetBool("FilterDragonGraphics"))
-            {
-                if (body == 0xC || body == 0x3B)
-                {
-                    p.Seek(-2, SeekOrigin.Current);
-                    p.Write((ushort) Config.GetInt("DragonGraphic"));
-                }
-            }
-
-            Point3D position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
-
+           
             Mobile m = World.FindMobile(serial);
+
             if (m == null)
                 World.AddMobile(m = new Mobile(serial));
+
+            MobileFilter.ApplyDragonFilter(p, m);
+            MobileFilter.ApplyDrakeFilter(p, m);
+
+            Point3D position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
             bool wasHidden = !m.Visible;
 
