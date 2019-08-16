@@ -402,7 +402,7 @@ namespace Assistant.Core
         {
             RedrawGroup();
 
-            if (_friendGroups.Items.Count > 0)
+            if (_friendGroups?.Items.Count > 0)
             {
                 RedrawList((FriendGroup) _friendGroups.Items[0]);
             }
@@ -414,7 +414,7 @@ namespace Assistant.Core
 
         public static void RedrawGroup()
         {
-            _friendGroups.SafeAction(s =>
+            _friendGroups?.SafeAction(s =>
             {
                 s.BeginUpdate();
                 s.Items.Clear();
@@ -435,7 +435,7 @@ namespace Assistant.Core
 
         public static void RedrawList(FriendGroup group)
         {
-            _friendList.SafeAction(s =>
+            _friendList?.SafeAction(s =>
             {
                 s.BeginUpdate();
                 s.Items.Clear();
