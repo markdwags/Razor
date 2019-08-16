@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Assistant.Core;
+using Assistant.Filters;
 
 namespace Assistant
 {
@@ -208,7 +209,8 @@ namespace Assistant
 
         private static void NextTarget()
         {
-            var mobiles = World.MobilesInRange().Where(x => !IsNextPrevFriend(x)).ToList();
+            var mobiles = World.MobilesInRange()
+                .Where(x => !IsNextPrevFriend(x) && !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -216,7 +218,8 @@ namespace Assistant
         private static void NextTargetHumanoid()
         {
             var mobiles = World.MobilesInRange().Where(x =>
-                    x.IsHuman && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                    x.IsHuman && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                    !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, true);
@@ -226,7 +229,7 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsHuman && x.Notoriety == (int) TargetType.Enemy && !IsNextPrevFriend(x) && !x.Blessed &&
-                    !x.IsGhost && x.Serial != World.Player.Serial)
+                    !x.IsGhost && x.Serial != World.Player.Serial && !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, true);
@@ -236,7 +239,7 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsMonster && x.Notoriety == (int) TargetType.Enemy && !IsNextPrevFriend(x) && !x.Blessed &&
-                    !x.IsGhost && x.Serial != World.Player.Serial)
+                    !x.IsGhost && x.Serial != World.Player.Serial && !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, true);
@@ -245,7 +248,8 @@ namespace Assistant
         private static void NextTargetMonster()
         {
             var mobiles = World.MobilesInRange().Where(x =>
-                    x.IsMonster && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                    x.IsMonster && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost &&
+                    x.Serial != World.Player.Serial && !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, true);
@@ -262,7 +266,8 @@ namespace Assistant
 
         private static void PrevTarget()
         {
-            var mobiles = World.MobilesInRange().Where(x => !IsNextPrevFriend(x)).ToList();
+            var mobiles = World.MobilesInRange()
+                .Where(x => !IsNextPrevFriend(x) && !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, false);
         }
@@ -270,7 +275,8 @@ namespace Assistant
         private static void PrevTargetHumanoid()
         {
             var mobiles = World.MobilesInRange().Where(x =>
-                    x.IsHuman && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                    x.IsHuman && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                    !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false);
@@ -280,7 +286,7 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsHuman && x.Notoriety == (int) TargetType.Enemy && !IsNextPrevFriend(x) && !x.Blessed &&
-                    !x.IsGhost && x.Serial != World.Player.Serial)
+                    !x.IsGhost && x.Serial != World.Player.Serial && !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false);
@@ -290,7 +296,7 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsMonster && x.Notoriety == (int) TargetType.Enemy && !IsNextPrevFriend(x) && !x.Blessed &&
-                    !x.IsGhost && x.Serial != World.Player.Serial)
+                    !x.IsGhost && x.Serial != World.Player.Serial && !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false);
@@ -299,7 +305,8 @@ namespace Assistant
         private static void PrevTargetMonster()
         {
             var mobiles = World.MobilesInRange().Where(x =>
-                    x.IsMonster && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                    x.IsMonster && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost &&
+                    x.Serial != World.Player.Serial && !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false);
@@ -317,8 +324,9 @@ namespace Assistant
         private static void NextTargetCriminalHumanoid()
         {
             var mobiles = World.MobilesInRange().Where(x =>
-                x.IsHuman && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) && !x.Blessed &&
-                !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                    x.IsHuman && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) && !x.Blessed &&
+                    !x.IsGhost && x.Serial != World.Player.Serial && !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -327,7 +335,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Murderer && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -336,7 +345,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Innocent && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -344,8 +354,9 @@ namespace Assistant
         private static void NextTargetCriminalMonster()
         {
             var mobiles = World.MobilesInRange().Where(x =>
-                x.IsMonster && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) && !x.Blessed &&
-                !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                    x.IsMonster && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) && !x.Blessed &&
+                    !x.IsGhost && x.Serial != World.Player.Serial && !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -354,7 +365,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Murderer && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -363,7 +375,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Innocent && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, true);
         }
@@ -372,7 +385,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, false);
         }
@@ -381,7 +395,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, false);
         }
@@ -390,7 +405,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Murderer && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, false);
         }
@@ -399,7 +415,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Murderer && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, false);
         }
@@ -408,7 +425,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Innocent && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, false);
         }
@@ -417,7 +435,8 @@ namespace Assistant
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Innocent && !IsNextPrevFriend(x) &&
-                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial).ToList();
+                            !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
 
             NextPrevTarget(mobiles, false);
         }
@@ -428,7 +447,8 @@ namespace Assistant
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Innocent ||
                                           x.Notoriety == (int) TargetType.Invalid ||
                                           x.Notoriety == (int) TargetType.GuildAlly) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, true, false, true);
@@ -440,7 +460,8 @@ namespace Assistant
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Innocent ||
                                             x.Notoriety == (int) TargetType.Invalid ||
                                             x.Notoriety == (int) TargetType.GuildAlly) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, true, false, true);
@@ -451,7 +472,8 @@ namespace Assistant
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
                                           x.Notoriety == (int) TargetType.Criminal) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, true);
@@ -462,7 +484,8 @@ namespace Assistant
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Attackable ||
                                             x.Notoriety == (int) TargetType.Criminal) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, true);
@@ -475,7 +498,8 @@ namespace Assistant
                                           x.Notoriety == (int) TargetType.Criminal ||
                                           x.Notoriety == (int) TargetType.Enemy ||
                                           x.Notoriety == (int) TargetType.Murderer) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)
                 ).ToList();
 
             NextPrevTarget(mobiles, true, false, false, true);
@@ -488,7 +512,8 @@ namespace Assistant
                                             x.Notoriety == (int) TargetType.Criminal ||
                                             x.Notoriety == (int) TargetType.Enemy ||
                                             x.Notoriety == (int) TargetType.Murderer) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial)
                 ).ToList();
 
             NextPrevTarget(mobiles, true, false, false, true);
@@ -500,7 +525,8 @@ namespace Assistant
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Innocent ||
                                           x.Notoriety == (int) TargetType.Invalid ||
                                           x.Notoriety == (int) TargetType.GuildAlly) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false, false, true);
@@ -512,7 +538,8 @@ namespace Assistant
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Innocent ||
                                             x.Notoriety == (int) TargetType.Invalid ||
                                             x.Notoriety == (int) TargetType.GuildAlly) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false, false, true);
@@ -523,7 +550,8 @@ namespace Assistant
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
                                           x.Notoriety == (int) TargetType.Criminal) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false);
@@ -534,7 +562,8 @@ namespace Assistant
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Attackable ||
                                             x.Notoriety == (int) TargetType.Criminal) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false);
@@ -547,7 +576,8 @@ namespace Assistant
                                           x.Notoriety == (int) TargetType.Criminal ||
                                           x.Notoriety == (int) TargetType.Enemy ||
                                           x.Notoriety == (int) TargetType.Murderer) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false, false, false, true);
@@ -560,7 +590,8 @@ namespace Assistant
                                             x.Notoriety == (int) TargetType.Criminal ||
                                             x.Notoriety == (int) TargetType.Enemy ||
                                             x.Notoriety == (int) TargetType.Murderer) &&
-                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();
 
             NextPrevTarget(mobiles, false, false, false, true);

@@ -366,6 +366,12 @@ namespace Assistant
         private TextBox captureOwnDeathDelay;
         private Label lblOwnDeathMs;
         private CheckBox captureOwnDeath;
+        private TabPage subTargetFilterTab;
+        private CheckBox targetFilterEnabled;
+        private ListBox targetFilter;
+        private Button targetFilterClear;
+        private Button targetFilterRemove;
+        private Button targetFilterAdd;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -421,8 +427,7 @@ namespace Assistant
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources =
-                new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.m_NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.generalTab = new System.Windows.Forms.TabPage();
@@ -468,6 +473,12 @@ namespace Assistant
             this.dragonAnimationList = new System.Windows.Forms.ComboBox();
             this.filterDragonGraphics = new System.Windows.Forms.CheckBox();
             this.filters = new System.Windows.Forms.CheckedListBox();
+            this.subTargetFilterTab = new System.Windows.Forms.TabPage();
+            this.targetFilterClear = new System.Windows.Forms.Button();
+            this.targetFilterRemove = new System.Windows.Forms.Button();
+            this.targetFilterAdd = new System.Windows.Forms.Button();
+            this.targetFilter = new System.Windows.Forms.ListBox();
+            this.targetFilterEnabled = new System.Windows.Forms.CheckBox();
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
@@ -602,8 +613,8 @@ namespace Assistant
             this.checkNewConts = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.counters = new System.Windows.Forms.ListView();
-            this.cntName = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
-            this.cntCount = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
+            this.cntName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cntCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.delCounter = new System.Windows.Forms.Button();
             this.addCounter = new System.Windows.Forms.Button();
             this.recount = new System.Windows.Forms.Button();
@@ -647,12 +658,12 @@ namespace Assistant
             this.setlocks = new System.Windows.Forms.Button();
             this.resetDelta = new System.Windows.Forms.Button();
             this.skillList = new System.Windows.Forms.ListView();
-            this.skillHDRName = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRvalue = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRbase = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRdelta = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRcap = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
-            this.skillHDRlock = ((System.Windows.Forms.ColumnHeader) (new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRvalue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRbase = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRdelta = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRcap = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.skillHDRlock = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.agentsTab = new System.Windows.Forms.TabPage();
             this.agentB6 = new System.Windows.Forms.Button();
             this.agentB5 = new System.Windows.Forms.Button();
@@ -756,16 +767,17 @@ namespace Assistant
             this.tabPage1.SuspendLayout();
             this.groupBox15.SuspendLayout();
             this.groupBox16.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.opacity)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.subFiltersTab.SuspendLayout();
+            this.subTargetFilterTab.SuspendLayout();
             this.moreOptTab.SuspendLayout();
             this.optionsTabCtrl.SuspendLayout();
             this.subOptionsSpeechTab.SuspendLayout();
             this.subOptionsTargetTab.SuspendLayout();
             this.groupSmartTarget.SuspendLayout();
             this.subOptionsMiscTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.lightLevelBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).BeginInit();
             this.subOptionsFriendsTab.SuspendLayout();
             this.friendsGroupBox.SuspendLayout();
             this.displayTab.SuspendLayout();
@@ -791,14 +803,14 @@ namespace Assistant
             this.subMacrosOptionsTab.SuspendLayout();
             this.macroVariableGroup.SuspendLayout();
             this.screenshotTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.screenPrev)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
             this.aboutTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
             // 
-            this.m_NotifyIcon.Icon = ((System.Drawing.Icon) (resources.GetObject("m_NotifyIcon.Icon")));
+            this.m_NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("m_NotifyIcon.Icon")));
             this.m_NotifyIcon.Text = "Razor";
             this.m_NotifyIcon.DoubleClick += new System.EventHandler(this.NotifyIcon_DoubleClick);
             // 
@@ -815,8 +827,7 @@ namespace Assistant
             this.tabs.Controls.Add(this.screenshotTab);
             this.tabs.Controls.Add(this.advancedTab);
             this.tabs.Controls.Add(this.aboutTab);
-            this.tabs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.tabs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabs.Location = new System.Drawing.Point(2, 0);
             this.tabs.Multiline = true;
             this.tabs.Name = "tabs";
@@ -840,11 +851,13 @@ namespace Assistant
             // 
             this.subGeneralTab.Controls.Add(this.tabPage1);
             this.subGeneralTab.Controls.Add(this.subFiltersTab);
+            this.subGeneralTab.Controls.Add(this.subTargetFilterTab);
             this.subGeneralTab.Location = new System.Drawing.Point(6, 3);
             this.subGeneralTab.Name = "subGeneralTab";
             this.subGeneralTab.SelectedIndex = 0;
             this.subGeneralTab.Size = new System.Drawing.Size(510, 314);
             this.subGeneralTab.TabIndex = 63;
+            this.subGeneralTab.SelectedIndexChanged += new System.EventHandler(this.subGeneralTab_IndexChanged);
             // 
             // tabPage1
             // 
@@ -975,15 +988,13 @@ namespace Assistant
             // clientPrio
             // 
             this.clientPrio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.clientPrio.Items.AddRange(new object[]
-            {
-                "Idle",
-                "BelowNormal",
-                "Normal",
-                "AboveNormal",
-                "High",
-                "Realtime"
-            });
+            this.clientPrio.Items.AddRange(new object[] {
+            "Idle",
+            "BelowNormal",
+            "Normal",
+            "AboveNormal",
+            "High",
+            "Realtime"});
             this.clientPrio.Location = new System.Drawing.Point(371, 127);
             this.clientPrio.Name = "clientPrio";
             this.clientPrio.Size = new System.Drawing.Size(125, 23);
@@ -1135,8 +1146,7 @@ namespace Assistant
             // profiles
             // 
             this.profiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.profiles.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.profiles.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.profiles.ItemHeight = 20;
             this.profiles.Location = new System.Drawing.Point(6, 22);
             this.profiles.MaxDropDownItems = 5;
@@ -1174,8 +1184,7 @@ namespace Assistant
             this.filterOverheadMessages.Size = new System.Drawing.Size(220, 20);
             this.filterOverheadMessages.TabIndex = 111;
             this.filterOverheadMessages.Text = "Filter repeating overhead messages";
-            this.filterOverheadMessages.CheckedChanged +=
-                new System.EventHandler(this.filterOverheadMessages_CheckedChanged);
+            this.filterOverheadMessages.CheckedChanged += new System.EventHandler(this.filterOverheadMessages_CheckedChanged);
             // 
             // lblFilterDelaySeconds
             // 
@@ -1220,8 +1229,7 @@ namespace Assistant
             this.filterSystemMessages.Size = new System.Drawing.Size(220, 20);
             this.filterSystemMessages.TabIndex = 106;
             this.filterSystemMessages.Text = "Filter repeating system messages";
-            this.filterSystemMessages.CheckedChanged +=
-                new System.EventHandler(this.filterSystemMessages_CheckedChanged);
+            this.filterSystemMessages.CheckedChanged += new System.EventHandler(this.filterSystemMessages_CheckedChanged);
             // 
             // filterSnoop
             // 
@@ -1241,8 +1249,7 @@ namespace Assistant
             this.drakeAnimationList.Name = "drakeAnimationList";
             this.drakeAnimationList.Size = new System.Drawing.Size(202, 23);
             this.drakeAnimationList.TabIndex = 104;
-            this.drakeAnimationList.SelectedIndexChanged +=
-                new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
+            this.drakeAnimationList.SelectedIndexChanged += new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
             // 
             // filterDrakeGraphics
             // 
@@ -1264,8 +1271,7 @@ namespace Assistant
             this.dragonAnimationList.Name = "dragonAnimationList";
             this.dragonAnimationList.Size = new System.Drawing.Size(202, 23);
             this.dragonAnimationList.TabIndex = 102;
-            this.dragonAnimationList.SelectedIndexChanged +=
-                new System.EventHandler(this.dragonAnimationList_SelectedIndexChanged);
+            this.dragonAnimationList.SelectedIndexChanged += new System.EventHandler(this.dragonAnimationList_SelectedIndexChanged);
             // 
             // filterDragonGraphics
             // 
@@ -1276,8 +1282,7 @@ namespace Assistant
             this.filterDragonGraphics.TabIndex = 101;
             this.filterDragonGraphics.Text = "Filter dragons";
             this.filterDragonGraphics.UseVisualStyleBackColor = true;
-            this.filterDragonGraphics.CheckedChanged +=
-                new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
+            this.filterDragonGraphics.CheckedChanged += new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
             // 
             // filters
             // 
@@ -1288,6 +1293,71 @@ namespace Assistant
             this.filters.Size = new System.Drawing.Size(197, 274);
             this.filters.TabIndex = 3;
             this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
+            // 
+            // subTargetFilterTab
+            // 
+            this.subTargetFilterTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subTargetFilterTab.Controls.Add(this.targetFilterClear);
+            this.subTargetFilterTab.Controls.Add(this.targetFilterRemove);
+            this.subTargetFilterTab.Controls.Add(this.targetFilterAdd);
+            this.subTargetFilterTab.Controls.Add(this.targetFilter);
+            this.subTargetFilterTab.Controls.Add(this.targetFilterEnabled);
+            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 24);
+            this.subTargetFilterTab.Name = "subTargetFilterTab";
+            this.subTargetFilterTab.Padding = new System.Windows.Forms.Padding(3);
+            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 286);
+            this.subTargetFilterTab.TabIndex = 2;
+            this.subTargetFilterTab.Text = "Target Filter";
+            // 
+            // targetFilterClear
+            // 
+            this.targetFilterClear.Location = new System.Drawing.Point(174, 181);
+            this.targetFilterClear.Name = "targetFilterClear";
+            this.targetFilterClear.Size = new System.Drawing.Size(79, 33);
+            this.targetFilterClear.TabIndex = 11;
+            this.targetFilterClear.Text = "Clear List";
+            this.targetFilterClear.UseVisualStyleBackColor = true;
+            this.targetFilterClear.Click += new System.EventHandler(this.TargetFilterClear_Click);
+            // 
+            // targetFilterRemove
+            // 
+            this.targetFilterRemove.Location = new System.Drawing.Point(94, 181);
+            this.targetFilterRemove.Name = "targetFilterRemove";
+            this.targetFilterRemove.Size = new System.Drawing.Size(74, 33);
+            this.targetFilterRemove.TabIndex = 10;
+            this.targetFilterRemove.Text = "Remove";
+            this.targetFilterRemove.UseVisualStyleBackColor = true;
+            this.targetFilterRemove.Click += new System.EventHandler(this.TargetFilterRemove_Click);
+            // 
+            // targetFilterAdd
+            // 
+            this.targetFilterAdd.Location = new System.Drawing.Point(6, 181);
+            this.targetFilterAdd.Name = "targetFilterAdd";
+            this.targetFilterAdd.Size = new System.Drawing.Size(82, 33);
+            this.targetFilterAdd.TabIndex = 9;
+            this.targetFilterAdd.Text = "Add (Target)";
+            this.targetFilterAdd.UseVisualStyleBackColor = true;
+            this.targetFilterAdd.Click += new System.EventHandler(this.TargetFilterAdd_Click);
+            // 
+            // targetFilter
+            // 
+            this.targetFilter.FormattingEnabled = true;
+            this.targetFilter.ItemHeight = 15;
+            this.targetFilter.Location = new System.Drawing.Point(6, 6);
+            this.targetFilter.Name = "targetFilter";
+            this.targetFilter.Size = new System.Drawing.Size(247, 169);
+            this.targetFilter.TabIndex = 2;
+            // 
+            // targetFilterEnabled
+            // 
+            this.targetFilterEnabled.AutoSize = true;
+            this.targetFilterEnabled.Location = new System.Drawing.Point(259, 6);
+            this.targetFilterEnabled.Name = "targetFilterEnabled";
+            this.targetFilterEnabled.Size = new System.Drawing.Size(133, 19);
+            this.targetFilterEnabled.TabIndex = 0;
+            this.targetFilterEnabled.Text = "Target Filter Enabled";
+            this.targetFilterEnabled.UseVisualStyleBackColor = true;
+            this.targetFilterEnabled.CheckedChanged += new System.EventHandler(this.TargetFilterEnabled_CheckedChanged);
             // 
             // moreOptTab
             // 
@@ -1357,8 +1427,7 @@ namespace Assistant
             // 
             // buffDebuffOptions
             // 
-            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buffDebuffOptions.Location = new System.Drawing.Point(208, 236);
             this.buffDebuffOptions.Name = "buffDebuffOptions";
             this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
@@ -1369,8 +1438,7 @@ namespace Assistant
             // 
             // damageTakenOverhead
             // 
-            this.damageTakenOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.damageTakenOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.damageTakenOverhead.Location = new System.Drawing.Point(394, 209);
             this.damageTakenOverhead.Name = "damageTakenOverhead";
             this.damageTakenOverhead.Size = new System.Drawing.Size(77, 19);
@@ -1392,8 +1460,7 @@ namespace Assistant
             // 
             // damageDealtOverhead
             // 
-            this.damageDealtOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.damageDealtOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.damageDealtOverhead.Location = new System.Drawing.Point(394, 184);
             this.damageDealtOverhead.Name = "damageDealtOverhead";
             this.damageDealtOverhead.Size = new System.Drawing.Size(77, 19);
@@ -1422,8 +1489,7 @@ namespace Assistant
             this.showBuffDebuffOverhead.TabIndex = 91;
             this.showBuffDebuffOverhead.Text = "Show buff/debuff overhead";
             this.showBuffDebuffOverhead.UseVisualStyleBackColor = true;
-            this.showBuffDebuffOverhead.CheckedChanged +=
-                new System.EventHandler(this.showBuffDebuffOverhead_CheckedChanged);
+            this.showBuffDebuffOverhead.CheckedChanged += new System.EventHandler(this.showBuffDebuffOverhead_CheckedChanged);
             // 
             // healthFmt
             // 
@@ -1464,8 +1530,7 @@ namespace Assistant
             // 
             // containerLabels
             // 
-            this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.containerLabels.Location = new System.Drawing.Point(438, 87);
             this.containerLabels.Name = "containerLabels";
             this.containerLabels.Size = new System.Drawing.Size(33, 19);
@@ -1487,8 +1552,7 @@ namespace Assistant
             // 
             // overHeadMessages
             // 
-            this.overHeadMessages.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.overHeadMessages.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.overHeadMessages.Location = new System.Drawing.Point(438, 62);
             this.overHeadMessages.Name = "overHeadMessages";
             this.overHeadMessages.Size = new System.Drawing.Size(33, 19);
@@ -1506,8 +1570,7 @@ namespace Assistant
             this.showOverheadMessages.TabIndex = 83;
             this.showOverheadMessages.Text = "Show overhead messages";
             this.showOverheadMessages.UseVisualStyleBackColor = true;
-            this.showOverheadMessages.CheckedChanged +=
-                new System.EventHandler(this.showMessagesOverhead_CheckedChanged);
+            this.showOverheadMessages.CheckedChanged += new System.EventHandler(this.showMessagesOverhead_CheckedChanged);
             // 
             // incomingMob
             // 
@@ -1746,8 +1809,7 @@ namespace Assistant
             this.nonFriendlyHarmfulOnly.TabIndex = 141;
             this.nonFriendlyHarmfulOnly.Text = "\'Next/Prev Non-Friendly\' harmful only";
             this.nonFriendlyHarmfulOnly.UseVisualStyleBackColor = true;
-            this.nonFriendlyHarmfulOnly.CheckedChanged +=
-                new System.EventHandler(this.nonFriendlyHarmfulOnly_CheckedChanged);
+            this.nonFriendlyHarmfulOnly.CheckedChanged += new System.EventHandler(this.nonFriendlyHarmfulOnly_CheckedChanged);
             // 
             // friendBeneficialOnly
             // 
@@ -1758,8 +1820,7 @@ namespace Assistant
             this.friendBeneficialOnly.TabIndex = 140;
             this.friendBeneficialOnly.Text = "\'Next/Prev Friendly\' sets beneficial only";
             this.friendBeneficialOnly.UseVisualStyleBackColor = true;
-            this.friendBeneficialOnly.CheckedChanged +=
-                new System.EventHandler(this.friendBeneficialOnly_CheckedChanged);
+            this.friendBeneficialOnly.CheckedChanged += new System.EventHandler(this.friendBeneficialOnly_CheckedChanged);
             // 
             // onlyNextPrevBeneficial
             // 
@@ -1770,8 +1831,7 @@ namespace Assistant
             this.onlyNextPrevBeneficial.TabIndex = 139;
             this.onlyNextPrevBeneficial.Text = "\'Next/Prev Friend\' sets beneficial only";
             this.onlyNextPrevBeneficial.UseVisualStyleBackColor = true;
-            this.onlyNextPrevBeneficial.CheckedChanged +=
-                new System.EventHandler(this.onlyNextPrevBeneficial_CheckedChanged);
+            this.onlyNextPrevBeneficial.CheckedChanged += new System.EventHandler(this.onlyNextPrevBeneficial_CheckedChanged);
             // 
             // smartLT
             // 
@@ -1812,16 +1872,14 @@ namespace Assistant
             // 
             // showAttackTargetNewOnly
             // 
-            this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI", 8.25F,
-                System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.showAttackTargetNewOnly.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showAttackTargetNewOnly.Location = new System.Drawing.Point(195, 196);
             this.showAttackTargetNewOnly.Name = "showAttackTargetNewOnly";
             this.showAttackTargetNewOnly.Size = new System.Drawing.Size(121, 44);
             this.showAttackTargetNewOnly.TabIndex = 90;
             this.showAttackTargetNewOnly.Text = "New targets only";
             this.showAttackTargetNewOnly.UseVisualStyleBackColor = true;
-            this.showAttackTargetNewOnly.CheckedChanged +=
-                new System.EventHandler(this.showAttackTargetNewOnly_CheckedChanged);
+            this.showAttackTargetNewOnly.CheckedChanged += new System.EventHandler(this.showAttackTargetNewOnly_CheckedChanged);
             // 
             // showTextTargetIndicator
             // 
@@ -1831,8 +1889,7 @@ namespace Assistant
             this.showTextTargetIndicator.TabIndex = 89;
             this.showTextTargetIndicator.Text = "Show text target indicator";
             this.showTextTargetIndicator.UseVisualStyleBackColor = true;
-            this.showTextTargetIndicator.CheckedChanged +=
-                new System.EventHandler(this.showTextTargetIndicator_CheckedChanged);
+            this.showTextTargetIndicator.CheckedChanged += new System.EventHandler(this.showTextTargetIndicator_CheckedChanged);
             // 
             // showAttackTarget
             // 
@@ -1853,8 +1910,7 @@ namespace Assistant
             this.showTargetMessagesOverChar.TabIndex = 74;
             this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
             this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
-            this.showTargetMessagesOverChar.CheckedChanged +=
-                new System.EventHandler(this.showTargetMessagesOverChar_CheckedChanged);
+            this.showTargetMessagesOverChar.CheckedChanged += new System.EventHandler(this.showTargetMessagesOverChar_CheckedChanged);
             // 
             // txtObjDelay
             // 
@@ -1986,15 +2042,13 @@ namespace Assistant
             // 
             // autoOpenDoorWhenHidden
             // 
-            this.autoOpenDoorWhenHidden.Font = new System.Drawing.Font("Segoe UI", 8.25F,
-                System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.autoOpenDoorWhenHidden.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.autoOpenDoorWhenHidden.Location = new System.Drawing.Point(393, 88);
             this.autoOpenDoorWhenHidden.Name = "autoOpenDoorWhenHidden";
             this.autoOpenDoorWhenHidden.Size = new System.Drawing.Size(95, 20);
             this.autoOpenDoorWhenHidden.TabIndex = 124;
             this.autoOpenDoorWhenHidden.Text = "When hidden";
-            this.autoOpenDoorWhenHidden.CheckedChanged +=
-                new System.EventHandler(this.autoDoorWhenHidden_CheckedChanged);
+            this.autoOpenDoorWhenHidden.CheckedChanged += new System.EventHandler(this.autoDoorWhenHidden_CheckedChanged);
             // 
             // lblStealthFormat
             // 
@@ -2037,21 +2091,18 @@ namespace Assistant
             // showStaticWallLabels
             // 
             this.showStaticWallLabels.AutoSize = true;
-            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.showStaticWallLabels.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showStaticWallLabels.Location = new System.Drawing.Point(421, 220);
             this.showStaticWallLabels.Name = "showStaticWallLabels";
             this.showStaticWallLabels.Size = new System.Drawing.Size(55, 17);
             this.showStaticWallLabels.TabIndex = 120;
             this.showStaticWallLabels.Text = "Labels";
             this.showStaticWallLabels.UseVisualStyleBackColor = true;
-            this.showStaticWallLabels.CheckedChanged +=
-                new System.EventHandler(this.showStaticWallLabels_CheckedChanged);
+            this.showStaticWallLabels.CheckedChanged += new System.EventHandler(this.showStaticWallLabels_CheckedChanged);
             // 
             // stealthOverhead
             // 
-            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.stealthOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stealthOverhead.Location = new System.Drawing.Point(393, 37);
             this.stealthOverhead.Name = "stealthOverhead";
             this.stealthOverhead.Size = new System.Drawing.Size(99, 20);
@@ -2123,8 +2174,7 @@ namespace Assistant
             // 
             // label18
             // 
-            this.label18.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.label18.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label18.Location = new System.Drawing.Point(427, 193);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(10, 18);
@@ -2163,15 +2213,13 @@ namespace Assistant
             // 
             this.seasonList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.seasonList.FormattingEnabled = true;
-            this.seasonList.Items.AddRange(new object[]
-            {
-                "Spring",
-                "Summer",
-                "Fall",
-                "Winter",
-                "Desolation",
-                "(Server Default)"
-            });
+            this.seasonList.Items.AddRange(new object[] {
+            "Spring",
+            "Summer",
+            "Fall",
+            "Winter",
+            "Desolation",
+            "(Server Default)"});
             this.seasonList.Location = new System.Drawing.Point(59, 195);
             this.seasonList.Name = "seasonList";
             this.seasonList.Size = new System.Drawing.Size(111, 23);
@@ -2237,15 +2285,13 @@ namespace Assistant
             // 
             // blockOpenCorpsesTwice
             // 
-            this.blockOpenCorpsesTwice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.blockOpenCorpsesTwice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.blockOpenCorpsesTwice.Location = new System.Drawing.Point(9, 91);
             this.blockOpenCorpsesTwice.Name = "blockOpenCorpsesTwice";
             this.blockOpenCorpsesTwice.Size = new System.Drawing.Size(209, 20);
             this.blockOpenCorpsesTwice.TabIndex = 96;
             this.blockOpenCorpsesTwice.Text = "Block opening corpses twice";
-            this.blockOpenCorpsesTwice.CheckedChanged +=
-                new System.EventHandler(this.blockOpenCorpsesTwice_CheckedChanged);
+            this.blockOpenCorpsesTwice.CheckedChanged += new System.EventHandler(this.blockOpenCorpsesTwice_CheckedChanged);
             // 
             // preAOSstatbar
             // 
@@ -2311,9 +2357,9 @@ namespace Assistant
             this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
             this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
             this.subOptionsFriendsTab.Controls.Add(this.friendFormat);
-            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
-            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsFriendsTab.TabIndex = 3;
             this.subOptionsFriendsTab.Text = "Friends";
             // 
@@ -2365,8 +2411,7 @@ namespace Assistant
             this.nextPrevIgnoresFriends.TabIndex = 97;
             this.nextPrevIgnoresFriends.Text = "Next/Prev Target ignores \'Friends\'";
             this.nextPrevIgnoresFriends.UseVisualStyleBackColor = true;
-            this.nextPrevIgnoresFriends.CheckedChanged +=
-                new System.EventHandler(this.nextPrevIgnoresFriends_CheckedChanged);
+            this.nextPrevIgnoresFriends.CheckedChanged += new System.EventHandler(this.nextPrevIgnoresFriends_CheckedChanged);
             // 
             // autoFriend
             // 
@@ -2442,8 +2487,6 @@ namespace Assistant
             this.friendAddTarget.TabIndex = 5;
             this.friendAddTarget.Text = "Add (Target)";
             this.friendAddTarget.UseVisualStyleBackColor = true;
-            this.friendAddTarget.MouseDown +=
-                new System.Windows.Forms.MouseEventHandler(this.friendAddTarget_MouseDown);
             // 
             // friendsList
             // 
@@ -2556,8 +2599,7 @@ namespace Assistant
             // 
             // razorTitleBar
             // 
-            this.razorTitleBar.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.razorTitleBar.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.razorTitleBar.Location = new System.Drawing.Point(6, 42);
             this.razorTitleBar.Name = "razorTitleBar";
             this.razorTitleBar.Size = new System.Drawing.Size(478, 22);
@@ -2621,71 +2663,67 @@ namespace Assistant
             // 
             this.titleBarParams.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.titleBarParams.FormattingEnabled = true;
-            this.titleBarParams.Items.AddRange(new object[]
-            {
-                "{ar}",
-                "{bandage}",
-                "{char}",
-                "{crimtime}",
-                "{buffsdebuffs}",
-                "{damage}",
-                "-",
-                "{dps}",
-                "{maxdps}",
-                "{maxdamagedealt}",
-                "{maxdamagetaken}",
-                "{totaldamagedealt}",
-                "{totaldamagetaken}",
-                "-",
-                "{dex}",
-                "{followersmax}",
-                "{followers}",
-                "-",
-                "{gold}",
-                "{goldtotal}",
-                "{goldtotalmin}",
-                "{gpm}",
-                "{gps}",
-                "{gph}",
-                "-",
-                "{gate}",
-                "{hpmax}",
-                "{hp}",
-                "{int}",
-                "{largestatbar}",
-                "{manamax}",
-                "{mana}",
-                "{maxweight}",
-                "{mediumstatbar}",
-                "{shard}",
-                "{skill}",
-                "{stammax}",
-                "{stam}",
-                "{statbar}",
-                "{stealthsteps}",
-                "{str}",
-                "{uptime}",
-                "{weight}",
-                "-",
-                "{coldresist}",
-                "{energyresist}",
-                "{fireresist}",
-                "{luck}",
-                "{physresist}",
-                "{poisonresist}",
-                "{tithe}"
-            });
+            this.titleBarParams.Items.AddRange(new object[] {
+            "{ar}",
+            "{bandage}",
+            "{char}",
+            "{crimtime}",
+            "{buffsdebuffs}",
+            "{damage}",
+            "-",
+            "{dps}",
+            "{maxdps}",
+            "{maxdamagedealt}",
+            "{maxdamagetaken}",
+            "{totaldamagedealt}",
+            "{totaldamagetaken}",
+            "-",
+            "{dex}",
+            "{followersmax}",
+            "{followers}",
+            "-",
+            "{gold}",
+            "{goldtotal}",
+            "{goldtotalmin}",
+            "{gpm}",
+            "{gps}",
+            "{gph}",
+            "-",
+            "{gate}",
+            "{hpmax}",
+            "{hp}",
+            "{int}",
+            "{largestatbar}",
+            "{manamax}",
+            "{mana}",
+            "{maxweight}",
+            "{mediumstatbar}",
+            "{shard}",
+            "{skill}",
+            "{stammax}",
+            "{stam}",
+            "{statbar}",
+            "{stealthsteps}",
+            "{str}",
+            "{uptime}",
+            "{weight}",
+            "-",
+            "{coldresist}",
+            "{energyresist}",
+            "{fireresist}",
+            "{luck}",
+            "{physresist}",
+            "{poisonresist}",
+            "{tithe}"});
             this.titleBarParams.Location = new System.Drawing.Point(380, 19);
             this.titleBarParams.Name = "titleBarParams";
             this.titleBarParams.Size = new System.Drawing.Size(104, 23);
             this.titleBarParams.TabIndex = 5;
-            this.titleBarParams.SelectedIndexChanged +=
-                new System.EventHandler(this.titleBarParams_SelectedIndexChanged);
+            this.titleBarParams.SelectedIndexChanged += new System.EventHandler(this.titleBarParams_SelectedIndexChanged);
             // 
             // titleStr
             // 
-            this.titleStr.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.titleStr.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleStr.Location = new System.Drawing.Point(6, 48);
             this.titleStr.Multiline = true;
             this.titleStr.Name = "titleStr";
@@ -2781,11 +2819,9 @@ namespace Assistant
             // counters
             // 
             this.counters.CheckBoxes = true;
-            this.counters.Columns.AddRange(new System.Windows.Forms.ColumnHeader[]
-            {
-                this.cntName,
-                this.cntCount
-            });
+            this.counters.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cntName,
+            this.cntCount});
             this.counters.GridLines = true;
             this.counters.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.counters.LabelWrap = false;
@@ -2911,17 +2947,14 @@ namespace Assistant
             // 
             this.bandageTimerLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.bandageTimerLocation.FormattingEnabled = true;
-            this.bandageTimerLocation.Items.AddRange(new object[]
-            {
-                "Overhead",
-                "System Messages"
-            });
+            this.bandageTimerLocation.Items.AddRange(new object[] {
+            "Overhead",
+            "System Messages"});
             this.bandageTimerLocation.Location = new System.Drawing.Point(145, 10);
             this.bandageTimerLocation.Name = "bandageTimerLocation";
             this.bandageTimerLocation.Size = new System.Drawing.Size(118, 23);
             this.bandageTimerLocation.TabIndex = 56;
-            this.bandageTimerLocation.SelectedIndexChanged +=
-                new System.EventHandler(this.bandageTimerLocation_SelectedIndexChanged);
+            this.bandageTimerLocation.SelectedIndexChanged += new System.EventHandler(this.bandageTimerLocation_SelectedIndexChanged);
             // 
             // bandageTimerSeconds
             // 
@@ -2939,8 +2972,7 @@ namespace Assistant
             this.onlyShowBandageTimerSeconds.Size = new System.Drawing.Size(205, 20);
             this.onlyShowBandageTimerSeconds.TabIndex = 53;
             this.onlyShowBandageTimerSeconds.Text = "Only show every X seconds:";
-            this.onlyShowBandageTimerSeconds.CheckedChanged +=
-                new System.EventHandler(this.onlyShowBandageTimerSeconds_CheckedChanged);
+            this.onlyShowBandageTimerSeconds.CheckedChanged += new System.EventHandler(this.onlyShowBandageTimerSeconds_CheckedChanged);
             // 
             // bandageTimerFormat
             // 
@@ -3017,8 +3049,7 @@ namespace Assistant
             // 
             // undressBag
             // 
-            this.undressBag.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.undressBag.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.undressBag.Location = new System.Drawing.Point(209, 208);
             this.undressBag.Name = "undressBag";
             this.undressBag.Size = new System.Drawing.Size(96, 40);
@@ -3156,8 +3187,7 @@ namespace Assistant
             // dispDeltaOverhead
             // 
             this.dispDeltaOverhead.AutoSize = true;
-            this.dispDeltaOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.dispDeltaOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dispDeltaOverhead.Location = new System.Drawing.Point(441, 207);
             this.dispDeltaOverhead.Name = "dispDeltaOverhead";
             this.dispDeltaOverhead.Size = new System.Drawing.Size(71, 17);
@@ -3205,8 +3235,7 @@ namespace Assistant
             // 
             // baseTotal
             // 
-            this.baseTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.baseTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.baseTotal.Location = new System.Drawing.Point(428, 290);
             this.baseTotal.Name = "baseTotal";
             this.baseTotal.ReadOnly = true;
@@ -3226,12 +3255,10 @@ namespace Assistant
             // locks
             // 
             this.locks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.locks.Items.AddRange(new object[]
-            {
-                "Up",
-                "Down",
-                "Locked"
-            });
+            this.locks.Items.AddRange(new object[] {
+            "Up",
+            "Down",
+            "Locked"});
             this.locks.Location = new System.Drawing.Point(468, 49);
             this.locks.Name = "locks";
             this.locks.Size = new System.Drawing.Size(44, 23);
@@ -3258,15 +3285,13 @@ namespace Assistant
             // skillList
             // 
             this.skillList.AutoArrange = false;
-            this.skillList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[]
-            {
-                this.skillHDRName,
-                this.skillHDRvalue,
-                this.skillHDRbase,
-                this.skillHDRdelta,
-                this.skillHDRcap,
-                this.skillHDRlock
-            });
+            this.skillList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.skillHDRName,
+            this.skillHDRvalue,
+            this.skillHDRbase,
+            this.skillHDRdelta,
+            this.skillHDRcap,
+            this.skillHDRlock});
             this.skillList.FullRowSelect = true;
             this.skillList.Location = new System.Drawing.Point(8, 5);
             this.skillList.Name = "skillList";
@@ -3359,8 +3384,7 @@ namespace Assistant
             // 
             // agentSubList
             // 
-            this.agentSubList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.agentSubList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.agentSubList.IntegralHeight = false;
             this.agentSubList.ItemHeight = 15;
             this.agentSubList.Location = new System.Drawing.Point(6, 15);
@@ -3434,8 +3458,7 @@ namespace Assistant
             // 
             // hkStatus
             // 
-            this.hkStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.hkStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hkStatus.Location = new System.Drawing.Point(337, 206);
             this.hkStatus.Name = "hkStatus";
             this.hkStatus.Size = new System.Drawing.Size(175, 64);
@@ -3721,8 +3744,7 @@ namespace Assistant
             this.disableMacroPlayFinish.TabIndex = 17;
             this.disableMacroPlayFinish.Text = "Disable Playing/Finished Message";
             this.disableMacroPlayFinish.UseVisualStyleBackColor = true;
-            this.disableMacroPlayFinish.CheckedChanged +=
-                new System.EventHandler(this.disableMacroPlayFinish_CheckedChanged);
+            this.disableMacroPlayFinish.CheckedChanged += new System.EventHandler(this.disableMacroPlayFinish_CheckedChanged);
             // 
             // macroActionDelay
             // 
@@ -3744,8 +3766,7 @@ namespace Assistant
             this.rangeCheckDoubleClick.TabIndex = 15;
             this.rangeCheckDoubleClick.Text = "Range check on \'DoubleClickType\'";
             this.rangeCheckDoubleClick.UseVisualStyleBackColor = true;
-            this.rangeCheckDoubleClick.CheckedChanged +=
-                new System.EventHandler(this.rangeCheckDoubleClick_CheckedChanged);
+            this.rangeCheckDoubleClick.CheckedChanged += new System.EventHandler(this.rangeCheckDoubleClick_CheckedChanged);
             // 
             // rangeCheckTargetByType
             // 
@@ -3756,8 +3777,7 @@ namespace Assistant
             this.rangeCheckTargetByType.TabIndex = 14;
             this.rangeCheckTargetByType.Text = "Range check on \'TargetByType\'";
             this.rangeCheckTargetByType.UseVisualStyleBackColor = true;
-            this.rangeCheckTargetByType.CheckedChanged +=
-                new System.EventHandler(this.rangeCheckTargetByType_CheckedChanged);
+            this.rangeCheckTargetByType.CheckedChanged += new System.EventHandler(this.rangeCheckTargetByType_CheckedChanged);
             // 
             // nextMacroAction
             // 
@@ -3790,8 +3810,7 @@ namespace Assistant
             this.targetByTypeDifferent.TabIndex = 11;
             this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
             this.targetByTypeDifferent.UseVisualStyleBackColor = true;
-            this.targetByTypeDifferent.CheckedChanged +=
-                new System.EventHandler(this.targetByTypeDifferent_CheckedChanged);
+            this.targetByTypeDifferent.CheckedChanged += new System.EventHandler(this.targetByTypeDifferent_CheckedChanged);
             // 
             // macroVariableGroup
             // 
@@ -3812,17 +3831,14 @@ namespace Assistant
             // 
             this.macroVariableTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.macroVariableTypeList.FormattingEnabled = true;
-            this.macroVariableTypeList.Items.AddRange(new object[]
-            {
-                "Absolute Target",
-                "DoubleClick Target"
-            });
+            this.macroVariableTypeList.Items.AddRange(new object[] {
+            "Absolute Target",
+            "DoubleClick Target"});
             this.macroVariableTypeList.Location = new System.Drawing.Point(79, 22);
             this.macroVariableTypeList.Name = "macroVariableTypeList";
             this.macroVariableTypeList.Size = new System.Drawing.Size(153, 23);
             this.macroVariableTypeList.TabIndex = 6;
-            this.macroVariableTypeList.SelectedIndexChanged +=
-                new System.EventHandler(this.macroVariableTypeList_SelectedIndexChanged);
+            this.macroVariableTypeList.SelectedIndexChanged += new System.EventHandler(this.macroVariableTypeList_SelectedIndexChanged);
             // 
             // retargetMacroVariable
             // 
@@ -3936,8 +3952,7 @@ namespace Assistant
             this.captureOthersDeathDelay.TabIndex = 58;
             this.captureOthersDeathDelay.Text = "0.5";
             this.captureOthersDeathDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.captureOthersDeathDelay.TextChanged +=
-                new System.EventHandler(this.CaptureOthersDeathDelay_TextChanged);
+            this.captureOthersDeathDelay.TextChanged += new System.EventHandler(this.CaptureOthersDeathDelay_TextChanged);
             // 
             // lblCaptureOthersDeathMs
             // 
@@ -3973,8 +3988,7 @@ namespace Assistant
             this.screenShotNotification.Size = new System.Drawing.Size(216, 20);
             this.screenShotNotification.TabIndex = 13;
             this.screenShotNotification.Text = "Show upload notification";
-            this.screenShotNotification.CheckedChanged +=
-                new System.EventHandler(this.screenShotNotification_CheckedChanged);
+            this.screenShotNotification.CheckedChanged += new System.EventHandler(this.screenShotNotification_CheckedChanged);
             // 
             // screenShotOpenBrowser
             // 
@@ -3983,23 +3997,20 @@ namespace Assistant
             this.screenShotOpenBrowser.Size = new System.Drawing.Size(216, 20);
             this.screenShotOpenBrowser.TabIndex = 12;
             this.screenShotOpenBrowser.Text = "Open link in browser when shared";
-            this.screenShotOpenBrowser.CheckedChanged +=
-                new System.EventHandler(this.screenShotOpenBrowser_CheckedChanged);
+            this.screenShotOpenBrowser.CheckedChanged += new System.EventHandler(this.screenShotOpenBrowser_CheckedChanged);
             // 
             // imgFmt
             // 
             this.imgFmt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.imgFmt.Items.AddRange(new object[]
-            {
-                "jpg",
-                "png",
-                "bmp",
-                "gif",
-                "tif",
-                "wmf",
-                "exif",
-                "emf"
-            });
+            this.imgFmt.Items.AddRange(new object[] {
+            "jpg",
+            "png",
+            "bmp",
+            "gif",
+            "tif",
+            "wmf",
+            "exif",
+            "emf"});
             this.imgFmt.Location = new System.Drawing.Point(102, 134);
             this.imgFmt.Name = "imgFmt";
             this.imgFmt.Size = new System.Drawing.Size(98, 23);
@@ -4161,13 +4172,11 @@ namespace Assistant
             // msglvl
             // 
             this.msglvl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.msglvl.Items.AddRange(new object[]
-            {
-                "Show All",
-                "Warnings & Errors",
-                "Errors Only",
-                "None"
-            });
+            this.msglvl.Items.AddRange(new object[] {
+            "Show All",
+            "Warnings & Errors",
+            "Errors Only",
+            "None"});
             this.msglvl.Location = new System.Drawing.Point(343, 127);
             this.msglvl.Name = "msglvl";
             this.msglvl.Size = new System.Drawing.Size(168, 23);
@@ -4196,8 +4205,7 @@ namespace Assistant
             // 
             this.statusBox.BackColor = System.Drawing.SystemColors.Control;
             this.statusBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.statusBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.statusBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statusBox.HideSelection = false;
             this.statusBox.Location = new System.Drawing.Point(10, 8);
             this.statusBox.Multiline = true;
@@ -4239,8 +4247,7 @@ namespace Assistant
             // 
             // linkGitHub
             // 
-            this.linkGitHub.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.linkGitHub.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkGitHub.Location = new System.Drawing.Point(6, 163);
             this.linkGitHub.Name = "linkGitHub";
             this.linkGitHub.Size = new System.Drawing.Size(506, 20);
@@ -4248,13 +4255,11 @@ namespace Assistant
             this.linkGitHub.TabStop = true;
             this.linkGitHub.Text = "https://github.com/markdwags/Razor";
             this.linkGitHub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkGitHub.LinkClicked +=
-                new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGitHub_LinkClicked);
+            this.linkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGitHub_LinkClicked);
             // 
             // lblCredits3
             // 
-            this.lblCredits3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.lblCredits3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCredits3.Location = new System.Drawing.Point(8, 259);
             this.lblCredits3.Name = "lblCredits3";
             this.lblCredits3.Size = new System.Drawing.Size(503, 20);
@@ -4264,8 +4269,7 @@ namespace Assistant
             // 
             // linkHelp
             // 
-            this.linkHelp.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.linkHelp.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkHelp.Location = new System.Drawing.Point(434, 10);
             this.linkHelp.Name = "linkHelp";
             this.linkHelp.Size = new System.Drawing.Size(78, 20);
@@ -4273,13 +4277,11 @@ namespace Assistant
             this.linkHelp.TabStop = true;
             this.linkHelp.Text = "Need Help?";
             this.linkHelp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkHelp.LinkClicked +=
-                new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkHelp_LinkClicked);
+            this.linkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkHelp_LinkClicked);
             // 
             // lblCredits2
             // 
-            this.lblCredits2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.lblCredits2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCredits2.Location = new System.Drawing.Point(9, 239);
             this.lblCredits2.Name = "lblCredits2";
             this.lblCredits2.Size = new System.Drawing.Size(503, 20);
@@ -4290,8 +4292,7 @@ namespace Assistant
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.Location = new System.Drawing.Point(93, 126);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(343, 17);
@@ -4300,8 +4301,7 @@ namespace Assistant
             // 
             // linkLabel1
             // 
-            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.Location = new System.Drawing.Point(6, 94);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(506, 20);
@@ -4309,13 +4309,11 @@ namespace Assistant
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "http://www.uorenaissance.com";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.linkLabel1.LinkClicked +=
-                new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // lblCredits1
             // 
-            this.lblCredits1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.lblCredits1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCredits1.Location = new System.Drawing.Point(6, 219);
             this.lblCredits1.Name = "lblCredits1";
             this.lblCredits1.Size = new System.Drawing.Size(506, 20);
@@ -4325,8 +4323,7 @@ namespace Assistant
             // 
             // aboutSubInfo
             // 
-            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.aboutSubInfo.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.aboutSubInfo.Location = new System.Drawing.Point(6, 75);
             this.aboutSubInfo.Name = "aboutSubInfo";
             this.aboutSubInfo.Size = new System.Drawing.Size(506, 19);
@@ -4336,8 +4333,7 @@ namespace Assistant
             // 
             // linkMain
             // 
-            this.linkMain.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.linkMain.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkMain.Location = new System.Drawing.Point(6, 143);
             this.linkMain.Name = "linkMain";
             this.linkMain.Size = new System.Drawing.Size(506, 20);
@@ -4345,15 +4341,12 @@ namespace Assistant
             this.linkMain.TabStop = true;
             this.linkMain.Text = "http://www.uor-razor.com";
             this.linkMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkMain.LinkClicked +=
-                new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.linkMain.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Segoe UI Semibold", 9F,
-                ((System.Drawing.FontStyle) ((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))),
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.label21.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label21.Location = new System.Drawing.Point(52, 98);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(0, 15);
@@ -4362,8 +4355,7 @@ namespace Assistant
             // 
             // aboutVer
             // 
-            this.aboutVer.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.aboutVer.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.aboutVer.Location = new System.Drawing.Point(6, 40);
             this.aboutVer.Name = "aboutVer";
             this.aboutVer.Size = new System.Drawing.Size(506, 35);
@@ -4376,10 +4368,9 @@ namespace Assistant
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
             this.ClientSize = new System.Drawing.Size(530, 372);
             this.Controls.Add(this.tabs);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -4397,10 +4388,12 @@ namespace Assistant
             this.tabPage1.ResumeLayout(false);
             this.groupBox15.ResumeLayout(false);
             this.groupBox16.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize) (this.opacity)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.subFiltersTab.ResumeLayout(false);
             this.subFiltersTab.PerformLayout();
+            this.subTargetFilterTab.ResumeLayout(false);
+            this.subTargetFilterTab.PerformLayout();
             this.moreOptTab.ResumeLayout(false);
             this.optionsTabCtrl.ResumeLayout(false);
             this.subOptionsSpeechTab.ResumeLayout(false);
@@ -4411,7 +4404,7 @@ namespace Assistant
             this.groupSmartTarget.PerformLayout();
             this.subOptionsMiscTab.ResumeLayout(false);
             this.subOptionsMiscTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.lightLevelBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightLevelBar)).EndInit();
             this.subOptionsFriendsTab.ResumeLayout(false);
             this.subOptionsFriendsTab.PerformLayout();
             this.friendsGroupBox.ResumeLayout(false);
@@ -4449,12 +4442,13 @@ namespace Assistant
             this.macroVariableGroup.ResumeLayout(false);
             this.screenshotTab.ResumeLayout(false);
             this.screenshotTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.screenPrev)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).EndInit();
             this.advancedTab.ResumeLayout(false);
             this.advancedTab.PerformLayout();
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -4489,6 +4483,7 @@ namespace Assistant
 
             FriendsManager.SetControls(friendsGroup, friendsList);
             DressList.SetControls(dressList, dressItems);
+            TargetFilterManager.SetControls(targetFilter);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -4903,6 +4898,8 @@ namespace Assistant
             captureOthersDeath.SafeAction(s => { s.Checked = Config.GetBool("CaptureOthersDeath"); });
             captureOwnDeath.SafeAction(s => { s.Checked = Config.GetBool("CaptureOwnDeath"); });
 
+            targetFilterEnabled.SafeAction(s => { s.Checked = Config.GetBool("TargetFilterEnabled"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -5054,6 +5051,17 @@ namespace Assistant
             else if (tabs.SelectedTab == moreOptTab)
             {
                 FriendsManager.RedrawGroup();
+            }
+        }
+
+        private void subGeneralTab_IndexChanged(object sender, EventArgs e)
+        {
+            if (subGeneralTab == null)
+                return;
+
+            if (subGeneralTab.SelectedTab == subTargetFilterTab)
+            {
+                TargetFilterManager.RedrawList();
             }
         }
 
@@ -10109,5 +10117,58 @@ namespace Assistant
                 captureOwnDeathDelay.SafeAction(s => s.Text = "0.5");
             }
         }
+
+        private void TargetFilterRemove_Click(object sender, EventArgs e)
+        {
+            if (targetFilter.SelectedIndex < 0)
+                return;
+
+            TargetFilterManager.RemoveTargetFilter(targetFilter.SelectedIndex);
+        }
+
+        private void TargetFilterClear_Click(object sender, EventArgs e)
+        {
+            TargetFilterManager.ClearTargetFilters();
+        }
+
+        private void TargetFilterEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("TargetFilterEnabled", targetFilterEnabled.Checked);
+        }
+
+        /*private void onAddAllMobilesTargetFilter(object sender, System.EventArgs e)
+        {
+            if (targetFilter.SelectedIndex < 0)
+                return;
+
+            if (World.Player == null)
+                return;
+            
+            TargetFilterManager.AddAllMobileAsTargetFilters();
+        }
+
+        private void onAddAllMobilesHumanoidTargetFilter(object sender, System.EventArgs e)
+        {
+            if (targetFilter.SelectedIndex < 0)
+                return;
+
+            if (World.Player == null)
+                return;
+
+            TargetFilterManager.AddAllHumanoidsAsTargetFilters();
+        }*/
+
+        private void TargetFilterAdd_Click(object sender, EventArgs e)
+        {
+            if (World.Player == null)
+                return;
+
+            TargetFilterManager.OnTargetAddTargetFilter();
+        }
+
+        private void friendAddTarget_Click(object sender, EventArgs e)
+        {
+        }
+
     }
 }

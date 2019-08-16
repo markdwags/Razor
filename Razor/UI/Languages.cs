@@ -539,6 +539,8 @@ namespace Assistant
         NewBeneficialTarget,
         NewHarmfulTarget,
         BirdSounds,
+        AddAllMobilesTargetFilter,
+        AddAllMobilesHumanoidTargetFilter,
         __End
     }
 

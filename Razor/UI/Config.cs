@@ -269,6 +269,8 @@ namespace Assistant
             AddProperty("CaptureOthersDeath", false);
             AddProperty("CaptureOwnDeath", false);
 
+            AddProperty("TargetFilterEnabled", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
@@ -381,6 +383,7 @@ namespace Assistant
             Counter.LoadProfile(root["counters"]);
             Agent.LoadProfile(root["agents"]);
             DressList.Load(root["dresslists"]);
+            TargetFilterManager.Load(root["targetfilters"]);
             FriendsManager.Load(root["friends"]);
             HotKey.Load(root["hotkeys"]);
             PasswordMemory.Load(root["passwords"]);
@@ -573,6 +576,10 @@ namespace Assistant
 
             xml.WriteStartElement("friends");
             FriendsManager.Save(xml);
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("targetfilters");
+            TargetFilterManager.Save(xml);
             xml.WriteEndElement();
 
             xml.WriteEndElement(); // end profile section

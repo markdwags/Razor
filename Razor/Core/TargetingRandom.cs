@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assistant.Core;
+using Assistant.Filters;
 
 namespace Assistant
 {
@@ -188,6 +189,7 @@ namespace Assistant
             foreach (var m in World.MobilesInRange(12))
                 if ((!FriendsManager.IsFriend(m.Serial) || noto.Length > 0 && noto[0] == 0) &&
                     !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                    !TargetFilterManager.IsFilteredTarget(m.Serial) &&
                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                 {
                     for (var i = 0; i < noto.Length; i++)
@@ -220,6 +222,7 @@ namespace Assistant
 
                 if ((!FriendsManager.IsFriend(m.Serial) || noto.Length > 0 && noto[0] == 0) &&
                     !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                    !TargetFilterManager.IsFilteredTarget(m.Serial) &&
                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                 {
                     for (var i = 0; i < noto.Length; i++)
@@ -253,6 +256,7 @@ namespace Assistant
 
                 if ((!FriendsManager.IsFriend(m.Serial) || noto.Length > 0 && noto[0] == 0) &&
                     !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                    !TargetFilterManager.IsFilteredTarget(m.Serial) &&
                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                 {
                     for (var i = 0; i < noto.Length; i++)
@@ -282,6 +286,7 @@ namespace Assistant
             foreach (var m in World.MobilesInRange(12))
                 if (FriendsManager.IsFriend(m.Serial) &&
                     !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
+                    !TargetFilterManager.IsFilteredTarget(m.Serial) &&
                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                     list.Add(m);
 
