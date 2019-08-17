@@ -15,7 +15,7 @@ Write-Host "Install ClassicUO & Razor - v1.2" -ForegroundColor Yellow
 Write-Host "Author: Quick (https://github.com/markdwags/Razor)`n" -ForegroundColor Yellow
 
 # Check if they are running 64 bit version of Windows
-if ((Get-WmiObject Win32_OperatingSystem).OSArchitecture -ne "64-bit") {
+if ((Get-WmiObject Win32_OperatingSystem).OSArchitecture.Contains("64") -ne $true) {
     Write-Host "************************" -ForegroundColor Red
     Write-Host "ClassicUO requires that you have a 64bit OS. It will fail to run without it." -ForegroundColor Red    
     Write-Host "************************" -ForegroundColor Red
