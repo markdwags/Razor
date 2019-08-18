@@ -3,7 +3,7 @@
   A basic Powershell script to download ClassicUO and Razor
   and configure the basic settings.
 .NOTES
-  Version:        1.2
+  Version:        1.3
   Author:         Quick
   Creation Date:  5/1/2019
 #>
@@ -11,7 +11,10 @@
 # Set TLS to be v1.2 or Invoke-WebRequest will fail
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-Write-Host "Install ClassicUO & Razor - v1.2" -ForegroundColor Yellow
+# Set the directory to be the one the command was issued in
+$WorkingDir = $(Get-Location).Path
+
+Write-Host "Install ClassicUO & Razor - v1.3" -ForegroundColor Yellow
 Write-Host "Author: Quick (https://github.com/markdwags/Razor)`n" -ForegroundColor Yellow
 
 # Check if they are running 64 bit version of Windows
@@ -59,12 +62,12 @@ $ForceDevPreview = $false
 try {
     $response = Invoke-RestMethod -Uri "https://api.github.com/repos/andreakarasho/ClassicUO/releases" -Method Get
 
-    $LatestCUO = $response[1].tag_name
-    $LatestCUODownloadUrl = $response[1].assets.browser_download_url
-    $LatestCUOFileName = $response[1].assets.name
-    $LatestCUOReleaseUpdated = $response[1].assets.updated_at
+    $LatestCUO = $response[0].tag_name
+    $LatestCUODownloadUrl = $response[0].assets.browser_download_url
+    $LatestCUOFileName = $response[0].assets.name
+    $LatestCUOReleaseUpdated = $response[0].assets.updated_at
 
-    $LatestCUODevPreviewUpdated = $response[0].assets.updated_at
+    $LatestCUODevPreviewUpdated = $response[1].assets.updated_at
 
     #Write-Host "Latest ClassicUO Release: $LatestCUO" -ForegroundColor Cyan
 } 
@@ -101,9 +104,6 @@ catch {
 # Use UOR defaults?
 $useDefaults = $true
 
-# Set the directory to be the one the command was issued in
-$WorkingDir = $(Get-Location).Path
-
 if ($WorkingDir.ToLower().StartsWith("c:\program files")) {
     Write-Host "************************" -ForegroundColor Red
     Write-Host "It's recommended that you DO NOT install this into 'C:\Program Files' or 'C:\Program Files (x86)'" -ForegroundColor Red
@@ -133,7 +133,7 @@ else {
 
     if ($proceed -ne "Y" -Or $proceed -ne "y") { Exit }
     
-    $backup = Read-Host -Prompt "> [UPGRADE] Would you like backup your existing installtion? [y or n]"
+    $backup = Read-Host -Prompt "> [UPGRADE] Would you like backup your existing installation? [y or n]"
 
     if ($backup -eq "Y" -Or $backup -eq "y") { 
         try {
