@@ -2730,18 +2730,29 @@ namespace Assistant.Macros
                     if (m_CountObj == null || !m_CountObj.Enabled)
                         return false;
 
+                    int val;
+
+                    if (m_Value is string value)
+                    {
+                        int.TryParse(value, out val);
+                    }
+                    else
+                    {
+                        val = Convert.ToInt32(m_Value);
+                    }
+
                     switch (m_Direction)
                     {
                         case 0:
-                            return m_CountObj.Amount <= (int) m_Value;
+                            return m_CountObj.Amount <= val;
                         case 1:
-                            return m_CountObj.Amount >= (int) m_Value;
+                            return m_CountObj.Amount >= val;
                         case 2:
-                            return m_CountObj.Amount < (int) m_Value;
+                            return m_CountObj.Amount < val;
                         case 3:
-                            return m_CountObj.Amount > (int) m_Value;
+                            return m_CountObj.Amount > val;
                         default:
-                            return m_CountObj.Amount <= (int) m_Value;
+                            return m_CountObj.Amount <= val;
                     }
                 }
 
