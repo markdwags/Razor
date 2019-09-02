@@ -4540,18 +4540,20 @@ namespace Assistant
                 s.AutoSize = false;
             });
 
+            this.SafeAction(s => 
+            {
+                s.Opacity = ((float)opacity.Value) / 100.0;
+                s.TopMost = s.alwaysTop.Checked = Config.GetBool("AlwaysOnTop");
+                s.Location = new System.Drawing.Point(Config.GetInt("WindowX"), Config.GetInt("WindowY"));
+                s.TopLevel = true;
+                if (!IsOnScreen(s))
+                {
+                    s.Location = new System.Drawing.Point(400, 400);
+                }
+            });
             this.Opacity = ((float) opacity.Value) / 100.0;
 
             opacityLabel.SafeAction(s => { s.Text = Language.Format(LocString.OpacityA1, opacity.Value); });
-
-            this.TopMost = alwaysTop.Checked = Config.GetBool("AlwaysOnTop");
-            this.Location = new System.Drawing.Point(Config.GetInt("WindowX"), Config.GetInt("WindowY"));
-            this.TopLevel = true;
-
-            if (!IsOnScreen(this))
-            {
-                this.Location = new System.Drawing.Point(400, 400);
-            }
 
             spellUnequip.SafeAction(s => { });
 
