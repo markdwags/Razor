@@ -4551,7 +4551,6 @@ namespace Assistant
                     s.Location = new System.Drawing.Point(400, 400);
                 }
             });
-            this.Opacity = ((float) opacity.Value) / 100.0;
 
             opacityLabel.SafeAction(s => { s.Text = Language.Format(LocString.OpacityA1, opacity.Value); });
 
