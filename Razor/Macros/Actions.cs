@@ -2461,7 +2461,8 @@ namespace Assistant.Macros
 
             BeginCountersMarker,
 
-            Counter = 50
+            Counter = 50,
+            Skill = 100
         }
 
         // 0 <=,1 >=,2 <,3 >
@@ -2469,6 +2470,7 @@ namespace Assistant.Macros
         private object m_Value;
         private IfVarType m_Var;
         private string m_Counter;
+        private int m_SkillId = -1;
         private Assistant.Counter m_CountObj;
 
         public sbyte Op
@@ -2491,6 +2493,11 @@ namespace Assistant.Macros
             get { return m_Counter; }
         }
 
+        public int SkillId
+        {
+            get { return m_SkillId; }
+        }
+
         public IfAction(string[] args)
         {
             m_Var = (IfVarType) Convert.ToInt32(args[1]);
@@ -2505,7 +2512,22 @@ namespace Assistant.Macros
                 m_Direction = -1;
             }
 
-            if (m_Var != IfVarType.SysMessage)
+            if (m_Var == IfVarType.SysMessage)
+            {
+                m_Value = args[3].ToLower();
+            }
+            else if (m_Var == IfVarType.Skill)
+            {
+                if (args[3] is string strVal)
+                {
+                    m_Value = strVal;
+                }
+                else
+                {
+                    m_Value = Convert.ToDouble(args[3]);
+                }
+            }
+            else
             {
                 if (args[3] is string strVal)
                 {
@@ -2516,13 +2538,12 @@ namespace Assistant.Macros
                     m_Value = Convert.ToInt32(args[3]);
                 }
             }
-            else
-            {
-                m_Value = args[3].ToLower();
-            }
 
             if (m_Var == IfVarType.Counter)
                 m_Counter = args[4];
+
+            if (m_Var == IfVarType.Skill)
+                m_SkillId = Convert.ToInt32(args[4]);
         }
 
         public IfAction(IfVarType var, sbyte dir, int val)
@@ -2547,6 +2568,14 @@ namespace Assistant.Macros
             m_Counter = counter;
         }
 
+        public IfAction(IfVarType var, sbyte dir, double val, int skillId)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+            m_SkillId = skillId;
+        }
+
         public IfAction(IfVarType var, string text)
         {
             m_Var = var;
@@ -2557,6 +2586,8 @@ namespace Assistant.Macros
         {
             if (m_Var == IfVarType.Counter && m_Counter != null)
                 return DoSerialize((int) m_Var, m_Direction, m_Value, m_Counter);
+            else if (m_Var == IfVarType.Skill && m_SkillId != -1)
+                return DoSerialize((int)m_Var, m_Direction, m_Value, m_SkillId);
             else
                 return DoSerialize((int) m_Var, m_Direction, m_Value);
         }
@@ -2713,6 +2744,33 @@ namespace Assistant.Macros
                     return World.Player.GetItemOnLayer(Layer.LeftHand) == null;
                 }
 
+                case IfVarType.Skill:
+
+                    double skillValToCompare;
+
+                    if (m_Value is string skillVal)
+                    {
+                        double.TryParse(skillVal, out skillValToCompare);
+                    }
+                    else
+                    {
+                        skillValToCompare = Convert.ToDouble(m_Value);
+                    }
+
+                    switch (m_Direction)
+                    {
+                        case 0:
+                            return World.Player.Skills[m_SkillId].Value <= skillValToCompare;
+                        case 1:
+                            return World.Player.Skills[m_SkillId].Value >= skillValToCompare;
+                        case 2:
+                            return World.Player.Skills[m_SkillId].Value < skillValToCompare;
+                        case 3:
+                            return World.Player.Skills[m_SkillId].Value > skillValToCompare;
+                        default:
+                            return World.Player.Skills[m_SkillId].Value <= skillValToCompare;
+                    }
+
                 case IfVarType.Counter:
                 {
                     if (m_CountObj == null)
@@ -2786,7 +2844,7 @@ namespace Assistant.Macros
                 case IfVarType.Mana:
                 case IfVarType.Stamina:
                 case IfVarType.Weight:
-                    return String.Format("If ( {0} {1} {2} )", m_Var, DirectionString(), m_Value);
+                    return $"If ( {m_Var} {DirectionString()} {m_Value} )";
                 case IfVarType.Poisoned:
                     return "If ( Poisoned )";
                 case IfVarType.SysMessage:
@@ -2796,7 +2854,8 @@ namespace Assistant.Macros
                         str = str.Substring(0, 7) + "...";
                     return String.Format("If ( SysMessage \"{0}\" )", str);
                 }
-
+                case IfVarType.Skill:
+                    return $"If ( \"{Language.Skill2Str(m_SkillId)}\" {DirectionString()} {m_Value})";
                 case IfVarType.Mounted:
                     return "If ( Mounted )";
                 case IfVarType.RHandEmpty:
@@ -2804,7 +2863,7 @@ namespace Assistant.Macros
                 case IfVarType.LHandEmpty:
                     return "If ( L-Hand Empty )";
                 case IfVarType.Counter:
-                    return String.Format("If ( \"{0} count\" {1} {2} )", m_Counter, DirectionString(), m_Value);
+                    return $"If ( \"{m_Counter} count\" {DirectionString()} {m_Value} )";
                 default:
                     return "If ( ??? )";
             }
