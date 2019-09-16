@@ -95,7 +95,7 @@ namespace Assistant.Core
                 }
             }
 
-            private void AddFriendToGroup()
+            public void AddFriendToGroup()
             {
                 World.Player.SendMessage(MsgLevel.Friend, $"Target friend to add to group '{GroupName}'");
                 Targeting.OneTimeTarget(OnAddFriendTarget);

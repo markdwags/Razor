@@ -1302,10 +1302,10 @@ namespace Assistant
             this.subTargetFilterTab.Controls.Add(this.targetFilterAdd);
             this.subTargetFilterTab.Controls.Add(this.targetFilter);
             this.subTargetFilterTab.Controls.Add(this.targetFilterEnabled);
-            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 24);
+            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 22);
             this.subTargetFilterTab.Name = "subTargetFilterTab";
             this.subTargetFilterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 286);
+            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 288);
             this.subTargetFilterTab.TabIndex = 2;
             this.subTargetFilterTab.Text = "Target Filter";
             // 
@@ -2487,6 +2487,7 @@ namespace Assistant
             this.friendAddTarget.TabIndex = 5;
             this.friendAddTarget.Text = "Add (Target)";
             this.friendAddTarget.UseVisualStyleBackColor = true;
+            this.friendAddTarget.Click += new System.EventHandler(this.FriendAddTarget_Click);
             // 
             // friendsList
             // 
@@ -10171,9 +10172,15 @@ namespace Assistant
             TargetFilterManager.OnTargetAddTargetFilter();
         }
 
-        private void friendAddTarget_Click(object sender, EventArgs e)
+        private void FriendAddTarget_Click(object sender, EventArgs e)
         {
-        }
+            if (World.Player == null)
+                return;
 
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            ((FriendsManager.FriendGroup)friendsGroup.SelectedItem).AddFriendToGroup();
+        }
     }
 }
