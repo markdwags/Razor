@@ -81,6 +81,16 @@ namespace Assistant
                     return;
                 }
 
+                if (msg == "You begin applying the bandages.") // Timer is running and they start a new bandage
+                {
+                    Start();
+
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageStart"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageStartMessage"));
+
+                    return;
+                }
+
                 foreach (var t in m_ClilocNums)
                 {
                     if (Language.GetCliloc(t) == msg)
