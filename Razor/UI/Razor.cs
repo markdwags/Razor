@@ -6984,9 +6984,7 @@ namespace Assistant
                         Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
-                TreeNode node = GetMacroDirNode();
-
+                
                 string newMacro = $"{Path.GetDirectoryName(sel.Filename)}/{name}.macro";
 
 
@@ -7000,7 +6998,11 @@ namespace Assistant
 
                 try
                 {
-                    File.Move(sel.Filename, newMacro);
+                    Engine.MainWindow.SafeAction(s =>
+                    {
+                        File.Move(sel.Filename, newMacro);
+                        MacroManager.Remove(sel);
+                    });
                 }
                 catch
                 {
