@@ -634,7 +634,23 @@ namespace Assistant
                     KeyData hk = (KeyData) m_List[i];
                     if (hk.Mod == cur && hk.Key > 0)
                     {
-                        if (hk.Key == key || KeyDown((Keys) hk.Key))
+                        if (hk.Key == key)
+                        {
+                            if (Macros.MacroManager.AcceptActions)
+                                Macros.MacroManager.Action(new Macros.HotKeyAction(hk));
+                            hk.Callback();
+                            return hk.SendToUO;
+                        }
+                    }
+                }
+
+                // if pressed key didn't match a hotkey, check for any key currently down
+                for (int i = 0; i < m_List.Count; i++)
+                {
+                    KeyData hk = (KeyData) m_List[i];
+                    if (hk.Mod == cur && hk.Key > 0)
+                    {
+                        if (KeyDown((Keys) hk.Key))
                         {
                             if (Macros.MacroManager.AcceptActions)
                                 Macros.MacroManager.Action(new Macros.HotKeyAction(hk));
