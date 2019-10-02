@@ -7104,6 +7104,9 @@ namespace Assistant
 
             LastSelectedMacro = m;
 
+            if (m == null)
+                return;
+
             Engine.MainWindow.SafeAction(s =>
             {
                 if (hotkeyTree.TopNode == null)
@@ -10269,6 +10272,11 @@ namespace Assistant
             {
                 // ignore
             }
+        }
+
+        public void SaveMacroVariables()
+        {
+            MacroManager.DisplayMacroVariables(macroVariables);
         }
     }
 }

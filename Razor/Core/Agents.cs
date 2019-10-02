@@ -753,10 +753,10 @@ namespace Assistant
 
         private void SetHBText()
         {
-            if (m_HotBTN != null)
+            m_HotBTN?.SafeAction(s =>
             {
-                m_HotBTN.Text = Language.GetString(m_HotBag == Serial.Zero ? LocString.SetHB : LocString.ClearHB);
-            }
+                s.Text = Language.GetString(m_HotBag == Serial.Zero ? LocString.SetHB : LocString.ClearHB);
+            });
         }
 
         private void OnTarget(bool location, Serial serial, Point3D loc, ushort gfx)

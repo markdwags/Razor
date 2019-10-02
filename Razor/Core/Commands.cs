@@ -20,16 +20,17 @@ namespace Assistant
             Command.Register("Echo", Echo);
             Command.Register("Macro", MacroCmd);
             Command.Register("Hue", GetItemHue);
-            Command.Register("Item", GetItemHue);
-            Command.Register("ClearItems", ClearItems);
+            Command.Register("Item", GetItemHue);            
             Command.Register("Resync", Resync);
             Command.Register("Mobile", GetMobile);
             Command.Register("Weather", SetWeather);
             Command.Register("Season", SetSeason);
             Command.Register("Damage", DamageTrackerReport);
+            Command.Register("Set", SetMacroVariable);
         }
 
         private static DateTime m_LastSync;
+        private static string _lastMacroVariable;
 
         private static void Resync(string[] param)
         {
@@ -48,6 +49,62 @@ namespace Assistant
         {
             if (DamageTracker.Running)
                 DamageTracker.SendReport();
+        }
+
+        private static void SetMacroVariable(string[] param)
+        {
+            if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
+                return;
+
+            if (string.IsNullOrEmpty(param[0]))
+            {
+                World.Player.SendMessage(MsgLevel.Error, "You must pass in a macro variable name.");
+                return;
+            }
+
+            _lastMacroVariable = param[0];
+
+            Targeting.OneTimeTarget(OnMacroVariableAddTarget);
+            World.Player.SendMessage(MsgLevel.Force, $"Select new target for '{_lastMacroVariable}'");
+        }
+
+        private static void OnMacroVariableAddTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            TargetInfo t = new TargetInfo
+            {
+                Gfx = gfx,
+                Serial = serial,
+                Type = (byte)(ground ? 1 : 0),
+                X = pt.X,
+                Y = pt.Y,
+                Z = pt.Z
+            };
+
+            bool foundVar = false;
+            
+            foreach (MacroVariables.MacroVariable mV in MacroVariables.MacroVariableList
+            )
+            {
+                if (mV.Name.ToLower().Equals(_lastMacroVariable.ToLower()))
+                {
+                    foundVar = true;
+                    // macro exists, update
+                    mV.TargetInfo = t;
+
+                    World.Player.SendMessage(MsgLevel.Force, $"'{mV.Name}' macro variable updated to '{t.Serial}'");
+
+                    break;
+                }
+            }
+
+            if (!foundVar)
+            {
+                MacroVariables.MacroVariableList.Add(new MacroVariables.MacroVariable(_lastMacroVariable, t));
+                World.Player.SendMessage(MsgLevel.Force, $"'{_lastMacroVariable}' not found, created variable and set to '{t.Serial}'");
+            }
+
+            // Save and reload the macros and vars
+            Engine.MainWindow.SaveMacroVariables();
         }
 
         private static void SetWeather(string[] param)
@@ -116,20 +173,6 @@ namespace Assistant
                 sb.Append(param[i]);
             Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", sb.ToString()));
-        }
-
-        private static void ClearItems(string[] param)
-        {
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                Language.CliLocName, "System", "Clearing all items from memory cache"));
-
-            World.Items.Clear();
-            Resync(param);
-
-            Item.UpdateContainers();
-
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                Language.CliLocName, "System", "All items in memory cache have been cleared"));
         }
 
         private static void AddUseOnce(string[] param)
@@ -203,9 +246,11 @@ namespace Assistant
                 return;
             }
 
+            string macroName = string.Join(" ", param);
+
             foreach (Macro m in MacroManager.List)
             {
-                if (m.ToString() == param[0])
+                if (m.ToString().ToLower().Equals(macroName.ToLower()))
                 {
                     MacroManager.HotKeyPlay(m);
                     break;
