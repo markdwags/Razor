@@ -29,6 +29,11 @@ namespace Assistant.Macros
             m_IfStatus = new Stack();
         }
 
+        public string GetName()
+        {
+            return Path.GetFileNameWithoutExtension(m_Path);
+        }
+
         public string Filename
         {
             get { return m_Path; }

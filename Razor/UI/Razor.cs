@@ -372,6 +372,7 @@ namespace Assistant
         private Button targetFilterClear;
         private Button targetFilterRemove;
         private Button targetFilterAdd;
+        private Button setMacroHotKey;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -693,6 +694,7 @@ namespace Assistant
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.subMacrosTab = new System.Windows.Forms.TabPage();
             this.macroActGroup = new System.Windows.Forms.GroupBox();
+            this.setMacroHotKey = new System.Windows.Forms.Button();
             this.playMacro = new System.Windows.Forms.Button();
             this.waitDisp = new System.Windows.Forms.Label();
             this.loopMacro = new System.Windows.Forms.CheckBox();
@@ -2357,9 +2359,9 @@ namespace Assistant
             this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
             this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
             this.subOptionsFriendsTab.Controls.Add(this.friendFormat);
-            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
-            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsFriendsTab.TabIndex = 3;
             this.subOptionsFriendsTab.Text = "Friends";
             // 
@@ -3609,6 +3611,7 @@ namespace Assistant
             // 
             // macroActGroup
             // 
+            this.macroActGroup.Controls.Add(this.setMacroHotKey);
             this.macroActGroup.Controls.Add(this.playMacro);
             this.macroActGroup.Controls.Add(this.waitDisp);
             this.macroActGroup.Controls.Add(this.loopMacro);
@@ -3622,6 +3625,15 @@ namespace Assistant
             this.macroActGroup.Text = "Actions";
             this.macroActGroup.Visible = false;
             // 
+            // setMacroHotKey
+            // 
+            this.setMacroHotKey.Location = new System.Drawing.Point(230, 95);
+            this.setMacroHotKey.Name = "setMacroHotKey";
+            this.setMacroHotKey.Size = new System.Drawing.Size(60, 33);
+            this.setMacroHotKey.TabIndex = 7;
+            this.setMacroHotKey.Text = "Set HK";
+            this.setMacroHotKey.Click += new System.EventHandler(this.SetMacroHotKey_Click);
+            // 
             // playMacro
             // 
             this.playMacro.Location = new System.Drawing.Point(230, 17);
@@ -3633,7 +3645,7 @@ namespace Assistant
             // 
             // waitDisp
             // 
-            this.waitDisp.Location = new System.Drawing.Point(230, 109);
+            this.waitDisp.Location = new System.Drawing.Point(230, 132);
             this.waitDisp.Name = "waitDisp";
             this.waitDisp.Size = new System.Drawing.Size(60, 89);
             this.waitDisp.TabIndex = 5;
@@ -7079,6 +7091,8 @@ namespace Assistant
             MacroManager.DisplayMacroVariables(macroVariables);
         }
 
+        public Macro LastSelectedMacro { get; set; }
+
         private void macroTree_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
         {
             if (MacroManager.Recording)
@@ -7087,6 +7101,33 @@ namespace Assistant
             Macro m = e.Node.Tag as Macro;
             macroActGroup.Visible = m != null;
             MacroManager.Select(m, actionList, playMacro, recMacro, loopMacro);
+
+            LastSelectedMacro = m;
+
+            Engine.MainWindow.SafeAction(s =>
+            {
+                if (hotkeyTree.TopNode == null)
+                {
+                    HotKey.RebuildList(hotkeyTree);
+                    RebuildHotKeyCache();
+                }
+
+                TreeNode resultNode = SearchTreeView(m.GetName(), hotkeyTree.Nodes);
+
+                if (resultNode != null)
+                {
+                    KeyData hk = (KeyData)resultNode.Tag;
+
+                    if (hk != null && !string.IsNullOrEmpty(hk.KeyString()))
+                    {
+                        macroActGroup.Text = $"Actions ({hk.KeyString()})";
+                    }
+                    else
+                    {
+                        macroActGroup.Text = $"Actions (Not Set)";
+                    }
+                }
+            });
         }
 
         private void delMacro_Click(object sender, System.EventArgs e)
@@ -10183,6 +10224,51 @@ namespace Assistant
                 return;
 
             ((FriendsManager.FriendGroup)friendsGroup.SelectedItem).AddFriendToGroup();
+        }
+        
+        private TreeNode SearchTreeView(string p_sSearchTerm, TreeNodeCollection p_Nodes)
+        {
+            foreach (TreeNode node in p_Nodes)
+            {
+                if (node.Text.Contains(p_sSearchTerm))
+                    return node;
+
+                if (node.Nodes.Count > 0)
+                {
+                    TreeNode child = SearchTreeView(p_sSearchTerm, node.Nodes);
+                    if (child != null) return child;
+                }
+            }
+
+            return null;
+        }
+
+        private void SetMacroHotKey_Click(object sender, EventArgs e)
+        {
+            
+            try
+            {
+                Engine.MainWindow.SafeAction(s =>
+                {
+                    Macro sel = GetMacroSel();
+
+                    tabs.SelectedTab = hotkeysTab;
+
+                    TreeNode resultNode = SearchTreeView(sel.GetName(), hotkeyTree.Nodes);
+
+                    if (resultNode != null)
+                    {
+                        KeyData hk = (KeyData) resultNode.Tag;
+
+                        hotkeyTree.SelectedNode = resultNode;
+                        key.Focus();
+                    }
+                });
+            }
+            catch
+            {
+                // ignore
+            }
         }
     }
 }

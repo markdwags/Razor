@@ -201,7 +201,7 @@ namespace Assistant
             }
         }
 
-        public string KeyString()
+        public string KeyString(bool smallNames = false)
         {
             if (Key != 0)
             {
@@ -210,7 +210,8 @@ namespace Assistant
 
                 if ((Mod & ModKeys.Control) != 0)
                 {
-                    sb.Append("Control");
+                    sb.Append(smallNames ? "Ctrl" : "Control");
+
                     np = true;
                 }
 
@@ -226,7 +227,7 @@ namespace Assistant
                 {
                     if (np)
                         sb.Append("+");
-                    sb.Append("Shift");
+                    sb.Append(smallNames ? "Sft" : "Shift");
                     np = true;
                 }
 
