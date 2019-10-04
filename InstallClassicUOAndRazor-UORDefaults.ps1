@@ -264,8 +264,10 @@ if ($(Test-Path "$WorkingDir\settings.json" -PathType Leaf) -eq $False) {
         $path = Read-Host -Prompt "> Enter the path to your Ultima Online files (ie: C:\Ultima Online)" 
 
         # Do a basic check to ensure its the right folder
-        if ($(Test-Path "$path\art.mul" -PathType Leaf) -eq $false) {
-            Write-Host "** $path doesn't contain art.mul, a core Ultima Online client file. That must not be the correct folder. Please use the folder that contains the UO art/sound files." -ForegroundColor Red
+        if ([string]::IsNullOrEmpty($path) -eq $true) {
+            Write-Host "** You must type in a path to where you have Ultima Online installed." -ForegroundColor Red
+        } elseif ($(Test-Path "$path\art.mul" -PathType Leaf) -eq $false -And $(Test-Path "$path\artLegacyMUL.uop" -PathType Leaf) -eq $false) {
+            Write-Host "** $path doesn't contain art.mul or artLegacyMUL.uop, a core Ultima Online client file. That must not be the correct folder. Please use the folder that contains the UO art/sound files." -ForegroundColor Red
             $path = ""
         }
 
