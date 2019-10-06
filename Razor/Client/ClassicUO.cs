@@ -320,9 +320,19 @@ namespace Assistant
             KMOD_RESERVED = 0x8000
         }
 
+        private enum SDL_Keycode_Ignore
+        {
+            SDLK_LCTRL = 1073742048,
+            SDLK_LSHIFT = 1073742049,
+            SDLK_LALT = 1073742050,
+            SDLK_RCTRL = 1073742052,
+            SDLK_RSHIFT = 1073742053,
+            SDLK_RALT = 1073742054,
+        }
+
         private bool OnHotKeyHandler(int key, int mod, bool ispressed)
         {
-            if (ispressed)
+            if (ispressed && !Enum.IsDefined(typeof(SDL_Keycode_Ignore), key))
             {
                 ModKeys cur = ModKeys.None;
                 SDL_Keymod keymod = (SDL_Keymod) mod;
