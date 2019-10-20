@@ -3,7 +3,7 @@
   A basic Powershell script to download ClassicUO and Razor
   and configure the basic settings.
 .NOTES
-  Version:        1.3
+  Version:        1.5
   Author:         Quick
   Creation Date:  5/1/2019
 #>
@@ -14,7 +14,7 @@
 # Set the directory to be the one the command was issued in
 $WorkingDir = $(Get-Location).Path
 
-Write-Host "Install ClassicUO & Razor - v1.3" -ForegroundColor Yellow
+Write-Host "Install ClassicUO & Razor - v1.5" -ForegroundColor Yellow
 Write-Host "Author: Quick (https://github.com/markdwags/Razor)`n" -ForegroundColor Yellow
 
 # Check if they are running 64 bit version of Windows
@@ -62,18 +62,23 @@ $ForceDevPreview = $false
 try {
     $response = Invoke-RestMethod -Uri "https://api.github.com/repos/andreakarasho/ClassicUO/releases" -Method Get
 
+    foreach ($release in $response) {
+        if ($release.tag_name -eq "ClassicUO-dev-preview") {
+            $LatestCUODevPreviewUpdated = $release.assets.updated_at
+            break
+        }
+    }
+
     $LatestCUO = $response[0].tag_name
     $LatestCUODownloadUrl = $response[0].assets.browser_download_url
     $LatestCUOFileName = $response[0].assets.name
     $LatestCUOReleaseUpdated = $response[0].assets.updated_at
 
-    $LatestCUODevPreviewUpdated = $response[1].assets.updated_at
-
     #Write-Host "Latest ClassicUO Release: $LatestCUO" -ForegroundColor Cyan
 } 
 catch {        
     Write-Host "************************" -ForegroundColor Red
-    Write-Host "Unable to get the latest Razor release version, will only download dev preview" -ForegroundColor Red
+    Write-Host "Unable to get the latest ClassicUO release version, will only download dev preview" -ForegroundColor Red
     Write-Host "************************" -ForegroundColor Red
 
     $ForceDevPreview = $true
@@ -107,7 +112,7 @@ $useDefaults = $true
 if ($WorkingDir.ToLower().StartsWith("c:\program files")) {
     Write-Host "************************" -ForegroundColor Red
     Write-Host "It's recommended that you DO NOT install this into 'C:\Program Files' or 'C:\Program Files (x86)'" -ForegroundColor Red
-    Write-Host "This will force you to run ClassicUO as an Administator, which isn't necessary. You also might experience of file related permission issues" -ForegroundColor Red
+    Write-Host "This will force you to run ClassicUO as an Administator, which isn't necessary. You also might experience file related permission issues" -ForegroundColor Red
     Write-Host "This script won't stop you, but it really recommends that you pick another folder like 'C:\Games\ClassicUO' or simply 'C:\ClassicUO'" -ForegroundColor Red
     Write-Host "************************" -ForegroundColor Red
 
