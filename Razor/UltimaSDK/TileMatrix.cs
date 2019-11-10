@@ -64,15 +64,25 @@ namespace Ultima
             BlockWidth = width >> 3;
             BlockHeight = height >> 3;
 
+
+
             if (path == null)
             {
                 mapPath = Files.GetFilePath("map{0}.mul", fileIndex);
-
+                
                 if (String.IsNullOrEmpty(mapPath) || !File.Exists(mapPath))
                     mapPath = Files.GetFilePath("map{0}LegacyMUL.uop", fileIndex);
 
                 if (mapPath != null && mapPath.EndsWith(".uop"))
                     IsUOPFormat = true;
+
+                // For shards that use Fel and Tram before the split
+                if (String.IsNullOrEmpty(mapPath) || (!File.Exists(mapPath) && fileIndex == 1))
+                {
+                    fileIndex = 0;
+                    mapPath = Files.GetFilePath("map{0}.mul", fileIndex);
+                }                    
+
             }
             else
             {

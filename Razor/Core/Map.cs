@@ -22,6 +22,7 @@ namespace Assistant
                 case 2: return Ultima.Map.Ilshenar;
                 case 3: return Ultima.Map.Malas;
                 case 4: return Ultima.Map.Tokuno;
+                case 5: return Ultima.Map.TerMur;
                 case 0:
                 default: return Ultima.Map.Felucca;
             }
