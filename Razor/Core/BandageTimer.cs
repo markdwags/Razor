@@ -71,7 +71,8 @@ namespace Assistant
             if (Running)
             {
                 if (msg == "You heal what little damage you had." ||
-                    msg == "You heal what little damage the patient had.")
+                    msg == "You heal what little damage the patient had." ||
+                    msg == "You did not stay close enough to heal your target.")
                 {
                     Stop();
 
