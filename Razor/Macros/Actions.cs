@@ -802,8 +802,8 @@ namespace Assistant.Macros
             for (int i = 0; i < m_TextEntries.Length; i++)
             {
                 string[] split = args[4 + m_Switches.Length + i].Split('&');
-                m_TextEntries[i].EntryID = Convert.ToUInt16(split[0]);
-                m_TextEntries[i].Text = split[1];
+
+                m_TextEntries[i] = new GumpTextEntry(Convert.ToUInt16(split[0]), split[1]);
             }
         }
 
