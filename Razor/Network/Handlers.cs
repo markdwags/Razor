@@ -2323,7 +2323,9 @@ namespace Assistant
 
         private static void RunUOProtocolExtention(PacketReader p, PacketHandlerEventArgs args)
         {
-            args.Block = true;
+            // Only block this packet if they are using the OSI client
+            // since ClassicUO actually has support for it now
+            args.Block = Client.IsOSI;
 
             switch (p.ReadByte())
             {
