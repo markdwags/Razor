@@ -51,6 +51,17 @@ namespace Assistant
 
                     if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageEnd"))
                         ShowBandagingStatusMessage(Config.GetString("BandageEndMessage"));
+
+                    return;
+                }
+
+                // Check if they are re-healing before the timer ends
+                if (num == 500956)
+                {
+                    Start();
+
+                    if (Config.GetBool("ShowBandageTimer") && Config.GetBool("ShowBandageStart"))
+                        ShowBandagingStatusMessage(Config.GetString("BandageStartMessage"));
                 }
             }
             else
@@ -71,7 +82,8 @@ namespace Assistant
             if (Running)
             {
                 if (msg == "You heal what little damage you had." ||
-                    msg == "You heal what little damage the patient had.")
+                    msg == "You heal what little damage the patient had." ||
+                    msg == "You did not stay close enough to heal your target.")
                 {
                     Stop();
 
