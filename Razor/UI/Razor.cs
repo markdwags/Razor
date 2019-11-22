@@ -373,6 +373,8 @@ namespace Assistant
         private Button targetFilterRemove;
         private Button targetFilterAdd;
         private Button setMacroHotKey;
+        private ComboBox daemonAnimationList;
+        private CheckBox filterDaemonGraphics;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -763,6 +765,8 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.daemonAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterDaemonGraphics = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1160,6 +1164,8 @@ namespace Assistant
             // subFiltersTab
             // 
             this.subFiltersTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subFiltersTab.Controls.Add(this.daemonAnimationList);
+            this.subFiltersTab.Controls.Add(this.filterDaemonGraphics);
             this.subFiltersTab.Controls.Add(this.filterOverheadMessages);
             this.subFiltersTab.Controls.Add(this.lblFilterDelaySeconds);
             this.subFiltersTab.Controls.Add(this.lblFilterDelay);
@@ -1172,16 +1178,16 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
             // 
             // filterOverheadMessages
             // 
-            this.filterOverheadMessages.Location = new System.Drawing.Point(209, 192);
+            this.filterOverheadMessages.Location = new System.Drawing.Point(209, 190);
             this.filterOverheadMessages.Name = "filterOverheadMessages";
             this.filterOverheadMessages.Size = new System.Drawing.Size(220, 20);
             this.filterOverheadMessages.TabIndex = 111;
@@ -1190,7 +1196,7 @@ namespace Assistant
             // 
             // lblFilterDelaySeconds
             // 
-            this.lblFilterDelaySeconds.Location = new System.Drawing.Point(346, 222);
+            this.lblFilterDelaySeconds.Location = new System.Drawing.Point(346, 220);
             this.lblFilterDelaySeconds.Name = "lblFilterDelaySeconds";
             this.lblFilterDelaySeconds.Size = new System.Drawing.Size(59, 18);
             this.lblFilterDelaySeconds.TabIndex = 110;
@@ -1199,7 +1205,7 @@ namespace Assistant
             // lblFilterDelay
             // 
             this.lblFilterDelay.AutoSize = true;
-            this.lblFilterDelay.Location = new System.Drawing.Point(230, 222);
+            this.lblFilterDelay.Location = new System.Drawing.Point(230, 220);
             this.lblFilterDelay.Name = "lblFilterDelay";
             this.lblFilterDelay.Size = new System.Drawing.Size(68, 15);
             this.lblFilterDelay.TabIndex = 109;
@@ -1207,7 +1213,7 @@ namespace Assistant
             // 
             // filterDelaySeconds
             // 
-            this.filterDelaySeconds.Location = new System.Drawing.Point(304, 219);
+            this.filterDelaySeconds.Location = new System.Drawing.Point(304, 217);
             this.filterDelaySeconds.Name = "filterDelaySeconds";
             this.filterDelaySeconds.Size = new System.Drawing.Size(36, 23);
             this.filterDelaySeconds.TabIndex = 108;
@@ -1217,7 +1223,7 @@ namespace Assistant
             // 
             // filterRazorMessages
             // 
-            this.filterRazorMessages.Location = new System.Drawing.Point(209, 166);
+            this.filterRazorMessages.Location = new System.Drawing.Point(209, 164);
             this.filterRazorMessages.Name = "filterRazorMessages";
             this.filterRazorMessages.Size = new System.Drawing.Size(220, 20);
             this.filterRazorMessages.TabIndex = 107;
@@ -1226,7 +1232,7 @@ namespace Assistant
             // 
             // filterSystemMessages
             // 
-            this.filterSystemMessages.Location = new System.Drawing.Point(209, 140);
+            this.filterSystemMessages.Location = new System.Drawing.Point(209, 138);
             this.filterSystemMessages.Name = "filterSystemMessages";
             this.filterSystemMessages.Size = new System.Drawing.Size(220, 20);
             this.filterSystemMessages.TabIndex = 106;
@@ -1235,7 +1241,7 @@ namespace Assistant
             // 
             // filterSnoop
             // 
-            this.filterSnoop.Location = new System.Drawing.Point(209, 114);
+            this.filterSnoop.Location = new System.Drawing.Point(209, 112);
             this.filterSnoop.Name = "filterSnoop";
             this.filterSnoop.Size = new System.Drawing.Size(220, 20);
             this.filterSnoop.TabIndex = 105;
@@ -1247,16 +1253,16 @@ namespace Assistant
             this.drakeAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.drakeAnimationList.DropDownWidth = 250;
             this.drakeAnimationList.FormattingEnabled = true;
-            this.drakeAnimationList.Location = new System.Drawing.Point(209, 85);
+            this.drakeAnimationList.Location = new System.Drawing.Point(313, 35);
             this.drakeAnimationList.Name = "drakeAnimationList";
-            this.drakeAnimationList.Size = new System.Drawing.Size(202, 23);
+            this.drakeAnimationList.Size = new System.Drawing.Size(183, 23);
             this.drakeAnimationList.TabIndex = 104;
             this.drakeAnimationList.SelectedIndexChanged += new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
             // 
             // filterDrakeGraphics
             // 
             this.filterDrakeGraphics.AutoSize = true;
-            this.filterDrakeGraphics.Location = new System.Drawing.Point(209, 60);
+            this.filterDrakeGraphics.Location = new System.Drawing.Point(209, 37);
             this.filterDrakeGraphics.Name = "filterDrakeGraphics";
             this.filterDrakeGraphics.Size = new System.Drawing.Size(89, 19);
             this.filterDrakeGraphics.TabIndex = 103;
@@ -1269,16 +1275,16 @@ namespace Assistant
             this.dragonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dragonAnimationList.DropDownWidth = 250;
             this.dragonAnimationList.FormattingEnabled = true;
-            this.dragonAnimationList.Location = new System.Drawing.Point(209, 31);
+            this.dragonAnimationList.Location = new System.Drawing.Point(313, 6);
             this.dragonAnimationList.Name = "dragonAnimationList";
-            this.dragonAnimationList.Size = new System.Drawing.Size(202, 23);
+            this.dragonAnimationList.Size = new System.Drawing.Size(183, 23);
             this.dragonAnimationList.TabIndex = 102;
             this.dragonAnimationList.SelectedIndexChanged += new System.EventHandler(this.dragonAnimationList_SelectedIndexChanged);
             // 
             // filterDragonGraphics
             // 
             this.filterDragonGraphics.AutoSize = true;
-            this.filterDragonGraphics.Location = new System.Drawing.Point(209, 6);
+            this.filterDragonGraphics.Location = new System.Drawing.Point(209, 8);
             this.filterDragonGraphics.Name = "filterDragonGraphics";
             this.filterDragonGraphics.Size = new System.Drawing.Size(98, 19);
             this.filterDragonGraphics.TabIndex = 101;
@@ -4376,6 +4382,28 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // daemonAnimationList
+            // 
+            this.daemonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.daemonAnimationList.DropDownWidth = 250;
+            this.daemonAnimationList.FormattingEnabled = true;
+            this.daemonAnimationList.Location = new System.Drawing.Point(313, 64);
+            this.daemonAnimationList.Name = "daemonAnimationList";
+            this.daemonAnimationList.Size = new System.Drawing.Size(183, 23);
+            this.daemonAnimationList.TabIndex = 113;
+            this.daemonAnimationList.SelectedIndexChanged += new System.EventHandler(this.daemonAnimationList_SelectedIndexChanged);
+            // 
+            // filterDaemonGraphics
+            // 
+            this.filterDaemonGraphics.AutoSize = true;
+            this.filterDaemonGraphics.Location = new System.Drawing.Point(209, 66);
+            this.filterDaemonGraphics.Name = "filterDaemonGraphics";
+            this.filterDaemonGraphics.Size = new System.Drawing.Size(104, 19);
+            this.filterDaemonGraphics.TabIndex = 112;
+            this.filterDaemonGraphics.Text = "Filter daemons";
+            this.filterDaemonGraphics.UseVisualStyleBackColor = true;
+            this.filterDaemonGraphics.CheckedChanged += new System.EventHandler(this.filterDaemonGraphics_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4914,6 +4942,8 @@ namespace Assistant
 
             targetFilterEnabled.SafeAction(s => { s.Checked = Config.GetBool("TargetFilterEnabled"); });
 
+            filterDaemonGraphics.SafeAction(s => { s.Checked = Config.GetBool("FilterDaemonGraphics"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -4956,6 +4986,7 @@ namespace Assistant
                             _animationData.Add(animData);
                             dragonAnimationList.Items.Add(animData.name);
                             drakeAnimationList.Items.Add(animData.name);
+                            daemonAnimationList.Items.Add(animData.name);
                         }
                     }
                     catch //Unable to verify animation, lets add it anyway
@@ -4963,6 +4994,7 @@ namespace Assistant
                         _animationData.Add(animData);
                         dragonAnimationList.Items.Add(animData.name);
                         drakeAnimationList.Items.Add(animData.name);
+                        daemonAnimationList.Items.Add(animData.name);
                     }
                 }
             }
@@ -4985,6 +5017,18 @@ namespace Assistant
                 if (animData.body.Equals(Config.GetInt("DrakeGraphic").ToString()))
                 {
                     drakeAnimationList.SelectedIndex = animIndex;
+                    break;
+                }
+
+                animIndex++;
+            }
+
+            animIndex = 0;
+            foreach (AnimData animData in _animationData)
+            {
+                if (animData.body.Equals(Config.GetInt("DaemonGraphic").ToString()))
+                {
+                    daemonAnimationList.SelectedIndex = animIndex;
                     break;
                 }
 
@@ -10277,6 +10321,28 @@ namespace Assistant
         public void SaveMacroVariables()
         {
             MacroManager.DisplayMacroVariables(macroVariables);
+        }
+
+        private void filterDaemonGraphics_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("FilterDaemonGraphics", filterDaemonGraphics.Checked);
+        }
+
+        private void daemonAnimationList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (daemonAnimationList.SelectedIndex < 0)
+                    return;
+
+                Config.SetProperty("DaemonGraphic",
+                    Convert.ToInt32(_animationData[daemonAnimationList.SelectedIndex].body));
+            }
+            catch
+            {
+                MessageBox.Show(this, "Unable to find animation in file", "Animation Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }

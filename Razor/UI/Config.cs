@@ -271,6 +271,9 @@ namespace Assistant
 
             AddProperty("TargetFilterEnabled", false);
 
+            AddProperty("FilterDaemonGraphics", false);
+            AddProperty("DaemonGraphic", 0);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

@@ -33,5 +33,17 @@ namespace Assistant.Filters
                 }
             }
         }
+
+        public static void ApplyDaemonFilter(Packet p, Mobile m)
+        {
+            if (Config.GetBool("FilterDaemonGraphics"))
+            {
+                if (m.Body == 0x9)
+                {
+                    p.Seek(-2, SeekOrigin.Current);
+                    p.Write((ushort)Config.GetInt("DaemonGraphic"));
+                }
+            }
+        }
     }
 }

@@ -992,6 +992,7 @@ namespace Assistant
 
                 MobileFilter.ApplyDragonFilter(p, m);
                 MobileFilter.ApplyDrakeFilter(p, m);
+                MobileFilter.ApplyDaemonFilter(p, m);
 
                 m.Position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
@@ -1442,6 +1443,7 @@ namespace Assistant
 
             MobileFilter.ApplyDragonFilter(p, m);
             MobileFilter.ApplyDrakeFilter(p, m);
+            MobileFilter.ApplyDaemonFilter(p, m);
 
             Point3D position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
