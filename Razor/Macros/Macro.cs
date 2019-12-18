@@ -574,6 +574,61 @@ namespace Assistant.Macros
                         if (ca >= 0 && m_Actions[ca] is ForAction)
                             m_CurrentAction = ca - 1;
                     }
+                    else if (action is WhileAction)
+                    {
+                        bool val = ((WhileAction)action).Evaluate();
+
+                        if (!val)
+                        {
+                            // false so skip to the endwhile
+                            int whilecount = 0;
+                            while (m_CurrentAction + 1 < m_Actions.Count)
+                            {
+                                if (m_Actions[m_CurrentAction + 1] is WhileAction)
+                                {
+                                    whilecount++;
+                                }
+                                else if (m_Actions[m_CurrentAction + 1] is EndWhileAction)
+                                {
+                                    if (whilecount <= 0)
+                                    {
+                                        // Skip over the end while
+                                        m_CurrentAction++;
+                                        break;
+                                    }
+
+                                    whilecount--;
+                                }
+
+                                m_CurrentAction++;
+                            }
+                        }
+                    }
+                    else if (action is EndWhileAction && Client.Instance.AllowBit(FeatureBit.LoopingMacros))
+                    {
+                        int ca = m_CurrentAction - 1;
+                        int whilecount = 0;
+
+                        while (ca >= 0)
+                        {
+                            if (m_Actions[ca] is EndWhileAction)
+                            {
+                                whilecount--;
+                            }
+                            else if (m_Actions[ca] is WhileAction)
+                            {
+                                if (whilecount >= 0)
+                                    break;
+                                else
+                                    whilecount++;
+                            }
+
+                            ca--;
+                        }
+
+                        if (ca >= 0 && m_Actions[ca] is WhileAction)
+                            m_CurrentAction = ca - 1;
+                    }
 
                     bool isWait = action is MacroWaitAction;
                     if (!action.Perform() && isWait)

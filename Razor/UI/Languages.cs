@@ -541,6 +541,8 @@ namespace Assistant
         BirdSounds,
         AddAllMobilesTargetFilter,
         AddAllMobilesHumanoidTargetFilter,
+        InsertWhile,
+        InsertEndWhile,
         __End
     }
 

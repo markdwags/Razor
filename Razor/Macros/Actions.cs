@@ -3052,6 +3052,468 @@ namespace Assistant.Macros
         }
     }
 
+    public class WhileAction : MacroAction
+    {
+        public enum WhileVarType : int
+        {
+            Hits = 0,
+            Mana,
+            Stamina,
+            Poisoned,
+            SysMessage,
+            Weight,
+            Mounted,
+            RHandEmpty,
+            LHandEmpty,
+
+            BeginCountersMarker,
+
+            Counter = 50,
+            Skill = 100
+        }
+
+        // 0 <=,1 >=,2 <,3 >
+        private sbyte m_Direction;
+        private object m_Value;
+        private WhileVarType m_Var;
+        private string m_Counter;
+        private int m_SkillId = -1;
+        private Assistant.Counter m_CountObj;
+
+        public sbyte Op
+        {
+            get { return m_Direction; }
+        }
+
+        public object Value
+        {
+            get { return m_Value; }
+        }
+
+        public WhileVarType Variable
+        {
+            get { return m_Var; }
+        }
+
+        public string Counter
+        {
+            get { return m_Counter; }
+        }
+
+        public int SkillId
+        {
+            get { return m_SkillId; }
+        }
+
+        public WhileAction(string[] args)
+        {
+            m_Var = (WhileVarType)Convert.ToInt32(args[1]);
+            try
+            {
+                m_Direction = Convert.ToSByte(args[2]);
+                if (m_Direction > 3)
+                    m_Direction = 0;
+            }
+            catch
+            {
+                m_Direction = -1;
+            }
+
+            if (m_Var == WhileVarType.SysMessage)
+            {
+                m_Value = args[3].ToLower();
+            }
+            else if (m_Var == WhileVarType.Skill)
+            {
+                if (args[3] is string strVal)
+                {
+                    m_Value = strVal;
+                }
+                else
+                {
+                    m_Value = Convert.ToDouble(args[3]);
+                }
+            }
+            else
+            {
+                if (args[3] is string strVal)
+                {
+                    m_Value = strVal;
+                }
+                else
+                {
+                    m_Value = Convert.ToInt32(args[3]);
+                }
+            }
+
+            if (m_Var == WhileVarType.Counter)
+                m_Counter = args[4];
+
+            if (m_Var == WhileVarType.Skill)
+                m_SkillId = Convert.ToInt32(args[4]);
+        }
+
+        public WhileAction(WhileVarType var, sbyte dir, int val)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+        }
+
+        public WhileAction(WhileVarType var, sbyte dir, string val)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+        }
+
+        public WhileAction(WhileVarType var, sbyte dir, int val, string counter)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+            m_Counter = counter;
+        }
+
+        public WhileAction(WhileVarType var, sbyte dir, double val, int skillId)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+            m_SkillId = skillId;
+        }
+
+        public WhileAction(WhileVarType var, string text)
+        {
+            m_Var = var;
+            m_Value = text.ToLower();
+        }
+
+        public override string Serialize()
+        {
+            if (m_Var == WhileVarType.Counter && m_Counter != null)
+                return DoSerialize((int)m_Var, m_Direction, m_Value, m_Counter);
+            else if (m_Var == WhileVarType.Skill && m_SkillId != -1)
+                return DoSerialize((int)m_Var, m_Direction, m_Value, m_SkillId);
+            else
+                return DoSerialize((int)m_Var, m_Direction, m_Value);
+        }
+
+        public override bool Perform()
+        {
+            return true;
+        }
+
+        public bool Evaluate()
+        {
+            switch (m_Var)
+            {
+                case WhileVarType.Hits:
+                case WhileVarType.Mana:
+                case WhileVarType.Stamina:
+                case WhileVarType.Weight:
+                    {
+                        bool isNumeric = true;
+                        int val;
+
+                        if (m_Value is string value)
+                        {
+                            isNumeric = int.TryParse(value, out val);
+                        }
+                        else
+                        {
+                            val = Convert.ToInt32(m_Value);
+                        }
+
+                        if (!isNumeric && m_Value is string strVal)
+                        {
+                            if (strVal.Equals("{maxhp}"))
+                            {
+                                val = World.Player.HitsMax;
+                            }
+                            else if (strVal.Equals("{maxstam}"))
+                            {
+                                val = World.Player.StamMax;
+                            }
+                            else if (strVal.Equals("{maxmana}"))
+                            {
+                                val = World.Player.ManaMax;
+                            }
+                            else
+                            {
+                                val = 0;
+                            }
+                        }
+
+                        switch (m_Direction)
+                        {
+                            case 0:
+                                // if stat <= m_Value
+                                switch (m_Var)
+                                {
+                                    case WhileVarType.Hits:
+                                        return World.Player.Hits <= val;
+                                    case WhileVarType.Mana:
+                                        return World.Player.Mana <= val;
+                                    case WhileVarType.Stamina:
+                                        return World.Player.Stam <= val;
+                                    case WhileVarType.Weight:
+                                        return World.Player.Weight <= val;
+                                }
+
+                                break;
+                            case 1:
+                                // if stat >= m_Value
+                                switch (m_Var)
+                                {
+                                    case WhileVarType.Hits:
+                                        return World.Player.Hits >= val;
+                                    case WhileVarType.Mana:
+                                        return World.Player.Mana >= val;
+                                    case WhileVarType.Stamina:
+                                        return World.Player.Stam >= val;
+                                    case WhileVarType.Weight:
+                                        return World.Player.Weight >= val;
+                                }
+
+                                break;
+                            case 2:
+                                // if stat < m_Value
+                                switch (m_Var)
+                                {
+                                    case WhileVarType.Hits:
+                                        return World.Player.Hits < val;
+                                    case WhileVarType.Mana:
+                                        return World.Player.Mana < val;
+                                    case WhileVarType.Stamina:
+                                        return World.Player.Stam < val;
+                                    case WhileVarType.Weight:
+                                        return World.Player.Weight < val;
+                                }
+
+                                break;
+                            case 3:
+                                // if stat > m_Value
+                                switch (m_Var)
+                                {
+                                    case WhileVarType.Hits:
+                                        return World.Player.Hits > val;
+                                    case WhileVarType.Mana:
+                                        return World.Player.Mana > val;
+                                    case WhileVarType.Stamina:
+                                        return World.Player.Stam > val;
+                                    case WhileVarType.Weight:
+                                        return World.Player.Weight > val;
+                                }
+
+                                break;
+                        }
+
+                        return false;
+                    }
+
+                case WhileVarType.Poisoned:
+                    {
+                        if (Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                            return World.Player.Poisoned;
+                        else
+                            return false;
+                    }
+
+                case WhileVarType.SysMessage:
+                    {
+                        string text = (string)m_Value;
+                        for (int i = PacketHandlers.SysMessages.Count - 1; i >= 0; i--)
+                        {
+                            string sys = PacketHandlers.SysMessages[i];
+                            if (sys.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1)
+                            {
+                                PacketHandlers.SysMessages.RemoveRange(0, i + 1);
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    }
+
+                case WhileVarType.Mounted:
+                    {
+                        return World.Player.GetItemOnLayer(Layer.Mount) != null;
+                    }
+
+                case WhileVarType.RHandEmpty:
+                    {
+                        return World.Player.GetItemOnLayer(Layer.RightHand) == null;
+                    }
+
+                case WhileVarType.LHandEmpty:
+                    {
+                        return World.Player.GetItemOnLayer(Layer.LeftHand) == null;
+                    }
+
+                case WhileVarType.Skill:
+
+                    double skillValToCompare;
+
+                    if (m_Value is string skillVal)
+                    {
+                        double.TryParse(skillVal, out skillValToCompare);
+                    }
+                    else
+                    {
+                        skillValToCompare = Convert.ToDouble(m_Value);
+                    }
+
+                    switch (m_Direction)
+                    {
+                        case 0:
+                            return World.Player.Skills[m_SkillId].Value <= skillValToCompare;
+                        case 1:
+                            return World.Player.Skills[m_SkillId].Value >= skillValToCompare;
+                        case 2:
+                            return World.Player.Skills[m_SkillId].Value < skillValToCompare;
+                        case 3:
+                            return World.Player.Skills[m_SkillId].Value > skillValToCompare;
+                        default:
+                            return World.Player.Skills[m_SkillId].Value <= skillValToCompare;
+                    }
+
+                case WhileVarType.Counter:
+                    {
+                        if (m_CountObj == null)
+                        {
+                            foreach (Assistant.Counter c in Assistant.Counter.List)
+                            {
+                                if (c.Name == m_Counter)
+                                {
+                                    m_CountObj = c;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (m_CountObj == null || !m_CountObj.Enabled)
+                            return false;
+
+                        int val;
+
+                        if (m_Value is string value)
+                        {
+                            int.TryParse(value, out val);
+                        }
+                        else
+                        {
+                            val = Convert.ToInt32(m_Value);
+                        }
+
+                        switch (m_Direction)
+                        {
+                            case 0:
+                                return m_CountObj.Amount <= val;
+                            case 1:
+                                return m_CountObj.Amount >= val;
+                            case 2:
+                                return m_CountObj.Amount < val;
+                            case 3:
+                                return m_CountObj.Amount > val;
+                            default:
+                                return m_CountObj.Amount <= val;
+                        }
+                    }
+
+                default:
+                    return false;
+            }
+        }
+
+        private string DirectionString()
+        {
+            switch (m_Direction)
+            {
+                case 0:
+                    return "<=";
+                case 1:
+                    return ">=";
+                case 2:
+                    return "<";
+                case 3:
+                    return ">";
+                default:
+                    return "<=";
+            }
+        }
+
+        public override string ToString()
+        {
+            switch (m_Var)
+            {
+                case WhileVarType.Hits:
+                case WhileVarType.Mana:
+                case WhileVarType.Stamina:
+                case WhileVarType.Weight:
+                    return $"While ( {m_Var} {DirectionString()} {m_Value} )";
+                case WhileVarType.Poisoned:
+                    return "While ( Poisoned )";
+                case WhileVarType.SysMessage:
+                    {
+                        string str = (string)m_Value;
+                        if (str.Length > 10)
+                            str = str.Substring(0, 7) + "...";
+                        return String.Format("If ( SysMessage \"{0}\" )", str);
+                    }
+                case WhileVarType.Skill:
+                    return $"While ( \"{Language.Skill2Str(m_SkillId)}\" {DirectionString()} {m_Value})";
+                case WhileVarType.Mounted:
+                    return "While ( Mounted )";
+                case WhileVarType.RHandEmpty:
+                    return "While ( R-Hand Empty )";
+                case WhileVarType.LHandEmpty:
+                    return "While ( L-Hand Empty )";
+                case WhileVarType.Counter:
+                    return $"While ( \"{m_Counter} count\" {DirectionString()} {m_Value} )";
+                default:
+                    return "While ( ??? )";
+            }
+        }
+
+        private MenuItem[] m_MenuItems;
+
+        public override MenuItem[] GetContextMenuItems()
+        {
+            if (m_MenuItems == null)
+            {
+                m_MenuItems = new MacroMenuItem[]
+                {
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit))
+                };
+            }
+
+            return m_MenuItems;
+        }
+
+        private void Edit(object[] args)
+        {
+            new MacroInsertWhile(this).ShowDialog(Engine.MainWindow);
+        }
+    }
+
+    public class EndWhileAction : MacroAction
+    {
+        public EndWhileAction()
+        {
+        }
+
+        public override bool Perform()
+        {
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "End While";
+        }
+    }
+
     public class ContextMenuAction : MacroAction
     {
         private ushort m_CtxName;

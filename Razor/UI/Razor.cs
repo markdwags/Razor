@@ -7289,7 +7289,10 @@ namespace Assistant
                     new MenuItem(Language.GetString(LocString.InsENDIF), new EventHandler(onMacroInsertEndIf)),
                     new MenuItem("-"),
                     new MenuItem(Language.GetString(LocString.InsFOR), new EventHandler(onMacroInsertFor)),
-                    new MenuItem(Language.GetString(LocString.InsENDFOR), new EventHandler(onMacroInsertEndFor))
+                    new MenuItem(Language.GetString(LocString.InsENDFOR), new EventHandler(onMacroInsertEndFor)),
+                    new MenuItem("-"),
+                    new MenuItem(Language.GetString(LocString.InsertWhile), new EventHandler(onMacroInsertWhile)),
+                    new MenuItem(Language.GetString(LocString.InsertEndWhile), new EventHandler(onMacroInsertEndWhile))
                 });
 
                 menu.Show(actionList, new Point(e.X, e.Y));
@@ -7492,6 +7495,35 @@ namespace Assistant
                 return;
 
             m.Actions.Insert(a + 1, new EndForAction());
+            RedrawActionList(m);
+        }
+
+        private void onMacroInsertWhile(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
+
+            MacroInsertWhile ins = new MacroInsertWhile(m, a);
+            if (ins.ShowDialog(this) == DialogResult.OK)
+                RedrawActionList(m);
+        }
+
+        private void onMacroInsertEndWhile(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
+
+            m.Actions.Insert(a + 1, new EndWhileAction());
             RedrawActionList(m);
         }
 

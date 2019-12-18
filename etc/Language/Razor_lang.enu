@@ -790,3 +790,7 @@ InputBox::ok=&OK
 2088=Target a new 'Beneficial Target'
 2089=Target a new 'Harmful Target'
 2090=Bird Sounds
+2091=AddAllMobilesTargetFilter
+2092=AddAllMobilesHumanoidTargetFilter
+2093=Insert "While Loop"
+2094=Insert "End While"
