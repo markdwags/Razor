@@ -464,6 +464,8 @@ namespace Assistant
             this.newProfile = new System.Windows.Forms.Button();
             this.profiles = new System.Windows.Forms.ComboBox();
             this.subFiltersTab = new System.Windows.Forms.TabPage();
+            this.daemonAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterDaemonGraphics = new System.Windows.Forms.CheckBox();
             this.filterOverheadMessages = new System.Windows.Forms.CheckBox();
             this.lblFilterDelaySeconds = new System.Windows.Forms.Label();
             this.lblFilterDelay = new System.Windows.Forms.Label();
@@ -765,8 +767,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.daemonAnimationList = new System.Windows.Forms.ComboBox();
-            this.filterDaemonGraphics = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1178,12 +1178,34 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
+            // 
+            // daemonAnimationList
+            // 
+            this.daemonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.daemonAnimationList.DropDownWidth = 250;
+            this.daemonAnimationList.FormattingEnabled = true;
+            this.daemonAnimationList.Location = new System.Drawing.Point(313, 64);
+            this.daemonAnimationList.Name = "daemonAnimationList";
+            this.daemonAnimationList.Size = new System.Drawing.Size(183, 23);
+            this.daemonAnimationList.TabIndex = 113;
+            this.daemonAnimationList.SelectedIndexChanged += new System.EventHandler(this.daemonAnimationList_SelectedIndexChanged);
+            // 
+            // filterDaemonGraphics
+            // 
+            this.filterDaemonGraphics.AutoSize = true;
+            this.filterDaemonGraphics.Location = new System.Drawing.Point(209, 66);
+            this.filterDaemonGraphics.Name = "filterDaemonGraphics";
+            this.filterDaemonGraphics.Size = new System.Drawing.Size(104, 19);
+            this.filterDaemonGraphics.TabIndex = 112;
+            this.filterDaemonGraphics.Text = "Filter daemons";
+            this.filterDaemonGraphics.UseVisualStyleBackColor = true;
+            this.filterDaemonGraphics.CheckedChanged += new System.EventHandler(this.filterDaemonGraphics_CheckedChanged);
             // 
             // filterOverheadMessages
             // 
@@ -4382,28 +4404,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // daemonAnimationList
-            // 
-            this.daemonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.daemonAnimationList.DropDownWidth = 250;
-            this.daemonAnimationList.FormattingEnabled = true;
-            this.daemonAnimationList.Location = new System.Drawing.Point(313, 64);
-            this.daemonAnimationList.Name = "daemonAnimationList";
-            this.daemonAnimationList.Size = new System.Drawing.Size(183, 23);
-            this.daemonAnimationList.TabIndex = 113;
-            this.daemonAnimationList.SelectedIndexChanged += new System.EventHandler(this.daemonAnimationList_SelectedIndexChanged);
-            // 
-            // filterDaemonGraphics
-            // 
-            this.filterDaemonGraphics.AutoSize = true;
-            this.filterDaemonGraphics.Location = new System.Drawing.Point(209, 66);
-            this.filterDaemonGraphics.Name = "filterDaemonGraphics";
-            this.filterDaemonGraphics.Size = new System.Drawing.Size(104, 19);
-            this.filterDaemonGraphics.TabIndex = 112;
-            this.filterDaemonGraphics.Text = "Filter daemons";
-            this.filterDaemonGraphics.UseVisualStyleBackColor = true;
-            this.filterDaemonGraphics.CheckedChanged += new System.EventHandler(this.filterDaemonGraphics_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -7292,7 +7292,10 @@ namespace Assistant
                     new MenuItem(Language.GetString(LocString.InsENDFOR), new EventHandler(onMacroInsertEndFor)),
                     new MenuItem("-"),
                     new MenuItem(Language.GetString(LocString.InsertWhile), new EventHandler(onMacroInsertWhile)),
-                    new MenuItem(Language.GetString(LocString.InsertEndWhile), new EventHandler(onMacroInsertEndWhile))
+                    new MenuItem(Language.GetString(LocString.InsertEndWhile), new EventHandler(onMacroInsertEndWhile)),
+                    new MenuItem("-"),
+                    new MenuItem(Language.GetString(LocString.InsertDo), new EventHandler(onMacroInsertDo)),
+                    new MenuItem(Language.GetString(LocString.InsertDoWhile), new EventHandler(onMacroInsertDoWhile)),
                 });
 
                 menu.Show(actionList, new Point(e.X, e.Y));
@@ -7326,6 +7329,14 @@ namespace Assistant
                             new MacroInsertIf(a).ShowDialog(Engine.MainWindow);
                         }
                         else if (a.GetType().Name.Equals("ForAction"))
+                        {
+                            aMenus[0].PerformClick();
+                        }
+                        else if (a.GetType().Name.Equals("DoWhileAction"))
+                        {
+                            aMenus[0].PerformClick();
+                        }
+                        else if (a.GetType().Name.Equals("WhileAction"))
                         {
                             aMenus[0].PerformClick();
                         }
@@ -7525,6 +7536,35 @@ namespace Assistant
 
             m.Actions.Insert(a + 1, new EndWhileAction());
             RedrawActionList(m);
+        }
+
+        private void onMacroInsertDo(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
+
+            m.Actions.Insert(a + 1, new StartDoWhileAction());
+            RedrawActionList(m);
+        }
+
+        private void onMacroInsertDoWhile(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
+
+            MacroInsertDoWhile ins = new MacroInsertDoWhile(m, a);
+            if (ins.ShowDialog(this) == DialogResult.OK)
+                RedrawActionList(m);
         }
 
         private void OnMacroActionMoveUp(object sender, System.EventArgs e)

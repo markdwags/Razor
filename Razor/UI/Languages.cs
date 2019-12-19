@@ -543,6 +543,8 @@ namespace Assistant
         AddAllMobilesHumanoidTargetFilter,
         InsertWhile,
         InsertEndWhile,
+        InsertDo,
+        InsertDoWhile,
         __End
     }
 

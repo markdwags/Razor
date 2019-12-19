@@ -356,6 +356,9 @@
     <Compile Include="UI\Languages.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\MacroInsertDoWhile.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\MacroInsertWhile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -467,6 +470,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MacroInsertDoWhile.resx">
+      <DependentUpon>MacroInsertDoWhile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MacroInsertWhile.resx">
       <DependentUpon>MacroInsertWhile.cs</DependentUpon>

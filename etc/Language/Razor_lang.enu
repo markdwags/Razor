@@ -794,3 +794,5 @@ InputBox::ok=&OK
 2092=AddAllMobilesHumanoidTargetFilter
 2093=Insert "While Loop"
 2094=Insert "End While"
+2095=Insert "Do"
+2096=Insert "Do While Loop"

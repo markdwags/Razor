@@ -574,7 +574,7 @@ namespace Assistant.Macros
                         if (ca >= 0 && m_Actions[ca] is ForAction)
                             m_CurrentAction = ca - 1;
                     }
-                    else if (action is WhileAction)
+                    else if (action is WhileAction && Client.Instance.AllowBit(FeatureBit.LoopingMacros))
                     {
                         bool val = ((WhileAction)action).Evaluate();
 
@@ -628,6 +628,36 @@ namespace Assistant.Macros
 
                         if (ca >= 0 && m_Actions[ca] is WhileAction)
                             m_CurrentAction = ca - 1;
+                    }
+                    else if (action is DoWhileAction && Client.Instance.AllowBit(FeatureBit.LoopingMacros))
+                    {
+                        bool val = ((DoWhileAction)action).Evaluate();
+
+                        if (val)
+                        {
+                            int ca = m_CurrentAction - 1;
+                            int dowhilecount = 0;
+
+                            while (ca >= 0)
+                            {
+                                if (m_Actions[ca] is DoWhileAction)
+                                {
+                                    dowhilecount--;
+                                }
+                                else if (m_Actions[ca] is StartDoWhileAction)
+                                {
+                                    if (dowhilecount >= 0)
+                                        break;
+                                    else
+                                        dowhilecount++;
+                                }
+
+                                ca--;
+                            }
+
+                            if (ca >= 0 && m_Actions[ca] is StartDoWhileAction)
+                                m_CurrentAction = ca - 1;
+                        }
                     }
 
                     bool isWait = action is MacroWaitAction;

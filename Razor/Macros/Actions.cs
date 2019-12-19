@@ -3514,6 +3514,468 @@ namespace Assistant.Macros
         }
     }
 
+    public class StartDoWhileAction : MacroAction
+    {
+        public StartDoWhileAction()
+        {
+        }
+
+        public override bool Perform()
+        {
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "Do";
+        }
+    }
+
+    public class DoWhileAction : MacroAction
+    {
+        public enum DoWhileVarType : int
+        {
+            Hits = 0,
+            Mana,
+            Stamina,
+            Poisoned,
+            SysMessage,
+            Weight,
+            Mounted,
+            RHandEmpty,
+            LHandEmpty,
+
+            BeginCountersMarker,
+
+            Counter = 50,
+            Skill = 100
+        }
+
+        // 0 <=,1 >=,2 <,3 >
+        private sbyte m_Direction;
+        private object m_Value;
+        private DoWhileVarType m_Var;
+        private string m_Counter;
+        private int m_SkillId = -1;
+        private Assistant.Counter m_CountObj;
+
+        public sbyte Op
+        {
+            get { return m_Direction; }
+        }
+
+        public object Value
+        {
+            get { return m_Value; }
+        }
+
+        public DoWhileVarType Variable
+        {
+            get { return m_Var; }
+        }
+
+        public string Counter
+        {
+            get { return m_Counter; }
+        }
+
+        public int SkillId
+        {
+            get { return m_SkillId; }
+        }
+
+        public DoWhileAction(string[] args)
+        {
+            m_Var = (DoWhileVarType)Convert.ToInt32(args[1]);
+            try
+            {
+                m_Direction = Convert.ToSByte(args[2]);
+                if (m_Direction > 3)
+                    m_Direction = 0;
+            }
+            catch
+            {
+                m_Direction = -1;
+            }
+
+            if (m_Var == DoWhileVarType.SysMessage)
+            {
+                m_Value = args[3].ToLower();
+            }
+            else if (m_Var == DoWhileVarType.Skill)
+            {
+                if (args[3] is string strVal)
+                {
+                    m_Value = strVal;
+                }
+                else
+                {
+                    m_Value = Convert.ToDouble(args[3]);
+                }
+            }
+            else
+            {
+                if (args[3] is string strVal)
+                {
+                    m_Value = strVal;
+                }
+                else
+                {
+                    m_Value = Convert.ToInt32(args[3]);
+                }
+            }
+
+            if (m_Var == DoWhileVarType.Counter)
+                m_Counter = args[4];
+
+            if (m_Var == DoWhileVarType.Skill)
+                m_SkillId = Convert.ToInt32(args[4]);
+        }
+
+        public DoWhileAction(DoWhileVarType var, sbyte dir, int val)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+        }
+
+        public DoWhileAction(DoWhileVarType var, sbyte dir, string val)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+        }
+
+        public DoWhileAction(DoWhileVarType var, sbyte dir, int val, string counter)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+            m_Counter = counter;
+        }
+
+        public DoWhileAction(DoWhileVarType var, sbyte dir, double val, int skillId)
+        {
+            m_Var = var;
+            m_Direction = dir;
+            m_Value = val;
+            m_SkillId = skillId;
+        }
+
+        public DoWhileAction(DoWhileVarType var, string text)
+        {
+            m_Var = var;
+            m_Value = text.ToLower();
+        }
+
+        public override string Serialize()
+        {
+            if (m_Var == DoWhileVarType.Counter && m_Counter != null)
+                return DoSerialize((int)m_Var, m_Direction, m_Value, m_Counter);
+            else if (m_Var == DoWhileVarType.Skill && m_SkillId != -1)
+                return DoSerialize((int)m_Var, m_Direction, m_Value, m_SkillId);
+            else
+                return DoSerialize((int)m_Var, m_Direction, m_Value);
+        }
+
+        public override bool Perform()
+        {
+            return true;
+        }
+
+        public bool Evaluate()
+        {
+            switch (m_Var)
+            {
+                case DoWhileVarType.Hits:
+                case DoWhileVarType.Mana:
+                case DoWhileVarType.Stamina:
+                case DoWhileVarType.Weight:
+                    {
+                        bool isNumeric = true;
+                        int val;
+
+                        if (m_Value is string value)
+                        {
+                            isNumeric = int.TryParse(value, out val);
+                        }
+                        else
+                        {
+                            val = Convert.ToInt32(m_Value);
+                        }
+
+                        if (!isNumeric && m_Value is string strVal)
+                        {
+                            if (strVal.Equals("{maxhp}"))
+                            {
+                                val = World.Player.HitsMax;
+                            }
+                            else if (strVal.Equals("{maxstam}"))
+                            {
+                                val = World.Player.StamMax;
+                            }
+                            else if (strVal.Equals("{maxmana}"))
+                            {
+                                val = World.Player.ManaMax;
+                            }
+                            else
+                            {
+                                val = 0;
+                            }
+                        }
+
+                        switch (m_Direction)
+                        {
+                            case 0:
+                                // if stat <= m_Value
+                                switch (m_Var)
+                                {
+                                    case DoWhileVarType.Hits:
+                                        return World.Player.Hits <= val;
+                                    case DoWhileVarType.Mana:
+                                        return World.Player.Mana <= val;
+                                    case DoWhileVarType.Stamina:
+                                        return World.Player.Stam <= val;
+                                    case DoWhileVarType.Weight:
+                                        return World.Player.Weight <= val;
+                                }
+
+                                break;
+                            case 1:
+                                // if stat >= m_Value
+                                switch (m_Var)
+                                {
+                                    case DoWhileVarType.Hits:
+                                        return World.Player.Hits >= val;
+                                    case DoWhileVarType.Mana:
+                                        return World.Player.Mana >= val;
+                                    case DoWhileVarType.Stamina:
+                                        return World.Player.Stam >= val;
+                                    case DoWhileVarType.Weight:
+                                        return World.Player.Weight >= val;
+                                }
+
+                                break;
+                            case 2:
+                                // if stat < m_Value
+                                switch (m_Var)
+                                {
+                                    case DoWhileVarType.Hits:
+                                        return World.Player.Hits < val;
+                                    case DoWhileVarType.Mana:
+                                        return World.Player.Mana < val;
+                                    case DoWhileVarType.Stamina:
+                                        return World.Player.Stam < val;
+                                    case DoWhileVarType.Weight:
+                                        return World.Player.Weight < val;
+                                }
+
+                                break;
+                            case 3:
+                                // if stat > m_Value
+                                switch (m_Var)
+                                {
+                                    case DoWhileVarType.Hits:
+                                        return World.Player.Hits > val;
+                                    case DoWhileVarType.Mana:
+                                        return World.Player.Mana > val;
+                                    case DoWhileVarType.Stamina:
+                                        return World.Player.Stam > val;
+                                    case DoWhileVarType.Weight:
+                                        return World.Player.Weight > val;
+                                }
+
+                                break;
+                        }
+
+                        return false;
+                    }
+
+                case DoWhileVarType.Poisoned:
+                    {
+                        if (Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                            return World.Player.Poisoned;
+                        else
+                            return false;
+                    }
+
+                case DoWhileVarType.SysMessage:
+                    {
+                        string text = (string)m_Value;
+                        for (int i = PacketHandlers.SysMessages.Count - 1; i >= 0; i--)
+                        {
+                            string sys = PacketHandlers.SysMessages[i];
+                            if (sys.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1)
+                            {
+                                PacketHandlers.SysMessages.RemoveRange(0, i + 1);
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    }
+
+                case DoWhileVarType.Mounted:
+                    {
+                        return World.Player.GetItemOnLayer(Layer.Mount) != null;
+                    }
+
+                case DoWhileVarType.RHandEmpty:
+                    {
+                        return World.Player.GetItemOnLayer(Layer.RightHand) == null;
+                    }
+
+                case DoWhileVarType.LHandEmpty:
+                    {
+                        return World.Player.GetItemOnLayer(Layer.LeftHand) == null;
+                    }
+
+                case DoWhileVarType.Skill:
+
+                    double skillValToCompare;
+
+                    if (m_Value is string skillVal)
+                    {
+                        double.TryParse(skillVal, out skillValToCompare);
+                    }
+                    else
+                    {
+                        skillValToCompare = Convert.ToDouble(m_Value);
+                    }
+
+                    switch (m_Direction)
+                    {
+                        case 0:
+                            return World.Player.Skills[m_SkillId].Value <= skillValToCompare;
+                        case 1:
+                            return World.Player.Skills[m_SkillId].Value >= skillValToCompare;
+                        case 2:
+                            return World.Player.Skills[m_SkillId].Value < skillValToCompare;
+                        case 3:
+                            return World.Player.Skills[m_SkillId].Value > skillValToCompare;
+                        default:
+                            return World.Player.Skills[m_SkillId].Value <= skillValToCompare;
+                    }
+
+                case DoWhileVarType.Counter:
+                    {
+                        if (m_CountObj == null)
+                        {
+                            foreach (Assistant.Counter c in Assistant.Counter.List)
+                            {
+                                if (c.Name == m_Counter)
+                                {
+                                    m_CountObj = c;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (m_CountObj == null || !m_CountObj.Enabled)
+                            return false;
+
+                        int val;
+
+                        if (m_Value is string value)
+                        {
+                            int.TryParse(value, out val);
+                        }
+                        else
+                        {
+                            val = Convert.ToInt32(m_Value);
+                        }
+
+                        switch (m_Direction)
+                        {
+                            case 0:
+                                return m_CountObj.Amount <= val;
+                            case 1:
+                                return m_CountObj.Amount >= val;
+                            case 2:
+                                return m_CountObj.Amount < val;
+                            case 3:
+                                return m_CountObj.Amount > val;
+                            default:
+                                return m_CountObj.Amount <= val;
+                        }
+                    }
+
+                default:
+                    return false;
+            }
+        }
+
+        private string DirectionString()
+        {
+            switch (m_Direction)
+            {
+                case 0:
+                    return "<=";
+                case 1:
+                    return ">=";
+                case 2:
+                    return "<";
+                case 3:
+                    return ">";
+                default:
+                    return "<=";
+            }
+        }
+
+        public override string ToString()
+        {
+            switch (m_Var)
+            {
+                case DoWhileVarType.Hits:
+                case DoWhileVarType.Mana:
+                case DoWhileVarType.Stamina:
+                case DoWhileVarType.Weight:
+                    return $"Do While ( {m_Var} {DirectionString()} {m_Value} )";
+                case DoWhileVarType.Poisoned:
+                    return "Do While ( Poisoned )";
+                case DoWhileVarType.SysMessage:
+                    {
+                        string str = (string)m_Value;
+                        if (str.Length > 10)
+                            str = str.Substring(0, 7) + "...";
+                        return String.Format("If ( SysMessage \"{0}\" )", str);
+                    }
+                case DoWhileVarType.Skill:
+                    return $"Do While ( \"{Language.Skill2Str(m_SkillId)}\" {DirectionString()} {m_Value})";
+                case DoWhileVarType.Mounted:
+                    return "Do While ( Mounted )";
+                case DoWhileVarType.RHandEmpty:
+                    return "Do While ( R-Hand Empty )";
+                case DoWhileVarType.LHandEmpty:
+                    return "Do While ( L-Hand Empty )";
+                case DoWhileVarType.Counter:
+                    return $"Do While ( \"{m_Counter} count\" {DirectionString()} {m_Value} )";
+                default:
+                    return "Do While ( ??? )";
+            }
+        }
+
+        private MenuItem[] m_MenuItems;
+
+        public override MenuItem[] GetContextMenuItems()
+        {
+            if (m_MenuItems == null)
+            {
+                m_MenuItems = new MacroMenuItem[]
+                {
+                    new MacroMenuItem(LocString.Edit, new MacroMenuCallback(Edit))
+                };
+            }
+
+            return m_MenuItems;
+        }
+
+        private void Edit(object[] args)
+        {
+            new MacroInsertDoWhile(this).ShowDialog(Engine.MainWindow);
+        }
+    }
+
     public class ContextMenuAction : MacroAction
     {
         private ushort m_CtxName;
