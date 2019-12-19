@@ -41,6 +41,10 @@ namespace Assistant
                 playerName.IndexOfAny(Path.GetInvalidPathChars()) != -1)
                 playerName = "Unknown";
 
+            if (LastMobileDeathName == null || LastMobileDeathName.Trim() == "" ||
+                LastMobileDeathName.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+                LastMobileDeathName = "Unknown";
+
             string imageTimestampTag = Config.GetBool("CapTimeStamp")
                 ? $"{playerName} ({World.ShardName}) - {Engine.MistedDateTime:M/dd/yy - HH:mm:ss}"
                 : "";
