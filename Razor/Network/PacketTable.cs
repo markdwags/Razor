@@ -256,8 +256,8 @@ namespace Assistant
             -1, // f7
             0x6A, // f8
             -1, // f9
-            -1, // fa
-            -1, // fb
+            0x01, // fa
+            0x02, // fb
             -1, // fc
             -1, // fd
             -1 // ff
