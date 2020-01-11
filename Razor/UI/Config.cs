@@ -316,6 +316,168 @@ namespace Assistant
 
         private static bool m_Warned = false;
 
+        private static Dictionary<string, string[]> SteamDataMappings = new Dictionary<string, string[]>()
+        {
+            { "CommandPrefix", null }, // ??
+            { "UseObjectsQueue", new string[2]{ "QueueActions", "System.Boolean" } },
+            { "ShowCorpseNames", new string[2]{ "ShowCorpseNames", "System.Boolean" } },
+            { "ShowCreatureNames", new string[2]{ "ShowMobNames", "System.Boolean" } },
+            { "OpenCorpses", new string[2]{ "AutoOpenCorpses", "System.Boolean" } },
+            { "OpenCorpsesRange",new string[2]{  "CorpseRange", "System.Int32" } },
+            { "ShowMobileHits", null }, // ??
+            { "PositionInTitle", null }, // ??
+            { "ForceResolution", new string[2]{ "ForceSizeEnabled", "System.Boolean" } },
+            { "GameWindowWidth", new string[2]{ "ForceSizeX", "System.Int32" } },
+            { "GameWindowHeight", new string[2]{ "ForceSizeY", "System.Int32" } },
+            { "HandsBeforePotions", new string[2]{ "PotionEquip", "System.Boolean" } },
+            { "HandsBeforeCasting", new string[2]{ "SpellUnequip", "System.Boolean" } },
+            // { "SmartTarget", new string[2]{ "SmartLastTarget", "System.Boolean" } },
+            { "SmartTargetRange", new string[2]{ "RangeCheckLT", "System.Boolean" } },
+            { "SmartTargetRangeValue", new string[2]{ "LTRange", "System.Int32" } },
+            { "HighlightCurrentTarget", null }, // ??
+            { "BlockInvalidHeal", new string[2]{ "BlockHealPoison", "System.Boolean" } },
+            { "ActionDelay", new string[2]{ "ObjectDelay", "System.Int32" } },
+            { "UseObjectsLimit", null }, // ??
+            { "TargetShare", null }, // ??
+            { "MountSerial", null }, // ??
+            { "BladeSerial", null }, // ??
+            { "BoneCutter", null }, // ??
+            { "AutoMount", null }, // ??
+            { "AutoBandage", null }, // ??
+            { "AutoBandageTarget", null }, // ??
+            { "AutoBandageScale", null }, // ??
+            { "AutoBandageCount", null }, // ??
+            { "AutoBandageStart", null }, // ??
+            { "AutoBandageStartValue", null }, // ??
+            { "AutoBandageDelay", null }, // ??
+            { "AutoBandageFormula", null  }, // ??
+            { "AutoBandageHidden", null }, // ??
+            { "OpenDoors", new string[2]{ "AutoOpenDoors", "System.Boolean" } },
+            { "UseDoors", null }, // ??
+            { "SpellsColor", null }, // ??
+            { "SpellsMode", null }, // ??
+            { "SpellsTargetShare", null }, // ??
+            { "OpenDoorsMode", new string[2]{ "AutoOpenDoorWhenHidden", "Variant" } }, // ??
+            { "OpenCorpsesMode", new string[2]{ "BlockOpenCorpsesTwice", "Variant" } }, // ??
+            { "ShowMobileFlags", null }, // ??
+            { "StateHighlightMode", null }, // ??
+            { "StaticFields", null }, // ??
+            { "CountStealthSteps",new string[2]{  "CountStealthSteps", "System.Boolean" } },
+            { "FriendsListOnly", null }, // ??
+            { "FriendsParty", null }, // ??
+            { "MoveConflictingItems", null }, // ??
+            { "CustomCaption", null }, // TitleBarDisplay ??
+            { "CustomCaptionMode", null }, // TitlebarImages ??
+            { "CustomCaptionText", null }, // RazorTitleBarText
+            { "WarnCounters", new string[2]{ "CounterWarn", "System.Boolean" } },
+            { "WarnCountersValue", new string[2]{ "CounterWarnAmount", "System.Int32" } },
+            { "HighlightReagents", new string[2]{ "HighlightReagents", "System.Boolean" } },
+            { "DisplayCountersName", null }, // ??
+            { "CaptionUseNotoHue", null }, // ??
+            { "DisplayCountersImage", null }, // ??
+            { "PreventDismount", new string[2]{ "BlockDismount", "System.Boolean" } },
+            { "PreventAttackFriends", null }, // ??
+            { "AutoSearchContainers", new string[2]{ "AutoSearch", "System.Boolean" } },
+            { "AutoAcceptParty", new string[2]{  "AutoAcceptParty", "System.Boolean" } },
+            { "StaticFieldsMode", null } // ??
+        };
+
+        public bool ImportSteam(string path)
+        {
+            if (!File.Exists(path))
+            return false;
+
+            XmlDocument doc = new XmlDocument();
+          
+            try
+            {
+                doc.Load(path);
+            }
+            catch
+            {
+                MessageBox.Show(Engine.ActiveWindow, Language.Format(LocString.ProfileCorrupt, path),
+                    "Steam Profile Import Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return false;
+            }
+
+            XmlElement root = doc["profile"];
+            if (root == null)
+                return false;
+
+            Assembly exe = Assembly.GetCallingAssembly();
+            if (exe == null)
+                return false;
+
+            foreach (XmlElement el in root.GetElementsByTagName("data"))
+            {
+                try
+                {
+                    string steamName = el.GetAttribute("name");
+                    // string typeStr = el.GetAttribute("type");
+                    string[] razorMapping = null;
+
+                    if (SteamDataMappings.ContainsKey(steamName))
+                        razorMapping = SteamDataMappings[steamName];
+
+                    if (razorMapping == null)
+                        continue;
+
+                    string typeStr = razorMapping[1];
+
+                    string val = el.InnerText;
+
+                    if (typeStr == "-null-")
+                    {
+                        //m_Props[name] = null;
+                        if (m_Props.ContainsKey(razorMapping[0]))
+                            m_Props.Remove(razorMapping[0]);
+                    }
+                    else
+                    {
+                        Type type = Type.GetType(typeStr);
+                        if (type == null)
+                            type = exe.GetType(typeStr);
+
+                        if (m_Props.ContainsKey(razorMapping[0]))
+                        {
+                            if (type == null)
+                                m_Props.Remove(razorMapping[0]);
+                            else
+                            {
+                                switch (type.Name)
+                                {
+                                    case "Int32":
+                                        {
+                                            m_Props[razorMapping[0]] = Convert.ToInt32(val, 16);
+                                            break;
+                                        }
+                                    case "Variant":
+                                        {
+                                            m_Props[razorMapping[0]] = GetObjectFromString(Convert.ToInt32(val, 16).ToString(), type);
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            m_Props[razorMapping[0]] = GetObjectFromString(val, type);
+                                            break;
+                                        }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(Engine.ActiveWindow, Language.Format(LocString.ProfileLoadEx, e.ToString()),
+                        "Steam Profile Import Exception", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
+
+
+            return false;
+        }
+
         public bool Load()
         {
             if (m_Name == null || m_Name.Trim() == "")
@@ -366,7 +528,7 @@ namespace Assistant
                         if (type == null)
                             type = exe.GetType(typeStr);
 
-                        if (m_Props.ContainsKey(name) || name == "ForceSize")
+                        if (m_Props.ContainsKey(name) || name == "ForceSize") 
                         {
                             if (type == null)
                                 m_Props.Remove(name);

@@ -375,6 +375,7 @@ namespace Assistant
         private Button setMacroHotKey;
         private ComboBox daemonAnimationList;
         private CheckBox filterDaemonGraphics;
+        private Button steamImport;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -464,6 +465,8 @@ namespace Assistant
             this.newProfile = new System.Windows.Forms.Button();
             this.profiles = new System.Windows.Forms.ComboBox();
             this.subFiltersTab = new System.Windows.Forms.TabPage();
+            this.daemonAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterDaemonGraphics = new System.Windows.Forms.CheckBox();
             this.filterOverheadMessages = new System.Windows.Forms.CheckBox();
             this.lblFilterDelaySeconds = new System.Windows.Forms.Label();
             this.lblFilterDelay = new System.Windows.Forms.Label();
@@ -765,8 +768,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.daemonAnimationList = new System.Windows.Forms.ComboBox();
-            this.filterDaemonGraphics = new System.Windows.Forms.CheckBox();
+            this.steamImport = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -941,6 +943,7 @@ namespace Assistant
             // 
             // groupBox16
             // 
+            this.groupBox16.Controls.Add(this.steamImport);
             this.groupBox16.Controls.Add(this.openBackupFolder);
             this.groupBox16.Controls.Add(this.setBackupFolder);
             this.groupBox16.Controls.Add(this.lastBackup);
@@ -983,9 +986,9 @@ namespace Assistant
             // 
             // createBackup
             // 
-            this.createBackup.Location = new System.Drawing.Point(61, 22);
+            this.createBackup.Location = new System.Drawing.Point(9, 22);
             this.createBackup.Name = "createBackup";
-            this.createBackup.Size = new System.Drawing.Size(107, 30);
+            this.createBackup.Size = new System.Drawing.Size(104, 30);
             this.createBackup.TabIndex = 72;
             this.createBackup.Text = "Create Backup";
             this.createBackup.UseVisualStyleBackColor = true;
@@ -1178,12 +1181,34 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
+            // 
+            // daemonAnimationList
+            // 
+            this.daemonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.daemonAnimationList.DropDownWidth = 250;
+            this.daemonAnimationList.FormattingEnabled = true;
+            this.daemonAnimationList.Location = new System.Drawing.Point(313, 64);
+            this.daemonAnimationList.Name = "daemonAnimationList";
+            this.daemonAnimationList.Size = new System.Drawing.Size(183, 23);
+            this.daemonAnimationList.TabIndex = 113;
+            this.daemonAnimationList.SelectedIndexChanged += new System.EventHandler(this.daemonAnimationList_SelectedIndexChanged);
+            // 
+            // filterDaemonGraphics
+            // 
+            this.filterDaemonGraphics.AutoSize = true;
+            this.filterDaemonGraphics.Location = new System.Drawing.Point(209, 66);
+            this.filterDaemonGraphics.Name = "filterDaemonGraphics";
+            this.filterDaemonGraphics.Size = new System.Drawing.Size(104, 19);
+            this.filterDaemonGraphics.TabIndex = 112;
+            this.filterDaemonGraphics.Text = "Filter daemons";
+            this.filterDaemonGraphics.UseVisualStyleBackColor = true;
+            this.filterDaemonGraphics.CheckedChanged += new System.EventHandler(this.filterDaemonGraphics_CheckedChanged);
             // 
             // filterOverheadMessages
             // 
@@ -1361,7 +1386,7 @@ namespace Assistant
             this.targetFilterEnabled.AutoSize = true;
             this.targetFilterEnabled.Location = new System.Drawing.Point(259, 6);
             this.targetFilterEnabled.Name = "targetFilterEnabled";
-            this.targetFilterEnabled.Size = new System.Drawing.Size(133, 19);
+            this.targetFilterEnabled.Size = new System.Drawing.Size(132, 19);
             this.targetFilterEnabled.TabIndex = 0;
             this.targetFilterEnabled.Text = "Target Filter Enabled";
             this.targetFilterEnabled.UseVisualStyleBackColor = true;
@@ -1824,7 +1849,7 @@ namespace Assistant
             this.friendBeneficialOnly.AutoSize = true;
             this.friendBeneficialOnly.Location = new System.Drawing.Point(6, 73);
             this.friendBeneficialOnly.Name = "friendBeneficialOnly";
-            this.friendBeneficialOnly.Size = new System.Drawing.Size(232, 19);
+            this.friendBeneficialOnly.Size = new System.Drawing.Size(233, 19);
             this.friendBeneficialOnly.TabIndex = 140;
             this.friendBeneficialOnly.Text = "\'Next/Prev Friendly\' sets beneficial only";
             this.friendBeneficialOnly.UseVisualStyleBackColor = true;
@@ -1835,7 +1860,7 @@ namespace Assistant
             this.onlyNextPrevBeneficial.AutoSize = true;
             this.onlyNextPrevBeneficial.Location = new System.Drawing.Point(6, 48);
             this.onlyNextPrevBeneficial.Name = "onlyNextPrevBeneficial";
-            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(223, 19);
+            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(224, 19);
             this.onlyNextPrevBeneficial.TabIndex = 139;
             this.onlyNextPrevBeneficial.Text = "\'Next/Prev Friend\' sets beneficial only";
             this.onlyNextPrevBeneficial.UseVisualStyleBackColor = true;
@@ -1914,7 +1939,7 @@ namespace Assistant
             this.showTargetMessagesOverChar.AutoSize = true;
             this.showTargetMessagesOverChar.Location = new System.Drawing.Point(9, 118);
             this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
-            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
+            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(224, 19);
             this.showTargetMessagesOverChar.TabIndex = 74;
             this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
             this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
@@ -2833,6 +2858,7 @@ namespace Assistant
             this.cntCount});
             this.counters.GridLines = true;
             this.counters.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.counters.HideSelection = false;
             this.counters.LabelWrap = false;
             this.counters.Location = new System.Drawing.Point(6, 18);
             this.counters.MultiSelect = false;
@@ -3302,6 +3328,7 @@ namespace Assistant
             this.skillHDRcap,
             this.skillHDRlock});
             this.skillList.FullRowSelect = true;
+            this.skillList.HideSelection = false;
             this.skillList.Location = new System.Drawing.Point(8, 5);
             this.skillList.Name = "skillList";
             this.skillList.Size = new System.Drawing.Size(342, 307);
@@ -3781,7 +3808,7 @@ namespace Assistant
             this.rangeCheckDoubleClick.AutoSize = true;
             this.rangeCheckDoubleClick.Location = new System.Drawing.Point(272, 78);
             this.rangeCheckDoubleClick.Name = "rangeCheckDoubleClick";
-            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(208, 19);
+            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(207, 19);
             this.rangeCheckDoubleClick.TabIndex = 15;
             this.rangeCheckDoubleClick.Text = "Range check on \'DoubleClickType\'";
             this.rangeCheckDoubleClick.UseVisualStyleBackColor = true;
@@ -3792,7 +3819,7 @@ namespace Assistant
             this.rangeCheckTargetByType.AutoSize = true;
             this.rangeCheckTargetByType.Location = new System.Drawing.Point(272, 53);
             this.rangeCheckTargetByType.Name = "rangeCheckTargetByType";
-            this.rangeCheckTargetByType.Size = new System.Drawing.Size(190, 19);
+            this.rangeCheckTargetByType.Size = new System.Drawing.Size(188, 19);
             this.rangeCheckTargetByType.TabIndex = 14;
             this.rangeCheckTargetByType.Text = "Range check on \'TargetByType\'";
             this.rangeCheckTargetByType.UseVisualStyleBackColor = true;
@@ -3814,7 +3841,7 @@ namespace Assistant
             this.stepThroughMacro.AutoSize = true;
             this.stepThroughMacro.Location = new System.Drawing.Point(272, 118);
             this.stepThroughMacro.Name = "stepThroughMacro";
-            this.stepThroughMacro.Size = new System.Drawing.Size(135, 19);
+            this.stepThroughMacro.Size = new System.Drawing.Size(134, 19);
             this.stepThroughMacro.TabIndex = 12;
             this.stepThroughMacro.Text = "Step Through Macro";
             this.stepThroughMacro.UseVisualStyleBackColor = true;
@@ -3825,7 +3852,7 @@ namespace Assistant
             this.targetByTypeDifferent.AutoSize = true;
             this.targetByTypeDifferent.Location = new System.Drawing.Point(272, 28);
             this.targetByTypeDifferent.Name = "targetByTypeDifferent";
-            this.targetByTypeDifferent.Size = new System.Drawing.Size(183, 19);
+            this.targetByTypeDifferent.Size = new System.Drawing.Size(181, 19);
             this.targetByTypeDifferent.TabIndex = 11;
             this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
             this.targetByTypeDifferent.UseVisualStyleBackColor = true;
@@ -4382,27 +4409,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // daemonAnimationList
+            // steamImport
             // 
-            this.daemonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.daemonAnimationList.DropDownWidth = 250;
-            this.daemonAnimationList.FormattingEnabled = true;
-            this.daemonAnimationList.Location = new System.Drawing.Point(313, 64);
-            this.daemonAnimationList.Name = "daemonAnimationList";
-            this.daemonAnimationList.Size = new System.Drawing.Size(183, 23);
-            this.daemonAnimationList.TabIndex = 113;
-            this.daemonAnimationList.SelectedIndexChanged += new System.EventHandler(this.daemonAnimationList_SelectedIndexChanged);
-            // 
-            // filterDaemonGraphics
-            // 
-            this.filterDaemonGraphics.AutoSize = true;
-            this.filterDaemonGraphics.Location = new System.Drawing.Point(209, 66);
-            this.filterDaemonGraphics.Name = "filterDaemonGraphics";
-            this.filterDaemonGraphics.Size = new System.Drawing.Size(104, 19);
-            this.filterDaemonGraphics.TabIndex = 112;
-            this.filterDaemonGraphics.Text = "Filter daemons";
-            this.filterDaemonGraphics.UseVisualStyleBackColor = true;
-            this.filterDaemonGraphics.CheckedChanged += new System.EventHandler(this.filterDaemonGraphics_CheckedChanged);
+            this.steamImport.Location = new System.Drawing.Point(122, 22);
+            this.steamImport.Name = "steamImport";
+            this.steamImport.Size = new System.Drawing.Size(101, 30);
+            this.steamImport.TabIndex = 76;
+            this.steamImport.Text = "Steam Import";
+            this.steamImport.UseVisualStyleBackColor = true;
+            this.steamImport.Click += new System.EventHandler(this.steamImport_Click);
             // 
             // MainForm
             // 
@@ -10342,6 +10357,32 @@ namespace Assistant
             {
                 MessageBox.Show(this, "Unable to find animation in file", "Animation Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+        }
+
+        private void steamImport_Click(object sender, EventArgs e)
+        {
+            Config.Save();
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                MessageBox.Show(this, Path.GetFileNameWithoutExtension(fileDialog.FileName), "File Selected", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                if (fileDialog.FileName == null)
+                    return;
+
+                string profileFilename = Path.GetFileNameWithoutExtension(fileDialog.FileName);
+
+                Config.NewProfile($"{profileFilename}_SteamImport");
+                Config.CurrentProfile.ImportSteam(fileDialog.FileName);
+                profiles.Items.Add($"{profileFilename}_SteamImport");
+                profiles.SelectedIndex = profiles.Items.Count - 1;
+                InitConfig();
+                if (World.Player != null)
+                    Config.SetProfileFor(World.Player);
+
+                Config.Save();
             }
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 using System.Xml;
+using System.Collections.Generic;
 
 namespace Assistant.Filters
 {
