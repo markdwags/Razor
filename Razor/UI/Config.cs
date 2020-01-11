@@ -473,7 +473,7 @@ namespace Assistant
                 }
             }
 
-
+            HotKey.ImportSteam(root["hotkeys"]);
 
             return false;
         }

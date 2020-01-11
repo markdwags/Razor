@@ -800,6 +800,182 @@ namespace Assistant
             return false;
         }
 
+        private static int GetSpellID(int circle, int num)
+        {
+            if (circle <= 8) // Mage
+                return 3002011 + ((circle - 1) * 8) + (num - 1);
+            else if (circle == 10) // Necr
+                return 1060509 + num - 1;
+            else if (circle == 20) // Chiv
+                return 1060585 + num - 1;
+            else if (circle == 40) // Bush
+                return 1060595 + num - 1;
+            else if (circle == 50) // Ninj
+                return 1060610 + num - 1;
+            else if (circle == 60) // Elfs
+                return 1071026 + num - 1;
+            else
+                return -1;
+        }
+
+        private static Dictionary<string, LocString> SteamActionMappings = new Dictionary<string, LocString>()
+        {
+            // main.pingserver
+            { "main.resynchronize", LocString.Resync },
+            // main.snapshot
+            { "actions.grabitem", LocString.GrabItem },
+            // main.togglemounted
+            { "actions.use.lastobject", LocString.LastObj },
+            { "actions.use.lefthand", LocString.UseLeftHand },
+            { "actions.use.righthand", LocString.UseRightHand },
+            { "actions.shownames.all", LocString.AllNames },
+            { "actions.shownames.corpses", LocString.AllCorpses },
+            { "actions.shownames.mobiles", LocString.AllMobiles },
+            { "actions.creatures.come", LocString.AllCome },
+            { "actions.creatures.follow", LocString.AllFollow },
+            { "actions.creatures.guard", LocString.AllGuard },
+            { "actions.creatures.kill", LocString.AllKill },
+            { "actions.creatures.stay", LocString.AllStay },
+            { "actions.creatures.stop", LocString.AllStop },
+            { "skills.last", LocString.LastSkill },
+            { "skills.anatomy", (LocString)(1044060 + 1) },
+            { "skills.animallore", (LocString)(1044060 + 2) },
+            { "skills.itemidentification",  (LocString)(1044060 + 3) },
+            { "skills.armslore", (LocString)(1044060 + 4) },
+            { "skills.begging", (LocString)(1044060 + 6) },
+            { "skills.peacemaking", (LocString)(1044060 + 9) },
+            { "skills.detectinghidden", (LocString)(1044060 + 14) },
+            { "skills.discordance", (LocString)(1044060 + 15) },
+            { "skills.evaluatingintelligence", (LocString)(1044060 + 16) },
+            { "skills.hiding", (LocString)(1044060 + 21) },
+            { "skills.provocation", (LocString)(1044060 + 22) },
+            { "skills.inscription", (LocString)(1044060 + 23) },
+            { "skills.poisoning", (LocString)(1044060 + 30) },
+            { "skills.spiritspeak", (LocString)(1044060 + 32) },
+            { "skills.stealing", (LocString)(1044060 + 33) },
+            { "skills.animaltaming", (LocString)(1044060 + 35) },
+            { "skills.tasteidentification", (LocString)(1044060 + 36) },
+            { "skills.tracking", (LocString)(1044060 + 38) },
+            { "skills.meditation", (LocString)(1044060 + 46) },
+            { "skills.stealth", (LocString)(1044060 + 47) },
+            { "skills.removetrap", (LocString)(1044060 + 48) },
+            { "spells.last", LocString.LastSpell },
+            { "spells.bigheal.self", LocString.GHealOrCureSelf },
+            { "spells.miniheal.self", LocString.MiniHealOrCureSelf },
+            { "spells.magery.clumsy", (LocString)GetSpellID(1, 1) },
+            { "spells.magery.createfood", (LocString)GetSpellID(1, 2) },
+            { "spells.magery.feeblemind", (LocString)GetSpellID(1, 3) },
+            { "spells.magery.heal", (LocString)GetSpellID(1, 4) },
+            { "spells.magery.magicarrow", (LocString)GetSpellID(1, 5) },
+            { "spells.magery.nightsight", (LocString)GetSpellID(1, 6) },
+            { "spells.magery.reactivearmor", (LocString)GetSpellID(1, 7) },
+            { "spells.magery.weaken", (LocString)GetSpellID(1, 8) },
+            { "spells.magery.agility", (LocString)GetSpellID(2, 1) },
+            { "spells.magery.cunning", (LocString)GetSpellID(2, 2) },
+            { "spells.magery.cure", (LocString)GetSpellID(2, 3) },
+            { "spells.magery.harm", (LocString)GetSpellID(2, 4) },
+            { "spells.magery.magictrap", (LocString)GetSpellID(2, 5) },
+            { "spells.magery.magicuntrap", (LocString)GetSpellID(2, 6) },
+            { "spells.magery.protection", (LocString)GetSpellID(2, 7) },
+            { "spells.magery.strength", (LocString)GetSpellID(2, 8) },            
+            { "spells.magery.bless", (LocString)GetSpellID(3, 1) },
+            { "spells.magery.fireball", (LocString)GetSpellID(3, 2) },
+            { "spells.magery.magiclock", (LocString)GetSpellID(3, 3) },
+            { "spells.magery.poison", (LocString)GetSpellID(3, 4) },
+            { "spells.magery.telekinesis", (LocString)GetSpellID(3, 5) },
+            { "spells.magery.teleport", (LocString)GetSpellID(3, 6) },
+            { "spells.magery.unlock", (LocString)GetSpellID(3, 7) },
+            { "spells.magery.wallofstone", (LocString)GetSpellID(3, 8) },
+            { "spells.magery.archcure", (LocString)GetSpellID(4, 1) },
+            { "spells.magery.archprotection", (LocString)GetSpellID(4, 2) },
+            { "spells.magery.curse", (LocString)GetSpellID(4, 3) },
+            { "spells.magery.firefield", (LocString)GetSpellID(4, 4) },
+            { "spells.magery.greaterheal", (LocString)GetSpellID(4, 5) },
+            { "spells.magery.lightning", (LocString)GetSpellID(4, 6) },
+            { "spells.magery.manadrain", (LocString)GetSpellID(4, 7) },
+            { "spells.magery.recall", (LocString)GetSpellID(4, 8) },
+            { "spells.magery.bladespirits", (LocString)GetSpellID(5, 1) },
+            { "spells.magery.dispelfield", (LocString)GetSpellID(5, 2) },
+            { "spells.magery.incognito", (LocString)GetSpellID(5, 3) },
+            { "spells.magery.magicreflection", (LocString)GetSpellID(5, 4) },
+            { "spells.magery.mindblast", (LocString)GetSpellID(5, 5) },
+            { "spells.magery.paralyze", (LocString)GetSpellID(5, 6) },
+            { "spells.magery.poisonfield", (LocString)GetSpellID(5, 7) },
+            { "spells.magery.summoncreature", (LocString)GetSpellID(5, 8) },
+            { "spells.magery.dispel", (LocString)GetSpellID(6, 1) },
+            { "spells.magery.energybolt", (LocString)GetSpellID(6, 2) },
+            { "spells.magery.explosion", (LocString)GetSpellID(6, 3) },
+            { "spells.magery.invisibility", (LocString)GetSpellID(6, 4) },
+            { "spells.magery.mark", (LocString)GetSpellID(6, 5) },
+            { "spells.magery.masscurse", (LocString)GetSpellID(6, 6) },
+            { "spells.magery.paralyzefield", (LocString)GetSpellID(6, 7) },
+            { "spells.magery.reveal", (LocString)GetSpellID(6, 8) },
+            { "spells.magery.chainlightning", (LocString)GetSpellID(7, 1) },
+            { "spells.magery.energyfield", (LocString)GetSpellID(7, 2) },
+            { "spells.magery.flamestrike", (LocString)GetSpellID(7, 3) },
+            { "spells.magery.gatetravel", (LocString)GetSpellID(7, 4) },
+            { "spells.magery.manavampire", (LocString)GetSpellID(7, 5) },
+            { "spells.magery.massdispel", (LocString)GetSpellID(7, 6) },
+            { "spells.magery.meteorswarm", (LocString)GetSpellID(7, 7) },
+            { "spells.magery.polymorph", (LocString)GetSpellID(7, 8) },
+            { "spells.magery.summonairelemental", (LocString)GetSpellID(8, 1) },
+            { "spells.magery.summonearthelemental", (LocString)GetSpellID(8, 2) },
+            { "spells.magery.earthquake", (LocString)GetSpellID(8, 3) },
+            { "spells.magery.energyvortex", (LocString)GetSpellID(8, 4) },
+            { "spells.magery.summonfireelemental", (LocString)GetSpellID(8, 5) },
+            { "spells.magery.resurrection", (LocString)GetSpellID(8, 6) },
+            { "spells.magery.summondaemon", (LocString)GetSpellID(8, 7) },
+            { "spells.magery.summonwaterelemental", (LocString)GetSpellID(8, 8) },
+        };
+
+        public static void ImportSteam(XmlElement xml)
+        {
+            if (xml == null)
+                return;
+
+            ClearAll();
+
+            foreach (XmlElement el in xml.GetElementsByTagName("hotkey"))
+            {
+                try
+                {
+                    string action = el.GetAttribute("action");
+
+                    if (!SteamActionMappings.ContainsKey(action))
+                        continue;
+
+                    int keyMask = Convert.ToInt32(el.GetAttribute("key"), 16);
+                    int key = keyMask & 0xFF;
+
+                    if (key == 4) key = -3;
+                    else if (key == 259) key = -4;
+                    else if (key == 260) key = -5;
+
+                    ModKeys mod = ModKeys.None;
+
+                    if ((keyMask & 0x200) != 0)
+                        mod = ModKeys.Shift;
+                    else if ((keyMask & 0x400) != 0)
+                        mod = ModKeys.Control;
+                    else if ((keyMask & 0x800) != 0)
+                        mod = ModKeys.Alt;
+
+                    string pass = el.GetAttribute("pass");
+
+                    KeyData k = Get((int)SteamActionMappings[action]);
+
+                    if (k != null)
+                    {
+                        k.Mod = mod;
+                        k.Key = key;
+                        k.SendToUO = Convert.ToBoolean(pass);
+                    }
+                }
+                catch
+                {
+                }
+            }
+        }
         public static void Load(XmlElement xml)
         {
             if (xml == null)
