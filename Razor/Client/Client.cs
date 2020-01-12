@@ -190,7 +190,7 @@ namespace Assistant
 
         public virtual void UpdateTitleBar()
         {
-            if (!ClientRunning)
+            if (!ClientRunning || World.Player == null)
                 return;
 
             StringBuilder sb = TitleBarBuilder;

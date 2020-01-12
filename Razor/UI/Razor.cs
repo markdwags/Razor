@@ -375,6 +375,7 @@ namespace Assistant
         private Button setMacroHotKey;
         private ComboBox daemonAnimationList;
         private CheckBox filterDaemonGraphics;
+        private Label lblTargetFilter;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -767,6 +768,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.lblTargetFilter = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1178,10 +1180,10 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
             // 
@@ -1327,15 +1329,16 @@ namespace Assistant
             // subTargetFilterTab
             // 
             this.subTargetFilterTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subTargetFilterTab.Controls.Add(this.lblTargetFilter);
             this.subTargetFilterTab.Controls.Add(this.targetFilterClear);
             this.subTargetFilterTab.Controls.Add(this.targetFilterRemove);
             this.subTargetFilterTab.Controls.Add(this.targetFilterAdd);
             this.subTargetFilterTab.Controls.Add(this.targetFilter);
             this.subTargetFilterTab.Controls.Add(this.targetFilterEnabled);
-            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 22);
+            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 24);
             this.subTargetFilterTab.Name = "subTargetFilterTab";
             this.subTargetFilterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 288);
+            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 286);
             this.subTargetFilterTab.TabIndex = 2;
             this.subTargetFilterTab.Text = "Target Filter";
             // 
@@ -1381,7 +1384,7 @@ namespace Assistant
             // targetFilterEnabled
             // 
             this.targetFilterEnabled.AutoSize = true;
-            this.targetFilterEnabled.Location = new System.Drawing.Point(259, 6);
+            this.targetFilterEnabled.Location = new System.Drawing.Point(263, 50);
             this.targetFilterEnabled.Name = "targetFilterEnabled";
             this.targetFilterEnabled.Size = new System.Drawing.Size(133, 19);
             this.targetFilterEnabled.TabIndex = 0;
@@ -4403,6 +4406,14 @@ namespace Assistant
             this.aboutVer.TabIndex = 14;
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTargetFilter
+            // 
+            this.lblTargetFilter.Location = new System.Drawing.Point(260, 6);
+            this.lblTargetFilter.Name = "lblTargetFilter";
+            this.lblTargetFilter.Size = new System.Drawing.Size(224, 31);
+            this.lblTargetFilter.TabIndex = 12;
+            this.lblTargetFilter.Text = "Targets added to this list will be ignored by Razor completely";
             // 
             // MainForm
             // 
