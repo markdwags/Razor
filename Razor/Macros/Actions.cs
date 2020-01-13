@@ -3938,7 +3938,7 @@ namespace Assistant.Macros
                         string str = (string)m_Value;
                         if (str.Length > 10)
                             str = str.Substring(0, 7) + "...";
-                        return String.Format("If ( SysMessage \"{0}\" )", str);
+                        return String.Format("Do While ( SysMessage \"{0}\" )", str);
                     }
                 case DoWhileVarType.Skill:
                     return $"Do While ( \"{Language.Skill2Str(m_SkillId)}\" {DirectionString()} {m_Value})";
