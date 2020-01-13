@@ -1423,6 +1423,80 @@ namespace Assistant.Macros
         }
     }
 
+    public class SetMacroVariableTargetAction : MacroWaitAction
+    {
+        private string m_VarName;
+        private MacroVariables.MacroVariable m_MacroVariable;
+
+        private bool m_MacroVarWasSet;
+        
+        public SetMacroVariableTargetAction(string[] args)
+        {
+            m_VarName = args.Length > 1 ? args[1] : args[0];
+
+            FindMacroVariable();
+        }
+
+        public SetMacroVariableTargetAction(string varName)
+        {
+            m_VarName = varName;
+
+            FindMacroVariable();
+        }
+
+        private bool FindMacroVariable() {
+
+            foreach (MacroVariables.MacroVariable mV in MacroVariables.MacroVariableList)
+            {
+                if (mV.Name.ToLower().Equals(m_VarName.ToLower()))
+                {
+                    m_MacroVariable = mV;
+                    break;
+                }
+            }
+
+            if (m_MacroVariable == null)
+            {
+                m_VarName = $"?{m_VarName}?";
+                return false;
+            }
+
+            return true;
+        }
+
+        public override bool Perform()
+        {
+            if (m_MacroVariable == null)
+            {
+                return false;
+            }
+
+            m_MacroVariable.TargetSetMacroVariable();
+
+            return !PerformWait();
+        }
+
+        public override bool PerformWait()
+        {
+            if (m_MacroVariable == null)
+            {
+                return false;
+            }
+
+            return !m_MacroVariable.TargetWasSet;
+        }
+
+        public override string ToString()
+        {
+            return $"Set Macro Variable (${m_VarName})";
+        }
+
+        public override string Serialize()
+        {
+            return DoSerialize(m_VarName);
+        }
+    }
+
     public class SpeechAction : MacroAction
     {
         private MessageType m_Type;

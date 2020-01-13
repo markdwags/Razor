@@ -13,11 +13,75 @@ namespace Assistant.Macros
             public TargetInfo TargetInfo { get; set; }
             public string Name { get; set; }
 
+            public bool TargetWasSet { get; set; }
+
             public MacroVariable(string targetVarName, TargetInfo t)
             {
                 TargetInfo = t;
                 Name = targetVarName;
+                TargetWasSet = true;
             }
+
+            public void TargetSetMacroVariable()
+            {
+                if (World.Player != null)
+                {
+                    TargetWasSet = false;
+
+                    Targeting.OneTimeTarget(OnMacroVariableTarget);
+                    World.Player.SendMessage(MsgLevel.Force, $"Select target for ${Name}");
+
+                    //OneTimeTarget(false, new Targeting.TargetResponseCallback(OnMacroVariableTarget), new Targeting.CancelTargetCallback(OnSLTCancel));
+                }
+            }
+
+            private void OnMacroVariableTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+            {
+                TargetInfo t = new TargetInfo
+                {
+                    Gfx = gfx,
+                    Serial = serial,
+                    Type = (byte)(ground ? 1 : 0),
+                    X = pt.X,
+                    Y = pt.Y,
+                    Z = pt.Z
+                };
+
+                bool foundVar = false;
+
+                foreach (MacroVariables.MacroVariable mV in MacroVariables.MacroVariableList
+                )
+                {
+                    if (mV.Name.ToLower().Equals(Name.ToLower()))
+                    {
+                        foundVar = true;
+                        // macro exists, update
+                        mV.TargetInfo = t;
+
+                        World.Player.SendMessage(MsgLevel.Force, $"'{mV.Name}' macro variable updated to '{t.Serial}'");
+
+                        break;
+                    }
+                }
+
+                if (!foundVar)
+                {
+                    //MacroVariables.MacroVariableList.Add(new MacroVariables.MacroVariable(_lastMacroVariable, t));
+                    //World.Player.SendMessage(MsgLevel.Force, $"'{_lastMacroVariable}' not found, created variable and set to '{t.Serial}'");
+                }
+
+                // Save and reload the macros and vars
+                Engine.MainWindow.SaveMacroVariables();
+
+                TargetWasSet = true;
+            }
+            
+            /*
+            private void OnSLTCancel()
+            {
+                if (m_LastTarget != null)
+                    m_LTWasSet = true;
+            }*/
         }
 
         public static List<MacroVariable> MacroVariableList = new List<MacroVariable>();

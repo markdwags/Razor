@@ -3877,7 +3877,9 @@ namespace Assistant
             this.macroVariableTypeList.FormattingEnabled = true;
             this.macroVariableTypeList.Items.AddRange(new object[] {
             "Absolute Target",
-            "DoubleClick Target"});
+            "DoubleClick Target",
+            "Set Macro Variable Action"
+            });
             this.macroVariableTypeList.Location = new System.Drawing.Point(79, 22);
             this.macroVariableTypeList.Name = "macroVariableTypeList";
             this.macroVariableTypeList.Size = new System.Drawing.Size(153, 23);
@@ -7285,6 +7287,7 @@ namespace Assistant
                 }
 
                 menu.MenuItems.Add("-");
+
                 menu.MenuItems.Add(Language.GetString(LocString.Constructs), new MenuItem[]
                 {
                     new MenuItem(Language.GetString(LocString.InsWait), new EventHandler(onMacroInsPause)),
@@ -7441,6 +7444,22 @@ namespace Assistant
                 return;
 
             m.Actions.Insert(a + 1, new WaitForTargetAction());
+            RedrawActionList(m);
+        }
+
+        private void onMacroInsertSetMacroVariable(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
+
+            MenuItem mnu = (MenuItem)sender;
+
+            m.Actions.Insert(a + 1, new SetMacroVariableTargetAction(mnu.Text));
             RedrawActionList(m);
         }
 
@@ -9555,6 +9574,9 @@ namespace Assistant
                     break;
                 case 1:
                     m.Actions.Insert(a + 1, new DoubleClickVariableAction(macroVariableName));
+                    break;
+                case 2:
+                    m.Actions.Insert(a + 1, new SetMacroVariableTargetAction(macroVariableName));
                     break;
             }
 
