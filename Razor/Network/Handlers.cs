@@ -1931,8 +1931,18 @@ namespace Assistant
                         {
                             if (text.IndexOf(message.SearchMessage, StringComparison.OrdinalIgnoreCase) != -1)
                             {
-                                World.Player.OverheadMessage(message.Hue,
-                                    overheadFormat.Replace("{msg}", message.MessageOverhead));
+                                string ohMessage = overheadFormat.Replace("{msg}", message.MessageOverhead);
+                                string[] splitText = text.Split(' ');
+
+                                if (splitText.Length > 0)
+                                {
+                                    for (int wordNum = 1; wordNum < splitText.Length + 1; wordNum++)
+                                    {
+                                        ohMessage = ohMessage.Replace($"{{{wordNum}}}", splitText[wordNum - 1]);
+                                    }
+                                }
+
+                                World.Player.OverheadMessage(message.Hue, ohMessage);
                                 break;
                             }
                         }
