@@ -387,6 +387,9 @@
     <Compile Include="UI\Razor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\Razor.Designer.cs">
+      <DependentUpon>Razor.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
