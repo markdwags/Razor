@@ -376,6 +376,16 @@ namespace Assistant
         private ComboBox daemonAnimationList;
         private CheckBox filterDaemonGraphics;
         private Label lblTargetFilter;
+        private TabPage subSoundMusicTab;
+        private CheckedListBox soundFilterList;
+        private CheckBox soundFilterEnabled;
+        private Button playSound;
+        private CheckBox showFilteredSound;
+        private CheckBox showPlayingSoundInfo;
+        private CheckBox showPlayingMusic;
+        private CheckBox playInClient;
+        private Button playMusic;
+        private ComboBox playableMusicList;
         private TreeView _macroTreeViewCache = new TreeView();
 
 
@@ -480,11 +490,22 @@ namespace Assistant
             this.filterDragonGraphics = new System.Windows.Forms.CheckBox();
             this.filters = new System.Windows.Forms.CheckedListBox();
             this.subTargetFilterTab = new System.Windows.Forms.TabPage();
+            this.lblTargetFilter = new System.Windows.Forms.Label();
             this.targetFilterClear = new System.Windows.Forms.Button();
             this.targetFilterRemove = new System.Windows.Forms.Button();
             this.targetFilterAdd = new System.Windows.Forms.Button();
             this.targetFilter = new System.Windows.Forms.ListBox();
             this.targetFilterEnabled = new System.Windows.Forms.CheckBox();
+            this.subSoundMusicTab = new System.Windows.Forms.TabPage();
+            this.playableMusicList = new System.Windows.Forms.ComboBox();
+            this.playMusic = new System.Windows.Forms.Button();
+            this.showPlayingMusic = new System.Windows.Forms.CheckBox();
+            this.showPlayingSoundInfo = new System.Windows.Forms.CheckBox();
+            this.showFilteredSound = new System.Windows.Forms.CheckBox();
+            this.playInClient = new System.Windows.Forms.CheckBox();
+            this.playSound = new System.Windows.Forms.Button();
+            this.soundFilterEnabled = new System.Windows.Forms.CheckBox();
+            this.soundFilterList = new System.Windows.Forms.CheckedListBox();
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
@@ -768,7 +789,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.lblTargetFilter = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -779,6 +799,7 @@ namespace Assistant
             this.groupBox4.SuspendLayout();
             this.subFiltersTab.SuspendLayout();
             this.subTargetFilterTab.SuspendLayout();
+            this.subSoundMusicTab.SuspendLayout();
             this.moreOptTab.SuspendLayout();
             this.optionsTabCtrl.SuspendLayout();
             this.subOptionsSpeechTab.SuspendLayout();
@@ -860,6 +881,7 @@ namespace Assistant
             this.subGeneralTab.Controls.Add(this.tabPage1);
             this.subGeneralTab.Controls.Add(this.subFiltersTab);
             this.subGeneralTab.Controls.Add(this.subTargetFilterTab);
+            this.subGeneralTab.Controls.Add(this.subSoundMusicTab);
             this.subGeneralTab.Location = new System.Drawing.Point(6, 3);
             this.subGeneralTab.Name = "subGeneralTab";
             this.subGeneralTab.SelectedIndex = 0;
@@ -1342,6 +1364,14 @@ namespace Assistant
             this.subTargetFilterTab.TabIndex = 2;
             this.subTargetFilterTab.Text = "Target Filter";
             // 
+            // lblTargetFilter
+            // 
+            this.lblTargetFilter.Location = new System.Drawing.Point(260, 6);
+            this.lblTargetFilter.Name = "lblTargetFilter";
+            this.lblTargetFilter.Size = new System.Drawing.Size(224, 31);
+            this.lblTargetFilter.TabIndex = 12;
+            this.lblTargetFilter.Text = "Targets added to this list will be ignored by Razor completely";
+            // 
             // targetFilterClear
             // 
             this.targetFilterClear.Location = new System.Drawing.Point(174, 181);
@@ -1391,6 +1421,116 @@ namespace Assistant
             this.targetFilterEnabled.Text = "Target Filter Enabled";
             this.targetFilterEnabled.UseVisualStyleBackColor = true;
             this.targetFilterEnabled.CheckedChanged += new System.EventHandler(this.TargetFilterEnabled_CheckedChanged);
+            // 
+            // subSoundMusicTab
+            // 
+            this.subSoundMusicTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subSoundMusicTab.Controls.Add(this.playableMusicList);
+            this.subSoundMusicTab.Controls.Add(this.playMusic);
+            this.subSoundMusicTab.Controls.Add(this.showPlayingMusic);
+            this.subSoundMusicTab.Controls.Add(this.showPlayingSoundInfo);
+            this.subSoundMusicTab.Controls.Add(this.showFilteredSound);
+            this.subSoundMusicTab.Controls.Add(this.playInClient);
+            this.subSoundMusicTab.Controls.Add(this.playSound);
+            this.subSoundMusicTab.Controls.Add(this.soundFilterEnabled);
+            this.subSoundMusicTab.Controls.Add(this.soundFilterList);
+            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 24);
+            this.subSoundMusicTab.Name = "subSoundMusicTab";
+            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 286);
+            this.subSoundMusicTab.TabIndex = 3;
+            this.subSoundMusicTab.Text = "Sound & Music  ";
+            // 
+            // playableMusicList
+            // 
+            this.playableMusicList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.playableMusicList.FormattingEnabled = true;
+            this.playableMusicList.Location = new System.Drawing.Point(215, 151);
+            this.playableMusicList.Name = "playableMusicList";
+            this.playableMusicList.Size = new System.Drawing.Size(145, 23);
+            this.playableMusicList.TabIndex = 8;
+            // 
+            // playMusic
+            // 
+            this.playMusic.Location = new System.Drawing.Point(215, 180);
+            this.playMusic.Name = "playMusic";
+            this.playMusic.Size = new System.Drawing.Size(132, 23);
+            this.playMusic.TabIndex = 7;
+            this.playMusic.Text = "Play Music In Client";
+            this.playMusic.UseVisualStyleBackColor = true;
+            this.playMusic.Click += new System.EventHandler(this.playMusic_Click);
+            // 
+            // showPlayingMusic
+            // 
+            this.showPlayingMusic.AutoSize = true;
+            this.showPlayingMusic.Location = new System.Drawing.Point(215, 215);
+            this.showPlayingMusic.Name = "showPlayingMusic";
+            this.showPlayingMusic.Size = new System.Drawing.Size(156, 19);
+            this.showPlayingMusic.TabIndex = 6;
+            this.showPlayingMusic.Text = "Show playing music info";
+            this.showPlayingMusic.UseVisualStyleBackColor = true;
+            this.showPlayingMusic.CheckedChanged += new System.EventHandler(this.showPlayingMusic_CheckedChanged);
+            // 
+            // showPlayingSoundInfo
+            // 
+            this.showPlayingSoundInfo.AutoSize = true;
+            this.showPlayingSoundInfo.Location = new System.Drawing.Point(215, 106);
+            this.showPlayingSoundInfo.Name = "showPlayingSoundInfo";
+            this.showPlayingSoundInfo.Size = new System.Drawing.Size(181, 19);
+            this.showPlayingSoundInfo.TabIndex = 5;
+            this.showPlayingSoundInfo.Text = "Show non-filtered sound info";
+            this.showPlayingSoundInfo.UseVisualStyleBackColor = true;
+            this.showPlayingSoundInfo.CheckedChanged += new System.EventHandler(this.showPlayingSoundInfo_CheckedChanged);
+            // 
+            // showFilteredSound
+            // 
+            this.showFilteredSound.AutoSize = true;
+            this.showFilteredSound.Location = new System.Drawing.Point(215, 81);
+            this.showFilteredSound.Name = "showFilteredSound";
+            this.showFilteredSound.Size = new System.Drawing.Size(155, 19);
+            this.showFilteredSound.TabIndex = 4;
+            this.showFilteredSound.Text = "Show filtered sound info";
+            this.showFilteredSound.UseVisualStyleBackColor = true;
+            this.showFilteredSound.CheckedChanged += new System.EventHandler(this.showFilteredSound_CheckedChanged);
+            // 
+            // playInClient
+            // 
+            this.playInClient.AutoSize = true;
+            this.playInClient.Location = new System.Drawing.Point(348, 42);
+            this.playInClient.Name = "playInClient";
+            this.playInClient.Size = new System.Drawing.Size(93, 19);
+            this.playInClient.TabIndex = 3;
+            this.playInClient.Text = "Play in client";
+            this.playInClient.UseVisualStyleBackColor = true;
+            // 
+            // playSound
+            // 
+            this.playSound.Location = new System.Drawing.Point(215, 39);
+            this.playSound.Name = "playSound";
+            this.playSound.Size = new System.Drawing.Size(127, 23);
+            this.playSound.TabIndex = 2;
+            this.playSound.Text = "Play Selected Sound";
+            this.playSound.UseVisualStyleBackColor = true;
+            this.playSound.Click += new System.EventHandler(this.playSound_Click);
+            // 
+            // soundFilterEnabled
+            // 
+            this.soundFilterEnabled.AutoSize = true;
+            this.soundFilterEnabled.Location = new System.Drawing.Point(215, 14);
+            this.soundFilterEnabled.Name = "soundFilterEnabled";
+            this.soundFilterEnabled.Size = new System.Drawing.Size(127, 19);
+            this.soundFilterEnabled.TabIndex = 1;
+            this.soundFilterEnabled.Text = "Enable Sound Filter";
+            this.soundFilterEnabled.UseVisualStyleBackColor = true;
+            this.soundFilterEnabled.CheckedChanged += new System.EventHandler(this.soundFilterEnabled_CheckedChanged);
+            // 
+            // soundFilterList
+            // 
+            this.soundFilterList.FormattingEnabled = true;
+            this.soundFilterList.Location = new System.Drawing.Point(16, 14);
+            this.soundFilterList.Name = "soundFilterList";
+            this.soundFilterList.Size = new System.Drawing.Size(193, 256);
+            this.soundFilterList.TabIndex = 0;
+            this.soundFilterList.SelectedIndexChanged += new System.EventHandler(this.soundFilterList_SelectedIndexChanged);
             // 
             // moreOptTab
             // 
@@ -3878,8 +4018,7 @@ namespace Assistant
             this.macroVariableTypeList.Items.AddRange(new object[] {
             "Absolute Target",
             "DoubleClick Target",
-            "Set Macro Variable Action"
-            });
+            "Set Macro Variable Action"});
             this.macroVariableTypeList.Location = new System.Drawing.Point(79, 22);
             this.macroVariableTypeList.Name = "macroVariableTypeList";
             this.macroVariableTypeList.Size = new System.Drawing.Size(153, 23);
@@ -4409,14 +4548,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblTargetFilter
-            // 
-            this.lblTargetFilter.Location = new System.Drawing.Point(260, 6);
-            this.lblTargetFilter.Name = "lblTargetFilter";
-            this.lblTargetFilter.Size = new System.Drawing.Size(224, 31);
-            this.lblTargetFilter.TabIndex = 12;
-            this.lblTargetFilter.Text = "Targets added to this list will be ignored by Razor completely";
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4448,6 +4579,8 @@ namespace Assistant
             this.subFiltersTab.PerformLayout();
             this.subTargetFilterTab.ResumeLayout(false);
             this.subTargetFilterTab.PerformLayout();
+            this.subSoundMusicTab.ResumeLayout(false);
+            this.subSoundMusicTab.PerformLayout();
             this.moreOptTab.ResumeLayout(false);
             this.optionsTabCtrl.ResumeLayout(false);
             this.subOptionsSpeechTab.ResumeLayout(false);
@@ -4538,6 +4671,7 @@ namespace Assistant
             FriendsManager.SetControls(friendsGroup, friendsList);
             DressList.SetControls(dressList, dressItems);
             TargetFilterManager.SetControls(targetFilter);
+            SoundMusicManager.SetControls(soundFilterList, playableMusicList);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -4957,6 +5091,11 @@ namespace Assistant
 
             filterDaemonGraphics.SafeAction(s => { s.Checked = Config.GetBool("FilterDaemonGraphics"); });
 
+            soundFilterEnabled.SafeAction(s => { s.Checked = Config.GetBool("SoundFilterEnabled"); });
+            showFilteredSound.SafeAction(s => { s.Checked = Config.GetBool("ShowFilteredSound"); });
+            showPlayingSoundInfo.SafeAction(s => { s.Checked = Config.GetBool("ShowPlayingSoundInfo"); });
+            showPlayingMusic.SafeAction(s => { s.Checked = Config.GetBool("ShowMusicInfo"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -5133,6 +5272,11 @@ namespace Assistant
             if (subGeneralTab.SelectedTab == subTargetFilterTab)
             {
                 TargetFilterManager.RedrawList();
+            }
+
+            if (subGeneralTab.SelectedTab == subSoundMusicTab)
+            {
+                SoundMusicManager.RedrawList();
             }
         }
 
@@ -10448,6 +10592,77 @@ namespace Assistant
                 MessageBox.Show(this, "Unable to find animation in file", "Animation Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private void soundFilterEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("SoundFilterEnabled", soundFilterEnabled.Checked);
+        }
+
+        private void soundFilterList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (soundFilterList.SelectedIndex < 0)
+                return;
+
+            SoundMusicManager.Sound sound = (SoundMusicManager.Sound) soundFilterList.SelectedItem;
+
+            if (soundFilterList.GetItemChecked(soundFilterList.SelectedIndex))
+            {
+                SoundMusicManager.AddSoundFilter(sound);
+            }
+            else
+            {
+                SoundMusicManager.RemoveSoundFilter(sound);
+            }
+        }
+
+        private System.Media.SoundPlayer sp = new System.Media.SoundPlayer();
+
+        private void playSound_Click(object sender, EventArgs e)
+        {
+            sp.Stop();
+
+            if (soundFilterList.SelectedIndex < 0)
+                return;
+
+            SoundMusicManager.Sound sound = (SoundMusicManager.Sound)soundFilterList.SelectedItem;
+
+            if (playInClient.Checked && World.Player != null)
+            {
+                Client.Instance.SendToClient(new PlaySound(sound.Serial - 1));
+            }
+            else
+            {
+                Ultima.UOSound s = Ultima.Sounds.GetSound(sound.Serial - 1);
+                using (MemoryStream m = new MemoryStream(s.buffer))
+                {
+                    sp.Stream = m;
+                    sp.Play();
+                }
+            }
+        }
+
+        private void showFilteredSound_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowFilteredSound", showFilteredSound.Checked);
+        }
+
+        private void showPlayingSoundInfo_CheckedChanged(object sender, EventArgs e)
+        {   
+            Config.SetProperty("ShowPlayingSoundInfo", showPlayingSoundInfo.Checked);
+        }
+
+        private void playMusic_Click(object sender, EventArgs e)
+        {
+            if (playableMusicList.SelectedIndex < 0 || World.Player == null)
+                return;
+
+            Client.Instance.SendToClient(new PlayMusic(Convert.ToUInt16(playableMusicList.SelectedIndex)));
+        }
+
+        private void showPlayingMusic_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowMusicInfo", showPlayingMusic.Checked);
         }
     }
 }

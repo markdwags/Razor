@@ -107,6 +107,9 @@ namespace Assistant
             PacketHandler.RegisterServerToClientViewer(0x2C, new PacketViewerCallback(ResurrectionGump));
 
             PacketHandler.RegisterServerToClientViewer(0xDF, new PacketViewerCallback(BuffDebuff));
+
+            PacketHandler.RegisterServerToClientFilter(0x54, new PacketFilterCallback(PlaySoundEffect));
+            PacketHandler.RegisterServerToClientFilter(0x6D, new PacketFilterCallback(PlayMusic));
         }
 
         private static void DisplayStringQuery(PacketReader p, PacketHandlerEventArgs args)
@@ -3044,6 +3047,43 @@ namespace Assistant
 
             //string lang = p.ReadStringSafe(4);
             //string message = p.ReadUnicodeStringSafe();
+        }
+
+        private static void PlaySoundEffect(Packet p, PacketHandlerEventArgs args)
+        {
+            byte type = p.ReadByte();
+            ushort sound = p.ReadUInt16();
+
+            if (Config.GetBool("SoundFilterEnabled"))
+            {
+                bool blockSound = SoundMusicManager.IsFilteredSound(sound, out string name);
+
+                if (blockSound)
+                {
+                    args.Block = true;
+
+                    if (Config.GetBool("ShowFilteredSound"))
+                    {
+                        World.Player.SendMessage(MsgLevel.Warning, $"Blocked Sound: '{name}' (0x{sound:X})");
+                        return;
+                    }
+                }
+            }
+
+            if (Config.GetBool("ShowPlayingSoundInfo"))
+            {
+                World.Player.SendMessage(MsgLevel.Info, $"Playing Sound: '{SoundMusicManager.GetSoundName(sound)}' (0x{sound:X})");
+            }
+        }
+
+        private static void PlayMusic(Packet p, PacketHandlerEventArgs args)
+        {
+            if (!Config.GetBool("ShowMusicInfo"))
+                return;
+
+            ushort musicId = p.ReadUInt16();
+
+            World.Player.SendMessage($"Playing Music: '{SoundMusicManager.GetMusicName(musicId, out bool loop)}' (id: '{musicId}' loop: '{loop}')");
         }
     }
 }

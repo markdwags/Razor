@@ -274,6 +274,11 @@ namespace Assistant
             AddProperty("FilterDaemonGraphics", false);
             AddProperty("DaemonGraphic", 0);
 
+            AddProperty("SoundFilterEnabled", false);
+            AddProperty("ShowFilteredSound", false);
+            AddProperty("ShowPlayingSoundInfo", false);
+            AddProperty("ShowMusicInfo", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
@@ -387,6 +392,7 @@ namespace Assistant
             Agent.LoadProfile(root["agents"]);
             DressList.Load(root["dresslists"]);
             TargetFilterManager.Load(root["targetfilters"]);
+            SoundMusicManager.Load(root["soundfilters"]);
             FriendsManager.Load(root["friends"]);
             HotKey.Load(root["hotkeys"]);
             PasswordMemory.Load(root["passwords"]);
@@ -583,6 +589,10 @@ namespace Assistant
 
             xml.WriteStartElement("targetfilters");
             TargetFilterManager.Save(xml);
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("soundfilters");
+            SoundMusicManager.Save(xml);
             xml.WriteEndElement();
 
             xml.WriteEndElement(); // end profile section

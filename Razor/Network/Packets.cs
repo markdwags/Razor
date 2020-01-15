@@ -268,9 +268,9 @@ namespace Assistant
 
     public sealed class PlayMusic : Packet
     {
-        public PlayMusic(int num) : base(0x6D, 3)
+        public PlayMusic(ushort num) : base(0x6D, 3)
         {
-            Write((uint) num);
+            Write(num);
         }
     }
 
