@@ -1,0 +1,3 @@
+[submodule "Steam"]
+	path = Steam
+	url = https://github.com/jaedan/steam-engine
