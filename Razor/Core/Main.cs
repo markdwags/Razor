@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using System.Threading;
-using System.Collections;
+using System.Globalization;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
@@ -229,8 +229,13 @@ namespace Assistant
             get { return DateTime.UtcNow.AddHours(Differential); }
         }
 
+        public static CultureInfo Culture;
+
         public static void Load()
         {
+            Culture = new CultureInfo("en-EN", false);
+            Culture.NumberFormat.NumberDecimalSeparator = ".";
+            Culture.NumberFormat.NumberGroupSeparator = ",";
             /* Load localization files */
             string defLang = Config.GetAppSetting<string>("DefaultLanguage");
             if (defLang == null)

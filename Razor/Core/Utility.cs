@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections;
+using System.Globalization;
 
 namespace Assistant
 {
@@ -335,17 +335,36 @@ namespace Assistant
             if (str == null)
                 return def;
 
-            try
-            {
-                if (str.Length > 2 && str.Substring(0, 2).ToLower() == "0x")
-                    return Convert.ToInt32(str.Substring(2), 16);
-                else
-                    return Convert.ToInt32(str);
-            }
-            catch
-            {
+            if (str == null)
                 return def;
+
+            int val;
+            if (str.StartsWith("0x"))
+            {
+                if (int.TryParse(str.Substring(2), NumberStyles.HexNumber, Engine.Culture, out val))
+                    return val;
             }
+            else if (int.TryParse(str, out val))
+                return val;
+
+            return def;
+        }
+
+        public static uint ToUInt32(string str, uint def)
+        {
+            if (str == null)
+                return def;
+
+            uint val;
+            if (str.StartsWith("0x"))
+            {
+                if (uint.TryParse(str.Substring(2), NumberStyles.HexNumber, Engine.Culture, out val))
+                    return val;
+            }
+            else if (uint.TryParse(str, out val))
+                return val;
+
+            return def;
         }
 
         public static double ToDouble(string str, double def)
@@ -353,14 +372,9 @@ namespace Assistant
             if (str == null)
                 return def;
 
-            try
-            {
-                return Convert.ToDouble(str);
-            }
-            catch
-            {
-                return def;
-            }
+            if (double.TryParse(str, out double d))
+                return d;
+            return def;
         }
     }
 }
