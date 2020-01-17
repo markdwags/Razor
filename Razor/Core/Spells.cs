@@ -230,7 +230,7 @@ namespace Assistant
                             if (string.IsNullOrEmpty(line))
                                 line = split[3].Trim();
                             if (!string.IsNullOrEmpty(line))
-                                m_SpellsByName[line] = s;
+                                m_SpellsByName[line.ToLower()] = s;
 
                             if (s.WordsOfPower != null && s.WordsOfPower.Trim().Length > 0)
                                 m_SpellsByPower[s.WordsOfPower] = s;
@@ -477,7 +477,7 @@ namespace Assistant
 
         public static Spell GetByName(string name)
         {
-            m_SpellsByName.TryGetValue(name, out Spell s);
+            m_SpellsByName.TryGetValue(name.ToLower(), out Spell s);
             return s;
         }
 
