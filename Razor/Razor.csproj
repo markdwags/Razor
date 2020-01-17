@@ -160,6 +160,7 @@
     <Compile Include="Core\BuffsTimer.cs" />
     <Compile Include="Core\BuffsDebuffs.cs" />
     <Compile Include="Core\BodCapture.cs" />
+    <Compile Include="Core\Dress.cs" />
     <Compile Include="Core\EncodedSpeech.cs" />
     <Compile Include="Core\DamageTracker.cs" />
     <Compile Include="Filters\SoundMusicManager.cs" />

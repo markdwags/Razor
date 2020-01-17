@@ -1994,7 +1994,7 @@ namespace Assistant.Macros
             }
             else
             {
-                return !HotKeys.UndressHotKeys.Unequip((Layer) m_Layer);
+                return !Dress.Unequip((Layer) m_Layer);
             }
         }
 
