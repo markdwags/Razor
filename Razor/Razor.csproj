@@ -91,7 +91,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -554,6 +554,6 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>xcopy /S /Q /Y $(SolutionDir)etc\* $(SolutionDir)bin\Win32\$(Configuration)\</PostBuildEvent>
+    <PostBuildEvent>xcopy /S /Q /Y $(SolutionDir)etc\* $(ProjectDir)$(OutDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>
