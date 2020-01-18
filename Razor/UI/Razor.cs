@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Assistant.Core;
 using Assistant.UI;
 using Ultima;
+using UOSteam;
 using ContainerLabels = Assistant.UI.ContainerLabels;
 using Exception = System.Exception;
 using OverheadMessages = Assistant.UI.OverheadMessages;
@@ -6047,6 +6048,15 @@ namespace Assistant
         private void showPlayingMusic_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowMusicInfo", showPlayingMusic.Checked);
+        }
+
+        private void playScript_Click(object sender, EventArgs e)
+        {
+            var root = Lexer.Lex(scriptEditor.Lines);
+
+            Script script = new Script(root);
+
+            Interpreter.StartScript(script);
         }
     }
 }

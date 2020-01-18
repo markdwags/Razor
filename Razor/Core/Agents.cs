@@ -1525,6 +1525,11 @@ namespace Assistant
             Agent.OnItemCreated += new ItemCreatedEventHandler(CheckBagOPL);
         }
 
+        public void ToggleEnabled()
+        {
+            OnEnableDisable();
+        }
+
         private void OnEnableDisable()
         {
             m_Enabled = !m_Enabled;

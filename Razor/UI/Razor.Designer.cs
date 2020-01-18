@@ -770,6 +770,10 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.subMacrosScriptsTab = new System.Windows.Forms.TabPage();
+            this.scriptEditor = new System.Windows.Forms.TextBox();
+            this.playScript = new System.Windows.Forms.Button();
+            this.scriptTree = new System.Windows.Forms.TreeView();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -816,6 +820,7 @@ namespace Assistant
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
             this.aboutTab.SuspendLayout();
+            this.subMacrosScriptsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
@@ -1183,10 +1188,10 @@ namespace Assistant
             this.subFiltersTab.Controls.Add(this.dragonAnimationList);
             this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
             this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 24);
+            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
             this.subFiltersTab.Name = "subFiltersTab";
             this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 286);
+            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
             this.subFiltersTab.TabIndex = 1;
             this.subFiltersTab.Text = "Filters";
             // 
@@ -1338,10 +1343,10 @@ namespace Assistant
             this.subTargetFilterTab.Controls.Add(this.targetFilterAdd);
             this.subTargetFilterTab.Controls.Add(this.targetFilter);
             this.subTargetFilterTab.Controls.Add(this.targetFilterEnabled);
-            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 24);
+            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 22);
             this.subTargetFilterTab.Name = "subTargetFilterTab";
             this.subTargetFilterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 286);
+            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 288);
             this.subTargetFilterTab.TabIndex = 2;
             this.subTargetFilterTab.Text = "Target Filter";
             // 
@@ -1415,9 +1420,9 @@ namespace Assistant
             this.subSoundMusicTab.Controls.Add(this.playSound);
             this.subSoundMusicTab.Controls.Add(this.soundFilterEnabled);
             this.subSoundMusicTab.Controls.Add(this.soundFilterList);
-            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 24);
+            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 22);
             this.subSoundMusicTab.Name = "subSoundMusicTab";
-            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 286);
+            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 288);
             this.subSoundMusicTab.TabIndex = 3;
             this.subSoundMusicTab.Text = "Sound & Music  ";
             // 
@@ -3739,6 +3744,7 @@ namespace Assistant
             // 
             this.tabControl2.Controls.Add(this.subMacrosTab);
             this.tabControl2.Controls.Add(this.subMacrosOptionsTab);
+            this.tabControl2.Controls.Add(this.subMacrosScriptsTab);
             this.tabControl2.Location = new System.Drawing.Point(6, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -3893,10 +3899,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -4529,6 +4535,43 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // subMacrosScriptsTab
+            // 
+            this.subMacrosScriptsTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subMacrosScriptsTab.Controls.Add(this.scriptTree);
+            this.subMacrosScriptsTab.Controls.Add(this.playScript);
+            this.subMacrosScriptsTab.Controls.Add(this.scriptEditor);
+            this.subMacrosScriptsTab.Location = new System.Drawing.Point(4, 24);
+            this.subMacrosScriptsTab.Name = "subMacrosScriptsTab";
+            this.subMacrosScriptsTab.Size = new System.Drawing.Size(502, 286);
+            this.subMacrosScriptsTab.TabIndex = 2;
+            this.subMacrosScriptsTab.Text = "Scripts";
+            // 
+            // scriptEditor
+            // 
+            this.scriptEditor.Location = new System.Drawing.Point(160, 3);
+            this.scriptEditor.Multiline = true;
+            this.scriptEditor.Name = "scriptEditor";
+            this.scriptEditor.Size = new System.Drawing.Size(339, 280);
+            this.scriptEditor.TabIndex = 0;
+            // 
+            // playScript
+            // 
+            this.playScript.Location = new System.Drawing.Point(47, 250);
+            this.playScript.Name = "playScript";
+            this.playScript.Size = new System.Drawing.Size(75, 23);
+            this.playScript.TabIndex = 1;
+            this.playScript.Text = "Play Script";
+            this.playScript.UseVisualStyleBackColor = true;
+            this.playScript.Click += new System.EventHandler(this.playScript_Click);
+            // 
+            // scriptTree
+            // 
+            this.scriptTree.Location = new System.Drawing.Point(3, 3);
+            this.scriptTree.Name = "scriptTree";
+            this.scriptTree.Size = new System.Drawing.Size(151, 228);
+            this.scriptTree.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4615,10 +4658,17 @@ namespace Assistant
             this.advancedTab.PerformLayout();
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
+            this.subMacrosScriptsTab.ResumeLayout(false);
+            this.subMacrosScriptsTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private TabPage subMacrosScriptsTab;
+        private TreeView scriptTree;
+        private Button playScript;
+        private TextBox scriptEditor;
     }
 }

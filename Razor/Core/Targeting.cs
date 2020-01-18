@@ -70,6 +70,11 @@ namespace Assistant
             get { return m_HasTarget; }
         }
 
+        public static TargetInfo LastTargetInfo
+        {
+            get { return m_LastTarget; }
+        }
+
         public static bool FromGrabHotKey
         {
             get { return m_FromGrabHotKey; }

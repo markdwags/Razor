@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using Assistant.Core;
 using Assistant.UI;
 
 namespace Assistant.Macros
@@ -1994,7 +1995,7 @@ namespace Assistant.Macros
             }
             else
             {
-                return !HotKeys.UndressHotKeys.Unequip((Layer) m_Layer);
+                return !Dress.Unequip((Layer) m_Layer);
             }
         }
 

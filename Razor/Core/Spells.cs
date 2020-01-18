@@ -187,6 +187,7 @@ namespace Assistant
 
         private static Dictionary<string, Spell> m_SpellsByPower;
         private static Dictionary<int, Spell> m_SpellsByID;
+        private static Dictionary<string, Spell> m_SpellsByName;
         private static HotKeyCallbackState HotKeyCallback;
 
         static Spell()
@@ -194,6 +195,7 @@ namespace Assistant
             string filename = Path.Combine(Config.GetInstallDirectory(), "spells.def");
             m_SpellsByPower = new Dictionary<string, Spell>(64 + 10 + 16);
             m_SpellsByID = new Dictionary<int, Spell>(64 + 10 + 16);
+            m_SpellsByName = new Dictionary<string, Spell>(64 + 10 + 16);
 
             if (!File.Exists(filename))
             {
@@ -223,6 +225,12 @@ namespace Assistant
                                 Convert.ToInt32(split[2].Trim()), /*split[3].Trim(),*/ split[4].Trim(), reags);
 
                             m_SpellsByID[s.GetID()] = s;
+
+                            line = Language.GetString(s.Name);
+                            if (string.IsNullOrEmpty(line))
+                                line = split[3].Trim();
+                            if (!string.IsNullOrEmpty(line))
+                                m_SpellsByName[line.ToLower()] = s;
 
                             if (s.WordsOfPower != null && s.WordsOfPower.Trim().Length > 0)
                                 m_SpellsByPower[s.WordsOfPower] = s;
@@ -464,6 +472,12 @@ namespace Assistant
         {
             Spell s;
             m_SpellsByID.TryGetValue(num, out s);
+            return s;
+        }
+
+        public static Spell GetByName(string name)
+        {
+            m_SpellsByName.TryGetValue(name.ToLower(), out Spell s);
             return s;
         }
 

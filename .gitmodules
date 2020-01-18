@@ -1,6 +1,0 @@
-[submodule "Razor/Macros/Scripts/ScriptEngine"]
-	path = Razor/Macros/Scripts/ScriptEngine
-	url = https://github.com/jaedan/steam-engine
-[submodule "steam-engine"]
-	path = steam-engine
-	url = https://github.com/jaedan/steam-engine
