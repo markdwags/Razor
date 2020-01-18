@@ -634,20 +634,13 @@ namespace Assistant.Filters
             {
                 foreach (XmlElement el in node.GetElementsByTagName("soundfilter"))
                 {
-                    try
+                    Sound filter = new Sound
                     {
-                        Sound filter = new Sound
-                        {
-                            Name = el.GetAttribute("name"),
-                            Serial = Serial.Parse(el.GetAttribute("serial")),
-                        };
+                        Name = el.GetAttribute("name"),
+                        Serial = Serial.Parse(el.GetAttribute("serial")),
+                    };
 
-                        SoundFilters.Add(filter);
-                    }
-                    catch
-                    {
-                        // bad entry, ignore
-                    }
+                    SoundFilters.Add(filter);
                 }
             }
             catch

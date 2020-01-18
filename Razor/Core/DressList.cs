@@ -81,37 +81,24 @@ namespace Assistant
 
             foreach (XmlElement el in xml.GetElementsByTagName("list"))
             {
-                try
-                {
-                    string name = el.GetAttribute("name");
-                    DressList list = new DressList(name);
-                    Add(list);
+                string name = el.GetAttribute("name");
+                DressList list = new DressList(name);
+                Add(list);
 
-                    try
-                    {
-                        list.m_UndressBag = Serial.Parse(el.GetAttribute("undressbag"));
-                    }
-                    catch
-                    {
-                        list.m_UndressBag = Serial.Zero;
-                    }
+                list.m_UndressBag = Serial.Parse(el.GetAttribute("undressbag"));
 
-                    foreach (XmlElement el2 in el.GetElementsByTagName("item"))
-                    {
-                        string ser = el2.GetAttribute("serial");
-                        uint val = Utility.ToUInt32(ser, Serial.MinusOne);
-                        if (val == Serial.MinusOne)
-                        {
-                            val = Utility.ToUInt32(el2.GetAttribute("id"), 0);
-                            if (val > 0)
-                                list.Items.Add((ItemID)val);
-                        }
-                        else
-                            list.Items.Add((Serial)val);
-                    }
-                }
-                catch
+                foreach (XmlElement el2 in el.GetElementsByTagName("item"))
                 {
+                    string ser = el2.GetAttribute("serial");
+                    uint val = Utility.ToUInt32(ser, Serial.MinusOne);
+                    if (val == Serial.MinusOne)
+                    {
+                        val = Utility.ToUInt32(el2.GetAttribute("id"), 0);
+                        if (val > 0)
+                            list.Items.Add((ItemID)val);
+                    }
+                    else
+                        list.Items.Add((Serial)val);
                 }
             }
         }

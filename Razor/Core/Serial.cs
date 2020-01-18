@@ -97,10 +97,7 @@ namespace Assistant
 
         public static Serial Parse(string s)
         {
-            if (s.StartsWith("0x"))
-                return (Serial) Convert.ToUInt32(s.Substring(2), 16);
-            else
-                return (Serial) Convert.ToUInt32(s);
+            return Utility.ToUInt32(s, Zero);
         }
 
         public static implicit operator uint(Serial a)

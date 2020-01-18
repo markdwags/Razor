@@ -361,20 +361,13 @@ namespace Assistant.Core
 
                     foreach (XmlElement friendEl in el.GetElementsByTagName("friend"))
                     {
-                        try
+                        Friend friend = new Friend
                         {
-                            Friend friend = new Friend
-                            {
-                                Name = friendEl.GetAttribute("name"),
-                                Serial = Serial.Parse(friendEl.GetAttribute("serial"))
-                            };
+                            Name = friendEl.GetAttribute("name"),
+                            Serial = Serial.Parse(friendEl.GetAttribute("serial"))
+                        };
 
-                            friendGroup.Friends.Add(friend);
-                        }
-                        catch
-                        {
-                            // ignore this bad record, most likely a bad serial
-                        }
+                        friendGroup.Friends.Add(friend);
                     }
 
                     FriendGroups.Add(friendGroup);

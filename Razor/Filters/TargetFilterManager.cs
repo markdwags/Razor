@@ -166,20 +166,13 @@ namespace Assistant.Filters
             {
                 foreach (XmlElement el in node.GetElementsByTagName("targetfilter"))
                 {
-                    try
+                    TargetFilter filter = new TargetFilter
                     {
-                        TargetFilter filter = new TargetFilter
-                        {
-                            Name = el.GetAttribute("name"),
-                            Serial = Serial.Parse(el.GetAttribute("serial"))
-                        };
+                        Name = el.GetAttribute("name"),
+                        Serial = Serial.Parse(el.GetAttribute("serial"))
+                    };
 
-                        TargetFilters.Add(filter);
-                    }
-                    catch
-                    {
-                        // bad entry, ignore
-                    }
+                    TargetFilters.Add(filter);
                 }
             }
             catch
