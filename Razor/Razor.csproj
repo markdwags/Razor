@@ -555,6 +555,12 @@
     <None Include="packages.config" />
     <None Include="Razor.manifest" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScriptEngine\Steam\Steam\UOSteam.csproj">
+      <Project>{569eabf7-8980-4a3b-bf3a-6321c4b1da78}</Project>
+      <Name>UOSteam</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
