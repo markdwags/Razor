@@ -254,6 +254,10 @@
     <Compile Include="Core\Map.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Macros\Scripts\Aliases.cs" />
+    <Compile Include="Macros\Scripts\Commands.cs" />
+    <Compile Include="Macros\Scripts\Expressions.cs" />
+    <Compile Include="Macros\Scripts\ScriptManager.cs" />
     <Compile Include="Map\MapWindow.cs">
       <SubType>Form</SubType>
     </Compile>
