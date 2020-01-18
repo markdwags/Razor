@@ -969,6 +969,11 @@ namespace Assistant
                 Directory.CreateDirectory(Path.Combine(appDir, "Profiles"));
             }
 
+            if (!Directory.Exists(Path.Combine(appDir, "Scripts")))
+            {
+                Directory.CreateDirectory(Path.Combine(appDir, "Scripts"));
+            }
+
             name = name.Length > 0 ? Path.Combine(appDir, name) : appDir;
 
             Engine.EnsureDirectory(name);
