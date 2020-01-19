@@ -11,6 +11,7 @@ using Assistant.Filters;
 using Assistant.Macros;
 using Assistant.Macros.Scripts;
 using Assistant.UI;
+using UOSteam;
 using OverheadMessages = Assistant.Core.OverheadMessages;
 using ContainerLabels = Assistant.Core.ContainerLabels;
 
@@ -252,7 +253,11 @@ namespace Assistant
                 }
 
                 if (gfx != 0)
+                {
                     MacroManager.Action(new DoubleClickAction(ser, gfx));
+
+                    ScriptManager.AddToScript($"useobject {ser}");
+                }   
             }
         }
 
@@ -302,6 +307,8 @@ namespace Assistant
                             try
                             {
                                 MacroManager.Action(new ContextMenuAction(ent, idx, ent.ContextMenu[idx].Value));
+
+                                ScriptManager.AddToScript($"replymenu '{ent.ContextMenu[idx].Value}'");
                             }
                             catch
                             {
@@ -327,6 +334,8 @@ namespace Assistant
 
                         if (Macros.MacroManager.AcceptActions)
                             MacroManager.Action(new ExtCastSpellAction(s, ser));
+
+                        ScriptManager.AddToScript($"cast '{Spell.GetName(sid - 1)}'");
                     }
 
                     break;
@@ -375,6 +384,8 @@ namespace Assistant
                     if (Macros.MacroManager.AcceptActions)
                         MacroManager.Action(new UseSkillAction(skillIndex));
 
+                    ScriptManager.AddToScript($"useskill '{Ultima.Skills.GetSkill(skillIndex).Name}'");
+
                     if (skillIndex == (int) SkillName.Stealth && !World.Player.Visible)
                         StealthSteps.Hide();
 
@@ -399,6 +410,8 @@ namespace Assistant
                                 args.Block = true;
                                 if (Macros.MacroManager.AcceptActions)
                                     MacroManager.Action(new BookCastSpellAction(s, serial));
+
+                                ScriptManager.AddToScript($"cast '{Spell.GetName(spellID - 1)}'");
                             }
                         }
                     }
@@ -421,6 +434,8 @@ namespace Assistant
                             args.Block = true;
                             if (Macros.MacroManager.AcceptActions)
                                 MacroManager.Action(new MacroCastSpellAction(s));
+
+                            ScriptManager.AddToScript($"cast '{Spell.GetName(spellID - 1)}'");
                         }
                     }
                     catch
@@ -512,6 +527,8 @@ namespace Assistant
                 MacroManager.Action(new LiftAction(serial, amount, iid));
                 //MacroManager.Action( new PauseAction( TimeSpan.FromMilliseconds( Config.GetInt( "ObjectDelay" ) ) ) );
             }
+
+            ScriptManager.AddToScript($"lift '{serial}' {amount}");
         }
 
         private static void LiftReject(PacketReader p, PacketHandlerEventArgs args)
@@ -548,7 +565,10 @@ namespace Assistant
                 }
 
                 if (layer > Layer.Invalid && layer <= Layer.LastUserValid)
+                {
                     MacroManager.Action(new DropAction(mser, Point3D.Zero, layer));
+                    ScriptManager.AddToScript($"drop '{mser}' {Point3D.Zero} {layer}");
+                }
             }
 
             if (item == null)
@@ -577,6 +597,8 @@ namespace Assistant
             if (Macros.MacroManager.AcceptActions)
                 MacroManager.Action(new DropAction(dser, newPos));
 
+            ScriptManager.AddToScript($"drop '{dser}' {newPos}");
+
             Item i = World.FindItem(iser);
             if (i == null)
                 return;
@@ -602,6 +624,8 @@ namespace Assistant
                 WalkAction.LastWalkTime = DateTime.UtcNow;
                 if (MacroManager.AcceptActions)
                     MacroManager.Action(new WalkAction(dir));
+
+                ScriptManager.AddToScript($"walk {dir}");
             }
         }
 
@@ -2159,6 +2183,9 @@ namespace Assistant
             if (Macros.MacroManager.AcceptActions &&
                 MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
+
+            if (ScriptManager.AddToScript($"waitforgump {World.Player.CurrentGumpI} 10000"))
+                args.Block = true;
         }
 
         private static void ClientGumpResponse(PacketReader p, PacketHandlerEventArgs args)
@@ -2196,6 +2223,8 @@ namespace Assistant
 
             if (Macros.MacroManager.AcceptActions)
                 MacroManager.Action(new GumpResponseAction(bid, switches, entries));
+
+            ScriptManager.AddToScript($"replygump {ser} {bid}");
 
             World.Player.LastGumpResponseAction = new GumpResponseAction(bid, switches, entries);
         }
@@ -2523,6 +2552,9 @@ namespace Assistant
 
                     if (ability >= 0 && ability < (int) AOSAbility.Invalid && Macros.MacroManager.AcceptActions)
                         MacroManager.Action(new SetAbilityAction((AOSAbility) ability));
+                    else if (ability >= 0 && ability < (int) AOSAbility.Invalid)
+                        ScriptManager.AddToScript($"setability '{ability}'");
+
                     break;
                 }
             }
@@ -2586,6 +2618,8 @@ namespace Assistant
             World.Player.HasMenu = false;
             if (MacroManager.AcceptActions)
                 MacroManager.Action(new MenuResponseAction(index, itemID, hue));
+
+            ScriptManager.AddToScript($"replymenu {index} {itemID} {hue}");
         }
 
         private static void SendMenu(PacketReader p, PacketHandlerEventArgs args)
@@ -2597,6 +2631,9 @@ namespace Assistant
             World.Player.CurrentMenuI = p.ReadUInt16();
             World.Player.HasMenu = true;
             if (MacroManager.AcceptActions && MacroManager.Action(new WaitForMenuAction(World.Player.CurrentMenuI)))
+                args.Block = true;
+
+            if (ScriptManager.AddToScript($"replymenu '{World.Player.CurrentMenuI}'"))
                 args.Block = true;
         }
 
@@ -2743,6 +2780,9 @@ namespace Assistant
 
             if (Macros.MacroManager.AcceptActions &&
                 MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
+                args.Block = true;
+
+            if (ScriptManager.AddToScript($"waitforgump {World.Player.CurrentGumpI}"))
                 args.Block = true;
 
             List<string> gumpStrings = new List<string>();
@@ -3026,6 +3066,9 @@ namespace Assistant
             {
                 MacroManager.Action(new PromptAction(World.Player.PromptInputText));
             }
+
+            if (!string.IsNullOrEmpty(World.Player.PromptInputText))
+                ScriptManager.AddToScript($"sendprompt {World.Player.PromptInputText}");
         }
 
         private static void UnicodePromptReceived(Packet p, PacketHandlerEventArgs args)
@@ -3046,6 +3089,9 @@ namespace Assistant
             {
                 MacroManager.Action(new WaitForPromptAction(id));
             }
+
+            ScriptManager.AddToScript($"waitforprompt {id}");
+
             //args.Block = true;
 
             //string lang = p.ReadStringSafe(4);

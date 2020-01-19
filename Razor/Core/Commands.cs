@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using Assistant.Core;
 using Assistant.Macros;
+using Assistant.Macros.Scripts;
 
 namespace Assistant
 {
@@ -355,6 +356,7 @@ namespace Assistant
                 if (text[0] != commandToggle)
                 {
                     Macros.MacroManager.Action(new Macros.SpeechAction(type, hue, font, lang, keys, text));
+                    ScriptManager.AddToScript($"say \'{text}\'");
                 }
                 else
                 {

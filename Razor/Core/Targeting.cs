@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Assistant.Core;
 using Assistant.Macros;
+using Assistant.Macros.Scripts;
 
 namespace Assistant
 {
@@ -846,6 +847,8 @@ namespace Assistant
                     if (Macros.MacroManager.AcceptActions)
                         MacroManager.Action(new AbsoluteTargetAction(info));
 
+                    ScriptManager.AddToScript($"target '{info.Serial}'");
+
                     if (m_OnTarget != null)
                         m_OnTarget(info.Type == 1 ? true : false, info.Serial, new Point3D(info.X, info.Y, info.Z),
                             info.Gfx);
@@ -1236,6 +1239,8 @@ namespace Assistant
 
                 if (Macros.MacroManager.AcceptActions)
                     MacroManager.Action(new AbsoluteTargetAction(info));
+
+                ScriptManager.AddToScript($"target '{info.Serial}'");
             }
             else
             {
@@ -1243,9 +1248,17 @@ namespace Assistant
                 {
                     KeyData hk = HotKey.Get((int) LocString.TargetSelf);
                     if (hk != null)
+                    {
                         MacroManager.Action(new HotKeyAction(hk));
+
+                        ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
+                    }
                     else
+                    {
                         MacroManager.Action(new AbsoluteTargetAction(info));
+
+                        ScriptManager.AddToScript($"target {info.Serial}");
+                    }
                 }
             }
 
@@ -1294,6 +1307,10 @@ namespace Assistant
 
             if (m_QueueTarget == null && Macros.MacroManager.AcceptActions &&
                 MacroManager.Action(new WaitForTargetAction()))
+            {
+                args.Block = true;
+            }
+            else if (m_QueueTarget == null && ScriptManager.AddToScript("waitfortarget"))
             {
                 args.Block = true;
             }

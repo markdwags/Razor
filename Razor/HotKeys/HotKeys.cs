@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text;
 using System.Xml;
+using Assistant.Macros.Scripts;
 using Assistant.UI;
 
 namespace Assistant
@@ -638,6 +639,9 @@ namespace Assistant
                         {
                             if (Macros.MacroManager.AcceptActions)
                                 Macros.MacroManager.Action(new Macros.HotKeyAction(hk));
+
+                            ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
+
                             hk.Callback();
                             return hk.SendToUO;
                         }
@@ -654,6 +658,9 @@ namespace Assistant
                         {
                             if (Macros.MacroManager.AcceptActions)
                                 Macros.MacroManager.Action(new Macros.HotKeyAction(hk));
+
+                            ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
+
                             hk.Callback();
                             return hk.SendToUO;
                         }

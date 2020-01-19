@@ -13,11 +13,14 @@ using Assistant.Boat;
 using Newtonsoft.Json;
 using System.Net;
 using System.Collections.Specialized;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Assistant.Core;
+using Assistant.Macros.Scripts;
 using Assistant.UI;
 using Ultima;
 using UOSteam;
+using WinFormsSyntaxHighlighter;
 using ContainerLabels = Assistant.UI.ContainerLabels;
 using Exception = System.Exception;
 using OverheadMessages = Assistant.UI.OverheadMessages;
@@ -58,6 +61,7 @@ namespace Assistant
             DressList.SetControls(dressList, dressItems);
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
+            ScriptManager.SetControls(scriptEditor, scriptError);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -89,6 +93,7 @@ namespace Assistant
             Show();
             BringToFront();
             tabs_IndexChanged(this, null); // load first tab
+            InitScriptEditor();
 
             m_ProfileConfirmLoad = false;
             Config.SetupProfilesList(profiles, Config.CurrentProfile.Name);
@@ -574,6 +579,31 @@ namespace Assistant
             }
         }
 
+        private void InitScriptEditor()
+        {
+           var syntaxHighlighter = new SyntaxHighlighter(scriptEditor);
+            
+            // single-line comments
+            syntaxHighlighter.AddPattern(new PatternDefinition(new Regex(@"//.*?$", RegexOptions.Multiline | RegexOptions.Compiled)), new SyntaxStyle(Color.SaddleBrown, false, true));
+            // numbers
+            syntaxHighlighter.AddPattern(new PatternDefinition(@"\d+\.\d+|\d+"), new SyntaxStyle(Color.Red));
+            // double quote strings
+            syntaxHighlighter.AddPattern(new PatternDefinition(@"\""([^""]|\""\"")+\"""), new SyntaxStyle(Color.Blue));
+            // single quote strings
+            syntaxHighlighter.AddPattern(new PatternDefinition(@"\'([^']|\'\')+\'"), new SyntaxStyle(Color.Blue));
+            // keywords1
+            syntaxHighlighter.AddPattern(new PatternDefinition("if", "elseif", "else", "endif", "while", "endwhile", "for", "endfor"), new SyntaxStyle(Color.SeaGreen, true, false));
+
+            syntaxHighlighter.AddPattern(new PatternDefinition("break", "continue", "stop", "replay", "not", "and", "or"), new SyntaxStyle(Color.PaleGreen, true, false));
+            syntaxHighlighter.AddPattern(
+                new PatternDefinition("target", "cast", "menu", "usetype", "useobject", "dress", "undress", "drop",
+                    "waitforgump", "waitformenu", "replygump", "closegump", "hotkey", "lift", "lifttype", "say", "msg",
+                    "overhead", "sysmsg", "wait", "pause", "setability", "setlasttarget", "skill", "walk", "waitforprompt", "waitfortarget", "useskill"),
+                new SyntaxStyle(Color.DarkOrchid, true, false));
+            // operators
+            syntaxHighlighter.AddPattern(new PatternDefinition("+", "-", ">", "<", "&", "|"), new SyntaxStyle(Color.CornflowerBlue));
+        }
+
         private void tabs_IndexChanged(object sender, System.EventArgs e)
         {
             if (tabs == null)
@@ -643,6 +673,10 @@ namespace Assistant
                     MacroManager.Current.DisplayTo(actionList);
 
                 macroActGroup.Visible = macroTree.SelectedNode != null;
+            }
+            else if (tabs.SelectedTab == scriptsTab)
+            {
+                RedrawScripts();
             }
             else if (tabs.SelectedTab == moreOptTab)
             {
@@ -1837,6 +1871,9 @@ namespace Assistant
             {
                 if (MacroManager.AcceptActions)
                     MacroManager.Action(new HotKeyAction(hk));
+
+                ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
+
                 hk.Callback();
             }
         }
@@ -2664,6 +2701,25 @@ namespace Assistant
             }
 
             return null;
+        }
+
+        private void RedrawScripts()
+        {
+            scriptList.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (string script in ScriptManager.GetScripts())
+                {
+                    if (script != null) 
+                        s.Items.Add(Path.GetFileNameWithoutExtension(script));
+                }
+
+                s.EndUpdate();
+            });
+
+            AddLineNumbers();
         }
 
         private void RedrawMacros()
@@ -6052,11 +6108,166 @@ namespace Assistant
 
         private void playScript_Click(object sender, EventArgs e)
         {
-            var root = Lexer.Lex(scriptEditor.Lines);
+            var root = Lexer.Lex(scriptEditor.Lines.ToArray());
 
             Script script = new Script(root);
 
             Interpreter.StartScript(script);
+        }
+
+        private void scriptEditor_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                //if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
+                    //return;
+
+                ContextMenu menu = new ContextMenu();
+                menu.MenuItems.Add(Language.GetString(LocString.Reload), new EventHandler(onScriptReload));
+                menu.MenuItems.Add(Language.GetString(LocString.Save), new EventHandler(onScriptSave));
+
+                menu.Show(scriptEditor, new Point(e.X, e.Y));
+
+            }
+        }
+
+        private void onScriptReload(object sender, System.EventArgs e)
+        {
+            /*Macro m = GetMacroSel();
+
+            if (m == null)
+                return;
+
+            m.Load();
+            RedrawActionList(m);*/
+        }
+
+        private void onScriptSave(object sender, System.EventArgs e)
+        {
+            /*Macro m = GetMacroSel();
+
+            if (m == null)
+                return;
+
+            m.Save();
+            RedrawActionList(m);*/
+        }
+
+        private void scriptList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (scriptList.SelectedIndex < 0)
+                return;
+
+            scriptEditor.Text = string.Empty;
+
+            scriptEditor.AppendText(File.ReadAllText($"{Config.GetInstallDirectory()}\\Scripts\\{scriptList.SelectedItem.ToString()}.razor") + Environment.NewLine);
+        }
+
+        public void AddLineNumbers()
+        {
+            // create & set Point pt to (0,0)    
+            Point pt = new Point(0, 0);
+            // get First Index & First Line from richTextBox1    
+            int First_Index = scriptEditor.GetCharIndexFromPosition(pt);
+            int First_Line = scriptEditor.GetLineFromCharIndex(First_Index);
+            // set X & Y coordinates of Point pt to ClientRectangle Width & Height respectively    
+            pt.X = ClientRectangle.Width;
+            pt.Y = ClientRectangle.Height;
+            // get Last Index & Last Line from richTextBox1    
+            int Last_Index = scriptEditor.GetCharIndexFromPosition(pt);
+            int Last_Line = scriptEditor.GetLineFromCharIndex(Last_Index);
+            // set Center alignment to LineNumberTextBox    
+            //scriptEditorLineNumbers.SelectionAlignment = HorizontalAlignment.Center;
+            // set LineNumberTextBox text to null & width to getWidth() function value    
+            scriptEditorLineNumbers.Text = "";
+            //scriptEditorLineNumbers.Width = GetScriptEditorWidth();
+            // now add each line number to LineNumberTextBox upto last line    
+            for (int i = First_Line; i <= Last_Line + 2; i++)
+            {
+                scriptEditorLineNumbers.Text += i + 1 + Environment.NewLine;
+            }
+
+            
+        }
+
+        private void scriptEditor_SelectionChanged(object sender, EventArgs e)
+        {
+            Point pt = scriptEditor.GetPositionFromCharIndex(scriptEditor.SelectionStart);
+            if (pt.X == 1)
+            {
+                AddLineNumbers();
+            }
+        }
+
+        private void scriptEditor_VScroll(object sender, EventArgs e)
+        {
+            scriptEditorLineNumbers.Text = "";
+            AddLineNumbers();
+            scriptEditorLineNumbers.Invalidate();
+        }
+
+        private void scriptEditor_TextChanged(object sender, EventArgs e)
+        {
+            if (scriptEditor.Text == "")
+            {
+                AddLineNumbers();
+            }
+        }
+
+        private void scriptEditor_FontChanged(object sender, EventArgs e)
+        {
+            scriptEditorLineNumbers.Font = scriptEditor.Font;
+            scriptEditor.Select();
+            AddLineNumbers();
+        }
+
+        private void scriptEditorLineNumbers_MouseDown(object sender, MouseEventArgs e)
+        {
+            scriptEditor.Select();
+            scriptEditorLineNumbers.DeselectAll();
+        }
+
+        public int GetScriptEditorWidth()
+        {
+            int w = 25;
+            
+            int line = scriptEditor.Lines.Length;
+
+            if (line <= 99)
+            {
+                w = 20 + (int)scriptEditor.Font.Size;
+            }
+            else if (line <= 999)
+            {
+                w = 30 + (int)scriptEditor.Font.Size;
+            }
+            else
+            {
+                w = 50 + (int)scriptEditor.Font.Size;
+            }
+
+            return w;
+        }
+
+        private void recordScript_Click(object sender, EventArgs e)
+        {
+            if (World.Player == null)
+                return;
+
+            if (ScriptManager.Recording) // stop recording
+            {
+                ScriptManager.OnLogout();
+
+                ScriptManager.Recording = false;
+                scriptEditor.Enabled = true;
+                playScript.Enabled = true;
+            }
+            else //start recording
+            {
+                ScriptManager.Recording = true;
+                scriptEditor.Enabled = false;
+                playScript.Enabled = false;
+            }
         }
     }
 }

@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using UOSteam;
 
 namespace Assistant.Macros.Scripts
 {
     public static class ScriptManager
     {
+        public static bool Recording { get; set; }
+
+        private static RichTextBox _scriptEditor { get; set; }
+        private static TextBox _scriptError { get; set; }
+
         private class ScriptTimer : Timer
         {
             // Only run scripts once every 25ms to avoid spamming.
@@ -17,7 +24,15 @@ namespace Assistant.Macros.Scripts
 
             protected override void OnTick()
             {
-                Interpreter.ExecuteScripts();
+                try
+                {
+                    Interpreter.ExecuteScripts();
+                }
+                catch (RunTimeError error)
+                {
+                    _scriptEditor.Text = error.Message;
+                    _timer.Stop();
+                }
             }
         }
 
@@ -26,6 +41,12 @@ namespace Assistant.Macros.Scripts
         static ScriptManager()
         {
             _timer = new ScriptTimer();
+        }
+
+        public static void SetControls(RichTextBox scriptEditor, TextBox scriptError)
+        {
+            _scriptEditor = scriptEditor;
+            _scriptError = scriptError;
         }
 
         public static void OnLogin()
@@ -40,6 +61,23 @@ namespace Assistant.Macros.Scripts
         public static void OnLogout()
         {
             _timer.Stop();
+        }
+
+        public static string[] GetScripts()
+        {
+            return Directory.GetFiles($"{Config.GetInstallDirectory()}\\Scripts", "*.razor");
+        }
+
+        public static bool AddToScript(string command)
+        {
+            if (Recording)
+            {
+                _scriptEditor?.AppendText(command + Environment.NewLine);
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

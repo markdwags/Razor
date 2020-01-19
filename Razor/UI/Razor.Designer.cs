@@ -727,6 +727,16 @@ namespace Assistant
             this.removeMacroVariable = new System.Windows.Forms.Button();
             this.addMacroVariable = new System.Windows.Forms.Button();
             this.macroVariables = new System.Windows.Forms.ListBox();
+            this.scriptsTab = new System.Windows.Forms.TabPage();
+            this.scriptEditorLineNumbers = new System.Windows.Forms.TextBox();
+            this.scriptError = new System.Windows.Forms.TextBox();
+            this.scriptList = new System.Windows.Forms.ListBox();
+            this.newScript = new System.Windows.Forms.Button();
+            this.loopScript = new System.Windows.Forms.CheckBox();
+            this.setScriptHotkey = new System.Windows.Forms.Button();
+            this.recordScript = new System.Windows.Forms.Button();
+            this.playScript = new System.Windows.Forms.Button();
+            this.scriptEditor = new System.Windows.Forms.RichTextBox();
             this.screenshotTab = new System.Windows.Forms.TabPage();
             this.captureOwnDeathDelay = new System.Windows.Forms.TextBox();
             this.lblOwnDeathMs = new System.Windows.Forms.Label();
@@ -770,10 +780,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.subMacrosScriptsTab = new System.Windows.Forms.TabPage();
-            this.scriptEditor = new System.Windows.Forms.TextBox();
-            this.playScript = new System.Windows.Forms.Button();
-            this.scriptTree = new System.Windows.Forms.TreeView();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -816,11 +822,11 @@ namespace Assistant
             this.macroActGroup.SuspendLayout();
             this.subMacrosOptionsTab.SuspendLayout();
             this.macroVariableGroup.SuspendLayout();
+            this.scriptsTab.SuspendLayout();
             this.screenshotTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
             this.aboutTab.SuspendLayout();
-            this.subMacrosScriptsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
@@ -839,6 +845,7 @@ namespace Assistant
             this.tabs.Controls.Add(this.agentsTab);
             this.tabs.Controls.Add(this.hotkeysTab);
             this.tabs.Controls.Add(this.macrosTab);
+            this.tabs.Controls.Add(this.scriptsTab);
             this.tabs.Controls.Add(this.screenshotTab);
             this.tabs.Controls.Add(this.advancedTab);
             this.tabs.Controls.Add(this.aboutTab);
@@ -3744,7 +3751,6 @@ namespace Assistant
             // 
             this.tabControl2.Controls.Add(this.subMacrosTab);
             this.tabControl2.Controls.Add(this.subMacrosOptionsTab);
-            this.tabControl2.Controls.Add(this.subMacrosScriptsTab);
             this.tabControl2.Location = new System.Drawing.Point(6, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -3899,10 +3905,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -4060,6 +4066,119 @@ namespace Assistant
             this.macroVariables.Name = "macroVariables";
             this.macroVariables.Size = new System.Drawing.Size(153, 199);
             this.macroVariables.TabIndex = 1;
+            // 
+            // scriptsTab
+            // 
+            this.scriptsTab.BackColor = System.Drawing.SystemColors.Control;
+            this.scriptsTab.Controls.Add(this.scriptEditorLineNumbers);
+            this.scriptsTab.Controls.Add(this.scriptError);
+            this.scriptsTab.Controls.Add(this.scriptList);
+            this.scriptsTab.Controls.Add(this.newScript);
+            this.scriptsTab.Controls.Add(this.loopScript);
+            this.scriptsTab.Controls.Add(this.setScriptHotkey);
+            this.scriptsTab.Controls.Add(this.recordScript);
+            this.scriptsTab.Controls.Add(this.playScript);
+            this.scriptsTab.Controls.Add(this.scriptEditor);
+            this.scriptsTab.Location = new System.Drawing.Point(4, 44);
+            this.scriptsTab.Name = "scriptsTab";
+            this.scriptsTab.Size = new System.Drawing.Size(519, 322);
+            this.scriptsTab.TabIndex = 13;
+            this.scriptsTab.Text = "Scripts";
+            // 
+            // scriptEditorLineNumbers
+            // 
+            this.scriptEditorLineNumbers.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.scriptEditorLineNumbers.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.scriptEditorLineNumbers.Cursor = System.Windows.Forms.Cursors.PanNW;
+            this.scriptEditorLineNumbers.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scriptEditorLineNumbers.ForeColor = System.Drawing.Color.LightGray;
+            this.scriptEditorLineNumbers.Location = new System.Drawing.Point(123, 12);
+            this.scriptEditorLineNumbers.Multiline = true;
+            this.scriptEditorLineNumbers.Name = "scriptEditorLineNumbers";
+            this.scriptEditorLineNumbers.ReadOnly = true;
+            this.scriptEditorLineNumbers.Size = new System.Drawing.Size(25, 278);
+            this.scriptEditorLineNumbers.TabIndex = 10;
+            this.scriptEditorLineNumbers.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.scriptEditorLineNumbers.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditorLineNumbers_MouseDown);
+            // 
+            // scriptError
+            // 
+            this.scriptError.BackColor = System.Drawing.SystemColors.Control;
+            this.scriptError.Location = new System.Drawing.Point(154, 296);
+            this.scriptError.Name = "scriptError";
+            this.scriptError.Size = new System.Drawing.Size(292, 23);
+            this.scriptError.TabIndex = 9;
+            // 
+            // scriptList
+            // 
+            this.scriptList.FormattingEnabled = true;
+            this.scriptList.ItemHeight = 15;
+            this.scriptList.Location = new System.Drawing.Point(7, 11);
+            this.scriptList.Name = "scriptList";
+            this.scriptList.Size = new System.Drawing.Size(110, 259);
+            this.scriptList.TabIndex = 8;
+            this.scriptList.SelectedIndexChanged += new System.EventHandler(this.scriptList_SelectedIndexChanged);
+            // 
+            // newScript
+            // 
+            this.newScript.Location = new System.Drawing.Point(7, 276);
+            this.newScript.Name = "newScript";
+            this.newScript.Size = new System.Drawing.Size(63, 32);
+            this.newScript.TabIndex = 6;
+            this.newScript.Text = "New...";
+            this.newScript.UseVisualStyleBackColor = true;
+            // 
+            // loopScript
+            // 
+            this.loopScript.Location = new System.Drawing.Point(455, 270);
+            this.loopScript.Name = "loopScript";
+            this.loopScript.Size = new System.Drawing.Size(57, 24);
+            this.loopScript.TabIndex = 5;
+            this.loopScript.Text = "Loop";
+            this.loopScript.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // setScriptHotkey
+            // 
+            this.setScriptHotkey.Location = new System.Drawing.Point(452, 87);
+            this.setScriptHotkey.Name = "setScriptHotkey";
+            this.setScriptHotkey.Size = new System.Drawing.Size(60, 32);
+            this.setScriptHotkey.TabIndex = 4;
+            this.setScriptHotkey.Text = "Set HK";
+            this.setScriptHotkey.UseVisualStyleBackColor = true;
+            // 
+            // recordScript
+            // 
+            this.recordScript.Location = new System.Drawing.Point(452, 49);
+            this.recordScript.Name = "recordScript";
+            this.recordScript.Size = new System.Drawing.Size(60, 32);
+            this.recordScript.TabIndex = 3;
+            this.recordScript.Text = "Record";
+            this.recordScript.UseVisualStyleBackColor = true;
+            this.recordScript.Click += new System.EventHandler(this.recordScript_Click);
+            // 
+            // playScript
+            // 
+            this.playScript.Location = new System.Drawing.Point(452, 11);
+            this.playScript.Name = "playScript";
+            this.playScript.Size = new System.Drawing.Size(60, 32);
+            this.playScript.TabIndex = 1;
+            this.playScript.Text = "Play";
+            this.playScript.UseVisualStyleBackColor = true;
+            this.playScript.Click += new System.EventHandler(this.playScript_Click);
+            // 
+            // scriptEditor
+            // 
+            this.scriptEditor.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scriptEditor.Location = new System.Drawing.Point(154, 11);
+            this.scriptEditor.Name = "scriptEditor";
+            this.scriptEditor.Size = new System.Drawing.Size(292, 283);
+            this.scriptEditor.TabIndex = 0;
+            this.scriptEditor.Text = "";
+            this.scriptEditor.SelectionChanged += new System.EventHandler(this.scriptEditor_SelectionChanged);
+            this.scriptEditor.VScroll += new System.EventHandler(this.scriptEditor_VScroll);
+            this.scriptEditor.FontChanged += new System.EventHandler(this.scriptEditor_FontChanged);
+            this.scriptEditor.TextChanged += new System.EventHandler(this.scriptEditor_TextChanged);
+            this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
             // 
             // screenshotTab
             // 
@@ -4535,43 +4654,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // subMacrosScriptsTab
-            // 
-            this.subMacrosScriptsTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subMacrosScriptsTab.Controls.Add(this.scriptTree);
-            this.subMacrosScriptsTab.Controls.Add(this.playScript);
-            this.subMacrosScriptsTab.Controls.Add(this.scriptEditor);
-            this.subMacrosScriptsTab.Location = new System.Drawing.Point(4, 24);
-            this.subMacrosScriptsTab.Name = "subMacrosScriptsTab";
-            this.subMacrosScriptsTab.Size = new System.Drawing.Size(502, 286);
-            this.subMacrosScriptsTab.TabIndex = 2;
-            this.subMacrosScriptsTab.Text = "Scripts";
-            // 
-            // scriptEditor
-            // 
-            this.scriptEditor.Location = new System.Drawing.Point(160, 3);
-            this.scriptEditor.Multiline = true;
-            this.scriptEditor.Name = "scriptEditor";
-            this.scriptEditor.Size = new System.Drawing.Size(339, 280);
-            this.scriptEditor.TabIndex = 0;
-            // 
-            // playScript
-            // 
-            this.playScript.Location = new System.Drawing.Point(47, 250);
-            this.playScript.Name = "playScript";
-            this.playScript.Size = new System.Drawing.Size(75, 23);
-            this.playScript.TabIndex = 1;
-            this.playScript.Text = "Play Script";
-            this.playScript.UseVisualStyleBackColor = true;
-            this.playScript.Click += new System.EventHandler(this.playScript_Click);
-            // 
-            // scriptTree
-            // 
-            this.scriptTree.Location = new System.Drawing.Point(3, 3);
-            this.scriptTree.Name = "scriptTree";
-            this.scriptTree.Size = new System.Drawing.Size(151, 228);
-            this.scriptTree.TabIndex = 2;
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4651,6 +4733,8 @@ namespace Assistant
             this.subMacrosOptionsTab.ResumeLayout(false);
             this.subMacrosOptionsTab.PerformLayout();
             this.macroVariableGroup.ResumeLayout(false);
+            this.scriptsTab.ResumeLayout(false);
+            this.scriptsTab.PerformLayout();
             this.screenshotTab.ResumeLayout(false);
             this.screenshotTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).EndInit();
@@ -4658,17 +4742,21 @@ namespace Assistant
             this.advancedTab.PerformLayout();
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
-            this.subMacrosScriptsTab.ResumeLayout(false);
-            this.subMacrosScriptsTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private TabPage subMacrosScriptsTab;
-        private TreeView scriptTree;
+        private TabPage scriptsTab;
         private Button playScript;
-        private TextBox scriptEditor;
+        private RichTextBox scriptEditor;
+        private Button newScript;
+        private CheckBox loopScript;
+        private Button setScriptHotkey;
+        private Button recordScript;
+        private ListBox scriptList;
+        private TextBox scriptError;
+        private TextBox scriptEditorLineNumbers;
     }
 }

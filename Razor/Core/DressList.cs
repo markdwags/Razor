@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Xml;
 using System.Windows.Forms;
+using Assistant.Macros.Scripts;
 using Assistant.UI;
 
 namespace Assistant
@@ -286,6 +287,9 @@ namespace Assistant
             if (Macros.MacroManager.AcceptActions)
                 Macros.MacroManager.Action(new Macros.UnDressAction(m_Name));
 
+            if (ScriptManager.Recording)
+                ScriptManager.AddToScript($"undress '{m_Name}'");
+
             if (m_UndressBag.IsValid)
             {
                 Item bag = World.FindItem(m_UndressBag);
@@ -345,6 +349,9 @@ namespace Assistant
 
             if (Macros.MacroManager.AcceptActions)
                 Macros.MacroManager.Action(new Macros.DressAction(m_Name));
+
+            if (ScriptManager.Recording)
+                ScriptManager.AddToScript($"dress '{m_Name}'");
 
             for (int i = 0; i < m_Items.Count; i++)
             {

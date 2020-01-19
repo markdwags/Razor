@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Assistant
@@ -479,6 +480,11 @@ namespace Assistant
         {
             m_SpellsByName.TryGetValue(name.ToLower(), out Spell s);
             return s;
+        }
+
+        public static string GetName(int num)
+        {
+            return m_SpellsByName.ElementAt(num).Key;
         }
 
         public static Spell Get(int circle, int num)

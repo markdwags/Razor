@@ -65,11 +65,16 @@ namespace Assistant.Macros.Scripts
         public static void Register()
         {
             // Commands based on Actions.cs
-            Interpreter.RegisterCommandHandler("target", DummyCommand); //Absolute Target
-            Interpreter.RegisterCommandHandler("cast", Cast); //BookcastAction
+            Interpreter.RegisterCommandHandler("target", Target); //Absolute Target
+            Interpreter.RegisterCommandHandler("cast", Cast); //BookcastAction, etc
+
             Interpreter.RegisterCommandHandler("menu", DummyCommand); //ContextMenuAction
-            Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAtion
-            Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
+
+            Interpreter.RegisterCommandHandler("dclicktype", DClickType); // DoubleClickTypeAction
+            Interpreter.RegisterCommandHandler("dclick", DClick); //DoubleClickAction
+
+            //Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAction
+            //Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
             Interpreter.RegisterCommandHandler("dress", DummyCommand); //DressAction
             Interpreter.RegisterCommandHandler("undress", DummyCommand); //UndressAction
             Interpreter.RegisterCommandHandler("drop", MoveItem); //DropAction
@@ -82,9 +87,11 @@ namespace Assistant.Macros.Scripts
             Interpreter.RegisterCommandHandler("lift", MoveItem); //LiftAction
             Interpreter.RegisterCommandHandler("lifttype", MoveItem); //LiftTypeAction
             Interpreter.RegisterCommandHandler("say", Msg); //SpeechAction
+            Interpreter.RegisterCommandHandler("msg", Msg); //SpeechAction
             Interpreter.RegisterCommandHandler("overhead", HeadMsg); //OverheadMessageAction
             Interpreter.RegisterCommandHandler("sysmsg", SysMsg); //SystemMessageAction
             Interpreter.RegisterCommandHandler("wait", Pause); //PauseAction
+            Interpreter.RegisterCommandHandler("pause", Pause); //PauseAction
             Interpreter.RegisterCommandHandler("setability", SetAbility); //SetAbilityAction
             Interpreter.RegisterCommandHandler("setlasttarget", DummyCommand); //SetLastTargetAction
             Interpreter.RegisterCommandHandler("skill", UseSkill); //SkillAction
@@ -151,11 +158,19 @@ namespace Assistant.Macros.Scripts
 
             ASTNode target = args[0];
 
-            Item equip = World.FindItem((uint)GetSerial(ref target));
-            byte layer = (byte)Utility.ToInt32(args[1].Lexeme, 0);
+            Item item = World.FindItem((uint)GetSerial(ref target));
 
-            if (equip != null && (Layer)layer != Layer.Invalid)
-                Dress.Equip(equip, (Layer)layer);
+            if (item != null)
+            {
+                Targeting.Target(item);
+            }
+
+            Mobile mobile = World.FindMobile((uint)GetSerial(ref target));
+
+            if (mobile != null)
+            {
+                Targeting.Target(mobile);
+            }
 
             return true;
         }
@@ -241,6 +256,30 @@ namespace Assistant.Macros.Scripts
                     Dress.Unequip(Layer.RightHand);
                     break;
             }
+
+            return true;
+        }
+
+        private static bool DClickType(ref ASTNode node, bool quiet, bool force)
+        {
+            node = node.Next();
+
+            // variable args here
+            List<ASTNode> args = ParseArguments(ref node);
+
+            ASTNode obj = args[0];
+
+            
+
+            return true;
+        }
+
+        private static bool DClick(ref ASTNode node, bool quiet, bool force)
+        {
+            node = node.Next();
+
+            // variable args here
+            ParseArguments(ref node);
 
             return true;
         }
