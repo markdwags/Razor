@@ -1877,7 +1877,7 @@ namespace Assistant
 
                     string newText = sb.ToString();
 
-                    if (newText != null && newText != "" && newText != text)
+                    if (!string.IsNullOrEmpty(newText) && newText != text)
                     {
                         Client.Instance.SendToClient(new AsciiMessage(ser, body, MessageType.Spell, s.GetHue(hue), font,
                             name, newText));
@@ -2541,7 +2541,7 @@ namespace Assistant
             if (pass == "")
             {
                 pass = PasswordMemory.Find(World.AccountName, Client.Instance.LastConnection);
-                if (pass != null && pass != "")
+                if (!string.IsNullOrEmpty(pass))
                 {
                     p.Seek(31, SeekOrigin.Begin);
                     p.WriteAsciiFixed(pass, 30);

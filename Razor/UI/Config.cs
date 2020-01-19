@@ -298,7 +298,7 @@ namespace Assistant
             get { return m_Name; }
             set
             {
-                if (value != null && value.Trim() != "")
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     StringBuilder sb = new StringBuilder(value);
                     sb.Replace('\\', '_');
