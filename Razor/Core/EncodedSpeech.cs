@@ -52,7 +52,7 @@ namespace Assistant.Core
 
         private static unsafe int NativeRead(FileStream fs, void* pBuffer, int bytes)
         {
-            return lread(fs.Handle, pBuffer, bytes);
+            return lread(fs.SafeFileHandle.DangerousGetHandle(), pBuffer, bytes);
         }
 
         private static unsafe int NativeRead(FileStream fs, byte[] buffer, int offset, int length)
