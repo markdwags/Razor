@@ -242,6 +242,8 @@
     <Compile Include="Core\ItemID.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Macros\Engine\Interpreter.cs" />
+    <Compile Include="Macros\Engine\Lexer.cs" />
     <Compile Include="Macros\MacroVariables.cs" />
     <Compile Include="Macros\Actions.cs">
       <SubType>Component</SubType>
@@ -557,12 +559,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Razor.manifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ScriptEngine\Steam\Steam\UOSteam.csproj">
-      <Project>{569eabf7-8980-4a3b-bf3a-6321c4b1da78}</Project>
-      <Name>UOSteam</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -79,7 +79,6 @@ namespace Assistant.Macros.Scripts
             Interpreter.RegisterCommandHandler("target", Target); //Absolute Target
             Interpreter.RegisterCommandHandler("targettype", TargetType); //TargetTypeAction
             Interpreter.RegisterCommandHandler("targetrelloc", TargetRelLoc); //TargetRelLocAction
-            Interpreter.RegisterCommandHandler("target", DummyCommand); //TargetRelLocAction
             Interpreter.RegisterCommandHandler("waitfortarget", WaitForTarget); //WaitForTargetAction
             Interpreter.RegisterCommandHandler("wft", WaitForTarget); //WaitForTargetAction
 
@@ -97,7 +96,7 @@ namespace Assistant.Macros.Scripts
             Interpreter.RegisterCommandHandler("lifttype", MoveItem); //LiftTypeAction
 
             // Gump
-            Interpreter.RegisterCommandHandler("waitforgump", DummyCommand); // WaitForGumpAction
+            Interpreter.RegisterCommandHandler("waitforgump", WaitForGump); // WaitForGumpAction
             Interpreter.RegisterCommandHandler("waitformenu", DummyCommand); // WaitForMenuAction
             Interpreter.RegisterCommandHandler("replygump", DummyCommand); // GumpResponseAction
             Interpreter.RegisterCommandHandler("closegump", DummyCommand);
@@ -292,6 +291,29 @@ namespace Assistant.Macros.Scripts
             node = node.Next();
 
             return Targeting.HasTarget;
+        }
+
+        private static bool WaitForGump(ref ASTNode node, bool quiet, bool force)
+        {
+            node = node.Next();
+
+            List<ASTNode> args = ParseArguments(ref node);
+
+            uint gumpId = 0;
+            bool strict = false;
+
+            // Look for a specific gump
+            if (args.Count == 1)
+            {
+                ASTNode gumpIdNode = args[0];
+                gumpId = Utility.ToUInt32(gumpIdNode.Lexeme, 0);
+                
+                if (gumpId > 0)
+                    strict = true;
+            }
+
+            
+            return !((World.Player.HasGump || World.Player.HasCompressedGump) && (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0));
         }
 
         private static string[] abilities = new string[4] {"primary", "secondary", "stun", "disarm"};
