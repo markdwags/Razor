@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using Assistant.Core;
 using UOSteam;
 
-namespace Assistant.Macros.Scripts
+namespace Assistant.Scripts
 {
     public class Commands
     {

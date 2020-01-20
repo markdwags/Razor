@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using UOSteam;
 
-namespace Assistant.Macros.Scripts
+namespace Assistant.Scripts
 {
     public static class ScriptManager
     {

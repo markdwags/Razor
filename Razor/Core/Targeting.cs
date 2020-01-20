@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Assistant.Core;
 using Assistant.Macros;
-using Assistant.Macros.Scripts;
+using Assistant.Scripts;
 
 namespace Assistant
 {

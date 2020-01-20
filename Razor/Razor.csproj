@@ -242,8 +242,8 @@
     <Compile Include="Core\ItemID.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Macros\Engine\Interpreter.cs" />
-    <Compile Include="Macros\Engine\Lexer.cs" />
+    <Compile Include="Scripts\Engine\Interpreter.cs" />
+    <Compile Include="Scripts\Engine\Lexer.cs" />
     <Compile Include="Macros\MacroVariables.cs" />
     <Compile Include="Macros\Actions.cs">
       <SubType>Component</SubType>
@@ -260,10 +260,10 @@
     <Compile Include="Core\Map.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Macros\Scripts\Aliases.cs" />
-    <Compile Include="Macros\Scripts\Commands.cs" />
-    <Compile Include="Macros\Scripts\Expressions.cs" />
-    <Compile Include="Macros\Scripts\ScriptManager.cs" />
+    <Compile Include="Scripts\Aliases.cs" />
+    <Compile Include="Scripts\Commands.cs" />
+    <Compile Include="Scripts\Expressions.cs" />
+    <Compile Include="Scripts\ScriptManager.cs" />
     <Compile Include="Map\MapWindow.cs">
       <SubType>Form</SubType>
     </Compile>

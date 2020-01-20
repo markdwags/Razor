@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using System.Windows.Forms;
-using Assistant.Macros.Scripts;
+using Assistant.Scripts;
 using Assistant.UI;
 
 namespace Assistant

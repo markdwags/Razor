@@ -16,7 +16,7 @@ using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Assistant.Core;
-using Assistant.Macros.Scripts;
+using Assistant.Scripts;
 using Assistant.UI;
 using Ultima;
 using UOSteam;

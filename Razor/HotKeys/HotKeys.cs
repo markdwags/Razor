@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text;
 using System.Xml;
-using Assistant.Macros.Scripts;
+using Assistant.Scripts;
 using Assistant.UI;
 
 namespace Assistant

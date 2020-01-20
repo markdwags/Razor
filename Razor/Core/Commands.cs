@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using Assistant.Core;
 using Assistant.Macros;
-using Assistant.Macros.Scripts;
+using Assistant.Scripts;
 
 namespace Assistant
 {

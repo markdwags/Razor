@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using Assistant.Core;
 using Assistant.Filters;
 using Assistant.Macros;
-using Assistant.Macros.Scripts;
+using Assistant.Scripts;
 using Assistant.UI;
 using UOSteam;
 using OverheadMessages = Assistant.Core.OverheadMessages;
