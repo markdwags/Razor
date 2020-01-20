@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Assistant.Core;
 using UOSteam;
 
@@ -72,14 +74,15 @@ namespace Assistant.Macros.Scripts
             Interpreter.RegisterCommandHandler("dressconfig", DressConfig);
 
             Interpreter.RegisterCommandHandler("target", Target); //Absolute Target
+            Interpreter.RegisterCommandHandler("waitfortarget", WaitForTarget); //Absolute Target
 
             Interpreter.RegisterCommandHandler("menu", DummyCommand); //ContextMenuAction
 
-            Interpreter.RegisterCommandHandler("dclicktype", DClickType); // DoubleClickTypeAction
-            Interpreter.RegisterCommandHandler("dclick", DClick); //DoubleClickAction
+            Interpreter.RegisterCommandHandler("dclicktype", UseType); // DoubleClickTypeAction
+            Interpreter.RegisterCommandHandler("dclick", UseObject); //DoubleClickAction
+            Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAction
+            Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
 
-            //Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAction
-            //Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
             Interpreter.RegisterCommandHandler("drop", MoveItem); //DropAction
             Interpreter.RegisterCommandHandler("waitforgump", DummyCommand); // WaitForGumpAction
             Interpreter.RegisterCommandHandler("waitformenu", DummyCommand); // WaitForMenuAction
@@ -159,21 +162,64 @@ namespace Assistant.Macros.Scripts
         {
             List<ASTNode> args = ParseArguments(ref node);
 
-            ASTNode target = args[0];
+            ASTNode target = args[1];
+            Serial serial = Serial.Parse(target.Lexeme);
 
-            Item item = World.FindItem((uint)GetSerial(ref target));
-
-            if (item != null)
+            if (serial != Serial.Zero) // Target a specific item or mobile
             {
-                Targeting.Target(item);
+                Item item = World.FindItem(serial);
+
+                if (item != null)
+                {
+                    Targeting.Target(item);
+                    return true;
+                }
+
+                Mobile mobile = World.FindMobile(serial);
+
+                if (mobile != null)
+                {
+                    Targeting.Target(mobile);
+                }
+            }
+            else if (args.Count == 6) // target a specific x/y/z
+            {
+                ASTNode x = args[2];
+                ASTNode y = args[3];
+                ASTNode z = args[4];
+                ASTNode gfx = args[5];
+
+                TargetInfo targetInfo = new TargetInfo
+                {
+                    Serial = Serial.Zero,
+                    X = Utility.ToInt32(x.Lexeme, 0),
+                    Y = Utility.ToInt32(y.Lexeme, 0),
+                    Z = Utility.ToInt32(z.Lexeme, 0),
+                    Gfx = Utility.ToUInt16(gfx.Lexeme, 0)
+                };
+
+                Targeting.Target(targetInfo);
             }
 
-            Mobile mobile = World.FindMobile((uint)GetSerial(ref target));
+            
 
-            if (mobile != null)
+            return true;
+        }
+
+        private static bool WaitForTarget(ref ASTNode node, bool quiet, bool force)
+        {
+            List<ASTNode> args = ParseArguments(ref node);
+
+            ASTNode waitTime = args[0];
+
+            //Stopwatch sw = Stopwatch.StartNew();
+
+            while (!Targeting.HasTarget)
             {
-                Targeting.Target(mobile);
+                return false;
             }
+
+            //sw.Stop();
 
             return true;
         }
@@ -186,11 +232,11 @@ namespace Assistant.Macros.Scripts
 
             List<ASTNode> args = ParseArguments(ref node);
 
-            if (args.Count < 1)
-                throw new ArgumentException("Usage: setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']");
-
-            if (!abilities.Contains(args[0].Lexeme))
-                throw new ArgumentException("Usage: setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']");
+            if (args.Count < 1 || !abilities.Contains(args[0].Lexeme))
+            {
+                ScriptErrorMsg("Usage: setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']");
+                return true;
+            }
 
             if (args.Count == 2 && args[1].Lexeme == "on" || args.Count == 1)
             {
@@ -240,11 +286,11 @@ namespace Assistant.Macros.Scripts
 
             List<ASTNode> args = ParseArguments(ref node);
 
-            if (args.Count == 0)
-                throw new ArgumentException("Usage: clearhands ('left'/'right'/'both')");
-
-            if (!hands.Contains(args[0].Lexeme))
-                throw new ArgumentException("Usage: clearhands ('left'/'right'/'both')");
+            if (args.Count == 0 || !hands.Contains(args[0].Lexeme))
+            {
+                ScriptErrorMsg("Usage: clearhands ('left'/'right'/'both')");
+                return true;
+            }
 
             switch (args[0].Lexeme)
             {
@@ -262,37 +308,25 @@ namespace Assistant.Macros.Scripts
 
             return true;
         }
-
-        private static bool DClickType(ref ASTNode node, bool quiet, bool force)
-        {
-            node = node.Next();
-
-            // variable args here
-            List<ASTNode> args = ParseArguments(ref node);
-
-            ASTNode obj = args[0];
-
-            
-
-            return true;
-        }
-
-        private static bool DClick(ref ASTNode node, bool quiet, bool force)
-        {
-            node = node.Next();
-
-            // variable args here
-            ParseArguments(ref node);
-
-            return true;
-        }
-
+        
         private static bool UseType(ref ASTNode node, bool quiet, bool force)
         {
             node = node.Next();
 
-            // variable args here
-            ParseArguments(ref node);
+            // expect a SERIAL containing graphic ID
+
+            List<ASTNode> args = ParseArguments(ref node);
+
+            if (args.Count == 0)
+                throw new ArgumentException("Usage: dclicktype|usetype (graphic)");
+
+            ASTNode obj = args[0];
+            int itemId = Utility.ToInt32(obj.Lexeme, -1);
+
+            Item item = World.FindItemByType(itemId);
+
+            if (item != null)
+                Client.Instance.SendToServer(new DoubleClick(item.Serial));
 
             return true;
         }
@@ -306,13 +340,19 @@ namespace Assistant.Macros.Scripts
             List<ASTNode> args = ParseArguments(ref node);
 
             if (args.Count == 0)
-                throw new ArgumentException("Usage: useobject (serial)");
+            {
+                ScriptErrorMsg("Usage: dclick|useobject (serial)");
+                return true;
+            }
 
             ASTNode obj = args[0];
             Serial serial = Serial.Parse(obj.Lexeme);
 
-            if (!serial.IsValid)
-                throw new ArgumentException("Invalid Serial in useobject");
+            if (args.Count == 0)
+            {
+                ScriptErrorMsg("Usage: dclick|useobject (serial)");
+                return true;
+            }
 
             Client.Instance.SendToServer(new DoubleClick(serial));
 
@@ -335,7 +375,10 @@ namespace Assistant.Macros.Scripts
             List<ASTNode> args = ParseArguments(ref node);
 
             if (args.Count < 2)
-                throw new ArgumentException("Usage: moveitem (serial) (destination) [(x, y, z)] [amount]");
+            {
+                ScriptErrorMsg("Usage: moveitem (serial) (destination) [(x, y, z)] [amount]");
+                return true;
+            }
 
             ASTNode serialNode = args[0];
             ASTNode destinationNode = args[1];
@@ -398,7 +441,10 @@ namespace Assistant.Macros.Scripts
             List<ASTNode> args = ParseArguments(ref node);
 
             if (args.Count == 0)
-                throw new ArgumentException("Usage: useskill ('skill name'/'last')");
+            {
+                ScriptErrorMsg("Usage: useskill ('skill name'/'last')");
+                return true;
+            }
 
             if (args[0].Lexeme == "last")
                 Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
@@ -415,7 +461,10 @@ namespace Assistant.Macros.Scripts
             List<ASTNode> args = ParseArguments(ref node);
 
             if (args.Count != 2)
-                throw new ArgumentException("Usage: setalias ('name') [serial]");
+            {
+                ScriptErrorMsg("Usage: setalias ('name') [serial]");
+                return true;
+            }
 
             ASTNode value = args[1]; // can't pass ref to this
 
@@ -436,7 +485,10 @@ namespace Assistant.Macros.Scripts
             List<ASTNode> args = ParseArguments(ref node);
 
             if (args.Count == 0)
-                throw new ArgumentException("Usage: unsetalias (string)");
+            {
+                ScriptErrorMsg("Usage: unsetalias (string)");
+                return true;
+            }
 
             Interpreter.SetAlias(args[0].Lexeme, 0);
 
@@ -450,7 +502,10 @@ namespace Assistant.Macros.Scripts
             List<ASTNode> args = ParseArguments(ref node);
 
             if (args.Count < 2)
-                throw new ArgumentException("Usage: equipitem (serial) (layer)");
+            {
+                ScriptErrorMsg("Usage: equipitem (serial) (layer)");
+                return true;
+            }
 
             ASTNode item = args[0];
 
@@ -475,7 +530,10 @@ namespace Assistant.Macros.Scripts
             List<ASTNode> args = ParseArguments(ref node);
 
             if (args.Count == 0)
-                throw new ArgumentException("Usage: msg ('text') [color]");
+            {
+                ScriptErrorMsg("Usage: msg ('text') [color]");
+                return true;
+            }
 
             if (!Client.Instance.ClientRunning)
                 return true;
@@ -498,11 +556,10 @@ namespace Assistant.Macros.Scripts
                 return true;
 
             if (args.Count == 0)
-                ScriptErrorMsg(
-                    "Usage: cast 'spell' [serial]"); //throw new ArgumentException("Usage: cast 'spell' [serial]");
-
-            if (!Client.Instance.ClientRunning)
+            {
+                ScriptErrorMsg("Usage: cast 'spell' [serial]");
                 return true;
+            }
 
             Spell spell;
 
@@ -538,12 +595,15 @@ namespace Assistant.Macros.Scripts
             node = node.Next();
 
             List<ASTNode> args = ParseArguments(ref node);
-
-            if (args.Count == 0)
-                throw new ArgumentException("Usage: headmsg ('text') [color] [serial]");
-
+            
             if (!Client.Instance.ClientRunning)
                 return true;
+
+            if (args.Count == 0)
+            {
+                ScriptErrorMsg("Usage: headmsg ('text') [color] [serial]");
+                return true;
+            }
 
             if (args.Count == 1)
                 World.Player.OverheadMessage(Config.GetInt("SysColor"), args[0].Lexeme);
@@ -575,7 +635,10 @@ namespace Assistant.Macros.Scripts
             List<ASTNode> args = ParseArguments(ref node);
 
             if (args.Count == 0)
-                throw new ArgumentException("Usage: sysmsg ('text') [color]");
+            {
+                ScriptErrorMsg("Usage: sysmsg ('text') [color]");
+                return true;
+            }
 
             if (!Client.Instance.ClientRunning)
                 return true;
@@ -586,11 +649,6 @@ namespace Assistant.Macros.Scripts
                 World.Player.SendMessage(Utility.ToInt32(args[1].Lexeme, 0), args[0].Lexeme);
 
             return true;
-        }
-
-        private static void ScriptErrorMsg(string message, string scriptname = "")
-        {
-            World.Player?.SendMessage(MsgLevel.Error, $"Script {scriptname} error => {message}");
         }
 
         public static bool DressCommand(ref ASTNode node, bool quiet, bool force)
@@ -669,6 +727,11 @@ namespace Assistant.Macros.Scripts
             }
 
             return true;
+        }
+        
+        private static void ScriptErrorMsg(string message, string scriptname = "")
+        {
+            World.Player?.SendMessage(MsgLevel.Error, $"Script {scriptname} error => {message}");_
         }
     }
 }

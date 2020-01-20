@@ -236,7 +236,7 @@ namespace Assistant
             if (Config.GetBool("QueueActions"))
                 args.Block = !PlayerData.DoubleClick(ser, false);
 
-            if (Macros.MacroManager.AcceptActions)
+            if (Macros.MacroManager.AcceptActions || ScriptManager.Recording)
             {
                 ushort gfx = 0;
                 if (ser.IsItem)

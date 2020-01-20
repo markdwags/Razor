@@ -23,20 +23,13 @@ namespace Assistant.Macros.Scripts
             }
 
             protected override void OnTick()
-            {
-                try
-                {
-                    Interpreter.ExecuteScripts();
-                }
-                catch (RunTimeError error)
-                {
-                    _scriptEditor.Text = error.Message;
-                    _timer.Stop();
-                }
+            {                
+                Interpreter.ExecuteScripts();
+              
             }
         }
 
-        private static ScriptTimer _timer;
+        private static ScriptTimer _timer { get; }
 
         static ScriptManager()
         {
@@ -59,6 +52,16 @@ namespace Assistant.Macros.Scripts
         }
 
         public static void OnLogout()
+        {
+            _timer.Stop();
+        }
+
+        public static void StartEngine()
+        {
+            _timer.Start();
+        }
+
+        public static void StopEngine()
         {
             _timer.Stop();
         }

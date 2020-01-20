@@ -377,5 +377,22 @@ namespace Assistant
                 return d;
             return def;
         }
+
+        public static ushort ToUInt16(string str, ushort def)
+        {
+            if (str == null)
+                return def;
+
+            ushort val;
+            if (str.StartsWith("0x"))
+            {
+                if (ushort.TryParse(str.Substring(2), NumberStyles.HexNumber, Engine.Culture, out val))
+                    return val;
+            }
+            else if (ushort.TryParse(str, out val))
+                return val;
+
+            return def;
+        }
     }
 }

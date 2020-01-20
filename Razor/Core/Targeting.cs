@@ -1240,7 +1240,23 @@ namespace Assistant
                 if (Macros.MacroManager.AcceptActions)
                     MacroManager.Action(new AbsoluteTargetAction(info));
 
-                ScriptManager.AddToScript($"target '{info.Serial}'");
+                ScriptManager.AddToScript($"target '{info.Serial}' {info.X} {info.Y} {info.Z}");
+
+                if (ScriptManager.Recording)
+                {
+                    if (info.Serial == Serial.Zero)
+                    {
+                        
+                    }
+                    else
+                    {
+
+                    }
+                        
+                }
+
+                
+
             }
             else
             {
@@ -1312,7 +1328,7 @@ namespace Assistant
             }
             else if (m_QueueTarget == null && ScriptManager.AddToScript("waitfortarget"))
             {
-                args.Block = true;
+                //args.Block = true;
             }
             else if (m_QueueTarget != null && m_QueueTarget())
             {

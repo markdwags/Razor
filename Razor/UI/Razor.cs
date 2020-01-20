@@ -586,7 +586,7 @@ namespace Assistant
             // single-line comments
             syntaxHighlighter.AddPattern(new PatternDefinition(new Regex(@"//.*?$", RegexOptions.Multiline | RegexOptions.Compiled)), new SyntaxStyle(Color.SaddleBrown, false, true));
             // numbers
-            syntaxHighlighter.AddPattern(new PatternDefinition(@"\d+\.\d+|\d+"), new SyntaxStyle(Color.Red));
+            //syntaxHighlighter.AddPattern(new PatternDefinition(@"\d+\.\d+|\d+"), new SyntaxStyle(Color.Red));
             // double quote strings
             syntaxHighlighter.AddPattern(new PatternDefinition(@"\""([^""]|\""\"")+\"""), new SyntaxStyle(Color.Blue));
             // single quote strings
@@ -598,7 +598,7 @@ namespace Assistant
             syntaxHighlighter.AddPattern(
                 new PatternDefinition("target", "cast", "menu", "usetype", "useobject", "dress", "undress", "drop",
                     "waitforgump", "waitformenu", "replygump", "closegump", "hotkey", "lift", "lifttype", "say", "msg",
-                    "overhead", "sysmsg", "wait", "pause", "setability", "setlasttarget", "skill", "walk", "waitforprompt", "waitfortarget", "useskill"),
+                    "overhead", "sysmsg", "wait", "pause", "setability", "setlasttarget", "skill", "walk", "waitforprompt", "waitfortarget", "useskill", "dclicktype", "dclick"),
                 new SyntaxStyle(Color.DarkOrchid, true, false));
             // operators
             syntaxHighlighter.AddPattern(new PatternDefinition("+", "-", ">", "<", "&", "|"), new SyntaxStyle(Color.CornflowerBlue));
@@ -6256,14 +6256,14 @@ namespace Assistant
 
             if (ScriptManager.Recording) // stop recording
             {
-                ScriptManager.OnLogout();
-
+                recordScript.Text = "Record";
                 ScriptManager.Recording = false;
                 scriptEditor.Enabled = true;
                 playScript.Enabled = true;
             }
             else //start recording
             {
+                recordScript.Text = "Stop";
                 ScriptManager.Recording = true;
                 scriptEditor.Enabled = false;
                 playScript.Enabled = false;

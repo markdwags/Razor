@@ -41,6 +41,17 @@ namespace Assistant
             m_Items.TryGetValue(serial, out it);
             return it;
         }
+        internal static Item FindItemByType(int itemId)
+        {
+            foreach (KeyValuePair<Serial, Item> item in m_Items)
+            {
+                if (item.Value.ItemID.Value == itemId)
+                    return item.Value;
+            }
+
+            return null;
+        }
+
 
         internal static Mobile FindMobile(Serial serial)
         {
