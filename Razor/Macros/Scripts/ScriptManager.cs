@@ -82,5 +82,10 @@ namespace Assistant.Macros.Scripts
 
             return false;
         }
+
+        public static void Error(string message, string scriptname = "")
+        {
+            World.Player?.SendMessage(MsgLevel.Error, $"Script '{scriptname}' error => {message}");
+        }
     }
 }
