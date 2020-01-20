@@ -40,16 +40,14 @@ extern "C" __declspec(dllexport) DWORD __stdcall Load( const char *exe, const ch
 	IMAGE_DOS_HEADER idh;
 	IMAGE_OPTIONAL_HEADER32 ioh;
 
-	FILE *pExe = fopen( exe, "rb" );
-	if ( !pExe )
+	FILE* pExe;
+	if (fopen_s(&pExe, exe, "rb") != 0)
 	{
-		buff[0] = 0;
-		if ( GetShortPathName( exe, buff, MAX_PATH ) >= MAX_PATH )
-			buff[0] = 0;
-
-		pExe = fopen( buff, "rb" );
-		if ( !pExe )
-			return NO_OPEN_EXE;
+	    buff[0] = 0;
+	    if (GetShortPathName(exe, buff, MAX_PATH) >= MAX_PATH)
+		   buff[0] = 0;
+	    if (fopen_s(&pExe, buff, "rb") != 0)
+		   return NO_OPEN_EXE;
 	}
 
 	if ( fread( &idh, 1, sizeof(IMAGE_DOS_HEADER), pExe ) != sizeof(IMAGE_DOS_HEADER) )
@@ -73,7 +71,7 @@ extern "C" __declspec(dllexport) DWORD __stdcall Load( const char *exe, const ch
 	fclose( pExe );
 
 	// find the exe's working directory
-	strcpy( buff, exe );
+	strcpy_s(buff, exe);
 
 	int i=(int)strlen(buff);
 	while ( buff[i] != '\\' && buff[i] != '/' && i > 0 )
