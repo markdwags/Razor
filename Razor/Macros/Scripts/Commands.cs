@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -69,100 +70,71 @@ namespace Assistant.Macros.Scripts
             // Commands based on Actions.cs
             Interpreter.RegisterCommandHandler("cast", Cast); //BookcastAction, etc
 
+            // Dress
             Interpreter.RegisterCommandHandler("dress", DressCommand); //DressAction
             Interpreter.RegisterCommandHandler("undress", UnDressCommand); //UndressAction
             Interpreter.RegisterCommandHandler("dressconfig", DressConfig);
 
+            // Targets
             Interpreter.RegisterCommandHandler("target", Target); //Absolute Target
-            Interpreter.RegisterCommandHandler("waitfortarget", WaitForTarget); //Absolute Target
+            Interpreter.RegisterCommandHandler("targettype", TargetType); //TargetTypeAction
+            Interpreter.RegisterCommandHandler("targetrelloc", TargetRelLoc); //TargetRelLocAction
+            Interpreter.RegisterCommandHandler("target", DummyCommand); //TargetRelLocAction
+            Interpreter.RegisterCommandHandler("waitfortarget", WaitForTarget); //WaitForTargetAction
+            Interpreter.RegisterCommandHandler("wft", WaitForTarget); //WaitForTargetAction
 
             Interpreter.RegisterCommandHandler("menu", DummyCommand); //ContextMenuAction
 
+            // Using stuff
             Interpreter.RegisterCommandHandler("dclicktype", UseType); // DoubleClickTypeAction
             Interpreter.RegisterCommandHandler("dclick", UseObject); //DoubleClickAction
             Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAction
             Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
 
+            // Moving stuff
             Interpreter.RegisterCommandHandler("drop", MoveItem); //DropAction
+            Interpreter.RegisterCommandHandler("lift", MoveItem); //LiftAction
+            Interpreter.RegisterCommandHandler("lifttype", MoveItem); //LiftTypeAction
+
+            // Gump
             Interpreter.RegisterCommandHandler("waitforgump", DummyCommand); // WaitForGumpAction
             Interpreter.RegisterCommandHandler("waitformenu", DummyCommand); // WaitForMenuAction
             Interpreter.RegisterCommandHandler("replygump", DummyCommand); // GumpResponseAction
             Interpreter.RegisterCommandHandler("closegump", DummyCommand);
+
+            // Hotkey execution
             Interpreter.RegisterCommandHandler("hotkey", DummyCommand); //HotKeyAction
-            //Interpreter.RegisterCommandHandler("lasttarget", DummyCommand); //LastTargetAction -- alias?
-            Interpreter.RegisterCommandHandler("lift", MoveItem); //LiftAction
-            Interpreter.RegisterCommandHandler("lifttype", MoveItem); //LiftTypeAction
+
+            // Messages
             Interpreter.RegisterCommandHandler("say", Msg); //SpeechAction
             Interpreter.RegisterCommandHandler("msg", Msg); //SpeechAction
             Interpreter.RegisterCommandHandler("overhead", HeadMsg); //OverheadMessageAction
             Interpreter.RegisterCommandHandler("sysmsg", SysMsg); //SystemMessageAction
+
+            // General Waits/Pauses
             Interpreter.RegisterCommandHandler("wait", Pause); //PauseAction
             Interpreter.RegisterCommandHandler("pause", Pause); //PauseAction
+
+            // Misc
             Interpreter.RegisterCommandHandler("setability", SetAbility); //SetAbilityAction
             Interpreter.RegisterCommandHandler("setlasttarget", DummyCommand); //SetLastTargetAction
             Interpreter.RegisterCommandHandler("skill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
-
-
-            /*Interpreter.RegisterCommandHandler("attack", Attack);
-            Interpreter.RegisterCommandHandler("clearhands", ClearHands);
-            Interpreter.RegisterCommandHandler("bandageself", BandageSelf);
-            Interpreter.RegisterCommandHandler("useonce", UseOnce);
-            //Interpreter.RegisterCommandHandler("cleanusequeue", CleanUseQueue);
-            /*Interpreter.RegisterCommandHandler("moveitem", MoveItem);
-            Interpreter.RegisterCommandHandler("moveitemoffset", DummyCommand);
-            Interpreter.RegisterCommandHandler("movetype", DummyCommand);
-            Interpreter.RegisterCommandHandler("movetypeoffset", DummyCommand);#1#
-            Interpreter.RegisterCommandHandler("turn", Turn);
-            Interpreter.RegisterCommandHandler("useskill", UseSkill);
-            Interpreter.RegisterCommandHandler("togglehands", ToggleHands);
-            Interpreter.RegisterCommandHandler("equipitem", EquipItem);
-            //Interpreter.RegisterCommandHandler("togglemounted", DummyCommand);
-            //Interpreter.RegisterCommandHandler("equipwand", DummyCommand);
-            //Interpreter.RegisterCommandHandler("buy", DummyCommand);
-            //Interpreter.RegisterCommandHandler("sell", DummyCommand);
-            //Interpreter.RegisterCommandHandler("clearbuy", DummyCommand);
-            //Interpreter.RegisterCommandHandler("clearsell", DummyCommand);
-            //Interpreter.RegisterCommandHandler("organizer", DummyCommand);
-            //Interpreter.RegisterCommandHandler("dressconfig", DummyCommand);
-            Interpreter.RegisterCommandHandler("togglescavenger", ToggleScavenger);
-            //Interpreter.RegisterCommandHandler("counter", DummyCommand);
-            Interpreter.RegisterCommandHandler("unsetalias", UnsetAlias);
-            Interpreter.RegisterCommandHandler("setalias", SetAlias);
-            Interpreter.RegisterCommandHandler("promptalias", DummyCommand);
-            
-            //Interpreter.RegisterCommandHandler("clearjournal", DummyCommand);
-            //Interpreter.RegisterCommandHandler("waitforjournal", DummyCommand);
-            //Interpreter.RegisterCommandHandler("poplist", DummyCommand);
-            //Interpreter.RegisterCommandHandler("pushlist", DummyCommand);
-            //Interpreter.RegisterCommandHandler("removelist", DummyCommand);
-            //Interpreter.RegisterCommandHandler("createlist", DummyCommand);
-            //Interpreter.RegisterCommandHandler("clearlist", DummyCommand);
-            //Interpreter.RegisterCommandHandler("info", DummyCommand);
-            Interpreter.RegisterCommandHandler("pause", Pause);
-            //Interpreter.RegisterCommandHandler("ping", Ping);
-            Interpreter.RegisterCommandHandler("playmacro", DummyCommand);
-            Interpreter.RegisterCommandHandler("playsound", DummyCommand);
-            Interpreter.RegisterCommandHandler("resync", Resync);
-            Interpreter.RegisterCommandHandler("snapshot", DummyCommand);
-            
-            Interpreter.RegisterCommandHandler("where", DummyCommand);*/
-            //Interpreter.RegisterCommandHandler("messagebox", MessageBox);
-            //Interpreter.RegisterCommandHandler("mapuo", DummyCommand);
-            //Interpreter.RegisterCommandHandler("clickscreen", DummyCommand);
-            //Interpreter.RegisterCommandHandler("paperdoll", DummyCommand);
-            //Interpreter.RegisterCommandHandler("helpbutton", DummyCommand);
-            //Interpreter.RegisterCommandHandler("guildbutton", DummyCommand);
-            //Interpreter.RegisterCommandHandler("questsbutton", DummyCommand);
-            //Interpreter.RegisterCommandHandler("logoutbutton", DummyCommand);
-            //Interpreter.RegisterCommandHandler("virtue", DummyCommand);
         }
 
         private static bool Target(ref ASTNode node, bool quiet, bool force)
         {
+            node = node.Next();
+
             List<ASTNode> args = ParseArguments(ref node);
 
-            ASTNode target = args[1];
+            if (args.Count < 1 || !abilities.Contains(args[0].Lexeme))
+            {
+                ScriptErrorMsg("Usage: target 'serial'");
+                return true;
+            }
+
+            ASTNode target = args[0];
             Serial serial = Serial.Parse(target.Lexeme);
 
             if (serial != Serial.Zero) // Target a specific item or mobile
@@ -182,46 +154,144 @@ namespace Assistant.Macros.Scripts
                     Targeting.Target(mobile);
                 }
             }
-            else if (args.Count == 6) // target a specific x/y/z
+
+            return true;
+        }
+
+        private static bool TargetType(ref ASTNode node, bool quiet, bool force)
+        {
+            node = node.Next();
+
+            List<ASTNode> args = ParseArguments(ref node);
+
+            if (args.Count < 2)
             {
-                ASTNode x = args[2];
-                ASTNode y = args[3];
-                ASTNode z = args[4];
-                ASTNode gfx = args[5];
-
-                TargetInfo targetInfo = new TargetInfo
-                {
-                    Serial = Serial.Zero,
-                    X = Utility.ToInt32(x.Lexeme, 0),
-                    Y = Utility.ToInt32(y.Lexeme, 0),
-                    Z = Utility.ToInt32(z.Lexeme, 0),
-                    Gfx = Utility.ToUInt16(gfx.Lexeme, 0)
-                };
-
-                Targeting.Target(targetInfo);
+                ScriptErrorMsg("Usage: targettype (isMobile) (graphic) ");
+                return true;
             }
 
-            
+            ASTNode mobileNode = args[0];
+            ASTNode gfxNode = args[1];
+
+            bool isMobile = bool.Parse(mobileNode.Lexeme);
+            ushort gfx = Utility.ToUInt16(gfxNode.Lexeme, 0);
+
+            if (Targeting.FromGrabHotKey)
+                return false;
+
+            ArrayList list = new ArrayList();
+            if (isMobile)
+            {
+                foreach (Mobile find in World.MobilesInRange())
+                {
+                    if (find.Body == gfx)
+                    {
+                        if (Config.GetBool("RangeCheckTargetByType"))
+                        {
+                            if (Utility.InRange(World.Player.Position, find.Position, 2))
+                            {
+                                list.Add(find);
+                            }
+                        }
+                        else
+                        {
+                            list.Add(find);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (Item i in World.Items.Values)
+                {
+                    if (i.ItemID == gfx && !i.IsInBank)
+                    {
+                        if (Config.GetBool("RangeCheckTargetByType"))
+                        {
+                            if (Utility.InRange(World.Player.Position, i.Position, 2))
+                            {
+                                list.Add(i);
+                            }
+                        }
+                        else
+                        {
+                            list.Add(i);
+                        }
+                    }
+                }
+            }
+
+            if (list.Count > 0)
+            {
+                /*if (Config.GetBool("DiffTargetByType") && list.Count > 1)
+                {
+                    object currentObject = list[Utility.Random(list.Count)];
+
+                    while (_previousObject != null && _previousObject == currentObject)
+                    {
+                        currentObject = list[Utility.Random(list.Count)];
+                    }
+
+                    Targeting.Target(currentObject);
+
+                    _previousObject = currentObject;
+                }
+                else
+                {
+                    Targeting.Target(list[Utility.Random(list.Count)]);
+                }*/
+
+                Targeting.Target(list[Utility.Random(list.Count)]);
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType,
+                    isMobile ? $"Character [{gfx}]" : ((ItemID)gfx).ToString());
+            }
+
+            return true;
+        }
+
+        private static bool TargetRelLoc(ref ASTNode node, bool quiet, bool force)
+        {
+            node = node.Next();
+
+            List<ASTNode> args = ParseArguments(ref node);
+
+            if (args.Count < 2)
+            {
+                ScriptErrorMsg("Usage: targetrelloc (x-offset) (y-offset) ");
+                return true;
+            }
+
+            ASTNode xoffsetNode = args[0];
+            ASTNode yoffsetNode = args[1];
+
+            int xoffset = Utility.ToInt32(xoffsetNode.Lexeme, 0);
+            int yoffset = Utility.ToInt32(yoffsetNode.Lexeme, 0);
+
+            ushort x = (ushort)(World.Player.Position.X + xoffset);
+            ushort y = (ushort)(World.Player.Position.Y + yoffset);
+            short z = (short)World.Player.Position.Z;
+
+            try
+            {
+                Ultima.HuedTile tile = Map.GetTileNear(World.Player.Map, x, y, z);
+                Targeting.Target(new Point3D(x, y, tile.Z), tile.ID);
+            }
+            catch (Exception e)
+            {
+                ScriptErrorMsg($"Error Executing TargetRelLoc: {e.Message}");
+            }
 
             return true;
         }
 
         private static bool WaitForTarget(ref ASTNode node, bool quiet, bool force)
         {
-            List<ASTNode> args = ParseArguments(ref node);
+            node = node.Next();
 
-            ASTNode waitTime = args[0];
-
-            //Stopwatch sw = Stopwatch.StartNew();
-
-            while (!Targeting.HasTarget)
-            {
-                return false;
-            }
-
-            //sw.Stop();
-
-            return true;
+            return Targeting.HasTarget;
         }
 
         private static string[] abilities = new string[4] {"primary", "secondary", "stun", "disarm"};
@@ -313,20 +383,124 @@ namespace Assistant.Macros.Scripts
         {
             node = node.Next();
 
-            // expect a SERIAL containing graphic ID
-
             List<ASTNode> args = ParseArguments(ref node);
 
             if (args.Count == 0)
-                throw new ArgumentException("Usage: dclicktype|usetype (graphic)");
+            {
+                ScriptErrorMsg("Usage: dclicktype|usetype ('graphic/name of item')");
+                return true;
+            }
 
-            ASTNode obj = args[0];
-            int itemId = Utility.ToInt32(obj.Lexeme, -1);
+            ASTNode gfxNode = args[0];
+            ushort gfx = Utility.ToUInt16(gfxNode.Lexeme, 0);
 
-            Item item = World.FindItemByType(itemId);
+            Serial click = Serial.Zero;
+            bool isItem = false;
+            Item item = null;
 
-            if (item != null)
-                Client.Instance.SendToServer(new DoubleClick(item.Serial));
+            // No graphic id, maybe searching by name?
+            if (gfx == 0)
+            {
+                item = World.FindItemByName(gfxNode.Lexeme);
+
+                if (item == null)
+                {
+                    ScriptErrorMsg($"Script Error: Couldn't find '{gfxNode.Lexeme}'");
+                    return true;
+                }
+                    
+            }
+            else // Check backpack first
+            {
+                item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(gfx) : null;
+            }
+
+            // Not in backpack? Lets check the world
+            if (item == null)
+            {
+                List<Item> list = new List<Item>();
+                foreach (Item i in World.Items.Values)
+                {
+                    if (i.ItemID == gfx && i.RootContainer == null)
+                    {
+                        isItem = true;
+
+                        if (Config.GetBool("RangeCheckDoubleClick"))
+                        {
+                            if (Utility.InRange(World.Player.Position, i.Position, 2))
+                            {
+                                list.Add(i);
+                            }
+                        }
+                        else
+                        {
+                            list.Add(i);
+                        }
+                    }
+                }
+
+                if (list.Count == 0)
+                {
+                    foreach (Item i in World.Items.Values)
+                    {
+                        if (i.ItemID == gfx && !i.IsInBank)
+                        {
+                            isItem = true;
+
+                            if (Config.GetBool("RangeCheckDoubleClick"))
+                            {
+                                if (Utility.InRange(World.Player.Position, i.Position, 2))
+                                {
+                                    list.Add(i);
+                                }
+                            }
+                            else
+                            {
+                                list.Add(i);
+                            }
+                        }
+                    }
+                }
+
+                if (list.Count > 0)
+                    click = list[Utility.Random(list.Count)].Serial;
+            }
+            else
+            {
+                isItem = true;
+                click = item.Serial;
+            }
+
+            // Still no item? Mobile check!
+            if (item == null)
+            {
+                List<Mobile> list = new List<Mobile>();
+                foreach (Mobile m in World.MobilesInRange())
+                {
+                    if (m.Body == gfx)
+                    {
+                        if (Config.GetBool("RangeCheckDoubleClick"))
+                        {
+                            if (Utility.InRange(World.Player.Position, m.Position, 2))
+                            {
+                                list.Add(m);
+                            }
+                        }
+                        else
+                        {
+                            list.Add(m);
+                        }
+                    }
+                }
+
+                if (list.Count > 0)
+                    click = list[Utility.Random(list.Count)].Serial;
+            }
+            
+            if (click != Serial.Zero)
+                PlayerData.DoubleClick(click);
+            else
+                World.Player.SendMessage(MsgLevel.Force, LocString.NoItemOfType, isItem ? ((ItemID)gfx).ToString() : $"(Character) 0x{gfx:X}");
 
             return true;
         }
@@ -569,6 +743,8 @@ namespace Assistant.Macros.Scripts
                 spell = Spell.GetByName(args[0].Lexeme);
             if (spell != null)
             {
+                spell.OnCast(new CastSpellFromMacro((ushort)spell.GetID()));
+
                 if (args.Count > 1)
                 {
                     ASTNode n = args[1];
@@ -577,7 +753,6 @@ namespace Assistant.Macros.Scripts
                         Targeting.ClearQueue();
                     if (s > Serial.Zero && s != Serial.MinusOne)
                     {
-                        spell.OnCast(new CastSpellFromMacro((ushort)spell.GetID()));
                         Targeting.Target(s);
                     }
                     else if (!quiet)
@@ -731,7 +906,7 @@ namespace Assistant.Macros.Scripts
         
         private static void ScriptErrorMsg(string message, string scriptname = "")
         {
-            World.Player?.SendMessage(MsgLevel.Error, $"Script {scriptname} error => {message}");_
+            World.Player?.SendMessage(MsgLevel.Error, $"Script {scriptname} error => {message}");
         }
     }
 }

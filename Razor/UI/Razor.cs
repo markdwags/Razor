@@ -598,7 +598,8 @@ namespace Assistant
             syntaxHighlighter.AddPattern(
                 new PatternDefinition("target", "cast", "menu", "usetype", "useobject", "dress", "undress", "drop",
                     "waitforgump", "waitformenu", "replygump", "closegump", "hotkey", "lift", "lifttype", "say", "msg",
-                    "overhead", "sysmsg", "wait", "pause", "setability", "setlasttarget", "skill", "walk", "waitforprompt", "waitfortarget", "useskill", "dclicktype", "dclick"),
+                    "overhead", "sysmsg", "wait", "pause", "setability", "setlasttarget", "skill", "walk",
+                    "waitforprompt", "waitfortarget", "useskill", "dclicktype", "dclick", "targetrelloc", "targettype", "wft"),
                 new SyntaxStyle(Color.DarkOrchid, true, false));
             // operators
             syntaxHighlighter.AddPattern(new PatternDefinition("+", "-", ">", "<", "&", "|"), new SyntaxStyle(Color.CornflowerBlue));

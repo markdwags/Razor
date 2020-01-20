@@ -52,6 +52,16 @@ namespace Assistant
             return null;
         }
 
+        internal static Item FindItemByName(string name)
+        {
+            foreach (KeyValuePair<Serial, Item> item in m_Items)
+            {
+                if (item.Value.DisplayName.ToLower().Equals(name.ToLower()))
+                    return item.Value;
+            }
+
+            return null;
+        }
 
         internal static Mobile FindMobile(Serial serial)
         {
