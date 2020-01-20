@@ -9,46 +9,6 @@ namespace Assistant.Scripts
 {
     public class Commands
     {
-        private static List<ASTNode> ParseArguments(ref ASTNode node)
-        {
-            List<ASTNode> args = new List<ASTNode>();
-            while (node != null)
-            {
-                args.Add(node);
-                node = node.Next();
-            }
-
-            return args;
-        }
-
-        private static bool DummyCommand(string command, Argument[] args, bool quiet, bool force)
-        {
-            World.Player?.SendMessage(MsgLevel.Info, $"Unimplemented command: {command}");
-
-            return true;
-        }
-
-        private static bool UseItem(Item cont, ushort find)
-        {
-            for (int i = 0; i < cont.Contains.Count; i++)
-            {
-                Item item = cont.Contains[i];
-
-                if (item.ItemID == find)
-                {
-                    PlayerData.DoubleClick(item);
-                    return true;
-                }
-                else if (item.Contains != null && item.Contains.Count > 0)
-                {
-                    if (UseItem(item, find))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
         public static void Register()
         {
             // Commands based on Actions.cs
@@ -86,7 +46,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("closegump", DummyCommand);
 
             // Hotkey execution
-            Interpreter.RegisterCommandHandler("hotkey", DummyCommand); //HotKeyAction
+            Interpreter.RegisterCommandHandler("hotkey", Hotkey); //HotKeyAction
 
             // Messages
             Interpreter.RegisterCommandHandler("say", Msg); //SpeechAction
@@ -103,6 +63,34 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("setlasttarget", DummyCommand); //SetLastTargetAction
             Interpreter.RegisterCommandHandler("skill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
+        }
+
+        private static bool DummyCommand(string command, Argument[] args, bool quiet, bool force)
+        {
+            ScriptManager.Error($"Unimplemented command: {command}");
+
+            return true;
+        }
+
+        private static bool UseItem(Item cont, ushort find)
+        {
+            for (int i = 0; i < cont.Contains.Count; i++)
+            {
+                Item item = cont.Contains[i];
+
+                if (item.ItemID == find)
+                {
+                    PlayerData.DoubleClick(item);
+                    return true;
+                }
+                else if (item.Contains != null && item.Contains.Count > 0)
+                {
+                    if (UseItem(item, find))
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool Target(string command, Argument[] args, bool quiet, bool force)
@@ -254,6 +242,29 @@ namespace Assistant.Scripts
         private static bool WaitForTarget(string command, Argument[] args, bool quiet, bool force)
         {
             return Targeting.HasTarget;
+        }
+
+        private static bool Hotkey(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                ScriptManager.Error("Usage: hotkey ('name of hotkey'/'hotkeyID')");
+                return true;
+            }
+
+            string query = args[0].AsString();
+
+            KeyData hk = HotKey.GetByNameOrId(query);
+
+            if (hk == null)
+            {
+                ScriptManager.Error($"Hotkey '{query}' not found");
+                return true;
+            }
+
+            hk.Callback();
+
+            return true;
         }
 
         private static bool WaitForGump(string command, Argument[] args, bool quiet, bool force)

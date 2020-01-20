@@ -519,6 +519,19 @@ namespace Assistant
             return null;
         }
 
+        public static KeyData GetByNameOrId(string query)
+        {
+            foreach (KeyData key in m_List)
+            {
+                if (key.DispName.ToLower().Equals(query.ToLower()))
+                    return key;
+            }
+
+            int hkIndex = Utility.ToInt32(query, -1);
+
+            return hkIndex != -1 ? m_List[hkIndex] : null;
+        }
+
         public static KeyData Get(int key, ModKeys mod)
         {
             for (int i = 0; i < m_List.Count; i++)
