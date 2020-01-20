@@ -552,7 +552,7 @@ namespace Assistant
 
             Item item = World.FindItem(iser);
 
-            if (MacroManager.AcceptActions)
+            if (MacroManager.AcceptActions || ScriptManager.Recording)
             {
                 if (layer == Layer.Invalid || layer > Layer.LastValid)
                 {
@@ -566,8 +566,10 @@ namespace Assistant
 
                 if (layer > Layer.Invalid && layer <= Layer.LastUserValid)
                 {
-                    MacroManager.Action(new DropAction(mser, Point3D.Zero, layer));
-                    ScriptManager.AddToScript($"drop '{mser}' {Point3D.Zero} {layer}");
+                    if (MacroManager.AcceptActions)
+                        MacroManager.Action(new DropAction(mser, Point3D.Zero, layer));
+
+                    ScriptManager.AddToScript($"drop '{mser}' '{layer}'");
                 }
             }
 
@@ -597,7 +599,7 @@ namespace Assistant
             if (Macros.MacroManager.AcceptActions)
                 MacroManager.Action(new DropAction(dser, newPos));
 
-            ScriptManager.AddToScript($"drop '{dser}' {newPos}");
+            ScriptManager.AddToScript($"drop '{dser}' {newPos.X} {newPos.Y} {newPos.Z}");
 
             Item i = World.FindItem(iser);
             if (i == null)

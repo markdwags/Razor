@@ -36,14 +36,13 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
 
             // Moving stuff
-            Interpreter.RegisterCommandHandler("drop", DummyCommand); //DropAction
+            Interpreter.RegisterCommandHandler("drop", DropItem); //DropAction
             Interpreter.RegisterCommandHandler("droprelloc", DummyCommand); //DropAction
-            Interpreter.RegisterCommandHandler("lift", DummyCommand); //LiftAction
+            Interpreter.RegisterCommandHandler("lift", LiftItem); //LiftAction
             Interpreter.RegisterCommandHandler("lifttype", DummyCommand); //LiftTypeAction
 
             // Gump
             Interpreter.RegisterCommandHandler("waitforgump", WaitForGump); // WaitForGumpAction
-            Interpreter.RegisterCommandHandler("waitformenu", DummyCommand); // WaitForMenuAction
             Interpreter.RegisterCommandHandler("gumpresponse", DummyCommand); // GumpResponseAction
             Interpreter.RegisterCommandHandler("replygump", DummyCommand); // GumpResponseAction
             Interpreter.RegisterCommandHandler("closegump", DummyCommand);
@@ -51,11 +50,11 @@ namespace Assistant.Scripts
             // Menu
             Interpreter.RegisterCommandHandler("contextmenu", DummyCommand); //ContextMenuAction
             Interpreter.RegisterCommandHandler("menuresponse", DummyCommand); //MenuResponseAction
-            Interpreter.RegisterCommandHandler("waitformenu", DummyCommand); //WaitForMenuAction
+            Interpreter.RegisterCommandHandler("waitformenu", WaitForMenu); //WaitForMenuAction
 
             // Prompt
             Interpreter.RegisterCommandHandler("promptresponse", DummyCommand); //PromptAction
-            Interpreter.RegisterCommandHandler("waitforprompt", DummyCommand); //WaitForPromptAction
+            Interpreter.RegisterCommandHandler("waitforprompt", WaitForPrompt); //WaitForPromptAction
 
             // Hotkey execution
             Interpreter.RegisterCommandHandler("hotkey", Hotkey); //HotKeyAction
@@ -147,8 +146,8 @@ namespace Assistant.Scripts
                 return true;
             }
 
-            bool isMobile = bool.Parse(args[0].ToString());
-            ushort gfx = Utility.ToUInt16(args[1].ToString(), 0);
+            bool isMobile = bool.Parse(args[0].AsString());
+            ushort gfx = Utility.ToUInt16(args[1].AsString(), 0);
 
             if (Targeting.FromGrabHotKey)
                 return false;
@@ -234,8 +233,8 @@ namespace Assistant.Scripts
                 return true;
             }
 
-            int xoffset = Utility.ToInt32(args[0].ToString(), 0);
-            int yoffset = Utility.ToInt32(args[1].ToString(), 0);
+            int xoffset = Utility.ToInt32(args[0].AsString(), 0);
+            int yoffset = Utility.ToInt32(args[1].AsString(), 0);
 
             ushort x = (ushort) (World.Player.Position.X + xoffset);
             ushort y = (ushort) (World.Player.Position.Y + yoffset);
@@ -290,7 +289,7 @@ namespace Assistant.Scripts
             // Look for a specific gump
             if (args.Length == 1)
             {
-                gumpId = Utility.ToUInt32(args[0].ToString(), 0);
+                gumpId = Utility.ToUInt32(args[0].AsString(), 0);
 
                 if (gumpId > 0)
                     strict = true;
@@ -298,6 +297,36 @@ namespace Assistant.Scripts
 
             return !((World.Player.HasGump || World.Player.HasCompressedGump) &&
                      (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0));
+        }
+
+        private static bool WaitForMenu(string command, Argument[] args, bool quiet, bool force)
+        {
+            uint menuId = 0;
+
+            // Look for a specific menu
+            if (args.Length == 1)
+            {
+                menuId = Utility.ToUInt32(args[0].AsString(), 0);
+            }
+
+            return !(World.Player.HasMenu && (World.Player.CurrentGumpI == menuId || menuId == 0));
+        }
+
+        private static bool WaitForPrompt(string command, Argument[] args, bool quiet, bool force)
+        {
+            uint promptId = 0;
+            bool strict = false;
+
+            // Look for a specific gump
+            if (args.Length == 1)
+            {
+                promptId = Utility.ToUInt32(args[0].AsString(), 0);
+
+                if (promptId > 0)
+                    strict = true;
+            }
+
+            return !(World.Player.HasPrompt && (World.Player.PromptID == promptId || !strict || promptId == 0));
         }
 
         private static string[] abilities = new string[4] {"primary", "secondary", "stun", "disarm"};
@@ -537,6 +566,80 @@ namespace Assistant.Scripts
                 return true;
             else if (args.Length == 6)
                 return true;
+
+            return true;
+        }
+
+        private static bool DropItem(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 2)
+            {
+                ScriptManager.Error("Usage: drop (serial) (x y z/'layername')");
+                return true;
+            }
+
+            Serial serial = args[0].AsSerial();
+            Point3D to = new Point3D(0, 0, 0);
+            Layer layer = Layer.Invalid;
+
+            if (args.Length == 2) // dropping on a layer
+            {
+                layer = (Layer) Enum.Parse(typeof(Layer), args[1].AsString(), true);
+            }
+            else // dropping at x/y/z
+            {
+                to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0),
+                    Utility.ToInt32(args[3].AsString(), 0));
+            }
+
+            if (DragDropManager.Holding != null)
+            {
+                if (layer > Layer.Invalid && layer <= Layer.LastUserValid)
+                {
+                    Mobile m = World.FindMobile(serial);
+                    if (m != null)
+                        DragDropManager.Drop(DragDropManager.Holding, m, layer);
+                }
+                else
+                {
+                    DragDropManager.Drop(DragDropManager.Holding, serial, to);
+                }
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.MacroNoHold);
+            }
+
+            return true;
+        }
+
+        private static bool LiftItem(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 2)
+            {
+                ScriptManager.Error("Usage: lift (serial) (amount)");
+                return true;
+            }
+
+            Serial serial = args[0].AsSerial();
+
+            if (!serial.IsValid)
+            {
+                ScriptManager.Error("lift - invalid serial");
+                return true;
+            }
+
+            ushort amount = Utility.ToUInt16(args[1].AsString(), 1);
+
+            Item item = World.FindItem(serial);
+            if (item != null)
+            {
+                DragDropManager.Drag(item, amount <= item.Amount ? amount : item.Amount);
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.MacroItemOutRange);
+            }
 
             return true;
         }
