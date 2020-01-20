@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Assistant.Core;
 using Assistant.Scripts;
 using Assistant.UI;
+using FastColoredTextBoxNS;
 using Ultima;
 using UOSteam;
 using WinFormsSyntaxHighlighter;
@@ -61,7 +62,7 @@ namespace Assistant
             DressList.SetControls(dressList, dressItems);
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
-            ScriptManager.SetControls(scriptEditor, scriptError);
+            ScriptManager.SetControls(scriptEditor);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -579,30 +580,222 @@ namespace Assistant
             }
         }
 
+        private FastColoredTextBoxNS.AutocompleteMenu _autoCompleteMenu;
+
         private void InitScriptEditor()
         {
-           var syntaxHighlighter = new SyntaxHighlighter(scriptEditor);
-            
-            // single-line comments
-            syntaxHighlighter.AddPattern(new PatternDefinition(new Regex(@"//.*?$", RegexOptions.Multiline | RegexOptions.Compiled)), new SyntaxStyle(Color.SaddleBrown, false, true));
-            // numbers
-            //syntaxHighlighter.AddPattern(new PatternDefinition(@"\d+\.\d+|\d+"), new SyntaxStyle(Color.Red));
-            // double quote strings
-            syntaxHighlighter.AddPattern(new PatternDefinition(@"\""([^""]|\""\"")+\"""), new SyntaxStyle(Color.Blue));
-            // single quote strings
-            syntaxHighlighter.AddPattern(new PatternDefinition(@"\'([^']|\'\')+\'"), new SyntaxStyle(Color.Blue));
-            // keywords1
-            syntaxHighlighter.AddPattern(new PatternDefinition("if", "elseif", "else", "endif", "while", "endwhile", "for", "endfor"), new SyntaxStyle(Color.SeaGreen, true, false));
+            /*var syntaxHighlighter = new SyntaxHighlighter(scriptEditor);
 
-            syntaxHighlighter.AddPattern(new PatternDefinition("break", "continue", "stop", "replay", "not", "and", "or"), new SyntaxStyle(Color.PaleGreen, true, false));
-            syntaxHighlighter.AddPattern(
-                new PatternDefinition("target", "cast", "menu", "usetype", "useobject", "dress", "undress", "drop",
-                    "waitforgump", "waitformenu", "replygump", "closegump", "hotkey", "lift", "lifttype", "say", "msg",
-                    "overhead", "sysmsg", "wait", "pause", "setability", "setlasttarget", "skill", "walk",
-                    "waitforprompt", "waitfortarget", "useskill", "dclicktype", "dclick", "targetrelloc", "targettype", "wft"),
-                new SyntaxStyle(Color.DarkOrchid, true, false));
-            // operators
-            syntaxHighlighter.AddPattern(new PatternDefinition("+", "-", ">", "<", "&", "|"), new SyntaxStyle(Color.CornflowerBlue));
+             // single-line comments
+             syntaxHighlighter.AddPattern(new PatternDefinition(new Regex(@"//.*?$", RegexOptions.Multiline | RegexOptions.Compiled)), new SyntaxStyle(Color.SaddleBrown, false, true));
+             // numbers
+             //syntaxHighlighter.AddPattern(new PatternDefinition(@"\d+\.\d+|\d+"), new SyntaxStyle(Color.Red));
+             // double quote strings
+             syntaxHighlighter.AddPattern(new PatternDefinition(@"\""([^""]|\""\"")+\"""), new SyntaxStyle(Color.Blue));
+             // single quote strings
+             syntaxHighlighter.AddPattern(new PatternDefinition(@"\'([^']|\'\')+\'"), new SyntaxStyle(Color.Blue));
+             // keywords1
+             syntaxHighlighter.AddPattern(new PatternDefinition("if", "elseif", "else", "endif", "while", "endwhile", "for", "endfor"), new SyntaxStyle(Color.SeaGreen, true, false));
+
+             syntaxHighlighter.AddPattern(new PatternDefinition("break", "continue", "stop", "replay", "not", "and", "or"), new SyntaxStyle(Color.PaleGreen, true, false));
+             syntaxHighlighter.AddPattern(
+                 new PatternDefinition("target", "cast", "menu", "usetype", "useobject", "dress", "undress", "drop",
+                     "waitforgump", "waitformenu", "replygump", "closegump", "hotkey", "lift", "lifttype", "say", "msg",
+                     "overhead", "sysmsg", "wait", "pause", "setability", "setlasttarget", "skill", "walk",
+                     "waitforprompt", "waitfortarget", "useskill", "dclicktype", "dclick", "targetrelloc", "targettype", "wft"),
+                 new SyntaxStyle(Color.DarkOrchid, true, false));
+             // operators
+             syntaxHighlighter.AddPattern(new PatternDefinition("+", "-", ">", "<", "&", "|"), new SyntaxStyle(Color.CornflowerBlue));*/
+
+            _autoCompleteMenu = new AutocompleteMenu(scriptEditor);
+            //_autoCompleteMenu.Items.ImageList = imageList2;
+            _autoCompleteMenu.SearchPattern = @"[\w\.:=!<>]";
+            _autoCompleteMenu.AllowTabKey = true;
+            _autoCompleteMenu.ToolTipDuration = 5000;
+            _autoCompleteMenu.AppearInterval = 100;
+
+            #region Keywords
+
+            string[] keywords =
+            {
+                "if", "elseif", "else","endif","while","endwhile","for","endfor","break","continue","stop","replay","not","and","or"
+            };
+
+            #endregion
+
+            #region Commands auto-complete
+
+            string[] commands =
+            {
+                "cast", "dress", "undress", "dressconfig", "target", "targetype", "dress", "drop"
+            };
+
+            #endregion
+
+            Dictionary<string, ToolTipDescriptions> descriptionCommands = new Dictionary<string, ToolTipDescriptions>();
+            ToolTipDescriptions tooltip = new ToolTipDescriptions("drop", new string[] { "drop serial" }, "N/A", "Drop a specific item");
+            descriptionCommands.Add("drop", tooltip);
+
+            List<AutocompleteItem> items = new List<AutocompleteItem>();
+
+            foreach (var item in keywords)
+                items.Add(new AutocompleteItem(item));
+
+            foreach (var item in commands)
+            {
+                descriptionCommands.TryGetValue(item, out ToolTipDescriptions element);
+
+                if (element != null)
+                {
+                    items.Add(new MethodAutocompleteItemAdvance(item)
+                    {
+                        ImageIndex = 2,
+                        ToolTipTitle = element.Title,
+                        ToolTipText = element.ToolTipDescription()
+                    });
+                }
+                else
+                {
+                    items.Add(new MethodAutocompleteItemAdvance(item)
+                    {
+                        ImageIndex = 2
+                    });
+                }
+
+                items.Add(new AutocompleteItem(item));
+            }
+                
+
+            _autoCompleteMenu.Items.SetAutocompleteItems(items);
+            _autoCompleteMenu.Items.MaximumSize = new Size(_autoCompleteMenu.Items.Width + 20, _autoCompleteMenu.Items.Height);
+            _autoCompleteMenu.Items.Width = _autoCompleteMenu.Items.Width + 20;
+
+            scriptEditor.syn
+        }
+
+        public class ToolTipDescriptions
+        {
+            public string Title;
+            public string[] Parameters;
+            public string Returns;
+            public string Description;
+
+            public ToolTipDescriptions(string title, string[] parameter, string returns, string description)
+            {
+                Title = title;
+                Parameters = parameter;
+                Returns = returns;
+                Description = description;
+            }
+
+            public string ToolTipDescription()
+            {
+                string complete_description = string.Empty;
+
+                complete_description += "Parameters: ";
+
+                foreach (string parameter in Parameters)
+                    complete_description += "\n\t" + parameter;
+
+                complete_description += "\nReturns: " + Returns;
+
+                complete_description += "\nDescription:";
+
+                complete_description += "\n\t" + Description;
+
+                return complete_description;
+            }
+        }
+
+        public class MethodAutocompleteItemAdvance : MethodAutocompleteItem
+        {
+            string firstPart;
+            string lastPart;
+
+            public MethodAutocompleteItemAdvance(string text)
+                : base(text)
+            {
+                var i = text.LastIndexOf(' ');
+                if (i < 0)
+                    firstPart = text;
+                else
+                {
+                    firstPart = text.Substring(0, i);
+                    lastPart = text.Substring(i + 1);
+                }
+            }
+
+            public override CompareResult Compare(string fragmentText)
+            {
+                int i = fragmentText.LastIndexOf(' ');
+
+                if (i < 0)
+                {
+                    if (firstPart.StartsWith(fragmentText) && string.IsNullOrEmpty(lastPart))
+                        return CompareResult.VisibleAndSelected;
+                    //if (firstPart.ToLower().Contains(fragmentText.ToLower()))
+                    //  return CompareResult.Visible;
+                }
+                else
+                {
+                    var fragmentFirstPart = fragmentText.Substring(0, i);
+                    var fragmentLastPart = fragmentText.Substring(i + 1);
+
+
+                    if (firstPart != fragmentFirstPart)
+                        return CompareResult.Hidden;
+
+                    if (lastPart != null && lastPart.StartsWith(fragmentLastPart))
+                        return CompareResult.VisibleAndSelected;
+
+                    if (lastPart != null && lastPart.ToLower().Contains(fragmentLastPart.ToLower()))
+                        return CompareResult.Visible;
+
+                }
+
+                return CompareResult.Hidden;
+            }
+
+            public override string GetTextForReplace()
+            {
+                if (lastPart == null)
+                    return firstPart;
+
+                return firstPart + " " + lastPart;
+            }
+
+            public override string ToString()
+            {
+                if (lastPart == null)
+                    return firstPart;
+
+                return lastPart;
+            }
+        }
+
+        private delegate void SetHighlightLineDelegate(int iline, Color color);
+        private List<int> m_Breakpoints = new List<int>();
+
+        private void SetHighlightLine(int iline, Color background)
+        {
+            if (this.scriptEditor.InvokeRequired)
+            {
+                SetHighlightLineDelegate d = new SetHighlightLineDelegate(SetHighlightLine);
+                this.Invoke(d, new object[] { iline, background });
+            }
+            else
+            {
+                for (int i = 0; i < scriptEditor.LinesCount; i++)
+                {
+                    if (m_Breakpoints.Contains(i))
+                        scriptEditor[i].BackgroundBrush = new SolidBrush(Color.Red);
+                    else
+                        scriptEditor[i].BackgroundBrush = new SolidBrush(Color.White);
+                }
+
+                this.scriptEditor[iline].BackgroundBrush = new SolidBrush(background);
+                this.scriptEditor.Invalidate();
+            }
         }
 
         private void tabs_IndexChanged(object sender, System.EventArgs e)
@@ -612,7 +805,7 @@ namespace Assistant
 
             if (tabs.SelectedTab == generalTab)
             {
-                Filters.Filter.Draw(filters);
+                Filter.Draw(filters);
                 langSel.BeginUpdate();
                 langSel.Items.Clear();
                 langSel.Items.AddRange(Language.GetPackNames());
@@ -2719,8 +2912,6 @@ namespace Assistant
 
                 s.EndUpdate();
             });
-
-            AddLineNumbers();
         }
 
         private void RedrawMacros()
@@ -6159,12 +6350,15 @@ namespace Assistant
             if (scriptList.SelectedIndex < 0)
                 return;
 
-            scriptEditor.Text = string.Empty;
+            //scriptEditor.Text = string.Empty;
+            //scriptEditor.AppendText(File.ReadAllText($"{Config.GetInstallDirectory()}\\Scripts\\{scriptList.SelectedItem.ToString()}.razor") + Environment.NewLine);
 
-            scriptEditor.AppendText(File.ReadAllText($"{Config.GetInstallDirectory()}\\Scripts\\{scriptList.SelectedItem.ToString()}.razor") + Environment.NewLine);
+            scriptEditor.Text =
+                File.ReadAllText(
+                    $"{Config.GetInstallDirectory()}\\Scripts\\{scriptList.SelectedItem.ToString()}.razor");
         }
 
-        public void AddLineNumbers()
+        /*public void AddLineNumbers()
         {
             // create & set Point pt to (0,0)    
             Point pt = new Point(0, 0);
@@ -6248,7 +6442,7 @@ namespace Assistant
             }
 
             return w;
-        }
+        }*/
 
         private void recordScript_Click(object sender, EventArgs e)
         {

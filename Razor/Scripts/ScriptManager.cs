@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using FastColoredTextBoxNS;
 using UOSteam;
 
 namespace Assistant.Scripts
@@ -9,9 +10,7 @@ namespace Assistant.Scripts
     {
         public static bool Recording { get; set; }
 
-        private static RichTextBox _scriptEditor { get; set; }
-        private static TextBox _scriptError { get; set; }
-
+        private static FastColoredTextBox _scriptEditor { get; set; }
         private class ScriptTimer : Timer
         {
             // Only run scripts once every 25ms to avoid spamming.
@@ -33,10 +32,9 @@ namespace Assistant.Scripts
             _timer = new ScriptTimer();
         }
 
-        public static void SetControls(RichTextBox scriptEditor, TextBox scriptError)
+        public static void SetControls(FastColoredTextBox scriptEditor)
         {
             _scriptEditor = scriptEditor;
-            _scriptError = scriptError;
         }
 
         public static void OnLogin()
@@ -84,5 +82,7 @@ namespace Assistant.Scripts
         {
             World.Player?.SendMessage(MsgLevel.Error, $"Script '{scriptname}' error => {message}");
         }
+
+
     }
 }

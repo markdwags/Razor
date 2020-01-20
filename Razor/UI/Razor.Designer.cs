@@ -728,15 +728,13 @@ namespace Assistant
             this.addMacroVariable = new System.Windows.Forms.Button();
             this.macroVariables = new System.Windows.Forms.ListBox();
             this.scriptsTab = new System.Windows.Forms.TabPage();
-            this.scriptEditorLineNumbers = new System.Windows.Forms.TextBox();
-            this.scriptError = new System.Windows.Forms.TextBox();
+            this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
             this.scriptList = new System.Windows.Forms.ListBox();
             this.newScript = new System.Windows.Forms.Button();
             this.loopScript = new System.Windows.Forms.CheckBox();
             this.setScriptHotkey = new System.Windows.Forms.Button();
             this.recordScript = new System.Windows.Forms.Button();
             this.playScript = new System.Windows.Forms.Button();
-            this.scriptEditor = new System.Windows.Forms.RichTextBox();
             this.screenshotTab = new System.Windows.Forms.TabPage();
             this.captureOwnDeathDelay = new System.Windows.Forms.TextBox();
             this.lblOwnDeathMs = new System.Windows.Forms.Label();
@@ -823,6 +821,7 @@ namespace Assistant
             this.subMacrosOptionsTab.SuspendLayout();
             this.macroVariableGroup.SuspendLayout();
             this.scriptsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).BeginInit();
             this.screenshotTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
@@ -4070,44 +4069,47 @@ namespace Assistant
             // scriptsTab
             // 
             this.scriptsTab.BackColor = System.Drawing.SystemColors.Control;
-            this.scriptsTab.Controls.Add(this.scriptEditorLineNumbers);
-            this.scriptsTab.Controls.Add(this.scriptError);
+            this.scriptsTab.Controls.Add(this.scriptEditor);
             this.scriptsTab.Controls.Add(this.scriptList);
             this.scriptsTab.Controls.Add(this.newScript);
             this.scriptsTab.Controls.Add(this.loopScript);
             this.scriptsTab.Controls.Add(this.setScriptHotkey);
             this.scriptsTab.Controls.Add(this.recordScript);
             this.scriptsTab.Controls.Add(this.playScript);
-            this.scriptsTab.Controls.Add(this.scriptEditor);
             this.scriptsTab.Location = new System.Drawing.Point(4, 44);
             this.scriptsTab.Name = "scriptsTab";
             this.scriptsTab.Size = new System.Drawing.Size(519, 322);
             this.scriptsTab.TabIndex = 13;
             this.scriptsTab.Text = "Scripts";
             // 
-            // scriptEditorLineNumbers
+            // scriptEditor
             // 
-            this.scriptEditorLineNumbers.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.scriptEditorLineNumbers.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.scriptEditorLineNumbers.Cursor = System.Windows.Forms.Cursors.PanNW;
-            this.scriptEditorLineNumbers.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scriptEditorLineNumbers.ForeColor = System.Drawing.Color.LightGray;
-            this.scriptEditorLineNumbers.Location = new System.Drawing.Point(123, 12);
-            this.scriptEditorLineNumbers.Multiline = true;
-            this.scriptEditorLineNumbers.Name = "scriptEditorLineNumbers";
-            this.scriptEditorLineNumbers.ReadOnly = true;
-            this.scriptEditorLineNumbers.Size = new System.Drawing.Size(25, 278);
-            this.scriptEditorLineNumbers.TabIndex = 10;
-            this.scriptEditorLineNumbers.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.scriptEditorLineNumbers.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditorLineNumbers_MouseDown);
-            // 
-            // scriptError
-            // 
-            this.scriptError.BackColor = System.Drawing.SystemColors.Control;
-            this.scriptError.Location = new System.Drawing.Point(154, 296);
-            this.scriptError.Name = "scriptError";
-            this.scriptError.Size = new System.Drawing.Size(292, 23);
-            this.scriptError.TabIndex = 9;
+            this.scriptEditor.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.scriptEditor.BackBrush = null;
+            this.scriptEditor.CharHeight = 14;
+            this.scriptEditor.CharWidth = 8;
+            this.scriptEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.scriptEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.scriptEditor.IsReplaceMode = false;
+            this.scriptEditor.Location = new System.Drawing.Point(123, 11);
+            this.scriptEditor.Name = "scriptEditor";
+            this.scriptEditor.Paddings = new System.Windows.Forms.Padding(0);
+            this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
+            this.scriptEditor.Size = new System.Drawing.Size(323, 305);
+            this.scriptEditor.TabIndex = 11;
+            this.scriptEditor.Zoom = 100;
             // 
             // scriptList
             // 
@@ -4165,20 +4167,6 @@ namespace Assistant
             this.playScript.Text = "Play";
             this.playScript.UseVisualStyleBackColor = true;
             this.playScript.Click += new System.EventHandler(this.playScript_Click);
-            // 
-            // scriptEditor
-            // 
-            this.scriptEditor.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scriptEditor.Location = new System.Drawing.Point(154, 11);
-            this.scriptEditor.Name = "scriptEditor";
-            this.scriptEditor.Size = new System.Drawing.Size(292, 283);
-            this.scriptEditor.TabIndex = 0;
-            this.scriptEditor.Text = "";
-            this.scriptEditor.SelectionChanged += new System.EventHandler(this.scriptEditor_SelectionChanged);
-            this.scriptEditor.VScroll += new System.EventHandler(this.scriptEditor_VScroll);
-            this.scriptEditor.FontChanged += new System.EventHandler(this.scriptEditor_FontChanged);
-            this.scriptEditor.TextChanged += new System.EventHandler(this.scriptEditor_TextChanged);
-            this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
             // 
             // screenshotTab
             // 
@@ -4734,7 +4722,7 @@ namespace Assistant
             this.subMacrosOptionsTab.PerformLayout();
             this.macroVariableGroup.ResumeLayout(false);
             this.scriptsTab.ResumeLayout(false);
-            this.scriptsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).EndInit();
             this.screenshotTab.ResumeLayout(false);
             this.screenshotTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).EndInit();
@@ -4750,13 +4738,11 @@ namespace Assistant
 
         private TabPage scriptsTab;
         private Button playScript;
-        private RichTextBox scriptEditor;
         private Button newScript;
         private CheckBox loopScript;
         private Button setScriptHotkey;
         private Button recordScript;
         private ListBox scriptList;
-        private TextBox scriptError;
-        private TextBox scriptEditorLineNumbers;
+        private FastColoredTextBoxNS.FastColoredTextBox scriptEditor;
     }
 }
