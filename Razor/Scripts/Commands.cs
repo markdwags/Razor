@@ -23,27 +23,39 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("target", Target); //Absolute Target
             Interpreter.RegisterCommandHandler("targettype", TargetType); //TargetTypeAction
             Interpreter.RegisterCommandHandler("targetrelloc", TargetRelLoc); //TargetRelLocAction
+
             Interpreter.RegisterCommandHandler("waitfortarget", WaitForTarget); //WaitForTargetAction
             Interpreter.RegisterCommandHandler("wft", WaitForTarget); //WaitForTargetAction
-
-            Interpreter.RegisterCommandHandler("menu", DummyCommand); //ContextMenuAction
 
             // Using stuff
             Interpreter.RegisterCommandHandler("dclicktype", UseType); // DoubleClickTypeAction
             Interpreter.RegisterCommandHandler("dclick", UseObject); //DoubleClickAction
+            Interpreter.RegisterCommandHandler("dclickvar", DummyCommand); //DoubleClickVariableAction -- this needed?
+
             Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAction
             Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
 
             // Moving stuff
-            Interpreter.RegisterCommandHandler("drop", MoveItem); //DropAction
-            Interpreter.RegisterCommandHandler("lift", MoveItem); //LiftAction
-            Interpreter.RegisterCommandHandler("lifttype", MoveItem); //LiftTypeAction
+            Interpreter.RegisterCommandHandler("drop", DummyCommand); //DropAction
+            Interpreter.RegisterCommandHandler("droprelloc", DummyCommand); //DropAction
+            Interpreter.RegisterCommandHandler("lift", DummyCommand); //LiftAction
+            Interpreter.RegisterCommandHandler("lifttype", DummyCommand); //LiftTypeAction
 
             // Gump
             Interpreter.RegisterCommandHandler("waitforgump", WaitForGump); // WaitForGumpAction
             Interpreter.RegisterCommandHandler("waitformenu", DummyCommand); // WaitForMenuAction
+            Interpreter.RegisterCommandHandler("gumpresponse", DummyCommand); // GumpResponseAction
             Interpreter.RegisterCommandHandler("replygump", DummyCommand); // GumpResponseAction
             Interpreter.RegisterCommandHandler("closegump", DummyCommand);
+
+            // Menu
+            Interpreter.RegisterCommandHandler("contextmenu", DummyCommand); //ContextMenuAction
+            Interpreter.RegisterCommandHandler("menuresponse", DummyCommand); //MenuResponseAction
+            Interpreter.RegisterCommandHandler("waitformenu", DummyCommand); //WaitForMenuAction
+
+            // Prompt
+            Interpreter.RegisterCommandHandler("promptresponse", DummyCommand); //PromptAction
+            Interpreter.RegisterCommandHandler("waitforprompt", DummyCommand); //WaitForPromptAction
 
             // Hotkey execution
             Interpreter.RegisterCommandHandler("hotkey", Hotkey); //HotKeyAction
@@ -57,10 +69,13 @@ namespace Assistant.Scripts
             // General Waits/Pauses
             Interpreter.RegisterCommandHandler("wait", Pause); //PauseAction
             Interpreter.RegisterCommandHandler("pause", Pause); //PauseAction
+            Interpreter.RegisterCommandHandler("waitforstat", Pause); //WaitForStatAction
 
             // Misc
             Interpreter.RegisterCommandHandler("setability", SetAbility); //SetAbilityAction
             Interpreter.RegisterCommandHandler("setlasttarget", DummyCommand); //SetLastTargetAction
+            Interpreter.RegisterCommandHandler("lasttarget", DummyCommand); //LastTargetAction
+            Interpreter.RegisterCommandHandler("setvar", DummyCommand); //SetMacroVariableTargetAction
             Interpreter.RegisterCommandHandler("skill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
         }
