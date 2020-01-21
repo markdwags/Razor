@@ -627,7 +627,7 @@ namespace Assistant
 
             string[] commands =
             {
-                "cast", "dress", "undress", "dressconfig", "target", "targetype", "dress", "drop"
+                "cast", "dress", "undress", "dressconfig", "target", "targetype", "targetrelloc", "dress", "drop", "waitfortarget"
             };
 
             #endregion

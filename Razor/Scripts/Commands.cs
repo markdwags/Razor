@@ -111,7 +111,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: target (serial/[x] [y] [z])");
+                ScriptManager.Error("Usage: target (serial) [x] [y] [z])");
                 return true;
             }
 
@@ -134,16 +134,16 @@ namespace Assistant.Scripts
                     Targeting.Target(mobile);
                 }
             }
-            else if (args.Length == 3) // target ground at specific x/y/z
+            else if (args.Length == 4) // target ground at specific x/y/z
             {
                 Targeting.Target(new TargetInfo
                 {
                     Type = 1,
                     Flags = 0,
                     Serial = Serial.Zero,
-                    X = args[0].AsInt(),
-                    Y = args[1].AsInt(),
-                    Z = args[2].AsInt(),
+                    X = args[1].AsInt(),
+                    Y = args[2].AsInt(),
+                    Z = args[3].AsInt(),
                     Gfx = 0
                 });
 

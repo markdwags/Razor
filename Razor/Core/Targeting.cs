@@ -1241,7 +1241,7 @@ namespace Assistant
                     MacroManager.Action(new AbsoluteTargetAction(info));
 
                 ScriptManager.AddToScript(info.Serial == Serial.Zero
-                    ? $"target {info.X} {info.Y} {info.Z}"
+                    ? $"target 0x0 {info.X} {info.Y} {info.Z}"
                     : $"target {info.Serial}");
 
 
