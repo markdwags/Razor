@@ -670,7 +670,7 @@ namespace Assistant
             _autoCompleteMenu.Items.MaximumSize = new Size(_autoCompleteMenu.Items.Width + 20, _autoCompleteMenu.Items.Height);
             _autoCompleteMenu.Items.Width = _autoCompleteMenu.Items.Width + 20;
 
-            scriptEditor.syn
+            scriptEditor.Language = FastColoredTextBoxNS.Language.Razor;
         }
 
         public class ToolTipDescriptions
