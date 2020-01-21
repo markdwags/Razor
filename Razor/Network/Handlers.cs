@@ -569,7 +569,7 @@ namespace Assistant
                     if (MacroManager.AcceptActions)
                         MacroManager.Action(new DropAction(mser, Point3D.Zero, layer));
 
-                    ScriptManager.AddToScript($"drop {mser} '{layer}'");
+                    ScriptManager.AddToScript($"drop {mser} {layer}");
                 }
             }
 

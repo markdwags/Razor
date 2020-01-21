@@ -714,6 +714,8 @@ namespace UOSteam
 
         private static LinkedList<Script> _scripts = new LinkedList<Script>();
 
+        public static int ScriptCount => _scripts.Count;
+
         public static CultureInfo Culture;
 
         static Interpreter()

@@ -778,6 +778,8 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.deleteScript = new System.Windows.Forms.Button();
+            this.saveScript = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -3904,10 +3906,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -4069,6 +4071,8 @@ namespace Assistant
             // scriptsTab
             // 
             this.scriptsTab.BackColor = System.Drawing.SystemColors.Control;
+            this.scriptsTab.Controls.Add(this.saveScript);
+            this.scriptsTab.Controls.Add(this.deleteScript);
             this.scriptsTab.Controls.Add(this.scriptEditor);
             this.scriptsTab.Controls.Add(this.scriptList);
             this.scriptsTab.Controls.Add(this.newScript);
@@ -4128,18 +4132,19 @@ namespace Assistant
             this.scriptList.ItemHeight = 15;
             this.scriptList.Location = new System.Drawing.Point(7, 11);
             this.scriptList.Name = "scriptList";
-            this.scriptList.Size = new System.Drawing.Size(110, 259);
+            this.scriptList.Size = new System.Drawing.Size(110, 199);
             this.scriptList.TabIndex = 8;
             this.scriptList.SelectedIndexChanged += new System.EventHandler(this.scriptList_SelectedIndexChanged);
             // 
             // newScript
             // 
-            this.newScript.Location = new System.Drawing.Point(7, 276);
+            this.newScript.Location = new System.Drawing.Point(7, 216);
             this.newScript.Name = "newScript";
-            this.newScript.Size = new System.Drawing.Size(63, 32);
+            this.newScript.Size = new System.Drawing.Size(51, 25);
             this.newScript.TabIndex = 6;
-            this.newScript.Text = "New...";
+            this.newScript.Text = "New";
             this.newScript.UseVisualStyleBackColor = true;
+            this.newScript.Click += new System.EventHandler(this.newScript_Click);
             // 
             // loopScript
             // 
@@ -4653,6 +4658,26 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // deleteScript
+            // 
+            this.deleteScript.Location = new System.Drawing.Point(7, 247);
+            this.deleteScript.Name = "deleteScript";
+            this.deleteScript.Size = new System.Drawing.Size(51, 25);
+            this.deleteScript.TabIndex = 12;
+            this.deleteScript.Text = "Delete";
+            this.deleteScript.UseVisualStyleBackColor = true;
+            this.deleteScript.Click += new System.EventHandler(this.deleteScript_Click);
+            // 
+            // saveScript
+            // 
+            this.saveScript.Location = new System.Drawing.Point(66, 216);
+            this.saveScript.Name = "saveScript";
+            this.saveScript.Size = new System.Drawing.Size(51, 25);
+            this.saveScript.TabIndex = 13;
+            this.saveScript.Text = "Save";
+            this.saveScript.UseVisualStyleBackColor = true;
+            this.saveScript.Click += new System.EventHandler(this.saveScript_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4755,5 +4780,7 @@ namespace Assistant
         private Button recordScript;
         private ListBox scriptList;
         private FastColoredTextBoxNS.FastColoredTextBox scriptEditor;
+        private Button saveScript;
+        private Button deleteScript;
     }
 }

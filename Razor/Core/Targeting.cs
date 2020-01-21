@@ -1240,7 +1240,10 @@ namespace Assistant
                 if (Macros.MacroManager.AcceptActions)
                     MacroManager.Action(new AbsoluteTargetAction(info));
 
-                ScriptManager.AddToScript($"target {info.Serial} {info.X} {info.Y} {info.Z}");
+                ScriptManager.AddToScript(info.Serial == Serial.Zero
+                    ? $"target {info.X} {info.Y} {info.Z}"
+                    : $"target {info.Serial}");
+
 
                 if (ScriptManager.Recording)
                 {

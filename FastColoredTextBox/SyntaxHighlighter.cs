@@ -1473,7 +1473,7 @@ namespace FastColoredTextBoxNS
 
             RazorCommandRegex =
                 new Regex(
-                    @"\b(drop|usetype|lift|dclick|msg|say|hotkey|overhead|sysmsg|pause|wait|target|targetrelloc|targettype|waitfortarget|useobject|waitforgump|waitforprompt|waitformenu)\b",
+                    @"\b(drop|usetype|lift|dclick|msg|say|hotkey|overhead|cast|sysmsg|pause|wait|target|targetrelloc|targettype|waitfortarget|useobject|waitforgump|waitforprompt|waitformenu)\b",
                     RegexCompiledOption);
             //RazorClassKeywordRegex = new Regex(@"\b(Player|Spells|Mobile|Mobiles|Item|Items|Misc|Target|Gumps|Journal|AutoLoot|Scavenger|Organizer|Restock|SellAgent|BuyAgent|Dress|Friend|BandageHeal|Statics|DPSMeter|PathFinding|Timer)\b", RegexCompiledOption);
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using FastColoredTextBoxNS;
@@ -9,6 +11,11 @@ namespace Assistant.Scripts
     public static class ScriptManager
     {
         public static bool Recording { get; set; }
+
+        public static string ScriptPath
+        {
+            get { return $"{Config.GetInstallDirectory()}\\Scripts"; }
+        }
 
         private static FastColoredTextBox _scriptEditor { get; set; }
         private class ScriptTimer : Timer
@@ -21,7 +28,11 @@ namespace Assistant.Scripts
             protected override void OnTick()
             {                
                 Interpreter.ExecuteScripts();
-              
+
+                /*if (Interpreter.ScriptCount > 0)
+                {
+                    SetHighlightLine(_scriptEditor.LinesCount - (Interpreter.ScriptCount + 1), Color.Yellow);
+                }*/
             }
         }
 
@@ -63,7 +74,7 @@ namespace Assistant.Scripts
 
         public static string[] GetScripts()
         {
-            return Directory.GetFiles($"{Config.GetInstallDirectory()}\\Scripts", "*.razor");
+            return Directory.GetFiles(ScriptPath, "*.razor");
         }
 
         public static bool AddToScript(string command)
@@ -83,6 +94,18 @@ namespace Assistant.Scripts
             World.Player?.SendMessage(MsgLevel.Error, $"Script '{scriptname}' error => {message}");
         }
 
+        private delegate void SetHighlightLineDelegate(int iline, Color color);
+
+        private static void SetHighlightLine(int iline, Color background)
+        {
+            for (int i = 0; i < _scriptEditor.LinesCount; i++)
+            { 
+                _scriptEditor[i].BackgroundBrush = _scriptEditor.BackBrush;
+            }
+
+            _scriptEditor[iline].BackgroundBrush = new SolidBrush(background);
+            _scriptEditor.Invalidate();
+        }
 
     }
 }

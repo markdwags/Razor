@@ -109,9 +109,9 @@ namespace Assistant.Scripts
 
         private static bool Target(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 1 || !abilities.Contains(args[0].AsString()))
+            if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: target 'serial'");
+                ScriptManager.Error("Usage: target (serial/[x] [y] [z])");
                 return true;
             }
 
@@ -133,6 +133,20 @@ namespace Assistant.Scripts
                 {
                     Targeting.Target(mobile);
                 }
+            }
+            else if (args.Length == 3) // target ground at specific x/y/z
+            {
+                Targeting.Target(new TargetInfo
+                {
+                    Type = 1,
+                    Flags = 0,
+                    Serial = Serial.Zero,
+                    X = args[0].AsInt(),
+                    Y = args[1].AsInt(),
+                    Z = args[2].AsInt(),
+                    Gfx = 0
+                });
+
             }
 
             return true;
@@ -574,7 +588,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 2)
             {
-                ScriptManager.Error("Usage: drop (serial) (x y z/'layername')");
+                ScriptManager.Error("Usage: drop (serial) (x y z/layername)");
                 return true;
             }
 

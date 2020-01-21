@@ -773,30 +773,7 @@ namespace Assistant
             }
         }
 
-        private delegate void SetHighlightLineDelegate(int iline, Color color);
-        private List<int> m_Breakpoints = new List<int>();
-
-        private void SetHighlightLine(int iline, Color background)
-        {
-            if (this.scriptEditor.InvokeRequired)
-            {
-                SetHighlightLineDelegate d = new SetHighlightLineDelegate(SetHighlightLine);
-                this.Invoke(d, new object[] { iline, background });
-            }
-            else
-            {
-                for (int i = 0; i < scriptEditor.LinesCount; i++)
-                {
-                    if (m_Breakpoints.Contains(i))
-                        scriptEditor[i].BackgroundBrush = new SolidBrush(Color.Red);
-                    else
-                        scriptEditor[i].BackgroundBrush = new SolidBrush(Color.White);
-                }
-
-                this.scriptEditor[iline].BackgroundBrush = new SolidBrush(background);
-                this.scriptEditor.Invalidate();
-            }
-        }
+        
 
         private void tabs_IndexChanged(object sender, System.EventArgs e)
         {
@@ -6307,20 +6284,12 @@ namespace Assistant
             Interpreter.StartScript(script);
         }
 
-        private void scriptEditor_MouseDown(object sender, MouseEventArgs e)
+        public void LockScripts(bool enabled)
         {
-            if (e.Button == MouseButtons.Right && e.Clicks == 1)
-            {
-                //if (MacroManager.Playing || MacroManager.Recording || World.Player == null)
-                    //return;
-
-                ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add(Language.GetString(LocString.Reload), new EventHandler(onScriptReload));
-                menu.MenuItems.Add(Language.GetString(LocString.Save), new EventHandler(onScriptSave));
-
-                menu.Show(scriptEditor, new Point(e.X, e.Y));
-
-            }
+            scriptEditor.Enabled = enabled;
+            playScript.Enabled = enabled;
+            recordScript.Enabled = enabled;
+            setScriptHotkey.Enabled = enabled;
         }
 
         private void onScriptReload(object sender, System.EventArgs e)
@@ -6350,99 +6319,10 @@ namespace Assistant
             if (scriptList.SelectedIndex < 0)
                 return;
 
-            //scriptEditor.Text = string.Empty;
-            //scriptEditor.AppendText(File.ReadAllText($"{Config.GetInstallDirectory()}\\Scripts\\{scriptList.SelectedItem.ToString()}.razor") + Environment.NewLine);
-
             scriptEditor.Text =
                 File.ReadAllText(
                     $"{Config.GetInstallDirectory()}\\Scripts\\{scriptList.SelectedItem.ToString()}.razor");
         }
-
-        /*public void AddLineNumbers()
-        {
-            // create & set Point pt to (0,0)    
-            Point pt = new Point(0, 0);
-            // get First Index & First Line from richTextBox1    
-            int First_Index = scriptEditor.GetCharIndexFromPosition(pt);
-            int First_Line = scriptEditor.GetLineFromCharIndex(First_Index);
-            // set X & Y coordinates of Point pt to ClientRectangle Width & Height respectively    
-            pt.X = ClientRectangle.Width;
-            pt.Y = ClientRectangle.Height;
-            // get Last Index & Last Line from richTextBox1    
-            int Last_Index = scriptEditor.GetCharIndexFromPosition(pt);
-            int Last_Line = scriptEditor.GetLineFromCharIndex(Last_Index);
-            // set Center alignment to LineNumberTextBox    
-            //scriptEditorLineNumbers.SelectionAlignment = HorizontalAlignment.Center;
-            // set LineNumberTextBox text to null & width to getWidth() function value    
-            scriptEditorLineNumbers.Text = "";
-            //scriptEditorLineNumbers.Width = GetScriptEditorWidth();
-            // now add each line number to LineNumberTextBox upto last line    
-            for (int i = First_Line; i <= Last_Line + 2; i++)
-            {
-                scriptEditorLineNumbers.Text += i + 1 + Environment.NewLine;
-            }
-
-            
-        }
-
-        private void scriptEditor_SelectionChanged(object sender, EventArgs e)
-        {
-            Point pt = scriptEditor.GetPositionFromCharIndex(scriptEditor.SelectionStart);
-            if (pt.X == 1)
-            {
-                AddLineNumbers();
-            }
-        }
-
-        private void scriptEditor_VScroll(object sender, EventArgs e)
-        {
-            scriptEditorLineNumbers.Text = "";
-            AddLineNumbers();
-            scriptEditorLineNumbers.Invalidate();
-        }
-
-        private void scriptEditor_TextChanged(object sender, EventArgs e)
-        {
-            if (scriptEditor.Text == "")
-            {
-                AddLineNumbers();
-            }
-        }
-
-        private void scriptEditor_FontChanged(object sender, EventArgs e)
-        {
-            scriptEditorLineNumbers.Font = scriptEditor.Font;
-            scriptEditor.Select();
-            AddLineNumbers();
-        }
-
-        private void scriptEditorLineNumbers_MouseDown(object sender, MouseEventArgs e)
-        {
-            scriptEditor.Select();
-            scriptEditorLineNumbers.DeselectAll();
-        }
-
-        public int GetScriptEditorWidth()
-        {
-            int w = 25;
-            
-            int line = scriptEditor.Lines.Length;
-
-            if (line <= 99)
-            {
-                w = 20 + (int)scriptEditor.Font.Size;
-            }
-            else if (line <= 999)
-            {
-                w = 30 + (int)scriptEditor.Font.Size;
-            }
-            else
-            {
-                w = 50 + (int)scriptEditor.Font.Size;
-            }
-
-            return w;
-        }*/
 
         private void recordScript_Click(object sender, EventArgs e)
         {
@@ -6463,6 +6343,66 @@ namespace Assistant
                 scriptEditor.Enabled = false;
                 playScript.Enabled = false;
             }
+        }
+
+        private void newScript_Click(object sender, EventArgs e)
+        {
+            if (InputBox.Show(this, "New Razor Script", "Enter the name of the script"))
+            {
+                string name = InputBox.GetString();
+                if (string.IsNullOrEmpty(name) || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+                    name.IndexOfAny(m_InvalidNameChars) != -1)
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string path = $"{ScriptManager.ScriptPath}\\{name}.razor";
+
+                if (File.Exists(path))
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.MacroExists),
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                File.CreateText(path).Close();
+            }
+
+            RedrawScripts();
+        }
+
+        private void saveScript_Click(object sender, EventArgs e)
+        {
+            if (scriptList.SelectedIndex < 0)
+                return;
+
+            string path = $"{ScriptManager.ScriptPath}\\{scriptList.SelectedItem}.razor";
+
+            File.WriteAllText(path, scriptEditor.Text);
+        }
+
+        private void deleteScript_Click(object sender, EventArgs e)
+        {
+            if (scriptList.SelectedIndex < 0)
+                return;
+            
+            if (MessageBox.Show(this, Language.Format(LocString.DelConf, $"{scriptList.SelectedItem}"),
+                    "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try
+                {
+                    string path = $"{ScriptManager.ScriptPath}\\{scriptList.SelectedItem}.razor";
+                    File.Delete(path);
+                }
+                catch
+                {
+                    return;
+                }
+            }
+
+            RedrawScripts();
         }
     }
 }
