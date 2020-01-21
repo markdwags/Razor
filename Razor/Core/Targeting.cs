@@ -847,7 +847,7 @@ namespace Assistant
                     if (Macros.MacroManager.AcceptActions)
                         MacroManager.Action(new AbsoluteTargetAction(info));
 
-                    ScriptManager.AddToScript($"target '{info.Serial}'");
+                    ScriptManager.AddToScript($"target {info.Serial}");
 
                     if (m_OnTarget != null)
                         m_OnTarget(info.Type == 1 ? true : false, info.Serial, new Point3D(info.X, info.Y, info.Z),
@@ -1240,7 +1240,7 @@ namespace Assistant
                 if (Macros.MacroManager.AcceptActions)
                     MacroManager.Action(new AbsoluteTargetAction(info));
 
-                ScriptManager.AddToScript($"target '{info.Serial}' {info.X} {info.Y} {info.Z}");
+                ScriptManager.AddToScript($"target {info.Serial} {info.X} {info.Y} {info.Z}");
 
                 if (ScriptManager.Recording)
                 {

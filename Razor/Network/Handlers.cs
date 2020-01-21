@@ -308,7 +308,7 @@ namespace Assistant
                             {
                                 MacroManager.Action(new ContextMenuAction(ent, idx, ent.ContextMenu[idx].Value));
 
-                                ScriptManager.AddToScript($"replymenu '{ent.ContextMenu[idx].Value}'");
+                                ScriptManager.AddToScript($"replymenu {ent.ContextMenu[idx].Value}");
                             }
                             catch
                             {
@@ -528,7 +528,7 @@ namespace Assistant
                 //MacroManager.Action( new PauseAction( TimeSpan.FromMilliseconds( Config.GetInt( "ObjectDelay" ) ) ) );
             }
 
-            ScriptManager.AddToScript($"lift '{serial}' {amount}");
+            ScriptManager.AddToScript($"lift {serial} {amount}");
         }
 
         private static void LiftReject(PacketReader p, PacketHandlerEventArgs args)
@@ -569,7 +569,7 @@ namespace Assistant
                     if (MacroManager.AcceptActions)
                         MacroManager.Action(new DropAction(mser, Point3D.Zero, layer));
 
-                    ScriptManager.AddToScript($"drop '{mser}' '{layer}'");
+                    ScriptManager.AddToScript($"drop {mser} '{layer}'");
                 }
             }
 
@@ -599,7 +599,7 @@ namespace Assistant
             if (Macros.MacroManager.AcceptActions)
                 MacroManager.Action(new DropAction(dser, newPos));
 
-            ScriptManager.AddToScript($"drop '{dser}' {newPos.X} {newPos.Y} {newPos.Z}");
+            ScriptManager.AddToScript($"drop {dser} {newPos.X} {newPos.Y} {newPos.Z}");
 
             Item i = World.FindItem(iser);
             if (i == null)
@@ -627,7 +627,7 @@ namespace Assistant
                 if (MacroManager.AcceptActions)
                     MacroManager.Action(new WalkAction(dir));
 
-                ScriptManager.AddToScript($"walk {dir}");
+                ScriptManager.AddToScript($"walk '{dir}'");
             }
         }
 
@@ -2635,7 +2635,7 @@ namespace Assistant
             if (MacroManager.AcceptActions && MacroManager.Action(new WaitForMenuAction(World.Player.CurrentMenuI)))
                 args.Block = true;
 
-            if (ScriptManager.AddToScript($"replymenu '{World.Player.CurrentMenuI}'"))
+            if (ScriptManager.AddToScript($"replymenu {World.Player.CurrentMenuI}"))
                 args.Block = true;
         }
 

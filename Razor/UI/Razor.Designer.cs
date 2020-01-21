@@ -4095,16 +4095,27 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
             this.scriptEditor.BackBrush = null;
-            this.scriptEditor.CharHeight = 14;
-            this.scriptEditor.CharWidth = 8;
+            this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
+            this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.scriptEditor.CharHeight = 15;
+            this.scriptEditor.CharWidth = 7;
+            this.scriptEditor.CommentPrefix = "#";
             this.scriptEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.scriptEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.scriptEditor.Font = new System.Drawing.Font("Consolas", 9.75F);
+            this.scriptEditor.ForeColor = System.Drawing.Color.White;
             this.scriptEditor.IsReplaceMode = false;
+            this.scriptEditor.Language = FastColoredTextBoxNS.Language.Razor;
+            this.scriptEditor.LeftBracket = '(';
+            this.scriptEditor.LeftBracket2 = '[';
+            this.scriptEditor.LineNumberColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(144)))), ((int)(((byte)(175)))));
             this.scriptEditor.Location = new System.Drawing.Point(123, 11);
             this.scriptEditor.Name = "scriptEditor";
             this.scriptEditor.Paddings = new System.Windows.Forms.Padding(0);
+            this.scriptEditor.RightBracket = ')';
+            this.scriptEditor.RightBracket2 = ']';
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.Size = new System.Drawing.Size(323, 305);
@@ -4132,7 +4143,7 @@ namespace Assistant
             // 
             // loopScript
             // 
-            this.loopScript.Location = new System.Drawing.Point(455, 270);
+            this.loopScript.Location = new System.Drawing.Point(455, 292);
             this.loopScript.Name = "loopScript";
             this.loopScript.Size = new System.Drawing.Size(57, 24);
             this.loopScript.TabIndex = 5;

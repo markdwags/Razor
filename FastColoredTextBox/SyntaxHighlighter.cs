@@ -28,7 +28,15 @@ namespace FastColoredTextBoxNS
 
           public readonly Style DarkOrangeBoldStyle = new TextStyle(Brushes.DarkOrange, null, FontStyle.Bold | FontStyle.Regular);
 
-          public readonly Style MediumPurpleStyle = new TextStyle(Brushes.MediumPurple, null, FontStyle.Regular);
+          public readonly Style RazorDarkKeywords = new TextStyle(new SolidBrush(Color.FromArgb(255, 253, 134, 30)), null, FontStyle.Regular);
+          public readonly Style RazorDarkCommands = new TextStyle(new SolidBrush(Color.FromArgb(255, 43, 144, 175)), null, FontStyle.Regular);
+          public readonly Style RazorDarkStrings = new TextStyle(new SolidBrush(Color.FromArgb(255, 181, 241, 9)), null, FontStyle.Regular);
+          public readonly Style RazorDarkOperators = new TextStyle(new SolidBrush(Color.FromArgb(255, 253, 134, 30)), null, FontStyle.Regular);
+          public readonly Style RazorDarkNumbers = new TextStyle(new SolidBrush(Color.FromArgb(255, 174, 129, 255)), null, FontStyle.Regular);
+          public readonly Style RazorDarkComments = new TextStyle(new SolidBrush(Color.FromArgb(255, 150, 150, 150)), null, FontStyle.Regular);
+          public readonly Style RazorDarkSerial = new TextStyle(new SolidBrush(Color.FromArgb(255, 249, 37, 77)), null, FontStyle.Regular);
+
+
         //
         protected readonly Dictionary<string, SyntaxDescriptor> descByXMLfileNames =
             new Dictionary<string, SyntaxDescriptor>();
@@ -104,6 +112,7 @@ namespace FastColoredTextBoxNS
 
         protected Regex RazorCommentRegex;
         protected Regex RazorSerialRegex;
+        protected Regex RazorOperatorRegex;
           protected Regex RazorCommandRegex;
           protected Regex RazorKeywordRegex;
           protected Regex RazorNumberRegex;
@@ -712,13 +721,22 @@ namespace FastColoredTextBoxNS
                     RazorFunctionsKeywordStyle = DodgerBlueStyle;
                     break;
                 case Language.Razor:
-                    StringStyle = BlueStyle;
+                    /*StringStyle = BlueStyle;
                     CommentStyle = GreenStyle;
                     NumberStyle = MagentaStyle;
                     KeywordStyle = DarkOrangeBoldStyle;
                     FunctionsStyle = RedStyle;
                     RazorCommandStyle = CrimsonStyle;
-                    RazorSerialStyle = MediumPurpleStyle;
+                    RazorSerialStyle = MediumPurpleStyle;*/
+
+                    StringStyle = RazorDarkStrings;
+                    CommentStyle = RazorDarkComments;
+                    NumberStyle = RazorDarkNumbers;
+                    KeywordStyle = RazorDarkKeywords;
+                    FunctionsStyle = RedStyle;
+                    RazorCommandStyle = RazorDarkCommands;
+                    RazorSerialStyle = RazorDarkSerial;
+
                     break;
                 case Language.PHP:
                     StringStyle = RedStyle;
@@ -1455,7 +1473,7 @@ namespace FastColoredTextBoxNS
 
             RazorCommandRegex =
                 new Regex(
-                    @"\b(drop|usetype|lift|dclick|msg|say|hotkey|overhead|sysmsg|target|targetrelloc|targettype|waitfortarget|useobject|waitforgump|waitforprompt|waitformenu)\b",
+                    @"\b(drop|usetype|lift|dclick|msg|say|hotkey|overhead|sysmsg|pause|wait|target|targetrelloc|targettype|waitfortarget|useobject|waitforgump|waitforprompt|waitformenu)\b",
                     RegexCompiledOption);
             //RazorClassKeywordRegex = new Regex(@"\b(Player|Spells|Mobile|Mobiles|Item|Items|Misc|Target|Gumps|Journal|AutoLoot|Scavenger|Organizer|Restock|SellAgent|BuyAgent|Dress|Friend|BandageHeal|Statics|DPSMeter|PathFinding|Timer)\b", RegexCompiledOption);
 
@@ -1510,6 +1528,7 @@ namespace FastColoredTextBoxNS
             // Razor highlight
             range.SetStyle(RazorCommandStyle, RazorCommandRegex);
             range.SetStyle(RazorSerialStyle, RazorSerialRegex);
+            //range.SetStyle(RazorOperatorStyle, RazorOperatorsRegEx);
 
             //clear folding markers
             range.ClearFoldingMarkers();
@@ -1647,6 +1666,8 @@ namespace FastColoredTextBoxNS
 
           public Style RazorCommandStyle { get; set; }
           public Style RazorSerialStyle { get; set; }
+          public Style RazorOperatorStyle { get; set; }
+
 
         #endregion
     }
