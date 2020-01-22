@@ -604,14 +604,23 @@ namespace Assistant
 
             string[] commands =
             {
-                "cast", "dress", "undress", "dressconfig", "target", "targetype", "targetrelloc", "dress", "drop", "waitfortarget", "droprelloc", "wait", "pause", "lift", "lifttype"
+                "cast", "dress", "undress", "dressconfig", "target", "targettype", "targetrelloc", "dress", "drop", "waitfortarget", "droprelloc", "wait", "pause", "lift", "lifttype"
             };
 
             #endregion
 
             Dictionary<string, ToolTipDescriptions> descriptionCommands = new Dictionary<string, ToolTipDescriptions>();
-            ToolTipDescriptions tooltip = new ToolTipDescriptions("drop", new string[] { "drop serial" }, "N/A", "Drop a specific item");
+            ToolTipDescriptions tooltip = new ToolTipDescriptions("drop", new[] { "drop (serial) (x y z/layername)" }, "N/A", "Drop a specific item on the location or on you", "drop 0x42ABD 234 521 0\ndrop 0x42ABD Helm");
             descriptionCommands.Add("drop", tooltip);
+            
+            tooltip = new ToolTipDescriptions("target", new[] { "target (serial) [x] [y] [z]" }, "N/A", "Target a specific item or mobile OR target a specific x, y, z location", "target 0x345A\ntarget 1563 2452 0");
+            descriptionCommands.Add("target", tooltip);
+
+            tooltip = new ToolTipDescriptions("targettype", new[] { "targettype (isMobile) (graphic)" }, "N/A", "Target a specific type of item/mobile", "targettype true 0x43");
+            descriptionCommands.Add("targettype", tooltip);
+
+            tooltip = new ToolTipDescriptions("targetrelloc", new[] { "targetrelloc (x-offset) (y-offset)" }, "N/A", "Target a relative location based on your location", "targetrelloc -4 6");
+            descriptionCommands.Add("targetrelloc", tooltip);
 
             List<AutocompleteItem> items = new List<AutocompleteItem>();
 
@@ -655,20 +664,22 @@ namespace Assistant
             public string[] Parameters;
             public string Returns;
             public string Description;
+            public string Example;
 
-            public ToolTipDescriptions(string title, string[] parameter, string returns, string description)
+            public ToolTipDescriptions(string title, string[] parameter, string returns, string description, string example)
             {
                 Title = title;
                 Parameters = parameter;
                 Returns = returns;
                 Description = description;
+                Example = example;
             }
 
             public string ToolTipDescription()
             {
                 string complete_description = string.Empty;
 
-                complete_description += "Parameters: ";
+                complete_description += "Parameter(s): ";
 
                 foreach (string parameter in Parameters)
                     complete_description += "\n\t" + parameter;
@@ -678,6 +689,10 @@ namespace Assistant
                 complete_description += "\nDescription:";
 
                 complete_description += "\n\t" + Description;
+
+                complete_description += "\nExample(s):";
+
+                complete_description += "\n\t" + Example;
 
                 return complete_description;
             }

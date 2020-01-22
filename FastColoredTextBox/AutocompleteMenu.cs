@@ -640,7 +640,7 @@ namespace FastColoredTextBoxNS
             newText = newText + item;
             if (item.ToolTipText != null)
             {
-                newText = newText + "()";
+                newText = newText + " ";
             }
 
             //replace text of fragment

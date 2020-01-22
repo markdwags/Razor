@@ -241,7 +241,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 2)
             {
-                ScriptManager.Error("Usage: targetrelloc (x-offset) (y-offset) ");
+                ScriptManager.Error("Usage: targetrelloc (x-offset) (y-offset)");
                 return true;
             }
 
@@ -267,6 +267,14 @@ namespace Assistant.Scripts
 
         private static bool WaitForTarget(string command, Argument[] args, bool quiet, bool force)
         {
+            switch (args.Length)
+            {
+                case 0:
+                    return Targeting.HasTarget;
+                case 1:
+                    return Targeting.HasTarget || ScriptManager.PauseComplete(args[0].AsInt());
+            }
+
             return Targeting.HasTarget;
         }
 
