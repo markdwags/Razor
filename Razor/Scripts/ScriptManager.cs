@@ -31,7 +31,10 @@ namespace Assistant.Scripts
 
                 /*if (Interpreter.ScriptCount > 0)
                 {
-                    SetHighlightLine(_scriptEditor.LinesCount - (Interpreter.ScriptCount + 1), Color.Yellow);
+                    int highlightLine = _scriptEditor.LinesCount - (Interpreter.ScriptCount - 1);
+
+                    if (highlightLine < _scriptEditor.LinesCount - 1)
+                        SetHighlightLine(highlightLine, Color.Yellow);
                 }*/
             }
         }
@@ -107,5 +110,45 @@ namespace Assistant.Scripts
             _scriptEditor.Invalidate();
         }
 
+        /*private static Timer _waitTimer = new ScriptTimer();
+
+        public static void StartWait(int ms)
+        {
+            if (_waitTimer.Running)
+            {
+                _waitTimer.Stop();
+            }
+
+            _waitTimer.Interval = TimeSpan.FromMilliseconds(ms);
+            _waitTimer.Start();
+        }
+
+        public static bool IsWaiting()
+        {
+            return _waitTimer.Running;
+        }*/
+
+        private static TimeSpan _pauseDuration;
+        private static DateTime _startPause = DateTime.MaxValue;
+        
+        public static bool PauseComplete(int ms = 30000)
+        {
+            if (_startPause == DateTime.MaxValue) // no timer set
+            {
+                _startPause = DateTime.UtcNow;
+                _pauseDuration = TimeSpan.FromMilliseconds(ms);
+
+                return false; // we want to start pausing
+            }
+            
+            if (_startPause + _pauseDuration < DateTime.UtcNow) // timer is set, has it elapsed?
+            {
+                _startPause = DateTime.MaxValue;
+                _pauseDuration = TimeSpan.FromMilliseconds(ms);
+                return true; //pause limit succeeded
+            }
+
+            return false; // keep on pausing
+        }
     }
 }

@@ -750,7 +750,7 @@ namespace Assistant.Scripts
 
         private static bool Pause(string command, Argument[] args, bool quiet, bool force)
         {
-            return true;
+            return args.Length < 1 ? ScriptManager.PauseComplete() : ScriptManager.PauseComplete(args[0].AsInt());
         }
 
         public static bool Msg(string command, Argument[] args, bool quiet, bool force)
