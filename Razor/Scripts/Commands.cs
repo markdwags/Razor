@@ -735,6 +735,16 @@ namespace Assistant.Scripts
 
         private static bool Walk(string command, Argument[] args, bool quiet, bool force)
         {
+            if (args.Length < 1)
+            {
+                ScriptManager.Error("Usage: walk (direction)");
+                return true;
+            }
+            
+            Direction dir = (Direction)Enum.Parse(typeof(Direction), args[0].AsString(), true);
+
+            Client.Instance.RequestMove(dir);
+
             return true;
         }
 
@@ -743,22 +753,29 @@ namespace Assistant.Scripts
             {"anatomy", 1}, // anatomy
             {"animallore", 2}, // animal lore
             {"itemidentification", 3}, // item identification
+            {"itemid", 3}, // item identification
             {"armslore", 4}, // arms lore
             {"begging", 6}, // begging
             {"peacemaking", 9}, // peacemaking
+            {"peace", 9}, // peacemaking
             {"cartography", 12}, // cartography
             {"detectinghidden", 14}, // detect hidden
+            {"discord", 15}, // Discordance
             {"discordance", 15}, // Discordance
             {"evaluatingintelligence", 16}, // evaluate intelligence
+            {"evalint", 16}, // evaluate intelligence
             {"forensicevaluation", 19}, // forensic evaluation
+            {"forensiceval", 19}, // forensic evaluation
             {"hiding", 21}, // hiding
             {"provocation", 22}, // provocation
+            {"provo", 22}, // provocation
             {"inscription", 23}, // inscription
             {"poisoning", 30}, // poisoning
             {"spiritspeak", 32}, // spirit speak
             {"stealing", 33}, // stealing
             {"taming", 35}, // taming
             {"tasteidentification", 36}, // taste id
+            {"tasteid", 36}, // taste id
             {"tracking", 38}, // tracking
             {"meditation", 46}, // Meditation
             {"stealth", 47}, // Stealth
