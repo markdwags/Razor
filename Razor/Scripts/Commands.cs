@@ -43,10 +43,11 @@ namespace Assistant.Scripts
 
             // Gump
             Interpreter.RegisterCommandHandler("waitforgump", WaitForGump); // WaitForGumpAction
-            Interpreter.RegisterCommandHandler("gumpreply", DummyCommand); // GumpResponseAction
+            Interpreter.RegisterCommandHandler("gumpresponse", GumpResponse); // GumpResponseAction
+            Interpreter.RegisterCommandHandler("gumpclose", GumpClose); // GumpResponseAction
 
             // Menu
-            Interpreter.RegisterCommandHandler("contextmenu", DummyCommand); //ContextMenuAction
+            Interpreter.RegisterCommandHandler("menu", DummyCommand); //ContextMenuAction
             Interpreter.RegisterCommandHandler("menuresponse", DummyCommand); //MenuResponseAction
             Interpreter.RegisterCommandHandler("waitformenu", WaitForMenu); //WaitForMenuAction
 
@@ -270,7 +271,7 @@ namespace Assistant.Scripts
             switch (args.Length)
             {
                 case 0:
-                    return Targeting.HasTarget;
+                    return Targeting.HasTarget || ScriptManager.PauseComplete();
                 case 1:
                     return Targeting.HasTarget || ScriptManager.PauseComplete(args[0].AsInt());
             }
@@ -833,10 +834,7 @@ namespace Assistant.Scripts
                 ScriptManager.Error("Usage: msg ('text') [color]");
                 return true;
             }
-
-            if (!Client.Instance.ClientRunning)
-                return true;
-
+            
             if (args.Length == 1)
                 World.Player.Say(Config.GetInt("SysColor"), args[0].AsString());
             else
@@ -847,14 +845,11 @@ namespace Assistant.Scripts
 
         public static bool Cast(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (args.Length < 2)
             {
                 ScriptManager.Error("Usage: cast 'spell' [serial]");
                 return true;
             }
-
-            if (!Client.Instance.ClientRunning)
-                return true;
 
             Spell spell;
 
@@ -966,6 +961,7 @@ namespace Assistant.Scripts
         {
             if (!Client.Instance.ClientRunning)
                 return true;
+
             //we're using a named dresslist or a temporary dresslist?
             if (args.Length == 0)
             {
@@ -1003,6 +999,45 @@ namespace Assistant.Scripts
                     item.Layer != Layer.FacialHair)
                     DressList._Temporary.Items.Add(item.Serial);
             }
+
+            return true;
+        }
+        
+        public static bool GumpResponse(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                ScriptManager.Error("Usage: gumpresponse (buttondId)");
+                //ScriptManager.Error("Usage: gumpresponse (buttondId) [option] ['text1'|fieldId] ['text2'|fieldId]");
+                return true;
+            }
+
+            int buttonId = args[0].AsInt();
+
+            /*private int m_ButtonID;
+                    private int[] m_Switches;
+                    private GumpTextEntry[] m_TextEntries;*/
+
+            //Assistant.Macros.GumpResponseAction|9|0|0
+            //Assistant.Macros.GumpResponseAction|1|0|1|0&Hello How are you?
+            //Assistant.Macros.GumpResponseAction|501|0|2|1&box2|0&box1
+
+            Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
+            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, buttonId, new int[] {}, new GumpTextEntry[] { }));
+
+            World.Player.HasGump = false;
+            World.Player.HasCompressedGump = false;
+
+            return true;
+        }
+
+        public static bool GumpClose(string command, Argument[] args, bool quiet, bool force)
+        {
+            Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
+            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, 0, new int[] { }, new GumpTextEntry[] { }));
+
+            World.Player.HasGump = false;
+            World.Player.HasCompressedGump = false;
 
             return true;
         }

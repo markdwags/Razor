@@ -1,4 +1,5 @@
 ﻿using System;
+using Ultima;
 using UOSteam;
 
 namespace Assistant.Scripts
@@ -16,39 +17,24 @@ namespace Assistant.Scripts
         {
             // Expressions
             Interpreter.RegisterExpressionHandler("findalias", FindAlias);
-            /*Interpreter.RegisterExpressionHandler("contents", DummyExpression);
-            Interpreter.RegisterExpressionHandler("inregion", DummyExpression);
-            Interpreter.RegisterExpressionHandler("skill", SkillExpression);
-            Interpreter.RegisterExpressionHandler("findobject", DummyExpression);
-            Interpreter.RegisterExpressionHandler("distance", DummyExpression);
-            Interpreter.RegisterExpressionHandler("inrange", DummyExpression);
-            Interpreter.RegisterExpressionHandler("buffexists", DummyExpression);
-            Interpreter.RegisterExpressionHandler("property", DummyExpression);
-            Interpreter.RegisterExpressionHandler("findtype", DummyExpression);
-            Interpreter.RegisterExpressionHandler("findlayer", DummyExpression);
-            Interpreter.RegisterExpressionHandler("skillstate", DummyExpression);
-            Interpreter.RegisterExpressionHandler("counttype", DummyExpression);
-            Interpreter.RegisterExpressionHandler("counttypeground", DummyExpression);
-            Interpreter.RegisterExpressionHandler("findwand", DummyExpression);
-            Interpreter.RegisterExpressionHandler("inparty", DummyExpression);
-            Interpreter.RegisterExpressionHandler("infriendslist", DummyExpression);
-            Interpreter.RegisterExpressionHandler("war", DummyExpression);
-            Interpreter.RegisterExpressionHandler("ingump", DummyExpression);
-            Interpreter.RegisterExpressionHandler("gumpexists", DummyExpression);
-            Interpreter.RegisterExpressionHandler("listexists", DummyExpression);
-            Interpreter.RegisterExpressionHandler("list", DummyExpression);
-            Interpreter.RegisterExpressionHandler("inlist", DummyExpression);
-            Interpreter.RegisterExpressionHandler("timer", DummyExpression);
-            Interpreter.RegisterExpressionHandler("timerexists", DummyExpression);*/
 
-            // Player Attributes
+            Interpreter.RegisterExpressionHandler("stam", Stam);
+            Interpreter.RegisterExpressionHandler("maxstam", MaxStam);
+            Interpreter.RegisterExpressionHandler("hp", Hp);
+            Interpreter.RegisterExpressionHandler("hits", Hp);
+            Interpreter.RegisterExpressionHandler("maxhp", MaxHp);
+            Interpreter.RegisterExpressionHandler("maxhits", MaxHp);
             Interpreter.RegisterExpressionHandler("mana", Mana);
-            Interpreter.RegisterExpressionHandler("x", X);
-            Interpreter.RegisterExpressionHandler("y", Y);
-            Interpreter.RegisterExpressionHandler("z", Z);
+            Interpreter.RegisterExpressionHandler("maxmana", MaxMana);
+
+            Interpreter.RegisterExpressionHandler("str", Str);
+            Interpreter.RegisterExpressionHandler("int", Int);
+            Interpreter.RegisterExpressionHandler("dex", Dex);
+
+            Interpreter.RegisterExpressionHandler("skill", SkillExpression);
         }
 
-        private static int FindAlias(string expression, Argument[] args, bool quiet)
+        private static double FindAlias(string expression, Argument[] args, bool quiet)
         {
             if (args.Length < 1)
                 ScriptManager.Error("Usage: findalias (string)");
@@ -61,7 +47,7 @@ namespace Assistant.Scripts
             return 1;
         }
 
-        private static int Mana(string expression, Argument[] args, bool quiet)
+        private static double Mana(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -69,7 +55,71 @@ namespace Assistant.Scripts
             return World.Player.Mana;
         }
 
-        private static int X(string expression, Argument[] args, bool quiet)
+        private static double MaxMana(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.ManaMax;
+        }
+
+        private static double Hp(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.Hits;
+        }
+
+        private static double MaxHp(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.HitsMax;
+        }
+
+        private static double Stam(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.Stam;
+        }
+
+        private static double MaxStam(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.StamMax;
+        }
+
+        private static double Str(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.Str;
+        }
+
+        private static double Dex(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.Dex;
+        }
+
+        private static double Int(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.Int;
+        }
+
+        /*private static int X(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -91,16 +141,24 @@ namespace Assistant.Scripts
                 return 0;
 
             return World.Player.Position.Z;
-        }
+        }*/
 
         // WIP
-        private static int SkillExpression(string expression, Argument[] args, bool quiet)
+        private static double SkillExpression(string expression, Argument[] args, bool quiet)
         {
             if (args.Length < 1)
                 throw new ArgumentException("Usage: skill (name)");
 
             if (World.Player == null)
                 return 0;
+
+            foreach (SkillInfo skill in Skills.SkillEntries)
+            {
+                if (skill.Name.ToLower().Contains(args[0].AsString()))
+                {
+                    return World.Player.Skills[skill.Index].Value;
+                }
+            }
 
             return 0;
         }
