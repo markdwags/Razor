@@ -584,29 +584,6 @@ namespace Assistant
 
         private void InitScriptEditor()
         {
-            /*var syntaxHighlighter = new SyntaxHighlighter(scriptEditor);
-
-             // single-line comments
-             syntaxHighlighter.AddPattern(new PatternDefinition(new Regex(@"//.*?$", RegexOptions.Multiline | RegexOptions.Compiled)), new SyntaxStyle(Color.SaddleBrown, false, true));
-             // numbers
-             //syntaxHighlighter.AddPattern(new PatternDefinition(@"\d+\.\d+|\d+"), new SyntaxStyle(Color.Red));
-             // double quote strings
-             syntaxHighlighter.AddPattern(new PatternDefinition(@"\""([^""]|\""\"")+\"""), new SyntaxStyle(Color.Blue));
-             // single quote strings
-             syntaxHighlighter.AddPattern(new PatternDefinition(@"\'([^']|\'\')+\'"), new SyntaxStyle(Color.Blue));
-             // keywords1
-             syntaxHighlighter.AddPattern(new PatternDefinition("if", "elseif", "else", "endif", "while", "endwhile", "for", "endfor"), new SyntaxStyle(Color.SeaGreen, true, false));
-
-             syntaxHighlighter.AddPattern(new PatternDefinition("break", "continue", "stop", "replay", "not", "and", "or"), new SyntaxStyle(Color.PaleGreen, true, false));
-             syntaxHighlighter.AddPattern(
-                 new PatternDefinition("target", "cast", "menu", "usetype", "useobject", "dress", "undress", "drop",
-                     "waitforgump", "waitformenu", "replygump", "closegump", "hotkey", "lift", "lifttype", "say", "msg",
-                     "overhead", "sysmsg", "wait", "pause", "setability", "setlasttarget", "skill", "walk",
-                     "waitforprompt", "waitfortarget", "useskill", "dclicktype", "dclick", "targetrelloc", "targettype", "wft"),
-                 new SyntaxStyle(Color.DarkOrchid, true, false));
-             // operators
-             syntaxHighlighter.AddPattern(new PatternDefinition("+", "-", ">", "<", "&", "|"), new SyntaxStyle(Color.CornflowerBlue));*/
-
             _autoCompleteMenu = new AutocompleteMenu(scriptEditor);
             //_autoCompleteMenu.Items.ImageList = imageList2;
             _autoCompleteMenu.SearchPattern = @"[\w\.:=!<>]";
@@ -627,7 +604,7 @@ namespace Assistant
 
             string[] commands =
             {
-                "cast", "dress", "undress", "dressconfig", "target", "targetype", "targetrelloc", "dress", "drop", "waitfortarget"
+                "cast", "dress", "undress", "dressconfig", "target", "targetype", "targetrelloc", "dress", "drop", "waitfortarget", "droprelloc", "wait", "pause", "lift", "lifttype"
             };
 
             #endregion
@@ -662,9 +639,8 @@ namespace Assistant
                     });
                 }
 
-                items.Add(new AutocompleteItem(item));
+                //items.Add(new AutocompleteItem(item));
             }
-                
 
             _autoCompleteMenu.Items.SetAutocompleteItems(items);
             _autoCompleteMenu.Items.MaximumSize = new Size(_autoCompleteMenu.Items.Width + 20, _autoCompleteMenu.Items.Height);

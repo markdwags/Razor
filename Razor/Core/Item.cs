@@ -277,6 +277,26 @@ namespace Assistant
             return null;
         }
 
+        public Item FindItemByName(string name, bool recurse)
+        {
+            foreach (var i in m_Items)
+            {
+                Item item = i;
+                if (item.ItemID.ItemData.Name.ToLower().Contains(name.ToLower()))
+                {
+                    return item;
+                }
+                else if (recurse)
+                {
+                    item = item.FindItemByName(name, true);
+                    if (item != null)
+                        return item;
+                }
+            }
+
+            return null;
+        }
+
         public int GetCount(ushort iid)
         {
             int count = 0;

@@ -37,15 +37,13 @@ namespace Assistant.Scripts
 
             // Moving stuff
             Interpreter.RegisterCommandHandler("drop", DropItem); //DropAction
-            Interpreter.RegisterCommandHandler("droprelloc", DummyCommand); //DropAction
+            Interpreter.RegisterCommandHandler("droprelloc", DropRelLoc); //DropAction
             Interpreter.RegisterCommandHandler("lift", LiftItem); //LiftAction
-            Interpreter.RegisterCommandHandler("lifttype", DummyCommand); //LiftTypeAction
+            Interpreter.RegisterCommandHandler("lifttype", LiftType); //LiftTypeAction
 
             // Gump
             Interpreter.RegisterCommandHandler("waitforgump", WaitForGump); // WaitForGumpAction
-            Interpreter.RegisterCommandHandler("gumpresponse", DummyCommand); // GumpResponseAction
-            Interpreter.RegisterCommandHandler("replygump", DummyCommand); // GumpResponseAction
-            Interpreter.RegisterCommandHandler("closegump", DummyCommand);
+            Interpreter.RegisterCommandHandler("gumpreply", DummyCommand); // GumpResponseAction
 
             // Menu
             Interpreter.RegisterCommandHandler("contextmenu", DummyCommand); //ContextMenuAction
@@ -68,7 +66,7 @@ namespace Assistant.Scripts
             // General Waits/Pauses
             Interpreter.RegisterCommandHandler("wait", Pause); //PauseAction
             Interpreter.RegisterCommandHandler("pause", Pause); //PauseAction
-            Interpreter.RegisterCommandHandler("waitforstat", Pause); //WaitForStatAction
+            Interpreter.RegisterCommandHandler("waitforstat", DummyCommand); //WaitForStatAction
 
             // Misc
             Interpreter.RegisterCommandHandler("setability", SetAbility); //SetAbilityAction
@@ -627,11 +625,33 @@ namespace Assistant.Scripts
             return true;
         }
 
+        private static bool DropRelLoc(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 3)
+            {
+                ScriptManager.Error("Usage: droprelloc (x) (y) (z)");
+                return true;
+            }
+
+            int x = args[0].AsInt();
+            int y = args[1].AsInt();
+            int z = args[2].AsInt();
+
+            if (DragDropManager.Holding != null)
+                DragDropManager.Drop(DragDropManager.Holding, null,
+                    new Point3D((ushort)(World.Player.Position.X + x),
+                        (ushort)(World.Player.Position.Y + y), (short)(World.Player.Position.Z + z)));
+            else
+                World.Player.SendMessage(LocString.MacroNoHold);
+
+            return true;
+        }
+
         private static bool LiftItem(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 2)
+            if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: lift (serial) (amount)");
+                ScriptManager.Error("Usage: lift (serial) [amount]");
                 return true;
             }
 
@@ -653,6 +673,51 @@ namespace Assistant.Scripts
             else
             {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.MacroItemOutRange);
+            }
+
+            return true;
+        }
+
+        private static bool LiftType(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                ScriptManager.Error("Usage: lifttype (gfx/'name of item') [amount]");
+                return true;
+            }
+
+            string gfxStr = args[0].AsString();
+            ushort gfx = Utility.ToUInt16(gfxStr, 0);
+            ushort amount = Utility.ToUInt16(args[1].AsString(), 1);
+
+            Item item;
+
+            // No graphic id, maybe searching by name?
+            if (gfx == 0)
+            {
+                item = World.Player.Backpack.FindItemByName(gfxStr, true);
+
+                if (item == null)
+                {
+                    ScriptManager.Error($"Script Error: Couldn't find '{gfxStr}'");
+                    return true;
+                }
+            }
+            else // Check backpack first
+            {
+                item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(gfx) : null;
+            }
+
+            if (item != null)
+            {
+                if (item.Amount < amount)
+                    amount = item.Amount;
+
+                DragDropManager.Drag(item, amount);
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, (ItemID)gfx);
             }
 
             return true;
