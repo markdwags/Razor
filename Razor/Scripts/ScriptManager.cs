@@ -18,6 +18,7 @@ namespace Assistant.Scripts
         }
 
         private static FastColoredTextBox _scriptEditor { get; set; }
+
         private class ScriptTimer : Timer
         {
             // Only run scripts once every 25ms to avoid spamming.
@@ -26,7 +27,7 @@ namespace Assistant.Scripts
             }
 
             protected override void OnTick()
-            {                
+            {
                 Interpreter.ExecuteScripts();
 
                 /*if (Interpreter.ScriptCount > 0)
@@ -102,7 +103,7 @@ namespace Assistant.Scripts
         private static void SetHighlightLine(int iline, Color background)
         {
             for (int i = 0; i < _scriptEditor.LinesCount; i++)
-            { 
+            {
                 _scriptEditor[i].BackgroundBrush = _scriptEditor.BackBrush;
             }
 
@@ -110,27 +111,257 @@ namespace Assistant.Scripts
             _scriptEditor.Invalidate();
         }
 
-        /*private static Timer _waitTimer = new ScriptTimer();
+        private static FastColoredTextBoxNS.AutocompleteMenu _autoCompleteMenu;
 
-        public static void StartWait(int ms)
+        public static void InitScriptEditor()
         {
-            if (_waitTimer.Running)
+            _autoCompleteMenu = new AutocompleteMenu(_scriptEditor);
+            //_autoCompleteMenu.Items.ImageList = imageList2;
+            _autoCompleteMenu.SearchPattern = @"[\w\.:=!<>]";
+            _autoCompleteMenu.AllowTabKey = true;
+            _autoCompleteMenu.ToolTipDuration = 5000;
+            _autoCompleteMenu.AppearInterval = 100;
+
+            #region Keywords
+
+            string[] keywords =
             {
-                _waitTimer.Stop();
+                "if", "elseif", "else", "endif", "while", "endwhile", "for", "endfor", "break", "continue", "stop",
+                "replay", "not", "and", "or"
+            };
+
+            #endregion
+
+            #region Commands auto-complete
+
+            string[] commands =
+            {
+                "cast", "dress", "undress", "dressconfig", "target", "targettype", "targetrelloc", "dress", "drop",
+                "waitfortarget", "wft", "dclick", "dclicktype", "dclickvar", "usetype", "useobject", "droprelloc",
+                "lift", "lifttype", "waitforgump", "gumpresponse", "gumpclose", "menu", "menuresponse", "waitformenu",
+                "promptresponse", "waitforprompt", "hotkey", "say", "msg", "overhead", "sysmsg", "wait", "pause",
+                "waitforstat", "setability", "setlasttarget", "lasttarget", "setvar", "skill", "useskill", "walk"
+            };
+
+            #endregion
+
+            Dictionary<string, ToolTipDescriptions> descriptionCommands = new Dictionary<string, ToolTipDescriptions>();
+
+            #region DropTips
+
+            ToolTipDescriptions tooltip = new ToolTipDescriptions("drop", new[] {"drop (serial) (x y z/layername)"},
+                "N/A", "Drop a specific item on the location or on you", "drop 0x42ABD 234 521 0\ndrop 0x42ABD Helm");
+            descriptionCommands.Add("drop", tooltip);
+
+            #endregion
+
+            #region DressTips
+
+            #endregion
+
+            #region TargetTips
+
+            tooltip = new ToolTipDescriptions("target", new[] {"target (serial) [x] [y] [z]"}, "N/A",
+                "Target a specific item or mobile OR target a specific x, y, z location",
+                "target 0x345A\ntarget 1563 2452 0");
+            descriptionCommands.Add("target", tooltip);
+
+            tooltip = new ToolTipDescriptions("targettype", new[] {"targettype (isMobile) (graphic)"}, "N/A",
+                "Target a specific type of item/mobile", "targettype true 0x43");
+            descriptionCommands.Add("targettype", tooltip);
+
+            tooltip = new ToolTipDescriptions("targetrelloc", new[] {"targetrelloc (x-offset) (y-offset)"}, "N/A",
+                "Target a relative location based on your location", "targetrelloc -4 6");
+            descriptionCommands.Add("targetrelloc", tooltip);
+
+            #endregion
+
+            #region DClickTips
+
+            #endregion
+
+            #region MovingTips
+
+            #endregion
+
+            #region GumpTips
+
+            #endregion
+
+            #region MenuTips
+
+            #endregion
+
+            #region PromptTips
+
+            #endregion
+
+            #region HotKeyTips
+
+            #endregion
+
+            #region MessageTips
+
+            #endregion
+
+            #region WaitPauseTips
+
+            #endregion
+
+            #region DressTips
+
+            #endregion
+
+            #region MiscTips
+
+            #endregion
+
+
+            List<AutocompleteItem> items = new List<AutocompleteItem>();
+
+            foreach (var item in keywords)
+                items.Add(new AutocompleteItem(item));
+
+            foreach (var item in commands)
+            {
+                descriptionCommands.TryGetValue(item, out ToolTipDescriptions element);
+
+                if (element != null)
+                {
+                    items.Add(new MethodAutocompleteItemAdvance(item)
+                    {
+                        ImageIndex = 2,
+                        ToolTipTitle = element.Title,
+                        ToolTipText = element.ToolTipDescription()
+                    });
+                }
+                else
+                {
+                    items.Add(new MethodAutocompleteItemAdvance(item)
+                    {
+                        ImageIndex = 2
+                    });
+                }
             }
 
-            _waitTimer.Interval = TimeSpan.FromMilliseconds(ms);
-            _waitTimer.Start();
+            _autoCompleteMenu.Items.SetAutocompleteItems(items);
+            _autoCompleteMenu.Items.MaximumSize =
+                new Size(_autoCompleteMenu.Items.Width + 20, _autoCompleteMenu.Items.Height);
+            _autoCompleteMenu.Items.Width = _autoCompleteMenu.Items.Width + 20;
+
+            _scriptEditor.Language = FastColoredTextBoxNS.Language.Razor;
         }
 
-        public static bool IsWaiting()
+        public class ToolTipDescriptions
         {
-            return _waitTimer.Running;
-        }*/
+            public string Title;
+            public string[] Parameters;
+            public string Returns;
+            public string Description;
+            public string Example;
+
+            public ToolTipDescriptions(string title, string[] parameter, string returns, string description,
+                string example)
+            {
+                Title = title;
+                Parameters = parameter;
+                Returns = returns;
+                Description = description;
+                Example = example;
+            }
+
+            public string ToolTipDescription()
+            {
+                string complete_description = string.Empty;
+
+                complete_description += "Parameter(s): ";
+
+                foreach (string parameter in Parameters)
+                    complete_description += "\n\t" + parameter;
+
+                complete_description += "\nReturns: " + Returns;
+
+                complete_description += "\nDescription:";
+
+                complete_description += "\n\t" + Description;
+
+                complete_description += "\nExample(s):";
+
+                complete_description += "\n\t" + Example;
+
+                return complete_description;
+            }
+        }
+
+        public class MethodAutocompleteItemAdvance : MethodAutocompleteItem
+        {
+            string firstPart;
+            string lastPart;
+
+            public MethodAutocompleteItemAdvance(string text)
+                : base(text)
+            {
+                var i = text.LastIndexOf(' ');
+                if (i < 0)
+                    firstPart = text;
+                else
+                {
+                    firstPart = text.Substring(0, i);
+                    lastPart = text.Substring(i + 1);
+                }
+            }
+
+            public override CompareResult Compare(string fragmentText)
+            {
+                int i = fragmentText.LastIndexOf(' ');
+
+                if (i < 0)
+                {
+                    if (firstPart.StartsWith(fragmentText) && string.IsNullOrEmpty(lastPart))
+                        return CompareResult.VisibleAndSelected;
+                    //if (firstPart.ToLower().Contains(fragmentText.ToLower()))
+                    //  return CompareResult.Visible;
+                }
+                else
+                {
+                    var fragmentFirstPart = fragmentText.Substring(0, i);
+                    var fragmentLastPart = fragmentText.Substring(i + 1);
+
+
+                    if (firstPart != fragmentFirstPart)
+                        return CompareResult.Hidden;
+
+                    if (lastPart != null && lastPart.StartsWith(fragmentLastPart))
+                        return CompareResult.VisibleAndSelected;
+
+                    if (lastPart != null && lastPart.ToLower().Contains(fragmentLastPart.ToLower()))
+                        return CompareResult.Visible;
+                }
+
+                return CompareResult.Hidden;
+            }
+
+            public override string GetTextForReplace()
+            {
+                if (lastPart == null)
+                    return firstPart;
+
+                return firstPart + " " + lastPart;
+            }
+
+            public override string ToString()
+            {
+                if (lastPart == null)
+                    return firstPart;
+
+                return lastPart;
+            }
+        }
+
 
         private static TimeSpan _pauseDuration;
         private static DateTime _startPause = DateTime.MaxValue;
-        
+
         public static bool PauseComplete(int ms = 30000)
         {
             if (_startPause == DateTime.MaxValue) // no timer set
@@ -140,7 +371,7 @@ namespace Assistant.Scripts
 
                 return false; // we want to start pausing
             }
-            
+
             if (_startPause + _pauseDuration < DateTime.UtcNow) // timer is set, has it elapsed?
             {
                 _startPause = DateTime.MaxValue;

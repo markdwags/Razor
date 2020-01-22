@@ -47,12 +47,12 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("gumpclose", GumpClose); // GumpResponseAction
 
             // Menu
-            Interpreter.RegisterCommandHandler("menu", DummyCommand); //ContextMenuAction
-            Interpreter.RegisterCommandHandler("menuresponse", DummyCommand); //MenuResponseAction
+            Interpreter.RegisterCommandHandler("menu", ContextMenu); //ContextMenuAction
+            Interpreter.RegisterCommandHandler("menuresponse", MenuResponse); //MenuResponseAction
             Interpreter.RegisterCommandHandler("waitformenu", WaitForMenu); //WaitForMenuAction
 
             // Prompt
-            Interpreter.RegisterCommandHandler("promptresponse", DummyCommand); //PromptAction
+            Interpreter.RegisterCommandHandler("promptresponse", PromptResponse); //PromptAction
             Interpreter.RegisterCommandHandler("waitforprompt", WaitForPrompt); //WaitForPromptAction
 
             // Hotkey execution
@@ -72,9 +72,10 @@ namespace Assistant.Scripts
             // Misc
             Interpreter.RegisterCommandHandler("setability", SetAbility); //SetAbilityAction
             Interpreter.RegisterCommandHandler("setlasttarget", DummyCommand); //SetLastTargetAction
-            Interpreter.RegisterCommandHandler("lasttarget", DummyCommand); //LastTargetAction
+            Interpreter.RegisterCommandHandler("lasttarget", LastTarget); //LastTargetAction
             Interpreter.RegisterCommandHandler("setvar", DummyCommand); //SetMacroVariableTargetAction
             Interpreter.RegisterCommandHandler("skill", UseSkill); //SkillAction
+            Interpreter.RegisterCommandHandler("useskill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
         }
 
@@ -1039,6 +1040,71 @@ namespace Assistant.Scripts
             World.Player.HasGump = false;
             World.Player.HasCompressedGump = false;
 
+            return true;
+        }
+        public static bool ContextMenu(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 2)
+            {
+                ScriptManager.Error("Usage: menu (serial) (index)");
+                return true;
+            }
+
+            Serial s = args[0].AsSerial();
+            ushort index = args[0].AsUShort();
+
+            if (s == Serial.Zero && World.Player != null)
+                s = World.Player.Serial;
+
+            Client.Instance.SendToServer(new ContextMenuRequest(s));
+            Client.Instance.SendToServer(new ContextMenuResponse(s, index));
+            return true;
+        }
+        
+        public static bool MenuResponse(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 2)
+            {
+                ScriptManager.Error("Usage: menuresponse (index) (menuId) [hue]");
+                return true;
+            }
+
+            ushort index = args[0].AsUShort();
+            ushort menuId = args[1].AsUShort();
+            ushort hue = 0;
+
+            if (args.Length == 3)
+                hue = args[2].AsUShort();
+
+            Client.Instance.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, index,
+                menuId, hue));
+            World.Player.HasMenu = false;
+            return true;
+        }
+
+        public static bool PromptResponse(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                ScriptManager.Error("Usage: promptresponse ('response to the prompt')");
+                return true;
+            }
+
+            World.Player.ResponsePrompt(args[0].AsString());
+            return true;
+        }
+        
+        public static bool LastTarget(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                ScriptManager.Error("Usage: lasttarget");
+                return true;
+            }
+
+            if (!Targeting.DoLastTarget())
+                Targeting.ResendTarget();
+            
             return true;
         }
     }

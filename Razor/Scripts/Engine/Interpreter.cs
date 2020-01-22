@@ -75,6 +75,24 @@ namespace UOSteam
             throw new RunTimeError(_node, "Cannot convert argument to uint");
         }
 
+        public ushort AsUShort()
+        {
+            if (_node.Lexeme == null)
+                throw new RunTimeError(_node, "Cannot convert argument to ushort");
+
+            ushort val;
+
+            if (_node.Lexeme.StartsWith("0x"))
+            {
+                if (ushort.TryParse(_node.Lexeme.Substring(2), NumberStyles.HexNumber, Interpreter.Culture, out val))
+                    return val;
+            }
+            else if (ushort.TryParse(_node.Lexeme, out val))
+                return val;
+
+            throw new RunTimeError(_node, "Cannot convert argument to ushort");
+        }
+
         // Treat the argument as a serial or an alias. Aliases will
         // be automatically resolved to serial numbers.
         public uint AsSerial()

@@ -308,7 +308,7 @@ namespace Assistant
                             {
                                 MacroManager.Action(new ContextMenuAction(ent, idx, ent.ContextMenu[idx].Value));
 
-                                ScriptManager.AddToScript($"replymenu {ent.ContextMenu[idx].Value}");
+                                ScriptManager.AddToScript($"menu {ent.ContextMenu[idx].Value} {idx}");
                             }
                             catch
                             {
@@ -2226,7 +2226,8 @@ namespace Assistant
             if (Macros.MacroManager.AcceptActions)
                 MacroManager.Action(new GumpResponseAction(bid, switches, entries));
 
-            ScriptManager.AddToScript($"replygump {ser} {bid}");
+            ScriptManager.AddToScript(bid == 0 ? "closegump" : $"gumpresponse {bid}");
+
 
             World.Player.LastGumpResponseAction = new GumpResponseAction(bid, switches, entries);
         }
@@ -2621,7 +2622,7 @@ namespace Assistant
             if (MacroManager.AcceptActions)
                 MacroManager.Action(new MenuResponseAction(index, itemID, hue));
 
-            ScriptManager.AddToScript($"replymenu {index} {itemID} {hue}");
+            ScriptManager.AddToScript($"menuresponse {index} {itemID} {hue}");
         }
 
         private static void SendMenu(PacketReader p, PacketHandlerEventArgs args)
@@ -3070,7 +3071,7 @@ namespace Assistant
             }
 
             if (!string.IsNullOrEmpty(World.Player.PromptInputText))
-                ScriptManager.AddToScript($"sendprompt {World.Player.PromptInputText}");
+                ScriptManager.AddToScript($"promptresponse '{World.Player.PromptInputText}'");
         }
 
         private static void UnicodePromptReceived(Packet p, PacketHandlerEventArgs args)
