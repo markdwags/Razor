@@ -34,7 +34,8 @@ namespace Assistant
         Spells,
         Skills,
         Misc,
-        Friends
+        Friends,
+        Scripts
     }
 
     public enum HKSubCat
@@ -442,6 +443,7 @@ namespace Assistant
             MakeNode(misc, "Pet Commands", HKSubCat.PetCommands);
 
             MakeNode("Friends", HKCategory.Friends);
+            MakeNode("Scripts", HKCategory.Scripts);
         }
 
         public static void RebuildList(TreeView tree)

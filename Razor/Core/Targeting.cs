@@ -702,6 +702,9 @@ namespace Assistant
             //if ( Macros.MacroManager.AcceptActions )
             //	MacroManager.Action( new LastTargetAction() );
 
+            if (FromGrabHotKey)
+                return;
+
             if (m_HasTarget)
             {
                 if (!DoLastTarget())
@@ -727,6 +730,9 @@ namespace Assistant
 
         public static bool DoLastTarget()
         {
+            if (FromGrabHotKey)
+                return true;
+
             TargetInfo targ;
             if (IsSmartTargetingEnabled())
             {

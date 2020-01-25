@@ -2392,6 +2392,12 @@ namespace Assistant
             recMacro.Enabled = false;
         }
 
+        public void PlayScript()
+        {
+            playScript.Text = "Stop";
+            recordScript.Enabled = false;
+        }
+
         public void OnMacroStop()
         {
             recMacro.Text = "Record";
@@ -6082,11 +6088,10 @@ namespace Assistant
 
         private void playScript_Click(object sender, EventArgs e)
         {
-            var root = Lexer.Lex(scriptEditor.Lines.ToArray());
+            if (scriptList.SelectedIndex < 0)
+                return;
 
-            Script script = new Script(root);
-
-            Interpreter.StartScript(script);
+            ScriptManager.PlayScript((string) scriptList.SelectedItem);
         }
 
         public void LockScripts(bool enabled)
@@ -6173,6 +6178,8 @@ namespace Assistant
                 }
 
                 File.CreateText(path).Close();
+
+                ScriptManager.AddHotkey(Path.GetFileNameWithoutExtension(path));
             }
 
             RedrawScripts();
@@ -6200,6 +6207,8 @@ namespace Assistant
                 {
                     string path = $"{ScriptManager.ScriptPath}\\{scriptList.SelectedItem}.razor";
                     File.Delete(path);
+
+                    ScriptManager.AddHotkey(Path.GetFileNameWithoutExtension(path));
                 }
                 catch
                 {
@@ -6209,5 +6218,11 @@ namespace Assistant
 
             RedrawScripts();
         }
+
+        private void setScriptHotkey_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

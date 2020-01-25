@@ -1390,6 +1390,9 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
+            if (Targeting.FromGrabHotKey)
+                return false;
+
             if (!Targeting.DoLastTarget()) //Targeting.LastTarget( true );
                 Targeting.ResendTarget();
             return true;

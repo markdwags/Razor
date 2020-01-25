@@ -3103,6 +3103,9 @@ namespace Assistant
 
         private static void PlaySoundEffect(Packet p, PacketHandlerEventArgs args)
         {
+            if (World.Player == null)
+                return;
+
             byte type = p.ReadByte();
             ushort sound = p.ReadUInt16();
 
@@ -3130,6 +3133,9 @@ namespace Assistant
 
         private static void PlayMusic(Packet p, PacketHandlerEventArgs args)
         {
+            if (World.Player == null)
+                return;
+
             if (!Config.GetBool("ShowMusicInfo"))
                 return;
 

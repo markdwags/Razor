@@ -86,64 +86,46 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool UseItem(Item cont, ushort find)
-        {
-            for (int i = 0; i < cont.Contains.Count; i++)
-            {
-                Item item = cont.Contains[i];
-
-                if (item.ItemID == find)
-                {
-                    PlayerData.DoubleClick(item);
-                    return true;
-                }
-                else if (item.Contains != null && item.Contains.Count > 0)
-                {
-                    if (UseItem(item, find))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
         private static bool Target(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: target (serial) [x] [y] [z])");
+                ScriptManager.Error("Usage: target (serial) OR (x) (y) (z)");
                 return true;
             }
 
-            Serial serial = args[0].AsSerial();
-
-            if (serial != Serial.Zero) // Target a specific item or mobile
+            if (args.Length == 1)
             {
-                Item item = World.FindItem(serial);
+                Serial serial = args[0].AsSerial();
 
-                if (item != null)
+                if (serial != Serial.Zero) // Target a specific item or mobile
                 {
-                    Targeting.Target(item);
-                    return true;
-                }
+                    Item item = World.FindItem(serial);
 
-                Mobile mobile = World.FindMobile(serial);
+                    if (item != null)
+                    {
+                        Targeting.Target(item);
+                        return true;
+                    }
 
-                if (mobile != null)
-                {
-                    Targeting.Target(mobile);
+                    Mobile mobile = World.FindMobile(serial);
+
+                    if (mobile != null)
+                    {
+                        Targeting.Target(mobile);
+                    }
                 }
             }
-            else if (args.Length == 4) // target ground at specific x/y/z
+            else if (args.Length == 3) // target ground at specific x/y/z
             {
                 Targeting.Target(new TargetInfo
                 {
                     Type = 1,
                     Flags = 0,
                     Serial = Serial.Zero,
-                    X = args[1].AsInt(),
-                    Y = args[2].AsInt(),
-                    Z = args[3].AsInt(),
+                    X = args[0].AsInt(),
+                    Y = args[1].AsInt(),
+                    Z = args[2].AsInt(),
                     Gfx = 0
                 });
 
@@ -154,17 +136,17 @@ namespace Assistant.Scripts
 
         private static bool TargetType(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 2)
-            {
-                ScriptManager.Error("Usage: targettype (isMobile) (graphic) ");
-                return true;
-            }
-
-            bool isMobile = bool.Parse(args[0].AsString());
-            ushort gfx = Utility.ToUInt16(args[1].AsString(), 0);
-
             if (Targeting.FromGrabHotKey)
                 return false;
+
+            if (args.Length < 1)
+            {
+                ScriptManager.Error("Usage: targettype (graphic) [isMobile]");
+                return true;
+            }
+            
+            ushort gfx = Utility.ToUInt16(args[0].AsString(), 0);
+            bool.TryParse(args[1].AsString(), out var isMobile);
 
             ArrayList list = new ArrayList();
             if (isMobile)
@@ -173,17 +155,7 @@ namespace Assistant.Scripts
                 {
                     if (find.Body == gfx)
                     {
-                        if (Config.GetBool("RangeCheckTargetByType"))
-                        {
-                            if (Utility.InRange(World.Player.Position, find.Position, 2))
-                            {
-                                list.Add(find);
-                            }
-                        }
-                        else
-                        {
-                            list.Add(find);
-                        }
+                        list.Add(find);
                     }
                 }
             }
@@ -193,41 +165,13 @@ namespace Assistant.Scripts
                 {
                     if (i.ItemID == gfx && !i.IsInBank)
                     {
-                        if (Config.GetBool("RangeCheckTargetByType"))
-                        {
-                            if (Utility.InRange(World.Player.Position, i.Position, 2))
-                            {
-                                list.Add(i);
-                            }
-                        }
-                        else
-                        {
-                            list.Add(i);
-                        }
+                        list.Add(i);
                     }
                 }
             }
 
             if (list.Count > 0)
             {
-                /*if (Config.GetBool("DiffTargetByType") && list.Count > 1)
-                {
-                    object currentObject = list[Utility.Random(list.Count)];
-
-                    while (_previousObject != null && _previousObject == currentObject)
-                    {
-                        currentObject = list[Utility.Random(list.Count)];
-                    }
-
-                    Targeting.Target(currentObject);
-
-                    _previousObject = currentObject;
-                }
-                else
-                {
-                    Targeting.Target(list[Utility.Random(list.Count)]);
-                }*/
-
                 Targeting.Target(list[Utility.Random(list.Count)]);
             }
             else
@@ -241,6 +185,9 @@ namespace Assistant.Scripts
 
         private static bool TargetRelLoc(string command, Argument[] args, bool quiet, bool force)
         {
+            if (Targeting.FromGrabHotKey)
+                return false;
+
             if (args.Length < 2)
             {
                 ScriptManager.Error("Usage: targetrelloc (x-offset) (y-offset)");
@@ -272,19 +219,19 @@ namespace Assistant.Scripts
             switch (args.Length)
             {
                 case 0:
-                    return Targeting.HasTarget || ScriptManager.PauseComplete();
+                    return Targeting.HasTarget || ScriptManager.Pause(); // use default timeout
                 case 1:
-                    return Targeting.HasTarget || ScriptManager.PauseComplete(args[0].AsInt());
+                    return Targeting.HasTarget || ScriptManager.Pause(args[0].AsInt()); // user provided timeout
+                default:
+                    return Targeting.HasTarget || ScriptManager.Pause(); // use default just in case
             }
-
-            return Targeting.HasTarget;
         }
 
         private static bool Hotkey(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: hotkey ('name of hotkey'/'hotkeyID')");
+                ScriptManager.Error("Usage: hotkey ('name of hotkey') OR (hotkeyId)");
                 return true;
             }
 
@@ -390,11 +337,6 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool Attack(string command, Argument[] args, bool quiet, bool force)
-        {
-            return true;
-        }
-
         private static string[] hands = new string[3] {"left", "right", "both"};
 
         private static bool ClearHands(string command, Argument[] args, bool quiet, bool force)
@@ -428,7 +370,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: dclicktype|usetype ('graphic/name of item')");
+                ScriptManager.Error("Usage: dclicktype|usetype ('name of item') OR (graphicID)");
                 return true;
             }
 
@@ -437,7 +379,7 @@ namespace Assistant.Scripts
 
             Serial click = Serial.Zero;
             bool isItem = false;
-            Item item = null;
+            Item item;
 
             // No graphic id, maybe searching by name?
             if (gfx == 0)
@@ -465,17 +407,7 @@ namespace Assistant.Scripts
                     {
                         isItem = true;
 
-                        if (Config.GetBool("RangeCheckDoubleClick"))
-                        {
-                            if (Utility.InRange(World.Player.Position, i.Position, 2))
-                            {
-                                list.Add(i);
-                            }
-                        }
-                        else
-                        {
-                            list.Add(i);
-                        }
+                        list.Add(i);
                     }
                 }
 
@@ -487,17 +419,7 @@ namespace Assistant.Scripts
                         {
                             isItem = true;
 
-                            if (Config.GetBool("RangeCheckDoubleClick"))
-                            {
-                                if (Utility.InRange(World.Player.Position, i.Position, 2))
-                                {
-                                    list.Add(i);
-                                }
-                            }
-                            else
-                            {
-                                list.Add(i);
-                            }
+                            list.Add(i);
                         }
                     }
                 }
@@ -519,17 +441,7 @@ namespace Assistant.Scripts
                 {
                     if (m.Body == gfx)
                     {
-                        if (Config.GetBool("RangeCheckDoubleClick"))
-                        {
-                            if (Utility.InRange(World.Player.Position, m.Position, 2))
-                            {
-                                list.Add(m);
-                            }
-                        }
-                        else
-                        {
-                            list.Add(m);
-                        }
+                        list.Add(m);
                     }
                 }
 
@@ -561,37 +473,12 @@ namespace Assistant.Scripts
                 ScriptManager.Error("useobject - invalid serial");
                 return true;
             }
-
-            Client.Instance.SendToServer(new DoubleClick(serial));
-
-            return true;
-        }
-
-        private static bool UseOnce(string command, Argument[] args, bool quiet, bool force)
-        {
-            return true;
-        }
-
-        private static bool MoveItem(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length < 2)
-            {
-                ScriptManager.Error("Usage: moveitem (serial) (destination) [(x, y, z)] [amount]");
-                return true;
-            }
-
-            uint serial = args[0].AsSerial();
-            uint destination = args[1].AsSerial();
-            if (args.Length == 2)
-                DragDropManager.DragDrop(World.FindItem((uint) serial), World.FindItem((uint) destination));
-            else if (args.Length == 5)
-                return true;
-            else if (args.Length == 6)
-                return true;
+            
+            PlayerData.DoubleClick(serial);
 
             return true;
         }
-
+        
         private static bool DropItem(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 2)
@@ -604,14 +491,19 @@ namespace Assistant.Scripts
             Point3D to = new Point3D(0, 0, 0);
             Layer layer = Layer.Invalid;
 
-            if (args.Length == 2) // dropping on a layer
+            switch (args.Length)
             {
-                layer = (Layer) Enum.Parse(typeof(Layer), args[1].AsString(), true);
-            }
-            else // dropping at x/y/z
-            {
-                to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0),
-                    Utility.ToInt32(args[3].AsString(), 0));
+                case 1: // drop at feet
+                    to = new Point3D(World.Player.Position.X, World.Player.Position.Y, World.Player.Position.Z);
+                    break;
+                case 2: // dropping on a layer
+                    layer = (Layer) Enum.Parse(typeof(Layer), args[1].AsString(), true);
+                    break;
+                
+                default: // dropping at x/y/z
+                    to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0),
+                        Utility.ToInt32(args[3].AsString(), 0));
+                    break;
             }
 
             if (DragDropManager.Holding != null)
@@ -705,7 +597,7 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                item = World.Player.Backpack.FindItemByName(gfxStr, true);
+                item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByName(gfxStr, true) : null;
 
                 if (item == null)
                 {
@@ -713,7 +605,7 @@ namespace Assistant.Scripts
                     return true;
                 }
             }
-            else // Check backpack first
+            else
             {
                 item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(gfx) : null;
             }
@@ -842,7 +734,8 @@ namespace Assistant.Scripts
 
         private static bool Pause(string command, Argument[] args, bool quiet, bool force)
         {
-            return args.Length < 1 ? ScriptManager.PauseComplete() : ScriptManager.PauseComplete(args[0].AsInt());
+            // If we return false, the script engine will run this command again
+            return args.Length < 1 ? !ScriptManager.Pause() : !ScriptManager.Pause(args[0].AsInt());
         }
 
         public static bool Msg(string command, Argument[] args, bool quiet, bool force)
@@ -863,37 +756,22 @@ namespace Assistant.Scripts
 
         public static bool Cast(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 2)
+            if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: cast 'spell' [serial]");
+                ScriptManager.Error("Usage: cast 'name of spell'");
                 return true;
             }
 
-            Spell spell;
+            Spell spell = int.TryParse(args[0].AsString(), out int spellnum) ? Spell.Get(spellnum) : Spell.GetByName(args[0].AsString());
 
-            if (int.TryParse(args[0].AsString(), out int spellnum))
-                spell = Spell.Get(spellnum);
-            else
-                spell = Spell.GetByName(args[0].AsString());
             if (spell != null)
             {
                 spell.OnCast(new CastSpellFromMacro((ushort) spell.GetID()));
-
-                if (args.Length > 1)
-                {
-                    Serial s = args[1].AsSerial();
-                    if (force)
-                        Targeting.ClearQueue();
-                    if (s > Serial.Zero && s != Serial.MinusOne)
-                    {
-                        Targeting.Target(s);
-                    }
-                    else if (!quiet)
-                        ScriptManager.Error("cast - invalid serial or alias");
-                }
             }
             else if (!quiet)
+            {
                 ScriptManager.Error("cast - spell name or number not valid");
+            }
 
             return true;
         }
@@ -918,10 +796,8 @@ namespace Assistant.Scripts
                 if (args.Length == 3)
                 {
                     uint serial = args[2].AsSerial();
-                    Mobile m = World.FindMobile((uint) serial);
-
-                    if (m != null)
-                        m.OverheadMessage(hue, args[0].AsString());
+                    Mobile m = World.FindMobile(serial);
+                    m?.OverheadMessage(hue, args[0].AsString());
                 }
                 else
                     World.Player.OverheadMessage(hue, args[0].AsString());
@@ -937,10 +813,7 @@ namespace Assistant.Scripts
                 ScriptManager.Error("Usage: sysmsg ('text') [color]");
                 return true;
             }
-
-            if (!Client.Instance.ClientRunning)
-                return true;
-
+            
             if (args.Length == 1)
                 World.Player.SendMessage(Config.GetInt("SysColor"), args[0].AsString());
             else if (args.Length == 2)
@@ -951,9 +824,6 @@ namespace Assistant.Scripts
 
         public static bool DressCommand(string command, Argument[] args, bool quiet, bool force)
         {
-            if (!Client.Instance.ClientRunning)
-                return true;
-
             //we're using a named dresslist or a temporary dresslist?
             if (args.Length == 0)
             {
@@ -977,9 +847,6 @@ namespace Assistant.Scripts
 
         public static bool UnDressCommand(string command, Argument[] args, bool quiet, bool force)
         {
-            if (!Client.Instance.ClientRunning)
-                return true;
-
             //we're using a named dresslist or a temporary dresslist?
             if (args.Length == 0)
             {
@@ -1003,9 +870,6 @@ namespace Assistant.Scripts
 
         public static bool DressConfig(string command, Argument[] args, bool quiet, bool force)
         {
-            if (!Client.Instance.ClientRunning)
-                return true;
-
             if (DressList._Temporary == null)
                 DressList._Temporary = new DressList("dressconfig");
 

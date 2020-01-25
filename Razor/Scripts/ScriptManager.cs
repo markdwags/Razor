@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using Assistant.Macros;
+using Assistant.UI;
 using FastColoredTextBoxNS;
 using UOSteam;
 
@@ -38,6 +41,51 @@ namespace Assistant.Scripts
                         SetHighlightLine(highlightLine, Color.Yellow);
                 }*/
             }
+        }
+
+        private static HotKeyCallbackState _hotkeyCallback;
+
+        public static void Initialize()
+        {
+            //HotKey.Add(HKCategory.Macros, LocString.StopCurrent, new HotKeyCallback(HotKeyStop));
+            //HotKey.Add(HKCategory.Macros, LocString.PauseCurrent, new HotKeyCallback(HotKeyPause));
+
+            _hotkeyCallback = OnHotKey;
+
+            foreach (string script in GetScripts())
+            {
+                AddHotkey(Path.GetFileNameWithoutExtension(script));
+            }
+        }
+
+        public static void AddHotkey(string script)
+        {
+            HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayA1, script), _hotkeyCallback, script);
+        }
+
+        public static void RemoveHotkey(string script)
+        {
+            HotKey.Remove(Language.Format(LocString.PlayA1, script));
+        }
+
+        public static void OnHotKey(ref object state)
+        {
+            PlayScript((string) state);
+        }
+
+        public static void PlayScript(string scriptName)
+        {
+            if (World.Player == null || _scriptEditor == null)
+                return;
+
+            _scriptEditor.SafeAction(s =>
+            {
+                var root = Lexer.Lex(GetScriptContext(scriptName));
+                Script script = new Script(root);
+                Interpreter.StartScript(script);
+            });
+
+            Engine.MainWindow.SafeAction(s => s.PlayScript());
         }
 
         private static ScriptTimer _timer { get; }
@@ -79,6 +127,11 @@ namespace Assistant.Scripts
         public static string[] GetScripts()
         {
             return Directory.GetFiles(ScriptPath, "*.razor");
+        }
+
+        public static string[] GetScriptContext(string script)
+        {
+            return File.ReadAllLines($"{ScriptPath}\\{script}.razor");
         }
 
         public static bool AddToScript(string command)
@@ -361,25 +414,30 @@ namespace Assistant.Scripts
 
         private static TimeSpan _pauseDuration;
         private static DateTime _startPause = DateTime.MaxValue;
-
-        public static bool PauseComplete(int ms = 30000)
+        
+        /// <summary>
+        /// Manage the state of pauses in the script engine 
+        /// </summary>
+        /// <param name="ms"></param>
+        /// <returns></returns>
+        public static bool Pause(int ms = 30000)
         {
             if (_startPause == DateTime.MaxValue) // no timer set
             {
                 _startPause = DateTime.UtcNow;
                 _pauseDuration = TimeSpan.FromMilliseconds(ms);
 
-                return false; // we want to start pausing
+                return true; // we want to start pausing
             }
 
             if (_startPause + _pauseDuration < DateTime.UtcNow) // timer is set, has it elapsed?
             {
                 _startPause = DateTime.MaxValue;
                 _pauseDuration = TimeSpan.FromMilliseconds(ms);
-                return true; //pause limit succeeded
+                return false; //pause limit succeeded
             }
 
-            return false; // keep on pausing
+            return true; // keep on pausing
         }
     }
 }
