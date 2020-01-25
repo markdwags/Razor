@@ -219,11 +219,11 @@ namespace Assistant.Scripts
             switch (args.Length)
             {
                 case 0:
-                    return Targeting.HasTarget || ScriptManager.Pause(); // use default timeout
+                    return Targeting.HasTarget || !ScriptManager.Pause(); // use default timeout
                 case 1:
-                    return Targeting.HasTarget || ScriptManager.Pause(args[0].AsInt()); // user provided timeout
+                    return Targeting.HasTarget || !ScriptManager.Pause(args[0].AsInt()); // user provided timeout
                 default:
-                    return Targeting.HasTarget || ScriptManager.Pause(); // use default just in case
+                    return Targeting.HasTarget || !ScriptManager.Pause(); // use default just in case
             }
         }
 
