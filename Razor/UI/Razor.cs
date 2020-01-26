@@ -2314,6 +2314,14 @@ namespace Assistant
                 return (Macro) macroTree.SelectedNode.Tag;
         }
 
+        public ScriptManager.RazorScript GetScriptSel()
+        {
+            if (scriptList.SelectedItem == null || !(scriptList.SelectedItem is ScriptManager.RazorScript))
+                return null;
+            else
+                return (ScriptManager.RazorScript)scriptList.SelectedItem;
+        }
+
         public void playMacro_Click(object sender, System.EventArgs e)
         {
             if (World.Player == null)
@@ -6096,6 +6104,10 @@ namespace Assistant
                 setScriptHotkey.Enabled = !enabled;
                 scriptList.Enabled = !enabled;
 
+                saveScript.Enabled = !enabled;
+                deleteScript.Enabled = !enabled;
+                newScript.Enabled = !enabled;
+
                 playScript.Text = !enabled ? "Play" : "Stop";
             });
         }
@@ -6235,11 +6247,11 @@ namespace Assistant
             {
                 Engine.MainWindow.SafeAction(s =>
                 {
-                    Macro sel = GetMacroSel();
+                    ScriptManager.RazorScript script = GetScriptSel();
 
                     tabs.SelectedTab = hotkeysTab;
 
-                    TreeNode resultNode = SearchTreeView(sel.GetName(), hotkeyTree.Nodes);
+                    TreeNode resultNode = SearchTreeView(script.Name, hotkeyTree.Nodes);
 
                     if (resultNode != null)
                     {

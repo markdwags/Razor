@@ -211,7 +211,7 @@ namespace Assistant.Scripts
         {
             for (int i = 0; i < Scripts.Count; i++)
             {
-                if (Scripts[i].Name.ToLower().Contains(script.ToLower()))
+                if (Scripts[i].Name.ToLower().Equals(script.ToLower()))
                     return i;
             }
 
