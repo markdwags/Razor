@@ -419,7 +419,6 @@ namespace UOSteam
 
                     break;
                 case ASTNodeType.FOR:
-                case ASTNodeType.FOREACH:
                     PushScope(node);
                     throw new RunTimeError(node, "For loops are not supported yet");
                 case ASTNodeType.ENDFOR:

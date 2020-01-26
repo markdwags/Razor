@@ -113,6 +113,7 @@ namespace FastColoredTextBoxNS
         protected Regex RazorCommentRegex;
         protected Regex RazorSerialRegex;
         protected Regex RazorOperatorRegex;
+        protected Regex RazorLayerRegex;
           protected Regex RazorCommandRegex;
           protected Regex RazorKeywordRegex;
           protected Regex RazorNumberRegex;
@@ -736,7 +737,7 @@ namespace FastColoredTextBoxNS
                     FunctionsStyle = RedStyle;
                     RazorCommandStyle = RazorDarkCommands;
                     RazorSerialStyle = RazorDarkSerial;
-
+                    RazorLayerStyle = RazorDarkNumbers;
                     break;
                 case Language.PHP:
                     StringStyle = RedStyle;
@@ -1468,12 +1469,17 @@ namespace FastColoredTextBoxNS
             RazorNumberRegex = new Regex(@"\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b", RegexCompiledOption);
             RazorKeywordRegex =
                 new Regex(
-                    @"\b(if|elseif|else|endif|while|endwhile|for|endfor|break|continue|stop|replay|not|and|or)\b",
+                    @"\b(if|elseif|else|endif|while|endwhile|for|endfor|break|continue|not|and|or|stop|replay|loop)\b",
                     RegexCompiledOption);
 
             RazorCommandRegex =
                 new Regex(
                     @"\b(cast|dress|undress|dressconfig|target|targettype|targetrelloc|dress|drop|waitfortarget|wft|dclick|dclicktype|dclickvar|usetype|useobject|droprelloc|lift|lifttype|waitforgump|gumpresponse|gumpclose|menu|menuresponse|waitformenu|promptresponse|waitforprompt|hotkey|say|msg|overhead|sysmsg|wait|pause|waitforstat|setability|setlasttarget|lasttarget|setvar|skill|useskill|walk|script)\b",
+                    RegexCompiledOption);
+
+            RazorLayerRegex =
+                new Regex(
+                    @"\b(RightHand|LeftHand|Shoes|Pants|Shirt|Head|Gloves|Ring|Talisman|Neck|Hair|Waist|InnerTorso|Bracelet|FacialHair|MiddleTorso|Earrings|Arms|Cloak|Backpack|OuterTorso|OuterLegs|InnerLegs)\b",
                     RegexCompiledOption);
         }
         
@@ -1511,6 +1517,7 @@ namespace FastColoredTextBoxNS
             // Razor highlight
             range.SetStyle(RazorCommandStyle, RazorCommandRegex);
             range.SetStyle(RazorSerialStyle, RazorSerialRegex);
+            range.SetStyle(RazorLayerStyle, RazorLayerRegex);
             //range.SetStyle(RazorOperatorStyle, RazorOperatorsRegEx);
 
             //clear folding markers
@@ -1649,6 +1656,7 @@ namespace FastColoredTextBoxNS
 
           public Style RazorCommandStyle { get; set; }
           public Style RazorSerialStyle { get; set; }
+          public Style RazorLayerStyle { get; set; }
           public Style RazorOperatorStyle { get; set; }
 
 

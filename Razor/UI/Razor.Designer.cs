@@ -735,7 +735,6 @@ namespace Assistant
             this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
             this.scriptList = new System.Windows.Forms.ListBox();
             this.newScript = new System.Windows.Forms.Button();
-            this.loopScript = new System.Windows.Forms.CheckBox();
             this.setScriptHotkey = new System.Windows.Forms.Button();
             this.recordScript = new System.Windows.Forms.Button();
             this.playScript = new System.Windows.Forms.Button();
@@ -1363,10 +1362,10 @@ namespace Assistant
             this.subTargetFilterTab.Controls.Add(this.targetFilterAdd);
             this.subTargetFilterTab.Controls.Add(this.targetFilter);
             this.subTargetFilterTab.Controls.Add(this.targetFilterEnabled);
-            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 24);
+            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 22);
             this.subTargetFilterTab.Name = "subTargetFilterTab";
             this.subTargetFilterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 286);
+            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 288);
             this.subTargetFilterTab.TabIndex = 2;
             this.subTargetFilterTab.Text = "Target Filter";
             // 
@@ -1440,9 +1439,9 @@ namespace Assistant
             this.subSoundMusicTab.Controls.Add(this.playSound);
             this.subSoundMusicTab.Controls.Add(this.soundFilterEnabled);
             this.subSoundMusicTab.Controls.Add(this.soundFilterList);
-            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 24);
+            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 22);
             this.subSoundMusicTab.Name = "subSoundMusicTab";
-            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 286);
+            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 288);
             this.subSoundMusicTab.TabIndex = 3;
             this.subSoundMusicTab.Text = "Sound & Music  ";
             // 
@@ -3004,6 +3003,7 @@ namespace Assistant
             this.cntCount});
             this.counters.GridLines = true;
             this.counters.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.counters.HideSelection = false;
             this.counters.LabelWrap = false;
             this.counters.Location = new System.Drawing.Point(6, 18);
             this.counters.MultiSelect = false;
@@ -3473,6 +3473,7 @@ namespace Assistant
             this.skillHDRcap,
             this.skillHDRlock});
             this.skillList.FullRowSelect = true;
+            this.skillList.HideSelection = false;
             this.skillList.Location = new System.Drawing.Point(8, 5);
             this.skillList.Name = "skillList";
             this.skillList.Size = new System.Drawing.Size(342, 307);
@@ -4108,7 +4109,6 @@ namespace Assistant
             this.subScripts.Controls.Add(this.scriptEditor);
             this.subScripts.Controls.Add(this.scriptList);
             this.subScripts.Controls.Add(this.newScript);
-            this.subScripts.Controls.Add(this.loopScript);
             this.subScripts.Controls.Add(this.setScriptHotkey);
             this.subScripts.Controls.Add(this.recordScript);
             this.subScripts.Controls.Add(this.playScript);
@@ -4197,15 +4197,6 @@ namespace Assistant
             this.newScript.Text = "New";
             this.newScript.UseVisualStyleBackColor = true;
             this.newScript.Click += new System.EventHandler(this.newScript_Click);
-            // 
-            // loopScript
-            // 
-            this.loopScript.Location = new System.Drawing.Point(441, 255);
-            this.loopScript.Name = "loopScript";
-            this.loopScript.Size = new System.Drawing.Size(54, 24);
-            this.loopScript.TabIndex = 17;
-            this.loopScript.Text = "Loop";
-            this.loopScript.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // setScriptHotkey
             // 
@@ -4877,7 +4868,6 @@ namespace Assistant
         private FastColoredTextBoxNS.FastColoredTextBox scriptEditor;
         private ListBox scriptList;
         private Button newScript;
-        private CheckBox loopScript;
         private Button setScriptHotkey;
         private Button recordScript;
         private Button playScript;

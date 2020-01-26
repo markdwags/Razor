@@ -181,6 +181,9 @@ namespace UOSteam
         {
             ASTNode node = new ASTNode(ASTNodeType.SCRIPT, null, null);
 
+            if (string.IsNullOrEmpty(fname))
+                return node;
+
             using (var file = new StreamReader(fname))
             {
                 int i = 0;
@@ -388,6 +391,12 @@ namespace UOSteam
                     statement.Push(ASTNodeType.STOP, null);
                     break;
                 case "replay":
+                    if (lexemes.Length > 1)
+                        throw new SyntaxError(node, "Script compilation error");
+
+                    statement.Push(ASTNodeType.REPLAY, null);
+                    break;
+                case "loop":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 

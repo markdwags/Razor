@@ -37,10 +37,10 @@ namespace Assistant
 
         internal static Item FindItem(Serial serial)
         {
-            Item it;
-            m_Items.TryGetValue(serial, out it);
+            m_Items.TryGetValue(serial, out Item it);
             return it;
         }
+
         internal static Item FindItemByType(int itemId)
         {
             foreach (KeyValuePair<Serial, Item> item in m_Items)
@@ -52,22 +52,35 @@ namespace Assistant
             return null;
         }
 
-        internal static Item FindItemByName(string name)
+        internal static List<Item> FindItemsByName(string name)
         {
+            List<Item> items = new List<Item>();
+
             foreach (KeyValuePair<Serial, Item> item in m_Items)
             {
                 if (item.Value.DisplayName.ToLower().Equals(name.ToLower()))
-                    return item.Value;
+                    items.Add(item.Value);
             }
 
-            return null;
+            return items;
         }
 
         internal static Mobile FindMobile(Serial serial)
         {
-            Mobile m;
-            m_Mobiles.TryGetValue(serial, out m);
+            m_Mobiles.TryGetValue(serial, out Mobile m);
             return m;
+        }
+
+        internal static List<Mobile> FindMobilesByName(string name)
+        {
+            List<Mobile> mobiles = new List<Mobile>();
+            foreach (KeyValuePair<Serial, Mobile> item in m_Mobiles)
+            {
+                if (item.Value.Name.ToLower().Equals(name.ToLower()))
+                    mobiles.Add(item.Value);
+            }
+
+            return mobiles;
         }
 
         internal static List<Mobile> MobilesInRange(int range)

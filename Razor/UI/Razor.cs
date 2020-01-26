@@ -6071,18 +6071,33 @@ namespace Assistant
 
         private void playScript_Click(object sender, EventArgs e)
         {
-            if (scriptList.SelectedIndex < 0)
+            if (ScriptManager.Running)
+            {
+                ScriptManager.StopScript();
                 return;
+            }
 
-            ScriptManager.PlayScript((string) scriptList.SelectedItem, true);
+            if (scriptList.SelectedIndex < 0 && !string.IsNullOrEmpty(scriptEditor.Text))
+            {
+                ScriptManager.PlayScript(string.Empty, true);
+            }
+            else if (scriptList.SelectedIndex >= 0)
+            {
+                ScriptManager.PlayScript((ScriptManager.RazorScript)scriptList.SelectedItem, true);
+            }
         }
 
-        public void LockScripts(bool enabled)
+        public void LockScriptUI(bool enabled)
         {
-            scriptEditor.Enabled = enabled;
-            playScript.Enabled = enabled;
-            recordScript.Enabled = enabled;
-            setScriptHotkey.Enabled = enabled;
+            Engine.MainWindow.SafeAction(s =>
+            {
+                scriptEditor.Enabled = !enabled;
+                recordScript.Enabled = !enabled;
+                setScriptHotkey.Enabled = !enabled;
+                scriptList.Enabled = !enabled;
+
+                playScript.Text = !enabled ? "Play" : "Stop";
+            });
         }
 
         private void onScriptReload(object sender, System.EventArgs e)
@@ -6162,7 +6177,14 @@ namespace Assistant
 
                 File.CreateText(path).Close();
 
-                ScriptManager.AddHotkey(Path.GetFileNameWithoutExtension(path));
+                ScriptManager.RazorScript script = new ScriptManager.RazorScript
+                {
+                    Script = new Script(Lexer.Lex(File.ReadAllLines(path))),
+                    Name = name,
+                    Path = path
+                };
+
+                ScriptManager.AddHotkey(script);
 
                 ScriptManager.RedrawScripts();
             }
@@ -6173,27 +6195,30 @@ namespace Assistant
             if (scriptList.SelectedIndex < 0)
                 return;
 
-            string path = $"{ScriptManager.ScriptPath}\\{scriptList.SelectedItem}.razor";
+            int curIndex = scriptList.SelectedIndex;
 
-            File.WriteAllText(path, scriptEditor.Text);
+            ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
+            File.WriteAllText(script.Path, scriptEditor.Text);
 
             ScriptManager.RedrawScripts();
+
+            scriptList.SelectedIndex = curIndex;
         }
 
         private void deleteScript_Click(object sender, EventArgs e)
         {
             if (scriptList.SelectedIndex < 0)
                 return;
-            
+
+            ScriptManager.RazorScript script = (ScriptManager.RazorScript)scriptList.SelectedItem;
+
             if (MessageBox.Show(this, Language.Format(LocString.DelConf, $"{scriptList.SelectedItem}"),
                     "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 try
                 {
-                    string path = $"{ScriptManager.ScriptPath}\\{scriptList.SelectedItem}.razor";
-                    File.Delete(path);
-
-                    ScriptManager.AddHotkey(Path.GetFileNameWithoutExtension(path));
+                    File.Delete(script.Path);
+                    ScriptManager.RemoveHotkey(script.Name);
                 }
                 catch
                 {
@@ -6206,7 +6231,29 @@ namespace Assistant
 
         private void setScriptHotkey_Click(object sender, EventArgs e)
         {
+            try
+            {
+                Engine.MainWindow.SafeAction(s =>
+                {
+                    Macro sel = GetMacroSel();
 
+                    tabs.SelectedTab = hotkeysTab;
+
+                    TreeNode resultNode = SearchTreeView(sel.GetName(), hotkeyTree.Nodes);
+
+                    if (resultNode != null)
+                    {
+                        KeyData hk = (KeyData)resultNode.Tag;
+
+                        hotkeyTree.SelectedNode = resultNode;
+                        key.Focus();
+                    }
+                });
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
     }

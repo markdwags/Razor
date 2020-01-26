@@ -15,13 +15,16 @@ namespace Assistant.Scripts
     {
         public static bool Recording { get; set; }
 
-        public static string ScriptPath
-        {
-            get { return $"{Config.GetInstallDirectory()}\\Scripts"; }
-        }
+        public static bool Running => ScriptRunning;
 
-        private static FastColoredTextBox _scriptEditor { get; set; }
-        private static ListBox _scriptList { get; set; }
+        private static  bool ScriptRunning { get; set; }
+
+        public static string ScriptPath => $"{Config.GetInstallDirectory()}\\Scripts";
+
+        public static RazorScript LastScript { get; set; }
+
+        private static FastColoredTextBox ScriptEditor { get; set; }
+        private static ListBox ScriptList { get; set; }
 
         private class ScriptTimer : Timer
         {
@@ -33,6 +36,17 @@ namespace Assistant.Scripts
             protected override void OnTick()
             {
                 Interpreter.ExecuteScripts();
+
+                if (Interpreter.ScriptCount > 0)
+                {
+                    Engine.MainWindow.LockScriptUI(true);
+                    ScriptRunning = true;
+                }
+                else
+                {
+                    Engine.MainWindow.LockScriptUI(false);
+                    ScriptRunning = false;
+                }
 
                 /*if (Interpreter.ScriptCount > 0)
                 {
@@ -57,11 +71,11 @@ namespace Assistant.Scripts
 
             foreach (RazorScript script in Scripts)
             {
-                AddHotkey(script.Name);
+                AddHotkey(script);
             }
         }
 
-        public static void AddHotkey(string script)
+        public static void AddHotkey(RazorScript script)
         {
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayA1, script), HotkeyCallback, script);
         }
@@ -73,36 +87,57 @@ namespace Assistant.Scripts
 
         public static void OnHotKey(ref object state)
         {
-            PlayScript((string) state, false);
+            PlayScript((RazorScript) state);
         }
 
-        public static void PlayScript(string scriptName, bool useEditorContent)
+        public static void StopScript()
         {
-            if (World.Player == null || _scriptEditor == null)
+            Interpreter.StartScript(new Script(Lexer.Lex(string.Empty)));
+        }
+
+        public static void PlayScript(string scriptName, bool useEditorContent = false)
+        {
+            RazorScript script = Scripts[GetScriptIndex(scriptName)];
+            PlayScript(script, useEditorContent);
+        }
+
+        public static void PlayScript(RazorScript razorScript, bool useEditorContent = false)
+        {
+            if (World.Player == null || ScriptEditor == null)
                 return;
 
-            _scriptEditor.SafeAction(s =>
-            {
-                ASTNode root;
-                root = Lexer.Lex(useEditorContent ? _scriptEditor.Lines.ToArray() : Scripts[GetScriptIndex(scriptName)].Content);
-                Script script = new Script(root);
-                Interpreter.StartScript(script);
-            });
+            _startPause = DateTime.MaxValue; // reset wait timers
 
-            //Engine.MainWindow.SafeAction(s => s.PlayScript());
+            Script script = null;
+
+            if (useEditorContent) // this check exists so people don't need to click save every time to test changes
+            {
+                ScriptEditor.SafeAction(s =>
+                {
+                    script = new Script(Lexer.Lex(ScriptEditor.Lines.ToArray()));
+                });
+
+                Interpreter.StartScript(script);
+            }
+            else
+            {
+                Interpreter.StartScript(razorScript.Script);
+            }
+
+            LastScript = razorScript;
         }
 
-        private static ScriptTimer _timer { get; }
+        private static ScriptTimer Timer { get; }
 
         static ScriptManager()
         {
-            _timer = new ScriptTimer();
+            Timer = new ScriptTimer();
         }
 
         public static void SetControls(FastColoredTextBox scriptEditor, ListBox scriptList)
         {
-            _scriptEditor = scriptEditor;
-            _scriptList = scriptList;
+            ScriptEditor = scriptEditor;
+            ScriptList = scriptList;
         }
 
         public static void OnLogin()
@@ -111,29 +146,34 @@ namespace Assistant.Scripts
             Aliases.Register();
             Expressions.Register();
 
-            _timer.Start();
+            Timer.Start();
         }
 
         public static void OnLogout()
         {
-            _timer.Stop();
+            Timer.Stop();
         }
 
         public static void StartEngine()
         {
-            _timer.Start();
+            Timer.Start();
         }
 
         public static void StopEngine()
         {
-            _timer.Stop();
+            Timer.Stop();
         }
 
         public class RazorScript
         {
             public string Path { get; set; }
-            public string[] Content { get; set; }
+            public Script Script { get; set; }
             public string Name { get; set; }
+
+            public override string ToString()
+            {
+                return Name;
+            }
         }
 
         public static List<RazorScript> Scripts { get; set; }
@@ -144,9 +184,11 @@ namespace Assistant.Scripts
 
             foreach (string file in Directory.GetFiles(ScriptPath, "*.razor"))
             {
+                ASTNode root = Lexer.Lex(File.ReadAllLines(file));
+
                 Scripts.Add(new RazorScript
                 {
-                    Content = File.ReadAllLines(file),
+                    Script = new Script(root),
                     Name = Path.GetFileNameWithoutExtension(file),
                     Path = file
                 });
@@ -157,7 +199,7 @@ namespace Assistant.Scripts
         {
             if (Recording)
             {
-                _scriptEditor?.AppendText(command + Environment.NewLine);
+                ScriptEditor?.AppendText(command + Environment.NewLine);
 
                 return true;
             }
@@ -185,20 +227,20 @@ namespace Assistant.Scripts
 
         private static void SetHighlightLine(int iline, Color background)
         {
-            for (int i = 0; i < _scriptEditor.LinesCount; i++)
+            for (int i = 0; i < ScriptEditor.LinesCount; i++)
             {
-                _scriptEditor[i].BackgroundBrush = _scriptEditor.BackBrush;
+                ScriptEditor[i].BackgroundBrush = ScriptEditor.BackBrush;
             }
 
-            _scriptEditor[iline].BackgroundBrush = new SolidBrush(background);
-            _scriptEditor.Invalidate();
+            ScriptEditor[iline].BackgroundBrush = new SolidBrush(background);
+            ScriptEditor.Invalidate();
         }
 
         private static FastColoredTextBoxNS.AutocompleteMenu _autoCompleteMenu;
 
         public static void InitScriptEditor()
         {
-            _autoCompleteMenu = new AutocompleteMenu(_scriptEditor);
+            _autoCompleteMenu = new AutocompleteMenu(ScriptEditor);
             //_autoCompleteMenu.Items.ImageList = imageList2;
             _autoCompleteMenu.SearchPattern = @"[\w\.:=!<>]";
             _autoCompleteMenu.AllowTabKey = true;
@@ -332,7 +374,7 @@ namespace Assistant.Scripts
                 new Size(_autoCompleteMenu.Items.Width + 20, _autoCompleteMenu.Items.Height);
             _autoCompleteMenu.Items.Width = _autoCompleteMenu.Items.Width + 20;
 
-            _scriptEditor.Language = FastColoredTextBoxNS.Language.Razor;
+            ScriptEditor.Language = FastColoredTextBoxNS.Language.Razor;
         }
 
         public class ToolTipDescriptions
@@ -443,7 +485,7 @@ namespace Assistant.Scripts
 
         public static void RedrawScripts()
         {
-            _scriptList.SafeAction(s =>
+            ScriptList.SafeAction(s =>
             {
                 s.BeginUpdate();
                 s.Items.Clear();
@@ -453,7 +495,7 @@ namespace Assistant.Scripts
                 foreach (RazorScript script in Scripts)
                 {
                     if (script != null)
-                        s.Items.Add(script.Name);
+                        s.Items.Add(script);
                 }
 
                 s.EndUpdate();
@@ -483,7 +525,7 @@ namespace Assistant.Scripts
             {
                 _startPause = DateTime.MaxValue;
                 _pauseDuration = TimeSpan.FromMilliseconds(ms);
-                return false; //pause limit succeeded
+                return false; //pause limit exceeded
             }
 
             return true; // keep on pausing

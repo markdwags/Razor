@@ -11,7 +11,6 @@ namespace Assistant
     public class DressList
     {
         private static readonly List<DressList> m_List = new List<DressList>();
-        internal static DressList _Temporary = null;
         private static ListBox _dressList;
         private static ListBox _dressItems;
 

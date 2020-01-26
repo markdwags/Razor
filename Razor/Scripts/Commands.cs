@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Assistant.Core;
 using UOSteam;
 
@@ -17,7 +18,6 @@ namespace Assistant.Scripts
             // Dress
             Interpreter.RegisterCommandHandler("dress", DressCommand); //DressAction
             Interpreter.RegisterCommandHandler("undress", UnDressCommand); //UndressAction
-            Interpreter.RegisterCommandHandler("dressconfig", DressConfig);
 
             // Targets
             Interpreter.RegisterCommandHandler("target", Target); //Absolute Target
@@ -79,9 +79,7 @@ namespace Assistant.Scripts
 
             // Script related
             Interpreter.RegisterCommandHandler("setvar", DummyCommand); //SetMacroVariableTargetAction
-            Interpreter.RegisterCommandHandler("loop", DummyCommand); //SetMacroVariableTargetAction
-            Interpreter.RegisterCommandHandler("replay", DummyCommand); //SetMacroVariableTargetAction
-            Interpreter.RegisterCommandHandler("script", PlayScript); //SetMacroVariableTargetAction
+            Interpreter.RegisterCommandHandler("script", PlayScript);
         }
 
         private static bool DummyCommand(string command, Argument[] args, bool quiet, bool force)
@@ -95,7 +93,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: target (serial) OR (x) (y) (z)");
+                ScriptManager.Error("Usage: target (serial) OR (x) (y) (z)", ScriptManager.LastScript.Name);
                 return true;
             }
 
@@ -146,15 +144,35 @@ namespace Assistant.Scripts
 
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: targettype (graphic) [isMobile]");
+                ScriptManager.Error("Usage: targettype (graphic) OR ('name of item or mobile type')");
                 return true;
             }
-            
-            ushort gfx = Utility.ToUInt16(args[0].AsString(), 0);
-            bool.TryParse(args[1].AsString(), out var isMobile);
+
+            string gfxStr = args[0].AsString();
+            Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
             ArrayList list = new ArrayList();
-            if (isMobile)
+
+            // No graphic id, maybe searching by name?
+            if (gfx == 0)
+            {
+                List<Item> items = World.FindItemsByName(gfxStr);
+
+                if (items.Count > 0)
+                {
+                    list.AddRange(items);
+                }
+                else // try to find a mobile
+                {
+                    List<Mobile> mobiles = World.FindMobilesByName(gfxStr);
+
+                    if (mobiles.Count > 0)
+                    {
+                        list.AddRange(mobiles);
+                    }
+                }
+            }
+            else // check if they are mobile or an item
             {
                 foreach (Mobile find in World.MobilesInRange())
                 {
@@ -163,14 +181,15 @@ namespace Assistant.Scripts
                         list.Add(find);
                     }
                 }
-            }
-            else
-            {
-                foreach (Item i in World.Items.Values)
+
+                if (list.Count == 0)
                 {
-                    if (i.ItemID == gfx && !i.IsInBank)
+                    foreach (Item i in World.Items.Values)
                     {
-                        list.Add(i);
+                        if (i.ItemID == gfx && !i.IsInBank)
+                        {
+                            list.Add(i);
+                        }
                     }
                 }
             }
@@ -181,8 +200,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType,
-                    isMobile ? $"Character [{gfx}]" : ((ItemID) gfx).ToString());
+                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, gfx.IsMobile ? $"Character [{gfx}]" : ((ItemID) gfx.Value).ToString());
             }
 
             return true;
@@ -380,85 +398,82 @@ namespace Assistant.Scripts
             }
 
             string gfxStr = args[0].AsString();
-            ushort gfx = Utility.ToUInt16(gfxStr, 0);
+            Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
             Serial click = Serial.Zero;
-            bool isItem = false;
-            Item item;
+            List<Item> items = new List<Item>();
 
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                item = World.FindItemByName(gfxStr);
+                items = World.FindItemsByName(gfxStr);
 
-                if (item == null)
+                if (items.Count == 0)
                 {
                     ScriptManager.Error($"Script Error: Couldn't find '{gfxStr}'");
                     return true;
                 }
+
+                click = items[Utility.Random(items.Count)].Serial;
             }
             else // Check backpack first
             {
-                item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(gfx) : null;
+                if (World.Player.Backpack != null)
+                {
+                    Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
+
+                    if (i != null)
+                        items.Add(i);
+                }
             }
 
             // Not in backpack? Lets check the world
-            if (item == null)
+            if (items.Count == 0)
             {
-                List<Item> list = new List<Item>();
                 foreach (Item i in World.Items.Values)
                 {
                     if (i.ItemID == gfx && i.RootContainer == null)
                     {
-                        isItem = true;
-
-                        list.Add(i);
+                        items.Add(i);
                     }
                 }
 
-                if (list.Count == 0)
+                if (items.Count == 0)
                 {
                     foreach (Item i in World.Items.Values)
                     {
                         if (i.ItemID == gfx && !i.IsInBank)
                         {
-                            isItem = true;
-
-                            list.Add(i);
+                            items.Add(i);
                         }
                     }
                 }
 
-                if (list.Count > 0)
-                    click = list[Utility.Random(list.Count)].Serial;
-            }
-            else
-            {
-                isItem = true;
-                click = item.Serial;
+                if (items.Count > 0)
+                    click = items[Utility.Random(items.Count)].Serial;
             }
 
             // Still no item? Mobile check!
-            if (item == null)
+            if (items.Count == 0)
             {
-                List<Mobile> list = new List<Mobile>();
+                List<Mobile> mobiles = new List<Mobile>();
                 foreach (Mobile m in World.MobilesInRange())
                 {
                     if (m.Body == gfx)
                     {
-                        list.Add(m);
+                        mobiles.Add(m);
                     }
                 }
 
-                if (list.Count > 0)
-                    click = list[Utility.Random(list.Count)].Serial;
+                if (mobiles.Count > 0)
+                    click = mobiles[Utility.Random(mobiles.Count)].Serial;
             }
 
             if (click != Serial.Zero)
                 PlayerData.DoubleClick(click);
             else
                 World.Player.SendMessage(MsgLevel.Force, LocString.NoItemOfType,
-                    isItem ? ((ItemID) gfx).ToString() : $"(Character) 0x{gfx:X}");
+                    gfx.IsItem ? ((ItemID) gfx.Value).ToString() : $"(Character) 0x{gfx:X}");
 
             return true;
         }
@@ -467,7 +482,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: useobject (serial)");
+                ScriptManager.Error("Usage: dclick/useobject (serial)");
                 return true;
             }
 
@@ -829,62 +844,43 @@ namespace Assistant.Scripts
 
         public static bool DressCommand(string command, Argument[] args, bool quiet, bool force)
         {
-            //we're using a named dresslist or a temporary dresslist?
             if (args.Length == 0)
             {
-                if (DressList._Temporary != null)
-                    DressList._Temporary.Dress();
-                else if (!quiet)
-                    ScriptManager.Error(
-                        "No dresslist specified and no temporary dressconfig present - usage: dress ['dresslist']");
+                ScriptManager.Error("Usage: dress ('name of dress list')");
+                return true;
             }
-            else
-            {
-                var d = DressList.Find(args[0].AsString());
-                if (d != null)
-                    d.Dress();
-                else if (!quiet)
-                    ScriptManager.Error($"dresslist {args[0].AsString()} not found");
-            }
+
+            DressList d = DressList.Find(args[0].AsString());
+
+            if (d != null)
+                d.Dress();
+            else if (!quiet)
+                ScriptManager.Error($"'{args[0].AsString()}' not found");
 
             return true;
         }
 
         public static bool UnDressCommand(string command, Argument[] args, bool quiet, bool force)
         {
-            //we're using a named dresslist or a temporary dresslist?
-            if (args.Length == 0)
+            if (args.Length == 0) // full naked!
             {
-                if (DressList._Temporary != null)
-                    DressList._Temporary.Undress();
-                else if (!quiet)
-                    ScriptManager.Error(
-                        "No dresslist specified and no temporary dressconfig present - usage: undress ['dresslist']");
+                HotKeys.UndressHotKeys.OnUndressAll();
             }
-            else
+            else if (args.Length == 1) // either a dress list item or a layer
             {
-                var d = DressList.Find(args[0].AsString());
+                DressList d = DressList.Find(args[0].AsString());
+
                 if (d != null)
+                {
                     d.Undress();
-                else if (!quiet)
-                    ScriptManager.Error($"dresslist {args[0].AsString()} not found");
-            }
-
-            return true;
-        }
-
-        public static bool DressConfig(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (DressList._Temporary == null)
-                DressList._Temporary = new DressList("dressconfig");
-
-            DressList._Temporary.Items.Clear();
-            for (int i = 0; i < World.Player.Contains.Count; i++)
-            {
-                Item item = World.Player.Contains[i];
-                if (item.Layer <= Layer.LastUserValid && item.Layer != Layer.Backpack && item.Layer != Layer.Hair &&
-                    item.Layer != Layer.FacialHair)
-                    DressList._Temporary.Items.Add(item.Serial);
+                }
+                else // lets find the layer
+                {
+                    if (Enum.TryParse(args[0].AsString(), true, out Layer layer))
+                    {
+                        Dress.Unequip(layer);
+                    }
+                }
             }
 
             return true;
@@ -994,11 +990,6 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool Loop(string command, Argument[] args, bool quiet, bool force)
-        {
-            return true;
-        }
-
         public static bool PlayScript(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
@@ -1007,7 +998,7 @@ namespace Assistant.Scripts
                 return true;
             }
 
-            ScriptManager.PlayScript(args[0].AsString(), false);
+            ScriptManager.PlayScript(args[0].AsString());
 
             return true;
         }
