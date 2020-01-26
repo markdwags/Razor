@@ -1363,10 +1363,10 @@ namespace Assistant
             this.subTargetFilterTab.Controls.Add(this.targetFilterAdd);
             this.subTargetFilterTab.Controls.Add(this.targetFilter);
             this.subTargetFilterTab.Controls.Add(this.targetFilterEnabled);
-            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 22);
+            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 24);
             this.subTargetFilterTab.Name = "subTargetFilterTab";
             this.subTargetFilterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 288);
+            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 286);
             this.subTargetFilterTab.TabIndex = 2;
             this.subTargetFilterTab.Text = "Target Filter";
             // 
@@ -1440,9 +1440,9 @@ namespace Assistant
             this.subSoundMusicTab.Controls.Add(this.playSound);
             this.subSoundMusicTab.Controls.Add(this.soundFilterEnabled);
             this.subSoundMusicTab.Controls.Add(this.soundFilterList);
-            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 22);
+            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 24);
             this.subSoundMusicTab.Name = "subSoundMusicTab";
-            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 288);
+            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 286);
             this.subSoundMusicTab.TabIndex = 3;
             this.subSoundMusicTab.Text = "Sound & Music  ";
             // 
@@ -4121,7 +4121,7 @@ namespace Assistant
             // 
             // saveScript
             // 
-            this.saveScript.Location = new System.Drawing.Point(56, 212);
+            this.saveScript.Location = new System.Drawing.Point(66, 212);
             this.saveScript.Name = "saveScript";
             this.saveScript.Size = new System.Drawing.Size(51, 25);
             this.saveScript.TabIndex = 22;
@@ -4131,9 +4131,9 @@ namespace Assistant
             // 
             // deleteScript
             // 
-            this.deleteScript.Location = new System.Drawing.Point(6, 243);
+            this.deleteScript.Location = new System.Drawing.Point(3, 243);
             this.deleteScript.Name = "deleteScript";
-            this.deleteScript.Size = new System.Drawing.Size(48, 25);
+            this.deleteScript.Size = new System.Drawing.Size(51, 25);
             this.deleteScript.TabIndex = 21;
             this.deleteScript.Text = "Delete";
             this.deleteScript.UseVisualStyleBackColor = true;
@@ -4158,7 +4158,6 @@ namespace Assistant
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.scriptEditor.CharHeight = 15;
             this.scriptEditor.CharWidth = 7;
-            this.scriptEditor.CommentPrefix = "#";
             this.scriptEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.scriptEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.scriptEditor.Font = new System.Drawing.Font("Consolas", 9.75F);
@@ -4168,14 +4167,14 @@ namespace Assistant
             this.scriptEditor.LeftBracket = '(';
             this.scriptEditor.LeftBracket2 = '[';
             this.scriptEditor.LineNumberColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(144)))), ((int)(((byte)(175)))));
-            this.scriptEditor.Location = new System.Drawing.Point(113, 6);
+            this.scriptEditor.Location = new System.Drawing.Point(123, 6);
             this.scriptEditor.Name = "scriptEditor";
             this.scriptEditor.Paddings = new System.Windows.Forms.Padding(0);
             this.scriptEditor.RightBracket = ')';
             this.scriptEditor.RightBracket2 = ']';
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
-            this.scriptEditor.Size = new System.Drawing.Size(316, 273);
+            this.scriptEditor.Size = new System.Drawing.Size(306, 273);
             this.scriptEditor.TabIndex = 20;
             this.scriptEditor.Zoom = 100;
             // 
@@ -4185,13 +4184,13 @@ namespace Assistant
             this.scriptList.ItemHeight = 15;
             this.scriptList.Location = new System.Drawing.Point(3, 7);
             this.scriptList.Name = "scriptList";
-            this.scriptList.Size = new System.Drawing.Size(104, 199);
+            this.scriptList.Size = new System.Drawing.Size(114, 199);
             this.scriptList.TabIndex = 19;
             this.scriptList.SelectedIndexChanged += new System.EventHandler(this.scriptList_SelectedIndexChanged);
             // 
             // newScript
             // 
-            this.newScript.Location = new System.Drawing.Point(6, 212);
+            this.newScript.Location = new System.Drawing.Point(3, 212);
             this.newScript.Name = "newScript";
             this.newScript.Size = new System.Drawing.Size(51, 25);
             this.newScript.TabIndex = 18;

@@ -73,10 +73,15 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("setability", SetAbility); //SetAbilityAction
             Interpreter.RegisterCommandHandler("setlasttarget", DummyCommand); //SetLastTargetAction
             Interpreter.RegisterCommandHandler("lasttarget", LastTarget); //LastTargetAction
-            Interpreter.RegisterCommandHandler("setvar", DummyCommand); //SetMacroVariableTargetAction
             Interpreter.RegisterCommandHandler("skill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("useskill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
+
+            // Script related
+            Interpreter.RegisterCommandHandler("setvar", DummyCommand); //SetMacroVariableTargetAction
+            Interpreter.RegisterCommandHandler("loop", DummyCommand); //SetMacroVariableTargetAction
+            Interpreter.RegisterCommandHandler("replay", DummyCommand); //SetMacroVariableTargetAction
+            Interpreter.RegisterCommandHandler("script", PlayScript); //SetMacroVariableTargetAction
         }
 
         private static bool DummyCommand(string command, Argument[] args, bool quiet, bool force)
@@ -986,6 +991,24 @@ namespace Assistant.Scripts
             if (!Targeting.DoLastTarget())
                 Targeting.ResendTarget();
             
+            return true;
+        }
+
+        public static bool Loop(string command, Argument[] args, bool quiet, bool force)
+        {
+            return true;
+        }
+
+        public static bool PlayScript(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                ScriptManager.Error("Usage: script 'name of script'");
+                return true;
+            }
+
+            ScriptManager.PlayScript(args[0].AsString(), false);
+
             return true;
         }
     }

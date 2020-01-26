@@ -62,7 +62,7 @@ namespace Assistant
             DressList.SetControls(dressList, dressItems);
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
-            ScriptManager.SetControls(scriptEditor);
+            ScriptManager.SetControls(scriptEditor, scriptList);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -652,7 +652,7 @@ namespace Assistant
             }
             else if (tabs.SelectedTab == scriptsTab)
             {
-                RedrawScripts();
+                ScriptManager.RedrawScripts();
             }
             else if (tabs.SelectedTab == moreOptTab)
             {
@@ -2683,23 +2683,6 @@ namespace Assistant
             }
 
             return null;
-        }
-
-        private void RedrawScripts()
-        {
-            scriptList.SafeAction(s =>
-            {
-                s.BeginUpdate();
-                s.Items.Clear();
-
-                foreach (string script in ScriptManager.GetScripts())
-                {
-                    if (script != null) 
-                        s.Items.Add(Path.GetFileNameWithoutExtension(script));
-                }
-
-                s.EndUpdate();
-            });
         }
 
         private void RedrawMacros()
@@ -6091,7 +6074,7 @@ namespace Assistant
             if (scriptList.SelectedIndex < 0)
                 return;
 
-            ScriptManager.PlayScript((string) scriptList.SelectedItem);
+            ScriptManager.PlayScript((string) scriptList.SelectedItem, true);
         }
 
         public void LockScripts(bool enabled)
@@ -6180,9 +6163,9 @@ namespace Assistant
                 File.CreateText(path).Close();
 
                 ScriptManager.AddHotkey(Path.GetFileNameWithoutExtension(path));
-            }
 
-            RedrawScripts();
+                ScriptManager.RedrawScripts();
+            }
         }
 
         private void saveScript_Click(object sender, EventArgs e)
@@ -6193,6 +6176,8 @@ namespace Assistant
             string path = $"{ScriptManager.ScriptPath}\\{scriptList.SelectedItem}.razor";
 
             File.WriteAllText(path, scriptEditor.Text);
+
+            ScriptManager.RedrawScripts();
         }
 
         private void deleteScript_Click(object sender, EventArgs e)
@@ -6216,7 +6201,7 @@ namespace Assistant
                 }
             }
 
-            RedrawScripts();
+            ScriptManager.RedrawScripts();
         }
 
         private void setScriptHotkey_Click(object sender, EventArgs e)

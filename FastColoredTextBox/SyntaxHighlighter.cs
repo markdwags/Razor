@@ -1473,30 +1473,13 @@ namespace FastColoredTextBoxNS
 
             RazorCommandRegex =
                 new Regex(
-                    @"\b(drop|usetype|lift|dclick|msg|say|hotkey|overhead|cast|sysmsg|pause|wait|target|targetrelloc|targettype|waitfortarget|useobject|waitforgump|waitforprompt|waitformenu)\b",
+                    @"\b(cast|dress|undress|dressconfig|target|targettype|targetrelloc|dress|drop|waitfortarget|wft|dclick|dclicktype|dclickvar|usetype|useobject|droprelloc|lift|lifttype|waitforgump|gumpresponse|gumpclose|menu|menuresponse|waitformenu|promptresponse|waitforprompt|hotkey|say|msg|overhead|sysmsg|wait|pause|waitforstat|setability|setlasttarget|lasttarget|setvar|skill|useskill|walk|script)\b",
                     RegexCompiledOption);
-            //RazorClassKeywordRegex = new Regex(@"\b(Player|Spells|Mobile|Mobiles|Item|Items|Misc|Target|Gumps|Journal|AutoLoot|Scavenger|Organizer|Restock|SellAgent|BuyAgent|Dress|Friend|BandageHeal|Statics|DPSMeter|PathFinding|Timer)\b", RegexCompiledOption);
-
-            /*string GenericProps = "Serial|Hue|Position|X|Y|Z|Contains|Weight";
-            string PlayerProps = "Str|Int|Dex|StatCap|AR|FireResistance|ColdResistance|EnergyResistance|PoisonResistance|Buffs|IsGhost|Gold|Luck|Followers|FollowersMax|MaxWeight|HasSpecial|Flying|StaticMount";
-            string MobileProps = "Name|Body|Color|Direction|Visible|Poisoned|YellowHits|Paralized|Human|WarMode|Female|Hits|HitsMax|Stam|StamMax|Mana|ManaMax|Backpack|Mount|Quiver|Notoriety|Map|InParty|Properties|Flying";
-            string ItemsProps = "Amount|IsBagOfSending|IsContainer|IsCorpse|IsDoor|IsInBank|Movable|OnGround|ItemID|RootContainer|Container|Durability|MaxDurability";
-            string StaticProps = "StaticID|StaticHue|StaticZ";
-            string ItemFilterProps = "Enabled|Graphics|Hues|RangeMin|RangeMax|Layers|Serials";
-            string MobileFilterProps = "Bodies|Notorieties|CheckIgnoreObject";
-            string PathFindProps = "DebugMessage|StopIfStuck|MaxRetry";
-            RazorPropsKeywordRegex = new Regex(String.Format(@"\b({0}|{1}|{2}|{3}|{4}|{5}|{6}|{7})\b", GenericProps, PlayerProps, MobileProps, ItemsProps, StaticProps, ItemFilterProps, MobileFilterProps, PathFindProps), RegexCompiledOption);*/
-
-            
         }
-
-        /// <summary>
-        /// Highlights Lua code
-        /// </summary>
-        /// <param name="range"></param>
+        
         public virtual void RazorSyntaxHighlight(Range range)
         {
-            range.tb.CommentPrefix = "#";
+            range.tb.CommentPrefix = "//";
 
             range.tb.LeftBracket = '(';
             range.tb.RightBracket = ')';

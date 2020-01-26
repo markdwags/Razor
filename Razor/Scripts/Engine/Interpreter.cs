@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net.Configuration;
 
 namespace UOSteam
 {
@@ -738,9 +739,10 @@ namespace UOSteam
 
         static Interpreter()
         {
-            Culture = new CultureInfo("en-EN", false);
-            Culture.NumberFormat.NumberDecimalSeparator = ".";
-            Culture.NumberFormat.NumberGroupSeparator = ",";
+            Culture = new CultureInfo("en-EN", false)
+            {
+                NumberFormat = {NumberDecimalSeparator = ".", NumberGroupSeparator = ","}
+            };
         }
 
         public static void RegisterExpressionHandler(string keyword, ExpressionHandler handler)
@@ -792,7 +794,8 @@ namespace UOSteam
 
         public static void StartScript(Script script)
         {
-            _scripts.AddLast(script);
+            _scripts.Clear();
+            _scripts.AddLast(script);            
         }
 
         public static void StopScript(Script script)
@@ -815,6 +818,11 @@ namespace UOSteam
             }
 
             return _scripts.Count > 0;
+        }
+
+        public static void ClearScripts()
+        {
+            _scripts.Clear();
         }
     }
 }

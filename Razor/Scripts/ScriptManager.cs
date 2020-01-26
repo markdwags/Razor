@@ -21,6 +21,7 @@ namespace Assistant.Scripts
         }
 
         private static FastColoredTextBox _scriptEditor { get; set; }
+        private static ListBox _scriptList { get; set; }
 
         private class ScriptTimer : Timer
         {
@@ -35,7 +36,7 @@ namespace Assistant.Scripts
 
                 /*if (Interpreter.ScriptCount > 0)
                 {
-                    int highlightLine = _scriptEditor.LinesCount - (Interpreter.ScriptCount - 1);
+                    int highlightLine = _scriptEditor.LinesCount - (Interpreter.ScriptCount + 1);
 
                     if (highlightLine < _scriptEditor.LinesCount - 1)
                         SetHighlightLine(highlightLine, Color.Yellow);
@@ -43,24 +44,26 @@ namespace Assistant.Scripts
             }
         }
 
-        private static HotKeyCallbackState _hotkeyCallback;
+        private static readonly HotKeyCallbackState HotkeyCallback = OnHotKey;
 
+        /// <summary>
+        /// This is called via reflection when the application starts up
+        /// </summary>
         public static void Initialize()
         {
-            //HotKey.Add(HKCategory.Macros, LocString.StopCurrent, new HotKeyCallback(HotKeyStop));
-            //HotKey.Add(HKCategory.Macros, LocString.PauseCurrent, new HotKeyCallback(HotKeyPause));
+            Scripts = new List<RazorScript>();
 
-            _hotkeyCallback = OnHotKey;
+            LoadScripts();
 
-            foreach (string script in GetScripts())
+            foreach (RazorScript script in Scripts)
             {
-                AddHotkey(Path.GetFileNameWithoutExtension(script));
+                AddHotkey(script.Name);
             }
         }
 
         public static void AddHotkey(string script)
         {
-            HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayA1, script), _hotkeyCallback, script);
+            HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayA1, script), HotkeyCallback, script);
         }
 
         public static void RemoveHotkey(string script)
@@ -70,22 +73,23 @@ namespace Assistant.Scripts
 
         public static void OnHotKey(ref object state)
         {
-            PlayScript((string) state);
+            PlayScript((string) state, false);
         }
 
-        public static void PlayScript(string scriptName)
+        public static void PlayScript(string scriptName, bool useEditorContent)
         {
             if (World.Player == null || _scriptEditor == null)
                 return;
 
             _scriptEditor.SafeAction(s =>
             {
-                var root = Lexer.Lex(GetScriptContext(scriptName));
+                ASTNode root;
+                root = Lexer.Lex(useEditorContent ? _scriptEditor.Lines.ToArray() : Scripts[GetScriptIndex(scriptName)].Content);
                 Script script = new Script(root);
                 Interpreter.StartScript(script);
             });
 
-            Engine.MainWindow.SafeAction(s => s.PlayScript());
+            //Engine.MainWindow.SafeAction(s => s.PlayScript());
         }
 
         private static ScriptTimer _timer { get; }
@@ -95,9 +99,10 @@ namespace Assistant.Scripts
             _timer = new ScriptTimer();
         }
 
-        public static void SetControls(FastColoredTextBox scriptEditor)
+        public static void SetControls(FastColoredTextBox scriptEditor, ListBox scriptList)
         {
             _scriptEditor = scriptEditor;
+            _scriptList = scriptList;
         }
 
         public static void OnLogin()
@@ -124,14 +129,28 @@ namespace Assistant.Scripts
             _timer.Stop();
         }
 
-        public static string[] GetScripts()
+        public class RazorScript
         {
-            return Directory.GetFiles(ScriptPath, "*.razor");
+            public string Path { get; set; }
+            public string[] Content { get; set; }
+            public string Name { get; set; }
         }
 
-        public static string[] GetScriptContext(string script)
+        public static List<RazorScript> Scripts { get; set; }
+
+        public static void LoadScripts()
         {
-            return File.ReadAllLines($"{ScriptPath}\\{script}.razor");
+            Scripts.Clear();
+
+            foreach (string file in Directory.GetFiles(ScriptPath, "*.razor"))
+            {
+                Scripts.Add(new RazorScript
+                {
+                    Content = File.ReadAllLines(file),
+                    Name = Path.GetFileNameWithoutExtension(file),
+                    Path = file
+                });
+            }
         }
 
         public static bool AddToScript(string command)
@@ -144,6 +163,17 @@ namespace Assistant.Scripts
             }
 
             return false;
+        }
+
+        private static int GetScriptIndex(string script)
+        {
+            for (int i = 0; i < Scripts.Count; i++)
+            {
+                if (Scripts[i].Name.ToLower().Contains(script.ToLower()))
+                    return i;
+            }
+
+            return -1;
         }
 
         public static void Error(string message, string scriptname = "")
@@ -193,7 +223,7 @@ namespace Assistant.Scripts
                 "waitfortarget", "wft", "dclick", "dclicktype", "dclickvar", "usetype", "useobject", "droprelloc",
                 "lift", "lifttype", "waitforgump", "gumpresponse", "gumpclose", "menu", "menuresponse", "waitformenu",
                 "promptresponse", "waitforprompt", "hotkey", "say", "msg", "overhead", "sysmsg", "wait", "pause",
-                "waitforstat", "setability", "setlasttarget", "lasttarget", "setvar", "skill", "useskill", "walk"
+                "waitforstat", "setability", "setlasttarget", "lasttarget", "setvar", "skill", "useskill", "walk", "script"
             };
 
             #endregion
@@ -409,6 +439,25 @@ namespace Assistant.Scripts
 
                 return lastPart;
             }
+        }
+
+        public static void RedrawScripts()
+        {
+            _scriptList.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                LoadScripts();
+
+                foreach (RazorScript script in Scripts)
+                {
+                    if (script != null)
+                        s.Items.Add(script.Name);
+                }
+
+                s.EndUpdate();
+            });
         }
 
 
