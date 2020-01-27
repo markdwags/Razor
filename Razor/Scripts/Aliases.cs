@@ -14,8 +14,13 @@ namespace Assistant.Scripts
 
 
             Interpreter.RegisterAliasHandler("stam", Stam);
+            Interpreter.RegisterAliasHandler("stamina", Stam);
             Interpreter.RegisterAliasHandler("maxstam", MaxStam);
+            Interpreter.RegisterAliasHandler("health", Hp);
+            Interpreter.RegisterAliasHandler("hits", Hp);
             Interpreter.RegisterAliasHandler("hp", Hp);
+            Interpreter.RegisterAliasHandler("maxhealth", MaxHp);
+            Interpreter.RegisterAliasHandler("maxhits", MaxHp);
             Interpreter.RegisterAliasHandler("maxhp", MaxHp);
             Interpreter.RegisterAliasHandler("mana", Mana);
             Interpreter.RegisterAliasHandler("maxmana", MaxMana);
@@ -145,7 +150,6 @@ namespace Assistant.Scripts
 
             return 0;
         }
-        
 
         private static uint Self(string alias)
         {
