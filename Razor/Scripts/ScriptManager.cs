@@ -35,7 +35,15 @@ namespace Assistant.Scripts
 
             protected override void OnTick()
             {
-                Interpreter.ExecuteScripts();
+                try
+                {
+                    Interpreter.ExecuteScripts();
+                }
+                catch (Exception ex)
+                {
+                    Error(ex.Message);
+                    Interpreter.ClearScripts();
+                }
 
                 if (Interpreter.ScriptCount > 0)
                 {
@@ -77,12 +85,12 @@ namespace Assistant.Scripts
 
         public static void AddHotkey(RazorScript script)
         {
-            HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayA1, script), HotkeyCallback, script);
+            HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayScript, script), HotkeyCallback, script);
         }
 
         public static void RemoveHotkey(string script)
         {
-            HotKey.Remove(Language.Format(LocString.PlayA1, script));
+            HotKey.Remove(Language.Format(LocString.PlayScript, script));
         }
 
         public static void OnHotKey(ref object state)

@@ -545,6 +545,7 @@ namespace Assistant
         InsertEndWhile,
         InsertDo,
         InsertDoWhile,
+        PlayScript,
         __End
     }
 

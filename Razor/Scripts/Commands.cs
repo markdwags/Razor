@@ -551,18 +551,17 @@ namespace Assistant.Scripts
         {
             if (args.Length < 3)
             {
-                ScriptManager.Error("Usage: droprelloc (x) (y) (z)");
+                ScriptManager.Error("Usage: droprelloc (x) (y)");
                 return true;
             }
 
             int x = args[0].AsInt();
             int y = args[1].AsInt();
-            int z = args[2].AsInt();
 
             if (DragDropManager.Holding != null)
                 DragDropManager.Drop(DragDropManager.Holding, null,
                     new Point3D((ushort)(World.Player.Position.X + x),
-                        (ushort)(World.Player.Position.Y + y), (short)(World.Player.Position.Z + z)));
+                        (ushort)(World.Player.Position.Y + y), World.Player.Position.Z));
             else
                 World.Player.SendMessage(LocString.MacroNoHold);
 
