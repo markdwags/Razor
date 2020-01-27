@@ -231,6 +231,17 @@ namespace Assistant.Scripts
             World.Player?.SendMessage(MsgLevel.Error, $"Script '{scriptname}' error => {message}");
         }
 
+        public static List<ASTNode> ParseArguments(ref ASTNode node)
+        {
+            List<ASTNode> args = new List<ASTNode>();
+            while (node != null)
+            {
+                args.Add(node);
+                node = node.Next();
+            }
+            return args;
+        }
+
         private delegate void SetHighlightLineDelegate(int iline, Color color);
 
         private static void SetHighlightLine(int iline, Color background)

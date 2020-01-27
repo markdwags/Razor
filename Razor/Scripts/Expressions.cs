@@ -32,6 +32,9 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("dex", Dex);
 
             Interpreter.RegisterExpressionHandler("skill", SkillExpression);
+
+            Interpreter.RegisterExpressionHandler("insysmsg", InSysMessage);
+            Interpreter.RegisterExpressionHandler("insysmessage", InSysMessage);
         }
 
         private static double FindAlias(string expression, Argument[] args, bool quiet)
@@ -45,6 +48,30 @@ namespace Assistant.Scripts
                 return 0;
 
             return 1;
+        }
+
+        private static double InSysMessage(string expression, Argument[] args, bool quiet)
+        {
+            if (args.Length == 0)
+            {
+                ScriptManager.Error("Usage: insysmsg ('text')");
+                return 0;
+            }
+
+            string text = args[0].AsString();
+
+            for (int i = PacketHandlers.SysMessages.Count - 1; i >= 0; i--)
+            {
+                string sys = PacketHandlers.SysMessages[i];
+
+                if (sys.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    PacketHandlers.SysMessages.RemoveRange(0, i + 1);
+                    return 1;
+                }
+            }
+
+            return 0;
         }
 
         private static double Mana(string expression, Argument[] args, bool quiet)
@@ -147,7 +174,7 @@ namespace Assistant.Scripts
         private static double SkillExpression(string expression, Argument[] args, bool quiet)
         {
             if (args.Length < 1)
-                throw new ArgumentException("Usage: skill (name)");
+                throw new ArgumentException("Usage: skill ('name of skill')");
 
             if (World.Player == null)
                 return 0;
