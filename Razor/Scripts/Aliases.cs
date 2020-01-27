@@ -137,10 +137,15 @@ namespace Assistant.Scripts
 
         private static uint Last(string alias)
         {
-            if (Targeting.LastTargetInfo == null)
+            /*if (Targeting.LastTargetInfo == null)
                 return 0;
 
-            return Targeting.LastTargetInfo.Serial;
+            return Targeting.LastTargetInfo.Serial;*/
+
+            if (!Targeting.DoLastTarget()) //Targeting.LastTarget( true );
+                Targeting.ResendTarget();
+
+            return 0;
         }
 
         private static uint LastObject(string alias)

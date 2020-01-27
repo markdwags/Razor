@@ -977,12 +977,6 @@ namespace Assistant.Scripts
         
         public static bool LastTarget(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 1)
-            {
-                ScriptManager.Error("Usage: lasttarget");
-                return true;
-            }
-
             if (!Targeting.DoLastTarget())
                 Targeting.ResendTarget();
             
