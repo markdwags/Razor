@@ -180,6 +180,9 @@ namespace UOSteam
         {
             ASTNode node = new ASTNode(ASTNodeType.SCRIPT, null, null);
 
+            if (string.IsNullOrEmpty(fname))
+                return node;
+
             using (var file = new StreamReader(fname))
             {
                 int i = 0;
