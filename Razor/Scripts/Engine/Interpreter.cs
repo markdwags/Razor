@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Net.Configuration;
+using System.Net;
 
 namespace UOSteam
 {
@@ -17,7 +17,7 @@ namespace UOSteam
 
     internal class Scope
     {
-        public Dictionary<string, object> Namespace = new Dictionary<string, object>();
+        public Dictionary<string, Argument> Namespace = new Dictionary<string, Argument>();
 
         public readonly ASTNode StartNode;
         public readonly Scope Parent;
@@ -32,10 +32,12 @@ namespace UOSteam
     public class Argument
     {
         private ASTNode _node;
+        private Script _script;
 
-        public Argument(ASTNode node)
+        public Argument(Script script, ASTNode node)
         {
             _node = node;
+            _script = script;
         }
 
         // Treat the argument as an integer
@@ -43,6 +45,11 @@ namespace UOSteam
         {
             if (_node.Lexeme == null)
                 throw new RunTimeError(_node, "Cannot convert argument to int");
+
+            // Try to resolve it as a scoped variable first
+            var arg = _script.Lookup(_node.Lexeme);
+            if (arg != null)
+                return arg.AsInt();
 
             int val;
 
@@ -63,6 +70,11 @@ namespace UOSteam
             if (_node.Lexeme == null)
                 throw new RunTimeError(_node, "Cannot convert argument to uint");
 
+            // Try to resolve it as a scoped variable first
+            var arg = _script.Lookup(_node.Lexeme);
+            if (arg != null)
+                return arg.AsUInt();
+
             uint val;
 
             if (_node.Lexeme.StartsWith("0x"))
@@ -75,7 +87,6 @@ namespace UOSteam
 
             throw new RunTimeError(_node, "Cannot convert argument to uint");
         }
-
         public ushort AsUShort()
         {
             if (_node.Lexeme == null)
@@ -93,7 +104,6 @@ namespace UOSteam
 
             throw new RunTimeError(_node, "Cannot convert argument to ushort");
         }
-
         // Treat the argument as a serial or an alias. Aliases will
         // be automatically resolved to serial numbers.
         public uint AsSerial()
@@ -101,9 +111,13 @@ namespace UOSteam
             if (_node.Lexeme == null)
                 throw new RunTimeError(_node, "Cannot convert argument to serial");
 
-            // Resolving aliases takes precedence
-            uint serial = Interpreter.GetAlias(_node.Lexeme);
+            // Try to resolve it as a scoped variable first
+            var arg = _script.Lookup(_node.Lexeme);
+            if (arg != null)
+                return arg.AsSerial();
 
+            // Resolve it as a global alias next
+            uint serial = Interpreter.GetAlias(_node.Lexeme);
             if (serial != uint.MaxValue)
                 return serial;
 
@@ -116,6 +130,11 @@ namespace UOSteam
             if (_node.Lexeme == null)
                 throw new RunTimeError(_node, "Cannot convert argument to string");
 
+            // Try to resolve it as a scoped variable first
+            var arg = _script.Lookup(_node.Lexeme);
+            if (arg != null)
+                return arg.AsString();
+
             return _node.Lexeme;
         }
     }
@@ -126,15 +145,17 @@ namespace UOSteam
 
         private Scope _scope;
 
-        private object Lookup(string name)
+        public Argument Lookup(string name)
         {
             var scope = _scope;
-            object result = null;
+            Argument result = null;
 
             while (scope != null)
             {
                 if (scope.Namespace.TryGetValue(name, out result))
                     return result;
+
+                scope = scope.Parent;
             }
 
             return result;
@@ -171,7 +192,7 @@ namespace UOSteam
                         return args.ToArray();
                 }
 
-                args.Add(new Argument(node));
+                args.Add(new Argument(this, node));
 
                 node = node.Next();
             }
@@ -419,8 +440,81 @@ namespace UOSteam
 
                     break;
                 case ASTNodeType.FOR:
-                    PushScope(node);
-                    throw new RunTimeError(node, "For loops are not supported yet");
+                    {
+                        // When we first enter the loop, push a new scope
+                        if (_scope.StartNode != node)
+                        {
+                            PushScope(node);
+
+                            // Grab the arguments
+                            var max = node.FirstChild();
+
+                            if (max.Type != ASTNodeType.INTEGER)
+                                throw new RunTimeError(max, "Invalid for loop syntax");
+
+                            // Create a dummy argument that acts as our loop variable
+                            var iter = new ASTNode(ASTNodeType.INTEGER, "0", node);
+
+                            _scope.Namespace[node.GetHashCode().ToString()] = new Argument(this, iter);
+                        }
+                        else
+                        {
+                            // Increment the iterator argument
+                            var arg = _scope.Namespace[node.GetHashCode().ToString()];
+
+                            var iter = new ASTNode(ASTNodeType.INTEGER, (arg.AsUInt() + 1).ToString(), node);
+
+                            _scope.Namespace[node.GetHashCode().ToString()] = new Argument(this, iter);
+                        }
+
+                        // Check loop condition
+                        var i = _scope.Namespace[node.GetHashCode().ToString()];
+
+                        // Grab the max value to iterate to
+                        node = node.FirstChild();
+                        var end = new Argument(this, node);
+
+                        if (i.AsUInt() < end.AsUInt())
+                        {
+                            // enter the loop
+                            _statement = _statement.Next();
+                        }
+                        else
+                        {
+                            // Walk until the end of the loop
+                            _statement = _statement.Next();
+
+                            depth = 0;
+
+                            while (_statement != null)
+                            {
+                                node = _statement.FirstChild();
+
+                                if (node.Type == ASTNodeType.FOR)
+                                {
+                                    depth++;
+                                }
+                                else if (node.Type == ASTNodeType.ENDFOR)
+                                {
+                                    if (depth == 0)
+                                    {
+                                        PopScope();
+
+                                        // Go one past the end so the loop doesn't repeat
+                                        _statement = _statement.Next();
+                                        break;
+                                    }
+
+                                    depth--;
+                                }
+
+                                _statement = _statement.Next();
+                            }
+
+                            PopScope();
+                        }
+                    }
+                    break;
                 case ASTNodeType.ENDFOR:
                     // Walk backward to the for statement
                     _statement = _statement.Prev();
@@ -429,8 +523,7 @@ namespace UOSteam
                     {
                         node = _statement.FirstChild();
 
-                        if (node.Type == ASTNodeType.FOR ||
-                            node.Type == ASTNodeType.FOREACH)
+                        if (node.Type == ASTNodeType.FOR)
                         {
                             break;
                         }
@@ -441,7 +534,6 @@ namespace UOSteam
                     if (_statement == null)
                         throw new RunTimeError(node, "Unexpected endfor");
 
-                    PopScope();
                     break;
                 case ASTNodeType.BREAK:
                     // Walk until the end of the loop
@@ -454,8 +546,7 @@ namespace UOSteam
                         node = _statement.FirstChild();
 
                         if (node.Type == ASTNodeType.WHILE ||
-                            node.Type == ASTNodeType.FOR ||
-                            node.Type == ASTNodeType.FOREACH)
+                            node.Type == ASTNodeType.FOR)
                         {
                             depth++;
                         }
@@ -495,8 +586,7 @@ namespace UOSteam
                             depth++;
                         }
                         else if (node.Type == ASTNodeType.WHILE ||
-                                 node.Type == ASTNodeType.FOR ||
-                                 node.Type == ASTNodeType.FOREACH)
+                                 node.Type == ASTNodeType.FOR)
                         {
                             if (depth == 0)
                                 break;
@@ -716,7 +806,7 @@ namespace UOSteam
         private static Dictionary<string, uint> _aliases = new Dictionary<string, uint>();
 
         // Lists
-        private static Dictionary<string, object[]> _lists = new Dictionary<string, object[]>();
+        private static Dictionary<string, List<Argument>> _lists = new Dictionary<string, List<Argument>>();
 
         public delegate double ExpressionHandler(string expression, Argument[] args, bool quiet);
 
@@ -731,17 +821,14 @@ namespace UOSteam
         private static Dictionary<string, AliasHandler> _aliasHandlers = new Dictionary<string, AliasHandler>();
 
         private static LinkedList<Script> _scripts = new LinkedList<Script>();
-
         public static int ScriptCount => _scripts.Count;
-
         public static CultureInfo Culture;
 
         static Interpreter()
         {
-            Culture = new CultureInfo("en-EN", false)
-            {
-                NumberFormat = {NumberDecimalSeparator = ".", NumberGroupSeparator = ","}
-            };
+            Culture = new CultureInfo("en-EN", false);
+            Culture.NumberFormat.NumberDecimalSeparator = ".";
+            Culture.NumberFormat.NumberGroupSeparator = ",";
         }
 
         public static void RegisterExpressionHandler(string keyword, ExpressionHandler handler)
@@ -794,7 +881,7 @@ namespace UOSteam
         public static void StartScript(Script script)
         {
             _scripts.Clear();
-            _scripts.AddLast(script);            
+            _scripts.AddLast(script);
         }
 
         public static void StopScript(Script script)
@@ -818,7 +905,7 @@ namespace UOSteam
 
             return _scripts.Count > 0;
         }
-
+        
         public static void ClearScripts()
         {
             _scripts.Clear();

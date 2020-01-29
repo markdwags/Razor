@@ -36,7 +36,6 @@ namespace UOSteam
         WHILE,
         ENDWHILE,
         FOR,
-        FOREACH,
         ENDFOR,
         BREAK,
         CONTINUE,
@@ -64,7 +63,7 @@ namespace UOSteam
         // Modifiers
         QUIET, // @ symbol
         FORCE, // ! symbol
-        
+
         // Everything else
         SCRIPT,
         STATEMENT,
@@ -180,9 +179,6 @@ namespace UOSteam
         public static ASTNode Lex(string fname)
         {
             ASTNode node = new ASTNode(ASTNodeType.SCRIPT, null, null);
-
-            if (string.IsNullOrEmpty(fname))
-                return node;
 
             using (var file = new StreamReader(fname))
             {
@@ -566,30 +562,17 @@ namespace UOSteam
 
         private static void ParseForLoop(ASTNode statement, string[] lexemes)
         {
-            // There are 4 variants of for loops. The simplest two just
-            // iterate a fixed number of times. The other two iterate
-            // parts of lists. We call those second two FOREACH.
-
             if (lexemes.Length == 1)
             {
                 // for X
                 var loop = statement.Push(ASTNodeType.FOR, null);
 
-                loop.Push(ASTNodeType.INTEGER, "0");
                 ParseValue(loop, lexemes[0]);
 
             }
-            else if (lexemes.Length == 3)
+            else
             {
-                // This one can be either a for or a foreach.
-            }
-            else if (lexemes.Length == 5)
-            {
-                // for X to Y in LIST
-                var loop = statement.Push(ASTNodeType.FOREACH, null);
-
-                ParseValue(loop, lexemes[0]);
-                ParseValue(loop, lexemes[2]);
+                throw new SyntaxError(statement, "Invalid for loop");
             }
         }
     }
