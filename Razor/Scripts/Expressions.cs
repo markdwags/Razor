@@ -32,6 +32,8 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("dex", Dex);
 
             Interpreter.RegisterExpressionHandler("skill", SkillExpression);
+            Interpreter.RegisterExpressionHandler("count", CountExpression);
+            Interpreter.RegisterExpressionHandler("counter", CountExpression);
 
             Interpreter.RegisterExpressionHandler("insysmsg", InSysMessage);
             Interpreter.RegisterExpressionHandler("insysmessage", InSysMessage);
@@ -146,31 +148,6 @@ namespace Assistant.Scripts
             return World.Player.Int;
         }
 
-        /*private static int X(string expression, Argument[] args, bool quiet)
-        {
-            if (World.Player == null)
-                return 0;
-
-            return World.Player.Position.X;
-        }
-
-        private static int Y(string expression, Argument[] args, bool quiet)
-        {
-            if (World.Player == null)
-                return 0;
-
-            return World.Player.Position.Y;
-        }
-
-        private static int Z(string expression, Argument[] args, bool quiet)
-        {
-            if (World.Player == null)
-                return 0;
-
-            return World.Player.Position.Z;
-        }*/
-
-        // WIP
         private static double SkillExpression(string expression, Argument[] args, bool quiet)
         {
             if (args.Length < 1)
@@ -184,6 +161,27 @@ namespace Assistant.Scripts
                 if (skill.Name.ToLower().Contains(args[0].AsString()))
                 {
                     return World.Player.Skills[skill.Index].Value;
+                }
+            }
+
+            return 0;
+        }
+        
+        private static double CountExpression(string expression, Argument[] args, bool quiet)
+        {
+            if (args.Length < 1)
+                throw new ArgumentException("Usage: count ('name of counter item')");
+
+            if (World.Player == null)
+                return 0;
+
+            string counterName = args[0].AsString().ToLower();
+
+            foreach (Counter c in Counter.List)
+            {
+                if (c.Name.ToLower().Equals(counterName))
+                {
+                    return c.Enabled ? c.Amount : 0;
                 }
             }
 
