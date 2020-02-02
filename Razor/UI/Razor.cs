@@ -6095,8 +6095,13 @@ namespace Assistant
             }
         }
 
+        private bool _isScriptUiLocked;
+
         public void LockScriptUI(bool enabled)
         {
+            if (_isScriptUiLocked && enabled)
+                return;
+
             Engine.MainWindow.SafeAction(s =>
             {
                 scriptEditor.Enabled = !enabled;
@@ -6109,6 +6114,8 @@ namespace Assistant
                 newScript.Enabled = !enabled;
 
                 playScript.Text = !enabled ? "Play" : "Stop";
+
+                _isScriptUiLocked = enabled;
             });
         }
 
