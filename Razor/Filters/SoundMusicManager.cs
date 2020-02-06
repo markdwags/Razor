@@ -82,6 +82,9 @@ namespace Assistant.Filters
 
         public static string GetSoundName(ushort soundId)
         {
+            if (SoundList.Count == 0)
+                RedrawList();
+
             foreach (Sound sound in SoundList)
             {
                 if (sound.Serial == soundId)
@@ -95,6 +98,9 @@ namespace Assistant.Filters
 
         public static string GetMusicName(int musicId, out bool loop)
         {
+            if (MusicList.Count == 0)
+                RedrawList();
+
             foreach (Music music in MusicList)
             {
                 if (music.Id == musicId)
