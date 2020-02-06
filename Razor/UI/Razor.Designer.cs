@@ -3919,10 +3919,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -4232,10 +4232,10 @@ namespace Assistant
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 287);
+            this.tabPage3.Size = new System.Drawing.Size(498, 285);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
             // 
@@ -4260,6 +4260,7 @@ namespace Assistant
             this.changeScriptVariable.TabIndex = 5;
             this.changeScriptVariable.Text = "Retarget";
             this.changeScriptVariable.UseVisualStyleBackColor = true;
+            this.changeScriptVariable.Click += new System.EventHandler(this.changeScriptVariable_Click);
             // 
             // removeScriptVariable
             // 
@@ -4269,6 +4270,7 @@ namespace Assistant
             this.removeScriptVariable.TabIndex = 3;
             this.removeScriptVariable.Text = "Remove";
             this.removeScriptVariable.UseVisualStyleBackColor = true;
+            this.removeScriptVariable.Click += new System.EventHandler(this.removeScriptVariable_Click);
             // 
             // addScriptVariable
             // 
@@ -4278,6 +4280,7 @@ namespace Assistant
             this.addScriptVariable.TabIndex = 2;
             this.addScriptVariable.Text = "Add";
             this.addScriptVariable.UseVisualStyleBackColor = true;
+            this.addScriptVariable.Click += new System.EventHandler(this.addScriptVariable_Click);
             // 
             // scriptVariables
             // 

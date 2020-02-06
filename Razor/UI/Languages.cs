@@ -546,6 +546,7 @@ namespace Assistant
         InsertDo,
         InsertDoWhile,
         PlayScript,
+        NewScriptVariable,
         __End
     }
 

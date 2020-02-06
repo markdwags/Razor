@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.Filters;
 using Assistant.Macros;
+using Assistant.Scripts;
 using Assistant.UI;
 using ContainerLabels = Assistant.Core.ContainerLabels;
 using OverheadMessages = Assistant.Core.OverheadMessages;
@@ -290,6 +291,7 @@ namespace Assistant
             OverheadMessages.ClearAll();
             ContainerLabels.ClearAll();
             MacroVariables.ClearAll();
+            ScriptVariables.ClearAll();
             FriendsManager.ClearAll();
         }
 
@@ -405,6 +407,7 @@ namespace Assistant
             {
                 MacroVariables.Import(root);
             }
+            ScriptVariables.Load(root["scriptvariables"]);
 
             GoldPerHourTimer.Stop();
             DamageTracker.Stop();
@@ -581,6 +584,10 @@ namespace Assistant
 
             xml.WriteStartElement("macrovariables");
             MacroVariables.Save(xml);
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("scriptvariables");
+            ScriptVariables.Save(xml);
             xml.WriteEndElement();
 
             xml.WriteStartElement("friends");

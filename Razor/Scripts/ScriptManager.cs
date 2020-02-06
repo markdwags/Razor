@@ -203,6 +203,25 @@ namespace Assistant.Scripts
             }
         }
 
+        public static void DisplayScriptVariables(ListBox list)
+        {
+
+            list.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (ScriptVariables.ScriptVariable at in ScriptVariables.ScriptVariableList)
+                {
+                    s.Items.Add($"'{at.Name}' ({at.TargetInfo.Serial})");
+                }
+
+                s.EndUpdate();
+                s.Refresh();
+                s.Update();
+            });
+        }
+
         public static bool AddToScript(string command)
         {
             if (Recording)

@@ -652,6 +652,8 @@ namespace Assistant
             }
             else if (tabs.SelectedTab == scriptsTab)
             {
+                RedrawScripts();
+
                 ScriptManager.RedrawScripts();
             }
             else if (tabs.SelectedTab == moreOptTab)
@@ -2703,6 +2705,12 @@ namespace Assistant
             RebuildMacroCache();
 
             MacroManager.DisplayMacroVariables(macroVariables);
+        }
+
+        private void RedrawScripts()
+        {
+            ScriptManager.LoadScripts();
+            ScriptManager.DisplayScriptVariables(scriptVariables);
         }
 
         public Macro LastSelectedMacro { get; set; }
@@ -5983,6 +5991,10 @@ namespace Assistant
         {
             MacroManager.DisplayMacroVariables(macroVariables);
         }
+        public void SaveScriptVariables()
+        {
+            ScriptManager.DisplayScriptVariables(scriptVariables);
+        }
 
         private void filterDaemonGraphics_CheckedChanged(object sender, EventArgs e)
         {
@@ -6275,5 +6287,99 @@ namespace Assistant
             }
         }
 
+        private void addScriptVariable_Click(object sender, EventArgs e)
+        {
+            if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
+                return;
+
+            Targeting.OneTimeTarget(OnScriptVariableAddTarget);
+           
+            World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
+        }
+
+        private void OnScriptVariableAddTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            TargetInfo t = new TargetInfo
+            {
+                Gfx = gfx,
+                Serial = serial,
+                Type = (byte)(ground ? 1 : 0),
+                X = pt.X,
+                Y = pt.Y,
+                Z = pt.Z
+            };
+
+            if (InputBox.Show(this, Language.GetString(LocString.NewScriptVariable),
+                Language.GetString(LocString.EnterAName)))
+            {
+                string name = InputBox.GetString();
+
+                foreach (ScriptVariables.ScriptVariable mV in ScriptVariables.ScriptVariableList
+                )
+                {
+                    if (mV.Name.ToLower().Equals(name.ToLower()))
+                    {
+                        MessageBox.Show(this, "Pick a unique Script Variable name and try again",
+                            "New Script Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+
+                ScriptVariables.ScriptVariableList.Add(
+                    new ScriptVariables.ScriptVariable(name, t));
+
+                ScriptVariables.RegisterVariable(name);
+
+                ScriptManager.DisplayScriptVariables(scriptVariables);
+            }
+
+            Engine.MainWindow.ShowMe();
+        }
+
+        private void OnScriptVariableReTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            TargetInfo t = new TargetInfo
+            {
+                Gfx = gfx,
+                Serial = serial,
+                Type = (byte)(ground ? 1 : 0),
+                X = pt.X,
+                Y = pt.Y,
+                Z = pt.Z
+            };
+
+            ScriptVariables.ScriptVariableList[scriptVariables.SelectedIndex].TargetInfo = t;
+
+            ScriptManager.DisplayScriptVariables(scriptVariables);
+
+            Engine.MainWindow.ShowMe();
+        }
+
+        private void changeScriptVariable_Click(object sender, EventArgs e)
+        {
+            if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
+                return;
+
+            if (scriptVariables.SelectedIndex < 0)
+                return;
+
+            Targeting.OneTimeTarget(OnScriptVariableReTarget);
+
+            World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
+        }
+
+        private void removeScriptVariable_Click(object sender, EventArgs e)
+        {
+            if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
+                return;
+
+            if (scriptVariables.SelectedIndex < 0)
+                return;
+
+            ScriptVariables.UnregisterVariable(ScriptVariables.ScriptVariableList[scriptVariables.SelectedIndex].Name);
+            ScriptVariables.ScriptVariableList.RemoveAt(scriptVariables.SelectedIndex);
+
+            ScriptManager.DisplayScriptVariables(scriptVariables);
+        }
     }
 }

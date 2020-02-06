@@ -860,6 +860,11 @@ namespace UOSteam
             _aliasHandlers[keyword] = handler;
         }
 
+        public static void UnregisterAliasHandler(string keyword)
+        {
+            _aliasHandlers.Remove(keyword);
+        }
+
         public static uint GetAlias(string alias)
         {
             // If a handler is explicitly registered, call that.

@@ -798,3 +798,4 @@ InputBox::ok=&OK
 2095=Insert "Do"
 2096=Insert "Do While Loop"
 2097=Play Script: {0}
+2098=Enter new script variable name
