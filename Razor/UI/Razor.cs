@@ -3921,6 +3921,8 @@ namespace Assistant
 
         private void OnClose(object sender, System.EventArgs e)
         {
+            m_NotifyIcon.Visible = false;
+            m_NotifyIcon.Dispose();
             m_CanClose = true;
             this.Close();
         }
