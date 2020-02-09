@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace UOSteam
+namespace Assistant.Scripts.Engine
 {
     public class SyntaxError : Exception
     {

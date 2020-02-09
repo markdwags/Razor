@@ -11,7 +11,6 @@ using Assistant.Filters;
 using Assistant.Macros;
 using Assistant.Scripts;
 using Assistant.UI;
-using UOSteam;
 using OverheadMessages = Assistant.Core.OverheadMessages;
 using ContainerLabels = Assistant.Core.ContainerLabels;
 

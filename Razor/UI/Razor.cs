@@ -17,10 +17,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Assistant.Core;
 using Assistant.Scripts;
+using Assistant.Scripts.Engine;
 using Assistant.UI;
 using FastColoredTextBoxNS;
 using Ultima;
-using UOSteam;
 using WinFormsSyntaxHighlighter;
 using ContainerLabels = Assistant.UI.ContainerLabels;
 using Exception = System.Exception;
@@ -6102,14 +6102,8 @@ namespace Assistant
 
             ScriptManager.PlayScript((ScriptManager.RazorScript)scriptList.SelectedItem);
         }
-
-        private bool _isScriptUiLocked;
-
         public void LockScriptUI(bool enabled)
         {
-            if (_isScriptUiLocked && enabled)
-                return;
-
             Engine.MainWindow.SafeAction(s =>
             {
                 scriptEditor.Enabled = !enabled;
@@ -6122,8 +6116,6 @@ namespace Assistant
                 newScript.Enabled = !enabled;
 
                 playScript.Text = !enabled ? "Play" : "Stop";
-
-                _isScriptUiLocked = enabled;
             });
         }
 

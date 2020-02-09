@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using Assistant.Macros;
+using Assistant.Scripts.Engine;
 using Assistant.UI;
 using FastColoredTextBoxNS;
-using UOSteam;
 
 namespace Assistant.Scripts
 {
@@ -47,22 +45,14 @@ namespace Assistant.Scripts
 
                 if (Interpreter.ScriptCount > 0)
                 {
-                    Engine.MainWindow.LockScriptUI(true);
+                    Assistant.Engine.MainWindow.LockScriptUI(true);
                     ScriptRunning = true;
                 }
                 else
                 {
-                    Engine.MainWindow.LockScriptUI(false);
+                    Assistant.Engine.MainWindow.LockScriptUI(false);
                     ScriptRunning = false;
                 }
-
-                /*if (Interpreter.ScriptCount > 0)
-                {
-                    int highlightLine = _scriptEditor.LinesCount - (Interpreter.ScriptCount + 1);
-
-                    if (highlightLine < _scriptEditor.LinesCount - 1)
-                        SetHighlightLine(highlightLine, Color.Yellow);
-                }*/
             }
         }
 
