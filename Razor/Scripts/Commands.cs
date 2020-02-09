@@ -144,12 +144,19 @@ namespace Assistant.Scripts
 
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: targettype (graphic) OR ('name of item or mobile type')");
+                ScriptManager.Error("Usage: targettype (graphic) OR ('name of item or mobile type') [inrangecheck]");
                 return true;
             }
 
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
+
+            bool inRangeCheck = false;
+
+            if (args.Length == 2)
+            {
+                inRangeCheck = args[1].AsBool();
+            }
 
             ArrayList list = new ArrayList();
 
@@ -160,7 +167,9 @@ namespace Assistant.Scripts
 
                 if (items.Count > 0)
                 {
-                    list.AddRange(items);
+                    list.AddRange(inRangeCheck
+                        ? items.Where(i => Utility.InRange(World.Player.Position, i.Position, 2)).ToList()
+                        : items);
                 }
                 else // try to find a mobile
                 {
@@ -168,7 +177,9 @@ namespace Assistant.Scripts
 
                     if (mobiles.Count > 0)
                     {
-                        list.AddRange(mobiles);
+                        list.AddRange(inRangeCheck
+                            ? mobiles.Where(m => Utility.InRange(World.Player.Position, m.Position, 2)).ToList()
+                            : mobiles);
                     }
                 }
             }
@@ -393,15 +404,21 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: dclicktype|usetype ('name of item') OR (graphicID)");
+                ScriptManager.Error("Usage: dclicktype|usetype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
                 return true;
             }
 
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
-
             Serial click = Serial.Zero;
             List<Item> items = new List<Item>();
+
+            bool inRangeCheck = false;
+
+            if (args.Length == 2)
+            {
+                inRangeCheck = args[1].AsBool();
+            }
 
             // No graphic id, maybe searching by name?
             if (gfx == 0)
@@ -434,7 +451,15 @@ namespace Assistant.Scripts
                 {
                     if (i.ItemID == gfx && i.RootContainer == null)
                     {
-                        items.Add(i);
+                        if (inRangeCheck)
+                        {
+                            if (Utility.InRange(World.Player.Position, i.Position, 2))
+                                items.Add(i);
+                        }
+                        else
+                        {
+                            items.Add(i);
+                        }
                     }
                 }
 
@@ -444,7 +469,15 @@ namespace Assistant.Scripts
                     {
                         if (i.ItemID == gfx && !i.IsInBank)
                         {
-                            items.Add(i);
+                            if (inRangeCheck)
+                            {
+                                if (Utility.InRange(World.Player.Position, i.Position, 2))
+                                    items.Add(i);
+                            }
+                            else
+                            {
+                                items.Add(i);
+                            }
                         }
                     }
                 }
@@ -461,7 +494,15 @@ namespace Assistant.Scripts
                 {
                     if (m.Body == gfx)
                     {
-                        mobiles.Add(m);
+                        if (inRangeCheck)
+                        {
+                            if (Utility.InRange(World.Player.Position, m.Position, 2))
+                                mobiles.Add(m);
+                        }
+                        else
+                        {
+                            mobiles.Add(m);
+                        }
                     }
                 }
 

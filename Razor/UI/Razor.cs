@@ -6097,14 +6097,10 @@ namespace Assistant
                 return;
             }
 
-            if (scriptList.SelectedIndex < 0 && !string.IsNullOrEmpty(scriptEditor.Text))
-            {
-                ScriptManager.PlayScript(string.Empty, true);
-            }
-            else if (scriptList.SelectedIndex >= 0)
-            {
-                ScriptManager.PlayScript((ScriptManager.RazorScript)scriptList.SelectedItem, true);
-            }
+            if (scriptList.SelectedIndex < 0 || string.IsNullOrEmpty(scriptEditor.Text))
+                return;
+
+            ScriptManager.PlayScript((ScriptManager.RazorScript)scriptList.SelectedItem);
         }
 
         private bool _isScriptUiLocked;

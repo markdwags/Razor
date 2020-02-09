@@ -4250,7 +4250,7 @@ namespace Assistant
             this.scriptVariablesBox.Size = new System.Drawing.Size(240, 269);
             this.scriptVariablesBox.TabIndex = 7;
             this.scriptVariablesBox.TabStop = false;
-            this.scriptVariablesBox.Text = "Script Variables/Aliases:";
+            this.scriptVariablesBox.Text = "Script Variables:";
             // 
             // changeScriptVariable
             // 
@@ -4288,7 +4288,7 @@ namespace Assistant
             this.scriptVariables.ItemHeight = 15;
             this.scriptVariables.Location = new System.Drawing.Point(79, 22);
             this.scriptVariables.Name = "scriptVariables";
-            this.scriptVariables.Size = new System.Drawing.Size(153, 199);
+            this.scriptVariables.Size = new System.Drawing.Size(153, 229);
             this.scriptVariables.TabIndex = 1;
             // 
             // screenshotTab

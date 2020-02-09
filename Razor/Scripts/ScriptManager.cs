@@ -103,34 +103,27 @@ namespace Assistant.Scripts
             Interpreter.StartScript(new Script(Lexer.Lex(string.Empty)));
         }
 
-        public static void PlayScript(string scriptName, bool useEditorContent = false)
+        public static void PlayScript(string scriptName)
         {
-            RazorScript script = Scripts[GetScriptIndex(scriptName)];
-            PlayScript(script, useEditorContent);
+            foreach (RazorScript razorScript in Scripts)
+            {
+                if (razorScript.Name.ToLower().Equals(scriptName.ToLower()))
+                {
+                    PlayScript(razorScript);
+                    break;
+                }
+            }
         }
 
-        public static void PlayScript(RazorScript razorScript, bool useEditorContent = false)
+        public static void PlayScript(RazorScript razorScript)
         {
-            if (World.Player == null || ScriptEditor == null)
+            if (World.Player == null || ScriptEditor == null || razorScript == null)
                 return;
 
+            StopScript();
             _startPause = DateTime.MaxValue; // reset wait timers
 
-            Script script = null;
-
-            if (useEditorContent) // this check exists so people don't need to click save every time to test changes
-            {
-                ScriptEditor.SafeAction(s =>
-                {
-                    script = new Script(Lexer.Lex(ScriptEditor.Lines.ToArray()));
-                });
-
-                Interpreter.StartScript(script);
-            }
-            else
-            {
-                Interpreter.StartScript(razorScript.Script);
-            }
+            Interpreter.StartScript(razorScript.Script);
 
             LastScript = razorScript;
         }

@@ -137,6 +137,17 @@ namespace UOSteam
 
             return _node.Lexeme;
         }
+
+        public bool AsBool()
+        {
+            if (_node.Lexeme == null)
+                throw new RunTimeError(_node, "Cannot convert argument to bool");
+
+            if (bool.TryParse(_node.Lexeme, out var val))
+                return val;
+
+            throw new RunTimeError(_node, "Cannot convert argument to bool");
+        }
     }
 
     public class Script
