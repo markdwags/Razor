@@ -6104,14 +6104,7 @@ namespace Assistant
 
             if (Config.GetBool("AutoSaveScriptPlay"))
             {
-                int curIndex = scriptList.SelectedIndex;
-
-                ScriptManager.RazorScript script = (ScriptManager.RazorScript)scriptList.SelectedItem;
-                File.WriteAllText(script.Path, scriptEditor.Text);
-
-                ScriptManager.RedrawScripts();
-
-                scriptList.SelectedIndex = curIndex;
+                SaveScript();
             }
 
             // We want to play the contents of the script editor
@@ -6160,41 +6153,47 @@ namespace Assistant
         {
             if (Config.GetBool("AutoSaveScript"))
             {
-                if (scriptList.SelectedIndex < 0)
+                SaveScript();
+            }
+        }
+
+        private void SaveScript()
+        {
+            if (scriptList.SelectedIndex < 0)
+            {
+                string filePath = $"{ScriptManager.ScriptPath}\\auto-{Guid.NewGuid().ToString().Substring(0, 4)}.razor";
+
+                File.WriteAllText(filePath, scriptEditor.Text);
+
+                ScriptManager.RazorScript script = new ScriptManager.RazorScript
                 {
-                    string filePath = $"{ScriptManager.ScriptPath}\\auto-{Guid.NewGuid().ToString().Substring(0, 4)}";
+                    Lines = File.ReadAllLines(filePath),
+                    Name = Path.GetFileNameWithoutExtension(filePath),
+                    Path = filePath
+                };
+                
+                ScriptManager.RedrawScripts();
 
-                    ScriptManager.RazorScript script = new ScriptManager.RazorScript
+                for (int i = 0; i < scriptList.Items.Count; i++)
+                {
+                    ScriptManager.RazorScript scriptItem = (ScriptManager.RazorScript)scriptList.Items[i];
+                    if (scriptItem.Name.Equals(script.Name))
                     {
-                        Lines = File.ReadAllLines(filePath),
-                        Name = Path.GetFileNameWithoutExtension(filePath),
-                        Path = filePath
-                    };
-
-                    File.WriteAllText(script.Path, scriptEditor.Text);
-                    ScriptManager.RedrawScripts();
-
-                    for (int i = 0; i < scriptList.Items.Count; i++)
-                    {
-                        ScriptManager.RazorScript scriptItem = (ScriptManager.RazorScript) scriptList.Items[i];
-                        if (scriptItem.Name.Equals(script.Name))
-                        {
-                            scriptList.SelectedIndex = i;
-                            break;
-                        }
+                        scriptList.SelectedIndex = i;
+                        break;
                     }
                 }
-                else
-                {
-                    int curIndex = scriptList.SelectedIndex;
+            }
+            else
+            {
+                int curIndex = scriptList.SelectedIndex;
 
-                    ScriptManager.RazorScript script = (ScriptManager.RazorScript)scriptList.SelectedItem;
-                    File.WriteAllText(script.Path, scriptEditor.Text);
+                ScriptManager.RazorScript script = (ScriptManager.RazorScript)scriptList.SelectedItem;
+                File.WriteAllText(script.Path, scriptEditor.Text);
 
-                    ScriptManager.RedrawScripts();
+                ScriptManager.RedrawScripts();
 
-                    scriptList.SelectedIndex = curIndex;
-                }
+                scriptList.SelectedIndex = curIndex;
             }
         }
 
@@ -6268,17 +6267,7 @@ namespace Assistant
 
         private void saveScript_Click(object sender, EventArgs e)
         {
-            if (scriptList.SelectedIndex < 0)
-                return;
-
-            int curIndex = scriptList.SelectedIndex;
-
-            ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
-            File.WriteAllText(script.Path, scriptEditor.Text);
-
-            ScriptManager.RedrawScripts();
-
-            scriptList.SelectedIndex = curIndex;
+            SaveScript();
         }
 
         private void deleteScript_Click(object sender, EventArgs e)
