@@ -1604,6 +1604,12 @@ namespace FastColoredTextBoxNS
             {
                 args.ShiftNextLines = args.TabLength;
             }
+
+            if (Regex.IsMatch(args.PrevLineText, @"^\s*(if|for|while|elseif|[\}\s]*else)\b[^{]*$"))
+                if (!Regex.IsMatch(args.PrevLineText, @"(;\s*$)|(;\s*//)")) //operator is unclosed
+                {
+                    args.Shift = args.TabLength;
+                }
         }
 
         #region Styles
