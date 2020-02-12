@@ -77,7 +77,6 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
 
             // Script related
-            Interpreter.RegisterCommandHandler("setvar", DummyCommand); //SetMacroVariableTargetAction
             Interpreter.RegisterCommandHandler("script", PlayScript);
         }
 
@@ -688,12 +687,18 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: walk (direction)");
+                ScriptManager.Error("Usage: walk ('direction')");
                 return true;
             }
-            
-            Direction dir = (Direction)Enum.Parse(typeof(Direction), args[0].AsString(), true);
 
+            if (ScriptManager.LastWalk + TimeSpan.FromSeconds(0.4) >= DateTime.UtcNow)
+            {
+                return false;
+            }
+
+            ScriptManager.LastWalk = DateTime.UtcNow;
+
+            Direction dir = (Direction)Enum.Parse(typeof(Direction), args[0].AsString(), true);
             Client.Instance.RequestMove(dir);
 
             return true;

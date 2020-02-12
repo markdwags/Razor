@@ -15,7 +15,9 @@ namespace Assistant.Scripts
 
         public static bool Running => ScriptRunning;
 
-        private static  bool ScriptRunning { get; set; }
+        private static bool ScriptRunning { get; set; }
+
+        public static DateTime LastWalk { get; set; }
 
         public static string ScriptPath => $"{Config.GetInstallDirectory()}\\Scripts";
 
