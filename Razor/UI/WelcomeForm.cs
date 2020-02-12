@@ -597,7 +597,6 @@ namespace Assistant
             patchEncy.Checked = Config.GetAppSetting<int>("ClientEncrypted") != 0;
 
             LoginCFG_SE lse = new LoginCFG_SE();
-            Custom_SE cse;
 
             serverList.BeginUpdate();
 

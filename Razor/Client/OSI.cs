@@ -124,7 +124,6 @@ namespace Assistant
         private bool m_Ready = false;
         private string m_LastStr = "";
         private DateTime m_ConnStart;
-        private Timer m_TBTimer;
         private IPAddress m_LastConnection;
 
         public override DateTime ConnectionStart

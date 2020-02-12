@@ -355,7 +355,6 @@ namespace Assistant
 
             if (World.Player != null)
             {
-                m_LTHarmWasSet = false;
                 OneTimeTarget(false, OnSetLastTargetHarmful, OnSLTHarmfulCancel);
                 World.Player.SendMessage(MsgLevel.Force, LocString.NewHarmfulTarget);
             }

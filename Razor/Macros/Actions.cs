@@ -1431,8 +1431,6 @@ namespace Assistant.Macros
     {
         private string m_VarName;
         private MacroVariables.MacroVariable m_MacroVariable;
-
-        private bool m_MacroVarWasSet;
         
         public SetMacroVariableTargetAction(string[] args)
         {

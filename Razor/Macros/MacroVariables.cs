@@ -126,8 +126,9 @@ namespace Assistant.Macros
                     MacroVariableList.Add(macroVariable);
                 }
             }
-            catch (Exception ex)
+            catch
             {
+                // ignored
             }
         }
 
@@ -154,8 +155,9 @@ namespace Assistant.Macros
                     MacroVariableList.Add(macroVariable);
                 }
             }
-            catch (Exception ex)
+            catch
             {
+                // ignored
             }
 
             try
@@ -177,8 +179,9 @@ namespace Assistant.Macros
                     MacroVariableList.Add(macroVariable);
                 }
             }
-            catch (Exception ex)
+            catch
             {
+                // ignored
             }
         }
 

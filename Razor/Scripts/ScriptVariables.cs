@@ -63,8 +63,9 @@ namespace Assistant.Scripts
                     RegisterVariable(scriptVariable.Name);
                 }
             }
-            catch (Exception ex)
+            catch
             {
+                // ignored
             }
         }
 
