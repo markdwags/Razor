@@ -281,6 +281,7 @@ namespace Assistant
             AddProperty("ShowMusicInfo", false);
 
             AddProperty("AutoSaveScript", false);
+            AddProperty("AutoSaveScriptPlay", false);
 
             Counter.Default();
             Filter.DisableAll();

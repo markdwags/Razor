@@ -789,6 +789,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.autoSaveScriptPlay = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -4248,6 +4249,7 @@ namespace Assistant
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
             this.tabPage3.Controls.Add(this.autoSaveScript);
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
@@ -4794,6 +4796,17 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // autoSaveScriptPlay
+            // 
+            this.autoSaveScriptPlay.AutoSize = true;
+            this.autoSaveScriptPlay.Location = new System.Drawing.Point(252, 53);
+            this.autoSaveScriptPlay.Name = "autoSaveScriptPlay";
+            this.autoSaveScriptPlay.Size = new System.Drawing.Size(193, 19);
+            this.autoSaveScriptPlay.TabIndex = 9;
+            this.autoSaveScriptPlay.Text = "Auto-save when you click \'Play\'";
+            this.autoSaveScriptPlay.UseVisualStyleBackColor = true;
+            this.autoSaveScriptPlay.CheckedChanged += new System.EventHandler(this.autoSaveScriptPlay_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4913,5 +4926,6 @@ namespace Assistant
         private ListBox scriptVariables;
         private LinkLabel linkScriptGuide;
         private CheckBox autoSaveScript;
+        private CheckBox autoSaveScriptPlay;
     }
 }

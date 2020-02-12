@@ -485,6 +485,7 @@ namespace Assistant
             showPlayingMusic.SafeAction(s => { s.Checked = Config.GetBool("ShowMusicInfo"); });
 
             autoSaveScript.SafeAction(s => { s.Checked = Config.GetBool("AutoSaveScript"); });
+            autoSaveScriptPlay.SafeAction(s => { s.Checked = Config.GetBool("AutoSaveScriptPlay"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -652,7 +653,8 @@ namespace Assistant
             {
                 RedrawScripts();
 
-                ScriptManager.RedrawScripts();
+                if (scriptList.SelectedIndex < 0)
+                    ScriptManager.RedrawScripts();
             }
             else if (tabs.SelectedTab == moreOptTab)
             {
@@ -6100,6 +6102,18 @@ namespace Assistant
                 return;
             }
 
+            if (Config.GetBool("AutoSaveScriptPlay"))
+            {
+                int curIndex = scriptList.SelectedIndex;
+
+                ScriptManager.RazorScript script = (ScriptManager.RazorScript)scriptList.SelectedItem;
+                File.WriteAllText(script.Path, scriptEditor.Text);
+
+                ScriptManager.RedrawScripts();
+
+                scriptList.SelectedIndex = curIndex;
+            }
+
             // We want to play the contents of the script editor
             ScriptManager.PlayScript(scriptEditor.Lines.ToArray());
         }
@@ -6530,6 +6544,11 @@ namespace Assistant
 
             scriptEditor.SelectedText = "";
             scriptEditor.SelectedText = $"dclicktype '{item.DisplayName}'";
+        }
+
+        private void autoSaveScriptPlay_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("AutoSaveScriptPlay", autoSaveScriptPlay.Checked);
         }
     }
 }
