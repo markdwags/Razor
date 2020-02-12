@@ -8,13 +8,13 @@ Razor is a free tool designed to help with simple tasks while playing Ultima Onl
 
 ## UO:R Community Edition
 
-The purpose and goal of this project is to revive and continue development of the abandoned Razor project and focus on "quality of life" improvements without driving down the path of automation and advanced scripting that is available in other assistants.
+The goal of this project is to revive and continue development and maintainence of the abandoned Razor project while focus on "quality of life" improvements without driving down the path of automation and advanced scripting that is found in other UO assistants.
 
-This project also attempts to keep the spirit and vision of the original Razor intact the original developers had for Razor.
+This project attempts to keep the spirit and vision the original developers had for Razor.
 
 For release notes, download links and other information go to http://www.uor-razor.com.
 
-This version currently supports both the standard Ultima Online client (5.x & 7.x) and the open source [ClassicUO](https://github.com/andreakarasho/ClassicUO).
+While it is recommended that you use [ClassicUO](https://github.com/andreakarasho/ClassicUO) with this version of Razor, it will work with the old 5.x and 7.x clients.
 
 ## History
 
@@ -36,6 +36,10 @@ All version of Razor doesn't use the Windows Registry or %AppData%\Razor to stor
 * **1.5.0.0** to **1.5.0.16** only support the standard Ultima Online client.
 * **1.5.0.17** has major changes to how Razor determines player position and only supports the standard Ultima Online client.
 * **1.6.x.x** support both the standard client and [ClassicUO](https://github.com/andreakarasho/ClassicUO).
+
+## Razor Scripting
+
+This version of Razor also supports a command-based script language.  Visit the [Razor Scripting Guide](http://www.uor-razor.com/guide/) for more information.
 
 ## Install: New ClassicUO with Razor Install
 
