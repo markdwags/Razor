@@ -32,6 +32,8 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("rhandempty", RHandEmpty);
             Interpreter.RegisterExpressionHandler("lhandempty", LHandEmpty);
 
+            Interpreter.RegisterExpressionHandler("dead", Dead);
+
             Interpreter.RegisterExpressionHandler("str", Str);
             Interpreter.RegisterExpressionHandler("int", Int);
             Interpreter.RegisterExpressionHandler("dex", Dex);
@@ -74,6 +76,12 @@ namespace Assistant.Scripts
         private static double LHandEmpty(string expression, Argument[] args, bool quiet)
         {
             return World.Player != null && World.Player.GetItemOnLayer(Layer.LeftHand) != null
+                ? 1
+                : 0;
+        }
+        private static double Dead(string expression, Argument[] args, bool quiet)
+        {
+            return World.Player != null && World.Player.IsGhost
                 ? 1
                 : 0;
         }
