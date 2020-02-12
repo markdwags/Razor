@@ -59,6 +59,7 @@ namespace Assistant
             PacketHandler.RegisterServerToClientViewer(0x17, new PacketViewerCallback(NewMobileStatus));
             PacketHandler.RegisterServerToClientViewer(0x1A, new PacketViewerCallback(WorldItem));
             PacketHandler.RegisterServerToClientViewer(0x1B, new PacketViewerCallback(LoginConfirm));
+            PacketHandler.RegisterServerToClientViewer(0x55, new PacketViewerCallback(CompleteLogin));
             PacketHandler.RegisterServerToClientFilter(0x1C, new PacketFilterCallback(AsciiSpeech));
             PacketHandler.RegisterServerToClientViewer(0x1D, new PacketViewerCallback(RemoveObject));
             PacketHandler.RegisterServerToClientFilter(0x20, new PacketFilterCallback(MobileUpdate));
@@ -1002,6 +1003,13 @@ namespace Assistant
 
             if (World.Player != null)
                 World.Player.SetSeason();
+        }
+
+        private static void CompleteLogin(PacketReader p, PacketHandlerEventArgs args)
+        {
+            // Set the default min light level if they have limits set
+            if (World.Player != null)
+                EnforceLightLevels(-1);
         }
 
         private static void MobileMoving(Packet p, PacketHandlerEventArgs args)
@@ -2711,8 +2719,11 @@ namespace Assistant
             if (Config.GetBool("MinMaxLightLevelEnabled"))
             {
                 // 0 bright, 30 is dark
-
-                if (lightLevel < Config.GetInt("MaxLightLevel"))
+                if (lightLevel == -1)
+                {
+                    lightLevel = Convert.ToByte(Config.GetInt("MinLightLevel"));
+                }
+                else if (lightLevel < Config.GetInt("MaxLightLevel"))
                 {
                     lightLevel = Convert.ToByte(Config.GetInt("MaxLightLevel")); // light level is too light
                 }
