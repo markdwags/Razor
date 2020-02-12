@@ -4,7 +4,7 @@ using System;
 
 namespace FastColoredTextBoxNS
 {
-    public class SyntaxDescriptor: IDisposable
+    public class SyntaxDescriptor : IDisposable
     {
         public char leftBracket = '(';
         public char rightBracket = ')';
@@ -37,6 +37,7 @@ namespace FastColoredTextBoxNS
                 {
                     regex = new Regex(pattern, SyntaxHighlighter.RegexCompiledOption | options);
                 }
+
                 return regex;
             }
         }

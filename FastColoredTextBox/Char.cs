@@ -11,6 +11,7 @@ namespace FastColoredTextBoxNS
         /// Unicode character
         /// </summary>
         public char c;
+
         /// <summary>
         /// Style bit mask
         /// </summary>

@@ -15,6 +15,7 @@ namespace FastColoredTextBoxNS
         /// This style is exported to outer formats (HTML for example)
         /// </summary>
         public virtual bool IsExportable { get; set; }
+
         /// <summary>
         /// Occurs when user click on StyleVisualMarker joined to this style 
         /// </summary>
@@ -104,7 +105,9 @@ namespace FastColoredTextBoxNS
     {
         public Brush ForeBrush { get; set; }
         public Brush BackgroundBrush { get; set; }
+
         public FontStyle FontStyle { get; set; }
+
         //public readonly Font Font;
         public StringFormat stringFormat;
 
@@ -120,14 +123,15 @@ namespace FastColoredTextBoxNS
         {
             //draw background
             if (BackgroundBrush != null)
-                gr.FillRectangle(BackgroundBrush, position.X, position.Y, (range.End.iChar - range.Start.iChar) * range.tb.CharWidth, range.tb.CharHeight);
+                gr.FillRectangle(BackgroundBrush, position.X, position.Y,
+                    (range.End.iChar - range.Start.iChar) * range.tb.CharWidth, range.tb.CharHeight);
             //draw chars
-            using(var f = new Font(range.tb.Font, FontStyle))
+            using (var f = new Font(range.tb.Font, FontStyle))
             {
                 Line line = range.tb[range.Start.iLine];
                 float dx = range.tb.CharWidth;
-                float y = position.Y + range.tb.LineInterval/2;
-                float x = position.X - range.tb.CharWidth/3;
+                float y = position.Y + range.tb.LineInterval / 2;
+                float x = position.X - range.tb.CharWidth / 3;
 
                 if (ForeBrush == null)
                     ForeBrush = new SolidBrush(range.tb.ForeColor);
@@ -140,8 +144,8 @@ namespace FastColoredTextBoxNS
                         SizeF size = FastColoredTextBox.GetCharSize(f, line[i].c);
 
                         var gs = gr.Save();
-                        float k = size.Width > range.tb.CharWidth + 1 ? range.tb.CharWidth/size.Width : 1;
-                        gr.TranslateTransform(x, y + (1 - k)*range.tb.CharHeight/2);
+                        float k = size.Width > range.tb.CharWidth + 1 ? range.tb.CharWidth / size.Width : 1;
+                        gr.TranslateTransform(x, y + (1 - k) * range.tb.CharHeight / 2);
                         gr.ScaleTransform(k, (float) Math.Sqrt(k));
                         gr.DrawString(line[i].c.ToString(), f, ForeBrush, 0, 0, stringFormat);
                         gr.Restore(gs);
@@ -167,16 +171,18 @@ namespace FastColoredTextBoxNS
 
             if (BackgroundBrush is SolidBrush)
             {
-                var s =  ExportToHTML.GetColorAsString((BackgroundBrush as SolidBrush).Color);
+                var s = ExportToHTML.GetColorAsString((BackgroundBrush as SolidBrush).Color);
                 if (s != "")
                     result += "background-color:" + s + ";";
             }
+
             if (ForeBrush is SolidBrush)
             {
                 var s = ExportToHTML.GetColorAsString((ForeBrush as SolidBrush).Color);
                 if (s != "")
                     result += "color:" + s + ";";
             }
+
             if ((FontStyle & FontStyle.Bold) != 0)
                 result += "font-weight:bold;";
             if ((FontStyle & FontStyle.Italic) != 0)
@@ -195,10 +201,10 @@ namespace FastColoredTextBoxNS
 
             if (BackgroundBrush is SolidBrush)
                 result.BackColor = (BackgroundBrush as SolidBrush).Color;
-            
+
             if (ForeBrush is SolidBrush)
                 result.ForeColor = (ForeBrush as SolidBrush).Color;
-            
+
             if ((FontStyle & FontStyle.Bold) != 0)
                 result.AdditionalTags += @"\b";
             if ((FontStyle & FontStyle.Italic) != 0)
@@ -217,7 +223,7 @@ namespace FastColoredTextBoxNS
     /// </summary>
     public class FoldedBlockStyle : TextStyle
     {
-        public FoldedBlockStyle(Brush foreBrush, Brush backgroundBrush, FontStyle fontStyle):
+        public FoldedBlockStyle(Brush foreBrush, Brush backgroundBrush, FontStyle fontStyle) :
             base(foreBrush, backgroundBrush, fontStyle)
         {
         }
@@ -229,7 +235,7 @@ namespace FastColoredTextBoxNS
                 base.Draw(gr, position, range);
 
                 int firstNonSpaceSymbolX = position.X;
-                
+
                 //find first non space symbol
                 for (int i = range.Start.iChar; i < range.End.iChar; i++)
                     if (range.tb[range.Start.iLine][i].c != ' ')
@@ -238,15 +244,19 @@ namespace FastColoredTextBoxNS
                         firstNonSpaceSymbolX += range.tb.CharWidth;
 
                 //create marker
-                range.tb.AddVisualMarker(new FoldedAreaMarker(range.Start.iLine, new Rectangle(firstNonSpaceSymbolX, position.Y, position.X + (range.End.iChar - range.Start.iChar) * range.tb.CharWidth - firstNonSpaceSymbolX, range.tb.CharHeight)));
+                range.tb.AddVisualMarker(new FoldedAreaMarker(range.Start.iLine,
+                    new Rectangle(firstNonSpaceSymbolX, position.Y,
+                        position.X + (range.End.iChar - range.Start.iChar) * range.tb.CharWidth - firstNonSpaceSymbolX,
+                        range.tb.CharHeight)));
             }
             else
             {
                 //draw '...'
-                using(Font f = new Font(range.tb.Font, FontStyle))
+                using (Font f = new Font(range.tb.Font, FontStyle))
                     gr.DrawString("...", f, ForeBrush, range.tb.LeftIndent, position.Y - 2);
                 //create marker
-                range.tb.AddVisualMarker(new FoldedAreaMarker(range.Start.iLine, new Rectangle(range.tb.LeftIndent + 2, position.Y, 2 * range.tb.CharHeight, range.tb.CharHeight)));
+                range.tb.AddVisualMarker(new FoldedAreaMarker(range.Start.iLine,
+                    new Rectangle(range.tb.LeftIndent + 2, position.Y, 2 * range.tb.CharHeight, range.tb.CharHeight)));
             }
         }
     }
@@ -256,12 +266,13 @@ namespace FastColoredTextBoxNS
     /// </summary>
     public class SelectionStyle : Style
     {
-        public Brush BackgroundBrush{ get; set;}
+        public Brush BackgroundBrush { get; set; }
         public Brush ForegroundBrush { get; private set; }
 
         public override bool IsExportable
         {
-            get{return false;}  set{}
+            get { return false; }
+            set { }
         }
 
         public SelectionStyle(Brush backgroundBrush, Brush foregroundBrush = null)
@@ -276,7 +287,8 @@ namespace FastColoredTextBoxNS
             if (BackgroundBrush != null)
             {
                 gr.SmoothingMode = SmoothingMode.None;
-                var rect = new Rectangle(position.X, position.Y, (range.End.iChar - range.Start.iChar) * range.tb.CharWidth, range.tb.CharHeight);
+                var rect = new Rectangle(position.X, position.Y,
+                    (range.End.iChar - range.Start.iChar) * range.tb.CharWidth, range.tb.CharHeight);
                 if (rect.Width == 0)
                     return;
                 gr.FillRectangle(BackgroundBrush, rect);
@@ -287,7 +299,7 @@ namespace FastColoredTextBoxNS
                     gr.SmoothingMode = SmoothingMode.AntiAlias;
 
                     var r = new Range(range.tb, range.Start.iChar, range.Start.iLine,
-                                      Math.Min(range.tb[range.End.iLine].Count, range.End.iChar), range.End.iLine);
+                        Math.Min(range.tb[range.End.iLine].Count, range.End.iChar), range.End.iLine);
                     using (var style = new TextStyle(ForegroundBrush, null, FontStyle.Regular))
                         style.Draw(gr, new Point(position.X, position.Y - 1), r);
                 }
@@ -301,7 +313,7 @@ namespace FastColoredTextBoxNS
     /// </summary>
     public class MarkerStyle : Style
     {
-        public Brush BackgroundBrush{get;set;}
+        public Brush BackgroundBrush { get; set; }
 
         public MarkerStyle(Brush backgroundBrush)
         {
@@ -314,7 +326,8 @@ namespace FastColoredTextBoxNS
             //draw background
             if (BackgroundBrush != null)
             {
-                Rectangle rect = new Rectangle(position.X, position.Y, (range.End.iChar - range.Start.iChar) * range.tb.CharWidth, range.tb.CharHeight);
+                Rectangle rect = new Rectangle(position.X, position.Y,
+                    (range.End.iChar - range.Start.iChar) * range.tb.CharWidth, range.tb.CharHeight);
                 if (rect.Width == 0)
                     return;
                 gr.FillRectangle(BackgroundBrush, rect);
@@ -357,7 +370,9 @@ namespace FastColoredTextBoxNS
             gr.FillPath(Brushes.White, GetRoundedRectangle(rect, 1));
             gr.DrawPath(borderPen, GetRoundedRectangle(rect, 1));
             //add visual marker for handle mouse events
-            AddVisualMarker(range.tb, new StyleVisualMarker(new Rectangle(p.X-range.tb.CharWidth, p.Y, range.tb.CharWidth, range.tb.CharHeight), this));
+            AddVisualMarker(range.tb,
+                new StyleVisualMarker(
+                    new Rectangle(p.X - range.tb.CharWidth, p.Y, range.tb.CharWidth, range.tb.CharHeight), this));
         }
     }
 

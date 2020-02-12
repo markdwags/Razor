@@ -34,14 +34,8 @@ namespace FastColoredTextBoxNS
 
         public string this[int index]
         {
-            get
-            {
-                return ts[index].Text;
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get { return ts[index].Text; }
+            set { throw new NotImplementedException(); }
         }
 
         public void Add(string item)

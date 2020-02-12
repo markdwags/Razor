@@ -25,7 +25,7 @@ namespace FastColoredTextBoxNS
         }
     }
 
-    public class CollapseFoldingMarker: VisualMarker
+    public class CollapseFoldingMarker : VisualMarker
     {
         public readonly int iLine;
 
@@ -40,7 +40,8 @@ namespace FastColoredTextBoxNS
             //draw minus
             gr.FillRectangle(backgroundBrush, rectangle);
             gr.DrawRectangle(pen, rectangle);
-            gr.DrawLine(forePen, rectangle.Left + 2, rectangle.Top + rectangle.Height / 2, rectangle.Right - 2, rectangle.Top + rectangle.Height / 2);
+            gr.DrawLine(forePen, rectangle.Left + 2, rectangle.Top + rectangle.Height / 2, rectangle.Right - 2,
+                rectangle.Top + rectangle.Height / 2);
         }
     }
 
@@ -54,13 +55,15 @@ namespace FastColoredTextBoxNS
             this.iLine = iLine;
         }
 
-        public void Draw(Graphics gr, Pen pen,  Brush backgroundBrush, Pen forePen)
+        public void Draw(Graphics gr, Pen pen, Brush backgroundBrush, Pen forePen)
         {
             //draw plus
             gr.FillRectangle(backgroundBrush, rectangle);
             gr.DrawRectangle(pen, rectangle);
-            gr.DrawLine(forePen, rectangle.Left + 2, rectangle.Top + rectangle.Height / 2, rectangle.Right - 2, rectangle.Top + rectangle.Height / 2);
-            gr.DrawLine(forePen, rectangle.Left + rectangle.Width / 2, rectangle.Top + 2, rectangle.Left + rectangle.Width / 2, rectangle.Bottom - 2);
+            gr.DrawLine(forePen, rectangle.Left + 2, rectangle.Top + rectangle.Height / 2, rectangle.Right - 2,
+                rectangle.Top + rectangle.Height / 2);
+            gr.DrawLine(forePen, rectangle.Left + rectangle.Width / 2, rectangle.Top + 2,
+                rectangle.Left + rectangle.Width / 2, rectangle.Bottom - 2);
         }
     }
 
@@ -82,7 +85,7 @@ namespace FastColoredTextBoxNS
 
     public class StyleVisualMarker : VisualMarker
     {
-        public Style Style{get;private set;}
+        public Style Style { get; private set; }
 
         public StyleVisualMarker(Rectangle rectangle, Style style)
             : base(rectangle)

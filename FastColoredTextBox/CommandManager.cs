@@ -8,7 +8,7 @@ namespace FastColoredTextBoxNS
         readonly int maxHistoryLength = 200;
         LimitedStack<UndoableCommand> history;
         Stack<UndoableCommand> redoStack = new Stack<UndoableCommand>();
-        public TextSource TextSource{ get; private set; }
+        public TextSource TextSource { get; private set; }
         public bool UndoRedoStackIsEnabled { get; set; }
 
         public event EventHandler RedoCompleted = delegate { };
@@ -27,9 +27,9 @@ namespace FastColoredTextBoxNS
 
             //multirange ?
             if (cmd.ts.CurrentTB.Selection.ColumnSelectionMode)
-            if (cmd is UndoableCommand)
-                //make wrapper
-                cmd = new MultiRangeCommand((UndoableCommand)cmd);
+                if (cmd is UndoableCommand)
+                    //make wrapper
+                    cmd = new MultiRangeCommand((UndoableCommand) cmd);
 
 
             if (cmd is UndoableCommand)
@@ -49,6 +49,7 @@ namespace FastColoredTextBoxNS
                 if (cmd is UndoableCommand)
                     history.Pop();
             }
+
             //
             if (!UndoRedoStackIsEnabled)
                 ClearHistory();
@@ -64,7 +65,7 @@ namespace FastColoredTextBoxNS
             {
                 var cmd = history.Pop();
                 //
-                BeginDisableCommands();//prevent text changing into handlers
+                BeginDisableCommands(); //prevent text changing into handlers
                 try
                 {
                     cmd.Undo();
@@ -73,6 +74,7 @@ namespace FastColoredTextBoxNS
                 {
                     EndDisableCommands();
                 }
+
                 //
                 redoStack.Push(cmd);
             }
@@ -126,7 +128,7 @@ namespace FastColoredTextBoxNS
             if (redoStack.Count == 0)
                 return;
             UndoableCommand cmd;
-            BeginDisableCommands();//prevent text changing into handlers
+            BeginDisableCommands(); //prevent text changing into handlers
             try
             {
                 cmd = redoStack.Pop();
@@ -152,20 +154,14 @@ namespace FastColoredTextBoxNS
             TextSource.CurrentTB.OnUndoRedoStateChanged();
         }
 
-        public bool UndoEnabled 
-        { 
-            get
-            {
-                return history.Count > 0;
-            }
+        public bool UndoEnabled
+        {
+            get { return history.Count > 0; }
         }
 
         public bool RedoEnabled
         {
-            get
-            {
-                return redoStack.Count > 0;
-            }
+            get { return redoStack.Count > 0; }
         }
     }
 

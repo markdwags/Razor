@@ -19,8 +19,7 @@ namespace FastColoredTextBoxNS
         [DefaultValue(typeof(Color), "DarkGray")]
         public Color TickColor { get; set; }
 
-        [DefaultValue(typeof(Color), "Black")]
-        public Color CaretTickColor { get; set; }
+        [DefaultValue(typeof(Color), "Black")] public Color CaretTickColor { get; set; }
 
         FastColoredTextBox target;
 
@@ -42,15 +41,15 @@ namespace FastColoredTextBoxNS
         {
             InitializeComponent();
 
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint,
+                true);
             MinimumSize = new Size(0, 24);
-            MaximumSize = new Size(int.MaxValue/2, 24);
+            MaximumSize = new Size(int.MaxValue / 2, 24);
 
             BackColor2 = SystemColors.ControlLight;
             TickColor = Color.DarkGray;
             CaretTickColor = Color.Black;
         }
-
 
 
         protected virtual void OnTargetChanged()
@@ -104,7 +103,9 @@ namespace FastColoredTextBoxNS
             Size fontSize = TextRenderer.MeasureText("W", Font);
 
             int column = 0;
-            e.Graphics.FillRectangle(new LinearGradientBrush(new Rectangle(0, 0, Width, Height), BackColor, BackColor2, 270), new Rectangle(0, 0, Width, Height));
+            e.Graphics.FillRectangle(
+                new LinearGradientBrush(new Rectangle(0, 0, Width, Height), BackColor, BackColor2, 270),
+                new Rectangle(0, 0, Width, Height));
 
             float columnWidth = target.CharWidth;
             var sf = new StringFormat();
@@ -116,13 +117,13 @@ namespace FastColoredTextBoxNS
 
             using (var pen = new Pen(TickColor))
             using (var textBrush = new SolidBrush(ForeColor))
-            for (float x = zeroPoint.X; x < Right; x += columnWidth, ++column)
-            {
-                if (column % 10 == 0)
-                    e.Graphics.DrawString(column.ToString(), Font, textBrush, x, 0f, sf);
+                for (float x = zeroPoint.X; x < Right; x += columnWidth, ++column)
+                {
+                    if (column % 10 == 0)
+                        e.Graphics.DrawString(column.ToString(), Font, textBrush, x, 0f, sf);
 
-                e.Graphics.DrawLine(pen, (int)x, fontSize.Height + (column % 5 == 0 ? 1 : 3), (int)x, Height - 4);
-            }
+                    e.Graphics.DrawLine(pen, (int) x, fontSize.Height + (column % 5 == 0 ? 1 : 3), (int) x, Height - 4);
+                }
 
             using (var pen = new Pen(TickColor))
                 e.Graphics.DrawLine(pen, new Point(car.X - 3, Height - 3), new Point(car.X + 3, Height - 3));

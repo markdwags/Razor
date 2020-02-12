@@ -24,7 +24,7 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Allows to user to record macros
         /// </summary>
-        public bool AllowMacroRecordingByUser { get;set; }
+        public bool AllowMacroRecordingByUser { get; set; }
 
         private bool isRecording;
 
@@ -34,7 +34,11 @@ namespace FastColoredTextBoxNS
         public bool IsRecording
         {
             get { return isRecording; }
-            set { isRecording = value; UnderlayingControl.Invalidate(); }
+            set
+            {
+                isRecording = value;
+                UnderlayingControl.Invalidate();
+            }
         }
 
         /// <summary>
@@ -56,15 +60,16 @@ namespace FastColoredTextBoxNS
             {
                 if (item is Keys)
                 {
-                    UnderlayingControl.ProcessKey((Keys)item);
+                    UnderlayingControl.ProcessKey((Keys) item);
                 }
+
                 if (item is KeyValuePair<char, Keys>)
                 {
-                    var p = (KeyValuePair<char, Keys>)item;
+                    var p = (KeyValuePair<char, Keys>) item;
                     UnderlayingControl.ProcessKey(p.Key, p.Value);
                 }
-                
             }
+
             UnderlayingControl.EndAutoUndo();
             UnderlayingControl.Selection.EndUpdate();
             UnderlayingControl.EndUpdate();
@@ -110,7 +115,10 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Returns True if last macro is empty
         /// </summary>
-        public bool MacroIsEmpty { get { return macro.Count == 0; }}
+        public bool MacroIsEmpty
+        {
+            get { return macro.Count == 0; }
+        }
 
         /// <summary>
         /// Macros as string.
@@ -129,14 +137,15 @@ namespace FastColoredTextBoxNS
                 {
                     if (item is Keys)
                     {
-                        sb.AppendFormat("<item key='{0}' />\r\n", kc.ConvertToString((Keys)item));
+                        sb.AppendFormat("<item key='{0}' />\r\n", kc.ConvertToString((Keys) item));
                     }
                     else if (item is KeyValuePair<char, Keys>)
                     {
-                        var p = (KeyValuePair<char, Keys>)item;
-                        sb.AppendFormat("<item char='{0}' key='{1}' />\r\n", (int)p.Key, kc.ConvertToString(p.Value));
+                        var p = (KeyValuePair<char, Keys>) item;
+                        sb.AppendFormat("<item char='{0}' key='{1}' />\r\n", (int) p.Key, kc.ConvertToString(p.Value));
                     }
                 }
+
                 sb.AppendLine("</macros>");
 
                 Thread.CurrentThread.CurrentUICulture = cult;
@@ -144,7 +153,7 @@ namespace FastColoredTextBoxNS
                 return sb.ToString();
             }
 
-            set 
+            set
             {
                 isRecording = false;
                 ClearMacros();
@@ -160,21 +169,21 @@ namespace FastColoredTextBoxNS
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
                 var kc = new KeysConverter();
 
-                if(list != null)
-                foreach (XmlElement node in list)
-                {
-                    var ca = node.GetAttributeNode("char");
-                    var ka = node.GetAttributeNode("key");
-                    if (ca != null)
+                if (list != null)
+                    foreach (XmlElement node in list)
                     {
-                        if(ka!=null)
-                            AddCharToMacros((char)int.Parse(ca.Value), (Keys)kc.ConvertFromString(ka.Value));
-                        else
-                            AddCharToMacros((char)int.Parse(ca.Value), Keys.None);
-                    }else
-                    if(ka!=null)
-                            AddKeyToMacros((Keys)kc.ConvertFromString(ka.Value));
-                }
+                        var ca = node.GetAttributeNode("char");
+                        var ka = node.GetAttributeNode("key");
+                        if (ca != null)
+                        {
+                            if (ka != null)
+                                AddCharToMacros((char) int.Parse(ca.Value), (Keys) kc.ConvertFromString(ka.Value));
+                            else
+                                AddCharToMacros((char) int.Parse(ca.Value), Keys.None);
+                        }
+                        else if (ka != null)
+                            AddKeyToMacros((Keys) kc.ConvertFromString(ka.Value));
+                    }
 
                 Thread.CurrentThread.CurrentUICulture = cult;
             }

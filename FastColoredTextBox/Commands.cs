@@ -17,7 +17,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         /// <param name="tb">Underlaying textbox</param>
         /// <param name="c">Inserting char</param>
-        public InsertCharCommand(TextSource ts, char c): base(ts)
+        public InsertCharCommand(TextSource ts, char c) : base(ts)
         {
             this.c = c;
         }
@@ -30,7 +30,9 @@ namespace FastColoredTextBoxNS
             ts.OnTextChanging();
             switch (c)
             {
-                case '\n': MergeLines(sel.Start.iLine, ts); break;
+                case '\n':
+                    MergeLines(sel.Start.iLine, ts);
+                    break;
                 case '\r': break;
                 case '\b':
                     ts.CurrentTB.Selection.Start = lastSel.Start;
@@ -40,6 +42,7 @@ namespace FastColoredTextBoxNS
                         ts.CurrentTB.ExpandBlock(ts.CurrentTB.Selection.Start.iLine);
                         InsertChar(deletedChar, ref cc, ts);
                     }
+
                     break;
                 case '\t':
                     ts.CurrentTB.ExpandBlock(sel.Start.iLine);
@@ -78,7 +81,8 @@ namespace FastColoredTextBoxNS
                 InsertLine(ts);
             InsertChar(c, ref deletedChar, ts);
 
-            ts.NeedRecalc(new TextSource.TextChangedEventArgs(ts.CurrentTB.Selection.Start.iLine, ts.CurrentTB.Selection.Start.iLine));
+            ts.NeedRecalc(new TextSource.TextChangedEventArgs(ts.CurrentTB.Selection.Start.iLine,
+                ts.CurrentTB.Selection.Start.iLine));
             base.Execute();
         }
 
@@ -96,7 +100,7 @@ namespace FastColoredTextBoxNS
                     InsertLine(ts);
                     break;
                 case '\r': break;
-                case '\b'://backspace
+                case '\b': //backspace
                     if (tb.Selection.Start.iChar == 0 && tb.Selection.Start.iLine == 0)
                         return;
                     if (tb.Selection.Start.iChar == 0)
@@ -114,6 +118,7 @@ namespace FastColoredTextBoxNS
                         ts[tb.Selection.Start.iLine].RemoveAt(tb.Selection.Start.iChar - 1);
                         tb.Selection.Start = new Place(tb.Selection.Start.iChar - 1, tb.Selection.Start.iLine);
                     }
+
                     break;
                 case '\t':
                     int spaceCountNextTabStop = tb.TabLength - (tb.Selection.Start.iChar % tb.TabLength);
@@ -123,7 +128,8 @@ namespace FastColoredTextBoxNS
                     for (int i = 0; i < spaceCountNextTabStop; i++)
                         ts[tb.Selection.Start.iLine].Insert(tb.Selection.Start.iChar, new Char(' '));
 
-                    tb.Selection.Start = new Place(tb.Selection.Start.iChar + spaceCountNextTabStop, tb.Selection.Start.iLine);
+                    tb.Selection.Start = new Place(tb.Selection.Start.iChar + spaceCountNextTabStop,
+                        tb.Selection.Start.iLine);
                     break;
                 default:
                     ts[tb.Selection.Start.iLine].Insert(tb.Selection.Start.iChar, new Char(c));
@@ -172,6 +178,7 @@ namespace FastColoredTextBoxNS
                 ts[i].AddRange(ts[i + 1]);
                 ts.RemoveLine(i + 1);
             }
+
             tb.Selection.Start = new Place(pos, i);
             ts.NeedRecalc(new TextSource.TextChangedEventArgs(0, 1));
         }
@@ -179,11 +186,11 @@ namespace FastColoredTextBoxNS
         internal static void BreakLines(int iLine, int pos, TextSource ts)
         {
             Line newLine = ts.CreateLine();
-            for(int i=pos;i<ts[iLine].Count;i++)
+            for (int i = pos; i < ts[iLine].Count; i++)
                 newLine.Add(ts[iLine][i]);
             ts[iLine].RemoveRange(pos, ts[iLine].Count - pos);
             //
-            ts.InsertLine(iLine+1, newLine);
+            ts.InsertLine(iLine + 1, newLine);
         }
 
         public override UndoableCommand Clone()
@@ -204,7 +211,7 @@ namespace FastColoredTextBoxNS
         /// </summary>
         /// <param name="tb">Underlaying textbox</param>
         /// <param name="insertedText">Text for inserting</param>
-        public InsertTextCommand(TextSource ts, string insertedText): base(ts)
+        public InsertTextCommand(TextSource ts, string insertedText) : base(ts)
         {
             this.InsertedText = insertedText;
         }
@@ -238,25 +245,28 @@ namespace FastColoredTextBoxNS
             {
                 tb.Selection.BeginUpdate();
                 char cc = '\x0';
-                
+
                 if (ts.Count == 0)
                 {
                     InsertCharCommand.InsertLine(ts);
                     tb.Selection.Start = Place.Empty;
                 }
+
                 tb.ExpandBlock(tb.Selection.Start.iLine);
                 var len = insertedText.Length;
                 for (int i = 0; i < len; i++)
                 {
                     var c = insertedText[i];
-                    if(c == '\r' && (i >= len - 1 || insertedText[i + 1] != '\n'))
+                    if (c == '\r' && (i >= len - 1 || insertedText[i + 1] != '\n'))
                         InsertCharCommand.InsertChar('\n', ref cc, ts);
                     else
                         InsertCharCommand.InsertChar(c, ref cc, ts);
                 }
+
                 ts.NeedRecalc(new TextSource.TextChangedEventArgs(0, 1));
             }
-            finally {
+            finally
+            {
                 tb.Selection.EndUpdate();
             }
         }
@@ -286,12 +296,12 @@ namespace FastColoredTextBoxNS
             : base(ts)
         {
             //sort ranges by place
-            ranges.Sort((r1, r2)=>
-                {
-                    if (r1.Start.iLine == r2.Start.iLine)
-                        return r1.Start.iChar.CompareTo(r2.Start.iChar);
-                    return r1.Start.iLine.CompareTo(r2.Start.iLine);
-                });
+            ranges.Sort((r1, r2) =>
+            {
+                if (r1.Start.iLine == r2.Start.iLine)
+                    return r1.Start.iChar.CompareTo(r2.Start.iChar);
+                return r1.Start.iLine.CompareTo(r2.Start.iLine);
+            });
             //
             this.ranges = ranges;
             this.insertedText = insertedText;
@@ -309,7 +319,7 @@ namespace FastColoredTextBoxNS
             tb.BeginUpdate();
 
             tb.Selection.BeginUpdate();
-            for (int i = 0; i<ranges.Count; i++)
+            for (int i = 0; i < ranges.Count; i++)
             {
                 tb.Selection.Start = ranges[i].Start;
                 for (int j = 0; j < insertedText.Length; j++)
@@ -317,6 +327,7 @@ namespace FastColoredTextBoxNS
                 ClearSelected(ts);
                 InsertTextCommand.InsertText(prevText[prevText.Count - i - 1], ts);
             }
+
             tb.Selection.EndUpdate();
             tb.EndUpdate();
 
@@ -344,10 +355,11 @@ namespace FastColoredTextBoxNS
                 tb.Selection.End = ranges[i].End;
                 prevText.Add(tb.Selection.Text);
                 ClearSelected(ts);
-                if (insertedText  != "")
+                if (insertedText != "")
                     InsertTextCommand.InsertText(insertedText, ts);
             }
-            if(ranges.Count > 0)
+
+            if (ranges.Count > 0)
                 ts.OnTextChanged(ranges[0].Start.iLine, ranges[ranges.Count - 1].End.iLine);
             tb.EndUpdate();
             tb.Selection.EndUpdate();
@@ -398,7 +410,7 @@ namespace FastColoredTextBoxNS
         /// Construstor
         /// </summary>
         /// <param name="tb">Underlaying textbox</param>
-        public ClearSelectedCommand(TextSource ts): base(ts)
+        public ClearSelectedCommand(TextSource ts) : base(ts)
         {
         }
 
@@ -454,6 +466,7 @@ namespace FastColoredTextBoxNS
                 ts.RemoveLine(fromLine + 1, toLine - fromLine - 1);
                 InsertCharCommand.MergeLines(fromLine, ts);
             }
+
             //
             tb.Selection.Start = new Place(fromChar, fromLine);
             //
@@ -520,6 +533,7 @@ namespace FastColoredTextBoxNS
                 InsertTextCommand.InsertText(prevText[prevTextIndex], ts);
                 ts.OnTextChanged(ranges[i].ReplacedRange.Start.iLine, ranges[i].ReplacedRange.Start.iLine);
             }
+
             tb.Selection.EndUpdate();
 
             ts.NeedRecalc(new TextSource.TextChangedEventArgs(0, 1));
@@ -545,6 +559,7 @@ namespace FastColoredTextBoxNS
                 InsertTextCommand.InsertText(ranges[i].ReplaceText, ts);
                 ts.OnTextChanged(ranges[i].ReplacedRange.Start.iLine, ranges[i].ReplacedRange.End.iLine);
             }
+
             tb.Selection.EndUpdate();
             ts.NeedRecalc(new TextSource.TextChangedEventArgs(0, 1));
 
@@ -596,7 +611,7 @@ namespace FastColoredTextBoxNS
             {
                 var iLine = iLines[i];
 
-                if(iLine < ts.Count)
+                if (iLine < ts.Count)
                     tb.Selection.Start = new Place(0, iLine);
                 else
                     tb.Selection.Start = new Place(ts[ts.Count - 1].Count, ts.Count - 1);
@@ -610,9 +625,10 @@ namespace FastColoredTextBoxNS
                     ts[iLine + 1].IsChanged = true;
                 else
                     ts[iLine - 1].IsChanged = true;
-                if(text.Trim() != string.Empty)
+                if (text.Trim() != string.Empty)
                     ts.OnTextChanged(iLine, iLine);
             }
+
             //tb.EndUpdate();
             tb.Selection.EndUpdate();
 
@@ -630,14 +646,15 @@ namespace FastColoredTextBoxNS
             ts.OnTextChanging();
 
             tb.Selection.BeginUpdate();
-            for(int i = iLines.Count - 1; i >= 0; i--)
+            for (int i = iLines.Count - 1; i >= 0; i--)
             {
                 var iLine = iLines[i];
-                
-                prevText.Add(ts[iLine].Text);//backward
+
+                prevText.Add(ts[iLine].Text); //backward
                 ts.RemoveLine(iLine);
                 //ts.OnTextChanged(ranges[i].Start.iLine, ranges[i].End.iLine);
             }
+
             tb.Selection.Start = new Place(0, 0);
             tb.Selection.EndUpdate();
             ts.NeedRecalc(new TextSource.TextChangedEventArgs(0, 1));
@@ -660,7 +677,7 @@ namespace FastColoredTextBoxNS
         private Range range;
         private List<UndoableCommand> commandsByRanges = new List<UndoableCommand>();
 
-        public MultiRangeCommand(UndoableCommand command):base(command.ts)
+        public MultiRangeCommand(UndoableCommand command) : base(command.ts)
         {
             this.cmd = command;
             range = ts.CurrentTB.Selection.Clone();
@@ -681,8 +698,8 @@ namespace FastColoredTextBoxNS
             {
                 if (cmd is InsertTextCommand)
                     ExecuteInsertTextCommand(ref iChar, (cmd as InsertTextCommand).InsertedText);
-                else
-                if (cmd is InsertCharCommand && (cmd as InsertCharCommand).c != '\x0' && (cmd as InsertCharCommand).c != '\b')//if not DEL or BACKSPACE
+                else if (cmd is InsertCharCommand && (cmd as InsertCharCommand).c != '\x0' &&
+                         (cmd as InsertCharCommand).c != '\b') //if not DEL or BACKSPACE
                     ExecuteInsertTextCommand(ref iChar, (cmd as InsertCharCommand).c.ToString());
                 else
                     ExecuteCommand(ref iChar);
@@ -701,6 +718,7 @@ namespace FastColoredTextBoxNS
                     ts.CurrentTB.Selection.Start = new Place(iChar, iStartLine);
                     ts.CurrentTB.Selection.End = new Place(iChar, iEndLine);
                 }
+
                 ts.CurrentTB.Selection.ColumnSelectionMode = true;
                 ts.CurrentTB.Selection.EndUpdate();
             }
@@ -716,13 +734,14 @@ namespace FastColoredTextBoxNS
                 var lineIsEmpty = r.End < r.Start && line.StartSpacesCount == line.Count;
                 if (!lineIsEmpty)
                 {
-                    var insertedText = lines[iLine%lines.Length];
-                    if (r.End < r.Start && insertedText!="")
+                    var insertedText = lines[iLine % lines.Length];
+                    if (r.End < r.Start && insertedText != "")
                     {
                         //add forwarding spaces
                         insertedText = new string(' ', r.Start.iChar - r.End.iChar) + insertedText;
                         r.Start = r.End;
                     }
+
                     ts.CurrentTB.Selection = r;
                     var c = new InsertTextCommand(ts, insertedText);
                     c.Execute();
@@ -730,6 +749,7 @@ namespace FastColoredTextBoxNS
                         iChar = ts.CurrentTB.Selection.End.iChar;
                     commandsByRanges.Add(c);
                 }
+
                 iLine++;
             }
         }
@@ -761,6 +781,7 @@ namespace FastColoredTextBoxNS
                 ts.CurrentTB.Selection.EndUpdate();
                 ts.CurrentTB.EndUpdate();
             }
+
             ts.CurrentTB.Selection = range.Clone();
             ts.CurrentTB.OnTextChanged(range);
             ts.CurrentTB.OnSelectionChanged();
@@ -778,7 +799,7 @@ namespace FastColoredTextBoxNS
     /// </summary>
     public class SelectCommand : UndoableCommand
     {
-        public SelectCommand(TextSource ts):base(ts)
+        public SelectCommand(TextSource ts) : base(ts)
         {
         }
 
@@ -801,7 +822,7 @@ namespace FastColoredTextBoxNS
         public override UndoableCommand Clone()
         {
             var result = new SelectCommand(ts);
-            if(lastSel!=null)
+            if (lastSel != null)
                 result.lastSel = new RangeInfo(new Range(ts.CurrentTB, lastSel.Start, lastSel.End));
             return result;
         }

@@ -43,7 +43,7 @@ namespace FastColoredTextBoxNS
             if (cbWholeWord.Checked)
                 pattern = "\\b" + pattern + "\\b";
             //
-            var range = tb.Selection.IsEmpty? tb.Range.Clone() : tb.Selection.Clone();
+            var range = tb.Selection.IsEmpty ? tb.Range.Clone() : tb.Selection.Clone();
             //
             var list = new List<Range>();
             foreach (var r in range.GetRangesByLines(pattern, opt))
@@ -68,6 +68,7 @@ namespace FastColoredTextBoxNS
                 startPlace = range.Start;
                 firstSearch = false;
             }
+
             //
             range.Start = range.End;
             if (range.Start >= startPlace)
@@ -83,11 +84,13 @@ namespace FastColoredTextBoxNS
                 tb.Invalidate();
                 return true;
             }
+
             if (range.Start >= startPlace && startPlace > Place.Empty)
             {
                 tb.Selection.Start = new Place(0, 0);
                 return Find(pattern);
             }
+
             return false;
         }
 
@@ -106,6 +109,7 @@ namespace FastColoredTextBoxNS
                 this.Close();
                 return true;
             }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -116,6 +120,7 @@ namespace FastColoredTextBoxNS
                 e.Cancel = true;
                 Hide();
             }
+
             this.tb.Focus();
         }
 
@@ -124,8 +129,8 @@ namespace FastColoredTextBoxNS
             try
             {
                 if (tb.SelectionLength != 0)
-                if (!tb.Selection.ReadOnly)
-                    tb.InsertText(tbReplace.Text);
+                    if (!tb.Selection.ReadOnly)
+                        tb.InsertText(tbReplace.Text);
                 btFindNext_Click(sender, null);
             }
             catch (Exception ex)
@@ -150,13 +155,16 @@ namespace FastColoredTextBoxNS
                         ro = true;
                         break;
                     }
+
                 //replace
                 if (!ro)
-                if (ranges.Count > 0)
-                {
-                    tb.TextSource.Manager.ExecuteCommand(new ReplaceTextCommand(tb.TextSource, ranges, tbReplace.Text));
-                    tb.Selection.Start = new Place(0, 0);
-                }
+                    if (ranges.Count > 0)
+                    {
+                        tb.TextSource.Manager.ExecuteCommand(new ReplaceTextCommand(tb.TextSource, ranges,
+                            tbReplace.Text));
+                        tb.Selection.Start = new Place(0, 0);
+                    }
+
                 //
                 tb.Invalidate();
                 MessageBox.Show(ranges.Count + " occurrence(s) replaced");
@@ -165,6 +173,7 @@ namespace FastColoredTextBoxNS
             {
                 MessageBox.Show(ex.Message);
             }
+
             tb.Selection.EndUpdate();
         }
 

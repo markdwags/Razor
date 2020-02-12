@@ -10,31 +10,45 @@ namespace FastColoredTextBoxNS
 {
     public class SyntaxHighlighter : IDisposable
     {
-		//styles
-		protected static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();
-		public readonly Style BlueBoldStyle = new TextStyle(Brushes.Blue, null, FontStyle.Bold);
-		public readonly Style BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
-		public readonly Style BoldStyle = new TextStyle(null, null, FontStyle.Bold | FontStyle.Underline);
-		public readonly Style BrownStyle = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
-		public readonly Style GrayStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
-		public readonly Style GreenStyle = new TextStyle(Brushes.Green, null, FontStyle.Italic);
-		public readonly Style MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
-		public readonly Style MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
-		public readonly Style RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
-		public readonly Style BlackStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
-		public readonly Style CrimsonStyle = new TextStyle(Brushes.Crimson, null, FontStyle.Regular);
-		public readonly Style DarkOrangeStyle = new TextStyle(Brushes.DarkOrange, null, FontStyle.Regular);
-		public readonly Style DodgerBlueStyle = new TextStyle(Brushes.DodgerBlue, null, FontStyle.Regular);
+        //styles
+        protected static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();
+        public readonly Style BlueBoldStyle = new TextStyle(Brushes.Blue, null, FontStyle.Bold);
+        public readonly Style BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
+        public readonly Style BoldStyle = new TextStyle(null, null, FontStyle.Bold | FontStyle.Underline);
+        public readonly Style BrownStyle = new TextStyle(Brushes.Brown, null, FontStyle.Italic);
+        public readonly Style GrayStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
+        public readonly Style GreenStyle = new TextStyle(Brushes.Green, null, FontStyle.Italic);
+        public readonly Style MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
+        public readonly Style MaroonStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Regular);
+        public readonly Style RedStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
+        public readonly Style BlackStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
+        public readonly Style CrimsonStyle = new TextStyle(Brushes.Crimson, null, FontStyle.Regular);
+        public readonly Style DarkOrangeStyle = new TextStyle(Brushes.DarkOrange, null, FontStyle.Regular);
+        public readonly Style DodgerBlueStyle = new TextStyle(Brushes.DodgerBlue, null, FontStyle.Regular);
 
-          public readonly Style DarkOrangeBoldStyle = new TextStyle(Brushes.DarkOrange, null, FontStyle.Bold | FontStyle.Regular);
+        public readonly Style DarkOrangeBoldStyle =
+            new TextStyle(Brushes.DarkOrange, null, FontStyle.Bold | FontStyle.Regular);
 
-          public readonly Style RazorDarkKeywords = new TextStyle(new SolidBrush(Color.FromArgb(255, 253, 134, 30)), null, FontStyle.Regular);
-          public readonly Style RazorDarkCommands = new TextStyle(new SolidBrush(Color.FromArgb(255, 43, 144, 175)), null, FontStyle.Regular);
-          public readonly Style RazorDarkStrings = new TextStyle(new SolidBrush(Color.FromArgb(255, 181, 241, 9)), null, FontStyle.Regular);
-          public readonly Style RazorDarkOperators = new TextStyle(new SolidBrush(Color.FromArgb(255, 253, 134, 30)), null, FontStyle.Regular);
-          public readonly Style RazorDarkNumbers = new TextStyle(new SolidBrush(Color.FromArgb(255, 174, 129, 255)), null, FontStyle.Regular);
-          public readonly Style RazorDarkComments = new TextStyle(new SolidBrush(Color.FromArgb(255, 150, 150, 150)), null, FontStyle.Regular);
-          public readonly Style RazorDarkSerial = new TextStyle(new SolidBrush(Color.FromArgb(255, 249, 37, 77)), null, FontStyle.Regular);
+        public readonly Style RazorDarkKeywords =
+            new TextStyle(new SolidBrush(Color.FromArgb(255, 253, 134, 30)), null, FontStyle.Regular);
+
+        public readonly Style RazorDarkCommands =
+            new TextStyle(new SolidBrush(Color.FromArgb(255, 43, 144, 175)), null, FontStyle.Regular);
+
+        public readonly Style RazorDarkStrings =
+            new TextStyle(new SolidBrush(Color.FromArgb(255, 181, 241, 9)), null, FontStyle.Regular);
+
+        public readonly Style RazorDarkOperators =
+            new TextStyle(new SolidBrush(Color.FromArgb(255, 253, 134, 30)), null, FontStyle.Regular);
+
+        public readonly Style RazorDarkNumbers =
+            new TextStyle(new SolidBrush(Color.FromArgb(255, 174, 129, 255)), null, FontStyle.Regular);
+
+        public readonly Style RazorDarkComments =
+            new TextStyle(new SolidBrush(Color.FromArgb(255, 150, 150, 150)), null, FontStyle.Regular);
+
+        public readonly Style RazorDarkSerial =
+            new TextStyle(new SolidBrush(Color.FromArgb(255, 249, 37, 77)), null, FontStyle.Regular);
 
 
         //
@@ -44,38 +58,38 @@ namespace FastColoredTextBoxNS
         protected readonly List<Style> resilientStyles = new List<Style>(5);
 
         protected Regex CSharpAttributeRegex,
-                      CSharpClassNameRegex;
+            CSharpClassNameRegex;
 
         protected Regex CSharpCommentRegex1,
-                      CSharpCommentRegex2,
-                      CSharpCommentRegex3;
+            CSharpCommentRegex2,
+            CSharpCommentRegex3;
 
         protected Regex CSharpKeywordRegex;
         protected Regex CSharpNumberRegex;
         protected Regex CSharpStringRegex;
 
         protected Regex HTMLAttrRegex,
-                      HTMLAttrValRegex,
-                      HTMLCommentRegex1,
-                      HTMLCommentRegex2;
+            HTMLAttrValRegex,
+            HTMLCommentRegex1,
+            HTMLCommentRegex2;
 
         protected Regex HTMLEndTagRegex;
 
         protected Regex HTMLEntityRegex,
-                      HTMLTagContentRegex;
+            HTMLTagContentRegex;
 
         protected Regex HTMLTagNameRegex;
         protected Regex HTMLTagRegex;
 
         protected Regex XMLAttrRegex,
-                      XMLAttrValRegex,
-                      XMLCommentRegex1,
-                      XMLCommentRegex2;
+            XMLAttrValRegex,
+            XMLCommentRegex1,
+            XMLCommentRegex2;
 
         protected Regex XMLEndTagRegex;
 
         protected Regex XMLEntityRegex,
-                      XMLTagContentRegex;
+            XMLTagContentRegex;
 
         protected Regex XMLTagNameRegex;
         protected Regex XMLTagRegex;
@@ -83,60 +97,60 @@ namespace FastColoredTextBoxNS
         protected Regex XMLFoldingRegex;
 
         protected Regex JScriptCommentRegex1,
-                      JScriptCommentRegex2,
-                      JScriptCommentRegex3;
+            JScriptCommentRegex2,
+            JScriptCommentRegex3;
 
         protected Regex JScriptKeywordRegex;
         protected Regex JScriptNumberRegex;
         protected Regex JScriptStringRegex;
 
         protected Regex LuaCommentRegex1,
-                      LuaCommentRegex2,
-                      LuaCommentRegex3;
+            LuaCommentRegex2,
+            LuaCommentRegex3;
 
         protected Regex LuaKeywordRegex;
         protected Regex LuaNumberRegex;
         protected Regex LuaStringRegex;
         protected Regex LuaFunctionsRegex;
 
-		protected Regex PythonCommentRegex;
+        protected Regex PythonCommentRegex;
 
-		protected Regex PythonKeywordRegex;
-		protected Regex PythonNumberRegex;
-		protected Regex PythonStringRegex1;
-		protected Regex PythonStringRegex2;
-          
-          protected Regex RazorClassKeywordRegex;
-          protected Regex RazorPropsKeywordRegex;
-          protected Regex RazorFunctionsKeywordRegex;
+        protected Regex PythonKeywordRegex;
+        protected Regex PythonNumberRegex;
+        protected Regex PythonStringRegex1;
+        protected Regex PythonStringRegex2;
+
+        protected Regex RazorClassKeywordRegex;
+        protected Regex RazorPropsKeywordRegex;
+        protected Regex RazorFunctionsKeywordRegex;
 
         protected Regex RazorCommentRegex;
         protected Regex RazorSerialRegex;
         protected Regex RazorOperatorRegex;
         protected Regex RazorLayerRegex;
-          protected Regex RazorCommandRegex;
-          protected Regex RazorKeywordRegex;
-          protected Regex RazorNumberRegex;
-          protected Regex RazorStringRegex1;
-          protected Regex RazorStringRegex2;
-        
+        protected Regex RazorCommandRegex;
+        protected Regex RazorKeywordRegex;
+        protected Regex RazorNumberRegex;
+        protected Regex RazorStringRegex1;
+        protected Regex RazorStringRegex2;
+
 
         protected Regex PHPCommentRegex1,
-                      PHPCommentRegex2,
-                      PHPCommentRegex3;
+            PHPCommentRegex2,
+            PHPCommentRegex3;
 
         protected Regex PHPKeywordRegex1,
-                      PHPKeywordRegex2,
-                      PHPKeywordRegex3;
+            PHPKeywordRegex2,
+            PHPKeywordRegex3;
 
         protected Regex PHPNumberRegex;
         protected Regex PHPStringRegex;
         protected Regex PHPVarRegex;
 
         protected Regex SQLCommentRegex1,
-                      SQLCommentRegex2,
-                      SQLCommentRegex3, 
-                      SQLCommentRegex4;
+            SQLCommentRegex2,
+            SQLCommentRegex3,
+            SQLCommentRegex4;
 
         protected Regex SQLFunctionsRegex;
         protected Regex SQLKeywordsRegex;
@@ -164,7 +178,8 @@ namespace FastColoredTextBoxNS
             }
         }
 
-        public SyntaxHighlighter(FastColoredTextBox currentTb) {
+        public SyntaxHighlighter(FastColoredTextBox currentTb)
+        {
             this.currentTb = currentTb;
         }
 
@@ -296,6 +311,7 @@ namespace FastColoredTextBoxNS
                 args.ShiftNextLines = args.TabLength;
                 return;
             }
+
             //end of block {}
             if (Regex.IsMatch(args.LineText, @"}[^""']*$"))
             {
@@ -303,6 +319,7 @@ namespace FastColoredTextBoxNS
                 args.ShiftNextLines = -args.TabLength;
                 return;
             }
+
             //is unclosed operator in previous line ?
             if (Regex.IsMatch(args.PrevLineText, @"^\s*(if|for|foreach|while|[\}\s]*else)\b[^{]*$"))
                 if (!Regex.IsMatch(args.PrevLineText, @"(;\s*$)|(;\s*//)")) //operator is unclosed
@@ -339,14 +356,16 @@ namespace FastColoredTextBoxNS
                 args.ShiftNextLines = -args.TabLength;
                 return;
             }
+
             //start of declaration
             if (Regex.IsMatch(args.LineText,
-                              @"\b(Class|Property|Enum|Structure|Sub|Function|Namespace|Interface|Get)\b|(Set\s*\()",
-                              RegexOptions.IgnoreCase))
+                @"\b(Class|Property|Enum|Structure|Sub|Function|Namespace|Interface|Get)\b|(Set\s*\()",
+                RegexOptions.IgnoreCase))
             {
                 args.ShiftNextLines = args.TabLength;
                 return;
             }
+
             // then ...
             if (Regex.IsMatch(args.LineText, @"\b(Then)\s*\S+", RegexOptions.IgnoreCase))
                 return;
@@ -383,6 +402,7 @@ namespace FastColoredTextBoxNS
                 args.ShiftNextLines = args.TabLength;
                 return;
             }
+
             //end of block {}
             if (Regex.IsMatch(args.LineText, @"}[^""']*$"))
             {
@@ -390,6 +410,7 @@ namespace FastColoredTextBoxNS
                 args.ShiftNextLines = -args.TabLength;
                 return;
             }
+
             //label
             if (Regex.IsMatch(args.LineText, @"^\s*\w+\s*:\s*($|//)") &&
                 !Regex.IsMatch(args.LineText, @"^\s*default\s*:"))
@@ -397,12 +418,14 @@ namespace FastColoredTextBoxNS
                 args.Shift = -args.TabLength;
                 return;
             }
+
             //some statements: case, default
             if (Regex.IsMatch(args.LineText, @"^\s*(case|default)\b.*:\s*($|//)"))
             {
                 args.Shift = -args.TabLength / 2;
                 return;
             }
+
             //is unclosed operator in previous line ?
             if (Regex.IsMatch(args.PrevLineText, @"^\s*(if|for|foreach|while|[\}\s]*else)\b[^{]*$"))
                 if (!Regex.IsMatch(args.PrevLineText, @"(;\s*$)|(;\s*//)")) //operator is unclosed
@@ -475,7 +498,9 @@ namespace FastColoredTextBoxNS
                 if (brackets.Attributes["strategy"] == null || brackets.Attributes["strategy"].Value == "")
                     desc.bracketsHighlightStrategy = BracketsHighlightStrategy.Strategy2;
                 else
-                    desc.bracketsHighlightStrategy = (BracketsHighlightStrategy)Enum.Parse(typeof(BracketsHighlightStrategy), brackets.Attributes["strategy"].Value);
+                    desc.bracketsHighlightStrategy =
+                        (BracketsHighlightStrategy) Enum.Parse(typeof(BracketsHighlightStrategy),
+                            brackets.Attributes["strategy"].Value);
             }
 
             var styleByName = new Dictionary<string, Style>();
@@ -486,6 +511,7 @@ namespace FastColoredTextBoxNS
                 styleByName[style.Attributes["name"].Value] = s;
                 desc.styles.Add(s);
             }
+
             foreach (XmlNode rule in doc.SelectNodes("doc/rule"))
                 desc.rules.Add(ParseRule(rule, styleByName));
             foreach (XmlNode folding in doc.SelectNodes("doc/folding"))
@@ -503,7 +529,7 @@ namespace FastColoredTextBoxNS
             //options
             XmlAttribute optionsA = foldingNode.Attributes["options"];
             if (optionsA != null)
-                folding.options = (RegexOptions)Enum.Parse(typeof(RegexOptions), optionsA.Value);
+                folding.options = (RegexOptions) Enum.Parse(typeof(RegexOptions), optionsA.Value);
 
             return folding;
         }
@@ -523,7 +549,7 @@ namespace FastColoredTextBoxNS
             rule.style = styles[styleA.Value];
             //options
             if (optionsA != null)
-                rule.options = (RegexOptions)Enum.Parse(typeof(RegexOptions), optionsA.Value);
+                rule.options = (RegexOptions) Enum.Parse(typeof(RegexOptions), optionsA.Value);
 
             return rule;
         }
@@ -545,7 +571,7 @@ namespace FastColoredTextBoxNS
             //fontStyle
             FontStyle fontStyle = FontStyle.Regular;
             if (fontStyleA != null)
-                fontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), fontStyleA.Value);
+                fontStyle = (FontStyle) Enum.Parse(typeof(FontStyle), fontStyleA.Value);
 
             return new TextStyle(foreBrush, backBrush, fontStyle);
         }
@@ -556,7 +582,7 @@ namespace FastColoredTextBoxNS
             {
                 if (s.Length <= 7)
                     return Color.FromArgb(255,
-                                          Color.FromArgb(Int32.Parse(s.Substring(1), NumberStyles.AllowHexSpecifier)));
+                        Color.FromArgb(Int32.Parse(s.Substring(1), NumberStyles.AllowHexSpecifier)));
                 else
                     return Color.FromArgb(Int32.Parse(s.Substring(1), NumberStyles.AllowHexSpecifier));
             }
@@ -605,7 +631,7 @@ namespace FastColoredTextBoxNS
 
         protected char[] RememberBrackets(FastColoredTextBox tb)
         {
-            return new[] { tb.LeftBracket, tb.RightBracket, tb.LeftBracket2, tb.RightBracket2 };
+            return new[] {tb.LeftBracket, tb.RightBracket, tb.LeftBracket2, tb.RightBracket2};
         }
 
         protected void InitCShaprRegex()
@@ -645,16 +671,18 @@ namespace FastColoredTextBoxNS
                         ",
                     RegexOptions.ExplicitCapture | RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace |
                     RegexCompiledOption
-                    ); //thanks to rittergig for this regex
+                ); //thanks to rittergig for this regex
 
             CSharpCommentRegex1 = new Regex(@"//.*$", RegexOptions.Multiline | RegexCompiledOption);
             CSharpCommentRegex2 = new Regex(@"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline | RegexCompiledOption);
             CSharpCommentRegex3 = new Regex(@"(/\*.*?\*/)|(.*\*/)",
-                                            RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+                RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
             CSharpNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b",
-                                          RegexCompiledOption);
-            CSharpAttributeRegex = new Regex(@"^\s*(?<range>\[.+?\])\s*$", RegexOptions.Multiline | RegexCompiledOption);
-            CSharpClassNameRegex = new Regex(@"\b(class|struct|enum|interface)\s+(?<range>\w+?)\b", RegexCompiledOption);
+                RegexCompiledOption);
+            CSharpAttributeRegex =
+                new Regex(@"^\s*(?<range>\[.+?\])\s*$", RegexOptions.Multiline | RegexCompiledOption);
+            CSharpClassNameRegex =
+                new Regex(@"\b(class|struct|enum|interface)\s+(?<range>\w+?)\b", RegexCompiledOption);
             CSharpKeywordRegex =
                 new Regex(
                     @"\b(abstract|as|base|bool|break|byte|case|catch|char|checked|class|const|continue|decimal|default|delegate|do|double|else|enum|event|explicit|extern|false|finally|fixed|float|for|foreach|goto|if|implicit|in|int|interface|internal|is|lock|long|namespace|new|null|object|operator|out|override|params|private|protected|public|readonly|ref|return|sbyte|sealed|short|sizeof|stackalloc|static|string|struct|switch|this|throw|true|try|typeof|uint|ulong|unchecked|unsafe|ushort|using|virtual|void|volatile|while|add|alias|ascending|descending|dynamic|from|get|global|group|into|join|let|orderby|partial|remove|select|set|value|var|where|yield)\b|#region\b|#endregion\b",
@@ -730,8 +758,8 @@ namespace FastColoredTextBoxNS
                     RazorCommandStyle = CrimsonStyle;
                     RazorSerialStyle = MediumPurpleStyle;*/
 
-                    StringStyle = RazorDarkStrings;
                     CommentStyle = RazorDarkComments;
+                    StringStyle = RazorDarkStrings;
                     NumberStyle = RazorDarkNumbers;
                     KeywordStyle = RazorDarkKeywords;
                     FunctionsStyle = RedStyle;
@@ -815,6 +843,7 @@ namespace FastColoredTextBoxNS
                     rr.ClearStyle(StyleIndex.All);
                     rr.SetStyle(CommentTagStyle);
                 }
+
                 //prefix '///'
                 foreach (Range rr in r.GetRanges(@"^\s*///", RegexOptions.Multiline))
                 {
@@ -837,7 +866,7 @@ namespace FastColoredTextBoxNS
             VBCommentRegex = new Regex(@"'.*$", RegexOptions.Multiline | RegexCompiledOption);
             VBNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?\b", RegexCompiledOption);
             VBClassNameRegex = new Regex(@"\b(Class|Structure|Enum|Interface)[ ]+(?<range>\w+?)\b",
-                                         RegexOptions.IgnoreCase | RegexCompiledOption);
+                RegexOptions.IgnoreCase | RegexCompiledOption);
             VBKeywordRegex =
                 new Regex(
                     @"\b(AddHandler|AddressOf|Alias|And|AndAlso|As|Boolean|ByRef|Byte|ByVal|Call|Case|Catch|CBool|CByte|CChar|CDate|CDbl|CDec|Char|CInt|Class|CLng|CObj|Const|Continue|CSByte|CShort|CSng|CStr|CType|CUInt|CULng|CUShort|Date|Decimal|Declare|Default|Delegate|Dim|DirectCast|Do|Double|Each|Else|ElseIf|End|EndIf|Enum|Erase|Error|Event|Exit|False|Finally|For|Friend|Function|Get|GetType|GetXMLNamespace|Global|GoSub|GoTo|Handles|If|Implements|Imports|In|Inherits|Integer|Interface|Is|IsNot|Let|Lib|Like|Long|Loop|Me|Mod|Module|MustInherit|MustOverride|MyBase|MyClass|Namespace|Narrowing|New|Next|Not|Nothing|NotInheritable|NotOverridable|Object|Of|On|Operator|Option|Optional|Or|OrElse|Overloads|Overridable|Overrides|ParamArray|Partial|Private|Property|Protected|Public|RaiseEvent|ReadOnly|ReDim|REM|RemoveHandler|Resume|Return|SByte|Select|Set|Shadows|Shared|Short|Single|Static|Step|Stop|String|Structure|Sub|SyncLock|Then|Throw|To|True|Try|TryCast|TypeOf|UInteger|ULong|UShort|Using|Variant|Wend|When|While|Widening|With|WithEvents|WriteOnly|Xor|Region)\b|(#Const|#Else|#ElseIf|#End|#If|#Region)\b",
@@ -881,24 +910,25 @@ namespace FastColoredTextBoxNS
             //set folding markers
             range.SetFoldingMarkers(@"#Region\b", @"#End\s+Region\b", RegexOptions.IgnoreCase);
             range.SetFoldingMarkers(@"\b(Class|Property|Enum|Structure|Interface)[ \t]+\S+",
-                                    @"\bEnd (Class|Property|Enum|Structure|Interface)\b", RegexOptions.IgnoreCase);
+                @"\bEnd (Class|Property|Enum|Structure|Interface)\b", RegexOptions.IgnoreCase);
             range.SetFoldingMarkers(@"^\s*(?<range>While)[ \t]+\S+", @"^\s*(?<range>End While)\b",
-                                    RegexOptions.Multiline | RegexOptions.IgnoreCase);
-            range.SetFoldingMarkers(@"\b(Sub|Function)[ \t]+[^\s']+", @"\bEnd (Sub|Function)\b", RegexOptions.IgnoreCase);
+                RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            range.SetFoldingMarkers(@"\b(Sub|Function)[ \t]+[^\s']+", @"\bEnd (Sub|Function)\b",
+                RegexOptions.IgnoreCase);
             //this declared separately because Sub and Function can be unclosed
             range.SetFoldingMarkers(@"(\r|\n|^)[ \t]*(?<range>Get|Set)[ \t]*(\r|\n|$)", @"\bEnd (Get|Set)\b",
-                                    RegexOptions.IgnoreCase);
+                RegexOptions.IgnoreCase);
             range.SetFoldingMarkers(@"^\s*(?<range>For|For\s+Each)\b", @"^\s*(?<range>Next)\b",
-                                    RegexOptions.Multiline | RegexOptions.IgnoreCase);
+                RegexOptions.Multiline | RegexOptions.IgnoreCase);
             range.SetFoldingMarkers(@"^\s*(?<range>Do)\b", @"^\s*(?<range>Loop)\b",
-                                    RegexOptions.Multiline | RegexOptions.IgnoreCase);
+                RegexOptions.Multiline | RegexOptions.IgnoreCase);
         }
 
         protected void InitHTMLRegex()
         {
             HTMLCommentRegex1 = new Regex(@"(<!--.*?-->)|(<!--.*)", RegexOptions.Singleline | RegexCompiledOption);
             HTMLCommentRegex2 = new Regex(@"(<!--.*?-->)|(.*-->)",
-                                          RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+                RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
             HTMLTagRegex = new Regex(@"<|/>|</|>", RegexCompiledOption);
             HTMLTagNameRegex = new Regex(@"<(?<range>[!\w:]+)", RegexCompiledOption);
             HTMLEndTagRegex = new Regex(@"</(?<range>[\w:]+)>", RegexCompiledOption);
@@ -912,7 +942,7 @@ namespace FastColoredTextBoxNS
                     @"[\w\d\-]{1,20}?=(?<range>'[^']*')|[\w\d\-]{1,20}=(?<range>""[^""]*"")|[\w\d\-]{1,20}=(?<range>[\w\d\-]{1,20})",
                     RegexCompiledOption);
             HTMLEntityRegex = new Regex(@"\&(amp|gt|lt|nbsp|quot|apos|copy|reg|#[0-9]{1,8}|#x[0-9a-f]{1,8});",
-                                        RegexCompiledOption | RegexOptions.IgnoreCase);
+                RegexCompiledOption | RegexOptions.IgnoreCase);
         }
 
         /// <summary>
@@ -929,7 +959,7 @@ namespace FastColoredTextBoxNS
             range.tb.AutoIndentCharsPatterns = @"";
             //clear style of changed range
             range.ClearStyle(CommentStyle, TagBracketStyle, TagNameStyle, AttributeStyle, AttributeValueStyle,
-                             HtmlEntityStyle);
+                HtmlEntityStyle);
             //
             if (HTMLTagRegex == null)
                 InitHTMLRegex();
@@ -965,7 +995,7 @@ namespace FastColoredTextBoxNS
         {
             XMLCommentRegex1 = new Regex(@"(<!--.*?-->)|(<!--.*)", RegexOptions.Singleline | RegexCompiledOption);
             XMLCommentRegex2 = new Regex(@"(<!--.*?-->)|(.*-->)",
-                                          RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+                RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
             XMLTagRegex = new Regex(@"<\?|<|/>|</|>|\?>", RegexCompiledOption);
             XMLTagNameRegex = new Regex(@"<[?](?<range1>[x][m][l]{1})|<(?<range>[!\w:]+)", RegexCompiledOption);
             XMLEndTagRegex = new Regex(@"</(?<range>[\w:]+)>", RegexCompiledOption);
@@ -979,9 +1009,13 @@ namespace FastColoredTextBoxNS
                     @"[\w\d\-]+?=(?<range>'[^']*')|[\w\d\-]+[ ]*=[ ]*(?<range>""[^""]*"")|[\w\d\-]+[ ]*=[ ]*(?<range>[\w\d\-]+)",
                     RegexCompiledOption);
             XMLEntityRegex = new Regex(@"\&(amp|gt|lt|nbsp|quot|apos|copy|reg|#[0-9]{1,8}|#x[0-9a-f]{1,8});",
-                                        RegexCompiledOption | RegexOptions.IgnoreCase);
-            XMLCDataRegex = new Regex(@"<!\s*\[CDATA\s*\[(?<text>(?>[^]]+|](?!]>))*)]]>", RegexCompiledOption | RegexOptions.IgnoreCase); // http://stackoverflow.com/questions/21681861/i-need-a-regex-that-matches-cdata-elements-in-html
-            XMLFoldingRegex = new Regex(@"<(?<range>/?\w+)\s[^>]*?[^/]>|<(?<range>/?\w+)\s*>", RegexOptions.Singleline | RegexCompiledOption);
+                RegexCompiledOption | RegexOptions.IgnoreCase);
+            XMLCDataRegex = new Regex(@"<!\s*\[CDATA\s*\[(?<text>(?>[^]]+|](?!]>))*)]]>",
+                RegexCompiledOption |
+                RegexOptions
+                    .IgnoreCase); // http://stackoverflow.com/questions/21681861/i-need-a-regex-that-matches-cdata-elements-in-html
+            XMLFoldingRegex = new Regex(@"<(?<range>/?\w+)\s[^>]*?[^/]>|<(?<range>/?\w+)\s*>",
+                RegexOptions.Singleline | RegexCompiledOption);
         }
 
         /// <summary>
@@ -997,8 +1031,9 @@ namespace FastColoredTextBoxNS
             range.tb.RightBracket2 = ')';
             range.tb.AutoIndentCharsPatterns = @"";
             //clear style of changed range
-            range.ClearStyle(CommentStyle, XmlTagBracketStyle, XmlTagNameStyle, XmlAttributeStyle, XmlAttributeValueStyle,
-                             XmlEntityStyle, XmlCDataStyle);
+            range.ClearStyle(CommentStyle, XmlTagBracketStyle, XmlTagNameStyle, XmlAttributeStyle,
+                XmlAttributeValueStyle,
+                XmlEntityStyle, XmlCDataStyle);
 
             //
             if (XMLTagRegex == null)
@@ -1052,7 +1087,7 @@ namespace FastColoredTextBoxNS
                 if (tagName[0] != '/')
                 {
                     // ...push into stack
-                    var tag = new XmlFoldingTag { Name = tagName, id = id++, startLine = r.Start.iLine };
+                    var tag = new XmlFoldingTag {Name = tagName, id = id++, startLine = r.Start.iLine};
                     stack.Push(tag);
                     // if this line has no markers - set marker
                     if (string.IsNullOrEmpty(fctb[iLine].FoldingStartMarker))
@@ -1087,7 +1122,11 @@ namespace FastColoredTextBoxNS
             public string Name;
             public int id;
             public int startLine;
-            public string Marker { get { return Name + id; } }
+
+            public string Marker
+            {
+                get { return Name + id; }
+            }
         }
 
         protected void InitSQLRegex()
@@ -1096,12 +1135,19 @@ namespace FastColoredTextBoxNS
             SQLNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?\b", RegexCompiledOption);
             SQLCommentRegex1 = new Regex(@"--.*$", RegexOptions.Multiline | RegexCompiledOption);
             SQLCommentRegex2 = new Regex(@"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline | RegexCompiledOption);
-            SQLCommentRegex3 = new Regex(@"(/\*.*?\*/)|(.*\*/)", RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+            SQLCommentRegex3 = new Regex(@"(/\*.*?\*/)|(.*\*/)",
+                RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
             SQLCommentRegex4 = new Regex(@"#.*$", RegexOptions.Multiline | RegexCompiledOption);
             SQLVarRegex = new Regex(@"@[a-zA-Z_\d]*\b", RegexCompiledOption);
-            SQLStatementsRegex = new Regex(@"\b(ALTER APPLICATION ROLE|ALTER ASSEMBLY|ALTER ASYMMETRIC KEY|ALTER AUTHORIZATION|ALTER BROKER PRIORITY|ALTER CERTIFICATE|ALTER CREDENTIAL|ALTER CRYPTOGRAPHIC PROVIDER|ALTER DATABASE|ALTER DATABASE AUDIT SPECIFICATION|ALTER DATABASE ENCRYPTION KEY|ALTER ENDPOINT|ALTER EVENT SESSION|ALTER FULLTEXT CATALOG|ALTER FULLTEXT INDEX|ALTER FULLTEXT STOPLIST|ALTER FUNCTION|ALTER INDEX|ALTER LOGIN|ALTER MASTER KEY|ALTER MESSAGE TYPE|ALTER PARTITION FUNCTION|ALTER PARTITION SCHEME|ALTER PROCEDURE|ALTER QUEUE|ALTER REMOTE SERVICE BINDING|ALTER RESOURCE GOVERNOR|ALTER RESOURCE POOL|ALTER ROLE|ALTER ROUTE|ALTER SCHEMA|ALTER SERVER AUDIT|ALTER SERVER AUDIT SPECIFICATION|ALTER SERVICE|ALTER SERVICE MASTER KEY|ALTER SYMMETRIC KEY|ALTER TABLE|ALTER TRIGGER|ALTER USER|ALTER VIEW|ALTER WORKLOAD GROUP|ALTER XML SCHEMA COLLECTION|BULK INSERT|CREATE AGGREGATE|CREATE APPLICATION ROLE|CREATE ASSEMBLY|CREATE ASYMMETRIC KEY|CREATE BROKER PRIORITY|CREATE CERTIFICATE|CREATE CONTRACT|CREATE CREDENTIAL|CREATE CRYPTOGRAPHIC PROVIDER|CREATE DATABASE|CREATE DATABASE AUDIT SPECIFICATION|CREATE DATABASE ENCRYPTION KEY|CREATE DEFAULT|CREATE ENDPOINT|CREATE EVENT NOTIFICATION|CREATE EVENT SESSION|CREATE FULLTEXT CATALOG|CREATE FULLTEXT INDEX|CREATE FULLTEXT STOPLIST|CREATE FUNCTION|CREATE INDEX|CREATE LOGIN|CREATE MASTER KEY|CREATE MESSAGE TYPE|CREATE PARTITION FUNCTION|CREATE PARTITION SCHEME|CREATE PROCEDURE|CREATE QUEUE|CREATE REMOTE SERVICE BINDING|CREATE RESOURCE POOL|CREATE ROLE|CREATE ROUTE|CREATE RULE|CREATE SCHEMA|CREATE SERVER AUDIT|CREATE SERVER AUDIT SPECIFICATION|CREATE SERVICE|CREATE SPATIAL INDEX|CREATE STATISTICS|CREATE SYMMETRIC KEY|CREATE SYNONYM|CREATE TABLE|CREATE TRIGGER|CREATE TYPE|CREATE USER|CREATE VIEW|CREATE WORKLOAD GROUP|CREATE XML INDEX|CREATE XML SCHEMA COLLECTION|DELETE|DISABLE TRIGGER|DROP AGGREGATE|DROP APPLICATION ROLE|DROP ASSEMBLY|DROP ASYMMETRIC KEY|DROP BROKER PRIORITY|DROP CERTIFICATE|DROP CONTRACT|DROP CREDENTIAL|DROP CRYPTOGRAPHIC PROVIDER|DROP DATABASE|DROP DATABASE AUDIT SPECIFICATION|DROP DATABASE ENCRYPTION KEY|DROP DEFAULT|DROP ENDPOINT|DROP EVENT NOTIFICATION|DROP EVENT SESSION|DROP FULLTEXT CATALOG|DROP FULLTEXT INDEX|DROP FULLTEXT STOPLIST|DROP FUNCTION|DROP INDEX|DROP LOGIN|DROP MASTER KEY|DROP MESSAGE TYPE|DROP PARTITION FUNCTION|DROP PARTITION SCHEME|DROP PROCEDURE|DROP QUEUE|DROP REMOTE SERVICE BINDING|DROP RESOURCE POOL|DROP ROLE|DROP ROUTE|DROP RULE|DROP SCHEMA|DROP SERVER AUDIT|DROP SERVER AUDIT SPECIFICATION|DROP SERVICE|DROP SIGNATURE|DROP STATISTICS|DROP SYMMETRIC KEY|DROP SYNONYM|DROP TABLE|DROP TRIGGER|DROP TYPE|DROP USER|DROP VIEW|DROP WORKLOAD GROUP|DROP XML SCHEMA COLLECTION|ENABLE TRIGGER|EXEC|EXECUTE|REPLACE|FROM|INSERT|MERGE|OPTION|OUTPUT|SELECT|TOP|TRUNCATE TABLE|UPDATE|UPDATE STATISTICS|WHERE|WITH|INTO|IN|SET)\b", RegexOptions.IgnoreCase | RegexCompiledOption);
-            SQLKeywordsRegex = new Regex(@"\b(ADD|ALL|AND|ANY|AS|ASC|AUTHORIZATION|BACKUP|BEGIN|BETWEEN|BREAK|BROWSE|BY|CASCADE|CHECK|CHECKPOINT|CLOSE|CLUSTERED|COLLATE|COLUMN|COMMIT|COMPUTE|CONSTRAINT|CONTAINS|CONTINUE|CROSS|CURRENT|CURRENT_DATE|CURRENT_TIME|CURSOR|DATABASE|DBCC|DEALLOCATE|DECLARE|DEFAULT|DENY|DESC|DISK|DISTINCT|DISTRIBUTED|DOUBLE|DUMP|ELSE|END|ERRLVL|ESCAPE|EXCEPT|EXISTS|EXIT|EXTERNAL|FETCH|FILE|FILLFACTOR|FOR|FOREIGN|FREETEXT|FULL|FUNCTION|GOTO|GRANT|GROUP|HAVING|HOLDLOCK|IDENTITY|IDENTITY_INSERT|IDENTITYCOL|IF|INDEX|INNER|INTERSECT|IS|JOIN|KEY|KILL|LIKE|LINENO|LOAD|NATIONAL|NOCHECK|NONCLUSTERED|NOT|NULL|OF|OFF|OFFSETS|ON|OPEN|OR|ORDER|OUTER|OVER|PERCENT|PIVOT|PLAN|PRECISION|PRIMARY|PRINT|PROC|PROCEDURE|PUBLIC|RAISERROR|READ|READTEXT|RECONFIGURE|REFERENCES|REPLICATION|RESTORE|RESTRICT|RETURN|REVERT|REVOKE|ROLLBACK|ROWCOUNT|ROWGUIDCOL|RULE|SAVE|SCHEMA|SECURITYAUDIT|SHUTDOWN|SOME|STATISTICS|TABLE|TABLESAMPLE|TEXTSIZE|THEN|TO|TRAN|TRANSACTION|TRIGGER|TSEQUAL|UNION|UNIQUE|UNPIVOT|UPDATETEXT|USE|USER|VALUES|VARYING|VIEW|WAITFOR|WHEN|WHILE|WRITETEXT)\b", RegexOptions.IgnoreCase | RegexCompiledOption);
-            SQLFunctionsRegex = new Regex(@"(@@CONNECTIONS|@@CPU_BUSY|@@CURSOR_ROWS|@@DATEFIRST|@@DATEFIRST|@@DBTS|@@ERROR|@@FETCH_STATUS|@@IDENTITY|@@IDLE|@@IO_BUSY|@@LANGID|@@LANGUAGE|@@LOCK_TIMEOUT|@@MAX_CONNECTIONS|@@MAX_PRECISION|@@NESTLEVEL|@@OPTIONS|@@PACKET_ERRORS|@@PROCID|@@REMSERVER|@@ROWCOUNT|@@SERVERNAME|@@SERVICENAME|@@SPID|@@TEXTSIZE|@@TRANCOUNT|@@VERSION)\b|\b(ABS|ACOS|APP_NAME|ASCII|ASIN|ASSEMBLYPROPERTY|AsymKey_ID|ASYMKEY_ID|asymkeyproperty|ASYMKEYPROPERTY|ATAN|ATN2|AVG|CASE|CAST|CEILING|Cert_ID|Cert_ID|CertProperty|CHAR|CHARINDEX|CHECKSUM_AGG|COALESCE|COL_LENGTH|COL_NAME|COLLATIONPROPERTY|COLLATIONPROPERTY|COLUMNPROPERTY|COLUMNS_UPDATED|COLUMNS_UPDATED|CONTAINSTABLE|CONVERT|COS|COT|COUNT|COUNT_BIG|CRYPT_GEN_RANDOM|CURRENT_TIMESTAMP|CURRENT_TIMESTAMP|CURRENT_USER|CURRENT_USER|CURSOR_STATUS|DATABASE_PRINCIPAL_ID|DATABASE_PRINCIPAL_ID|DATABASEPROPERTY|DATABASEPROPERTYEX|DATALENGTH|DATALENGTH|DATEADD|DATEDIFF|DATENAME|DATEPART|DAY|DB_ID|DB_NAME|DECRYPTBYASYMKEY|DECRYPTBYCERT|DECRYPTBYKEY|DECRYPTBYKEYAUTOASYMKEY|DECRYPTBYKEYAUTOCERT|DECRYPTBYPASSPHRASE|DEGREES|DENSE_RANK|DIFFERENCE|ENCRYPTBYASYMKEY|ENCRYPTBYCERT|ENCRYPTBYKEY|ENCRYPTBYPASSPHRASE|ERROR_LINE|ERROR_MESSAGE|ERROR_NUMBER|ERROR_PROCEDURE|ERROR_SEVERITY|ERROR_STATE|EVENTDATA|EXP|FILE_ID|FILE_IDEX|FILE_NAME|FILEGROUP_ID|FILEGROUP_NAME|FILEGROUPPROPERTY|FILEPROPERTY|FLOOR|fn_helpcollations|fn_listextendedproperty|fn_servershareddrives|fn_virtualfilestats|fn_virtualfilestats|FORMATMESSAGE|FREETEXTTABLE|FULLTEXTCATALOGPROPERTY|FULLTEXTSERVICEPROPERTY|GETANSINULL|GETDATE|GETUTCDATE|GROUPING|HAS_PERMS_BY_NAME|HOST_ID|HOST_NAME|IDENT_CURRENT|IDENT_CURRENT|IDENT_INCR|IDENT_INCR|IDENT_SEED|IDENTITY\(|INDEX_COL|INDEXKEY_PROPERTY|INDEXPROPERTY|IS_MEMBER|IS_OBJECTSIGNED|IS_SRVROLEMEMBER|ISDATE|ISDATE|ISNULL|ISNUMERIC|Key_GUID|Key_GUID|Key_ID|Key_ID|KEY_NAME|KEY_NAME|LEFT|LEN|LOG|LOG10|LOWER|LTRIM|MAX|MIN|MONTH|NCHAR|NEWID|NTILE|NULLIF|OBJECT_DEFINITION|OBJECT_ID|OBJECT_NAME|OBJECT_SCHEMA_NAME|OBJECTPROPERTY|OBJECTPROPERTYEX|OPENDATASOURCE|OPENQUERY|OPENROWSET|OPENXML|ORIGINAL_LOGIN|ORIGINAL_LOGIN|PARSENAME|PATINDEX|PATINDEX|PERMISSIONS|PI|POWER|PUBLISHINGSERVERNAME|PWDCOMPARE|PWDENCRYPT|QUOTENAME|RADIANS|RAND|RANK|REPLICATE|REVERSE|RIGHT|ROUND|ROW_NUMBER|ROWCOUNT_BIG|RTRIM|SCHEMA_ID|SCHEMA_ID|SCHEMA_NAME|SCHEMA_NAME|SCOPE_IDENTITY|SERVERPROPERTY|SESSION_USER|SESSION_USER|SESSIONPROPERTY|SETUSER|SIGN|SignByAsymKey|SignByCert|SIN|SOUNDEX|SPACE|SQL_VARIANT_PROPERTY|SQRT|SQUARE|STATS_DATE|STDEV|STDEVP|STR|STUFF|SUBSTRING|SUM|SUSER_ID|SUSER_NAME|SUSER_SID|SUSER_SNAME|SWITCHOFFSET|SYMKEYPROPERTY|symkeyproperty|sys\.dm_db_index_physical_stats|sys\.fn_builtin_permissions|sys\.fn_my_permissions|SYSDATETIME|SYSDATETIMEOFFSET|SYSTEM_USER|SYSTEM_USER|SYSUTCDATETIME|TAN|TERTIARY_WEIGHTS|TEXTPTR|TODATETIMEOFFSET|TRIGGER_NESTLEVEL|TYPE_ID|TYPE_NAME|TYPEPROPERTY|UNICODE|UPDATE\(|UPPER|USER_ID|USER_NAME|USER_NAME|VAR|VARP|VerifySignedByAsymKey|VerifySignedByCert|XACT_STATE|YEAR)\b", RegexOptions.IgnoreCase | RegexCompiledOption);
+            SQLStatementsRegex = new Regex(
+                @"\b(ALTER APPLICATION ROLE|ALTER ASSEMBLY|ALTER ASYMMETRIC KEY|ALTER AUTHORIZATION|ALTER BROKER PRIORITY|ALTER CERTIFICATE|ALTER CREDENTIAL|ALTER CRYPTOGRAPHIC PROVIDER|ALTER DATABASE|ALTER DATABASE AUDIT SPECIFICATION|ALTER DATABASE ENCRYPTION KEY|ALTER ENDPOINT|ALTER EVENT SESSION|ALTER FULLTEXT CATALOG|ALTER FULLTEXT INDEX|ALTER FULLTEXT STOPLIST|ALTER FUNCTION|ALTER INDEX|ALTER LOGIN|ALTER MASTER KEY|ALTER MESSAGE TYPE|ALTER PARTITION FUNCTION|ALTER PARTITION SCHEME|ALTER PROCEDURE|ALTER QUEUE|ALTER REMOTE SERVICE BINDING|ALTER RESOURCE GOVERNOR|ALTER RESOURCE POOL|ALTER ROLE|ALTER ROUTE|ALTER SCHEMA|ALTER SERVER AUDIT|ALTER SERVER AUDIT SPECIFICATION|ALTER SERVICE|ALTER SERVICE MASTER KEY|ALTER SYMMETRIC KEY|ALTER TABLE|ALTER TRIGGER|ALTER USER|ALTER VIEW|ALTER WORKLOAD GROUP|ALTER XML SCHEMA COLLECTION|BULK INSERT|CREATE AGGREGATE|CREATE APPLICATION ROLE|CREATE ASSEMBLY|CREATE ASYMMETRIC KEY|CREATE BROKER PRIORITY|CREATE CERTIFICATE|CREATE CONTRACT|CREATE CREDENTIAL|CREATE CRYPTOGRAPHIC PROVIDER|CREATE DATABASE|CREATE DATABASE AUDIT SPECIFICATION|CREATE DATABASE ENCRYPTION KEY|CREATE DEFAULT|CREATE ENDPOINT|CREATE EVENT NOTIFICATION|CREATE EVENT SESSION|CREATE FULLTEXT CATALOG|CREATE FULLTEXT INDEX|CREATE FULLTEXT STOPLIST|CREATE FUNCTION|CREATE INDEX|CREATE LOGIN|CREATE MASTER KEY|CREATE MESSAGE TYPE|CREATE PARTITION FUNCTION|CREATE PARTITION SCHEME|CREATE PROCEDURE|CREATE QUEUE|CREATE REMOTE SERVICE BINDING|CREATE RESOURCE POOL|CREATE ROLE|CREATE ROUTE|CREATE RULE|CREATE SCHEMA|CREATE SERVER AUDIT|CREATE SERVER AUDIT SPECIFICATION|CREATE SERVICE|CREATE SPATIAL INDEX|CREATE STATISTICS|CREATE SYMMETRIC KEY|CREATE SYNONYM|CREATE TABLE|CREATE TRIGGER|CREATE TYPE|CREATE USER|CREATE VIEW|CREATE WORKLOAD GROUP|CREATE XML INDEX|CREATE XML SCHEMA COLLECTION|DELETE|DISABLE TRIGGER|DROP AGGREGATE|DROP APPLICATION ROLE|DROP ASSEMBLY|DROP ASYMMETRIC KEY|DROP BROKER PRIORITY|DROP CERTIFICATE|DROP CONTRACT|DROP CREDENTIAL|DROP CRYPTOGRAPHIC PROVIDER|DROP DATABASE|DROP DATABASE AUDIT SPECIFICATION|DROP DATABASE ENCRYPTION KEY|DROP DEFAULT|DROP ENDPOINT|DROP EVENT NOTIFICATION|DROP EVENT SESSION|DROP FULLTEXT CATALOG|DROP FULLTEXT INDEX|DROP FULLTEXT STOPLIST|DROP FUNCTION|DROP INDEX|DROP LOGIN|DROP MASTER KEY|DROP MESSAGE TYPE|DROP PARTITION FUNCTION|DROP PARTITION SCHEME|DROP PROCEDURE|DROP QUEUE|DROP REMOTE SERVICE BINDING|DROP RESOURCE POOL|DROP ROLE|DROP ROUTE|DROP RULE|DROP SCHEMA|DROP SERVER AUDIT|DROP SERVER AUDIT SPECIFICATION|DROP SERVICE|DROP SIGNATURE|DROP STATISTICS|DROP SYMMETRIC KEY|DROP SYNONYM|DROP TABLE|DROP TRIGGER|DROP TYPE|DROP USER|DROP VIEW|DROP WORKLOAD GROUP|DROP XML SCHEMA COLLECTION|ENABLE TRIGGER|EXEC|EXECUTE|REPLACE|FROM|INSERT|MERGE|OPTION|OUTPUT|SELECT|TOP|TRUNCATE TABLE|UPDATE|UPDATE STATISTICS|WHERE|WITH|INTO|IN|SET)\b",
+                RegexOptions.IgnoreCase | RegexCompiledOption);
+            SQLKeywordsRegex = new Regex(
+                @"\b(ADD|ALL|AND|ANY|AS|ASC|AUTHORIZATION|BACKUP|BEGIN|BETWEEN|BREAK|BROWSE|BY|CASCADE|CHECK|CHECKPOINT|CLOSE|CLUSTERED|COLLATE|COLUMN|COMMIT|COMPUTE|CONSTRAINT|CONTAINS|CONTINUE|CROSS|CURRENT|CURRENT_DATE|CURRENT_TIME|CURSOR|DATABASE|DBCC|DEALLOCATE|DECLARE|DEFAULT|DENY|DESC|DISK|DISTINCT|DISTRIBUTED|DOUBLE|DUMP|ELSE|END|ERRLVL|ESCAPE|EXCEPT|EXISTS|EXIT|EXTERNAL|FETCH|FILE|FILLFACTOR|FOR|FOREIGN|FREETEXT|FULL|FUNCTION|GOTO|GRANT|GROUP|HAVING|HOLDLOCK|IDENTITY|IDENTITY_INSERT|IDENTITYCOL|IF|INDEX|INNER|INTERSECT|IS|JOIN|KEY|KILL|LIKE|LINENO|LOAD|NATIONAL|NOCHECK|NONCLUSTERED|NOT|NULL|OF|OFF|OFFSETS|ON|OPEN|OR|ORDER|OUTER|OVER|PERCENT|PIVOT|PLAN|PRECISION|PRIMARY|PRINT|PROC|PROCEDURE|PUBLIC|RAISERROR|READ|READTEXT|RECONFIGURE|REFERENCES|REPLICATION|RESTORE|RESTRICT|RETURN|REVERT|REVOKE|ROLLBACK|ROWCOUNT|ROWGUIDCOL|RULE|SAVE|SCHEMA|SECURITYAUDIT|SHUTDOWN|SOME|STATISTICS|TABLE|TABLESAMPLE|TEXTSIZE|THEN|TO|TRAN|TRANSACTION|TRIGGER|TSEQUAL|UNION|UNIQUE|UNPIVOT|UPDATETEXT|USE|USER|VALUES|VARYING|VIEW|WAITFOR|WHEN|WHILE|WRITETEXT)\b",
+                RegexOptions.IgnoreCase | RegexCompiledOption);
+            SQLFunctionsRegex = new Regex(
+                @"(@@CONNECTIONS|@@CPU_BUSY|@@CURSOR_ROWS|@@DATEFIRST|@@DATEFIRST|@@DBTS|@@ERROR|@@FETCH_STATUS|@@IDENTITY|@@IDLE|@@IO_BUSY|@@LANGID|@@LANGUAGE|@@LOCK_TIMEOUT|@@MAX_CONNECTIONS|@@MAX_PRECISION|@@NESTLEVEL|@@OPTIONS|@@PACKET_ERRORS|@@PROCID|@@REMSERVER|@@ROWCOUNT|@@SERVERNAME|@@SERVICENAME|@@SPID|@@TEXTSIZE|@@TRANCOUNT|@@VERSION)\b|\b(ABS|ACOS|APP_NAME|ASCII|ASIN|ASSEMBLYPROPERTY|AsymKey_ID|ASYMKEY_ID|asymkeyproperty|ASYMKEYPROPERTY|ATAN|ATN2|AVG|CASE|CAST|CEILING|Cert_ID|Cert_ID|CertProperty|CHAR|CHARINDEX|CHECKSUM_AGG|COALESCE|COL_LENGTH|COL_NAME|COLLATIONPROPERTY|COLLATIONPROPERTY|COLUMNPROPERTY|COLUMNS_UPDATED|COLUMNS_UPDATED|CONTAINSTABLE|CONVERT|COS|COT|COUNT|COUNT_BIG|CRYPT_GEN_RANDOM|CURRENT_TIMESTAMP|CURRENT_TIMESTAMP|CURRENT_USER|CURRENT_USER|CURSOR_STATUS|DATABASE_PRINCIPAL_ID|DATABASE_PRINCIPAL_ID|DATABASEPROPERTY|DATABASEPROPERTYEX|DATALENGTH|DATALENGTH|DATEADD|DATEDIFF|DATENAME|DATEPART|DAY|DB_ID|DB_NAME|DECRYPTBYASYMKEY|DECRYPTBYCERT|DECRYPTBYKEY|DECRYPTBYKEYAUTOASYMKEY|DECRYPTBYKEYAUTOCERT|DECRYPTBYPASSPHRASE|DEGREES|DENSE_RANK|DIFFERENCE|ENCRYPTBYASYMKEY|ENCRYPTBYCERT|ENCRYPTBYKEY|ENCRYPTBYPASSPHRASE|ERROR_LINE|ERROR_MESSAGE|ERROR_NUMBER|ERROR_PROCEDURE|ERROR_SEVERITY|ERROR_STATE|EVENTDATA|EXP|FILE_ID|FILE_IDEX|FILE_NAME|FILEGROUP_ID|FILEGROUP_NAME|FILEGROUPPROPERTY|FILEPROPERTY|FLOOR|fn_helpcollations|fn_listextendedproperty|fn_servershareddrives|fn_virtualfilestats|fn_virtualfilestats|FORMATMESSAGE|FREETEXTTABLE|FULLTEXTCATALOGPROPERTY|FULLTEXTSERVICEPROPERTY|GETANSINULL|GETDATE|GETUTCDATE|GROUPING|HAS_PERMS_BY_NAME|HOST_ID|HOST_NAME|IDENT_CURRENT|IDENT_CURRENT|IDENT_INCR|IDENT_INCR|IDENT_SEED|IDENTITY\(|INDEX_COL|INDEXKEY_PROPERTY|INDEXPROPERTY|IS_MEMBER|IS_OBJECTSIGNED|IS_SRVROLEMEMBER|ISDATE|ISDATE|ISNULL|ISNUMERIC|Key_GUID|Key_GUID|Key_ID|Key_ID|KEY_NAME|KEY_NAME|LEFT|LEN|LOG|LOG10|LOWER|LTRIM|MAX|MIN|MONTH|NCHAR|NEWID|NTILE|NULLIF|OBJECT_DEFINITION|OBJECT_ID|OBJECT_NAME|OBJECT_SCHEMA_NAME|OBJECTPROPERTY|OBJECTPROPERTYEX|OPENDATASOURCE|OPENQUERY|OPENROWSET|OPENXML|ORIGINAL_LOGIN|ORIGINAL_LOGIN|PARSENAME|PATINDEX|PATINDEX|PERMISSIONS|PI|POWER|PUBLISHINGSERVERNAME|PWDCOMPARE|PWDENCRYPT|QUOTENAME|RADIANS|RAND|RANK|REPLICATE|REVERSE|RIGHT|ROUND|ROW_NUMBER|ROWCOUNT_BIG|RTRIM|SCHEMA_ID|SCHEMA_ID|SCHEMA_NAME|SCHEMA_NAME|SCOPE_IDENTITY|SERVERPROPERTY|SESSION_USER|SESSION_USER|SESSIONPROPERTY|SETUSER|SIGN|SignByAsymKey|SignByCert|SIN|SOUNDEX|SPACE|SQL_VARIANT_PROPERTY|SQRT|SQUARE|STATS_DATE|STDEV|STDEVP|STR|STUFF|SUBSTRING|SUM|SUSER_ID|SUSER_NAME|SUSER_SID|SUSER_SNAME|SWITCHOFFSET|SYMKEYPROPERTY|symkeyproperty|sys\.dm_db_index_physical_stats|sys\.fn_builtin_permissions|sys\.fn_my_permissions|SYSDATETIME|SYSDATETIMEOFFSET|SYSTEM_USER|SYSTEM_USER|SYSUTCDATETIME|TAN|TERTIARY_WEIGHTS|TEXTPTR|TODATETIMEOFFSET|TRIGGER_NESTLEVEL|TYPE_ID|TYPE_NAME|TYPEPROPERTY|UNICODE|UPDATE\(|UPPER|USER_ID|USER_NAME|USER_NAME|VAR|VARP|VerifySignedByAsymKey|VerifySignedByCert|XACT_STATE|YEAR)\b",
+                RegexOptions.IgnoreCase | RegexCompiledOption);
             SQLTypesRegex =
                 new Regex(
                     @"\b(BIGINT|NUMERIC|BIT|SMALLINT|DECIMAL|SMALLMONEY|INT|TINYINT|MONEY|FLOAT|REAL|DATE|DATETIMEOFFSET|DATETIME2|SMALLDATETIME|DATETIME|TIME|CHAR|VARCHAR|TEXT|NCHAR|NVARCHAR|NTEXT|BINARY|VARBINARY|IMAGE|TIMESTAMP|HIERARCHYID|TABLE|UNIQUEIDENTIFIER|SQL_VARIANT|XML)\b",
@@ -1123,7 +1169,7 @@ namespace FastColoredTextBoxNS
             range.tb.AutoIndentCharsPatterns = @"";
             //clear style of changed range
             range.ClearStyle(CommentStyle, StringStyle, NumberStyle, VariableStyle, StatementsStyle, KeywordStyle,
-                             FunctionsStyle, TypesStyle);
+                FunctionsStyle, TypesStyle);
             //
             if (SQLStringRegex == null)
                 InitSQLRegex();
@@ -1162,7 +1208,7 @@ namespace FastColoredTextBoxNS
             PHPCommentRegex1 = new Regex(@"(//|#).*$", RegexOptions.Multiline | RegexCompiledOption);
             PHPCommentRegex2 = new Regex(@"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline | RegexCompiledOption);
             PHPCommentRegex3 = new Regex(@"(/\*.*?\*/)|(.*\*/)",
-                                         RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+                RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
             PHPVarRegex = new Regex(@"\$[a-zA-Z_\d]*\b", RegexCompiledOption);
             PHPKeywordRegex1 =
                 new Regex(
@@ -1173,7 +1219,7 @@ namespace FastColoredTextBoxNS
                     @"\b(abstract|and|array|as|break|case|catch|cfunction|class|clone|const|continue|declare|default|do|else|elseif|enddeclare|endfor|endforeach|endif|endswitch|endwhile|extends|final|for|foreach|function|global|goto|if|implements|instanceof|interface|namespace|new|or|private|protected|public|static|switch|throw|try|use|var|while|xor)\b",
                     RegexCompiledOption);
             PHPKeywordRegex3 = new Regex(@"__CLASS__|__DIR__|__FILE__|__LINE__|__FUNCTION__|__METHOD__|__NAMESPACE__",
-                                         RegexCompiledOption);
+                RegexCompiledOption);
         }
 
         /// <summary>
@@ -1190,7 +1236,7 @@ namespace FastColoredTextBoxNS
             range.tb.BracketsHighlightStrategy = BracketsHighlightStrategy.Strategy2;
             //clear style of changed range
             range.ClearStyle(StringStyle, CommentStyle, NumberStyle, VariableStyle, KeywordStyle, KeywordStyle2,
-                             KeywordStyle3);
+                KeywordStyle3);
 
             range.tb.AutoIndentCharsPatterns
                 = @"
@@ -1228,9 +1274,9 @@ namespace FastColoredTextBoxNS
             JScriptCommentRegex1 = new Regex(@"//.*$", RegexOptions.Multiline | RegexCompiledOption);
             JScriptCommentRegex2 = new Regex(@"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline | RegexCompiledOption);
             JScriptCommentRegex3 = new Regex(@"(/\*.*?\*/)|(.*\*/)",
-                                             RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+                RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
             JScriptNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b",
-                                           RegexCompiledOption);
+                RegexCompiledOption);
             JScriptKeywordRegex =
                 new Regex(
                     @"\b(true|false|break|case|catch|const|continue|default|delete|do|else|export|for|function|if|in|instanceof|new|null|return|switch|this|throw|try|var|void|while|with|typeof)\b",
@@ -1283,9 +1329,9 @@ namespace FastColoredTextBoxNS
             LuaCommentRegex1 = new Regex(@"--.*$", RegexOptions.Multiline | RegexCompiledOption);
             LuaCommentRegex2 = new Regex(@"(--\[\[.*?\]\])|(--\[\[.*)", RegexOptions.Singleline | RegexCompiledOption);
             LuaCommentRegex3 = new Regex(@"(--\[\[.*?\]\])|(.*\]\])",
-                                             RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
+                RegexOptions.Singleline | RegexOptions.RightToLeft | RegexCompiledOption);
             LuaNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b",
-                                           RegexCompiledOption);
+                RegexCompiledOption);
             LuaKeywordRegex =
                 new Regex(
                     @"\b(and|break|do|else|elseif|end|false|for|function|if|in|local|nil|not|or|repeat|return|then|true|until|while)\b",
@@ -1348,6 +1394,7 @@ namespace FastColoredTextBoxNS
                 args.ShiftNextLines = -args.TabLength;
                 return;
             }
+
             // then ...
             if (Regex.IsMatch(args.LineText, @"\b(then)\s*\S+"))
                 return;
@@ -1368,41 +1415,68 @@ namespace FastColoredTextBoxNS
 
         protected void InitPythonRegex()
         {
-             PythonStringRegex1 = new Regex("\"[^\"\\\\]*(\\\\.[^\"\\\\]*)*\"", RegexCompiledOption);
-             PythonStringRegex2 = new Regex("'[^'\\\\]*(\\\\.[^'\\\\]*)*'", RegexCompiledOption);
+            PythonStringRegex1 = new Regex("\"[^\"\\\\]*(\\\\.[^\"\\\\]*)*\"", RegexCompiledOption);
+            PythonStringRegex2 = new Regex("'[^'\\\\]*(\\\\.[^'\\\\]*)*'", RegexCompiledOption);
 
-             PythonCommentRegex = LuaCommentRegex1 = new Regex(@"#.*$", RegexOptions.Multiline | RegexCompiledOption);
+            PythonCommentRegex = LuaCommentRegex1 = new Regex(@"#.*$", RegexOptions.Multiline | RegexCompiledOption);
 
-             PythonNumberRegex = new Regex(@"\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b", RegexCompiledOption);
-             PythonKeywordRegex = new Regex(@"\b(and|assert|break|class|continue|def|del|elif|else|except|exec|finally|for|from|global|if|import|in|is|lambda|not|or|pass|print|raise|return|try|while|yield|None|True|False|as)\b", RegexCompiledOption);
+            PythonNumberRegex = new Regex(@"\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b", RegexCompiledOption);
+            PythonKeywordRegex =
+                new Regex(
+                    @"\b(and|assert|break|class|continue|def|del|elif|else|except|exec|finally|for|from|global|if|import|in|is|lambda|not|or|pass|print|raise|return|try|while|yield|None|True|False|as)\b",
+                    RegexCompiledOption);
 
-             RazorClassKeywordRegex = new Regex(@"\b(Player|Spells|Mobile|Mobiles|Item|Items|Misc|Target|Gumps|Journal|AutoLoot|Scavenger|Organizer|Restock|SellAgent|BuyAgent|Dress|Friend|BandageHeal|Statics|DPSMeter|PathFinding|Timer)\b", RegexCompiledOption);
+            RazorClassKeywordRegex = new Regex(
+                @"\b(Player|Spells|Mobile|Mobiles|Item|Items|Misc|Target|Gumps|Journal|AutoLoot|Scavenger|Organizer|Restock|SellAgent|BuyAgent|Dress|Friend|BandageHeal|Statics|DPSMeter|PathFinding|Timer)\b",
+                RegexCompiledOption);
 
-             string GenericProps = "Serial|Hue|Position|X|Y|Z|Contains|Weight";
-             string PlayerProps = "Str|Int|Dex|StatCap|AR|FireResistance|ColdResistance|EnergyResistance|PoisonResistance|Buffs|IsGhost|Gold|Luck|Followers|FollowersMax|MaxWeight|HasSpecial|Flying|StaticMount";
-             string MobileProps = "Name|Body|Color|Direction|Visible|Poisoned|YellowHits|Paralized|Human|WarMode|Female|Hits|HitsMax|Stam|StamMax|Mana|ManaMax|Backpack|Mount|Quiver|Notoriety|Map|InParty|Properties|Flying";
-             string ItemsProps = "Amount|IsBagOfSending|IsContainer|IsCorpse|IsDoor|IsInBank|Movable|OnGround|ItemID|RootContainer|Container|Durability|MaxDurability";
-             string StaticProps = "StaticID|StaticHue|StaticZ";
-             string ItemFilterProps = "Enabled|Graphics|Hues|RangeMin|RangeMax|Layers|Serials";
-             string MobileFilterProps = "Bodies|Notorieties|CheckIgnoreObject";
-             string PathFindProps = "DebugMessage|StopIfStuck|MaxRetry";
-             RazorPropsKeywordRegex = new Regex(String.Format(@"\b({0}|{1}|{2}|{3}|{4}|{5}|{6}|{7})\b", GenericProps, PlayerProps, MobileProps, ItemsProps, StaticProps, ItemFilterProps, MobileFilterProps, PathFindProps), RegexCompiledOption);
+            string GenericProps = "Serial|Hue|Position|X|Y|Z|Contains|Weight";
+            string PlayerProps =
+                "Str|Int|Dex|StatCap|AR|FireResistance|ColdResistance|EnergyResistance|PoisonResistance|Buffs|IsGhost|Gold|Luck|Followers|FollowersMax|MaxWeight|HasSpecial|Flying|StaticMount";
+            string MobileProps =
+                "Name|Body|Color|Direction|Visible|Poisoned|YellowHits|Paralized|Human|WarMode|Female|Hits|HitsMax|Stam|StamMax|Mana|ManaMax|Backpack|Mount|Quiver|Notoriety|Map|InParty|Properties|Flying";
+            string ItemsProps =
+                "Amount|IsBagOfSending|IsContainer|IsCorpse|IsDoor|IsInBank|Movable|OnGround|ItemID|RootContainer|Container|Durability|MaxDurability";
+            string StaticProps = "StaticID|StaticHue|StaticZ";
+            string ItemFilterProps = "Enabled|Graphics|Hues|RangeMin|RangeMax|Layers|Serials";
+            string MobileFilterProps = "Bodies|Notorieties|CheckIgnoreObject";
+            string PathFindProps = "DebugMessage|StopIfStuck|MaxRetry";
+            RazorPropsKeywordRegex =
+                new Regex(
+                    String.Format(@"\b({0}|{1}|{2}|{3}|{4}|{5}|{6}|{7})\b", GenericProps, PlayerProps, MobileProps,
+                        ItemsProps, StaticProps, ItemFilterProps, MobileFilterProps, PathFindProps),
+                    RegexCompiledOption);
 
-             string GenericFunctions = "GetItemOnLayer|GetAssistantLayer|FindBySerial|Filter|ApplyFilter|Select|SingleClick|WaitForProps|GetPropValue|GetPropStringByIndex|GetPropStringList|Message";
-             string PlayerFunctions = "BuffsExist|GetBuffDescription|HeadMessage|InRangeMobile|InRangeItem|UnEquipItemByLayer|EquipItem|CheckLayer|GetSkillValue|GetSkillCap|GetSkillStatus|GetRealSkillValue|UseSkill|ChatSay|MapSay|ChatEmote|ChatWhisper|ChatYell|ChatGuild|ChatAlliance|SetWarMode|Attack|AttackLast|InParty|ChatParty|PartyCanLoot|PartyInvite|PartyLeave|KickMember|InvokeVirtue|Walk|Run|PathFindTo|QuestButton|GuildButton|WeaponPrimarySA|WeaponSecondarySA|WeaponClearSA|WeaponStunSA|WeaponDisarmSA|Fly|ChatChannel|EquipUO3D|SpellIsEnabled|SetSkillStatus";
-             string SpellsFunctions = "CastMagery|CastNecro|CastChivalry|CastBushido|CastNinjitsu|CastSpellweaving|CastMysticism|CastMastery|Interrupt|CastLastSpell";
-             string MobileFunctions = "UseMobile|ContextExist|WaitForStats";
-             string ItemsFunctions = "DistanceTo|Move|MoveOnGround|DropItemGroundSelf|UseItem|WaitForContents|BackpackCount|ContainerCount|GetPropByCliloc|GetPropByString|UseItemByID|Hide|ContextExist|UseItemOnMobile|FindByID";
-             string MiscFunctions = "SendMessage|Resync|Pause|Beep|Disconnect|WaitForContext|ContextReply|ReadSharedValue|RemoveSharedValue|CheckSharedValue|SetSharedValue|HasMenu|CloseMenu|MenuContain|GetMenuTitle|WaitForMenu|MenuResponse|HasQueryString|WaitForQueryString|QueryStringResponse|NoOperation|ScriptRun|ScriptStop|ScriptStatus|PetRename|FocusUOWindow|ClearIgnore|CheckIgnoreObject|IgnoreObject|UnIgnoreObject|ScriptStopAll|ShardName";
-             string TargetFunctions = "HasTarget|GetLast|GetLastAttack|WaitForTarget|TargetExecute|Cancel|Last|LastQueued|Self|SelfQueued|SetLast|ClearLast|ClearQueue|ClearLastandQueue|SetLastTargetFromList|PerformTargetFromList|AttackTargetFromList|PromptGroundTarget|PromptTarget|TargetExecuteRelative|GetTargetFromList";
-             string GumpsFunctions = "CurrentGump|HasGump|CloseGump|ResetGump|WaitForGump|SendAction|SendAdvancedAction|LastGump|LastGumpGetLineList|LastGumpTextExist|LastGumpTextExistByLine|LastGumpRawData";
-             string JournalFunctions = "Clear|Search|SearchByName|SearchByColor|SearchByType|GetLineText|GetSpeechName|WaitJournal|GetTextBySerial|GetTextByColor|GetTextByName|GetTextByType";
-             string AgentsFunctions = "Status|Start|Stop|FStart|FStop|ChangeList|RunOnce|Enable|Disable|IsFriend|Pause|GetDamage|GetList";
-             string DressUndressAgentFunctions = "DressStatus|UnDressStatus|DressFStart|UnDressFStart|DressFStop|UnDressFStop";
-             string StaticsFunctions = "GetLandID|GetLandZ|GetStaticsTileInfo|GetTileFlag|GetLandFlag|GetStaticsLandInfo|CheckDeedHouse";
-             string PathFindingFunctions = "Route|Go";
-             string TimerFunctions = "Check|Create";
-             RazorFunctionsKeywordRegex = new Regex(String.Format(@"\b({0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13})\b", GenericFunctions, PlayerFunctions, SpellsFunctions, MobileFunctions, ItemsFunctions, MiscFunctions, TargetFunctions, JournalFunctions, GumpsFunctions, AgentsFunctions, DressUndressAgentFunctions, StaticsFunctions, PathFindingFunctions, TimerFunctions), RegexCompiledOption);
+            string GenericFunctions =
+                "GetItemOnLayer|GetAssistantLayer|FindBySerial|Filter|ApplyFilter|Select|SingleClick|WaitForProps|GetPropValue|GetPropStringByIndex|GetPropStringList|Message";
+            string PlayerFunctions =
+                "BuffsExist|GetBuffDescription|HeadMessage|InRangeMobile|InRangeItem|UnEquipItemByLayer|EquipItem|CheckLayer|GetSkillValue|GetSkillCap|GetSkillStatus|GetRealSkillValue|UseSkill|ChatSay|MapSay|ChatEmote|ChatWhisper|ChatYell|ChatGuild|ChatAlliance|SetWarMode|Attack|AttackLast|InParty|ChatParty|PartyCanLoot|PartyInvite|PartyLeave|KickMember|InvokeVirtue|Walk|Run|PathFindTo|QuestButton|GuildButton|WeaponPrimarySA|WeaponSecondarySA|WeaponClearSA|WeaponStunSA|WeaponDisarmSA|Fly|ChatChannel|EquipUO3D|SpellIsEnabled|SetSkillStatus";
+            string SpellsFunctions =
+                "CastMagery|CastNecro|CastChivalry|CastBushido|CastNinjitsu|CastSpellweaving|CastMysticism|CastMastery|Interrupt|CastLastSpell";
+            string MobileFunctions = "UseMobile|ContextExist|WaitForStats";
+            string ItemsFunctions =
+                "DistanceTo|Move|MoveOnGround|DropItemGroundSelf|UseItem|WaitForContents|BackpackCount|ContainerCount|GetPropByCliloc|GetPropByString|UseItemByID|Hide|ContextExist|UseItemOnMobile|FindByID";
+            string MiscFunctions =
+                "SendMessage|Resync|Pause|Beep|Disconnect|WaitForContext|ContextReply|ReadSharedValue|RemoveSharedValue|CheckSharedValue|SetSharedValue|HasMenu|CloseMenu|MenuContain|GetMenuTitle|WaitForMenu|MenuResponse|HasQueryString|WaitForQueryString|QueryStringResponse|NoOperation|ScriptRun|ScriptStop|ScriptStatus|PetRename|FocusUOWindow|ClearIgnore|CheckIgnoreObject|IgnoreObject|UnIgnoreObject|ScriptStopAll|ShardName";
+            string TargetFunctions =
+                "HasTarget|GetLast|GetLastAttack|WaitForTarget|TargetExecute|Cancel|Last|LastQueued|Self|SelfQueued|SetLast|ClearLast|ClearQueue|ClearLastandQueue|SetLastTargetFromList|PerformTargetFromList|AttackTargetFromList|PromptGroundTarget|PromptTarget|TargetExecuteRelative|GetTargetFromList";
+            string GumpsFunctions =
+                "CurrentGump|HasGump|CloseGump|ResetGump|WaitForGump|SendAction|SendAdvancedAction|LastGump|LastGumpGetLineList|LastGumpTextExist|LastGumpTextExistByLine|LastGumpRawData";
+            string JournalFunctions =
+                "Clear|Search|SearchByName|SearchByColor|SearchByType|GetLineText|GetSpeechName|WaitJournal|GetTextBySerial|GetTextByColor|GetTextByName|GetTextByType";
+            string AgentsFunctions =
+                "Status|Start|Stop|FStart|FStop|ChangeList|RunOnce|Enable|Disable|IsFriend|Pause|GetDamage|GetList";
+            string DressUndressAgentFunctions =
+                "DressStatus|UnDressStatus|DressFStart|UnDressFStart|DressFStop|UnDressFStop";
+            string StaticsFunctions =
+                "GetLandID|GetLandZ|GetStaticsTileInfo|GetTileFlag|GetLandFlag|GetStaticsLandInfo|CheckDeedHouse";
+            string PathFindingFunctions = "Route|Go";
+            string TimerFunctions = "Check|Create";
+            RazorFunctionsKeywordRegex = new Regex(
+                String.Format(@"\b({0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13})\b", GenericFunctions,
+                    PlayerFunctions, SpellsFunctions, MobileFunctions, ItemsFunctions, MiscFunctions, TargetFunctions,
+                    JournalFunctions, GumpsFunctions, AgentsFunctions, DressUndressAgentFunctions, StaticsFunctions,
+                    PathFindingFunctions, TimerFunctions), RegexCompiledOption);
         }
 
         /// <summary>
@@ -1411,50 +1485,50 @@ namespace FastColoredTextBoxNS
         /// <param name="range"></param>
         public virtual void PythonSyntaxHighlight(Range range)
         {
-             range.tb.CommentPrefix = "#";
+            range.tb.CommentPrefix = "#";
 
-             range.tb.LeftBracket = '(';
-             range.tb.RightBracket = ')';
-             range.tb.LeftBracket2 = '[';
-             range.tb.RightBracket2 = ']';
-             range.tb.BracketsHighlightStrategy = BracketsHighlightStrategy.Strategy1;
+            range.tb.LeftBracket = '(';
+            range.tb.RightBracket = ')';
+            range.tb.LeftBracket2 = '[';
+            range.tb.RightBracket2 = ']';
+            range.tb.BracketsHighlightStrategy = BracketsHighlightStrategy.Strategy1;
 
-             //range.tb.AutoIndentCharsPatterns = @"^\s*[\w\.]+(\s\w+)?\s*(?<range>=)\s*(?<range>.+)";
+            //range.tb.AutoIndentCharsPatterns = @"^\s*[\w\.]+(\s\w+)?\s*(?<range>=)\s*(?<range>.+)";
 
-             //clear style of changed range
-             range.ClearStyle(StringStyle, CommentStyle, NumberStyle, KeywordStyle, FunctionsStyle);
+            //clear style of changed range
+            range.ClearStyle(StringStyle, CommentStyle, NumberStyle, KeywordStyle, FunctionsStyle);
 
-             if (PythonStringRegex1 == null)
-                  InitPythonRegex();
+            if (PythonStringRegex1 == null)
+                InitPythonRegex();
 
-             //string highlighting
-             range.SetStyle(StringStyle, PythonStringRegex1);
-             range.SetStyle(StringStyle, PythonStringRegex2);
+            //string highlighting
+            range.SetStyle(StringStyle, PythonStringRegex1);
+            range.SetStyle(StringStyle, PythonStringRegex2);
 
-             //comment highlighting
-             range.SetStyle(CommentStyle, PythonCommentRegex);
+            //comment highlighting
+            range.SetStyle(CommentStyle, PythonCommentRegex);
 
-             //number highlighting
-             range.SetStyle(NumberStyle, PythonNumberRegex);
+            //number highlighting
+            range.SetStyle(NumberStyle, PythonNumberRegex);
 
-             //keyword highlighting
-             range.SetStyle(KeywordStyle, PythonKeywordRegex);
+            //keyword highlighting
+            range.SetStyle(KeywordStyle, PythonKeywordRegex);
 
-             // Razor highlight
-             range.SetStyle(RazorClassKeywordStyle, RazorClassKeywordRegex);
-             range.SetStyle(RazorPropsKeywordStyle, RazorPropsKeywordRegex);
-             range.SetStyle(RazorFunctionsKeywordStyle, RazorFunctionsKeywordRegex);
+            // Razor highlight
+            range.SetStyle(RazorClassKeywordStyle, RazorClassKeywordRegex);
+            range.SetStyle(RazorPropsKeywordStyle, RazorPropsKeywordRegex);
+            range.SetStyle(RazorFunctionsKeywordStyle, RazorFunctionsKeywordRegex);
 
-             //clear folding markers
-             range.ClearFoldingMarkers();
+            //clear folding markers
+            range.ClearFoldingMarkers();
         }
 
         protected void PythonAutoIndentNeeded(object sender, AutoIndentEventArgs args)
         {
-             if (Regex.IsMatch(args.LineText, @"^[^""']*\:"))
-             {
-                  args.ShiftNextLines = args.TabLength;
-             }
+            if (Regex.IsMatch(args.LineText, @"^[^""']*\:"))
+            {
+                args.ShiftNextLines = args.TabLength;
+            }
         }
 
         protected void InitRazorRegex()
@@ -1463,7 +1537,7 @@ namespace FastColoredTextBoxNS
             RazorStringRegex2 = new Regex("'[^'\\\\]*(\\\\.[^'\\\\]*)*'", RegexCompiledOption);
 
             RazorCommentRegex = new Regex("(//.*$|#.*$)", RegexOptions.Multiline | RegexCompiledOption);
-            
+
             RazorSerialRegex = new Regex(@"0x[\da-fA-F]*");
 
             RazorNumberRegex = new Regex(@"\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b", RegexCompiledOption);
@@ -1482,7 +1556,7 @@ namespace FastColoredTextBoxNS
                     @"\b(RightHand|LeftHand|Shoes|Pants|Shirt|Head|Gloves|Ring|Talisman|Neck|Hair|Waist|InnerTorso|Bracelet|FacialHair|MiddleTorso|Earrings|Arms|Cloak|Backpack|OuterTorso|OuterLegs|InnerLegs)\b",
                     RegexCompiledOption);
         }
-        
+
         public virtual void RazorSyntaxHighlight(Range range)
         {
             range.tb.CommentPrefix = "//";
@@ -1539,145 +1613,144 @@ namespace FastColoredTextBoxNS
         /// </summary>
         public Style StringStyle { get; set; }
 
-		/// <summary>
-		/// Comment style
-		/// </summary>
-		public Style CommentStyle { get; set; }
+        /// <summary>
+        /// Comment style
+        /// </summary>
+        public Style CommentStyle { get; set; }
 
-		/// <summary>
-		/// Number style
-		/// </summary>
-		public Style NumberStyle { get; set; }
+        /// <summary>
+        /// Number style
+        /// </summary>
+        public Style NumberStyle { get; set; }
 
-		/// <summary>
-		/// C# attribute style
-		/// </summary>
-		public Style AttributeStyle { get; set; }
+        /// <summary>
+        /// C# attribute style
+        /// </summary>
+        public Style AttributeStyle { get; set; }
 
-		/// <summary>
-		/// Class name style
-		/// </summary>
-		public Style ClassNameStyle { get; set; }
+        /// <summary>
+        /// Class name style
+        /// </summary>
+        public Style ClassNameStyle { get; set; }
 
-		/// <summary>
-		/// Keyword style
-		/// </summary>
-		public Style KeywordStyle { get; set; }
+        /// <summary>
+        /// Keyword style
+        /// </summary>
+        public Style KeywordStyle { get; set; }
 
-		/// <summary>
-		/// Style of tags in comments of C#
-		/// </summary>
-		public Style CommentTagStyle { get; set; }
+        /// <summary>
+        /// Style of tags in comments of C#
+        /// </summary>
+        public Style CommentTagStyle { get; set; }
 
-		/// <summary>
-		/// HTML attribute value style
-		/// </summary>
-		public Style AttributeValueStyle { get; set; }
+        /// <summary>
+        /// HTML attribute value style
+        /// </summary>
+        public Style AttributeValueStyle { get; set; }
 
-		/// <summary>
-		/// HTML tag brackets style
-		/// </summary>
-		public Style TagBracketStyle { get; set; }
+        /// <summary>
+        /// HTML tag brackets style
+        /// </summary>
+        public Style TagBracketStyle { get; set; }
 
-		/// <summary>
-		/// HTML tag name style
-		/// </summary>
-		public Style TagNameStyle { get; set; }
+        /// <summary>
+        /// HTML tag name style
+        /// </summary>
+        public Style TagNameStyle { get; set; }
 
-		/// <summary>
-		/// HTML Entity style
-		/// </summary>
-		public Style HtmlEntityStyle { get; set; }
+        /// <summary>
+        /// HTML Entity style
+        /// </summary>
+        public Style HtmlEntityStyle { get; set; }
 
-		/// <summary>
-		/// XML attribute style
-		/// </summary>
-		public Style XmlAttributeStyle { get; set; }
+        /// <summary>
+        /// XML attribute style
+        /// </summary>
+        public Style XmlAttributeStyle { get; set; }
 
-		/// <summary>
-		/// XML attribute value style
-		/// </summary>
-		public Style XmlAttributeValueStyle { get; set; }
+        /// <summary>
+        /// XML attribute value style
+        /// </summary>
+        public Style XmlAttributeValueStyle { get; set; }
 
-		/// <summary>
-		/// XML tag brackets style
-		/// </summary>
-		public Style XmlTagBracketStyle { get; set; }
+        /// <summary>
+        /// XML tag brackets style
+        /// </summary>
+        public Style XmlTagBracketStyle { get; set; }
 
-		/// <summary>
-		/// XML tag name style
-		/// </summary>
-		public Style XmlTagNameStyle { get; set; }
+        /// <summary>
+        /// XML tag name style
+        /// </summary>
+        public Style XmlTagNameStyle { get; set; }
 
-		/// <summary>
-		/// XML Entity style
-		/// </summary>
-		public Style XmlEntityStyle { get; set; }
+        /// <summary>
+        /// XML Entity style
+        /// </summary>
+        public Style XmlEntityStyle { get; set; }
 
-		/// <summary>
-		/// XML CData style
-		/// </summary>
-		public Style XmlCDataStyle { get; set; }
+        /// <summary>
+        /// XML CData style
+        /// </summary>
+        public Style XmlCDataStyle { get; set; }
 
-		/// <summary>
-		/// Variable style
-		/// </summary>
-		public Style VariableStyle { get; set; }
+        /// <summary>
+        /// Variable style
+        /// </summary>
+        public Style VariableStyle { get; set; }
 
-		/// <summary>
-		/// Specific PHP keyword style
-		/// </summary>
-		public Style KeywordStyle2 { get; set; }
+        /// <summary>
+        /// Specific PHP keyword style
+        /// </summary>
+        public Style KeywordStyle2 { get; set; }
 
-		/// <summary>
-		/// Specific PHP keyword style
-		/// </summary>
-		public Style KeywordStyle3 { get; set; }
+        /// <summary>
+        /// Specific PHP keyword style
+        /// </summary>
+        public Style KeywordStyle3 { get; set; }
 
-		/// <summary>
-		/// SQL Statements style
-		/// </summary>
-		public Style StatementsStyle { get; set; }
+        /// <summary>
+        /// SQL Statements style
+        /// </summary>
+        public Style StatementsStyle { get; set; }
 
-		/// <summary>
-		/// SQL Functions style
-		/// </summary>
-		public Style FunctionsStyle { get; set; }
+        /// <summary>
+        /// SQL Functions style
+        /// </summary>
+        public Style FunctionsStyle { get; set; }
 
-		/// <summary>
-		/// SQL Types style
-		/// </summary>
-		public Style TypesStyle { get; set; }
+        /// <summary>
+        /// SQL Types style
+        /// </summary>
+        public Style TypesStyle { get; set; }
 
-		// Razor style
-		public Style RazorClassKeywordStyle { get; set; }
-		public Style RazorPropsKeywordStyle { get; set; }
-		public Style RazorFunctionsKeywordStyle { get; set; }
+        // Razor style
+        public Style RazorClassKeywordStyle { get; set; }
+        public Style RazorPropsKeywordStyle { get; set; }
+        public Style RazorFunctionsKeywordStyle { get; set; }
 
-          public Style RazorCommandStyle { get; set; }
-          public Style RazorSerialStyle { get; set; }
-          public Style RazorLayerStyle { get; set; }
-          public Style RazorOperatorStyle { get; set; }
-
+        public Style RazorCommandStyle { get; set; }
+        public Style RazorSerialStyle { get; set; }
+        public Style RazorLayerStyle { get; set; }
+        public Style RazorOperatorStyle { get; set; }
 
         #endregion
     }
 
-	/// <summary>
-	/// Language
-	/// </summary>
-	public enum Language
-	{
-		Custom,
-		CSharp,
-		VB,
-		HTML,
-		XML,
-		SQL,
-		PHP,
-		JS,
-		Lua, 
-		Python,
-          Razor
-	}
+    /// <summary>
+    /// Language
+    /// </summary>
+    public enum Language
+    {
+        Custom,
+        CSharp,
+        VB,
+        HTML,
+        XML,
+        SQL,
+        PHP,
+        JS,
+        Lua,
+        Python,
+        Razor
+    }
 }

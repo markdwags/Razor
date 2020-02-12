@@ -15,6 +15,7 @@ namespace FastColoredTextBoxNS
         /// Includes line numbers
         /// </summary>
         public bool IncludeLineNumbers { get; set; }
+
         /// <summary>
         /// Use original font
         /// </summary>
@@ -71,8 +72,10 @@ namespace FastColoredTextBoxNS
                         if (IncludeLineNumbers)
                             tempSB.AppendFormat(@"{{\cf{1} {0}}}\tab", i + 2, lineNumberColor);
                     }
+
                     currentLine = p.iLine;
                 }
+
                 switch (c.c)
                 {
                     case '\\':
@@ -86,16 +89,17 @@ namespace FastColoredTextBoxNS
                         break;
                     default:
                         var ch = c.c;
-                        var code = (int)ch;
-                        if(code < 128)
+                        var code = (int) ch;
+                        if (code < 128)
                             tempSB.Append(c.c);
                         else
                             tempSB.AppendFormat(@"{{\u{0}}}", code);
                         break;
                 }
             }
+
             Flush(sb, tempSB, currentStyleId);
-           
+
             //build color table
             var list = new SortedList<int, Color>();
             foreach (var pair in colorTable)
@@ -105,14 +109,14 @@ namespace FastColoredTextBoxNS
             tempSB.AppendFormat(@"{{\colortbl;");
 
             foreach (var pair in list)
-                tempSB.Append(GetColorAsString(pair.Value)+";");
+                tempSB.Append(GetColorAsString(pair.Value) + ";");
             tempSB.AppendLine("}");
 
             //
             if (UseOriginalFont)
             {
                 sb.Insert(0, string.Format(@"{{\fonttbl{{\f0\fmodern {0};}}}}{{\fs{1} ",
-                                tb.Font.Name, (int)(2 * tb.Font.SizeInPoints), tb.CharHeight));
+                    tb.Font.Name, (int) (2 * tb.Font.SizeInPoints), tb.CharHeight));
                 sb.AppendLine(@"}");
             }
 
@@ -133,7 +137,7 @@ namespace FastColoredTextBoxNS
             bool hasTextStyle = false;
             for (int i = 0; i < tb.Styles.Length; i++)
             {
-                if (tb.Styles[i] != null && ((int)styleIndex & mask) != 0)
+                if (tb.Styles[i] != null && ((int) styleIndex & mask) != 0)
                     if (tb.Styles[i].IsExportable)
                     {
                         var style = tb.Styles[i];
@@ -147,8 +151,10 @@ namespace FastColoredTextBoxNS
                                 textStyle = style as TextStyle;
                             }
                     }
+
                 mask = mask << 1;
             }
+
             //add TextStyle css
             RTFStyleDescriptor result = null;
 
@@ -186,10 +192,10 @@ namespace FastColoredTextBoxNS
                 tags.AppendFormat(@"\cf{0}", cf);
             if (cb >= 0)
                 tags.AppendFormat(@"\highlight{0}", cb);
-            if(!string.IsNullOrEmpty(desc.AdditionalTags))
+            if (!string.IsNullOrEmpty(desc.AdditionalTags))
                 tags.Append(desc.AdditionalTags.Trim());
 
-            if(tags.Length > 0)
+            if (tags.Length > 0)
                 sb.AppendFormat(@"{{{0} {1}}}", tags, tempSB.ToString());
             else
                 sb.Append(tempSB.ToString());

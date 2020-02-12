@@ -91,7 +91,7 @@ namespace FastColoredTextBoxNS
             this[KEYS.Control | KEYS.Subtract] = FCTBAction.ZoomOut;
             this[KEYS.Control | KEYS.Add] = FCTBAction.ZoomIn;
             this[KEYS.Control | KEYS.D0] = FCTBAction.ZoomNormal;
-            this[KEYS.Control | KEYS.I] = FCTBAction.AutoIndentChars;   
+            this[KEYS.Control | KEYS.I] = FCTBAction.AutoIndentChars;
         }
 
         public override string ToString()
@@ -120,12 +120,12 @@ namespace FastColoredTextBoxNS
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
             var kc = new KeysConverter();
-            
+
             foreach (var p in s.Split(','))
             {
                 var pp = p.Split('=');
-                var k = (Keys)kc.ConvertFromString(pp[0].Trim());
-                var a = (FCTBAction)Enum.Parse(typeof(FCTBAction), pp[1].Trim());
+                var k = (Keys) kc.ConvertFromString(pp[0].Trim());
+                var a = (FCTBAction) Enum.Parse(typeof(FCTBAction), pp[1].Trim());
                 result[k] = a;
             }
 
@@ -238,13 +238,15 @@ namespace FastColoredTextBoxNS
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if ((provider != null) && (((IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService))) != null))
+            if ((provider != null) &&
+                (((IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService))) != null))
             {
                 var form = new HotkeysEditorForm(HotkeysMapping.Parse(value as string));
 
                 if (form.ShowDialog() == DialogResult.OK)
                     value = form.GetHotkeys().ToString();
             }
+
             return value;
         }
     }

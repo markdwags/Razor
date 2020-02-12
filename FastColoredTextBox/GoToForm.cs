@@ -12,7 +12,7 @@ namespace FastColoredTextBoxNS
         {
             InitializeComponent();
         }
-        
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -48,6 +48,6 @@ namespace FastColoredTextBoxNS
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
-         }
+        }
     }
 }

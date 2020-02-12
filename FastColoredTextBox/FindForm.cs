@@ -45,6 +45,7 @@ namespace FastColoredTextBoxNS
                     startPlace = range.Start;
                     firstSearch = false;
                 }
+
                 //
                 range.Start = range.End;
                 if (range.Start >= startPlace)
@@ -59,6 +60,7 @@ namespace FastColoredTextBoxNS
                     tb.Invalidate();
                     return;
                 }
+
                 //
                 if (range.Start >= startPlace && startPlace > Place.Empty)
                 {
@@ -66,6 +68,7 @@ namespace FastColoredTextBoxNS
                     FindNext(pattern);
                     return;
                 }
+
                 MessageBox.Show("Not found");
             }
             catch (Exception ex)
@@ -82,6 +85,7 @@ namespace FastColoredTextBoxNS
                 e.Handled = true;
                 return;
             }
+
             if (e.KeyChar == '\x1b')
             {
                 Hide();
@@ -97,6 +101,7 @@ namespace FastColoredTextBoxNS
                 e.Cancel = true;
                 Hide();
             }
+
             this.tb.Focus();
         }
 
@@ -107,6 +112,7 @@ namespace FastColoredTextBoxNS
                 this.Close();
                 return true;
             }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
