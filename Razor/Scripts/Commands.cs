@@ -92,7 +92,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: target (serial) OR (x) (y) (z)", ScriptManager.LastScript.Name);
+                ScriptManager.Error("Usage: target (serial) OR (x) (y) (z)");
                 return true;
             }
 

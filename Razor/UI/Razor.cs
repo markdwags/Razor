@@ -6100,7 +6100,8 @@ namespace Assistant
             if (scriptList.SelectedIndex < 0 || string.IsNullOrEmpty(scriptEditor.Text))
                 return;
 
-            ScriptManager.PlayScript((ScriptManager.RazorScript)scriptList.SelectedItem);
+            // We want to play the contents of the script editor
+            ScriptManager.PlayScript(scriptEditor.Lines.ToArray());
         }
         public void LockScriptUI(bool enabled)
         {
@@ -6198,7 +6199,7 @@ namespace Assistant
 
                 ScriptManager.RazorScript script = new ScriptManager.RazorScript
                 {
-                    Script = new Script(Lexer.Lex(File.ReadAllLines(path))),
+                    Lines = File.ReadAllLines(path),
                     Name = name,
                     Path = path
                 };

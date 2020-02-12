@@ -19,9 +19,8 @@ namespace Assistant.Scripts
 
         public static string ScriptPath => $"{Config.GetInstallDirectory()}\\Scripts";
 
-        public static RazorScript LastScript { get; set; }
-
         private static FastColoredTextBox ScriptEditor { get; set; }
+
         private static ListBox ScriptList { get; set; }
 
         private class ScriptTimer : Timer
@@ -46,14 +45,21 @@ namespace Assistant.Scripts
                 if (Interpreter.ScriptCount > 0)
                 {
                     if (ScriptRunning == false)
+                    {
+                        World.Player?.SendMessage(LocString.ScriptPlaying);
                         Assistant.Engine.MainWindow.LockScriptUI(true);
+                    }
 
                     ScriptRunning = true;
                 }
                 else
                 {
                     if (ScriptRunning)
+                    {
+                        World.Player?.SendMessage(LocString.ScriptFinished);
                         Assistant.Engine.MainWindow.LockScriptUI(false);
+                    }
+                        
 
                     ScriptRunning = false;
                 }
@@ -97,29 +103,34 @@ namespace Assistant.Scripts
             Interpreter.StartScript(new Script(Lexer.Lex(string.Empty)));
         }
 
+        public static void PlayScript(RazorScript script)
+        {
+            PlayScript(script.Lines);
+        }
+
         public static void PlayScript(string scriptName)
         {
             foreach (RazorScript razorScript in Scripts)
             {
                 if (razorScript.Name.ToLower().Equals(scriptName.ToLower()))
                 {
-                    PlayScript(razorScript);
+                    PlayScript(razorScript.Lines);
                     break;
                 }
             }
         }
 
-        public static void PlayScript(RazorScript razorScript)
+        public static void PlayScript(string[] lines)
         {
-            if (World.Player == null || ScriptEditor == null || razorScript == null)
+            if (World.Player == null || ScriptEditor == null || lines == null)
                 return;
 
-            StopScript();
+            StopScript(); // be sure nothing is running
+
             _startPause = DateTime.MaxValue; // reset wait timers
 
-            Interpreter.StartScript(razorScript.Script);
-
-            LastScript = razorScript;
+            Script script = new Script(Lexer.Lex(lines));
+            Interpreter.StartScript(script);
         }
 
         private static ScriptTimer Timer { get; }
@@ -162,7 +173,7 @@ namespace Assistant.Scripts
         public class RazorScript
         {
             public string Path { get; set; }
-            public Script Script { get; set; }
+            public string[] Lines { get; set; }
             public string Name { get; set; }
 
             public override string ToString()
@@ -179,11 +190,9 @@ namespace Assistant.Scripts
 
             foreach (string file in Directory.GetFiles(ScriptPath, "*.razor"))
             {
-                ASTNode root = Lexer.Lex(File.ReadAllLines(file));
-
                 Scripts.Add(new RazorScript
                 {
-                    Script = new Script(root),
+                    Lines = File.ReadAllLines(file),
                     Name = Path.GetFileNameWithoutExtension(file),
                     Path = file
                 });
