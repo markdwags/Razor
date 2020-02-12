@@ -740,6 +740,7 @@ namespace Assistant
             this.recordScript = new System.Windows.Forms.Button();
             this.playScript = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.autoSaveScript = new System.Windows.Forms.CheckBox();
             this.scriptVariablesBox = new System.Windows.Forms.GroupBox();
             this.changeScriptVariable = new System.Windows.Forms.Button();
             this.removeScriptVariable = new System.Windows.Forms.Button();
@@ -4191,6 +4192,7 @@ namespace Assistant
             this.scriptEditor.Size = new System.Drawing.Size(306, 273);
             this.scriptEditor.TabIndex = 20;
             this.scriptEditor.Zoom = 100;
+            this.scriptEditor.LostFocus += new System.EventHandler(this.scriptEditor_LostFocus);
             // 
             // scriptList
             // 
@@ -4245,6 +4247,7 @@ namespace Assistant
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.autoSaveScript);
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
@@ -4252,6 +4255,17 @@ namespace Assistant
             this.tabPage3.Size = new System.Drawing.Size(498, 285);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
+            // 
+            // autoSaveScript
+            // 
+            this.autoSaveScript.AutoSize = true;
+            this.autoSaveScript.Location = new System.Drawing.Point(252, 28);
+            this.autoSaveScript.Name = "autoSaveScript";
+            this.autoSaveScript.Size = new System.Drawing.Size(239, 19);
+            this.autoSaveScript.TabIndex = 8;
+            this.autoSaveScript.Text = "Auto-save when script editor loses focus";
+            this.autoSaveScript.UseVisualStyleBackColor = true;
+            this.autoSaveScript.CheckedChanged += new System.EventHandler(this.autoSaveScript_CheckedChanged);
             // 
             // scriptVariablesBox
             // 
@@ -4864,6 +4878,7 @@ namespace Assistant
             this.subScripts.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).EndInit();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.scriptVariablesBox.ResumeLayout(false);
             this.screenshotTab.ResumeLayout(false);
             this.screenshotTab.PerformLayout();
@@ -4896,5 +4911,6 @@ namespace Assistant
         private Button addScriptVariable;
         private ListBox scriptVariables;
         private LinkLabel linkScriptGuide;
+        private CheckBox autoSaveScript;
     }
 }

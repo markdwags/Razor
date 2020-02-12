@@ -280,6 +280,8 @@ namespace Assistant
             AddProperty("ShowPlayingSoundInfo", false);
             AddProperty("ShowMusicInfo", false);
 
+            AddProperty("AutoSaveScript", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

@@ -484,6 +484,8 @@ namespace Assistant
             showPlayingSoundInfo.SafeAction(s => { s.Checked = Config.GetBool("ShowPlayingSoundInfo"); });
             showPlayingMusic.SafeAction(s => { s.Checked = Config.GetBool("ShowMusicInfo"); });
 
+            autoSaveScript.SafeAction(s => { s.Checked = Config.GetBool("AutoSaveScript"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -6093,9 +6095,8 @@ namespace Assistant
                 return;
             }
 
-            if (scriptList.SelectedIndex < 0 || string.IsNullOrEmpty(scriptEditor.Text))
+            if (string.IsNullOrEmpty(scriptEditor.Text))
             {
-                MessageBox.Show(this, "You must select a script to play.", "Play Script", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -6139,6 +6140,48 @@ namespace Assistant
 
             m.Save();
             RedrawActionList(m);*/
+        }
+
+        private void scriptEditor_LostFocus(object sender, EventArgs e)
+        {
+            if (Config.GetBool("AutoSaveScript"))
+            {
+                if (scriptList.SelectedIndex < 0)
+                {
+                    string filePath = $"{ScriptManager.ScriptPath}\\auto-{Guid.NewGuid().ToString().Substring(0, 4)}";
+
+                    ScriptManager.RazorScript script = new ScriptManager.RazorScript
+                    {
+                        Lines = File.ReadAllLines(filePath),
+                        Name = Path.GetFileNameWithoutExtension(filePath),
+                        Path = filePath
+                    };
+
+                    File.WriteAllText(script.Path, scriptEditor.Text);
+                    ScriptManager.RedrawScripts();
+
+                    for (int i = 0; i < scriptList.Items.Count; i++)
+                    {
+                        ScriptManager.RazorScript scriptItem = (ScriptManager.RazorScript) scriptList.Items[i];
+                        if (scriptItem.Name.Equals(script.Name))
+                        {
+                            scriptList.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    int curIndex = scriptList.SelectedIndex;
+
+                    ScriptManager.RazorScript script = (ScriptManager.RazorScript)scriptList.SelectedItem;
+                    File.WriteAllText(script.Path, scriptEditor.Text);
+
+                    ScriptManager.RedrawScripts();
+
+                    scriptList.SelectedIndex = curIndex;
+                }
+            }
         }
 
         private void scriptList_SelectedIndexChanged(object sender, EventArgs e)
@@ -6203,7 +6246,7 @@ namespace Assistant
                     Path = path
                 };
 
-                ScriptManager.AddHotkey(script);
+                ScriptManager.AddHotkey(script.Name);
 
                 ScriptManager.RedrawScripts();
             }
@@ -6373,6 +6416,11 @@ namespace Assistant
         private void linkScriptGuide_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://www.uor-razor.com/guide/");
+        }
+
+        private void autoSaveScript_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("AutoSaveScript", autoSaveScript.Checked);
         }
     }
 }

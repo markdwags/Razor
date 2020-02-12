@@ -82,11 +82,11 @@ namespace Assistant.Scripts
 
             foreach (RazorScript script in Scripts)
             {
-                AddHotkey(script);
+                AddHotkey(script.Name);
             }
         }
 
-        public static void AddHotkey(RazorScript script)
+        public static void AddHotkey(string script)
         {
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayScript, script), HotkeyCallback, script);
         }
@@ -98,7 +98,7 @@ namespace Assistant.Scripts
 
         public static void OnHotKey(ref object state)
         {
-            PlayScript((RazorScript) state);
+            PlayScript((string) state);
         }
 
         public static void StopScript()
@@ -106,16 +106,11 @@ namespace Assistant.Scripts
             Interpreter.StartScript(new Script(Lexer.Lex(string.Empty)));
         }
 
-        public static void PlayScript(RazorScript script)
-        {
-            PlayScript(script.Lines);
-        }
-
         public static void PlayScript(string scriptName)
         {
             foreach (RazorScript razorScript in Scripts)
             {
-                if (razorScript.Name.ToLower().Equals(scriptName.ToLower()))
+                if (razorScript.Name.Equals(scriptName))
                 {
                     PlayScript(razorScript.Lines);
                     break;
@@ -524,6 +519,11 @@ namespace Assistant.Scripts
         {
             ScriptList.SafeAction(s =>
             {
+                int curIndex = 0;
+
+                if (s.SelectedIndex > -1)
+                    curIndex = s.SelectedIndex;
+
                 s.BeginUpdate();
                 s.Items.Clear();
 
@@ -534,6 +534,8 @@ namespace Assistant.Scripts
                     if (script != null)
                         s.Items.Add(script);
                 }
+
+                s.SelectedIndex = curIndex;
 
                 s.EndUpdate();
             });
