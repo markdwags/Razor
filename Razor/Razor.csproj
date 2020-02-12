@@ -142,9 +142,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="WinFormsSyntaxHighlighter">
-      <HintPath>..\WinFormsSyntaxHighlighter\WinFormsSyntaxHighlighter\bin\Release\WinFormsSyntaxHighlighter.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boat\BoatWindow.cs">
