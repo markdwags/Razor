@@ -45,12 +45,16 @@ namespace Assistant.Scripts
 
                 if (Interpreter.ScriptCount > 0)
                 {
-                    Assistant.Engine.MainWindow.LockScriptUI(true);
+                    if (ScriptRunning == false)
+                        Assistant.Engine.MainWindow.LockScriptUI(true);
+
                     ScriptRunning = true;
                 }
                 else
                 {
-                    Assistant.Engine.MainWindow.LockScriptUI(false);
+                    if (ScriptRunning)
+                        Assistant.Engine.MainWindow.LockScriptUI(false);
+
                     ScriptRunning = false;
                 }
             }
