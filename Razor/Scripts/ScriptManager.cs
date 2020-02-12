@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Assistant.Macros;
 using Assistant.Scripts.Engine;
 using Assistant.UI;
 using FastColoredTextBoxNS;
@@ -124,7 +125,7 @@ namespace Assistant.Scripts
 
         public static void PlayScript(string[] lines)
         {
-            if (World.Player == null || ScriptEditor == null || lines == null)
+            if (World.Player == null || ScriptEditor == null || lines == null || MacroManager.Playing || MacroManager.StepThrough)
                 return;
 
             StopScript(); // be sure nothing is running

@@ -439,6 +439,9 @@ namespace Assistant.Scripts
 
                     if (i != null)
                         items.Add(i);
+
+                    if (items.Count > 0)
+                        click = items[Utility.Random(items.Count)].Serial;
                 }
             }
 

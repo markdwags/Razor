@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
+using Assistant.Scripts;
 using Assistant.UI;
 
 namespace Assistant.Macros
@@ -154,6 +155,9 @@ namespace Assistant.Macros
 
         public static void Play(Macro m)
         {
+            if (ScriptManager.Running)
+                return;
+
             if (m_Current != null)
             {
                 if (m_Current.Playing && m_Current.Loop && !m.Loop)

@@ -58,7 +58,7 @@ namespace Assistant
 
             foreach (KeyValuePair<Serial, Item> item in m_Items)
             {
-                if (item.Value.DisplayName.ToLower().Equals(name.ToLower()))
+                if (item.Value.DisplayName.ToLower().StartsWith(name.ToLower()))
                     items.Add(item.Value);
             }
 

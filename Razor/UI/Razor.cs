@@ -6094,7 +6094,10 @@ namespace Assistant
             }
 
             if (scriptList.SelectedIndex < 0 || string.IsNullOrEmpty(scriptEditor.Text))
+            {
+                MessageBox.Show(this, "You must select a script to play.", "Play Script", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
 
             // We want to play the contents of the script editor
             ScriptManager.PlayScript(scriptEditor.Lines.ToArray());
