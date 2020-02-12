@@ -740,6 +740,7 @@ namespace Assistant
             this.recordScript = new System.Windows.Forms.Button();
             this.playScript = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.autoSaveScriptPlay = new System.Windows.Forms.CheckBox();
             this.autoSaveScript = new System.Windows.Forms.CheckBox();
             this.scriptVariablesBox = new System.Windows.Forms.GroupBox();
             this.changeScriptVariable = new System.Windows.Forms.Button();
@@ -789,7 +790,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.autoSaveScriptPlay = new System.Windows.Forms.CheckBox();
+            this.renameScript = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -4107,6 +4108,7 @@ namespace Assistant
             // subScripts
             // 
             this.subScripts.BackColor = System.Drawing.SystemColors.Control;
+            this.subScripts.Controls.Add(this.renameScript);
             this.subScripts.Controls.Add(this.linkScriptGuide);
             this.subScripts.Controls.Add(this.saveScript);
             this.subScripts.Controls.Add(this.deleteScript);
@@ -4125,21 +4127,20 @@ namespace Assistant
             // 
             // linkScriptGuide
             // 
-            this.linkScriptGuide.AutoSize = true;
-            this.linkScriptGuide.Location = new System.Drawing.Point(438, 249);
+            this.linkScriptGuide.Location = new System.Drawing.Point(6, 254);
             this.linkScriptGuide.Name = "linkScriptGuide";
-            this.linkScriptGuide.Size = new System.Drawing.Size(54, 30);
+            this.linkScriptGuide.Size = new System.Drawing.Size(114, 25);
             this.linkScriptGuide.TabIndex = 23;
             this.linkScriptGuide.TabStop = true;
-            this.linkScriptGuide.Text = "Scripting\r\nGuide";
+            this.linkScriptGuide.Text = "Scripting Guide";
             this.linkScriptGuide.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkScriptGuide.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkScriptGuide_LinkClicked);
             // 
             // saveScript
             // 
-            this.saveScript.Location = new System.Drawing.Point(66, 212);
+            this.saveScript.Location = new System.Drawing.Point(432, 163);
             this.saveScript.Name = "saveScript";
-            this.saveScript.Size = new System.Drawing.Size(51, 25);
+            this.saveScript.Size = new System.Drawing.Size(60, 26);
             this.saveScript.TabIndex = 22;
             this.saveScript.Text = "Save";
             this.saveScript.UseVisualStyleBackColor = true;
@@ -4147,9 +4148,9 @@ namespace Assistant
             // 
             // deleteScript
             // 
-            this.deleteScript.Location = new System.Drawing.Point(3, 243);
+            this.deleteScript.Location = new System.Drawing.Point(432, 227);
             this.deleteScript.Name = "deleteScript";
-            this.deleteScript.Size = new System.Drawing.Size(51, 25);
+            this.deleteScript.Size = new System.Drawing.Size(60, 26);
             this.deleteScript.TabIndex = 21;
             this.deleteScript.Text = "Delete";
             this.deleteScript.UseVisualStyleBackColor = true;
@@ -4190,7 +4191,7 @@ namespace Assistant
             this.scriptEditor.RightBracket2 = ']';
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
-            this.scriptEditor.Size = new System.Drawing.Size(306, 273);
+            this.scriptEditor.Size = new System.Drawing.Size(303, 273);
             this.scriptEditor.TabIndex = 20;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.LostFocus += new System.EventHandler(this.scriptEditor_LostFocus);
@@ -4198,19 +4199,21 @@ namespace Assistant
             // 
             // scriptList
             // 
+            this.scriptList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scriptList.FormattingEnabled = true;
-            this.scriptList.ItemHeight = 15;
-            this.scriptList.Location = new System.Drawing.Point(3, 7);
+            this.scriptList.ItemHeight = 17;
+            this.scriptList.Location = new System.Drawing.Point(6, 7);
             this.scriptList.Name = "scriptList";
-            this.scriptList.Size = new System.Drawing.Size(114, 199);
+            this.scriptList.Size = new System.Drawing.Size(114, 242);
             this.scriptList.TabIndex = 19;
             this.scriptList.SelectedIndexChanged += new System.EventHandler(this.scriptList_SelectedIndexChanged);
+            this.scriptList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptList_MouseDown);
             // 
             // newScript
             // 
-            this.newScript.Location = new System.Drawing.Point(3, 212);
+            this.newScript.Location = new System.Drawing.Point(432, 131);
             this.newScript.Name = "newScript";
-            this.newScript.Size = new System.Drawing.Size(51, 25);
+            this.newScript.Size = new System.Drawing.Size(60, 26);
             this.newScript.TabIndex = 18;
             this.newScript.Text = "New";
             this.newScript.UseVisualStyleBackColor = true;
@@ -4218,7 +4221,7 @@ namespace Assistant
             // 
             // setScriptHotkey
             // 
-            this.setScriptHotkey.Location = new System.Drawing.Point(435, 83);
+            this.setScriptHotkey.Location = new System.Drawing.Point(432, 83);
             this.setScriptHotkey.Name = "setScriptHotkey";
             this.setScriptHotkey.Size = new System.Drawing.Size(60, 32);
             this.setScriptHotkey.TabIndex = 16;
@@ -4228,7 +4231,7 @@ namespace Assistant
             // 
             // recordScript
             // 
-            this.recordScript.Location = new System.Drawing.Point(435, 45);
+            this.recordScript.Location = new System.Drawing.Point(432, 45);
             this.recordScript.Name = "recordScript";
             this.recordScript.Size = new System.Drawing.Size(60, 32);
             this.recordScript.TabIndex = 15;
@@ -4238,7 +4241,7 @@ namespace Assistant
             // 
             // playScript
             // 
-            this.playScript.Location = new System.Drawing.Point(435, 7);
+            this.playScript.Location = new System.Drawing.Point(432, 7);
             this.playScript.Name = "playScript";
             this.playScript.Size = new System.Drawing.Size(60, 32);
             this.playScript.TabIndex = 14;
@@ -4252,12 +4255,23 @@ namespace Assistant
             this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
             this.tabPage3.Controls.Add(this.autoSaveScript);
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 285);
+            this.tabPage3.Size = new System.Drawing.Size(498, 287);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
+            // 
+            // autoSaveScriptPlay
+            // 
+            this.autoSaveScriptPlay.AutoSize = true;
+            this.autoSaveScriptPlay.Location = new System.Drawing.Point(252, 53);
+            this.autoSaveScriptPlay.Name = "autoSaveScriptPlay";
+            this.autoSaveScriptPlay.Size = new System.Drawing.Size(193, 19);
+            this.autoSaveScriptPlay.TabIndex = 9;
+            this.autoSaveScriptPlay.Text = "Auto-save when you click \'Play\'";
+            this.autoSaveScriptPlay.UseVisualStyleBackColor = true;
+            this.autoSaveScriptPlay.CheckedChanged += new System.EventHandler(this.autoSaveScriptPlay_CheckedChanged);
             // 
             // autoSaveScript
             // 
@@ -4796,16 +4810,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // autoSaveScriptPlay
+            // renameScript
             // 
-            this.autoSaveScriptPlay.AutoSize = true;
-            this.autoSaveScriptPlay.Location = new System.Drawing.Point(252, 53);
-            this.autoSaveScriptPlay.Name = "autoSaveScriptPlay";
-            this.autoSaveScriptPlay.Size = new System.Drawing.Size(193, 19);
-            this.autoSaveScriptPlay.TabIndex = 9;
-            this.autoSaveScriptPlay.Text = "Auto-save when you click \'Play\'";
-            this.autoSaveScriptPlay.UseVisualStyleBackColor = true;
-            this.autoSaveScriptPlay.CheckedChanged += new System.EventHandler(this.autoSaveScriptPlay_CheckedChanged);
+            this.renameScript.Location = new System.Drawing.Point(432, 195);
+            this.renameScript.Name = "renameScript";
+            this.renameScript.Size = new System.Drawing.Size(60, 26);
+            this.renameScript.TabIndex = 24;
+            this.renameScript.Text = "Rename";
+            this.renameScript.UseVisualStyleBackColor = true;
+            this.renameScript.Click += new System.EventHandler(this.renameScript_Click);
             // 
             // MainForm
             // 
@@ -4889,7 +4902,6 @@ namespace Assistant
             this.scriptsTab.ResumeLayout(false);
             this.subTabScripts.ResumeLayout(false);
             this.subScripts.ResumeLayout(false);
-            this.subScripts.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
@@ -4927,5 +4939,6 @@ namespace Assistant
         private LinkLabel linkScriptGuide;
         private CheckBox autoSaveScript;
         private CheckBox autoSaveScriptPlay;
+        private Button renameScript;
     }
 }

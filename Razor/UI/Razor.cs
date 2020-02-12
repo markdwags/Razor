@@ -6437,6 +6437,32 @@ namespace Assistant
             Config.SetProperty("AutoSaveScript", autoSaveScript.Checked);
         }
 
+        private void scriptList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (scriptList.SelectedIndex < 0)
+                return;
+
+            /*if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
+                    return;
+
+                ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
+
+                ContextMenu menu = new ContextMenu();
+                
+                menu.MenuItems.Add("New", OnScriptNew);
+                menu.MenuItems.Add($"Rename '{script.Name}'", OnScriptRename);
+                menu.MenuItems.Add($"Delete '{script.Name}'", OnScriptDelete);
+
+                menu.Show(scriptList, new Point(e.X, e.Y));
+            }
+            else if (e.Button == MouseButtons.Left && e.Clicks == 2)
+            {
+                if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
+                    return;
+            }*/
+        }
         private void scriptEditor_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
@@ -6571,6 +6597,70 @@ namespace Assistant
         private void autoSaveScriptPlay_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("AutoSaveScriptPlay", autoSaveScriptPlay.Checked);
+        }
+
+        private void renameScript_Click(object sender, EventArgs e)
+        {
+            if (scriptList.SelectedIndex < 0)
+                return;
+
+            if (InputBox.Show(this, "Enter a new name for the script", "Rename Script"))
+            {
+                string name = InputBox.GetString();
+
+                if (string.IsNullOrEmpty(name) || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+                    name.IndexOfAny(m_InvalidNameChars) != -1)
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
+
+                string newScript = $"{ScriptManager.ScriptPath}\\{name}.razor";
+
+                if (File.Exists(newScript))
+                {
+                    MessageBox.Show(this, "A script with that name already exists.",
+                        Language.GetString(LocString.Invalid),
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                try
+                {
+                    Engine.MainWindow.SafeAction(s =>
+                    {
+                        ScriptManager.RemoveHotkey(script.Name);
+
+                        File.Move(script.Path, newScript);
+
+                        script.Path = newScript;
+                        script.Name = Path.GetFileNameWithoutExtension(newScript);
+
+                        ScriptManager.RedrawScripts();
+
+                        ScriptManager.AddHotkey(script.Name);
+                    });
+                }
+                catch
+                {
+                    return;
+                }
+
+                /*Macro m = new Macro(newMacro);
+                MacroManager.Add(m);
+                TreeNode newNode = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename));
+                newNode.Tag = m;
+                if (node == null)
+                    macroTree.Nodes.Add(newNode);
+                else
+                    node.Nodes.Add(newNode);
+                macroTree.SelectedNode = newNode;*/
+
+                RedrawMacros();
+            }
         }
     }
 }
