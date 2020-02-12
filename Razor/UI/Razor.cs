@@ -6370,5 +6370,10 @@ namespace Assistant
 
             ScriptManager.DisplayScriptVariables(scriptVariables);
         }
+
+        private void linkScriptGuide_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://www.uor-razor.com/guide/");
+        }
     }
 }

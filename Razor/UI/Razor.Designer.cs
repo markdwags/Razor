@@ -730,6 +730,7 @@ namespace Assistant
             this.scriptsTab = new System.Windows.Forms.TabPage();
             this.subTabScripts = new System.Windows.Forms.TabControl();
             this.subScripts = new System.Windows.Forms.TabPage();
+            this.linkScriptGuide = new System.Windows.Forms.LinkLabel();
             this.saveScript = new System.Windows.Forms.Button();
             this.deleteScript = new System.Windows.Forms.Button();
             this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
@@ -3919,10 +3920,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -4104,6 +4105,7 @@ namespace Assistant
             // subScripts
             // 
             this.subScripts.BackColor = System.Drawing.SystemColors.Control;
+            this.subScripts.Controls.Add(this.linkScriptGuide);
             this.subScripts.Controls.Add(this.saveScript);
             this.subScripts.Controls.Add(this.deleteScript);
             this.subScripts.Controls.Add(this.scriptEditor);
@@ -4118,6 +4120,18 @@ namespace Assistant
             this.subScripts.Size = new System.Drawing.Size(498, 285);
             this.subScripts.TabIndex = 0;
             this.subScripts.Text = "Scripts";
+            // 
+            // linkScriptGuide
+            // 
+            this.linkScriptGuide.AutoSize = true;
+            this.linkScriptGuide.Location = new System.Drawing.Point(438, 249);
+            this.linkScriptGuide.Name = "linkScriptGuide";
+            this.linkScriptGuide.Size = new System.Drawing.Size(54, 30);
+            this.linkScriptGuide.TabIndex = 23;
+            this.linkScriptGuide.TabStop = true;
+            this.linkScriptGuide.Text = "Scripting\r\nGuide";
+            this.linkScriptGuide.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkScriptGuide.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkScriptGuide_LinkClicked);
             // 
             // saveScript
             // 
@@ -4847,6 +4861,7 @@ namespace Assistant
             this.scriptsTab.ResumeLayout(false);
             this.subTabScripts.ResumeLayout(false);
             this.subScripts.ResumeLayout(false);
+            this.subScripts.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.scriptVariablesBox.ResumeLayout(false);
@@ -4880,5 +4895,6 @@ namespace Assistant
         private Button removeScriptVariable;
         private Button addScriptVariable;
         private ListBox scriptVariables;
+        private LinkLabel linkScriptGuide;
     }
 }
