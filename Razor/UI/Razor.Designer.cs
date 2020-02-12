@@ -4193,6 +4193,7 @@ namespace Assistant
             this.scriptEditor.TabIndex = 20;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.LostFocus += new System.EventHandler(this.scriptEditor_LostFocus);
+            this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
             // 
             // scriptList
             // 

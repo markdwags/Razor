@@ -6422,5 +6422,114 @@ namespace Assistant
         {
             Config.SetProperty("AutoSaveScript", autoSaveScript.Checked);
         }
+
+        private void scriptEditor_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
+                    return;
+
+                if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
+                {
+                    ContextMenu menu = new ContextMenu();
+
+                    menu.MenuItems.Add("Comment", onScriptComment);
+                    menu.MenuItems.Add("Uncomment", onScriptUncomment);
+
+                    int space = scriptEditor.SelectedText.IndexOf(" ", StringComparison.Ordinal);
+
+                    if (space > -1)
+                    {
+                        string command = scriptEditor.SelectedText.Substring(0, space);
+
+                        if (command.Equals("dclick"))
+                        {
+                            menu.MenuItems.Add("-");
+                            menu.MenuItems.Add("Convert to 'dclicktype' by gfxid", onScriptDclickTypeId);
+                            menu.MenuItems.Add("Convert to 'dclicktype' by name", onScriptDclickTypeName);
+                        }
+                        
+                    }
+
+                    menu.Show(scriptEditor, new Point(e.X, e.Y));
+                }
+            }
+            else if (e.Button == MouseButtons.Left && e.Clicks == 2)
+            {
+                if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
+                    return;
+            }
+        }
+
+        private void onScriptComment(object sender, System.EventArgs e)
+        {
+            string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+            scriptEditor.SelectedText = "";
+            for (int i = 0; i < lines.Count(); i++)
+            {
+                scriptEditor.SelectedText += "#" + lines[i];
+                if (i < lines.Count() - 1)
+                    scriptEditor.SelectedText += "\r\n";
+            }
+        }
+        private void onScriptUncomment(object sender, System.EventArgs e)
+        {
+            string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+            scriptEditor.SelectedText = "";
+            for (int i = 0; i < lines.Count(); i++)
+            {
+                scriptEditor.SelectedText += lines[i].TrimStart('#');
+                if (i < lines.Count() - 1)
+                    scriptEditor.SelectedText += "\r\n";
+            }
+        }
+
+        private void onScriptDclickTypeId(object sender, System.EventArgs e)
+        {
+            Serial itemId = Serial.Zero;
+
+            try
+            {
+                itemId = Serial.Parse(scriptEditor.SelectedText.Split(' ')[1]);
+            }
+            catch
+            {
+                return;
+            }
+
+            Item item = World.FindItem(itemId);
+
+            if (item == null)
+                return;
+
+            scriptEditor.SelectedText = "";
+            scriptEditor.SelectedText = $"dclicktype '{item.ItemID.Value}'";
+        }
+
+        private void onScriptDclickTypeName(object sender, System.EventArgs e)
+        {
+            Serial gfxid = Serial.Zero;
+
+            try
+            {
+                gfxid = Serial.Parse(scriptEditor.SelectedText.Split(' ')[1]);
+            }
+            catch
+            {
+                return;
+            }
+
+
+            Item item = World.FindItem(gfxid);
+
+            if (item == null)
+                return;
+
+            scriptEditor.SelectedText = "";
+            scriptEditor.SelectedText = $"dclicktype '{item.DisplayName}'";
+        }
     }
 }

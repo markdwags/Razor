@@ -256,7 +256,7 @@ namespace Assistant
                 {
                     MacroManager.Action(new DoubleClickAction(ser, gfx));
 
-                    ScriptManager.AddToScript($"useobject {ser}");
+                    ScriptManager.AddToScript($"dclick {ser}");
                 }   
             }
         }
