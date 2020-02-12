@@ -4028,12 +4028,12 @@ namespace Assistant
 
         private void tabs_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            HotKey.KeyDown(e.KeyData);
+            //HotKey.KeyDown(e.KeyData);
         }
 
         private void MainForm_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            HotKey.KeyDown(e.KeyData);
+            //HotKey.KeyDown(e.KeyData);
         }
 
         private void spellUnequip_CheckedChanged(object sender, System.EventArgs e)
