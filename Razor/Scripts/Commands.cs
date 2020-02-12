@@ -296,7 +296,7 @@ namespace Assistant.Scripts
                     strict = true;
             }
 
-            return !((World.Player.HasGump || World.Player.HasCompressedGump) &&
+            return ((World.Player.HasGump || World.Player.HasCompressedGump) &&
                      (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0));
         }
 
@@ -310,7 +310,7 @@ namespace Assistant.Scripts
                 menuId = Utility.ToUInt32(args[0].AsString(), 0);
             }
 
-            return !(World.Player.HasMenu && (World.Player.CurrentGumpI == menuId || menuId == 0));
+            return (World.Player.HasMenu && (World.Player.CurrentGumpI == menuId || menuId == 0));
         }
 
         private static bool WaitForPrompt(string command, Argument[] args, bool quiet, bool force)
@@ -327,7 +327,7 @@ namespace Assistant.Scripts
                     strict = true;
             }
 
-            return !(World.Player.HasPrompt && (World.Player.PromptID == promptId || !strict || promptId == 0));
+            return (World.Player.HasPrompt && (World.Player.PromptID == promptId || !strict || promptId == 0));
         }
 
         private static string[] abilities = new string[4] {"primary", "secondary", "stun", "disarm"};
