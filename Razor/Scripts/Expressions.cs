@@ -28,6 +28,10 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("maxmana", MaxMana);
             Interpreter.RegisterExpressionHandler("poisoned", Poisoned);
 
+            Interpreter.RegisterExpressionHandler("mounted", Mounted);
+            Interpreter.RegisterExpressionHandler("rhandempty", RHandEmpty);
+            Interpreter.RegisterExpressionHandler("lhandempty", LHandEmpty);
+
             Interpreter.RegisterExpressionHandler("str", Str);
             Interpreter.RegisterExpressionHandler("int", Int);
             Interpreter.RegisterExpressionHandler("dex", Dex);
@@ -51,6 +55,27 @@ namespace Assistant.Scripts
                 return 0;
 
             return 1;
+        }
+
+        private static double Mounted(string expression, Argument[] args, bool quiet)
+        {
+            return World.Player != null && World.Player.GetItemOnLayer(Layer.Mount) != null
+                ? 1
+                : 0;
+        }
+
+        private static double RHandEmpty(string expression, Argument[] args, bool quiet)
+        {
+            return World.Player != null && World.Player.GetItemOnLayer(Layer.RightHand) != null
+                ? 1
+                : 0;
+        }
+
+        private static double LHandEmpty(string expression, Argument[] args, bool quiet)
+        {
+            return World.Player != null && World.Player.GetItemOnLayer(Layer.LeftHand) != null
+                ? 1
+                : 0;
         }
 
         private static double InSysMessage(string expression, Argument[] args, bool quiet)
