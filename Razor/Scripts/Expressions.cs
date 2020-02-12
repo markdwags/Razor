@@ -26,6 +26,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("maxhits", MaxHp);
             Interpreter.RegisterExpressionHandler("mana", Mana);
             Interpreter.RegisterExpressionHandler("maxmana", MaxMana);
+            Interpreter.RegisterExpressionHandler("poisoned", Poisoned);
 
             Interpreter.RegisterExpressionHandler("str", Str);
             Interpreter.RegisterExpressionHandler("int", Int);
@@ -90,6 +91,14 @@ namespace Assistant.Scripts
                 return 0;
 
             return World.Player.ManaMax;
+        }
+
+        private static double Poisoned(string expression, Argument[] args, bool quiet)
+        {
+            return World.Player != null && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned) &&
+                   World.Player.Poisoned
+                ? 1
+                : 0;
         }
 
         private static double Hp(string expression, Argument[] args, bool quiet)
