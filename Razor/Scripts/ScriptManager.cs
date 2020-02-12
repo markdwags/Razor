@@ -535,7 +535,8 @@ namespace Assistant.Scripts
                         s.Items.Add(script);
                 }
 
-                s.SelectedIndex = curIndex;
+                if (s.Items.Count > 0)
+                    s.SelectedIndex = curIndex;
 
                 s.EndUpdate();
             });
