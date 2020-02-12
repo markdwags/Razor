@@ -6448,22 +6448,28 @@ namespace Assistant
                 {
                     ContextMenu menu = new ContextMenu();
 
-                    menu.MenuItems.Add("Comment", onScriptComment);
-                    menu.MenuItems.Add("Uncomment", onScriptUncomment);
+                    menu.MenuItems.Add("Comment", OnScriptComment);
+                    menu.MenuItems.Add("Uncomment", OnScriptUncomment);
 
-                    int space = scriptEditor.SelectedText.IndexOf(" ", StringComparison.Ordinal);
-
-                    if (space > -1)
+                    if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
                     {
-                        string command = scriptEditor.SelectedText.Substring(0, space);
+                        menu.MenuItems.Add("-");
+                        menu.MenuItems.Add("Play selected script code", OnScriptPlaySelected);
 
-                        if (command.Equals("dclick"))
+                        int space = scriptEditor.SelectedText.IndexOf(" ", StringComparison.Ordinal);
+
+                        if (space > -1)
                         {
-                            menu.MenuItems.Add("-");
-                            menu.MenuItems.Add("Convert to 'dclicktype' by gfxid", onScriptDclickTypeId);
-                            menu.MenuItems.Add("Convert to 'dclicktype' by name", onScriptDclickTypeName);
+                            string command = scriptEditor.SelectedText.Substring(0, space);
+
+                            if (command.Equals("dclick"))
+                            {
+                                menu.MenuItems.Add("-");
+                                menu.MenuItems.Add("Convert to 'dclicktype' by gfxid", OnScriptDclickTypeId);
+                                menu.MenuItems.Add("Convert to 'dclicktype' by name", OnScriptDclickTypeName);
+                            }
+
                         }
-                        
                     }
 
                     menu.Show(scriptEditor, new Point(e.X, e.Y));
@@ -6476,7 +6482,7 @@ namespace Assistant
             }
         }
 
-        private void onScriptComment(object sender, System.EventArgs e)
+        private void OnScriptComment(object sender, System.EventArgs e)
         {
             string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
@@ -6488,7 +6494,7 @@ namespace Assistant
                     scriptEditor.SelectedText += "\r\n";
             }
         }
-        private void onScriptUncomment(object sender, System.EventArgs e)
+        private void OnScriptUncomment(object sender, System.EventArgs e)
         {
             string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
@@ -6501,7 +6507,7 @@ namespace Assistant
             }
         }
 
-        private void onScriptDclickTypeId(object sender, System.EventArgs e)
+        private void OnScriptDclickTypeId(object sender, System.EventArgs e)
         {
             Serial itemId = Serial.Zero;
 
@@ -6523,7 +6529,7 @@ namespace Assistant
             scriptEditor.SelectedText = $"dclicktype '{item.ItemID.Value}'";
         }
 
-        private void onScriptDclickTypeName(object sender, System.EventArgs e)
+        private void OnScriptDclickTypeName(object sender, System.EventArgs e)
         {
             Serial gfxid = Serial.Zero;
 
@@ -6544,6 +6550,22 @@ namespace Assistant
 
             scriptEditor.SelectedText = "";
             scriptEditor.SelectedText = $"dclicktype '{item.DisplayName}'";
+        }
+        
+        private void OnScriptPlaySelected(object sender, System.EventArgs e)
+        {
+            if (ScriptManager.Running)
+            {
+                ScriptManager.StopScript();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(scriptEditor.SelectedText))
+                return;
+
+            string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+            ScriptManager.PlayScript(lines);
         }
 
         private void autoSaveScriptPlay_CheckedChanged(object sender, EventArgs e)
