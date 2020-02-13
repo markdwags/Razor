@@ -6263,6 +6263,15 @@ namespace Assistant
                 ScriptManager.AddHotkey(script.Name);
 
                 ScriptManager.RedrawScripts();
+
+                for (int i = 0; i < scriptList.Items.Count; i++)
+                {
+                    if (scriptList.Items[i].ToString().Equals(script.Name))
+                    {
+                        scriptList.SelectedIndex = i;
+                        break;
+                    }
+                }
             }
         }
 
@@ -6636,20 +6645,8 @@ namespace Assistant
                 }
                 catch
                 {
-                    return;
+                    // ignore
                 }
-
-                /*Macro m = new Macro(newMacro);
-                MacroManager.Add(m);
-                TreeNode newNode = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename));
-                newNode.Tag = m;
-                if (node == null)
-                    macroTree.Nodes.Add(newNode);
-                else
-                    node.Nodes.Add(newNode);
-                macroTree.SelectedNode = newNode;*/
-
-                RedrawMacros();
             }
         }
     }
