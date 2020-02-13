@@ -980,7 +980,7 @@ namespace Assistant.Scripts
             }
 
             Serial s = args[0].AsSerial();
-            ushort index = args[0].AsUShort();
+            ushort index = args[1].AsUShort();
 
             if (s == Serial.Zero && World.Player != null)
                 s = World.Player.Serial;

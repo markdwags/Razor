@@ -307,8 +307,20 @@ namespace Assistant
                             try
                             {
                                 MacroManager.Action(new ContextMenuAction(ent, idx, ent.ContextMenu[idx].Value));
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
+                        }
 
-                                ScriptManager.AddToScript($"menu {ent.ContextMenu[idx].Value} {idx}");
+                        if (ScriptManager.Recording)
+                        {
+                            try
+                            {
+                                ScriptManager.AddToScript(ent.Serial == World.Player.Serial
+                                    ? $"menu 'self' {idx}"
+                                    : $"menu {ent.Serial} {idx}");
                             }
                             catch
                             {
