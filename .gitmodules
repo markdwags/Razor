@@ -1,3 +1,0 @@
-[submodule "ScriptEngine/Steam"]
-	path = ScriptEngine/Steam
-	url = https://github.com/jaedan/steam-engine
