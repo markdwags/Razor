@@ -2205,8 +2205,7 @@ namespace Assistant
                 MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
 
-            if (ScriptManager.AddToScript($"waitforgump {World.Player.CurrentGumpI} 10000"))
-                args.Block = true;
+            ScriptManager.AddToScript($"waitforgump {World.Player.CurrentGumpI} 10000");
         }
 
         private static void ClientGumpResponse(PacketReader p, PacketHandlerEventArgs args)
@@ -2807,8 +2806,7 @@ namespace Assistant
                 MacroManager.Action(new WaitForGumpAction(World.Player.CurrentGumpI)))
                 args.Block = true;
 
-            if (ScriptManager.AddToScript($"waitforgump {World.Player.CurrentGumpI}"))
-                args.Block = true;
+            ScriptManager.AddToScript($"waitforgump {World.Player.CurrentGumpI}");
 
             List<string> gumpStrings = new List<string>();
 

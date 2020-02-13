@@ -730,6 +730,7 @@ namespace Assistant
             this.scriptsTab = new System.Windows.Forms.TabPage();
             this.subTabScripts = new System.Windows.Forms.TabControl();
             this.subScripts = new System.Windows.Forms.TabPage();
+            this.renameScript = new System.Windows.Forms.Button();
             this.linkScriptGuide = new System.Windows.Forms.LinkLabel();
             this.saveScript = new System.Windows.Forms.Button();
             this.deleteScript = new System.Windows.Forms.Button();
@@ -790,7 +791,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.renameScript = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -4125,6 +4125,16 @@ namespace Assistant
             this.subScripts.TabIndex = 0;
             this.subScripts.Text = "Scripts";
             // 
+            // renameScript
+            // 
+            this.renameScript.Location = new System.Drawing.Point(432, 195);
+            this.renameScript.Name = "renameScript";
+            this.renameScript.Size = new System.Drawing.Size(60, 26);
+            this.renameScript.TabIndex = 24;
+            this.renameScript.Text = "Rename";
+            this.renameScript.UseVisualStyleBackColor = true;
+            this.renameScript.Click += new System.EventHandler(this.renameScript_Click);
+            // 
             // linkScriptGuide
             // 
             this.linkScriptGuide.Location = new System.Drawing.Point(6, 254);
@@ -4809,16 +4819,6 @@ namespace Assistant
             this.aboutVer.TabIndex = 14;
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // renameScript
-            // 
-            this.renameScript.Location = new System.Drawing.Point(432, 195);
-            this.renameScript.Name = "renameScript";
-            this.renameScript.Size = new System.Drawing.Size(60, 26);
-            this.renameScript.TabIndex = 24;
-            this.renameScript.Text = "Rename";
-            this.renameScript.UseVisualStyleBackColor = true;
-            this.renameScript.Click += new System.EventHandler(this.renameScript_Click);
             // 
             // MainForm
             // 
