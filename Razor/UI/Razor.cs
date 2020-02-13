@@ -6314,7 +6314,7 @@ namespace Assistant
 
                     tabs.SelectedTab = hotkeysTab;
 
-                    TreeNode resultNode = SearchTreeView(script.Name, hotkeyTree.Nodes);
+                    TreeNode resultNode = SearchTreeView($"{Language.Format(LocString.PlayScript, script)}", hotkeyTree.Nodes);
 
                     if (resultNode != null)
                     {
