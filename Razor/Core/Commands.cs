@@ -138,7 +138,7 @@ namespace Assistant
             if (item != null)
             {
                 Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                    Language.CliLocName, "System", $"Item: '{item.Name}' '{item.ItemID.Value}'"));
+                    Language.CliLocName, "System", $"Item: '{item.DisplayName}' '{item.Serial}' ({item.ItemID.Value})"));
 
                 Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", $"Hue: '{item.Hue}'"));
