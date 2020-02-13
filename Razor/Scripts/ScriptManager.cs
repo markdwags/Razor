@@ -110,7 +110,7 @@ namespace Assistant.Scripts
         {
             foreach (RazorScript razorScript in Scripts)
             {
-                if (razorScript.Name.Equals(scriptName))
+                if (razorScript.Name.Equals(scriptName, StringComparison.OrdinalIgnoreCase))
                 {
                     PlayScript(razorScript.Lines);
                     break;
@@ -232,7 +232,7 @@ namespace Assistant.Scripts
         {
             for (int i = 0; i < Scripts.Count; i++)
             {
-                if (Scripts[i].Name.ToLower().Equals(script.ToLower()))
+                if (Scripts[i].Name.Equals(script, StringComparison.OrdinalIgnoreCase))
                     return i;
             }
 

@@ -200,7 +200,7 @@ namespace Assistant.Scripts
 
             foreach (SkillInfo skill in Skills.SkillEntries)
             {
-                if (skill.Name.ToLower().Contains(args[0].AsString()))
+                if (skill.Name.IndexOf(args[0].AsString(), StringComparison.CurrentCultureIgnoreCase) != -1)
                 {
                     return World.Player.Skills[skill.Index].Value;
                 }
@@ -216,12 +216,10 @@ namespace Assistant.Scripts
 
             if (World.Player == null)
                 return 0;
-
-            string counterName = args[0].AsString().ToLower();
-
+            
             foreach (Counter c in Counter.List)
             {
-                if (c.Name.ToLower().Equals(counterName))
+                if (c.Name.Equals(args[0].AsString(), StringComparison.OrdinalIgnoreCase))
                 {
                     return c.Enabled ? c.Amount : 0;
                 }
