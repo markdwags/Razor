@@ -2,7 +2,7 @@
 
 namespace Assistant.Scripts
 {
-    public class Aliases
+    public static class Aliases
     {
         public static void Register()
         {
