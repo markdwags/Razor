@@ -6122,6 +6122,7 @@ namespace Assistant
                 saveScript.Enabled = !enabled;
                 deleteScript.Enabled = !enabled;
                 newScript.Enabled = !enabled;
+                renameScript.Enabled = !enabled;
 
                 playScript.Text = !enabled ? "Play" : "Stop";
             });
