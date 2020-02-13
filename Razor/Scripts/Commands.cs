@@ -421,14 +421,27 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                items = World.FindItemsByName(gfxStr);
+                foreach (Item item in World.FindItemsByName(gfxStr))
+                {
+                    if (inRangeCheck)
+                    {
+                        if (Utility.InRange(World.Player.Position, item.Position, 2))
+                        {
+                            items.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        items.Add(item);
+                    }
+                }
 
                 if (items.Count == 0)
                 {
                     ScriptManager.Error($"Script Error: Couldn't find '{gfxStr}'");
                     return true;
                 }
-
+                
                 click = items[Utility.Random(items.Count)].Serial;
             }
             else // Check backpack first
