@@ -242,8 +242,6 @@
     <Compile Include="Core\ItemID.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scripts\Engine\Interpreter.cs" />
-    <Compile Include="Scripts\Engine\Lexer.cs" />
     <Compile Include="Macros\MacroVariables.cs" />
     <Compile Include="Macros\Actions.cs">
       <SubType>Component</SubType>
