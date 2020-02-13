@@ -20,6 +20,7 @@ namespace Assistant
             Command.Register("Help", Command.ListCommands);
             Command.Register("Echo", Echo);
             Command.Register("Macro", MacroCmd);
+            Command.Register("Script", ScriptCmd);
             Command.Register("Hue", GetItemHue);
             Command.Register("Item", GetItemHue);            
             Command.Register("Resync", Resync);
@@ -257,6 +258,19 @@ namespace Assistant
                     break;
                 }
             }
+        }
+
+        private static void ScriptCmd(string[] param)
+        {
+            if (param.Length <= 0)
+            {
+                World.Player.SendMessage("You must enter a script name.");
+                return;
+            }
+
+            string name = string.Join(" ", param);
+
+            ScriptManager.PlayScript(name);
         }
     }
 
