@@ -61,6 +61,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("say", Msg); //SpeechAction
             Interpreter.RegisterCommandHandler("msg", Msg); //SpeechAction
             Interpreter.RegisterCommandHandler("overhead", HeadMsg); //OverheadMessageAction
+            Interpreter.RegisterCommandHandler("headmsg", HeadMsg); //OverheadMessageAction
             Interpreter.RegisterCommandHandler("sysmsg", SysMsg); //SystemMessageAction
 
             // General Waits/Pauses
@@ -860,7 +861,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: headmsg ('text') [color] [serial]");
+                ScriptManager.Error("Usage: overhead ('text') [color] [serial]");
                 return true;
             }
 
