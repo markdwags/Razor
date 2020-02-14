@@ -3454,10 +3454,10 @@ namespace Assistant
             imgurUploads.Items.Clear();
             m_ImgurUploads.Clear();
 
-            if (!File.Exists($"{Config.GetInstallDirectory()}\\ImgurUploads.csv"))
+            if (!File.Exists(Path.Combine(Config.GetInstallDirectory(), "ImgurUploads.csv")))
                 return;
 
-            string[] lines = File.ReadAllLines($"{Config.GetInstallDirectory()}\\ImgurUploads.csv");
+            string[] lines = File.ReadAllLines(Path.Combine(Config.GetInstallDirectory(), "ImgurUploads.csv"));
 
             foreach (string line in lines)
             {
@@ -3694,7 +3694,7 @@ namespace Assistant
         {
             try
             {
-                string path = $"{Config.GetInstallDirectory()}\\ImgurUploads.csv";
+                string path = Path.Combine(Config.GetInstallDirectory(), "ImgurUploads.csv");
                 using (StreamWriter sw = File.AppendText(path))
                 {
                     sw.WriteLine($"{url},{deleteHash},{DateTime.Now}");
@@ -3712,13 +3712,13 @@ namespace Assistant
         {
             try
             {
-                if (File.Exists($"{Config.GetInstallDirectory()}\\ImgurUploads.csv"))
+                string path = Path.Combine(Config.GetInstallDirectory(), "ImgurUploads.csv");
+
+                if (File.Exists(path))
                 {
-                    File.Delete($"{Config.GetInstallDirectory()}\\ImgurUploads.csv");
+                    File.Delete(path);
                 }
-
-                string path = $"{Config.GetInstallDirectory()}\\ImgurUploads.csv";
-
+                
                 using (StreamWriter sw = File.AppendText(path))
                 {
                     foreach (ImgurUpload upload in m_ImgurUploads)
@@ -6206,8 +6206,7 @@ namespace Assistant
                 return;
 
             scriptEditor.Text =
-                File.ReadAllText(
-                    $"{Config.GetInstallDirectory()}\\Scripts\\{scriptList.SelectedItem.ToString()}.razor");
+                File.ReadAllText(Path.Combine(ScriptManager.ScriptPath, $"{scriptList.SelectedItem}.razor"));
         }
 
         private void recordScript_Click(object sender, EventArgs e)
@@ -6244,7 +6243,7 @@ namespace Assistant
                     return;
                 }
 
-                string path = $"{ScriptManager.ScriptPath}\\{name}.razor";
+                string path = Path.Combine(ScriptManager.ScriptPath, $"{name}.razor");
 
                 if (File.Exists(path))
                 {
@@ -6618,10 +6617,10 @@ namespace Assistant
                 }
 
                 ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
+                
+                string newScriptPath = Path.Combine(ScriptManager.ScriptPath, $"{name}.razor");
 
-                string newScript = $"{ScriptManager.ScriptPath}\\{name}.razor";
-
-                if (File.Exists(newScript))
+                if (File.Exists(newScriptPath))
                 {
                     MessageBox.Show(this, "A script with that name already exists.",
                         Language.GetString(LocString.Invalid),
@@ -6635,10 +6634,10 @@ namespace Assistant
                     {
                         ScriptManager.RemoveHotkey(script.Name);
 
-                        File.Move(script.Path, newScript);
+                        File.Move(script.Path, newScriptPath);
 
-                        script.Path = newScript;
-                        script.Name = Path.GetFileNameWithoutExtension(newScript);
+                        script.Path = newScriptPath;
+                        script.Name = Path.GetFileNameWithoutExtension(newScriptPath);
 
                         ScriptManager.RedrawScripts();
 

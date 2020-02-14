@@ -22,8 +22,7 @@ namespace Assistant.Core
 
         public static void CaptureMibCoordinates(string coords, bool hasXY)
         {
-            string mibLog =
-                $"{Config.GetInstallDirectory()}\\MIBCapture.csv";
+            string mibLog = Path.Combine(Config.GetInstallDirectory(), "MIBCapture.csv");
 
             if (!File.Exists(mibLog))
             {

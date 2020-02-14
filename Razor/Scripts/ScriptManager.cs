@@ -22,7 +22,7 @@ namespace Assistant.Scripts
 
         public static bool SetLastTargetActive { get; set; }
 
-        public static string ScriptPath => $"{Config.GetInstallDirectory()}\\Scripts";
+        public static string ScriptPath => Config.GetUserDirectory("Scripts");
 
         private static FastColoredTextBox ScriptEditor { get; set; }
 
