@@ -10,7 +10,9 @@ We want to make contributing to this project as easy and transparent as possible
 
 When contributing to this repository, either through a bug report or a pull request, please first discuss the change or bug via Discord or any other method with the owners of this repository.
 
-Please note we have a [code of conduct](CODE_OF_CONDUCT.md), please follow it in all your interactions with the project.
+[![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
+
+Please note we have a [code of conduct](CODE_OF_CONDUCT.md), please follow it in all your interactions with this project.
 
 ### Pull Request Process
 
