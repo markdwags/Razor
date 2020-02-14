@@ -569,6 +569,7 @@ namespace Assistant
         NewScriptVariable,
         ScriptPlaying,
         ScriptFinished,
+        StopScript,
         __End
     }
 

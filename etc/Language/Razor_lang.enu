@@ -801,3 +801,4 @@ InputBox::ok=&OK
 2098=Enter new script variable name
 2099=Playing Script...
 2100=Script finished
+2101=> Stop Current Script

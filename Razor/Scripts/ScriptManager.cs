@@ -95,6 +95,8 @@ namespace Assistant.Scripts
         /// </summary>
         public static void Initialize()
         {
+            HotKey.Add(HKCategory.Scripts, LocString.StopScript, new HotKeyCallback(HotkeyStopScript));
+
             Scripts = new List<RazorScript>();
 
             LoadScripts();
@@ -103,6 +105,11 @@ namespace Assistant.Scripts
             {
                 AddHotkey(script.Name);
             }
+        }
+
+        private static void HotkeyStopScript()
+        {
+            StopScript();
         }
 
         public static void AddHotkey(string script)
