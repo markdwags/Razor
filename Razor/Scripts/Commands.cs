@@ -7,7 +7,7 @@ using Assistant.Scripts.Engine;
 
 namespace Assistant.Scripts
 {
-    public class Commands
+    public static class Commands
     {
         public static void Register()
         {

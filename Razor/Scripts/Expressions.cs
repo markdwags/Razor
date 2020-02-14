@@ -6,13 +6,6 @@ namespace Assistant.Scripts
 {
     public static class Expressions
     {
-        private static int DummyExpression(string expression, Argument[] args, bool quiet)
-        {
-            Console.WriteLine("Executing expression {0} {1}", expression, args);
-
-            return 0;
-        }
-
         public static void Register()
         {
             // Expressions
