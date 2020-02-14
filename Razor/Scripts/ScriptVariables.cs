@@ -11,11 +11,60 @@ namespace Assistant.Scripts
         {
             public TargetInfo TargetInfo { get; set; }
             public string Name { get; set; }
+            public bool TargetWasSet { get; set; }
 
             public ScriptVariable(string targetVarName, TargetInfo t)
             {
                 TargetInfo = t;
                 Name = targetVarName;
+            }
+
+            public void SetTarget()
+            {
+                if (World.Player != null)
+                {
+                    TargetWasSet = false;
+
+                    Targeting.OneTimeTarget(OnScriptVariableTarget);
+                    World.Player.SendMessage(MsgLevel.Force, $"Select target for ${Name}");
+
+                    //OneTimeTarget(false, new Targeting.TargetResponseCallback(OnMacroVariableTarget), new Targeting.CancelTargetCallback(OnSLTCancel));
+                }
+            }
+
+            private void OnScriptVariableTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+            {
+                TargetInfo t = new TargetInfo
+                {
+                    Gfx = gfx,
+                    Serial = serial,
+                    Type = (byte)(ground ? 1 : 0),
+                    X = pt.X,
+                    Y = pt.Y,
+                    Z = pt.Z
+                };
+
+                bool foundVar = false;
+
+                foreach (ScriptVariable sV in ScriptVariableList
+                )
+                {
+                    if (sV.Name.IndexOf(Name, StringComparison.OrdinalIgnoreCase) != -1)
+                    {
+                        foundVar = true;
+                        sV.TargetInfo = t;
+
+                        World.Player.SendMessage(MsgLevel.Force, $"'{sV.Name}' script variable updated to '{t.Serial}'");
+
+                        break;
+                    }
+                }
+
+                // Save and reload the vars
+                if (foundVar)
+                    Assistant.Engine.MainWindow.SaveScriptVariables();
+
+                TargetWasSet = true;
             }
         }
 
@@ -100,6 +149,19 @@ namespace Assistant.Scripts
             }
 
             ScriptVariableList.Clear();
+        }
+
+        public static ScriptVariable GetVariable(string name)
+        {
+            foreach (ScriptVariable scriptVariable in ScriptVariableList)
+            {
+                if (scriptVariable.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    return scriptVariable;
+                }
+            }
+
+            return null;
         }
     }
 }

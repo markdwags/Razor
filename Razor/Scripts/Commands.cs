@@ -79,6 +79,8 @@ namespace Assistant.Scripts
 
             // Script related
             Interpreter.RegisterCommandHandler("script", PlayScript);
+            Interpreter.RegisterCommandHandler("setvar", SetVar);
+            Interpreter.RegisterCommandHandler("setvariable", SetVar);
         }
 
         private static bool DummyCommand(string command, Argument[] args, bool quiet, bool force)
@@ -101,6 +103,41 @@ namespace Assistant.Scripts
             if (Targeting.LTWasSet)
             {
                 ScriptManager.SetLastTargetActive = false;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool SetVar(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                ScriptManager.Error("Usage: setvar ('variable')");
+                return true;
+            }
+
+            string varname = args[0].AsString();
+
+            ScriptVariables.ScriptVariable var = ScriptVariables.GetVariable(varname);
+
+            if (var == null)
+            {
+                ScriptManager.Error($"Unknown variable '{varname}'");
+                return true;
+            }
+
+            if (!ScriptManager.SetVariableActive)
+            {
+                var.SetTarget();
+                ScriptManager.SetVariableActive = true;
+
+                return false;
+            }
+
+            if (var.TargetWasSet)
+            {
+                ScriptManager.SetVariableActive = false;
                 return true;
             }
 
