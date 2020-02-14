@@ -71,7 +71,7 @@ namespace Assistant.Scripts
 
             // Misc
             Interpreter.RegisterCommandHandler("setability", SetAbility); //SetAbilityAction
-            Interpreter.RegisterCommandHandler("setlasttarget", DummyCommand); //SetLastTargetAction
+            Interpreter.RegisterCommandHandler("setlasttarget", SetLastTarget); //SetLastTargetAction
             Interpreter.RegisterCommandHandler("lasttarget", LastTarget); //LastTargetAction
             Interpreter.RegisterCommandHandler("skill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("useskill", UseSkill); //SkillAction
@@ -86,6 +86,25 @@ namespace Assistant.Scripts
             ScriptManager.Error($"Unimplemented command: {command}");
 
             return true;
+        }
+
+        private static bool SetLastTarget(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (!ScriptManager.SetLastTargetActive)
+            {
+                Targeting.TargetSetLastTarget();
+                ScriptManager.SetLastTargetActive = true;
+
+                return false;
+            }
+
+            if (Targeting.LTWasSet)
+            {
+                ScriptManager.SetLastTargetActive = false;
+                return true;
+            }
+
+            return false;
         }
 
         private static bool Target(string command, Argument[] args, bool quiet, bool force)

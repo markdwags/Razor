@@ -20,6 +20,8 @@ namespace Assistant.Scripts
 
         public static DateTime LastWalk { get; set; }
 
+        public static bool SetLastTargetActive { get; set; }
+
         public static string ScriptPath => $"{Config.GetInstallDirectory()}\\Scripts";
 
         private static FastColoredTextBox ScriptEditor { get; set; }
@@ -121,6 +123,7 @@ namespace Assistant.Scripts
             StopScript(); // be sure nothing is running
 
             _startPause = DateTime.MaxValue; // reset wait timers
+            SetLastTargetActive = false;
 
             Script script = new Script(Lexer.Lex(lines));
             Interpreter.StartScript(script);
