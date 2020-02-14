@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -226,10 +246,11 @@ namespace Assistant.Scripts.Engine
 
             // Split the line by spaces (unless the space is in quotes)
             var lexemes = line.Split('\'', '"')
-                           .Select((element, index) => index % 2 == 0 ?
-                            element.Split(new char[0], StringSplitOptions.RemoveEmptyEntries) :
-                            new string[] { element })
-                           .SelectMany(element => element).ToArray();
+                .Select((element, index) =>
+                    index % 2 == 0
+                        ? element.Split(new char[0], StringSplitOptions.RemoveEmptyEntries)
+                        : new string[] {element})
+                .SelectMany(element => element).ToArray();
 
             if (lexemes.Length == 0)
                 return;
@@ -310,23 +331,25 @@ namespace Assistant.Scripts.Engine
 
                 // Control flow statements are special
                 case "if":
-                    {
-                        if (lexemes.Length <= 1)
-                            throw new SyntaxError(node, "Script compilation error");
+                {
+                    if (lexemes.Length <= 1)
+                        throw new SyntaxError(node, "Script compilation error");
 
-                        var t = statement.Push(ASTNodeType.IF, null);
-                        ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
-                        break;
-                    }
+                    var t = statement.Push(ASTNodeType.IF, null);
+                    ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
+                    break;
+                }
+
                 case "elseif":
-                    {
-                        if (lexemes.Length <= 1)
-                            throw new SyntaxError(node, "Script compilation error");
+                {
+                    if (lexemes.Length <= 1)
+                        throw new SyntaxError(node, "Script compilation error");
 
-                        var t = statement.Push(ASTNodeType.ELSEIF, null);
-                        ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
-                        break;
-                    }
+                    var t = statement.Push(ASTNodeType.ELSEIF, null);
+                    ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
+                    break;
+                }
+
                 case "else":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
@@ -340,14 +363,15 @@ namespace Assistant.Scripts.Engine
                     statement.Push(ASTNodeType.ENDIF, null);
                     break;
                 case "while":
-                    {
-                        if (lexemes.Length <= 1)
-                            throw new SyntaxError(node, "Script compilation error");
+                {
+                    if (lexemes.Length <= 1)
+                        throw new SyntaxError(node, "Script compilation error");
 
-                        var t = statement.Push(ASTNodeType.WHILE, null);
-                        ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
-                        break;
-                    }
+                    var t = statement.Push(ASTNodeType.WHILE, null);
+                    ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
+                    break;
+                }
+
                 case "endwhile":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
@@ -355,13 +379,14 @@ namespace Assistant.Scripts.Engine
                     statement.Push(ASTNodeType.ENDWHILE, null);
                     break;
                 case "for":
-                    {
-                        if (lexemes.Length <= 1)
-                            throw new SyntaxError(node, "Script compilation error");
+                {
+                    if (lexemes.Length <= 1)
+                        throw new SyntaxError(node, "Script compilation error");
 
-                        ParseForLoop(statement, lexemes.Slice(1, lexemes.Length - 1));
-                        break;
-                    }
+                    ParseForLoop(statement, lexemes.Slice(1, lexemes.Length - 1));
+                    break;
+                }
+
                 case "endfor":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
@@ -401,9 +426,9 @@ namespace Assistant.Scripts.Engine
                     {
                         ParseValue(statement, lexeme);
                     }
+
                     break;
             }
-
         }
 
         private static bool IsOperator(string lexeme)
@@ -445,7 +470,6 @@ namespace Assistant.Scripts.Engine
                     ParseExpression(expr, lexemes.Slice(start, i - 1));
                     start = i + 1;
                     expr.Push(lexemes[i] == "and" ? ASTNodeType.AND : ASTNodeType.OR, null);
-
                 }
             }
 
@@ -454,7 +478,6 @@ namespace Assistant.Scripts.Engine
 
         private static void ParseExpression(ASTNode node, string[] lexemes)
         {
-
             // The steam language supports both unary and
             // binary expressions. First determine what type
             // we have here.
@@ -577,7 +600,6 @@ namespace Assistant.Scripts.Engine
                 var loop = statement.Push(ASTNodeType.FOR, null);
 
                 ParseValue(loop, lexemes[0]);
-
             }
             else
             {

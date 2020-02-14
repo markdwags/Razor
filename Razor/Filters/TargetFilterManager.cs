@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -60,7 +80,8 @@ namespace Assistant.Filters
             {
                 if (FriendsManager.IsFriend(serial))
                 {
-                    World.Player.SendMessage(MsgLevel.Warning, $"'{name}' ({serial}) is a friend, not adding to target filter list");
+                    World.Player.SendMessage(MsgLevel.Warning,
+                        $"'{name}' ({serial}) is a friend, not adding to target filter list");
                     return;
                 }
 
@@ -86,7 +107,8 @@ namespace Assistant.Filters
 
             foreach (Mobile mobile in mobiles)
             {
-                if (!FriendsManager.IsFriend(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial)
+                if (!FriendsManager.IsFriend(mobile.Serial) && mobile.Serial.IsMobile &&
+                    mobile.Serial != World.Player.Serial)
                 {
                     AddTargetFilter(mobile.Name, mobile.Serial);
                     /*if (AddTargetFilter(mobile.Name, mobile.Serial))
@@ -104,7 +126,8 @@ namespace Assistant.Filters
 
             foreach (Mobile mobile in mobiles)
             {
-                if (!FriendsManager.IsFriend(mobile.Serial) && mobile.Serial.IsMobile && mobile.Serial != World.Player.Serial &&
+                if (!FriendsManager.IsFriend(mobile.Serial) && mobile.Serial.IsMobile &&
+                    mobile.Serial != World.Player.Serial &&
                     mobile.IsHuman)
                 {
                     AddTargetFilter(mobile.Name, mobile.Serial);
@@ -121,7 +144,7 @@ namespace Assistant.Filters
         {
             if (!Config.GetBool("TargetFilterEnabled"))
                 return false;
-            
+
             foreach (var filter in TargetFilters)
             {
                 if (filter.Serial == serial)

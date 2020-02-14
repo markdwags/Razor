@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -186,7 +206,6 @@ namespace Assistant.Scripts
                     Z = args[2].AsInt(),
                     Gfx = 0
                 });
-
             }
 
             return true;
@@ -266,7 +285,8 @@ namespace Assistant.Scripts
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, gfx.IsMobile ? $"Character [{gfx}]" : ((ItemID) gfx.Value).ToString());
+                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType,
+                    gfx.IsMobile ? $"Character [{gfx}]" : ((ItemID) gfx.Value).ToString());
             }
 
             return true;
@@ -354,7 +374,7 @@ namespace Assistant.Scripts
             }
 
             return ((World.Player.HasGump || World.Player.HasCompressedGump) &&
-                     (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0));
+                    (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0));
         }
 
         private static bool WaitForMenu(string command, Argument[] args, bool quiet, bool force)
@@ -459,7 +479,8 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: dclicktype|usetype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
+                ScriptManager.Error(
+                    "Usage: dclicktype|usetype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
                 return true;
             }
 
@@ -498,7 +519,7 @@ namespace Assistant.Scripts
                     ScriptManager.Error($"Script Error: Couldn't find '{gfxStr}'");
                     return true;
                 }
-                
+
                 click = items[Utility.Random(items.Count)].Serial;
             }
             else // Check backpack first
@@ -605,12 +626,12 @@ namespace Assistant.Scripts
                 ScriptManager.Error("useobject - invalid serial");
                 return true;
             }
-            
+
             PlayerData.DoubleClick(serial);
 
             return true;
         }
-        
+
         private static bool DropItem(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 2)
@@ -631,7 +652,7 @@ namespace Assistant.Scripts
                 case 2: // dropping on a layer
                     layer = (Layer) Enum.Parse(typeof(Layer), args[1].AsString(), true);
                     break;
-                
+
                 default: // dropping at x/y/z
                     to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0),
                         Utility.ToInt32(args[3].AsString(), 0));
@@ -672,8 +693,8 @@ namespace Assistant.Scripts
 
             if (DragDropManager.Holding != null)
                 DragDropManager.Drop(DragDropManager.Holding, null,
-                    new Point3D((ushort)(World.Player.Position.X + x),
-                        (ushort)(World.Player.Position.Y + y), World.Player.Position.Z));
+                    new Point3D((ushort) (World.Player.Position.X + x),
+                        (ushort) (World.Player.Position.Y + y), World.Player.Position.Z));
             else
                 World.Player.SendMessage(LocString.MacroNoHold);
 
@@ -750,7 +771,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, (ItemID)gfx);
+                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, (ItemID) gfx);
             }
 
             return true;
@@ -771,7 +792,7 @@ namespace Assistant.Scripts
 
             ScriptManager.LastWalk = DateTime.UtcNow;
 
-            Direction dir = (Direction)Enum.Parse(typeof(Direction), args[0].AsString(), true);
+            Direction dir = (Direction) Enum.Parse(typeof(Direction), args[0].AsString(), true);
             Client.Instance.RequestMove(dir);
 
             return true;
@@ -882,7 +903,7 @@ namespace Assistant.Scripts
                 ScriptManager.Error("Usage: msg ('text') [color]");
                 return true;
             }
-            
+
             if (args.Length == 1)
                 World.Player.Say(Config.GetInt("SysColor"), args[0].AsString());
             else
@@ -899,7 +920,9 @@ namespace Assistant.Scripts
                 return true;
             }
 
-            Spell spell = int.TryParse(args[0].AsString(), out int spellnum) ? Spell.Get(spellnum) : Spell.GetByName(args[0].AsString());
+            Spell spell = int.TryParse(args[0].AsString(), out int spellnum)
+                ? Spell.Get(spellnum)
+                : Spell.GetByName(args[0].AsString());
 
             if (spell != null)
             {
@@ -950,7 +973,7 @@ namespace Assistant.Scripts
                 ScriptManager.Error("Usage: sysmsg ('text') [color]");
                 return true;
             }
-            
+
             if (args.Length == 1)
                 World.Player.SendMessage(Config.GetInt("SysColor"), args[0].AsString());
             else if (args.Length == 2)
@@ -1002,7 +1025,7 @@ namespace Assistant.Scripts
 
             return true;
         }
-        
+
         public static bool GumpResponse(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
@@ -1023,7 +1046,8 @@ namespace Assistant.Scripts
             //Assistant.Macros.GumpResponseAction|501|0|2|1&box2|0&box1
 
             Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
-            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, buttonId, new int[] {}, new GumpTextEntry[] { }));
+            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI,
+                buttonId, new int[] { }, new GumpTextEntry[] { }));
 
             World.Player.HasGump = false;
             World.Player.HasCompressedGump = false;
@@ -1034,13 +1058,15 @@ namespace Assistant.Scripts
         public static bool GumpClose(string command, Argument[] args, bool quiet, bool force)
         {
             Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
-            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, 0, new int[] { }, new GumpTextEntry[] { }));
+            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, 0,
+                new int[] { }, new GumpTextEntry[] { }));
 
             World.Player.HasGump = false;
             World.Player.HasCompressedGump = false;
 
             return true;
         }
+
         public static bool ContextMenu(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 2)
@@ -1059,7 +1085,7 @@ namespace Assistant.Scripts
             Client.Instance.SendToServer(new ContextMenuResponse(s, index));
             return true;
         }
-        
+
         public static bool MenuResponse(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 2)
@@ -1092,12 +1118,12 @@ namespace Assistant.Scripts
             World.Player.ResponsePrompt(args[0].AsString());
             return true;
         }
-        
+
         public static bool LastTarget(string command, Argument[] args, bool quiet, bool force)
         {
             if (!Targeting.DoLastTarget())
                 Targeting.ResendTarget();
-            
+
             return true;
         }
 

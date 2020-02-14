@@ -1,3 +1,23 @@
+#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
 using System;
 using System.Text;
 using System.Collections;
@@ -22,7 +42,7 @@ namespace Assistant
             Command.Register("Macro", MacroCmd);
             Command.Register("Script", ScriptCmd);
             Command.Register("Hue", GetItemHue);
-            Command.Register("Item", GetItemHue);            
+            Command.Register("Item", GetItemHue);
             Command.Register("Resync", Resync);
             Command.Register("Mobile", GetMobile);
             Command.Register("Weather", SetWeather);
@@ -76,14 +96,14 @@ namespace Assistant
             {
                 Gfx = gfx,
                 Serial = serial,
-                Type = (byte)(ground ? 1 : 0),
+                Type = (byte) (ground ? 1 : 0),
                 X = pt.X,
                 Y = pt.Y,
                 Z = pt.Z
             };
 
             bool foundVar = false;
-            
+
             foreach (MacroVariables.MacroVariable mV in MacroVariables.MacroVariableList
             )
             {
@@ -102,7 +122,8 @@ namespace Assistant
             if (!foundVar)
             {
                 MacroVariables.MacroVariableList.Add(new MacroVariables.MacroVariable(_lastMacroVariable, t));
-                World.Player.SendMessage(MsgLevel.Force, $"'{_lastMacroVariable}' not found, created variable and set to '{t.Serial}'");
+                World.Player.SendMessage(MsgLevel.Force,
+                    $"'{_lastMacroVariable}' not found, created variable and set to '{t.Serial}'");
             }
 
             // Save and reload the macros and vars
@@ -138,7 +159,8 @@ namespace Assistant
             if (item != null)
             {
                 Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                    Language.CliLocName, "System", $"Item: '{item.DisplayName}' '{item.Serial}' ({item.ItemID.Value})"));
+                    Language.CliLocName, "System",
+                    $"Item: '{item.DisplayName}' '{item.Serial}' ({item.ItemID.Value})"));
 
                 Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", $"Hue: '{item.Hue}'"));

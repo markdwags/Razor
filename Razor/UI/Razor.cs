@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
+using System;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
@@ -2321,7 +2341,7 @@ namespace Assistant
             if (scriptList.SelectedItem == null || !(scriptList.SelectedItem is ScriptManager.RazorScript))
                 return null;
             else
-                return (ScriptManager.RazorScript)scriptList.SelectedItem;
+                return (ScriptManager.RazorScript) scriptList.SelectedItem;
         }
 
         public void playMacro_Click(object sender, System.EventArgs e)
@@ -3718,7 +3738,7 @@ namespace Assistant
                 {
                     File.Delete(path);
                 }
-                
+
                 using (StreamWriter sw = File.AppendText(path))
                 {
                     foreach (ImgurUpload upload in m_ImgurUploads)
@@ -5993,6 +6013,7 @@ namespace Assistant
         {
             MacroManager.DisplayMacroVariables(macroVariables);
         }
+
         public void SaveScriptVariables()
         {
             ScriptManager.DisplayScriptVariables(scriptVariables);
@@ -6112,6 +6133,7 @@ namespace Assistant
             // We want to play the contents of the script editor
             ScriptManager.PlayScript(scriptEditor.Lines.ToArray());
         }
+
         public void LockScriptUI(bool enabled)
         {
             Engine.MainWindow.SafeAction(s =>
@@ -6174,12 +6196,12 @@ namespace Assistant
                     Name = Path.GetFileNameWithoutExtension(filePath),
                     Path = filePath
                 };
-                
+
                 ScriptManager.RedrawScripts();
 
                 for (int i = 0; i < scriptList.Items.Count; i++)
                 {
-                    ScriptManager.RazorScript scriptItem = (ScriptManager.RazorScript)scriptList.Items[i];
+                    ScriptManager.RazorScript scriptItem = (ScriptManager.RazorScript) scriptList.Items[i];
                     if (scriptItem.Name.Equals(script.Name))
                     {
                         scriptList.SelectedIndex = i;
@@ -6191,7 +6213,7 @@ namespace Assistant
             {
                 int curIndex = scriptList.SelectedIndex;
 
-                ScriptManager.RazorScript script = (ScriptManager.RazorScript)scriptList.SelectedItem;
+                ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
                 File.WriteAllText(script.Path, scriptEditor.Text);
 
                 ScriptManager.RedrawScripts();
@@ -6286,7 +6308,7 @@ namespace Assistant
             if (scriptList.SelectedIndex < 0)
                 return;
 
-            ScriptManager.RazorScript script = (ScriptManager.RazorScript)scriptList.SelectedItem;
+            ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
 
             if (MessageBox.Show(this, Language.Format(LocString.DelConf, $"{scriptList.SelectedItem}"),
                     "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -6315,11 +6337,12 @@ namespace Assistant
 
                     tabs.SelectedTab = hotkeysTab;
 
-                    TreeNode resultNode = SearchTreeView($"{Language.Format(LocString.PlayScript, script)}", hotkeyTree.Nodes);
+                    TreeNode resultNode = SearchTreeView($"{Language.Format(LocString.PlayScript, script)}",
+                        hotkeyTree.Nodes);
 
                     if (resultNode != null)
                     {
-                        KeyData hk = (KeyData)resultNode.Tag;
+                        KeyData hk = (KeyData) resultNode.Tag;
 
                         hotkeyTree.SelectedNode = resultNode;
                         key.Focus();
@@ -6338,7 +6361,7 @@ namespace Assistant
                 return;
 
             Targeting.OneTimeTarget(OnScriptVariableAddTarget);
-           
+
             World.Player.SendMessage(MsgLevel.Force, LocString.SelTargAct);
         }
 
@@ -6348,7 +6371,7 @@ namespace Assistant
             {
                 Gfx = gfx,
                 Serial = serial,
-                Type = (byte)(ground ? 1 : 0),
+                Type = (byte) (ground ? 1 : 0),
                 X = pt.X,
                 Y = pt.Y,
                 Z = pt.Z
@@ -6387,7 +6410,7 @@ namespace Assistant
             {
                 Gfx = gfx,
                 Serial = serial,
-                Type = (byte)(ground ? 1 : 0),
+                Type = (byte) (ground ? 1 : 0),
                 X = pt.X,
                 Y = pt.Y,
                 Z = pt.Z
@@ -6463,6 +6486,7 @@ namespace Assistant
                     return;
             }*/
         }
+
         private void scriptEditor_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
@@ -6494,7 +6518,6 @@ namespace Assistant
                                 menu.MenuItems.Add("Convert to 'dclicktype' by gfxid", OnScriptDclickTypeId);
                                 menu.MenuItems.Add("Convert to 'dclicktype' by name", OnScriptDclickTypeName);
                             }
-
                         }
                     }
 
@@ -6510,7 +6533,7 @@ namespace Assistant
 
         private void OnScriptComment(object sender, System.EventArgs e)
         {
-            string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            string[] lines = scriptEditor.SelectedText.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None);
 
             scriptEditor.SelectedText = "";
             for (int i = 0; i < lines.Count(); i++)
@@ -6520,9 +6543,10 @@ namespace Assistant
                     scriptEditor.SelectedText += "\r\n";
             }
         }
+
         private void OnScriptUncomment(object sender, System.EventArgs e)
         {
-            string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            string[] lines = scriptEditor.SelectedText.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None);
 
             scriptEditor.SelectedText = "";
             for (int i = 0; i < lines.Count(); i++)
@@ -6577,7 +6601,7 @@ namespace Assistant
             scriptEditor.SelectedText = "";
             scriptEditor.SelectedText = $"dclicktype '{item.DisplayName}'";
         }
-        
+
         private void OnScriptPlaySelected(object sender, System.EventArgs e)
         {
             if (ScriptManager.Running)
@@ -6589,7 +6613,7 @@ namespace Assistant
             if (string.IsNullOrEmpty(scriptEditor.SelectedText))
                 return;
 
-            string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            string[] lines = scriptEditor.SelectedText.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None);
 
             ScriptManager.PlayScript(lines);
         }
@@ -6617,7 +6641,7 @@ namespace Assistant
                 }
 
                 ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
-                
+
                 string newScriptPath = Path.Combine(ScriptManager.ScriptPath, $"{name}.razor");
 
                 if (File.Exists(newScriptPath))

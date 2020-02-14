@@ -1,3 +1,23 @@
+#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -237,9 +257,9 @@ namespace Assistant
             {
                 Item item = null;
                 if (Items[i] is Serial)
-                    item = World.FindItem((Serial)Items[i]);
+                    item = World.FindItem((Serial) Items[i]);
                 else if (Items[i] is ItemID)
-                    item = World.Player.FindItemByID((ItemID)Items[i]);
+                    item = World.Player.FindItemByID((ItemID) Items[i]);
 
                 if (item == null)
                     total--;
@@ -297,9 +317,9 @@ namespace Assistant
             {
                 Item item = null;
                 if (Items[i] is Serial)
-                    item = World.FindItem((Serial)Items[i]);
+                    item = World.FindItem((Serial) Items[i]);
                 else if (Items[i] is ItemID)
-                    item = World.Player.FindItemByID((ItemID)Items[i]);
+                    item = World.Player.FindItemByID((ItemID) Items[i]);
 
                 if (item == null || DragDropManager.CancelDragFor(item.Serial) || item.Container != World.Player)
                 {
@@ -349,7 +369,7 @@ namespace Assistant
                 Item item = null;
                 if (Items[i] is Serial)
                 {
-                    item = World.FindItem((Serial)Items[i]);
+                    item = World.FindItem((Serial) Items[i]);
                     if (item == null)
                         gone++;
                     else
@@ -357,7 +377,7 @@ namespace Assistant
                 }
                 else if (Items[i] is ItemID)
                 {
-                    ItemID id = (ItemID)Items[i];
+                    ItemID id = (ItemID) Items[i];
 
                     // search to make sure they are not already wearing this...
                     item = World.Player.FindItemByID(id);

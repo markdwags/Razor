@@ -1,3 +1,23 @@
+#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
 using System;
 using System.CodeDom;
 using System.IO;
@@ -257,7 +277,7 @@ namespace Assistant
                     MacroManager.Action(new DoubleClickAction(ser, gfx));
 
                     ScriptManager.AddToScript($"dclick {ser}");
-                }   
+                }
             }
         }
 
@@ -1484,7 +1504,7 @@ namespace Assistant
 
             Serial serial = p.ReadUInt32();
             ushort body = p.ReadUInt16();
-           
+
             Mobile m = World.FindMobile(serial);
 
             if (m == null)
@@ -2280,6 +2300,7 @@ namespace Assistant
                         World.Player.HasGump = false;
                         World.Player.HasCompressedGump = false;
                     }
+
                     break;
                 }
 
@@ -3147,7 +3168,8 @@ namespace Assistant
 
             if (Config.GetBool("ShowPlayingSoundInfo"))
             {
-                World.Player.SendMessage(MsgLevel.Info, $"Playing Sound: '{SoundMusicManager.GetSoundName(sound)}' (0x{sound:X})");
+                World.Player.SendMessage(MsgLevel.Info,
+                    $"Playing Sound: '{SoundMusicManager.GetSoundName(sound)}' (0x{sound:X})");
             }
         }
 
@@ -3161,7 +3183,8 @@ namespace Assistant
 
             ushort musicId = p.ReadUInt16();
 
-            World.Player.SendMessage($"Playing Music: '{SoundMusicManager.GetMusicName(musicId, out bool loop)}' (id: '{musicId}' loop: '{loop}')");
+            World.Player.SendMessage(
+                $"Playing Music: '{SoundMusicManager.GetMusicName(musicId, out bool loop)}' (id: '{musicId}' loop: '{loop}')");
         }
     }
 }

@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -87,7 +107,8 @@ namespace Assistant.Scripts
 
         public static void AddHotkey(string script)
         {
-            HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayScript, script), HotkeyCallback, script);
+            HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayScript, script), HotkeyCallback,
+                script);
         }
 
         public static void RemoveHotkey(string script)
@@ -119,7 +140,8 @@ namespace Assistant.Scripts
 
         public static void PlayScript(string[] lines)
         {
-            if (World.Player == null || ScriptEditor == null || lines == null || MacroManager.Playing || MacroManager.StepThrough)
+            if (World.Player == null || ScriptEditor == null || lines == null || MacroManager.Playing ||
+                MacroManager.StepThrough)
                 return;
 
             StopScript(); // be sure nothing is running
@@ -200,7 +222,6 @@ namespace Assistant.Scripts
 
         public static void DisplayScriptVariables(ListBox list)
         {
-
             list.SafeAction(s =>
             {
                 s.BeginUpdate();
@@ -253,6 +274,7 @@ namespace Assistant.Scripts
                 args.Add(node);
                 node = node.Next();
             }
+
             return args;
         }
 
@@ -298,7 +320,8 @@ namespace Assistant.Scripts
                 "waitfortarget", "wft", "dclick", "dclicktype", "dclickvar", "usetype", "useobject", "droprelloc",
                 "lift", "lifttype", "waitforgump", "gumpresponse", "gumpclose", "menu", "menuresponse", "waitformenu",
                 "promptresponse", "waitforprompt", "hotkey", "say", "msg", "overhead", "sysmsg", "wait", "pause",
-                "waitforstat", "setability", "setlasttarget", "lasttarget", "setvar", "skill", "useskill", "walk", "script"
+                "waitforstat", "setability", "setlasttarget", "lasttarget", "setvar", "skill", "useskill", "walk",
+                "script"
             };
 
             #endregion
@@ -546,7 +569,7 @@ namespace Assistant.Scripts
 
         private static TimeSpan _pauseDuration;
         private static DateTime _startPause = DateTime.MaxValue;
-        
+
         /// <summary>
         /// Manage the state of pauses in the script engine 
         /// </summary>

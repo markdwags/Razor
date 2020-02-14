@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
+using System;
 using Assistant.Scripts.Engine;
 using Ultima;
 
@@ -157,6 +177,7 @@ namespace Assistant.Scripts
                 ? 1
                 : 0;
         }
+
         private static double Dead(string expression, Argument[] args, bool quiet)
         {
             return World.Player != null && World.Player.IsGhost
@@ -286,7 +307,7 @@ namespace Assistant.Scripts
 
             return 0;
         }
-        
+
         private static double CountExpression(string expression, Argument[] args, bool quiet)
         {
             if (args.Length < 1)
@@ -294,7 +315,7 @@ namespace Assistant.Scripts
 
             if (World.Player == null)
                 return 0;
-            
+
             foreach (Counter c in Counter.List)
             {
                 if (c.Name.Equals(args[0].AsString(), StringComparison.OrdinalIgnoreCase))

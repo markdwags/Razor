@@ -1,3 +1,23 @@
+#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
 using System;
 using System.Windows.Forms;
 using Assistant.Macros;
@@ -125,16 +145,18 @@ namespace Assistant
             // varList
             // 
             this.varList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.varList.Items.AddRange(new object[] {
-            "Hits",
-            "Mana",
-            "Stamina",
-            "Poisoned",
-            "SysMessage",
-            "Weight",
-            "Mounted",
-            "R Hand Empty",
-            "L Hand Empty"});
+            this.varList.Items.AddRange(new object[]
+            {
+                "Hits",
+                "Mana",
+                "Stamina",
+                "Poisoned",
+                "SysMessage",
+                "Weight",
+                "Mounted",
+                "R Hand Empty",
+                "L Hand Empty"
+            });
             this.varList.Location = new System.Drawing.Point(58, 9);
             this.varList.Name = "varList";
             this.varList.Size = new System.Drawing.Size(143, 23);
@@ -154,11 +176,13 @@ namespace Assistant
             // opList
             // 
             this.opList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.opList.Items.AddRange(new object[] {
-            "<=",
-            ">=",
-            "<",
-            ">"});
+            this.opList.Items.AddRange(new object[]
+            {
+                "<=",
+                ">=",
+                "<",
+                ">"
+            });
             this.opList.Location = new System.Drawing.Point(207, 9);
             this.opList.Name = "opList";
             this.opList.Size = new System.Drawing.Size(53, 23);
@@ -166,7 +190,8 @@ namespace Assistant
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.label1.Location = new System.Drawing.Point(8, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 20);
@@ -177,10 +202,12 @@ namespace Assistant
             // 
             this.whileVariables.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.whileVariables.FormattingEnabled = true;
-            this.whileVariables.Items.AddRange(new object[] {
-            "{maxhp}",
-            "{maxstam}",
-            "{maxmana}"});
+            this.whileVariables.Items.AddRange(new object[]
+            {
+                "{maxhp}",
+                "{maxstam}",
+                "{maxmana}"
+            });
             this.whileVariables.Location = new System.Drawing.Point(281, 44);
             this.whileVariables.Name = "whileVariables";
             this.whileVariables.Size = new System.Drawing.Size(104, 23);
@@ -199,7 +226,8 @@ namespace Assistant
             this.Controls.Add(this.varList);
             this.Controls.Add(this.txtAmount);
             this.Controls.Add(this.insert);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MacroInsertWhile";
             this.ShowInTaskbar = false;
@@ -208,7 +236,6 @@ namespace Assistant
             this.Load += new System.EventHandler(this.MacroInsertWhile_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -225,7 +252,7 @@ namespace Assistant
 
             try
             {
-                if (varList.SelectedIndex == (int)WhileAction.WhileVarType.SysMessage)
+                if (varList.SelectedIndex == (int) WhileAction.WhileVarType.SysMessage)
                 {
                     a = new WhileAction((WhileAction.WhileVarType) varList.SelectedIndex, txtAmount.Text);
                 }
@@ -243,9 +270,10 @@ namespace Assistant
                     }
 
                     if (skillId != -1)
-                        a = new WhileAction(WhileAction.WhileVarType.Skill, (sbyte)opList.SelectedIndex, Utility.ToDouble(txtAmount.Text, 0.0), skillId);
+                        a = new WhileAction(WhileAction.WhileVarType.Skill, (sbyte) opList.SelectedIndex,
+                            Utility.ToDouble(txtAmount.Text, 0.0), skillId);
                 }
-                else if (varList.SelectedIndex >= (int)WhileAction.WhileVarType.BeginCountersMarker)
+                else if (varList.SelectedIndex >= (int) WhileAction.WhileVarType.BeginCountersMarker)
                 {
                     a = new WhileAction(WhileAction.WhileVarType.Counter, (sbyte) opList.SelectedIndex,
                         Utility.ToInt32(txtAmount.Text, 0), varList.SelectedItem as string);
@@ -253,9 +281,11 @@ namespace Assistant
                 else
                 {
                     a = txtAmount.Text.Contains("{") // using an if variable
-                        ? new WhileAction((WhileAction.WhileVarType) varList.SelectedIndex, (sbyte) opList.SelectedIndex,
+                        ? new WhileAction((WhileAction.WhileVarType) varList.SelectedIndex,
+                            (sbyte) opList.SelectedIndex,
                             txtAmount.Text)
-                        : new WhileAction((WhileAction.WhileVarType) varList.SelectedIndex, (sbyte) opList.SelectedIndex,
+                        : new WhileAction((WhileAction.WhileVarType) varList.SelectedIndex,
+                            (sbyte) opList.SelectedIndex,
                             Utility.ToInt32(txtAmount.Text, 0));
                 }
             }
@@ -298,7 +328,7 @@ namespace Assistant
                 {
                     if (varList.SelectedIndex != 3 && (varList.SelectedIndex <= 5 ||
                                                        varList.SelectedIndex >=
-                                                       (int)WhileAction.WhileVarType.BeginCountersMarker))
+                                                       (int) WhileAction.WhileVarType.BeginCountersMarker))
                         txtAmount.Text = ((WhileAction) m_Action).Value.ToString();
                 }
                 catch
@@ -315,11 +345,11 @@ namespace Assistant
                     {
                     }
 
-                if (((WhileAction)m_Action).SkillId != -1 &&
-                    ((WhileAction)m_Action).Variable == WhileAction.WhileVarType.Skill)
+                if (((WhileAction) m_Action).SkillId != -1 &&
+                    ((WhileAction) m_Action).Variable == WhileAction.WhileVarType.Skill)
                     try
                     {
-                        varList.SelectedItem = Language.Skill2Str(((WhileAction)m_Action).SkillId);
+                        varList.SelectedItem = Language.Skill2Str(((WhileAction) m_Action).SkillId);
                     }
                     catch
                     {
@@ -335,7 +365,7 @@ namespace Assistant
                                  varList.SelectedIndex >= (int) WhileAction.WhileVarType.BeginCountersMarker;
                 txtAmount.Visible = varList.SelectedIndex != 3 &&
                                     (varList.SelectedIndex <= 5 || varList.SelectedIndex >=
-                                     (int)WhileAction.WhileVarType.BeginCountersMarker);
+                                     (int) WhileAction.WhileVarType.BeginCountersMarker);
             }
             catch
             {

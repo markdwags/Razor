@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
@@ -295,79 +315,80 @@ namespace Assistant.Scripts.Engine
             switch (node.Type)
             {
                 case ASTNodeType.IF:
+                {
+                    PushScope(node);
+
+                    var expr = node.FirstChild();
+                    var result = EvaluateExpression(ref expr);
+
+                    // Advance to next statement
+                    _statement = _statement.Next();
+
+                    // Evaluated true. Jump right into execution.
+                    if (result)
+                        break;
+
+                    // The expression evaluated false, so keep advancing until
+                    // we hit an elseif, else, or, endif statement that matches
+                    // and try again.
+                    depth = 0;
+
+                    while (_statement != null)
                     {
-                        PushScope(node);
+                        node = _statement.FirstChild();
 
-                        var expr = node.FirstChild();
-                        var result = EvaluateExpression(ref expr);
-
-                        // Advance to next statement
-                        _statement = _statement.Next();
-
-                        // Evaluated true. Jump right into execution.
-                        if (result)
-                            break;
-
-                        // The expression evaluated false, so keep advancing until
-                        // we hit an elseif, else, or, endif statement that matches
-                        // and try again.
-                        depth = 0;
-
-                        while (_statement != null)
+                        if (node.Type == ASTNodeType.IF)
                         {
-                            node = _statement.FirstChild();
-
-                            if (node.Type == ASTNodeType.IF)
+                            depth++;
+                        }
+                        else if (node.Type == ASTNodeType.ELSEIF)
+                        {
+                            if (depth > 0)
                             {
-                                depth++;
+                                continue;
                             }
-                            else if (node.Type == ASTNodeType.ELSEIF)
+
+                            expr = node.FirstChild();
+                            result = EvaluateExpression(ref expr);
+
+                            // Evaluated true. Jump right into execution
+                            if (result)
                             {
-                                if (depth > 0)
-                                {
-                                    continue;
-                                }
-
-                                expr = node.FirstChild();
-                                result = EvaluateExpression(ref expr);
-
-                                // Evaluated true. Jump right into execution
-                                if (result)
-                                {
-                                    _statement = _statement.Next();
-                                    break;
-                                }
-                            }
-                            else if (node.Type == ASTNodeType.ELSE)
-                            {
-                                if (depth > 0)
-                                {
-                                    continue;
-                                }
-
-                                // Jump into the else clause
                                 _statement = _statement.Next();
                                 break;
                             }
-                            else if (node.Type == ASTNodeType.ENDIF)
+                        }
+                        else if (node.Type == ASTNodeType.ELSE)
+                        {
+                            if (depth > 0)
                             {
-                                if (depth > 0)
-                                {
-                                    depth--;
-                                    continue;
-                                }
-
-                                break;
+                                continue;
                             }
 
+                            // Jump into the else clause
                             _statement = _statement.Next();
+                            break;
+                        }
+                        else if (node.Type == ASTNodeType.ENDIF)
+                        {
+                            if (depth > 0)
+                            {
+                                depth--;
+                                continue;
+                            }
+
+                            break;
                         }
 
-                        if (_statement == null)
-                            throw new RunTimeError(node, "If with no matching endif");
-
-                        break;
+                        _statement = _statement.Next();
                     }
+
+                    if (_statement == null)
+                        throw new RunTimeError(node, "If with no matching endif");
+
+                    break;
+                }
+
                 case ASTNodeType.ELSEIF:
                     // If we hit the elseif statement during normal advancing, skip over it. The only way
                     // to execute an elseif clause is to jump directly in from an if statement.
@@ -429,47 +450,49 @@ namespace Assistant.Scripts.Engine
 
                     break;
                 case ASTNodeType.WHILE:
+                {
+                    PushScope(node);
+
+                    var expr = node.FirstChild();
+                    var result = EvaluateExpression(ref expr);
+
+                    // Advance to next statement
+                    _statement = _statement.Next();
+
+                    // The expression evaluated false, so keep advancing until
+                    // we hit an endwhile statement.
+                    if (!result)
                     {
-                        PushScope(node);
+                        depth = 0;
 
-                        var expr = node.FirstChild();
-                        var result = EvaluateExpression(ref expr);
-
-                        // Advance to next statement
-                        _statement = _statement.Next();
-
-                        // The expression evaluated false, so keep advancing until
-                        // we hit an endwhile statement.
-                        if (!result)
+                        while (_statement != null)
                         {
-                            depth = 0;
+                            node = _statement.FirstChild();
 
-                            while (_statement != null)
+                            if (node.Type == ASTNodeType.WHILE)
                             {
-                                node = _statement.FirstChild();
-
-                                if (node.Type == ASTNodeType.WHILE)
-                                {
-                                    depth++;
-                                }
-                                else if (node.Type == ASTNodeType.ENDWHILE)
-                                {
-                                    if (depth == 0)
-                                    {
-                                        PopScope();
-                                        // Go one past the endwhile so the loop doesn't repeat
-                                        _statement = _statement.Next();
-                                        break;
-                                    }
-
-                                    depth--;
-                                }
-
-                                _statement = _statement.Next();
+                                depth++;
                             }
+                            else if (node.Type == ASTNodeType.ENDWHILE)
+                            {
+                                if (depth == 0)
+                                {
+                                    PopScope();
+                                    // Go one past the endwhile so the loop doesn't repeat
+                                    _statement = _statement.Next();
+                                    break;
+                                }
+
+                                depth--;
+                            }
+
+                            _statement = _statement.Next();
                         }
-                        break;
                     }
+
+                    break;
+                }
+
                 case ASTNodeType.ENDWHILE:
                     // Walk backward to the while statement
                     _statement = _statement.Prev();
@@ -502,83 +525,83 @@ namespace Assistant.Scripts.Engine
 
                     break;
                 case ASTNodeType.FOR:
+                {
+                    // The iterator variable's name is the hash code of the for loop's ASTNode.
+                    var iterName = node.GetHashCode().ToString();
+
+                    // When we first enter the loop, push a new scope
+                    if (_scope.StartNode != node)
                     {
-                        // The iterator variable's name is the hash code of the for loop's ASTNode.
-                        var iterName = node.GetHashCode().ToString();
+                        PushScope(node);
 
-                        // When we first enter the loop, push a new scope
-                        if (_scope.StartNode != node)
+                        // Grab the arguments
+                        var max = node.FirstChild();
+
+                        if (max.Type != ASTNodeType.INTEGER)
+                            throw new RunTimeError(max, "Invalid for loop syntax");
+
+                        // Create a dummy argument that acts as our loop variable
+                        var iter = new ASTNode(ASTNodeType.INTEGER, "0", node);
+
+                        _scope.SetVar(iterName, new Argument(this, iter));
+                    }
+                    else
+                    {
+                        // Increment the iterator argument
+                        var arg = _scope.GetVar(iterName);
+
+                        var iter = new ASTNode(ASTNodeType.INTEGER, (arg.AsUInt() + 1).ToString(), node);
+
+                        _scope.SetVar(iterName, new Argument(this, iter));
+                    }
+
+                    // Check loop condition
+                    var i = _scope.GetVar(iterName);
+
+                    // Grab the max value to iterate to
+                    node = node.FirstChild();
+                    var end = new Argument(this, node);
+
+                    if (i.AsUInt() < end.AsUInt())
+                    {
+                        // enter the loop
+                        _statement = _statement.Next();
+                    }
+                    else
+                    {
+                        // Walk until the end of the loop
+                        _statement = _statement.Next();
+
+                        depth = 0;
+
+                        while (_statement != null)
                         {
-                            PushScope(node);
+                            node = _statement.FirstChild();
 
-                            // Grab the arguments
-                            var max = node.FirstChild();
-
-                            if (max.Type != ASTNodeType.INTEGER)
-                                throw new RunTimeError(max, "Invalid for loop syntax");
-
-                            // Create a dummy argument that acts as our loop variable
-                            var iter = new ASTNode(ASTNodeType.INTEGER, "0", node);
-
-                            _scope.SetVar(iterName, new Argument(this, iter));
-                        }
-                        else
-                        {
-                            // Increment the iterator argument
-                            var arg = _scope.GetVar(iterName);
-
-                            var iter = new ASTNode(ASTNodeType.INTEGER, (arg.AsUInt() + 1).ToString(), node);
-
-                            _scope.SetVar(iterName, new Argument(this, iter));
-                        }
-
-                        // Check loop condition
-                        var i = _scope.GetVar(iterName);
-
-                        // Grab the max value to iterate to
-                        node = node.FirstChild();
-                        var end = new Argument(this, node);
-
-                        if (i.AsUInt() < end.AsUInt())
-                        {
-                            // enter the loop
-                            _statement = _statement.Next();
-                        }
-                        else
-                        {
-                            // Walk until the end of the loop
-                            _statement = _statement.Next();
-
-                            depth = 0;
-
-                            while (_statement != null)
+                            if (node.Type == ASTNodeType.FOR)
                             {
-                                node = _statement.FirstChild();
-
-                                if (node.Type == ASTNodeType.FOR)
+                                depth++;
+                            }
+                            else if (node.Type == ASTNodeType.ENDFOR)
+                            {
+                                if (depth == 0)
                                 {
-                                    depth++;
-                                }
-                                else if (node.Type == ASTNodeType.ENDFOR)
-                                {
-                                    if (depth == 0)
-                                    {
-                                        PopScope();
+                                    PopScope();
 
-                                        // Go one past the end so the loop doesn't repeat
-                                        _statement = _statement.Next();
-                                        break;
-                                    }
-
-                                    depth--;
+                                    // Go one past the end so the loop doesn't repeat
+                                    _statement = _statement.Next();
+                                    break;
                                 }
 
-                                _statement = _statement.Next();
+                                depth--;
                             }
 
-                            PopScope();
+                            _statement = _statement.Next();
                         }
+
+                        PopScope();
                     }
+                }
                     break;
                 case ASTNodeType.ENDFOR:
                     // Walk backward to the for statement
@@ -616,7 +639,7 @@ namespace Assistant.Scripts.Engine
                             depth++;
                         }
                         else if (node.Type == ASTNodeType.ENDWHILE ||
-                            node.Type == ASTNodeType.ENDFOR)
+                                 node.Type == ASTNodeType.ENDFOR)
                         {
                             if (depth == 0)
                             {
@@ -728,7 +751,9 @@ namespace Assistant.Scripts.Engine
 
         private bool EvaluateExpression(ref ASTNode expr)
         {
-            if (expr == null || (expr.Type != ASTNodeType.UNARY_EXPRESSION && expr.Type != ASTNodeType.BINARY_EXPRESSION && expr.Type != ASTNodeType.LOGICAL_EXPRESSION))
+            if (expr == null || (expr.Type != ASTNodeType.UNARY_EXPRESSION &&
+                                 expr.Type != ASTNodeType.BINARY_EXPRESSION &&
+                                 expr.Type != ASTNodeType.LOGICAL_EXPRESSION))
                 throw new RunTimeError(expr, "No expression following control statement");
 
             var node = expr.FirstChild();
@@ -869,10 +894,11 @@ namespace Assistant.Scripts.Engine
     {
         // Aliases only hold serial numbers
         private static Dictionary<string, uint> _aliases = new Dictionary<string, uint>();
-        
+
         public delegate double ExpressionHandler(string expression, Argument[] args, bool quiet);
 
-        private static Dictionary<string, ExpressionHandler> _exprHandlers = new Dictionary<string, ExpressionHandler>();
+        private static Dictionary<string, ExpressionHandler>
+            _exprHandlers = new Dictionary<string, ExpressionHandler>();
 
         public delegate bool CommandHandler(string command, Argument[] args, bool quiet, bool force);
 
@@ -944,7 +970,7 @@ namespace Assistant.Scripts.Engine
         {
             _aliases[alias] = serial;
         }
-        
+
         public static bool StartScript(Script script)
         {
             if (_activeScript != null)

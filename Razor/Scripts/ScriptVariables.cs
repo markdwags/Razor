@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region license
+
+// Razor: An Ultima Online Assistant
+// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using Assistant.Scripts.Engine;
@@ -38,7 +58,7 @@ namespace Assistant.Scripts
                 {
                     Gfx = gfx,
                     Serial = serial,
-                    Type = (byte)(ground ? 1 : 0),
+                    Type = (byte) (ground ? 1 : 0),
                     X = pt.X,
                     Y = pt.Y,
                     Z = pt.Z
@@ -54,7 +74,8 @@ namespace Assistant.Scripts
                         foundVar = true;
                         sV.TargetInfo = t;
 
-                        World.Player.SendMessage(MsgLevel.Force, $"'{sV.Name}' script variable updated to '{t.Serial}'");
+                        World.Player.SendMessage(MsgLevel.Force,
+                            $"'{sV.Name}' script variable updated to '{t.Serial}'");
 
                         break;
                     }
