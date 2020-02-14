@@ -821,7 +821,7 @@ namespace Assistant.Scripts
 
             if (args[0].AsString() == "last")
                 Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
-            else if (UsableSkills.TryGetValue(args[0].AsString(), out int skillId))
+            else if (UsableSkills.TryGetValue(args[0].AsString().ToLower(), out int skillId))
                 Client.Instance.SendToServer(new UseSkill(skillId));
 
             return true;
