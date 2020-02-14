@@ -17,7 +17,7 @@ namespace Assistant.Scripts.Engine
 
     internal class Scope
     {
-        public Dictionary<string, Argument> Namespace = new Dictionary<string, Argument>();
+        private Dictionary<string, Argument> _namespace = new Dictionary<string, Argument>();
 
         public readonly ASTNode StartNode;
         public readonly Scope Parent;
@@ -26,6 +26,26 @@ namespace Assistant.Scripts.Engine
         {
             Parent = parent;
             StartNode = start;
+        }
+
+        public Argument GetVar(string name)
+        {
+            Argument arg;
+
+            if (_namespace.TryGetValue(name, out arg))
+                return arg;
+
+            return null;
+        }
+
+        public void SetVar(string name, Argument val)
+        {
+            _namespace[name] = val;
+        }
+
+        public void ClearVar(string name)
+        {
+            _namespace.Remove(name);
         }
     }
 
@@ -87,10 +107,16 @@ namespace Assistant.Scripts.Engine
 
             throw new RunTimeError(_node, "Cannot convert argument to uint");
         }
+
         public ushort AsUShort()
         {
             if (_node.Lexeme == null)
                 throw new RunTimeError(_node, "Cannot convert argument to ushort");
+
+            // Try to resolve it as a scoped variable first
+            var arg = _script.Lookup(_node.Lexeme);
+            if (arg != null)
+                return arg.AsUShort();
 
             ushort val;
 
@@ -104,6 +130,7 @@ namespace Assistant.Scripts.Engine
 
             throw new RunTimeError(_node, "Cannot convert argument to ushort");
         }
+
         // Treat the argument as a serial or an alias. Aliases will
         // be automatically resolved to serial numbers.
         public uint AsSerial()
@@ -143,10 +170,33 @@ namespace Assistant.Scripts.Engine
             if (_node.Lexeme == null)
                 throw new RunTimeError(_node, "Cannot convert argument to bool");
 
-            if (bool.TryParse(_node.Lexeme, out var val))
+            bool val;
+
+            if (bool.TryParse(_node.Lexeme, out val))
                 return val;
 
             throw new RunTimeError(_node, "Cannot convert argument to bool");
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            Argument arg = obj as Argument;
+
+            if (arg == null)
+                return false;
+
+            return Equals(arg);
+        }
+
+        public bool Equals(Argument other)
+        {
+            if (other == null)
+                return false;
+
+            return (other._node.Lexeme == _node.Lexeme);
         }
     }
 
@@ -163,7 +213,8 @@ namespace Assistant.Scripts.Engine
 
             while (scope != null)
             {
-                if (scope.Namespace.TryGetValue(name, out result))
+                result = scope.GetVar(name);
+                if (result != null)
                     return result;
 
                 scope = scope.Parent;
@@ -452,6 +503,9 @@ namespace Assistant.Scripts.Engine
                     break;
                 case ASTNodeType.FOR:
                     {
+                        // The iterator variable's name is the hash code of the for loop's ASTNode.
+                        var iterName = node.GetHashCode().ToString();
+
                         // When we first enter the loop, push a new scope
                         if (_scope.StartNode != node)
                         {
@@ -466,20 +520,20 @@ namespace Assistant.Scripts.Engine
                             // Create a dummy argument that acts as our loop variable
                             var iter = new ASTNode(ASTNodeType.INTEGER, "0", node);
 
-                            _scope.Namespace[node.GetHashCode().ToString()] = new Argument(this, iter);
+                            _scope.SetVar(iterName, new Argument(this, iter));
                         }
                         else
                         {
                             // Increment the iterator argument
-                            var arg = _scope.Namespace[node.GetHashCode().ToString()];
+                            var arg = _scope.GetVar(iterName);
 
                             var iter = new ASTNode(ASTNodeType.INTEGER, (arg.AsUInt() + 1).ToString(), node);
 
-                            _scope.Namespace[node.GetHashCode().ToString()] = new Argument(this, iter);
+                            _scope.SetVar(iterName, new Argument(this, iter));
                         }
 
                         // Check loop condition
-                        var i = _scope.Namespace[node.GetHashCode().ToString()];
+                        var i = _scope.GetVar(iterName);
 
                         // Grab the max value to iterate to
                         node = node.FirstChild();
@@ -501,7 +555,8 @@ namespace Assistant.Scripts.Engine
                             {
                                 node = _statement.FirstChild();
 
-                                if (node.Type == ASTNodeType.FOR)
+                                if (node.Type == ASTNodeType.FOR ||
+                                    node.Type == ASTNodeType.FOREACH)
                                 {
                                     depth++;
                                 }
@@ -526,6 +581,92 @@ namespace Assistant.Scripts.Engine
                         }
                     }
                     break;
+                case ASTNodeType.FOREACH:
+                    {
+                        // foreach VAR in LIST
+                        // The iterator's name is the hash code of the for loop's ASTNode.
+                        var varName = node.FirstChild().Lexeme;
+                        var listName = node.FirstChild().Next().Lexeme;
+                        var iterName = node.GetHashCode().ToString();
+
+                        // When we first enter the loop, push a new scope
+                        if (_scope.StartNode != node)
+                        {
+                            PushScope(node);
+
+                            // Create a dummy argument that acts as our iterator object
+                            var iter = new ASTNode(ASTNodeType.INTEGER, "0", node);
+                            _scope.SetVar(iterName, new Argument(this, iter));
+
+                            // Make the user-chosen variable have the value for the front of the list
+                            var arg = Interpreter.GetListValue(listName, 0);
+
+                            if (arg != null)
+                                _scope.SetVar(varName, arg);
+                            else
+                                _scope.ClearVar(varName);
+                        }
+                        else
+                        {
+                            // Increment the iterator argument
+                            var idx = _scope.GetVar(iterName).AsInt() + 1;
+                            var iter = new ASTNode(ASTNodeType.INTEGER, idx.ToString(), node);
+                            _scope.SetVar(iterName, new Argument(this, iter));
+
+                            // Update the user-chosen variable
+                            var arg = Interpreter.GetListValue(listName, idx);
+
+                            if (arg != null)
+                                _scope.SetVar(varName, arg);
+                            else
+                                _scope.ClearVar(varName);
+                        }
+
+                        // Check loop condition
+                        var i = _scope.GetVar(varName);
+
+                        if (i != null)
+                        {
+                            // enter the loop
+                            _statement = _statement.Next();
+                        }
+                        else
+                        {
+                            // Walk until the end of the loop
+                            _statement = _statement.Next();
+
+                            depth = 0;
+
+                            while (_statement != null)
+                            {
+                                node = _statement.FirstChild();
+
+                                if (node.Type == ASTNodeType.FOR ||
+                                    node.Type == ASTNodeType.FOREACH)
+                                {
+                                    depth++;
+                                }
+                                else if (node.Type == ASTNodeType.ENDFOR)
+                                {
+                                    if (depth == 0)
+                                    {
+                                        PopScope();
+
+                                        // Go one past the end so the loop doesn't repeat
+                                        _statement = _statement.Next();
+                                        break;
+                                    }
+
+                                    depth--;
+                                }
+
+                                _statement = _statement.Next();
+                            }
+
+                            PopScope();
+                        }
+                        break;
+                    }
                 case ASTNodeType.ENDFOR:
                     // Walk backward to the for statement
                     _statement = _statement.Prev();
@@ -534,7 +675,8 @@ namespace Assistant.Scripts.Engine
                     {
                         node = _statement.FirstChild();
 
-                        if (node.Type == ASTNodeType.FOR)
+                        if (node.Type == ASTNodeType.FOR ||
+                            node.Type == ASTNodeType.FOREACH)
                         {
                             break;
                         }
@@ -557,7 +699,8 @@ namespace Assistant.Scripts.Engine
                         node = _statement.FirstChild();
 
                         if (node.Type == ASTNodeType.WHILE ||
-                            node.Type == ASTNodeType.FOR)
+                            node.Type == ASTNodeType.FOR ||
+                            node.Type == ASTNodeType.FOREACH)
                         {
                             depth++;
                         }
@@ -597,7 +740,8 @@ namespace Assistant.Scripts.Engine
                             depth++;
                         }
                         else if (node.Type == ASTNodeType.WHILE ||
-                                 node.Type == ASTNodeType.FOR)
+                                 node.Type == ASTNodeType.FOR ||
+                                 node.Type == ASTNodeType.FOREACH)
                         {
                             if (depth == 0)
                                 break;
@@ -742,12 +886,12 @@ namespace Assistant.Scripts.Engine
             node = EvaluateModifiers(node, out bool quiet, out _, out bool not);
 
             // Unary expressions are converted to bool.
-            var result = ExecuteExpression(ref node, quiet) != 0;
+            double result = ExecuteExpression(ref node, quiet);
 
             if (not)
-                return !result;
+                return (result == 0);
             else
-                return result;
+                return (result != 0);
         }
 
         private bool EvaluateBinaryExpression(ref ASTNode node)
@@ -831,8 +975,8 @@ namespace Assistant.Scripts.Engine
 
         private static Dictionary<string, AliasHandler> _aliasHandlers = new Dictionary<string, AliasHandler>();
 
-        private static LinkedList<Script> _scripts = new LinkedList<Script>();
-        public static int ScriptCount => _scripts.Count;
+        private static Script _activeScript = null;
+
         public static CultureInfo Culture;
 
         static Interpreter()
@@ -894,37 +1038,124 @@ namespace Assistant.Scripts.Engine
             _aliases[alias] = serial;
         }
 
-        public static void StartScript(Script script)
+        public static void CreateList(string name)
         {
-            _scripts.Clear();
-            _scripts.AddLast(script);
+            if (_lists.ContainsKey(name))
+                return;
+
+            _lists[name] = new List<Argument>();
         }
 
-        public static void StopScript(Script script)
+        public static void DestroyList(string name)
         {
-            _scripts.Remove(script);
+            _lists.Remove(name);
         }
 
-        public static bool ExecuteScripts()
+        public static void ClearList(string name)
         {
-            var node = _scripts.Last;
+            if (!_lists.ContainsKey(name))
+                return;
 
-            while (node != null)
+            _lists[name].Clear();
+        }
+
+        public static bool ListExists(string name)
+        {
+            return _lists.ContainsKey(name);
+        }
+
+        public static bool ListContains(string name, Argument arg)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError(null, "List does not exist");
+
+            return _lists[name].Contains(arg);
+        }
+
+        public static int ListLength(string name)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError(null, "List does not exist");
+
+            return _lists[name].Count;
+        }
+
+        public static void PushList(string name, Argument arg, bool front, bool unique)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError(null, "List does not exist");
+
+            if (unique && _lists[name].Contains(arg))
+                return;
+
+            if (front)
+                _lists[name].Insert(0, arg);
+            else
+                _lists[name].Add(arg);
+        }
+
+        public static bool PopList(string name, Argument arg)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError(null, "List does not exist");
+
+            return _lists[name].Remove(arg);
+        }
+
+        public static bool PopList(string name, bool front)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError(null, "List does not exist");
+
+            var idx = front ? 0 : _lists[name].Count - 1;
+
+            _lists[name].RemoveAt(idx);
+
+            return _lists[name].Count > 0;
+        }
+
+        public static Argument GetListValue(string name, int idx)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError(null, "List does not exist");
+
+            var list = _lists[name];
+
+            if (idx < list.Count)
+                return list[idx];
+
+            return null;
+        }
+
+        public static bool StartScript(Script script)
+        {
+            if (_activeScript != null)
+                return false;
+
+            _activeScript = script;
+
+            ExecuteScript();
+
+            return true;
+        }
+
+        public static void StopScript()
+        {
+            _activeScript = null;
+        }
+
+        public static bool ExecuteScript()
+        {
+            if (_activeScript == null)
+                return false;
+
+            if (!_activeScript.ExecuteNext())
             {
-                var prev = node.Previous;
-
-                if (!node.Value.ExecuteNext())
-                    _scripts.Remove(node);
-
-                node = prev;
+                _activeScript = null;
+                return false;
             }
 
-            return _scripts.Count > 0;
-        }
-        
-        public static void ClearScripts()
-        {
-            _scripts.Clear();
+            return true;
         }
     }
 }

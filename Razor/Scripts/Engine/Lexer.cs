@@ -36,6 +36,7 @@ namespace Assistant.Scripts.Engine
         WHILE,
         ENDWHILE,
         FOR,
+        FOREACH,
         ENDFOR,
         BREAK,
         CONTINUE,
@@ -59,6 +60,7 @@ namespace Assistant.Scripts.Engine
         STRING,
         SERIAL,
         INTEGER,
+        LIST,
 
         // Modifiers
         QUIET, // @ symbol
@@ -179,9 +181,6 @@ namespace Assistant.Scripts.Engine
         public static ASTNode Lex(string fname)
         {
             ASTNode node = new ASTNode(ASTNodeType.SCRIPT, null, null);
-
-            if (string.IsNullOrEmpty(fname))
-                return node;
 
             using (var file = new StreamReader(fname))
             {
@@ -365,6 +364,14 @@ namespace Assistant.Scripts.Engine
                         ParseForLoop(statement, lexemes.Slice(1, lexemes.Length - 1));
                         break;
                     }
+                case "foreach":
+                    {
+                        if (lexemes.Length != 4)
+                            throw new SyntaxError(node, "Script compilation error");
+
+                        ParseForEachLoop(statement, lexemes.Slice(1, lexemes.Length - 1));
+                        break;
+                    }
                 case "endfor":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
@@ -390,11 +397,6 @@ namespace Assistant.Scripts.Engine
                     statement.Push(ASTNodeType.STOP, null);
                     break;
                 case "replay":
-                    if (lexemes.Length > 1)
-                        throw new SyntaxError(node, "Script compilation error");
-
-                    statement.Push(ASTNodeType.REPLAY, null);
-                    break;
                 case "loop":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
@@ -565,6 +567,20 @@ namespace Assistant.Scripts.Engine
 
         private static void ParseForLoop(ASTNode statement, string[] lexemes)
         {
+            // There are 4 variants of for loops in steam. The simplest two just
+            // iterate a fixed number of times. The other two iterate
+            // parts of lists. We call those second two FOREACH.
+
+            // We're intentionally deprecating two of the variants here.
+            // The for X to Y variant, where both X and Y are integers, 
+            // is useless. It can be just written as for X.
+            // The for X to Y in LIST variant may have some niche uses, but
+            // is annoying to implement.
+
+            // The for X loop remains supported as is, while the
+            // for X in LIST form is actually transformed into a foreach
+            // statement.
+
             if (lexemes.Length == 1)
             {
                 // for X
@@ -573,10 +589,31 @@ namespace Assistant.Scripts.Engine
                 ParseValue(loop, lexemes[0]);
 
             }
+            else if (lexemes.Length == 3 && lexemes[1] == "to")
+            {
+                // for X to LIST
+                var loop = statement.Push(ASTNodeType.FOREACH, null);
+
+                loop.Push(ASTNodeType.STRING, lexemes[2]);
+                loop.Push(ASTNodeType.LIST, lexemes[2].Substring(0, lexemes[2].Length - 2));
+            }
             else
             {
                 throw new SyntaxError(statement, "Invalid for loop");
             }
+        }
+
+        private static void ParseForEachLoop(ASTNode statement, string[] lexemes)
+        {
+            // foreach X in LIST
+            var loop = statement.Push(ASTNodeType.FOREACH, null);
+
+            if (lexemes[1] != "in")
+                throw new SyntaxError(statement, "Invalid foreach loop");
+
+            // This is the iterator name
+            ParseValue(loop, lexemes[0]);
+            loop.Push(ASTNodeType.LIST, lexemes[2]);
         }
     }
 }
