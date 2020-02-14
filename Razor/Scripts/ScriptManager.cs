@@ -37,34 +37,29 @@ namespace Assistant.Scripts
             {
                 try
                 {
-                    Interpreter.ExecuteScripts();
+                    if (Interpreter.ExecuteScript())
+                    {
+                        if (ScriptRunning == false)
+                        {
+                            World.Player?.SendMessage(LocString.ScriptPlaying);
+                            Assistant.Engine.MainWindow.LockScriptUI(true);
+                            ScriptRunning = true;
+                        }
+                    }
+                    else
+                    {
+                        if (ScriptRunning)
+                        {
+                            World.Player?.SendMessage(LocString.ScriptFinished);
+                            Assistant.Engine.MainWindow.LockScriptUI(false);
+                            ScriptRunning = false;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     Error(ex.Message);
-                    Interpreter.ClearScripts();
-                }
-
-                if (Interpreter.ScriptCount > 0)
-                {
-                    if (ScriptRunning == false)
-                    {
-                        World.Player?.SendMessage(LocString.ScriptPlaying);
-                        Assistant.Engine.MainWindow.LockScriptUI(true);
-                    }
-
-                    ScriptRunning = true;
-                }
-                else
-                {
-                    if (ScriptRunning)
-                    {
-                        World.Player?.SendMessage(LocString.ScriptFinished);
-                        Assistant.Engine.MainWindow.LockScriptUI(false);
-                    }
-                        
-
-                    ScriptRunning = false;
+                    Interpreter.StopScript();
                 }
             }
         }
@@ -103,7 +98,7 @@ namespace Assistant.Scripts
 
         public static void StopScript()
         {
-            Interpreter.StartScript(new Script(Lexer.Lex(string.Empty)));
+            Interpreter.StopScript();
         }
 
         public static void PlayScript(string scriptName)
