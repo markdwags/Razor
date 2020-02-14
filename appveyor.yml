@@ -33,5 +33,7 @@ skip_commits:
   message: /\[chore\]/
   files:    
     - help/
+    - docs/
     - '**/*.md'
     - '**/*.ps1'
+    - '**/*.yml'
