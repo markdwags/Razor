@@ -126,6 +126,8 @@ namespace Assistant.Macros
 
         public static void PlayAt(Macro m, int at)
         {
+            ScriptManager.StopScript();
+
             if (m_Current != null)
             {
                 if (m_Current.Playing && m_Current.Loop && !m.Loop)
@@ -175,8 +177,7 @@ namespace Assistant.Macros
 
         public static void Play(Macro m)
         {
-            if (ScriptManager.Running)
-                return;
+            ScriptManager.StopScript();
 
             if (m_Current != null)
             {

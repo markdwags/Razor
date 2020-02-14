@@ -147,9 +147,11 @@ namespace Assistant.Scripts
 
         public static void PlayScript(string[] lines)
         {
-            if (World.Player == null || ScriptEditor == null || lines == null || MacroManager.Playing ||
-                MacroManager.StepThrough)
+            if (World.Player == null || ScriptEditor == null || lines == null)
                 return;
+
+            if (MacroManager.Playing || MacroManager.StepThrough)
+                MacroManager.Stop();
 
             StopScript(); // be sure nothing is running
 
