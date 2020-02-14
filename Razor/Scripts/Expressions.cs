@@ -8,9 +8,6 @@ namespace Assistant.Scripts
     {
         public static void Register()
         {
-            // Expressions
-            Interpreter.RegisterExpressionHandler("findalias", FindAlias);
-
             Interpreter.RegisterExpressionHandler("stam", Stam);
             Interpreter.RegisterExpressionHandler("maxstam", MaxStam);
             Interpreter.RegisterExpressionHandler("hp", Hp);
@@ -37,19 +34,107 @@ namespace Assistant.Scripts
 
             Interpreter.RegisterExpressionHandler("insysmsg", InSysMessage);
             Interpreter.RegisterExpressionHandler("insysmessage", InSysMessage);
+
+            Interpreter.RegisterExpressionHandler("findtype", FindType);
         }
 
-        private static double FindAlias(string expression, Argument[] args, bool quiet)
+        private static double FindType(string expression, Argument[] args, bool quiet)
         {
-            if (args.Length < 1)
-                ScriptManager.Error("Usage: findalias (string)");
-
-            uint serial = Interpreter.GetAlias(args[0].AsString());
-
-            if (serial == uint.MaxValue)
+            if (args.Length == 0)
+            {
+                ScriptManager.Error("Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
                 return 0;
+            }
 
-            return 1;
+            string gfxStr = args[0].AsString();
+            Serial gfx = Utility.ToUInt16(gfxStr, 0);
+
+            bool inRangeCheck = false;
+
+            if (args.Length == 2)
+            {
+                inRangeCheck = args[1].AsBool();
+            }
+
+            // No graphic id, maybe searching by name?
+            if (gfx == 0)
+            {
+                foreach (Item item in World.FindItemsByName(gfxStr))
+                {
+                    if (inRangeCheck)
+                    {
+                        if (Utility.InRange(World.Player.Position, item.Position, 2))
+                        {
+                            return 1;
+                        }
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+            }
+            else // Check backpack first
+            {
+                if (World.Player.Backpack != null)
+                {
+                    Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
+
+                    if (i != null)
+                        return 1;
+                }
+            }
+
+            // Not in backpack? Lets check the world
+            foreach (Item i in World.Items.Values)
+            {
+                if (i.ItemID == gfx && i.RootContainer == null)
+                {
+                    if (inRangeCheck)
+                    {
+                        if (Utility.InRange(World.Player.Position, i.Position, 2))
+                            return 1;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+            }
+
+            foreach (Item i in World.Items.Values)
+            {
+                if (i.ItemID == gfx && !i.IsInBank)
+                {
+                    if (inRangeCheck)
+                    {
+                        if (Utility.InRange(World.Player.Position, i.Position, 2))
+                            return 1;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+            }
+
+            foreach (Mobile m in World.MobilesInRange())
+            {
+                if (m.Body == gfx)
+                {
+                    if (inRangeCheck)
+                    {
+                        if (Utility.InRange(World.Player.Position, m.Position, 2))
+                            return 1;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+            }
+
+            return 0;
         }
 
         private static double Mounted(string expression, Argument[] args, bool quiet)

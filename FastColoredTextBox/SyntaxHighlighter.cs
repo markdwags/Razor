@@ -128,6 +128,7 @@ namespace FastColoredTextBoxNS
         protected Regex RazorSerialRegex;
         protected Regex RazorOperatorRegex;
         protected Regex RazorLayerRegex;
+        protected Regex RazorExpressionRegex;
         protected Regex RazorCommandRegex;
         protected Regex RazorKeywordRegex;
         protected Regex RazorNumberRegex;
@@ -766,6 +767,7 @@ namespace FastColoredTextBoxNS
                     RazorCommandStyle = RazorDarkCommands;
                     RazorSerialStyle = RazorDarkSerial;
                     RazorLayerStyle = RazorDarkNumbers;
+                    RazorExpressionStyle = RazorDarkSerial;
                     break;
                 case Language.PHP:
                     StringStyle = RedStyle;
@@ -1555,6 +1557,11 @@ namespace FastColoredTextBoxNS
                 new Regex(
                     @"\b(RightHand|LeftHand|Shoes|Pants|Shirt|Head|Gloves|Ring|Talisman|Neck|Hair|Waist|InnerTorso|Bracelet|FacialHair|MiddleTorso|Earrings|Arms|Cloak|Backpack|OuterTorso|OuterLegs|InnerLegs)\b",
                     RegexCompiledOption);
+
+            RazorExpressionRegex =
+                new Regex(
+                    @"\b(insysmsg|insysmessage|findtype|stam|maxstam|hp|maxhp|mana|maxmana|str|dex|int|poisoned|mounted|rhandempty|lhandempty|skill|count|counter)\b",
+                    RegexCompiledOption);
         }
 
         public virtual void RazorSyntaxHighlight(Range range)
@@ -1592,6 +1599,7 @@ namespace FastColoredTextBoxNS
             range.SetStyle(RazorCommandStyle, RazorCommandRegex);
             range.SetStyle(RazorSerialStyle, RazorSerialRegex);
             range.SetStyle(RazorLayerStyle, RazorLayerRegex);
+            range.SetStyle(RazorExpressionStyle, RazorExpressionRegex);
             //range.SetStyle(RazorOperatorStyle, RazorOperatorsRegEx);
 
             //clear folding markers
@@ -1737,6 +1745,7 @@ namespace FastColoredTextBoxNS
         public Style RazorCommandStyle { get; set; }
         public Style RazorSerialStyle { get; set; }
         public Style RazorLayerStyle { get; set; }
+        public Style RazorExpressionStyle { get; set; }
         public Style RazorOperatorStyle { get; set; }
 
         #endregion
