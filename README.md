@@ -59,9 +59,9 @@ If you need more help with using Razor, [please go here](http://www.uor-razor.co
 
 ## Contributing & Code of Conduct
 
-Please read [CONTRIBUTING](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
+Please read [CONTRIBUTING](CONTRIBUTING.md) for more information on how to contribute to this project.
 
-Please note we have a [code of conduct](CODE_OF_CONDUCT.md), please follow it in all your interactions with this project.
+Please note we have a [Code of Conduct](CODE_OF_CONDUCT.md), please follow it in all your interactions with this project.
 
 ## License
 
