@@ -603,5 +603,33 @@ namespace Assistant.Scripts
 
             return true; // keep on pausing
         }
+
+        private static TimeSpan _timeoutDuration;
+        private static DateTime _startTimeout = DateTime.MaxValue;
+
+        /// <summary>
+        /// Manage the state of wait for target in the script engine
+        /// </summary>
+        /// <param name="ms"></param>
+        /// <returns></returns>
+        public static bool Timeout(int ms = 30000)
+        {
+            if (_startTimeout == DateTime.MaxValue) // no timer set
+            {
+                _startTimeout = DateTime.UtcNow;
+                _timeoutDuration = TimeSpan.FromMilliseconds(ms);
+
+                return true; // we want to start the timeout wait
+            }
+
+            if (_startTimeout + _timeoutDuration < DateTime.UtcNow) // timer is set, has it elapsed?
+            {
+                _startTimeout = DateTime.MaxValue;
+                _timeoutDuration = TimeSpan.FromMilliseconds(ms);
+                return false; // timeout exceeded
+            }
+
+            return true; // keep on pausing
+        }
     }
 }
