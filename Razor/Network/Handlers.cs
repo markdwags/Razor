@@ -256,6 +256,9 @@ namespace Assistant
             if (Config.GetBool("QueueActions"))
                 args.Block = !PlayerData.DoubleClick(ser, false);
 
+            if (ser.IsItem && World.Player != null)
+                World.Player.LastObject = ser;
+
             if (Macros.MacroManager.AcceptActions || ScriptManager.Recording)
             {
                 ushort gfx = 0;

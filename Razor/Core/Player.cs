@@ -1064,6 +1064,7 @@ namespace Assistant
         public Serial LastObject
         {
             get { return m_LastObj; }
+            set { m_LastObj = value; }
         }
 
         private int m_LastSpell = -1;
