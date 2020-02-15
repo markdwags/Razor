@@ -49,7 +49,6 @@ namespace Assistant.Scripts
             // Using stuff
             Interpreter.RegisterCommandHandler("dclicktype", UseType); // DoubleClickTypeAction
             Interpreter.RegisterCommandHandler("dclick", UseObject); //DoubleClickAction
-            Interpreter.RegisterCommandHandler("dclickvar", DummyCommand); //DoubleClickVariableAction -- this needed?
 
             Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAction
             Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
@@ -87,7 +86,6 @@ namespace Assistant.Scripts
             // General Waits/Pauses
             Interpreter.RegisterCommandHandler("wait", Pause); //PauseAction
             Interpreter.RegisterCommandHandler("pause", Pause); //PauseAction
-            Interpreter.RegisterCommandHandler("waitforstat", DummyCommand); //WaitForStatAction
 
             // Misc
             Interpreter.RegisterCommandHandler("setability", SetAbility); //SetAbilityAction
@@ -101,13 +99,6 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("script", PlayScript);
             Interpreter.RegisterCommandHandler("setvar", SetVar);
             Interpreter.RegisterCommandHandler("setvariable", SetVar);
-        }
-
-        private static bool DummyCommand(string command, Argument[] args, bool quiet, bool force)
-        {
-            ScriptManager.Error($"Unimplemented command: {command}");
-
-            return true;
         }
 
         private static bool SetLastTarget(string command, Argument[] args, bool quiet, bool force)
