@@ -265,7 +265,8 @@ namespace Assistant
                     reader = new PacketReader(ptr, length, PacketsTable.IsDynLength(id));
                     result = !PacketHandler.OnServerPacket(id, reader, packet);
                 }
-                else if (isFilter)
+                
+                if (isFilter)
                 {
                     packet = new Packet(data, length, PacketsTable.IsDynLength(id));
                     result = !PacketHandler.OnServerPacket(id, reader, packet);
