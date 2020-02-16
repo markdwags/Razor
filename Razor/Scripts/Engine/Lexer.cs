@@ -78,7 +78,7 @@ namespace Assistant.Scripts.Engine
         // Value types
         STRING,
         SERIAL,
-        INTEGER,
+        DOUBLE,
 
         // Modifiers
         QUIET, // @ symbol
@@ -262,8 +262,8 @@ namespace Assistant.Scripts.Engine
         {
             if (lexeme.StartsWith("0x"))
                 node.Push(ASTNodeType.SERIAL, lexeme);
-            else if (int.TryParse(lexeme, out _))
-                node.Push(ASTNodeType.INTEGER, lexeme);
+            else if (double.TryParse(lexeme, out _))
+                node.Push(ASTNodeType.DOUBLE, lexeme);
             else
                 node.Push(ASTNodeType.STRING, lexeme);
         }
@@ -541,7 +541,7 @@ namespace Assistant.Scripts.Engine
 
             // The expressions on either side of the operator can be integer values
             // or commands that need to be evaluated.
-            if (int.TryParse(lexemes[i], out int _))
+            if (double.TryParse(lexemes[i], out double _))
             {
                 ParseValue(expr, lexemes[i++]);
             }
@@ -560,7 +560,7 @@ namespace Assistant.Scripts.Engine
 
             ParseOperator(expr, lexemes[i++]);
 
-            if (int.TryParse(lexemes[i], out int _))
+            if (double.TryParse(lexemes[i], out double _))
             {
                 ParseValue(expr, lexemes[i++]);
             }

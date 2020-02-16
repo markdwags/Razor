@@ -537,11 +537,11 @@ namespace Assistant.Scripts.Engine
                         // Grab the arguments
                         var max = node.FirstChild();
 
-                        if (max.Type != ASTNodeType.INTEGER)
+                        if (max.Type != ASTNodeType.DOUBLE)
                             throw new RunTimeError(max, "Invalid for loop syntax");
 
                         // Create a dummy argument that acts as our loop variable
-                        var iter = new ASTNode(ASTNodeType.INTEGER, "0", node);
+                        var iter = new ASTNode(ASTNodeType.DOUBLE, "0", node);
 
                         _scope.SetVar(iterName, new Argument(this, iter));
                     }
@@ -550,7 +550,7 @@ namespace Assistant.Scripts.Engine
                         // Increment the iterator argument
                         var arg = _scope.GetVar(iterName);
 
-                        var iter = new ASTNode(ASTNodeType.INTEGER, (arg.AsUInt() + 1).ToString(), node);
+                        var iter = new ASTNode(ASTNodeType.DOUBLE, (arg.AsUInt() + 1).ToString(), node);
 
                         _scope.SetVar(iterName, new Argument(this, iter));
                     }
@@ -836,9 +836,9 @@ namespace Assistant.Scripts.Engine
 
             // Evaluate the left hand side
             node = EvaluateModifiers(node, out bool quiet, out _, out _);
-            if (node.Type == ASTNodeType.INTEGER)
+            if (node.Type == ASTNodeType.DOUBLE)
             {
-                lhs = int.Parse(node.Lexeme);
+                lhs = double.Parse(node.Lexeme);
                 node = node.Next();
             }
             else
@@ -850,9 +850,9 @@ namespace Assistant.Scripts.Engine
 
             // Evaluate the right hand side
             node = EvaluateModifiers(node, out quiet, out _, out _);
-            if (node.Type == ASTNodeType.INTEGER)
+            if (node.Type == ASTNodeType.DOUBLE)
             {
-                rhs = int.Parse(node.Lexeme);
+                rhs = double.Parse(node.Lexeme);
                 node = node.Next();
             }
             else
