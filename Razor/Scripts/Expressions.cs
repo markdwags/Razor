@@ -70,6 +70,7 @@ namespace Assistant.Scripts
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
             bool inRangeCheck = false;
+            ScriptVariables.ScriptVariable foundVar = ScriptVariables.GetVariable("found");
 
             if (args.Length == 2)
             {
@@ -85,11 +86,37 @@ namespace Assistant.Scripts
                     {
                         if (Utility.InRange(World.Player.Position, item.Position, 2))
                         {
+                            if (foundVar != null)
+                            {
+                                foundVar.TargetInfo = new TargetInfo
+                                {
+                                    Gfx = 0,
+                                    Serial = item.Serial,
+                                    Type = (byte)(item.OnGround ? 1 : 0),
+                                    X = item.Position.X,
+                                    Y = item.Position.Y,
+                                    Z = item.Position.Z
+                                };
+                                Assistant.Engine.MainWindow.SaveScriptVariables();
+                            }
                             return 1;
                         }
                     }
                     else
                     {
+                        if (foundVar != null)
+                        {
+                            foundVar.TargetInfo = new TargetInfo
+                            {
+                                Gfx = 0,
+                                Serial = item.Serial,
+                                Type = (byte)(item.OnGround ? 1 : 0),
+                                X = item.Position.X,
+                                Y = item.Position.Y,
+                                Z = item.Position.Z
+                            };
+                            Assistant.Engine.MainWindow.SaveScriptVariables();
+                        }
                         return 1;
                     }
                 }
@@ -101,7 +128,22 @@ namespace Assistant.Scripts
                     Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
 
                     if (i != null)
+                    {
+                        if (foundVar != null)
+                        {
+                            foundVar.TargetInfo = new TargetInfo
+                            {
+                                Gfx = (ushort)gfx.Value,
+                                Serial = i.Serial,
+                                Type = (byte)(i.OnGround ? 1 : 0),
+                                X = i.Position.X,
+                                Y = i.Position.Y,
+                                Z = i.Position.Z
+                            };
+                            Assistant.Engine.MainWindow.SaveScriptVariables();
+                        }
                         return 1;
+                    }
                 }
             }
 
@@ -113,10 +155,39 @@ namespace Assistant.Scripts
                     if (inRangeCheck)
                     {
                         if (Utility.InRange(World.Player.Position, i.Position, 2))
+                        {
+                            if (foundVar != null)
+                            {
+                                foundVar.TargetInfo = new TargetInfo
+                                {
+                                    Gfx = (ushort)gfx.Value,
+                                    Serial = i.Serial,
+                                    Type = (byte)(i.OnGround ? 1 : 0),
+                                    X = i.Position.X,
+                                    Y = i.Position.Y,
+                                    Z = i.Position.Z
+                                };
+                                Assistant.Engine.MainWindow.SaveScriptVariables();
+                            }
                             return 1;
+                        }
+
                     }
                     else
                     {
+                        if (foundVar != null)
+                        {
+                            foundVar.TargetInfo = new TargetInfo
+                            {
+                                Gfx = (ushort)gfx.Value,
+                                Serial = i.Serial,
+                                Type = (byte)(i.OnGround ? 1 : 0),
+                                X = i.Position.X,
+                                Y = i.Position.Y,
+                                Z = i.Position.Z
+                            };
+                            Assistant.Engine.MainWindow.SaveScriptVariables();
+                        }
                         return 1;
                     }
                 }
@@ -129,10 +200,39 @@ namespace Assistant.Scripts
                     if (inRangeCheck)
                     {
                         if (Utility.InRange(World.Player.Position, i.Position, 2))
+                        {
+                            if (foundVar != null)
+                            {
+                                foundVar.TargetInfo = new TargetInfo
+                                {
+                                    Gfx = (ushort)gfx.Value,
+                                    Serial = i.Serial,
+                                    Type = (byte)(i.OnGround ? 1 : 0),
+                                    X = i.Position.X,
+                                    Y = i.Position.Y,
+                                    Z = i.Position.Z
+                                };
+                                Assistant.Engine.MainWindow.SaveScriptVariables();
+                            }
                             return 1;
+                        }
+
                     }
                     else
                     {
+                        if (foundVar != null)
+                        {
+                            foundVar.TargetInfo = new TargetInfo
+                            {
+                                Gfx = (ushort)gfx.Value,
+                                Serial = i.Serial,
+                                Type = (byte)(i.OnGround ? 1 : 0),
+                                X = i.Position.X,
+                                Y = i.Position.Y,
+                                Z = i.Position.Z
+                            };
+                            Assistant.Engine.MainWindow.SaveScriptVariables();
+                        }
                         return 1;
                     }
                 }
@@ -145,10 +245,38 @@ namespace Assistant.Scripts
                     if (inRangeCheck)
                     {
                         if (Utility.InRange(World.Player.Position, m.Position, 2))
-                            return 1;
+                        {
+                            if (foundVar != null)
+                            {
+                                foundVar.TargetInfo = new TargetInfo
+                                {
+                                    Gfx = (ushort)gfx.Value,
+                                    Serial = m.Serial,
+                                    Type = 1,
+                                    X = m.Position.X,
+                                    Y = m.Position.Y,
+                                    Z = m.Position.Z
+                                };
+                                Assistant.Engine.MainWindow.SaveScriptVariables();
+                            }
+                        }
+                        return 1;
                     }
                     else
                     {
+                        if (foundVar != null)
+                        {
+                            foundVar.TargetInfo = new TargetInfo
+                            {
+                                Gfx = (ushort)gfx.Value,
+                                Serial = m.Serial,
+                                Type = 1,
+                                X = m.Position.X,
+                                Y = m.Position.Y,
+                                Z = m.Position.Z
+                            };
+                            Assistant.Engine.MainWindow.SaveScriptVariables();
+                        }
                         return 1;
                     }
                 }
