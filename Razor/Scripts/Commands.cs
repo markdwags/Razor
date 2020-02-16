@@ -32,6 +32,7 @@ namespace Assistant.Scripts
         public static void Register()
         {
             // Commands based on Actions.cs
+            Interpreter.RegisterCommandHandler("attack", Attack); //Attack by serial
             Interpreter.RegisterCommandHandler("cast", Cast); //BookcastAction, etc
 
             // Dress
@@ -899,6 +900,28 @@ namespace Assistant.Scripts
                 World.Player.Say(Config.GetInt("SysColor"), args[0].AsString());
             else
                 World.Player.Say(Utility.ToInt32(args[1].AsString(), 0), args[0].AsString());
+
+            return true;
+        }
+
+        public static bool Attack(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length == 0)
+            {
+                ScriptManager.Error("Usage: attack (serial)");
+                return true;
+            }
+
+            Serial serial = args[0].AsSerial();
+
+            if (!serial.IsValid)
+            {
+                ScriptManager.Error("attack - invalid serial");
+                return true;
+            }
+
+            if (serial != null && serial.IsMobile)
+                Client.Instance.SendToServer(new AttackReq(serial));
 
             return true;
         }
