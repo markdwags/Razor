@@ -50,8 +50,7 @@ namespace Assistant.Scripts
                 return true;
             }
 
-            string agentNum = args[0].AsString();
-            string agentName = $"{Language.GetString(LocString.Restock)}-{agentNum}";
+            int agentNum = args[0].AsInt();
 
             bool setBag = false;
 
@@ -63,20 +62,13 @@ namespace Assistant.Scripts
                 }
             }
 
-            foreach (Agent agent in Agent.List)
+            if (setBag)
             {
-                if (agent.Name.Equals(agentName))
-                {
-                    if (setBag)
-                    {
-                        ((RestockAgent) agent).SetHB();
-                    }
-                    else
-                    {
-                        ((RestockAgent)agent).OnHotKey();
-                    }
-                    break;
-                }
+                RestockAgent.Agents[agentNum - 1].SetHB();
+            }
+            else
+            {
+                RestockAgent.Agents[agentNum - 1].OnHotKey();
             }
 
             return true;
@@ -84,8 +76,6 @@ namespace Assistant.Scripts
 
         private static bool UseOnceCommand(string command, Argument[] args, bool quiet, bool force)
         {
-            string agentName = Language.GetString(LocString.UseOnce);
-
             bool add = false;
             bool container = false;
 
@@ -101,25 +91,17 @@ namespace Assistant.Scripts
                 }
             }
 
-            foreach (Agent agent in Agent.List)
+            if (add)
             {
-                if (agent.Name.Equals(agentName))
-                {
-                    if (add)
-                    {
-                        ((UseOnceAgent)agent).OnAdd();
-                    }
-                    else if (container)
-                    {
-                        ((UseOnceAgent)agent).OnAddContainer();
-                    }
-                    else
-                    {
-                        ((UseOnceAgent)agent).OnHotKey();
-                    }
-
-                    break;
-                }
+                UseOnceAgent.Instance.OnAdd();
+            }
+            else if (container)
+            {
+                UseOnceAgent.Instance.OnAddContainer();
+            }
+            else
+            {
+                UseOnceAgent.Instance.OnHotKey();
             }
 
             return true;
@@ -133,8 +115,7 @@ namespace Assistant.Scripts
                 return true;
             }
 
-            string agentNum = args[0].AsString();
-            string agentName = $"{Language.GetString(LocString.Organizer)}-{agentNum}";
+            int agentNum = args[0].AsInt();
 
             bool setBag = false;
 
@@ -146,20 +127,13 @@ namespace Assistant.Scripts
                 }
             }
 
-            foreach (Agent agent in Agent.List)
+            if (setBag)
             {
-                if (agent.Name.Equals(agentName))
-                {
-                    if (setBag)
-                    {
-                        ((OrganizerAgent)agent).SetHotBag();
-                    }
-                    else
-                    {
-                        ((OrganizerAgent)agent).Organize();
-                    }
-                    break;
-                }
+                OrganizerAgent.Agents[agentNum - 1].SetHotBag();
+            }
+            else
+            {
+                OrganizerAgent.Agents[agentNum - 1].Organize();
             }
 
             return true;
@@ -172,8 +146,6 @@ namespace Assistant.Scripts
                 ScriptManager.Error("Usage: scavenger ['clear'/'add'/'on'/'off'/'set']");
                 return true;
             }
-
-            string agentName = Language.GetString(LocString.Scavenger);
 
             bool clear = false;
             bool add = false;
@@ -207,36 +179,28 @@ namespace Assistant.Scripts
                 }
             }
 
-            foreach (Agent agent in Agent.List)
+            if (clear)
             {
-                if (agent.Name.Equals(agentName))
+                ScavengerAgent.Instance.ClearCache();
+            }
+            else if (add)
+            {
+                ScavengerAgent.Instance.OnAddToHotBag();
+            }
+            else if (status)
+            {
+                if (enabled)
                 {
-                    if (clear)
-                    {
-                        ((ScavengerAgent)agent).ClearCache();
-                    }
-                    else if (add)
-                    {
-                        ((ScavengerAgent)agent).OnAddToHotBag();
-                    }
-                    else if (status)
-                    {
-                        if (enabled)
-                        {
-                            ((ScavengerAgent)agent).Enable();
-                        }
-                        else
-                        {
-                            ((ScavengerAgent)agent).Disable();
-                        }
-                    }
-                    else if (set)
-                    {
-                        ((ScavengerAgent)agent).OnSetHotBag();
-                    }
-
-                    break;
+                    ScavengerAgent.Instance.Enable();
                 }
+                else
+                {
+                    ScavengerAgent.Instance.Disable();
+                }
+            }
+            else if (set)
+            {
+                ScavengerAgent.Instance.OnSetHotBag();
             }
 
             return true;
@@ -244,17 +208,7 @@ namespace Assistant.Scripts
 
         private static bool SellAgentCommand(string command, Argument[] args, bool quiet, bool force)
         {
-            string agentName = Language.GetString(LocString.Sell);
-            
-            foreach (Agent agent in Agent.List)
-            {
-                if (agent.Name.Equals(agentName))
-                {
-                    ((SellAgent)agent).SetHotBag();
-
-                    break;
-                }
-            }
+            SellAgent.Instance.SetHotBag();
 
             return true;
         }

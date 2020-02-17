@@ -28,15 +28,23 @@ namespace Assistant.Agents
 {
     public class OrganizerAgent : Agent
     {
+        public static List<OrganizerAgent> Agents { get; set; }
+
         public static void Initialize()
         {
             int maxAgents = Config.GetAppSetting<int>("MaxOrganizerAgents") == 0
                 ? 20
                 : Config.GetAppSetting<int>("MaxOrganizerAgents");
 
+            Agents = new List<OrganizerAgent>();
+
             for (int i = 1; i <= maxAgents; i++)
             {
-                Agent.Add(new OrganizerAgent(i));
+                OrganizerAgent organizerAgent = new OrganizerAgent(i);
+
+                Agent.Add(organizerAgent);
+
+                Agents.Add(organizerAgent);
             }
         }
 

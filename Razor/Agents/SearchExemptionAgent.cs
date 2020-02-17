@@ -28,21 +28,16 @@ namespace Assistant.Agents
 {
     public class SearchExemptionAgent : Agent
     {
-        private static SearchExemptionAgent m_Instance;
-
         public static int Count
         {
-            get { return m_Instance.m_Items.Count; }
+            get { return Instance.m_Items.Count; }
         }
-
-        public static SearchExemptionAgent Instance
-        {
-            get { return m_Instance; }
-        }
+        
+        public static SearchExemptionAgent Instance { get; private set; }
 
         public static void Initialize()
         {
-            Agent.Add(m_Instance = new SearchExemptionAgent());
+            Agent.Add(Instance = new SearchExemptionAgent());
         }
 
         public static bool IsExempt(Item item)
@@ -52,14 +47,14 @@ namespace Assistant.Agents
                 return true;
             }
 
-            return m_Instance == null ? false : m_Instance.CheckExempt(item);
+            return Instance == null ? false : Instance.CheckExempt(item);
         }
 
         public static bool Contains(Item item)
         {
-            return m_Instance == null
+            return Instance == null
                 ? false
-                : m_Instance.m_Items.Contains(item.Serial) || m_Instance.m_Items.Contains(item.ItemID);
+                : Instance.m_Items.Contains(item.Serial) || Instance.m_Items.Contains(item.ItemID);
         }
 
         private ListBox m_SubList;

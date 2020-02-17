@@ -28,15 +28,22 @@ namespace Assistant.Agents
 {
     public class RestockAgent : Agent
     {
+        public static List<RestockAgent> Agents { get; set; }
+
         public static void Initialize()
         {
             int maxAgents = Config.GetAppSetting<int>("MaxRestockAgents") == 0
                 ? 20
                 : Config.GetAppSetting<int>("MaxRestockAgents");
 
+            Agents = new List<RestockAgent>();
+
             for (int i = 1; i <= maxAgents; i++)
             {
-                Agent.Add(new RestockAgent(i));
+                RestockAgent restockAgent = new RestockAgent(i);
+
+                Agent.Add(restockAgent);
+                Agents.Add(restockAgent);
             }
         }
 

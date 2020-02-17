@@ -78,6 +78,8 @@ namespace Assistant.Agents
         }
 
         private static readonly ArrayList m_Instances = new ArrayList();
+        
+        public static List<BuyAgent> Agents { get; set; }
 
         public static void Initialize()
         {
@@ -88,11 +90,15 @@ namespace Assistant.Agents
                 ? 20
                 : Config.GetAppSetting<int>("MaxBuyAgents");
 
+            Agents = new List<BuyAgent>();
+
             for (int i = 1; i <= maxAgents; i++)
             {
                 BuyAgent b = new BuyAgent(i);
                 m_Instances.Add(b);
                 Agent.Add(b);
+
+                Agents.Add(b);
             }
         }
 

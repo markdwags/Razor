@@ -28,21 +28,16 @@ namespace Assistant.Agents
 {
     public class IgnoreAgent : Agent
     {
-        private static readonly IgnoreAgent m_Instance = new IgnoreAgent();
-
-        public static IgnoreAgent Instance
-        {
-            get { return m_Instance; }
-        }
+        public static IgnoreAgent Instance { get; private set; }
 
         public static void Initialize()
         {
-            Agent.Add(m_Instance);
+            Agent.Add(Instance = new IgnoreAgent());
         }
 
         public static bool IsIgnored(Serial ser)
         {
-            return m_Instance == null ? false : m_Instance.IsSerialIgnored(ser);
+            return Instance?.IsSerialIgnored(ser) ?? false;
         }
 
         private ListBox m_SubList;

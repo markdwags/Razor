@@ -28,9 +28,11 @@ namespace Assistant.Agents
 {
     public class UseOnceAgent : Agent
     {
+        public static UseOnceAgent Instance { get; private set; }
+
         public static void Initialize()
         {
-            Agent.Add(new UseOnceAgent());
+            Agent.Add(Instance = new UseOnceAgent());
         }
 
         private ListBox m_SubList;

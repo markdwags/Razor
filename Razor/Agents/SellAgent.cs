@@ -28,9 +28,11 @@ namespace Assistant.Agents
 {
     public class SellAgent : Agent
     {
+        public static SellAgent Instance { get; private set; }
+
         public static void Initialize()
         {
-            Agent.Add(new SellAgent());
+            Agent.Add(Instance = new SellAgent());
         }
 
         private ListBox m_SubList;
