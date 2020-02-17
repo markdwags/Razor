@@ -19,14 +19,10 @@
 #endregion
 
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 
 namespace Assistant.MapUO
 {

@@ -20,19 +20,8 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Net;
-using Assistant.Core;
-using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
 namespace Assistant
 {

@@ -19,12 +19,9 @@
 #endregion
 
 using System;
-using System.Text;
 using System.Drawing;
 using System.Collections;
-using System.IO;
 using System.Windows.Forms;
-using Ultima;
 
 namespace Assistant.MapUO
 {

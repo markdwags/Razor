@@ -19,9 +19,7 @@
 #endregion
 
 using System;
-using Assistant;
 using Assistant.Core;
-using Assistant.Macros;
 
 namespace Assistant.HotKeys
 {

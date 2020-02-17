@@ -19,11 +19,7 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Assistant.Agents;
-using Assistant.Core;
 using Assistant.Scripts.Engine;
 
 namespace Assistant.Scripts

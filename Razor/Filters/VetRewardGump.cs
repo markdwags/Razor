@@ -19,7 +19,6 @@
 #endregion
 
 using System;
-using Assistant;
 
 namespace Assistant.Filters
 {

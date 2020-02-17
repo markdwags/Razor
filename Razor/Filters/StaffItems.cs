@@ -18,9 +18,6 @@
 
 #endregion
 
-using System;
-using Assistant;
-
 namespace Assistant.Filters
 {
     public class StaffItemFilter : Filter

@@ -18,8 +18,6 @@
 
 #endregion
 
-using System;
-
 namespace Assistant
 {
     public class StealthSteps

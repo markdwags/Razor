@@ -18,9 +18,6 @@
 
 #endregion
 
-using System;
-using Assistant;
-
 namespace Assistant.HotKeys
 {
     public class CounterHotKeys

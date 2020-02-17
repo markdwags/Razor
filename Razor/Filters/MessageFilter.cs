@@ -18,10 +18,6 @@
 
 #endregion
 
-using System;
-using System.Text;
-using Assistant;
-
 namespace Assistant.Filters
 {
     public class AsciiMessageFilter : Filter

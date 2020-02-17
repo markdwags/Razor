@@ -20,17 +20,11 @@
 
 using System;
 using System.IO;
-using System.Reflection;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Timers;
 using Assistant.Core;
 using Assistant.Macros;
 using Assistant.UI;
-using Ultima;
 
 namespace Assistant
 {
