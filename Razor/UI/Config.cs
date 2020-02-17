@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Windows.Forms;
+using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Filters;
 using Assistant.Macros;

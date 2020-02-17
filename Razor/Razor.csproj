@@ -144,6 +144,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agents\BuyAgent.cs" />
+    <Compile Include="Agents\IgnoreAgent.cs" />
+    <Compile Include="Agents\OrganizerAgent.cs" />
+    <Compile Include="Agents\RestockAgent.cs" />
+    <Compile Include="Agents\SearchExemptionAgent.cs" />
+    <Compile Include="Agents\SellAgent.cs" />
+    <Compile Include="Agents\UseOnceAgent.cs" />
     <Compile Include="Boat\BoatWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,7 +162,7 @@
     <Compile Include="Core\ActionQueue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Agents.cs">
+    <Compile Include="Agents\Agents.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\BuffsTimer.cs" />
@@ -240,6 +247,7 @@
     <Compile Include="Core\ItemID.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ScavengerAgent.cs" />
     <Compile Include="Scripts\AgentCommands.cs" />
     <Compile Include="Scripts\Engine\Interpreter.cs" />
     <Compile Include="Scripts\Engine\Lexer.cs" />

@@ -23,6 +23,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Macros;
 using Assistant.Scripts;
@@ -204,7 +205,7 @@ namespace Assistant
             string use = Language.GetString(LocString.UseOnce);
             for (int i = 0; i < Agent.List.Count; i++)
             {
-                Agent a = (Agent) Agent.List[i];
+                Agent a = Agent.List[i];
                 if (a.Name == use)
                 {
                     a.OnButtonPress(1);

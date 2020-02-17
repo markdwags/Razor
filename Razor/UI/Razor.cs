@@ -34,6 +34,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
+using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Scripts;
 using Assistant.UI;

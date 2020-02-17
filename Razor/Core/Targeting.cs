@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Macros;
 using Assistant.Scripts;

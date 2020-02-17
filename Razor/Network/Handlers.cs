@@ -26,6 +26,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Filters;
 using Assistant.Macros;
