@@ -235,18 +235,62 @@ namespace Assistant.Scripts
 
         private static double Hp(string expression, Argument[] args, bool quiet)
         {
-            if (World.Player == null)
-                return 0;
+            if (args.Length < 1)
+            {
+                if (World.Player == null)
+                    return 0;
 
-            return World.Player.Hits;
+                return World.Player.Hits;
+            }
+            else
+            {
+                Serial serial = args[0].AsSerial();
+
+                if (!serial.IsValid)
+                {
+                    ScriptManager.Error("hp/hits - invalid serial");
+                    return 0;
+                }
+
+                Mobile m = World.FindMobile(serial);
+
+                if (m != null)
+                {
+                    return m.Hits;
+                }
+
+                return Double.MaxValue;
+            }
         }
 
         private static double MaxHp(string expression, Argument[] args, bool quiet)
         {
-            if (World.Player == null)
-                return 0;
+            if (args.Length < 1)
+            {
+                if (World.Player == null)
+                    return 0;
 
-            return World.Player.HitsMax;
+                return World.Player.HitsMax;
+            }
+            else
+            {
+                Serial serial = args[0].AsSerial();
+
+                if (!serial.IsValid)
+                {
+                    ScriptManager.Error("maxhp/maxhits - invalid serial");
+                    return 0;
+                }
+
+                Mobile m = World.FindMobile(serial);
+
+                if (m != null)
+                {
+                    return m.HitsMax;
+                }
+
+                return Double.MaxValue;
+            }
         }
 
         private static double Stam(string expression, Argument[] args, bool quiet)
@@ -326,5 +370,6 @@ namespace Assistant.Scripts
 
             return 0;
         }
+
     }
 }
