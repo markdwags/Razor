@@ -30,12 +30,7 @@ namespace Assistant
 {
     public abstract class Agent
     {
-        private static readonly List<Agent> m_List = new List<Agent>();
-
-        public static List<Agent> List
-        {
-            get { return m_List; }
-        }
+        public static List<Agent> List { get; } = new List<Agent>();
 
         public delegate void ItemCreatedEventHandler(Item item);
 
@@ -62,20 +57,20 @@ namespace Assistant
 
         public static void Add(Agent a)
         {
-            m_List.Add(a);
+            List.Add(a);
         }
 
         public static void ClearAll()
         {
-            for (int i = 0; i < m_List.Count; i++)
+            for (int i = 0; i < List.Count; i++)
             {
-                ((Agent) m_List[i]).Clear();
+                ((Agent) List[i]).Clear();
             }
         }
 
         public static void SaveProfile(XmlTextWriter xml)
         {
-            foreach (Agent a in m_List)
+            foreach (Agent a in List)
             {
                 xml.WriteStartElement(a.Name);
                 a.Save(xml);
@@ -92,11 +87,11 @@ namespace Assistant
                 return;
             }
 
-            for (int i = 0; i < m_List.Count; i++)
+            for (int i = 0; i < List.Count; i++)
             {
                 try
                 {
-                    Agent a = (Agent) m_List[i];
+                    Agent a = (Agent) List[i];
                     XmlElement el = xml[a.Name];
                     if (el != null)
                     {
@@ -121,9 +116,9 @@ namespace Assistant
                 buttons[i].Visible = false;
             }
 
-            for (int i = 0; i < m_List.Count; i++)
+            for (int i = 0; i < List.Count; i++)
             {
-                list.Items.Add(m_List[i]);
+                list.Items.Add(List[i]);
             }
 
             list.EndUpdate();
@@ -145,9 +140,9 @@ namespace Assistant
             Engine.MainWindow.SafeAction(s => s.UnlockControl(subList));
 
             Agent a = null;
-            if (idx >= 0 && idx < m_List.Count)
+            if (idx >= 0 && idx < List.Count)
             {
-                a = m_List[idx] as Agent;
+                a = List[idx] as Agent;
             }
 
             if (a != null)
@@ -331,13 +326,13 @@ namespace Assistant
             }
         }
 
-        private void OnAdd()
+        public void OnAdd()
         {
             World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
             Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnTarget));
         }
 
-        private void OnAddContainer()
+        public void OnAddContainer()
         {
             World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
             Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnTargetBag));
@@ -806,7 +801,7 @@ namespace Assistant
             }
         }
 
-        private void SetHotBag()
+        public void SetHotBag()
         {
             World.Player.SendMessage(MsgLevel.Force, LocString.TargCont);
             Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnHBTarget));
@@ -1060,7 +1055,7 @@ namespace Assistant
             }
         }
 
-        private void Organize()
+        public void Organize()
         {
             if (m_Cont == 0 || m_Cont > 0x7FFFFF00)
             {
@@ -1550,6 +1545,19 @@ namespace Assistant
             OnEnableDisable();
         }
 
+        public void Disable()
+        {
+            m_Enabled = false;
+            UpdateEnableButton();
+            World.Player.SendMessage(MsgLevel.Force, "Scavenger Agent Disabled");
+        }
+        public void Enable()
+        {
+            m_Enabled = true;
+            UpdateEnableButton();
+            World.Player.SendMessage(MsgLevel.Force, "Scavenger Agent Enabled");
+        }
+
         private void OnEnableDisable()
         {
             m_Enabled = !m_Enabled;
@@ -1565,13 +1573,13 @@ namespace Assistant
             }
         }
 
-        private void OnAddToHotBag()
+        public void OnAddToHotBag()
         {
             World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
             Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnTarget));
         }
 
-        private void OnSetHotBag()
+        public void OnSetHotBag()
         {
             World.Player.SendMessage(LocString.TargCont);
             Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnTargetBag));
@@ -1694,7 +1702,7 @@ namespace Assistant
             }
         }
 
-        private void ClearCache()
+        public void ClearCache()
         {
             DebugLog("Clearing Cache of {0} items", m_Cache == null ? -1 : m_Cache.Count);
             if (m_Cache != null)
@@ -2534,7 +2542,7 @@ namespace Assistant
             }
         }
 
-        private void SetHB()
+        public void SetHB()
         {
             World.Player.SendMessage(MsgLevel.Force, LocString.TargCont);
             Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnHBTarget));
@@ -2572,7 +2580,7 @@ namespace Assistant
             SetHBText();
         }
 
-        private void OnHotKey()
+        public void OnHotKey()
         {
             if (Client.Instance.AllowBit(FeatureBit.RestockAgent))
             {
