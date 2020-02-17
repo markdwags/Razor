@@ -251,7 +251,7 @@ namespace Assistant.Agents
 
             if (m_SubList != null)
             {
-                m_SubList.Items.Add(String.Format("\"{0}\" {1}", name, s));
+                m_SubList.Items.Add($"\"{name}\" {s}");
             }
         }
 

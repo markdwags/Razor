@@ -47,7 +47,7 @@ namespace Assistant.Agents
 
             public override string ToString()
             {
-                return String.Format("{0}\t{1}", ItemID, Amount);
+                return $"{ItemID}\t{Amount}";
             }
         }
 
@@ -299,7 +299,7 @@ namespace Assistant.Agents
 
         public override string Name
         {
-            get { return String.Format("{0}-{1}", Language.GetString(LocString.Buy), m_Num); }
+            get { return $"{Language.GetString(LocString.Buy)}-{m_Num}"; }
         }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)

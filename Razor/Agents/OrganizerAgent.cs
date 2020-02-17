@@ -52,10 +52,10 @@ namespace Assistant.Agents
             m_Items = new List<ItemID>();
             m_Num = num;
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
-                String.Format("{0}-{1:D2}", Language.GetString(LocString.OrganizerAgent), m_Num),
+                $"{Language.GetString(LocString.OrganizerAgent)}-{m_Num:D2}",
                 new HotKeyCallback(Organize));
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
-                String.Format("{0}-{1:D2}", Language.GetString(LocString.SetOrganizerHB), m_Num),
+                $"{Language.GetString(LocString.SetOrganizerHB)}-{m_Num:D2}",
                 new HotKeyCallback(SetHotBag));
             PacketHandler.RegisterClientToServerViewer(0x09, new PacketViewerCallback(OnSingleClick));
 
@@ -89,7 +89,7 @@ namespace Assistant.Agents
 
         public override string Name
         {
-            get { return String.Format("{0}-{1}", Language.GetString(LocString.Organizer), m_Num); }
+            get { return $"{Language.GetString(LocString.Organizer)}-{m_Num}"; }
         }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)

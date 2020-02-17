@@ -53,10 +53,10 @@ namespace Assistant.Agents
             m_Items = new List<RestockItem>();
 
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
-                String.Format("{0}-{1:D2}", Language.GetString(LocString.RestockAgent), m_Num),
+                $"{Language.GetString(LocString.RestockAgent)}-{m_Num:D2}",
                 new HotKeyCallback(OnHotKey));
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
-                String.Format("{0}-{1:D2}", Language.GetString(LocString.SetRestockHB), m_Num),
+                $"{Language.GetString(LocString.SetRestockHB)}-{m_Num:D2}",
                 new HotKeyCallback(SetHB));
             PacketHandler.RegisterClientToServerViewer(0x09, new PacketViewerCallback(OnSingleClick));
 
@@ -95,7 +95,7 @@ namespace Assistant.Agents
 
         public override string Name
         {
-            get { return String.Format("{0}-{1}", Language.GetString(LocString.Restock), m_Num); }
+            get { return $"{Language.GetString(LocString.Restock)}-{m_Num}"; }
         }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)
@@ -489,7 +489,7 @@ namespace Assistant.Agents
 
             public override string ToString()
             {
-                return String.Format("{0}\t\t{1}", ItemID, Amount);
+                return $"{ItemID}\t\t{Amount}";
             }
         }
     }
