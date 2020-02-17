@@ -978,8 +978,6 @@ namespace Assistant.Scripts.Engine
 
             _activeScript = script;
 
-            ExecuteScript();
-
             return true;
         }
 
