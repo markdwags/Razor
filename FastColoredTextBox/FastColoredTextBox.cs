@@ -24,7 +24,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Drawing.Drawing2D;
@@ -172,7 +171,7 @@ namespace FastColoredTextBoxNS
             LeftBracket2 = '\x0';
             RightBracket2 = '\x0';
             SyntaxHighlighter = new SyntaxHighlighter(this);
-            language = Language.Custom;
+            language = Language.Razor;
             PreferredLineWidth = 0;
             needRecalc = true;
             lastNavigatedDateTime = DateTime.Now;
@@ -994,7 +993,7 @@ namespace FastColoredTextBoxNS
         /// Language for highlighting by built-in highlighter.
         /// </summary>
         [Browsable(true)]
-        [DefaultValue(typeof(Language), "Custom")]
+        [DefaultValue(typeof(Language), "Razor")]
         [Description("Language for highlighting by built-in highlighter.")]
         public Language Language
         {
@@ -4765,7 +4764,7 @@ namespace FastColoredTextBoxNS
 
             EventHandler<AutoIndentEventArgs> calculator = AutoIndentNeeded;
             if (calculator == null)
-                if (Language != Language.Custom && SyntaxHighlighter != null)
+                if (SyntaxHighlighter != null)
                     calculator = SyntaxHighlighter.AutoIndentNeeded;
                 else
                     calculator = CalcAutoIndentShiftByCodeFolding;
@@ -7345,7 +7344,7 @@ namespace FastColoredTextBoxNS
 
             if (SyntaxHighlighter != null)
             {
-                if (Language == Language.Custom && !string.IsNullOrEmpty(DescriptionFile))
+                if (!string.IsNullOrEmpty(DescriptionFile))
                     SyntaxHighlighter.HighlightSyntax(DescriptionFile, range);
                 else
                     SyntaxHighlighter.HighlightSyntax(Language, range);
