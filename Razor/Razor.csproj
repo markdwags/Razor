@@ -247,7 +247,7 @@
     <Compile Include="Core\ItemID.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ScavengerAgent.cs" />
+    <Compile Include="Agents\ScavengerAgent.cs" />
     <Compile Include="Scripts\AgentCommands.cs" />
     <Compile Include="Scripts\Engine\Interpreter.cs" />
     <Compile Include="Scripts\Engine\Lexer.cs" />
