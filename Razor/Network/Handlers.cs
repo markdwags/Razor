@@ -1993,30 +1993,7 @@ namespace Assistant
                     }
 
                     // Overhead message override
-                    if (Config.GetBool("ShowOverheadMessages") && OverheadMessages.OverheadMessageList.Count > 0)
-                    {
-                        string overheadFormat = Config.GetString("OverheadFormat");
-
-                        foreach (OverheadMessages.OverheadMessage message in OverheadMessages.OverheadMessageList)
-                        {
-                            if (text.IndexOf(message.SearchMessage, StringComparison.OrdinalIgnoreCase) != -1)
-                            {
-                                string ohMessage = overheadFormat.Replace("{msg}", message.MessageOverhead);
-                                string[] splitText = text.Split(' ');
-
-                                if (splitText.Length > 0)
-                                {
-                                    for (int wordNum = 1; wordNum < splitText.Length + 1; wordNum++)
-                                    {
-                                        ohMessage = ohMessage.Replace($"{{{wordNum}}}", splitText[wordNum - 1]);
-                                    }
-                                }
-
-                                World.Player.OverheadMessage(message.Hue, ohMessage);
-                                break;
-                            }
-                        }
-                    }
+                    OverheadMessages.DisplayOverheadMessage(text);
                 }
 
                 if (Config.GetBool("ShowContainerLabels") && ser.IsItem)
