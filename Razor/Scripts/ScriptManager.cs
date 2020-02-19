@@ -331,7 +331,7 @@ namespace Assistant.Scripts
                 "lift", "lifttype", "waitforgump", "gumpresponse", "gumpclose", "menu", "menuresponse", "waitformenu",
                 "promptresponse", "waitforprompt", "hotkey", "say", "msg", "overhead", "sysmsg", "wait", "pause",
                 "waitforstat", "setability", "setlasttarget", "lasttarget", "setvar", "skill", "useskill", "walk",
-                "script", "attack", "useonce", "organizer", "org", "restock", "scav", "scavenger"
+                "script", "attack", "useonce", "organizer", "org", "organize", "restock", "scav", "scavenger"
             };
 
             #endregion

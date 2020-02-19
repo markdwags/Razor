@@ -31,6 +31,7 @@ namespace Assistant.Scripts
             // "useonce", "organizer", "org", "restock", "scav", "scavenger"
             Interpreter.RegisterCommandHandler("useonce", UseOnceCommand);
             Interpreter.RegisterCommandHandler("organizer", OrganizerAgentCommand);
+            Interpreter.RegisterCommandHandler("organize", OrganizerAgentCommand);
             Interpreter.RegisterCommandHandler("org", OrganizerAgentCommand);
             Interpreter.RegisterCommandHandler("restock", RestockAgentCommand);
             Interpreter.RegisterCommandHandler("scav", ScavAgentCommand);
