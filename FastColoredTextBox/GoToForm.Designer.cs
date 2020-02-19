@@ -37,9 +37,9 @@
             // label
             // 
             this.label.AutoSize = true;
-            this.label.Location = new System.Drawing.Point(12, 9);
+            this.label.Location = new System.Drawing.Point(14, 10);
             this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(96, 13);
+            this.label.Size = new System.Drawing.Size(107, 15);
             this.label.TabIndex = 0;
             this.label.Text = "Line Number (1/1):";
             // 
@@ -47,17 +47,17 @@
             // 
             this.tbLineNumber.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbLineNumber.Location = new System.Drawing.Point(12, 29);
+            this.tbLineNumber.Location = new System.Drawing.Point(14, 33);
             this.tbLineNumber.Name = "tbLineNumber";
-            this.tbLineNumber.Size = new System.Drawing.Size(296, 20);
+            this.tbLineNumber.Size = new System.Drawing.Size(199, 23);
             this.tbLineNumber.TabIndex = 1;
             // 
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(152, 71);
+            this.btnOk.Location = new System.Drawing.Point(14, 62);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.Size = new System.Drawing.Size(87, 27);
             this.btnOk.TabIndex = 2;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -66,9 +66,9 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(233, 71);
+            this.btnCancel.Location = new System.Drawing.Point(125, 62);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(87, 27);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -77,14 +77,15 @@
             // GoToForm
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(320, 106);
+            this.ClientSize = new System.Drawing.Size(225, 105);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.tbLineNumber);
             this.Controls.Add(this.label);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
