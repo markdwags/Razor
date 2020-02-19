@@ -1072,6 +1072,30 @@ namespace Assistant
 
         //private UOEntity m_LastCtxM = null;
         //public UOEntity LastContextMenu { get { return m_LastCtxM; } set { m_LastCtxM = value; } }
+        
+        public bool UseItem(Item cont, ushort find)
+        {
+            if (!Client.Instance.AllowBit(FeatureBit.PotionHotkeys))
+                return false;
+
+            for (int i = 0; i < cont.Contains.Count; i++)
+            {
+                Item item = (Item)cont.Contains[i];
+
+                if (item.ItemID == find)
+                {
+                    PlayerData.DoubleClick(item);
+                    return true;
+                }
+                else if (item.Contains != null && item.Contains.Count > 0)
+                {
+                    if (UseItem(item, find))
+                        return true;
+                }
+            }
+
+            return false;
+        }
 
         public static bool DoubleClick(object clicked)
         {

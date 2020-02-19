@@ -95,6 +95,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("skill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("useskill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
+            Interpreter.RegisterCommandHandler("potion", Potion);
 
             // Script related
             Interpreter.RegisterCommandHandler("script", PlayScript);
@@ -1150,6 +1151,51 @@ namespace Assistant.Scripts
             }
 
             ScriptManager.PlayScript(args[0].AsString());
+
+            return true;
+        }
+
+        private static readonly Dictionary<string, ushort> PotionList = new Dictionary<string, ushort>()
+        {
+            {"heal", 3852},
+            {"cure", 3847},
+            {"refresh", 3851},
+            {"nightsight", 3846},
+            {"ns", 3846},
+            {"explosion", 3853},
+            {"strength", 3849},
+            {"str", 3849},
+            {"agility", 3848}
+        };
+
+        private static bool Potion(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length == 0)
+            {
+                ScriptManager.Error("Usage: potion ('type')");
+                return true;
+            }
+            
+            Item pack = World.Player.Backpack;
+            if (pack == null)
+                return true;
+
+            if (PotionList.TryGetValue(args[0].AsString().ToLower(), out ushort potionId))
+            {
+                if (potionId == 3852 && World.Player.Poisoned && Config.GetBool("BlockHealPoison") &&
+                    Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                {
+                    World.Player.SendMessage(MsgLevel.Force, LocString.HealPoisonBlocked);
+                    return true;
+                }
+
+                if (!World.Player.UseItem(pack, potionId))
+                    World.Player.SendMessage(LocString.NoItemOfType, (ItemID)potionId);
+            }
+            else
+            {
+                ScriptManager.Error("Unknown potion type");
+            }
 
             return true;
         }

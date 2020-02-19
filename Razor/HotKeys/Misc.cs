@@ -298,7 +298,7 @@ namespace Assistant.HotKeys
             Item pack = World.Player.Backpack;
             if (pack != null)
             {
-                if (!UseItem(pack, 3617))
+                if (!World.Player.UseItem(pack, 3617))
                 {
                     World.Player.SendMessage(MsgLevel.Warning, LocString.NoBandages);
                 }
@@ -315,7 +315,7 @@ namespace Assistant.HotKeys
             Item pack = World.Player.Backpack;
             if (pack != null)
             {
-                if (!UseItem(pack, 3617))
+                if (!World.Player.UseItem(pack, 3617))
                 {
                     World.Player.SendMessage(MsgLevel.Warning, LocString.NoBandages);
                 }
@@ -372,7 +372,7 @@ namespace Assistant.HotKeys
                 return;
             }
 
-            if (!UseItem(pack, id))
+            if (!World.Player.UseItem(pack, id))
                 World.Player.SendMessage(LocString.NoItemOfType, (ItemID) id);
         }
 
@@ -400,30 +400,6 @@ namespace Assistant.HotKeys
 
             if (item != null)
                 PlayerData.DoubleClick(item);
-        }
-
-        private static bool UseItem(Item cont, ushort find)
-        {
-            if (!Client.Instance.AllowBit(FeatureBit.PotionHotkeys))
-                return false;
-
-            for (int i = 0; i < cont.Contains.Count; i++)
-            {
-                Item item = (Item) cont.Contains[i];
-
-                if (item.ItemID == find)
-                {
-                    PlayerData.DoubleClick(item);
-                    return true;
-                }
-                else if (item.Contains != null && item.Contains.Count > 0)
-                {
-                    if (UseItem(item, find))
-                        return true;
-                }
-            }
-
-            return false;
         }
 
         private static void GrabItem()
