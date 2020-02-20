@@ -36,6 +36,8 @@ namespace FastColoredTextBoxNS
 
         public static Platform GetOperationSystemPlatform()
         {
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+                return Environment.Is64BitOperatingSystem  ? Platform.X64 : Platform.X86;
             var sysInfo = new SYSTEM_INFO();
 
             // WinXP and older - use GetNativeSystemInfo
