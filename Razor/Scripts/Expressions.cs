@@ -48,6 +48,8 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("int", Int);
             Interpreter.RegisterExpressionHandler("dex", Dex);
 
+            Interpreter.RegisterExpressionHandler("weight", Weight);
+
             Interpreter.RegisterExpressionHandler("skill", SkillExpression);
             Interpreter.RegisterExpressionHandler("count", CountExpression);
             Interpreter.RegisterExpressionHandler("counter", CountExpression);
@@ -287,6 +289,14 @@ namespace Assistant.Scripts
                 return 0;
 
             return World.Player.Int;
+        }
+
+        private static double Weight(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.Weight;
         }
 
         private static double SkillExpression(string expression, Argument[] args, bool quiet)
