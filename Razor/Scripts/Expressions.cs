@@ -168,14 +168,14 @@ namespace Assistant.Scripts
 
         private static double RHandEmpty(string expression, Argument[] args, bool quiet)
         {
-            return World.Player != null && World.Player.GetItemOnLayer(Layer.RightHand) != null
+            return World.Player != null && World.Player.GetItemOnLayer(Layer.RightHand) == null
                 ? 1
                 : 0;
         }
 
         private static double LHandEmpty(string expression, Argument[] args, bool quiet)
         {
-            return World.Player != null && World.Player.GetItemOnLayer(Layer.LeftHand) != null
+            return World.Player != null && World.Player.GetItemOnLayer(Layer.LeftHand) == null
                 ? 1
                 : 0;
         }
