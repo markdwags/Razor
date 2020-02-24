@@ -397,7 +397,7 @@ namespace FastColoredTextBoxNS
         /// <summary>
         /// Draw caret when the control is not focused
         /// </summary>
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         public bool ShowCaretWhenInactive { get; set; }
 
 
