@@ -181,8 +181,8 @@ namespace Assistant.Core
                     {
                         RedrawList(this);
                     }
-
-                    World.Player.SendMessage(MsgLevel.Friend, $"Added '{friendName}' to '{GroupName}'");
+                    
+                    World.Player?.SendMessage(MsgLevel.Friend, $"Added '{friendName}' to '{GroupName}'");
 
                     return true;
                 }
