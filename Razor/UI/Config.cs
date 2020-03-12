@@ -304,6 +304,8 @@ namespace Assistant
             AddProperty("AutoSaveScript", false);
             AddProperty("AutoSaveScriptPlay", false);
 
+            AddProperty("HighlightFriend", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

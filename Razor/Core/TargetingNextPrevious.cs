@@ -216,7 +216,7 @@ namespace Assistant
             target.Y = mobile.Position.Y;
             target.Z = mobile.Position.Z;
 
-            if (!isFriend)
+            if (!isFriend || Config.GetBool("HighlightFriend"))
             {
                 Client.Instance.SendToClient(new ChangeCombatant(mobile));
                 m_LastCombatant = mobile.Serial;

@@ -508,6 +508,8 @@ namespace Assistant
             autoSaveScript.SafeAction(s => { s.Checked = Config.GetBool("AutoSaveScript"); });
             autoSaveScriptPlay.SafeAction(s => { s.Checked = Config.GetBool("AutoSaveScriptPlay"); });
 
+            highlightFriend.SafeAction(s => { s.Checked = Config.GetBool("HighlightFriend"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -6674,6 +6676,11 @@ namespace Assistant
                     // ignore
                 }
             }
+        }
+
+        private void highlightFriend_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("HighlightFriend", highlightFriend.Checked);
         }
     }
 }
