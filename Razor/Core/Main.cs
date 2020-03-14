@@ -251,7 +251,7 @@ namespace Assistant
 
         public static void Load()
         {
-            Culture = new CultureInfo("en-EN", false);
+            Culture = new CultureInfo("en-US", false);
             Culture.NumberFormat.NumberDecimalSeparator = ".";
             Culture.NumberFormat.NumberGroupSeparator = ",";
 

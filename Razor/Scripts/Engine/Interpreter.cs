@@ -913,7 +913,7 @@ namespace Assistant.Scripts.Engine
 
         static Interpreter()
         {
-            Culture = new CultureInfo("en-EN", false);
+            Culture = new CultureInfo("en-US", false);
             Culture.NumberFormat.NumberDecimalSeparator = ".";
             Culture.NumberFormat.NumberGroupSeparator = ",";
         }
