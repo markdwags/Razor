@@ -3912,13 +3912,15 @@ namespace Assistant
                 if (World.Player != null)
                     if (Config.GetBool("ShowInRazorTitleBar") && !string.IsNullOrEmpty(razorTitleBar.Text))
                     {
-                        m_NotifyIcon.Text = razorTitleBar.Text.Replace("{name}", World.Player.Name)
-                            .Replace("{shard}", World.ShardName)
-                            .Replace("{version}", Engine.Version);
+                        string title = razorTitleBar.Text.Replace("{name}", World.Player.Name).Replace("{shard}", World.ShardName)
+                            .Replace("{version}", Engine.Version).Replace("{profile}", Config.CurrentProfile.Name)
+                            .Replace("{account}", World.AccountName);
+
+                        m_NotifyIcon.Text = title.Substring(0, 63);
                     }
                     else
                     {
-                        m_NotifyIcon.Text = String.Format("Razor - {0} ({1})", World.Player.Name, World.ShardName);
+                        m_NotifyIcon.Text = $"Razor - {World.Player.Name} ({World.ShardName})";
                     }
                 else
                     m_NotifyIcon.Text = "Razor";
