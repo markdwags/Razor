@@ -693,6 +693,12 @@ namespace Assistant
             }
         }
 
+        public static void AutoSave()
+        {
+            bool autoSaveDisabled = Config.GetAppSetting<bool>("DisableAutoSave");
+            if (!autoSaveDisabled)
+                Config.Save();
+        }
         public static void Save()
         {
             if (m_Current != null)
