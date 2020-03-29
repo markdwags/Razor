@@ -2186,6 +2186,10 @@ namespace Assistant
                 Packet.Logging = false;
             }
         }
+        private void disableAutoSave_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetAppSetting("DisableAutoSave", (disableAutoSave.Checked ? 1 : 0).ToString());
+        }
 
         private void showNotoHue_CheckedChanged(object sender, System.EventArgs e)
         {
@@ -6684,5 +6688,6 @@ namespace Assistant
         {
             Config.SetProperty("HighlightFriend", highlightFriend.Checked);
         }
+
     }
 }
