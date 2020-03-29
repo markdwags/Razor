@@ -510,6 +510,8 @@ namespace Assistant
 
             highlightFriend.SafeAction(s => { s.Checked = Config.GetBool("HighlightFriend"); });
 
+            disableAutoSave.SafeAction(s => { s.Checked = Config.GetBool("DisableAutoSave"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -2188,7 +2190,7 @@ namespace Assistant
         }
         private void disableAutoSave_CheckedChanged(object sender, EventArgs e)
         {
-            Config.SetAppSetting("DisableAutoSave", (disableAutoSave.Checked ? 1 : 0).ToString());
+            Config.SetProperty("DisableAutoSave", disableAutoSave.Checked);
         }
 
         private void showNotoHue_CheckedChanged(object sender, System.EventArgs e)
