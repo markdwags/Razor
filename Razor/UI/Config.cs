@@ -793,7 +793,7 @@ namespace Assistant
                 if (m_Current != null && (m_Current.Name == prof || m_Current.Name.Trim() == prof.Trim()))
                     return;
 
-                Save();
+                AutoSave();
 
                 if (!LoadProfile(prof))
                 {
