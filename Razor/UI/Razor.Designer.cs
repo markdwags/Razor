@@ -771,6 +771,7 @@ namespace Assistant
             this.screenPrev = new System.Windows.Forms.PictureBox();
             this.dispTime = new System.Windows.Forms.CheckBox();
             this.advancedTab = new System.Windows.Forms.TabPage();
+            this.disableAutoSave = new System.Windows.Forms.CheckBox();
             this.enableUOAAPI = new System.Windows.Forms.CheckBox();
             this.disableSmartCPU = new System.Windows.Forms.Button();
             this.negotiate = new System.Windows.Forms.CheckBox();
@@ -1427,7 +1428,7 @@ namespace Assistant
             this.targetFilterEnabled.AutoSize = true;
             this.targetFilterEnabled.Location = new System.Drawing.Point(263, 50);
             this.targetFilterEnabled.Name = "targetFilterEnabled";
-            this.targetFilterEnabled.Size = new System.Drawing.Size(133, 19);
+            this.targetFilterEnabled.Size = new System.Drawing.Size(132, 19);
             this.targetFilterEnabled.TabIndex = 0;
             this.targetFilterEnabled.Text = "Target Filter Enabled";
             this.targetFilterEnabled.UseVisualStyleBackColor = true;
@@ -2000,7 +2001,7 @@ namespace Assistant
             this.friendBeneficialOnly.AutoSize = true;
             this.friendBeneficialOnly.Location = new System.Drawing.Point(6, 73);
             this.friendBeneficialOnly.Name = "friendBeneficialOnly";
-            this.friendBeneficialOnly.Size = new System.Drawing.Size(232, 19);
+            this.friendBeneficialOnly.Size = new System.Drawing.Size(233, 19);
             this.friendBeneficialOnly.TabIndex = 140;
             this.friendBeneficialOnly.Text = "\'Next/Prev Friendly\' sets beneficial only";
             this.friendBeneficialOnly.UseVisualStyleBackColor = true;
@@ -2011,7 +2012,7 @@ namespace Assistant
             this.onlyNextPrevBeneficial.AutoSize = true;
             this.onlyNextPrevBeneficial.Location = new System.Drawing.Point(6, 48);
             this.onlyNextPrevBeneficial.Name = "onlyNextPrevBeneficial";
-            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(223, 19);
+            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(224, 19);
             this.onlyNextPrevBeneficial.TabIndex = 139;
             this.onlyNextPrevBeneficial.Text = "\'Next/Prev Friend\' sets beneficial only";
             this.onlyNextPrevBeneficial.UseVisualStyleBackColor = true;
@@ -2090,7 +2091,7 @@ namespace Assistant
             this.showTargetMessagesOverChar.AutoSize = true;
             this.showTargetMessagesOverChar.Location = new System.Drawing.Point(9, 118);
             this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
-            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
+            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(224, 19);
             this.showTargetMessagesOverChar.TabIndex = 74;
             this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
             this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
@@ -3970,7 +3971,7 @@ namespace Assistant
             this.rangeCheckDoubleClick.AutoSize = true;
             this.rangeCheckDoubleClick.Location = new System.Drawing.Point(272, 78);
             this.rangeCheckDoubleClick.Name = "rangeCheckDoubleClick";
-            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(208, 19);
+            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(207, 19);
             this.rangeCheckDoubleClick.TabIndex = 15;
             this.rangeCheckDoubleClick.Text = "Range check on \'DoubleClickType\'";
             this.rangeCheckDoubleClick.UseVisualStyleBackColor = true;
@@ -3981,7 +3982,7 @@ namespace Assistant
             this.rangeCheckTargetByType.AutoSize = true;
             this.rangeCheckTargetByType.Location = new System.Drawing.Point(272, 53);
             this.rangeCheckTargetByType.Name = "rangeCheckTargetByType";
-            this.rangeCheckTargetByType.Size = new System.Drawing.Size(190, 19);
+            this.rangeCheckTargetByType.Size = new System.Drawing.Size(188, 19);
             this.rangeCheckTargetByType.TabIndex = 14;
             this.rangeCheckTargetByType.Text = "Range check on \'TargetByType\'";
             this.rangeCheckTargetByType.UseVisualStyleBackColor = true;
@@ -4003,7 +4004,7 @@ namespace Assistant
             this.stepThroughMacro.AutoSize = true;
             this.stepThroughMacro.Location = new System.Drawing.Point(272, 118);
             this.stepThroughMacro.Name = "stepThroughMacro";
-            this.stepThroughMacro.Size = new System.Drawing.Size(135, 19);
+            this.stepThroughMacro.Size = new System.Drawing.Size(134, 19);
             this.stepThroughMacro.TabIndex = 12;
             this.stepThroughMacro.Text = "Step Through Macro";
             this.stepThroughMacro.UseVisualStyleBackColor = true;
@@ -4014,7 +4015,7 @@ namespace Assistant
             this.targetByTypeDifferent.AutoSize = true;
             this.targetByTypeDifferent.Location = new System.Drawing.Point(272, 28);
             this.targetByTypeDifferent.Name = "targetByTypeDifferent";
-            this.targetByTypeDifferent.Size = new System.Drawing.Size(183, 19);
+            this.targetByTypeDifferent.Size = new System.Drawing.Size(181, 19);
             this.targetByTypeDifferent.TabIndex = 11;
             this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
             this.targetByTypeDifferent.UseVisualStyleBackColor = true;
@@ -4584,6 +4585,7 @@ namespace Assistant
             // advancedTab
             // 
             this.advancedTab.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedTab.Controls.Add(this.disableAutoSave);
             this.advancedTab.Controls.Add(this.enableUOAAPI);
             this.advancedTab.Controls.Add(this.disableSmartCPU);
             this.advancedTab.Controls.Add(this.negotiate);
@@ -4598,6 +4600,15 @@ namespace Assistant
             this.advancedTab.Size = new System.Drawing.Size(519, 322);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
+            // 
+            // disableAutoSave
+            // 
+            this.disableAutoSave.Location = new System.Drawing.Point(241, 293);
+            this.disableAutoSave.Name = "disableAutoSave";
+            this.disableAutoSave.Size = new System.Drawing.Size(270, 23);
+            this.disableAutoSave.TabIndex = 76;
+            this.disableAutoSave.Text = "Disable auto-save profiles";
+            this.disableAutoSave.CheckedChanged += new System.EventHandler(this.disableAutoSave_CheckedChanged);
             // 
             // enableUOAAPI
             // 
