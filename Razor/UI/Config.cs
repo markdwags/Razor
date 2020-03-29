@@ -695,7 +695,7 @@ namespace Assistant
 
         public static void AutoSave()
         {
-            bool autoSaveDisabled = Config.GetAppSetting<bool>("DisableAutoSave");
+            bool autoSaveDisabled = Config.GetBool("DisableAutoSave");
             if (!autoSaveDisabled)
                 Config.Save();
         }
