@@ -392,7 +392,7 @@ namespace Assistant
                 Engine.MainWindow.MapWindow.Close();
             PacketHandlers.Party.Clear();
             PacketHandlers.IgnoreGumps.Clear();
-            Config.Save();
+            Config.AutoSave();
         }
 
         private void OnConnected()
