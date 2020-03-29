@@ -249,10 +249,7 @@ namespace Assistant
             }
         }
 
-        public string DisplayName
-        {
-            get { return Ultima.TileData.ItemTable[m_ItemID.Value].Name; }
-        }
+        public string DisplayName => m_ItemID.Value < Ultima.TileData.ItemTable.Length ? Ultima.TileData.ItemTable[m_ItemID.Value].Name : string.Empty;
 
         public Layer Layer
         {
