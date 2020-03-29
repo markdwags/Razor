@@ -232,6 +232,11 @@ namespace Assistant.Scripts
             {
                 List<Item> items = World.FindItemsByName(gfxStr);
 
+                Item backItem = World.Player.Backpack.FindItemByName(gfxStr, true);
+
+                if (backItem != null)
+                    items.Add(backItem);
+
                 if (items.Count > 0)
                 {
                     list.AddRange(inRangeCheck
@@ -506,6 +511,11 @@ namespace Assistant.Scripts
                         items.Add(item);
                     }
                 }
+
+                Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
+
+                if (i != null)
+                    items.Add(i);
 
                 if (items.Count == 0)
                 {

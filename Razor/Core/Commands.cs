@@ -160,10 +160,7 @@ namespace Assistant
             {
                 Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System",
-                    $"Item: '{item.DisplayName}' '{item.Serial}' ({item.ItemID.Value})"));
-
-                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                    Language.CliLocName, "System", $"Hue: '{item.Hue}'"));
+                    $"Item Name: '{item.ItemID.ItemData.Name}' Serial: '{item.Serial}' Id: '{item.ItemID.Value}' Hue: '{item.Hue}'"));
             }
         }
 

@@ -6604,7 +6604,7 @@ namespace Assistant
                 return;
 
             scriptEditor.SelectedText = "";
-            scriptEditor.SelectedText = $"dclicktype '{item.DisplayName}'";
+            scriptEditor.SelectedText = $"dclicktype '{item.ItemID.ItemData.Name}'";
         }
 
         private void OnScriptPlaySelected(object sender, System.EventArgs e)
