@@ -341,7 +341,7 @@ namespace Assistant
             Client.Instance.Close();
             Counter.Save();
             Macros.MacroManager.Save();
-            Config.Save();
+            Config.AutoSave();
         }
 
         public static void RunUI()

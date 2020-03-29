@@ -1227,7 +1227,7 @@ namespace Assistant
             if (MessageBox.Show(this, Language.Format(LocString.ProfLoadQ, name), "Load?", MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Config.Save();
+                Config.AutoSave();
                 if (!Config.LoadProfile(name))
                 {
                     MessageBox.Show(this, Language.GetString(LocString.ProfLoadE), "Load Error", MessageBoxButtons.OK,
@@ -1339,7 +1339,7 @@ namespace Assistant
                         if (MessageBox.Show(this, Language.GetString(LocString.ProfExists), "Load Profile?",
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            Config.Save();
+                            Config.AutoSave();
                             profiles.SelectedIndex = i;
                             if (!Config.LoadProfile(str))
                             {
@@ -1361,7 +1361,7 @@ namespace Assistant
                     }
                 }
 
-                Config.Save();
+                Config.AutoSave();
                 Config.NewProfile(str);
                 profiles.Items.Add(str);
                 profiles.SelectedIndex = sel;
