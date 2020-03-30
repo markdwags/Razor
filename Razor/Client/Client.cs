@@ -296,7 +296,7 @@ namespace Assistant
                         : $"{buff.ClilocMessage1} ({timeLeft}), ");
                 }
 
-                buffs.Length = buffs.Length - 2;
+                buffs.Length = Math.Max(0, buffs.Length - 2);
                 buffList = buffs.ToString();
                 sb.Replace(@"{buffsdebuffs}", buffList);
             }
