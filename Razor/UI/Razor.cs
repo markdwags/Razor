@@ -3916,7 +3916,7 @@ namespace Assistant
                             .Replace("{version}", Engine.Version).Replace("{profile}", Config.CurrentProfile.Name)
                             .Replace("{account}", World.AccountName);
 
-                        m_NotifyIcon.Text = title.Substring(0, 63);
+                        m_NotifyIcon.Text = title.Length > 63 ? title.Substring(0, 63) : title;
                     }
                     else
                     {
