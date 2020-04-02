@@ -61,6 +61,16 @@ namespace Assistant.Scripts
             {
                 try
                 {
+                    if (!Client.Instance.ClientRunning)
+                    {
+                        if (ScriptRunning)
+                        {
+                            ScriptRunning = false;
+                            Interpreter.StopScript();
+                        }
+                        return;
+                    }
+
                     if (Interpreter.ExecuteScript())
                     {
                         if (ScriptRunning == false)

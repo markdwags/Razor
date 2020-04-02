@@ -968,10 +968,7 @@ namespace Assistant.Scripts
                 ScriptManager.Error("Usage: overhead ('text') [color] [serial]");
                 return true;
             }
-
-            if (!Client.Instance.ClientRunning)
-                return true;
-
+            
             if (args.Length == 1)
                 World.Player.OverheadMessage(Config.GetInt("SysColor"), args[0].AsString());
             else
