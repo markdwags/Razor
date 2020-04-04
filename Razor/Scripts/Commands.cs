@@ -323,15 +323,15 @@ namespace Assistant.Scripts
 
         private static bool WaitForTarget(string command, Argument[] args, bool quiet, bool force)
         {
-            switch (args.Length)
-            {
-                case 0:
-                    return Targeting.HasTarget || !ScriptManager.Timeout(); // use default timeout
-                case 1:
-                    return Targeting.HasTarget || !ScriptManager.Timeout(args[0].AsInt()); // user provided timeout
-                default:
-                    return Targeting.HasTarget || !ScriptManager.Timeout(); // use default just in case
-            }
+            if (args.Length != 1)
+                ScriptManager.Error("Usage: waitfortarget (timeout)");
+
+            if (Targeting.HasTarget)
+                return true;
+
+            Interpreter.Timeout(args[0].AsUInt(), () => { return true; });
+
+            return false;
         }
 
         private static bool Hotkey(string command, Argument[] args, bool quiet, bool force)
@@ -895,8 +895,12 @@ namespace Assistant.Scripts
 
         private static bool Pause(string command, Argument[] args, bool quiet, bool force)
         {
-            // If we return false, the script engine will run this command again
-            return args.Length < 1 ? !ScriptManager.Pause() : !ScriptManager.Pause(args[0].AsInt());
+            if (args.Length == 0)
+                throw new RunTimeError(null, "Usage: pause (timeout)");
+
+            Interpreter.Pause(args[0].AsUInt());
+
+            return true;
         }
 
         public static bool Msg(string command, Argument[] args, bool quiet, bool force)
