@@ -64,8 +64,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
-                return 0;
+                throw new RunTimeError(null, "Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
             }
 
             string gfxStr = args[0].AsString();
@@ -191,8 +190,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: insysmsg ('text')");
-                return 0;
+                throw new RunTimeError(null, "Usage: insysmsg ('text')");
             }
 
             string text = args[0].AsString();

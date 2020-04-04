@@ -130,12 +130,16 @@ namespace Assistant.Scripts
                 }
                 catch (RunTimeError ex)
                 {
-                    Error($"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})");
+                    World.Player?.SendMessage(MsgLevel.Error,
+                        ex.Node != null
+                            ? $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})"
+                            : $"Script Error: {ex.Message}");
+
                     Interpreter.StopScript();
                 }
                 catch (Exception ex)
                 {
-                    Error(ex.Message);
+                    World.Player?.SendMessage(MsgLevel.Error, ex.Message);
                     Interpreter.StopScript();
                 }
             }
@@ -333,9 +337,12 @@ namespace Assistant.Scripts
             return -1;
         }
 
-        public static void Error(string message)
+        public static void Error(bool quiet, string statement, string message, bool throwError = false)
         {
-            throw new RunTimeError(null, message);
+            if (quiet)
+                return;
+
+            World.Player?.SendMessage(MsgLevel.Error, $"{statement}: {message}");
         }
 
         public static List<ASTNode> ParseArguments(ref ASTNode node)
