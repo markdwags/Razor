@@ -135,12 +135,12 @@ namespace Assistant.Scripts
                             ? $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})"
                             : $"Script Error: {ex.Message}");
 
-                    Interpreter.StopScript();
+                    StopScript();
                 }
                 catch (Exception ex)
                 {
-                    World.Player?.SendMessage(MsgLevel.Error, ex.Message);
-                    Interpreter.StopScript();
+                    World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message}");
+                    StopScript();
                 }
             }
         }
@@ -187,6 +187,8 @@ namespace Assistant.Scripts
 
         public static void StopScript()
         {
+            _queuedScript = null;
+
             Interpreter.StopScript();
         }
 

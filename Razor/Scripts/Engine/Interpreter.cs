@@ -482,7 +482,11 @@ namespace Assistant.Scripts.Engine
                     break;
                 case ASTNodeType.WHILE:
                     {
-                        PushScope(node);
+                        // When we first enter the loop, push a new scope
+                        if (_scope.StartNode != node)
+                        {
+                            PushScope(node);
+                        }
 
                         var expr = node.FirstChild();
                         var result = EvaluateExpression(ref expr);
@@ -550,8 +554,6 @@ namespace Assistant.Scripts.Engine
                     if (_statement == null)
                         throw new RunTimeError(node, "Unexpected endwhile");
 
-                    PopScope();
-
                     break;
                 case ASTNodeType.FOR:
                     {
@@ -616,7 +618,6 @@ namespace Assistant.Scripts.Engine
                                     if (depth == 0)
                                     {
                                         PopScope();
-
                                         // Go one past the end so the loop doesn't repeat
                                         _statement = _statement.Next();
                                         break;
@@ -627,8 +628,6 @@ namespace Assistant.Scripts.Engine
 
                                 _statement = _statement.Next();
                             }
-
-                            PopScope();
                         }
                     }
                     break;
@@ -727,10 +726,7 @@ namespace Assistant.Scripts.Engine
                 case ASTNodeType.FORCE:
                 case ASTNodeType.COMMAND:
                     if (ExecuteCommand(node))
-                    {
-                        Interpreter.ClearTimeout();
                         _statement = _statement.Next();
-                    }
 
                     break;
             }
@@ -1065,7 +1061,6 @@ namespace Assistant.Scripts.Engine
         {
             _aliases[alias] = serial;
         }
-        
         public static bool StartScript(Script script)
         {
             if (_activeScript != null)
@@ -1092,14 +1087,14 @@ namespace Assistant.Scripts.Engine
 
             if (_executionState == ExecutionState.PAUSED)
             {
-                if (_pauseTimeout >= DateTime.UtcNow.Ticks)
+                if (_pauseTimeout < DateTime.UtcNow.Ticks)
                     _executionState = ExecutionState.RUNNING;
                 else
                     return true;
             }
             else if (_executionState == ExecutionState.TIMING_OUT)
             {
-                if (_pauseTimeout >= DateTime.UtcNow.Ticks)
+                if (_pauseTimeout < DateTime.UtcNow.Ticks)
                 {
                     if (_timeoutCallback != null)
                     {
@@ -1132,14 +1127,14 @@ namespace Assistant.Scripts.Engine
             return true;
         }
 
-        // Pause execution for the given number of ticks (as defined by DateTime.UtcNow)
+        // Pause execution for the given number of milliseconds
         public static void Pause(long duration)
         {
             // Already paused or timing out
             if (_executionState != ExecutionState.RUNNING)
                 return;
 
-            _pauseTimeout = DateTime.UtcNow.Ticks + duration;
+            _pauseTimeout = DateTime.UtcNow.Ticks + (duration * 10000);
             _executionState = ExecutionState.PAUSED;
         }
 
@@ -1154,14 +1149,14 @@ namespace Assistant.Scripts.Engine
         }
 
         // If forward progress on the script isn't made within this
-        // amount of time, bail
+        // amount of time (milliseconds), bail
         public static void Timeout(long duration, TimeoutCallback callback)
         {
             // Don't change an existing timeout
             if (_executionState != ExecutionState.RUNNING)
                 return;
 
-            _pauseTimeout = DateTime.UtcNow.Ticks + duration;
+            _pauseTimeout = DateTime.UtcNow.Ticks + (duration * 10000);
             _executionState = ExecutionState.TIMING_OUT;
             _timeoutCallback = callback;
         }
