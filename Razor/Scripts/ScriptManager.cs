@@ -108,32 +108,20 @@ namespace Assistant.Scripts
                             ScriptRunning = false;
                         }
                     }
-
-                    /*if (Interpreter.ExecuteScript())
-                    {
-                        if (ScriptRunning == false)
-                        {
-                            World.Player?.SendMessage(LocString.ScriptPlaying);
-                            Assistant.Engine.MainWindow.LockScriptUI(true);
-                            ScriptRunning = true;
-                        }
-                    }
-                    else
-                    {
-                        if (ScriptRunning)
-                        {
-                            World.Player?.SendMessage(LocString.ScriptFinished);
-                            Assistant.Engine.MainWindow.LockScriptUI(false);
-                            ScriptRunning = false;
-                        }
-                    }*/
                 }
                 catch (RunTimeError ex)
                 {
-                    World.Player?.SendMessage(MsgLevel.Error,
-                        ex.Node != null
-                            ? $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})"
-                            : $"Script Error: {ex.Message}");
+
+                    if (ex.Node != null)
+                    {
+                        World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})");
+
+                        SetHighlightLine(ex.Node.LineNumber, Color.Red);
+                    }
+                    else
+                    {
+                        World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message}");
+                    }
 
                     StopScript();
                 }
@@ -225,6 +213,8 @@ namespace Assistant.Scripts
 
             if (World.Player == null)
                 return;
+
+            ClearHighlightLine();
 
             Script script = new Script(Lexer.Lex(lines));
 
@@ -369,6 +359,16 @@ namespace Assistant.Scripts
             }
 
             ScriptEditor[iline].BackgroundBrush = new SolidBrush(background);
+            ScriptEditor.Invalidate();
+        }
+
+        public static void ClearHighlightLine()
+        {
+            for (int i = 0; i < ScriptEditor.LinesCount; i++)
+            {
+                ScriptEditor[i].BackgroundBrush = ScriptEditor.BackBrush;
+            }
+
             ScriptEditor.Invalidate();
         }
 
