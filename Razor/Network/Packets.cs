@@ -87,6 +87,18 @@ namespace Assistant
         }
     }
 
+    public sealed class AddParty : Packet
+    {
+        public AddParty() : base(0xBF)
+        {
+            EnsureCapacity(1 + 2 + 2 + 1 + 4);
+
+            Write((ushort)0x06); // party command
+            Write((byte)0x01); // add party
+            Write(0);
+        }
+    }
+
     public sealed class SendMessageParty : Packet
     {
         public SendMessageParty(string message) : base(0xBF)
