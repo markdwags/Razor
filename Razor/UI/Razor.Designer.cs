@@ -582,6 +582,7 @@ namespace Assistant
             this.openCorpses = new System.Windows.Forms.CheckBox();
             this.blockDis = new System.Windows.Forms.CheckBox();
             this.subOptionsFriendsTab = new System.Windows.Forms.TabPage();
+            this.highlightFriend = new System.Windows.Forms.CheckBox();
             this.setFriendsFormatHue = new System.Windows.Forms.Button();
             this.friendOverheadFormat = new System.Windows.Forms.TextBox();
             this.showFriendOverhead = new System.Windows.Forms.CheckBox();
@@ -791,7 +792,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.highlightFriend = new System.Windows.Forms.CheckBox();
+            this.scriptFilter = new System.Windows.Forms.TextBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -2541,11 +2542,21 @@ namespace Assistant
             this.subOptionsFriendsTab.Controls.Add(this.autoFriend);
             this.subOptionsFriendsTab.Controls.Add(this.friendsGroupBox);
             this.subOptionsFriendsTab.Controls.Add(this.friendFormat);
-            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsFriendsTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsFriendsTab.Name = "subOptionsFriendsTab";
-            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsFriendsTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsFriendsTab.TabIndex = 3;
             this.subOptionsFriendsTab.Text = "Friends";
+            // 
+            // highlightFriend
+            // 
+            this.highlightFriend.Location = new System.Drawing.Point(267, 142);
+            this.highlightFriend.Name = "highlightFriend";
+            this.highlightFriend.Size = new System.Drawing.Size(184, 23);
+            this.highlightFriend.TabIndex = 134;
+            this.highlightFriend.Text = "Next/Prev highlights \'Friends\'";
+            this.highlightFriend.UseVisualStyleBackColor = true;
+            this.highlightFriend.CheckedChanged += new System.EventHandler(this.highlightFriend_CheckedChanged);
             // 
             // setFriendsFormatHue
             // 
@@ -4110,6 +4121,7 @@ namespace Assistant
             // subScripts
             // 
             this.subScripts.BackColor = System.Drawing.SystemColors.Control;
+            this.subScripts.Controls.Add(this.scriptFilter);
             this.subScripts.Controls.Add(this.renameScript);
             this.subScripts.Controls.Add(this.linkScriptGuide);
             this.subScripts.Controls.Add(this.saveScript);
@@ -4181,7 +4193,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4213,9 +4225,9 @@ namespace Assistant
             this.scriptList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scriptList.FormattingEnabled = true;
             this.scriptList.ItemHeight = 17;
-            this.scriptList.Location = new System.Drawing.Point(6, 7);
+            this.scriptList.Location = new System.Drawing.Point(6, 41);
             this.scriptList.Name = "scriptList";
-            this.scriptList.Size = new System.Drawing.Size(114, 242);
+            this.scriptList.Size = new System.Drawing.Size(114, 208);
             this.scriptList.TabIndex = 19;
             this.scriptList.SelectedIndexChanged += new System.EventHandler(this.scriptList_SelectedIndexChanged);
             this.scriptList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptList_MouseDown);
@@ -4821,15 +4833,14 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // highlightFriend
+            // scriptFilter
             // 
-            this.highlightFriend.Location = new System.Drawing.Point(267, 142);
-            this.highlightFriend.Name = "highlightFriend";
-            this.highlightFriend.Size = new System.Drawing.Size(184, 23);
-            this.highlightFriend.TabIndex = 134;
-            this.highlightFriend.Text = "Next/Prev highlights \'Friends\'";
-            this.highlightFriend.UseVisualStyleBackColor = true;
-            this.highlightFriend.CheckedChanged += new System.EventHandler(this.highlightFriend_CheckedChanged);
+            this.scriptFilter.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scriptFilter.Location = new System.Drawing.Point(6, 7);
+            this.scriptFilter.Name = "scriptFilter";
+            this.scriptFilter.Size = new System.Drawing.Size(114, 25);
+            this.scriptFilter.TabIndex = 25;
+            this.scriptFilter.TextChanged += new System.EventHandler(this.scriptFilter_TextChanged);
             // 
             // MainForm
             // 
@@ -4913,6 +4924,7 @@ namespace Assistant
             this.scriptsTab.ResumeLayout(false);
             this.subTabScripts.ResumeLayout(false);
             this.subScripts.ResumeLayout(false);
+            this.subScripts.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
@@ -4952,5 +4964,6 @@ namespace Assistant
         private CheckBox autoSaveScriptPlay;
         private Button renameScript;
         private CheckBox highlightFriend;
+        private TextBox scriptFilter;
     }
 }

@@ -6684,5 +6684,34 @@ namespace Assistant
         {
             Config.SetProperty("HighlightFriend", highlightFriend.Checked);
         }
+
+        private void scriptFilter_TextChanged(object sender, EventArgs e)
+        {
+             scriptList.SafeAction(s =>
+             {
+                 s.BeginUpdate();
+                 s.Items.Clear();
+
+                 if (!string.IsNullOrEmpty(scriptFilter.Text))
+                 {
+                     foreach (ScriptManager.RazorScript script in ScriptManager.Scripts)
+                     {
+                         if (script.Name.IndexOf(scriptFilter.Text, StringComparison.OrdinalIgnoreCase) != -1)
+                         {
+                             s.Items.Add(script);
+                         }
+                     }
+                 }
+                 else
+                 {
+                     foreach (ScriptManager.RazorScript script in ScriptManager.Scripts)
+                     {
+                         s.Items.Add(script);
+                     }
+                 }
+
+                 s.EndUpdate();
+             });
+        }
     }
 }
