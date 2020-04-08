@@ -78,6 +78,7 @@ namespace Assistant.Scripts.Engine
         // Value types
         STRING,
         SERIAL,
+        INTEGER,
         DOUBLE,
 
         // Modifiers
@@ -88,6 +89,7 @@ namespace Assistant.Scripts.Engine
         SCRIPT,
         STATEMENT,
         COMMAND,
+        OPERAND,
         LOGICAL_EXPRESSION,
         UNARY_EXPRESSION,
         BINARY_EXPRESSION,
@@ -99,11 +101,12 @@ namespace Assistant.Scripts.Engine
         public readonly ASTNodeType Type;
         public readonly string Lexeme;
         public readonly ASTNode Parent;
+        public readonly int LineNumber;
 
         internal LinkedListNode<ASTNode> _node;
         private LinkedList<ASTNode> _children;
 
-        public ASTNode(ASTNodeType type, string lexeme, ASTNode parent)
+        public ASTNode(ASTNodeType type, string lexeme, ASTNode parent, int lineNumber)
         {
             Type = type;
             if (lexeme != null)
@@ -111,11 +114,12 @@ namespace Assistant.Scripts.Engine
             else
                 Lexeme = "";
             Parent = parent;
+            LineNumber = lineNumber;
         }
 
-        public ASTNode Push(ASTNodeType type, string lexeme)
+        public ASTNode Push(ASTNodeType type, string lexeme, int lineNumber)
         {
-            var node = new ASTNode(type, lexeme, this);
+            var node = new ASTNode(type, lexeme, this, lineNumber);
 
             if (_children == null)
                 _children = new LinkedList<ASTNode>();
@@ -152,6 +156,8 @@ namespace Assistant.Scripts.Engine
 
     public static class Lexer
     {
+        private static int _curLine = 0;
+
         public static T[] Slice<T>(this T[] src, int start, int end)
         {
             if (end < start)
@@ -170,15 +176,13 @@ namespace Assistant.Scripts.Engine
 
         public static ASTNode Lex(string[] lines)
         {
-            ASTNode node = new ASTNode(ASTNodeType.SCRIPT, null, null);
-
-            int i = 0;
+            ASTNode node = new ASTNode(ASTNodeType.SCRIPT, null, null, 0);
 
             try
             {
-                for (; i < lines.Length; i++)
+                for (_curLine = 0; _curLine < lines.Length; _curLine++)
                 {
-                    foreach (var l in lines[i].Split(';'))
+                    foreach (var l in lines[_curLine].Split(';'))
                     {
                         ParseLine(node, l);
                     }
@@ -186,11 +190,11 @@ namespace Assistant.Scripts.Engine
             }
             catch (SyntaxError e)
             {
-                throw new SyntaxError(lines[i], i, e.Node, e.Message);
+                throw new SyntaxError(lines[_curLine], _curLine, e.Node, e.Message);
             }
             catch (Exception e)
             {
-                throw new SyntaxError(lines[i], i, null, e.Message);
+                throw new SyntaxError(lines[_curLine], _curLine, null, e.Message);
             }
 
             return node;
@@ -198,11 +202,11 @@ namespace Assistant.Scripts.Engine
 
         public static ASTNode Lex(string fname)
         {
-            ASTNode node = new ASTNode(ASTNodeType.SCRIPT, null, null);
+            ASTNode node = new ASTNode(ASTNodeType.SCRIPT, null, null, 0);
 
             using (var file = new StreamReader(fname))
             {
-                int i = 0;
+                _curLine = 0;
                 string line = null;
 
                 try
@@ -221,16 +225,16 @@ namespace Assistant.Scripts.Engine
                         foreach (var l in line.Split(';'))
                             ParseLine(node, line);
 
-                        i++;
+                        _curLine++;
                     }
                 }
                 catch (SyntaxError e)
                 {
-                    throw new SyntaxError(line, i, e.Node, e.Message);
+                    throw new SyntaxError(line, _curLine, e.Node, e.Message);
                 }
                 catch (Exception e)
                 {
-                    throw new SyntaxError(line, i, null, e.Message);
+                    throw new SyntaxError(line, _curLine, null, e.Message);
                 }
             }
 
@@ -246,11 +250,10 @@ namespace Assistant.Scripts.Engine
 
             // Split the line by spaces (unless the space is in quotes)
             var lexemes = line.Split('\'', '"')
-                .Select((element, index) =>
-                    index % 2 == 0
-                        ? element.Split(new char[0], StringSplitOptions.RemoveEmptyEntries)
-                        : new string[] {element})
-                .SelectMany(element => element).ToArray();
+                           .Select((element, index) => index % 2 == 0 ?
+                            element.Split(new char[0], StringSplitOptions.RemoveEmptyEntries) :
+                            new string[] { element })
+                           .SelectMany(element => element).ToArray();
 
             if (lexemes.Length == 0)
                 return;
@@ -258,14 +261,16 @@ namespace Assistant.Scripts.Engine
             ParseStatement(node, lexemes);
         }
 
-        private static void ParseValue(ASTNode node, string lexeme)
+        private static void ParseValue(ASTNode node, string lexeme, ASTNodeType typeDefault)
         {
             if (lexeme.StartsWith("0x"))
-                node.Push(ASTNodeType.SERIAL, lexeme);
+                node.Push(ASTNodeType.SERIAL, lexeme, _curLine);
+            else if (int.TryParse(lexeme, out _))
+                node.Push(ASTNodeType.INTEGER, lexeme, _curLine);
             else if (double.TryParse(lexeme, out _))
-                node.Push(ASTNodeType.DOUBLE, lexeme);
+                node.Push(ASTNodeType.DOUBLE, lexeme, _curLine);
             else
-                node.Push(ASTNodeType.STRING, lexeme);
+                node.Push(typeDefault, lexeme, _curLine);
         }
 
         private static void ParseCommand(ASTNode node, string lexeme)
@@ -274,7 +279,7 @@ namespace Assistant.Scripts.Engine
             // off.
             if (lexeme[0] == '@')
             {
-                node.Push(ASTNodeType.QUIET, null);
+                node.Push(ASTNodeType.QUIET, null, _curLine);
                 lexeme = lexeme.Substring(1, lexeme.Length - 1);
             }
 
@@ -282,11 +287,39 @@ namespace Assistant.Scripts.Engine
             // off.
             if (lexeme.EndsWith("!"))
             {
-                node.Push(ASTNodeType.FORCE, null);
+                node.Push(ASTNodeType.FORCE, null, _curLine);
                 lexeme = lexeme.Substring(0, lexeme.Length - 1);
             }
 
-            node.Push(ASTNodeType.COMMAND, lexeme);
+            node.Push(ASTNodeType.COMMAND, lexeme, _curLine);
+        }
+
+        private static void ParseOperand(ASTNode node, string lexeme)
+        {
+            bool modifier = false;
+
+            // An operand may start with an '@' symbol. Pick that
+            // off.
+            if (lexeme[0] == '@')
+            {
+                node.Push(ASTNodeType.QUIET, null, _curLine);
+                lexeme = lexeme.Substring(1, lexeme.Length - 1);
+                modifier = true;
+            }
+
+            // An operand may end with a '!' symbol. Pick that
+            // off.
+            if (lexeme.EndsWith("!"))
+            {
+                node.Push(ASTNodeType.FORCE, null, _curLine);
+                lexeme = lexeme.Substring(0, lexeme.Length - 1);
+                modifier = true;
+            }
+
+            if (!modifier)
+                ParseValue(node, lexeme, ASTNodeType.OPERAND);
+            else
+                node.Push(ASTNodeType.OPERAND, lexeme, _curLine);
         }
 
         private static void ParseOperator(ASTNode node, string lexeme)
@@ -295,22 +328,22 @@ namespace Assistant.Scripts.Engine
             {
                 case "==":
                 case "=":
-                    node.Push(ASTNodeType.EQUAL, null);
+                    node.Push(ASTNodeType.EQUAL, null, _curLine);
                     break;
                 case "!=":
-                    node.Push(ASTNodeType.NOT_EQUAL, null);
+                    node.Push(ASTNodeType.NOT_EQUAL, null, _curLine);
                     break;
                 case "<":
-                    node.Push(ASTNodeType.LESS_THAN, null);
+                    node.Push(ASTNodeType.LESS_THAN, null, _curLine);
                     break;
                 case "<=":
-                    node.Push(ASTNodeType.LESS_THAN_OR_EQUAL, null);
+                    node.Push(ASTNodeType.LESS_THAN_OR_EQUAL, null, _curLine);
                     break;
                 case ">":
-                    node.Push(ASTNodeType.GREATER_THAN, null);
+                    node.Push(ASTNodeType.GREATER_THAN, null, _curLine);
                     break;
                 case ">=":
-                    node.Push(ASTNodeType.GREATER_THAN_OR_EQUAL, null);
+                    node.Push(ASTNodeType.GREATER_THAN_OR_EQUAL, null, _curLine);
                     break;
                 default:
                     throw new SyntaxError(node, "Invalid operator in binary expression");
@@ -319,7 +352,7 @@ namespace Assistant.Scripts.Engine
 
         private static void ParseStatement(ASTNode node, string[] lexemes)
         {
-            var statement = node.Push(ASTNodeType.STATEMENT, null);
+            var statement = node.Push(ASTNodeType.STATEMENT, null, _curLine);
 
             // Examine the first word on the line
             switch (lexemes[0])
@@ -331,92 +364,88 @@ namespace Assistant.Scripts.Engine
 
                 // Control flow statements are special
                 case "if":
-                {
-                    if (lexemes.Length <= 1)
-                        throw new SyntaxError(node, "Script compilation error");
+                    {
+                        if (lexemes.Length <= 1)
+                            throw new SyntaxError(node, "Script compilation error");
 
-                    var t = statement.Push(ASTNodeType.IF, null);
-                    ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
-                    break;
-                }
-
+                        var t = statement.Push(ASTNodeType.IF, null, _curLine);
+                        ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
+                        break;
+                    }
                 case "elseif":
-                {
-                    if (lexemes.Length <= 1)
-                        throw new SyntaxError(node, "Script compilation error");
+                    {
+                        if (lexemes.Length <= 1)
+                            throw new SyntaxError(node, "Script compilation error");
 
-                    var t = statement.Push(ASTNodeType.ELSEIF, null);
-                    ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
-                    break;
-                }
-
+                        var t = statement.Push(ASTNodeType.ELSEIF, null, _curLine);
+                        ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
+                        break;
+                    }
                 case "else":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 
-                    statement.Push(ASTNodeType.ELSE, null);
+                    statement.Push(ASTNodeType.ELSE, null, _curLine);
                     break;
                 case "endif":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 
-                    statement.Push(ASTNodeType.ENDIF, null);
+                    statement.Push(ASTNodeType.ENDIF, null, _curLine);
                     break;
                 case "while":
-                {
-                    if (lexemes.Length <= 1)
-                        throw new SyntaxError(node, "Script compilation error");
+                    {
+                        if (lexemes.Length <= 1)
+                            throw new SyntaxError(node, "Script compilation error");
 
-                    var t = statement.Push(ASTNodeType.WHILE, null);
-                    ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
-                    break;
-                }
-
+                        var t = statement.Push(ASTNodeType.WHILE, null, _curLine);
+                        ParseLogicalExpression(t, lexemes.Slice(1, lexemes.Length - 1));
+                        break;
+                    }
                 case "endwhile":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 
-                    statement.Push(ASTNodeType.ENDWHILE, null);
+                    statement.Push(ASTNodeType.ENDWHILE, null, _curLine);
                     break;
                 case "for":
-                {
-                    if (lexemes.Length <= 1)
-                        throw new SyntaxError(node, "Script compilation error");
+                    {
+                        if (lexemes.Length <= 1)
+                            throw new SyntaxError(node, "Script compilation error");
 
-                    ParseForLoop(statement, lexemes.Slice(1, lexemes.Length - 1));
-                    break;
-                }
-
+                        ParseForLoop(statement, lexemes.Slice(1, lexemes.Length - 1));
+                        break;
+                    }
                 case "endfor":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 
-                    statement.Push(ASTNodeType.ENDFOR, null);
+                    statement.Push(ASTNodeType.ENDFOR, null, _curLine);
                     break;
                 case "break":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 
-                    statement.Push(ASTNodeType.BREAK, null);
+                    statement.Push(ASTNodeType.BREAK, null, _curLine);
                     break;
                 case "continue":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 
-                    statement.Push(ASTNodeType.CONTINUE, null);
+                    statement.Push(ASTNodeType.CONTINUE, null, _curLine);
                     break;
                 case "stop":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 
-                    statement.Push(ASTNodeType.STOP, null);
+                    statement.Push(ASTNodeType.STOP, null, _curLine);
                     break;
                 case "replay":
                 case "loop":
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 
-                    statement.Push(ASTNodeType.REPLAY, null);
+                    statement.Push(ASTNodeType.REPLAY, null, _curLine);
                     break;
                 default:
                     // It's a regular statement.
@@ -424,11 +453,11 @@ namespace Assistant.Scripts.Engine
 
                     foreach (var lexeme in lexemes.Slice(1, lexemes.Length - 1))
                     {
-                        ParseValue(statement, lexeme);
+                        ParseValue(statement, lexeme, ASTNodeType.STRING);
                     }
-
                     break;
             }
+
         }
 
         private static bool IsOperator(string lexeme)
@@ -463,13 +492,14 @@ namespace Assistant.Scripts.Engine
                 {
                     if (!logical)
                     {
-                        expr = node.Push(ASTNodeType.LOGICAL_EXPRESSION, null);
+                        expr = node.Push(ASTNodeType.LOGICAL_EXPRESSION, null, _curLine);
                         logical = true;
                     }
 
                     ParseExpression(expr, lexemes.Slice(start, i - 1));
                     start = i + 1;
-                    expr.Push(lexemes[i] == "and" ? ASTNodeType.AND : ASTNodeType.OR, null);
+                    expr.Push(lexemes[i] == "and" ? ASTNodeType.AND : ASTNodeType.OR, null, _curLine);
+
                 }
             }
 
@@ -478,6 +508,7 @@ namespace Assistant.Scripts.Engine
 
         private static void ParseExpression(ASTNode node, string[] lexemes)
         {
+
             // The steam language supports both unary and
             // binary expressions. First determine what type
             // we have here.
@@ -515,66 +546,52 @@ namespace Assistant.Scripts.Engine
 
         private static void ParseUnaryExpression(ASTNode node, string[] lexemes)
         {
-            var expr = node.Push(ASTNodeType.UNARY_EXPRESSION, null);
+            var expr = node.Push(ASTNodeType.UNARY_EXPRESSION, null, _curLine);
 
             int i = 0;
 
             if (lexemes[i] == "not")
             {
-                expr.Push(ASTNodeType.NOT, null);
+                expr.Push(ASTNodeType.NOT, null, _curLine);
                 i++;
             }
 
-            ParseCommand(expr, lexemes[i++]);
+            ParseOperand(expr, lexemes[i++]);
 
             for (; i < lexemes.Length; i++)
             {
-                ParseValue(expr, lexemes[i]);
+                ParseValue(expr, lexemes[i], ASTNodeType.STRING);
             }
         }
 
         private static void ParseBinaryExpression(ASTNode node, string[] lexemes)
         {
-            var expr = node.Push(ASTNodeType.BINARY_EXPRESSION, null);
+            var expr = node.Push(ASTNodeType.BINARY_EXPRESSION, null, _curLine);
 
             int i = 0;
 
-            // The expressions on either side of the operator can be integer values
-            // or commands that need to be evaluated.
-            if (double.TryParse(lexemes[i], out double _))
-            {
-                ParseValue(expr, lexemes[i++]);
-            }
-            else
-            {
-                ParseCommand(expr, lexemes[i++]);
-            }
+            // The expressions on either side of the operator can be values
+            // or operands that need to be evaluated.
+            ParseOperand(expr, lexemes[i++]);
 
             for (; i < lexemes.Length; i++)
             {
                 if (IsOperator(lexemes[i]))
                     break;
 
-                ParseValue(expr, lexemes[i]);
+                ParseValue(expr, lexemes[i], ASTNodeType.STRING);
             }
 
             ParseOperator(expr, lexemes[i++]);
 
-            if (double.TryParse(lexemes[i], out double _))
-            {
-                ParseValue(expr, lexemes[i++]);
-            }
-            else
-            {
-                ParseCommand(expr, lexemes[i++]);
-            }
+            ParseOperand(expr, lexemes[i++]);
 
             for (; i < lexemes.Length; i++)
             {
                 if (IsOperator(lexemes[i]))
                     break;
 
-                ParseValue(expr, lexemes[i]);
+                ParseValue(expr, lexemes[i], ASTNodeType.STRING);
             }
         }
 
@@ -597,9 +614,10 @@ namespace Assistant.Scripts.Engine
             if (lexemes.Length == 1)
             {
                 // for X
-                var loop = statement.Push(ASTNodeType.FOR, null);
+                var loop = statement.Push(ASTNodeType.FOR, null, _curLine);
 
-                ParseValue(loop, lexemes[0]);
+                ParseValue(loop, lexemes[0], ASTNodeType.STRING);
+
             }
             else
             {

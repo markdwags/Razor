@@ -67,7 +67,8 @@ namespace Assistant.Core
 
             using (StreamWriter sw = File.AppendText(mibLog))
             {
-                sw.WriteLine($"{xAxis},{yAxis},mib,");
+                if (Client.IsOSI)
+                    sw.WriteLine($"{xAxis},{yAxis},{World.Player.Map},mib,mib,red,3");
             }
 
             World.Player.SendMessage(MsgLevel.Force, $"MIB Captured: {xAxis},{yAxis}");

@@ -64,8 +64,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
-                return 0;
+                throw new RunTimeError(null, "Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
             }
 
             string gfxStr = args[0].AsString();
@@ -159,40 +158,31 @@ namespace Assistant.Scripts
             return 0;
         }
 
-        private static double Mounted(string expression, Argument[] args, bool quiet)
+        private static bool Mounted(string expression, Argument[] args, bool quiet)
         {
-            return World.Player != null && World.Player.GetItemOnLayer(Layer.Mount) != null
-                ? 1
-                : 0;
+            return World.Player != null && World.Player.GetItemOnLayer(Layer.Mount) != null;
         }
 
-        private static double RHandEmpty(string expression, Argument[] args, bool quiet)
+        private static bool RHandEmpty(string expression, Argument[] args, bool quiet)
         {
-            return World.Player != null && World.Player.GetItemOnLayer(Layer.RightHand) == null
-                ? 1
-                : 0;
+            return World.Player != null && World.Player.GetItemOnLayer(Layer.RightHand) == null;
         }
 
-        private static double LHandEmpty(string expression, Argument[] args, bool quiet)
+        private static bool LHandEmpty(string expression, Argument[] args, bool quiet)
         {
-            return World.Player != null && World.Player.GetItemOnLayer(Layer.LeftHand) == null
-                ? 1
-                : 0;
+            return World.Player != null && World.Player.GetItemOnLayer(Layer.LeftHand) == null;
         }
 
-        private static double Dead(string expression, Argument[] args, bool quiet)
+        private static bool Dead(string expression, Argument[] args, bool quiet)
         {
-            return World.Player != null && World.Player.IsGhost
-                ? 1
-                : 0;
+            return World.Player != null && World.Player.IsGhost;
         }
 
-        private static double InSysMessage(string expression, Argument[] args, bool quiet)
+        private static bool InSysMessage(string expression, Argument[] args, bool quiet)
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: insysmsg ('text')");
-                return 0;
+                throw new RunTimeError(null, "Usage: insysmsg ('text')");
             }
 
             string text = args[0].AsString();
@@ -204,14 +194,14 @@ namespace Assistant.Scripts
                 if (sys.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     PacketHandlers.SysMessages.RemoveRange(0, i + 1);
-                    return 1;
+                    return true;
                 }
             }
 
-            return 0;
+            return false;
         }
 
-        private static double Mana(string expression, Argument[] args, bool quiet)
+        private static int Mana(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -219,7 +209,7 @@ namespace Assistant.Scripts
             return World.Player.Mana;
         }
 
-        private static double MaxMana(string expression, Argument[] args, bool quiet)
+        private static int MaxMana(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -227,15 +217,13 @@ namespace Assistant.Scripts
             return World.Player.ManaMax;
         }
 
-        private static double Poisoned(string expression, Argument[] args, bool quiet)
+        private static bool Poisoned(string expression, Argument[] args, bool quiet)
         {
             return World.Player != null && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned) &&
-                   World.Player.Poisoned
-                ? 1
-                : 0;
+                   World.Player.Poisoned;
         }
 
-        private static double Hp(string expression, Argument[] args, bool quiet)
+        private static int Hp(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -243,7 +231,7 @@ namespace Assistant.Scripts
             return World.Player.Hits;
         }
 
-        private static double MaxHp(string expression, Argument[] args, bool quiet)
+        private static int MaxHp(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -251,7 +239,7 @@ namespace Assistant.Scripts
             return World.Player.HitsMax;
         }
 
-        private static double Stam(string expression, Argument[] args, bool quiet)
+        private static int Stam(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -259,7 +247,7 @@ namespace Assistant.Scripts
             return World.Player.Stam;
         }
 
-        private static double MaxStam(string expression, Argument[] args, bool quiet)
+        private static int MaxStam(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -267,7 +255,7 @@ namespace Assistant.Scripts
             return World.Player.StamMax;
         }
 
-        private static double Str(string expression, Argument[] args, bool quiet)
+        private static int Str(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -275,7 +263,7 @@ namespace Assistant.Scripts
             return World.Player.Str;
         }
 
-        private static double Dex(string expression, Argument[] args, bool quiet)
+        private static int Dex(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -283,7 +271,7 @@ namespace Assistant.Scripts
             return World.Player.Dex;
         }
 
-        private static double Int(string expression, Argument[] args, bool quiet)
+        private static int Int(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -291,7 +279,7 @@ namespace Assistant.Scripts
             return World.Player.Int;
         }
 
-        private static double Weight(string expression, Argument[] args, bool quiet)
+        private static int Weight(string expression, Argument[] args, bool quiet)
         {
             if (World.Player == null)
                 return 0;
@@ -318,7 +306,7 @@ namespace Assistant.Scripts
             return 0;
         }
 
-        private static double CountExpression(string expression, Argument[] args, bool quiet)
+        private static int CountExpression(string expression, Argument[] args, bool quiet)
         {
             if (args.Length < 1)
                 throw new ArgumentException("Usage: count ('name of counter item')");

@@ -3916,7 +3916,7 @@ namespace Assistant
                             .Replace("{version}", Engine.Version).Replace("{profile}", Config.CurrentProfile.Name)
                             .Replace("{account}", World.AccountName);
 
-                        m_NotifyIcon.Text = title.Substring(0, 63);
+                        m_NotifyIcon.Text = title.Length > 63 ? title.Substring(0, 63) : title;
                     }
                     else
                     {
@@ -6604,7 +6604,7 @@ namespace Assistant
                 return;
 
             scriptEditor.SelectedText = "";
-            scriptEditor.SelectedText = $"dclicktype '{item.DisplayName}'";
+            scriptEditor.SelectedText = $"dclicktype '{item.ItemID.ItemData.Name}'";
         }
 
         private void OnScriptPlaySelected(object sender, System.EventArgs e)
@@ -6683,6 +6683,35 @@ namespace Assistant
         private void highlightFriend_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("HighlightFriend", highlightFriend.Checked);
+        }
+
+        private void scriptFilter_TextChanged(object sender, EventArgs e)
+        {
+             scriptList.SafeAction(s =>
+             {
+                 s.BeginUpdate();
+                 s.Items.Clear();
+
+                 if (!string.IsNullOrEmpty(scriptFilter.Text))
+                 {
+                     foreach (ScriptManager.RazorScript script in ScriptManager.Scripts)
+                     {
+                         if (script.Name.IndexOf(scriptFilter.Text, StringComparison.OrdinalIgnoreCase) != -1)
+                         {
+                             s.Items.Add(script);
+                         }
+                     }
+                 }
+                 else
+                 {
+                     foreach (ScriptManager.RazorScript script in ScriptManager.Scripts)
+                     {
+                         s.Items.Add(script);
+                     }
+                 }
+
+                 s.EndUpdate();
+             });
         }
     }
 }

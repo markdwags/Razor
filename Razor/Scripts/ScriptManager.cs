@@ -50,6 +50,8 @@ namespace Assistant.Scripts
 
         private static ListBox ScriptList { get; set; }
 
+        private static Script _queuedScript;
+
         private class ScriptTimer : Timer
         {
             // Only run scripts once every 25ms to avoid spamming.
@@ -61,9 +63,36 @@ namespace Assistant.Scripts
             {
                 try
                 {
-                    if (Interpreter.ExecuteScript())
+                    if (!Client.Instance.ClientRunning)
                     {
-                        if (ScriptRunning == false)
+                        if (ScriptRunning)
+                        {
+                            ScriptRunning = false;
+                            Interpreter.StopScript();
+                        }
+                        return;
+                    }
+
+                    bool running;
+
+                    if (_queuedScript != null)
+                    {
+                        // Starting a new script. This relies on the atomicity for references in CLR
+                        var script = _queuedScript;
+
+                        running = Interpreter.StartScript(script);
+
+                        _queuedScript = null;
+                    }
+                    else
+                    {
+                        running = Interpreter.ExecuteScript();
+                    }
+
+
+                    if (running)
+                    {
+                        if (ScriptManager.Running == false)
                         {
                             World.Player?.SendMessage(LocString.ScriptPlaying);
                             Assistant.Engine.MainWindow.LockScriptUI(true);
@@ -72,7 +101,7 @@ namespace Assistant.Scripts
                     }
                     else
                     {
-                        if (ScriptRunning)
+                        if (ScriptManager.Running)
                         {
                             World.Player?.SendMessage(LocString.ScriptFinished);
                             Assistant.Engine.MainWindow.LockScriptUI(false);
@@ -80,10 +109,26 @@ namespace Assistant.Scripts
                         }
                     }
                 }
+                catch (RunTimeError ex)
+                {
+
+                    if (ex.Node != null)
+                    {
+                        World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})");
+
+                        SetHighlightLine(ex.Node.LineNumber, Color.Red);
+                    }
+                    else
+                    {
+                        World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message}");
+                    }
+
+                    StopScript();
+                }
                 catch (Exception ex)
                 {
-                    Error(ex.Message);
-                    Interpreter.StopScript();
+                    World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message}");
+                    StopScript();
                 }
             }
         }
@@ -130,6 +175,8 @@ namespace Assistant.Scripts
 
         public static void StopScript()
         {
+            _queuedScript = null;
+
             Interpreter.StopScript();
         }
 
@@ -155,12 +202,23 @@ namespace Assistant.Scripts
 
             StopScript(); // be sure nothing is running
 
-            _startPause = DateTime.MaxValue; // reset wait timers
             SetLastTargetActive = false;
             SetVariableActive = false;
+            
+            if (_queuedScript != null)
+                return;
+
+            if (!Client.Instance.ClientRunning)
+                return;
+
+            if (World.Player == null)
+                return;
+
+            ClearHighlightLine();
 
             Script script = new Script(Lexer.Lex(lines));
-            Interpreter.StartScript(script);
+
+            _queuedScript = script;
         }
 
         private static ScriptTimer Timer { get; }
@@ -271,9 +329,12 @@ namespace Assistant.Scripts
             return -1;
         }
 
-        public static void Error(string message, string scriptname = "")
+        public static void Error(bool quiet, string statement, string message, bool throwError = false)
         {
-            World.Player?.SendMessage(MsgLevel.Error, $"Script '{scriptname}' error => {message}");
+            if (quiet)
+                return;
+
+            World.Player?.SendMessage(MsgLevel.Error, $"{statement}: {message}");
         }
 
         public static List<ASTNode> ParseArguments(ref ASTNode node)
@@ -298,6 +359,16 @@ namespace Assistant.Scripts
             }
 
             ScriptEditor[iline].BackgroundBrush = new SolidBrush(background);
+            ScriptEditor.Invalidate();
+        }
+
+        public static void ClearHighlightLine()
+        {
+            for (int i = 0; i < ScriptEditor.LinesCount; i++)
+            {
+                ScriptEditor[i].BackgroundBrush = ScriptEditor.BackBrush;
+            }
+
             ScriptEditor.Invalidate();
         }
 
@@ -574,63 +645,6 @@ namespace Assistant.Scripts
 
                 s.EndUpdate();
             });
-        }
-
-
-        private static TimeSpan _pauseDuration;
-        private static DateTime _startPause = DateTime.MaxValue;
-
-        /// <summary>
-        /// Manage the state of pauses in the script engine 
-        /// </summary>
-        /// <param name="ms"></param>
-        /// <returns></returns>
-        public static bool Pause(int ms = 30000)
-        {
-            if (_startPause == DateTime.MaxValue) // no timer set
-            {
-                _startPause = DateTime.UtcNow;
-                _pauseDuration = TimeSpan.FromMilliseconds(ms);
-
-                return true; // we want to start pausing
-            }
-
-            if (_startPause + _pauseDuration < DateTime.UtcNow) // timer is set, has it elapsed?
-            {
-                _startPause = DateTime.MaxValue;
-                _pauseDuration = TimeSpan.FromMilliseconds(ms);
-                return false; //pause limit exceeded
-            }
-
-            return true; // keep on pausing
-        }
-
-        private static TimeSpan _timeoutDuration;
-        private static DateTime _startTimeout = DateTime.MaxValue;
-
-        /// <summary>
-        /// Manage the state of wait for target in the script engine
-        /// </summary>
-        /// <param name="ms"></param>
-        /// <returns></returns>
-        public static bool Timeout(int ms = 30000)
-        {
-            if (_startTimeout == DateTime.MaxValue) // no timer set
-            {
-                _startTimeout = DateTime.UtcNow;
-                _timeoutDuration = TimeSpan.FromMilliseconds(ms);
-
-                return true; // we want to start the timeout wait
-            }
-
-            if (_startTimeout + _timeoutDuration < DateTime.UtcNow) // timer is set, has it elapsed?
-            {
-                _startTimeout = DateTime.MaxValue;
-                _timeoutDuration = TimeSpan.FromMilliseconds(ms);
-                return false; // timeout exceeded
-            }
-
-            return true; // keep on pausing
         }
     }
 }

@@ -570,6 +570,7 @@ namespace Assistant
         ScriptPlaying,
         ScriptFinished,
         StopScript,
+        PartyAdd,
         __End
     }
 

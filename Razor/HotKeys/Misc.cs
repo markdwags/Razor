@@ -54,6 +54,7 @@ namespace Assistant.HotKeys
 
             HotKey.Add(HKCategory.Misc, LocString.PartyAccept, new HotKeyCallback(PartyAccept));
             HotKey.Add(HKCategory.Misc, LocString.PartyDecline, new HotKeyCallback(PartyDecline));
+            HotKey.Add(HKCategory.Misc, LocString.PartyAdd, new HotKeyCallback(PartyAdd));
 
             HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllCome, new HotKeyCallback(PetAllCome));
             HotKey.Add(HKCategory.Misc, HKSubCat.PetCommands, LocString.AllFollowMe,
@@ -194,6 +195,11 @@ namespace Assistant.HotKeys
                 Client.Instance.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
                 PacketHandlers.PartyLeader = Serial.Zero;
             }
+        }
+
+        private static void PartyAdd()
+        {
+            Client.Instance.SendToServer(new AddParty());
         }
 
         private static void Dismount()

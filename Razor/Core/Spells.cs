@@ -502,6 +502,9 @@ namespace Assistant
 
         public static string GetName(int num)
         {
+            if (num > m_SpellsByName.Count - 1)
+                return string.Empty;
+
             return m_SpellsByName.ElementAt(num).Key;
         }
 

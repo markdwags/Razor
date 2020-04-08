@@ -126,8 +126,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: setvar ('variable')");
-                return true;
+                throw new RunTimeError(null, "Usage: setvar ('variable')");
             }
 
             string varname = args[0].AsString();
@@ -136,8 +135,7 @@ namespace Assistant.Scripts
 
             if (var == null)
             {
-                ScriptManager.Error($"Unknown variable '{varname}'");
-                return true;
+                throw new RunTimeError(null, $"Unknown variable '{varname}'");
             }
 
             if (!ScriptManager.SetVariableActive)
@@ -161,8 +159,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: target (serial) OR (x) (y) (z)");
-                return true;
+                throw new RunTimeError(null, "Usage: target (serial) OR (x) (y) (z)");
             }
 
             if (args.Length == 1)
@@ -211,8 +208,7 @@ namespace Assistant.Scripts
 
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: targettype (graphic) OR ('name of item or mobile type') [inrangecheck]");
-                return true;
+                throw new RunTimeError(null, "Usage: targettype (graphic) OR ('name of item or mobile type') [inrangecheck]");
             }
 
             string gfxStr = args[0].AsString();
@@ -231,6 +227,11 @@ namespace Assistant.Scripts
             if (gfx == 0)
             {
                 List<Item> items = World.FindItemsByName(gfxStr);
+
+                Item backItem = World.Player.Backpack.FindItemByName(gfxStr, true);
+
+                if (backItem != null)
+                    items.Add(backItem);
 
                 if (items.Count > 0)
                 {
@@ -292,8 +293,7 @@ namespace Assistant.Scripts
 
             if (args.Length < 2)
             {
-                ScriptManager.Error("Usage: targetrelloc (x-offset) (y-offset)");
-                return true;
+                throw new RunTimeError(null, "Usage: targetrelloc (x-offset) (y-offset)");
             }
 
             int xoffset = Utility.ToInt32(args[0].AsString(), 0);
@@ -310,7 +310,7 @@ namespace Assistant.Scripts
             }
             catch (Exception e)
             {
-                ScriptManager.Error($"Error Executing TargetRelLoc: {e.Message}");
+                throw new RunTimeError(null, $"Error Executing TargetRelLoc: {e.Message}");
             }
 
             return true;
@@ -318,23 +318,19 @@ namespace Assistant.Scripts
 
         private static bool WaitForTarget(string command, Argument[] args, bool quiet, bool force)
         {
-            switch (args.Length)
-            {
-                case 0:
-                    return Targeting.HasTarget || !ScriptManager.Timeout(); // use default timeout
-                case 1:
-                    return Targeting.HasTarget || !ScriptManager.Timeout(args[0].AsInt()); // user provided timeout
-                default:
-                    return Targeting.HasTarget || !ScriptManager.Timeout(); // use default just in case
-            }
+            if (Targeting.HasTarget)
+                return true;
+
+            Interpreter.Timeout(args.Length > 0 ? args[0].AsUInt() : 30000, () => { return true; });
+
+            return false;
         }
 
         private static bool Hotkey(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: hotkey ('name of hotkey') OR (hotkeyId)");
-                return true;
+                throw new RunTimeError(null, "Usage: hotkey ('name of hotkey') OR (hotkeyId)");
             }
 
             string query = args[0].AsString();
@@ -343,8 +339,7 @@ namespace Assistant.Scripts
 
             if (hk == null)
             {
-                ScriptManager.Error($"Hotkey '{query}' not found");
-                return true;
+                throw new RunTimeError(null, $"Hotkey '{query}' not found");
             }
 
             hk.Callback();
@@ -406,8 +401,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1 || !abilities.Contains(args[0].AsString()))
             {
-                ScriptManager.Error("Usage: setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']");
-                return true;
+                throw new RunTimeError(null, "Usage: setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']");
             }
 
             if (args.Length == 2 && args[1].AsString() == "on" || args.Length == 1)
@@ -447,8 +441,7 @@ namespace Assistant.Scripts
 
             if (args.Length == 0 || !hands.Contains(args[0].AsString()))
             {
-                ScriptManager.Error("Usage: clearhands ('left'/'right'/'both')");
-                return true;
+                throw new RunTimeError(null, "Usage: clearhands ('left'/'right'/'both')");
             }
 
             switch (args[0].AsString())
@@ -472,9 +465,8 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error(
+                throw new RunTimeError(null, 
                     "Usage: dclicktype|usetype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
-                return true;
             }
 
             string gfxStr = args[0].AsString();
@@ -507,9 +499,14 @@ namespace Assistant.Scripts
                     }
                 }
 
+                Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
+
+                if (i != null)
+                    items.Add(i);
+
                 if (items.Count == 0)
                 {
-                    ScriptManager.Error($"Script Error: Couldn't find '{gfxStr}'");
+                    throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
                     return true;
                 }
 
@@ -608,16 +605,14 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: dclick/useobject (serial)");
-                return true;
+                throw new RunTimeError(null, "Usage: dclick/useobject (serial)");
             }
 
             Serial serial = args[0].AsSerial();
 
             if (!serial.IsValid)
             {
-                ScriptManager.Error("useobject - invalid serial");
-                return true;
+                throw new RunTimeError(null, "useobject - invalid serial");
             }
 
             PlayerData.DoubleClick(serial);
@@ -629,8 +624,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 2)
             {
-                ScriptManager.Error("Usage: drop (serial) (x y z/layername)");
-                return true;
+                throw new RunTimeError(null, "Usage: drop (serial) (x y z/layername)");
             }
 
             Serial serial = args[0].AsSerial();
@@ -677,8 +671,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 3)
             {
-                ScriptManager.Error("Usage: droprelloc (x) (y)");
-                return true;
+                throw new RunTimeError(null, "Usage: droprelloc (x) (y)");
             }
 
             int x = args[0].AsInt();
@@ -698,16 +691,14 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: lift (serial) [amount]");
-                return true;
+                throw new RunTimeError(null, "Usage: lift (serial) [amount]");
             }
 
             Serial serial = args[0].AsSerial();
 
             if (!serial.IsValid)
             {
-                ScriptManager.Error("lift - invalid serial");
-                return true;
+                throw new RunTimeError(null, "lift - invalid serial");
             }
 
             ushort amount = Utility.ToUInt16(args[1].AsString(), 1);
@@ -729,8 +720,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: lifttype (gfx/'name of item') [amount]");
-                return true;
+                throw new RunTimeError(null, "Usage: lifttype (gfx/'name of item') [amount]");
             }
 
             string gfxStr = args[0].AsString();
@@ -746,8 +736,7 @@ namespace Assistant.Scripts
 
                 if (item == null)
                 {
-                    ScriptManager.Error($"Script Error: Couldn't find '{gfxStr}'");
-                    return true;
+                    throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
                 }
             }
             else
@@ -774,8 +763,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: walk ('direction')");
-                return true;
+                throw new RunTimeError(null, "Usage: walk ('direction')");
             }
 
             if (ScriptManager.LastWalk + TimeSpan.FromSeconds(0.4) >= DateTime.UtcNow)
@@ -829,8 +817,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: useskill ('skill name'/'last')");
-                return true;
+                throw new RunTimeError(null, "Usage: useskill ('skill name'/'last')");
             }
 
             if (args[0].AsString() == "last")
@@ -841,60 +828,21 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool SetAlias(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length != 2)
-            {
-                ScriptManager.Error("Usage: setalias ('name') [serial]");
-                return true;
-            }
-
-            Interpreter.SetAlias(args[0].AsString(), args[1].AsSerial());
-
-            return true;
-        }
-
-        private static bool UnsetAlias(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length == 0)
-            {
-                ScriptManager.Error("Usage: unsetalias (string)");
-                return true;
-            }
-
-            Interpreter.SetAlias(args[0].AsString(), 0);
-
-            return true;
-        }
-
-        public static bool EquipItem(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length < 2)
-            {
-                ScriptManager.Error("Usage: equipitem (serial) (layer)");
-                return true;
-            }
-
-            Item equip = World.FindItem(args[0].AsSerial());
-            byte layer = (byte) Utility.ToInt32(args[1].AsString(), 0);
-            if (equip != null && (Layer) layer != Layer.Invalid)
-                Dress.Equip(equip, (Layer) layer);
-
-            return true;
-        }
-
         private static bool Pause(string command, Argument[] args, bool quiet, bool force)
         {
-            // If we return false, the script engine will run this command again
-            return args.Length < 1 ? !ScriptManager.Pause() : !ScriptManager.Pause(args[0].AsInt());
+            if (args.Length == 0)
+                throw new RunTimeError(null, "Usage: pause (timeout)");
+
+            Interpreter.Pause(args[0].AsUInt());
+
+            return true;
         }
 
         public static bool Msg(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: msg ('text') [color]");
-                return true;
+                throw new RunTimeError(null, "Usage: msg ('text') [color]");
             }
 
             if (args.Length == 1)
@@ -909,16 +857,14 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: attack (serial)");
-                return true;
+                throw new RunTimeError(null, "Usage: attack (serial)");
             }
 
             Serial serial = args[0].AsSerial();
 
             if (!serial.IsValid)
             {
-                ScriptManager.Error("attack - invalid serial");
-                return true;
+                throw new RunTimeError(null, "attack - invalid serial");
             }
 
             if (serial != null && serial.IsMobile)
@@ -931,8 +877,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: cast 'name of spell'");
-                return true;
+                throw new RunTimeError(null, "Usage: cast 'name of spell'");
             }
 
             Spell spell = int.TryParse(args[0].AsString(), out int spellnum)
@@ -945,7 +890,7 @@ namespace Assistant.Scripts
             }
             else if (!quiet)
             {
-                ScriptManager.Error("cast - spell name or number not valid");
+                throw new RunTimeError(null, "cast - spell name or number not valid");
             }
 
             return true;
@@ -955,13 +900,9 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: overhead ('text') [color] [serial]");
-                return true;
+                throw new RunTimeError(null, "Usage: overhead ('text') [color] [serial]");
             }
-
-            if (!Client.Instance.ClientRunning)
-                return true;
-
+            
             if (args.Length == 1)
                 World.Player.OverheadMessage(Config.GetInt("SysColor"), args[0].AsString());
             else
@@ -985,8 +926,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: sysmsg ('text') [color]");
-                return true;
+                throw new RunTimeError(null, "Usage: sysmsg ('text') [color]");
             }
 
             if (args.Length == 1)
@@ -1001,8 +941,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: dress ('name of dress list')");
-                return true;
+                throw new RunTimeError(null, "Usage: dress ('name of dress list')");
             }
 
             DressList d = DressList.Find(args[0].AsString());
@@ -1010,7 +949,7 @@ namespace Assistant.Scripts
             if (d != null)
                 d.Dress();
             else if (!quiet)
-                ScriptManager.Error($"'{args[0].AsString()}' not found");
+                throw new RunTimeError(null, $"'{args[0].AsString()}' not found");
 
             return true;
         }
@@ -1045,9 +984,8 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: gumpresponse (buttondId)");
-                //ScriptManager.Error("Usage: gumpresponse (buttondId) [option] ['text1'|fieldId] ['text2'|fieldId]");
-                return true;
+                throw new RunTimeError(null, "Usage: gumpresponse (buttondId)");
+                //throw new RunTimeError(null, "Usage: gumpresponse (buttondId) [option] ['text1'|fieldId] ['text2'|fieldId]");
             }
 
             int buttonId = args[0].AsInt();
@@ -1086,8 +1024,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 2)
             {
-                ScriptManager.Error("Usage: menu (serial) (index)");
-                return true;
+                throw new RunTimeError(null, "Usage: menu (serial) (index)");
             }
 
             Serial s = args[0].AsSerial();
@@ -1105,8 +1042,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 2)
             {
-                ScriptManager.Error("Usage: menuresponse (index) (menuId) [hue]");
-                return true;
+                throw new RunTimeError(null, "Usage: menuresponse (index) (menuId) [hue]");
             }
 
             ushort index = args[0].AsUShort();
@@ -1126,8 +1062,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: promptresponse ('response to the prompt')");
-                return true;
+                throw new RunTimeError(null, "Usage: promptresponse ('response to the prompt')");
             }
 
             World.Player.ResponsePrompt(args[0].AsString());
@@ -1146,8 +1081,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                ScriptManager.Error("Usage: script 'name of script'");
-                return true;
+                throw new RunTimeError(null, "Usage: script 'name of script'");
             }
 
             ScriptManager.PlayScript(args[0].AsString());
@@ -1172,8 +1106,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                ScriptManager.Error("Usage: potion ('type')");
-                return true;
+                throw new RunTimeError(null, "Usage: potion ('type')");
             }
             
             Item pack = World.Player.Backpack;
@@ -1194,7 +1127,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                ScriptManager.Error("Unknown potion type");
+                throw new RunTimeError(null, "Unknown potion type");
             }
 
             return true;
