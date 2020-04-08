@@ -2192,6 +2192,10 @@ namespace Assistant
         {
             Config.SetProperty("DisableAutoSave", disableAutoSave.Checked);
         }
+        private void disableAutoSave_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("DisableAutoSave", disableAutoSave.Checked);
+        }
 
         private void showNotoHue_CheckedChanged(object sender, System.EventArgs e)
         {
