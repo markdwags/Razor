@@ -700,6 +700,8 @@ namespace Assistant
             bool autoSaveDisabled = Config.GetBool("DisableAutoSave");
             if (!autoSaveDisabled)
                 Config.Save();
+            else
+                SaveCharList();
         }
         public static void Save()
         {
