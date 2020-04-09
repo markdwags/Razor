@@ -67,8 +67,8 @@ namespace Assistant.Scripts
 
         private static uint Last(string alias)
         {
-            if (!Targeting.DoLastTarget())
-                Targeting.ResendTarget();
+            if (Targeting.LastTargetInfo != null)
+                return Targeting.LastTargetInfo.Serial;
 
             return 0;
         }

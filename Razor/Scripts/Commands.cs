@@ -867,8 +867,15 @@ namespace Assistant.Scripts
                 throw new RunTimeError(null, "attack - invalid serial");
             }
 
-            if (serial != null && serial.IsMobile)
-                Client.Instance.SendToServer(new AttackReq(serial));
+            if (serial == Targeting.LastTargetInfo.Serial)
+            {
+                Targeting.AttackLastTarg();
+            }
+            else
+            {
+                if (serial.IsMobile)
+                    Client.Instance.SendToServer(new AttackReq(serial));
+            }
 
             return true;
         }

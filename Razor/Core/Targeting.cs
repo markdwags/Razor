@@ -165,7 +165,7 @@ namespace Assistant
                 Client.Instance.SendToServer(new AttackReq(m_LastCombatant));
         }
 
-        private static void AttackLastTarg()
+        public static void AttackLastTarg()
         {
             TargetInfo targ;
             if (IsSmartTargetingEnabled())
