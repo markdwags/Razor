@@ -361,7 +361,7 @@ namespace Assistant.Scripts.Engine
                             break;
 
                         // The expression evaluated false, so keep advancing until
-                        // we hit an elseif, else, or, endif statement that matches
+                        // we hit an elseif, else, or endif statement that matches
                         // and try again.
                         depth = 0;
 
@@ -375,41 +375,34 @@ namespace Assistant.Scripts.Engine
                             }
                             else if (node.Type == ASTNodeType.ELSEIF)
                             {
-                                if (depth > 0)
+                                if (depth == 0)
                                 {
-                                    continue;
-                                }
+                                    expr = node.FirstChild();
+                                    result = EvaluateExpression(ref expr);
 
-                                expr = node.FirstChild();
-                                result = EvaluateExpression(ref expr);
-
-                                // Evaluated true. Jump right into execution
-                                if (result)
-                                {
-                                    _statement = _statement.Next();
-                                    break;
+                                    // Evaluated true. Jump right into execution
+                                    if (result)
+                                    {
+                                        _statement = _statement.Next();
+                                        break;
+                                    }
                                 }
                             }
                             else if (node.Type == ASTNodeType.ELSE)
                             {
-                                if (depth > 0)
+                                if (depth == 0)
                                 {
-                                    continue;
+                                    // Jump into the else clause
+                                    _statement = _statement.Next();
+                                    break;
                                 }
-
-                                // Jump into the else clause
-                                _statement = _statement.Next();
-                                break;
                             }
                             else if (node.Type == ASTNodeType.ENDIF)
                             {
-                                if (depth > 0)
-                                {
-                                    depth--;
-                                    continue;
-                                }
+                                if (depth == 0)
+                                    break;
 
-                                break;
+                                depth--;
                             }
 
                             _statement = _statement.Next();
@@ -965,13 +958,7 @@ namespace Assistant.Scripts.Engine
     {
         // Aliases only hold serial numbers
         private static Dictionary<string, uint> _aliases = new Dictionary<string, uint>();
-
-        // Lists
-        private static Dictionary<string, List<Argument>> _lists = new Dictionary<string, List<Argument>>();
-
-        // Timers
-        private static Dictionary<string, DateTime> _timers = new Dictionary<string, DateTime>();
-
+        
         // Expressions
         public delegate IComparable ExpressionHandler(string expression, Argument[] args, bool quiet);
         public delegate T ExpressionHandler<T>(string expression, Argument[] args, bool quiet) where T : IComparable;
@@ -1061,6 +1048,7 @@ namespace Assistant.Scripts.Engine
         {
             _aliases[alias] = serial;
         }
+
         public static bool StartScript(Script script)
         {
             if (_activeScript != null)
