@@ -37,6 +37,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("mana", Mana);
             Interpreter.RegisterExpressionHandler("maxmana", MaxMana);
             Interpreter.RegisterExpressionHandler("poisoned", Poisoned);
+            Interpreter.RegisterExpressionHandler("hidden", Hidden);
 
             Interpreter.RegisterExpressionHandler("mounted", Mounted);
             Interpreter.RegisterExpressionHandler("rhandempty", RHandEmpty);
@@ -221,6 +222,11 @@ namespace Assistant.Scripts
         {
             return World.Player != null && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned) &&
                    World.Player.Poisoned;
+        }
+
+        private static bool Hidden(string expression, Argument[] args, bool quiet)
+        {
+            return World.Player != null && !World.Player.Visible;
         }
 
         private static int Hp(string expression, Argument[] args, bool quiet)
