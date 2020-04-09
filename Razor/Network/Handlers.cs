@@ -783,7 +783,7 @@ namespace Assistant
                 }
 
                 item.Container = cont; // must be done after hue is set (for counters)
-                if (!SearchExemptionAgent.IsExempt(item) &&
+                if (World.Player != null && !SearchExemptionAgent.IsExempt(item) &&
                     (item.IsChildOf(World.Player.Backpack) || item.IsChildOf(World.Player.Quiver)))
                     Counter.Count(item);
             }
