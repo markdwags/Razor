@@ -2462,6 +2462,8 @@ namespace Assistant
                         new MenuItem("Rename Macro", new EventHandler(Macro_Rename)),
                         new MenuItem("Open Externally", new EventHandler(Open_Externally)),
                         new MenuItem("-"),
+                        new MenuItem("Convert to Script", new EventHandler(ConvertMacroToScript)),
+                        new MenuItem("-"),
                         new MenuItem("Refresh Macro List", new EventHandler(Macro_RefreshList))
                     });
                 }
@@ -2688,6 +2690,39 @@ namespace Assistant
             {
                 MessageBox.Show(this, Language.GetString(LocString.UnableToOpenMacro),
                     Language.GetString(LocString.ReadError),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ConvertMacroToScript(object sender, EventArgs args)
+        {
+            Macro sel = GetMacroSel();
+            if (sel == null)
+                return;
+
+            try
+            {
+                string name = $"{sel.GetName()}-{Guid.NewGuid().ToString().Substring(0, 4)}";
+                string path = Path.Combine(ScriptManager.ScriptPath, $"{name}.razor");
+
+                List<string> scriptLines = new List<string>();
+
+                foreach (MacroAction selAction in sel.Actions)
+                {
+                    scriptLines.Add(selAction.ToScript());
+                }
+
+                File.WriteAllLines(path, scriptLines.ToArray());
+
+                ScriptManager.RedrawScripts();
+
+                tabs.SelectedTab = scriptsTab;
+
+                scriptList.SelectedIndex = scriptList.FindString(name);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, $"Unable to convert macro to script: {ex.Message}", "Macro Conversion",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

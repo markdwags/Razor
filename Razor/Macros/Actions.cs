@@ -62,6 +62,8 @@ namespace Assistant.Macros
             return String.Format("?{0}?", GetType().Name);
         }
 
+        public abstract string ToScript();
+
         public virtual string Serialize()
         {
             return GetType().FullName;
@@ -152,6 +154,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"# {m_Comment}";
+        }
+
         public override string Serialize()
         {
             return ToString();
@@ -226,6 +233,11 @@ namespace Assistant.Macros
         {
             PlayerData.DoubleClick(m_Serial);
             return true;
+        }
+
+        public override string ToScript()
+        {
+            return $"dclick '{m_Serial.ToString()}'";
         }
 
         public override string Serialize()
@@ -394,6 +406,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"dclicktype '{m_Gfx}'";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Gfx, m_Item);
@@ -487,6 +504,11 @@ namespace Assistant.Macros
         public override bool PerformWait()
         {
             return DragDropManager.LastIDLifted < m_Id;
+        }
+
+        public override string ToScript()
+        {
+            return $"lift '{m_Serial}' {m_Amount}";
         }
 
         public override string Serialize()
@@ -611,6 +633,11 @@ namespace Assistant.Macros
             return DragDropManager.LastIDLifted < m_Id && !DragDropManager.Empty;
         }
 
+        public override string ToScript()
+        {
+            return $"lifttype '{m_Gfx}' {m_Amount}";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Gfx, m_Amount);
@@ -719,6 +746,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return m_Layer != Layer.Invalid ? $"drop '{m_To}' {m_Layer}" : $"drop '{m_To}' {m_At.X} {m_At.Y} {m_At.X}";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_To, m_At, (byte) m_Layer);
@@ -793,6 +825,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"droprelloc {m_Loc[0]} {m_Loc[1]}";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Loc[0], m_Loc[1], m_Loc[2]);
@@ -840,6 +877,11 @@ namespace Assistant.Macros
             World.Player.HasGump = false;
             World.Player.HasCompressedGump = false;
             return true;
+        }
+
+        public override string ToScript()
+        {
+            return $"gumpresponse {m_ButtonID}";
         }
 
         public override string Serialize()
@@ -922,6 +964,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"menuresponse {m_Index} {m_ItemID} {m_Hue}";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Index, m_ItemID, m_Hue);
@@ -966,6 +1013,11 @@ namespace Assistant.Macros
         {
             Targeting.Target(m_Info);
             return true;
+        }
+
+        public override string ToScript()
+        {
+            return $"target '{m_Info}'";
         }
 
         public override string Serialize()
@@ -1079,6 +1131,11 @@ namespace Assistant.Macros
             }
         }
 
+        public override string ToScript()
+        {
+            return $"target '{_variableName}'";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(_variableName);
@@ -1160,6 +1217,11 @@ namespace Assistant.Macros
             }
 
             return false;
+        }
+
+        public override string ToScript()
+        {
+            return $"dclick '{_variableName}'";
         }
 
         public override string Serialize()
@@ -1267,6 +1329,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"targettype '{m_Gfx}'";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Mobile, m_Gfx);
@@ -1356,6 +1423,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"targetrelloc {m_X} {m_Y}";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_X, m_Y);
@@ -1419,6 +1491,11 @@ namespace Assistant.Macros
         {
             return String.Format("Exec: {0}", Language.GetString(LocString.LastTarget));
         }
+
+        public override string ToScript()
+        {
+            return "lasttarget";
+        }
     }
 
     public class SetLastTargetAction : MacroWaitAction
@@ -1441,6 +1518,11 @@ namespace Assistant.Macros
         public override string ToString()
         {
             return Language.GetString(LocString.SetLT);
+        }
+
+        public override string ToScript()
+        {
+            return "setlasttarget";
         }
     }
 
@@ -1508,6 +1590,11 @@ namespace Assistant.Macros
         public override string ToString()
         {
             return $"Set Macro Variable (${m_VarName})";
+        }
+
+        public override string ToScript()
+        {
+            return $"setvar {m_VarName}";
         }
 
         public override string Serialize()
@@ -1594,6 +1681,11 @@ namespace Assistant.Macros
 
             Client.Instance.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech));
             return true;
+        }
+
+        public override string ToScript()
+        {
+            return $"say '{m_Speech}'";
         }
 
         public override string Serialize()
@@ -1701,6 +1793,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"overhead '{_message}' {_hue}";
+        }
+
         public override string Serialize()
         {
             ArrayList list = new ArrayList(2) {_hue, _message};
@@ -1755,6 +1852,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"skill '{Language.Skill2Str(m_Skill)}'";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Skill);
@@ -1793,6 +1895,11 @@ namespace Assistant.Macros
         {
             m_Spell.OnCast(new ExtCastSpell(m_Book, (ushort) m_Spell.GetID()));
             return true;
+        }
+
+        public override string ToScript()
+        {
+            return $"cast '{m_Spell.Name}'";
         }
 
         public override string Serialize()
@@ -1835,6 +1942,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"cast '{m_Spell.Name}'";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Spell.GetID(), m_Book.Value);
@@ -1871,6 +1983,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"cast '{m_Spell.Name}'";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Spell.GetID());
@@ -1900,6 +2017,11 @@ namespace Assistant.Macros
         {
             Client.Instance.SendToServer(new UseAbility(m_Ability));
             return true;
+        }
+
+        public override string ToScript()
+        {
+            return $"setability '{m_Ability}'";
         }
 
         public override string Serialize()
@@ -1944,6 +2066,11 @@ namespace Assistant.Macros
         public override bool PerformWait()
         {
             return !ActionQueue.Empty;
+        }
+
+        public override string ToScript()
+        {
+            return $"dress '{m_Name}'";
         }
 
         public override string Serialize()
@@ -2022,6 +2149,16 @@ namespace Assistant.Macros
             return !ActionQueue.Empty;
         }
 
+        public override string ToScript()
+        {
+            if (m_Layer == 255)
+            {
+                return $"undress '{m_Name}'";
+            }
+
+            return m_Layer == 0 ? "undress" : $"undress '{m_Layer}'";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Name, m_Layer);
@@ -2091,6 +2228,11 @@ namespace Assistant.Macros
             }
         }
 
+        public override string ToScript()
+        {
+            return $"walk '{m_Dir}'";
+        }
+
         public override string Serialize()
         {
             return DoSerialize((byte) m_Dir);
@@ -2141,6 +2283,11 @@ namespace Assistant.Macros
                 return Language.GetString(LocString.WaitAnyMenu);
             else
                 return Language.Format(LocString.WaitMenuA1, m_MenuID);
+        }
+
+        public override string ToScript()
+        {
+            return $"waitformenu {m_MenuID}";
         }
 
         public override string Serialize()
@@ -2246,6 +2393,11 @@ namespace Assistant.Macros
                 return Language.Format(LocString.WaitGumpA1, m_GumpID);
         }
 
+        public override string ToScript()
+        {
+            return $"waitforgump {m_GumpID}";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_GumpID, m_Strict, m_Timeout.TotalSeconds);
@@ -2333,6 +2485,11 @@ namespace Assistant.Macros
             return Language.GetString(LocString.WaitTarg);
         }
 
+        public override string ToScript()
+        {
+            return $"waitfortarget";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Timeout.TotalSeconds);
@@ -2380,6 +2537,11 @@ namespace Assistant.Macros
         public PauseAction(TimeSpan time)
         {
             m_Timeout = time;
+        }
+
+        public override string ToScript()
+        {
+            return $"wait {m_Timeout.Milliseconds}";
         }
 
         public override string Serialize()
@@ -2468,6 +2630,27 @@ namespace Assistant.Macros
             m_Value = val;
 
             m_Timeout = TimeSpan.FromMinutes(60.0);
+        }
+
+        public override string ToScript()
+        {
+            string op = m_Direction > 0 ? ">=" : "<=";
+            string stat = "unknown";
+
+            switch (m_Stat)
+            {
+                case IfAction.IfVarType.Hits:
+                    stat = "hits";
+                    break;
+                case IfAction.IfVarType.Mana:
+                    stat = "mana";
+                    break;
+                case IfAction.IfVarType.Stamina:
+                    stat = "stam";
+                    break;
+            }
+
+            return $"if {stat} {op} {m_Value}";
         }
 
         public override string Serialize()
@@ -2674,6 +2857,77 @@ namespace Assistant.Macros
         {
             m_Var = var;
             m_Value = text.ToLower();
+        }
+
+        public override string ToScript()
+        {
+            string op = "??";
+            string expression = "unknown";
+
+            bool useValue = true;
+
+            switch (m_Direction)
+            {
+                case 0:
+                    // if stat <= m_Value
+                    op = "<=";
+                    break;
+                case 1:
+                    // if stat >= m_Value
+                    op = ">=";
+                    break;
+                case 2:
+                    // if stat < m_Value
+                    op = "<";
+                    break;
+                case 3:
+                    // if stat > m_Value
+                    op = ">";
+                    break;
+            }
+
+            switch (m_Var)
+            {
+                case IfAction.IfVarType.Hits:
+                    expression = "hits";
+                    break;
+                case IfAction.IfVarType.Mana:
+                    expression = "mana";
+                    break;
+                case IfAction.IfVarType.Stamina:
+                    expression = "stam";
+                    break;
+                case IfVarType.Poisoned:
+                    expression = "poisoned";
+                    break;
+                case IfVarType.SysMessage:
+                    expression = $"insysmsg '{m_Value}'";
+                    useValue = false;
+                    break;
+                case IfVarType.Weight:
+                    expression = "weight";
+                    break;
+                case IfVarType.Mounted:
+                    expression = "mounted";
+                    break;
+                case IfVarType.RHandEmpty:
+                    expression = "rhandempty";
+                    break;
+                case IfVarType.LHandEmpty:
+                    expression = "lhandempty";
+                    break;
+                case IfVarType.Counter:
+                    expression = $"count '{m_Counter}'";
+                    break;
+                case IfVarType.Skill:
+                    expression = $"skill '{Language.Skill2Str(m_SkillId)}'";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            return useValue ? $"if {expression} {op} {m_Value}" : $"if {expression}";
+
         }
 
         public override string Serialize()
@@ -3000,6 +3254,11 @@ namespace Assistant.Macros
         {
             return "Else";
         }
+
+        public override string ToScript()
+        {
+            return "else";
+        }
     }
 
     public class EndIfAction : MacroAction
@@ -3016,6 +3275,11 @@ namespace Assistant.Macros
         public override string ToString()
         {
             return "End If";
+        }
+
+        public override string ToScript()
+        {
+            return "endif";
         }
     }
 
@@ -3055,6 +3319,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"hotkey '{m_Key.DispName}'";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Key.LocName, m_Key.StrName == null ? "" : m_Key.StrName);
@@ -3089,6 +3358,11 @@ namespace Assistant.Macros
         public ForAction(int max)
         {
             m_Max = max;
+        }
+
+        public override string ToScript()
+        {
+            return $"for {m_Max}";
         }
 
         public override string Serialize()
@@ -3144,6 +3418,11 @@ namespace Assistant.Macros
         public override string ToString()
         {
             return "End For";
+        }
+
+        public override string ToScript()
+        {
+            return "endfor";
         }
     }
 
@@ -3282,6 +3561,76 @@ namespace Assistant.Macros
         {
             m_Var = var;
             m_Value = text.ToLower();
+        }
+
+        public override string ToScript()
+        {
+            string op = "??";
+            string expression = "unknown";
+
+            bool useValue = true;
+
+            switch (m_Direction)
+            {
+                case 0:
+                    // if stat <= m_Value
+                    op = "<=";
+                    break;
+                case 1:
+                    // if stat >= m_Value
+                    op = ">=";
+                    break;
+                case 2:
+                    // if stat < m_Value
+                    op = "<";
+                    break;
+                case 3:
+                    // if stat > m_Value
+                    op = ">";
+                    break;
+            }
+
+            switch (m_Var)
+            {
+                case WhileVarType.Hits:
+                    expression = "hits";
+                    break;
+                case WhileVarType.Mana:
+                    expression = "mana";
+                    break;
+                case WhileVarType.Stamina:
+                    expression = "stam";
+                    break;
+                case WhileVarType.Poisoned:
+                    expression = "poisoned";
+                    break;
+                case WhileVarType.SysMessage:
+                    expression = $"insysmsg '{m_Value}'";
+                    useValue = false;
+                    break;
+                case WhileVarType.Weight:
+                    expression = "weight";
+                    break;
+                case WhileVarType.Mounted:
+                    expression = "mounted";
+                    break;
+                case WhileVarType.RHandEmpty:
+                    expression = "rhandempty";
+                    break;
+                case WhileVarType.LHandEmpty:
+                    expression = "lhandempty";
+                    break;
+                case WhileVarType.Counter:
+                    expression = $"count '{m_Counter}'";
+                    break;
+                case WhileVarType.Skill:
+                    expression = $"skill '{Language.Skill2Str(m_SkillId)}'";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            return useValue ? $"while {expression} {op} {m_Value}" : $"while {expression}";
         }
 
         public override string Serialize()
@@ -3608,6 +3957,11 @@ namespace Assistant.Macros
         {
             return "End While";
         }
+
+        public override string ToScript()
+        {
+            return "endwhile";
+        }
     }
 
     public class StartDoWhileAction : MacroAction
@@ -3624,6 +3978,11 @@ namespace Assistant.Macros
         public override string ToString()
         {
             return "Do";
+        }
+
+        public override string ToScript()
+        {
+            return "# do-while not implemented, use while";
         }
     }
 
@@ -3762,6 +4121,11 @@ namespace Assistant.Macros
         {
             m_Var = var;
             m_Value = text.ToLower();
+        }
+
+        public override string ToScript()
+        {
+            return "# do-while not implemented, use while";
         }
 
         public override string Serialize()
@@ -4115,6 +4479,11 @@ namespace Assistant.Macros
             return true;
         }
 
+        public override string ToScript()
+        {
+            return $"menu {m_Entity} {m_Idx}";
+        }
+
         public override string Serialize()
         {
             return DoSerialize(m_Entity, m_Idx, m_CtxName);
@@ -4156,6 +4525,11 @@ namespace Assistant.Macros
             }
 
             return false;
+        }
+
+        public override string ToScript()
+        {
+            return $"promptresponse '{m_Response}'";
         }
 
         public override string Serialize()
@@ -4248,6 +4622,11 @@ namespace Assistant.Macros
                 return "Wait For Prompt (Any)";
 
             return $"Wait For Prompt ({m_PromptID})";
+        }
+
+        public override string ToScript()
+        {
+            return m_PromptID == 0 || !m_Strict ? "waitforprompt" : $"waitforprompt '{m_PromptID}'";
         }
 
         public override string Serialize()
