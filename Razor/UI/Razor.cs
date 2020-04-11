@@ -4669,6 +4669,25 @@ namespace Assistant
                             Path.Combine(backupDir, "Macros")), true);
                 }
 
+                Directory.CreateDirectory(Path.Combine(backupDir, "Scripts"));
+
+                // Create folders
+                foreach (string dirPath in Directory.GetDirectories(ScriptManager.ScriptPath, "*",
+                    SearchOption.AllDirectories))
+                {
+                    Directory.CreateDirectory(dirPath.Replace(ScriptManager.ScriptPath,
+                        Path.Combine(backupDir, "Scripts")));
+                }
+
+                // Copy macros
+                foreach (string newPath in Directory.GetFiles(ScriptManager.ScriptPath, "*.*",
+                    SearchOption.AllDirectories))
+                {
+                    File.Copy(newPath,
+                        newPath.Replace(ScriptManager.ScriptPath,
+                            Path.Combine(backupDir, "Scripts")), true);
+                }
+
                 // Backup the profiles
                 Directory.CreateDirectory(Path.Combine(backupDir, "Profiles"));
                 var profilesDirectory = Path.Combine(Config.GetUserDirectory(), "Profiles");
