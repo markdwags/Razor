@@ -1155,6 +1155,9 @@ namespace Assistant
 
         private static void TargetResponse(PacketReader p, PacketHandlerEventArgs args)
         {
+            if (World.Player == null)
+                return;
+
             TargetInfo info = new TargetInfo
             {
                 Type = p.ReadByte(),
