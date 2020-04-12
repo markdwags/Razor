@@ -226,29 +226,29 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                List<Item> items = World.FindItemsByName(gfxStr);
-
-                Item backItem = World.Player.Backpack.FindItemByName(gfxStr, true);
-
-                if (backItem != null)
-                    items.Add(backItem);
+                List<Item> items = new List<Item>();
+                
+                items.AddRange(inRangeCheck
+                    ? World.FindItemsByName(gfxStr).Where(item =>
+                            !item.IsInBank &&
+                            (Utility.InRange(World.Player.Position, item.Position, 2) ||
+                             item.RootContainer == World.Player.Backpack))
+                        .ToList()
+                    : World.FindItemsByName(gfxStr).Where(item => !item.IsInBank)
+                        .ToList());
 
                 if (items.Count > 0)
                 {
-                    list.AddRange(inRangeCheck
-                        ? items.Where(i => Utility.InRange(World.Player.Position, i.Position, 2)).ToList()
-                        : items);
+                    throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
                 }
-                else // try to find a mobile
-                {
-                    List<Mobile> mobiles = World.FindMobilesByName(gfxStr);
 
-                    if (mobiles.Count > 0)
-                    {
-                        list.AddRange(inRangeCheck
-                            ? mobiles.Where(m => Utility.InRange(World.Player.Position, m.Position, 2)).ToList()
-                            : mobiles);
-                    }
+                List<Mobile> mobiles = World.FindMobilesByName(gfxStr);
+
+                if (mobiles.Count > 0)
+                {
+                    list.AddRange(inRangeCheck
+                        ? mobiles.Where(m => Utility.InRange(World.Player.Position, m.Position, 2)).ToList()
+                        : mobiles);
                 }
             }
             else // check if they are mobile or an item
@@ -263,13 +263,14 @@ namespace Assistant.Scripts
 
                 if (list.Count == 0)
                 {
-                    foreach (Item i in World.Items.Values)
-                    {
-                        if (i.ItemID == gfx && !i.IsInBank)
-                        {
-                            list.Add(i);
-                        }
-                    }
+                    list.AddRange(inRangeCheck
+                        ? World.Items.Values.Where(i =>
+                                i.ItemID == gfx && !i.IsInBank &&
+                                (Utility.InRange(World.Player.Position, i.Position, 2) ||
+                                 i.RootContainer == World.Player.Backpack))
+                            .ToList()
+                        : World.Items.Values.Where(i => i.ItemID == gfx && !i.IsInBank)
+                            .ToList());
                 }
             }
 
@@ -484,30 +485,18 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                foreach (Item item in World.FindItemsByName(gfxStr))
-                {
-                    if (inRangeCheck)
-                    {
-                        if (Utility.InRange(World.Player.Position, item.Position, 2))
-                        {
-                            items.Add(item);
-                        }
-                    }
-                    else
-                    {
-                        items.Add(item);
-                    }
-                }
-
-                Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
-
-                if (i != null)
-                    items.Add(i);
-
+                items.AddRange(inRangeCheck
+                    ? World.FindItemsByName(gfxStr).Where(item =>
+                            !item.IsInBank &&
+                            (Utility.InRange(World.Player.Position, item.Position, 2) ||
+                             item.RootContainer == World.Player.Backpack))
+                        .ToList()
+                    : World.FindItemsByName(gfxStr).Where(item => !item.IsInBank)
+                        .ToList());
+                
                 if (items.Count == 0)
                 {
                     throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
-                    return true;
                 }
 
                 click = items[Utility.Random(items.Count)].Serial;

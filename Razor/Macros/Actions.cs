@@ -352,7 +352,7 @@ namespace Assistant.Macros
                             {
                                 if (Config.GetBool("RangeCheckDoubleClick"))
                                 {
-                                    if (Utility.InRange(World.Player.Position, i.Position, 2))
+                                    if (Utility.InRange(World.Player.Position, i.Position, 2) || i.RootContainer == World.Player.Backpack)
                                     {
                                         list.Add(i);
                                     }
@@ -1287,7 +1287,7 @@ namespace Assistant.Macros
                     {
                         if (Config.GetBool("RangeCheckTargetByType"))
                         {
-                            if (Utility.InRange(World.Player.Position, i.Position, 2))
+                            if (Utility.InRange(World.Player.Position, i.Position, 2) || i.RootContainer == World.Player.Backpack)
                             {
                                 list.Add(i);
                             }
