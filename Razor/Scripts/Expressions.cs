@@ -19,6 +19,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Assistant.Scripts.Engine;
 using Ultima;
 
@@ -61,7 +63,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("findtype", FindType);
         }
 
-        private static double FindType(string expression, Argument[] args, bool quiet)
+        private static bool FindType(string expression, Argument[] args, bool quiet)
         {
             if (args.Length == 0)
             {
@@ -85,14 +87,16 @@ namespace Assistant.Scripts
                 {
                     if (inRangeCheck)
                     {
-                        if (Utility.InRange(World.Player.Position, item.Position, 2))
+                        if (!item.IsInBank &&
+                            (Utility.InRange(World.Player.Position, item.Position, 2) ||
+                             item.RootContainer == World.Player))
                         {
-                            return 1;
+                            return true;
                         }
                     }
-                    else
+                    else if (!item.IsInBank)
                     {
-                        return 1;
+                        return true;
                     }
                 }
             }
@@ -103,40 +107,38 @@ namespace Assistant.Scripts
                     Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
 
                     if (i != null)
-                        return 1;
+                        return true;
                 }
             }
 
             // Not in backpack? Lets check the world
             foreach (Item i in World.Items.Values)
             {
-                if (i.ItemID == gfx && i.RootContainer == null)
+                if (i.ItemID != gfx || i.RootContainer != null) continue;
+
+                if (inRangeCheck)
                 {
-                    if (inRangeCheck)
-                    {
-                        if (Utility.InRange(World.Player.Position, i.Position, 2))
-                            return 1;
-                    }
-                    else
-                    {
-                        return 1;
-                    }
+                    if (Utility.InRange(World.Player.Position, i.Position, 2))
+                        return true;
+                }
+                else
+                {
+                    return true;
                 }
             }
 
             foreach (Item i in World.Items.Values)
             {
-                if (i.ItemID == gfx && !i.IsInBank)
+                if (i.ItemID != gfx || i.IsInBank) continue;
+
+                if (inRangeCheck)
                 {
-                    if (inRangeCheck)
-                    {
-                        if (Utility.InRange(World.Player.Position, i.Position, 2))
-                            return 1;
-                    }
-                    else
-                    {
-                        return 1;
-                    }
+                    if (Utility.InRange(World.Player.Position, i.Position, 2) || i.RootContainer == World.Player)
+                        return true;
+                }
+                else
+                {
+                    return true;
                 }
             }
 
@@ -147,16 +149,16 @@ namespace Assistant.Scripts
                     if (inRangeCheck)
                     {
                         if (Utility.InRange(World.Player.Position, m.Position, 2))
-                            return 1;
+                            return true;
                     }
                     else
                     {
-                        return 1;
+                        return true;
                     }
                 }
             }
 
-            return 0;
+            return false;
         }
 
         private static bool Mounted(string expression, Argument[] args, bool quiet)

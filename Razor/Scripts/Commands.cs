@@ -232,7 +232,7 @@ namespace Assistant.Scripts
                     ? World.FindItemsByName(gfxStr).Where(item =>
                             !item.IsInBank &&
                             (Utility.InRange(World.Player.Position, item.Position, 2) ||
-                             item.RootContainer == World.Player.Backpack))
+                             item.RootContainer == World.Player))
                         .ToList()
                     : World.FindItemsByName(gfxStr).Where(item => !item.IsInBank)
                         .ToList());
@@ -267,7 +267,7 @@ namespace Assistant.Scripts
                         ? World.Items.Values.Where(i =>
                                 i.ItemID == gfx && !i.IsInBank &&
                                 (Utility.InRange(World.Player.Position, i.Position, 2) ||
-                                 i.RootContainer == World.Player.Backpack))
+                                 i.RootContainer == World.Player))
                             .ToList()
                         : World.Items.Values.Where(i => i.ItemID == gfx && !i.IsInBank)
                             .ToList());
@@ -489,7 +489,7 @@ namespace Assistant.Scripts
                     ? World.FindItemsByName(gfxStr).Where(item =>
                             !item.IsInBank &&
                             (Utility.InRange(World.Player.Position, item.Position, 2) ||
-                             item.RootContainer == World.Player.Backpack))
+                             item.RootContainer == World.Player))
                         .ToList()
                     : World.FindItemsByName(gfxStr).Where(item => !item.IsInBank)
                         .ToList());
