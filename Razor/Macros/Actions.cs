@@ -2230,7 +2230,7 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return $"walk '{m_Dir}'";
+            return m_Dir == Direction.Mask ? $"walk 'Up'" : $"walk '{m_Dir}'";
         }
 
         public override string Serialize()
