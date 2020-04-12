@@ -810,7 +810,8 @@ namespace Assistant.Scripts
             {"tracking", 38}, // tracking
             {"meditation", 46}, // Meditation
             {"stealth", 47}, // Stealth
-            {"removetrap", 48} // RemoveTrap
+            {"removetrap", 48}, // RemoveTrap
+            {"imbuing", 56} // Imbuing
         };
 
         private static bool UseSkill(string command, Argument[] args, bool quiet, bool force)

@@ -571,6 +571,8 @@ namespace Assistant
         ScriptFinished,
         StopScript,
         PartyAdd,
+        Mysticism,
+        Masteries,
         __End
     }
 

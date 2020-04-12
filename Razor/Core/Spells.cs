@@ -59,18 +59,32 @@ namespace Assistant
             {
                 if (Circle <= 8) // Mage
                     return 3002011 + ((Circle - 1) * 8) + (Number - 1);
-                else if (Circle == 10) // Necr
+                
+                if (Circle == 10) // Necr
                     return 1060509 + Number - 1;
-                else if (Circle == 20) // Chiv
+                
+                if (Circle == 20) // Chiv
                     return 1060585 + Number - 1;
-                else if (Circle == 40) // Bush
+                
+                if (Circle == 40) // Bush
                     return 1060595 + Number - 1;
-                else if (Circle == 50) // Ninj
+                
+                if (Circle == 50) // Ninj
                     return 1060610 + Number - 1;
-                else if (Circle == 60) // Elfs
+                
+                if (Circle == 60) // Elfs
                     return 1071026 + Number - 1;
-                else
+                
+                if (Circle == 65) // Myst
+                    return 1031678 + this.Number - 28;
+
+                if (Circle != 70)
                     return -1;
+
+                if (Number <= 6)
+                    return 1115683 + Number - 1;
+
+                return 1155896 + Number - 7;
             }
         }
 

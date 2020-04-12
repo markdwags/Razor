@@ -83,6 +83,8 @@ namespace Assistant
         BushidoC = SpellOffset + 40,
         NinjisuC = SpellOffset + 50,
         SpellWeaveC = SpellOffset + 60,
+        MystC = SpellOffset + 65,
+        MasteriesC = SpellOffset + 70,
 
         // pet commands
         PetCommands = 780, //1749
@@ -453,6 +455,8 @@ namespace Assistant
             MakeNode(spells, "Bushido", HKSubCat.BushidoC);
             MakeNode(spells, "Ninjisu", HKSubCat.NinjisuC);
             MakeNode(spells, "Spellweaving", HKSubCat.SpellWeaveC);
+            MakeNode(spells, "Mysticism", HKSubCat.MystC);
+            MakeNode(spells, "Masteries", HKSubCat.MasteriesC);
 
             MakeNode("Skills", HKCategory.Skills);
 
@@ -484,7 +488,7 @@ namespace Assistant
                 else if (node.Tag is HKCategory)
                     node.Text = Language.GetString((int) LocString.HotKeys + (int) ((HKCategory) node.Tag));
                 else if (node.Tag is HKSubCat)
-                    node.Text = Language.GetString((int) LocString.HKSubOffset + (int) ((HKSubCat) node.Tag));
+                    node.Text = Language.GetString(GetHKSubCatLangKey((HKSubCat) node.Tag));
                 else if (node.Tag is Int32)
                     node.Text = Language.GetString((int) node.Tag);
 
@@ -492,6 +496,19 @@ namespace Assistant
                     UpdateNode(node.NextNode);
                 if (node.GetNodeCount(true) > 0)
                     UpdateNode(node.FirstNode);
+            }
+        }
+
+        private static int GetHKSubCatLangKey(HKSubCat tag)
+        {
+            switch (tag)
+            {
+                case HKSubCat.MystC:
+                    return 2103;
+                case HKSubCat.MasteriesC:
+                    return 2104;
+                default:
+                    return (int)LocString.HKSubOffset + (int) tag;
             }
         }
 

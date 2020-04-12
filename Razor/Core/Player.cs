@@ -176,7 +176,10 @@ namespace Assistant
         Chivalry = 51,
         Bushido = 52,
         Ninjitsu = 53,
-        SpellWeaving = 54
+        SpellWeaving = 54,
+        Mysticism,
+        Imbuing,
+        Throwing,
     }
 
     public enum MaleSounds

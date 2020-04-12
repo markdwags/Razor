@@ -145,3 +145,74 @@ N | 13 | 60 | Ethereal Voyage | Orlavdra
 H | 14 | 60 | Word of Death | Nyraxle
 B | 15 | 60 | Gift of Life | Illorae
 B | 16 | 60 | Arcane Empowerment | Aslavdra
+
+#
+# Mysticism
+#
+H | 28 | 65 | Nether Bolt | In Corp Ylem
+N | 29 | 65 | Healing Stone | Kal In Mani
+H | 30 | 65 | Purge Magic | An Ort Sanct
+N | 31 | 65 | Enchant | In Ort Ylem
+H | 32 | 65 | Sleep | In Zu
+H | 33 | 65 | Eagle Strike | Kal Por Xen
+H | 34 | 65 | Animated Weapon | In Jux Por Ylem
+N | 35 | 65 | Stone Form | In Rel Ylem
+N | 36 | 65 | Spell Trigger | In Vas Ort Ex
+H | 37 | 65 | Mass Sleep | Vas Zu
+B | 38 | 65 | Cleansing Winds | In Vas Mani Hur
+H | 39 | 65 | Bombard | Corp Por Ylem
+H | 40 | 65 | Spell Plague | Vas Rel Jux Ort
+H | 41 | 65 | Hail Storm | Kal Des Ylem
+H | 42 | 65 | Nether Cyclone | Grav Hur
+H | 43 | 65 | Rising Colossus | Kal Vas Xen Corp Ylem
+
+#
+# Masteries
+# TODO: Correct flags
+#
+N | 1 | 70 | Inspire | Uus Por
+N | 2 | 70 | Invigorate | An Zu
+N | 3 | 70 | Resilience | Kal Mani Tym
+N | 4 | 70 | Perserverance | Uus Jux Sanct
+N | 5 | 70 | Tribulation | In Jux Hur Rel
+N | 6 | 70 | Despair | Kal Des Mani Tym
+N | 7 | 70 | Death Ray | In Grav Corp
+N | 8 | 70 | Ethereal Burst | Uus Ort Grav
+N | 9 | 70 | Nether Blast | In Vas Xen Por
+N | 10 | 70 | Mystic Weapon | Vas Ylem Wis
+N | 11 | 70 | Command Undead | In Corp Xen Por
+N | 12 | 70 | Conduit | Uus Corp Grav
+N | 13 | 70 | Mana Shield | Faerkulggen
+N | 14 | 70 | Summon Reaper | Lartarisstree
+N | 15 | 70 | Enchanted Summoning | NA
+N | 16 | 70 | Anticipate Hit | NA
+N | 17 | 70 | Warcry | NA
+N | 18 | 70 | Intuition | NA
+N | 19 | 70 | Rejuvenate | NA
+N | 20 | 70 | Holy Fist | NA
+N | 21 | 70 | Shadow | NA
+N | 22 | 70 | White Tiger Form | NA
+N | 23 | 70 | Flaming Shot | NA
+N | 24 | 70 | Playing The Odds | NA
+N | 25 | 70 | Thrust | NA
+N | 26 | 70 | Pierce | NA
+N | 27 | 70 | Stagger | NA
+N | 28 | 70 | Toughness | NA
+N | 29 | 70 | Onslaught | NA
+N | 30 | 70 | Focused Eye | NA
+N | 31 | 70 | Elemental Fury | NA
+N | 32 | 70 | Called Shot | NA
+N | 33 | 70 | Saving Throw | NA
+N | 34 | 70 | Shield Bash | NA
+N | 35 | 70 | Bodyguard | NA
+N | 36 | 70 | Heighten Senses | NA
+N | 37 | 70 | Tolerance | NA
+N | 38 | 70 | Injected Strike | NA
+N | 39 | 70 | Potency | NA
+N | 40 | 70 | Rampage | NA
+N | 41 | 70 | Fists of Fury | NA
+N | 42 | 70 | Knockout | NA
+N | 43 | 70 | Whispering | NA
+N | 44 | 70 | Combat Training | NA
+N | 45 | 70 | Boarding | NA
+
