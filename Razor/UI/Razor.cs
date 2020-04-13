@@ -6286,6 +6286,8 @@ namespace Assistant
             if (scriptList.SelectedIndex < 0)
                 return;
 
+            ScriptManager.ClearHighlightLine();
+
             scriptEditor.Text =
                 File.ReadAllText(Path.Combine(ScriptManager.ScriptPath, $"{scriptList.SelectedItem}.razor"));
         }
