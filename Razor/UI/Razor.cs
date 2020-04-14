@@ -2714,6 +2714,15 @@ namespace Assistant
 
                 File.WriteAllLines(path, scriptLines.ToArray());
 
+                ScriptManager.RazorScript script = new ScriptManager.RazorScript
+                {
+                    Lines = File.ReadAllLines(path),
+                    Name = name,
+                    Path = path
+                };
+
+                ScriptManager.AddHotkey(script.Name);
+
                 ScriptManager.RedrawScripts();
 
                 tabs.SelectedTab = scriptsTab;
