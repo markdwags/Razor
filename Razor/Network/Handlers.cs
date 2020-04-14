@@ -2242,7 +2242,7 @@ namespace Assistant
             if (Macros.MacroManager.AcceptActions)
                 MacroManager.Action(new GumpResponseAction(bid, switches, entries));
 
-            ScriptManager.AddToScript(bid == 0 ? "closegump" : $"gumpresponse {bid}");
+            ScriptManager.AddToScript(bid == 0 ? "gumpclose" : $"gumpresponse {bid}");
 
 
             World.Player.LastGumpResponseAction = new GumpResponseAction(bid, switches, entries);

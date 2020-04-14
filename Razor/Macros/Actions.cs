@@ -881,7 +881,7 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return $"gumpresponse {m_ButtonID}";
+            return m_ButtonID == 0 ? "gumpclose" : $"gumpresponse {m_ButtonID}";
         }
 
         public override string Serialize()
