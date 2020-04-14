@@ -18,6 +18,8 @@
 
 #endregion
 
+using System.Collections.Generic;
+
 namespace Assistant.HotKeys
 {
     public class SkillHotKeys
@@ -52,10 +54,46 @@ namespace Assistant.HotKeys
             56 // Imbuing
         };
 
+        public static readonly Dictionary<string, int> UsableSkillsByName = new Dictionary<string, int>()
+        {
+            {"anatomy", 1}, // anatomy
+            {"animallore", 2}, // animal lore
+            {"itemidentification", 3}, // item identification
+            {"itemid", 3}, // item identification
+            {"armslore", 4}, // arms lore
+            {"begging", 6}, // begging
+            {"peacemaking", 9}, // peacemaking
+            {"peace", 9}, // peacemaking
+            {"cartography", 12}, // cartography
+            {"detectinghidden", 14}, // detect hidden
+            {"discord", 15}, // Discordance
+            {"discordance", 15}, // Discordance
+            {"evaluatingintelligence", 16}, // evaluate intelligence
+            {"evalint", 16}, // evaluate intelligence
+            {"forensicevaluation", 19}, // forensic evaluation
+            {"forensiceval", 19}, // forensic evaluation
+            {"hiding", 21}, // hiding
+            {"provocation", 22}, // provocation
+            {"provo", 22}, // provocation
+            {"inscription", 23}, // inscription
+            {"poisoning", 30}, // poisoning
+            {"spiritspeak", 32}, // spirit speak
+            {"stealing", 33}, // stealing
+            {"taming", 35}, // taming
+            {"tasteidentification", 36}, // taste id
+            {"tasteid", 36}, // taste id
+            {"tracking", 38}, // tracking
+            {"meditation", 46}, // Meditation
+            {"stealth", 47}, // Stealth
+            {"removetrap", 48}, // RemoveTrap
+            {"imbuing", 56} // Imbuing
+        };
+
         public static void Initialize()
         {
             m_Callback = new HotKeyCallbackState(OnHotKey);
             //1044060 = Alchemy in UO cliloc
+            
             foreach (int t in m_UsableSkills)
             {
                 HotKey.Add(HKCategory.Skills, (1044060 + t), m_Callback, t);

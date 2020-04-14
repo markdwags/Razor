@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Filters;
+using Assistant.HotKeys;
 using Assistant.Macros;
 using Assistant.Scripts;
 using Assistant.UI;
@@ -414,12 +415,15 @@ namespace Assistant
                     if (World.Player != null)
                         World.Player.LastSkill = skillIndex;
 
-                    if (Macros.MacroManager.AcceptActions)
+                    if (MacroManager.AcceptActions)
                         MacroManager.Action(new UseSkillAction(skillIndex));
 
-                    ScriptManager.AddToScript($"useskill '{Ultima.Skills.GetSkill(skillIndex).Name}'");
+                    if (SkillHotKeys.UsableSkillsByName.ContainsValue(skillIndex))
+                    {
+                        ScriptManager.AddToScript($"skill '{SkillHotKeys.UsableSkillsByName.FirstOrDefault(x => x.Value.Equals(skillIndex)).Key}'");
+                    }
 
-                    if (skillIndex == (int) SkillName.Stealth && !World.Player.Visible)
+                    if (World.Player != null && (skillIndex == (int) SkillName.Stealth && !World.Player.Visible))
                         StealthSteps.Hide();
 
                     SkillTimer.Start();

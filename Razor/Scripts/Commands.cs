@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assistant.Core;
+using Assistant.HotKeys;
 using Assistant.Scripts.Engine;
 
 namespace Assistant.Scripts
@@ -768,41 +769,6 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static Dictionary<string, int> UsableSkills = new Dictionary<string, int>()
-        {
-            {"anatomy", 1}, // anatomy
-            {"animallore", 2}, // animal lore
-            {"itemidentification", 3}, // item identification
-            {"itemid", 3}, // item identification
-            {"armslore", 4}, // arms lore
-            {"begging", 6}, // begging
-            {"peacemaking", 9}, // peacemaking
-            {"peace", 9}, // peacemaking
-            {"cartography", 12}, // cartography
-            {"detectinghidden", 14}, // detect hidden
-            {"discord", 15}, // Discordance
-            {"discordance", 15}, // Discordance
-            {"evaluatingintelligence", 16}, // evaluate intelligence
-            {"evalint", 16}, // evaluate intelligence
-            {"forensicevaluation", 19}, // forensic evaluation
-            {"forensiceval", 19}, // forensic evaluation
-            {"hiding", 21}, // hiding
-            {"provocation", 22}, // provocation
-            {"provo", 22}, // provocation
-            {"inscription", 23}, // inscription
-            {"poisoning", 30}, // poisoning
-            {"spiritspeak", 32}, // spirit speak
-            {"stealing", 33}, // stealing
-            {"taming", 35}, // taming
-            {"tasteidentification", 36}, // taste id
-            {"tasteid", 36}, // taste id
-            {"tracking", 38}, // tracking
-            {"meditation", 46}, // Meditation
-            {"stealth", 47}, // Stealth
-            {"removetrap", 48}, // RemoveTrap
-            {"imbuing", 56} // Imbuing
-        };
-
         private static bool UseSkill(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
@@ -812,7 +778,7 @@ namespace Assistant.Scripts
 
             if (args[0].AsString() == "last")
                 Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
-            else if (UsableSkills.TryGetValue(args[0].AsString().ToLower(), out int skillId))
+            else if (SkillHotKeys.UsableSkillsByName.TryGetValue(args[0].AsString().ToLower(), out int skillId))
                 Client.Instance.SendToServer(new UseSkill(skillId));
 
             return true;
