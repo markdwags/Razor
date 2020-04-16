@@ -1017,7 +1017,7 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return $"target '{m_Info}'";
+            return $"target {m_Info.Serial}";
         }
 
         public override string Serialize()
