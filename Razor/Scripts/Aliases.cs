@@ -31,30 +31,36 @@ namespace Assistant.Scripts
             Interpreter.RegisterAliasHandler("lasttarget", Last);
             Interpreter.RegisterAliasHandler("lastobject", LastObject);
             Interpreter.RegisterAliasHandler("self", Self);
-            Interpreter.RegisterAliasHandler("mount", Mounted);
-            Interpreter.RegisterAliasHandler("righthand", RHandEmpty);
-            Interpreter.RegisterAliasHandler("lefthand", LHandEmpty);
+            Interpreter.RegisterAliasHandler("righthand", RightHand);
+            Interpreter.RegisterAliasHandler("lefthand", LeftHand);
+            Interpreter.RegisterAliasHandler("hand", Hand);
         }
 
-        private static uint Mounted(string alias)
+        private static uint RightHand(string alias)
         {
-            return World.Player != null && World.Player.GetItemOnLayer(Layer.Mount) != null
-                ? (uint) 1
-                : (uint) 0;
+            Item item = World.Player.GetItemOnLayer(Layer.RightHand);
+
+            return World.Player != null && item != null
+                ? (uint) item.Serial
+                : 0;
         }
 
-        private static uint RHandEmpty(string alias)
+        private static uint LeftHand(string alias)
         {
-            return World.Player != null && World.Player.GetItemOnLayer(Layer.RightHand) != null
-                ? (uint) 1
-                : (uint) 0;
+            Item item = World.Player.GetItemOnLayer(Layer.LeftHand);
+
+            return World.Player != null && item != null
+                ? (uint)item.Serial
+                : 0;
         }
 
-        private static uint LHandEmpty(string alias)
+        private static uint Hand(string alias)
         {
-            return World.Player != null && World.Player.GetItemOnLayer(Layer.LeftHand) != null
-                ? (uint) 1
-                : (uint) 0;
+            Item item = World.Player.GetItemOnLayer(Layer.RightHand) ?? World.Player.GetItemOnLayer(Layer.LeftHand);
+
+            return World.Player != null && item != null
+                ? (uint)item.Serial
+                : 0;
         }
 
         private static uint Backpack(string alias)
