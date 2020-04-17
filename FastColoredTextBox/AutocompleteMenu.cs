@@ -12,10 +12,9 @@ namespace FastColoredTextBoxNS
     /// Popup menu for autocomplete
     /// </summary>
     [Browsable(false)]
-    public class AutocompleteMenu : ToolStripDropDown, IDisposable
+    public class AutocompleteMenu : UserControl, IDisposable
     {
         AutocompleteListView listView;
-        public ToolStripControlHost host;
         public Range Fragment { get; internal set; }
 
         /// <summary>
@@ -102,23 +101,20 @@ namespace FastColoredTextBoxNS
         public AutocompleteMenu(FastColoredTextBox tb)
         {
             // create a new popup and add the list view to it
-            AutoClose = false;
+            Visible = false;
+            BorderStyle = BorderStyle.FixedSingle;
             AutoSize = false;
             Margin = Padding.Empty;
             Padding = Padding.Empty;
             BackColor = Color.White;
             listView = new AutocompleteListView(tb);
-            host = new ToolStripControlHost(listView);
-            host.Margin = new Padding(2, 2, 2, 2);
-            host.Padding = Padding.Empty;
-            host.AutoSize = false;
-            host.AutoToolTip = false;
+           
             CalcSize();
-            base.Items.Add(host);
             listView.Parent = this;
             SearchPattern = @"[\w\.]";
             MinFragmentLength = 2;
         }
+
 
         public new Font Font
         {
@@ -135,12 +131,11 @@ namespace FastColoredTextBoxNS
         public new void Close()
         {
             listView.toolTip.Hide(listView);
-            base.Close();
+            Hide();
         }
 
         internal void CalcSize()
         {
-            host.Size = listView.Size;
             Size = new System.Drawing.Size(listView.Size.Width + 4, listView.Size.Height + 4);
         }
 
@@ -467,7 +462,11 @@ namespace FastColoredTextBoxNS
                     CancelEventArgs args = new CancelEventArgs();
                     Menu.OnOpening(args);
                     if (!args.Cancel)
-                        Menu.Show(tb, point);
+                    {
+                        Menu.Location = point;
+                        Menu.Parent = tb;
+                        Menu.Show();
+                    }
                 }
 
                 DoSelectedVisible();
@@ -593,6 +592,9 @@ namespace FastColoredTextBoxNS
             }
         }
 
+        public override Color ForeColor { get { return Color.Black; } set { }
+        }
+
         protected override void OnScroll(ScrollEventArgs se)
         {
             base.OnScroll(se);
@@ -603,7 +605,7 @@ namespace FastColoredTextBoxNS
         {
             base.OnMouseClick(e);
 
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == System.Windows.Forms.MouseButtons.Left || Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 FocussedItemIndex = PointToItemIndex(e.Location);
                 DoSelectedVisible();
@@ -793,13 +795,14 @@ namespace FastColoredTextBoxNS
             if (this.Parent != null)
             {
                 IWin32Window window = this.Parent ?? this;
-                Point location;
+               /* Point location;
 
                 if ((this.PointToScreen(this.Location).X + MaxToolTipSize.Width + 105) <
                     Screen.FromControl(this.Parent).WorkingArea.Right)
                     location = new Point(Right + 5, 0);
                 else
-                    location = new Point(Left - 105 - MaximumSize.Width, 0);
+                    location = new Point(Left - 105 - MaximumSize.Width, 0);*/
+                var location = new Point(Right + 3 + Menu.Left, Menu.Top);
 
                 if (string.IsNullOrEmpty(text))
                 {
