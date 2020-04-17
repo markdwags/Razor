@@ -306,6 +306,8 @@ namespace FastColoredTextBoxNS
             ToolTipDuration = 3000;
             toolTip.Popup += ToolTip_Popup;
 
+            MouseDown += new MouseEventHandler(ListMouseDown);
+
             this.tb = tb;
 
             tb.KeyDown += new KeyEventHandler(tb_KeyDown);
@@ -335,6 +337,11 @@ namespace FastColoredTextBoxNS
                 if (this.Visible)
                     DoSelectedVisible();
             };
+        }
+
+        private void ListMouseDown(object sender, MouseEventArgs e)
+        {
+            DoAutocomplete(false);
         }
 
         private void ToolTip_Popup(object sender, PopupEventArgs e)
