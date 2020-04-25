@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace Assistant.Core
 {
@@ -64,23 +63,6 @@ namespace Assistant.Core
         }
 
         private static List<SpeechEntry> m_Speech;
-
-        [DllImport("Kernel32", EntryPoint = "_lread")]
-        internal static extern unsafe int lread(IntPtr hFile, void* lpBuffer, int wBytes);
-
-        private static unsafe int NativeRead(FileStream fs, void* pBuffer, int bytes)
-        {
-            return lread(fs.SafeFileHandle.DangerousGetHandle(), pBuffer, bytes);
-        }
-
-        private static unsafe int NativeRead(FileStream fs, byte[] buffer, int offset, int length)
-        {
-            fixed (byte* numRef = buffer)
-            {
-                return NativeRead(fs, (void*) (numRef + offset), length);
-            }
-        }
-
         internal static unsafe void LoadSpeechTable()
         {
             string path = Ultima.Files.GetFilePath("Speech.mul");
@@ -91,27 +73,25 @@ namespace Assistant.Core
             }
             else
             {
+                m_Speech = new List<SpeechEntry>();
                 byte[] buffer = new byte[0x400];
                 fixed (byte* numRef = buffer)
                 {
-                    List<SpeechEntry> list = new List<SpeechEntry>();
-                    FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    int num = 0;
-                    while ((num = NativeRead(fs, (void*) numRef, 4)) > 0)
-                    {
-                        int idKeyword = numRef[1] | (numRef[0] << 8);
-                        int bytes = numRef[3] | (numRef[2] << 8);
-                        if (bytes > 0)
+                    using(var file = new FileStream(path, FileMode.Open,FileAccess.Read)) 
+                        while (file.Position < file.Length)
                         {
-                            NativeRead(fs, (void*) numRef, bytes);
-                            list.Add(new SpeechEntry(idKeyword, new string((sbyte*) numRef, 0, bytes)));
+                            int id = (ushort)((file.ReadByte() << 8) | file.ReadByte());
+                            int length = (ushort)((file.ReadByte() << 8) | file.ReadByte());
+                            if (length > 0 && file.Position + length <= file.Length)
+                            {
+                                file.Read(buffer, 0, length);
+                                m_Speech.Add(new SpeechEntry(id, new string((sbyte*) numRef,0, length)));
+                            }
                         }
-                    }
-
-                    fs.Close();
-                    m_Speech = list;
                 }
+
             }
+            
         }
 
         internal static List<ushort> GetKeywords(string text)
