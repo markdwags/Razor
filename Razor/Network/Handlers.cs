@@ -369,7 +369,7 @@ namespace Assistant
                         if (Macros.MacroManager.AcceptActions)
                             MacroManager.Action(new ExtCastSpellAction(s, ser));
 
-                        ScriptManager.AddToScript($"cast '{Spell.GetName(sid - 1)}'");
+                        ScriptManager.AddToScript($"cast '{Spell.GetName(sid)}'");
                     }
 
                     break;
@@ -448,7 +448,7 @@ namespace Assistant
                                 if (Macros.MacroManager.AcceptActions)
                                     MacroManager.Action(new BookCastSpellAction(s, serial));
 
-                                ScriptManager.AddToScript($"cast '{Spell.GetName(spellID - 1)}'");
+                                ScriptManager.AddToScript($"cast '{Spell.GetName(spellID)}'");
                             }
                         }
                     }
@@ -472,7 +472,7 @@ namespace Assistant
                             if (Macros.MacroManager.AcceptActions)
                                 MacroManager.Action(new MacroCastSpellAction(s));
 
-                            ScriptManager.AddToScript($"cast '{Spell.GetName(spellID - 1)}'");
+                            ScriptManager.AddToScript($"cast '{Spell.GetName(spellID)}'");
                         }
                     }
                     catch

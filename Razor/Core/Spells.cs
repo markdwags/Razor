@@ -93,6 +93,11 @@ namespace Assistant
             return String.Format("{0} (#{1})", Language.GetString(this.Name), GetID());
         }
 
+        public string GetName()
+        {
+            return $"{Language.GetString(Name)}";
+        }
+
         public int GetID()
         {
             return ToID(Circle, Number);
@@ -516,10 +521,12 @@ namespace Assistant
 
         public static string GetName(int num)
         {
-            if (num > m_SpellsByName.Count - 1)
-                return string.Empty;
+            if (m_SpellsByID.TryGetValue(num, out Spell spell))
+            {
+                return spell.GetName();
+            }
 
-            return m_SpellsByName.ElementAt(num).Key;
+            return string.Empty;
         }
 
         public static Spell Get(int circle, int num)
