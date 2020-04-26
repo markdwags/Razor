@@ -321,7 +321,10 @@ namespace Assistant.Scripts
         private static bool WaitForTarget(string command, Argument[] args, bool quiet, bool force)
         {
             if (Targeting.HasTarget)
+            {
+                Interpreter.ClearTimeout();
                 return true;
+            }
 
             Interpreter.Timeout(args.Length > 0 ? args[0].AsUInt() : 30000, () => { return true; });
 
@@ -363,8 +366,14 @@ namespace Assistant.Scripts
                     strict = true;
             }
 
-            return ((World.Player.HasGump || World.Player.HasCompressedGump) &&
-                    (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0));
+            if ((World.Player.HasGump || World.Player.HasCompressedGump) &&
+                (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0))
+            {
+                Interpreter.ClearTimeout();
+                return true;
+            }
+
+            return false;
         }
 
         private static bool WaitForMenu(string command, Argument[] args, bool quiet, bool force)
@@ -394,7 +403,13 @@ namespace Assistant.Scripts
                     strict = true;
             }
 
-            return (World.Player.HasPrompt && (World.Player.PromptID == promptId || !strict || promptId == 0));
+            if (World.Player.HasPrompt && (World.Player.PromptID == promptId || !strict || promptId == 0))
+            {
+                Interpreter.ClearTimeout();
+                return true;
+            }
+
+            return false;
         }
 
         private static string[] abilities = new string[4] {"primary", "secondary", "stun", "disarm"};
