@@ -1899,7 +1899,7 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return $"cast '{m_Spell.Name}'";
+            return $"cast '{m_Spell.GetName()}'";
         }
 
         public override string Serialize()
@@ -1944,7 +1944,7 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return $"cast '{m_Spell.Name}'";
+            return $"cast '{m_Spell.GetName()}'";
         }
 
         public override string Serialize()
@@ -1985,7 +1985,7 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return $"cast '{m_Spell.Name}'";
+            return $"cast '{m_Spell.GetName()}'";
         }
 
         public override string Serialize()
