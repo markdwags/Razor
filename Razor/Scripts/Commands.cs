@@ -215,7 +215,7 @@ namespace Assistant.Scripts
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
-            bool inRangeCheck = false;
+            bool inRangeCheck = Config.GetBool("ScriptTargetTypeRange");
 
             if (args.Length == 2)
             {
@@ -491,7 +491,7 @@ namespace Assistant.Scripts
             Serial click = Serial.Zero;
             List<Item> items = new List<Item>();
 
-            bool inRangeCheck = false;
+            bool inRangeCheck = Config.GetBool("ScriptDClickTypeRange");
 
             if (args.Length == 2)
             {

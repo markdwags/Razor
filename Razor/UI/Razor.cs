@@ -510,6 +510,9 @@ namespace Assistant
 
             highlightFriend.SafeAction(s => { s.Checked = Config.GetBool("HighlightFriend"); });
 
+            scriptDClickTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptDClickTypeRange"); });
+            scriptTargetTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptTargetTypeRange"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -6777,6 +6780,16 @@ namespace Assistant
 
                  s.EndUpdate();
              });
+        }
+
+        private void scriptTargetTypeRange_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ScriptTargetTypeRange", scriptTargetTypeRange.Checked);
+        }
+
+        private void scriptDClickTypeRange_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ScriptDClickTypeRange", scriptDClickTypeRange.Checked);
         }
     }
 }

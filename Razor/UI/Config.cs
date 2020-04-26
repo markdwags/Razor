@@ -306,6 +306,9 @@ namespace Assistant
 
             AddProperty("HighlightFriend", false);
 
+            AddProperty("ScriptTargetTypeRange", false);
+            AddProperty("ScriptDClickTypeRange", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

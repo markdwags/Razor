@@ -731,6 +731,7 @@ namespace Assistant
             this.scriptsTab = new System.Windows.Forms.TabPage();
             this.subTabScripts = new System.Windows.Forms.TabControl();
             this.subScripts = new System.Windows.Forms.TabPage();
+            this.scriptFilter = new System.Windows.Forms.TextBox();
             this.renameScript = new System.Windows.Forms.Button();
             this.linkScriptGuide = new System.Windows.Forms.LinkLabel();
             this.saveScript = new System.Windows.Forms.Button();
@@ -792,7 +793,8 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.scriptFilter = new System.Windows.Forms.TextBox();
+            this.scriptDClickTypeRange = new System.Windows.Forms.CheckBox();
+            this.scriptTargetTypeRange = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -3936,10 +3938,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -4139,6 +4141,15 @@ namespace Assistant
             this.subScripts.TabIndex = 0;
             this.subScripts.Text = "Scripts";
             // 
+            // scriptFilter
+            // 
+            this.scriptFilter.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scriptFilter.Location = new System.Drawing.Point(6, 7);
+            this.scriptFilter.Name = "scriptFilter";
+            this.scriptFilter.Size = new System.Drawing.Size(114, 25);
+            this.scriptFilter.TabIndex = 25;
+            this.scriptFilter.TextChanged += new System.EventHandler(this.scriptFilter_TextChanged);
+            // 
             // renameScript
             // 
             this.renameScript.Location = new System.Drawing.Point(432, 195);
@@ -4214,6 +4225,7 @@ namespace Assistant
             this.scriptEditor.RightBracket2 = ']';
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
+            this.scriptEditor.ShowCaretWhenInactive = false;
             this.scriptEditor.Size = new System.Drawing.Size(303, 273);
             this.scriptEditor.TabIndex = 20;
             this.scriptEditor.Zoom = 100;
@@ -4275,13 +4287,15 @@ namespace Assistant
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.scriptDClickTypeRange);
+            this.tabPage3.Controls.Add(this.scriptTargetTypeRange);
             this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
             this.tabPage3.Controls.Add(this.autoSaveScript);
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 287);
+            this.tabPage3.Size = new System.Drawing.Size(498, 285);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
             // 
@@ -4833,14 +4847,27 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // scriptFilter
+            // scriptDClickTypeRange
             // 
-            this.scriptFilter.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scriptFilter.Location = new System.Drawing.Point(6, 7);
-            this.scriptFilter.Name = "scriptFilter";
-            this.scriptFilter.Size = new System.Drawing.Size(114, 25);
-            this.scriptFilter.TabIndex = 25;
-            this.scriptFilter.TextChanged += new System.EventHandler(this.scriptFilter_TextChanged);
+            this.scriptDClickTypeRange.AutoSize = true;
+            this.scriptDClickTypeRange.Location = new System.Drawing.Point(252, 119);
+            this.scriptDClickTypeRange.Name = "scriptDClickTypeRange";
+            this.scriptDClickTypeRange.Size = new System.Drawing.Size(173, 19);
+            this.scriptDClickTypeRange.TabIndex = 17;
+            this.scriptDClickTypeRange.Text = "Range check on \'dclicktype\'";
+            this.scriptDClickTypeRange.UseVisualStyleBackColor = true;
+            this.scriptDClickTypeRange.CheckedChanged += new System.EventHandler(this.scriptDClickTypeRange_CheckedChanged);
+            // 
+            // scriptTargetTypeRange
+            // 
+            this.scriptTargetTypeRange.AutoSize = true;
+            this.scriptTargetTypeRange.Location = new System.Drawing.Point(252, 94);
+            this.scriptTargetTypeRange.Name = "scriptTargetTypeRange";
+            this.scriptTargetTypeRange.Size = new System.Drawing.Size(173, 19);
+            this.scriptTargetTypeRange.TabIndex = 16;
+            this.scriptTargetTypeRange.Text = "Range check on \'targettype\'";
+            this.scriptTargetTypeRange.UseVisualStyleBackColor = true;
+            this.scriptTargetTypeRange.CheckedChanged += new System.EventHandler(this.scriptTargetTypeRange_CheckedChanged);
             // 
             // MainForm
             // 
@@ -4965,5 +4992,7 @@ namespace Assistant
         private Button renameScript;
         private CheckBox highlightFriend;
         private TextBox scriptFilter;
+        private CheckBox scriptDClickTypeRange;
+        private CheckBox scriptTargetTypeRange;
     }
 }
