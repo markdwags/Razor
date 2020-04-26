@@ -238,7 +238,7 @@ namespace Assistant.Scripts
                     : World.FindItemsByName(gfxStr).Where(item => !item.IsInBank)
                         .ToList());
 
-                if (items.Count > 0)
+                if (items.Count == 0)
                 {
                     throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
                 }
