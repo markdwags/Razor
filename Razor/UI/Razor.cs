@@ -512,6 +512,7 @@ namespace Assistant
 
             scriptDClickTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptDClickTypeRange"); });
             scriptTargetTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptTargetTypeRange"); });
+            scriptFindTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptFindTypeRange"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -6790,6 +6791,11 @@ namespace Assistant
         private void scriptDClickTypeRange_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ScriptDClickTypeRange", scriptDClickTypeRange.Checked);
+        }
+
+        private void scriptFindTypeRange_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ScriptFindTypeRange", scriptFindTypeRange.Checked);
         }
     }
 }

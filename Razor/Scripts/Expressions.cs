@@ -73,7 +73,7 @@ namespace Assistant.Scripts
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
-            bool inRangeCheck = false;
+            bool inRangeCheck = Config.GetBool("ScriptFindTypeRange");
 
             if (args.Length == 2)
             {

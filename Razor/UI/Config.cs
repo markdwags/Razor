@@ -308,6 +308,7 @@ namespace Assistant
 
             AddProperty("ScriptTargetTypeRange", false);
             AddProperty("ScriptDClickTypeRange", false);
+            AddProperty("ScriptFindTypeRange", false);
 
             Counter.Default();
             Filter.DisableAll();

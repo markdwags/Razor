@@ -743,6 +743,8 @@ namespace Assistant
             this.recordScript = new System.Windows.Forms.Button();
             this.playScript = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.scriptDClickTypeRange = new System.Windows.Forms.CheckBox();
+            this.scriptTargetTypeRange = new System.Windows.Forms.CheckBox();
             this.autoSaveScriptPlay = new System.Windows.Forms.CheckBox();
             this.autoSaveScript = new System.Windows.Forms.CheckBox();
             this.scriptVariablesBox = new System.Windows.Forms.GroupBox();
@@ -793,8 +795,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.scriptDClickTypeRange = new System.Windows.Forms.CheckBox();
-            this.scriptTargetTypeRange = new System.Windows.Forms.CheckBox();
+            this.scriptFindTypeRange = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -3938,10 +3939,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -4287,6 +4288,7 @@ namespace Assistant
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.scriptFindTypeRange);
             this.tabPage3.Controls.Add(this.scriptDClickTypeRange);
             this.tabPage3.Controls.Add(this.scriptTargetTypeRange);
             this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
@@ -4298,6 +4300,28 @@ namespace Assistant
             this.tabPage3.Size = new System.Drawing.Size(498, 285);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
+            // 
+            // scriptDClickTypeRange
+            // 
+            this.scriptDClickTypeRange.AutoSize = true;
+            this.scriptDClickTypeRange.Location = new System.Drawing.Point(252, 119);
+            this.scriptDClickTypeRange.Name = "scriptDClickTypeRange";
+            this.scriptDClickTypeRange.Size = new System.Drawing.Size(173, 19);
+            this.scriptDClickTypeRange.TabIndex = 17;
+            this.scriptDClickTypeRange.Text = "Range check on \'dclicktype\'";
+            this.scriptDClickTypeRange.UseVisualStyleBackColor = true;
+            this.scriptDClickTypeRange.CheckedChanged += new System.EventHandler(this.scriptDClickTypeRange_CheckedChanged);
+            // 
+            // scriptTargetTypeRange
+            // 
+            this.scriptTargetTypeRange.AutoSize = true;
+            this.scriptTargetTypeRange.Location = new System.Drawing.Point(252, 94);
+            this.scriptTargetTypeRange.Name = "scriptTargetTypeRange";
+            this.scriptTargetTypeRange.Size = new System.Drawing.Size(173, 19);
+            this.scriptTargetTypeRange.TabIndex = 16;
+            this.scriptTargetTypeRange.Text = "Range check on \'targettype\'";
+            this.scriptTargetTypeRange.UseVisualStyleBackColor = true;
+            this.scriptTargetTypeRange.CheckedChanged += new System.EventHandler(this.scriptTargetTypeRange_CheckedChanged);
             // 
             // autoSaveScriptPlay
             // 
@@ -4847,27 +4871,16 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // scriptDClickTypeRange
+            // scriptFindTypeRange
             // 
-            this.scriptDClickTypeRange.AutoSize = true;
-            this.scriptDClickTypeRange.Location = new System.Drawing.Point(252, 119);
-            this.scriptDClickTypeRange.Name = "scriptDClickTypeRange";
-            this.scriptDClickTypeRange.Size = new System.Drawing.Size(173, 19);
-            this.scriptDClickTypeRange.TabIndex = 17;
-            this.scriptDClickTypeRange.Text = "Range check on \'dclicktype\'";
-            this.scriptDClickTypeRange.UseVisualStyleBackColor = true;
-            this.scriptDClickTypeRange.CheckedChanged += new System.EventHandler(this.scriptDClickTypeRange_CheckedChanged);
-            // 
-            // scriptTargetTypeRange
-            // 
-            this.scriptTargetTypeRange.AutoSize = true;
-            this.scriptTargetTypeRange.Location = new System.Drawing.Point(252, 94);
-            this.scriptTargetTypeRange.Name = "scriptTargetTypeRange";
-            this.scriptTargetTypeRange.Size = new System.Drawing.Size(173, 19);
-            this.scriptTargetTypeRange.TabIndex = 16;
-            this.scriptTargetTypeRange.Text = "Range check on \'targettype\'";
-            this.scriptTargetTypeRange.UseVisualStyleBackColor = true;
-            this.scriptTargetTypeRange.CheckedChanged += new System.EventHandler(this.scriptTargetTypeRange_CheckedChanged);
+            this.scriptFindTypeRange.AutoSize = true;
+            this.scriptFindTypeRange.Location = new System.Drawing.Point(252, 144);
+            this.scriptFindTypeRange.Name = "scriptFindTypeRange";
+            this.scriptFindTypeRange.Size = new System.Drawing.Size(163, 19);
+            this.scriptFindTypeRange.TabIndex = 18;
+            this.scriptFindTypeRange.Text = "Range check on \'findtype\'";
+            this.scriptFindTypeRange.UseVisualStyleBackColor = true;
+            this.scriptFindTypeRange.CheckedChanged += new System.EventHandler(this.scriptFindTypeRange_CheckedChanged);
             // 
             // MainForm
             // 
@@ -4994,5 +5007,6 @@ namespace Assistant
         private TextBox scriptFilter;
         private CheckBox scriptDClickTypeRange;
         private CheckBox scriptTargetTypeRange;
+        private CheckBox scriptFindTypeRange;
     }
 }
