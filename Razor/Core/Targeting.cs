@@ -162,7 +162,11 @@ namespace Assistant
         private static void AttackLastComb()
         {
             if (m_LastCombatant.IsMobile)
+            {
                 Client.Instance.SendToServer(new AttackReq(m_LastCombatant));
+                ShowAttackOverhead(m_LastCombatant);
+            }
+                
         }
 
         public static void AttackLastTarg()
@@ -183,7 +187,23 @@ namespace Assistant
             }
 
             if (targ != null && targ.Serial.IsMobile)
+            {
                 Client.Instance.SendToServer(new AttackReq(targ.Serial));
+                ShowAttackOverhead(targ.Serial);
+            }
+        }
+
+        public static void ShowAttackOverhead(Serial serial)
+        {
+            if (!Config.GetBool("ShowAttackTargetOverhead"))
+                return;
+
+            Mobile m = World.FindMobile(serial);
+            if (m == null)
+                return;
+
+            World.Player.OverheadMessage(FriendsManager.IsFriend(m.Serial) ? 63 : m.GetNotorietyColorInt(),
+                $"Attack: {m.Name}");
         }
 
         private static void OnClearQueue()
