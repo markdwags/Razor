@@ -674,7 +674,7 @@ namespace Assistant.Scripts
 
         private static bool DropRelLoc(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 3)
+            if (args.Length < 2)
             {
                 throw new RunTimeError(null, "Usage: droprelloc (x) (y)");
             }
