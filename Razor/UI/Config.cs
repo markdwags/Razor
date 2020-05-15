@@ -310,6 +310,8 @@ namespace Assistant
             AddProperty("ScriptDClickTypeRange", false);
             AddProperty("ScriptFindTypeRange", false);
 
+            AddProperty("ScriptDisablePlayFinish", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

@@ -94,7 +94,9 @@ namespace Assistant.Scripts
                     {
                         if (ScriptManager.Running == false)
                         {
-                            World.Player?.SendMessage(LocString.ScriptPlaying);
+                            if (Config.GetBool("ScriptDisablePlayFinish"))
+                                World.Player?.SendMessage(LocString.ScriptPlaying);
+
                             Assistant.Engine.MainWindow.LockScriptUI(true);
                             ScriptRunning = true;
                         }
@@ -103,7 +105,9 @@ namespace Assistant.Scripts
                     {
                         if (ScriptManager.Running)
                         {
-                            World.Player?.SendMessage(LocString.ScriptFinished);
+                            if (Config.GetBool("ScriptDisablePlayFinish"))
+                                World.Player?.SendMessage(LocString.ScriptFinished);
+
                             Assistant.Engine.MainWindow.LockScriptUI(false);
                             ScriptRunning = false;
                         }

@@ -514,6 +514,8 @@ namespace Assistant
             scriptTargetTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptTargetTypeRange"); });
             scriptFindTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptFindTypeRange"); });
 
+            scriptDisablePlayFinish.SafeAction(s => { s.Checked = Config.GetBool("ScriptDisablePlayFinish"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -6796,6 +6798,11 @@ namespace Assistant
         private void scriptFindTypeRange_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ScriptFindTypeRange", scriptFindTypeRange.Checked);
+        }
+
+        private void disableScriptPlayFinish_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ScriptDisablePlayFinish", scriptFindTypeRange.Checked);
         }
     }
 }
