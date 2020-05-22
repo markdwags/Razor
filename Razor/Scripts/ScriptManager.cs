@@ -405,7 +405,7 @@ namespace Assistant.Scripts
                 "waitfortarget", "wft", "dclick", "dclicktype", "dclickvar", "usetype", "useobject", "droprelloc",
                 "lift", "lifttype", "waitforgump", "gumpresponse", "gumpclose", "menu", "menuresponse", "waitformenu",
                 "promptresponse", "waitforprompt", "hotkey", "say", "msg", "overhead", "sysmsg", "wait", "pause",
-                "waitforstat", "setability", "setlasttarget", "lasttarget", "setvar", "skill", "useskill", "walk",
+                "setability", "setlasttarget", "lasttarget", "setvar", "skill", "useskill", "walk",
                 "script", "attack", "useonce", "organizer", "org", "organize", "restock", "scav", "scavenger", "potion"
             };
 
