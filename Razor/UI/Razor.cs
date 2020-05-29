@@ -432,7 +432,7 @@ namespace Assistant
 
             showDamageTaken.SafeAction(s => { s.Checked = Config.GetBool("ShowDamageTaken"); });
 
-            damageDealtOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowDamageTakenOverhead"); });
+            damageTakenOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowDamageTakenOverhead"); });
 
             razorTitleBar.SafeAction(s => { s.Text = Config.GetString("RazorTitleBarText"); });
 
