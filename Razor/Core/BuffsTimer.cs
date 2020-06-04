@@ -85,6 +85,12 @@ namespace Assistant
 
         public static bool IsFiltered(string name)
         {
+            if (string.IsNullOrEmpty(Config.GetString("BuffDebuffFilter")))
+                return false;
+
+            if (string.IsNullOrEmpty(name))
+                return false;
+
             foreach (string filter in Config.GetString("BuffDebuffFilter").ToLower().Split(','))
             {
                 if (string.IsNullOrEmpty(filter))
