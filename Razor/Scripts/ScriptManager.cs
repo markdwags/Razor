@@ -401,12 +401,11 @@ namespace Assistant.Scripts
 
             string[] commands =
             {
-                "cast", "dress", "undress", "dressconfig", "target", "targettype", "targetrelloc", "dress", "drop",
-                "waitfortarget", "wft", "dclick", "dclicktype", "dclickvar", "usetype", "useobject", "droprelloc",
-                "lift", "lifttype", "waitforgump", "gumpresponse", "gumpclose", "menu", "menuresponse", "waitformenu",
-                "promptresponse", "waitforprompt", "hotkey", "say", "msg", "overhead", "sysmsg", "wait", "pause",
-                "setability", "setlasttarget", "lasttarget", "setvar", "skill", "useskill", "walk",
-                "script", "attack", "useonce", "organizer", "org", "organize", "restock", "scav", "scavenger", "potion"
+                "attack", "cast", "dclick", "dclicktype", "dress", "drop", "droprelloc", "gumpresponse", "gumpclose",
+                "hotkey", "lasttarget", "lift", "lifttype", "menu", "menuresponse", "organizer", "overhead", "potion",
+                "promptresponse", "restock", "say", "script", "scavenger", "sell", "setability", "setlasttarget",
+                "setvar", "skill", "sysmsg", "target", "targettype", "targetrelloc", "undress", "useonce", "walk",
+                "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget"
             };
 
             #endregion
