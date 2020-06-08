@@ -6282,6 +6282,8 @@ namespace Assistant
                         break;
                     }
                 }
+
+                ScriptManager.RedrawScripts();
             }
             else
             {
@@ -6289,8 +6291,6 @@ namespace Assistant
 
                 ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
                 File.WriteAllText(script.Path, scriptEditor.Text);
-
-                ScriptManager.RedrawScripts();
 
                 scriptList.SelectedIndex = curIndex;
             }

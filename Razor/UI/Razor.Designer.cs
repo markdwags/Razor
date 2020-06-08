@@ -743,6 +743,7 @@ namespace Assistant
             this.recordScript = new System.Windows.Forms.Button();
             this.playScript = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.scriptDisablePlayFinish = new System.Windows.Forms.CheckBox();
             this.scriptFindTypeRange = new System.Windows.Forms.CheckBox();
             this.scriptDClickTypeRange = new System.Windows.Forms.CheckBox();
             this.scriptTargetTypeRange = new System.Windows.Forms.CheckBox();
@@ -796,7 +797,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.scriptDisablePlayFinish = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -3940,10 +3940,10 @@ namespace Assistant
             this.subMacrosOptionsTab.Controls.Add(this.stepThroughMacro);
             this.subMacrosOptionsTab.Controls.Add(this.targetByTypeDifferent);
             this.subMacrosOptionsTab.Controls.Add(this.macroVariableGroup);
-            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 24);
+            this.subMacrosOptionsTab.Location = new System.Drawing.Point(4, 22);
             this.subMacrosOptionsTab.Name = "subMacrosOptionsTab";
             this.subMacrosOptionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 286);
+            this.subMacrosOptionsTab.Size = new System.Drawing.Size(502, 288);
             this.subMacrosOptionsTab.TabIndex = 1;
             this.subMacrosOptionsTab.Text = "Options";
             // 
@@ -4302,6 +4302,17 @@ namespace Assistant
             this.tabPage3.Size = new System.Drawing.Size(498, 285);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
+            // 
+            // scriptDisablePlayFinish
+            // 
+            this.scriptDisablePlayFinish.AutoSize = true;
+            this.scriptDisablePlayFinish.Location = new System.Drawing.Point(252, 178);
+            this.scriptDisablePlayFinish.Name = "scriptDisablePlayFinish";
+            this.scriptDisablePlayFinish.Size = new System.Drawing.Size(204, 19);
+            this.scriptDisablePlayFinish.TabIndex = 19;
+            this.scriptDisablePlayFinish.Text = "Disable Playing/Finished Message";
+            this.scriptDisablePlayFinish.UseVisualStyleBackColor = true;
+            this.scriptDisablePlayFinish.CheckedChanged += new System.EventHandler(this.disableScriptPlayFinish_CheckedChanged);
             // 
             // scriptFindTypeRange
             // 
@@ -4883,17 +4894,6 @@ namespace Assistant
             this.aboutVer.TabIndex = 14;
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // scriptDisablePlayFinish
-            // 
-            this.scriptDisablePlayFinish.AutoSize = true;
-            this.scriptDisablePlayFinish.Location = new System.Drawing.Point(252, 178);
-            this.scriptDisablePlayFinish.Name = "scriptDisablePlayFinish";
-            this.scriptDisablePlayFinish.Size = new System.Drawing.Size(204, 19);
-            this.scriptDisablePlayFinish.TabIndex = 19;
-            this.scriptDisablePlayFinish.Text = "Disable Playing/Finished Message";
-            this.scriptDisablePlayFinish.UseVisualStyleBackColor = true;
-            this.scriptDisablePlayFinish.CheckedChanged += new System.EventHandler(this.disableScriptPlayFinish_CheckedChanged);
             // 
             // MainForm
             // 
