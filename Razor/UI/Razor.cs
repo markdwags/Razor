@@ -685,7 +685,7 @@ namespace Assistant
                 if (scriptList.SelectedIndex < 0)
                     ScriptManager.RedrawScripts();
             }
-            else if (tabs.SelectedTab == moreOptTab)
+            else if (tabs.SelectedTab == friendsTab)
             {
                 FriendsManager.RedrawGroup();
             }
@@ -5678,7 +5678,7 @@ namespace Assistant
 
             var friendGroup = (FriendsManager.FriendGroup) friendsGroup.SelectedItem;
 
-            friendsListEnabled.SafeAction(s => s.Checked = friendsGroup.Enabled);
+            friendsListEnabled.SafeAction(s => s.Checked = friendGroup.Enabled);
 
             FriendsManager.RedrawList(friendGroup);
         }
