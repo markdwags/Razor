@@ -240,16 +240,18 @@ namespace Assistant.Scripts
 
                 if (items.Count == 0)
                 {
-                    throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
-                }
+                    List<Mobile> mobiles = World.FindMobilesByName(gfxStr);
 
-                List<Mobile> mobiles = World.FindMobilesByName(gfxStr);
-
-                if (mobiles.Count > 0)
-                {
-                    list.AddRange(inRangeCheck
-                        ? mobiles.Where(m => Utility.InRange(World.Player.Position, m.Position, 2)).ToList()
-                        : mobiles);
+                    if (mobiles.Count > 0)
+                    {
+                        list.AddRange(inRangeCheck
+                            ? mobiles.Where(m => Utility.InRange(World.Player.Position, m.Position, 2)).ToList()
+                            : mobiles);
+                    }
+                    else
+                    {
+                        throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
+                    }
                 }
             }
             else // check if they are mobile or an item
