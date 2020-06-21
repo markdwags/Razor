@@ -102,6 +102,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("script", PlayScript);
             Interpreter.RegisterCommandHandler("setvar", SetVar);
             Interpreter.RegisterCommandHandler("setvariable", SetVar);
+            Interpreter.RegisterCommandHandler("stop", Stop);
         }
 
         private static bool SetLastTarget(string command, Argument[] args, bool quiet, bool force)
@@ -154,6 +155,13 @@ namespace Assistant.Scripts
             }
 
             return false;
+        }
+
+        private static bool Stop(string command, Argument[] args, bool quiet, bool force)
+        {
+            ScriptManager.StopScript();
+
+            return true;
         }
 
         private static bool Target(string command, Argument[] args, bool quiet, bool force)

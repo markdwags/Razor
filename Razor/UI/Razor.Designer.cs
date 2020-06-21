@@ -780,6 +780,20 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.agentTabs = new System.Windows.Forms.TabControl();
+            this.subAgentBuy = new System.Windows.Forms.TabPage();
+            this.subAgentIgnore = new System.Windows.Forms.TabPage();
+            this.subAgentOrganizer = new System.Windows.Forms.TabPage();
+            this.subAgentRestock = new System.Windows.Forms.TabPage();
+            this.subAgentAutoSearchExemption = new System.Windows.Forms.TabPage();
+            this.subAgentSell = new System.Windows.Forms.TabPage();
+            this.subAgentUseOnce = new System.Windows.Forms.TabPage();
+            this.subAgentScavenger = new System.Windows.Forms.TabPage();
+            this.agentBuyAddTarget = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -832,6 +846,8 @@ namespace Assistant
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
             this.aboutTab.SuspendLayout();
+            this.agentTabs.SuspendLayout();
+            this.subAgentBuy.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
@@ -1952,10 +1968,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
@@ -2205,9 +2221,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -3325,6 +3341,7 @@ namespace Assistant
             // 
             // agentsTab
             // 
+            this.agentsTab.Controls.Add(this.agentTabs);
             this.agentsTab.Controls.Add(this.agentB6);
             this.agentsTab.Controls.Add(this.agentB5);
             this.agentsTab.Controls.Add(this.agentList);
@@ -3341,7 +3358,7 @@ namespace Assistant
             // 
             // agentB6
             // 
-            this.agentB6.Location = new System.Drawing.Point(8, 231);
+            this.agentB6.Location = new System.Drawing.Point(8, 279);
             this.agentB6.Name = "agentB6";
             this.agentB6.Size = new System.Drawing.Size(130, 32);
             this.agentB6.TabIndex = 6;
@@ -3349,7 +3366,7 @@ namespace Assistant
             // 
             // agentB5
             // 
-            this.agentB5.Location = new System.Drawing.Point(8, 193);
+            this.agentB5.Location = new System.Drawing.Point(8, 241);
             this.agentB5.Name = "agentB5";
             this.agentB5.Size = new System.Drawing.Size(130, 32);
             this.agentB5.TabIndex = 5;
@@ -3358,7 +3375,7 @@ namespace Assistant
             // agentList
             // 
             this.agentList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.agentList.Location = new System.Drawing.Point(8, 14);
+            this.agentList.Location = new System.Drawing.Point(8, 45);
             this.agentList.Name = "agentList";
             this.agentList.Size = new System.Drawing.Size(130, 23);
             this.agentList.TabIndex = 2;
@@ -3367,9 +3384,9 @@ namespace Assistant
             // agentGroup
             // 
             this.agentGroup.Controls.Add(this.agentSubList);
-            this.agentGroup.Location = new System.Drawing.Point(144, 3);
+            this.agentGroup.Location = new System.Drawing.Point(173, 203);
             this.agentGroup.Name = "agentGroup";
-            this.agentGroup.Size = new System.Drawing.Size(368, 309);
+            this.agentGroup.Size = new System.Drawing.Size(368, 169);
             this.agentGroup.TabIndex = 1;
             this.agentGroup.TabStop = false;
             // 
@@ -3378,15 +3395,15 @@ namespace Assistant
             this.agentSubList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.agentSubList.IntegralHeight = false;
             this.agentSubList.ItemHeight = 15;
-            this.agentSubList.Location = new System.Drawing.Point(6, 15);
+            this.agentSubList.Location = new System.Drawing.Point(6, 22);
             this.agentSubList.Name = "agentSubList";
-            this.agentSubList.Size = new System.Drawing.Size(356, 288);
+            this.agentSubList.Size = new System.Drawing.Size(356, 139);
             this.agentSubList.TabIndex = 0;
             this.agentSubList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.agentSubList_MouseDown);
             // 
             // agentB4
             // 
-            this.agentB4.Location = new System.Drawing.Point(8, 155);
+            this.agentB4.Location = new System.Drawing.Point(8, 203);
             this.agentB4.Name = "agentB4";
             this.agentB4.Size = new System.Drawing.Size(130, 32);
             this.agentB4.TabIndex = 4;
@@ -3394,7 +3411,7 @@ namespace Assistant
             // 
             // agentB1
             // 
-            this.agentB1.Location = new System.Drawing.Point(8, 41);
+            this.agentB1.Location = new System.Drawing.Point(8, 89);
             this.agentB1.Name = "agentB1";
             this.agentB1.Size = new System.Drawing.Size(130, 32);
             this.agentB1.TabIndex = 1;
@@ -3402,7 +3419,7 @@ namespace Assistant
             // 
             // agentB2
             // 
-            this.agentB2.Location = new System.Drawing.Point(8, 79);
+            this.agentB2.Location = new System.Drawing.Point(8, 127);
             this.agentB2.Name = "agentB2";
             this.agentB2.Size = new System.Drawing.Size(130, 32);
             this.agentB2.TabIndex = 2;
@@ -3410,7 +3427,7 @@ namespace Assistant
             // 
             // agentB3
             // 
-            this.agentB3.Location = new System.Drawing.Point(8, 117);
+            this.agentB3.Location = new System.Drawing.Point(8, 165);
             this.agentB3.Name = "agentB3";
             this.agentB3.Size = new System.Drawing.Size(130, 32);
             this.agentB3.TabIndex = 3;
@@ -4878,6 +4895,146 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // agentTabs
+            // 
+            this.agentTabs.Controls.Add(this.subAgentBuy);
+            this.agentTabs.Controls.Add(this.subAgentSell);
+            this.agentTabs.Controls.Add(this.subAgentOrganizer);
+            this.agentTabs.Controls.Add(this.subAgentRestock);
+            this.agentTabs.Controls.Add(this.subAgentScavenger);
+            this.agentTabs.Controls.Add(this.subAgentUseOnce);
+            this.agentTabs.Controls.Add(this.subAgentAutoSearchExemption);
+            this.agentTabs.Controls.Add(this.subAgentIgnore);
+            this.agentTabs.Location = new System.Drawing.Point(165, 21);
+            this.agentTabs.Name = "agentTabs";
+            this.agentTabs.SelectedIndex = 0;
+            this.agentTabs.Size = new System.Drawing.Size(347, 229);
+            this.agentTabs.TabIndex = 7;
+            // 
+            // subAgentBuy
+            // 
+            this.subAgentBuy.BackColor = System.Drawing.SystemColors.Control;
+            this.subAgentBuy.Controls.Add(this.button4);
+            this.subAgentBuy.Controls.Add(this.button3);
+            this.subAgentBuy.Controls.Add(this.button2);
+            this.subAgentBuy.Controls.Add(this.button1);
+            this.subAgentBuy.Controls.Add(this.agentBuyAddTarget);
+            this.subAgentBuy.Location = new System.Drawing.Point(4, 24);
+            this.subAgentBuy.Name = "subAgentBuy";
+            this.subAgentBuy.Padding = new System.Windows.Forms.Padding(3);
+            this.subAgentBuy.Size = new System.Drawing.Size(339, 201);
+            this.subAgentBuy.TabIndex = 0;
+            this.subAgentBuy.Text = "Buy";
+            // 
+            // subAgentIgnore
+            // 
+            this.subAgentIgnore.BackColor = System.Drawing.SystemColors.Control;
+            this.subAgentIgnore.Location = new System.Drawing.Point(4, 24);
+            this.subAgentIgnore.Name = "subAgentIgnore";
+            this.subAgentIgnore.Padding = new System.Windows.Forms.Padding(3);
+            this.subAgentIgnore.Size = new System.Drawing.Size(496, 130);
+            this.subAgentIgnore.TabIndex = 1;
+            this.subAgentIgnore.Text = "Ignore";
+            // 
+            // subAgentOrganizer
+            // 
+            this.subAgentOrganizer.BackColor = System.Drawing.SystemColors.Control;
+            this.subAgentOrganizer.Location = new System.Drawing.Point(4, 24);
+            this.subAgentOrganizer.Name = "subAgentOrganizer";
+            this.subAgentOrganizer.Size = new System.Drawing.Size(496, 130);
+            this.subAgentOrganizer.TabIndex = 2;
+            this.subAgentOrganizer.Text = "Organizer";
+            // 
+            // subAgentRestock
+            // 
+            this.subAgentRestock.BackColor = System.Drawing.SystemColors.Control;
+            this.subAgentRestock.Location = new System.Drawing.Point(4, 24);
+            this.subAgentRestock.Name = "subAgentRestock";
+            this.subAgentRestock.Size = new System.Drawing.Size(496, 130);
+            this.subAgentRestock.TabIndex = 3;
+            this.subAgentRestock.Text = "Restock";
+            // 
+            // subAgentAutoSearchExemption
+            // 
+            this.subAgentAutoSearchExemption.BackColor = System.Drawing.SystemColors.Control;
+            this.subAgentAutoSearchExemption.Location = new System.Drawing.Point(4, 24);
+            this.subAgentAutoSearchExemption.Name = "subAgentAutoSearchExemption";
+            this.subAgentAutoSearchExemption.Size = new System.Drawing.Size(496, 130);
+            this.subAgentAutoSearchExemption.TabIndex = 4;
+            this.subAgentAutoSearchExemption.Text = "Auto Search Exemption";
+            // 
+            // subAgentSell
+            // 
+            this.subAgentSell.BackColor = System.Drawing.SystemColors.Control;
+            this.subAgentSell.Location = new System.Drawing.Point(4, 24);
+            this.subAgentSell.Name = "subAgentSell";
+            this.subAgentSell.Size = new System.Drawing.Size(496, 130);
+            this.subAgentSell.TabIndex = 5;
+            this.subAgentSell.Text = "Sell";
+            // 
+            // subAgentUseOnce
+            // 
+            this.subAgentUseOnce.BackColor = System.Drawing.SystemColors.Control;
+            this.subAgentUseOnce.Location = new System.Drawing.Point(4, 24);
+            this.subAgentUseOnce.Name = "subAgentUseOnce";
+            this.subAgentUseOnce.Size = new System.Drawing.Size(496, 130);
+            this.subAgentUseOnce.TabIndex = 6;
+            this.subAgentUseOnce.Text = "Use Once";
+            // 
+            // subAgentScavenger
+            // 
+            this.subAgentScavenger.BackColor = System.Drawing.SystemColors.Control;
+            this.subAgentScavenger.Location = new System.Drawing.Point(4, 24);
+            this.subAgentScavenger.Name = "subAgentScavenger";
+            this.subAgentScavenger.Size = new System.Drawing.Size(496, 130);
+            this.subAgentScavenger.TabIndex = 7;
+            this.subAgentScavenger.Text = "Scavenger";
+            // 
+            // agentBuyAddTarget
+            // 
+            this.agentBuyAddTarget.Location = new System.Drawing.Point(10, 6);
+            this.agentBuyAddTarget.Name = "agentBuyAddTarget";
+            this.agentBuyAddTarget.Size = new System.Drawing.Size(108, 30);
+            this.agentBuyAddTarget.TabIndex = 0;
+            this.agentBuyAddTarget.Text = "Add (Target)";
+            this.agentBuyAddTarget.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(10, 42);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(108, 30);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Edit";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(10, 78);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(108, 30);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Remove";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(10, 114);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(108, 30);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "Clear List";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(10, 150);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(108, 30);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "Add (Target)";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4972,6 +5129,8 @@ namespace Assistant
             this.advancedTab.PerformLayout();
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
+            this.agentTabs.ResumeLayout(false);
+            this.subAgentBuy.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -5022,5 +5181,19 @@ namespace Assistant
         private ComboBox friendsGroup;
         private CheckBox friendsListEnabled;
         private Label friendFormat;
+        private TabControl agentTabs;
+        private TabPage subAgentBuy;
+        private Button button4;
+        private Button button3;
+        private Button button2;
+        private Button button1;
+        private Button agentBuyAddTarget;
+        private TabPage subAgentSell;
+        private TabPage subAgentOrganizer;
+        private TabPage subAgentRestock;
+        private TabPage subAgentScavenger;
+        private TabPage subAgentUseOnce;
+        private TabPage subAgentAutoSearchExemption;
+        private TabPage subAgentIgnore;
     }
 }
