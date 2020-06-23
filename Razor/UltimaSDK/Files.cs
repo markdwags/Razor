@@ -209,11 +209,6 @@ namespace Ultima
             "verdata.mul"
         };
 
-        static Files()
-        {
-            m_Directory = LoadDirectory();
-            LoadMulPath();
-        }
 
         /// <summary>
         /// ReReads Registry Client dir
@@ -349,13 +344,15 @@ namespace Ultima
             // If they're using the ClassicUO client, pull the UO data dir from the plugin
             if (!Assistant.Client.IsOSI)
             {
-                //dir = Assistant.Client.Instance.GetUoFilePath();
-
                 // Check in the root of this process for the file
                 if (File.Exists("settings.json"))
                 {
                     dynamic cuoJson = JObject.Parse(File.ReadAllText("settings.json"));
                     dir = cuoJson.ultimaonlinedirectory.ToString();
+                }
+                else
+                {
+                    dir = Assistant.Client.Instance.GetUoFilePath();
                 }
             }
 
