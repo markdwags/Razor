@@ -578,6 +578,6 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>xcopy /S /Q /Y $(SolutionDir)etc\* $(SolutionDir)bin\Win32\$(Configuration)\</PostBuildEvent>
+    <PostBuildEvent>xcopy /S /Q /Y "$(SolutionDir)etc\*" "$(SolutionDir)bin\Win32\$(Configuration)\"</PostBuildEvent>
   </PropertyGroup>
 </Project>
