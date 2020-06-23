@@ -67,6 +67,21 @@ namespace Assistant
                 return;
             }
 
+            // load ultimasdk before or the Language.Load will throw the cliloc not found warning every time you run cuo
+            string clientPath =
+                ((OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(OnGetUOFilePath))
+                )();
+
+            // just replicating the static .ctor
+            Ultima.Files.ReLoadDirectory();
+            Ultima.Files.LoadMulPath();
+
+            Ultima.Files.SetMulPath(clientPath);
+            Ultima.Multis.PostHSFormat = UsePostHSChanges;
+            Client.Instance.ClientEncrypted = false;
+            Client.Instance.ServerEncrypted = false;
+
+
             /* Load localization files */
             if (!Language.Load("ENU"))
             {
@@ -79,15 +94,6 @@ namespace Assistant
             }
 
             m_Running = true;
-
-            string clientPath =
-                ((OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(OnGetUOFilePath))
-                )();
-
-            Ultima.Files.SetMulPath(clientPath);
-            Ultima.Multis.PostHSFormat = UsePostHSChanges;
-            Client.Instance.ClientEncrypted = false;
-            Client.Instance.ServerEncrypted = false;
 
             Language.LoadCliLoc();
 
