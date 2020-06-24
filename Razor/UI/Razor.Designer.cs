@@ -111,10 +111,6 @@ namespace Assistant
         private Label label20;
         private Button disableSmartCPU;
         private CheckBox logSkillChanges;
-        private CheckBox screenShotOpenBrowser;
-        private CheckBox screenShotNotification;
-        private ListBox imgurUploads;
-        private CheckBox screenShotClipboard;
         private TreeView _hotkeyTreeViewCache = new TreeView();
         private LinkLabel linkHelp;
         private CheckBox enableUOAAPI;
@@ -743,10 +739,6 @@ namespace Assistant
             this.captureOwnDeath = new System.Windows.Forms.CheckBox();
             this.captureOthersDeathDelay = new System.Windows.Forms.TextBox();
             this.lblCaptureOthersDeathMs = new System.Windows.Forms.Label();
-            this.imgurUploads = new System.Windows.Forms.ListBox();
-            this.screenShotClipboard = new System.Windows.Forms.CheckBox();
-            this.screenShotNotification = new System.Windows.Forms.CheckBox();
-            this.screenShotOpenBrowser = new System.Windows.Forms.CheckBox();
             this.imgFmt = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.capNow = new System.Windows.Forms.Button();
@@ -1952,10 +1944,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
@@ -2205,9 +2197,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -4411,10 +4403,6 @@ namespace Assistant
             this.screenshotTab.Controls.Add(this.captureOwnDeath);
             this.screenshotTab.Controls.Add(this.captureOthersDeathDelay);
             this.screenshotTab.Controls.Add(this.lblCaptureOthersDeathMs);
-            this.screenshotTab.Controls.Add(this.imgurUploads);
-            this.screenshotTab.Controls.Add(this.screenShotClipboard);
-            this.screenshotTab.Controls.Add(this.screenShotNotification);
-            this.screenshotTab.Controls.Add(this.screenShotOpenBrowser);
             this.screenshotTab.Controls.Add(this.imgFmt);
             this.screenshotTab.Controls.Add(this.label12);
             this.screenshotTab.Controls.Add(this.capNow);
@@ -4434,7 +4422,7 @@ namespace Assistant
             // 
             // captureOwnDeathDelay
             // 
-            this.captureOwnDeathDelay.Location = new System.Drawing.Point(196, 235);
+            this.captureOwnDeathDelay.Location = new System.Drawing.Point(419, 263);
             this.captureOwnDeathDelay.Name = "captureOwnDeathDelay";
             this.captureOwnDeathDelay.Size = new System.Drawing.Size(32, 23);
             this.captureOwnDeathDelay.TabIndex = 61;
@@ -4444,7 +4432,7 @@ namespace Assistant
             // 
             // lblOwnDeathMs
             // 
-            this.lblOwnDeathMs.Location = new System.Drawing.Point(230, 239);
+            this.lblOwnDeathMs.Location = new System.Drawing.Point(453, 267);
             this.lblOwnDeathMs.Name = "lblOwnDeathMs";
             this.lblOwnDeathMs.Size = new System.Drawing.Size(26, 18);
             this.lblOwnDeathMs.TabIndex = 60;
@@ -4452,7 +4440,7 @@ namespace Assistant
             // 
             // captureOwnDeath
             // 
-            this.captureOwnDeath.Location = new System.Drawing.Point(12, 238);
+            this.captureOwnDeath.Location = new System.Drawing.Point(235, 266);
             this.captureOwnDeath.Name = "captureOwnDeath";
             this.captureOwnDeath.Size = new System.Drawing.Size(158, 20);
             this.captureOwnDeath.TabIndex = 59;
@@ -4461,7 +4449,7 @@ namespace Assistant
             // 
             // captureOthersDeathDelay
             // 
-            this.captureOthersDeathDelay.Location = new System.Drawing.Point(196, 211);
+            this.captureOthersDeathDelay.Location = new System.Drawing.Point(419, 239);
             this.captureOthersDeathDelay.Name = "captureOthersDeathDelay";
             this.captureOthersDeathDelay.Size = new System.Drawing.Size(32, 23);
             this.captureOthersDeathDelay.TabIndex = 58;
@@ -4471,48 +4459,11 @@ namespace Assistant
             // 
             // lblCaptureOthersDeathMs
             // 
-            this.lblCaptureOthersDeathMs.Location = new System.Drawing.Point(230, 214);
+            this.lblCaptureOthersDeathMs.Location = new System.Drawing.Point(453, 242);
             this.lblCaptureOthersDeathMs.Name = "lblCaptureOthersDeathMs";
             this.lblCaptureOthersDeathMs.Size = new System.Drawing.Size(26, 18);
             this.lblCaptureOthersDeathMs.TabIndex = 57;
             this.lblCaptureOthersDeathMs.Text = "s";
-            // 
-            // imgurUploads
-            // 
-            this.imgurUploads.FormattingEnabled = true;
-            this.imgurUploads.ItemHeight = 15;
-            this.imgurUploads.Location = new System.Drawing.Point(266, 203);
-            this.imgurUploads.Name = "imgurUploads";
-            this.imgurUploads.Size = new System.Drawing.Size(246, 109);
-            this.imgurUploads.TabIndex = 15;
-            this.imgurUploads.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgurUploads_MouseDown);
-            // 
-            // screenShotClipboard
-            // 
-            this.screenShotClipboard.Location = new System.Drawing.Point(12, 264);
-            this.screenShotClipboard.Name = "screenShotClipboard";
-            this.screenShotClipboard.Size = new System.Drawing.Size(239, 20);
-            this.screenShotClipboard.TabIndex = 14;
-            this.screenShotClipboard.Text = "Copy link to clipboard after upload";
-            this.screenShotClipboard.CheckedChanged += new System.EventHandler(this.screenShotClipboard_CheckedChanged);
-            // 
-            // screenShotNotification
-            // 
-            this.screenShotNotification.Location = new System.Drawing.Point(266, 173);
-            this.screenShotNotification.Name = "screenShotNotification";
-            this.screenShotNotification.Size = new System.Drawing.Size(216, 20);
-            this.screenShotNotification.TabIndex = 13;
-            this.screenShotNotification.Text = "Show upload notification";
-            this.screenShotNotification.CheckedChanged += new System.EventHandler(this.screenShotNotification_CheckedChanged);
-            // 
-            // screenShotOpenBrowser
-            // 
-            this.screenShotOpenBrowser.Location = new System.Drawing.Point(12, 290);
-            this.screenShotOpenBrowser.Name = "screenShotOpenBrowser";
-            this.screenShotOpenBrowser.Size = new System.Drawing.Size(216, 20);
-            this.screenShotOpenBrowser.TabIndex = 12;
-            this.screenShotOpenBrowser.Text = "Open link in browser when shared";
-            this.screenShotOpenBrowser.CheckedChanged += new System.EventHandler(this.screenShotOpenBrowser_CheckedChanged);
             // 
             // imgFmt
             // 
@@ -4526,7 +4477,7 @@ namespace Assistant
             "wmf",
             "exif",
             "emf"});
-            this.imgFmt.Location = new System.Drawing.Point(102, 134);
+            this.imgFmt.Location = new System.Drawing.Point(103, 237);
             this.imgFmt.Name = "imgFmt";
             this.imgFmt.Size = new System.Drawing.Size(98, 23);
             this.imgFmt.TabIndex = 11;
@@ -4534,7 +4485,7 @@ namespace Assistant
             // 
             // label12
             // 
-            this.label12.Location = new System.Drawing.Point(5, 134);
+            this.label12.Location = new System.Drawing.Point(6, 237);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(92, 20);
             this.label12.TabIndex = 10;
@@ -4560,7 +4511,7 @@ namespace Assistant
             // 
             // radioUO
             // 
-            this.radioUO.Location = new System.Drawing.Point(12, 157);
+            this.radioUO.Location = new System.Drawing.Point(13, 260);
             this.radioUO.Name = "radioUO";
             this.radioUO.Size = new System.Drawing.Size(75, 26);
             this.radioUO.TabIndex = 6;
@@ -4569,7 +4520,7 @@ namespace Assistant
             // 
             // radioFull
             // 
-            this.radioFull.Location = new System.Drawing.Point(102, 157);
+            this.radioFull.Location = new System.Drawing.Point(103, 260);
             this.radioFull.Name = "radioFull";
             this.radioFull.Size = new System.Drawing.Size(88, 26);
             this.radioFull.TabIndex = 5;
@@ -4578,7 +4529,7 @@ namespace Assistant
             // 
             // captureOthersDeath
             // 
-            this.captureOthersDeath.Location = new System.Drawing.Point(12, 212);
+            this.captureOthersDeath.Location = new System.Drawing.Point(235, 240);
             this.captureOthersDeath.Name = "captureOthersDeath";
             this.captureOthersDeath.Size = new System.Drawing.Size(216, 20);
             this.captureOthersDeath.TabIndex = 4;
@@ -4600,7 +4551,7 @@ namespace Assistant
             this.screensList.ItemHeight = 15;
             this.screensList.Location = new System.Drawing.Point(8, 36);
             this.screensList.Name = "screensList";
-            this.screensList.Size = new System.Drawing.Size(252, 92);
+            this.screensList.Size = new System.Drawing.Size(252, 195);
             this.screensList.Sorted = true;
             this.screensList.TabIndex = 1;
             this.screensList.SelectedIndexChanged += new System.EventHandler(this.screensList_SelectedIndexChanged);
@@ -4619,7 +4570,7 @@ namespace Assistant
             // 
             // dispTime
             // 
-            this.dispTime.Location = new System.Drawing.Point(12, 186);
+            this.dispTime.Location = new System.Drawing.Point(13, 289);
             this.dispTime.Name = "dispTime";
             this.dispTime.Size = new System.Drawing.Size(206, 20);
             this.dispTime.TabIndex = 9;

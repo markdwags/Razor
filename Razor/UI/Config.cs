@@ -188,10 +188,6 @@ namespace Assistant
 
             AddProperty("BlockOpenCorpsesTwice", false);
 
-            AddProperty("ScreenshotUploadNotifications", false);
-            AddProperty("ScreenshotUploadClipboard", true);
-            AddProperty("ScreenshotUploadOpenBrowser", true);
-
             AddProperty("ShowAttackTargetOverhead", true);
 
             AddProperty("RangeCheckTargetByType", false);

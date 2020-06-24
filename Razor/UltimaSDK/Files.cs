@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
 
 namespace Ultima
 {
@@ -344,16 +343,7 @@ namespace Ultima
             // If they're using the ClassicUO client, pull the UO data dir from the plugin
             if (!Assistant.Client.IsOSI)
             {
-                // Check in the root of this process for the file
-                if (File.Exists("settings.json"))
-                {
-                    dynamic cuoJson = JObject.Parse(File.ReadAllText("settings.json"));
-                    dir = cuoJson.ultimaonlinedirectory.ToString();
-                }
-                else
-                {
-                    dir = Assistant.Client.Instance.GetUoFilePath();
-                }
+                dir = Assistant.Client.Instance.GetUoFilePath();
             }
 
 

@@ -30,7 +30,7 @@ using Assistant.Filters;
 using Assistant.Macros;
 using System.Diagnostics;
 using Assistant.Boat;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 using System.Net;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -377,26 +377,13 @@ namespace Assistant
 
             blockOpenCorpsesTwice.SafeAction(s => { s.Checked = Config.GetBool("BlockOpenCorpsesTwice"); });
 
-            screenShotOpenBrowser.SafeAction(s => { s.Checked = Config.GetBool("ScreenshotUploadOpenBrowser"); });
-
-            screenShotClipboard.SafeAction(s => { s.Checked = Config.GetBool("ScreenshotUploadClipboard"); });
-
-            screenShotNotification.SafeAction(s => { s.Checked = Config.GetBool("ScreenshotUploadNotifications"); });
-
             showContainerLabels.SafeAction(s => { s.Checked = Config.GetBool("ShowContainerLabels"); });
 
             seasonList.SafeAction(s => { s.SelectedIndex = Config.GetInt("Season"); });
 
-            if (screenShotNotification.Checked)
-            {
-                m_NotifyIcon.Visible = true;
-            }
-            else
-            {
-                bool st = Config.GetBool("Systray");
-                taskbar.Checked = ShowInTaskbar = !st;
-                systray.Checked = m_NotifyIcon.Visible = st;
-            }
+            bool st = Config.GetBool("Systray");
+            taskbar.Checked = ShowInTaskbar = !st;
+            systray.Checked = m_NotifyIcon.Visible = st;
 
             showAttackTarget.SafeAction(s => { s.Checked = Config.GetBool("ShowAttackTargetOverhead"); });
 
@@ -527,8 +514,8 @@ namespace Assistant
 
         private class AnimData
         {
-            public string name { get; set; }
-            public string body { get; set; }
+            public string Name { get; set; }
+            public int BodyId { get; set; }
         }
 
         private List<AnimData> _animationData = new List<AnimData>();
@@ -537,44 +524,50 @@ namespace Assistant
         {
             int hue = 0;
 
-            using (StreamReader r = new StreamReader(Path.Combine(Config.GetInstallDirectory(), "animdata.json")))
+            var lines = File.ReadLines(Path.Combine(Config.GetInstallDirectory(), "animdata.csv")).Select(a => a.Split(','));
+
+            _animationData.Clear();
+            dragonAnimationList.Items.Clear();
+            drakeAnimationList.Items.Clear();
+
+
+            foreach (string[] line in lines)
             {
-                string json = r.ReadToEnd();
-                List<AnimData> items = JsonConvert.DeserializeObject<List<AnimData>>(json);
+                // ant_lion (787),787
 
-                _animationData.Clear();
-                dragonAnimationList.Items.Clear();
-                drakeAnimationList.Items.Clear();
-
-                foreach (AnimData animData in items)
+                AnimData animData = new AnimData
                 {
-                    try
-                    {
-                        Frame[] frames =
-                            Animations.GetAnimation(Convert.ToInt32(animData.body), 0, 1, ref hue, false, false);
+                    Name = line[0],
+                    BodyId = Convert.ToInt32(line[1])
+                };
 
-                        if (frames != null)
-                        {
-                            _animationData.Add(animData);
-                            dragonAnimationList.Items.Add(animData.name);
-                            drakeAnimationList.Items.Add(animData.name);
-                            daemonAnimationList.Items.Add(animData.name);
-                        }
-                    }
-                    catch //Unable to verify animation, lets add it anyway
+                try
+                {
+                    Frame[] frames =
+                        Animations.GetAnimation(animData.BodyId, 0, 1, ref hue, false, false);
+                 
+                    if (frames != null)
                     {
                         _animationData.Add(animData);
-                        dragonAnimationList.Items.Add(animData.name);
-                        drakeAnimationList.Items.Add(animData.name);
-                        daemonAnimationList.Items.Add(animData.name);
+                        dragonAnimationList.Items.Add(animData.Name);
+                        drakeAnimationList.Items.Add(animData.Name);
+                        daemonAnimationList.Items.Add(animData.Name);
                     }
+                }
+                catch //Unable to verify animation, lets add it anyway
+                {
+                    _animationData.Add(animData);
+                    dragonAnimationList.Items.Add(animData.Name);
+                    drakeAnimationList.Items.Add(animData.Name);
+                    daemonAnimationList.Items.Add(animData.Name);
                 }
             }
 
             int animIndex = 0;
+
             foreach (AnimData animData in _animationData)
             {
-                if (animData.body.Equals(Config.GetInt("DragonGraphic").ToString()))
+                if (animData.BodyId.Equals(Config.GetInt("DragonGraphic")))
                 {
                     dragonAnimationList.SelectedIndex = animIndex;
                     break;
@@ -586,7 +579,7 @@ namespace Assistant
             animIndex = 0;
             foreach (AnimData animData in _animationData)
             {
-                if (animData.body.Equals(Config.GetInt("DrakeGraphic").ToString()))
+                if (animData.BodyId.Equals(Config.GetInt("DrakeGraphic")))
                 {
                     drakeAnimationList.SelectedIndex = animIndex;
                     break;
@@ -598,7 +591,7 @@ namespace Assistant
             animIndex = 0;
             foreach (AnimData animData in _animationData)
             {
-                if (animData.body.Equals(Config.GetInt("DaemonGraphic").ToString()))
+                if (animData.BodyId.Equals(Config.GetInt("DaemonGraphic")))
                 {
                     daemonAnimationList.SelectedIndex = animIndex;
                     break;
@@ -3509,115 +3502,6 @@ namespace Assistant
                 screenPrev.Image.Dispose();
                 screenPrev.Image = null;
             }
-
-            ReloadImgurUploadList();
-        }
-
-        public List<ImgurUpload> m_ImgurUploads = new List<ImgurUpload>();
-
-        public class ImgurUpload
-        {
-            public string Url { get; set; }
-            public string DeleteHash { get; set; }
-            public string UploadTime { get; set; }
-        }
-
-        public void ReloadImgurUploadList()
-        {
-            imgurUploads.Items.Clear();
-            m_ImgurUploads.Clear();
-
-            if (!File.Exists(Path.Combine(Config.GetInstallDirectory(), "ImgurUploads.csv")))
-                return;
-
-            string[] lines = File.ReadAllLines(Path.Combine(Config.GetInstallDirectory(), "ImgurUploads.csv"));
-
-            foreach (string line in lines)
-            {
-                string[] splitLine = line.Split(',');
-
-                ImgurUpload upload = new ImgurUpload
-                {
-                    Url = splitLine[0],
-                    DeleteHash = splitLine[1],
-                    UploadTime = splitLine[2]
-                };
-
-                m_ImgurUploads.Add(upload);
-            }
-
-            foreach (ImgurUpload upload in m_ImgurUploads)
-            {
-                imgurUploads.Items.Add(upload.Url);
-            }
-        }
-
-        private void imgurUploads_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (imgurUploads.SelectedIndex < 0)
-                return;
-
-            if (e.Button == MouseButtons.Right && e.Clicks == 1)
-            {
-                ContextMenu menu = new ContextMenu();
-
-                m_LastImgurUrl = imgurUploads.Items[imgurUploads.SelectedIndex].ToString();
-
-                menu.MenuItems.Add("Copy URL to clipboard", new EventHandler(CopyImgurUrlToClipboard));
-                menu.MenuItems.Add("Open URL in browser", new EventHandler(razorNotify_BalloonTipClicked));
-                menu.MenuItems.Add("-");
-                menu.MenuItems.Add("Delete from Imgur", new EventHandler(DeleteFromImgur));
-
-                menu.Show(imgurUploads, new Point(e.X, e.Y));
-            }
-        }
-
-        private void DeleteFromImgur(object sender, System.EventArgs e)
-        {
-            try
-            {
-                if (MessageBox.Show(this,
-                        "Are you sure you want to delete this from Imgur? It will permanently be removed and cannot be undone.",
-                        "Delete Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                    return;
-
-                using (var w = new WebClient()
-                ) //HttpClient would be preferred, but I didn't want to add a new package to Razor
-                {
-                    string clientID = "b241fb37ce1e0e9";
-                    w.Headers.Add("Authorization", "Client-ID " + clientID);
-
-                    string deleteHash = m_ImgurUploads[imgurUploads.SelectedIndex].DeleteHash;
-
-                    string response = w.UploadString($"https://api.imgur.com/3/image/{deleteHash}", "DELETE", "");
-
-                    dynamic jsonResponse = JsonConvert.DeserializeObject(response);
-
-                    if (jsonResponse["status"] == 200)
-                    {
-                        m_ImgurUploads.RemoveAt(imgurUploads.SelectedIndex);
-
-                        SaveImgurUploadsToLog();
-
-                        ReloadImgurUploadList();
-                    }
-                    else
-                    {
-                        throw new Exception("Unable to delete image");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message, "Error deleting image on Imgur", MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
-        }
-
-        private void CopyImgurUrlToClipboard(object sender, System.EventArgs e)
-        {
-            Clipboard.SetText(m_LastImgurUrl);
         }
 
         private void radioFull_CheckedChanged(object sender, System.EventArgs e)
@@ -3670,9 +3554,7 @@ namespace Assistant
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
                 ContextMenu menu = new ContextMenu();
-
-                menu.MenuItems.Add("Upload to Imgur", new EventHandler(UploadToImgurEvent));
-                menu.MenuItems.Add("-");
+               
                 menu.MenuItems.Add("Delete", new EventHandler(DeleteScreenCap));
 
                 if (screensList.SelectedIndex == -1)
@@ -3682,128 +3564,6 @@ namespace Assistant
 
 
                 menu.Show(screensList, new Point(e.X, e.Y));
-            }
-        }
-
-        private void UploadToImgurEvent(object sender, System.EventArgs e)
-        {
-            int sel = screensList.SelectedIndex;
-            if (sel == -1)
-                return;
-
-            string file = Path.Combine(Config.GetString("CapPath"), (string) screensList.SelectedItem);
-
-
-            // This is .NET 4.0, can't use async Task.Run
-            Task T = Task.Factory.StartNew(() => { UploadToImgur(file); });
-        }
-
-        private void UploadToImgur(string file)
-        {
-            try
-            {
-                using (var w = new WebClient())
-                {
-                    string clientID = "b241fb37ce1e0e9";
-                    w.Headers.Add("Authorization", "Client-ID " + clientID);
-                    var values = new NameValueCollection
-                    {
-                        {"image", Convert.ToBase64String(File.ReadAllBytes(file))}
-                    };
-
-                    byte[] response = w.UploadValues("https://api.imgur.com/3/upload", values);
-
-                    dynamic jsonResponse = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(response));
-
-                    if (jsonResponse["status"] == 200)
-                    {
-                        m_LastImgurUrl = jsonResponse["data"].link.Value;
-
-                        imgurUploads.Invoke((MethodInvoker) delegate
-                        {
-                            // Running on the UI thread
-                            LogImgurUpload(m_LastImgurUrl, jsonResponse["data"].deletehash.Value);
-
-                            if (Config.GetBool("ScreenshotUploadNotifications"))
-                            {
-                                m_NotifyIcon.ShowBalloonTip(2000, "Screenshot Uploaded",
-                                    "Click here to view in your browser.", ToolTipIcon.Info);
-                                m_NotifyIcon.BalloonTipClicked += new EventHandler(razorNotify_BalloonTipClicked);
-                            }
-
-                            if (Config.GetBool("ScreenshotUploadOpenBrowser"))
-                            {
-                                Process.Start(m_LastImgurUrl);
-                            }
-
-                            if (Config.GetBool("ScreenshotUploadClipboard"))
-                            {
-                                Clipboard.SetText(m_LastImgurUrl);
-                            }
-                        });
-                    }
-                    else
-                    {
-                        throw new Exception("Unable to upload");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message, "Error Uploading to Imgur", MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
-        }
-
-        private string m_LastImgurUrl;
-
-        private void razorNotify_BalloonTipClicked(object sender, EventArgs e)
-        {
-            Process.Start(m_LastImgurUrl);
-        }
-
-        private void LogImgurUpload(string url, string deleteHash)
-        {
-            try
-            {
-                string path = Path.Combine(Config.GetInstallDirectory(), "ImgurUploads.csv");
-                using (StreamWriter sw = File.AppendText(path))
-                {
-                    sw.WriteLine($"{url},{deleteHash},{DateTime.Now}");
-                }
-
-                ReloadImgurUploadList();
-            }
-            catch
-            {
-                //ignore
-            }
-        }
-
-        private void SaveImgurUploadsToLog()
-        {
-            try
-            {
-                string path = Path.Combine(Config.GetInstallDirectory(), "ImgurUploads.csv");
-
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-
-                using (StreamWriter sw = File.AppendText(path))
-                {
-                    foreach (ImgurUpload upload in m_ImgurUploads)
-                    {
-                        sw.WriteLine($"{upload.Url},{upload.DeleteHash},{upload.UploadTime}");
-                    }
-                }
-
-                ReloadImgurUploadList();
-            }
-            catch
-            {
             }
         }
 
@@ -4980,33 +4740,6 @@ namespace Assistant
             }
         }
 
-        private void screenShotNotification_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.SetProperty("ScreenshotUploadNotifications", screenShotNotification.Checked);
-
-
-            if (screenShotNotification.Checked)
-            {
-                m_NotifyIcon.Visible = true;
-            }
-            else
-            {
-                bool st = Config.GetBool("Systray");
-                taskbar.Checked = ShowInTaskbar = !st;
-                systray.Checked = m_NotifyIcon.Visible = st;
-            }
-        }
-
-        private void screenShotClipboard_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.SetProperty("ScreenshotUploadClipboard", screenShotClipboard.Checked);
-        }
-
-        private void screenShotOpenBrowser_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.SetProperty("ScreenshotUploadOpenBrowser", screenShotOpenBrowser.Checked);
-        }
-
         private void showAttackTarget_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowAttackTargetOverhead", showAttackTarget.Checked);
@@ -5289,8 +5022,7 @@ namespace Assistant
                 if (dragonAnimationList.SelectedIndex < 0)
                     return;
 
-                Config.SetProperty("DragonGraphic",
-                    Convert.ToInt32(_animationData[dragonAnimationList.SelectedIndex].body));
+                Config.SetProperty("DragonGraphic", _animationData[dragonAnimationList.SelectedIndex].BodyId);
             }
             catch
             {
@@ -5306,8 +5038,7 @@ namespace Assistant
                 if (drakeAnimationList.SelectedIndex < 0)
                     return;
 
-                Config.SetProperty("DrakeGraphic",
-                    Convert.ToInt32(_animationData[drakeAnimationList.SelectedIndex].body));
+                Config.SetProperty("DrakeGraphic", _animationData[drakeAnimationList.SelectedIndex].BodyId);
             }
             catch
             {
@@ -6105,8 +5836,7 @@ namespace Assistant
                 if (daemonAnimationList.SelectedIndex < 0)
                     return;
 
-                Config.SetProperty("DaemonGraphic",
-                    Convert.ToInt32(_animationData[daemonAnimationList.SelectedIndex].body));
+                Config.SetProperty("DaemonGraphic", _animationData[daemonAnimationList.SelectedIndex].BodyId);
             }
             catch
             {
