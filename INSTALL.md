@@ -1,8 +1,8 @@
 # Installation
 
-## Install: New ClassicUO with Razor Install
-
 These steps assume that you already have obtained and installed the Ultima Online game asset files in the local system and want to install ClassicUO and Razor for the first time.
+
+## Install: New ClassicUO with Razor Install
 
 * Create a new folder on your local computer (ie: C:\Games\ClassicUO)
 * Open PowerShell prompt and go to folder you created
