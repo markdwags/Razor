@@ -110,7 +110,7 @@ namespace Assistant
             AddProperty("SkillListCol", (int) -1);
             AddProperty("SkillListAsc", false);
 
-            AddProperty("AutoStack", true);
+            AddProperty("AutoStack", false);
             AddProperty("ActionStatusMsg", true);
             AddProperty("RememberPwds", false);
 
@@ -162,12 +162,6 @@ namespace Assistant
             AddProperty("HotKeyStop", false);
             AddProperty("DiffTargetByType", false);
             AddProperty("StepThroughMacro", false);
-
-            // Map options
-            /*AddProperty("ShowPlayerPosition", true);
-            AddProperty("TrackPlayerPosition", true);
-            AddProperty("ShowPartyMemberPositions", true);
-            AddProperty("TiltMap", true);*/
 
             AddProperty("ShowTargetSelfLastClearOverhead", true);
             AddProperty("ShowOverheadMessages", false);
