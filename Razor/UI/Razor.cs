@@ -6128,13 +6128,13 @@ namespace Assistant
                 {
                     return;
                 }
-            }
-            
-            ScriptManager.RedrawScripts();
 
-            if (scriptList.Items.Count > 0)
-            {
-                scriptList.SelectedIndex = 0;
+                ScriptManager.RedrawScripts();
+
+                if (scriptList.Items.Count > 0)
+                {
+                    scriptList.SelectedIndex = 0;
+                }
             }
         }
 
