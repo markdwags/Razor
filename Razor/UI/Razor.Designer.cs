@@ -717,13 +717,14 @@ namespace Assistant
             this.scriptVariables = new System.Windows.Forms.ListBox();
             this.friendsTab = new System.Windows.Forms.TabPage();
             this.highlightFriend = new System.Windows.Forms.CheckBox();
-            this.setFriendsFormatHue = new System.Windows.Forms.Button();
-            this.friendOverheadFormat = new System.Windows.Forms.TextBox();
-            this.showFriendOverhead = new System.Windows.Forms.CheckBox();
             this.autoAcceptParty = new System.Windows.Forms.CheckBox();
             this.nextPrevIgnoresFriends = new System.Windows.Forms.CheckBox();
             this.autoFriend = new System.Windows.Forms.CheckBox();
             this.friendsGroupBox = new System.Windows.Forms.GroupBox();
+            this.showFriendOverhead = new System.Windows.Forms.CheckBox();
+            this.setFriendsFormatHue = new System.Windows.Forms.Button();
+            this.friendOverheadFormat = new System.Windows.Forms.TextBox();
+            this.friendFormat = new System.Windows.Forms.Label();
             this.friendsGroupRemove = new System.Windows.Forms.Button();
             this.friendsGroupAdd = new System.Windows.Forms.Button();
             this.friendClearList = new System.Windows.Forms.Button();
@@ -732,7 +733,6 @@ namespace Assistant
             this.friendsList = new System.Windows.Forms.ListBox();
             this.friendsGroup = new System.Windows.Forms.ComboBox();
             this.friendsListEnabled = new System.Windows.Forms.CheckBox();
-            this.friendFormat = new System.Windows.Forms.Label();
             this.screenshotTab = new System.Windows.Forms.TabPage();
             this.captureOwnDeathDelay = new System.Windows.Forms.TextBox();
             this.lblOwnDeathMs = new System.Windows.Forms.Label();
@@ -4206,14 +4206,10 @@ namespace Assistant
             // 
             this.friendsTab.BackColor = System.Drawing.SystemColors.Control;
             this.friendsTab.Controls.Add(this.highlightFriend);
-            this.friendsTab.Controls.Add(this.setFriendsFormatHue);
-            this.friendsTab.Controls.Add(this.friendOverheadFormat);
-            this.friendsTab.Controls.Add(this.showFriendOverhead);
             this.friendsTab.Controls.Add(this.autoAcceptParty);
             this.friendsTab.Controls.Add(this.nextPrevIgnoresFriends);
             this.friendsTab.Controls.Add(this.autoFriend);
             this.friendsTab.Controls.Add(this.friendsGroupBox);
-            this.friendsTab.Controls.Add(this.friendFormat);
             this.friendsTab.Location = new System.Drawing.Point(4, 44);
             this.friendsTab.Name = "friendsTab";
             this.friendsTab.Size = new System.Drawing.Size(519, 322);
@@ -4222,43 +4218,13 @@ namespace Assistant
             // 
             // highlightFriend
             // 
-            this.highlightFriend.Location = new System.Drawing.Point(270, 143);
+            this.highlightFriend.Location = new System.Drawing.Point(270, 91);
             this.highlightFriend.Name = "highlightFriend";
             this.highlightFriend.Size = new System.Drawing.Size(184, 23);
             this.highlightFriend.TabIndex = 143;
             this.highlightFriend.Text = "Next/Prev highlights \'Friends\'";
             this.highlightFriend.UseVisualStyleBackColor = true;
             this.highlightFriend.CheckedChanged += new System.EventHandler(this.highlightFriend_CheckedChanged);
-            // 
-            // setFriendsFormatHue
-            // 
-            this.setFriendsFormatHue.Location = new System.Drawing.Point(441, 116);
-            this.setFriendsFormatHue.Name = "setFriendsFormatHue";
-            this.setFriendsFormatHue.Size = new System.Drawing.Size(59, 24);
-            this.setFriendsFormatHue.TabIndex = 142;
-            this.setFriendsFormatHue.Text = "Set Hue";
-            this.setFriendsFormatHue.UseVisualStyleBackColor = true;
-            this.setFriendsFormatHue.Click += new System.EventHandler(this.setFriendsFormatHue_Click);
-            // 
-            // friendOverheadFormat
-            // 
-            this.friendOverheadFormat.Location = new System.Drawing.Point(333, 117);
-            this.friendOverheadFormat.Name = "friendOverheadFormat";
-            this.friendOverheadFormat.Size = new System.Drawing.Size(102, 23);
-            this.friendOverheadFormat.TabIndex = 140;
-            this.friendOverheadFormat.Text = "[Friend]";
-            this.friendOverheadFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.friendOverheadFormat.TextChanged += new System.EventHandler(this.friendOverheadFormat_TextChanged);
-            // 
-            // showFriendOverhead
-            // 
-            this.showFriendOverhead.Location = new System.Drawing.Point(270, 91);
-            this.showFriendOverhead.Name = "showFriendOverhead";
-            this.showFriendOverhead.Size = new System.Drawing.Size(184, 23);
-            this.showFriendOverhead.TabIndex = 139;
-            this.showFriendOverhead.Text = "Show [Friend] overhead";
-            this.showFriendOverhead.UseVisualStyleBackColor = true;
-            this.showFriendOverhead.CheckedChanged += new System.EventHandler(this.showFriendOverhead_CheckedChanged);
             // 
             // autoAcceptParty
             // 
@@ -4291,6 +4257,10 @@ namespace Assistant
             // 
             // friendsGroupBox
             // 
+            this.friendsGroupBox.Controls.Add(this.showFriendOverhead);
+            this.friendsGroupBox.Controls.Add(this.setFriendsFormatHue);
+            this.friendsGroupBox.Controls.Add(this.friendOverheadFormat);
+            this.friendsGroupBox.Controls.Add(this.friendFormat);
             this.friendsGroupBox.Controls.Add(this.friendsGroupRemove);
             this.friendsGroupBox.Controls.Add(this.friendsGroupAdd);
             this.friendsGroupBox.Controls.Add(this.friendClearList);
@@ -4301,10 +4271,49 @@ namespace Assistant
             this.friendsGroupBox.Controls.Add(this.friendsListEnabled);
             this.friendsGroupBox.Location = new System.Drawing.Point(6, 3);
             this.friendsGroupBox.Name = "friendsGroupBox";
-            this.friendsGroupBox.Size = new System.Drawing.Size(258, 280);
+            this.friendsGroupBox.Size = new System.Drawing.Size(258, 313);
             this.friendsGroupBox.TabIndex = 135;
             this.friendsGroupBox.TabStop = false;
             this.friendsGroupBox.Text = "Friends Groups && Lists";
+            // 
+            // showFriendOverhead
+            // 
+            this.showFriendOverhead.Location = new System.Drawing.Point(6, 52);
+            this.showFriendOverhead.Name = "showFriendOverhead";
+            this.showFriendOverhead.Size = new System.Drawing.Size(184, 23);
+            this.showFriendOverhead.TabIndex = 146;
+            this.showFriendOverhead.Text = "Show overhead tag";
+            this.showFriendOverhead.UseVisualStyleBackColor = true;
+            this.showFriendOverhead.CheckedChanged += new System.EventHandler(this.showFriendOverhead_CheckedChanged);
+            // 
+            // setFriendsFormatHue
+            // 
+            this.setFriendsFormatHue.Location = new System.Drawing.Point(163, 78);
+            this.setFriendsFormatHue.Name = "setFriendsFormatHue";
+            this.setFriendsFormatHue.Size = new System.Drawing.Size(59, 23);
+            this.setFriendsFormatHue.TabIndex = 145;
+            this.setFriendsFormatHue.Text = "Set Hue";
+            this.setFriendsFormatHue.UseVisualStyleBackColor = true;
+            this.setFriendsFormatHue.Click += new System.EventHandler(this.setFriendsFormatHue_Click);
+            // 
+            // friendOverheadFormat
+            // 
+            this.friendOverheadFormat.Location = new System.Drawing.Point(55, 78);
+            this.friendOverheadFormat.Name = "friendOverheadFormat";
+            this.friendOverheadFormat.Size = new System.Drawing.Size(102, 23);
+            this.friendOverheadFormat.TabIndex = 143;
+            this.friendOverheadFormat.Text = "[Friend]";
+            this.friendOverheadFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.friendOverheadFormat.TextChanged += new System.EventHandler(this.friendOverheadFormat_TextChanged);
+            // 
+            // friendFormat
+            // 
+            this.friendFormat.Location = new System.Drawing.Point(6, 78);
+            this.friendFormat.Name = "friendFormat";
+            this.friendFormat.Size = new System.Drawing.Size(151, 23);
+            this.friendFormat.TabIndex = 144;
+            this.friendFormat.Text = "Format:";
+            this.friendFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // friendsGroupRemove
             // 
@@ -4328,7 +4337,7 @@ namespace Assistant
             // 
             // friendClearList
             // 
-            this.friendClearList.Location = new System.Drawing.Point(174, 241);
+            this.friendClearList.Location = new System.Drawing.Point(174, 274);
             this.friendClearList.Name = "friendClearList";
             this.friendClearList.Size = new System.Drawing.Size(79, 33);
             this.friendClearList.TabIndex = 8;
@@ -4338,7 +4347,7 @@ namespace Assistant
             // 
             // friendRemoveSelected
             // 
-            this.friendRemoveSelected.Location = new System.Drawing.Point(94, 241);
+            this.friendRemoveSelected.Location = new System.Drawing.Point(94, 274);
             this.friendRemoveSelected.Name = "friendRemoveSelected";
             this.friendRemoveSelected.Size = new System.Drawing.Size(74, 33);
             this.friendRemoveSelected.TabIndex = 7;
@@ -4348,7 +4357,7 @@ namespace Assistant
             // 
             // friendAddTarget
             // 
-            this.friendAddTarget.Location = new System.Drawing.Point(6, 241);
+            this.friendAddTarget.Location = new System.Drawing.Point(6, 274);
             this.friendAddTarget.Name = "friendAddTarget";
             this.friendAddTarget.Size = new System.Drawing.Size(82, 33);
             this.friendAddTarget.TabIndex = 5;
@@ -4360,9 +4369,9 @@ namespace Assistant
             // 
             this.friendsList.FormattingEnabled = true;
             this.friendsList.ItemHeight = 15;
-            this.friendsList.Location = new System.Drawing.Point(6, 51);
+            this.friendsList.Location = new System.Drawing.Point(5, 114);
             this.friendsList.Name = "friendsList";
-            this.friendsList.Size = new System.Drawing.Size(247, 184);
+            this.friendsList.Size = new System.Drawing.Size(247, 154);
             this.friendsList.TabIndex = 4;
             this.friendsList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.friendsList_KeyDown);
             this.friendsList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.friendsList_MouseDown);
@@ -4386,15 +4395,6 @@ namespace Assistant
             this.friendsListEnabled.Text = "Enabled";
             this.friendsListEnabled.UseVisualStyleBackColor = true;
             this.friendsListEnabled.CheckedChanged += new System.EventHandler(this.friendsListEnabled_CheckedChanged);
-            // 
-            // friendFormat
-            // 
-            this.friendFormat.Location = new System.Drawing.Point(279, 117);
-            this.friendFormat.Name = "friendFormat";
-            this.friendFormat.Size = new System.Drawing.Size(145, 23);
-            this.friendFormat.TabIndex = 141;
-            this.friendFormat.Text = "Format:";
-            this.friendFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // screenshotTab
             // 
@@ -4916,6 +4916,7 @@ namespace Assistant
             this.friendsTab.ResumeLayout(false);
             this.friendsTab.PerformLayout();
             this.friendsGroupBox.ResumeLayout(false);
+            this.friendsGroupBox.PerformLayout();
             this.screenshotTab.ResumeLayout(false);
             this.screenshotTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).EndInit();
@@ -4957,9 +4958,6 @@ namespace Assistant
         private CheckBox scriptDisablePlayFinish;
         private TabPage friendsTab;
         private CheckBox highlightFriend;
-        private Button setFriendsFormatHue;
-        private TextBox friendOverheadFormat;
-        private CheckBox showFriendOverhead;
         private CheckBox autoAcceptParty;
         private CheckBox nextPrevIgnoresFriends;
         private CheckBox autoFriend;
@@ -4972,6 +4970,9 @@ namespace Assistant
         private ListBox friendsList;
         private ComboBox friendsGroup;
         private CheckBox friendsListEnabled;
+        private CheckBox showFriendOverhead;
+        private Button setFriendsFormatHue;
+        private TextBox friendOverheadFormat;
         private Label friendFormat;
     }
 }

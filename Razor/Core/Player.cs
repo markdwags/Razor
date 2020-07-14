@@ -879,7 +879,7 @@ namespace Assistant
                         hue = Config.GetInt("WarningColor");
                         break;
                     case MsgLevel.Friend:
-                        hue = Config.GetInt("FriendOverheadFormatHue");
+                        hue = 63;
                         break;
                     default:
                         hue = Config.GetInt("SysColor");

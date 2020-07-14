@@ -64,6 +64,10 @@ namespace Assistant.Core
             public bool Enabled { get; set; }
             public List<Friend> Friends { get; set; }
 
+            public string OverheadFormat { get; set; }
+            public int OverheadFormatHue { get; set; }
+            public bool OverheadFormatEnabled { get; set; }
+
             public FriendGroup()
             {
                 Friends = new List<Friend>();
@@ -226,25 +230,42 @@ namespace Assistant.Core
             }
         }
 
+        public static bool IsFriendOverhead(Serial serial, ref FriendGroup group)
+        {
+            // Check if they have treat party as friends enabled and check the party if so
+            if (Config.GetBool("AutoFriend") && PacketHandlers.Party.Contains(serial))
+                return true;
+            
+            // Loop through each friends group that is enabled
+            foreach (FriendGroup friendGroup in FriendGroups)
+            {
+                if (friendGroup.Enabled && friendGroup.Friends.Any(f => f.Serial == serial))
+                {
+                    group = friendGroup;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool IsFriend(Serial serial)
         {
             // Check if they have treat party as friends enabled and check the party if so
             if (Config.GetBool("AutoFriend") && PacketHandlers.Party.Contains(serial))
                 return true;
 
-            bool isFriend = false;
-
             // Loop through each friends group that is enabled
-            foreach (var friendGroup in FriendGroups)
+            foreach (FriendGroup friendGroup in FriendGroups)
             {
                 if (friendGroup.Enabled && friendGroup.Friends.Any(f => f.Serial == serial))
                 {
-                    isFriend = true;
-                    break;
+                    return true;
                 }
             }
 
-            return isFriend;
+            return false;
         }
 
         public static void EnableFriendsGroup(FriendGroup group, bool enabled)
@@ -333,7 +354,10 @@ namespace Assistant.Core
             {
                 Enabled = true,
                 GroupName = group,
-                Friends = new List<Friend>()
+                Friends = new List<Friend>(),
+                OverheadFormatHue = 63,
+                OverheadFormat = "[Friend]",
+                OverheadFormatEnabled = true
             };
 
             friendGroup.AddHotKeys();
@@ -343,6 +367,59 @@ namespace Assistant.Core
             RedrawGroup();
         }
 
+        public static void SetOverheadFormat(FriendGroup group, string format)
+        {
+            foreach (FriendGroup friendGroup in FriendGroups)
+            {
+                if (friendGroup == group)
+                {
+                    friendGroup.OverheadFormat = format;
+                    return;
+                }
+            }
+        }
+
+        public static void SetOverheadHue(FriendGroup group, int hue)
+        {
+            foreach (FriendGroup friendGroup in FriendGroups)
+            {
+                if (friendGroup == group)
+                {
+                    friendGroup.OverheadFormatHue = hue;
+                    return;
+                }
+            }
+        }
+
+        public static void SetOverheadFormatEnabled(FriendGroup group, bool enabled)
+        {
+            foreach (FriendGroup friendGroup in FriendGroups)
+            {
+                if (friendGroup == group)
+                {
+                    friendGroup.OverheadFormatEnabled = enabled;
+                    return;
+                }
+            }
+        }
+
+        public static void ShowOverhead(Mobile mobile)
+        {
+            FriendGroup group = null;
+
+            if (IsFriendOverhead(mobile.Serial, ref group))
+            {
+                if (group == null) // If they are a friend with no group, must be a party member
+                {
+                    mobile.OverheadMessage(63, "[Party-Friend]");
+                }
+                else if (group.OverheadFormatEnabled)
+                {
+                    mobile.OverheadMessage(group.OverheadFormatHue, group.OverheadFormat);
+                }
+            }
+        }
+
         public static void Save(XmlTextWriter xml)
         {
             foreach (var friendGroup in FriendGroups)
@@ -350,6 +427,9 @@ namespace Assistant.Core
                 xml.WriteStartElement("group");
                 xml.WriteAttributeString("name", friendGroup.GroupName);
                 xml.WriteAttributeString("enabled", friendGroup.Enabled.ToString());
+                xml.WriteAttributeString("overheadformat", friendGroup.OverheadFormat);
+                xml.WriteAttributeString("overheadhue", friendGroup.OverheadFormatHue.ToString());
+                xml.WriteAttributeString("overheadenabled", friendGroup.OverheadFormatEnabled.ToString());
 
                 foreach (var friend in friendGroup.Friends)
                 {
@@ -376,6 +456,21 @@ namespace Assistant.Core
                         GroupName = el.GetAttribute("name"),
                         Enabled = Convert.ToBoolean(el.GetAttribute("enabled"))
                     };
+
+                    // Newer versions didn't have these, so it will cause an error when loading for the first time
+                    // If any fail, just set defaults
+                    try
+                    {
+                        friendGroup.OverheadFormat = el.GetAttribute("overheadformat");
+                        friendGroup.OverheadFormatHue = Convert.ToInt32(el.GetAttribute("overheadhue"));
+                        friendGroup.OverheadFormatEnabled = Convert.ToBoolean(el.GetAttribute("overheadenabled"));
+                    }
+                    catch
+                    {
+                        friendGroup.OverheadFormat = "[Friend]";
+                        friendGroup.OverheadFormatHue = 63;
+                        friendGroup.OverheadFormatEnabled = true;
+                    }
 
                     friendGroup.AddHotKeys();
 

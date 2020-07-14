@@ -250,9 +250,6 @@ namespace Assistant
             AddProperty("OnlyShowBandageTimerSeconds", 1);
             AddProperty("ShowBandageTimerHue", 88);
 
-            AddProperty("FriendOverheadFormat", "[Friend]");
-            AddProperty("FriendOverheadFormatHue", 0x03F);
-
             AddProperty("TargetIndicatorHue", 10);
 
             AddProperty("FilterSystemMessages", false);

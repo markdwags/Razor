@@ -222,11 +222,7 @@ namespace Assistant.HotKeys
                 if (textFlags)
                     Targeting.CheckTextFlags(m);
 
-                if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
-                {
-                    m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"),
-                        $"{Config.GetString("FriendOverheadFormat")}");
-                }
+                FriendsManager.ShowOverhead(m);
             }
 
             foreach (Item i in World.Items.Values)
@@ -257,11 +253,7 @@ namespace Assistant.HotKeys
                 if (textFlags)
                     Targeting.CheckTextFlags(m);
 
-                if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
-                {
-                    m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"),
-                        $"{Config.GetString("FriendOverheadFormat")}");
-                }
+                FriendsManager.ShowOverhead(m);
             }
         }
 

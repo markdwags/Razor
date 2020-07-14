@@ -457,10 +457,6 @@ namespace Assistant
             bandageTimerFormat.SafeAction(s => { s.Text = Config.GetString("ShowBandageTimerFormat"); });
             lblBandageCountFormat.SafeAction(s => { InitPreviewHue(s, "ShowBandageTimerHue"); });
 
-            friendOverheadFormat.SafeAction(s => { s.Text = Config.GetString("FriendOverheadFormat"); });
-
-            friendFormat.SafeAction(s => { InitPreviewHue(s, "FriendOverheadFormatHue"); });
-
             lblTargetFormat.SafeAction(s => { InitPreviewHue(s, "TargetIndicatorHue"); });
 
             filterSystemMessages.SafeAction(s => { s.Checked = Config.GetBool("FilterSystemMessages"); });
@@ -5217,7 +5213,11 @@ namespace Assistant
 
         private void showFriendOverhead_CheckedChanged(object sender, EventArgs e)
         {
-            Config.SetProperty("ShowFriendOverhead", showFriendOverhead.Checked);
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            FriendsManager.SetOverheadFormatEnabled((FriendsManager.FriendGroup)friendsGroup.SelectedItem,
+                showFriendOverhead.Checked);
         }
 
         private void dispDeltaOverhead_CheckedChanged(object sender, EventArgs e)
@@ -5337,7 +5337,7 @@ namespace Assistant
         {
             Config.SetProperty("ShowBandageTimerFormat", bandageTimerFormat.Text);
 
-            if (string.IsNullOrEmpty(friendOverheadFormat.Text))
+            if (string.IsNullOrEmpty(bandageTimerFormat.Text))
             {
                 Config.SetProperty("ShowBandageTimerFormat", "Bandage: {count}s");
                 bandageTimerFormat.Text = "Bandage: {count}s";
@@ -5411,6 +5411,21 @@ namespace Assistant
 
             friendsListEnabled.SafeAction(s => s.Checked = friendGroup.Enabled);
 
+            friendFormat.SafeAction(s =>
+            {
+                int hueIdx = friendGroup.OverheadFormatHue;
+
+                if (hueIdx > 0 && hueIdx < 3000)
+                    s.BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                else
+                    s.BackColor = SystemColors.Control;
+
+                s.ForeColor = (s.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+            });
+
+            friendOverheadFormat.SafeAction(s => s.Text = friendGroup.OverheadFormat);
+            showFriendOverhead.SafeAction(s => s.Checked = friendGroup.OverheadFormatEnabled);
+
             FriendsManager.RedrawList(friendGroup);
         }
 
@@ -5440,19 +5455,45 @@ namespace Assistant
 
         private void friendOverheadFormat_TextChanged(object sender, EventArgs e)
         {
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
             //FriendOverheadFormat
             if (string.IsNullOrEmpty(friendOverheadFormat.Text))
             {
-                Config.SetProperty("FriendOverheadFormat", "[Friend]");
                 targetIndictorFormat.SafeAction(s => s.Text = "[Friend]");
             }
 
-            Config.SetProperty("FriendOverheadFormat", friendOverheadFormat.Text);
+            friendOverheadFormat.SafeAction(s => FriendsManager.SetOverheadFormat((FriendsManager.FriendGroup)friendsGroup.SelectedItem,
+                s.Text));
         }
 
         private void setFriendsFormatHue_Click(object sender, EventArgs e)
         {
-            friendFormat.SafeAction(s => { SetHue(s, "FriendOverheadFormatHue"); });
+            if (friendsGroup.SelectedIndex < 0)
+                return;
+
+            friendFormat.SafeAction(s =>
+            {
+                FriendsManager.FriendGroup group = (FriendsManager.FriendGroup) friendsGroup.SelectedItem;
+
+                HueEntry h = new HueEntry(group.OverheadFormatHue);
+
+                if (h.ShowDialog(this) == DialogResult.OK)
+                {
+                    int hueIdx = h.Hue;
+                    
+                    if (hueIdx > 0 && hueIdx < 3000)
+                        s.BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                    else
+                        s.BackColor = Color.White;
+
+                    s.ForeColor = (s.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+
+                    FriendsManager.SetOverheadHue((FriendsManager.FriendGroup)friendsGroup.SelectedItem,
+                        hueIdx);
+                }
+            });
         }
 
         private void friendAddTarget_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)

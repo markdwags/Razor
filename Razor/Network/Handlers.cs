@@ -233,11 +233,7 @@ namespace Assistant
             if (Config.GetBool("LastTargTextFlags"))
                 Targeting.CheckTextFlags(m);
 
-            if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
-            {
-                m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"),
-                    $"{Config.GetString("FriendOverheadFormat")}");
-            }
+            FriendsManager.ShowOverhead(m);
         }
 
         private static void ClientDoubleClick(PacketReader p, PacketHandlerEventArgs args)
@@ -1527,12 +1523,6 @@ namespace Assistant
                 Client.Instance.SendToServer(new SingleClick(m));
             if (Config.GetBool("LastTargTextFlags"))
                 Targeting.CheckTextFlags(m);
-
-            if (Config.GetBool("ShowFriendOverhead") && FriendsManager.IsFriend(m.Serial))
-            {
-                m.OverheadMessage(Config.GetInt("FriendOverheadFormatHue"),
-                    $"{Config.GetString("FriendOverheadFormat")}");
-            }
 
             int ltHue = Config.GetInt("LTHilight");
             bool isLT;
