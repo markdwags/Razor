@@ -193,9 +193,14 @@ namespace Assistant
             }
         }
 
+        private static Serial _lastOverheadMessageAttack;
+
         public static void ShowAttackOverhead(Serial serial)
         {
             if (!Config.GetBool("ShowAttackTargetOverhead"))
+                return;
+
+            if (Config.GetBool("ShowAttackTargetNewOnly") && serial == _lastOverheadMessageAttack)
                 return;
 
             Mobile m = World.FindMobile(serial);
@@ -204,6 +209,8 @@ namespace Assistant
 
             World.Player.OverheadMessage(FriendsManager.IsFriend(m.Serial) ? 63 : m.GetNotorietyColorInt(),
                 $"Attack: {m.Name}");
+
+            _lastOverheadMessageAttack = serial;
         }
 
         private static void OnClearQueue()
