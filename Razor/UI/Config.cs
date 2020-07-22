@@ -348,7 +348,7 @@ namespace Assistant
                 return false;
 
             string path = Config.GetUserDirectory("Profiles");
-            string file = Path.Combine(path, String.Format("{0}.xml", m_Name));
+            string file = Path.Combine(path, $"{m_Name}.xml");
             if (!File.Exists(file))
                 return false;
 
@@ -517,7 +517,7 @@ namespace Assistant
         public void Save()
         {
             string profileDir = Config.GetUserDirectory("Profiles");
-            string file = Path.Combine(profileDir, String.Format("{0}.xml", m_Name));
+            string file = Path.Combine(profileDir, $"{m_Name}.xml");
 
             if (m_Name != "default" && !m_Warned)
             {
@@ -539,7 +539,7 @@ namespace Assistant
             XmlTextWriter xml;
             try
             {
-                xml = new XmlTextWriter(file, Encoding.Default);
+                xml = new XmlTextWriter(file, Encoding.UTF8);
             }
             catch
             {
