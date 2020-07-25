@@ -32,6 +32,7 @@ namespace Assistant.Core
     public static class WaypointManager
     {
         private static ListBox _waypointList;
+        private static WaypointTimer _waypointTimer;
 
         public static Waypoint CurrentWaypoint;
         private static int _curWaypointIndex;
@@ -48,6 +49,8 @@ namespace Assistant.Core
         public static void SetControls(ListBox waypointList)
         {
             _waypointList = waypointList;
+            _waypointTimer = new WaypointTimer();
+            _waypointTimer.Stop();
         }
 
         public class Waypoint
@@ -99,10 +102,15 @@ namespace Assistant.Core
         public static void ShowWaypoint(Waypoint waypoint)
         {
             Client.Instance.SendToClient(new QuestArrow(true, Convert.ToUInt16(waypoint.X), Convert.ToUInt16(waypoint.Y)));
-
-            World.Player.OverheadMessage($"Waypoint: {waypoint}");
-
+            
             CurrentWaypoint = waypoint;
+
+            SendMessage($"Waypoint: {CurrentWaypoint}");
+
+            if (Config.GetBool("ShowWaypointDistance"))
+            {
+                _waypointTimer.Start();
+            }
         }
 
         public static void HideWaypoint()
@@ -110,6 +118,77 @@ namespace Assistant.Core
             Client.Instance.SendToClient(new QuestArrow(false, 0, 0));
 
             CurrentWaypoint = null;
+
+            _waypointTimer.Stop();
+        }
+
+        public static void ResetTimer()
+        {
+            if (_waypointTimer.Running)
+            {
+                _waypointTimer.Stop();
+                _waypointTimer = new WaypointTimer();
+                _waypointTimer.Start();
+            }
+            else
+            {
+                _waypointTimer = new WaypointTimer();
+                _waypointTimer.Stop();
+            }
+        }
+
+        public static void StartTimer()
+        {
+            _waypointTimer.Start();
+        }
+
+        public static void StopTimer()
+        {
+            _waypointTimer.Stop();
+        }
+
+        private static void SendMessage(string msg)
+        {
+            if (Config.GetBool("ShowWaypointOverhead"))
+            {
+                World.Player.OverheadMessage(msg);
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Info, msg);
+            }
+        }
+
+        private class WaypointTimer : Timer
+        {
+            public WaypointTimer() : base(TimeSpan.FromSeconds(Config.GetInt("ShowWaypointSeconds")),
+                TimeSpan.FromSeconds(Config.GetInt("ShowWaypointSeconds")))
+            {
+            }
+
+            protected override void OnTick()
+            {
+                if (World.Player == null || CurrentWaypoint == null)
+                {
+                    Stop();
+                    return;
+                }
+
+                int dist = Utility.Distance(World.Player.Position.X, World.Player.Position.Y, CurrentWaypoint.X,
+                    CurrentWaypoint.Y);
+
+                if (Config.GetBool("HideWaypoint") && dist <= Config.GetInt("HideWaypointDistance"))
+                {
+                    SendMessage($"Arrived at '{CurrentWaypoint}'");
+
+                    Stop();
+                    HideWaypoint();
+                }
+                else
+                {
+                    SendMessage($"{CurrentWaypoint.Name}: {dist} tiles away");
+                }
+            }
         }
 
         public static void Save(XmlTextWriter xml)

@@ -298,6 +298,12 @@ namespace Assistant
             AddProperty("ScriptFindTypeRange", false);
 
             AddProperty("ScriptDisablePlayFinish", false);
+            
+            AddProperty("ShowWaypointOverhead", true);
+            AddProperty("ShowWaypointDistance", true);
+            AddProperty("ShowWaypointSeconds", 10);
+            AddProperty("HideWaypoint", false);
+            AddProperty("HideWaypointDistance", 4);
 
             Counter.Default();
             Filter.DisableAll();

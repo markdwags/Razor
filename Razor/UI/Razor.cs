@@ -499,6 +499,13 @@ namespace Assistant
             scriptFindTypeRange.SafeAction(s => { s.Checked = Config.GetBool("ScriptFindTypeRange"); });
 
             scriptDisablePlayFinish.SafeAction(s => { s.Checked = Config.GetBool("ScriptDisablePlayFinish"); });
+            
+            showWaypointOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowWaypointOverhead"); });
+            showWaypointDistance.SafeAction(s => { s.Checked = Config.GetBool("ShowWaypointDistance"); });
+            txtWaypointDistanceSec.SafeAction(s => { s.Text = Config.GetInt("ShowWaypointSeconds").ToString(); });
+
+            hideWaypointWithin.SafeAction(s => { s.Checked = Config.GetBool("HideWaypoint"); });
+            hideWaypointDist.SafeAction(s => { s.Text = Config.GetInt("HideWaypointDistance").ToString(); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -6646,7 +6653,43 @@ namespace Assistant
             if (listWaypoints.SelectedIndex < 0)
                 return;
 
+            WaypointManager.RemoveWaypoint((WaypointManager.Waypoint) listWaypoints.SelectedItem);
+        }
 
+        private void showWaypointOverhead_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowWaypointOverhead", showWaypointOverhead.Checked);
+        }
+
+        private void showWaypointDistance_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowWaypointDistance", showWaypointDistance.Checked);
+
+            if (showWaypointDistance.Checked)
+            {
+                WaypointManager.StartTimer();
+            }
+            else
+            {
+                WaypointManager.StopTimer();
+            }
+        }
+
+        private void txtWaypointDistanceSec_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowWaypointSeconds", Utility.ToInt32(txtWaypointDistanceSec.Text, 10));
+
+            WaypointManager.ResetTimer();
+        }
+
+        private void hideWaypointDist_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("HideWaypointDistance", Utility.ToInt32(hideWaypointDist.Text, 4));
+        }
+
+        private void hideWaypointWithin_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("HideWaypoint", hideWaypointWithin.Checked);
         }
     }
 }
