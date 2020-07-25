@@ -466,6 +466,16 @@ namespace Assistant
             this.playSound = new System.Windows.Forms.Button();
             this.soundFilterEnabled = new System.Windows.Forms.CheckBox();
             this.soundFilterList = new System.Windows.Forms.CheckedListBox();
+            this.subWaypoints = new System.Windows.Forms.TabPage();
+            this.btnUseCurrentLoc = new System.Windows.Forms.Button();
+            this.txtWaypointName = new System.Windows.Forms.TextBox();
+            this.lblWaypointY = new System.Windows.Forms.Label();
+            this.lblWaypointX = new System.Windows.Forms.Label();
+            this.txtWaypointX = new System.Windows.Forms.TextBox();
+            this.txtWaypointY = new System.Windows.Forms.TextBox();
+            this.lblWaypoint = new System.Windows.Forms.Label();
+            this.btnAddWaypoint = new System.Windows.Forms.Button();
+            this.listWaypoints = new System.Windows.Forms.ListBox();
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
@@ -772,6 +782,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -783,6 +794,7 @@ namespace Assistant
             this.subFiltersTab.SuspendLayout();
             this.subTargetFilterTab.SuspendLayout();
             this.subSoundMusicTab.SuspendLayout();
+            this.subWaypoints.SuspendLayout();
             this.moreOptTab.SuspendLayout();
             this.optionsTabCtrl.SuspendLayout();
             this.subOptionsSpeechTab.SuspendLayout();
@@ -873,6 +885,7 @@ namespace Assistant
             this.subGeneralTab.Controls.Add(this.subFiltersTab);
             this.subGeneralTab.Controls.Add(this.subTargetFilterTab);
             this.subGeneralTab.Controls.Add(this.subSoundMusicTab);
+            this.subGeneralTab.Controls.Add(this.subWaypoints);
             this.subGeneralTab.Location = new System.Drawing.Point(6, 3);
             this.subGeneralTab.Name = "subGeneralTab";
             this.subGeneralTab.SelectedIndex = 0;
@@ -1348,10 +1361,10 @@ namespace Assistant
             this.subTargetFilterTab.Controls.Add(this.targetFilterAdd);
             this.subTargetFilterTab.Controls.Add(this.targetFilter);
             this.subTargetFilterTab.Controls.Add(this.targetFilterEnabled);
-            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 22);
+            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 24);
             this.subTargetFilterTab.Name = "subTargetFilterTab";
             this.subTargetFilterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 288);
+            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 286);
             this.subTargetFilterTab.TabIndex = 2;
             this.subTargetFilterTab.Text = "Target Filter";
             // 
@@ -1407,7 +1420,7 @@ namespace Assistant
             this.targetFilterEnabled.AutoSize = true;
             this.targetFilterEnabled.Location = new System.Drawing.Point(263, 50);
             this.targetFilterEnabled.Name = "targetFilterEnabled";
-            this.targetFilterEnabled.Size = new System.Drawing.Size(133, 19);
+            this.targetFilterEnabled.Size = new System.Drawing.Size(132, 19);
             this.targetFilterEnabled.TabIndex = 0;
             this.targetFilterEnabled.Text = "Target Filter Enabled";
             this.targetFilterEnabled.UseVisualStyleBackColor = true;
@@ -1425,9 +1438,9 @@ namespace Assistant
             this.subSoundMusicTab.Controls.Add(this.playSound);
             this.subSoundMusicTab.Controls.Add(this.soundFilterEnabled);
             this.subSoundMusicTab.Controls.Add(this.soundFilterList);
-            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 22);
+            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 24);
             this.subSoundMusicTab.Name = "subSoundMusicTab";
-            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 288);
+            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 286);
             this.subSoundMusicTab.TabIndex = 3;
             this.subSoundMusicTab.Text = "Sound & Music  ";
             // 
@@ -1522,6 +1535,103 @@ namespace Assistant
             this.soundFilterList.Size = new System.Drawing.Size(193, 256);
             this.soundFilterList.TabIndex = 0;
             this.soundFilterList.SelectedIndexChanged += new System.EventHandler(this.soundFilterList_SelectedIndexChanged);
+            // 
+            // subWaypoints
+            // 
+            this.subWaypoints.BackColor = System.Drawing.SystemColors.Control;
+            this.subWaypoints.Controls.Add(this.button1);
+            this.subWaypoints.Controls.Add(this.btnUseCurrentLoc);
+            this.subWaypoints.Controls.Add(this.txtWaypointName);
+            this.subWaypoints.Controls.Add(this.lblWaypointY);
+            this.subWaypoints.Controls.Add(this.lblWaypointX);
+            this.subWaypoints.Controls.Add(this.txtWaypointX);
+            this.subWaypoints.Controls.Add(this.txtWaypointY);
+            this.subWaypoints.Controls.Add(this.lblWaypoint);
+            this.subWaypoints.Controls.Add(this.btnAddWaypoint);
+            this.subWaypoints.Controls.Add(this.listWaypoints);
+            this.subWaypoints.Location = new System.Drawing.Point(4, 24);
+            this.subWaypoints.Name = "subWaypoints";
+            this.subWaypoints.Size = new System.Drawing.Size(502, 286);
+            this.subWaypoints.TabIndex = 4;
+            this.subWaypoints.Text = "Waypoints";
+            // 
+            // btnUseCurrentLoc
+            // 
+            this.btnUseCurrentLoc.Location = new System.Drawing.Point(378, 42);
+            this.btnUseCurrentLoc.Name = "btnUseCurrentLoc";
+            this.btnUseCurrentLoc.Size = new System.Drawing.Size(98, 23);
+            this.btnUseCurrentLoc.TabIndex = 8;
+            this.btnUseCurrentLoc.Text = "Use Current";
+            this.btnUseCurrentLoc.UseVisualStyleBackColor = true;
+            this.btnUseCurrentLoc.Click += new System.EventHandler(this.btnUseCurrentLoc_Click);
+            // 
+            // txtWaypointName
+            // 
+            this.txtWaypointName.Location = new System.Drawing.Point(233, 12);
+            this.txtWaypointName.Name = "txtWaypointName";
+            this.txtWaypointName.Size = new System.Drawing.Size(129, 23);
+            this.txtWaypointName.TabIndex = 7;
+            // 
+            // lblWaypointY
+            // 
+            this.lblWaypointY.AutoSize = true;
+            this.lblWaypointY.Location = new System.Drawing.Point(289, 44);
+            this.lblWaypointY.Name = "lblWaypointY";
+            this.lblWaypointY.Size = new System.Drawing.Size(17, 15);
+            this.lblWaypointY.TabIndex = 6;
+            this.lblWaypointY.Text = "Y:";
+            // 
+            // lblWaypointX
+            // 
+            this.lblWaypointX.AutoSize = true;
+            this.lblWaypointX.Location = new System.Drawing.Point(210, 45);
+            this.lblWaypointX.Name = "lblWaypointX";
+            this.lblWaypointX.Size = new System.Drawing.Size(17, 15);
+            this.lblWaypointX.TabIndex = 5;
+            this.lblWaypointX.Text = "X:";
+            // 
+            // txtWaypointX
+            // 
+            this.txtWaypointX.Location = new System.Drawing.Point(233, 42);
+            this.txtWaypointX.Name = "txtWaypointX";
+            this.txtWaypointX.Size = new System.Drawing.Size(50, 23);
+            this.txtWaypointX.TabIndex = 4;
+            // 
+            // txtWaypointY
+            // 
+            this.txtWaypointY.Location = new System.Drawing.Point(312, 42);
+            this.txtWaypointY.Name = "txtWaypointY";
+            this.txtWaypointY.Size = new System.Drawing.Size(50, 23);
+            this.txtWaypointY.TabIndex = 3;
+            // 
+            // lblWaypoint
+            // 
+            this.lblWaypoint.AutoSize = true;
+            this.lblWaypoint.Location = new System.Drawing.Point(185, 15);
+            this.lblWaypoint.Name = "lblWaypoint";
+            this.lblWaypoint.Size = new System.Drawing.Size(42, 15);
+            this.lblWaypoint.TabIndex = 2;
+            this.lblWaypoint.Text = "Name:";
+            // 
+            // btnAddWaypoint
+            // 
+            this.btnAddWaypoint.Location = new System.Drawing.Point(264, 71);
+            this.btnAddWaypoint.Name = "btnAddWaypoint";
+            this.btnAddWaypoint.Size = new System.Drawing.Size(98, 29);
+            this.btnAddWaypoint.TabIndex = 1;
+            this.btnAddWaypoint.Text = "Add Waypoint";
+            this.btnAddWaypoint.UseVisualStyleBackColor = true;
+            this.btnAddWaypoint.Click += new System.EventHandler(this.btnAddWaypoint_Click);
+            // 
+            // listWaypoints
+            // 
+            this.listWaypoints.FormattingEnabled = true;
+            this.listWaypoints.ItemHeight = 15;
+            this.listWaypoints.Location = new System.Drawing.Point(11, 12);
+            this.listWaypoints.Name = "listWaypoints";
+            this.listWaypoints.Size = new System.Drawing.Size(164, 259);
+            this.listWaypoints.TabIndex = 0;
+            this.listWaypoints.SelectedIndexChanged += new System.EventHandler(this.listWaypoints_SelectedIndexChanged);
             // 
             // moreOptTab
             // 
@@ -1979,7 +2089,7 @@ namespace Assistant
             this.friendBeneficialOnly.AutoSize = true;
             this.friendBeneficialOnly.Location = new System.Drawing.Point(6, 73);
             this.friendBeneficialOnly.Name = "friendBeneficialOnly";
-            this.friendBeneficialOnly.Size = new System.Drawing.Size(232, 19);
+            this.friendBeneficialOnly.Size = new System.Drawing.Size(233, 19);
             this.friendBeneficialOnly.TabIndex = 140;
             this.friendBeneficialOnly.Text = "\'Next/Prev Friendly\' sets beneficial only";
             this.friendBeneficialOnly.UseVisualStyleBackColor = true;
@@ -1990,7 +2100,7 @@ namespace Assistant
             this.onlyNextPrevBeneficial.AutoSize = true;
             this.onlyNextPrevBeneficial.Location = new System.Drawing.Point(6, 48);
             this.onlyNextPrevBeneficial.Name = "onlyNextPrevBeneficial";
-            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(223, 19);
+            this.onlyNextPrevBeneficial.Size = new System.Drawing.Size(224, 19);
             this.onlyNextPrevBeneficial.TabIndex = 139;
             this.onlyNextPrevBeneficial.Text = "\'Next/Prev Friend\' sets beneficial only";
             this.onlyNextPrevBeneficial.UseVisualStyleBackColor = true;
@@ -2069,7 +2179,7 @@ namespace Assistant
             this.showTargetMessagesOverChar.AutoSize = true;
             this.showTargetMessagesOverChar.Location = new System.Drawing.Point(9, 118);
             this.showTargetMessagesOverChar.Name = "showTargetMessagesOverChar";
-            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(225, 19);
+            this.showTargetMessagesOverChar.Size = new System.Drawing.Size(224, 19);
             this.showTargetMessagesOverChar.TabIndex = 74;
             this.showTargetMessagesOverChar.Text = "Show Target Self/Last/Clear Overhead";
             this.showTargetMessagesOverChar.UseVisualStyleBackColor = true;
@@ -3755,7 +3865,7 @@ namespace Assistant
             this.rangeCheckDoubleClick.AutoSize = true;
             this.rangeCheckDoubleClick.Location = new System.Drawing.Point(272, 78);
             this.rangeCheckDoubleClick.Name = "rangeCheckDoubleClick";
-            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(208, 19);
+            this.rangeCheckDoubleClick.Size = new System.Drawing.Size(207, 19);
             this.rangeCheckDoubleClick.TabIndex = 15;
             this.rangeCheckDoubleClick.Text = "Range check on \'DoubleClickType\'";
             this.rangeCheckDoubleClick.UseVisualStyleBackColor = true;
@@ -3766,7 +3876,7 @@ namespace Assistant
             this.rangeCheckTargetByType.AutoSize = true;
             this.rangeCheckTargetByType.Location = new System.Drawing.Point(272, 53);
             this.rangeCheckTargetByType.Name = "rangeCheckTargetByType";
-            this.rangeCheckTargetByType.Size = new System.Drawing.Size(190, 19);
+            this.rangeCheckTargetByType.Size = new System.Drawing.Size(188, 19);
             this.rangeCheckTargetByType.TabIndex = 14;
             this.rangeCheckTargetByType.Text = "Range check on \'TargetByType\'";
             this.rangeCheckTargetByType.UseVisualStyleBackColor = true;
@@ -3788,7 +3898,7 @@ namespace Assistant
             this.stepThroughMacro.AutoSize = true;
             this.stepThroughMacro.Location = new System.Drawing.Point(272, 118);
             this.stepThroughMacro.Name = "stepThroughMacro";
-            this.stepThroughMacro.Size = new System.Drawing.Size(135, 19);
+            this.stepThroughMacro.Size = new System.Drawing.Size(134, 19);
             this.stepThroughMacro.TabIndex = 12;
             this.stepThroughMacro.Text = "Step Through Macro";
             this.stepThroughMacro.UseVisualStyleBackColor = true;
@@ -3799,7 +3909,7 @@ namespace Assistant
             this.targetByTypeDifferent.AutoSize = true;
             this.targetByTypeDifferent.Location = new System.Drawing.Point(272, 28);
             this.targetByTypeDifferent.Name = "targetByTypeDifferent";
-            this.targetByTypeDifferent.Size = new System.Drawing.Size(183, 19);
+            this.targetByTypeDifferent.Size = new System.Drawing.Size(181, 19);
             this.targetByTypeDifferent.TabIndex = 11;
             this.targetByTypeDifferent.Text = "Force different \'TargetByType\'";
             this.targetByTypeDifferent.UseVisualStyleBackColor = true;
@@ -4829,6 +4939,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(292, 171);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(135, 29);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Clear/Hide Waypoint";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -4862,6 +4981,8 @@ namespace Assistant
             this.subTargetFilterTab.PerformLayout();
             this.subSoundMusicTab.ResumeLayout(false);
             this.subSoundMusicTab.PerformLayout();
+            this.subWaypoints.ResumeLayout(false);
+            this.subWaypoints.PerformLayout();
             this.moreOptTab.ResumeLayout(false);
             this.optionsTabCtrl.ResumeLayout(false);
             this.subOptionsSpeechTab.ResumeLayout(false);
@@ -4974,5 +5095,16 @@ namespace Assistant
         private Button setFriendsFormatHue;
         private TextBox friendOverheadFormat;
         private Label friendFormat;
+        private TabPage subWaypoints;
+        private ListBox listWaypoints;
+        private TextBox txtWaypointX;
+        private TextBox txtWaypointY;
+        private Label lblWaypoint;
+        private Button btnAddWaypoint;
+        private Button btnUseCurrentLoc;
+        private TextBox txtWaypointName;
+        private Label lblWaypointY;
+        private Label lblWaypointX;
+        private Button button1;
     }
 }

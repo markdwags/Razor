@@ -79,13 +79,24 @@ namespace Assistant
         {
             try
             {
-                Client.Instance.SendToClient(param[0].Equals("off")
-                    ? new QuestArrow(false, 0, 0)
-                    : new QuestArrow(true, Convert.ToUInt16(param[0]), Convert.ToUInt16(param[1])));
+                if (param[0].Equals("off"))
+                {
+                    WaypointManager.HideWaypoint();
+                    return;
+                }
+
+                WaypointManager.Waypoint waypoint = new WaypointManager.Waypoint
+                {
+                    Name = "N/A",
+                    X = Convert.ToUInt16(param[0]),
+                    Y = Convert.ToUInt16(param[1])
+                };
+
+                WaypointManager.ShowWaypoint(waypoint);
             }
             catch
             {
-                Client.Instance.SendToClient(new QuestArrow(false, 0, 0));
+                WaypointManager.HideWaypoint();
             }
         }
 

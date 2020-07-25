@@ -414,6 +414,7 @@ namespace Assistant
             DressList.Load(root["dresslists"]);
             TargetFilterManager.Load(root["targetfilters"]);
             SoundMusicManager.Load(root["soundfilters"]);
+            WaypointManager.Load(root["waypoints"]);
             FriendsManager.Load(root["friends"]);
             HotKey.Load(root["hotkeys"]);
             PasswordMemory.Load(root["passwords"]);
@@ -620,6 +621,10 @@ namespace Assistant
 
             xml.WriteStartElement("soundfilters");
             SoundMusicManager.Save(xml);
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("waypoints");
+            WaypointManager.Save(xml);
             xml.WriteEndElement();
 
             xml.WriteEndElement(); // end profile section

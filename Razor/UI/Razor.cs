@@ -80,6 +80,7 @@ namespace Assistant
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
             ScriptManager.SetControls(scriptEditor, scriptList);
+            WaypointManager.SetControls(listWaypoints);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -688,11 +689,18 @@ namespace Assistant
             if (subGeneralTab.SelectedTab == subTargetFilterTab)
             {
                 TargetFilterManager.RedrawList();
+                return;
             }
 
             if (subGeneralTab.SelectedTab == subSoundMusicTab)
             {
                 SoundMusicManager.RedrawList();
+                return;
+            }
+
+            if (subGeneralTab.SelectedTab == subWaypoints)
+            {
+                WaypointManager.RedrawList();
             }
         }
 
@@ -6579,6 +6587,52 @@ namespace Assistant
         private void disableScriptPlayFinish_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ScriptDisablePlayFinish", scriptFindTypeRange.Checked);
+        }
+
+        private void btnUseCurrentLoc_Click(object sender, EventArgs e)
+        {
+            if (World.Player != null)
+            {
+                txtWaypointX.SafeAction(s => s.Text = World.Player.Position.X.ToString());
+                txtWaypointY.SafeAction(s => s.Text = World.Player.Position.Y.ToString());
+            }
+        }
+
+        private void btnAddWaypoint_Click(object sender, EventArgs e)
+        {
+            WaypointManager.Waypoint waypoint = new WaypointManager.Waypoint();
+
+            if (!string.IsNullOrEmpty(txtWaypointName.Text))
+            {
+                waypoint.Name = txtWaypointName.Text;
+            }
+            else
+            {
+                waypoint.Name = "N/A";
+            }
+
+            txtWaypointX.SafeAction(s =>
+            {
+                waypoint.X = Utility.ToInt32(s.Text.Trim(), 0);
+            });
+
+            txtWaypointY.SafeAction(s =>
+            {
+                waypoint.Y = Utility.ToInt32(s.Text.Trim(), 0);
+            });
+
+            if (waypoint.X != 0 && waypoint.Y != 0)
+            {
+                WaypointManager.AddWaypoint(waypoint);
+            }
+        }
+
+        private void listWaypoints_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (World.Player != null || listWaypoints.SelectedIndex < 0)
+                return;
+
+            WaypointManager.ShowWaypoint((WaypointManager.Waypoint)listWaypoints.SelectedItem);
         }
     }
 }
