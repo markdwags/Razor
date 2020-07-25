@@ -573,6 +573,9 @@ namespace Assistant
         PartyAdd,
         Mysticism,
         Masteries,
+        NextWaypoint,
+        PrevWaypoint,
+        HideWaypoint,
         __End
     }
 

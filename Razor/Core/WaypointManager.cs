@@ -33,7 +33,17 @@ namespace Assistant.Core
     {
         private static ListBox _waypointList;
 
+        public static Waypoint CurrentWaypoint;
+        private static int _curWaypointIndex;
+
         private static List<Waypoint> _waypoints = new List<Waypoint>();
+
+        public static void Initialize()
+        {
+            HotKey.Add(HKCategory.Misc, LocString.NextWaypoint, new HotKeyCallback(NextWaypoint));
+            HotKey.Add(HKCategory.Misc, LocString.PrevWaypoint, new HotKeyCallback(PrevWaypoint));
+            HotKey.Add(HKCategory.Misc, LocString.HideWaypoint, new HotKeyCallback(HideWaypoint));
+        }
 
         public static void SetControls(ListBox waypointList)
         {
@@ -52,6 +62,26 @@ namespace Assistant.Core
             }
         }
 
+        public static void NextWaypoint()
+        {
+            _curWaypointIndex++;
+
+            if (_curWaypointIndex >= _waypoints.Count)
+                _curWaypointIndex = 0;
+
+            ShowWaypoint(_waypoints[_curWaypointIndex]);
+        }
+
+        public static void PrevWaypoint()
+        {
+            _curWaypointIndex--;
+
+            if (_curWaypointIndex < 0)
+                _curWaypointIndex = _waypoints.Count - 1;
+
+            ShowWaypoint(_waypoints[_curWaypointIndex]);
+        }
+
         public static void AddWaypoint(Waypoint waypoint)
         {
             _waypoints.Add(waypoint);
@@ -59,14 +89,27 @@ namespace Assistant.Core
             RedrawList();
         }
 
+        public static void RemoveWaypoint(Waypoint waypoint)
+        {
+            _waypoints.Remove(waypoint);
+
+            RedrawList();
+        }
+
         public static void ShowWaypoint(Waypoint waypoint)
         {
             Client.Instance.SendToClient(new QuestArrow(true, Convert.ToUInt16(waypoint.X), Convert.ToUInt16(waypoint.Y)));
+
+            World.Player.OverheadMessage($"Waypoint: {waypoint}");
+
+            CurrentWaypoint = waypoint;
         }
 
         public static void HideWaypoint()
         {
             Client.Instance.SendToClient(new QuestArrow(false, 0, 0));
+
+            CurrentWaypoint = null;
         }
 
         public static void Save(XmlTextWriter xml)

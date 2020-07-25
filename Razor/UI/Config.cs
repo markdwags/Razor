@@ -306,6 +306,7 @@ namespace Assistant
             Agent.ClearAll();
             PasswordMemory.ClearAll();
             FriendsManager.ClearAll();
+            WaypointManager.ClearAll();
             DressList.ClearAll();
             OverheadMessages.ClearAll();
             ContainerLabels.ClearAll();

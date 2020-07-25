@@ -6629,10 +6629,24 @@ namespace Assistant
 
         private void listWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (World.Player != null || listWaypoints.SelectedIndex < 0)
+            if (World.Player == null || listWaypoints.SelectedIndex < 0)
                 return;
 
             WaypointManager.ShowWaypoint((WaypointManager.Waypoint)listWaypoints.SelectedItem);
+        }
+
+        private void btnHideWaypoint_Click(object sender, EventArgs e)
+        {
+            if (World.Player != null)
+                WaypointManager.HideWaypoint();
+        }
+
+        private void btnRemoveSelectedWaypoint_Click(object sender, EventArgs e)
+        {
+            if (listWaypoints.SelectedIndex < 0)
+                return;
+
+
         }
     }
 }
