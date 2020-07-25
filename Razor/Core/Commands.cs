@@ -49,6 +49,8 @@ namespace Assistant
             Command.Register("Season", SetSeason);
             Command.Register("Damage", DamageTrackerReport);
             Command.Register("Set", SetMacroVariable);
+            Command.Register("Track", Track);
+            Command.Register("Waypoint", Track);
         }
 
         private static DateTime m_LastSync;
@@ -71,6 +73,20 @@ namespace Assistant
         {
             if (DamageTracker.Running)
                 DamageTracker.SendReport();
+        }
+
+        private static void Track(string[] param)
+        {
+            try
+            {
+                Client.Instance.SendToClient(param[0].Equals("off")
+                    ? new QuestArrow(false, 0, 0)
+                    : new QuestArrow(true, Convert.ToUInt16(param[0]), Convert.ToUInt16(param[1])));
+            }
+            catch
+            {
+                Client.Instance.SendToClient(new QuestArrow(false, 0, 0));
+            }
         }
 
         private static void SetMacroVariable(string[] param)

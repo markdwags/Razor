@@ -1803,4 +1803,15 @@ namespace Assistant
             WriteAsciiNull(version);
         }
     }
+    
+    internal sealed class QuestArrow : Packet
+    {
+        internal QuestArrow(bool active, int x, int y)
+            : base(0xBA, 10)
+        {
+            Write((byte) (active ? 1 : 0));
+            Write((ushort) x);
+            Write((ushort) y);
+        }
+    }
 }
