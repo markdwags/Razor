@@ -467,6 +467,7 @@ namespace Assistant
             this.soundFilterEnabled = new System.Windows.Forms.CheckBox();
             this.soundFilterList = new System.Windows.Forms.CheckedListBox();
             this.subWaypoints = new System.Windows.Forms.TabPage();
+            this.waypointOnDeath = new System.Windows.Forms.CheckBox();
             this.lblWaypointTiles = new System.Windows.Forms.Label();
             this.hideWaypointDist = new System.Windows.Forms.TextBox();
             this.hideWaypointWithin = new System.Windows.Forms.CheckBox();
@@ -484,7 +485,7 @@ namespace Assistant
             this.txtWaypointY = new System.Windows.Forms.TextBox();
             this.lblWaypoint = new System.Windows.Forms.Label();
             this.btnAddWaypoint = new System.Windows.Forms.Button();
-            this.listWaypoints = new System.Windows.Forms.ListBox();
+            this.waypointList = new System.Windows.Forms.ListBox();
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
@@ -713,7 +714,6 @@ namespace Assistant
             this.subScripts = new System.Windows.Forms.TabPage();
             this.scriptFilter = new System.Windows.Forms.TextBox();
             this.renameScript = new System.Windows.Forms.Button();
-            this.linkScriptGuide = new System.Windows.Forms.LinkLabel();
             this.saveScript = new System.Windows.Forms.Button();
             this.deleteScript = new System.Windows.Forms.Button();
             this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
@@ -791,7 +791,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.waypointOnDeath = new System.Windows.Forms.CheckBox();
+            this.scriptGuide = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1566,12 +1566,23 @@ namespace Assistant
             this.subWaypoints.Controls.Add(this.txtWaypointY);
             this.subWaypoints.Controls.Add(this.lblWaypoint);
             this.subWaypoints.Controls.Add(this.btnAddWaypoint);
-            this.subWaypoints.Controls.Add(this.listWaypoints);
+            this.subWaypoints.Controls.Add(this.waypointList);
             this.subWaypoints.Location = new System.Drawing.Point(4, 24);
             this.subWaypoints.Name = "subWaypoints";
             this.subWaypoints.Size = new System.Drawing.Size(502, 286);
             this.subWaypoints.TabIndex = 4;
             this.subWaypoints.Text = "Waypoints";
+            // 
+            // waypointOnDeath
+            // 
+            this.waypointOnDeath.AutoSize = true;
+            this.waypointOnDeath.Location = new System.Drawing.Point(184, 87);
+            this.waypointOnDeath.Name = "waypointOnDeath";
+            this.waypointOnDeath.Size = new System.Drawing.Size(162, 19);
+            this.waypointOnDeath.TabIndex = 66;
+            this.waypointOnDeath.Text = "Create waypoint on death";
+            this.waypointOnDeath.UseVisualStyleBackColor = true;
+            this.waypointOnDeath.CheckedChanged += new System.EventHandler(this.waypointOnDeath_CheckedChanged);
             // 
             // lblWaypointTiles
             // 
@@ -1728,15 +1739,16 @@ namespace Assistant
             this.btnAddWaypoint.UseVisualStyleBackColor = true;
             this.btnAddWaypoint.Click += new System.EventHandler(this.btnAddWaypoint_Click);
             // 
-            // listWaypoints
+            // waypointList
             // 
-            this.listWaypoints.FormattingEnabled = true;
-            this.listWaypoints.ItemHeight = 15;
-            this.listWaypoints.Location = new System.Drawing.Point(11, 12);
-            this.listWaypoints.Name = "listWaypoints";
-            this.listWaypoints.Size = new System.Drawing.Size(164, 259);
-            this.listWaypoints.TabIndex = 0;
-            this.listWaypoints.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDoubleClick);
+            this.waypointList.FormattingEnabled = true;
+            this.waypointList.ItemHeight = 15;
+            this.waypointList.Location = new System.Drawing.Point(11, 12);
+            this.waypointList.Name = "waypointList";
+            this.waypointList.Size = new System.Drawing.Size(164, 259);
+            this.waypointList.TabIndex = 0;
+            this.waypointList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDoubleClick);
+            this.waypointList.MouseDown += new MouseEventHandler(this.listWaypoints_MouseDown);
             // 
             // moreOptTab
             // 
@@ -4121,9 +4133,9 @@ namespace Assistant
             // subScripts
             // 
             this.subScripts.BackColor = System.Drawing.SystemColors.Control;
+            this.subScripts.Controls.Add(this.scriptGuide);
             this.subScripts.Controls.Add(this.scriptFilter);
             this.subScripts.Controls.Add(this.renameScript);
-            this.subScripts.Controls.Add(this.linkScriptGuide);
             this.subScripts.Controls.Add(this.saveScript);
             this.subScripts.Controls.Add(this.deleteScript);
             this.subScripts.Controls.Add(this.scriptEditor);
@@ -4150,7 +4162,7 @@ namespace Assistant
             // 
             // renameScript
             // 
-            this.renameScript.Location = new System.Drawing.Point(432, 195);
+            this.renameScript.Location = new System.Drawing.Point(432, 189);
             this.renameScript.Name = "renameScript";
             this.renameScript.Size = new System.Drawing.Size(60, 26);
             this.renameScript.TabIndex = 24;
@@ -4158,20 +4170,9 @@ namespace Assistant
             this.renameScript.UseVisualStyleBackColor = true;
             this.renameScript.Click += new System.EventHandler(this.renameScript_Click);
             // 
-            // linkScriptGuide
-            // 
-            this.linkScriptGuide.Location = new System.Drawing.Point(6, 254);
-            this.linkScriptGuide.Name = "linkScriptGuide";
-            this.linkScriptGuide.Size = new System.Drawing.Size(114, 25);
-            this.linkScriptGuide.TabIndex = 23;
-            this.linkScriptGuide.TabStop = true;
-            this.linkScriptGuide.Text = "Scripting Guide";
-            this.linkScriptGuide.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkScriptGuide.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkScriptGuide_LinkClicked);
-            // 
             // saveScript
             // 
-            this.saveScript.Location = new System.Drawing.Point(432, 163);
+            this.saveScript.Location = new System.Drawing.Point(432, 157);
             this.saveScript.Name = "saveScript";
             this.saveScript.Size = new System.Drawing.Size(60, 26);
             this.saveScript.TabIndex = 22;
@@ -4181,7 +4182,7 @@ namespace Assistant
             // 
             // deleteScript
             // 
-            this.deleteScript.Location = new System.Drawing.Point(432, 227);
+            this.deleteScript.Location = new System.Drawing.Point(432, 221);
             this.deleteScript.Name = "deleteScript";
             this.deleteScript.Size = new System.Drawing.Size(60, 26);
             this.deleteScript.TabIndex = 21;
@@ -4202,7 +4203,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4237,14 +4238,14 @@ namespace Assistant
             this.scriptList.ItemHeight = 17;
             this.scriptList.Location = new System.Drawing.Point(6, 41);
             this.scriptList.Name = "scriptList";
-            this.scriptList.Size = new System.Drawing.Size(114, 208);
+            this.scriptList.Size = new System.Drawing.Size(114, 225);
             this.scriptList.TabIndex = 19;
             this.scriptList.SelectedIndexChanged += new System.EventHandler(this.scriptList_SelectedIndexChanged);
             this.scriptList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptList_MouseDown);
             // 
             // newScript
             // 
-            this.newScript.Location = new System.Drawing.Point(432, 131);
+            this.newScript.Location = new System.Drawing.Point(432, 125);
             this.newScript.Name = "newScript";
             this.newScript.Size = new System.Drawing.Size(60, 26);
             this.newScript.TabIndex = 18;
@@ -5044,16 +5045,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // waypointOnDeath
+            // scriptGuide
             // 
-            this.waypointOnDeath.AutoSize = true;
-            this.waypointOnDeath.Location = new System.Drawing.Point(184, 87);
-            this.waypointOnDeath.Name = "waypointOnDeath";
-            this.waypointOnDeath.Size = new System.Drawing.Size(162, 19);
-            this.waypointOnDeath.TabIndex = 66;
-            this.waypointOnDeath.Text = "Create waypoint on death";
-            this.waypointOnDeath.UseVisualStyleBackColor = true;
-            this.waypointOnDeath.CheckedChanged += new System.EventHandler(this.waypointOnDeath_CheckedChanged);
+            this.scriptGuide.Location = new System.Drawing.Point(432, 253);
+            this.scriptGuide.Name = "scriptGuide";
+            this.scriptGuide.Size = new System.Drawing.Size(60, 26);
+            this.scriptGuide.TabIndex = 26;
+            this.scriptGuide.Text = "Help";
+            this.scriptGuide.UseVisualStyleBackColor = true;
+            this.scriptGuide.Click += new System.EventHandler(this.scriptGuide_Click);
             // 
             // MainForm
             // 
@@ -5175,7 +5175,6 @@ namespace Assistant
         private Button removeScriptVariable;
         private Button addScriptVariable;
         private ListBox scriptVariables;
-        private LinkLabel linkScriptGuide;
         private CheckBox autoSaveScript;
         private CheckBox autoSaveScriptPlay;
         private Button renameScript;
@@ -5203,7 +5202,7 @@ namespace Assistant
         private TextBox friendOverheadFormat;
         private Label friendFormat;
         private TabPage subWaypoints;
-        private ListBox listWaypoints;
+        private ListBox waypointList;
         private TextBox txtWaypointX;
         private TextBox txtWaypointY;
         private Label lblWaypoint;
@@ -5222,5 +5221,6 @@ namespace Assistant
         private TextBox hideWaypointDist;
         private CheckBox hideWaypointWithin;
         private CheckBox waypointOnDeath;
+        private Button scriptGuide;
     }
 }

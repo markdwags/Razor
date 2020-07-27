@@ -37,7 +37,7 @@ namespace Assistant.Core
         public static Waypoint CurrentWaypoint;
         private static int _curWaypointIndex;
 
-        private static List<Waypoint> _waypoints = new List<Waypoint>();
+        public static List<Waypoint> Waypoints = new List<Waypoint>();
 
         public static void Initialize()
         {
@@ -69,10 +69,10 @@ namespace Assistant.Core
         {
             _curWaypointIndex++;
 
-            if (_curWaypointIndex >= _waypoints.Count)
+            if (_curWaypointIndex >= Waypoints.Count)
                 _curWaypointIndex = 0;
 
-            ShowWaypoint(_waypoints[_curWaypointIndex]);
+            ShowWaypoint(Waypoints[_curWaypointIndex]);
         }
 
         public static void PrevWaypoint()
@@ -80,14 +80,14 @@ namespace Assistant.Core
             _curWaypointIndex--;
 
             if (_curWaypointIndex < 0)
-                _curWaypointIndex = _waypoints.Count - 1;
+                _curWaypointIndex = Waypoints.Count - 1;
 
-            ShowWaypoint(_waypoints[_curWaypointIndex]);
+            ShowWaypoint(Waypoints[_curWaypointIndex]);
         }
 
         public static void AddWaypoint(Waypoint waypoint)
         {
-            _waypoints.Add(waypoint);
+            Waypoints.Add(waypoint);
 
             RedrawList();
         }
@@ -96,7 +96,7 @@ namespace Assistant.Core
         {
             HideWaypoint();
 
-            _waypoints.Remove(waypoint);
+            Waypoints.Remove(waypoint);
 
             RedrawList();
         }
@@ -195,7 +195,7 @@ namespace Assistant.Core
         
         public static void Save(XmlTextWriter xml)
         {
-            foreach (var waypoint in _waypoints)
+            foreach (var waypoint in Waypoints)
             {
                 xml.WriteStartElement("waypoint");
                 xml.WriteAttributeString("x", waypoint.X.ToString());
@@ -220,7 +220,7 @@ namespace Assistant.Core
                         Name = el.GetAttribute("name")
                     };
 
-                    _waypoints.Add(waypoint);
+                    Waypoints.Add(waypoint);
                 }
 
                 RedrawList();
@@ -233,7 +233,7 @@ namespace Assistant.Core
 
         public static void ClearAll()
         {
-            _waypoints.Clear();
+            Waypoints.Clear();
         }
 
         public static void RedrawList()
@@ -243,7 +243,7 @@ namespace Assistant.Core
                 s.BeginUpdate();
                 s.Items.Clear();
 
-                foreach (Waypoint waypoint in _waypoints)
+                foreach (Waypoint waypoint in Waypoints)
                 {
                     s.Items.Add(waypoint);
                 }

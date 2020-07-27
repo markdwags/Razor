@@ -80,7 +80,7 @@ namespace Assistant
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
             ScriptManager.SetControls(scriptEditor, scriptList);
-            WaypointManager.SetControls(listWaypoints);
+            WaypointManager.SetControls(waypointList);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -6321,11 +6321,6 @@ namespace Assistant
             ScriptManager.DisplayScriptVariables(scriptVariables);
         }
 
-        private void linkScriptGuide_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://www.uor-razor.com/guide/");
-        }
-
         private void autoSaveScript_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("AutoSaveScript", autoSaveScript.Checked);
@@ -6613,14 +6608,7 @@ namespace Assistant
         {
             WaypointManager.Waypoint waypoint = new WaypointManager.Waypoint();
 
-            if (!string.IsNullOrEmpty(txtWaypointName.Text))
-            {
-                waypoint.Name = txtWaypointName.Text;
-            }
-            else
-            {
-                waypoint.Name = "N/A";
-            }
+            waypoint.Name = !string.IsNullOrEmpty(txtWaypointName.Text) ? txtWaypointName.Text.Replace("#", string.Empty) : "N/A";
 
             txtWaypointX.SafeAction(s =>
             {
@@ -6646,10 +6634,10 @@ namespace Assistant
 
         private void btnRemoveSelectedWaypoint_Click(object sender, EventArgs e)
         {
-            if (listWaypoints.SelectedIndex < 0)
+            if (waypointList.SelectedIndex < 0)
                 return;
 
-            WaypointManager.RemoveWaypoint((WaypointManager.Waypoint) listWaypoints.SelectedItem);
+            WaypointManager.RemoveWaypoint((WaypointManager.Waypoint) waypointList.SelectedItem);
         }
 
         private void showWaypointOverhead_CheckedChanged(object sender, EventArgs e)
@@ -6690,15 +6678,79 @@ namespace Assistant
 
         private void listWaypoints_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (World.Player == null || listWaypoints.SelectedIndex < 0)
+            if (World.Player == null || waypointList.SelectedIndex < 0)
                 return;
 
-            WaypointManager.ShowWaypoint((WaypointManager.Waypoint)listWaypoints.SelectedItem);
+            WaypointManager.ShowWaypoint((WaypointManager.Waypoint)waypointList.SelectedItem);
         }
 
         private void waypointOnDeath_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("CreateWaypointOnDeath", waypointOnDeath.Checked);
+        }
+
+        private void scriptGuide_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://www.uor-razor.com/guide/");
+        }
+        private void listWaypoints_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                ContextMenu menu = new ContextMenu();
+                menu.MenuItems.Add("Import Waypoints", onImportWaypoints);
+                menu.MenuItems.Add("Export Waypoints", onExportWaypoints);
+
+                menu.Show(waypointList, new Point(e.X, e.Y));
+            }
+        }
+
+        private void onExportWaypoints(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("!Razor.Waypoints.Import");
+
+            foreach (WaypointManager.Waypoint waypoint in WaypointManager.Waypoints)
+            {
+                sb.AppendLine($"{waypoint.Name}#{waypoint.X}#{waypoint.Y}");
+            }
+
+            Clipboard.SetDataObject(sb.ToString(), true);
+        }
+
+        private void onImportWaypoints(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Clipboard.GetText().Contains("!Razor.Waypoints.Import"))
+                {
+                    List<string> waypointImport = Clipboard.GetText()
+                        .Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).ToList();
+
+                    waypointImport.RemoveAt(0);
+
+                    foreach (string import in waypointImport)
+                    {
+                        if (string.IsNullOrEmpty(import))
+                            continue;
+
+                        string[] waypoint = import.Split('#');
+
+                        WaypointManager.AddWaypoint(new WaypointManager.Waypoint
+                        {
+                            Name = waypoint[0],
+                            X = Convert.ToInt32(waypoint[1]),
+                            Y = Convert.ToInt32(waypoint[2])
+                        });
+                    }
+
+                    Clipboard.Clear();
+                }
+            }
+            catch
+            {
+            }
         }
     }
 }
