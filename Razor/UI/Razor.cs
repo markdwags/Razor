@@ -6700,8 +6700,20 @@ namespace Assistant
                 ContextMenu menu = new ContextMenu();
                 menu.MenuItems.Add("Import Waypoints", onImportWaypoints);
                 menu.MenuItems.Add("Export Waypoints", onExportWaypoints);
+                menu.MenuItems.Add("-");
+                menu.MenuItems.Add("Clear All Waypoints", onClearWaypoints);
 
                 menu.Show(waypointList, new Point(e.X, e.Y));
+            }
+        }
+
+        private void onClearWaypoints(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(this, "Are you sure you want to clear all of your waypoints?", "Clear Waypoints?",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                WaypointManager.ClearAll();
+                WaypointManager.RedrawList();
             }
         }
 
