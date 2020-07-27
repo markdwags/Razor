@@ -6080,6 +6080,8 @@ namespace Assistant
                 ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
                 File.WriteAllText(script.Path, scriptEditor.Text);
 
+                script.Lines = File.ReadAllLines(script.Path);
+
                 scriptList.SelectedIndex = curIndex;
             }
         }
