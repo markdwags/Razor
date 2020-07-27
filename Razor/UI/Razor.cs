@@ -507,6 +507,8 @@ namespace Assistant
             hideWaypointWithin.SafeAction(s => { s.Checked = Config.GetBool("HideWaypoint"); });
             hideWaypointDist.SafeAction(s => { s.Text = Config.GetInt("HideWaypointDistance").ToString(); });
 
+            waypointOnDeath.SafeAction(s => { s.Checked = Config.GetBool("CreateWaypointOnDeath"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -6633,15 +6635,7 @@ namespace Assistant
                 WaypointManager.AddWaypoint(waypoint);
             }
         }
-
-        private void listWaypoints_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (World.Player == null || listWaypoints.SelectedIndex < 0)
-                return;
-
-            WaypointManager.ShowWaypoint((WaypointManager.Waypoint)listWaypoints.SelectedItem);
-        }
-
+        
         private void btnHideWaypoint_Click(object sender, EventArgs e)
         {
             if (World.Player != null)
@@ -6690,6 +6684,19 @@ namespace Assistant
         private void hideWaypointWithin_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("HideWaypoint", hideWaypointWithin.Checked);
+        }
+
+        private void listWaypoints_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (World.Player == null || listWaypoints.SelectedIndex < 0)
+                return;
+
+            WaypointManager.ShowWaypoint((WaypointManager.Waypoint)listWaypoints.SelectedItem);
+        }
+
+        private void waypointOnDeath_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("CreateWaypointOnDeath", waypointOnDeath.Checked);
         }
     }
 }

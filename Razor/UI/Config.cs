@@ -302,8 +302,11 @@ namespace Assistant
             AddProperty("ShowWaypointOverhead", true);
             AddProperty("ShowWaypointDistance", true);
             AddProperty("ShowWaypointSeconds", 10);
+
             AddProperty("HideWaypoint", false);
             AddProperty("HideWaypointDistance", 4);
+
+            AddProperty("CreateWaypointOnDeath", false);
 
             Counter.Default();
             Filter.DisableAll();

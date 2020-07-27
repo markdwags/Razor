@@ -2945,6 +2945,19 @@ namespace Assistant
                 ScreenCapManager.DeathCapture(Config.GetDouble("CaptureOwnDeathDelay"));
                 _lastSelfDeathScreenshot = DateTime.UtcNow;
             }
+
+            if (Config.GetBool("CreateWaypointOnDeath") && World.Player != null)
+            {
+                WaypointManager.Waypoint waypoint = new WaypointManager.Waypoint
+                {
+                    X = World.Player.Position.X,
+                    Y = World.Player.Position.Y,
+                    Name = "Your Body"
+                };
+
+                WaypointManager.AddWaypoint(waypoint);
+                WaypointManager.ShowWaypoint(waypoint);
+            }
         }
 
         private static void BuffDebuff(PacketReader p, PacketHandlerEventArgs args)

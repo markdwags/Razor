@@ -32,7 +32,7 @@ namespace Assistant.Core
     public static class WaypointManager
     {
         private static ListBox _waypointList;
-        private static WaypointTimer _waypointTimer;
+        private static WaypointDistanceTimer _waypointTimer;
 
         public static Waypoint CurrentWaypoint;
         private static int _curWaypointIndex;
@@ -49,7 +49,7 @@ namespace Assistant.Core
         public static void SetControls(ListBox waypointList)
         {
             _waypointList = waypointList;
-            _waypointTimer = new WaypointTimer();
+            _waypointTimer = new WaypointDistanceTimer();
             _waypointTimer.Stop();
         }
 
@@ -94,6 +94,8 @@ namespace Assistant.Core
 
         public static void RemoveWaypoint(Waypoint waypoint)
         {
+            HideWaypoint();
+
             _waypoints.Remove(waypoint);
 
             RedrawList();
@@ -127,12 +129,12 @@ namespace Assistant.Core
             if (_waypointTimer.Running)
             {
                 _waypointTimer.Stop();
-                _waypointTimer = new WaypointTimer();
+                _waypointTimer = new WaypointDistanceTimer();
                 _waypointTimer.Start();
             }
             else
             {
-                _waypointTimer = new WaypointTimer();
+                _waypointTimer = new WaypointDistanceTimer();
                 _waypointTimer.Stop();
             }
         }
@@ -159,9 +161,9 @@ namespace Assistant.Core
             }
         }
 
-        private class WaypointTimer : Timer
+        private class WaypointDistanceTimer : Timer
         {
-            public WaypointTimer() : base(TimeSpan.FromSeconds(Config.GetInt("ShowWaypointSeconds")),
+            public WaypointDistanceTimer() : base(TimeSpan.FromSeconds(Config.GetInt("ShowWaypointSeconds")),
                 TimeSpan.FromSeconds(Config.GetInt("ShowWaypointSeconds")))
             {
             }
@@ -190,7 +192,7 @@ namespace Assistant.Core
                 }
             }
         }
-
+        
         public static void Save(XmlTextWriter xml)
         {
             foreach (var waypoint in _waypoints)
