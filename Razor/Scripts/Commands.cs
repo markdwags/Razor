@@ -218,17 +218,25 @@ namespace Assistant.Scripts
 
             if (args.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: targettype (graphic) OR ('name of item or mobile type') [inrangecheck]");
+                throw new RunTimeError(null, "Usage: targettype (graphic) OR ('name of item or mobile type') [inrangecheck/backpack]");
             }
 
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
             bool inRangeCheck = Config.GetBool("ScriptTargetTypeRange");
+            bool backpack = false;
 
             if (args.Length == 2)
             {
-                inRangeCheck = args[1].AsBool();
+                if (args[1].AsString().StartsWith("backpack", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    backpack = true;
+                }
+                else
+                {
+                    inRangeCheck = args[1].AsBool();
+                }
             }
 
             ArrayList list = new ArrayList();
@@ -237,15 +245,27 @@ namespace Assistant.Scripts
             if (gfx == 0)
             {
                 List<Item> items = new List<Item>();
-                
-                items.AddRange(inRangeCheck
-                    ? World.FindItemsByName(gfxStr).Where(item =>
-                            !item.IsInBank &&
-                            (Utility.InRange(World.Player.Position, item.Position, 2) ||
-                             item.RootContainer == World.Player))
-                        .ToList()
-                    : World.FindItemsByName(gfxStr).Where(item => !item.IsInBank)
-                        .ToList());
+
+                if (backpack) // search backpack only
+                {
+                    if (World.Player.Backpack != null)
+                    {
+                        Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
+
+                        if (i != null)
+                            items.Add(i);
+                    }
+                }
+                else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
+                {
+                    items.AddRange(World.FindItemsByName(gfxStr).Where(item =>
+                        !item.IsInBank && (Utility.InRange(World.Player.Position, item.Position, 2) ||
+                                           item.RootContainer == World.Player)).ToList());
+                }
+                else
+                {
+                    items.AddRange(World.FindItemsByName(gfxStr).Where(item => !item.IsInBank).ToList());
+                }
 
                 if (items.Count == 0)
                 {
@@ -494,7 +514,7 @@ namespace Assistant.Scripts
             if (args.Length == 0)
             {
                 throw new RunTimeError(null, 
-                    "Usage: dclicktype|usetype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
+                    "Usage: dclicktype|usetype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
             }
 
             string gfxStr = args[0].AsString();
@@ -503,24 +523,44 @@ namespace Assistant.Scripts
             List<Item> items = new List<Item>();
 
             bool inRangeCheck = Config.GetBool("ScriptDClickTypeRange");
+            bool backpack = false;
 
             if (args.Length == 2)
             {
-                inRangeCheck = args[1].AsBool();
+                if (args[1].AsString().StartsWith("backpack", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    backpack = true;
+                }
+                else
+                {
+                    inRangeCheck = args[1].AsBool();
+                }
             }
 
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                items.AddRange(inRangeCheck
-                    ? World.FindItemsByName(gfxStr).Where(item =>
-                            !item.IsInBank &&
-                            (Utility.InRange(World.Player.Position, item.Position, 2) ||
-                             item.RootContainer == World.Player))
-                        .ToList()
-                    : World.FindItemsByName(gfxStr).Where(item => !item.IsInBank)
-                        .ToList());
-                
+                if (backpack) // search backpack only
+                {
+                    if (World.Player.Backpack != null)
+                    {
+                        Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
+
+                        if (i != null)
+                            items.Add(i);
+                    }
+                }
+                else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
+                {
+                    items.AddRange(World.FindItemsByName(gfxStr).Where(item =>
+                        !item.IsInBank && (Utility.InRange(World.Player.Position, item.Position, 2) ||
+                                           item.RootContainer == World.Player)).ToList());
+                }
+                else
+                {
+                    items.AddRange(World.FindItemsByName(gfxStr).Where(item => !item.IsInBank).ToList());
+                }
+
                 if (items.Count == 0)
                 {
                     throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
@@ -528,7 +568,7 @@ namespace Assistant.Scripts
 
                 click = items[Utility.Random(items.Count)].Serial;
             }
-            else // Check backpack first
+            else // Provided graphic id for type, check backpack first (same behavior as DoubleClickAction in macros
             {
                 if (World.Player.Backpack != null)
                 {
