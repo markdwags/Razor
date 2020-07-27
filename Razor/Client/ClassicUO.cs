@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Assistant.Core;
 
 namespace Assistant
 {
@@ -391,6 +392,7 @@ namespace Assistant
             GoldPerHourTimer.Stop();
             BandageTimer.Stop();
             GateTimer.Stop();
+            WaypointManager.StopTimer();
             BuffsTimer.Stop();
             StealthSteps.Unhide();
             Engine.MainWindow.OnLogout();

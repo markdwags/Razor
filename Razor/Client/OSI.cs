@@ -464,6 +464,7 @@ namespace Assistant
             DamageTracker.Stop();
             BandageTimer.Stop();
             GateTimer.Stop();
+            WaypointManager.StopTimer();
             BuffsTimer.Stop();
             StealthSteps.Unhide();
             Engine.MainWindow.OnLogout();
