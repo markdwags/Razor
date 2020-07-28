@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.HotKeys;
 using Assistant.Scripts.Engine;
@@ -229,7 +230,7 @@ namespace Assistant.Scripts
 
             if (args.Length == 2)
             {
-                if (args[1].AsString().StartsWith("backpack", StringComparison.InvariantCultureIgnoreCase))
+                if (args[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
                 {
                     backpack = true;
                 }
@@ -244,8 +245,6 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                List<Item> items = new List<Item>();
-
                 if (backpack) // search backpack only
                 {
                     if (World.Player.Backpack != null)
@@ -253,21 +252,21 @@ namespace Assistant.Scripts
                         Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
 
                         if (i != null)
-                            items.Add(i);
+                            list.Add(i);
                     }
                 }
                 else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
                 {
-                    items.AddRange(World.FindItemsByName(gfxStr).Where(item =>
+                    list.AddRange(World.FindItemsByName(gfxStr).Where(item =>
                         !item.IsInBank && (Utility.InRange(World.Player.Position, item.Position, 2) ||
                                            item.RootContainer == World.Player)).ToList());
                 }
                 else
                 {
-                    items.AddRange(World.FindItemsByName(gfxStr).Where(item => !item.IsInBank).ToList());
+                    list.AddRange(World.FindItemsByName(gfxStr).Where(item => !item.IsInBank).ToList());
                 }
-
-                if (items.Count == 0)
+                
+                if (list.Count == 0) // no item found, search mobile by name
                 {
                     List<Mobile> mobiles = World.FindMobilesByName(gfxStr);
 
@@ -283,26 +282,52 @@ namespace Assistant.Scripts
                     }
                 }
             }
-            else // check if they are mobile or an item
+            else // Using graphic id, so find mobile or item
             {
+                // Look for a mobile first
                 foreach (Mobile find in World.MobilesInRange())
                 {
                     if (find.Body == gfx)
                     {
-                        list.Add(find);
+                        if (Config.GetBool("ScriptTargetTypeRange"))
+                        {
+                            if (Utility.InRange(World.Player.Position, find.Position, 2))
+                            {
+                                list.Add(find);
+                            }
+                        }
+                        else
+                        {
+                            list.Add(find);
+                        }
                     }
                 }
 
-                if (list.Count == 0)
+                if (list.Count == 0) // No mobile found, search for items
                 {
-                    list.AddRange(inRangeCheck
-                        ? World.Items.Values.Where(i =>
+                    if (backpack) // search backpack only
+                    {
+                        if (World.Player.Backpack != null)
+                        {
+                            Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
+
+                            if (i != null)
+                                list.Add(i);
+                        }
+                    }
+                    else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
+                    {
+                        list.AddRange(World.Items.Values.Where(i =>
                                 i.ItemID == gfx && !i.IsInBank &&
                                 (Utility.InRange(World.Player.Position, i.Position, 2) ||
                                  i.RootContainer == World.Player))
-                            .ToList()
-                        : World.Items.Values.Where(i => i.ItemID == gfx && !i.IsInBank)
                             .ToList());
+                    }
+                    else
+                    {
+                        list.AddRange(World.Items.Values.Where(i => i.ItemID == gfx && !i.IsInBank)
+                            .ToList());
+                    }
                 }
             }
 
@@ -527,7 +552,7 @@ namespace Assistant.Scripts
 
             if (args.Length == 2)
             {
-                if (args[1].AsString().StartsWith("backpack", StringComparison.InvariantCultureIgnoreCase))
+                if (args[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
                 {
                     backpack = true;
                 }
