@@ -808,3 +808,5 @@ InputBox::ok=&OK
 2105=Waypoint: Next
 2106=Waypoint: Previous
 2107=Waypoint: Hide
+2108=Next Non-Friendly Target
+2109=Prev Non-Friendly Target
