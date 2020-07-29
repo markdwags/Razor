@@ -285,8 +285,16 @@ namespace Ultima
             "InstallDir"
         };
 
+        private static readonly bool IsWindows = Environment.OSVersion.Platform == PlatformID.Win32NT ||
+                                                 Environment.OSVersion.Platform == PlatformID.Win32Windows ||
+                                                 Environment.OSVersion.Platform == PlatformID.Win32S ||
+                                                 Environment.OSVersion.Platform == PlatformID.WinCE;
+
         public static void DetectMulPath()
         {
+            if (!IsWindows)
+                return;
+
             var dir = m_RootDir;
 
             if (string.IsNullOrEmpty(dir) || !System.IO.Directory.Exists(dir))
