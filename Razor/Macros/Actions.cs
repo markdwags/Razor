@@ -30,7 +30,7 @@ namespace Assistant.Macros
 {
     public delegate void MacroMenuCallback(object[] Args);
 
-    public class MacroMenuItem : MenuItem
+    public class MacroMenuItem : ToolStripMenuItem
     {
         private MacroMenuCallback m_Call;
         private object[] m_Args;
@@ -77,7 +77,7 @@ namespace Assistant.Macros
             return sb.ToString();
         }
 
-        public virtual MenuItem[] GetContextMenuItems()
+        public virtual ToolStripMenuItem[] GetContextMenuItems()
         {
             return null;
         }
@@ -178,9 +178,9 @@ namespace Assistant.Macros
             return String.Format("// {0}", m_Comment);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -250,9 +250,9 @@ namespace Assistant.Macros
             return Language.Format(LocString.DClickA1, m_Serial);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -422,9 +422,9 @@ namespace Assistant.Macros
                 m_Item ? ((ItemID) m_Gfx).ToString() : String.Format("(Character) 0x{0:X}", m_Gfx));
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -521,9 +521,9 @@ namespace Assistant.Macros
             return Language.Format(LocString.LiftA10, m_Serial, m_Amount);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -643,9 +643,9 @@ namespace Assistant.Macros
             return DoSerialize(m_Gfx, m_Amount);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -764,9 +764,9 @@ namespace Assistant.Macros
                 return Language.Format(LocString.DropA2, m_To.IsValid ? m_To.ToString() : "Ground", m_At);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_To.IsValid)
             {
@@ -904,12 +904,12 @@ namespace Assistant.Macros
                 return Language.Format(LocString.CloseGump);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (this.m_MenuItems == null)
-                this.m_MenuItems = (MenuItem[]) new MacroMenuItem[]
+                this.m_MenuItems = (ToolStripMenuItem[]) new MacroMenuItem[]
                 {
                     new MacroMenuItem(LocString.UseLastGumpResponse, new MacroMenuCallback(this.UseLastResponse),
                         new object[0]),
@@ -1031,9 +1031,9 @@ namespace Assistant.Macros
             return Language.GetString(LocString.AbsTarg);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -1347,9 +1347,9 @@ namespace Assistant.Macros
                 return Language.Format(LocString.TargByType, (ItemID) m_Gfx);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -1438,9 +1438,9 @@ namespace Assistant.Macros
             return Language.Format(LocString.TargRelLocA3, m_X, m_Y, 0);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -1736,12 +1736,12 @@ namespace Assistant.Macros
             return sb.ToString();
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (this.m_MenuItems == null)
-                this.m_MenuItems = (MenuItem[]) new MacroMenuItem[1]
+                this.m_MenuItems = (ToolStripMenuItem[]) new MacroMenuItem[1]
                 {
                     new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
                 };
@@ -1813,9 +1813,9 @@ namespace Assistant.Macros
             return sb.ToString();
         }
 
-        private MenuItem[] _menuItems;
+        private ToolStripMenuItem[] _menuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             return _menuItems ?? (_menuItems = new MacroMenuItem[1]
             {
@@ -2306,9 +2306,9 @@ namespace Assistant.Macros
             return false;
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -2414,9 +2414,9 @@ namespace Assistant.Macros
             return false;
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -2495,9 +2495,9 @@ namespace Assistant.Macros
             return DoSerialize(m_Timeout.TotalSeconds);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -2565,9 +2565,9 @@ namespace Assistant.Macros
             return Language.Format(LocString.PauseA1, m_Timeout.TotalSeconds);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -2700,9 +2700,9 @@ namespace Assistant.Macros
             return Language.Format(LocString.WaitA3, m_Stat, m_Direction > 0 ? ">=" : "<=", m_Value);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -3218,9 +3218,9 @@ namespace Assistant.Macros
             }
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -3380,9 +3380,9 @@ namespace Assistant.Macros
             return String.Format("For ( 1 to {0} )", m_Max);
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -3921,9 +3921,9 @@ namespace Assistant.Macros
             }
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -4416,9 +4416,9 @@ namespace Assistant.Macros
             }
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {
@@ -4542,12 +4542,12 @@ namespace Assistant.Macros
             return $"PromptAction: {m_Response}";
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (this.m_MenuItems == null)
-                this.m_MenuItems = (MenuItem[]) new MacroMenuItem[1]
+                this.m_MenuItems = (ToolStripMenuItem[]) new MacroMenuItem[1]
                 {
                     new MacroMenuItem(LocString.Edit, new MacroMenuCallback(this.Edit), new object[0])
                 };
@@ -4645,9 +4645,9 @@ namespace Assistant.Macros
             return false;
         }
 
-        private MenuItem[] m_MenuItems;
+        private ToolStripMenuItem[] m_MenuItems;
 
-        public override MenuItem[] GetContextMenuItems()
+        public override ToolStripMenuItem[] GetContextMenuItems()
         {
             if (m_MenuItems == null)
             {

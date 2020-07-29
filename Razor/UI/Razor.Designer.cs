@@ -363,17 +363,16 @@ namespace Assistant
             //
             InitializeComponent();
 
-            m_NotifyIcon.ContextMenu =
-                new ContextMenu(new MenuItem[]
-                {
-                    new MenuItem("Show Razor", new EventHandler(DoShowMe)),
-                    new MenuItem("Hide Razor", new EventHandler(HideMe)),
-                    new MenuItem("-"),
-                    new MenuItem("Toggle Razor Visibility", new EventHandler(ToggleVisible)),
-                    new MenuItem("-"),
-                    new MenuItem("Close Razor && UO", new EventHandler(OnClose))
-                });
-            m_NotifyIcon.ContextMenu.MenuItems[0].DefaultItem = true;
+            m_NotifyIcon.ContextMenuStrip = new ContextMenuStrip();
+            m_NotifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Show Razor", null, new EventHandler(DoShowMe)));
+            m_NotifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Hide Razor", null, new EventHandler(HideMe)));
+            m_NotifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("-"));
+            m_NotifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Toggle Razor Visibility", null, new EventHandler(ToggleVisible)));
+            m_NotifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("-"));
+            m_NotifyIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Close Razor && UO", null, new EventHandler(OnClose)));
+
+            m_NotifyIcon.ContextMenuStrip.Items[0].Select();
+
         }
 
         /// <summary>
