@@ -576,6 +576,8 @@ namespace Assistant
         NextWaypoint,
         PrevWaypoint,
         HideWaypoint,
+        NextTargetNonFriendly,
+        PrevTargetNonFriendly,
         __End
     }
 
