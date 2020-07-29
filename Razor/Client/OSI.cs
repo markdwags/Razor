@@ -516,11 +516,7 @@ namespace Assistant
 
                     try
                     {
-                        string path = Ultima.Files.GetFilePath("art.mul");
-                        if (path != null && path != string.Empty)
-                            SetDataPath(Path.GetDirectoryName(path));
-                        else
-                            SetDataPath(Path.GetDirectoryName(Ultima.Files.Directory));
+                        SetDataPath(Path.GetDirectoryName(Ultima.Files.RootDir));
                     }
                     catch
                     {

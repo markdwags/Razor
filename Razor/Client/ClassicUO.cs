@@ -73,10 +73,6 @@ namespace Assistant
                 ((OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(OnGetUOFilePath))
                 )();
 
-            // just replicating the static .ctor
-            Ultima.Files.ReLoadDirectory();
-            Ultima.Files.LoadMulPath();
-
             Ultima.Files.SetMulPath(clientPath);
             Ultima.Multis.PostHSFormat = UsePostHSChanges;
             Client.Instance.ClientEncrypted = false;

@@ -41,7 +41,6 @@ namespace Ultima
         private static bool m_CacheData = true;
         private static bool m_UseHashFile = false;
         private static Dictionary<string, string> m_MulPath;
-        private static string m_Directory;
         private static string m_RootDir;
 
         /// <summary>
@@ -69,14 +68,6 @@ namespace Ultima
         {
             get { return m_MulPath; }
             set { m_MulPath = value; }
-        }
-
-        /// <summary>
-        /// Gets a list of paths to the Client's data files.
-        /// </summary>
-        public static string Directory
-        {
-            get { return m_Directory; }
         }
 
         /// <summary>
@@ -208,64 +199,22 @@ namespace Ultima
             "verdata.mul"
         };
 
-
-        /// <summary>
-        /// ReReads Registry Client dir
-        /// </summary>
-        public static void ReLoadDirectory()
-        {
-            m_Directory = LoadDirectory();
-        }
-
-        /// <summary>
-        /// Fills <see cref="MulPath"/> with <see cref="Files.Directory"/>
-        /// </summary>
-        public static void LoadMulPath()
-        {
-            m_MulPath = new Dictionary<string, string>();
-            m_RootDir = Directory;
-            if (m_RootDir == null)
-                m_RootDir = "";
-            foreach (string file in m_Files)
-            {
-                string filePath = Path.Combine(m_RootDir, file);
-                if (File.Exists(filePath))
-                    m_MulPath[file] = file;
-                else if (File.Exists(Path.Combine(m_RootDir, char.ToUpper(file[0]) + file.Substring(1))))
-                    m_MulPath[file] = Path.Combine(m_RootDir, char.ToUpper(file[0]) + file.Substring(1));
-                else
-                    m_MulPath[file] = "";
-            }
-        }
-
         /// <summary>
         /// ReSets <see cref="MulPath"/> with given path
         /// </summary>
         /// <param name="path"></param>
         public static void SetMulPath(string path)
         {
-            m_RootDir = path;
+            m_RootDir = Path.GetFullPath(path);
+
+            DetectMulPath();
+
             foreach (string file in m_Files)
             {
-                string filePath;
-                if (!String.IsNullOrEmpty(m_MulPath[file])) //file was set
-                {
-                    if (String.IsNullOrEmpty(Path.GetDirectoryName(m_MulPath[file]))) //and relative
-                    {
-                        filePath = Path.Combine(m_RootDir, m_MulPath[file]);
-                        if (File.Exists(filePath)) // exists in new Root?
-                        {
-                            m_MulPath[file] = filePath;
-                            continue;
-                        }
-                    }
-                    else // absolut dir ignore
-                        continue;
-                }
+                var filePath = Path.Combine(m_RootDir, file);
 
-                filePath = Path.Combine(m_RootDir, file); //file was not set, or relative and non existent
                 if (File.Exists(filePath))
-                    m_MulPath[file] = file;
+                    m_MulPath[file] = filePath;
                 else
                     m_MulPath[file] = "";
             }
@@ -336,19 +285,11 @@ namespace Ultima
             "InstallDir"
         };
 
-        private static string LoadDirectory()
+        public static void DetectMulPath()
         {
-            string dir = ConfigurationManager.AppSettings["UODataDir"];
+            var dir = m_RootDir;
 
-            // If they're using the ClassicUO client, pull the UO data dir from the plugin
-            if (!Assistant.Client.IsOSI)
-            {
-                dir = Assistant.Client.Instance.GetUoFilePath();
-            }
-
-
-            if (string.IsNullOrEmpty(dir) || !System.IO.Directory.Exists(dir)
-            ) // If the path in the config looks bad, try the registry as a fallback
+            if (string.IsNullOrEmpty(dir) || !System.IO.Directory.Exists(dir))
             {
                 for (int i = knownRegkeys.Length - 1; i >= 0; i--)
                 {
@@ -367,7 +308,7 @@ namespace Ultima
                 }
             }
 
-            return dir;
+            m_RootDir = dir;
         }
 
         private static string GetPath(string regkey)

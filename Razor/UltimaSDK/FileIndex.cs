@@ -166,9 +166,6 @@ namespace Ultima
             MulPath = null;
             string uopPath = null;
 
-            if (Files.MulPath == null)
-                Files.LoadMulPath();
-
             if (Files.MulPath.Count > 0)
             {
                 idxPath = Files.MulPath[idxFile.ToLower()];
@@ -365,8 +362,6 @@ namespace Ultima
         {
             string idxPath = null;
             MulPath = null;
-            if (Files.MulPath == null)
-                Files.LoadMulPath();
             if (Files.MulPath.Count > 0)
             {
                 idxPath = Files.MulPath[idxFile.ToLower()];
