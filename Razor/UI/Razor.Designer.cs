@@ -712,6 +712,7 @@ namespace Assistant
             this.scriptsTab = new System.Windows.Forms.TabPage();
             this.subTabScripts = new System.Windows.Forms.TabControl();
             this.subScripts = new System.Windows.Forms.TabPage();
+            this.scriptGuide = new System.Windows.Forms.Button();
             this.scriptFilter = new System.Windows.Forms.TextBox();
             this.renameScript = new System.Windows.Forms.Button();
             this.saveScript = new System.Windows.Forms.Button();
@@ -791,7 +792,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.scriptGuide = new System.Windows.Forms.Button();
+            this.showPartyFriendOverhead = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1567,9 +1568,9 @@ namespace Assistant
             this.subWaypoints.Controls.Add(this.lblWaypoint);
             this.subWaypoints.Controls.Add(this.btnAddWaypoint);
             this.subWaypoints.Controls.Add(this.waypointList);
-            this.subWaypoints.Location = new System.Drawing.Point(4, 24);
+            this.subWaypoints.Location = new System.Drawing.Point(4, 22);
             this.subWaypoints.Name = "subWaypoints";
-            this.subWaypoints.Size = new System.Drawing.Size(502, 286);
+            this.subWaypoints.Size = new System.Drawing.Size(502, 288);
             this.subWaypoints.TabIndex = 4;
             this.subWaypoints.Text = "Waypoints";
             // 
@@ -1748,7 +1749,7 @@ namespace Assistant
             this.waypointList.Size = new System.Drawing.Size(164, 259);
             this.waypointList.TabIndex = 0;
             this.waypointList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDoubleClick);
-            this.waypointList.MouseDown += new MouseEventHandler(this.listWaypoints_MouseDown);
+            this.waypointList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDown);
             // 
             // moreOptTab
             // 
@@ -4151,6 +4152,16 @@ namespace Assistant
             this.subScripts.TabIndex = 0;
             this.subScripts.Text = "Scripts";
             // 
+            // scriptGuide
+            // 
+            this.scriptGuide.Location = new System.Drawing.Point(432, 253);
+            this.scriptGuide.Name = "scriptGuide";
+            this.scriptGuide.Size = new System.Drawing.Size(60, 26);
+            this.scriptGuide.TabIndex = 26;
+            this.scriptGuide.Text = "Help";
+            this.scriptGuide.UseVisualStyleBackColor = true;
+            this.scriptGuide.Click += new System.EventHandler(this.scriptGuide_Click);
+            // 
             // scriptFilter
             // 
             this.scriptFilter.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -4203,7 +4214,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4421,6 +4432,7 @@ namespace Assistant
             // friendsTab
             // 
             this.friendsTab.BackColor = System.Drawing.SystemColors.Control;
+            this.friendsTab.Controls.Add(this.showPartyFriendOverhead);
             this.friendsTab.Controls.Add(this.highlightFriend);
             this.friendsTab.Controls.Add(this.autoAcceptParty);
             this.friendsTab.Controls.Add(this.nextPrevIgnoresFriends);
@@ -4434,7 +4446,7 @@ namespace Assistant
             // 
             // highlightFriend
             // 
-            this.highlightFriend.Location = new System.Drawing.Point(270, 91);
+            this.highlightFriend.Location = new System.Drawing.Point(270, 117);
             this.highlightFriend.Name = "highlightFriend";
             this.highlightFriend.Size = new System.Drawing.Size(184, 23);
             this.highlightFriend.TabIndex = 143;
@@ -4444,7 +4456,7 @@ namespace Assistant
             // 
             // autoAcceptParty
             // 
-            this.autoAcceptParty.Location = new System.Drawing.Point(270, 65);
+            this.autoAcceptParty.Location = new System.Drawing.Point(270, 91);
             this.autoAcceptParty.Name = "autoAcceptParty";
             this.autoAcceptParty.Size = new System.Drawing.Size(230, 20);
             this.autoAcceptParty.TabIndex = 138;
@@ -4454,7 +4466,7 @@ namespace Assistant
             // nextPrevIgnoresFriends
             // 
             this.nextPrevIgnoresFriends.AutoSize = true;
-            this.nextPrevIgnoresFriends.Location = new System.Drawing.Point(270, 40);
+            this.nextPrevIgnoresFriends.Location = new System.Drawing.Point(270, 66);
             this.nextPrevIgnoresFriends.Name = "nextPrevIgnoresFriends";
             this.nextPrevIgnoresFriends.Size = new System.Drawing.Size(203, 19);
             this.nextPrevIgnoresFriends.TabIndex = 137;
@@ -5045,15 +5057,14 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // scriptGuide
+            // showPartyFriendOverhead
             // 
-            this.scriptGuide.Location = new System.Drawing.Point(432, 253);
-            this.scriptGuide.Name = "scriptGuide";
-            this.scriptGuide.Size = new System.Drawing.Size(60, 26);
-            this.scriptGuide.TabIndex = 26;
-            this.scriptGuide.Text = "Help";
-            this.scriptGuide.UseVisualStyleBackColor = true;
-            this.scriptGuide.Click += new System.EventHandler(this.scriptGuide_Click);
+            this.showPartyFriendOverhead.Location = new System.Drawing.Point(283, 40);
+            this.showPartyFriendOverhead.Name = "showPartyFriendOverhead";
+            this.showPartyFriendOverhead.Size = new System.Drawing.Size(217, 20);
+            this.showPartyFriendOverhead.TabIndex = 144;
+            this.showPartyFriendOverhead.Text = "Show [Party-Friend] overhead";
+            this.showPartyFriendOverhead.CheckedChanged += new System.EventHandler(this.showPartyFriendOverhead_CheckedChanged);
             // 
             // MainForm
             // 
@@ -5222,5 +5233,6 @@ namespace Assistant
         private CheckBox hideWaypointWithin;
         private CheckBox waypointOnDeath;
         private Button scriptGuide;
+        private CheckBox showPartyFriendOverhead;
     }
 }

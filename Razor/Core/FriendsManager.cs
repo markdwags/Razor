@@ -409,7 +409,7 @@ namespace Assistant.Core
 
             if (IsFriendOverhead(mobile.Serial, ref group))
             {
-                if (group == null) // If they are a friend with no group, must be a party member
+                if (group == null && Config.GetBool("ShowPartyFriendOverhead")) // If they are a friend with no group, must be a party member
                 {
                     mobile.OverheadMessage(63, "[Party-Friend]");
                 }

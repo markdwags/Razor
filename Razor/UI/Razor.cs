@@ -509,6 +509,8 @@ namespace Assistant
 
             waypointOnDeath.SafeAction(s => { s.Checked = Config.GetBool("CreateWaypointOnDeath"); });
 
+            showPartyFriendOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowPartyFriendOverhead"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -6763,6 +6765,11 @@ namespace Assistant
             catch
             {
             }
+        }
+
+        private void showPartyFriendOverhead_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowPartyFriendOverhead", showPartyFriendOverhead.Checked);
         }
     }
 }

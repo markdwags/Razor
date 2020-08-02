@@ -308,6 +308,8 @@ namespace Assistant
 
             AddProperty("CreateWaypointOnDeath", false);
 
+            AddProperty("ShowPartyFriendOverhead", true);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
