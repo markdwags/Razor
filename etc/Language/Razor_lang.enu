@@ -808,3 +808,5 @@ InputBox::ok=&OK
 2105=Waypoint: Next
 2106=Waypoint: Previous
 2107=Waypoint: Hide
+2108=Insert Clear SysMessages
+2109=Clear SysMessages

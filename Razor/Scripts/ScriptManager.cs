@@ -405,7 +405,7 @@ namespace Assistant.Scripts
                 "hotkey", "lasttarget", "lift", "lifttype", "menu", "menuresponse", "organizer", "overhead", "potion",
                 "promptresponse", "restock", "say", "script", "scavenger", "sell", "setability", "setlasttarget",
                 "setvar", "skill", "sysmsg", "target", "targettype", "targetrelloc", "undress", "useonce", "walk",
-                "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget"
+                "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget", "clearsysmsg", "clearjournal"
             };
 
             #endregion
@@ -623,6 +623,18 @@ namespace Assistant.Scripts
                 "This command will cause the script to pause until you have a target cursor.\n\tBy default it will wait 30 seconds but you can define a specific wait time if you prefer.",
                 "cast 'energy bolt'\n\twaitfortarget\n\thotkey 'Target Closest Enemy'");
             descriptionCommands.Add("waitfortarget", tooltip);
+
+            tooltip = new ToolTipDescriptions("clearsysmsg",
+                new[] { "clearsysmsg" }, "N/A",
+                "This command will clear the internal system message queue used with insysmsg.",
+                "clearsysmsg\n");
+            descriptionCommands.Add("clearsysmsg", tooltip);
+
+            tooltip = new ToolTipDescriptions("clearjournal",
+                new[] { "clearjournal" }, "N/A",
+                "This command (same as clearjournal) will clear the internal system message queue used with insysmsg.",
+                "clearjournal\n");
+            descriptionCommands.Add("clearjournal", tooltip);
 
             #endregion
 

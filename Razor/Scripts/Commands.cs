@@ -85,6 +85,8 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("overhead", HeadMsg); //OverheadMessageAction
             Interpreter.RegisterCommandHandler("headmsg", HeadMsg); //OverheadMessageAction
             Interpreter.RegisterCommandHandler("sysmsg", SysMsg); //SystemMessageAction
+            Interpreter.RegisterCommandHandler("clearsysmsg", ClearSysMsg); //SystemMessageAction
+            Interpreter.RegisterCommandHandler("clearjournal", ClearSysMsg); //SystemMessageAction
 
             // General Waits/Pauses
             Interpreter.RegisterCommandHandler("wait", Pause); //PauseAction
@@ -987,6 +989,13 @@ namespace Assistant.Scripts
                 World.Player.SendMessage(Config.GetInt("SysColor"), args[0].AsString());
             else if (args.Length == 2)
                 World.Player.SendMessage(Utility.ToInt32(args[1].AsString(), 0), args[0].AsString());
+
+            return true;
+        }
+
+        public static bool ClearSysMsg(string command, Argument[] args, bool quiet, bool force)
+        {
+            PacketHandlers.SysMessages.Clear();
 
             return true;
         }

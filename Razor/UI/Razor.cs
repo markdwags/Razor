@@ -2937,6 +2937,7 @@ namespace Assistant
                         new EventHandler(onMacroInsertOverheadMessage)),
                     new MenuItem(Language.GetString(LocString.InsertWaitForTarget),
                         new EventHandler(onMacroInsertWaitForTarget)),
+                    new MenuItem(Language.GetString(LocString.InsertClearSysMsg), new EventHandler(onMacroInsertClearSysMsg)),
                     new MenuItem("-"),
                     new MenuItem(Language.GetString(LocString.InsIF), new EventHandler(onMacroInsertIf)),
                     new MenuItem(Language.GetString(LocString.InsELSE), new EventHandler(onMacroInsertElse)),
@@ -3036,6 +3037,20 @@ namespace Assistant
             recMacro.Enabled = false;
 
             OnMacroStart(m);
+        }
+
+        private void onMacroInsertClearSysMsg(object sender, System.EventArgs e)
+        {
+            Macro m = GetMacroSel();
+            if (m == null)
+                return;
+
+            int a = actionList.SelectedIndex;
+            if (a >= m.Actions.Count) // -1 is valid, will insert @ top
+                return;
+
+            m.Actions.Insert(a + 1, new ClearSysMessages());
+            RedrawActionList(m);
         }
 
         private void onMacroInsertComment(object sender, System.EventArgs e)

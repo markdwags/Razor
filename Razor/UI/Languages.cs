@@ -576,6 +576,8 @@ namespace Assistant
         NextWaypoint,
         PrevWaypoint,
         HideWaypoint,
+        InsertClearSysMsg,
+        ClearSysMsg,
         __End
     }
 
