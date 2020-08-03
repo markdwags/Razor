@@ -212,6 +212,35 @@ namespace Assistant.Macros
         }
     }
 
+    public class ClearSysMessages : MacroAction
+    {
+        public ClearSysMessages()
+        {
+        }
+
+        public override bool Perform()
+        {
+            PacketHandlers.SysMessages.Clear();
+
+            return true;
+        }
+
+        public override string ToScript()
+        {
+            return "clearsysmsg";
+        }
+
+        public override string Serialize()
+        {
+            return DoSerialize();
+        }
+
+        public override string ToString()
+        {
+            return Language.GetString(LocString.ClearSysMsg);
+        }
+    }
+
     public class DoubleClickAction : MacroAction
     {
         private Serial m_Serial;

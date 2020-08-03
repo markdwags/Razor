@@ -359,7 +359,7 @@ namespace FastColoredTextBoxNS
 
             RazorCommandRegex =
                 new Regex(
-                    @"\b(attack|cast|dress|undress|dressconfig|target|targettype|targetrelloc|dress|drop|waitfortarget|wft|dclick|dclicktype|dclickvar|usetype|useobject|droprelloc|lift|lifttype|waitforgump|gumpresponse|gumpclose|menu|menuresponse|waitformenu|promptresponse|waitforprompt|hotkey|say|msg|overhead|sysmsg|wait|pause|waitforstat|setability|setlasttarget|lasttarget|setvar|skill|useskill|walk|script|useonce|organizer|organize|org|restock|scav|scavenger|potion)\b",
+                    @"\b(attack|cast|dress|undress|dressconfig|target|targettype|targetrelloc|dress|drop|waitfortarget|wft|dclick|dclicktype|dclickvar|usetype|useobject|droprelloc|lift|lifttype|waitforgump|gumpresponse|gumpclose|menu|menuresponse|waitformenu|promptresponse|waitforprompt|hotkey|say|msg|overhead|sysmsg|wait|pause|waitforstat|setability|setlasttarget|lasttarget|setvar|skill|useskill|walk|script|useonce|organizer|organize|org|restock|scav|scavenger|potion|clearsysmsg|clearjournal)\b",
                     RegexCompiledOption);
 
             RazorLayerRegex =
