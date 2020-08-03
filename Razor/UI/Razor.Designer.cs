@@ -249,9 +249,7 @@ namespace Assistant
         private Button addCounter;
         private Button recount;
         private TabControl subGeneralTab;
-        private TabPage tabPage1;
-        private TabPage subFiltersTab;
-        private CheckedListBox filters;
+        private TabPage subGenTab;
         private GroupBox groupBox16;
         private Button setBackupFolder;
         private Label lastBackup;
@@ -273,10 +271,6 @@ namespace Assistant
         private Button delProfile;
         private Button newProfile;
         private ComboBox profiles;
-        private ComboBox drakeAnimationList;
-        private CheckBox filterDrakeGraphics;
-        private ComboBox dragonAnimationList;
-        private CheckBox filterDragonGraphics;
         private Button openBackupFolder;
         private TextBox targetIndictorFormat;
         private Label lblTargetFormat;
@@ -304,13 +298,6 @@ namespace Assistant
         private Label lblBandageCountFormat;
         private Button setBandageHue;
         private Button setTargetIndicatorHue;
-        private CheckBox filterRazorMessages;
-        private CheckBox filterSystemMessages;
-        private CheckBox filterSnoop;
-        private Label lblFilterDelaySeconds;
-        private Label lblFilterDelay;
-        private TextBox filterDelaySeconds;
-        private CheckBox filterOverheadMessages;
         private GroupBox groupSmartTarget;
         private CheckBox nonFriendlyHarmfulOnly;
         private CheckBox friendBeneficialOnly;
@@ -326,16 +313,7 @@ namespace Assistant
         private TextBox captureOwnDeathDelay;
         private Label lblOwnDeathMs;
         private CheckBox captureOwnDeath;
-        private TabPage subTargetFilterTab;
-        private CheckBox targetFilterEnabled;
-        private ListBox targetFilter;
-        private Button targetFilterClear;
-        private Button targetFilterRemove;
-        private Button targetFilterAdd;
         private Button setMacroHotKey;
-        private ComboBox daemonAnimationList;
-        private CheckBox filterDaemonGraphics;
-        private Label lblTargetFilter;
         private TabPage subSoundMusicTab;
         private CheckedListBox soundFilterList;
         private CheckBox soundFilterEnabled;
@@ -406,7 +384,7 @@ namespace Assistant
             this.tabs = new System.Windows.Forms.TabControl();
             this.generalTab = new System.Windows.Forms.TabPage();
             this.subGeneralTab = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.subGenTab = new System.Windows.Forms.TabPage();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.boatControl = new System.Windows.Forms.Button();
             this.openUOAM = new System.Windows.Forms.Button();
@@ -434,28 +412,6 @@ namespace Assistant
             this.delProfile = new System.Windows.Forms.Button();
             this.newProfile = new System.Windows.Forms.Button();
             this.profiles = new System.Windows.Forms.ComboBox();
-            this.subFiltersTab = new System.Windows.Forms.TabPage();
-            this.daemonAnimationList = new System.Windows.Forms.ComboBox();
-            this.filterDaemonGraphics = new System.Windows.Forms.CheckBox();
-            this.filterOverheadMessages = new System.Windows.Forms.CheckBox();
-            this.lblFilterDelaySeconds = new System.Windows.Forms.Label();
-            this.lblFilterDelay = new System.Windows.Forms.Label();
-            this.filterDelaySeconds = new System.Windows.Forms.TextBox();
-            this.filterRazorMessages = new System.Windows.Forms.CheckBox();
-            this.filterSystemMessages = new System.Windows.Forms.CheckBox();
-            this.filterSnoop = new System.Windows.Forms.CheckBox();
-            this.drakeAnimationList = new System.Windows.Forms.ComboBox();
-            this.filterDrakeGraphics = new System.Windows.Forms.CheckBox();
-            this.dragonAnimationList = new System.Windows.Forms.ComboBox();
-            this.filterDragonGraphics = new System.Windows.Forms.CheckBox();
-            this.filters = new System.Windows.Forms.CheckedListBox();
-            this.subTargetFilterTab = new System.Windows.Forms.TabPage();
-            this.lblTargetFilter = new System.Windows.Forms.Label();
-            this.targetFilterClear = new System.Windows.Forms.Button();
-            this.targetFilterRemove = new System.Windows.Forms.Button();
-            this.targetFilterAdd = new System.Windows.Forms.Button();
-            this.targetFilter = new System.Windows.Forms.ListBox();
-            this.targetFilterEnabled = new System.Windows.Forms.CheckBox();
             this.subSoundMusicTab = new System.Windows.Forms.TabPage();
             this.playableMusicList = new System.Windows.Forms.ComboBox();
             this.playMusic = new System.Windows.Forms.Button();
@@ -664,6 +620,30 @@ namespace Assistant
             this.agentB1 = new System.Windows.Forms.Button();
             this.agentB2 = new System.Windows.Forms.Button();
             this.agentB3 = new System.Windows.Forms.Button();
+            this.filtersTab = new System.Windows.Forms.TabPage();
+            this.filterTabs = new System.Windows.Forms.TabControl();
+            this.subFilterTab = new System.Windows.Forms.TabPage();
+            this.daemonAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterDaemonGraphics = new System.Windows.Forms.CheckBox();
+            this.filterOverheadMessages = new System.Windows.Forms.CheckBox();
+            this.lblFilterDelaySeconds = new System.Windows.Forms.Label();
+            this.lblFilterDelay = new System.Windows.Forms.Label();
+            this.filterDelaySeconds = new System.Windows.Forms.TextBox();
+            this.filterRazorMessages = new System.Windows.Forms.CheckBox();
+            this.filterSystemMessages = new System.Windows.Forms.CheckBox();
+            this.filterSnoop = new System.Windows.Forms.CheckBox();
+            this.drakeAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterDrakeGraphics = new System.Windows.Forms.CheckBox();
+            this.dragonAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterDragonGraphics = new System.Windows.Forms.CheckBox();
+            this.filters = new System.Windows.Forms.CheckedListBox();
+            this.subFilterTargets = new System.Windows.Forms.TabPage();
+            this.lblTargetFilter = new System.Windows.Forms.Label();
+            this.targetFilterClear = new System.Windows.Forms.Button();
+            this.targetFilterRemove = new System.Windows.Forms.Button();
+            this.targetFilterAdd = new System.Windows.Forms.Button();
+            this.targetFilter = new System.Windows.Forms.ListBox();
+            this.targetFilterEnabled = new System.Windows.Forms.CheckBox();
             this.hotkeysTab = new System.Windows.Forms.TabPage();
             this.filterHotkeys = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
@@ -736,6 +716,7 @@ namespace Assistant
             this.addScriptVariable = new System.Windows.Forms.Button();
             this.scriptVariables = new System.Windows.Forms.ListBox();
             this.friendsTab = new System.Windows.Forms.TabPage();
+            this.showPartyFriendOverhead = new System.Windows.Forms.CheckBox();
             this.highlightFriend = new System.Windows.Forms.CheckBox();
             this.autoAcceptParty = new System.Windows.Forms.CheckBox();
             this.nextPrevIgnoresFriends = new System.Windows.Forms.CheckBox();
@@ -792,17 +773,14 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.showPartyFriendOverhead = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.subGenTab.SuspendLayout();
             this.groupBox15.SuspendLayout();
             this.groupBox16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
             this.groupBox4.SuspendLayout();
-            this.subFiltersTab.SuspendLayout();
-            this.subTargetFilterTab.SuspendLayout();
             this.subSoundMusicTab.SuspendLayout();
             this.subWaypoints.SuspendLayout();
             this.moreOptTab.SuspendLayout();
@@ -826,6 +804,10 @@ namespace Assistant
             this.skillsTab.SuspendLayout();
             this.agentsTab.SuspendLayout();
             this.agentGroup.SuspendLayout();
+            this.filtersTab.SuspendLayout();
+            this.filterTabs.SuspendLayout();
+            this.subFilterTab.SuspendLayout();
+            this.subFilterTargets.SuspendLayout();
             this.hotkeysTab.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.macrosTab.SuspendLayout();
@@ -862,6 +844,7 @@ namespace Assistant
             this.tabs.Controls.Add(this.dressTab);
             this.tabs.Controls.Add(this.skillsTab);
             this.tabs.Controls.Add(this.agentsTab);
+            this.tabs.Controls.Add(this.filtersTab);
             this.tabs.Controls.Add(this.hotkeysTab);
             this.tabs.Controls.Add(this.macrosTab);
             this.tabs.Controls.Add(this.scriptsTab);
@@ -891,9 +874,7 @@ namespace Assistant
             // 
             // subGeneralTab
             // 
-            this.subGeneralTab.Controls.Add(this.tabPage1);
-            this.subGeneralTab.Controls.Add(this.subFiltersTab);
-            this.subGeneralTab.Controls.Add(this.subTargetFilterTab);
+            this.subGeneralTab.Controls.Add(this.subGenTab);
             this.subGeneralTab.Controls.Add(this.subSoundMusicTab);
             this.subGeneralTab.Controls.Add(this.subWaypoints);
             this.subGeneralTab.Location = new System.Drawing.Point(6, 3);
@@ -903,29 +884,29 @@ namespace Assistant
             this.subGeneralTab.TabIndex = 63;
             this.subGeneralTab.SelectedIndexChanged += new System.EventHandler(this.subGeneralTab_IndexChanged);
             // 
-            // tabPage1
+            // subGenTab
             // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.groupBox15);
-            this.tabPage1.Controls.Add(this.groupBox16);
-            this.tabPage1.Controls.Add(this.clientPrio);
-            this.tabPage1.Controls.Add(this.systray);
-            this.tabPage1.Controls.Add(this.taskbar);
-            this.tabPage1.Controls.Add(this.langSel);
-            this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.label11);
-            this.tabPage1.Controls.Add(this.showWelcome);
-            this.tabPage1.Controls.Add(this.opacity);
-            this.tabPage1.Controls.Add(this.alwaysTop);
-            this.tabPage1.Controls.Add(this.opacityLabel);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.groupBox4);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(502, 286);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "General";
+            this.subGenTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subGenTab.Controls.Add(this.groupBox15);
+            this.subGenTab.Controls.Add(this.groupBox16);
+            this.subGenTab.Controls.Add(this.clientPrio);
+            this.subGenTab.Controls.Add(this.systray);
+            this.subGenTab.Controls.Add(this.taskbar);
+            this.subGenTab.Controls.Add(this.langSel);
+            this.subGenTab.Controls.Add(this.label7);
+            this.subGenTab.Controls.Add(this.label11);
+            this.subGenTab.Controls.Add(this.showWelcome);
+            this.subGenTab.Controls.Add(this.opacity);
+            this.subGenTab.Controls.Add(this.alwaysTop);
+            this.subGenTab.Controls.Add(this.opacityLabel);
+            this.subGenTab.Controls.Add(this.label9);
+            this.subGenTab.Controls.Add(this.groupBox4);
+            this.subGenTab.Location = new System.Drawing.Point(4, 24);
+            this.subGenTab.Name = "subGenTab";
+            this.subGenTab.Padding = new System.Windows.Forms.Padding(3);
+            this.subGenTab.Size = new System.Drawing.Size(502, 286);
+            this.subGenTab.TabIndex = 0;
+            this.subGenTab.Text = "General";
             // 
             // groupBox15
             // 
@@ -1199,243 +1180,6 @@ namespace Assistant
             this.profiles.TabIndex = 0;
             this.profiles.SelectedIndexChanged += new System.EventHandler(this.profiles_SelectedIndexChanged);
             // 
-            // subFiltersTab
-            // 
-            this.subFiltersTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subFiltersTab.Controls.Add(this.daemonAnimationList);
-            this.subFiltersTab.Controls.Add(this.filterDaemonGraphics);
-            this.subFiltersTab.Controls.Add(this.filterOverheadMessages);
-            this.subFiltersTab.Controls.Add(this.lblFilterDelaySeconds);
-            this.subFiltersTab.Controls.Add(this.lblFilterDelay);
-            this.subFiltersTab.Controls.Add(this.filterDelaySeconds);
-            this.subFiltersTab.Controls.Add(this.filterRazorMessages);
-            this.subFiltersTab.Controls.Add(this.filterSystemMessages);
-            this.subFiltersTab.Controls.Add(this.filterSnoop);
-            this.subFiltersTab.Controls.Add(this.drakeAnimationList);
-            this.subFiltersTab.Controls.Add(this.filterDrakeGraphics);
-            this.subFiltersTab.Controls.Add(this.dragonAnimationList);
-            this.subFiltersTab.Controls.Add(this.filterDragonGraphics);
-            this.subFiltersTab.Controls.Add(this.filters);
-            this.subFiltersTab.Location = new System.Drawing.Point(4, 22);
-            this.subFiltersTab.Name = "subFiltersTab";
-            this.subFiltersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFiltersTab.Size = new System.Drawing.Size(502, 288);
-            this.subFiltersTab.TabIndex = 1;
-            this.subFiltersTab.Text = "Filters";
-            // 
-            // daemonAnimationList
-            // 
-            this.daemonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.daemonAnimationList.DropDownWidth = 250;
-            this.daemonAnimationList.FormattingEnabled = true;
-            this.daemonAnimationList.Location = new System.Drawing.Point(313, 64);
-            this.daemonAnimationList.Name = "daemonAnimationList";
-            this.daemonAnimationList.Size = new System.Drawing.Size(183, 23);
-            this.daemonAnimationList.TabIndex = 113;
-            this.daemonAnimationList.SelectedIndexChanged += new System.EventHandler(this.daemonAnimationList_SelectedIndexChanged);
-            // 
-            // filterDaemonGraphics
-            // 
-            this.filterDaemonGraphics.AutoSize = true;
-            this.filterDaemonGraphics.Location = new System.Drawing.Point(209, 66);
-            this.filterDaemonGraphics.Name = "filterDaemonGraphics";
-            this.filterDaemonGraphics.Size = new System.Drawing.Size(104, 19);
-            this.filterDaemonGraphics.TabIndex = 112;
-            this.filterDaemonGraphics.Text = "Filter daemons";
-            this.filterDaemonGraphics.UseVisualStyleBackColor = true;
-            this.filterDaemonGraphics.CheckedChanged += new System.EventHandler(this.filterDaemonGraphics_CheckedChanged);
-            // 
-            // filterOverheadMessages
-            // 
-            this.filterOverheadMessages.Location = new System.Drawing.Point(209, 190);
-            this.filterOverheadMessages.Name = "filterOverheadMessages";
-            this.filterOverheadMessages.Size = new System.Drawing.Size(220, 20);
-            this.filterOverheadMessages.TabIndex = 111;
-            this.filterOverheadMessages.Text = "Filter repeating overhead messages";
-            this.filterOverheadMessages.CheckedChanged += new System.EventHandler(this.filterOverheadMessages_CheckedChanged);
-            // 
-            // lblFilterDelaySeconds
-            // 
-            this.lblFilterDelaySeconds.Location = new System.Drawing.Point(346, 220);
-            this.lblFilterDelaySeconds.Name = "lblFilterDelaySeconds";
-            this.lblFilterDelaySeconds.Size = new System.Drawing.Size(59, 18);
-            this.lblFilterDelaySeconds.TabIndex = 110;
-            this.lblFilterDelaySeconds.Text = "seconds";
-            // 
-            // lblFilterDelay
-            // 
-            this.lblFilterDelay.AutoSize = true;
-            this.lblFilterDelay.Location = new System.Drawing.Point(230, 220);
-            this.lblFilterDelay.Name = "lblFilterDelay";
-            this.lblFilterDelay.Size = new System.Drawing.Size(68, 15);
-            this.lblFilterDelay.TabIndex = 109;
-            this.lblFilterDelay.Text = "Filter Delay:";
-            // 
-            // filterDelaySeconds
-            // 
-            this.filterDelaySeconds.Location = new System.Drawing.Point(304, 217);
-            this.filterDelaySeconds.Name = "filterDelaySeconds";
-            this.filterDelaySeconds.Size = new System.Drawing.Size(36, 23);
-            this.filterDelaySeconds.TabIndex = 108;
-            this.filterDelaySeconds.Text = "3.5";
-            this.filterDelaySeconds.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.filterDelaySeconds.TextChanged += new System.EventHandler(this.filterDelaySeconds_TextChanged);
-            // 
-            // filterRazorMessages
-            // 
-            this.filterRazorMessages.Location = new System.Drawing.Point(209, 164);
-            this.filterRazorMessages.Name = "filterRazorMessages";
-            this.filterRazorMessages.Size = new System.Drawing.Size(220, 20);
-            this.filterRazorMessages.TabIndex = 107;
-            this.filterRazorMessages.Text = "Filter repeating Razor messages";
-            this.filterRazorMessages.CheckedChanged += new System.EventHandler(this.filterRazorMessages_CheckedChanged);
-            // 
-            // filterSystemMessages
-            // 
-            this.filterSystemMessages.Location = new System.Drawing.Point(209, 138);
-            this.filterSystemMessages.Name = "filterSystemMessages";
-            this.filterSystemMessages.Size = new System.Drawing.Size(220, 20);
-            this.filterSystemMessages.TabIndex = 106;
-            this.filterSystemMessages.Text = "Filter repeating system messages";
-            this.filterSystemMessages.CheckedChanged += new System.EventHandler(this.filterSystemMessages_CheckedChanged);
-            // 
-            // filterSnoop
-            // 
-            this.filterSnoop.Location = new System.Drawing.Point(209, 112);
-            this.filterSnoop.Name = "filterSnoop";
-            this.filterSnoop.Size = new System.Drawing.Size(220, 20);
-            this.filterSnoop.TabIndex = 105;
-            this.filterSnoop.Text = "Filter snooping messages";
-            this.filterSnoop.CheckedChanged += new System.EventHandler(this.filterSnoop_CheckedChanged);
-            // 
-            // drakeAnimationList
-            // 
-            this.drakeAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.drakeAnimationList.DropDownWidth = 250;
-            this.drakeAnimationList.FormattingEnabled = true;
-            this.drakeAnimationList.Location = new System.Drawing.Point(313, 35);
-            this.drakeAnimationList.Name = "drakeAnimationList";
-            this.drakeAnimationList.Size = new System.Drawing.Size(183, 23);
-            this.drakeAnimationList.TabIndex = 104;
-            this.drakeAnimationList.SelectedIndexChanged += new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
-            // 
-            // filterDrakeGraphics
-            // 
-            this.filterDrakeGraphics.AutoSize = true;
-            this.filterDrakeGraphics.Location = new System.Drawing.Point(209, 37);
-            this.filterDrakeGraphics.Name = "filterDrakeGraphics";
-            this.filterDrakeGraphics.Size = new System.Drawing.Size(89, 19);
-            this.filterDrakeGraphics.TabIndex = 103;
-            this.filterDrakeGraphics.Text = "Filter drakes";
-            this.filterDrakeGraphics.UseVisualStyleBackColor = true;
-            this.filterDrakeGraphics.CheckedChanged += new System.EventHandler(this.filterDrakeGraphics_CheckedChanged);
-            // 
-            // dragonAnimationList
-            // 
-            this.dragonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.dragonAnimationList.DropDownWidth = 250;
-            this.dragonAnimationList.FormattingEnabled = true;
-            this.dragonAnimationList.Location = new System.Drawing.Point(313, 6);
-            this.dragonAnimationList.Name = "dragonAnimationList";
-            this.dragonAnimationList.Size = new System.Drawing.Size(183, 23);
-            this.dragonAnimationList.TabIndex = 102;
-            this.dragonAnimationList.SelectedIndexChanged += new System.EventHandler(this.dragonAnimationList_SelectedIndexChanged);
-            // 
-            // filterDragonGraphics
-            // 
-            this.filterDragonGraphics.AutoSize = true;
-            this.filterDragonGraphics.Location = new System.Drawing.Point(209, 8);
-            this.filterDragonGraphics.Name = "filterDragonGraphics";
-            this.filterDragonGraphics.Size = new System.Drawing.Size(98, 19);
-            this.filterDragonGraphics.TabIndex = 101;
-            this.filterDragonGraphics.Text = "Filter dragons";
-            this.filterDragonGraphics.UseVisualStyleBackColor = true;
-            this.filterDragonGraphics.CheckedChanged += new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
-            // 
-            // filters
-            // 
-            this.filters.CheckOnClick = true;
-            this.filters.IntegralHeight = false;
-            this.filters.Location = new System.Drawing.Point(6, 6);
-            this.filters.Name = "filters";
-            this.filters.Size = new System.Drawing.Size(197, 274);
-            this.filters.TabIndex = 3;
-            this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
-            // 
-            // subTargetFilterTab
-            // 
-            this.subTargetFilterTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subTargetFilterTab.Controls.Add(this.lblTargetFilter);
-            this.subTargetFilterTab.Controls.Add(this.targetFilterClear);
-            this.subTargetFilterTab.Controls.Add(this.targetFilterRemove);
-            this.subTargetFilterTab.Controls.Add(this.targetFilterAdd);
-            this.subTargetFilterTab.Controls.Add(this.targetFilter);
-            this.subTargetFilterTab.Controls.Add(this.targetFilterEnabled);
-            this.subTargetFilterTab.Location = new System.Drawing.Point(4, 22);
-            this.subTargetFilterTab.Name = "subTargetFilterTab";
-            this.subTargetFilterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subTargetFilterTab.Size = new System.Drawing.Size(502, 288);
-            this.subTargetFilterTab.TabIndex = 2;
-            this.subTargetFilterTab.Text = "Target Filter";
-            // 
-            // lblTargetFilter
-            // 
-            this.lblTargetFilter.Location = new System.Drawing.Point(260, 6);
-            this.lblTargetFilter.Name = "lblTargetFilter";
-            this.lblTargetFilter.Size = new System.Drawing.Size(224, 31);
-            this.lblTargetFilter.TabIndex = 12;
-            this.lblTargetFilter.Text = "Targets added to this list will be ignored by Razor completely";
-            // 
-            // targetFilterClear
-            // 
-            this.targetFilterClear.Location = new System.Drawing.Point(174, 181);
-            this.targetFilterClear.Name = "targetFilterClear";
-            this.targetFilterClear.Size = new System.Drawing.Size(79, 33);
-            this.targetFilterClear.TabIndex = 11;
-            this.targetFilterClear.Text = "Clear List";
-            this.targetFilterClear.UseVisualStyleBackColor = true;
-            this.targetFilterClear.Click += new System.EventHandler(this.TargetFilterClear_Click);
-            // 
-            // targetFilterRemove
-            // 
-            this.targetFilterRemove.Location = new System.Drawing.Point(94, 181);
-            this.targetFilterRemove.Name = "targetFilterRemove";
-            this.targetFilterRemove.Size = new System.Drawing.Size(74, 33);
-            this.targetFilterRemove.TabIndex = 10;
-            this.targetFilterRemove.Text = "Remove";
-            this.targetFilterRemove.UseVisualStyleBackColor = true;
-            this.targetFilterRemove.Click += new System.EventHandler(this.TargetFilterRemove_Click);
-            // 
-            // targetFilterAdd
-            // 
-            this.targetFilterAdd.Location = new System.Drawing.Point(6, 181);
-            this.targetFilterAdd.Name = "targetFilterAdd";
-            this.targetFilterAdd.Size = new System.Drawing.Size(82, 33);
-            this.targetFilterAdd.TabIndex = 9;
-            this.targetFilterAdd.Text = "Add (Target)";
-            this.targetFilterAdd.UseVisualStyleBackColor = true;
-            this.targetFilterAdd.Click += new System.EventHandler(this.TargetFilterAdd_Click);
-            // 
-            // targetFilter
-            // 
-            this.targetFilter.FormattingEnabled = true;
-            this.targetFilter.ItemHeight = 15;
-            this.targetFilter.Location = new System.Drawing.Point(6, 6);
-            this.targetFilter.Name = "targetFilter";
-            this.targetFilter.Size = new System.Drawing.Size(247, 169);
-            this.targetFilter.TabIndex = 2;
-            // 
-            // targetFilterEnabled
-            // 
-            this.targetFilterEnabled.AutoSize = true;
-            this.targetFilterEnabled.Location = new System.Drawing.Point(263, 50);
-            this.targetFilterEnabled.Name = "targetFilterEnabled";
-            this.targetFilterEnabled.Size = new System.Drawing.Size(132, 19);
-            this.targetFilterEnabled.TabIndex = 0;
-            this.targetFilterEnabled.Text = "Target Filter Enabled";
-            this.targetFilterEnabled.UseVisualStyleBackColor = true;
-            this.targetFilterEnabled.CheckedChanged += new System.EventHandler(this.TargetFilterEnabled_CheckedChanged);
-            // 
             // subSoundMusicTab
             // 
             this.subSoundMusicTab.BackColor = System.Drawing.SystemColors.Control;
@@ -1448,9 +1192,9 @@ namespace Assistant
             this.subSoundMusicTab.Controls.Add(this.playSound);
             this.subSoundMusicTab.Controls.Add(this.soundFilterEnabled);
             this.subSoundMusicTab.Controls.Add(this.soundFilterList);
-            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 22);
+            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 24);
             this.subSoundMusicTab.Name = "subSoundMusicTab";
-            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 288);
+            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 286);
             this.subSoundMusicTab.TabIndex = 3;
             this.subSoundMusicTab.Text = "Sound & Music  ";
             // 
@@ -1568,9 +1312,9 @@ namespace Assistant
             this.subWaypoints.Controls.Add(this.lblWaypoint);
             this.subWaypoints.Controls.Add(this.btnAddWaypoint);
             this.subWaypoints.Controls.Add(this.waypointList);
-            this.subWaypoints.Location = new System.Drawing.Point(4, 22);
+            this.subWaypoints.Location = new System.Drawing.Point(4, 24);
             this.subWaypoints.Name = "subWaypoints";
-            this.subWaypoints.Size = new System.Drawing.Size(502, 288);
+            this.subWaypoints.Size = new System.Drawing.Size(502, 286);
             this.subWaypoints.TabIndex = 4;
             this.subWaypoints.Text = "Waypoints";
             // 
@@ -1591,7 +1335,6 @@ namespace Assistant
             this.lblWaypointTiles.Name = "lblWaypointTiles";
             this.lblWaypointTiles.Size = new System.Drawing.Size(58, 18);
             this.lblWaypointTiles.TabIndex = 65;
-            this.lblWaypointTiles.Text = "tiles";
             // 
             // hideWaypointDist
             // 
@@ -1628,7 +1371,6 @@ namespace Assistant
             this.lblWaypointSeconds.Name = "lblWaypointSeconds";
             this.lblWaypointSeconds.Size = new System.Drawing.Size(58, 18);
             this.lblWaypointSeconds.TabIndex = 61;
-            this.lblWaypointSeconds.Text = "seconds";
             // 
             // showWaypointDistance
             // 
@@ -1694,18 +1436,16 @@ namespace Assistant
             this.lblWaypointY.AutoSize = true;
             this.lblWaypointY.Location = new System.Drawing.Point(422, 159);
             this.lblWaypointY.Name = "lblWaypointY";
-            this.lblWaypointY.Size = new System.Drawing.Size(17, 15);
+            this.lblWaypointY.Size = new System.Drawing.Size(0, 15);
             this.lblWaypointY.TabIndex = 6;
-            this.lblWaypointY.Text = "Y:";
             // 
             // lblWaypointX
             // 
             this.lblWaypointX.AutoSize = true;
             this.lblWaypointX.Location = new System.Drawing.Point(343, 160);
             this.lblWaypointX.Name = "lblWaypointX";
-            this.lblWaypointX.Size = new System.Drawing.Size(17, 15);
+            this.lblWaypointX.Size = new System.Drawing.Size(0, 15);
             this.lblWaypointX.TabIndex = 5;
-            this.lblWaypointX.Text = "X:";
             // 
             // txtWaypointX
             // 
@@ -1726,9 +1466,8 @@ namespace Assistant
             this.lblWaypoint.AutoSize = true;
             this.lblWaypoint.Location = new System.Drawing.Point(318, 130);
             this.lblWaypoint.Name = "lblWaypoint";
-            this.lblWaypoint.Size = new System.Drawing.Size(42, 15);
+            this.lblWaypoint.Size = new System.Drawing.Size(0, 15);
             this.lblWaypoint.TabIndex = 2;
-            this.lblWaypoint.Text = "Name:";
             // 
             // btnAddWaypoint
             // 
@@ -1746,7 +1485,7 @@ namespace Assistant
             this.waypointList.ItemHeight = 15;
             this.waypointList.Location = new System.Drawing.Point(11, 12);
             this.waypointList.Name = "waypointList";
-            this.waypointList.Size = new System.Drawing.Size(164, 259);
+            this.waypointList.Size = new System.Drawing.Size(164, 244);
             this.waypointList.TabIndex = 0;
             this.waypointList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDoubleClick);
             this.waypointList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDown);
@@ -3636,6 +3375,265 @@ namespace Assistant
             this.agentB3.TabIndex = 3;
             this.agentB3.Click += new System.EventHandler(this.agentB3_Click);
             // 
+            // filtersTab
+            // 
+            this.filtersTab.BackColor = System.Drawing.SystemColors.Control;
+            this.filtersTab.Controls.Add(this.filterTabs);
+            this.filtersTab.Location = new System.Drawing.Point(4, 44);
+            this.filtersTab.Name = "filtersTab";
+            this.filtersTab.Size = new System.Drawing.Size(519, 322);
+            this.filtersTab.TabIndex = 15;
+            this.filtersTab.Text = "Filters";
+            // 
+            // filterTabs
+            // 
+            this.filterTabs.Controls.Add(this.subFilterTab);
+            this.filterTabs.Controls.Add(this.subFilterTargets);
+            this.filterTabs.Location = new System.Drawing.Point(6, 3);
+            this.filterTabs.Name = "filterTabs";
+            this.filterTabs.SelectedIndex = 0;
+            this.filterTabs.Size = new System.Drawing.Size(506, 313);
+            this.filterTabs.TabIndex = 1;
+            this.filterTabs.SelectedIndexChanged += new System.EventHandler(this.filterTabs_IndexChanged);
+            // 
+            // subFilterTab
+            // 
+            this.subFilterTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subFilterTab.Controls.Add(this.daemonAnimationList);
+            this.subFilterTab.Controls.Add(this.filterDaemonGraphics);
+            this.subFilterTab.Controls.Add(this.filterOverheadMessages);
+            this.subFilterTab.Controls.Add(this.lblFilterDelaySeconds);
+            this.subFilterTab.Controls.Add(this.lblFilterDelay);
+            this.subFilterTab.Controls.Add(this.filterDelaySeconds);
+            this.subFilterTab.Controls.Add(this.filterRazorMessages);
+            this.subFilterTab.Controls.Add(this.filterSystemMessages);
+            this.subFilterTab.Controls.Add(this.filterSnoop);
+            this.subFilterTab.Controls.Add(this.drakeAnimationList);
+            this.subFilterTab.Controls.Add(this.filterDrakeGraphics);
+            this.subFilterTab.Controls.Add(this.dragonAnimationList);
+            this.subFilterTab.Controls.Add(this.filterDragonGraphics);
+            this.subFilterTab.Controls.Add(this.filters);
+            this.subFilterTab.Location = new System.Drawing.Point(4, 24);
+            this.subFilterTab.Name = "subFilterTab";
+            this.subFilterTab.Padding = new System.Windows.Forms.Padding(3);
+            this.subFilterTab.Size = new System.Drawing.Size(498, 285);
+            this.subFilterTab.TabIndex = 0;
+            this.subFilterTab.Text = "Filters";
+            // 
+            // daemonAnimationList
+            // 
+            this.daemonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.daemonAnimationList.DropDownWidth = 250;
+            this.daemonAnimationList.FormattingEnabled = true;
+            this.daemonAnimationList.Location = new System.Drawing.Point(313, 64);
+            this.daemonAnimationList.Name = "daemonAnimationList";
+            this.daemonAnimationList.Size = new System.Drawing.Size(163, 23);
+            this.daemonAnimationList.TabIndex = 127;
+            this.daemonAnimationList.SelectedIndexChanged += new System.EventHandler(this.daemonAnimationList_SelectedIndexChanged);
+            // 
+            // filterDaemonGraphics
+            // 
+            this.filterDaemonGraphics.AutoSize = true;
+            this.filterDaemonGraphics.Location = new System.Drawing.Point(209, 66);
+            this.filterDaemonGraphics.Name = "filterDaemonGraphics";
+            this.filterDaemonGraphics.Size = new System.Drawing.Size(104, 19);
+            this.filterDaemonGraphics.TabIndex = 126;
+            this.filterDaemonGraphics.Text = "Filter daemons";
+            this.filterDaemonGraphics.UseVisualStyleBackColor = true;
+            this.filterDaemonGraphics.CheckedChanged += new System.EventHandler(this.filterDaemonGraphics_CheckedChanged);
+            // 
+            // filterOverheadMessages
+            // 
+            this.filterOverheadMessages.Location = new System.Drawing.Point(209, 187);
+            this.filterOverheadMessages.Name = "filterOverheadMessages";
+            this.filterOverheadMessages.Size = new System.Drawing.Size(220, 20);
+            this.filterOverheadMessages.TabIndex = 125;
+            this.filterOverheadMessages.Text = "Filter repeating overhead messages";
+            this.filterOverheadMessages.CheckedChanged += new System.EventHandler(this.filterOverheadMessages_CheckedChanged);
+            // 
+            // lblFilterDelaySeconds
+            // 
+            this.lblFilterDelaySeconds.Location = new System.Drawing.Point(346, 217);
+            this.lblFilterDelaySeconds.Name = "lblFilterDelaySeconds";
+            this.lblFilterDelaySeconds.Size = new System.Drawing.Size(59, 18);
+            this.lblFilterDelaySeconds.TabIndex = 124;
+            this.lblFilterDelaySeconds.Text = "seconds";
+            // 
+            // lblFilterDelay
+            // 
+            this.lblFilterDelay.AutoSize = true;
+            this.lblFilterDelay.Location = new System.Drawing.Point(230, 217);
+            this.lblFilterDelay.Name = "lblFilterDelay";
+            this.lblFilterDelay.Size = new System.Drawing.Size(68, 15);
+            this.lblFilterDelay.TabIndex = 123;
+            this.lblFilterDelay.Text = "Filter Delay:";
+            // 
+            // filterDelaySeconds
+            // 
+            this.filterDelaySeconds.Location = new System.Drawing.Point(304, 214);
+            this.filterDelaySeconds.Name = "filterDelaySeconds";
+            this.filterDelaySeconds.Size = new System.Drawing.Size(36, 23);
+            this.filterDelaySeconds.TabIndex = 122;
+            this.filterDelaySeconds.Text = "3.5";
+            this.filterDelaySeconds.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.filterDelaySeconds.TextChanged += new System.EventHandler(this.filterDelaySeconds_TextChanged);
+            // 
+            // filterRazorMessages
+            // 
+            this.filterRazorMessages.Location = new System.Drawing.Point(209, 161);
+            this.filterRazorMessages.Name = "filterRazorMessages";
+            this.filterRazorMessages.Size = new System.Drawing.Size(220, 20);
+            this.filterRazorMessages.TabIndex = 121;
+            this.filterRazorMessages.Text = "Filter repeating Razor messages";
+            this.filterRazorMessages.CheckedChanged += new System.EventHandler(this.filterRazorMessages_CheckedChanged);
+            // 
+            // filterSystemMessages
+            // 
+            this.filterSystemMessages.Location = new System.Drawing.Point(209, 135);
+            this.filterSystemMessages.Name = "filterSystemMessages";
+            this.filterSystemMessages.Size = new System.Drawing.Size(220, 20);
+            this.filterSystemMessages.TabIndex = 120;
+            this.filterSystemMessages.Text = "Filter repeating system messages";
+            this.filterSystemMessages.CheckedChanged += new System.EventHandler(this.filterSystemMessages_CheckedChanged);
+            // 
+            // filterSnoop
+            // 
+            this.filterSnoop.Location = new System.Drawing.Point(209, 109);
+            this.filterSnoop.Name = "filterSnoop";
+            this.filterSnoop.Size = new System.Drawing.Size(220, 20);
+            this.filterSnoop.TabIndex = 119;
+            this.filterSnoop.Text = "Filter snooping messages";
+            this.filterSnoop.CheckedChanged += new System.EventHandler(this.filterSnoop_CheckedChanged);
+            // 
+            // drakeAnimationList
+            // 
+            this.drakeAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.drakeAnimationList.DropDownWidth = 250;
+            this.drakeAnimationList.FormattingEnabled = true;
+            this.drakeAnimationList.Location = new System.Drawing.Point(313, 35);
+            this.drakeAnimationList.Name = "drakeAnimationList";
+            this.drakeAnimationList.Size = new System.Drawing.Size(163, 23);
+            this.drakeAnimationList.TabIndex = 118;
+            this.drakeAnimationList.SelectedIndexChanged += new System.EventHandler(this.drakeAnimationList_SelectedIndexChanged);
+            // 
+            // filterDrakeGraphics
+            // 
+            this.filterDrakeGraphics.AutoSize = true;
+            this.filterDrakeGraphics.Location = new System.Drawing.Point(209, 37);
+            this.filterDrakeGraphics.Name = "filterDrakeGraphics";
+            this.filterDrakeGraphics.Size = new System.Drawing.Size(89, 19);
+            this.filterDrakeGraphics.TabIndex = 117;
+            this.filterDrakeGraphics.Text = "Filter drakes";
+            this.filterDrakeGraphics.UseVisualStyleBackColor = true;
+            this.filterDrakeGraphics.CheckedChanged += new System.EventHandler(this.filterDrakeGraphics_CheckedChanged);
+            // 
+            // dragonAnimationList
+            // 
+            this.dragonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.dragonAnimationList.DropDownWidth = 250;
+            this.dragonAnimationList.FormattingEnabled = true;
+            this.dragonAnimationList.Location = new System.Drawing.Point(313, 6);
+            this.dragonAnimationList.Name = "dragonAnimationList";
+            this.dragonAnimationList.Size = new System.Drawing.Size(163, 23);
+            this.dragonAnimationList.TabIndex = 116;
+            this.dragonAnimationList.SelectedIndexChanged += new System.EventHandler(this.dragonAnimationList_SelectedIndexChanged);
+            // 
+            // filterDragonGraphics
+            // 
+            this.filterDragonGraphics.AutoSize = true;
+            this.filterDragonGraphics.Location = new System.Drawing.Point(209, 8);
+            this.filterDragonGraphics.Name = "filterDragonGraphics";
+            this.filterDragonGraphics.Size = new System.Drawing.Size(98, 19);
+            this.filterDragonGraphics.TabIndex = 115;
+            this.filterDragonGraphics.Text = "Filter dragons";
+            this.filterDragonGraphics.UseVisualStyleBackColor = true;
+            this.filterDragonGraphics.CheckedChanged += new System.EventHandler(this.filterDragonGraphics_CheckedChanged);
+            // 
+            // filters
+            // 
+            this.filters.CheckOnClick = true;
+            this.filters.IntegralHeight = false;
+            this.filters.Location = new System.Drawing.Point(6, 6);
+            this.filters.Name = "filters";
+            this.filters.Size = new System.Drawing.Size(197, 273);
+            this.filters.TabIndex = 114;
+            this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
+            // 
+            // subFilterTargets
+            // 
+            this.subFilterTargets.BackColor = System.Drawing.SystemColors.Control;
+            this.subFilterTargets.Controls.Add(this.lblTargetFilter);
+            this.subFilterTargets.Controls.Add(this.targetFilterClear);
+            this.subFilterTargets.Controls.Add(this.targetFilterRemove);
+            this.subFilterTargets.Controls.Add(this.targetFilterAdd);
+            this.subFilterTargets.Controls.Add(this.targetFilter);
+            this.subFilterTargets.Controls.Add(this.targetFilterEnabled);
+            this.subFilterTargets.Location = new System.Drawing.Point(4, 24);
+            this.subFilterTargets.Name = "subFilterTargets";
+            this.subFilterTargets.Padding = new System.Windows.Forms.Padding(3);
+            this.subFilterTargets.Size = new System.Drawing.Size(498, 285);
+            this.subFilterTargets.TabIndex = 1;
+            this.subFilterTargets.Text = "Target Filter";
+            // 
+            // lblTargetFilter
+            // 
+            this.lblTargetFilter.Location = new System.Drawing.Point(6, 84);
+            this.lblTargetFilter.Name = "lblTargetFilter";
+            this.lblTargetFilter.Size = new System.Drawing.Size(217, 52);
+            this.lblTargetFilter.TabIndex = 18;
+            this.lblTargetFilter.Text = "Targets added to this list will be ignored by Razor completely when using any tar" +
+    "get hotkeys.";
+            // 
+            // targetFilterClear
+            // 
+            this.targetFilterClear.Location = new System.Drawing.Point(415, 241);
+            this.targetFilterClear.Name = "targetFilterClear";
+            this.targetFilterClear.Size = new System.Drawing.Size(77, 29);
+            this.targetFilterClear.TabIndex = 17;
+            this.targetFilterClear.Text = "Clear List";
+            this.targetFilterClear.UseVisualStyleBackColor = true;
+            this.targetFilterClear.Click += new System.EventHandler(this.TargetFilterClear_Click);
+            // 
+            // targetFilterRemove
+            // 
+            this.targetFilterRemove.Location = new System.Drawing.Point(335, 241);
+            this.targetFilterRemove.Name = "targetFilterRemove";
+            this.targetFilterRemove.Size = new System.Drawing.Size(74, 29);
+            this.targetFilterRemove.TabIndex = 16;
+            this.targetFilterRemove.Text = "Remove";
+            this.targetFilterRemove.UseVisualStyleBackColor = true;
+            this.targetFilterRemove.Click += new System.EventHandler(this.TargetFilterRemove_Click);
+            // 
+            // targetFilterAdd
+            // 
+            this.targetFilterAdd.Location = new System.Drawing.Point(247, 241);
+            this.targetFilterAdd.Name = "targetFilterAdd";
+            this.targetFilterAdd.Size = new System.Drawing.Size(82, 29);
+            this.targetFilterAdd.TabIndex = 15;
+            this.targetFilterAdd.Text = "Add (Target)";
+            this.targetFilterAdd.UseVisualStyleBackColor = true;
+            this.targetFilterAdd.Click += new System.EventHandler(this.TargetFilterAdd_Click);
+            // 
+            // targetFilter
+            // 
+            this.targetFilter.FormattingEnabled = true;
+            this.targetFilter.ItemHeight = 15;
+            this.targetFilter.Location = new System.Drawing.Point(247, 6);
+            this.targetFilter.Name = "targetFilter";
+            this.targetFilter.Size = new System.Drawing.Size(245, 229);
+            this.targetFilter.TabIndex = 14;
+            // 
+            // targetFilterEnabled
+            // 
+            this.targetFilterEnabled.AutoSize = true;
+            this.targetFilterEnabled.Location = new System.Drawing.Point(6, 6);
+            this.targetFilterEnabled.Name = "targetFilterEnabled";
+            this.targetFilterEnabled.Size = new System.Drawing.Size(132, 19);
+            this.targetFilterEnabled.TabIndex = 13;
+            this.targetFilterEnabled.Text = "Target Filter Enabled";
+            this.targetFilterEnabled.UseVisualStyleBackColor = true;
+            this.targetFilterEnabled.CheckedChanged += new System.EventHandler(this.TargetFilterEnabled_CheckedChanged);
+            // 
             // hotkeysTab
             // 
             this.hotkeysTab.Controls.Add(this.filterHotkeys);
@@ -4444,6 +4442,15 @@ namespace Assistant
             this.friendsTab.TabIndex = 14;
             this.friendsTab.Text = "Friends";
             // 
+            // showPartyFriendOverhead
+            // 
+            this.showPartyFriendOverhead.Location = new System.Drawing.Point(283, 40);
+            this.showPartyFriendOverhead.Name = "showPartyFriendOverhead";
+            this.showPartyFriendOverhead.Size = new System.Drawing.Size(217, 20);
+            this.showPartyFriendOverhead.TabIndex = 144;
+            this.showPartyFriendOverhead.Text = "Show [Party-Friend] overhead";
+            this.showPartyFriendOverhead.CheckedChanged += new System.EventHandler(this.showPartyFriendOverhead_CheckedChanged);
+            // 
             // highlightFriend
             // 
             this.highlightFriend.Location = new System.Drawing.Point(270, 117);
@@ -5057,15 +5064,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // showPartyFriendOverhead
-            // 
-            this.showPartyFriendOverhead.Location = new System.Drawing.Point(283, 40);
-            this.showPartyFriendOverhead.Name = "showPartyFriendOverhead";
-            this.showPartyFriendOverhead.Size = new System.Drawing.Size(217, 20);
-            this.showPartyFriendOverhead.TabIndex = 144;
-            this.showPartyFriendOverhead.Text = "Show [Party-Friend] overhead";
-            this.showPartyFriendOverhead.CheckedChanged += new System.EventHandler(this.showPartyFriendOverhead_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5088,15 +5086,11 @@ namespace Assistant
             this.tabs.ResumeLayout(false);
             this.generalTab.ResumeLayout(false);
             this.subGeneralTab.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.subGenTab.ResumeLayout(false);
             this.groupBox15.ResumeLayout(false);
             this.groupBox16.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
             this.groupBox4.ResumeLayout(false);
-            this.subFiltersTab.ResumeLayout(false);
-            this.subFiltersTab.PerformLayout();
-            this.subTargetFilterTab.ResumeLayout(false);
-            this.subTargetFilterTab.PerformLayout();
             this.subSoundMusicTab.ResumeLayout(false);
             this.subSoundMusicTab.PerformLayout();
             this.subWaypoints.ResumeLayout(false);
@@ -5132,6 +5126,12 @@ namespace Assistant
             this.skillsTab.PerformLayout();
             this.agentsTab.ResumeLayout(false);
             this.agentGroup.ResumeLayout(false);
+            this.filtersTab.ResumeLayout(false);
+            this.filterTabs.ResumeLayout(false);
+            this.subFilterTab.ResumeLayout(false);
+            this.subFilterTab.PerformLayout();
+            this.subFilterTargets.ResumeLayout(false);
+            this.subFilterTargets.PerformLayout();
             this.hotkeysTab.ResumeLayout(false);
             this.hotkeysTab.PerformLayout();
             this.groupBox8.ResumeLayout(false);
@@ -5212,27 +5212,51 @@ namespace Assistant
         private Button setFriendsFormatHue;
         private TextBox friendOverheadFormat;
         private Label friendFormat;
+        private Button scriptGuide;
+        private CheckBox showPartyFriendOverhead;
         private TabPage subWaypoints;
-        private ListBox waypointList;
-        private TextBox txtWaypointX;
-        private TextBox txtWaypointY;
-        private Label lblWaypoint;
-        private Button btnAddWaypoint;
-        private Button btnUseCurrentLoc;
-        private TextBox txtWaypointName;
-        private Label lblWaypointY;
-        private Label lblWaypointX;
-        private Button btnHideWaypoint;
-        private Button btnRemoveSelectedWaypoint;
+        private CheckBox waypointOnDeath;
+        private Label lblWaypointTiles;
+        private TextBox hideWaypointDist;
+        private CheckBox hideWaypointWithin;
         private TextBox txtWaypointDistanceSec;
         private Label lblWaypointSeconds;
         private CheckBox showWaypointDistance;
         private CheckBox showWaypointOverhead;
-        private Label lblWaypointTiles;
-        private TextBox hideWaypointDist;
-        private CheckBox hideWaypointWithin;
-        private CheckBox waypointOnDeath;
-        private Button scriptGuide;
-        private CheckBox showPartyFriendOverhead;
+        private Button btnRemoveSelectedWaypoint;
+        private Button btnHideWaypoint;
+        private Button btnUseCurrentLoc;
+        private TextBox txtWaypointName;
+        private Label lblWaypointY;
+        private Label lblWaypointX;
+        private TextBox txtWaypointX;
+        private TextBox txtWaypointY;
+        private Label lblWaypoint;
+        private Button btnAddWaypoint;
+        private ListBox waypointList;
+        private TabPage filtersTab;
+        private TabControl filterTabs;
+        private TabPage subFilterTab;
+        private ComboBox daemonAnimationList;
+        private CheckBox filterDaemonGraphics;
+        private CheckBox filterOverheadMessages;
+        private Label lblFilterDelaySeconds;
+        private Label lblFilterDelay;
+        private TextBox filterDelaySeconds;
+        private CheckBox filterRazorMessages;
+        private CheckBox filterSystemMessages;
+        private CheckBox filterSnoop;
+        private ComboBox drakeAnimationList;
+        private CheckBox filterDrakeGraphics;
+        private ComboBox dragonAnimationList;
+        private CheckBox filterDragonGraphics;
+        private CheckedListBox filters;
+        private TabPage subFilterTargets;
+        private Label lblTargetFilter;
+        private Button targetFilterClear;
+        private Button targetFilterRemove;
+        private Button targetFilterAdd;
+        private ListBox targetFilter;
+        private CheckBox targetFilterEnabled;
     }
 }

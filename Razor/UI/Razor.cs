@@ -697,12 +697,6 @@ namespace Assistant
             if (subGeneralTab == null)
                 return;
 
-            if (subGeneralTab.SelectedTab == subTargetFilterTab)
-            {
-                TargetFilterManager.RedrawList();
-                return;
-            }
-
             if (subGeneralTab.SelectedTab == subSoundMusicTab)
             {
                 SoundMusicManager.RedrawList();
@@ -6770,6 +6764,14 @@ namespace Assistant
         private void showPartyFriendOverhead_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowPartyFriendOverhead", showPartyFriendOverhead.Checked);
+        }
+
+        private void filterTabs_IndexChanged(object sender, EventArgs e)
+        {
+            if (filterTabs.SelectedTab == subFilterTargets)
+            {
+                TargetFilterManager.RedrawList();
+            }
         }
     }
 }
