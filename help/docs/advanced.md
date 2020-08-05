@@ -8,8 +8,6 @@ This tab will show some data regarding Razor internals and give you a few option
 
 * **Open Data Directory**
     * Opens Windows Explorer to the folder containing your profiles and macros.
-* **Backup Profiles and Macros**
-    * Creates a backup in a separate folder of your current profiles and macros.
 * **Enable packet logging**
     * This feature will save all packets flowing between the UO client and server. Useful for debugging purposes but when enabled can slow down Razor and eventually cause a large file to be created if not disabled.
 * **Negotiate features with server**
@@ -17,6 +15,6 @@ This tab will show some data regarding Razor internals and give you a few option
  * * **Enable UOA API**
     * This opens up a limited API that can be used by 3rd party applications (such as various mapping tools) to get some data from Razor.
 
-## SmartCPU
+## Disable SmartCPU
 
 SmartCPU has been completely removed from this version, but the option to disable it remains in place in case it was enabled in an older version.

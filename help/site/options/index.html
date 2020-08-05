@@ -1,183 +1,599 @@
-<!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <meta name="author" content="Maintained by Quick, many contributed over the years">
-  <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Options - Razor - Ultima Online Assistant Tool</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
-  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-  
-  <script>
-    // Current page data
-    var mkdocs_page_name = "Options";
-    var mkdocs_page_input_path = "options.md";
-    var mkdocs_page_url = null;
-  </script>
-  
-  <script src="../js/jquery-2.1.1.min.js" defer></script>
-  <script src="../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script> 
-  
-  <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-20537997-5', 'uor-razor.com');
-      ga('send', 'pageview');
-  </script>
-  
-</head>
 
-<body class="wy-body-for-nav" role="document">
-
-  <div class="wy-grid-for-nav">
-
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-      <div class="wy-side-nav-search">
-        <a href=".." class="icon icon-home"> Razor - Ultima Online Assistant Tool</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Help guide for using the Ultima Online assistant client called Razor">
+      
+      
+        <link rel="canonical" href="http://www.uor-razor.com/help/options/">
+      
+      
+        <meta name="author" content="Maintained by Quick, many contributed over the years">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.3">
+    
+    
+      
+        <title>Options - Razor - UO Assistant</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.947af8d5.min.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/palette.7f672a1f.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#ef5350">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-20537997-5","uor-razor.com"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="red" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#options" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="http://www.uor-razor.com/help" title="Razor - UO Assistant" class="md-header-nav__button md-logo" aria-label="Razor - UO Assistant">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-	<ul class="current">
-	  
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="..">Home</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Overview</span>
-    <ul class="subnav">
-                <li class="">
-                    
-    <a class="" href="../general/">General</a>
-                </li>
-                <li class=" current">
-                    
-    <a class="current" href="./">Options</a>
-    <ul class="subnav">
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Razor - UO Assistant
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
             
-    <li class="toctree-l3"><a href="#options">Options</a></li>
+              Options
+            
+          </span>
+        </div>
+      
+    </div>
     
-        <ul>
-        
-            <li><a class="toctree-l4" href="#speech-messages">Speech &amp; Messages</a></li>
-        
-            <li><a class="toctree-l4" href="#targeting-queues">Targeting &amp; Queues</a></li>
-        
-            <li><a class="toctree-l4" href="#additional-options">Additional Options</a></li>
-        
-        </ul>
-    
-
-    </ul>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../displaycounters/">Display/Counters</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../armdress/">Arm/Dress</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../skills/">Skills</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../agents/">Agents</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../hotkeys/">Hot Keys</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../macros/">Macros</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../map/">Map</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../screenshots/">Screen Shots</a>
-                </li>
-                <li class="">
-                    
-    <a class="" href="../advanced/">Advanced</a>
-                </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../help/">Help / Guides</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../uoaapi/">UOA API</a>
-	    </li>
-          
-        </ul>
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
       </div>
-      &nbsp;
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="..">Razor - Ultima Online Assistant Tool</a>
-      </nav>
-
-      
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href="..">Docs</a> &raquo;</li>
-    
-      
-        
-          <li>Overview &raquo;</li>
-        
-      
-    
-    <li>Options</li>
-    <li class="wy-breadcrumbs-aside">
-      
-    </li>
-  </ul>
-  <hr/>
+    </div>
+  </div>
 </div>
-          <div role="main">
-            <div class="section">
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/markdwags/Razor" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Razor
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="http://www.uor-razor.com/help" title="Razor - UO Assistant" class="md-nav__button md-logo" aria-label="Razor - UO Assistant">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Razor - UO Assistant
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/markdwags/Razor" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Razor
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../install/" title="Install" class="md-nav__link">
+      Install
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Overview
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Overview" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Overview
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../general/" title="General" class="md-nav__link">
+      General
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Options
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Options" class="md-nav__link md-nav__link--active">
+      Options
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    Options
+  </a>
+  
+    <nav class="md-nav" aria-label="Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#speech-messages" class="md-nav__link">
+    Speech &amp; Messages
+  </a>
+  
+    <nav class="md-nav" aria-label="Speech &amp; Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overhead-messages" class="md-nav__link">
+    Overhead Messages
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#targeting-queues" class="md-nav__link">
+    Targeting &amp; Queues
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-options" class="md-nav__link">
+    Additional Options
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../displaycounters/" title="Display/Counters" class="md-nav__link">
+      Display/Counters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../armdress/" title="Arm/Dress" class="md-nav__link">
+      Arm/Dress
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../skills/" title="Skills" class="md-nav__link">
+      Skills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../agents/" title="Agents" class="md-nav__link">
+      Agents
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../filters/" title="Filters" class="md-nav__link">
+      Filters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../hotkeys/" title="Hot Keys" class="md-nav__link">
+      Hot Keys
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../macros/" title="Macros" class="md-nav__link">
+      Macros
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../scripts/" title="Scripts" class="md-nav__link">
+      Scripts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../friends/" title="Friends" class="md-nav__link">
+      Friends
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../screenshots/" title="Screen Shots" class="md-nav__link">
+      Screen Shots
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../advanced/" title="Advanced" class="md-nav__link">
+      Advanced
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../help/" title="Help" class="md-nav__link">
+      Help
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../uoaapi/" title="UOA API" class="md-nav__link">
+      UOA API
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    Options
+  </a>
+  
+    <nav class="md-nav" aria-label="Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#speech-messages" class="md-nav__link">
+    Speech &amp; Messages
+  </a>
+  
+    <nav class="md-nav" aria-label="Speech &amp; Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overhead-messages" class="md-nav__link">
+    Overhead Messages
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#targeting-queues" class="md-nav__link">
+    Targeting &amp; Queues
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-options" class="md-nav__link">
+    Additional Options
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
               
-                <h1 id="options">Options</h1>
-<h2 id="speech-messages">Speech &amp; Messages</h2>
+                
+                
+                  
+                
+                
+                  <h1>Options</h1>
+                
+                <h3 id="options">Options</h3>
+<h4 id="speech-messages">Speech &amp; Messages</h4>
 <p><img alt="options" src="../images/options.png" /></p>
 <ul>
 <li><strong>Search Exemption Hue</strong><ul>
@@ -185,11 +601,10 @@
 </ul>
 </li>
 </ul>
-<blockquote>
-<blockquote>
-<p><em><strong>Note</strong>: The color of the item does not actually change. When removed from your backpack it will return to the original color.</em></p>
-</blockquote>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The color of the item does not actually change. When removed from your backpack it will return to the original color.</p>
+</div>
 <ul>
 <li><strong>Razor Message Hue</strong><ul>
 <li>Razor messages sent to your client will be this color. Click the set tab to change the color.</li>
@@ -238,21 +653,28 @@
 </ul>
 </li>
 </ul>
-<blockquote>
-<blockquote>
-<p><em><strong>Note:</strong> This option exist within the UO client itself. It's recommend to disable the one in the UO Client or in Razor or it will produce duplicated names when new players or creatures enter the screen.</em></p>
-</blockquote>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This option exist within the UO client itself. It's recommend to disable the one in the UO Client or in Razor or it will produce duplicated names when new players or creatures enter the screen.*</p>
+</div>
 <ul>
 <li><strong>Show New/Incoming Corpses</strong><ul>
 <li>As above, but with corpses.</li>
 </ul>
 </li>
-<li><strong>Show overhead messages</strong><ul>
-<li>This option will display messages above your head that are triggered based on system messages in the lower-left that come in from the server. For example, when the message <code>You begin applying bandages.</code> comes through, you can have the message <code>[Applying bandages]</code> appear above your head.</li>
-<li><strong>Default Format</strong> <code>[{msg}]</code></li>
 </ul>
-</li>
+<h5 id="overhead-messages">Overhead Messages</h5>
+<ul>
+<li><strong>Show overhead messages</strong></li>
+</ul>
+<p><img alt="overhead" src="../images/overhead.png" /></p>
+<p>This option will display messages above your head that are triggered based on system messages in the lower-left that come in from the server. For example, when the message <code>You begin applying bandages.</code> comes through, you can have the message <code>[Applying bandages]</code> appear above your head.</p>
+<div class="admonition tip">
+<p class="admonition-title">Expand Overhead Messages</p>
+<p>You can extract specific words from the system message to display in the overhead messages (<code>{1}</code> for the first word, <code>{2}</code> for the second word, etc).
+If the system message is <code>You must wait 80 seconds!</code>, you can set the overhead message to <code>Wait {4}s</code> and it would display <code>Wait 80s</code> overhead.</p>
+</div>
+<ul>
 <li><strong>Show container labels</strong><ul>
 <li>This option will allow you to tag containers and give them a label. This should allow for easier pixel sorting.</li>
 <li><strong>Default Format</strong> <code>[{label}] ({name})</code></li>
@@ -275,12 +697,8 @@
 <li>Display the damage you're taking in the lower-left or overhead.</li>
 </ul>
 </li>
-<li><strong>Show [Friend] overhead</strong><ul>
-<li>If a mobile is marked as your friend, when they enter the screen it will display [Friend] overhead.</li>
 </ul>
-</li>
-</ul>
-<h2 id="targeting-queues">Targeting &amp; Queues</h2>
+<h4 id="targeting-queues">Targeting &amp; Queues</h4>
 <p><img alt="options-targets" src="../images/options-targetqueues.png" /></p>
 <ul>
 <li><strong>Queue LastTarget and TargetSelf</strong><ul>
@@ -299,8 +717,8 @@
 <li>Sets the number of milliseconds between actions. Unchecking the box will set it to 0.</li>
 </ul>
 </li>
-<li><strong>Use smart last target</strong><ul>
-<li>When this box is checked, Razor will use beneficial and harmful spells according to your previous actions. For example, in battle if you cast Energy Bolt (a harmful spell) at an enemy and Greater Heal (a beneficial spell) at a friend, Razor will remember the last targets for each spell type. The next time you cast a harmful spell with last target, Razor will target the enemy even if you just casted Greater Heal on your friend with last target.</li>
+<li><strong>Show Target Self/Last/Clear Overhead</strong><ul>
+<li>When checked, the messages for <code>[Target Self]</code>, <code>[Last Target]</code> and <code>[Clear Target Queue]</code> will display overhead instead of in the lower-left corner.</li>
 </ul>
 </li>
 <li><strong>Range check Last Target: <em>X</em> tiles</strong><ul>
@@ -312,34 +730,41 @@
 </ul>
 </li>
 </ul>
-<blockquote>
-<blockquote>
-<p><em><strong>Note:</strong> To edit this format, go into your profile and search for <code>PartyStatFmt</code>. <code>[{0}% / {1}%]</code> is the standard format.</em></p>
-</blockquote>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To edit this format, go into your profile and search for <code>PartyStatFmt</code>. <code>[{0}% / {1}%]</code> is the standard format.*</p>
+</div>
 <ul>
 <li><strong>Attack/target name overhead</strong><ul>
 <li>When you attack a target, or aquire a new target using a hotkey, it will display the name of your target above your head.</li>
 </ul>
 </li>
-<li><strong>Show text target indicator</strong><ul>
+<li>
+<p><strong>Show text target indicator</strong></p>
+<ul>
 <li>When checked, a simple text indicator above the target's head will appear</li>
 </ul>
 </li>
-<li><strong>Treat party members as 'Friends'</strong><ul>
-<li>Select this box to have Razor treat those in your party like they are on your 'Friends' list (See the agents tab for more information on 'Friends').</li>
+<li>
+<p><strong>Use smart last target</strong></p>
+<ul>
+<li>When this box is checked, Razor will use beneficial and harmful spells according to your previous actions. For example, in battle if you cast Energy Bolt (a harmful spell) at an enemy and Greater Heal (a beneficial spell) at a friend, Razor will remember the last targets for each spell type. The next time you cast a harmful spell with last target, Razor will target the enemy even if you just casted Greater Heal on your friend with last target.</li>
 </ul>
 </li>
-<li><strong>Show Target Self/Last/Clear Overhead</strong><ul>
-<li>When checked, the messages for <code>[Target Self]</code>, <code>[Last Target]</code> and <code>[Clear Target Queue]</code> will display overhead instead of in the lower-left corner.</li>
+<li><strong>'Next/Prev Friend' sets beneficial only</strong><ul>
+<li>Using Next/Prev Friend will only set the beneficial target.</li>
 </ul>
 </li>
-<li><strong>Next/Prev Target ignores 'Friends'</strong><ul>
-<li>When this is checked, cycling through next/prev targets will ignore mobiles on your friends list.</li>
+<li><strong>'Next/Prev Friendly' sets beneficial only</strong><ul>
+<li>Using Next/Prev Friendly will only set the beneficial target.</li>
+</ul>
+</li>
+<li><strong>'Next/Prev Non-Friendly' harmful only</strong><ul>
+<li>Using Next/Prev Friend will only set the harmful target.</li>
 </ul>
 </li>
 </ul>
-<h2 id="additional-options">Additional Options</h2>
+<h4 id="additional-options">Additional Options</h4>
 <p><img alt="options-additional" src="../images/options-additional.png" /></p>
 <ul>
 <li><strong>Use Pre-AOS status window</strong><ul>
@@ -347,11 +772,10 @@
 </ul>
 </li>
 </ul>
-<blockquote>
-<blockquote>
-<p><em><strong>Note:</strong> You will need to close, then re-open your status bar in-game for the change to take effect.</em></p>
-</blockquote>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You will need to close, then re-open your status bar in-game for the change to take effect.*</p>
+</div>
 <ul>
 <li><strong>Auto-Stack Ore/Fish/Logs at Feet</strong><ul>
 <li>When checked, when these items are placed into your bag, they will stack at your feet instead. Useful for gathering resources.</li>
@@ -362,11 +786,10 @@
 </ul>
 </li>
 </ul>
-<blockquote>
-<blockquote>
-<p><em><strong>Note:</strong> Use with caution, this function does not differentiate between a blue, grey, or red corpse.</em></p>
-</blockquote>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Use with caution, this function does not differentiate between a blue, grey, or red corpse.</p>
+</div>
 <ul>
 <li><strong>Block opening corpses twice</strong><ul>
 <li>Used with the above option, if checked a corpse that was auto-opened will not auto-open again. Manually opening a corpse does not prevent it from auto-opening.</li>
@@ -385,30 +808,15 @@
 </ul>
 </li>
 <li><strong>Season</strong><ul>
-<li>Set the season in the client. If you check <em>Real</em> it will set the season based on the commonly accepted astronomical calendar dates to determine the season.</li>
+<li>Set the season in the client.</li>
 </ul>
 </li>
 <li><strong>Light</strong><ul>
 <li>Adjust the slider to set the <strong>Light Level</strong> on the client. To keep this setting, be sure <strong>Light Filter</strong> is checked on the <strong>General</strong> tab.</li>
 </ul>
 </li>
-</ul>
-<blockquote>
-<blockquote>
-<p><em><strong>Note:</strong> You will need to close, then re-open your status bar in-game for the change to take effect.</em></p>
-</blockquote>
-</blockquote>
-<ul>
-<li>
-<p><strong>Enable Min/Max</strong></p>
-<ul>
+<li><strong>Enable Min/Max</strong><ul>
 <li>This feature lets you set the min and max light levels that Razor will allow.</li>
-</ul>
-</li>
-<li>
-<p><strong>Filter repeating system messages</strong></p>
-<ul>
-<li>This option condenses system messages like "you are already performing another action". When the message is repeated, Razor will show the message only once with the number of times it was sent in brackets.</li>
 </ul>
 </li>
 <li><strong>Remember passwords</strong><ul>
@@ -416,16 +824,11 @@
 </ul>
 </li>
 </ul>
-<blockquote>
-<blockquote>
-<p><strong>WARNING:</strong> <em>Anyone who obtains a copy of your profile maybe be able to decrypt your password and log into your account. <strong>Personally I would not use this option. Type in your password each time and be sure it's unique.</strong></em></p>
-</blockquote>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Anyone who obtains a copy of your profile maybe be able to decrypt your password and log into your account.</p>
+</div>
 <ul>
-<li><strong>Auto-accept party invites from friends</strong><ul>
-<li>When checked, anyone on your friends list who sends you a party invite, that invite will be auto-accepted.</li>
-</ul>
-</li>
 <li><strong>Count stealth steps</strong><ul>
 <li>Keeps track of steps taken while hidden, displaying the number on the bottom left of your screen unless you check <strong>Overhead</strong> and they will display over your character.</li>
 </ul>
@@ -455,52 +858,89 @@
 </ul>
 </li>
 </ul>
+                
               
-            </div>
+              
+                
+
+
+              
+            </article>
           </div>
-          <footer>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
   
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../displaycounters/" class="btn btn-neutral float-right" title="Display/Counters">Next <span class="icon icon-circle-arrow-right"></span></a>
-      
-      
-        <a href="../general/" class="btn btn-neutral" title="General"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-      
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../general/" title="General" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                General
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../displaycounters/" title="Display/Counters" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Display/Counters
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     </div>
   
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-    
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright 2020 - Mark Wagner (Quick)
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
   </div>
-
-  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
       
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" style="cursor: pointer">
-    <span class="rst-current-version" data-toggle="rst-current-version">
+    </div>
+    
+      <script src="../assets/javascripts/vendor.c3dc8c49.min.js"></script>
+      <script src="../assets/javascripts/bundle.f9edbbd5.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
       
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8e2cddea.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
       
-        <span><a href="../general/" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      
-      
-        <span style="margin-left: 15px"><a href="../displaycounters/" style="color: #fcfcfc">Next &raquo;</a></span>
-      
-    </span>
-</div>
-    <script>var base_url = '..';</script>
-    <script src="../js/theme.js" defer></script>
-      <script src="../search/main.js" defer></script>
-
-</body>
+    
+  </body>
 </html>

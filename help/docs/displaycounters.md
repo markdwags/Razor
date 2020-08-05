@@ -1,8 +1,13 @@
-# Display
+# Display/Counters
 
 ![displayscounters](images/displayscounters.png)
 
-## Title Bar Display
+## Display
+
+### Title Bar Display
+
+!!! note
+    If you are using ClassicUO, images will not display in the title bar. It's recommended to use the built-in counter bar.
 
 ![titlebar](images/titlebar.png)
 
@@ -50,7 +55,7 @@ Here is a default title bar to built yours off of:
 
 `{char} - {crimtime} {weight}/{maxweight} - ~#FF0000 {hp}/{hpmax} ~#~ - ~#FE2EF7 {stam}/{stammax}~#~ - ~#0080FF {mana}/{manamax} ~#~ {bp} {bm} {gl} {gs} {mr} {ns} {ss} {sa} Gold: {gold}`
 
-### Color
+#### Color
 
 You can color the title bar text using any HTML style 6 digit hex number.  Use the code in the following manner:
 
@@ -58,7 +63,7 @@ HTML hex color code: `~#rrggbb` ('`~#~`' to terminate)
 
 For the purpose of example, I want to change the color of my hp display to orange. I would use the following code to do so: `~#FF6600 {hp}/{hpmax} ~#~`. The '`~#FF6600`' tells Razor to color everything between it and the '`~#~`' to an orange color, the color orange selected by the six digits, FF6600. The '`~#~`' tells Razor to stop coloring. If you need to know the color codes for this function, try this page.
 
-## Track gold per sec/min/hour
+### Track gold per sec/min/hour
 
 When using **Track Gold Per sec/min/hour** these values will work:
 
@@ -68,7 +73,7 @@ When using **Track Gold Per sec/min/hour** these values will work:
 - `{gps}` - Display your gold per second
 - `{gph}` - Display your gold per hour
 
-## Other
+### Other
 
 * **Highlight Spell Reagents on Cast**
     - Whenever you cast a spell, a red background will highlight the reagents used to cast the spell.
@@ -77,13 +82,13 @@ When using **Track Gold Per sec/min/hour** these values will work:
 * **Enable gold per sec/min/hour trackers**
     - When checked, the counter will start monitoring your gold intake using the values above.
 
-# Counters
+## Counters
 
 ![counters](images/counters.png)
 
 Counters are used to track the number of items you currently have in your backpack. The most commonly used counter is for reagents but this feature can be used on any item. Razor will come with some common counters available to you by default.
 
-### Adding a counter
+#### Adding a counter
 
   - Click **Add...** under the list of counters.
   - Click **Target** and target the item to add. The Item ID and color fields should auto-populate for you.
@@ -96,8 +101,15 @@ To **Edit or Remove** a counter, select it and click **Del/Edit**.
 
 Click **Recount** to force Razor to check all the containers on your character and get the correct acounts.
 
-## Others
+### Others
 * **Show Images with Counters**
     - Check this to show counter images instead of abbreviations. Each counter can be modified individually from the counter table with the edit tab to disable this.
 * **Warn when a counter is below X**
     - When your counter for any specific item drops below **X**, Razor will provide a warning in red.
+
+## Bandage Timer
+
+![bandagetimer](images/bandagetimer.png)
+
+* **Show bandage timer**
+    - When you have this enabled, when you use a bandage a timer will display.

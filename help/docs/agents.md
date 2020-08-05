@@ -112,11 +112,9 @@ When I use the restock agent, it will top my black pearl up to 33; it won't add 
 * **Restock Now**
     - Activate the agent. You will receive a targeting cursor. Target the container to restock from. If you are at the bank, with your bank open, you can target your character to refill from the bank. This may also be set as a hotkey.
 
-## Friends
+## IgnoreList Agent
 
-The Friends agent works with PvP target hotkeys.
-
-Players added to this list will never be targeted by a Random Target (except for Target Random Friendly)
+Players added to this list will have all the say, yell, emote, etc blocked. Spell power words will still be seen.
 
 * **Add (Target)**
     - Target the character to be added to the list.
@@ -127,4 +125,4 @@ Players added to this list will never be targeted by a Random Target (except for
 * **Clear List**
     - Clear the entire list.
 * **(Push to Disable/Enable)**
-    - Turn the Friends list off and on.
+    - Turn the Ignore list off and on.

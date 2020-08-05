@@ -1,9 +1,15 @@
-site_name: Razor - Ultima Online Assistant Tool
+site_name: Razor - UO Assistant
 site_description: Help guide for using the Ultima Online assistant client called Razor
 site_author: Maintained by Quick, many contributed over the years
+site_url: http://www.uor-razor.com/help
+copyright: Copyright 2020 - Mark Wagner (Quick)
 google_analytics: ['UA-20537997-5', 'uor-razor.com']
+repo_url: https://github.com/markdwags/Razor
+repo_name: Razor
+edit_uri: ""
 nav:
 - Home: index.md
+- Install: install.md
 - Overview:
     - General: general.md
     - Options: options.md    
@@ -11,11 +17,25 @@ nav:
     - Arm/Dress: armdress.md
     - Skills: skills.md
     - Agents: agents.md
+    - Filters: filters.md
     - Hot Keys: hotkeys.md
     - Macros: macros.md
-    - Map: map.md    
+    - Scripts: scripts.md
+    - Friends: friends.md    
     - Screen Shots: screenshots.md
     - Advanced: advanced.md
-- Help / Guides: help.md
+- Help: help.md
 - UOA API: uoaapi.md
-theme: readthedocs
+theme: 
+    name: material    
+    icon:
+        repo: fontawesome/brands/github
+    palette:
+        primary: red
+        accent: blue
+markdown_extensions:
+  - admonition
+  - toc:
+        baselevel: 3
+plugins:
+  - search

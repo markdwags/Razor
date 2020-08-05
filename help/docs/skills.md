@@ -29,9 +29,15 @@ The Skills tab gives you general information about your skills.
     - Copies the skill information from the selected skills to the clipboard. Click a skill to highlight it. For multiple skill selection, hold the control key and click all skills to be copied.
 * **Copy All**
     - As above, all skills are automatically selected with this tab.
-* **Display Changes**
-    - When checked, Razor will inform you of each skill level change, the change amount and the total change since the last +/- reset.
 * **Log skill changes**
     - All your skill changes will be logged and timestamp into a `.csv` file in your Razor folder.
+* **Show skill/stat changes**
+    - When checked, Razor will inform you of each skill level change, the change amount and the total change since the last +/- reset.
+* **Capture MIBs to file**
+    - When you open an MIB, a file is written to the root folder of Razor.
+
+!!! warning
+    This feature only works with the default RunUO MIB Gump.
+
 * **Base Total**
     - Displays your character's total base skill level.

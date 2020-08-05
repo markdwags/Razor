@@ -2,13 +2,13 @@
 
 The Macros tab is an indispensable tool. Record a set of actions often repeated. The macro can then be run repeatedly to copy the same actions. In this manner, less wear and tear is put on your mouse. Macros can be used to macro skill, even afk or while playing another character. Macros can be used for gathering resources and crafting.
 
-**Note:** On some servers, macroing afk to gather resources is known as bot farming and is illegal.
-
 Macros are divided into two sections. The column on the left is the macro index of all macros you make. On the right is the action area, used to set and edit the macros you create. Macros are saved to a folder, 'Macros', in your Razor folder. These can be edited in text format.
 
 ![macros](images/macros.png)
 
-## Categories
+## Macros
+
+### Categories
 
 Categories can be created to organize your macros into groups. While, unlike the rest of the profile, macros are shared across all characters. Each character can have their own hot key settings depending on how frequent that character would use the macro (if at all).
 
@@ -29,7 +29,7 @@ To Create a Macro, begin by clicking the 'New' tab at the bottom of the gump. A 
 
 The macro will now appear in the left index. Highlight the macro name with a left click. A list of functions to set the macro will now show beside the right action window. Right click the macro name to move it into a category if you choose.
 
-## Set/Recording a macro
+### Set/Recording a macro
 
 To Set/Record a Macro, highlight the macro in the left index. Click the 'Record' tab on the right and go through the actions in-game that you want in the macro. When you have finished, click the 'Stop' tab. Once the macro is created, the 'Stop' tab will change to a 'Play' tab when the macro is not running. To clear the macro entirely for re-recording, click the Record tab again. A prompt warns your original macro will be cleared.
 
@@ -78,7 +78,7 @@ This version of Razor has an expanded section with additional macro options
 
 ![macros-advanced](images/macros-options.png)
 
-### Absolute Target Variables
+#### Absolute Target Variables
 
 The concept with **Absolute Target Variables** is to remove duplicate macros for the same thing. For example, you have a Recall macro that casts recall, waits for target, and clicks a rune or runebook. If you have 5 characters doing the same thing, you need 5 macros because the unique ID of the rune or runebook is different.
 
@@ -98,7 +98,7 @@ As long as you have setup a `$rune` variable on your profile, that macro will wo
 * **Remove**
     * Remove the selected variable from the list.
 
-### Other
+### Options
 
 * **Force different 'TargetByType'**
     * Prevents a macro from selecting the same item over and over (for example, the item is out of range)
@@ -108,3 +108,8 @@ As long as you have setup a `$rune` variable on your profile, that macro will wo
     * Same idea here. Macros will only double-click items in range of your character.
 * **Step Through Macro**
     * If checked, each step in the macro will require you to click `Next`. Useful for debugging your macros.
+
+* **Default macro action delay (50ms)**
+    - The OSI client required a 50ms delay, which isn't required by ClassicUO. Some macros were designed with ths 50ms delay in mind. Checking this and restarting Razor will restore it. 
+* **Disable Playing/Finished Message**
+    - Hide the message that shows when you run a macro.
