@@ -1,6 +1,6 @@
 # Display/Counters
 
-![displayscounters](images/displayscounters.png)
+![displayscounters](../images/displayscounters.png)
 
 ## Display
 
@@ -9,7 +9,7 @@
 !!! note
     If you are using ClassicUO, images will not display in the title bar. It's recommended to use the built-in counter bar.
 
-![titlebar](images/titlebar.png)
+![titlebar](../images/titlebar.png)
 
 This feature will display the values of your counters and other information in the title bar of the Ultima Online client. Along with the **Format** of the counter wrapped in `{}`, Razor has the following values built in. Check **Show in UO title bar** to enable.
 

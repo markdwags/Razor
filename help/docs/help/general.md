@@ -2,13 +2,13 @@
 
 The General tab has setting largely related to the client itself and Razor in general.
 
-![general](images/general.png)
+![general](../images/general.png)
 
 ## General
 
 ### Profiles
 
-![profiles](images/profiles.png)
+![profiles](../images/profiles.png)
 
 Each character has a profile that contains your settings, such as the options in Razor and your hotkeys. Profiles are stored in the same location as `Razor.exe` under `.\Profiles\`. You can create a new profile, which will be based on the *default profile settings*
 
@@ -86,13 +86,13 @@ Razor supports the following in-game commands (not case-sensitive).
 
 #### UOPS
 
-![uops](images/map-uops.png)
+![uops](../images/map-uops.png)
 
 Razor's Ultima Online Position System (UOPS) gives you a basic map.
 
 #### Boat Control
 
-![boat](images/map-boat.png)
+![boat](../images/map-boat.png)
 
 **Boat Control** was inspired by UO Rudder and designed to make navigating the seas of Britannia much easier. This tool is built into Razor.
 
@@ -116,7 +116,7 @@ Razor's Ultima Online Position System (UOPS) gives you a basic map.
 
 ## Sound & Music
 
-![sound](images/soundmusic.png)
+![sound](../images/soundmusic.png)
 
 * Enable Sound Filter
     - When checked, sounds that are checked will be blocked from playing in the client.
@@ -131,7 +131,7 @@ Razor's Ultima Online Position System (UOPS) gives you a basic map.
 
 ## Waypoints
 
-![waypoints](images/waypoints.png)
+![waypoints](../images/waypoints.png)
 
 This feature lets you set waypoints, that will display within the client.
 

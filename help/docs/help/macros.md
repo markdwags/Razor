@@ -4,7 +4,7 @@ The Macros tab is an indispensable tool. Record a set of actions often repeated.
 
 Macros are divided into two sections. The column on the left is the macro index of all macros you make. On the right is the action area, used to set and edit the macros you create. Macros are saved to a folder, 'Macros', in your Razor folder. These can be edited in text format.
 
-![macros](images/macros.png)
+![macros](../images/macros.png)
 
 ## Macros
 
@@ -76,7 +76,7 @@ You now have the basis of a macro. From here, you can fine tune it with a list o
 
 This version of Razor has an expanded section with additional macro options
 
-![macros-advanced](images/macros-options.png)
+![macros-advanced](../images/macros-options.png)
 
 #### Absolute Target Variables
 
@@ -85,7 +85,7 @@ The concept with **Absolute Target Variables** is to remove duplicate macros for
 With **Absolute Target Variables** in that same scenario, you can have one macro cover all 5 characters. Your macro and absolute target variable might look like this:
 
 
-![macros-advanced1](images/macros-advanced-at1.png) ![macros-advanced](images/macros-advanced-at.png)
+![macros-advanced1](../images/macros-advanced-at1.png) ![macros-advanced](images/macros-advanced-at.png)
 
 As long as you have setup a `$rune` variable on your profile, that macro will work across all profiles.
 

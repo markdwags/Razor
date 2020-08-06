@@ -2,7 +2,7 @@
 
 ## Speech & Messages
 
-![options](images/options.png)
+![options](../images/options.png)
 
 * **Search Exemption Hue**
     - Used in conjunction with the **AutoSearchExemption** feature on the agents tab. Containers and/or container types added to this agent will appear the *Search Exemption Hue* while in your backpack. Click the set tab to the right to change the color.
@@ -44,7 +44,7 @@
 
 * **Show overhead messages**
 
-![overhead](images/overhead.png)
+![overhead](../images/overhead.png)
 
 This option will display messages above your head that are triggered based on system messages in the lower-left that come in from the server. For example, when the message `You begin applying bandages.` comes through, you can have the message `[Applying bandages]` appear above your head.
 
@@ -66,7 +66,7 @@ This option will display messages above your head that are triggered based on sy
 
 ## Targeting & Queues
 
-![options-targets](images/options-targetqueues.png)
+![options-targets](../images/options-targetqueues.png)
 
 * **Queue LastTarget and TargetSelf**
     - This is used with **Last Target** and/or **Target Self** hotkeys. When this option is selected, `Last Target` and `Target Self` commands will be placed in queue until they can be executed. For example, you cast a spell and hit the `Last Target Hotkey` too soon. The moment the target is up, the last target function will be executed. A hotkey can be set to clear the queue when needed.
@@ -102,7 +102,7 @@ This option will display messages above your head that are triggered based on sy
 
 ## Additional Options
 
-![options-additional](images/options-additional.png)
+![options-additional](../images/options-additional.png)
 
 * **Use Pre-AOS status window**
     - The default status window is from the AOS expansion. If you check this box, it will look like the Pre-AOS window.

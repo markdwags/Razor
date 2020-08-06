@@ -1,6 +1,6 @@
 # Friends
 
-![friends](images/friends.png)
+![friends](../images/friends.png)
 
 ## Friend Groups & Lists
 

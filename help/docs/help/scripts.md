@@ -4,4 +4,4 @@ The Razor Scripting Engine is a "command based scripting language" designed to m
 
 For a comprhensive guide on how to use it, please go [here](http://www.uor-razor.com/guide/).
 
-![scripts](images/scripts.png)
+![scripts](../images/scripts.png)

@@ -1,6 +1,6 @@
 # Advanced
 
-![advanced](images/advanced.png)
+![advanced](../images/advanced.png)
 
 This tab will show some data regarding Razor internals and give you a few options. The data on the left is purely for informational purposes only.
 

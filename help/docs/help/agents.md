@@ -2,7 +2,7 @@
 
 The Agents tab is for organizing, restocking and moving items.
 
-![agents](images/agents.png)
+![agents](../images/agents.png)
 
 ## Use Once Agent
 

@@ -2,11 +2,11 @@
 
 The Arm/Dress tab is for setting clothes, armor and weapons for use. These settings are used with hotkeys.
 
-![armdress](images/armdress.png)
+![armdress](../images/armdress.png)
 
 ## Arm/Dress Selection
 
-![armdresssel](images/armdress-selection.png)
+![armdresssel](../images/armdress-selection.png)
 
 This is the list of arm/dresses can consist of a complete outfit or just one item. Hotkeys can be assigned to each. Use the **Add** and **Remove** buttons to manage.
 
@@ -15,7 +15,7 @@ This is the list of arm/dresses can consist of a complete outfit or just one ite
 
 ## Arm/Dress Items
 
-![armdress-item](images/armdress-items.png)
+![armdress-item](../images/armdress-items.png)
 
 This is where you define the items for each list created above. Highlight a list from the left and use the following tabs to set it up. Any entries can be right-clicked for conversion to 'Dress by Type'.
 

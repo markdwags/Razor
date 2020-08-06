@@ -1,6 +1,6 @@
 # More Options
 
-![moreoptions](images/moreoptions.png)
+![moreoptions](../images/moreoptions.png)
 
 * **Show Action-Queue status messages**
     - A toggle to turn off/on messages about actions being queued. Unchecking this option will still allow some important messages to come through.
@@ -18,8 +18,8 @@
 * **Show mana/stam above party members**
     - As above, but mana and stamina. 
 
-
->> ***Note:** To edit this format, go into your profile and search for `PartyStatFmt`. `[{0}% / {1}%]` is the standard format.*
+!!! tip
+    To edit this format, go into your profile and search for `PartyStatFmt`. `[{0}% / {1}%]` is the standard format.*
 
 * **Show Target Self/Last/Clear Overhead**
     - When checked, the messages for `[Target Self]`, `[Last Target]` and `[Clear Target Queue]` will display overhead instead of in the lower-left corner.
@@ -32,7 +32,8 @@
 * **Remember passwords**
     - Using this option will save your passwords in your Profile.xml file. When logging in the saved password will be entered for you although the field will remain blank on your screen.
   
->> **WARNING:** *Anyone who obtains a copy of your profile maybe be able to decrypt your password and log into your account. **Personally I would not use this option. Type in your password each time and be sure it's unique.***
+!!! warning
+    Anyone who obtains a copy of your profile maybe be able to decrypt your password and log into your account. **Personally I would not use this option. Type in your password each time and be sure it's unique.***
 
 * **Treat party members as 'Friends'**
     - Select this box to have Razor treat those in your party like they are on your 'Friends' list (See the agents tab for more information on 'Friends').

@@ -2,7 +2,7 @@
 
 ## Filters
 
-![filters](images/filters.png)
+![filters](../images/filters.png)
 
 Filters will change the way the client will display visuals or play audio.
 
@@ -31,7 +31,7 @@ Instead of spamming your screen system or overhead messages, if checked it will 
 
 ## Target Filter
 
-![targetfilters](images/targetfilters.png)
+![targetfilters](../images/targetfilters.png)
 
 Mobiles on this list will be ignored completely by Razor.
 

@@ -1,6 +1,6 @@
 # Hot Keys
 
-![displayscounters](images/hotkeys.png)
+![displayscounters](../images/hotkeys.png)
 
 Hot keys tie your keyboard and mouse to specific actions within Ultima Online, or to specific functions within Razor.
 

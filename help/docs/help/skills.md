@@ -2,7 +2,7 @@
 
 The Skills tab gives you general information about your skills.
 
-![skills](images/skills.png)
+![skills](../images/skills.png)
 
 ## Skill Table
 

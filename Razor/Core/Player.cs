@@ -1032,8 +1032,11 @@ namespace Assistant
 
             protected override void OnTick()
             {
-                Client.Instance.ForceSendToClient(new SeasonChange(World.Player.Season, true));
-                m_SeasonTimer.Stop();
+                if (World.Player != null && Client.Instance != null &&)
+                {
+                    Client.Instance.ForceSendToClient(new SeasonChange(World.Player.Season, true));
+                    m_SeasonTimer.Stop();
+                }
             }
         }
 
