@@ -84,7 +84,7 @@ When using **Track Gold Per sec/min/hour** these values will work:
 
 ## Counters
 
-![counters](images/counters.png)
+![counters](../images/counters.png)
 
 Counters are used to track the number of items you currently have in your backpack. The most commonly used counter is for reagents but this feature can be used on any item. Razor will come with some common counters available to you by default.
 
@@ -109,7 +109,7 @@ Click **Recount** to force Razor to check all the containers on your character a
 
 ## Bandage Timer
 
-![bandagetimer](images/bandagetimer.png)
+![bandagetimer](../images/bandagetimer.png)
 
 * **Show bandage timer**
     - When you have this enabled, when you use a bandage a timer will display.

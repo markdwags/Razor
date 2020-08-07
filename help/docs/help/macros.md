@@ -85,7 +85,7 @@ The concept with **Absolute Target Variables** is to remove duplicate macros for
 With **Absolute Target Variables** in that same scenario, you can have one macro cover all 5 characters. Your macro and absolute target variable might look like this:
 
 
-![macros-advanced1](../images/macros-advanced-at1.png) ![macros-advanced](images/macros-advanced-at.png)
+![macros-advanced1](../images/macros-advanced-at1.png) ![macros-advanced](../images/macros-advanced-at.png)
 
 As long as you have setup a `$rune` variable on your profile, that macro will work across all profiles.
 

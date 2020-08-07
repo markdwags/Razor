@@ -12,17 +12,20 @@ This is used to register your application with Razor.  Once your application is 
 
 * Parameters: WPARAM = The window handle where you want messages sent.  LPARAM = flags  ( 1 = get house notifications, NOTE all notification with a lesser notify value than the house notification will go to all windows that have requested information)
 * Returns 2 on unhook, 1 on success, 0 on failure (failure means all slots full) .  
-* Notes:  If you have registered a window and wish to unregister just send the message with the window handle again. 
+!!! note
+    If you have registered a window and wish to unregister just send the message with the window handle again. 
 
-###C ount Resources  (WM_USER+201)
+### Count Resources (WM_USER+201)
 
 This will prompt Razor to begin counting resources. 
 
 * Parameters:  NONE
 * Returns 1 on successful start or 0 on stop.
-* Notes:  If resources are already being counted the count will be stopped.
 
-UPDATE 7/13/99:   currently it will always return 0 - this MAY be changed in the future but for now it will be zero
+!!! note
+    If resources are already being counted the count will be stopped.
+
+    Currently it will always return 0 - this MAY be changed in the future but for now it will be zero
 
 ### Get Coords (WM_USER+202)
 
@@ -30,7 +33,9 @@ Gets the current location of the character.
 
 * Parameters:  NONE
 * Returns: X in the loword and Y in the hiword.  (x=LOWORD(retVal); y=HIWORD(retVal);)
-* Notes:  You MUST use SendMessage for the return value to be valid.
+* 
+!!! note
+    You MUST use SendMessage for the return value to be valid.
 
 ### Get Skill (WM_USER+203)
 
@@ -38,7 +43,9 @@ Gets the current skill level of specified skill.
 
 * Parameters: WPARAM = skill number ( 0 based )  LPARAM (when 0 the return will be the 'display' value, when 1 it will be the 'base' value, 2 = get lock value, 3 = get skill name  ).
 * Returns:  Skill level * 10.  Meaning if the skill level was 19.4 you would get 194 returned.  Or if lock value was requested the return is 0 = up, 1 = down, 2 = locked.  If the skill name is requested the value is a global atom that you will need to free.
-* Notes:  You MUST use SendMessage for the return value to be valid.
+
+!!! note
+    You MUST use SendMessage for the return value to be valid.
 
 ### Get Stat (WM_USER+204)
 

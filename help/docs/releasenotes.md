@@ -1,6 +1,6 @@
 # Razor Release Notes
 
-Below is a list of the latest releases notes going back to the initial version
+Below is a list of the latest releases notes going back to the initial version.
 
 ## 1.6.5.X (08/X/2020)
 
@@ -40,21 +40,18 @@ Below is a list of the latest releases notes going back to the initial version
 * Added support for Mystic and Masteries
 * Show Attack message when using Attack Last Target hotkey
 
-## 1.6.4.2 & v1.6.3.43 (03/16/2020)
+## 1.6.4.2 (03/16/2020)
 
 This version introduces a new scripting engine that makes it easier to create and share macros.
 
 For more information, visit the [Razor Scripting Engine Guide](http://www.uor-razor.com/guide/).
-
-!!! note
-    This is a hotfix for anyone having a CultureNotFoundException error on Windows 7 which 1.6.4.2 fixed.
 
 * Introduction of the Razor Scripting Engine (thanks to everyone for your time testing and providing feedback)
 * New Sound & Music Tab: Filter out any game sound, trigger music and listen to any sound
 * Added while loop to the macro system
 * Fixed issue with auto-screenshot not working with players with invalid characters in their name
 * Enforce your min light level on login
-* You can extract specific words from the system message to display in the overhead messages (…{1}. {2}, etc for the first, second word)
+* You can extract specific words from the system message to display in the overhead messages (`{1} {2}`, etc for the first, second word)
 * Added Set Macro Variable Target Action to macros that will pause until you set a variable (same behavior as "Set Last Target")
 * Razor's Last Object (hotkey and macro/scripts) should work as expected
 * `>hue` and `>item` commands are a bit more informative
@@ -115,7 +112,7 @@ For more information, visit the [Razor Scripting Engine Guide](http://www.uor-ra
 
 ## 1.6.0.57 (06/28/19)
 
-After 57 builds, Razor now fully supports ClassicUO. Thanks to KaRaShO for his amazing work on this client. Thanks to Jaedan, DarkLotus, and everyone who helped test Razor and provided feedback.
+After 57 builds, Razor now fully supports [ClassicUO](https://github.com/andreakarasho/ClassicUO). Thanks to KaRaShO for his amazing work on this client. Thanks to Jaedan, DarkLotus, and everyone who helped test Razor and provided feedback.
 
 * Enabled support for ClassicUO and standard OSI client
 * Enabled cross-platform support (specifically Linux)
@@ -481,12 +478,7 @@ Razor will keep a history of images uploaded, and store the delete hash so they 
 
 ## 1.5.0.7 (8/24/18)
 
-This version introduces a brand new UO mapping system referred to as JMap (designed by Jimmy the Hand), that will hopefully give those who use Razor's current map system system more functionality while giving those who use UOAM an option built directly into Razor. JMap is still in active development and this is the first public release. Please report any issues on the development thread.
-
-!!! warning
-    This is a legacy feature that was removed at the request of the original developer
-
-This version also includes a new Overhead system that lets you trigger messages that are in the lower-left to appear overhead.
+This version includes a new Overhead system that lets you trigger messages that are in the lower-left to appear overhead.
 
 ### Razor
 

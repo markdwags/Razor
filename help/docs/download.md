@@ -4,7 +4,14 @@ This version of Razor is portable. All files (Profiles, Macros, etc) are contain
 
 To learn more about each version, view the [release notes](releasenotes.md).
 
-## ClassicUO
+# Client Support
+
+It's recommended that you use the latest version of the [ClassicUO](https://github.com/andreakarasho/ClassicUO) client with this version of Razor however it should work with the original 5.x and 7.x clients though support for any bugs may be limited.
+
+!!! note
+    When using ClassicUO, some features in Razor are disabled since they either won't work and/or may cause conflicts with ClassicUO.
+
+## Razor with ClassicUO Support
 
 * [1.6.4.32](https://github.com/markdwags/Razor/releases/tag/v1.6.4.32)
 * [1.6.4.2](https://github.com/markdwags/Razor/releases/tag/v1.6.4.2)
@@ -18,7 +25,7 @@ This is built automatically after each commit to master, so it may contain bugs 
 
 * [Razor-dev-preview](https://github.com/markdwags/Razor/releases/tag/Razor-dev-preview)  
 
-## OSI Client
+## Razor with OSI Client Only Support
 
 * [1.5.0.16](http://www.uor-razor.com/Razor_UOR_CE-1.5.0.16.zip) `SHA256: 63D0B617FCE217C067A3270323C9E58B63F379F401B4224E0EA937DAA7871B8B`
 * [1.5.0.15](http://www.uor-razor.com/Razor_UOR_CE-1.5.0.15.zip) `SHA256: 64916F16A72FDE5E9C17B3A180001A896E9472458C8DB69E09DC7E37D78A6B30`
@@ -39,7 +46,7 @@ Some users have reported issues when logging in so that is why this version is m
 
 * [1.5.0.17](http://www.uor-razor.com/Razor_UOR_CE-1.5.0.17.zip) `SHA256: D26E8B887FC26B94FB5B0C50530BE07A4393783CCBEAA9C3FD5B38171A857571`
 
-## Validate Checksum
+# Validate Checksum
 
 * Windows (using Powershell)
     - `Get-FileHash '.\Razor_UOR_CE-1.5.X.X.zip' -Algorithm SHA25`

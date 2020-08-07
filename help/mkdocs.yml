@@ -9,15 +9,17 @@ repo_name: Razor
 edit_uri: ""
 nav:
 - Home: index.md
-- Install: install.md
 - Download: download.md
+- Install:
+    - Windows Install: install/windows.md
+    - Linux Install: install/linux.md
 - Release Notes: releasenotes.md
-- Help:
+- Help Guide:
     - General: help/general.md
     - Options: help/options.md    
     - Display/Counters: help/displaycounters.md
     - Arm/Dress: help/armdress.md
-    - Skills: help/help/skills.md
+    - Skills: help/skills.md
     - Agents: help/agents.md
     - Filters: help/filters.md
     - Hot Keys: help/hotkeys.md
@@ -26,18 +28,39 @@ nav:
     - Friends: help/friends.md    
     - Screen Shots: help/screenshots.md
     - Advanced: help/advanced.md
-- Razor Scripting Guide: http://www.uor-razor.com/guide
+- Scripting Guide:
+    - Scripting Overview: guide/index.md
+    - Commands: guide/commands.md
+    - Comments: guide/comments.md
+    - Condition Loops: guide/conditionloops.md
+    - Expressions: guide/expressions.md
+    - Keywords: guide/keywords.md
+    - Layers: guide/layers.md
+    - Variables: guide/variables.md
 - UOAssist API: uoaapi.md
+
 theme: 
     name: material    
+    language: en    
+    favicon: images/razor.ico
     icon:
         repo: fontawesome/brands/github
     palette:
         primary: red
         accent: blue
+        scheme: slate
+    font:
+        text: Mulish
+        code: Fira Code
+    logo: images/razor.png
+
 markdown_extensions:
   - admonition
   - toc:
-        baselevel: 3
+        baselevel: 3    
+        permalink: true    
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+
 plugins:
-  - search
+  - search  
