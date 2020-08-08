@@ -2,7 +2,7 @@
 
 Below is a list of the latest releases notes going back to the initial version.
 
-## 1.6.5.X (08/X/2020)
+## 1.6.5.16 (08/08/2020)
 
 * Fixed issue with saving scripts in certain scenarios
 * `targettype` will find mobiles and items by name
