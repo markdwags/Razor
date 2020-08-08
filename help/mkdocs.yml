@@ -15,6 +15,7 @@ nav:
     - Linux Install: install/linux.md
 - Release Notes: releasenotes.md
 - Help Guide:
+    - Help Overview: help/index.md
     - General: help/general.md
     - Options: help/options.md    
     - Display/Counters: help/displaycounters.md
