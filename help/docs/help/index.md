@@ -12,7 +12,7 @@ This guide is broken down based on the different tabs found in Razor.
 * [Hot Keys](hotkeys.md)
 * [Macros](macros.md)
 * [Scripts](scripts.md)
-* [Friends](friends.md)    
+* [Friends](friends.md)
 * [Screen Shots](screenshots.md)
 * [Advanced](advanced.md)
 

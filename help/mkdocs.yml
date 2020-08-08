@@ -6,7 +6,7 @@ copyright: Copyright 2020 - Mark Wagner (Quick)
 google_analytics: ['UA-20537997-5', 'uor-razor.com']
 repo_url: https://github.com/markdwags/Razor
 repo_name: Razor
-edit_uri: ""
+edit_uri: "tree/master/help/docs"
 nav:
 - Home: index.md
 - Download: download.md
@@ -65,3 +65,4 @@ markdown_extensions:
 
 plugins:
   - search  
+  - git-revision-date
