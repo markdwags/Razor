@@ -283,6 +283,7 @@ namespace Assistant
                 Log("Equipping {0} to {1} (@{2})", i, to.Serial, layer);
                 Client.Instance.SendToServer(new EquipRequest(i.Serial, to, layer));
                 m_Pending = Serial.Zero;
+                EndHolding(i.Serial);
                 m_Lifted = DateTime.MinValue;
                 return true;
             }
@@ -544,6 +545,7 @@ namespace Assistant
                 if (dr != null)
                 {
                     m_Pending = Serial.Zero;
+                    EndHolding(lr.Serial);
                     m_Lifted = DateTime.MinValue;
 
                     Log("Dropping {0} to {1}", lr, dr.Serial);
