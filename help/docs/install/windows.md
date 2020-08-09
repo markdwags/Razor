@@ -1,9 +1,7 @@
-# Client Support
+!!! warning "Client Support"
+    It's recommended that you use the latest version of the [ClassicUO](https://github.com/andreakarasho/ClassicUO) client with this version of Razor, however it should work with the original 5.x and 7.x clients though support for any bugs may be limited.
 
-It's recommended that you use the latest version of the [ClassicUO](https://github.com/andreakarasho/ClassicUO) client with this version of Razor, however it should will work with the original 5.x and 7.x clients though support for any bugs may be limited.
-
-!!! note
-    When using ClassicUO, some features in Razor are disabled since they either won't work or may cause conflicts with ClassicUO.
+    When using ClassicUO, some features in Razor are disabled since they either won't work and/or may cause conflicts with ClassicUO.
 
 # Install: New ClassicUO with Razor Install (Powershell)
 

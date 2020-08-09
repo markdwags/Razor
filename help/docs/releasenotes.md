@@ -1,6 +1,6 @@
 # Razor Release Notes
 
-Below is a list of the latest releases notes going back to the initial version.
+Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
 ## 1.6.5.16 (08/08/2020)
 

@@ -11,8 +11,8 @@ nav:
 - Home: index.md
 - Download: download.md
 - Install:
-    - Windows Install: install/windows.md
-    - Linux Install: install/linux.md
+    - Windows: install/windows.md
+    - Linux: install/linux.md
 - Release Notes: releasenotes.md
 - Help Guide:
     - Help Overview: help/index.md

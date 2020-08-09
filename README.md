@@ -12,7 +12,7 @@ The goal of this project is to revive and continue development and maintenance o
 
 It's recommended that you use the [ClassicUO](https://github.com/andreakarasho/ClassicUO) client with this version of Razor, however it should will work with the original 5.x and 7.x clients though support for any bugs may be limited.
 
-For release notes, download links and other information go to http://www.uor-razor.com
+For more information, guides, release notes and download links go to http://www.uor-razor.com
 
 ## Project History
 
@@ -23,7 +23,7 @@ Razor was originally designed by Bryan Pass, known as Zippy in the RunUO communi
  The original project was last updated May 2nd, 2014 and while over 50 forks exist on GitHub, none of them have been active or have made significant changes except for a few exceptions:
 
 * [Jaedan](https://github.com/jaedan) (which this version is based on) who updated the project to compile and work in Visual Studio 2017 and made improvements to Crypt.dll that enabled this project to move forward.
-* [uoitalia](https://github.com/uoitalia) who made several performance changes from generic to non-generic collections that I incorporated in the first release.
+* [SaschaKP](https://github.com/SaschaKP) who made several performance changes from generic to non-generic collections that I incorporated in the first release.
 
 I based this version off of 1.4.0.3, which was simply version 1.0.13.13 updated from .NET 2.0 to .NET 4.0 available from [this repo](https://github.com/msturgill/razor). Another version of Razor exists (the 1.0.14.x versions) and is/was maintained by another private shard that make some enhancements, notable around targeting. This version of Razor has long since incorporated the majority of changes you can find in that version.
 
@@ -49,7 +49,9 @@ For a comprehensive guide on the language and syntax, visit the [Razor Scripting
 
 ## Installation & Help
 
-For information on installing Razor, please read [INSTALL](INSTALL.md).
+For information on installing Razor on Windows, [please read this guide](http://www.uor-razor.com/install/windows/).
+
+For information on installing Razor on Linux, [please read this guide](http://www.uor-razor.com/install/linux/).
 
 If you need more help with using Razor, [please go here](http://www.uor-razor.com/help) and review the documentation and/or join Discord and ask there.
 

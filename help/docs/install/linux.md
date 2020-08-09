@@ -67,6 +67,8 @@ chmod +x ClassicUOLauncher
 
 ![cuoinstall](../images/cuolauncher-update.png)
 
+## Install Razor
+
 * Download the latest version of [Razor](../download.md).
 * Extract to `/home/username/games/classicuo-launcher/ClassicUO/Data/Plugins/Razor`
 * Click **Edit Profiles** and setup your profile (server name, Ultima Online path, client version, etc)
@@ -77,4 +79,11 @@ chmod +x ClassicUOLauncher
     You can also run ClassicUO without using the launcher.
 
     Go to `/home/username/games/classicuo-launcher/ClassicUO` and type `mono ClassicUO.exe` or `./ClassicUO`
-    
+
+!!! warning
+
+    On first launch, it might appear stuck on the Razor splash screen.
+
+    ![splash](../images/linuxsplash.png)
+
+    Behind that is a message box warning you that it will use a default profile. If you experience this, simply hit `Enter` with the splash screen active.

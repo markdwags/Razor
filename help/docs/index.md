@@ -26,7 +26,7 @@ The code initially didn't include `Crypt.dll` and `Loader.dll` which are require
 The original project was last updated May 2nd, 2014 which was simply an update from .NET 2.0 to .NET 4.0 and while over 50 forks exist on GitHub, none of them have been active or have made significant changes except for a few exceptions:
 
 * `Jaedan` (which this version is based on) who updated the project to compile and work in Visual Studio 2017 and made improvements to Crypt.dll that enabled this project to move forward.
-* `uoitalia` who made several performance changes from generic to non-generic collections that I incorporated in the first release.
+* `SaschaKP` who made several performance changes from generic to non-generic collections that I incorporated in the first release.
 
 I have been actively maintaining this project since early April 2018 and based this version off of `1.4.0.3`, which was simply the version `1.0.13.13` updated to .NET 4.0.
 
