@@ -327,6 +327,7 @@ namespace Assistant
 
                 Client.Instance.SendToServer(new DropRequest(i.Serial, pt, dest));
                 m_Pending = Serial.Zero;
+                EndHolding(i.Serial);
                 m_Lifted = DateTime.MinValue;
                 return true;
             }
