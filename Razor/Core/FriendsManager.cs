@@ -413,7 +413,7 @@ namespace Assistant.Core
                 {
                     mobile.OverheadMessage(63, "[Party-Friend]");
                 }
-                else if (group.OverheadFormatEnabled)
+                else if (group != null && group.OverheadFormatEnabled)
                 {
                     mobile.OverheadMessage(group.OverheadFormatHue, group.OverheadFormat);
                 }

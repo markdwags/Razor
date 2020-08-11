@@ -308,7 +308,7 @@ namespace Assistant
 
             AddProperty("CreateWaypointOnDeath", false);
 
-            AddProperty("ShowPartyFriendOverhead", true);
+            AddProperty("ShowPartyFriendOverhead", false);
 
             Counter.Default();
             Filter.DisableAll();
