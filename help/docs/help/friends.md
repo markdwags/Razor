@@ -11,7 +11,7 @@ Razor allows you to manage groups of friends to prevent you from targeting those
 * **Show [Party-Friend] overhead**
     - Shows a message overhead on party members who are friends.
 * **Next/Prev Target ignores 'Friends'**
-    - Ignore friends when using Next/Prev targeting.
+    - Ignore friends when using Next/Prev targeting unless you specifically use the `Next/Prev Friend` hotkey.
 * **Auto-accept party invites from friends**
     - If a friend sends you a party invite, it will auto accept it.
 * **Next/Prev highlights 'Friends'**

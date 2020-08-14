@@ -9,7 +9,7 @@ Razor is a free tool designed to help with simple tasks while playing Ultima Onl
 
 This guide was written for the **Razor UO:Renaissance Community Edition**.
 
-For more information about this version of Razor, read the [history](#history), review the [release notes](http://www.uor-razor.com/#releasenotes) and [download](http://www.uor-razor.com/#download) Razor.
+For more information about this version of Razor, read the [history](#history), review the [release notes](./releasenotes.md) and [download](./download.md) Razor.
 
 # Overview
 

@@ -1,6 +1,6 @@
 # Macros
 
-The Macros tab is an indispensable tool. Record a set of actions often repeated. The macro can then be run repeatedly to copy the same actions. In this manner, less wear and tear is put on your mouse. Macros can be used to macro skill, even afk or while playing another character. Macros can be used for gathering resources and crafting.
+Macros allow you to run a set of recorded actions. Macros can be used to macro skills or perform other actions even while AFK or while playing another character. Macros can be used for gathering resources and crafting.
 
 Macros are divided into two sections. The column on the left is the macro index of all macros you make. On the right is the action area, used to set and edit the macros you create. Macros are saved to a folder, 'Macros', in your Razor folder. These can be edited in text format.
 

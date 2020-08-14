@@ -91,14 +91,23 @@ This option will display messages above your head that are triggered based on sy
 * **Show text target indicator**
     - When checked, a simple text indicator above the target's head will appear
 
+### Smart Targeting
+
+Smart Targeting enables Razor to use beneficial or harmful spells according to your previous actions.
+
+For example, in battle if you cast Energy Bolt (a harmful spell) at an enemy and Greater Heal (a beneficial spell) at a friend, Razor will remember the last targets for each spell type. The next time you cast a harmful spell with `Last Target`, Razor will target the enemy even if you just casted Greater Heal on your friend with last target without requiring you to set a new target.
+
+!!! tip "Smart Targeting Hot Keys"
+    You can set your `Harmful` and `Beneficial` target manually by using `Set Last Target (Beneficial)` or `Set Last Target (Harmful)`.
+ 
 * **Use smart last target**
-    - When this box is checked, Razor will use beneficial and harmful spells according to your previous actions. For example, in battle if you cast Energy Bolt (a harmful spell) at an enemy and Greater Heal (a beneficial spell) at a friend, Razor will remember the last targets for each spell type. The next time you cast a harmful spell with last target, Razor will target the enemy even if you just casted Greater Heal on your friend with last target.
+    - Enables smart targeting
 * **'Next/Prev Friend' sets beneficial only**
-    - Using Next/Prev Friend will only set the beneficial target.
+    - Using Next/Prev Friend will only set the beneficial target (this option works in conjunction with the [Friends tab](friends.md))
 * **'Next/Prev Friendly' sets beneficial only**
     - Using Next/Prev Friendly will only set the beneficial target.
 * **'Next/Prev Non-Friendly' harmful only**
-    - Using Next/Prev Friend will only set the harmful target.
+    - Using Next/Prev Friendly will only set the harmful target.
 
 ## Additional Options
 

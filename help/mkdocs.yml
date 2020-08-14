@@ -15,7 +15,7 @@ nav:
     - Linux: install/linux.md
 - Release Notes: releasenotes.md
 - Help Guide:
-    - Help Overview: help/index.md
+    - Help Overview: help/index.md    
     - General: help/general.md
     - Options: help/options.md    
     - Display/Counters: help/displaycounters.md
@@ -29,6 +29,7 @@ nav:
     - Friends: help/friends.md    
     - Screen Shots: help/screenshots.md
     - Advanced: help/advanced.md
+- FAQ: faq.md
 - Scripting Guide:
     - Scripting Overview: guide/index.md
     - Commands: guide/commands.md
