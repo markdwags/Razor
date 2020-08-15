@@ -113,3 +113,35 @@ Click **Recount** to force Razor to check all the containers on your character a
 
 * **Show bandage timer**
     - When you have this enabled, when you use a bandage a timer will display.
+
+## Overhead Messages
+
+![overhead](../images/overhead.png)
+
+Check `Enabled` to turn on the overhead messages feature.
+
+This option will display messages above your head that are triggered based on system messages in the lower-left that come in from the server. For example, when the message `You begin applying bandages.` comes through, you can have the message `[Applying bandages]` appear above your head.
+
+!!! tip "Expand Overhead Messages"
+    You can extract specific words from the system message to display in the overhead messages (`{1}` for the first word, `{2}` for the second word, etc).
+    If the system message is `You must wait 80 seconds!`, you can set the overhead message to `Wait {4}s` and it would display `Wait 80s` overhead.
+
+| Option | Description |
+| ------ | ----------- |
+| Format | Set the format of the overhead message. It must contain `{msg}` for your custom message to appear. Default is `[{msg}]`.|
+| Message Style | Set the message style to appear overhead depending on your preference. Default is `Unicode`. |
+
+### Create Overhead Message
+
+* Enter part of the message or the whole message into the `Search Text` field.
+* (Optional) If you need help finding the message, click `Search` and select the message you want to capture.
+
+!!! tip
+    If your message is custom to your shard and not on the search list, simply click `Add` to capture it. It doesn't need to be a static message in the client files.
+
+* Click `Add` and enter the message you want to appear overhead and click `OK`.
+* Your overhead message capture will appear at the bottom of the list.
+
+### Demo
+
+![overheaddemo](../images/overheaddemo.gif)

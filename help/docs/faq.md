@@ -52,3 +52,7 @@ Scripts are stored in the `Scripts` folder and saved with the `.razor` file exte
 
 !!! warning
     Files not listed here the related binaries required for Razor to work. They include files ending with `.dll, .lib, .exe, .exp, .pdb` and **_should not_** be part of restoring Razor files between installations.
+
+# Overhead Messages
+
+For details on how to use the Overhead Messages feature, view the [help guide](help/displaycounters.md#overhead-messages).

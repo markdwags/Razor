@@ -40,17 +40,7 @@
 
 * **Show New/Incoming Corpses**
     - As above, but with corpses.
-### Overhead Messages
 
-* **Show overhead messages**
-
-![overhead](../images/overhead.png)
-
-This option will display messages above your head that are triggered based on system messages in the lower-left that come in from the server. For example, when the message `You begin applying bandages.` comes through, you can have the message `[Applying bandages]` appear above your head.
-
-!!! tip "Expand Overhead Messages"
-    You can extract specific words from the system message to display in the overhead messages (`{1}` for the first word, `{2}` for the second word, etc).
-    If the system message is `You must wait 80 seconds!`, you can set the overhead message to `Wait {4}s` and it would display `Wait 80s` overhead.
 * **Show container labels**
     - This option will allow you to tag containers and give them a label. This should allow for easier pixel sorting.
     - **Default Format** `[{label}] ({name})`
