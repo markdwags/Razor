@@ -180,8 +180,6 @@ namespace Assistant
         private CheckBox showtargtext;
         private Button containerLabels;
         private CheckBox showContainerLabels;
-        private Button overHeadMessages;
-        private CheckBox showOverheadMessages;
         private CheckBox showBuffDebuffOverhead;
         private TextBox healthFmt;
         private Label label10;
@@ -457,8 +455,6 @@ namespace Assistant
             this.chkPartyOverhead = new System.Windows.Forms.CheckBox();
             this.containerLabels = new System.Windows.Forms.Button();
             this.showContainerLabels = new System.Windows.Forms.CheckBox();
-            this.overHeadMessages = new System.Windows.Forms.Button();
-            this.showOverheadMessages = new System.Windows.Forms.CheckBox();
             this.incomingMob = new System.Windows.Forms.CheckBox();
             this.incomingCorpse = new System.Windows.Forms.CheckBox();
             this.setLTHilight = new System.Windows.Forms.Button();
@@ -576,6 +572,26 @@ namespace Assistant
             this.bandageTimerFormat = new System.Windows.Forms.TextBox();
             this.showBandageTimer = new System.Windows.Forms.CheckBox();
             this.lblBandageCountFormat = new System.Windows.Forms.Label();
+            this.subOverheadTab = new System.Windows.Forms.TabPage();
+            this.label14 = new System.Windows.Forms.Label();
+            this.unicodeStyle = new System.Windows.Forms.RadioButton();
+            this.asciiStyle = new System.Windows.Forms.RadioButton();
+            this.editOverheadMessage = new System.Windows.Forms.Button();
+            this.setColorHue = new System.Windows.Forms.Button();
+            this.removeOverheadMessage = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.overheadFormat = new System.Windows.Forms.TextBox();
+            this.setOverheadMessage = new System.Windows.Forms.Button();
+            this.cliLocOverheadView = new System.Windows.Forms.ListView();
+            this.cliLocOriginal = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cliLocOverheadMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cliLocSearch = new System.Windows.Forms.Button();
+            this.cliLocTextSearch = new System.Windows.Forms.TextBox();
+            this.lblOhSearch = new System.Windows.Forms.Label();
+            this.cliLocSearchView = new System.Windows.Forms.ListView();
+            this.cliLocSearchNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cliLocSearchText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.showOverheadMessages = new System.Windows.Forms.CheckBox();
             this.dressTab = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.clearDress = new System.Windows.Forms.Button();
@@ -798,6 +814,7 @@ namespace Assistant
             this.subCountersTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.subBandageTimerTab.SuspendLayout();
+            this.subOverheadTab.SuspendLayout();
             this.dressTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -1192,9 +1209,9 @@ namespace Assistant
             this.subSoundMusicTab.Controls.Add(this.playSound);
             this.subSoundMusicTab.Controls.Add(this.soundFilterEnabled);
             this.subSoundMusicTab.Controls.Add(this.soundFilterList);
-            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 24);
+            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 22);
             this.subSoundMusicTab.Name = "subSoundMusicTab";
-            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 286);
+            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 288);
             this.subSoundMusicTab.TabIndex = 3;
             this.subSoundMusicTab.Text = "Sound & Music  ";
             // 
@@ -1312,9 +1329,9 @@ namespace Assistant
             this.subWaypoints.Controls.Add(this.lblWaypoint);
             this.subWaypoints.Controls.Add(this.btnAddWaypoint);
             this.subWaypoints.Controls.Add(this.waypointList);
-            this.subWaypoints.Location = new System.Drawing.Point(4, 24);
+            this.subWaypoints.Location = new System.Drawing.Point(4, 22);
             this.subWaypoints.Name = "subWaypoints";
-            this.subWaypoints.Size = new System.Drawing.Size(502, 286);
+            this.subWaypoints.Size = new System.Drawing.Size(502, 288);
             this.subWaypoints.TabIndex = 4;
             this.subWaypoints.Text = "Waypoints";
             // 
@@ -1525,8 +1542,6 @@ namespace Assistant
             this.subOptionsSpeechTab.Controls.Add(this.chkPartyOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.containerLabels);
             this.subOptionsSpeechTab.Controls.Add(this.showContainerLabels);
-            this.subOptionsSpeechTab.Controls.Add(this.overHeadMessages);
-            this.subOptionsSpeechTab.Controls.Add(this.showOverheadMessages);
             this.subOptionsSpeechTab.Controls.Add(this.incomingMob);
             this.subOptionsSpeechTab.Controls.Add(this.incomingCorpse);
             this.subOptionsSpeechTab.Controls.Add(this.setLTHilight);
@@ -1569,7 +1584,7 @@ namespace Assistant
             // damageTakenOverhead
             // 
             this.damageTakenOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.damageTakenOverhead.Location = new System.Drawing.Point(394, 209);
+            this.damageTakenOverhead.Location = new System.Drawing.Point(394, 185);
             this.damageTakenOverhead.Name = "damageTakenOverhead";
             this.damageTakenOverhead.Size = new System.Drawing.Size(77, 19);
             this.damageTakenOverhead.TabIndex = 128;
@@ -1580,7 +1595,7 @@ namespace Assistant
             // showDamageTaken
             // 
             this.showDamageTaken.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.showDamageTaken.Location = new System.Drawing.Point(260, 209);
+            this.showDamageTaken.Location = new System.Drawing.Point(260, 185);
             this.showDamageTaken.Name = "showDamageTaken";
             this.showDamageTaken.Size = new System.Drawing.Size(139, 19);
             this.showDamageTaken.TabIndex = 127;
@@ -1591,7 +1606,7 @@ namespace Assistant
             // damageDealtOverhead
             // 
             this.damageDealtOverhead.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.damageDealtOverhead.Location = new System.Drawing.Point(394, 184);
+            this.damageDealtOverhead.Location = new System.Drawing.Point(394, 160);
             this.damageDealtOverhead.Name = "damageDealtOverhead";
             this.damageDealtOverhead.Size = new System.Drawing.Size(77, 19);
             this.damageDealtOverhead.TabIndex = 126;
@@ -1602,7 +1617,7 @@ namespace Assistant
             // showDamageDealt
             // 
             this.showDamageDealt.AutoSize = true;
-            this.showDamageDealt.Location = new System.Drawing.Point(260, 184);
+            this.showDamageDealt.Location = new System.Drawing.Point(260, 160);
             this.showDamageDealt.Name = "showDamageDealt";
             this.showDamageDealt.Size = new System.Drawing.Size(130, 19);
             this.showDamageDealt.TabIndex = 125;
@@ -1623,7 +1638,7 @@ namespace Assistant
             // 
             // healthFmt
             // 
-            this.healthFmt.Location = new System.Drawing.Point(377, 134);
+            this.healthFmt.Location = new System.Drawing.Point(377, 110);
             this.healthFmt.Name = "healthFmt";
             this.healthFmt.Size = new System.Drawing.Size(53, 23);
             this.healthFmt.TabIndex = 89;
@@ -1633,7 +1648,7 @@ namespace Assistant
             // 
             // label10
             // 
-            this.label10.Location = new System.Drawing.Point(283, 135);
+            this.label10.Location = new System.Drawing.Point(283, 111);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(115, 18);
             this.label10.TabIndex = 88;
@@ -1642,7 +1657,7 @@ namespace Assistant
             // 
             // showHealthOH
             // 
-            this.showHealthOH.Location = new System.Drawing.Point(260, 112);
+            this.showHealthOH.Location = new System.Drawing.Point(260, 88);
             this.showHealthOH.Name = "showHealthOH";
             this.showHealthOH.Size = new System.Drawing.Size(231, 20);
             this.showHealthOH.TabIndex = 87;
@@ -1651,7 +1666,7 @@ namespace Assistant
             // 
             // chkPartyOverhead
             // 
-            this.chkPartyOverhead.Location = new System.Drawing.Point(260, 158);
+            this.chkPartyOverhead.Location = new System.Drawing.Point(260, 134);
             this.chkPartyOverhead.Name = "chkPartyOverhead";
             this.chkPartyOverhead.Size = new System.Drawing.Size(238, 20);
             this.chkPartyOverhead.TabIndex = 90;
@@ -1661,7 +1676,7 @@ namespace Assistant
             // containerLabels
             // 
             this.containerLabels.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.containerLabels.Location = new System.Drawing.Point(438, 87);
+            this.containerLabels.Location = new System.Drawing.Point(438, 63);
             this.containerLabels.Name = "containerLabels";
             this.containerLabels.Size = new System.Drawing.Size(33, 19);
             this.containerLabels.TabIndex = 86;
@@ -1672,35 +1687,13 @@ namespace Assistant
             // showContainerLabels
             // 
             this.showContainerLabels.AutoSize = true;
-            this.showContainerLabels.Location = new System.Drawing.Point(260, 87);
+            this.showContainerLabels.Location = new System.Drawing.Point(260, 63);
             this.showContainerLabels.Name = "showContainerLabels";
             this.showContainerLabels.Size = new System.Drawing.Size(141, 19);
             this.showContainerLabels.TabIndex = 85;
             this.showContainerLabels.Text = "Show container labels";
             this.showContainerLabels.UseVisualStyleBackColor = true;
             this.showContainerLabels.CheckedChanged += new System.EventHandler(this.showContainerLabels_CheckedChanged);
-            // 
-            // overHeadMessages
-            // 
-            this.overHeadMessages.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.overHeadMessages.Location = new System.Drawing.Point(438, 62);
-            this.overHeadMessages.Name = "overHeadMessages";
-            this.overHeadMessages.Size = new System.Drawing.Size(33, 19);
-            this.overHeadMessages.TabIndex = 84;
-            this.overHeadMessages.Text = "...";
-            this.overHeadMessages.UseVisualStyleBackColor = true;
-            this.overHeadMessages.Click += new System.EventHandler(this.overHeadMessages_Click);
-            // 
-            // showOverheadMessages
-            // 
-            this.showOverheadMessages.AutoSize = true;
-            this.showOverheadMessages.Location = new System.Drawing.Point(260, 62);
-            this.showOverheadMessages.Name = "showOverheadMessages";
-            this.showOverheadMessages.Size = new System.Drawing.Size(161, 19);
-            this.showOverheadMessages.TabIndex = 83;
-            this.showOverheadMessages.Text = "Show overhead messages";
-            this.showOverheadMessages.UseVisualStyleBackColor = true;
-            this.showOverheadMessages.CheckedChanged += new System.EventHandler(this.showMessagesOverhead_CheckedChanged);
             // 
             // incomingMob
             // 
@@ -2490,11 +2483,13 @@ namespace Assistant
             this.displayCountersTabCtrl.Controls.Add(this.subDisplayTab);
             this.displayCountersTabCtrl.Controls.Add(this.subCountersTab);
             this.displayCountersTabCtrl.Controls.Add(this.subBandageTimerTab);
+            this.displayCountersTabCtrl.Controls.Add(this.subOverheadTab);
             this.displayCountersTabCtrl.Location = new System.Drawing.Point(6, 3);
             this.displayCountersTabCtrl.Name = "displayCountersTabCtrl";
             this.displayCountersTabCtrl.SelectedIndex = 0;
             this.displayCountersTabCtrl.Size = new System.Drawing.Size(510, 314);
             this.displayCountersTabCtrl.TabIndex = 51;
+            this.displayCountersTabCtrl.SelectedIndexChanged += new System.EventHandler(this.displayCountersTabCtrl_SelectedIndexChanged);
             // 
             // subDisplayTab
             // 
@@ -2950,6 +2945,204 @@ namespace Assistant
             this.lblBandageCountFormat.TabIndex = 54;
             this.lblBandageCountFormat.Text = "Format && Hue:";
             this.lblBandageCountFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // subOverheadTab
+            // 
+            this.subOverheadTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOverheadTab.Controls.Add(this.label14);
+            this.subOverheadTab.Controls.Add(this.unicodeStyle);
+            this.subOverheadTab.Controls.Add(this.asciiStyle);
+            this.subOverheadTab.Controls.Add(this.editOverheadMessage);
+            this.subOverheadTab.Controls.Add(this.setColorHue);
+            this.subOverheadTab.Controls.Add(this.removeOverheadMessage);
+            this.subOverheadTab.Controls.Add(this.label13);
+            this.subOverheadTab.Controls.Add(this.overheadFormat);
+            this.subOverheadTab.Controls.Add(this.setOverheadMessage);
+            this.subOverheadTab.Controls.Add(this.cliLocOverheadView);
+            this.subOverheadTab.Controls.Add(this.cliLocSearch);
+            this.subOverheadTab.Controls.Add(this.cliLocTextSearch);
+            this.subOverheadTab.Controls.Add(this.lblOhSearch);
+            this.subOverheadTab.Controls.Add(this.cliLocSearchView);
+            this.subOverheadTab.Controls.Add(this.showOverheadMessages);
+            this.subOverheadTab.Location = new System.Drawing.Point(4, 24);
+            this.subOverheadTab.Name = "subOverheadTab";
+            this.subOverheadTab.Size = new System.Drawing.Size(502, 286);
+            this.subOverheadTab.TabIndex = 3;
+            this.subOverheadTab.Text = "Overhead Messages";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(5, 101);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(84, 15);
+            this.label14.TabIndex = 102;
+            this.label14.Text = "Message Style:";
+            // 
+            // unicodeStyle
+            // 
+            this.unicodeStyle.AutoSize = true;
+            this.unicodeStyle.Location = new System.Drawing.Point(8, 119);
+            this.unicodeStyle.Name = "unicodeStyle";
+            this.unicodeStyle.Size = new System.Drawing.Size(69, 19);
+            this.unicodeStyle.TabIndex = 101;
+            this.unicodeStyle.TabStop = true;
+            this.unicodeStyle.Text = "Unicode";
+            this.unicodeStyle.UseVisualStyleBackColor = true;
+            this.unicodeStyle.CheckedChanged += new System.EventHandler(this.unicodeStyle_CheckedChanged);
+            // 
+            // asciiStyle
+            // 
+            this.asciiStyle.AutoSize = true;
+            this.asciiStyle.Location = new System.Drawing.Point(8, 144);
+            this.asciiStyle.Name = "asciiStyle";
+            this.asciiStyle.Size = new System.Drawing.Size(53, 19);
+            this.asciiStyle.TabIndex = 100;
+            this.asciiStyle.TabStop = true;
+            this.asciiStyle.Text = "ASCII";
+            this.asciiStyle.UseVisualStyleBackColor = true;
+            this.asciiStyle.CheckedChanged += new System.EventHandler(this.asciiStyle_CheckedChanged);
+            // 
+            // editOverheadMessage
+            // 
+            this.editOverheadMessage.Location = new System.Drawing.Point(8, 179);
+            this.editOverheadMessage.Name = "editOverheadMessage";
+            this.editOverheadMessage.Size = new System.Drawing.Size(84, 28);
+            this.editOverheadMessage.TabIndex = 97;
+            this.editOverheadMessage.Text = "Edit";
+            this.editOverheadMessage.UseVisualStyleBackColor = true;
+            this.editOverheadMessage.Click += new System.EventHandler(this.editOverheadMessage_Click);
+            // 
+            // setColorHue
+            // 
+            this.setColorHue.Location = new System.Drawing.Point(8, 247);
+            this.setColorHue.Name = "setColorHue";
+            this.setColorHue.Size = new System.Drawing.Size(84, 28);
+            this.setColorHue.TabIndex = 96;
+            this.setColorHue.Text = "Set Hue";
+            this.setColorHue.UseVisualStyleBackColor = true;
+            this.setColorHue.Click += new System.EventHandler(this.setColorHue_Click);
+            // 
+            // removeOverheadMessage
+            // 
+            this.removeOverheadMessage.Location = new System.Drawing.Point(8, 213);
+            this.removeOverheadMessage.Name = "removeOverheadMessage";
+            this.removeOverheadMessage.Size = new System.Drawing.Size(84, 28);
+            this.removeOverheadMessage.TabIndex = 95;
+            this.removeOverheadMessage.Text = "Remove";
+            this.removeOverheadMessage.UseVisualStyleBackColor = true;
+            this.removeOverheadMessage.Click += new System.EventHandler(this.removeOverheadMessage_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(5, 39);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(48, 15);
+            this.label13.TabIndex = 94;
+            this.label13.Text = "Format:";
+            // 
+            // overheadFormat
+            // 
+            this.overheadFormat.Location = new System.Drawing.Point(8, 57);
+            this.overheadFormat.Name = "overheadFormat";
+            this.overheadFormat.Size = new System.Drawing.Size(84, 23);
+            this.overheadFormat.TabIndex = 93;
+            this.overheadFormat.Text = "[{msg}]";
+            this.overheadFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.overheadFormat.TextChanged += new System.EventHandler(this.overheadFormat_TextChanged);
+            // 
+            // setOverheadMessage
+            // 
+            this.setOverheadMessage.Location = new System.Drawing.Point(443, 9);
+            this.setOverheadMessage.Name = "setOverheadMessage";
+            this.setOverheadMessage.Size = new System.Drawing.Size(56, 24);
+            this.setOverheadMessage.TabIndex = 92;
+            this.setOverheadMessage.Text = "Add";
+            this.setOverheadMessage.UseVisualStyleBackColor = true;
+            this.setOverheadMessage.Click += new System.EventHandler(this.setOverheadMessage_Click);
+            // 
+            // cliLocOverheadView
+            // 
+            this.cliLocOverheadView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cliLocOriginal,
+            this.cliLocOverheadMessage});
+            this.cliLocOverheadView.HideSelection = false;
+            this.cliLocOverheadView.Location = new System.Drawing.Point(98, 156);
+            this.cliLocOverheadView.Name = "cliLocOverheadView";
+            this.cliLocOverheadView.Size = new System.Drawing.Size(401, 127);
+            this.cliLocOverheadView.TabIndex = 91;
+            this.cliLocOverheadView.UseCompatibleStateImageBehavior = false;
+            this.cliLocOverheadView.View = System.Windows.Forms.View.Details;
+            // 
+            // cliLocOriginal
+            // 
+            this.cliLocOriginal.Text = "Original Text";
+            this.cliLocOriginal.Width = 168;
+            // 
+            // cliLocOverheadMessage
+            // 
+            this.cliLocOverheadMessage.Text = "Overhead Message";
+            this.cliLocOverheadMessage.Width = 229;
+            // 
+            // cliLocSearch
+            // 
+            this.cliLocSearch.Location = new System.Drawing.Point(377, 9);
+            this.cliLocSearch.Name = "cliLocSearch";
+            this.cliLocSearch.Size = new System.Drawing.Size(60, 24);
+            this.cliLocSearch.TabIndex = 90;
+            this.cliLocSearch.Text = "Search";
+            this.cliLocSearch.UseVisualStyleBackColor = true;
+            this.cliLocSearch.Click += new System.EventHandler(this.cliLocSearch_Click);
+            // 
+            // cliLocTextSearch
+            // 
+            this.cliLocTextSearch.Location = new System.Drawing.Point(146, 9);
+            this.cliLocTextSearch.Name = "cliLocTextSearch";
+            this.cliLocTextSearch.Size = new System.Drawing.Size(225, 23);
+            this.cliLocTextSearch.TabIndex = 89;
+            // 
+            // lblOhSearch
+            // 
+            this.lblOhSearch.AutoSize = true;
+            this.lblOhSearch.Location = new System.Drawing.Point(95, 12);
+            this.lblOhSearch.Name = "lblOhSearch";
+            this.lblOhSearch.Size = new System.Drawing.Size(45, 15);
+            this.lblOhSearch.TabIndex = 88;
+            this.lblOhSearch.Text = "Search:";
+            // 
+            // cliLocSearchView
+            // 
+            this.cliLocSearchView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cliLocSearchNumber,
+            this.cliLocSearchText});
+            this.cliLocSearchView.HideSelection = false;
+            this.cliLocSearchView.Location = new System.Drawing.Point(98, 39);
+            this.cliLocSearchView.Name = "cliLocSearchView";
+            this.cliLocSearchView.Size = new System.Drawing.Size(401, 111);
+            this.cliLocSearchView.TabIndex = 87;
+            this.cliLocSearchView.UseCompatibleStateImageBehavior = false;
+            this.cliLocSearchView.View = System.Windows.Forms.View.Details;
+            // 
+            // cliLocSearchNumber
+            // 
+            this.cliLocSearchNumber.Text = "Number";
+            this.cliLocSearchNumber.Width = 75;
+            // 
+            // cliLocSearchText
+            // 
+            this.cliLocSearchText.Text = "Text";
+            this.cliLocSearchText.Width = 313;
+            // 
+            // showOverheadMessages
+            // 
+            this.showOverheadMessages.Location = new System.Drawing.Point(8, 9);
+            this.showOverheadMessages.Name = "showOverheadMessages";
+            this.showOverheadMessages.Size = new System.Drawing.Size(71, 24);
+            this.showOverheadMessages.TabIndex = 85;
+            this.showOverheadMessages.Text = "Enabled";
+            this.showOverheadMessages.UseVisualStyleBackColor = true;
+            this.showOverheadMessages.CheckedChanged += new System.EventHandler(this.showOverheadMessages_CheckedChanged);
             // 
             // dressTab
             // 
@@ -3568,10 +3761,10 @@ namespace Assistant
             this.subFilterTargets.Controls.Add(this.targetFilterAdd);
             this.subFilterTargets.Controls.Add(this.targetFilter);
             this.subFilterTargets.Controls.Add(this.targetFilterEnabled);
-            this.subFilterTargets.Location = new System.Drawing.Point(4, 24);
+            this.subFilterTargets.Location = new System.Drawing.Point(4, 22);
             this.subFilterTargets.Name = "subFilterTargets";
             this.subFilterTargets.Padding = new System.Windows.Forms.Padding(3);
-            this.subFilterTargets.Size = new System.Drawing.Size(498, 285);
+            this.subFilterTargets.Size = new System.Drawing.Size(498, 287);
             this.subFilterTargets.TabIndex = 1;
             this.subFilterTargets.Text = "Target Filter";
             // 
@@ -5119,6 +5312,8 @@ namespace Assistant
             this.groupBox2.ResumeLayout(false);
             this.subBandageTimerTab.ResumeLayout(false);
             this.subBandageTimerTab.PerformLayout();
+            this.subOverheadTab.ResumeLayout(false);
+            this.subOverheadTab.PerformLayout();
             this.dressTab.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -5258,5 +5453,25 @@ namespace Assistant
         private Button targetFilterAdd;
         private ListBox targetFilter;
         private CheckBox targetFilterEnabled;
+        private TabPage subOverheadTab;
+        private CheckBox showOverheadMessages;
+        private Button cliLocSearch;
+        private TextBox cliLocTextSearch;
+        private Label lblOhSearch;
+        private ListView cliLocSearchView;
+        private ColumnHeader cliLocSearchNumber;
+        private ColumnHeader cliLocSearchText;
+        private Label label13;
+        private TextBox overheadFormat;
+        private Button setOverheadMessage;
+        private ListView cliLocOverheadView;
+        private ColumnHeader cliLocOriginal;
+        private ColumnHeader cliLocOverheadMessage;
+        private Button editOverheadMessage;
+        private Button setColorHue;
+        private Button removeOverheadMessage;
+        private Label label14;
+        private RadioButton unicodeStyle;
+        private RadioButton asciiStyle;
     }
 }

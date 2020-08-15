@@ -394,12 +394,6 @@
     <Compile Include="UI\ContainerLabels.Designer.cs">
       <DependentUpon>ContainerLabels.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\OverheadMessages.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\OverheadMessages.Designer.cs">
-      <DependentUpon>OverheadMessages.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Razor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -508,9 +502,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ContainerLabels.resx">
       <DependentUpon>ContainerLabels.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\OverheadMessages.resx">
-      <DependentUpon>OverheadMessages.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Razor.resx">
       <DependentUpon>Razor.cs</DependentUpon>
