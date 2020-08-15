@@ -168,13 +168,13 @@
     <Compile Include="Core\Dress.cs" />
     <Compile Include="Core\EncodedSpeech.cs" />
     <Compile Include="Core\DamageTracker.cs" />
+    <Compile Include="Core\OverheadManager.cs" />
     <Compile Include="Core\WaypointManager.cs" />
     <Compile Include="Filters\SoundMusicManager.cs" />
     <Compile Include="Filters\TargetFilterManager.cs" />
     <Compile Include="Core\FriendsManager.cs" />
     <Compile Include="Core\MessageInBottleCapture.cs" />
     <Compile Include="Core\ContainerLabels.cs" />
-    <Compile Include="Core\OverheadMessages.cs" />
     <Compile Include="Core\GoldPerHourTimer.cs" />
     <Compile Include="Core\GateTimer.cs" />
     <Compile Include="Core\SkillTimer.cs" />

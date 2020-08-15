@@ -6846,7 +6846,7 @@ namespace Assistant
 
                 cliLocOverheadView.SafeAction(s => s.Items.Add(item));
 
-                Core.OverheadMessages.OverheadMessageList.Add(new Core.OverheadMessages.OverheadMessage
+                OverheadManager.OverheadMessageList.Add(new OverheadManager.OverheadMessage
                 {
                     SearchMessage = newItemText,
                     Hue = hueIdx,
@@ -6874,7 +6874,7 @@ namespace Assistant
 
                 selectedItem.SubItems[1].Text = newMessage;
 
-                foreach (Core.OverheadMessages.OverheadMessage list in Core.OverheadMessages.OverheadMessageList)
+                foreach (OverheadManager.OverheadMessage list in OverheadManager.OverheadMessageList)
                 {
                     if (list.MessageOverhead.Equals(oldMessage))
                     {
@@ -6891,7 +6891,7 @@ namespace Assistant
             {
                 cliLocOverheadView.SafeAction(s =>
                 {
-                    OverheadMessages.Remove(s.SelectedItems[0].Text);
+                    OverheadManager.Remove(s.SelectedItems[0].Text);
                     s.Items.Remove(s.SelectedItems[0]);
                 });
             }
@@ -6924,7 +6924,7 @@ namespace Assistant
                     ? Color.White
                     : Color.Black);
 
-                foreach (Core.OverheadMessages.OverheadMessage list in Core.OverheadMessages.OverheadMessageList)
+                foreach (OverheadManager.OverheadMessage list in OverheadManager.OverheadMessageList)
                 {
                     if (list.SearchMessage.Equals(selectedItem.Text))
                     {
@@ -6939,7 +6939,7 @@ namespace Assistant
         {
             int hue = 0;
 
-            foreach (Core.OverheadMessages.OverheadMessage list in Core.OverheadMessages.OverheadMessageList)
+            foreach (OverheadManager.OverheadMessage list in OverheadManager.OverheadMessageList)
             {
                 if (list.MessageOverhead.Equals(id))
                 {
@@ -6984,7 +6984,7 @@ namespace Assistant
             {
                 cliLocOverheadView.SafeAction(s => s.Items.Clear());
 
-                foreach (Core.OverheadMessages.OverheadMessage message in Core.OverheadMessages.OverheadMessageList)
+                foreach (OverheadManager.OverheadMessage message in OverheadManager.OverheadMessageList)
                 {
                     ListViewItem item = new ListViewItem($"{message.SearchMessage}");
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, message.MessageOverhead));

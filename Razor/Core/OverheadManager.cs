@@ -24,7 +24,7 @@ using System.Xml;
 
 namespace Assistant.Core
 {
-    public class OverheadMessages
+    public class OverheadManager
     {
         public class OverheadMessage
         {

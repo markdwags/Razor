@@ -30,7 +30,6 @@ using Assistant.HotKeys;
 using Assistant.Macros;
 using Assistant.Scripts;
 using Assistant.UI;
-using OverheadMessages = Assistant.Core.OverheadMessages;
 using ContainerLabels = Assistant.Core.ContainerLabels;
 
 namespace Assistant
@@ -1987,7 +1986,7 @@ namespace Assistant
                     }
 
                     // Overhead message override
-                    OverheadMessages.DisplayOverheadMessage(text);
+                    OverheadManager.DisplayOverheadMessage(text);
                 }
 
                 if (Config.GetBool("ShowContainerLabels") && ser.IsItem)

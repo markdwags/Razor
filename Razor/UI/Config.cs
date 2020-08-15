@@ -34,7 +34,6 @@ using Assistant.Macros;
 using Assistant.Scripts;
 using Assistant.UI;
 using ContainerLabels = Assistant.Core.ContainerLabels;
-using OverheadMessages = Assistant.Core.OverheadMessages;
 
 namespace Assistant
 {
@@ -319,7 +318,7 @@ namespace Assistant
             FriendsManager.ClearAll();
             WaypointManager.ClearAll();
             DressList.ClearAll();
-            OverheadMessages.ClearAll();
+            OverheadManager.ClearAll();
             ContainerLabels.ClearAll();
             MacroVariables.ClearAll();
             ScriptVariables.ClearAll();
@@ -430,7 +429,7 @@ namespace Assistant
             FriendsManager.Load(root["friends"]);
             HotKey.Load(root["hotkeys"]);
             PasswordMemory.Load(root["passwords"]);
-            OverheadMessages.Load(root["overheadmessages"]);
+            OverheadManager.Load(root["overheadmessages"]);
             ContainerLabels.Load(root["containerlabels"]);
             MacroVariables.Load(root["macrovariables"]);
             //imports previous absolutetargets and doubleclickvariables if present in profile
@@ -608,7 +607,7 @@ namespace Assistant
             xml.WriteEndElement();
 
             xml.WriteStartElement("overheadmessages");
-            OverheadMessages.Save(xml);
+            OverheadManager.Save(xml);
             xml.WriteEndElement();
 
             xml.WriteStartElement("containerlabels");
