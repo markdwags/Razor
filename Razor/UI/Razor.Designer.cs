@@ -883,7 +883,6 @@ namespace Assistant
             // subGeneralTab
             // 
             this.subGeneralTab.Controls.Add(this.subGenTab);
-            this.subGeneralTab.Controls.Add(this.subSoundMusicTab);
             this.subGeneralTab.Controls.Add(this.subWaypoints);
             this.subGeneralTab.Location = new System.Drawing.Point(6, 3);
             this.subGeneralTab.Name = "subGeneralTab";
@@ -3500,6 +3499,7 @@ namespace Assistant
             // 
             this.filterTabs.Controls.Add(this.subFilterTab);
             this.filterTabs.Controls.Add(this.subFilterTargets);
+            this.filterTabs.Controls.Add(this.subSoundMusicTab);
             this.filterTabs.Location = new System.Drawing.Point(6, 3);
             this.filterTabs.Name = "filterTabs";
             this.filterTabs.SelectedIndex = 0;

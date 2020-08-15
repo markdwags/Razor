@@ -114,21 +114,6 @@ Razor's Ultima Online Position System (UOPS) gives you a basic map.
 * Opacity
     - Adjust the transparency of Razor. Useful on a single monitor.
 
-## Sound & Music
-
-![sound](../images/soundmusic.png)
-
-* Enable Sound Filter
-    - When checked, sounds that are checked will be blocked from playing in the client.
-* Play Selected Sound
-    - Listen to the selected sound. If you check `Play in client` the sound will play in the client if logged in.
-* Show filtered sound info
-    - If a sound is blocked, show the name in system messages.
-* Show non-filtered sound info
-    - If a sound plays, show the name in system messages.
-* Play Music In Client
-    - Plays the specific song in the client if logged in.
-
 ## Waypoints
 
 ![waypoints](../images/waypoints.png)

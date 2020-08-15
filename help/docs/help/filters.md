@@ -37,3 +37,18 @@ Mobiles on this list will be ignored completely by Razor.
 
 !!! tip
     This feature is intended to be used to add NPCs that might be picked up during events that take place in towns or where NPCs are.
+
+## Sound & Music
+
+![sound](../images/soundmusic.png)
+
+* Enable Sound Filter
+    - When checked, sounds that are checked will be blocked from playing in the client.
+* Play Selected Sound
+    - Listen to the selected sound. If you check `Play in client` the sound will play in the client if logged in.
+* Show filtered sound info
+    - If a sound is blocked, show the name in system messages.
+* Show non-filtered sound info
+    - If a sound plays, show the name in system messages.
+* Play Music In Client
+    - Plays the specific song in the client if logged in.
