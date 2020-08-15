@@ -396,36 +396,6 @@ namespace Assistant
             this.delProfile = new System.Windows.Forms.Button();
             this.newProfile = new System.Windows.Forms.Button();
             this.profiles = new System.Windows.Forms.ComboBox();
-            this.subSoundMusicTab = new System.Windows.Forms.TabPage();
-            this.playableMusicList = new System.Windows.Forms.ComboBox();
-            this.playMusic = new System.Windows.Forms.Button();
-            this.showPlayingMusic = new System.Windows.Forms.CheckBox();
-            this.showPlayingSoundInfo = new System.Windows.Forms.CheckBox();
-            this.showFilteredSound = new System.Windows.Forms.CheckBox();
-            this.playInClient = new System.Windows.Forms.CheckBox();
-            this.playSound = new System.Windows.Forms.Button();
-            this.soundFilterEnabled = new System.Windows.Forms.CheckBox();
-            this.soundFilterList = new System.Windows.Forms.CheckedListBox();
-            this.subWaypoints = new System.Windows.Forms.TabPage();
-            this.waypointOnDeath = new System.Windows.Forms.CheckBox();
-            this.lblWaypointTiles = new System.Windows.Forms.Label();
-            this.hideWaypointDist = new System.Windows.Forms.TextBox();
-            this.hideWaypointWithin = new System.Windows.Forms.CheckBox();
-            this.txtWaypointDistanceSec = new System.Windows.Forms.TextBox();
-            this.lblWaypointSeconds = new System.Windows.Forms.Label();
-            this.showWaypointDistance = new System.Windows.Forms.CheckBox();
-            this.showWaypointOverhead = new System.Windows.Forms.CheckBox();
-            this.btnRemoveSelectedWaypoint = new System.Windows.Forms.Button();
-            this.btnHideWaypoint = new System.Windows.Forms.Button();
-            this.btnUseCurrentLoc = new System.Windows.Forms.Button();
-            this.txtWaypointName = new System.Windows.Forms.TextBox();
-            this.lblWaypointY = new System.Windows.Forms.Label();
-            this.lblWaypointX = new System.Windows.Forms.Label();
-            this.txtWaypointX = new System.Windows.Forms.TextBox();
-            this.txtWaypointY = new System.Windows.Forms.TextBox();
-            this.lblWaypoint = new System.Windows.Forms.Label();
-            this.btnAddWaypoint = new System.Windows.Forms.Button();
-            this.waypointList = new System.Windows.Forms.ListBox();
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
@@ -578,6 +548,26 @@ namespace Assistant
             this.cliLocSearchNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cliLocSearchText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.showOverheadMessages = new System.Windows.Forms.CheckBox();
+            this.subWaypoints = new System.Windows.Forms.TabPage();
+            this.waypointOnDeath = new System.Windows.Forms.CheckBox();
+            this.lblWaypointTiles = new System.Windows.Forms.Label();
+            this.hideWaypointDist = new System.Windows.Forms.TextBox();
+            this.hideWaypointWithin = new System.Windows.Forms.CheckBox();
+            this.txtWaypointDistanceSec = new System.Windows.Forms.TextBox();
+            this.lblWaypointSeconds = new System.Windows.Forms.Label();
+            this.showWaypointDistance = new System.Windows.Forms.CheckBox();
+            this.showWaypointOverhead = new System.Windows.Forms.CheckBox();
+            this.btnRemoveSelectedWaypoint = new System.Windows.Forms.Button();
+            this.btnHideWaypoint = new System.Windows.Forms.Button();
+            this.btnUseCurrentLoc = new System.Windows.Forms.Button();
+            this.txtWaypointName = new System.Windows.Forms.TextBox();
+            this.lblWaypointY = new System.Windows.Forms.Label();
+            this.lblWaypointX = new System.Windows.Forms.Label();
+            this.txtWaypointX = new System.Windows.Forms.TextBox();
+            this.txtWaypointY = new System.Windows.Forms.TextBox();
+            this.lblWaypoint = new System.Windows.Forms.Label();
+            this.btnAddWaypoint = new System.Windows.Forms.Button();
+            this.waypointList = new System.Windows.Forms.ListBox();
             this.dressTab = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.clearDress = new System.Windows.Forms.Button();
@@ -646,6 +636,16 @@ namespace Assistant
             this.targetFilterAdd = new System.Windows.Forms.Button();
             this.targetFilter = new System.Windows.Forms.ListBox();
             this.targetFilterEnabled = new System.Windows.Forms.CheckBox();
+            this.subSoundMusicTab = new System.Windows.Forms.TabPage();
+            this.playableMusicList = new System.Windows.Forms.ComboBox();
+            this.playMusic = new System.Windows.Forms.Button();
+            this.showPlayingMusic = new System.Windows.Forms.CheckBox();
+            this.showPlayingSoundInfo = new System.Windows.Forms.CheckBox();
+            this.showFilteredSound = new System.Windows.Forms.CheckBox();
+            this.playInClient = new System.Windows.Forms.CheckBox();
+            this.playSound = new System.Windows.Forms.Button();
+            this.soundFilterEnabled = new System.Windows.Forms.CheckBox();
+            this.soundFilterList = new System.Windows.Forms.CheckedListBox();
             this.hotkeysTab = new System.Windows.Forms.TabPage();
             this.filterHotkeys = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
@@ -787,8 +787,6 @@ namespace Assistant
             this.groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
             this.groupBox4.SuspendLayout();
-            this.subSoundMusicTab.SuspendLayout();
-            this.subWaypoints.SuspendLayout();
             this.moreOptTab.SuspendLayout();
             this.optionsTabCtrl.SuspendLayout();
             this.subOptionsSpeechTab.SuspendLayout();
@@ -805,6 +803,7 @@ namespace Assistant
             this.groupBox2.SuspendLayout();
             this.subBandageTimerTab.SuspendLayout();
             this.subOverheadTab.SuspendLayout();
+            this.subWaypoints.SuspendLayout();
             this.dressTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -815,6 +814,7 @@ namespace Assistant
             this.filterTabs.SuspendLayout();
             this.subFilterTab.SuspendLayout();
             this.subFilterTargets.SuspendLayout();
+            this.subSoundMusicTab.SuspendLayout();
             this.hotkeysTab.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.macrosTab.SuspendLayout();
@@ -883,7 +883,6 @@ namespace Assistant
             // subGeneralTab
             // 
             this.subGeneralTab.Controls.Add(this.subGenTab);
-            this.subGeneralTab.Controls.Add(this.subWaypoints);
             this.subGeneralTab.Location = new System.Drawing.Point(6, 3);
             this.subGeneralTab.Name = "subGeneralTab";
             this.subGeneralTab.SelectedIndex = 0;
@@ -1113,316 +1112,6 @@ namespace Assistant
             this.profiles.Size = new System.Drawing.Size(476, 28);
             this.profiles.TabIndex = 0;
             this.profiles.SelectedIndexChanged += new System.EventHandler(this.profiles_SelectedIndexChanged);
-            // 
-            // subSoundMusicTab
-            // 
-            this.subSoundMusicTab.BackColor = System.Drawing.SystemColors.Control;
-            this.subSoundMusicTab.Controls.Add(this.playableMusicList);
-            this.subSoundMusicTab.Controls.Add(this.playMusic);
-            this.subSoundMusicTab.Controls.Add(this.showPlayingMusic);
-            this.subSoundMusicTab.Controls.Add(this.showPlayingSoundInfo);
-            this.subSoundMusicTab.Controls.Add(this.showFilteredSound);
-            this.subSoundMusicTab.Controls.Add(this.playInClient);
-            this.subSoundMusicTab.Controls.Add(this.playSound);
-            this.subSoundMusicTab.Controls.Add(this.soundFilterEnabled);
-            this.subSoundMusicTab.Controls.Add(this.soundFilterList);
-            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 22);
-            this.subSoundMusicTab.Name = "subSoundMusicTab";
-            this.subSoundMusicTab.Size = new System.Drawing.Size(502, 288);
-            this.subSoundMusicTab.TabIndex = 3;
-            this.subSoundMusicTab.Text = "Sound & Music  ";
-            // 
-            // playableMusicList
-            // 
-            this.playableMusicList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.playableMusicList.FormattingEnabled = true;
-            this.playableMusicList.Location = new System.Drawing.Point(215, 151);
-            this.playableMusicList.Name = "playableMusicList";
-            this.playableMusicList.Size = new System.Drawing.Size(145, 23);
-            this.playableMusicList.TabIndex = 8;
-            // 
-            // playMusic
-            // 
-            this.playMusic.Location = new System.Drawing.Point(215, 180);
-            this.playMusic.Name = "playMusic";
-            this.playMusic.Size = new System.Drawing.Size(132, 23);
-            this.playMusic.TabIndex = 7;
-            this.playMusic.Text = "Play Music In Client";
-            this.playMusic.UseVisualStyleBackColor = true;
-            this.playMusic.Click += new System.EventHandler(this.playMusic_Click);
-            // 
-            // showPlayingMusic
-            // 
-            this.showPlayingMusic.AutoSize = true;
-            this.showPlayingMusic.Location = new System.Drawing.Point(215, 215);
-            this.showPlayingMusic.Name = "showPlayingMusic";
-            this.showPlayingMusic.Size = new System.Drawing.Size(156, 19);
-            this.showPlayingMusic.TabIndex = 6;
-            this.showPlayingMusic.Text = "Show playing music info";
-            this.showPlayingMusic.UseVisualStyleBackColor = true;
-            this.showPlayingMusic.CheckedChanged += new System.EventHandler(this.showPlayingMusic_CheckedChanged);
-            // 
-            // showPlayingSoundInfo
-            // 
-            this.showPlayingSoundInfo.AutoSize = true;
-            this.showPlayingSoundInfo.Location = new System.Drawing.Point(215, 106);
-            this.showPlayingSoundInfo.Name = "showPlayingSoundInfo";
-            this.showPlayingSoundInfo.Size = new System.Drawing.Size(181, 19);
-            this.showPlayingSoundInfo.TabIndex = 5;
-            this.showPlayingSoundInfo.Text = "Show non-filtered sound info";
-            this.showPlayingSoundInfo.UseVisualStyleBackColor = true;
-            this.showPlayingSoundInfo.CheckedChanged += new System.EventHandler(this.showPlayingSoundInfo_CheckedChanged);
-            // 
-            // showFilteredSound
-            // 
-            this.showFilteredSound.AutoSize = true;
-            this.showFilteredSound.Location = new System.Drawing.Point(215, 81);
-            this.showFilteredSound.Name = "showFilteredSound";
-            this.showFilteredSound.Size = new System.Drawing.Size(155, 19);
-            this.showFilteredSound.TabIndex = 4;
-            this.showFilteredSound.Text = "Show filtered sound info";
-            this.showFilteredSound.UseVisualStyleBackColor = true;
-            this.showFilteredSound.CheckedChanged += new System.EventHandler(this.showFilteredSound_CheckedChanged);
-            // 
-            // playInClient
-            // 
-            this.playInClient.AutoSize = true;
-            this.playInClient.Location = new System.Drawing.Point(348, 42);
-            this.playInClient.Name = "playInClient";
-            this.playInClient.Size = new System.Drawing.Size(93, 19);
-            this.playInClient.TabIndex = 3;
-            this.playInClient.Text = "Play in client";
-            this.playInClient.UseVisualStyleBackColor = true;
-            // 
-            // playSound
-            // 
-            this.playSound.Location = new System.Drawing.Point(215, 39);
-            this.playSound.Name = "playSound";
-            this.playSound.Size = new System.Drawing.Size(127, 23);
-            this.playSound.TabIndex = 2;
-            this.playSound.Text = "Play Selected Sound";
-            this.playSound.UseVisualStyleBackColor = true;
-            this.playSound.Click += new System.EventHandler(this.playSound_Click);
-            // 
-            // soundFilterEnabled
-            // 
-            this.soundFilterEnabled.AutoSize = true;
-            this.soundFilterEnabled.Location = new System.Drawing.Point(215, 14);
-            this.soundFilterEnabled.Name = "soundFilterEnabled";
-            this.soundFilterEnabled.Size = new System.Drawing.Size(127, 19);
-            this.soundFilterEnabled.TabIndex = 1;
-            this.soundFilterEnabled.Text = "Enable Sound Filter";
-            this.soundFilterEnabled.UseVisualStyleBackColor = true;
-            this.soundFilterEnabled.CheckedChanged += new System.EventHandler(this.soundFilterEnabled_CheckedChanged);
-            // 
-            // soundFilterList
-            // 
-            this.soundFilterList.FormattingEnabled = true;
-            this.soundFilterList.Location = new System.Drawing.Point(16, 14);
-            this.soundFilterList.Name = "soundFilterList";
-            this.soundFilterList.Size = new System.Drawing.Size(193, 256);
-            this.soundFilterList.TabIndex = 0;
-            this.soundFilterList.SelectedIndexChanged += new System.EventHandler(this.soundFilterList_SelectedIndexChanged);
-            // 
-            // subWaypoints
-            // 
-            this.subWaypoints.BackColor = System.Drawing.SystemColors.Control;
-            this.subWaypoints.Controls.Add(this.waypointOnDeath);
-            this.subWaypoints.Controls.Add(this.lblWaypointTiles);
-            this.subWaypoints.Controls.Add(this.hideWaypointDist);
-            this.subWaypoints.Controls.Add(this.hideWaypointWithin);
-            this.subWaypoints.Controls.Add(this.txtWaypointDistanceSec);
-            this.subWaypoints.Controls.Add(this.lblWaypointSeconds);
-            this.subWaypoints.Controls.Add(this.showWaypointDistance);
-            this.subWaypoints.Controls.Add(this.showWaypointOverhead);
-            this.subWaypoints.Controls.Add(this.btnRemoveSelectedWaypoint);
-            this.subWaypoints.Controls.Add(this.btnHideWaypoint);
-            this.subWaypoints.Controls.Add(this.btnUseCurrentLoc);
-            this.subWaypoints.Controls.Add(this.txtWaypointName);
-            this.subWaypoints.Controls.Add(this.lblWaypointY);
-            this.subWaypoints.Controls.Add(this.lblWaypointX);
-            this.subWaypoints.Controls.Add(this.txtWaypointX);
-            this.subWaypoints.Controls.Add(this.txtWaypointY);
-            this.subWaypoints.Controls.Add(this.lblWaypoint);
-            this.subWaypoints.Controls.Add(this.btnAddWaypoint);
-            this.subWaypoints.Controls.Add(this.waypointList);
-            this.subWaypoints.Location = new System.Drawing.Point(4, 22);
-            this.subWaypoints.Name = "subWaypoints";
-            this.subWaypoints.Size = new System.Drawing.Size(502, 288);
-            this.subWaypoints.TabIndex = 4;
-            this.subWaypoints.Text = "Waypoints";
-            // 
-            // waypointOnDeath
-            // 
-            this.waypointOnDeath.AutoSize = true;
-            this.waypointOnDeath.Location = new System.Drawing.Point(184, 87);
-            this.waypointOnDeath.Name = "waypointOnDeath";
-            this.waypointOnDeath.Size = new System.Drawing.Size(162, 19);
-            this.waypointOnDeath.TabIndex = 66;
-            this.waypointOnDeath.Text = "Create waypoint on death";
-            this.waypointOnDeath.UseVisualStyleBackColor = true;
-            this.waypointOnDeath.CheckedChanged += new System.EventHandler(this.waypointOnDeath_CheckedChanged);
-            // 
-            // lblWaypointTiles
-            // 
-            this.lblWaypointTiles.Location = new System.Drawing.Point(374, 63);
-            this.lblWaypointTiles.Name = "lblWaypointTiles";
-            this.lblWaypointTiles.Size = new System.Drawing.Size(58, 18);
-            this.lblWaypointTiles.TabIndex = 65;
-            // 
-            // hideWaypointDist
-            // 
-            this.hideWaypointDist.Location = new System.Drawing.Point(336, 60);
-            this.hideWaypointDist.Name = "hideWaypointDist";
-            this.hideWaypointDist.Size = new System.Drawing.Size(32, 23);
-            this.hideWaypointDist.TabIndex = 64;
-            this.hideWaypointDist.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.hideWaypointDist.TextChanged += new System.EventHandler(this.hideWaypointDist_TextChanged);
-            // 
-            // hideWaypointWithin
-            // 
-            this.hideWaypointWithin.AutoSize = true;
-            this.hideWaypointWithin.Location = new System.Drawing.Point(184, 62);
-            this.hideWaypointWithin.Name = "hideWaypointWithin";
-            this.hideWaypointWithin.Size = new System.Drawing.Size(139, 19);
-            this.hideWaypointWithin.TabIndex = 63;
-            this.hideWaypointWithin.Text = "Hide waypoint within";
-            this.hideWaypointWithin.UseVisualStyleBackColor = true;
-            this.hideWaypointWithin.CheckedChanged += new System.EventHandler(this.hideWaypointWithin_CheckedChanged);
-            // 
-            // txtWaypointDistanceSec
-            // 
-            this.txtWaypointDistanceSec.Location = new System.Drawing.Point(336, 35);
-            this.txtWaypointDistanceSec.Name = "txtWaypointDistanceSec";
-            this.txtWaypointDistanceSec.Size = new System.Drawing.Size(32, 23);
-            this.txtWaypointDistanceSec.TabIndex = 62;
-            this.txtWaypointDistanceSec.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtWaypointDistanceSec.TextChanged += new System.EventHandler(this.txtWaypointDistanceSec_TextChanged);
-            // 
-            // lblWaypointSeconds
-            // 
-            this.lblWaypointSeconds.Location = new System.Drawing.Point(374, 37);
-            this.lblWaypointSeconds.Name = "lblWaypointSeconds";
-            this.lblWaypointSeconds.Size = new System.Drawing.Size(58, 18);
-            this.lblWaypointSeconds.TabIndex = 61;
-            // 
-            // showWaypointDistance
-            // 
-            this.showWaypointDistance.AutoSize = true;
-            this.showWaypointDistance.Location = new System.Drawing.Point(184, 37);
-            this.showWaypointDistance.Name = "showWaypointDistance";
-            this.showWaypointDistance.Size = new System.Drawing.Size(152, 19);
-            this.showWaypointDistance.TabIndex = 60;
-            this.showWaypointDistance.Text = "Show tile distance every";
-            this.showWaypointDistance.UseVisualStyleBackColor = true;
-            this.showWaypointDistance.CheckedChanged += new System.EventHandler(this.showWaypointDistance_CheckedChanged);
-            // 
-            // showWaypointOverhead
-            // 
-            this.showWaypointOverhead.AutoSize = true;
-            this.showWaypointOverhead.Location = new System.Drawing.Point(184, 12);
-            this.showWaypointOverhead.Name = "showWaypointOverhead";
-            this.showWaypointOverhead.Size = new System.Drawing.Size(213, 19);
-            this.showWaypointOverhead.TabIndex = 59;
-            this.showWaypointOverhead.Text = "Show waypoint messages overhead";
-            this.showWaypointOverhead.UseVisualStyleBackColor = true;
-            this.showWaypointOverhead.CheckedChanged += new System.EventHandler(this.showWaypointOverhead_CheckedChanged);
-            // 
-            // btnRemoveSelectedWaypoint
-            // 
-            this.btnRemoveSelectedWaypoint.Location = new System.Drawing.Point(184, 207);
-            this.btnRemoveSelectedWaypoint.Name = "btnRemoveSelectedWaypoint";
-            this.btnRemoveSelectedWaypoint.Size = new System.Drawing.Size(129, 29);
-            this.btnRemoveSelectedWaypoint.TabIndex = 10;
-            this.btnRemoveSelectedWaypoint.Text = "Remove Selected";
-            this.btnRemoveSelectedWaypoint.UseVisualStyleBackColor = true;
-            this.btnRemoveSelectedWaypoint.Click += new System.EventHandler(this.btnRemoveSelectedWaypoint_Click);
-            // 
-            // btnHideWaypoint
-            // 
-            this.btnHideWaypoint.Location = new System.Drawing.Point(184, 242);
-            this.btnHideWaypoint.Name = "btnHideWaypoint";
-            this.btnHideWaypoint.Size = new System.Drawing.Size(129, 29);
-            this.btnHideWaypoint.TabIndex = 9;
-            this.btnHideWaypoint.Text = "Hide Waypoint";
-            this.btnHideWaypoint.UseVisualStyleBackColor = true;
-            this.btnHideWaypoint.Click += new System.EventHandler(this.btnHideWaypoint_Click);
-            // 
-            // btnUseCurrentLoc
-            // 
-            this.btnUseCurrentLoc.Location = new System.Drawing.Point(377, 186);
-            this.btnUseCurrentLoc.Name = "btnUseCurrentLoc";
-            this.btnUseCurrentLoc.Size = new System.Drawing.Size(106, 23);
-            this.btnUseCurrentLoc.TabIndex = 8;
-            this.btnUseCurrentLoc.Text = "Use Current";
-            this.btnUseCurrentLoc.UseVisualStyleBackColor = true;
-            this.btnUseCurrentLoc.Click += new System.EventHandler(this.btnUseCurrentLoc_Click);
-            // 
-            // txtWaypointName
-            // 
-            this.txtWaypointName.Location = new System.Drawing.Point(366, 127);
-            this.txtWaypointName.Name = "txtWaypointName";
-            this.txtWaypointName.Size = new System.Drawing.Size(129, 23);
-            this.txtWaypointName.TabIndex = 7;
-            // 
-            // lblWaypointY
-            // 
-            this.lblWaypointY.AutoSize = true;
-            this.lblWaypointY.Location = new System.Drawing.Point(422, 159);
-            this.lblWaypointY.Name = "lblWaypointY";
-            this.lblWaypointY.Size = new System.Drawing.Size(0, 15);
-            this.lblWaypointY.TabIndex = 6;
-            // 
-            // lblWaypointX
-            // 
-            this.lblWaypointX.AutoSize = true;
-            this.lblWaypointX.Location = new System.Drawing.Point(343, 160);
-            this.lblWaypointX.Name = "lblWaypointX";
-            this.lblWaypointX.Size = new System.Drawing.Size(0, 15);
-            this.lblWaypointX.TabIndex = 5;
-            // 
-            // txtWaypointX
-            // 
-            this.txtWaypointX.Location = new System.Drawing.Point(366, 157);
-            this.txtWaypointX.Name = "txtWaypointX";
-            this.txtWaypointX.Size = new System.Drawing.Size(50, 23);
-            this.txtWaypointX.TabIndex = 4;
-            // 
-            // txtWaypointY
-            // 
-            this.txtWaypointY.Location = new System.Drawing.Point(445, 157);
-            this.txtWaypointY.Name = "txtWaypointY";
-            this.txtWaypointY.Size = new System.Drawing.Size(50, 23);
-            this.txtWaypointY.TabIndex = 3;
-            // 
-            // lblWaypoint
-            // 
-            this.lblWaypoint.AutoSize = true;
-            this.lblWaypoint.Location = new System.Drawing.Point(318, 130);
-            this.lblWaypoint.Name = "lblWaypoint";
-            this.lblWaypoint.Size = new System.Drawing.Size(0, 15);
-            this.lblWaypoint.TabIndex = 2;
-            // 
-            // btnAddWaypoint
-            // 
-            this.btnAddWaypoint.Location = new System.Drawing.Point(184, 123);
-            this.btnAddWaypoint.Name = "btnAddWaypoint";
-            this.btnAddWaypoint.Size = new System.Drawing.Size(129, 29);
-            this.btnAddWaypoint.TabIndex = 1;
-            this.btnAddWaypoint.Text = "Add Waypoint";
-            this.btnAddWaypoint.UseVisualStyleBackColor = true;
-            this.btnAddWaypoint.Click += new System.EventHandler(this.btnAddWaypoint_Click);
-            // 
-            // waypointList
-            // 
-            this.waypointList.FormattingEnabled = true;
-            this.waypointList.ItemHeight = 15;
-            this.waypointList.Location = new System.Drawing.Point(11, 12);
-            this.waypointList.Name = "waypointList";
-            this.waypointList.Size = new System.Drawing.Size(164, 244);
-            this.waypointList.TabIndex = 0;
-            this.waypointList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDoubleClick);
-            this.waypointList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDown);
             // 
             // moreOptTab
             // 
@@ -2401,6 +2090,7 @@ namespace Assistant
             this.displayCountersTabCtrl.Controls.Add(this.subCountersTab);
             this.displayCountersTabCtrl.Controls.Add(this.subBandageTimerTab);
             this.displayCountersTabCtrl.Controls.Add(this.subOverheadTab);
+            this.displayCountersTabCtrl.Controls.Add(this.subWaypoints);
             this.displayCountersTabCtrl.Location = new System.Drawing.Point(6, 3);
             this.displayCountersTabCtrl.Name = "displayCountersTabCtrl";
             this.displayCountersTabCtrl.SelectedIndex = 0;
@@ -3060,6 +2750,211 @@ namespace Assistant
             this.showOverheadMessages.Text = "Enabled";
             this.showOverheadMessages.UseVisualStyleBackColor = true;
             this.showOverheadMessages.CheckedChanged += new System.EventHandler(this.showOverheadMessages_CheckedChanged);
+            // 
+            // subWaypoints
+            // 
+            this.subWaypoints.BackColor = System.Drawing.SystemColors.Control;
+            this.subWaypoints.Controls.Add(this.waypointOnDeath);
+            this.subWaypoints.Controls.Add(this.lblWaypointTiles);
+            this.subWaypoints.Controls.Add(this.hideWaypointDist);
+            this.subWaypoints.Controls.Add(this.hideWaypointWithin);
+            this.subWaypoints.Controls.Add(this.txtWaypointDistanceSec);
+            this.subWaypoints.Controls.Add(this.lblWaypointSeconds);
+            this.subWaypoints.Controls.Add(this.showWaypointDistance);
+            this.subWaypoints.Controls.Add(this.showWaypointOverhead);
+            this.subWaypoints.Controls.Add(this.btnRemoveSelectedWaypoint);
+            this.subWaypoints.Controls.Add(this.btnHideWaypoint);
+            this.subWaypoints.Controls.Add(this.btnUseCurrentLoc);
+            this.subWaypoints.Controls.Add(this.txtWaypointName);
+            this.subWaypoints.Controls.Add(this.lblWaypointY);
+            this.subWaypoints.Controls.Add(this.lblWaypointX);
+            this.subWaypoints.Controls.Add(this.txtWaypointX);
+            this.subWaypoints.Controls.Add(this.txtWaypointY);
+            this.subWaypoints.Controls.Add(this.lblWaypoint);
+            this.subWaypoints.Controls.Add(this.btnAddWaypoint);
+            this.subWaypoints.Controls.Add(this.waypointList);
+            this.subWaypoints.Location = new System.Drawing.Point(4, 24);
+            this.subWaypoints.Name = "subWaypoints";
+            this.subWaypoints.Size = new System.Drawing.Size(502, 286);
+            this.subWaypoints.TabIndex = 4;
+            this.subWaypoints.Text = "Waypoints";
+            // 
+            // waypointOnDeath
+            // 
+            this.waypointOnDeath.AutoSize = true;
+            this.waypointOnDeath.Location = new System.Drawing.Point(184, 87);
+            this.waypointOnDeath.Name = "waypointOnDeath";
+            this.waypointOnDeath.Size = new System.Drawing.Size(162, 19);
+            this.waypointOnDeath.TabIndex = 66;
+            this.waypointOnDeath.Text = "Create waypoint on death";
+            this.waypointOnDeath.UseVisualStyleBackColor = true;
+            this.waypointOnDeath.CheckedChanged += new System.EventHandler(this.waypointOnDeath_CheckedChanged);
+            // 
+            // lblWaypointTiles
+            // 
+            this.lblWaypointTiles.Location = new System.Drawing.Point(374, 63);
+            this.lblWaypointTiles.Name = "lblWaypointTiles";
+            this.lblWaypointTiles.Size = new System.Drawing.Size(58, 18);
+            this.lblWaypointTiles.TabIndex = 65;
+            this.lblWaypointTiles.Text = "tiles";
+            // 
+            // hideWaypointDist
+            // 
+            this.hideWaypointDist.Location = new System.Drawing.Point(336, 60);
+            this.hideWaypointDist.Name = "hideWaypointDist";
+            this.hideWaypointDist.Size = new System.Drawing.Size(32, 23);
+            this.hideWaypointDist.TabIndex = 64;
+            this.hideWaypointDist.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.hideWaypointDist.TextChanged += new System.EventHandler(this.hideWaypointDist_TextChanged);
+            // 
+            // hideWaypointWithin
+            // 
+            this.hideWaypointWithin.AutoSize = true;
+            this.hideWaypointWithin.Location = new System.Drawing.Point(184, 62);
+            this.hideWaypointWithin.Name = "hideWaypointWithin";
+            this.hideWaypointWithin.Size = new System.Drawing.Size(139, 19);
+            this.hideWaypointWithin.TabIndex = 63;
+            this.hideWaypointWithin.Text = "Hide waypoint within";
+            this.hideWaypointWithin.UseVisualStyleBackColor = true;
+            this.hideWaypointWithin.CheckedChanged += new System.EventHandler(this.hideWaypointWithin_CheckedChanged);
+            // 
+            // txtWaypointDistanceSec
+            // 
+            this.txtWaypointDistanceSec.Location = new System.Drawing.Point(336, 35);
+            this.txtWaypointDistanceSec.Name = "txtWaypointDistanceSec";
+            this.txtWaypointDistanceSec.Size = new System.Drawing.Size(32, 23);
+            this.txtWaypointDistanceSec.TabIndex = 62;
+            this.txtWaypointDistanceSec.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtWaypointDistanceSec.TextChanged += new System.EventHandler(this.txtWaypointDistanceSec_TextChanged);
+            // 
+            // lblWaypointSeconds
+            // 
+            this.lblWaypointSeconds.Location = new System.Drawing.Point(374, 37);
+            this.lblWaypointSeconds.Name = "lblWaypointSeconds";
+            this.lblWaypointSeconds.Size = new System.Drawing.Size(58, 18);
+            this.lblWaypointSeconds.TabIndex = 61;
+            this.lblWaypointSeconds.Text = "secs";
+            // 
+            // showWaypointDistance
+            // 
+            this.showWaypointDistance.AutoSize = true;
+            this.showWaypointDistance.Location = new System.Drawing.Point(184, 37);
+            this.showWaypointDistance.Name = "showWaypointDistance";
+            this.showWaypointDistance.Size = new System.Drawing.Size(152, 19);
+            this.showWaypointDistance.TabIndex = 60;
+            this.showWaypointDistance.Text = "Show tile distance every";
+            this.showWaypointDistance.UseVisualStyleBackColor = true;
+            this.showWaypointDistance.CheckedChanged += new System.EventHandler(this.showWaypointDistance_CheckedChanged);
+            // 
+            // showWaypointOverhead
+            // 
+            this.showWaypointOverhead.AutoSize = true;
+            this.showWaypointOverhead.Location = new System.Drawing.Point(184, 12);
+            this.showWaypointOverhead.Name = "showWaypointOverhead";
+            this.showWaypointOverhead.Size = new System.Drawing.Size(213, 19);
+            this.showWaypointOverhead.TabIndex = 59;
+            this.showWaypointOverhead.Text = "Show waypoint messages overhead";
+            this.showWaypointOverhead.UseVisualStyleBackColor = true;
+            this.showWaypointOverhead.CheckedChanged += new System.EventHandler(this.showWaypointOverhead_CheckedChanged);
+            // 
+            // btnRemoveSelectedWaypoint
+            // 
+            this.btnRemoveSelectedWaypoint.Location = new System.Drawing.Point(184, 242);
+            this.btnRemoveSelectedWaypoint.Name = "btnRemoveSelectedWaypoint";
+            this.btnRemoveSelectedWaypoint.Size = new System.Drawing.Size(135, 29);
+            this.btnRemoveSelectedWaypoint.TabIndex = 10;
+            this.btnRemoveSelectedWaypoint.Text = "Remove Selected";
+            this.btnRemoveSelectedWaypoint.UseVisualStyleBackColor = true;
+            this.btnRemoveSelectedWaypoint.Click += new System.EventHandler(this.btnRemoveSelectedWaypoint_Click);
+            // 
+            // btnHideWaypoint
+            // 
+            this.btnHideWaypoint.Location = new System.Drawing.Point(364, 242);
+            this.btnHideWaypoint.Name = "btnHideWaypoint";
+            this.btnHideWaypoint.Size = new System.Drawing.Size(129, 29);
+            this.btnHideWaypoint.TabIndex = 9;
+            this.btnHideWaypoint.Text = "Clear Waypoint";
+            this.btnHideWaypoint.UseVisualStyleBackColor = true;
+            this.btnHideWaypoint.Click += new System.EventHandler(this.btnHideWaypoint_Click);
+            // 
+            // btnUseCurrentLoc
+            // 
+            this.btnUseCurrentLoc.Location = new System.Drawing.Point(364, 151);
+            this.btnUseCurrentLoc.Name = "btnUseCurrentLoc";
+            this.btnUseCurrentLoc.Size = new System.Drawing.Size(129, 23);
+            this.btnUseCurrentLoc.TabIndex = 8;
+            this.btnUseCurrentLoc.Text = "Use Current Position";
+            this.btnUseCurrentLoc.UseVisualStyleBackColor = true;
+            this.btnUseCurrentLoc.Click += new System.EventHandler(this.btnUseCurrentLoc_Click);
+            // 
+            // txtWaypointName
+            // 
+            this.txtWaypointName.Location = new System.Drawing.Point(229, 121);
+            this.txtWaypointName.Name = "txtWaypointName";
+            this.txtWaypointName.Size = new System.Drawing.Size(129, 23);
+            this.txtWaypointName.TabIndex = 7;
+            // 
+            // lblWaypointY
+            // 
+            this.lblWaypointY.AutoSize = true;
+            this.lblWaypointY.Location = new System.Drawing.Point(285, 154);
+            this.lblWaypointY.Name = "lblWaypointY";
+            this.lblWaypointY.Size = new System.Drawing.Size(17, 15);
+            this.lblWaypointY.TabIndex = 6;
+            this.lblWaypointY.Text = "Y:";
+            // 
+            // lblWaypointX
+            // 
+            this.lblWaypointX.AutoSize = true;
+            this.lblWaypointX.Location = new System.Drawing.Point(206, 154);
+            this.lblWaypointX.Name = "lblWaypointX";
+            this.lblWaypointX.Size = new System.Drawing.Size(17, 15);
+            this.lblWaypointX.TabIndex = 5;
+            this.lblWaypointX.Text = "X:";
+            // 
+            // txtWaypointX
+            // 
+            this.txtWaypointX.Location = new System.Drawing.Point(229, 151);
+            this.txtWaypointX.Name = "txtWaypointX";
+            this.txtWaypointX.Size = new System.Drawing.Size(50, 23);
+            this.txtWaypointX.TabIndex = 4;
+            // 
+            // txtWaypointY
+            // 
+            this.txtWaypointY.Location = new System.Drawing.Point(308, 151);
+            this.txtWaypointY.Name = "txtWaypointY";
+            this.txtWaypointY.Size = new System.Drawing.Size(50, 23);
+            this.txtWaypointY.TabIndex = 3;
+            // 
+            // lblWaypoint
+            // 
+            this.lblWaypoint.AutoSize = true;
+            this.lblWaypoint.Location = new System.Drawing.Point(181, 124);
+            this.lblWaypoint.Name = "lblWaypoint";
+            this.lblWaypoint.Size = new System.Drawing.Size(42, 15);
+            this.lblWaypoint.TabIndex = 2;
+            this.lblWaypoint.Text = "Name:";
+            // 
+            // btnAddWaypoint
+            // 
+            this.btnAddWaypoint.Location = new System.Drawing.Point(364, 121);
+            this.btnAddWaypoint.Name = "btnAddWaypoint";
+            this.btnAddWaypoint.Size = new System.Drawing.Size(129, 24);
+            this.btnAddWaypoint.TabIndex = 1;
+            this.btnAddWaypoint.Text = "Add Waypoint";
+            this.btnAddWaypoint.UseVisualStyleBackColor = true;
+            this.btnAddWaypoint.Click += new System.EventHandler(this.btnAddWaypoint_Click);
+            // 
+            // waypointList
+            // 
+            this.waypointList.FormattingEnabled = true;
+            this.waypointList.ItemHeight = 15;
+            this.waypointList.Location = new System.Drawing.Point(11, 12);
+            this.waypointList.Name = "waypointList";
+            this.waypointList.Size = new System.Drawing.Size(164, 259);
+            this.waypointList.TabIndex = 0;
+            this.waypointList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDoubleClick);
+            this.waypointList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDown);
             // 
             // dressTab
             // 
@@ -3744,6 +3639,116 @@ namespace Assistant
             this.targetFilterEnabled.Text = "Target Filter Enabled";
             this.targetFilterEnabled.UseVisualStyleBackColor = true;
             this.targetFilterEnabled.CheckedChanged += new System.EventHandler(this.TargetFilterEnabled_CheckedChanged);
+            // 
+            // subSoundMusicTab
+            // 
+            this.subSoundMusicTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subSoundMusicTab.Controls.Add(this.playableMusicList);
+            this.subSoundMusicTab.Controls.Add(this.playMusic);
+            this.subSoundMusicTab.Controls.Add(this.showPlayingMusic);
+            this.subSoundMusicTab.Controls.Add(this.showPlayingSoundInfo);
+            this.subSoundMusicTab.Controls.Add(this.showFilteredSound);
+            this.subSoundMusicTab.Controls.Add(this.playInClient);
+            this.subSoundMusicTab.Controls.Add(this.playSound);
+            this.subSoundMusicTab.Controls.Add(this.soundFilterEnabled);
+            this.subSoundMusicTab.Controls.Add(this.soundFilterList);
+            this.subSoundMusicTab.Location = new System.Drawing.Point(4, 22);
+            this.subSoundMusicTab.Name = "subSoundMusicTab";
+            this.subSoundMusicTab.Size = new System.Drawing.Size(498, 287);
+            this.subSoundMusicTab.TabIndex = 3;
+            this.subSoundMusicTab.Text = "Sound & Music  ";
+            // 
+            // playableMusicList
+            // 
+            this.playableMusicList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.playableMusicList.FormattingEnabled = true;
+            this.playableMusicList.Location = new System.Drawing.Point(215, 151);
+            this.playableMusicList.Name = "playableMusicList";
+            this.playableMusicList.Size = new System.Drawing.Size(145, 23);
+            this.playableMusicList.TabIndex = 8;
+            // 
+            // playMusic
+            // 
+            this.playMusic.Location = new System.Drawing.Point(215, 180);
+            this.playMusic.Name = "playMusic";
+            this.playMusic.Size = new System.Drawing.Size(132, 23);
+            this.playMusic.TabIndex = 7;
+            this.playMusic.Text = "Play Music In Client";
+            this.playMusic.UseVisualStyleBackColor = true;
+            this.playMusic.Click += new System.EventHandler(this.playMusic_Click);
+            // 
+            // showPlayingMusic
+            // 
+            this.showPlayingMusic.AutoSize = true;
+            this.showPlayingMusic.Location = new System.Drawing.Point(215, 215);
+            this.showPlayingMusic.Name = "showPlayingMusic";
+            this.showPlayingMusic.Size = new System.Drawing.Size(156, 19);
+            this.showPlayingMusic.TabIndex = 6;
+            this.showPlayingMusic.Text = "Show playing music info";
+            this.showPlayingMusic.UseVisualStyleBackColor = true;
+            this.showPlayingMusic.CheckedChanged += new System.EventHandler(this.showPlayingMusic_CheckedChanged);
+            // 
+            // showPlayingSoundInfo
+            // 
+            this.showPlayingSoundInfo.AutoSize = true;
+            this.showPlayingSoundInfo.Location = new System.Drawing.Point(215, 106);
+            this.showPlayingSoundInfo.Name = "showPlayingSoundInfo";
+            this.showPlayingSoundInfo.Size = new System.Drawing.Size(181, 19);
+            this.showPlayingSoundInfo.TabIndex = 5;
+            this.showPlayingSoundInfo.Text = "Show non-filtered sound info";
+            this.showPlayingSoundInfo.UseVisualStyleBackColor = true;
+            this.showPlayingSoundInfo.CheckedChanged += new System.EventHandler(this.showPlayingSoundInfo_CheckedChanged);
+            // 
+            // showFilteredSound
+            // 
+            this.showFilteredSound.AutoSize = true;
+            this.showFilteredSound.Location = new System.Drawing.Point(215, 81);
+            this.showFilteredSound.Name = "showFilteredSound";
+            this.showFilteredSound.Size = new System.Drawing.Size(155, 19);
+            this.showFilteredSound.TabIndex = 4;
+            this.showFilteredSound.Text = "Show filtered sound info";
+            this.showFilteredSound.UseVisualStyleBackColor = true;
+            this.showFilteredSound.CheckedChanged += new System.EventHandler(this.showFilteredSound_CheckedChanged);
+            // 
+            // playInClient
+            // 
+            this.playInClient.AutoSize = true;
+            this.playInClient.Location = new System.Drawing.Point(348, 42);
+            this.playInClient.Name = "playInClient";
+            this.playInClient.Size = new System.Drawing.Size(93, 19);
+            this.playInClient.TabIndex = 3;
+            this.playInClient.Text = "Play in client";
+            this.playInClient.UseVisualStyleBackColor = true;
+            // 
+            // playSound
+            // 
+            this.playSound.Location = new System.Drawing.Point(215, 39);
+            this.playSound.Name = "playSound";
+            this.playSound.Size = new System.Drawing.Size(127, 23);
+            this.playSound.TabIndex = 2;
+            this.playSound.Text = "Play Selected Sound";
+            this.playSound.UseVisualStyleBackColor = true;
+            this.playSound.Click += new System.EventHandler(this.playSound_Click);
+            // 
+            // soundFilterEnabled
+            // 
+            this.soundFilterEnabled.AutoSize = true;
+            this.soundFilterEnabled.Location = new System.Drawing.Point(215, 14);
+            this.soundFilterEnabled.Name = "soundFilterEnabled";
+            this.soundFilterEnabled.Size = new System.Drawing.Size(127, 19);
+            this.soundFilterEnabled.TabIndex = 1;
+            this.soundFilterEnabled.Text = "Enable Sound Filter";
+            this.soundFilterEnabled.UseVisualStyleBackColor = true;
+            this.soundFilterEnabled.CheckedChanged += new System.EventHandler(this.soundFilterEnabled_CheckedChanged);
+            // 
+            // soundFilterList
+            // 
+            this.soundFilterList.FormattingEnabled = true;
+            this.soundFilterList.Location = new System.Drawing.Point(16, 14);
+            this.soundFilterList.Name = "soundFilterList";
+            this.soundFilterList.Size = new System.Drawing.Size(193, 256);
+            this.soundFilterList.TabIndex = 0;
+            this.soundFilterList.SelectedIndexChanged += new System.EventHandler(this.soundFilterList_SelectedIndexChanged);
             // 
             // hotkeysTab
             // 
@@ -5254,10 +5259,6 @@ namespace Assistant
             this.groupBox15.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
             this.groupBox4.ResumeLayout(false);
-            this.subSoundMusicTab.ResumeLayout(false);
-            this.subSoundMusicTab.PerformLayout();
-            this.subWaypoints.ResumeLayout(false);
-            this.subWaypoints.PerformLayout();
             this.moreOptTab.ResumeLayout(false);
             this.optionsTabCtrl.ResumeLayout(false);
             this.subOptionsSpeechTab.ResumeLayout(false);
@@ -5284,6 +5285,8 @@ namespace Assistant
             this.subBandageTimerTab.PerformLayout();
             this.subOverheadTab.ResumeLayout(false);
             this.subOverheadTab.PerformLayout();
+            this.subWaypoints.ResumeLayout(false);
+            this.subWaypoints.PerformLayout();
             this.dressTab.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -5297,6 +5300,8 @@ namespace Assistant
             this.subFilterTab.PerformLayout();
             this.subFilterTargets.ResumeLayout(false);
             this.subFilterTargets.PerformLayout();
+            this.subSoundMusicTab.ResumeLayout(false);
+            this.subSoundMusicTab.PerformLayout();
             this.hotkeysTab.ResumeLayout(false);
             this.hotkeysTab.PerformLayout();
             this.groupBox8.ResumeLayout(false);

@@ -145,3 +145,27 @@ This option will display messages above your head that are triggered based on sy
 ### Demo
 
 ![overheaddemo](../images/overheaddemo.gif)
+
+## Waypoints
+
+![waypoints](../images/waypoints.png)
+
+This feature lets you set waypoints, that will display within the client.
+
+* **Show waypoint messages overhead**
+    - Direct waypoint messages from system message to overhead.
+* **Show tile distance every X**
+    - If checked, it will show the current distance every X seconds.
+* **Hide waypoint within**
+    - When you're within X tiles, hide/clear the waypoint.
+* **Create waypoint on death**
+    - Upon death, create a waypoint.
+
+### Create Waypoint
+
+* Enter the name for the waypoint in the `Name` field.
+* Either manually enter the X and Y coordinates or click `Use Current Position` to auto-fill.
+* Click `Add Waypoint`
+
+!!! tip
+    Double-click a waypoint in the UI to activate it in game. You can also assign hotkeys to cycle between waypoints.

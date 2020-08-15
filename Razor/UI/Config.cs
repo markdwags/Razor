@@ -300,7 +300,7 @@ namespace Assistant
             AddProperty("ShowWaypointDistance", true);
             AddProperty("ShowWaypointSeconds", 10);
 
-            AddProperty("HideWaypoint", false);
+            AddProperty("ClearWaypoint", false);
             AddProperty("HideWaypointDistance", 4);
 
             AddProperty("CreateWaypointOnDeath", false);

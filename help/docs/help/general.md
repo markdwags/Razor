@@ -113,18 +113,3 @@ Razor's Ultima Online Position System (UOPS) gives you a basic map.
     - The `.\Language\` folder contains all the translations. Some are missing, feel free to translate based on the `.enu` file located in the package.
 * Opacity
     - Adjust the transparency of Razor. Useful on a single monitor.
-
-## Waypoints
-
-![waypoints](../images/waypoints.png)
-
-This feature lets you set waypoints, that will display within the client.
-
-* **Show waypoint messages overhead**
-    - Direct waypoint messages from system message to overhead.
-* **Show tile distance every X**
-    - If checked, it will show the current distance every X seconds.
-* **Hide waypoint within**
-    - When you're within X tiles, hide the waypoint.
-* **Create waypoint on death**
-    - Upon death, create a waypoint.

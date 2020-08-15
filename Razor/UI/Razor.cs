@@ -516,7 +516,7 @@ namespace Assistant
             showWaypointDistance.SafeAction(s => { s.Checked = Config.GetBool("ShowWaypointDistance"); });
             txtWaypointDistanceSec.SafeAction(s => { s.Text = Config.GetInt("ShowWaypointSeconds").ToString(); });
 
-            hideWaypointWithin.SafeAction(s => { s.Checked = Config.GetBool("HideWaypoint"); });
+            hideWaypointWithin.SafeAction(s => { s.Checked = Config.GetBool("ClearWaypoint"); });
             hideWaypointDist.SafeAction(s => { s.Text = Config.GetInt("HideWaypointDistance").ToString(); });
 
             waypointOnDeath.SafeAction(s => { s.Checked = Config.GetBool("CreateWaypointOnDeath"); });
@@ -708,17 +708,6 @@ namespace Assistant
         {
             if (subGeneralTab == null)
                 return;
-
-            if (subGeneralTab.SelectedTab == subSoundMusicTab)
-            {
-                SoundMusicManager.RedrawList();
-                return;
-            }
-
-            if (subGeneralTab.SelectedTab == subWaypoints)
-            {
-                WaypointManager.RedrawList();
-            }
         }
 
         private void RebuildHotKeyCache()
@@ -6587,7 +6576,7 @@ namespace Assistant
         private void btnHideWaypoint_Click(object sender, EventArgs e)
         {
             if (World.Player != null)
-                WaypointManager.HideWaypoint();
+                WaypointManager.ClearWaypoint();
         }
 
         private void btnRemoveSelectedWaypoint_Click(object sender, EventArgs e)
@@ -6631,7 +6620,7 @@ namespace Assistant
 
         private void hideWaypointWithin_CheckedChanged(object sender, EventArgs e)
         {
-            Config.SetProperty("HideWaypoint", hideWaypointWithin.Checked);
+            Config.SetProperty("ClearWaypoint", hideWaypointWithin.Checked);
         }
 
         private void listWaypoints_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -6897,6 +6886,17 @@ namespace Assistant
             if (displayCountersTabCtrl.SelectedTab == subOverheadTab)
             {
                 OverheadManager.RedrawList();
+            }
+
+            if (displayCountersTabCtrl.SelectedTab == subSoundMusicTab)
+            {
+                SoundMusicManager.RedrawList();
+                return;
+            }
+
+            if (displayCountersTabCtrl.SelectedTab == subWaypoints)
+            {
+                WaypointManager.RedrawList();
             }
         }
     }

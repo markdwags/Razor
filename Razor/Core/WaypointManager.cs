@@ -43,7 +43,7 @@ namespace Assistant.Core
         {
             HotKey.Add(HKCategory.Misc, LocString.NextWaypoint, new HotKeyCallback(NextWaypoint));
             HotKey.Add(HKCategory.Misc, LocString.PrevWaypoint, new HotKeyCallback(PrevWaypoint));
-            HotKey.Add(HKCategory.Misc, LocString.HideWaypoint, new HotKeyCallback(HideWaypoint));
+            HotKey.Add(HKCategory.Misc, LocString.HideWaypoint, new HotKeyCallback(ClearWaypoint));
         }
 
         public static void SetControls(ListBox waypointList)
@@ -94,7 +94,7 @@ namespace Assistant.Core
 
         public static void RemoveWaypoint(Waypoint waypoint)
         {
-            HideWaypoint();
+            ClearWaypoint();
 
             Waypoints.Remove(waypoint);
 
@@ -115,7 +115,7 @@ namespace Assistant.Core
             }
         }
 
-        public static void HideWaypoint()
+        public static void ClearWaypoint()
         {
             Client.Instance.SendToClient(new QuestArrow(false, 0, 0));
 
@@ -179,12 +179,12 @@ namespace Assistant.Core
                 int dist = Utility.Distance(World.Player.Position.X, World.Player.Position.Y, CurrentWaypoint.X,
                     CurrentWaypoint.Y);
 
-                if (Config.GetBool("HideWaypoint") && dist <= Config.GetInt("HideWaypointDistance"))
+                if (Config.GetBool("ClearWaypoint") && dist <= Config.GetInt("HideWaypointDistance"))
                 {
                     SendMessage($"Arrived at '{CurrentWaypoint}'");
 
                     Stop();
-                    HideWaypoint();
+                    ClearWaypoint();
                 }
                 else
                 {

@@ -81,7 +81,7 @@ namespace Assistant
             {
                 if (param[0].Equals("off"))
                 {
-                    WaypointManager.HideWaypoint();
+                    WaypointManager.ClearWaypoint();
                     return;
                 }
 
@@ -96,7 +96,7 @@ namespace Assistant
             }
             catch
             {
-                WaypointManager.HideWaypoint();
+                WaypointManager.ClearWaypoint();
             }
         }
 
