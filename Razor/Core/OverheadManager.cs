@@ -35,7 +35,7 @@ namespace Assistant.Core
         public int Hue { get; set; }
     }
 
-    public class OverheadManager
+    public static class OverheadManager
     {
         private static ListView _listView;
 
