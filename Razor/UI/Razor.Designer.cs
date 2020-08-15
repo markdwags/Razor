@@ -248,10 +248,6 @@ namespace Assistant
         private Button recount;
         private TabControl subGeneralTab;
         private TabPage subGenTab;
-        private GroupBox groupBox16;
-        private Button setBackupFolder;
-        private Label lastBackup;
-        private Button createBackup;
         private ComboBox clientPrio;
         private RadioButton systray;
         private RadioButton taskbar;
@@ -269,7 +265,6 @@ namespace Assistant
         private Button delProfile;
         private Button newProfile;
         private ComboBox profiles;
-        private Button openBackupFolder;
         private TextBox targetIndictorFormat;
         private Label lblTargetFormat;
         private Label lblStealthFormat;
@@ -279,8 +274,6 @@ namespace Assistant
         private LinkLabel linkGitHub;
         private Label lblCredits3;
         private GroupBox groupBox15;
-        private Button openUOAM;
-        private Button openUltimaMapper;
         private Button btnMap;
         private Button boatControl;
         private CheckBox captureMibs;
@@ -385,14 +378,7 @@ namespace Assistant
             this.subGenTab = new System.Windows.Forms.TabPage();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.boatControl = new System.Windows.Forms.Button();
-            this.openUOAM = new System.Windows.Forms.Button();
-            this.openUltimaMapper = new System.Windows.Forms.Button();
             this.btnMap = new System.Windows.Forms.Button();
-            this.groupBox16 = new System.Windows.Forms.GroupBox();
-            this.openBackupFolder = new System.Windows.Forms.Button();
-            this.setBackupFolder = new System.Windows.Forms.Button();
-            this.lastBackup = new System.Windows.Forms.Label();
-            this.createBackup = new System.Windows.Forms.Button();
             this.clientPrio = new System.Windows.Forms.ComboBox();
             this.systray = new System.Windows.Forms.RadioButton();
             this.taskbar = new System.Windows.Forms.RadioButton();
@@ -768,6 +754,11 @@ namespace Assistant
             this.screenPrev = new System.Windows.Forms.PictureBox();
             this.dispTime = new System.Windows.Forms.CheckBox();
             this.advancedTab = new System.Windows.Forms.TabPage();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.lastBackup = new System.Windows.Forms.Label();
+            this.openBackupFolder = new System.Windows.Forms.Button();
+            this.setBackupFolder = new System.Windows.Forms.Button();
+            this.createBackup = new System.Windows.Forms.Button();
             this.enableUOAAPI = new System.Windows.Forms.CheckBox();
             this.disableSmartCPU = new System.Windows.Forms.Button();
             this.negotiate = new System.Windows.Forms.CheckBox();
@@ -794,7 +785,6 @@ namespace Assistant
             this.subGeneralTab.SuspendLayout();
             this.subGenTab.SuspendLayout();
             this.groupBox15.SuspendLayout();
-            this.groupBox16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.subSoundMusicTab.SuspendLayout();
@@ -844,6 +834,7 @@ namespace Assistant
             this.screenshotTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
+            this.groupBox16.SuspendLayout();
             this.aboutTab.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -905,7 +896,6 @@ namespace Assistant
             // 
             this.subGenTab.BackColor = System.Drawing.SystemColors.Control;
             this.subGenTab.Controls.Add(this.groupBox15);
-            this.subGenTab.Controls.Add(this.groupBox16);
             this.subGenTab.Controls.Add(this.clientPrio);
             this.subGenTab.Controls.Add(this.systray);
             this.subGenTab.Controls.Add(this.taskbar);
@@ -928,43 +918,23 @@ namespace Assistant
             // groupBox15
             // 
             this.groupBox15.Controls.Add(this.boatControl);
-            this.groupBox15.Controls.Add(this.openUOAM);
-            this.groupBox15.Controls.Add(this.openUltimaMapper);
             this.groupBox15.Controls.Add(this.btnMap);
-            this.groupBox15.Location = new System.Drawing.Point(6, 232);
+            this.groupBox15.Location = new System.Drawing.Point(273, 181);
             this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(490, 48);
+            this.groupBox15.Size = new System.Drawing.Size(223, 48);
             this.groupBox15.TabIndex = 77;
             this.groupBox15.TabStop = false;
-            this.groupBox15.Text = "Maps / Boat";
+            this.groupBox15.Text = "Map / Boat";
             // 
             // boatControl
             // 
-            this.boatControl.Location = new System.Drawing.Point(388, 16);
+            this.boatControl.Location = new System.Drawing.Point(119, 16);
             this.boatControl.Name = "boatControl";
             this.boatControl.Size = new System.Drawing.Size(96, 26);
             this.boatControl.TabIndex = 70;
             this.boatControl.Text = "Boat Control";
             this.boatControl.UseVisualStyleBackColor = true;
             this.boatControl.Click += new System.EventHandler(this.boatControl_Click);
-            // 
-            // openUOAM
-            // 
-            this.openUOAM.Location = new System.Drawing.Point(238, 16);
-            this.openUOAM.Name = "openUOAM";
-            this.openUOAM.Size = new System.Drawing.Size(107, 26);
-            this.openUOAM.TabIndex = 69;
-            this.openUOAM.Text = "UOAM";
-            this.openUOAM.Click += new System.EventHandler(this.openUOAM_Click);
-            // 
-            // openUltimaMapper
-            // 
-            this.openUltimaMapper.Location = new System.Drawing.Point(122, 16);
-            this.openUltimaMapper.Name = "openUltimaMapper";
-            this.openUltimaMapper.Size = new System.Drawing.Size(107, 26);
-            this.openUltimaMapper.TabIndex = 68;
-            this.openUltimaMapper.Text = "Ultima Mapper";
-            this.openUltimaMapper.Click += new System.EventHandler(this.openUltimaMapper_Click);
             // 
             // btnMap
             // 
@@ -974,58 +944,6 @@ namespace Assistant
             this.btnMap.TabIndex = 67;
             this.btnMap.Text = "UOPS";
             this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
-            // 
-            // groupBox16
-            // 
-            this.groupBox16.Controls.Add(this.openBackupFolder);
-            this.groupBox16.Controls.Add(this.setBackupFolder);
-            this.groupBox16.Controls.Add(this.lastBackup);
-            this.groupBox16.Controls.Add(this.createBackup);
-            this.groupBox16.Location = new System.Drawing.Point(6, 107);
-            this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(229, 119);
-            this.groupBox16.TabIndex = 74;
-            this.groupBox16.TabStop = false;
-            this.groupBox16.Text = "Backup Profiles && Macros";
-            // 
-            // openBackupFolder
-            // 
-            this.openBackupFolder.Location = new System.Drawing.Point(119, 81);
-            this.openBackupFolder.Name = "openBackupFolder";
-            this.openBackupFolder.Size = new System.Drawing.Size(104, 30);
-            this.openBackupFolder.TabIndex = 75;
-            this.openBackupFolder.Text = "Open Folder";
-            this.openBackupFolder.UseVisualStyleBackColor = true;
-            this.openBackupFolder.Click += new System.EventHandler(this.openBackupFolder_Click);
-            // 
-            // setBackupFolder
-            // 
-            this.setBackupFolder.Location = new System.Drawing.Point(6, 81);
-            this.setBackupFolder.Name = "setBackupFolder";
-            this.setBackupFolder.Size = new System.Drawing.Size(107, 30);
-            this.setBackupFolder.TabIndex = 74;
-            this.setBackupFolder.Text = "Set Folder";
-            this.setBackupFolder.UseVisualStyleBackColor = true;
-            this.setBackupFolder.Click += new System.EventHandler(this.setBackupFolder_Click);
-            // 
-            // lastBackup
-            // 
-            this.lastBackup.Location = new System.Drawing.Point(6, 55);
-            this.lastBackup.Name = "lastBackup";
-            this.lastBackup.Size = new System.Drawing.Size(217, 23);
-            this.lastBackup.TabIndex = 73;
-            this.lastBackup.Text = "Last Backup: 01/01/2019 5:54PM";
-            this.lastBackup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // createBackup
-            // 
-            this.createBackup.Location = new System.Drawing.Point(61, 22);
-            this.createBackup.Name = "createBackup";
-            this.createBackup.Size = new System.Drawing.Size(107, 30);
-            this.createBackup.TabIndex = 72;
-            this.createBackup.Text = "Create Backup";
-            this.createBackup.UseVisualStyleBackColor = true;
-            this.createBackup.Click += new System.EventHandler(this.createBackup_Click);
             // 
             // clientPrio
             // 
@@ -1037,7 +955,7 @@ namespace Assistant
             "AboveNormal",
             "High",
             "Realtime"});
-            this.clientPrio.Location = new System.Drawing.Point(371, 127);
+            this.clientPrio.Location = new System.Drawing.Point(371, 118);
             this.clientPrio.Name = "clientPrio";
             this.clientPrio.Size = new System.Drawing.Size(125, 23);
             this.clientPrio.TabIndex = 73;
@@ -1045,7 +963,7 @@ namespace Assistant
             // 
             // systray
             // 
-            this.systray.Location = new System.Drawing.Point(371, 89);
+            this.systray.Location = new System.Drawing.Point(141, 118);
             this.systray.Name = "systray";
             this.systray.Size = new System.Drawing.Size(88, 23);
             this.systray.TabIndex = 69;
@@ -1054,7 +972,7 @@ namespace Assistant
             // 
             // taskbar
             // 
-            this.taskbar.Location = new System.Drawing.Point(301, 89);
+            this.taskbar.Location = new System.Drawing.Point(69, 118);
             this.taskbar.Name = "taskbar";
             this.taskbar.Size = new System.Drawing.Size(79, 23);
             this.taskbar.TabIndex = 68;
@@ -1064,7 +982,7 @@ namespace Assistant
             // langSel
             // 
             this.langSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.langSel.Location = new System.Drawing.Point(371, 156);
+            this.langSel.Location = new System.Drawing.Point(371, 148);
             this.langSel.Name = "langSel";
             this.langSel.Size = new System.Drawing.Size(125, 23);
             this.langSel.TabIndex = 71;
@@ -1072,7 +990,7 @@ namespace Assistant
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(241, 159);
+            this.label7.Location = new System.Drawing.Point(241, 150);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(68, 18);
             this.label7.TabIndex = 70;
@@ -1080,7 +998,7 @@ namespace Assistant
             // 
             // label11
             // 
-            this.label11.Location = new System.Drawing.Point(241, 93);
+            this.label11.Location = new System.Drawing.Point(9, 122);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(54, 16);
             this.label11.TabIndex = 67;
@@ -1088,7 +1006,7 @@ namespace Assistant
             // 
             // showWelcome
             // 
-            this.showWelcome.Location = new System.Drawing.Point(244, 28);
+            this.showWelcome.Location = new System.Drawing.Point(14, 181);
             this.showWelcome.Name = "showWelcome";
             this.showWelcome.Size = new System.Drawing.Size(152, 23);
             this.showWelcome.TabIndex = 66;
@@ -1099,11 +1017,11 @@ namespace Assistant
             // 
             this.opacity.AutoSize = false;
             this.opacity.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this.opacity.Location = new System.Drawing.Point(327, 194);
+            this.opacity.Location = new System.Drawing.Point(97, 150);
             this.opacity.Maximum = 100;
             this.opacity.Minimum = 10;
             this.opacity.Name = "opacity";
-            this.opacity.Size = new System.Drawing.Size(169, 21);
+            this.opacity.Size = new System.Drawing.Size(138, 21);
             this.opacity.TabIndex = 64;
             this.opacity.TickFrequency = 0;
             this.opacity.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -1112,7 +1030,7 @@ namespace Assistant
             // 
             // alwaysTop
             // 
-            this.alwaysTop.Location = new System.Drawing.Point(244, 57);
+            this.alwaysTop.Location = new System.Drawing.Point(14, 210);
             this.alwaysTop.Name = "alwaysTop";
             this.alwaysTop.Size = new System.Drawing.Size(162, 23);
             this.alwaysTop.TabIndex = 63;
@@ -1121,15 +1039,15 @@ namespace Assistant
             // 
             // opacityLabel
             // 
-            this.opacityLabel.Location = new System.Drawing.Point(241, 196);
+            this.opacityLabel.Location = new System.Drawing.Point(11, 152);
             this.opacityLabel.Name = "opacityLabel";
-            this.opacityLabel.Size = new System.Drawing.Size(89, 19);
+            this.opacityLabel.Size = new System.Drawing.Size(58, 19);
             this.opacityLabel.TabIndex = 65;
             this.opacityLabel.Text = "Opacity: 100%";
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(241, 130);
+            this.label9.Location = new System.Drawing.Point(241, 121);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(129, 18);
             this.label9.TabIndex = 72;
@@ -1144,14 +1062,14 @@ namespace Assistant
             this.groupBox4.Controls.Add(this.profiles);
             this.groupBox4.Location = new System.Drawing.Point(6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(229, 95);
+            this.groupBox4.Size = new System.Drawing.Size(490, 95);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Profiles";
             // 
             // saveProfile
             // 
-            this.saveProfile.Location = new System.Drawing.Point(63, 56);
+            this.saveProfile.Location = new System.Drawing.Point(320, 56);
             this.saveProfile.Name = "saveProfile";
             this.saveProfile.Size = new System.Drawing.Size(50, 30);
             this.saveProfile.TabIndex = 4;
@@ -1160,7 +1078,7 @@ namespace Assistant
             // 
             // cloneProfile
             // 
-            this.cloneProfile.Location = new System.Drawing.Point(119, 56);
+            this.cloneProfile.Location = new System.Drawing.Point(376, 56);
             this.cloneProfile.Name = "cloneProfile";
             this.cloneProfile.Size = new System.Drawing.Size(50, 30);
             this.cloneProfile.TabIndex = 3;
@@ -1169,7 +1087,7 @@ namespace Assistant
             // 
             // delProfile
             // 
-            this.delProfile.Location = new System.Drawing.Point(175, 56);
+            this.delProfile.Location = new System.Drawing.Point(432, 56);
             this.delProfile.Name = "delProfile";
             this.delProfile.Size = new System.Drawing.Size(50, 30);
             this.delProfile.TabIndex = 2;
@@ -1178,7 +1096,7 @@ namespace Assistant
             // 
             // newProfile
             // 
-            this.newProfile.Location = new System.Drawing.Point(7, 56);
+            this.newProfile.Location = new System.Drawing.Point(264, 56);
             this.newProfile.Name = "newProfile";
             this.newProfile.Size = new System.Drawing.Size(50, 30);
             this.newProfile.TabIndex = 1;
@@ -1193,7 +1111,7 @@ namespace Assistant
             this.profiles.Location = new System.Drawing.Point(6, 22);
             this.profiles.MaxDropDownItems = 5;
             this.profiles.Name = "profiles";
-            this.profiles.Size = new System.Drawing.Size(217, 28);
+            this.profiles.Size = new System.Drawing.Size(476, 28);
             this.profiles.TabIndex = 0;
             this.profiles.SelectedIndexChanged += new System.EventHandler(this.profiles_SelectedIndexChanged);
             // 
@@ -2964,9 +2882,9 @@ namespace Assistant
             this.subOverheadTab.Controls.Add(this.lblOhSearch);
             this.subOverheadTab.Controls.Add(this.cliLocSearchView);
             this.subOverheadTab.Controls.Add(this.showOverheadMessages);
-            this.subOverheadTab.Location = new System.Drawing.Point(4, 24);
+            this.subOverheadTab.Location = new System.Drawing.Point(4, 22);
             this.subOverheadTab.Name = "subOverheadTab";
-            this.subOverheadTab.Size = new System.Drawing.Size(502, 286);
+            this.subOverheadTab.Size = new System.Drawing.Size(502, 288);
             this.subOverheadTab.TabIndex = 3;
             this.subOverheadTab.Text = "Overhead Messages";
             // 
@@ -5008,6 +4926,7 @@ namespace Assistant
             // advancedTab
             // 
             this.advancedTab.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedTab.Controls.Add(this.groupBox16);
             this.advancedTab.Controls.Add(this.enableUOAAPI);
             this.advancedTab.Controls.Add(this.disableSmartCPU);
             this.advancedTab.Controls.Add(this.negotiate);
@@ -5022,6 +4941,58 @@ namespace Assistant
             this.advancedTab.Size = new System.Drawing.Size(519, 322);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
+            // 
+            // groupBox16
+            // 
+            this.groupBox16.Controls.Add(this.lastBackup);
+            this.groupBox16.Controls.Add(this.openBackupFolder);
+            this.groupBox16.Controls.Add(this.setBackupFolder);
+            this.groupBox16.Controls.Add(this.createBackup);
+            this.groupBox16.Location = new System.Drawing.Point(10, 184);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Size = new System.Drawing.Size(225, 132);
+            this.groupBox16.TabIndex = 80;
+            this.groupBox16.TabStop = false;
+            this.groupBox16.Text = "Backup";
+            // 
+            // lastBackup
+            // 
+            this.lastBackup.Location = new System.Drawing.Point(100, 63);
+            this.lastBackup.Name = "lastBackup";
+            this.lastBackup.Size = new System.Drawing.Size(119, 44);
+            this.lastBackup.TabIndex = 82;
+            this.lastBackup.Text = "Last Backup: 01/01/2019 5:54PM";
+            this.lastBackup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // openBackupFolder
+            // 
+            this.openBackupFolder.Location = new System.Drawing.Point(6, 70);
+            this.openBackupFolder.Name = "openBackupFolder";
+            this.openBackupFolder.Size = new System.Drawing.Size(88, 30);
+            this.openBackupFolder.TabIndex = 81;
+            this.openBackupFolder.Text = "Open Folder";
+            this.openBackupFolder.UseVisualStyleBackColor = true;
+            this.openBackupFolder.Click += new System.EventHandler(this.openBackupFolder_Click);
+            // 
+            // setBackupFolder
+            // 
+            this.setBackupFolder.Location = new System.Drawing.Point(134, 22);
+            this.setBackupFolder.Name = "setBackupFolder";
+            this.setBackupFolder.Size = new System.Drawing.Size(85, 30);
+            this.setBackupFolder.TabIndex = 80;
+            this.setBackupFolder.Text = "Set Folder";
+            this.setBackupFolder.UseVisualStyleBackColor = true;
+            this.setBackupFolder.Click += new System.EventHandler(this.setBackupFolder_Click);
+            // 
+            // createBackup
+            // 
+            this.createBackup.Location = new System.Drawing.Point(6, 22);
+            this.createBackup.Name = "createBackup";
+            this.createBackup.Size = new System.Drawing.Size(122, 30);
+            this.createBackup.TabIndex = 79;
+            this.createBackup.Text = "Create Backup";
+            this.createBackup.UseVisualStyleBackColor = true;
+            this.createBackup.Click += new System.EventHandler(this.createBackup_Click);
             // 
             // enableUOAAPI
             // 
@@ -5099,13 +5070,13 @@ namespace Assistant
             // 
             this.statusBox.BackColor = System.Drawing.SystemColors.Control;
             this.statusBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.statusBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statusBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statusBox.HideSelection = false;
             this.statusBox.Location = new System.Drawing.Point(10, 8);
             this.statusBox.Multiline = true;
             this.statusBox.Name = "statusBox";
             this.statusBox.ReadOnly = true;
-            this.statusBox.Size = new System.Drawing.Size(225, 255);
+            this.statusBox.Size = new System.Drawing.Size(225, 170);
             this.statusBox.TabIndex = 66;
             // 
             // features
@@ -5116,7 +5087,7 @@ namespace Assistant
             this.features.Name = "features";
             this.features.ReadOnly = true;
             this.features.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.features.Size = new System.Drawing.Size(271, 79);
+            this.features.Size = new System.Drawing.Size(271, 132);
             this.features.TabIndex = 65;
             this.features.Visible = false;
             // 
@@ -5281,7 +5252,6 @@ namespace Assistant
             this.subGeneralTab.ResumeLayout(false);
             this.subGenTab.ResumeLayout(false);
             this.groupBox15.ResumeLayout(false);
-            this.groupBox16.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opacity)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.subSoundMusicTab.ResumeLayout(false);
@@ -5356,6 +5326,7 @@ namespace Assistant
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).EndInit();
             this.advancedTab.ResumeLayout(false);
             this.advancedTab.PerformLayout();
+            this.groupBox16.ResumeLayout(false);
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
             this.ResumeLayout(false);
@@ -5473,5 +5444,10 @@ namespace Assistant
         private Label label14;
         private RadioButton unicodeStyle;
         private RadioButton asciiStyle;
+        private GroupBox groupBox16;
+        private Label lastBackup;
+        private Button openBackupFolder;
+        private Button setBackupFolder;
+        private Button createBackup;
     }
 }

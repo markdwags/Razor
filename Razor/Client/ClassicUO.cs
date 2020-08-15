@@ -88,8 +88,7 @@ namespace Assistant
             {
                 SplashScreen.End();
                 MessageBox.Show(
-                    String.Format(
-                        "WARNING: Razor was unable to load the file Language/Razor_lang.ENU\n."),
+                    "WARNING: Razor was unable to load the file Language/Razor_lang.ENU\n.",
                     "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }

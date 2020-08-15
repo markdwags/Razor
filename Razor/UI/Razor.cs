@@ -5139,48 +5139,6 @@ namespace Assistant
             Config.SetProperty("EnableUOAAPI", enableUOAAPI.Checked);
         }
 
-        private void openUOAM_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(Config.GetString("UOAMPath")))
-            {
-                OpenFileDialog file = new OpenFileDialog();
-                file.Filter = "Executables (*.exe)|*.exe";
-                file.FilterIndex = 1;
-                file.Multiselect = false;
-
-                if (file.ShowDialog(this) == DialogResult.OK)
-                {
-                    Config.SetProperty("UOAMPath", file.FileName);
-                    Process.Start(Config.GetString("UOAMPath"));
-                }
-            }
-            else
-            {
-                Process.Start(Config.GetString("UOAMPath"));
-            }
-        }
-
-        private void openUltimaMapper_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(Config.GetString("UltimaMapperPath")))
-            {
-                OpenFileDialog file = new OpenFileDialog();
-                file.Filter = "Executables (*.exe)|*.exe";
-                file.FilterIndex = 1;
-                file.Multiselect = false;
-
-                if (file.ShowDialog(this) == DialogResult.OK)
-                {
-                    Config.SetProperty("UltimaMapperPath", file.FileName);
-                    Process.Start(Config.GetString("UltimaMapperPath"));
-                }
-            }
-            else
-            {
-                Process.Start(Config.GetString("UltimaMapperPath"));
-            }
-        }
-
         private void setBackupFolder_Click(object sender, EventArgs e)
         {
             //Config.SetAppSetting("UODataDir", dataDir.Text);

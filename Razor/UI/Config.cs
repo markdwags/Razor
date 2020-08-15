@@ -220,8 +220,6 @@ namespace Assistant
             AddProperty("RazorTitleBarText", "{name} on {account} ({profile} - {shard}) - Razor v{version}");
 
             AddProperty("EnableUOAAPI", true);
-            AddProperty("UOAMPath", string.Empty);
-            AddProperty("UltimaMapperPath", string.Empty);
 
             AddProperty("TargetIndicatorFormat", "* Target *");
 
