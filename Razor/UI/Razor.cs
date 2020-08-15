@@ -6889,7 +6889,11 @@ namespace Assistant
         {
             if (cliLocOverheadView.SelectedItems.Count > 0)
             {
-                cliLocOverheadView.SafeAction(s => s.Items.Remove(s.SelectedItems[0]));
+                cliLocOverheadView.SafeAction(s =>
+                {
+                    OverheadMessages.Remove(s.SelectedItems[0].Text);
+                    s.Items.Remove(s.SelectedItems[0]);
+                });
             }
         }
 

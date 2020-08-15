@@ -78,6 +78,18 @@ namespace Assistant.Core
             OverheadMessageList.Clear();
         }
 
+        public static void Remove(string text)
+        {
+            foreach (OverheadMessage message in OverheadMessageList)
+            {
+                if (message.SearchMessage.Equals(text))
+                {
+                    OverheadMessageList.Remove(message);
+                    break;
+                }
+            }
+        }
+
         public static void DisplayOverheadMessage(string text)
         {
             if (Config.GetBool("ShowOverheadMessages") && OverheadMessageList.Count > 0)
