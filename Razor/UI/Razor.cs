@@ -80,6 +80,7 @@ namespace Assistant
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
             ScriptManager.SetControls(scriptEditor, scriptList);
             WaypointManager.SetControls(waypointList);
+            OverheadManager.SetControls(cliLocOverheadView);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -6846,7 +6847,7 @@ namespace Assistant
 
                 cliLocOverheadView.SafeAction(s => s.Items.Add(item));
 
-                OverheadManager.OverheadMessageList.Add(new OverheadManager.OverheadMessage
+                OverheadManager.OverheadMessages.Add(new OverheadMessage
                 {
                     SearchMessage = newItemText,
                     Hue = hueIdx,
@@ -6874,7 +6875,7 @@ namespace Assistant
 
                 selectedItem.SubItems[1].Text = newMessage;
 
-                foreach (OverheadManager.OverheadMessage list in OverheadManager.OverheadMessageList)
+                foreach (OverheadMessage list in OverheadManager.OverheadMessages)
                 {
                     if (list.MessageOverhead.Equals(oldMessage))
                     {
@@ -6901,53 +6902,8 @@ namespace Assistant
         {
             if (cliLocOverheadView.SelectedItems.Count > 0)
             {
-                SetContainerLabelHue();
+                OverheadManager.SetOverheadHue();
             }
-        }
-
-        private void SetContainerLabelHue()
-        {
-            ListViewItem selectedItem = cliLocOverheadView.Items[cliLocOverheadView.SelectedIndices[0]];
-
-            HueEntry h = new HueEntry(GetHueFromListView(selectedItem.SubItems[1].Text));
-
-            if (h.ShowDialog(this) == DialogResult.OK)
-            {
-                int hueIdx = h.Hue;
-
-                if (hueIdx > 0 && hueIdx < 3000)
-                    selectedItem.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-                else
-                    selectedItem.SubItems[1].BackColor = Color.White;
-
-                selectedItem.SubItems[1].ForeColor = (selectedItem.SubItems[1].BackColor.GetBrightness() < 0.35
-                    ? Color.White
-                    : Color.Black);
-
-                foreach (OverheadManager.OverheadMessage list in OverheadManager.OverheadMessageList)
-                {
-                    if (list.SearchMessage.Equals(selectedItem.Text))
-                    {
-                        list.Hue = hueIdx;
-                        break;
-                    }
-                }
-            }
-        }
-
-        public int GetHueFromListView(string id)
-        {
-            int hue = 0;
-
-            foreach (OverheadManager.OverheadMessage list in OverheadManager.OverheadMessageList)
-            {
-                if (list.MessageOverhead.Equals(id))
-                {
-                    return list.Hue;
-                }
-            }
-
-            return hue;
         }
 
         private void unicodeStyle_CheckedChanged(object sender, EventArgs e)
@@ -6982,27 +6938,7 @@ namespace Assistant
         {
             if (displayCountersTabCtrl.SelectedTab == subOverheadTab)
             {
-                cliLocOverheadView.SafeAction(s => s.Items.Clear());
-
-                foreach (OverheadManager.OverheadMessage message in OverheadManager.OverheadMessageList)
-                {
-                    ListViewItem item = new ListViewItem($"{message.SearchMessage}");
-                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, message.MessageOverhead));
-
-                    int hueIdx = message.Hue;
-
-                    if (hueIdx > 0 && hueIdx < 3000)
-                        item.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-                    else
-                        item.SubItems[1].BackColor = SystemColors.Control;
-
-                    item.SubItems[1].ForeColor =
-                        (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
-
-                    item.UseItemStyleForSubItems = false;
-
-                    cliLocOverheadView.SafeAction(s => s.Items.Add(item));
-                }
+                OverheadManager.RedrawList();
             }
         }
     }
