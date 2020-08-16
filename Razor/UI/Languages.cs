@@ -580,6 +580,7 @@ namespace Assistant
         ClearSysMsg,
         NextTargetNonFriendly,
         PrevTargetNonFriendly,
+        SetHue,
         __End
     }
 

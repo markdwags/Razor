@@ -21,10 +21,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.UI;
+using Ultima;
 
 namespace Assistant.Macros
 {
@@ -1846,9 +1848,10 @@ namespace Assistant.Macros
 
         public override MenuItem[] GetContextMenuItems()
         {
-            return _menuItems ?? (_menuItems = new MacroMenuItem[1]
+            return _menuItems ?? (_menuItems = new MacroMenuItem[]
             {
-                new MacroMenuItem(LocString.Edit, Edit)
+                new MacroMenuItem(LocString.Edit, Edit),
+                new MacroMenuItem(LocString.SetHue, SetHue)
             });
         }
 
@@ -1856,6 +1859,18 @@ namespace Assistant.Macros
         {
             if (InputBox.Show(Language.GetString(LocString.EnterNewText), "Input Box", _message))
                 _message = InputBox.GetString();
+
+            Parent?.Update();
+        }
+
+        private void SetHue(object[] args)
+        {
+            HueEntry h = new HueEntry(_hue);
+
+            if (h.ShowDialog(Engine.MainWindow) == DialogResult.OK)
+            {
+                _hue = (ushort) h.Hue;
+            }
 
             Parent?.Update();
         }
