@@ -267,6 +267,7 @@
     </Compile>
     <Compile Include="Scripts\Aliases.cs" />
     <Compile Include="Scripts\Commands.cs" />
+    <Compile Include="Scripts\Engine\TextParser.cs" />
     <Compile Include="Scripts\Expressions.cs" />
     <Compile Include="Scripts\ScriptVariables.cs" />
     <Compile Include="Scripts\ScriptManager.cs" />

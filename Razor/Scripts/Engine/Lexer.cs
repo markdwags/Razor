@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Assistant.Scripts.Engine
 {
@@ -241,6 +240,8 @@ namespace Assistant.Scripts.Engine
             return node;
         }
 
+        private static TextParser _tfp = new TextParser("", new char[] { ' ' }, new char[] { }, new char[] { '\'', '\'', '"', '"' });
+
         private static void ParseLine(ASTNode node, string line)
         {
             line = line.Trim();
@@ -249,11 +250,7 @@ namespace Assistant.Scripts.Engine
                 return;
 
             // Split the line by spaces (unless the space is in quotes)
-            var lexemes = line.Split('\'', '"')
-                           .Select((element, index) => index % 2 == 0 ?
-                            element.Split(new char[0], StringSplitOptions.RemoveEmptyEntries) :
-                            new string[] { element })
-                           .SelectMany(element => element).ToArray();
+            var lexemes = _tfp.GetTokens(line, false);
 
             if (lexemes.Length == 0)
                 return;
