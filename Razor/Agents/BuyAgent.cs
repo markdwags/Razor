@@ -194,11 +194,13 @@ namespace Assistant.Agents
                             if (count < b.Amount && b.Amount > 0)
                             {
                                 count = b.Amount - count;
-                                if (count > item.Amount)
+                                if (count >= item.Amount)
                                 {
                                     count = item.Amount;
+                                    if (pack.Contains.Remove(item))
+                                        --i;
                                 }
-                                else if (count <= 0)
+                                if (count <= 0)
                                 {
                                     continue;
                                 }
