@@ -13,6 +13,9 @@ Each character has a profile that contains your settings, such as the options in
 !!! tip "Profile Location"
         Profiles are stored in the same location as `Razor.exe` under `.\Profiles\`. You can create a new profile, which will be based on the *default profile settings* (`default.xml`)
 
+!!! tip "Multiple Profiles"
+    It's **highly recommend** that have you have 1 profile per character. If you use the same profile among multiple characters while logged in, you could potentially lose changes to your profile. It's doable, but requires an extra bit a caution to ensure you keep all your profiles synced up.
+
 |Feature|Description|
 |----|----|
 |New|Create a new profile based off of the default Razor profile.|
