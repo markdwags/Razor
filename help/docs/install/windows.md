@@ -26,12 +26,45 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 These steps assume that you already have obtained and installed the Ultima Online game asset files in the local system and are already using ClassicUO or the standard client.
 
 * Download the latest release
-* Extract into any location (ie: C:\UO\Razor)
+* Extract into any location (ie: `C:\UO\Razor`)
 
 !!! warning
     Windows 10 will block `.dll` files downloaded, so you may have to open up a Powershell prompt from within the Razor folder and run `gci | Unblock-File`
 
 * ***(Optional)*** If you have an existing version of Razor, copy the Profiles, Macros and Scripts folders from `%AppData%\Razor` into the folder you extracted the zip above to. If you have custom counters, also copy `counters.xml` over.
+
+## ClassicUO Client
+
+If using the ClassicUO client, follow these steps.
+
+* Go to the folder where you have ClassicUO installed and edit `settings.json`.
+
+```json
+  "plugins": [
+    ".\\Assistant\\Razor.dll"
+  ]
+```
+
+* Find the section above and edit the path to point to where you extract Razor in the above step. For example, if I extracted it to `C:\UO\Razor` my `settings.json` would look like one of these depending on the slashes you use.
+
+!!! tip "Slashes"
+    If you use backslash (`\`) you must use double backslashes `\\`.  You can also use a single forward slashes (`/`) such as `"C:/UO/Razor/Razor.exe"`
+
+```json
+  "plugins": [
+    "C:\\UO\\Razor\\Razor.exe"
+  ]
+```
+
+or
+
+```json
+  "plugins": [
+    "C:/UO/Razor/Razor.exe"
+  ]
+```
+
+* When you launch ClassicUO, Razor will load up during the startup process.
 
 ## Standard Client
 
@@ -40,28 +73,6 @@ If using the standard OSI client, follow these steps.
 * Right-click on the Razor shortcut or Razor.exe, go to Properties. On the Compatibility tab, select **Run this program in compatibility mode** for and select **Windows XP SP2**. Also select **Run this program as an administrator**
 * Run Razor either via the shortcut or clicking the Razor.exe directly.
 * Razor should prompt to **Run As Administrator**. You must allow this for Razor to function correctly.
-
-## ClassicUO Client
-
-If using the ClassicUO client, follow these steps.
-
-* Go to the folder where you have ClassicUO installed and edit settings.json.
-
-```json
-  "plugins": [
-    ".\\Assistant\\Razor.dll"
-  ]
-```
-
-* Find the section above and edit the path to point to where you extract Razor in the above step. For example, if I extracted it to **C:\UO\Razor** my settings.json would look like this:
-
-```json
-  "plugins": [
-    "C:\\UO\\Razor\\Razor.exe"
-  ]
-```
-
-* When you launch ClassicUO, Razor will load up during the startup process.
 
 # Upgrading
 

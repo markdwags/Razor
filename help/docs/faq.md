@@ -56,3 +56,48 @@ Scripts are stored in the `Scripts` folder and saved with the `.razor` file exte
 # Overhead Messages
 
 For details on how to use the Overhead Messages feature, view the [help guide](help/displaycounters.md#overhead-messages).
+
+# In-Game Commands
+
+Razor supports the following in-game commands (not case-sensitive).
+
+!!! note "Command Prefix"
+    The command prefix with the OSI client is `-`.
+
+    If you are using ClassicUO, you must prefix each command with `>`.
+    
+    For example, instead of `-where` you would type `>where`. This is due to ClassicUO commands starting with `-` and several UO commands for yell, whisper, guild use other symbols so Razor had find something unique.
+
+* `help` - Displays all the in-game commands you see here.
+* `adduseonce` - Creates a target that adds the item to the **UseOnce** list.
+* `time` - Displays the current client system time.
+* `where` - Displays your X/Y/Z coordinates according to Razor.
+
+!!! tip
+    Some shards support `[where` to get your location from the server.
+
+* `ping` - Pings the server 5 times and returns the results.
+* `echo` - Send a message to yourself. Useful for leaving a note to yourself when macroing, for example.
+* `getserial` - Get information on the RPV you are viewing to verify authenticity.
+* `rpvinfo` - Get information on the RPV you are viewing to verify authenticity.
+* `macro [name]` - This will run a macro in-game. If you have a macro called `CreateRobes` you would type `macro CreateRobes`.
+* `hue` - Display information about an item, include the hue.
+* `item` - Same as `hue`.
+* `resync` - This will resync your client, the same way the resync hotkey does.
+* `mobile` - Display some general information about a mobile (used for debugging)
+* `weather [weather_type] [num_of_effects]` - Set the weather in the game. Weather will end automatically after 6 minutes, on newer clients it will end in 10 minutes.
+    * `[weather_type]`:
+        * `0` - It starts to rain
+        * `1` - A fierce storm approaches
+        * `2` - It begins to snow
+        * `3` - A storm is brewing
+    * `[num_of_effects]` - Max number on the screen (client restriction) is 70.
+* `season [season_type]` - Sets the season. This is client side only.
+    * `[season_type]`:
+        * `0` - Spring
+        * `1` - Summer
+        * `2` - Fall
+        * `3` - Winter
+        * `4` - Desolation (Feluccia)
+* `set [variable]` - Sets a macro variable
+* `waypoint [x] [y]` or `track off` - Sets a waypoint at a specific `X/Y` location. If you pass `off` it will remove it from the client.

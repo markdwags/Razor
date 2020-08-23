@@ -52,7 +52,10 @@ theme:
         accent: blue
         scheme: slate
     font:
-        text: Mulish
+        #text: Mulish
+        #text: Alata
+        #text: Noto Sans JP
+        text: Lato
         code: Fira Code
     logo: images/razor.png
 

@@ -50,8 +50,8 @@ For me, that shard is [UO:Renaissance](http://www.uorenaissance.com).
 
 If you're unable to find a solution using the information here or you'd like to submit a feature request or bug report, use the following resources.
 
-* Submit a bug/issue on the [official Razor GitHub Repo](https://github.com/markdwags/Razor/issues).
-* Join us in #razor on Discord
+* Submit a feature/bug/issue on our [official Razor GitHub Repo](https://github.com/markdwags/Razor/issues).
+* Join us in #razor on Discord (this is the official [ClassicUO](https://www.classicuo.eu/) Discord server)
 
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 
@@ -62,5 +62,3 @@ For more information about the Razor Scripting Engine, go [here](http://www.uor-
 All work is released under the GPLv3 license. This project does not distribute any copyrighted game assets. In order to run this application you'll need to legally obtain a copy of the Ultima Online Classic Client.
 
 See the [LICENSE](https://github.com/markdwags/Razor/blob/master/LICENSE.md) file for details.
-
-The documentation found here is a combination of new content and aggregation of data and resources gathered across the Internet including [UO:Renaissance's Guide to Razor](http://uorforum.com/threads/renaissance-guide-to-razor.3671/).
