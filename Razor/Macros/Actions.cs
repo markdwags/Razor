@@ -2585,7 +2585,7 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return $"wait {m_Timeout.Milliseconds}";
+            return $"wait {m_Timeout.TotalMilliseconds}";
         }
 
         public override string Serialize()
