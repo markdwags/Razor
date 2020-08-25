@@ -85,6 +85,7 @@ namespace Assistant.Agents
         {
             PacketHandler.RegisterServerToClientViewer(0x74, new PacketViewerCallback(ExtBuyInfo));
             PacketHandler.RegisterServerToClientViewer(0x24, new PacketViewerCallback(DisplayBuy));
+            PacketHandler.RegisterServerToClientViewer(0x3B, new PacketViewerCallback(EndVendorBuy));
 
             int maxAgents = Config.GetAppSetting<int>("MaxBuyAgents") == 0
                 ? 20
@@ -265,6 +266,7 @@ namespace Assistant.Agents
             }
         }
 
+        private static readonly Dictionary<uint, List<VendorBuyItem>> BuyLists = new Dictionary<uint, List<VendorBuyItem>>();
         private static void ExtBuyInfo(PacketReader p, PacketHandlerEventArgs args)
         {
             Serial ser = p.ReadUInt32();
@@ -300,9 +302,43 @@ namespace Assistant.Agents
             }
         }
 
+        private static void EndVendorBuy(PacketReader p, PacketHandlerEventArgs args)
+        {
+            if (!Client.Instance.AllowBit(FeatureBit.BuyAgent) || World.Player == null)
+                return;
+            uint serial = p.ReadUInt32();
+            if (BuyLists.TryGetValue(serial, out var list))
+            {
+                BuyLists.Remove(serial);
+                Mobile vendor = World.FindMobile(serial);
+                if (vendor == null)
+                    return;
+
+                Item pack = vendor.GetItemOnLayer(Layer.ShopBuy);
+                if (pack == null || pack.Contains == null || pack.Contains.Count <= 0)
+                    return;
+
+                for (int i = list.Count - 1; i >= 0; --i)
+                {
+                    VendorBuyItem vbi = list[i];
+                    Item item = World.FindItem(vbi.Serial);
+                    if (item == null || !pack.Contains.Contains(item))
+                        continue;
+                    item.Amount -= (ushort)vbi.Amount;
+                    if (item.Amount <= 0)
+                        item.Remove();
+                }
+            }
+        }
+
         public override void Clear()
         {
             m_Items.Clear();
+        }
+
+        internal static void OnDisconnected()
+        {
+            BuyLists.Clear();
         }
 
         public override string Name
