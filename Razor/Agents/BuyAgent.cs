@@ -198,10 +198,8 @@ namespace Assistant.Agents
                                 if (count >= item.Amount)
                                 {
                                     count = item.Amount;
-                                    if (pack.Contains.Remove(item))
-                                        --i;
                                 }
-                                if (count <= 0)
+                                else if (count <= 0)
                                 {
                                     continue;
                                 }
@@ -256,6 +254,7 @@ namespace Assistant.Agents
             if (buyList.Count > 0)
             {
                 args.Block = true;
+                BuyLists[serial] = buyList;
                 Client.Instance.SendToServer(new VendorBuyResponse(serial, buyList));
                 World.Player.SendMessage(MsgLevel.Force, LocString.BuyTotals, total, cost);
             }
