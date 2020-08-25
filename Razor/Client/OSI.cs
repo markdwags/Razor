@@ -472,6 +472,7 @@ namespace Assistant
                 Engine.MainWindow.MapWindow.Close();
             PacketHandlers.Party.Clear();
             PacketHandlers.IgnoreGumps.Clear();
+            Agents.BuyAgent.OnDisconnected();
             Config.Save();
 
             //TranslateEnabled = false;
