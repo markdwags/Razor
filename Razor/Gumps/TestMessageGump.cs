@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Assistant.Core.Gumps;
 using Ultima;
 
@@ -7,14 +8,12 @@ namespace Assistant.Gumps
 {
     public sealed class TestMessageGump : Gump
     {
-        //private readonly Version _version;
-
         public TestMessageGump(string message ) : base( 500, 250, -1 )
         {
             X = 300;
             Y = 200;
 
-            //_version = version;
+            Movable = true;
             Closable = true;
             Disposable = false;
 
@@ -26,7 +25,7 @@ namespace Assistant.Gumps
 
         public override void OnResponse( int buttonID, int[] switches, Dictionary<int, string> textEntries = null )
         {
-            //AssistantOptions.UpdateGumpVersion = _version;
+            Debug.WriteLine(buttonID);
             base.OnResponse( buttonID, switches, textEntries );
         }
     }

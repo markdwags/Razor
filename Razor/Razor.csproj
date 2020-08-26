@@ -172,7 +172,6 @@
     <Compile Include="Core\Gumps\GumpButtonType.cs" />
     <Compile Include="Core\Gumps\GumpElement.cs" />
     <Compile Include="Core\Gumps\GumpPage.cs" />
-    <Compile Include="Core\Gumps\GumpParser.cs" />
     <Compile Include="Core\Gumps\GumpType.cs" />
     <Compile Include="Core\OverheadManager.cs" />
     <Compile Include="Core\WaypointManager.cs" />
