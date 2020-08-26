@@ -813,3 +813,6 @@ InputBox::ok=&OK
 2110=Next Non-Friendly Target
 2111=Prev Non-Friendly Target
 2112=Set Hue
+2113=Script: Get 'dclicktype' command
+2114=Script: Get 'targettype' command
+2115=Script: '{0}' copied to the clipboard

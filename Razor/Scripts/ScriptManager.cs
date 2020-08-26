@@ -144,7 +144,9 @@ namespace Assistant.Scripts
         /// </summary>
         public static void Initialize()
         {
-            HotKey.Add(HKCategory.Scripts, LocString.StopScript, new HotKeyCallback(HotkeyStopScript));
+            HotKey.Add(HKCategory.Scripts, HKSubCat.None, LocString.StopScript, HotkeyStopScript);
+            HotKey.Add(HKCategory.Scripts, HKSubCat.None, LocString.ScriptDClickType, HotkeyDClickTypeScript);
+            HotKey.Add(HKCategory.Scripts, HKSubCat.None, LocString.ScriptTargetType, HotkeyTargetTypeScript);
 
             Scripts = new List<RazorScript>();
 
@@ -153,6 +155,74 @@ namespace Assistant.Scripts
             foreach (RazorScript script in Scripts)
             {
                 AddHotkey(script.Name);
+            }
+        }
+
+        private static void HotkeyTargetTypeScript()
+        {
+            if (World.Player != null)
+            {
+                World.Player.SendMessage(MsgLevel.Force, LocString.ScriptTargetType);
+                Targeting.OneTimeTarget(OnTargetTypeScript);
+            }
+        }
+
+        private static void OnTargetTypeScript(bool loc, Serial serial, Point3D pt, ushort itemId)
+        {
+            Item item = World.FindItem(serial);
+
+            if (item != null && item.Serial.IsItem && item.Movable && item.Visible)
+            {
+                string cmd = $"targettype '{item.ItemID.ItemData.Name}'";
+
+                Clipboard.SetDataObject(cmd);
+                World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ScriptCopied, cmd), false);
+            }
+            else
+            {
+                Mobile m = World.FindMobile(serial);
+
+                if (m != null)
+                {
+                    string cmd = $"targettype '{m.Body}'";
+
+                    Clipboard.SetDataObject(cmd);
+                    World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ScriptCopied, cmd), false);
+                }
+            }
+        }
+
+        private static void HotkeyDClickTypeScript()
+        {
+            if (World.Player != null)
+            {
+                World.Player.SendMessage(MsgLevel.Force, LocString.ScriptTargetType);
+                Targeting.OneTimeTarget(OnDClickTypeScript);
+            }
+        }
+
+        private static void OnDClickTypeScript(bool loc, Serial serial, Point3D pt, ushort itemId)
+        {
+            Item item = World.FindItem(serial);
+
+            if (item != null && item.Serial.IsItem && item.Movable && item.Visible)
+            {
+                string cmd = $"dclicktype '{item.ItemID.ItemData.Name}'";
+
+                Clipboard.SetDataObject(cmd);
+                World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ScriptCopied, cmd), false);
+            }
+            else
+            {
+                Mobile m = World.FindMobile(serial);
+
+                if (m != null)
+                {
+                    string cmd = $"dclicktype '{m.Body}'";
+
+                    Clipboard.SetDataObject(cmd);
+                    World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ScriptCopied, cmd), false);
+                }
             }
         }
 

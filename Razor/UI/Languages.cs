@@ -581,6 +581,9 @@ namespace Assistant
         NextTargetNonFriendly,
         PrevTargetNonFriendly,
         SetHue,
+        ScriptDClickType,
+        ScriptTargetType,
+        ScriptCopied,
         __End
     }
 
