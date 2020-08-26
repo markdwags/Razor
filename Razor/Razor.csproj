@@ -170,6 +170,7 @@
     <Compile Include="Core\DamageTracker.cs" />
     <Compile Include="Core\Gumps\Gump.cs" />
     <Compile Include="Core\Gumps\GumpButtonType.cs" />
+    <Compile Include="Core\Gumps\GumpCollection.cs" />
     <Compile Include="Core\Gumps\GumpElement.cs" />
     <Compile Include="Core\Gumps\GumpPage.cs" />
     <Compile Include="Core\Gumps\GumpType.cs" />

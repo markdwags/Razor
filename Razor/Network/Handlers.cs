@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Assistant.Agents;
 using Assistant.Core;
+using Assistant.Core.Gumps;
 using Assistant.Filters;
 using Assistant.HotKeys;
 using Assistant.Macros;
@@ -2230,6 +2231,11 @@ namespace Assistant
                     return;
                 string text = p.ReadUnicodeStringSafe(len);
                 entries[i] = new GumpTextEntry(id, text);
+            }
+
+            if (World.Player.InternalGumps.GetGump(tid, out Gump gump))
+            {
+                World.Player.InternalGumps.Remove(tid, bid, switches, entries);
             }
 
             if (Macros.MacroManager.AcceptActions)

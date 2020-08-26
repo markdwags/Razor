@@ -28,9 +28,9 @@ namespace Assistant.Core.Gumps
         /// <summary>
         ///     Get array of GumpElements which match the specified ElementType.
         /// </summary>
-        public GumpElement[] GetElementsByType( ElementType type )
+        public GumpElement[] GetElementsByType(ElementType type)
         {
-            return GumpElements.Where( ge => ge.Type == type ).ToArray();
+            return GumpElements.Where(ge => ge.Type == type).ToArray();
         }
 
         /// <summary>
@@ -40,35 +40,35 @@ namespace Assistant.Core.Gumps
         /// <param name="includeTypes">Array of ElementTypes which specifies valid GumpElements to search.</param>
         /// <param name="element">GumpElement (out).</param>
         /// <returns>True on success.</returns>
-        public bool GetNearestElement( GumpElement source, ElementType[] includeTypes, out GumpElement element )
+        public bool GetNearestElement(GumpElement source, ElementType[] includeTypes, out GumpElement element)
         {
             GumpElement nearest = null;
             double closest = 0;
 
-            foreach ( GumpElement ge in GumpElements )
+            foreach (GumpElement ge in GumpElements)
             {
-                if ( ge == source )
+                if (ge == source)
                 {
                     continue;
                 }
 
-                bool found = includeTypes.Any( et => ge.Type == et );
+                bool found = includeTypes.Any(et => ge.Type == et);
 
-                if ( !found )
+                if (!found)
                 {
                     continue;
                 }
 
-                double distance = Utility.Distance( source.X, source.Y, ge.X, ge.Y );
+                double distance = Utility.Distance(source.X, source.Y, ge.X, ge.Y);
 
-                if ( nearest == null )
+                if (nearest == null)
                 {
                     closest = distance;
                     nearest = ge;
                 }
                 else
                 {
-                    if ( !( distance < closest ) )
+                    if (!(distance < closest))
                     {
                         continue;
                     }
@@ -86,28 +86,28 @@ namespace Assistant.Core.Gumps
         ///     Get nearest GumpElement from source.
         /// </summary>
         /// <returns>True on success.</returns>
-        public bool GetNearestElement( GumpElement source, out GumpElement element )
+        public bool GetNearestElement(GumpElement source, out GumpElement element)
         {
             GumpElement nearest = null;
             double closest = 0;
 
-            foreach ( GumpElement ge in GumpElements )
+            foreach (GumpElement ge in GumpElements)
             {
-                if ( ge == source )
+                if (ge == source)
                 {
                     continue;
                 }
 
-                double distance = Utility.Distance( source.X, source.Y, ge.X, ge.Y );
+                double distance = Utility.Distance(source.X, source.Y, ge.X, ge.Y);
 
-                if ( nearest == null )
+                if (nearest == null)
                 {
                     closest = distance;
                     nearest = ge;
                 }
                 else
                 {
-                    if ( !( distance < closest ) )
+                    if (!(distance < closest))
                     {
                         continue;
                     }
@@ -121,18 +121,18 @@ namespace Assistant.Core.Gumps
             return nearest != null;
         }
 
-        public bool GetElementByXY( int x, int y, out GumpElement gumpElement )
+        public bool GetElementByXY(int x, int y, out GumpElement gumpElement)
         {
             gumpElement = null;
 
-            if ( GumpElements == null )
+            if (GumpElements == null)
             {
                 return false;
             }
 
-            GumpElement element = GumpElements.FirstOrDefault( m => m.X == x && m.Y == y );
+            GumpElement element = GumpElements.FirstOrDefault(m => m.X == x && m.Y == y);
 
-            if ( element != null )
+            if (element != null)
             {
                 gumpElement = element;
             }
@@ -140,9 +140,9 @@ namespace Assistant.Core.Gumps
             return gumpElement != null;
         }
 
-        public GumpElement GetElementByXY( int x, int y )
+        public GumpElement GetElementByXY(int x, int y)
         {
-            if ( GetElementByXY( x, y, out GumpElement element ) )
+            if (GetElementByXY(x, y, out GumpElement element))
             {
                 return element;
             }
@@ -150,18 +150,18 @@ namespace Assistant.Core.Gumps
             return null;
         }
 
-        public bool GetElementByCliloc( int cliloc, out GumpElement gumpElement )
+        public bool GetElementByCliloc(int cliloc, out GumpElement gumpElement)
         {
             gumpElement = null;
 
-            if ( GumpElements == null )
+            if (GumpElements == null)
             {
                 return false;
             }
 
-            GumpElement element = GumpElements.FirstOrDefault( m => m.Cliloc == cliloc );
+            GumpElement element = GumpElements.FirstOrDefault(m => m.Cliloc == cliloc);
 
-            if ( element != null )
+            if (element != null)
             {
                 gumpElement = element;
             }
@@ -169,9 +169,9 @@ namespace Assistant.Core.Gumps
             return gumpElement != null;
         }
 
-        public GumpElement GetElementByCliloc( int cliloc )
+        public GumpElement GetElementByCliloc(int cliloc)
         {
-            return GetElementByCliloc( cliloc, out GumpElement element ) ? element : null;
+            return GetElementByCliloc(cliloc, out GumpElement element) ? element : null;
         }
     }
 }

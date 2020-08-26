@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assistant.Agents;
 using Assistant.Core;
+using Assistant.Core.Gumps;
 using Assistant.Macros;
 using Assistant.UI;
 
@@ -941,6 +942,8 @@ namespace Assistant
         public uint PromptID;
         public uint PromptType;
         public string PromptInputText;
+        
+        public GumpCollection InternalGumps { get; set; } = new GumpCollection();
 
         public void CancelPrompt()
         {
