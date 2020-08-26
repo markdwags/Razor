@@ -1,6 +1,6 @@
 ﻿using Assistant.Core.Gumps;
 
-namespace Assistant.Gumps
+namespace Assistant.Gumps.Internal
 {
     public sealed class TestMessageGump : Gump
     {
@@ -16,13 +16,14 @@ namespace Assistant.Gumps
             AddPage(0);
             AddBackground(0, 0, 500, 400, 9270);
             AddHtml(20, 20, 460, 330, message, true, true);
-            AddButton(420, 360, 247, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(200, 360, 247, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(420, 360, 247, 248, 1, GumpButtonType.Reply, 0);
         }
 
-        public override void OnResponse(int buttonID, int[] switches, GumpTextEntry[] textEntries = null)
+        public override void OnResponse(int buttonId, int[] switches, GumpTextEntry[] textEntries = null)
         {
-            World.Player.OverheadMessage($"Button {buttonID}");
-            base.OnResponse(buttonID, switches, textEntries);
+            World.Player.OverheadMessage($"Button {buttonId}");
+            base.OnResponse(buttonId, switches, textEntries);
         }
     }
 }

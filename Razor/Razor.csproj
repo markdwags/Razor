@@ -168,12 +168,12 @@
     <Compile Include="Core\Dress.cs" />
     <Compile Include="Core\EncodedSpeech.cs" />
     <Compile Include="Core\DamageTracker.cs" />
-    <Compile Include="Core\Gumps\Gump.cs" />
-    <Compile Include="Core\Gumps\GumpButtonType.cs" />
-    <Compile Include="Core\Gumps\GumpCollection.cs" />
-    <Compile Include="Core\Gumps\GumpElement.cs" />
-    <Compile Include="Core\Gumps\GumpPage.cs" />
-    <Compile Include="Core\Gumps\GumpType.cs" />
+    <Compile Include="Gumps\Gump.cs" />
+    <Compile Include="Gumps\GumpButtonType.cs" />
+    <Compile Include="Gumps\GumpCollection.cs" />
+    <Compile Include="Gumps\GumpElement.cs" />
+    <Compile Include="Gumps\GumpPage.cs" />
+    <Compile Include="Gumps\GumpType.cs" />
     <Compile Include="Core\OverheadManager.cs" />
     <Compile Include="Core\WaypointManager.cs" />
     <Compile Include="Filters\SoundMusicManager.cs" />
@@ -227,7 +227,7 @@
     <Compile Include="Core\Geometry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\TestMessageGump.cs" />
+    <Compile Include="Gumps\Internal\TestMessageGump.cs" />
     <Compile Include="HotKeys\Counters.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -571,7 +571,9 @@
       <Name>FastColoredTextBox</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\Gumps\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -1,4 +1,4 @@
-﻿namespace Assistant.Core.Gumps
+﻿namespace Assistant.Gumps
 {
     public enum GumpButtonType
     {

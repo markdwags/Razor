@@ -24,7 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assistant.Agents;
 using Assistant.Core;
-using Assistant.Gumps;
+using Assistant.Gumps.Internal;
 using Assistant.Macros;
 using Assistant.Scripts;
 

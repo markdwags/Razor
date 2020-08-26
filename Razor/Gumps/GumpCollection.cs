@@ -18,7 +18,7 @@
 using System.Collections.Concurrent;
 using System.Linq;
 
-namespace Assistant.Core.Gumps
+namespace Assistant.Gumps
 {
     public sealed class GumpCollection
     {

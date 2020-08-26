@@ -25,8 +25,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Assistant.Agents;
 using Assistant.Core;
-using Assistant.Core.Gumps;
 using Assistant.Filters;
+using Assistant.Gumps;
 using Assistant.HotKeys;
 using Assistant.Macros;
 using Assistant.Scripts;
@@ -2206,22 +2206,24 @@ namespace Assistant
                 return;
 
             Serial ser = p.ReadUInt32();
-            uint tid = p.ReadUInt32();
-            int bid = p.ReadInt32();
+            uint gumpId = p.ReadUInt32();
+            int buttonId = p.ReadInt32();
 
             World.Player.HasGump = false;
             World.Player.HasCompressedGump = false;
 
-            int sc = p.ReadInt32();
-            if (sc < 0 || sc > 2000)
+            int switchCount = p.ReadInt32();
+            if (switchCount < 0 || switchCount > 2000)
                 return;
-            int[] switches = new int[sc];
-            for (int i = 0; i < sc; i++)
+
+            int[] switches = new int[switchCount];
+            for (int i = 0; i < switchCount; i++)
                 switches[i] = p.ReadInt32();
 
             int ec = p.ReadInt32();
             if (ec < 0 || ec > 2000)
                 return;
+
             GumpTextEntry[] entries = new GumpTextEntry[ec];
             for (int i = 0; i < ec; i++)
             {
@@ -2233,18 +2235,18 @@ namespace Assistant
                 entries[i] = new GumpTextEntry(id, text);
             }
 
-            if (World.Player.InternalGumps.GetGump(tid, out Gump gump))
+            if (World.Player.InternalGumps.GetGump(gumpId, out Gump gump))
             {
-                World.Player.InternalGumps.Remove(tid, bid, switches, entries);
+                World.Player.InternalGumps.Remove(gumpId, buttonId, switches, entries);
             }
 
             if (Macros.MacroManager.AcceptActions)
-                MacroManager.Action(new GumpResponseAction(bid, switches, entries));
+                MacroManager.Action(new GumpResponseAction(buttonId, switches, entries));
 
-            ScriptManager.AddToScript(bid == 0 ? "gumpclose" : $"gumpresponse {bid}");
+            ScriptManager.AddToScript(buttonId == 0 ? "gumpclose" : $"gumpresponse {buttonId}");
 
 
-            World.Player.LastGumpResponseAction = new GumpResponseAction(bid, switches, entries);
+            World.Player.LastGumpResponseAction = new GumpResponseAction(buttonId, switches, entries);
         }
 
         private static void ChangeSeason(PacketReader p, PacketHandlerEventArgs args)

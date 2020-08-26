@@ -21,9 +21,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Assistant;
+using Assistant.Core.Gumps;
 using Assistant.Network;
 
-namespace Assistant.Core.Gumps
+namespace Assistant.Gumps
 {
     public class Gump
     {

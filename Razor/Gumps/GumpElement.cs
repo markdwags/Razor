@@ -16,8 +16,9 @@
  * along with UO Machine.  If not, see <http://www.gnu.org/licenses/>. */
 
 using System;
+using Assistant.Core.Gumps;
 
-namespace Assistant.Core.Gumps
+namespace Assistant.Gumps
 {
     public class GumpElement
     {
