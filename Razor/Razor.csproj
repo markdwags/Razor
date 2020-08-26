@@ -168,6 +168,12 @@
     <Compile Include="Core\Dress.cs" />
     <Compile Include="Core\EncodedSpeech.cs" />
     <Compile Include="Core\DamageTracker.cs" />
+    <Compile Include="Core\Gumps\Gump.cs" />
+    <Compile Include="Core\Gumps\GumpButtonType.cs" />
+    <Compile Include="Core\Gumps\GumpElement.cs" />
+    <Compile Include="Core\Gumps\GumpPage.cs" />
+    <Compile Include="Core\Gumps\GumpParser.cs" />
+    <Compile Include="Core\Gumps\GumpType.cs" />
     <Compile Include="Core\OverheadManager.cs" />
     <Compile Include="Core\WaypointManager.cs" />
     <Compile Include="Filters\SoundMusicManager.cs" />
@@ -221,6 +227,7 @@
     <Compile Include="Core\Geometry.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\TestMessageGump.cs" />
     <Compile Include="HotKeys\Counters.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -246,6 +253,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Agents\ScavengerAgent.cs" />
+    <Compile Include="Network\PacketWriter.cs" />
     <Compile Include="Scripts\AgentCommands.cs" />
     <Compile Include="Scripts\Engine\Interpreter.cs" />
     <Compile Include="Scripts\Engine\Lexer.cs" />
@@ -563,6 +571,7 @@
       <Name>FastColoredTextBox</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

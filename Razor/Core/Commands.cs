@@ -24,6 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assistant.Agents;
 using Assistant.Core;
+using Assistant.Gumps;
 using Assistant.Macros;
 using Assistant.Scripts;
 
@@ -51,6 +52,19 @@ namespace Assistant
             Command.Register("Set", SetMacroVariable);
             Command.Register("Track", Track);
             Command.Register("Waypoint", Track);
+            Command.Register("Gump", CreateGump);
+        }
+
+        private static void CreateGump(string[] param)
+        {
+            StringBuilder message = new StringBuilder();
+            message.AppendLine("Razor");
+            message.AppendLine();
+            message.AppendLine("Another message");
+
+            TestMessageGump gump =
+                new TestMessageGump(message.ToString());
+            gump.SendGump();
         }
 
         private static DateTime m_LastSync;

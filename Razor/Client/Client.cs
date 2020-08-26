@@ -152,6 +152,7 @@ namespace Assistant
         public abstract void SendToServer(PacketReader pr);
 
         public abstract void SendToClient(Packet p);
+        public abstract void SendPacketToClient(byte[] packet, int length);
 
         public abstract void ForceSendToClient(Packet p);
 

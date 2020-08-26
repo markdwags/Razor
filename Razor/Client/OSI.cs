@@ -745,6 +745,11 @@ namespace Assistant
             }
         }
 
+        public override void SendPacketToClient(byte[] packet, int length)
+        {
+            //_sendToClient(ref packet, ref length);
+        }
+
         public override void ForceSendToClient(Packet p)
         {
             byte[] data = p.Compile();
