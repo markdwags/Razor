@@ -2352,8 +2352,8 @@ namespace Assistant
         {
             if (scriptList.SelectedItem == null || !(scriptList.SelectedItem is ScriptManager.RazorScript))
                 return null;
-            else
-                return (ScriptManager.RazorScript) scriptList.SelectedItem;
+
+            return (ScriptManager.RazorScript) scriptList.SelectedItem;
         }
 
         public void playMacro_Click(object sender, System.EventArgs e)
@@ -6040,8 +6040,9 @@ namespace Assistant
 
             ScriptManager.ClearHighlightLine();
 
-            scriptEditor.Text =
-                File.ReadAllText(Path.Combine(ScriptManager.ScriptPath, $"{scriptList.SelectedItem}.razor"));
+            ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
+
+            scriptEditor.Text = string.Join("\n", script.Lines);
         }
 
         private void recordScript_Click(object sender, EventArgs e)
@@ -6273,31 +6274,64 @@ namespace Assistant
             Config.SetProperty("AutoSaveScript", autoSaveScript.Checked);
         }
 
-        private void scriptList_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        private ContextMenu m_ScriptContextMenu = null;
+        private void scriptList_MouseDown(object sender, MouseEventArgs e)
         {
-            if (scriptList.SelectedIndex < 0)
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                if (m_ScriptContextMenu == null)
+                {
+                    m_ScriptContextMenu = new ContextMenu(new[]
+                    {
+                        new MenuItem("Open Externally", OpenScriptExternally),
+                        new MenuItem("Copy to Clipboard", CopyScriptToClipboard),
+                        new MenuItem("-"),
+                        new MenuItem("Reload Scripts", ReloadScripts)
+                    });
+                }
+
+                m_ScriptContextMenu.Show(scriptList, new Point(e.X, e.Y));
+            }
+        }
+
+        private void CopyScriptToClipboard(object sender, EventArgs e)
+        {
+            ScriptManager.RazorScript script = GetScriptSel();
+            if (script == null)
                 return;
 
-            /*if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            try
             {
-                if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
-                    return;
-
-                ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
-
-                ContextMenu menu = new ContextMenu();
-                
-                menu.MenuItems.Add("New", OnScriptNew);
-                menu.MenuItems.Add($"Rename '{script.Name}'", OnScriptRename);
-                menu.MenuItems.Add($"Delete '{script.Name}'", OnScriptDelete);
-
-                menu.Show(scriptList, new Point(e.X, e.Y));
+                Clipboard.SetText(string.Join(Environment.NewLine, script.Lines));
             }
-            else if (e.Button == MouseButtons.Left && e.Clicks == 2)
+            catch
             {
-                if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
-                    return;
-            }*/
+                MessageBox.Show(this, Language.GetString(LocString.ReadError), "Copy Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void ReloadScripts(object sender, EventArgs e)
+        {
+            ScriptManager.RedrawScripts();
+        }
+
+        private void OpenScriptExternally(object sender, EventArgs args)
+        {
+            ScriptManager.RazorScript script = GetScriptSel();
+            if (script == null)
+                return;
+
+            try
+            {
+                Process.Start(script.Path);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(this, "Unable to open script",
+                    Language.GetString(LocString.ReadError),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void scriptEditor_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
