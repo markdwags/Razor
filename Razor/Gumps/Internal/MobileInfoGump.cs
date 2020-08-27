@@ -48,6 +48,7 @@ namespace Assistant.Gumps.Internal
             Disposable = true;
             Movable = true;
             Resizable = false;
+            Resend = true;
 
             AddPage(0);
 
@@ -111,6 +112,9 @@ namespace Assistant.Gumps.Internal
                 case (int)MobileInfoButtons.CopyBody:
                     Clipboard.SetText(_mobile.Body.ToString());
                     World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ScriptCopied, _mobile.Body.ToString()), false);
+                    break;
+                case (int)MobileInfoButtons.Okay:
+                    Resend = false;
                     break;
             }
 

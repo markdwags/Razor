@@ -50,6 +50,9 @@ namespace Assistant.Gumps
                 OnCollectionChanged();
             }
 
+            if (g.Resend)
+                g.SendGump();
+
             return result;
         }
 

@@ -47,6 +47,7 @@ namespace Assistant.Gumps.Internal
             Disposable = true;
             Movable = true;
             Resizable = false;
+            Resend = true;
 
             AddPage(0);
             

@@ -125,6 +125,8 @@ namespace Assistant.Gumps
 
         public bool Resizable { get; set; }
 
+        public bool Resend { get; set; }
+
         public string[] Strings
         {
             get => _strings.ToArray();
@@ -345,6 +347,8 @@ namespace Assistant.Gumps
 
         public virtual void OnResponse(int buttonID, int[] switches, GumpTextEntry[] textEntries = null)
         {
+            if (Resend)
+                SendGump();
         }
 
         public virtual void SendGump()
