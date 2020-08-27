@@ -227,6 +227,8 @@
     <Compile Include="Core\Geometry.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\Internal\MobileInfoGump.cs" />
+    <Compile Include="Gumps\Internal\ItemInfoGump.cs" />
     <Compile Include="Gumps\Internal\TestMessageGump.cs" />
     <Compile Include="HotKeys\Counters.cs">
       <SubType>Code</SubType>
@@ -571,9 +573,7 @@
       <Name>FastColoredTextBox</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Gumps\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -52,7 +52,9 @@ namespace Assistant
             Command.Register("Set", SetMacroVariable);
             Command.Register("Track", Track);
             Command.Register("Waypoint", Track);
-            Command.Register("Gump", CreateGump);
+
+            Command.Register("TestGump", CreateGump);
+            Command.Register("Info", GetGumpInfo);
         }
 
         private static void CreateGump(string[] param)
@@ -185,6 +187,34 @@ namespace Assistant
                 Language.CliLocName, "System", "Setting season.."));
 
             Client.Instance.ForceSendToClient(new SeasonChange(Convert.ToInt32(param[0]), true));
+        }
+
+        private static void GetGumpInfo(string[] param)
+        {
+            Targeting.OneTimeTarget(OnGetItemInfoTarget);
+            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Language.CliLocName, "System", "Select an item or mobile to view/inspect"));
+        }
+
+        private static void OnGetItemInfoTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            Item item = World.FindItem(serial);
+
+            if (item == null)
+            {
+                Mobile mobile = World.FindMobile(serial);
+
+                if (mobile == null)
+                    return;
+
+                MobileInfoGump gump = new MobileInfoGump(mobile);
+                gump.SendGump();
+            }
+            else
+            {
+                ItemInfoGump gump = new ItemInfoGump(item);
+                gump.SendGump();
+            }
         }
 
         private static void GetItemHue(string[] param)
