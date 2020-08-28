@@ -828,39 +828,33 @@ namespace Assistant
         public static bool LoadLastProfile()
         {
             string name = LastProfileName;
-            bool failed = true;
-            Profile p = null;
+            Profile p;
 
-            if (name != null)
+            if (!string.IsNullOrWhiteSpace(name))
             {
                 p = new Profile(name);
-                failed = !p.Load();
-            }
-
-            if (failed)
-            {
-                if (p == null)
-                    p = new Profile("default");
-                else
-                    p.Name = "default";
-
-                if (!p.Load())
+                if (p.Load())
                 {
-                    p.MakeDefault();
-                    p.Save();
+                    if (m_Current != null)
+                        m_Current.Unload();
+                    m_Current = p;
+                    return true;
                 }
-
-                LastProfileName = "default";
             }
 
-            if (p != null)
+            LastProfileName = "default";
+            p = new Profile("default");
+            if (!p.Load())
             {
-                if (m_Current != null)
-                    m_Current.Unload();
-                m_Current = p;
+                p.MakeDefault();
+                p.Save();
             }
 
-            return !failed;
+            if (m_Current != null)
+                m_Current.Unload();
+            m_Current = p;
+
+            return true;
         }
 
         public static void SetupProfilesList(ComboBox list, string selectName)
