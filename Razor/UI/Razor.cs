@@ -523,6 +523,8 @@ namespace Assistant
 
             showPartyFriendOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowPartyFriendOverhead"); });
 
+            overrideSpellFormat.SafeAction(s => { s.Checked = Config.GetBool("OverrideSpellFormat"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -6932,6 +6934,11 @@ namespace Assistant
             {
                 WaypointManager.RedrawList();
             }
+        }
+
+        private void overrideSpellFormat_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("OverrideSpellFormat", overrideSpellFormat.Checked);            
         }
     }
 }

@@ -307,6 +307,8 @@ namespace Assistant
 
             AddProperty("ShowPartyFriendOverhead", false);
 
+            AddProperty("OverrideSpellFormat", true);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

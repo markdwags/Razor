@@ -1917,6 +1917,14 @@ namespace Assistant
 
         public static List<string> SysMessages = new List<string>();
 
+        public static System.Text.StringBuilder SpellPowerwordsBuilder { get; set; } = new System.Text.StringBuilder(Config.GetString("SpellFormat"));
+
+        private static void ResetSpellPowerwordsBuilder()
+        {
+            SpellPowerwordsBuilder.Remove(0, SpellPowerwordsBuilder.Length);
+            SpellPowerwordsBuilder.Insert(0, Config.GetString("SpellFormat"));
+        }
+
         public static void HandleSpeech(Packet p, PacketHandlerEventArgs args, Serial ser, ushort body,
             MessageType type, ushort hue, ushort font, string lang, string name, string text)
         {
@@ -1927,9 +1935,12 @@ namespace Assistant
             {
                 Spell s = Spell.Get(text.Trim());
                 bool replaced = false;
-                if (s != null)
+
+                if (Config.GetBool("OverrideSpellFormat") && s != null)
                 {
-                    System.Text.StringBuilder sb = new System.Text.StringBuilder(Config.GetString("SpellFormat"));
+                    ResetSpellPowerwordsBuilder();
+
+                    System.Text.StringBuilder sb = SpellPowerwordsBuilder;
                     sb.Replace(@"{power}", s.WordsOfPower);
                     string spell = Language.GetString(s.Name);
                     sb.Replace(@"{spell}", spell);
@@ -1942,7 +1953,7 @@ namespace Assistant
                     {
                         Client.Instance.SendToClient(new AsciiMessage(ser, body, MessageType.Spell, s.GetHue(hue), font,
                             name, newText));
-                        //Client.Instance.SendToClient( new UnicodeMessage( ser, body, MessageType.Spell, s.GetHue( hue ), font, Language.CliLocName, name, newText ) );
+                        
                         replaced = true;
                         args.Block = true;
                     }

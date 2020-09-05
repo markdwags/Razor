@@ -780,6 +780,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.overrideSpellFormat = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1136,6 +1137,7 @@ namespace Assistant
             // subOptionsSpeechTab
             // 
             this.subOptionsSpeechTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsSpeechTab.Controls.Add(this.overrideSpellFormat);
             this.subOptionsSpeechTab.Controls.Add(this.buffDebuffOptions);
             this.subOptionsSpeechTab.Controls.Add(this.damageTakenOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.showDamageTaken);
@@ -1179,7 +1181,7 @@ namespace Assistant
             // buffDebuffOptions
             // 
             this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buffDebuffOptions.Location = new System.Drawing.Point(208, 236);
+            this.buffDebuffOptions.Location = new System.Drawing.Point(438, 209);
             this.buffDebuffOptions.Name = "buffDebuffOptions";
             this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
             this.buffDebuffOptions.TabIndex = 129;
@@ -1234,7 +1236,7 @@ namespace Assistant
             // showBuffDebuffOverhead
             // 
             this.showBuffDebuffOverhead.AutoSize = true;
-            this.showBuffDebuffOverhead.Location = new System.Drawing.Point(9, 237);
+            this.showBuffDebuffOverhead.Location = new System.Drawing.Point(260, 210);
             this.showBuffDebuffOverhead.Name = "showBuffDebuffOverhead";
             this.showBuffDebuffOverhead.Size = new System.Drawing.Size(172, 19);
             this.showBuffDebuffOverhead.TabIndex = 91;
@@ -1456,9 +1458,9 @@ namespace Assistant
             // 
             // txtSpellFormat
             // 
-            this.txtSpellFormat.Location = new System.Drawing.Point(89, 208);
+            this.txtSpellFormat.Location = new System.Drawing.Point(89, 228);
             this.txtSpellFormat.Name = "txtSpellFormat";
-            this.txtSpellFormat.Size = new System.Drawing.Size(152, 23);
+            this.txtSpellFormat.Size = new System.Drawing.Size(126, 23);
             this.txtSpellFormat.TabIndex = 55;
             this.txtSpellFormat.TextChanged += new System.EventHandler(this.txtSpellFormat_TextChanged);
             // 
@@ -1482,9 +1484,9 @@ namespace Assistant
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(9, 208);
+            this.label3.Location = new System.Drawing.Point(11, 228);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(102, 20);
+            this.label3.Size = new System.Drawing.Size(87, 20);
             this.label3.TabIndex = 54;
             this.label3.Text = "Spell Format:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2773,9 +2775,9 @@ namespace Assistant
             this.subWaypoints.Controls.Add(this.lblWaypoint);
             this.subWaypoints.Controls.Add(this.btnAddWaypoint);
             this.subWaypoints.Controls.Add(this.waypointList);
-            this.subWaypoints.Location = new System.Drawing.Point(4, 24);
+            this.subWaypoints.Location = new System.Drawing.Point(4, 22);
             this.subWaypoints.Name = "subWaypoints";
-            this.subWaypoints.Size = new System.Drawing.Size(502, 286);
+            this.subWaypoints.Size = new System.Drawing.Size(502, 288);
             this.subWaypoints.TabIndex = 4;
             this.subWaypoints.Text = "Waypoints";
             // 
@@ -5233,6 +5235,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // overrideSpellFormat
+            // 
+            this.overrideSpellFormat.Location = new System.Drawing.Point(9, 205);
+            this.overrideSpellFormat.Name = "overrideSpellFormat";
+            this.overrideSpellFormat.Size = new System.Drawing.Size(152, 20);
+            this.overrideSpellFormat.TabIndex = 130;
+            this.overrideSpellFormat.Text = "Override spell format";
+            this.overrideSpellFormat.CheckedChanged += new System.EventHandler(this.overrideSpellFormat_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5454,5 +5465,6 @@ namespace Assistant
         private Button openBackupFolder;
         private Button setBackupFolder;
         private Button createBackup;
+        private CheckBox overrideSpellFormat;
     }
 }
