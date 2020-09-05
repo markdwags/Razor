@@ -27,6 +27,7 @@ using Assistant.Core;
 using Assistant.Gumps.Internal;
 using Assistant.Macros;
 using Assistant.Scripts;
+using System.Linq;
 
 namespace Assistant
 {
@@ -55,6 +56,15 @@ namespace Assistant
 
             Command.Register("TestGump", CreateGump);
             Command.Register("Info", GetGumpInfo);
+
+            Command.Register("SysMsgs", GetSystemMessages);
+            Command.Register("SysMessages", GetSystemMessages);
+        }
+
+        private static void GetSystemMessages(string[] param)
+        {
+            SystemMessagesGump gump = new SystemMessagesGump(string.Join("\n", PacketHandlers.SysMessages.ToArray().Reverse()));
+            gump.SendGump();            
         }
 
         private static void CreateGump(string[] param)

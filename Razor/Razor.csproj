@@ -231,6 +231,7 @@
     <Compile Include="Gumps\Internal\MobileInfoGump.cs" />
     <Compile Include="Gumps\Internal\ItemInfoGump.cs" />
     <Compile Include="Gumps\Internal\DamageTrackerGump.cs" />
+    <Compile Include="Gumps\Internal\SystemMessagesGump.cs" />
     <Compile Include="Gumps\Internal\TestMessageGump.cs" />
     <Compile Include="HotKeys\Counters.cs">
       <SubType>Code</SubType>
