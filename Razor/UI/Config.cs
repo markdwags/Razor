@@ -58,8 +58,12 @@ namespace Assistant
             AddProperty("ShowMobNames", false);
             AddProperty("ShowCorpseNames", false);
             AddProperty("DisplaySkillChanges", false);
-            AddProperty("TitleBarText",
-                @"UO - {char} {crimtime}- {mediumstatbar} {bp} {bm} {gl} {gs} {mr} {ns} {ss} {sa} {aids}");
+
+            if (Client.IsOSI)
+                AddProperty("TitleBarText", @"UO - {char} {crimtime}- {mediumstatbar} {bp} {bm} {gl} {gs} {mr} {ns} {ss} {sa} {aids}");
+            else
+                AddProperty("TitleBarText", @"UO - {char}");
+
             AddProperty("TitleBarDisplay", true);
             AddProperty("AutoSearch", true);
             AddProperty("NoSearchPouches", true);
@@ -75,15 +79,15 @@ namespace Assistant
             AddProperty("WindowY", (int) 400);
             AddProperty("CountStealthSteps", true);
 
-            AddProperty("SysColor", (int) 0x03B1);
+            AddProperty("SysColor", (int) 0x0044);
             AddProperty("WarningColor", (int) 0x0025);
             AddProperty("ExemptColor", (int) 0x0480);
             AddProperty("SpeechHue", (int) 0x03B1);
             AddProperty("BeneficialSpellHue", (int) 0x0005);
-            AddProperty("HarmfulSpellHue", (int) 0x0025);
+            AddProperty("HarmfulSpellHue", (int) 0x0058);
             AddProperty("NeutralSpellHue", (int) 0x03B1);
             AddProperty("ForceSpeechHue", false);
-            AddProperty("ForceSpellHue", false);
+            AddProperty("ForceSpellHue", true);
             AddProperty("SpellFormat", @"{power} [{spell}]");
 
             AddProperty("ShowNotoHue", true);
@@ -204,7 +208,7 @@ namespace Assistant
             AddProperty("ShowStaticWallLabels", false);
 
             AddProperty("ShowTextTargetIndicator", false);
-            AddProperty("ShowAttackTargetNewOnly", false);
+            AddProperty("ShowAttackTargetNewOnly", true);
 
             AddProperty("FilterDragonGraphics", false);
             AddProperty("FilterDrakeGraphics", false);

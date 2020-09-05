@@ -20,6 +20,8 @@
     - When checked, the last target will highlight the selected color. Click the set tab to select the highlight hue.
 * **Override Spell Hues**
     - Like speech, checking this box allows you to select the color for spell text, both words of power or spell names. Colors may be selected for beneficial, harmful, and neutral spells.
+* **Override Spell Format**
+    - If checked, Razor will transform spell power words into the actual spell name.
 * **Spell Format**
     - This field determines how you view spells being cast.
         - `{power}` will show words of power on your screen. These are the actual spell words.
