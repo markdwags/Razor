@@ -23,12 +23,17 @@ after_build:
     SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
 
     python --version
+    
     python.exe -m pip install --upgrade pip
+    
     pip install mkdocs
+    
     pip install mkdocs-material
+    
     pip install mkdocs-git-revision-date-plugin
-
+    
     cd help
+    
     mkdocs build
 artifacts:
 - path: bin\Win32\Release
