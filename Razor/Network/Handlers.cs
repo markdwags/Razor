@@ -2059,10 +2059,13 @@ namespace Assistant
 
                 if (!ser.IsValid || ser == World.Player.Serial || ser.IsItem)
                 {
-                    SysMessages.Add(text);
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        SysMessages.Add(text);
 
-                    if (SysMessages.Count >= 25)
-                        SysMessages.RemoveRange(0, 10);
+                        if (SysMessages.Count >= 25)
+                            SysMessages.RemoveRange(0, 10);
+                    }
                 }
 
                 if (Config.GetBool("FilterSystemMessages") && ser == Serial.MinusOne || ser == Serial.Zero)
