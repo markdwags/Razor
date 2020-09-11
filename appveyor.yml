@@ -19,22 +19,14 @@ build:
   verbosity: minimal
 test: off
 after_build:
-- cmd: >-
-    SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
-
-    python --version
-    
-    python.exe -m pip install --upgrade pip
-    
-    pip install mkdocs
-    
-    pip install mkdocs-material
-    
-    pip install mkdocs-git-revision-date-plugin
-    
-    cd help
-    
-    mkdocs build
+- cmd: SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+- cmd: python --version
+- cmd: python.exe -m pip install --upgrade pip
+- cmd: pip install mkdocs
+- cmd: pip install mkdocs-material
+- cmd: pip install mkdocs-git-revision-date-plugin
+- cmd: cd help
+- cmd: mkdocs build
 artifacts:
 - path: bin\Win32\Release
   name: Razor-dev-preview
