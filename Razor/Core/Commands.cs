@@ -63,7 +63,7 @@ namespace Assistant
 
         private static void GetSystemMessages(string[] param)
         {
-            SystemMessagesGump gump = new SystemMessagesGump(string.Join("\n", PacketHandlers.SysMessages.ToArray().Reverse()));
+            SystemMessagesGump gump = new SystemMessagesGump();
             gump.SendGump();            
         }
 

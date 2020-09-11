@@ -32,6 +32,7 @@ using Assistant.Macros;
 using Assistant.Scripts;
 using Assistant.UI;
 using ContainerLabels = Assistant.Core.ContainerLabels;
+using System.Windows.Forms;
 
 namespace Assistant
 {
@@ -1915,7 +1916,7 @@ namespace Assistant
                 args.Block = WallStaticFilter.MakeWallStatic(item);
         }
 
-        public static List<string> SysMessages = new List<string>();
+        public static List<string> SysMessages { get; set; } = new List<string>();
 
         public static System.Text.StringBuilder SpellPowerwordsBuilder { get; set; } = new System.Text.StringBuilder(Config.GetString("SpellFormat"));
 
