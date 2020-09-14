@@ -2,7 +2,7 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
-## 1.6.6.15 (09/04/2020)
+## 1.6.6.15 (09/14/2020)
 
 * Fixed ancient Razor bug that could cause non-existent items to remain in your queue (ie: when you stack a pile of gold on to another). This should fix some instances where scavenger isn't picking up items (thanks @SaschaKP)
 * Fixed another ancient Razor bug where the vendor pack items aren't updated realtime by the server (it's managed client side). Razor should behave exactly like this. This will remove the warning in extinfos with amounts not matching. (thanks @SaschaKP)

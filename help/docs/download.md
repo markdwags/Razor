@@ -11,6 +11,7 @@ To learn more about each version, view the [release notes](releasenotes.md).
 
 ## Razor with ClassicUO Support
 
+* [Razor v1.6.6.15](https://github.com/markdwags/Razor/releases/tag/v1.6.6.15)
 * [Razor v1.6.5.16](https://github.com/markdwags/Razor/releases/tag/v1.6.5.16)
 * [Razor v1.6.4.32](https://github.com/markdwags/Razor/releases/tag/v1.6.4.32)
 * [Razor v1.6.4.2](https://github.com/markdwags/Razor/releases/tag/v1.6.4.2)
