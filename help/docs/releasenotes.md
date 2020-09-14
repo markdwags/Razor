@@ -2,6 +2,25 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
+## 1.6.6.15 (09/04/2020)
+
+* Fixed ancient Razor bug that could cause non-existent items to remain in your queue (ie: when you stack a pile of gold on to another). This should fix some instances where scavenger isn't picking up items (thanks @SaschaKP)
+* Fixed another ancient Razor bug where the vendor pack items aren't updated realtime by the server (it's managed client side). Razor should behave exactly like this. This will remove the warning in extinfos with amounts not matching. (thanks @SaschaKP)
+* Fixed issue where party/friends overhead messages
+* Moved the Overhead Messages feature to the `Display/Counters` tab so its more visible to everyone
+* Revamped the General tab UI as it was too cluttered. Removed UOAM and Ultima Mapper shortcuts
+* Moved the `Sound/Music` tab to the main `Filter` tab
+* Moved the `Waypoint` tab to the `Display/Counters` tab
+* Change the hue of the overhead message in the macro UI
+* Fixed issue with scripts not parsing words like `spider's silk` correctly
+* Fixed macro->script conversion for wait/pauses
+* Created hotkeys to help generate script commands for `targettype` and `dclicktype`
+* Added right-click menu to script list (reload, open externally, copy to clipboard)
+* `>info` command will popup a gump that will display information about a mobile or item and let you copy by clicking the blue buttons
+* Fixed some issues loading the previous profile
+* Added `>sysmsgs` to display a gump of the current system messages in Razor's buffer for macro and scripting
+* Prevent empty strings from going into the system message buffer
+
 ## 1.6.5.16 (08/08/2020)
 
 * Fixed issue with saving scripts in certain scenarios

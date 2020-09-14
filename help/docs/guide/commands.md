@@ -91,7 +91,7 @@ dclick 0x34AB
 
 ## dclicktype
 
-Syntax: `dclicktype ('name of item') OR (graphicID) [inrange]` or `usetype ('name of item') OR (graphicID) [inrange]`
+Syntax: `dclicktype ('name of item') OR (graphicID) [inrange]` or `usetype ('name of item') OR (graphicID) [inrange]` or `usetype ('name of item') OR (graphicID) backpack`
 
 Description: This command will use (double-click) an item type either provided by the name or the graphic ID.
 
@@ -513,7 +513,7 @@ target 5923 1145 0
 
 ## targettype
 
-Syntax: `targettype (graphic)` or `targettype ('name of item or mobile type') [inrangecheck]`
+Syntax: `targettype (graphic)` or `targettype ('name of item or mobile type') true` or `targettype ('name of item or mobile type') backpack`
 
 Description: This command will target a specific type of mobile or item based on the graphic id or based on the name of the item or mobile.
 
