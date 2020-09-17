@@ -96,6 +96,9 @@ namespace Assistant.Gumps.Internal
                     Clipboard.SetText(_item.Hue.ToString());
                     World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ScriptCopied, _item.Hue.ToString()), false);
                     break;
+                case (int)ItemInfoButtons.Okay:
+                    Resend = false;
+                    break;
             }
 
             base.OnResponse(buttonId, switches, textEntries);
