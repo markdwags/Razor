@@ -781,6 +781,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.reequipHandsPotion = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1742,6 +1743,7 @@ namespace Assistant
             // subOptionsMiscTab
             // 
             this.subOptionsMiscTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOptionsMiscTab.Controls.Add(this.reequipHandsPotion);
             this.subOptionsMiscTab.Controls.Add(this.autoOpenDoorWhenHidden);
             this.subOptionsMiscTab.Controls.Add(this.lblStealthFormat);
             this.subOptionsMiscTab.Controls.Add(this.stealthStepsFormat);
@@ -1774,9 +1776,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -1882,7 +1884,7 @@ namespace Assistant
             this.potionEquip.Name = "potionEquip";
             this.potionEquip.Size = new System.Drawing.Size(232, 20);
             this.potionEquip.TabIndex = 115;
-            this.potionEquip.Text = "Auto Un/Re-equip hands for potions";
+            this.potionEquip.Text = "Auto Unequip for potions";
             this.potionEquip.CheckedChanged += new System.EventHandler(this.potionEquip_CheckedChanged);
             // 
             // spellUnequip
@@ -4339,7 +4341,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4429,10 +4431,10 @@ namespace Assistant
             this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
             this.tabPage3.Controls.Add(this.autoSaveScript);
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 285);
+            this.tabPage3.Size = new System.Drawing.Size(498, 287);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
             // 
@@ -5244,6 +5246,16 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // reequipHandsPotion
+            // 
+            this.reequipHandsPotion.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.reequipHandsPotion.Location = new System.Drawing.Point(423, 140);
+            this.reequipHandsPotion.Name = "reequipHandsPotion";
+            this.reequipHandsPotion.Size = new System.Drawing.Size(69, 20);
+            this.reequipHandsPotion.TabIndex = 125;
+            this.reequipHandsPotion.Text = "Re-equip";
+            this.reequipHandsPotion.CheckedChanged += new System.EventHandler(this.reequipHandsPotion_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5466,5 +5478,6 @@ namespace Assistant
         private Button setBackupFolder;
         private Button createBackup;
         private CheckBox overrideSpellFormat;
+        private CheckBox reequipHandsPotion;
     }
 }

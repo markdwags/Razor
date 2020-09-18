@@ -313,6 +313,8 @@ namespace Assistant
 
             AddProperty("OverrideSpellFormat", true);
 
+            AddProperty("PotionReequip", true);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

@@ -1153,7 +1153,7 @@ namespace Assistant
 
                 ActionQueue.DoubleClick(silent, s);
 
-                if (free != null)
+                if (free != null && Config.GetBool("PotionReequip"))
                     DragDropManager.DragDrop(free, World.Player, free.Layer, true);
 
                 if (s.IsItem)

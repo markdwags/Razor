@@ -525,6 +525,8 @@ namespace Assistant
 
             overrideSpellFormat.SafeAction(s => { s.Checked = Config.GetBool("OverrideSpellFormat"); });
 
+            reequipHandsPotion.SafeAction(s => { s.Checked = Config.GetBool("PotionReequip"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -6939,6 +6941,11 @@ namespace Assistant
         private void overrideSpellFormat_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("OverrideSpellFormat", overrideSpellFormat.Checked);            
+        }
+
+        private void reequipHandsPotion_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("PotionReequip", reequipHandsPotion.Checked);
         }
     }
 }
