@@ -6947,18 +6947,5 @@ namespace Assistant
         {
             Config.SetProperty("PotionReequip", reequipHandsPotion.Checked);
         }
-
-        private void listHotkeys_Click(object sender, EventArgs e)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (KeyData data in HotKey.List.Where(hk => hk.Key != 0).OrderBy(hk => hk.DispName))
-            {
-                sb.AppendLine($"{data.DispName} ({data.KeyString()})");
-            }
-
-            MessageBox.Show(this, sb.ToString(), "Assigned Hot Keys",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
     }
 }

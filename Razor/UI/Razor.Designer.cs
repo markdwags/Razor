@@ -782,7 +782,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.listHotkeys = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -3776,7 +3775,6 @@ namespace Assistant
             // 
             // hotkeysTab
             // 
-            this.hotkeysTab.Controls.Add(this.listHotkeys);
             this.hotkeysTab.Controls.Add(this.filterHotkeys);
             this.hotkeysTab.Controls.Add(this.label22);
             this.hotkeysTab.Controls.Add(this.hkStatus);
@@ -5258,16 +5256,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // listHotkeys
-            // 
-            this.listHotkeys.Location = new System.Drawing.Point(376, 283);
-            this.listHotkeys.Name = "listHotkeys";
-            this.listHotkeys.Size = new System.Drawing.Size(95, 28);
-            this.listHotkeys.TabIndex = 10;
-            this.listHotkeys.Text = "List Hot Keys";
-            this.listHotkeys.UseVisualStyleBackColor = true;
-            this.listHotkeys.Click += new System.EventHandler(this.listHotkeys_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5491,6 +5479,5 @@ namespace Assistant
         private Button createBackup;
         private CheckBox overrideSpellFormat;
         private CheckBox reequipHandsPotion;
-        private Button listHotkeys;
     }
 }
