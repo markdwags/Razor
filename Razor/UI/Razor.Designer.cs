@@ -457,6 +457,7 @@ namespace Assistant
             this.queueTargets = new System.Windows.Forms.CheckBox();
             this.lblTargetFormat = new System.Windows.Forms.Label();
             this.subOptionsMiscTab = new System.Windows.Forms.TabPage();
+            this.reequipHandsPotion = new System.Windows.Forms.CheckBox();
             this.autoOpenDoorWhenHidden = new System.Windows.Forms.CheckBox();
             this.lblStealthFormat = new System.Windows.Forms.Label();
             this.stealthStepsFormat = new System.Windows.Forms.TextBox();
@@ -781,7 +782,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.reequipHandsPotion = new System.Windows.Forms.CheckBox();
+            this.listHotkeys = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1776,11 +1777,21 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
+            // 
+            // reequipHandsPotion
+            // 
+            this.reequipHandsPotion.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.reequipHandsPotion.Location = new System.Drawing.Point(423, 140);
+            this.reequipHandsPotion.Name = "reequipHandsPotion";
+            this.reequipHandsPotion.Size = new System.Drawing.Size(69, 20);
+            this.reequipHandsPotion.TabIndex = 125;
+            this.reequipHandsPotion.Text = "Re-equip";
+            this.reequipHandsPotion.CheckedChanged += new System.EventHandler(this.reequipHandsPotion_CheckedChanged);
             // 
             // autoOpenDoorWhenHidden
             // 
@@ -3765,6 +3776,7 @@ namespace Assistant
             // 
             // hotkeysTab
             // 
+            this.hotkeysTab.Controls.Add(this.listHotkeys);
             this.hotkeysTab.Controls.Add(this.filterHotkeys);
             this.hotkeysTab.Controls.Add(this.label22);
             this.hotkeysTab.Controls.Add(this.hkStatus);
@@ -5246,15 +5258,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // reequipHandsPotion
+            // listHotkeys
             // 
-            this.reequipHandsPotion.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.reequipHandsPotion.Location = new System.Drawing.Point(423, 140);
-            this.reequipHandsPotion.Name = "reequipHandsPotion";
-            this.reequipHandsPotion.Size = new System.Drawing.Size(69, 20);
-            this.reequipHandsPotion.TabIndex = 125;
-            this.reequipHandsPotion.Text = "Re-equip";
-            this.reequipHandsPotion.CheckedChanged += new System.EventHandler(this.reequipHandsPotion_CheckedChanged);
+            this.listHotkeys.Location = new System.Drawing.Point(376, 283);
+            this.listHotkeys.Name = "listHotkeys";
+            this.listHotkeys.Size = new System.Drawing.Size(95, 28);
+            this.listHotkeys.TabIndex = 10;
+            this.listHotkeys.Text = "List Hot Keys";
+            this.listHotkeys.UseVisualStyleBackColor = true;
+            this.listHotkeys.Click += new System.EventHandler(this.listHotkeys_Click);
             // 
             // MainForm
             // 
@@ -5479,5 +5491,6 @@ namespace Assistant
         private Button createBackup;
         private CheckBox overrideSpellFormat;
         private CheckBox reequipHandsPotion;
+        private Button listHotkeys;
     }
 }

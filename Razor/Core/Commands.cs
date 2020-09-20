@@ -59,12 +59,20 @@ namespace Assistant
 
             Command.Register("SysMsgs", GetSystemMessages);
             Command.Register("SysMessages", GetSystemMessages);
+
+            Command.Register("HotKeys", ShowHotKeyGump);
         }
 
         private static void GetSystemMessages(string[] param)
         {
             SystemMessagesGump gump = new SystemMessagesGump();
             gump.SendGump();            
+        }
+
+        private static void ShowHotKeyGump(string[] param)
+        {
+            HotKeyGump gump = new HotKeyGump();
+            gump.SendGump();
         }
 
         private static void CreateGump(string[] param)
