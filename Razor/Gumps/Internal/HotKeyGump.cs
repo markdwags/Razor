@@ -24,7 +24,7 @@ namespace Assistant.Gumps.Internal
 {
     public sealed class HotKeyGump : Gump
     {
-        public HotKeyGump() : base(0, 0)
+        public HotKeyGump(bool alt, bool ctrl, bool shift) : base(0, 0)
         {
             Closable = true;
             Disposable = true;
@@ -37,6 +37,14 @@ namespace Assistant.Gumps.Internal
 
             AddBackground(0, 0, 326, 450, 9270);
             AddLabel(16, 16, 52, "Assigned Razor Hot Keys");
+
+            AddCheck(16, 38, 210, 211, alt, 1);
+            AddLabel(40, 38, 52, "Alt");
+            AddCheck(68, 38, 210, 211, ctrl, 2);
+            AddLabel(92, 38, 52, "Ctrl");
+            AddCheck(127, 38, 210, 211, shift, 3);
+            AddLabel(151, 38, 52, "Shift");
+            AddButton(197, 38, 4011, 4012, 1, GumpButtonType.Reply, 0);
 
             int labelY = 40;
             int count = 0;
@@ -62,6 +70,39 @@ namespace Assistant.Gumps.Internal
                     AddButton(270, 18, 9909, 9911, pageCount + 1, GumpButtonType.Page, pageCount - 1);
                 }
             }
+        }
+
+        public override void OnResponse(int buttonID, int[] switches, GumpTextEntry[] textEntries = null)
+        {
+            if (buttonID == 1)
+            {
+                bool alt = false;
+                bool ctrl = false;
+                bool shift = false;
+
+                foreach (int check in switches)
+                {
+                    switch (check)
+                    {
+                        case 1:
+                            alt = true;
+                            break;
+                        case 2:
+                            ctrl = true;
+                            break;
+                        case 3:
+                            shift = true;
+                            break;
+                    }
+                }
+
+                CloseGump();
+                HotKeyGump gump = new HotKeyGump(alt, ctrl, shift);
+                gump.SendGump();
+
+            }
+
+            base.OnResponse(buttonID, switches, textEntries);
         }
     }
 }

@@ -71,7 +71,7 @@ namespace Assistant
 
         private static void ShowHotKeyGump(string[] param)
         {
-            HotKeyGump gump = new HotKeyGump();
+            HotKeyGump gump = new HotKeyGump(true, true, true);
             gump.SendGump();
         }
 
