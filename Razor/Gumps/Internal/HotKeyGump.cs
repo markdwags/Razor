@@ -28,7 +28,7 @@ namespace Assistant.Gumps.Internal
         private bool _showCtrl { get; }
         private bool _showShift { get; }
 
-        public HotKeyGump(bool alt, bool ctrl, bool shift) : base(0, 0)
+        public HotKeyGump(bool alt, bool ctrl, bool shift) : base(100, 100)
         {
             Closable = true;
             Disposable = true;
@@ -44,7 +44,7 @@ namespace Assistant.Gumps.Internal
             AddPage(pageCount);
 
             AddBackground(0, 0, 326, 474, 9270);
-            AddLabel(16, 16, 37, "Assigned Razor Hot Keys");
+            AddHtml(16, 16, 450, 20, $"<BASEFONT COLOR=#EC760D>Assigned Hot Keys</BASEFONT> <BASEFONT COLOR=#0DB6EC>({Config.CurrentProfile.Name})</BASEFONT>", false, false);
 
             AddFilterElements();
 
@@ -72,8 +72,7 @@ namespace Assistant.Gumps.Internal
                     AddPage(pageCount);
 
                     AddBackground(0, 0, 326, 480, 9270);
-                    AddLabel(16, 16, 37, "Assigned Razor Hot Keys");
-                    //AddFilterElements();
+                    AddHtml(16, 16, 450, 20, $"<BASEFONT COLOR=#EC760D>Assigned Hot Keys</BASEFONT> <BASEFONT COLOR=#0DB6EC>({Config.CurrentProfile.Name})</BASEFONT>", false, false);
                     AddButton(270, 18, 9909, 9911, pageCount + 1, GumpButtonType.Page, pageCount - 1);
                 }
             }
