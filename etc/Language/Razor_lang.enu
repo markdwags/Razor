@@ -818,3 +818,6 @@ InputBox::ok=&OK
 2113=Script: Get 'dclicktype' command
 2114=Script: Get 'targettype' command
 2115=Script: '{0}' copied to the clipboard
+2116=Gump: Item/Mobile Info
+2117=Gump: System Messages
+2118=Gump: Hot Keys

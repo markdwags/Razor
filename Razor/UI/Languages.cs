@@ -584,6 +584,9 @@ namespace Assistant
         ScriptDClickType,
         ScriptTargetType,
         ScriptCopied,
+        GumpInfo,
+        GumpSysMsg,
+        GumpHotKeys,
         __End
     }
 
