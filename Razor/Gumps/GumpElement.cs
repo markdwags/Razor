@@ -334,7 +334,18 @@ namespace Assistant.Gumps
                 case ElementType.invalid:
                     break;
                 case ElementType.checkbox:
+                {
+                    disp.AppendLayout(Gump.StringToBuffer("checkbox"));
+                    disp.AppendLayout(X);
+                    disp.AppendLayout(Y);
+                    disp.AppendLayout(InactiveID);
+                    disp.AppendLayout(ActiveID);
+                    disp.AppendLayout(InitialState);
+                    disp.AppendLayout(ElementID);
+
+                    disp.Switches++;
                     break;
+                }
                 case ElementType.kr_xmfhtmlgump:
                     break;
                 case ElementType.mastergump:
