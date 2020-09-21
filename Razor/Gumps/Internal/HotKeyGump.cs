@@ -24,6 +24,10 @@ namespace Assistant.Gumps.Internal
 {
     public sealed class HotKeyGump : Gump
     {
+        private bool _showAlt { get; }
+        private bool _showCtrl { get; }
+        private bool _showShift { get; }
+
         public HotKeyGump(bool alt, bool ctrl, bool shift) : base(0, 0)
         {
             Closable = true;
@@ -31,26 +35,28 @@ namespace Assistant.Gumps.Internal
             Movable = true;
             Resizable = false;
 
+            _showAlt = alt;
+            _showCtrl = ctrl;
+            _showShift = shift;
+
             int pageCount = 1;
 
             AddPage(pageCount);
 
-            AddBackground(0, 0, 326, 450, 9270);
-            AddLabel(16, 16, 52, "Assigned Razor Hot Keys");
+            AddBackground(0, 0, 326, 474, 9270);
+            AddLabel(16, 16, 37, "Assigned Razor Hot Keys");
 
-            AddCheck(16, 38, 210, 211, alt, 1);
-            AddLabel(40, 38, 52, "Alt");
-            AddCheck(68, 38, 210, 211, ctrl, 2);
-            AddLabel(92, 38, 52, "Ctrl");
-            AddCheck(127, 38, 210, 211, shift, 3);
-            AddLabel(151, 38, 52, "Shift");
-            AddButton(197, 38, 4011, 4012, 1, GumpButtonType.Reply, 0);
+            AddFilterElements();
 
-            int labelY = 40;
+            int labelY = 64;
             int count = 0;
 
             foreach (KeyData data in HotKey.List.Where(hk => hk.Key != 0).OrderBy(hk => hk.DispName))
             {
+                if (!_showAlt && (data.Mod & ModKeys.Alt) != 0 || !_showCtrl && (data.Mod & ModKeys.Control) != 0 ||
+                    !_showShift && (data.Mod & ModKeys.Shift) != 0)
+                    continue;
+
                 AddHtml(20, labelY, 500, 20, $"<BASEFONT COLOR=#FFFFFF>{data.DispName}</BASEFONT> <BASEFONT COLOR=#E0E70B>({data.KeyString()})</BASEFONT>", false, false);
                 
                 labelY += 20;
@@ -61,15 +67,27 @@ namespace Assistant.Gumps.Internal
                     AddButton(292, 17, 9903, 9905, pageCount + 2, GumpButtonType.Page, pageCount + 1);
 
                     pageCount++;
-                    labelY = 40;
+                    labelY = 64;
 
                     AddPage(pageCount);
 
                     AddBackground(0, 0, 326, 480, 9270);
-                    AddLabel(16, 16, 52, "Assigned Razor Hot Keys");
+                    AddLabel(16, 16, 37, "Assigned Razor Hot Keys");
+                    //AddFilterElements();
                     AddButton(270, 18, 9909, 9911, pageCount + 1, GumpButtonType.Page, pageCount - 1);
                 }
             }
+        }
+
+        public void AddFilterElements()
+        {
+            AddCheck(16, 38, 210, 211, _showAlt, 1);
+            AddLabel(40, 38, 67, "Alt");
+            AddCheck(68, 38, 210, 211, _showCtrl, 2);
+            AddLabel(92, 38, 67, "Ctrl");
+            AddCheck(127, 38, 210, 211, _showShift, 3);
+            AddLabel(151, 38, 67, "Shift");
+            AddButton(197, 38, 4011, 4012, 1, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(int buttonID, int[] switches, GumpTextEntry[] textEntries = null)
