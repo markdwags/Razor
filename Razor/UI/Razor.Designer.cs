@@ -782,6 +782,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.agentSetHotKey = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -3312,6 +3313,7 @@ namespace Assistant
             // 
             // agentsTab
             // 
+            this.agentsTab.Controls.Add(this.agentSetHotKey);
             this.agentsTab.Controls.Add(this.agentB6);
             this.agentsTab.Controls.Add(this.agentB5);
             this.agentsTab.Controls.Add(this.agentList);
@@ -5256,6 +5258,16 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // agentSetHotKey
+            // 
+            this.agentSetHotKey.Location = new System.Drawing.Point(8, 274);
+            this.agentSetHotKey.Name = "agentSetHotKey";
+            this.agentSetHotKey.Size = new System.Drawing.Size(130, 32);
+            this.agentSetHotKey.TabIndex = 7;
+            this.agentSetHotKey.Text = "Set Hot Key";
+            this.agentSetHotKey.Visible = false;
+            this.agentSetHotKey.Click += new System.EventHandler(this.agentSetHotKey_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5479,5 +5491,6 @@ namespace Assistant
         private Button createBackup;
         private CheckBox overrideSpellFormat;
         private CheckBox reequipHandsPotion;
+        private Button agentSetHotKey;
     }
 }

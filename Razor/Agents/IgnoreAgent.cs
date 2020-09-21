@@ -51,6 +51,8 @@ namespace Assistant.Agents
             m_Chars = new List<Serial>();
             m_Names = new Dictionary<Serial, string>();
 
+            Number = 0;
+
             HotKey.Add(HKCategory.Targets, LocString.AddToIgnore, new HotKeyCallback(AddToIgnoreList));
             HotKey.Add(HKCategory.Targets, LocString.RemoveFromIgnore, new HotKeyCallback(RemoveFromIgnoreList));
 
@@ -84,6 +86,8 @@ namespace Assistant.Agents
         {
             get { return Language.GetString(LocString.IgnoreAgent); }
         }
+
+        public override int Number { get; }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)
         {

@@ -46,6 +46,8 @@ namespace Assistant.Agents
             HotKey.Add(HKCategory.Agents, LocString.AddUseOnce, new HotKeyCallback(OnAdd));
             HotKey.Add(HKCategory.Agents, LocString.AddUseOnceContainer, new HotKeyCallback(OnAddContainer));
 
+            Number = 0;
+
             Agent.OnItemCreated += new ItemCreatedEventHandler(CheckItemOPL);
         }
 
@@ -105,6 +107,8 @@ namespace Assistant.Agents
         {
             get { return Language.GetString(LocString.UseOnce); }
         }
+
+        public override int Number { get; }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)
         {

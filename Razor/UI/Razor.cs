@@ -2030,6 +2030,8 @@ namespace Assistant
             {
                 Agent.Select(agentList.SelectedIndex, agentList, agentSubList, agentGroup, agentB1, agentB2, agentB3,
                     agentB4, agentB5, agentB6);
+
+                agentSetHotKey.Visible = true;
             }
             catch
             {
@@ -6946,6 +6948,49 @@ namespace Assistant
         private void reequipHandsPotion_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("PotionReequip", reequipHandsPotion.Checked);
+        }
+
+        private void agentSetHotKey_Click(object sender, EventArgs e)
+        {
+            if (agentList.SelectedIndex < 0)
+                return;
+
+            try
+            {
+                Engine.MainWindow.SafeAction(s =>
+                {
+                    Agent agent = (Agent) agentList.SelectedItem;
+
+                    tabs.SelectedTab = hotkeysTab;
+
+                    string search = string.Empty;
+
+                    if (agent is OrganizerAgent)
+                        search = $"{Language.GetString(LocString.OrganizerAgent)}-{agent.Number:D2}";
+                    else if (agent is RestockAgent)
+                        search = $"{Language.GetString(LocString.RestockAgent)}-{agent.Number:D2}";
+                    else if (agent is UseOnceAgent)
+                        search = agent.Name;
+                    else if (agent is ScavengerAgent)
+                        search = Language.GetString(LocString.ScavengerEnableDisable);
+                    else if (agent is SellAgent)
+                        search = Language.GetString(LocString.SetSellAgentHotBag);
+
+                    TreeNode resultNode = SearchTreeView(search, hotkeyTree.Nodes);
+
+                    if (resultNode != null)
+                    {
+                        KeyData hk = (KeyData)resultNode.Tag;
+
+                        hotkeyTree.SelectedNode = resultNode;
+                        key.Focus();
+                    }
+                });
+            }
+            catch
+            {
+                // ignore
+            }
         }
     }
 }

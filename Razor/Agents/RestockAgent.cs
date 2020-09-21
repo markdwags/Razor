@@ -51,19 +51,18 @@ namespace Assistant.Agents
         private readonly List<RestockItem> m_Items;
         private Button m_HotBTN;
         private Serial m_HotBag;
-        private readonly int m_Num;
 
         public RestockAgent(int num)
         {
-            m_Num = num;
+            Number = num;
 
             m_Items = new List<RestockItem>();
 
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
-                $"{Language.GetString(LocString.RestockAgent)}-{m_Num:D2}",
+                $"{Language.GetString(LocString.RestockAgent)}-{Number:D2}",
                 new HotKeyCallback(OnHotKey));
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
-                $"{Language.GetString(LocString.SetRestockHB)}-{m_Num:D2}",
+                $"{Language.GetString(LocString.SetRestockHB)}-{Number:D2}",
                 new HotKeyCallback(SetHB));
             PacketHandler.RegisterClientToServerViewer(0x09, new PacketViewerCallback(OnSingleClick));
 
@@ -74,7 +73,7 @@ namespace Assistant.Agents
         {
             if (item.Serial == m_HotBag)
             {
-                item.ObjPropList.Add(Language.Format(LocString.RestockHBA1, m_Num));
+                item.ObjPropList.Add(Language.Format(LocString.RestockHBA1, Number));
             }
         }
 
@@ -91,7 +90,7 @@ namespace Assistant.Agents
                 }
 
                 Client.Instance.SendToClient(new UnicodeMessage(m_HotBag, gfx, Assistant.MessageType.Label, 0x3B2, 3,
-                    Language.CliLocName, "", Language.Format(LocString.RestockHBA1, m_Num)));
+                    Language.CliLocName, "", Language.Format(LocString.RestockHBA1, Number)));
             }
         }
 
@@ -102,8 +101,10 @@ namespace Assistant.Agents
 
         public override string Name
         {
-            get { return $"{Language.GetString(LocString.Restock)}-{m_Num}"; }
+            get { return $"{Language.GetString(LocString.Restock)}-{Number}"; }
         }
+
+        public override int Number { get; }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)
         {
@@ -249,7 +250,7 @@ namespace Assistant.Agents
             Item hb = World.FindItem(m_HotBag);
             if (hb != null)
             {
-                if (hb.ObjPropList.Remove(Language.Format(LocString.RestockHBA1, m_Num)))
+                if (hb.ObjPropList.Remove(Language.Format(LocString.RestockHBA1, Number)))
                 {
                     hb.OPLChanged();
                 }
@@ -267,7 +268,7 @@ namespace Assistant.Agents
             hb = World.FindItem(m_HotBag);
             if (hb != null)
             {
-                hb.ObjPropList.Add(Language.Format(LocString.RestockHBA1, m_Num));
+                hb.ObjPropList.Add(Language.Format(LocString.RestockHBA1, Number));
                 hb.OPLChanged();
             }
 

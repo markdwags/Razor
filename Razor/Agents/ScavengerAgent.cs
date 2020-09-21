@@ -56,6 +56,8 @@ namespace Assistant.Agents
         {
             m_Items = new List<ItemID>();
 
+            Number = 0;
+
             HotKey.Add(HKCategory.Agents, LocString.ClearScavCache, new HotKeyCallback(ClearCache));
             HotKey.Add(HKCategory.Agents, LocString.ScavengerEnableDisable, new HotKeyCallback(OnEnableDisable));
             HotKey.Add(HKCategory.Agents, LocString.ScavengerSetHotBag, new HotKeyCallback(OnSetHotBag));
@@ -152,6 +154,8 @@ namespace Assistant.Agents
         {
             get { return Language.GetString(LocString.Scavenger); }
         }
+
+        public override int Number { get; }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)
         {

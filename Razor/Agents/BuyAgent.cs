@@ -107,11 +107,10 @@ namespace Assistant.Agents
         private Button m_EnableBTN;
         private readonly List<BuyEntry> m_Items;
         private bool m_Enabled;
-        private readonly int m_Num;
 
         public BuyAgent(int num)
         {
-            m_Num = num;
+            Number = num;
             m_Items = new List<BuyEntry>();
         }
 
@@ -342,8 +341,10 @@ namespace Assistant.Agents
 
         public override string Name
         {
-            get { return $"{Language.GetString(LocString.Buy)}-{m_Num}"; }
+            get { return $"{Language.GetString(LocString.Buy)}-{Number}"; }
         }
+
+        public override int Number { get; }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)
         {

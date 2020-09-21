@@ -53,17 +53,16 @@ namespace Assistant.Agents
         private Button m_ArrBTN;
         private readonly List<ItemID> m_Items;
         private uint m_Cont;
-        private readonly int m_Num;
 
         public OrganizerAgent(int num)
         {
             m_Items = new List<ItemID>();
-            m_Num = num;
+            Number = num;
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
-                $"{Language.GetString(LocString.OrganizerAgent)}-{m_Num:D2}",
+                $"{Language.GetString(LocString.OrganizerAgent)}-{Number:D2}",
                 new HotKeyCallback(Organize));
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
-                $"{Language.GetString(LocString.SetOrganizerHB)}-{m_Num:D2}",
+                $"{Language.GetString(LocString.SetOrganizerHB)}-{Number:D2}",
                 new HotKeyCallback(SetHotBag));
             PacketHandler.RegisterClientToServerViewer(0x09, new PacketViewerCallback(OnSingleClick));
 
@@ -74,7 +73,7 @@ namespace Assistant.Agents
         {
             if (item.Serial == m_Cont)
             {
-                item.ObjPropList.Add(Language.Format(LocString.OrganizerHBA1, m_Num));
+                item.ObjPropList.Add(Language.Format(LocString.OrganizerHBA1, Number));
             }
         }
 
@@ -91,14 +90,16 @@ namespace Assistant.Agents
                 }
 
                 Client.Instance.SendToClient(new UnicodeMessage(m_Cont, gfx, Assistant.MessageType.Label, 0x3B2, 3,
-                    Language.CliLocName, "", Language.Format(LocString.OrganizerHBA1, m_Num)));
+                    Language.CliLocName, "", Language.Format(LocString.OrganizerHBA1, Number)));
             }
         }
 
         public override string Name
         {
-            get { return $"{Language.GetString(LocString.Organizer)}-{m_Num}"; }
+            get { return $"{Language.GetString(LocString.Organizer)}-{Number}"; }
         }
+
+        public override int Number { get; }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)
         {
@@ -172,7 +173,7 @@ namespace Assistant.Agents
                         Item bag = World.FindItem(m_Cont);
                         if (bag != null)
                         {
-                            bag.ObjPropList.Remove(Language.Format(LocString.OrganizerHBA1, m_Num));
+                            bag.ObjPropList.Remove(Language.Format(LocString.OrganizerHBA1, Number));
                             bag.OPLChanged();
                         }
 
@@ -308,7 +309,7 @@ namespace Assistant.Agents
                 Item bag = World.FindItem(m_Cont);
                 if (bag != null && bag.ObjPropList != null)
                 {
-                    bag.ObjPropList.Remove(Language.Format(LocString.OrganizerHBA1, m_Num));
+                    bag.ObjPropList.Remove(Language.Format(LocString.OrganizerHBA1, Number));
                     bag.OPLChanged();
                 }
 
@@ -326,7 +327,7 @@ namespace Assistant.Agents
                 bag = World.FindItem(m_Cont);
                 if (bag != null && bag.ObjPropList != null)
                 {
-                    bag.ObjPropList.Add(Language.Format(LocString.OrganizerHBA1, m_Num));
+                    bag.ObjPropList.Add(Language.Format(LocString.OrganizerHBA1, Number));
                     bag.OPLChanged();
                 }
             }

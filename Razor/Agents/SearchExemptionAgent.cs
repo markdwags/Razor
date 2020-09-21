@@ -96,6 +96,8 @@ namespace Assistant.Agents
             get { return Language.GetString(LocString.AutoSearchEx); }
         }
 
+        public override int Number { get; }
+
         public override void OnSelected(ListBox subList, params Button[] buttons)
         {
             m_SubList = subList;

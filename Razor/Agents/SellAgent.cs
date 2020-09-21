@@ -49,6 +49,8 @@ namespace Assistant.Agents
             PacketHandler.RegisterServerToClientViewer(0x9E, new PacketViewerCallback(OnVendorSell));
             PacketHandler.RegisterClientToServerViewer(0x09, new PacketViewerCallback(OnSingleClick));
 
+            Number = 0;
+
             HotKey.Add(HKCategory.Agents, HKSubCat.None, Language.GetString(LocString.SetSellAgentHotBag),
                 new HotKeyCallback(SetHotBag));
 
@@ -163,6 +165,8 @@ namespace Assistant.Agents
         {
             get { return Language.GetString(LocString.Sell); }
         }
+
+        public override int Number { get; }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)
         {
