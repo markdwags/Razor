@@ -121,7 +121,6 @@ namespace Assistant
             AddProperty("RangeCheckLT", true);
             AddProperty("LTRange", (int) 12);
 
-            AddProperty("ClientPrio", "Normal");
             AddProperty("FilterSnoopMsg", true);
             AddProperty("OldStatBar", false);
 

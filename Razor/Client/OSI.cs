@@ -215,24 +215,6 @@ namespace Assistant
 
         public override Loader_Error LaunchClient(string client)
         {
-            /*string dir = Directory.GetCurrentDirectory();
-            Directory.SetCurrentDirectory( Path.GetDirectoryName( client ) );
-            Directory.SetCurrentDirectory( dir );
-
-            try
-            {
-                ProcessStartInfo psi = new ProcessStartInfo( client );
-                psi.WorkingDirectory = Path.GetDirectoryName( client );
-
-                ClientProc = Process.Start( psi );
-
-                if ( ClientProc != null && !Config.GetBool( "SmartCPU" ) )
-                    ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );
-            }
-            catch
-            {
-            }*/
-
             string dll = Path.Combine(Config.GetInstallDirectory(), "Crypt.dll");
             uint pid = 0;
             Loader_Error err = (Loader_Error) Load(client, dll, "OnAttach", null, 0, out pid);
@@ -242,12 +224,10 @@ namespace Assistant
                 try
                 {
                     ClientProc = Process.GetProcessById((int) pid);
-
-                    /*if ( ClientProc != null && !Config.GetBool( "SmartCPU" ) )
-                        ClientProc.PriorityClass = (ProcessPriorityClass)Enum.Parse( typeof(ProcessPriorityClass), Config.GetString( "ClientPrio" ), true );*/
                 }
                 catch
                 {
+                    // ignore
                 }
             }
 

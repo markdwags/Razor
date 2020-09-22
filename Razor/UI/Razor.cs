@@ -314,19 +314,7 @@ namespace Assistant
             smartLT.SafeAction(s => { s.Checked = Config.GetBool("SmartLastTarget"); });
 
             autoFriend.SafeAction(s => { s.Checked = Config.GetBool("AutoFriend"); });
-
-            clientPrio.SafeAction(s =>
-            {
-                try
-                {
-                    s.SelectedItem = Config.GetString("ClientPrio");
-                }
-                catch
-                {
-                    s.SelectedItem = "Normal";
-                }
-            });
-
+            
             forceSizeX.SafeAction(s => { s.Text = Config.GetInt("ForceSizeX").ToString(); });
 
             forceSizeY.SafeAction(s => { s.Text = Config.GetInt("ForceSizeY").ToString(); });
@@ -3922,21 +3910,6 @@ namespace Assistant
             Config.SetProperty("NoSearchPouches", excludePouches.Checked);
         }
 
-        private void clientPrio_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            string str = (string) clientPrio.SelectedItem;
-            Config.SetProperty("ClientPrio", str);
-            try
-            {
-                Client.Instance.ClientProcess.PriorityClass =
-                    (System.Diagnostics.ProcessPriorityClass) Enum.Parse(
-                        typeof(System.Diagnostics.ProcessPriorityClass), str, true);
-            }
-            catch
-            {
-            }
-        }
-
         private void filterSnoop_CheckedChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("FilterSnoopMsg", filterSnoop.Checked);
@@ -6928,7 +6901,7 @@ namespace Assistant
                 OverheadManager.RedrawList();
             }
 
-            if (displayCountersTabCtrl.SelectedTab == subSoundMusicTab)
+            if (displayCountersTabCtrl.SelectedTab == subFilteroundMusic)
             {
                 SoundMusicManager.RedrawList();
                 return;
