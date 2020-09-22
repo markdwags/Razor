@@ -2050,6 +2050,12 @@ namespace Assistant
                         return;
                     }
 
+                    if (ser.IsMobile && TextFilterManager.IsFiltered(text))
+                    {
+                        args.Block = true;
+                        return;
+                    }
+
                     if (Config.GetBool("ForceSpeechHue"))
                     {
                         p.Seek(10, SeekOrigin.Begin);

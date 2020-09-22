@@ -625,7 +625,7 @@ namespace Assistant
             this.gbFilterText = new System.Windows.Forms.GroupBox();
             this.removeFilterText = new System.Windows.Forms.Button();
             this.addFilterText = new System.Windows.Forms.Button();
-            this.filterTextList = new System.Windows.Forms.ListBox();
+            this.textFilterList = new System.Windows.Forms.ListBox();
             this.gbFilterMessages = new System.Windows.Forms.GroupBox();
             this.filterOverheadMessages = new System.Windows.Forms.CheckBox();
             this.lblFilterDelaySeconds = new System.Windows.Forms.Label();
@@ -785,6 +785,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.enableTextFilter = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -2574,9 +2575,9 @@ namespace Assistant
             this.subOverheadTab.Controls.Add(this.lblOhSearch);
             this.subOverheadTab.Controls.Add(this.cliLocSearchView);
             this.subOverheadTab.Controls.Add(this.showOverheadMessages);
-            this.subOverheadTab.Location = new System.Drawing.Point(4, 22);
+            this.subOverheadTab.Location = new System.Drawing.Point(4, 24);
             this.subOverheadTab.Name = "subOverheadTab";
-            this.subOverheadTab.Size = new System.Drawing.Size(502, 288);
+            this.subOverheadTab.Size = new System.Drawing.Size(502, 286);
             this.subOverheadTab.TabIndex = 3;
             this.subOverheadTab.Text = "Overhead Messages";
             // 
@@ -3515,9 +3516,9 @@ namespace Assistant
             this.subFilterText.BackColor = System.Drawing.SystemColors.Control;
             this.subFilterText.Controls.Add(this.gbFilterText);
             this.subFilterText.Controls.Add(this.gbFilterMessages);
-            this.subFilterText.Location = new System.Drawing.Point(4, 22);
+            this.subFilterText.Location = new System.Drawing.Point(4, 24);
             this.subFilterText.Name = "subFilterText";
-            this.subFilterText.Size = new System.Drawing.Size(498, 287);
+            this.subFilterText.Size = new System.Drawing.Size(498, 285);
             this.subFilterText.TabIndex = 4;
             this.subFilterText.Text = "Text && Messages  ";
             // 
@@ -3525,40 +3526,43 @@ namespace Assistant
             // 
             this.gbFilterText.Controls.Add(this.removeFilterText);
             this.gbFilterText.Controls.Add(this.addFilterText);
-            this.gbFilterText.Controls.Add(this.filterTextList);
+            this.gbFilterText.Controls.Add(this.textFilterList);
+            this.gbFilterText.Controls.Add(this.enableTextFilter);
             this.gbFilterText.Location = new System.Drawing.Point(3, 3);
             this.gbFilterText.Name = "gbFilterText";
-            this.gbFilterText.Size = new System.Drawing.Size(229, 217);
+            this.gbFilterText.Size = new System.Drawing.Size(229, 279);
             this.gbFilterText.TabIndex = 134;
             this.gbFilterText.TabStop = false;
-            this.gbFilterText.Text = "Filter Text";
+            this.gbFilterText.Text = "Text Filter";
             // 
             // removeFilterText
             // 
-            this.removeFilterText.Location = new System.Drawing.Point(148, 182);
+            this.removeFilterText.Location = new System.Drawing.Point(148, 244);
             this.removeFilterText.Name = "removeFilterText";
             this.removeFilterText.Size = new System.Drawing.Size(75, 29);
             this.removeFilterText.TabIndex = 2;
             this.removeFilterText.Text = "Remove";
             this.removeFilterText.UseVisualStyleBackColor = true;
+            this.removeFilterText.Click += new System.EventHandler(this.removeFilterText_Click);
             // 
             // addFilterText
             // 
-            this.addFilterText.Location = new System.Drawing.Point(67, 182);
+            this.addFilterText.Location = new System.Drawing.Point(67, 244);
             this.addFilterText.Name = "addFilterText";
             this.addFilterText.Size = new System.Drawing.Size(75, 29);
             this.addFilterText.TabIndex = 1;
             this.addFilterText.Text = "Add";
             this.addFilterText.UseVisualStyleBackColor = true;
+            this.addFilterText.Click += new System.EventHandler(this.addFilterText_Click);
             // 
-            // filterTextList
+            // textFilterList
             // 
-            this.filterTextList.FormattingEnabled = true;
-            this.filterTextList.ItemHeight = 15;
-            this.filterTextList.Location = new System.Drawing.Point(6, 22);
-            this.filterTextList.Name = "filterTextList";
-            this.filterTextList.Size = new System.Drawing.Size(217, 154);
-            this.filterTextList.TabIndex = 0;
+            this.textFilterList.FormattingEnabled = true;
+            this.textFilterList.ItemHeight = 15;
+            this.textFilterList.Location = new System.Drawing.Point(6, 48);
+            this.textFilterList.Name = "textFilterList";
+            this.textFilterList.Size = new System.Drawing.Size(217, 184);
+            this.textFilterList.TabIndex = 0;
             // 
             // gbFilterMessages
             // 
@@ -3569,9 +3573,9 @@ namespace Assistant
             this.gbFilterMessages.Controls.Add(this.filterRazorMessages);
             this.gbFilterMessages.Controls.Add(this.filterSystemMessages);
             this.gbFilterMessages.Controls.Add(this.filterSnoop);
-            this.gbFilterMessages.Location = new System.Drawing.Point(266, 3);
+            this.gbFilterMessages.Location = new System.Drawing.Point(238, 3);
             this.gbFilterMessages.Name = "gbFilterMessages";
-            this.gbFilterMessages.Size = new System.Drawing.Size(229, 217);
+            this.gbFilterMessages.Size = new System.Drawing.Size(257, 279);
             this.gbFilterMessages.TabIndex = 133;
             this.gbFilterMessages.TabStop = false;
             this.gbFilterMessages.Text = "Filter Messages";
@@ -3651,9 +3655,9 @@ namespace Assistant
             this.subFilteroundMusic.Controls.Add(this.playSound);
             this.subFilteroundMusic.Controls.Add(this.soundFilterEnabled);
             this.subFilteroundMusic.Controls.Add(this.soundFilterList);
-            this.subFilteroundMusic.Location = new System.Drawing.Point(4, 22);
+            this.subFilteroundMusic.Location = new System.Drawing.Point(4, 24);
             this.subFilteroundMusic.Name = "subFilteroundMusic";
-            this.subFilteroundMusic.Size = new System.Drawing.Size(498, 287);
+            this.subFilteroundMusic.Size = new System.Drawing.Size(498, 285);
             this.subFilteroundMusic.TabIndex = 3;
             this.subFilteroundMusic.Text = "Sound & Music  ";
             // 
@@ -3758,10 +3762,10 @@ namespace Assistant
             this.subFilterTargets.Controls.Add(this.targetFilterAdd);
             this.subFilterTargets.Controls.Add(this.targetFilter);
             this.subFilterTargets.Controls.Add(this.targetFilterEnabled);
-            this.subFilterTargets.Location = new System.Drawing.Point(4, 22);
+            this.subFilterTargets.Location = new System.Drawing.Point(4, 24);
             this.subFilterTargets.Name = "subFilterTargets";
             this.subFilterTargets.Padding = new System.Windows.Forms.Padding(3);
-            this.subFilterTargets.Size = new System.Drawing.Size(498, 287);
+            this.subFilterTargets.Size = new System.Drawing.Size(498, 285);
             this.subFilterTargets.TabIndex = 1;
             this.subFilterTargets.Text = "Target Filter";
             // 
@@ -5307,6 +5311,17 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // enableTextFilter
+            // 
+            this.enableTextFilter.AutoSize = true;
+            this.enableTextFilter.Location = new System.Drawing.Point(6, 22);
+            this.enableTextFilter.Name = "enableTextFilter";
+            this.enableTextFilter.Size = new System.Drawing.Size(111, 19);
+            this.enableTextFilter.TabIndex = 3;
+            this.enableTextFilter.Text = "Enable text filter";
+            this.enableTextFilter.UseVisualStyleBackColor = true;
+            this.enableTextFilter.CheckedChanged += new System.EventHandler(this.enableTextFilter_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5374,6 +5389,7 @@ namespace Assistant
             this.subFilterTab.PerformLayout();
             this.subFilterText.ResumeLayout(false);
             this.gbFilterText.ResumeLayout(false);
+            this.gbFilterText.PerformLayout();
             this.gbFilterMessages.ResumeLayout(false);
             this.gbFilterMessages.PerformLayout();
             this.subFilteroundMusic.ResumeLayout(false);
@@ -5532,7 +5548,7 @@ namespace Assistant
         private GroupBox gbFilterText;
         private Button removeFilterText;
         private Button addFilterText;
-        private ListBox filterTextList;
+        private ListBox textFilterList;
         private GroupBox gbFilterMessages;
         private CheckBox filterOverheadMessages;
         private Label lblFilterDelaySeconds;
@@ -5541,5 +5557,6 @@ namespace Assistant
         private CheckBox filterRazorMessages;
         private CheckBox filterSystemMessages;
         private CheckBox filterSnoop;
+        private CheckBox enableTextFilter;
     }
 }

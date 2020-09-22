@@ -81,6 +81,7 @@ namespace Assistant
             ScriptManager.SetControls(scriptEditor, scriptList);
             WaypointManager.SetControls(waypointList);
             OverheadManager.SetControls(cliLocOverheadView);
+            TextFilterManager.SetControls(textFilterList);
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -514,6 +515,8 @@ namespace Assistant
             overrideSpellFormat.SafeAction(s => { s.Checked = Config.GetBool("OverrideSpellFormat"); });
 
             reequipHandsPotion.SafeAction(s => { s.Checked = Config.GetBool("PotionReequip"); });
+
+            enableTextFilter.SafeAction(s => { s.Checked = Config.GetBool("EnableTextFilter"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
@@ -6736,6 +6739,10 @@ namespace Assistant
             {
                 TargetFilterManager.RedrawList();
             }
+            else if (filterTabs.SelectedTab == subFilterText)
+            {
+                TextFilterManager.RedrawList();
+            }
         }
 
         private void cliLocSearch_Click(object sender, EventArgs e)
@@ -6964,6 +6971,27 @@ namespace Assistant
             {
                 // ignore
             }
+        }
+        private void addFilterText_Click(object sender, EventArgs e)
+        {
+            if (InputBox.Show(this, "Enter text to filter", "Text Filter"))
+            {
+                string message = InputBox.GetString();
+                TextFilterManager.AddFilter(message);
+            }
+        }
+
+        private void removeFilterText_Click(object sender, EventArgs e)
+        {
+            if (textFilterList.SelectedIndex < 0)
+                return;
+
+            TextFilterManager.RemoveFilter((string) textFilterList.SelectedItem);
+        }
+
+        private void enableTextFilter_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("EnableTextFilter", enableTextFilter.Checked);
         }
     }
 }

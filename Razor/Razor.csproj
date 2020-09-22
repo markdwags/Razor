@@ -168,6 +168,7 @@
     <Compile Include="Core\Dress.cs" />
     <Compile Include="Core\EncodedSpeech.cs" />
     <Compile Include="Core\DamageTracker.cs" />
+    <Compile Include="Core\TextFilterManager.cs" />
     <Compile Include="Gumps\Gump.cs" />
     <Compile Include="Gumps\GumpButtonType.cs" />
     <Compile Include="Gumps\GumpCollection.cs" />

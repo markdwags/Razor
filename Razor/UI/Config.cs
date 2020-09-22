@@ -314,6 +314,8 @@ namespace Assistant
 
             AddProperty("PotionReequip", true);
 
+            AddProperty("EnableTextFilter", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
@@ -322,12 +324,12 @@ namespace Assistant
             PasswordMemory.ClearAll();
             FriendsManager.ClearAll();
             WaypointManager.ClearAll();
+            TextFilterManager.ClearAll();
             DressList.ClearAll();
             OverheadManager.ClearAll();
             ContainerLabels.ClearAll();
             MacroVariables.ClearAll();
             ScriptVariables.ClearAll();
-            FriendsManager.ClearAll();
         }
 
         public string Name
@@ -431,6 +433,7 @@ namespace Assistant
             TargetFilterManager.Load(root["targetfilters"]);
             SoundMusicManager.Load(root["soundfilters"]);
             WaypointManager.Load(root["waypoints"]);
+            TextFilterManager.Load(root["textfilters"]);
             FriendsManager.Load(root["friends"]);
             HotKey.Load(root["hotkeys"]);
             PasswordMemory.Load(root["passwords"]);
@@ -629,6 +632,10 @@ namespace Assistant
 
             xml.WriteStartElement("friends");
             FriendsManager.Save(xml);
+            xml.WriteEndElement();
+            
+            xml.WriteStartElement("textfilters");
+            TextFilterManager.Save(xml);
             xml.WriteEndElement();
 
             xml.WriteStartElement("targetfilters");
