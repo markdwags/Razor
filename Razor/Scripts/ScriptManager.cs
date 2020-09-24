@@ -52,6 +52,24 @@ namespace Assistant.Scripts
 
         private static Script _queuedScript;
 
+        public enum HighlightType
+        {
+            Error,
+            Execeution
+        }
+
+        private static Dictionary<HighlightType, List<int>> HighlightLines = new Dictionary<HighlightType, List<int>>();
+        private static Dictionary<HighlightType, Brush> HighlightLineColors = new Dictionary<HighlightType, Brush>()
+        {
+            { HighlightType.Error, new SolidBrush(Color.Red) },
+            { HighlightType.Execeution, new SolidBrush(Color.Blue) }
+        };
+
+        private static HighlightType[] GetHighlightTypes()
+        {
+            return (HighlightType[])Enum.GetValues(typeof(HighlightType));
+        }
+
         private class ScriptTimer : Timer
         {
             // Only run scripts once every 25ms to avoid spamming.
@@ -110,6 +128,8 @@ namespace Assistant.Scripts
 
                             Assistant.Engine.MainWindow.LockScriptUI(false);
                             ScriptRunning = false;
+                            // Clears execution highlight when script finishes
+                            ClearHighlightLine(HighlightType.Execeution);
                         }
                     }
                 }
@@ -120,7 +140,7 @@ namespace Assistant.Scripts
                     {
                         World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})");
 
-                        SetHighlightLine(ex.Node.LineNumber, Color.Red);
+                        SetHighlightLine(ex.Node.LineNumber, HighlightType.Error);
                     }
                     else
                     {
@@ -155,6 +175,13 @@ namespace Assistant.Scripts
             foreach (RazorScript script in Scripts)
             {
                 AddHotkey(script.Name);
+            }
+
+            Interpreter.ActiveScriptStatementExecuted += ActiveScriptStatementExecuted;
+
+            foreach (HighlightType type in GetHighlightTypes())
+            {
+                HighlightLines[type] = new List<int>();
             }
         }
 
@@ -288,11 +315,24 @@ namespace Assistant.Scripts
             if (World.Player == null)
                 return;
 
-            ClearHighlightLine();
+            ClearAllHighlightLines();
 
             Script script = new Script(Lexer.Lex(lines));
 
             _queuedScript = script;
+        }
+
+        private static void ActiveScriptStatementExecuted(ASTNode statement)
+        {
+            if (statement != null)
+            {
+                var lineNum = statement.LineNumber;
+
+                SetHighlightLine(lineNum, HighlightType.Execeution);
+                // Scrolls to relevant line, per this suggestion: https://github.com/PavelTorgashov/FastColoredTextBox/issues/115
+                ScriptEditor.Selection.Start = new Place(0, lineNum);
+                ScriptEditor.DoSelectionVisible();
+            }
         }
 
         private static ScriptTimer Timer { get; }
@@ -425,22 +465,56 @@ namespace Assistant.Scripts
 
         private delegate void SetHighlightLineDelegate(int iline, Color color);
 
-        private static void SetHighlightLine(int iline, Color background)
+        /// <summary>
+        /// Adds a new highlight of specified type
+        /// </summary>
+        /// <param name="iline">Line number to highlight</param>
+        /// <param name="type">Type of highlight to set</param>
+        private static void AddHighlightLine(int iline, HighlightType type)
+        {
+            HighlightLines[type].Add(iline);
+            RefreshHighlightLines();
+        }
+
+        /// <summary>
+        /// Clears existing highlight lines of this type, and adds a new one at specified line number
+        /// </summary>
+        /// <param name="iline">Line number to highlight</param>
+        /// <param name="type">Type of highlight to set</param>
+        private static void SetHighlightLine(int iline, HighlightType type)
+        {
+            ClearHighlightLine(type);
+            AddHighlightLine(iline, type);
+        }
+
+        public static void ClearHighlightLine(HighlightType type)
+        {
+            HighlightLines[type].Clear();
+            RefreshHighlightLines();
+        }
+
+        public static void ClearAllHighlightLines()
+        {
+            foreach (HighlightType type in GetHighlightTypes())
+            {
+                HighlightLines[type].Clear();
+            }
+            RefreshHighlightLines();
+        }
+
+        private static void RefreshHighlightLines()
         {
             for (int i = 0; i < ScriptEditor.LinesCount; i++)
             {
                 ScriptEditor[i].BackgroundBrush = ScriptEditor.BackBrush;
             }
 
-            ScriptEditor[iline].BackgroundBrush = new SolidBrush(background);
-            ScriptEditor.Invalidate();
-        }
-
-        public static void ClearHighlightLine()
-        {
-            for (int i = 0; i < ScriptEditor.LinesCount; i++)
+            foreach (HighlightType type in GetHighlightTypes())
             {
-                ScriptEditor[i].BackgroundBrush = ScriptEditor.BackBrush;
+                foreach (int lineNum in HighlightLines[type])
+                {
+                    ScriptEditor[lineNum].BackgroundBrush = HighlightLineColors[type];
+                }
             }
 
             ScriptEditor.Invalidate();

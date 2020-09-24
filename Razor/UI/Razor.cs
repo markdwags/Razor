@@ -6044,7 +6044,7 @@ namespace Assistant
             if (scriptList.SelectedIndex < 0)
                 return;
 
-            ScriptManager.ClearHighlightLine();
+            ScriptManager.ClearAllHighlightLines();
 
             ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
 
