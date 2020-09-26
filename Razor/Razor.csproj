@@ -233,6 +233,7 @@
     <Compile Include="Gumps\Internal\ItemInfoGump.cs" />
     <Compile Include="Gumps\Internal\DamageTrackerGump.cs" />
     <Compile Include="Gumps\Internal\HotKeyGump.cs" />
+    <Compile Include="Gumps\Internal\BoatControlGump.cs" />
     <Compile Include="Gumps\Internal\SystemMessagesGump.cs" />
     <Compile Include="Gumps\Internal\TestMessageGump.cs" />
     <Compile Include="HotKeys\Counters.cs">

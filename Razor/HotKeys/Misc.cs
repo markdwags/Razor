@@ -89,6 +89,7 @@ namespace Assistant.HotKeys
             HotKey.Add(HKCategory.Misc, LocString.GumpInfo, GetInfoGump);
             HotKey.Add(HKCategory.Misc, LocString.GumpSysMsg, GetSysMsgGump);
             HotKey.Add(HKCategory.Misc, LocString.GumpHotKeys, GetHotKeysGump);
+            HotKey.Add(HKCategory.Misc, LocString.GumpBoatControl, GetBoatControlGump);
         }
 
         private static void ToggleGoldPer()
@@ -512,6 +513,12 @@ namespace Assistant.HotKeys
         {
             World.Player.SendMessage(MsgLevel.Force, "Displaying currently assigned hotkeys");
             HotKeyGump gump = new HotKeyGump(true, true, true);
+            gump.SendGump();
+        }
+        private static void GetBoatControlGump()
+        {
+            World.Player.SendMessage(MsgLevel.Force, "Displaying boat control gump");
+            BoatControlGump gump = new BoatControlGump(0);
             gump.SendGump();
         }
     }

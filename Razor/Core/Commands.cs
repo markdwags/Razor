@@ -61,6 +61,8 @@ namespace Assistant
             Command.Register("SysMessages", GetSystemMessages);
 
             Command.Register("HotKeys", ShowHotKeyGump);
+
+            Command.Register("Boat", ShowBoatControlGump);
         }
 
         private static void GetSystemMessages(string[] param)
@@ -72,6 +74,12 @@ namespace Assistant
         private static void ShowHotKeyGump(string[] param)
         {
             HotKeyGump gump = new HotKeyGump(true, true, true);
+            gump.SendGump();
+        }
+
+        private static void ShowBoatControlGump(string[] param)
+        {
+            BoatControlGump gump = new BoatControlGump(0);
             gump.SendGump();
         }
 

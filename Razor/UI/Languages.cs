@@ -587,6 +587,7 @@ namespace Assistant
         GumpInfo,
         GumpSysMsg,
         GumpHotKeys,
+        GumpBoatControl,
         __End
     }
 
