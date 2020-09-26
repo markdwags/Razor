@@ -262,6 +262,12 @@ namespace Assistant
                 defLang = "ENU";
             }
 
+            if (Client.IsOSI)
+            {
+                Ultima.Files.ReLoadDirectory();
+                Ultima.Files.LoadMulPath();
+            }
+
             if (!Language.Load(defLang))
             {
                 MessageBox.Show(
@@ -373,6 +379,12 @@ namespace Assistant
             }
 
             Client.Init(true);
+
+            if (Client.IsOSI)
+            {
+                Ultima.Files.ReLoadDirectory();
+                Ultima.Files.LoadMulPath();
+            }
 
             if (!Language.Load(defLang))
             {
