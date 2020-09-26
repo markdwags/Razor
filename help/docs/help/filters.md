@@ -1,6 +1,6 @@
 # Filters
 
-## Filters
+## General
 
 ![filters](../images/filters.png)
 
@@ -19,7 +19,13 @@ Filters will change the way the client will display visuals or play audio.
 * **Filter daemons**
     * Override the daemon graphic and replace it with something else.
 
-* **Message Filters**
+## Text & Messages
+
+* **Text Filter**
+
+Enable the text filter to block all text from any mobile.
+
+* **Filter Messages**
 
 Instead of spamming your screen system or overhead messages, if checked it will keep filtering messages as long as you have the filter delay. When those seconds pass, it will show you the message.
 

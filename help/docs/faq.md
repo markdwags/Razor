@@ -99,5 +99,8 @@ Razor supports the following in-game commands (not case-sensitive).
         * `2` - Fall
         * `3` - Winter
         * `4` - Desolation (Feluccia)
-* `set [variable]` - Sets a macro variable
+* `set [variable]` - Sets a macro variable* 
 * `waypoint [x] [y]` or `track off` - Sets a waypoint at a specific `X/Y` location. If you pass `off` it will remove it from the client.
+* `sysmsgs` - Show the current system message buffer
+* `boat` - Show in-game boat control gump
+* `hotkeys` - Show in-game gump with used hot keys
