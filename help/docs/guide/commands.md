@@ -167,6 +167,20 @@ wait 1000
 droprelloc 1 1
 ```
 
+## emote
+
+Syntax: `emote ('message to send') [hue]`
+
+Description: This command will force your character to emote the message passed as the parameter.
+
+Example:
+
+```bash
+emote 'Hello world!'
+
+emote 'Hello world!' 454
+```
+
 ## gumpresponse
 
 Syntax: `gumpresponse (buttonID)`
@@ -687,4 +701,32 @@ hotkey 'Target Closest Enemy'
 cast 'energy bolt'
 wft
 target 'last'
+```
+
+## whisper
+
+Syntax: `whisper ('message to send') [hue]`
+
+Description: This command will force your character to whisper the message passed as the parameter.
+
+Example:
+
+```bash
+whisper 'Hello world!'
+
+whisper 'Hello world!' 454
+```
+
+## yell
+
+Syntax: `yell ('message to send') [hue]`
+
+Description: This command will force your character to yell the message passed as the parameter.
+
+Example:
+
+```bash
+yell 'Hello world!'
+
+yell 'Hello world!' 454
 ```

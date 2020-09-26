@@ -473,7 +473,7 @@ namespace Assistant.Scripts
             {
                 "attack", "cast", "dclick", "dclicktype", "dress", "drop", "droprelloc", "gumpresponse", "gumpclose",
                 "hotkey", "lasttarget", "lift", "lifttype", "menu", "menuresponse", "organizer", "overhead", "potion",
-                "promptresponse", "restock", "say", "script", "scavenger", "sell", "setability", "setlasttarget",
+                "promptresponse", "restock", "say", "whisper", "yell", "emote", "script", "scavenger", "sell", "setability", "setlasttarget",
                 "setvar", "skill", "sysmsg", "target", "targettype", "targetrelloc", "undress", "useonce", "walk",
                 "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget", "clearsysmsg", "clearjournal"
             };
@@ -589,6 +589,24 @@ namespace Assistant.Scripts
                 "This command will force your character to say the message passed as the parameter.",
                 "say 'Hello world!'\n\tsay 'Hello world!' 454");
             descriptionCommands.Add("say", tooltip);
+
+            tooltip = new ToolTipDescriptions("whisper",
+                new[] { "whisper ('message to send') [hue]" }, "N/A",
+                "This command will force your character to whisper the message passed as the parameter.",
+                "whisper 'Hello world!'\n\twhisper 'Hello world!' 454");
+            descriptionCommands.Add("whisper", tooltip);
+
+            tooltip = new ToolTipDescriptions("yell",
+                new[] { "yell ('message to send') [hue]" }, "N/A",
+                "This command will force your character to yell the message passed as the parameter.",
+                "yell 'Hello world!'\n\tyell 'Hello world!' 454");
+            descriptionCommands.Add("yell", tooltip);
+
+            tooltip = new ToolTipDescriptions("emote",
+                new[] { "emote ('message to send') [hue]" }, "N/A",
+                "This command will force your character to emote the message passed as the parameter.",
+                "emote 'Hello world!'\n\temote 'Hello world!' 454");
+            descriptionCommands.Add("emote", tooltip);
 
             tooltip = new ToolTipDescriptions("script", new[] {"script 'name'"}, "N/A",
                 "This command will call another script.", "if hp = 40\n\t   script 'healself'\n\tendif");

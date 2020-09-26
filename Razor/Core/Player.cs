@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -925,6 +926,26 @@ namespace Assistant
         internal void Say(string msg)
         {
             Say(Config.GetInt("SpeechHue"), msg);
+        }
+
+        internal void Whisper(string msg, int hue)
+        {
+            Client.Instance.SendToServer(new ClientUniMessage(MessageType.Whisper, hue, 3,
+                Language.CliLocName, new ArrayList(), msg));
+        }
+
+        internal void Yell(string msg, int hue)
+        {
+            Client.Instance.SendToServer(new ClientUniMessage(MessageType.Yell, hue, 3,
+                Language.CliLocName, new ArrayList(), msg));
+        }
+
+        internal void Emote(string msg, int hue)
+        {
+            msg = $"*{msg}*";
+
+            Client.Instance.SendToServer(new ClientUniMessage(MessageType.Emote, hue, 3,
+                Language.CliLocName, new ArrayList(), msg));
         }
 
         public uint CurrentGumpS, CurrentGumpI;
