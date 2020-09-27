@@ -27,7 +27,6 @@ using Assistant.Core;
 using Assistant.Gumps.Internal;
 using Assistant.Macros;
 using Assistant.Scripts;
-using System.Linq;
 
 namespace Assistant
 {

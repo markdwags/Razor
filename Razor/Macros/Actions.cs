@@ -21,12 +21,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.UI;
-using Ultima;
 
 namespace Assistant.Macros
 {

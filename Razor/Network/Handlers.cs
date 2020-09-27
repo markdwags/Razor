@@ -32,7 +32,6 @@ using Assistant.Macros;
 using Assistant.Scripts;
 using Assistant.UI;
 using ContainerLabels = Assistant.Core.ContainerLabels;
-using System.Windows.Forms;
 
 namespace Assistant
 {

@@ -18,8 +18,6 @@
 
 #endregion
 
-using System.Reflection;
-
 namespace Assistant.Gumps.Internal
 {
     public sealed class BoatControlGump : Gump

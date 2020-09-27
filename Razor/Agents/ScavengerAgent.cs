@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
-using Assistant.Agents;
 using Assistant.UI;
 
 namespace Assistant.Agents
