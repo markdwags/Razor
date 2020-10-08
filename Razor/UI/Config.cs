@@ -298,7 +298,7 @@ namespace Assistant
             AddProperty("ScriptFindTypeRange", false);
 
             AddProperty("ScriptDisablePlayFinish", false);
-            
+
             AddProperty("ShowWaypointOverhead", true);
             AddProperty("ShowWaypointDistance", true);
             AddProperty("ShowWaypointSeconds", 10);
@@ -315,6 +315,8 @@ namespace Assistant
             AddProperty("PotionReequip", true);
 
             AddProperty("EnableTextFilter", false);
+
+            AddProperty("DisableScriptTooltips", false);
 
             Counter.Default();
             Filter.DisableAll();

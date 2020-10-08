@@ -626,6 +626,7 @@ namespace Assistant
             this.removeFilterText = new System.Windows.Forms.Button();
             this.addFilterText = new System.Windows.Forms.Button();
             this.textFilterList = new System.Windows.Forms.ListBox();
+            this.enableTextFilter = new System.Windows.Forms.CheckBox();
             this.gbFilterMessages = new System.Windows.Forms.GroupBox();
             this.filterOverheadMessages = new System.Windows.Forms.CheckBox();
             this.lblFilterDelaySeconds = new System.Windows.Forms.Label();
@@ -785,7 +786,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.enableTextFilter = new System.Windows.Forms.CheckBox();
+            this.disableScriptTooltips = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -2575,9 +2576,9 @@ namespace Assistant
             this.subOverheadTab.Controls.Add(this.lblOhSearch);
             this.subOverheadTab.Controls.Add(this.cliLocSearchView);
             this.subOverheadTab.Controls.Add(this.showOverheadMessages);
-            this.subOverheadTab.Location = new System.Drawing.Point(4, 24);
+            this.subOverheadTab.Location = new System.Drawing.Point(4, 22);
             this.subOverheadTab.Name = "subOverheadTab";
-            this.subOverheadTab.Size = new System.Drawing.Size(502, 286);
+            this.subOverheadTab.Size = new System.Drawing.Size(502, 288);
             this.subOverheadTab.TabIndex = 3;
             this.subOverheadTab.Text = "Overhead Messages";
             // 
@@ -3516,9 +3517,9 @@ namespace Assistant
             this.subFilterText.BackColor = System.Drawing.SystemColors.Control;
             this.subFilterText.Controls.Add(this.gbFilterText);
             this.subFilterText.Controls.Add(this.gbFilterMessages);
-            this.subFilterText.Location = new System.Drawing.Point(4, 24);
+            this.subFilterText.Location = new System.Drawing.Point(4, 22);
             this.subFilterText.Name = "subFilterText";
-            this.subFilterText.Size = new System.Drawing.Size(498, 285);
+            this.subFilterText.Size = new System.Drawing.Size(498, 287);
             this.subFilterText.TabIndex = 4;
             this.subFilterText.Text = "Text && Messages  ";
             // 
@@ -3563,6 +3564,17 @@ namespace Assistant
             this.textFilterList.Name = "textFilterList";
             this.textFilterList.Size = new System.Drawing.Size(217, 184);
             this.textFilterList.TabIndex = 0;
+            // 
+            // enableTextFilter
+            // 
+            this.enableTextFilter.AutoSize = true;
+            this.enableTextFilter.Location = new System.Drawing.Point(6, 22);
+            this.enableTextFilter.Name = "enableTextFilter";
+            this.enableTextFilter.Size = new System.Drawing.Size(111, 19);
+            this.enableTextFilter.TabIndex = 3;
+            this.enableTextFilter.Text = "Enable text filter";
+            this.enableTextFilter.UseVisualStyleBackColor = true;
+            this.enableTextFilter.CheckedChanged += new System.EventHandler(this.enableTextFilter_CheckedChanged);
             // 
             // gbFilterMessages
             // 
@@ -3655,9 +3667,9 @@ namespace Assistant
             this.subFilteroundMusic.Controls.Add(this.playSound);
             this.subFilteroundMusic.Controls.Add(this.soundFilterEnabled);
             this.subFilteroundMusic.Controls.Add(this.soundFilterList);
-            this.subFilteroundMusic.Location = new System.Drawing.Point(4, 24);
+            this.subFilteroundMusic.Location = new System.Drawing.Point(4, 22);
             this.subFilteroundMusic.Name = "subFilteroundMusic";
-            this.subFilteroundMusic.Size = new System.Drawing.Size(498, 285);
+            this.subFilteroundMusic.Size = new System.Drawing.Size(498, 287);
             this.subFilteroundMusic.TabIndex = 3;
             this.subFilteroundMusic.Text = "Sound & Music  ";
             // 
@@ -3762,10 +3774,10 @@ namespace Assistant
             this.subFilterTargets.Controls.Add(this.targetFilterAdd);
             this.subFilterTargets.Controls.Add(this.targetFilter);
             this.subFilterTargets.Controls.Add(this.targetFilterEnabled);
-            this.subFilterTargets.Location = new System.Drawing.Point(4, 24);
+            this.subFilterTargets.Location = new System.Drawing.Point(4, 22);
             this.subFilterTargets.Name = "subFilterTargets";
             this.subFilterTargets.Padding = new System.Windows.Forms.Padding(3);
-            this.subFilterTargets.Size = new System.Drawing.Size(498, 285);
+            this.subFilterTargets.Size = new System.Drawing.Size(498, 287);
             this.subFilterTargets.TabIndex = 1;
             this.subFilterTargets.Text = "Target Filter";
             // 
@@ -4406,7 +4418,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4489,6 +4501,7 @@ namespace Assistant
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.disableScriptTooltips);
             this.tabPage3.Controls.Add(this.scriptDisablePlayFinish);
             this.tabPage3.Controls.Add(this.scriptFindTypeRange);
             this.tabPage3.Controls.Add(this.scriptDClickTypeRange);
@@ -4496,10 +4509,10 @@ namespace Assistant
             this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
             this.tabPage3.Controls.Add(this.autoSaveScript);
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 287);
+            this.tabPage3.Size = new System.Drawing.Size(498, 285);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
             // 
@@ -5311,16 +5324,16 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // enableTextFilter
+            // disableScriptTooltips
             // 
-            this.enableTextFilter.AutoSize = true;
-            this.enableTextFilter.Location = new System.Drawing.Point(6, 22);
-            this.enableTextFilter.Name = "enableTextFilter";
-            this.enableTextFilter.Size = new System.Drawing.Size(111, 19);
-            this.enableTextFilter.TabIndex = 3;
-            this.enableTextFilter.Text = "Enable text filter";
-            this.enableTextFilter.UseVisualStyleBackColor = true;
-            this.enableTextFilter.CheckedChanged += new System.EventHandler(this.enableTextFilter_CheckedChanged);
+            this.disableScriptTooltips.AutoSize = true;
+            this.disableScriptTooltips.Location = new System.Drawing.Point(252, 203);
+            this.disableScriptTooltips.Name = "disableScriptTooltips";
+            this.disableScriptTooltips.Size = new System.Drawing.Size(107, 19);
+            this.disableScriptTooltips.TabIndex = 20;
+            this.disableScriptTooltips.Text = "Disable tooltips";
+            this.disableScriptTooltips.UseVisualStyleBackColor = true;
+            this.disableScriptTooltips.CheckedChanged += new System.EventHandler(this.disableScriptTooltips_CheckedChanged);
             // 
             // MainForm
             // 
@@ -5558,5 +5571,6 @@ namespace Assistant
         private CheckBox filterSystemMessages;
         private CheckBox filterSnoop;
         private CheckBox enableTextFilter;
+        private CheckBox disableScriptTooltips;
     }
 }

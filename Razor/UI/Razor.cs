@@ -514,6 +514,8 @@ namespace Assistant
 
             enableTextFilter.SafeAction(s => { s.Checked = Config.GetBool("EnableTextFilter"); });
 
+            disableScriptTooltips.SafeAction(s => { s.Checked = Config.GetBool("DisableScriptTooltips"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -6988,6 +6990,13 @@ namespace Assistant
         private void enableTextFilter_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("EnableTextFilter", enableTextFilter.Checked);
+        }
+
+        private void disableScriptTooltips_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("DisableScriptTooltips", disableScriptTooltips.Checked);
+
+            ScriptManager.InitScriptEditor();
         }
     }
 }
