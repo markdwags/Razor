@@ -20,6 +20,7 @@
 
 using System.Linq;
 using System.Windows.Forms;
+using Assistant.Core;
 
 namespace Assistant.Gumps.Internal
 {
@@ -37,7 +38,7 @@ namespace Assistant.Gumps.Internal
 
             AddPage(pageCount);
             AddBackground(0, 0, 527, 201, 9270);
-            AddLabel(18, 13, 252, $"System Messages ({PacketHandlers.SysMessages.Count})");
+            AddLabel(18, 13, 252, $"System Messages ({SystemMessages.Messages.Count})");
             AddButton(460, 15, 9909, 9911, 1234, GumpButtonType.Page, pageCount);
             AddButton(483, 14, 9903, 9905, 1235, GumpButtonType.Page, pageCount + 1);
 
@@ -46,10 +47,10 @@ namespace Assistant.Gumps.Internal
             int id = 0;
             int count = 0;
 
-            foreach (string message in PacketHandlers.SysMessages.ToArray().Reverse())
+            foreach (string message in SystemMessages.Messages.ToArray().Reverse())
             {
                 AddButton(18, buttonY, 1209, 1210, id, GumpButtonType.Reply, 0);
-                AddTextEntry(44, textY, 463, 20, 2954, id, PacketHandlers.SysMessages[count]);
+                AddTextEntry(44, textY, 463, 20, 2954, id, SystemMessages.Messages[count]);
 
                 id++;
                 count++;
@@ -66,8 +67,8 @@ namespace Assistant.Gumps.Internal
 
                     AddPage(pageCount);
                     AddBackground(0, 0, 527, 201, 9270);
-                    AddLabel(18, 13, 252, $"System Messages ({PacketHandlers.SysMessages.Count})");
-                    AddButton(460, 15, 9909, 9911, pageCount + 1, GumpButtonType.Page, pageCount - 1);                    
+                    AddLabel(18, 13, 252, $"System Messages ({SystemMessages.Messages.Count})");
+                    AddButton(460, 15, 9909, 9911, pageCount + 1, GumpButtonType.Page, pageCount - 1);
                 }
             }
         }
@@ -78,13 +79,15 @@ namespace Assistant.Gumps.Internal
             {
                 Resend = false;
                 CloseGump();
+
+                return;
             }
 
-            if (buttonId > PacketHandlers.SysMessages.Count)
+            if (buttonId > SystemMessages.Messages.Count)
                 return;
 
-            Clipboard.SetText(PacketHandlers.SysMessages[buttonId]);
-            World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ScriptCopied, PacketHandlers.SysMessages[buttonId]), false);
+            Clipboard.SetText(SystemMessages.Messages[buttonId]);
+            World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ScriptCopied, SystemMessages.Messages[buttonId]), false);
         }
     }
 }

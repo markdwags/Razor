@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using Assistant.Core;
 using Assistant.Scripts.Engine;
 using Ultima;
 
@@ -188,18 +189,7 @@ namespace Assistant.Scripts
 
             string text = args[0].AsString();
 
-            for (int i = PacketHandlers.SysMessages.Count - 1; i >= 0; i--)
-            {
-                string sys = PacketHandlers.SysMessages[i];
-
-                if (sys.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    PacketHandlers.SysMessages.RemoveRange(0, i + 1);
-                    return true;
-                }
-            }
-
-            return false;
+            return SystemMessages.Exists(text);
         }
 
         private static int Mana(string expression, Argument[] args, bool quiet)

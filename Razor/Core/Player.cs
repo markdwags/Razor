@@ -888,10 +888,7 @@ namespace Assistant
                         break;
                 }
 
-                PacketHandlers.SysMessages.Add(text);
-
-                if (PacketHandlers.SysMessages.Count >= 25)
-                    PacketHandlers.SysMessages.RemoveRange(0, 10);
+                SystemMessages.Add(text);
 
                 if (Config.GetBool("FilterRazorMessages"))
                 {

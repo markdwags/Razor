@@ -1915,8 +1915,6 @@ namespace Assistant
                 args.Block = WallStaticFilter.MakeWallStatic(item);
         }
 
-        public static List<string> SysMessages { get; set; } = new List<string>();
-
         public static System.Text.StringBuilder SpellPowerwordsBuilder { get; set; } = new System.Text.StringBuilder(Config.GetString("SpellFormat"));
 
         private static void ResetSpellPowerwordsBuilder()
@@ -2064,13 +2062,7 @@ namespace Assistant
 
                 if (!ser.IsValid || ser == World.Player.Serial || ser.IsItem)
                 {
-                    if (!string.IsNullOrEmpty(text))
-                    {
-                        SysMessages.Add(text);
-
-                        if (SysMessages.Count >= 25)
-                            SysMessages.RemoveRange(0, 10);
-                    }
+                    SystemMessages.Add(text);
                 }
 
                 if (Config.GetBool("FilterSystemMessages") && ser == Serial.MinusOne || ser == Serial.Zero)

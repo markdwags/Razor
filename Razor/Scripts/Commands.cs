@@ -1046,7 +1046,7 @@ namespace Assistant.Scripts
 
         public static bool ClearSysMsg(string command, Argument[] args, bool quiet, bool force)
         {
-            PacketHandlers.SysMessages.Clear();
+            SystemMessages.Messages.Clear();
 
             return true;
         }
