@@ -576,7 +576,7 @@ namespace Assistant
 
         internal override void RequestMove(Direction m_Dir)
         {
-            _requestMove((int) m_Dir, true);
+            _requestMove((int) m_Dir, false);
         }
 
         public void OnFocusGained()
