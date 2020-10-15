@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Assistant.Macros;
 using Assistant.Scripts.Engine;
@@ -351,7 +352,9 @@ namespace Assistant.Scripts
         {
             Scripts.Clear();
 
-            foreach (string file in Directory.GetFiles(ScriptPath, "*.razor"))
+            var razorFiles = Directory.GetFiles(ScriptPath, "*.razor");
+            razorFiles = razorFiles.OrderBy(fileName => fileName).ToArray();
+            foreach (var file in razorFiles)
             {
                 Scripts.Add(new RazorScript
                 {
