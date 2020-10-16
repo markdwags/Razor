@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Assistant.UltimaSDK;
 
 namespace Assistant.Core
 {
@@ -65,7 +66,7 @@ namespace Assistant.Core
         private static List<SpeechEntry> m_Speech;
         internal static unsafe void LoadSpeechTable()
         {
-            string path = Ultima.Files.GetFilePath("Speech.mul");
+            string path = Files.GetFilePath("Speech.mul");
 
             if (!File.Exists(path))
             {

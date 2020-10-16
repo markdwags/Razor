@@ -20,8 +20,9 @@
 
 using System;
 using System.Linq;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class GateTimer
     {
@@ -73,13 +74,13 @@ namespace Assistant
             }
 
             m_Timer.Start();
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         public static void Stop()
         {
             m_Timer.Stop();
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         private class InternalTimer : Timer
@@ -96,7 +97,7 @@ namespace Assistant
                     Stop();
                 }
 
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
             }
         }
     }

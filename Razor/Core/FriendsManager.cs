@@ -24,6 +24,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.HotKeys;
+using Assistant.Network;
 using Assistant.UI;
 
 namespace Assistant.Core

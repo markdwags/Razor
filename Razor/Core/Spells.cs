@@ -19,11 +19,15 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
+using Assistant.Client;
+using Assistant.HotKeys;
+using Assistant.Network;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class Spell
     {
@@ -127,18 +131,18 @@ namespace Assistant
         public void OnCast(PacketReader p)
         {
             Cast();
-            Client.Instance.SendToServer(p);
+            Client.Client.Instance.SendToServer(p);
         }
 
         public void OnCast(Packet p)
         {
             Cast();
-            Client.Instance.SendToServer(p);
+            Client.Client.Instance.SendToServer(p);
         }
 
         private void Cast()
         {
-            if (Config.GetBool("SpellUnequip") && Client.Instance.AllowBit(FeatureBit.UnequipBeforeCast))
+            if (Config.GetBool("SpellUnequip") && Client.Client.Instance.AllowBit(FeatureBit.UnequipBeforeCast))
             {
                 Item pack = World.Player.Backpack;
                 if (pack != null)
@@ -195,7 +199,7 @@ namespace Assistant
                 m_UnflagTimer.Start();
             }
 
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
             UOAssist.PostSpellCast(this.Number);
 
             if (World.Player != null)
@@ -218,7 +222,7 @@ namespace Assistant
             {
                 for (int i = 0; i < Counter.List.Count; i++)
                     ((Counter) Counter.List[i]).Flag = false;
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
             }
         }
 
@@ -293,7 +297,7 @@ namespace Assistant
         {
             Spell s = null;
 
-            if (!Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
             {
                 if (World.Player.Hits + 30 < World.Player.HitsMax && World.Player.Mana >= 12)
                     s = Get(4, 5); // greater heal
@@ -302,7 +306,7 @@ namespace Assistant
             }
             else
             {
-                if (World.Player.Poisoned && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                if (World.Player.Poisoned && Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                 {
                     s = Get(2, 3); // cure 
                 }
@@ -326,7 +330,7 @@ namespace Assistant
             {
                 if (World.Player.Poisoned || World.Player.Hits < World.Player.HitsMax)
                     Targeting.TargetSelf(true);
-                Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
+                Client.Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
                 s.Cast();
             }
         }
@@ -335,7 +339,7 @@ namespace Assistant
         {
             Spell s = null;
 
-            if (!Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
             {
                 s = Get(1, 4); // mini heal
             }
@@ -351,7 +355,7 @@ namespace Assistant
             {
                 if (World.Player.Poisoned || World.Player.Hits < World.Player.HitsMax)
                     Targeting.TargetSelf(true);
-                Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
+                Client.Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
                 s.Cast();
             }
         }
@@ -360,7 +364,7 @@ namespace Assistant
         {
             Spell s = null;
 
-            if (!Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
             {
                 s = Get(4, 5); // gheal
             }
@@ -376,7 +380,7 @@ namespace Assistant
             {
                 if (World.Player.Poisoned || World.Player.Hits < World.Player.HitsMax)
                     Targeting.TargetSelf(true);
-                Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
+                Client.Client.Instance.SendToServer(new CastSpellFromMacro((ushort) s.GetID()));
                 s.Cast();
             }
         }
@@ -387,8 +391,8 @@ namespace Assistant
 
             if (item != null)
             {
-                Client.Instance.SendToServer(new LiftRequest(item, 1)); // unequip
-                Client.Instance.SendToServer(new EquipRequest(item.Serial, World.Player, item.Layer)); // Equip
+                Client.Client.Instance.SendToServer(new LiftRequest(item, 1)); // unequip
+                Client.Client.Instance.SendToServer(new EquipRequest(item.Serial, World.Player, item.Layer)); // Equip
             }
         }
 

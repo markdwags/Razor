@@ -25,7 +25,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     /// <summary>
     /// Contains translation tables used for mapping body values to file subsets.

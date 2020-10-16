@@ -18,7 +18,6 @@
 
 #endregion
 
-using Assistant.Core;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -29,8 +28,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Assistant.Core;
+using Assistant.HotKeys;
+using Assistant.Network;
+using Assistant.UI;
+using Assistant.UltimaSDK;
+using Timer = Assistant.Core.Timer;
 
-namespace Assistant
+namespace Assistant.Client
 {
     public unsafe class OSIClient : Client
     {
@@ -418,7 +423,7 @@ namespace Assistant
             sb.AppendFormat("{0}\n", error);
             sb.Append(Language.GetString((int) (LocString.InitError + (int) error)));
 
-            MessageBox.Show(Engine.ActiveWindow, sb.ToString(), "Init Error", MessageBoxButtons.OK,
+            MessageBox.Show(Core.Engine.ActiveWindow, sb.ToString(), "Init Error", MessageBoxButtons.OK,
                 MessageBoxIcon.Stop);
         }
 
@@ -429,7 +434,7 @@ namespace Assistant
                 PacketHandlers.Party.Clear();
 
                 SetTitleStr("");
-                Engine.MainWindow.UpdateTitle();
+                Core.Engine.MainWindow.UpdateTitle();
                 UOAssist.PostLogout();
                 m_ConnStart = DateTime.MinValue;
             }
@@ -447,9 +452,9 @@ namespace Assistant
             WaypointManager.StopTimer();
             BuffsTimer.Stop();
             StealthSteps.Unhide();
-            Engine.MainWindow.OnLogout();
-            if (Engine.MainWindow.MapWindow != null)
-                Engine.MainWindow.MapWindow.Close();
+            Core.Engine.MainWindow.OnLogout();
+            if (Core.Engine.MainWindow.MapWindow != null)
+                Core.Engine.MainWindow.MapWindow.Close();
             PacketHandlers.Party.Clear();
             PacketHandlers.IgnoreGumps.Clear();
             Agents.BuyAgent.OnDisconnected();
@@ -468,14 +473,14 @@ namespace Assistant
                 case UONetMessage.Ready: //Patch status
                     if (lParam == (int) InitError.NO_MEMCOPY)
                     {
-                        if (MessageBox.Show(Engine.ActiveWindow, Language.GetString(LocString.NoMemCpy),
+                        if (MessageBox.Show(Core.Engine.ActiveWindow, Language.GetString(LocString.NoMemCpy),
                                 "No Client MemCopy", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) ==
                             DialogResult.No)
                         {
                             m_Ready = false;
                             ClientProc = null;
-                            Engine.MainWindow.CanClose = true;
-                            Engine.MainWindow.Close();
+                            Core.Engine.MainWindow.CanClose = true;
+                            Core.Engine.MainWindow.Close();
                             break;
                         }
                     }
@@ -497,11 +502,11 @@ namespace Assistant
 
                     try
                     {
-                        string path = Ultima.Files.GetFilePath("art.mul");
+                        string path = Files.GetFilePath("art.mul");
                         if (path != null && path != string.Empty)
                             SetDataPath(Path.GetDirectoryName(path));
                         else
-                            SetDataPath(Path.GetDirectoryName(Ultima.Files.Directory));
+                            SetDataPath(Path.GetDirectoryName(Files.Directory));
                     }
                     catch
                     {
@@ -512,15 +517,15 @@ namespace Assistant
                         RequestStatbarPatch(true);
 
                     m_Ready = true;
-                    Engine.MainWindow.MainForm_EndLoad();
+                    Core.Engine.MainWindow.MainForm_EndLoad();
                     break;
 
                 case UONetMessage.NotReady:
                     m_Ready = false;
                     FatalInit((InitError) lParam);
                     ClientProc = null;
-                    Engine.MainWindow.CanClose = true;
-                    Engine.MainWindow.Close();
+                    Core.Engine.MainWindow.CanClose = true;
+                    Core.Engine.MainWindow.Close();
                     break;
 
                 // Network events
@@ -547,8 +552,8 @@ namespace Assistant
                 case UONetMessage.Close:
                     OnLogout(true);
                     ClientProc = null;
-                    Engine.MainWindow.CanClose = true;
-                    Engine.MainWindow.Close();
+                    Core.Engine.MainWindow.CanClose = true;
+                    Core.Engine.MainWindow.Close();
                     break;
 
                 // Hot Keys
@@ -626,7 +631,7 @@ namespace Assistant
                             break;
                     }
 
-                    MessageBox.Show(Engine.ActiveWindow, "An Error has occured : \n" + error, "Error Reported",
+                    MessageBox.Show(Core.Engine.ActiveWindow, "An Error has occured : \n" + error, "Error Reported",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
                 }
@@ -638,7 +643,7 @@ namespace Assistant
 
                 // Unknown
                 default:
-                    MessageBox.Show(Engine.ActiveWindow, "Unknown message from uo client\n" + ((int) wParam).ToString(),
+                    MessageBox.Show(Core.Engine.ActiveWindow, "Unknown message from uo client\n" + ((int) wParam).ToString(),
                         "Error?");
                     break;
             }

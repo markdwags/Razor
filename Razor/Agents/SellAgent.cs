@@ -22,7 +22,12 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Client;
+using Assistant.Core;
+using Assistant.HotKeys;
+using Assistant.Network;
 using Assistant.UI;
+using Engine = Assistant.Core.Engine;
 
 namespace Assistant.Agents
 {
@@ -77,7 +82,7 @@ namespace Assistant.Agents
                     gfx = c.ItemID.Value;
                 }
 
-                Client.Instance.SendToClient(new UnicodeMessage(m_HotBag, gfx, Assistant.MessageType.Label, 0x3B2, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(m_HotBag, gfx, MessageType.Label, 0x3B2, 3,
                     Language.CliLocName, "", Language.GetString(LocString.SellHB)));
             }
         }
@@ -89,7 +94,7 @@ namespace Assistant.Agents
 
         private void OnVendorSell(PacketReader pvSrc, PacketHandlerEventArgs args)
         {
-            if (!m_Enabled || !Client.Instance.AllowBit(FeatureBit.SellAgent) ||
+            if (!m_Enabled || !Client.Client.Instance.AllowBit(FeatureBit.SellAgent) ||
                 (m_Items.Count == 0 && m_HotBag == Serial.Zero))
             {
                 return;
@@ -155,7 +160,7 @@ namespace Assistant.Agents
 
             if (list.Count > 0)
             {
-                Client.Instance.SendToServer(new VendorSellResponse(vendor, list));
+                Client.Client.Instance.SendToServer(new VendorSellResponse(vendor, list));
                 World.Player.SendMessage(MsgLevel.Force, LocString.SellTotals, sold, total);
                 args.Block = true;
             }
@@ -198,7 +203,7 @@ namespace Assistant.Agents
 
             m_SubList.EndUpdate();
 
-            if (!Client.Instance.AllowBit(FeatureBit.SellAgent) && Engine.MainWindow != null)
+            if (!Client.Client.Instance.AllowBit(FeatureBit.SellAgent) && Engine.MainWindow != null)
             {
                 for (int i = 0; i < buttons.Length; i++)
                 {

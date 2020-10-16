@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Assistant.Core.Gumps;
+using Assistant.Core;
 using Assistant.Network;
 
 namespace Assistant.Gumps
@@ -356,12 +356,12 @@ namespace Assistant.Gumps
 
             World.Player.InternalGumps.Add(this);
 
-            Client.Instance.SendPacketToClient(bytes, bytes.Length);
+            Client.Client.Instance.SendPacketToClient(bytes, bytes.Length);
         }
 
         public void CloseGump()
         {
-            Client.Instance.SendToClient(new CloseGump(ID));
+            Client.Client.Instance.SendToClient(new CloseGump(ID));
         }
 
         public void Add(GumpElement e)

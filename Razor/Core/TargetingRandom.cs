@@ -19,10 +19,12 @@
 #endregion
 
 using System.Collections.Generic;
-using Assistant.Core;
+using Assistant.Client;
 using Assistant.Filters;
+using Assistant.HotKeys;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public partial class Targeting
     {
@@ -202,7 +204,7 @@ namespace Assistant
 
         private static void RandomTarget(params int[] noto)
         {
-            if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
 
             var list = new List<Mobile>();
@@ -231,7 +233,7 @@ namespace Assistant
 
         private static void RandomHumanoidTarget(params int[] noto)
         {
-            if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
 
             var list = new List<Mobile>();
@@ -265,7 +267,7 @@ namespace Assistant
 
         private static void RandomMonsterTarget(params int[] noto)
         {
-            if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
 
             var list = new List<Mobile>();
@@ -299,7 +301,7 @@ namespace Assistant
 
         private static void RandomFriendTarget()
         {
-            if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
 
             var list = new List<Mobile>();

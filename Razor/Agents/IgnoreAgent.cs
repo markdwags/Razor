@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Core;
+using Assistant.HotKeys;
 using Assistant.UI;
 
 namespace Assistant.Agents

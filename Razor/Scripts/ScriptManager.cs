@@ -24,10 +24,14 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Assistant.Core;
+using Assistant.HotKeys;
 using Assistant.Macros;
 using Assistant.Scripts.Engine;
 using Assistant.UI;
 using FastColoredTextBoxNS;
+using Language = Assistant.UI.Language;
+using Timer = Assistant.Core.Timer;
 
 namespace Assistant.Scripts
 {
@@ -64,7 +68,7 @@ namespace Assistant.Scripts
             {
                 try
                 {
-                    if (!Client.Instance.ClientRunning)
+                    if (!Client.Client.Instance.ClientRunning)
                     {
                         if (ScriptRunning)
                         {
@@ -99,7 +103,7 @@ namespace Assistant.Scripts
                             if (Config.GetBool("ScriptDisablePlayFinish"))
                                 World.Player?.SendMessage(LocString.ScriptPlaying);
 
-                            Assistant.Engine.MainWindow.LockScriptUI(true);
+                            Core.Engine.MainWindow.LockScriptUI(true);
                             ScriptRunning = true;
                         }
                     }
@@ -110,7 +114,7 @@ namespace Assistant.Scripts
                             if (Config.GetBool("ScriptDisablePlayFinish"))
                                 World.Player?.SendMessage(LocString.ScriptFinished);
 
-                            Assistant.Engine.MainWindow.LockScriptUI(false);
+                            Core.Engine.MainWindow.LockScriptUI(false);
                             ScriptRunning = false;
                         }
                     }
@@ -283,7 +287,7 @@ namespace Assistant.Scripts
             if (_queuedScript != null)
                 return;
 
-            if (!Client.Instance.ClientRunning)
+            if (!Client.Client.Instance.ClientRunning)
                 return;
 
             if (World.Player == null)

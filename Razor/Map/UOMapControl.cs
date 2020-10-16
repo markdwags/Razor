@@ -19,12 +19,14 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Windows.Forms;
 using System.Collections;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
+using Assistant.Core;
+using Assistant.Network;
 
-namespace Assistant.MapUO
+namespace Assistant.Map
 {
     public class UOMapControl : PictureBox
     {
@@ -62,7 +64,7 @@ namespace Assistant.MapUO
             this.prevPoint = new Point(0, 0);
             this.BorderStyle = BorderStyle.Fixed3D;
             this.m_MapButtons = new ArrayList();
-            m_Regions = Assistant.MapUO.Region.Load("guardlines.def");
+            m_Regions = Map.Region.Load("guardlines.def");
             m_MapButtons = UOMapRuneButton.Load("test.xml");
         }
 
@@ -152,9 +154,9 @@ namespace Assistant.MapUO
             gfx.RotateTransform(45, MatrixOrder.Append);
             gfx.TranslateTransform(xtrans, ytrans, MatrixOrder.Append);
 
-            Ultima.Map map = Map.GetMap(this.FocusMobile.Map);
+            UltimaSDK.Map map = Core.Map.GetMap(this.FocusMobile.Map);
             if (map == null)
-                map = Ultima.Map.Felucca;
+                map = UltimaSDK.Map.Felucca;
 
             gfx.DrawImage(map.GetImage(mapOrigin.X, mapOrigin.Y, w + offset.X, h + offset.Y, true), -offset.X,
                 -offset.Y);
@@ -174,7 +176,7 @@ namespace Assistant.MapUO
                 mButtons = ButtonList(focus.X, focus.Y, this.Height);
             }
 
-            foreach (Assistant.MapUO.Region region in regions)
+            foreach (Region region in regions)
                 gfx.DrawRectangle(Pens.LimeGreen, (region.X) - ((mapOrigin.X << 3) + offset.X),
                     (region.Y) - ((mapOrigin.Y << 3) + offset.Y), region.Width, region.Length);
 
@@ -191,7 +193,7 @@ namespace Assistant.MapUO
             gfx.ResetTransform();
 
 
-            if (Format(new Point(focus.X, focus.Y), Ultima.Map.Felucca, ref xLong, ref yLat, ref xMins, ref yMins,
+            if (Format(new Point(focus.X, focus.Y), UltimaSDK.Map.Felucca, ref xLong, ref yLat, ref xMins, ref yMins,
                 ref xEast, ref ySouth))
             {
                 string locString = String.Format("{0}°{1}'{2} {3}°{4}'{5} | ({6},{7})", yLat, yMins, ySouth ? "S" : "N",
@@ -400,7 +402,7 @@ namespace Assistant.MapUO
             ArrayList aList = new ArrayList();
             for (int i = 0; i < count; i++)
             {
-                Assistant.MapUO.Region rg1 = this.m_Regions[i];
+                Region rg1 = this.m_Regions[i];
                 if (Utility.Distance(rg1.X, rg1.Y, x, y) <= maxDist * 2)
                 {
                     aList.Add(rg1);
@@ -428,7 +430,7 @@ namespace Assistant.MapUO
             return aList;
         }
 
-        public static bool Format(Point p, Ultima.Map map, ref int xLong, ref int yLat, ref int xMins, ref int yMins,
+        public static bool Format(Point p, UltimaSDK.Map map, ref int xLong, ref int yLat, ref int xMins, ref int yMins,
             ref bool xEast, ref bool ySouth)
         {
             if (map == null)
@@ -470,13 +472,13 @@ namespace Assistant.MapUO
             return true;
         }
 
-        public static bool ComputeMapDetails(Ultima.Map map, int x, int y, out int xCenter, out int yCenter,
+        public static bool ComputeMapDetails(UltimaSDK.Map map, int x, int y, out int xCenter, out int yCenter,
             out int xWidth, out int yHeight)
         {
             xWidth = 5120;
             yHeight = 4096;
 
-            if (map == Ultima.Map.Trammel || map == Ultima.Map.Felucca)
+            if (map == UltimaSDK.Map.Trammel || map == UltimaSDK.Map.Felucca)
             {
                 if (x >= 0 && y >= 0 && x < 5120 && y < map.Height)
                 {

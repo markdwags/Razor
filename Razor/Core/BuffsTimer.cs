@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using Assistant.Core;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class BuffsTimer
     {
@@ -45,13 +45,13 @@ namespace Assistant
                 m_Timer.Stop();
             m_Timer.Start();
 
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         public static void Stop()
         {
             m_Timer.Stop();
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         private class InternalTimer : Timer
@@ -62,7 +62,7 @@ namespace Assistant
 
             protected override void OnTick()
             {
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
 
                 if (!Config.GetBool("BuffDebuffEveryXSeconds") || !Config.GetBool("ShowBuffDebuffOverhead"))
                     return;

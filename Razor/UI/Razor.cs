@@ -19,38 +19,42 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Assistant.Filters;
-using Assistant.Macros;
-using System.Diagnostics;
-using Assistant.Boat;
+using System.Windows.Forms;
 using Assistant.Agents;
+using Assistant.Boat;
+using Assistant.Client;
 using Assistant.Core;
+using Assistant.Filters;
+using Assistant.HotKeys;
+using Assistant.Macros;
+using Assistant.Map;
+using Assistant.Network;
 using Assistant.Scripts;
-using Assistant.UI;
-using Ultima;
-using ContainerLabels = Assistant.UI.ContainerLabels;
+using Assistant.UltimaSDK;
+using Engine = Assistant.Core.Engine;
 using Exception = System.Exception;
+using Timer = Assistant.Core.Timer;
 
-namespace Assistant
+namespace Assistant.UI
 {
     public partial class MainForm
     {
         protected override void WndProc(ref Message msg)
         {
-            if (msg.Msg == Client.WM_UONETEVENT)
+            if (msg.Msg == Client.Client.WM_UONETEVENT)
                 msg.Result =
-                    (IntPtr) (Client.Instance.OnMessage(this, (uint) msg.WParam.ToInt32(), msg.LParam.ToInt32())
+                    (IntPtr) (Client.Client.Instance.OnMessage(this, (uint) msg.WParam.ToInt32(), msg.LParam.ToInt32())
                         ? 1
                         : 0);
-            else if (msg.Msg == Client.WM_COPYDATA)
-                msg.Result = (IntPtr) (Client.Instance.OnCopyData(msg.WParam, msg.LParam) ? 1 : 0);
+            else if (msg.Msg == Client.Client.WM_COPYDATA)
+                msg.Result = (IntPtr) (Client.Client.Instance.OnCopyData(msg.WParam, msg.LParam) ? 1 : 0);
             else if (Config.GetBool("EnableUOAAPI") && msg.Msg >= (int) UOAssist.UOAMessage.First &&
                      msg.Msg <= (int) UOAssist.UOAMessage.Last)
                 msg.Result = (IntPtr) UOAssist.OnUOAMessage(this, msg.Msg, msg.WParam.ToInt32(), msg.LParam.ToInt32());
@@ -89,7 +93,7 @@ namespace Assistant
 
             DisableCloseButton();
 
-            if (!Client.Instance.InstallHooks(this.Handle))
+            if (!Client.Client.Instance.InstallHooks(this.Handle))
             {
                 m_CanClose = true;
                 SplashScreen.End();
@@ -100,7 +104,7 @@ namespace Assistant
 
         public void MainForm_EndLoad()
         {
-            Ultima.Multis.PostHSFormat = Engine.UsePostHSChanges;
+            Multis.PostHSFormat = Engine.UsePostHSChanges;
 
             PacketsTable.AdjustPacketSizeByVersion(Engine.ClientVersion);
 
@@ -517,9 +521,9 @@ namespace Assistant
             disableScriptTooltips.SafeAction(s => { s.Checked = Config.GetBool("DisableScriptTooltips"); });
 
             // Disable SmartCPU in case it was enabled before the feature was removed
-            Client.Instance.SetSmartCPU(false);
+            Client.Client.Instance.SetSmartCPU(false);
 
-            if (!Client.IsOSI)
+            if (!Client.Client.IsOSI)
                 DisableCUOFeatures();
 
             m_Initializing = false;
@@ -745,13 +749,13 @@ namespace Assistant
 
         private void UpdateRazorStatus()
         {
-            if (!Client.Instance.ClientRunning)
+            if (!Client.Client.Instance.ClientRunning)
                 Close();
 
             uint ps = m_OutPrev;
             uint pr = m_InPrev;
-            m_OutPrev = Client.Instance.TotalDataOut();
-            m_InPrev = Client.Instance.TotalDataIn();
+            m_OutPrev = Client.Client.Instance.TotalDataOut();
+            m_InPrev = Client.Client.Instance.TotalDataIn();
 
             tabs.SafeAction(s =>
             {
@@ -762,8 +766,8 @@ namespace Assistant
             });
 
             int time = 0;
-            if (Client.Instance.ConnectionStart != DateTime.MinValue)
-                time = (int) ((DateTime.UtcNow - Client.Instance.ConnectionStart).TotalSeconds);
+            if (Client.Client.Instance.ConnectionStart != DateTime.MinValue)
+                time = (int) ((DateTime.UtcNow - Client.Client.Instance.ConnectionStart).TotalSeconds);
 
 
             statusBox.SafeAction(s =>
@@ -803,7 +807,7 @@ namespace Assistant
 
                     for (int i = 0; i < FeatureBit.MaxBit; i++)
                     {
-                        if (!Client.Instance.AllowBit(i))
+                        if (!Client.Client.Instance.AllowBit(i))
                         {
                             allAllowed = false;
 
@@ -1002,12 +1006,12 @@ namespace Assistant
 
             try
             {
-                Client.Instance.SendToServer(new SetSkillLock(s.Index, lockType));
+                Client.Client.Instance.SendToServer(new SetSkillLock(s.Index, lockType));
 
                 s.Lock = lockType;
                 UpdateSkill(s);
 
-                Client.Instance.SendToClient(new SkillUpdate(s));
+                Client.Client.Instance.SendToClient(new SkillUpdate(s));
             }
             catch
             {
@@ -1120,10 +1124,10 @@ namespace Assistant
             for (short i = 0; i < Skill.Count; i++)
             {
                 World.Player.Skills[i].Lock = type;
-                Client.Instance.SendToServer(new SetSkillLock(i, type));
+                Client.Client.Instance.SendToServer(new SetSkillLock(i, type));
             }
 
-            Client.Instance.SendToClient(new SkillsList());
+            Client.Client.Instance.SendToClient(new SkillsList());
             RedrawSkills();
         }
 
@@ -1172,14 +1176,14 @@ namespace Assistant
         {
             titleStr.Enabled = showInBar.Checked;
             Config.SetProperty("TitleBarDisplay", showInBar.Checked);
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         private void titleStr_TextChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("TitleBarText", titleStr.Text.TrimEnd());
             if (Config.GetBool("TitleBarDisplay"))
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         private void counters_ItemCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
@@ -1187,7 +1191,7 @@ namespace Assistant
             if (e.Index >= 0 && e.Index < Counter.List.Count && !Counter.SupressChecks)
             {
                 ((Counter) (counters.Items[e.Index].Tag)).SetEnabled(e.NewValue == CheckState.Checked);
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
                 counters.Sort();
                 //counters.Refresh();
             }
@@ -1242,7 +1246,7 @@ namespace Assistant
                         Config.SetProfileFor(World.Player);
                 }
 
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
             }
             else
             {
@@ -1355,7 +1359,7 @@ namespace Assistant
                                     Config.SetProfileFor(World.Player);
                             }
 
-                            Client.Instance.RequestTitlebarUpdate();
+                            Client.Client.Instance.RequestTitlebarUpdate();
                         }
 
                         m_ProfileConfirmLoad = true;
@@ -1382,7 +1386,7 @@ namespace Assistant
 
         private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!m_CanClose && Client.Instance.ClientRunning)
+            if (!m_CanClose && Client.Client.Instance.ClientRunning)
             {
                 DisableCloseButton();
                 e.Cancel = true;
@@ -1704,12 +1708,12 @@ namespace Assistant
             chkPass.Checked = hk.SendToUO;
 
             if ((hk.LocName >= (int) LocString.DrinkHeal && hk.LocName <= (int) LocString.DrinkAg &&
-                 !Client.Instance.AllowBit(FeatureBit.PotionHotkeys)) ||
+                 !Client.Client.Instance.AllowBit(FeatureBit.PotionHotkeys)) ||
                 (hk.LocName >= (int) LocString.TargCloseRed && hk.LocName <= (int) LocString.TargCloseCriminal &&
-                 !Client.Instance.AllowBit(FeatureBit.ClosestTargets)) ||
+                 !Client.Client.Instance.AllowBit(FeatureBit.ClosestTargets)) ||
                 (((hk.LocName >= (int) LocString.TargRandRed && hk.LocName <= (int) LocString.TargRandNFriend) ||
                   (hk.LocName >= (int) LocString.TargRandEnemyHuman && hk.LocName <= (int) LocString.TargRandCriminal)
-                 ) && !Client.Instance.AllowBit(FeatureBit.RandomTargets)))
+                 ) && !Client.Client.Instance.AllowBit(FeatureBit.RandomTargets)))
             {
                 LockControl(chkCtrl);
                 LockControl(chkAlt);
@@ -1897,7 +1901,7 @@ namespace Assistant
             if (!(setLTHilight.Enabled = lthilight.Checked))
             {
                 Config.SetProperty("LTHilight", 0);
-                Client.Instance.SetCustomNotoHue(0);
+                Client.Client.Instance.SetCustomNotoHue(0);
                 lthilight.BackColor = SystemColors.Control;
                 lthilight.ForeColor = SystemColors.ControlText;
             }
@@ -1926,7 +1930,7 @@ namespace Assistant
         {
             int hueIdx = Config.GetInt(cfg);
             if (hueIdx > 0 && hueIdx < 3000)
-                ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                ctrl.BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
             else
                 ctrl.BackColor = SystemColors.Control;
             ctrl.ForeColor = (ctrl.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
@@ -1941,7 +1945,7 @@ namespace Assistant
                 int hueIdx = h.Hue;
                 Config.SetProperty(cfg, hueIdx);
                 if (hueIdx > 0 && hueIdx < 3000)
-                    ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                    ctrl.BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
                 else
                     ctrl.BackColor = Color.White;
                 ctrl.ForeColor = (ctrl.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
@@ -1977,7 +1981,7 @@ namespace Assistant
         private void setLTHilight_Click(object sender, System.EventArgs e)
         {
             if (SetHue(lthilight, "LTHilight"))
-                Client.Instance.SetCustomNotoHue(Config.GetInt("LTHilight"));
+                Client.Client.Instance.SetCustomNotoHue(Config.GetInt("LTHilight"));
         }
 
         private void setBeneHue_Click(object sender, System.EventArgs e)
@@ -2195,7 +2199,7 @@ namespace Assistant
         {
             Config.SetProperty("ShowNotoHue", showNotoHue.Checked);
             if (showNotoHue.Checked)
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         private void recount_Click(object sender, System.EventArgs e)
@@ -3821,13 +3825,13 @@ namespace Assistant
         private void titlebarImages_CheckedChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("TitlebarImages", titlebarImages.Checked);
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         private void highlightSpellReags_CheckedChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("HighlightReagents", highlightSpellReags.Checked);
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         private void actionStatusMsg_CheckedChanged(object sender, System.EventArgs e)
@@ -3919,7 +3923,7 @@ namespace Assistant
         private void preAOSstatbar_CheckedChanged(object sender, System.EventArgs e)
         {
             Config.SetProperty("OldStatBar", preAOSstatbar.Checked);
-            Client.Instance.RequestStatbarPatch(preAOSstatbar.Checked);
+            Client.Client.Instance.RequestStatbarPatch(preAOSstatbar.Checked);
             if (World.Player != null && !m_Initializing)
                 MessageBox.Show(this, "Close and re-open your status bar for the change to take effect.",
                     "Status Window Note", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -4009,7 +4013,7 @@ namespace Assistant
                 y = Config.GetInt("ForceSizeY");
 
                 if (x > 100 && x < 2000 && y > 100 && y < 2000)
-                    Client.Instance.SetGameSize(x, y);
+                    Client.Client.Instance.SetGameSize(x, y);
                 else
                     MessageBox.Show(Engine.MainWindow, Language.GetString(LocString.ForceSizeBad), "Bad Size",
                         MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -4030,11 +4034,11 @@ namespace Assistant
                     MessageBox.Show(this, Language.GetString(LocString.ForceSizeBad), "Bad Size", MessageBoxButtons.OK,
                         MessageBoxIcon.Stop);
                 else
-                    Client.Instance.SetGameSize(x, y);
+                    Client.Client.Instance.SetGameSize(x, y);
             }
             else
             {
-                Client.Instance.SetGameSize(800, 600);
+                Client.Client.Instance.SetGameSize(800, 600);
             }
 
             if (!m_Initializing)
@@ -4089,7 +4093,7 @@ namespace Assistant
             if (!m_Initializing)
             {
                 Config.SetProperty("Negotiate", negotiate.Checked);
-                Client.Instance.SetNegotiate(negotiate.Checked);
+                Client.Client.Instance.SetNegotiate(negotiate.Checked);
             }
         }
 
@@ -4225,28 +4229,28 @@ namespace Assistant
 
             m_LockBoxes.Clear();
 
-            if (!Client.Instance.AllowBit(FeatureBit.SmartLT))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.SmartLT))
                 LockControl(this.smartLT);
 
-            if (!Client.Instance.AllowBit(FeatureBit.RangeCheckLT))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.RangeCheckLT))
                 LockControl(this.rangeCheckLT);
 
-            if (!Client.Instance.AllowBit(FeatureBit.AutoOpenDoors))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.AutoOpenDoors))
                 LockControl(this.autoOpenDoors);
 
-            if (!Client.Instance.AllowBit(FeatureBit.UnequipBeforeCast))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.UnequipBeforeCast))
                 LockControl(this.spellUnequip);
 
-            if (!Client.Instance.AllowBit(FeatureBit.AutoPotionEquip))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.AutoPotionEquip))
                 LockControl(this.potionEquip);
 
-            if (!Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                 LockControl(this.blockHealPoison);
 
-            if (!Client.Instance.AllowBit(FeatureBit.LoopingMacros))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.LoopingMacros))
                 LockControl(this.loopMacro);
 
-            if (!Client.Instance.AllowBit(FeatureBit.OverheadHealth))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.OverheadHealth))
             {
                 LockControl(this.showHealthOH);
                 LockControl(this.healthFmt);
@@ -4254,7 +4258,7 @@ namespace Assistant
             }
         }
 
-        public Assistant.MapUO.MapWindow MapWindow;
+        public MapWindow MapWindow;
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern IntPtr SetParent(IntPtr child, IntPtr newParent);
@@ -4264,7 +4268,7 @@ namespace Assistant
             if (World.Player != null)
             {
                 if (MapWindow == null)
-                    MapWindow = new MapUO.MapWindow();
+                    MapWindow = new MapWindow();
 
                 MapWindow.SafeAction(s =>
                 {
@@ -4591,20 +4595,20 @@ namespace Assistant
 
         private void disableSmartCPU_Click(object sender, EventArgs e)
         {
-            Client.Instance.SetSmartCPU(false);
+            Client.Client.Instance.SetSmartCPU(false);
         }
 
         private void lightLevelBar_Scroll(object sender, EventArgs e)
         {
-            if (Client.Instance.AllowBit(FeatureBit.LightFilter) && World.Player != null)
+            if (Client.Client.Instance.AllowBit(FeatureBit.LightFilter) && World.Player != null)
             {
                 byte selectedLightLevel = Convert.ToByte(lightLevelBar.Maximum - lightLevelBar.Value);
 
                 World.Player.LocalLightLevel = 0;
                 World.Player.GlobalLightLevel = selectedLightLevel;
 
-                Client.Instance.SendToClient(new GlobalLightLevel(selectedLightLevel));
-                Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
+                Client.Client.Instance.SendToClient(new GlobalLightLevel(selectedLightLevel));
+                Client.Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
 
                 double percent = Math.Round((lightLevelBar.Value / (double) lightLevelBar.Maximum) * 100.0);
 
@@ -4829,7 +4833,7 @@ namespace Assistant
 
             if (seasonList.SelectedIndex < 5)
             {
-                Client.Instance.ForceSendToClient(new SeasonChange(seasonList.SelectedIndex, true));
+                Client.Client.Instance.ForceSendToClient(new SeasonChange(seasonList.SelectedIndex, true));
             }
         }
 
@@ -5865,11 +5869,11 @@ namespace Assistant
 
             if (playInClient.Checked && World.Player != null)
             {
-                Client.Instance.SendToClient(new PlaySound(sound.Serial - 1));
+                Client.Client.Instance.SendToClient(new PlaySound(sound.Serial - 1));
             }
             else
             {
-                Ultima.UOSound s = Ultima.Sounds.GetSound(sound.Serial - 1);
+                UOSound s = Sounds.GetSound(sound.Serial - 1);
                 using (MemoryStream m = new MemoryStream(s.buffer))
                 {
                     sp.Stream = m;
@@ -5893,7 +5897,7 @@ namespace Assistant
             if (playableMusicList.SelectedIndex < 0 || World.Player == null)
                 return;
 
-            Client.Instance.SendToClient(new PlayMusic(Convert.ToUInt16(playableMusicList.SelectedIndex)));
+            Client.Client.Instance.SendToClient(new PlayMusic(Convert.ToUInt16(playableMusicList.SelectedIndex)));
         }
 
         private void showPlayingMusic_CheckedChanged(object sender, EventArgs e)

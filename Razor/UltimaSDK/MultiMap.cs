@@ -18,12 +18,12 @@
 
 #endregion
 
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class MultiMap
     {

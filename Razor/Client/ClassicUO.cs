@@ -18,8 +18,6 @@
 
 #endregion
 
-using Assistant.UI;
-using CUO_API;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -29,8 +27,14 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Assistant.Core;
+using Assistant.HotKeys;
+using Assistant.Network;
+using Assistant.UI;
+using Assistant.UltimaSDK;
+using CUO_API;
+using Timer = Assistant.Core.Timer;
 
-namespace Assistant
+namespace Assistant.Client
 {
     public partial class Engine
     {
@@ -52,13 +56,13 @@ namespace Assistant
 
                 AssemblyName askedassembly = new AssemblyName(e.Name);
 
-                bool isdll = File.Exists(Path.Combine(RootPath, askedassembly.Name + ".dll"));
+                bool isdll = File.Exists(Path.Combine(Core.Engine.RootPath, askedassembly.Name + ".dll"));
 
-                return Assembly.LoadFile(Path.Combine(RootPath, askedassembly.Name + (isdll ? ".dll" : ".exe")));
+                return Assembly.LoadFile(Path.Combine(Core.Engine.RootPath, askedassembly.Name + (isdll ? ".dll" : ".exe")));
             };
 
             SplashScreen.Start();
-            m_ActiveWnd = SplashScreen.Instance;
+            Core.Engine.ActiveWindow = SplashScreen.Instance;
 
             Client.Init(false);
 
@@ -74,11 +78,11 @@ namespace Assistant
                 )();
 
             // just replicating the static .ctor
-            Ultima.Files.ReLoadDirectory();
-            Ultima.Files.LoadMulPath();
+            Files.ReLoadDirectory();
+            Files.LoadMulPath();
 
-            Ultima.Files.SetMulPath(clientPath);
-            Ultima.Multis.PostHSFormat = UsePostHSChanges;
+            Files.SetMulPath(clientPath);
+            Multis.PostHSFormat = Core.Engine.UsePostHSChanges;
             Client.Instance.ClientEncrypted = false;
             Client.Instance.ServerEncrypted = false;
 
@@ -93,13 +97,13 @@ namespace Assistant
                 return;
             }
 
-            m_Running = true;
+            Core.Engine.Running = true;
 
             Language.LoadCliLoc();
 
             /* Initialize engine */
             SplashScreen.Message = LocString.Initializing;
-            Initialize(typeof(Engine).Assembly);
+            Core.Engine.Initialize(typeof(Core.Engine).Assembly);
 
             /* Load Profile */
             SplashScreen.Message = LocString.LoadingLastProfile;
@@ -113,7 +117,7 @@ namespace Assistant
 
             SplashScreen.End();
 
-            Thread t = new Thread(() => { RunUI(); });
+            Thread t = new Thread(() => { Core.Engine.RunUI(); });
             t.SetApartmentState(ApartmentState.STA);
             t.IsBackground = true;
             t.Start();
@@ -239,7 +243,7 @@ namespace Assistant
 
         public unsafe override bool InstallHooks(IntPtr pluginPtr)
         {
-            Engine.MainWindow.SafeAction((s) => { Engine.MainWindow.MainForm_EndLoad(); });
+            Core.Engine.MainWindow.SafeAction((s) => { Core.Engine.MainWindow.MainForm_EndLoad(); });
             return true;
         }
 
@@ -379,7 +383,7 @@ namespace Assistant
         {
             PacketHandlers.Party.Clear();
             //TODO reset window title
-            Engine.MainWindow.UpdateTitle();
+            Core.Engine.MainWindow.UpdateTitle();
             UOAssist.PostLogout();
 
             World.Player = null;
@@ -394,9 +398,9 @@ namespace Assistant
             WaypointManager.StopTimer();
             BuffsTimer.Stop();
             StealthSteps.Unhide();
-            Engine.MainWindow.OnLogout();
-            if (Engine.MainWindow.MapWindow != null)
-                Engine.MainWindow.MapWindow.Close();
+            Core.Engine.MainWindow.OnLogout();
+            if (Core.Engine.MainWindow.MapWindow != null)
+                Core.Engine.MainWindow.MapWindow.Close();
             PacketHandlers.Party.Clear();
             PacketHandlers.IgnoreGumps.Clear();
             Agents.BuyAgent.OnDisconnected();
@@ -417,7 +421,7 @@ namespace Assistant
             Console.WriteLine("Closing Razor instance");
             Console.BackgroundColor = last;
             Console.ForegroundColor = lastFore;
-            Engine.Close();
+            Core.Engine.Close();
         }
 
         private void OnInitialize()
@@ -581,16 +585,16 @@ namespace Assistant
 
         public void OnFocusGained()
         {
-            if (Engine.MainWindow == null)
+            if (Core.Engine.MainWindow == null)
                 return;
 
             if (Config.GetBool("AlwaysOnTop"))
             {
-                if (!Engine.MainWindow.TopMost)
+                if (!Core.Engine.MainWindow.TopMost)
                 {
                     Platform.SetForegroundWindow(GetWindowHandle());
 
-                    Engine.MainWindow.SafeAction(s =>
+                    Core.Engine.MainWindow.SafeAction(s =>
                     {
                         s.TopMost = true;
                         s.BringToFront();
@@ -599,11 +603,11 @@ namespace Assistant
             }
 
             // always use smartness for the map window
-            if (Engine.MainWindow.MapWindow != null && Engine.MainWindow.MapWindow.Visible)
+            if (Core.Engine.MainWindow.MapWindow != null && Core.Engine.MainWindow.MapWindow.Visible)
             {
-                if (!Engine.MainWindow.MapWindow.TopMost)
+                if (!Core.Engine.MainWindow.MapWindow.TopMost)
                 {
-                    Engine.MainWindow.MapWindow.SafeAction(s =>
+                    Core.Engine.MainWindow.MapWindow.SafeAction(s =>
                     {
                         s.TopMost = true;
                         s.BringToFront();
@@ -614,15 +618,15 @@ namespace Assistant
 
         public void OnFocusLost()
         {
-            if (Engine.MainWindow == null)
+            if (Core.Engine.MainWindow == null)
                 return;
 
-            bool razorfocus = Form.ActiveForm == Engine.MainWindow || Form.ActiveForm == Engine.MainWindow.MapWindow;
+            bool razorfocus = Form.ActiveForm == Core.Engine.MainWindow || Form.ActiveForm == Core.Engine.MainWindow.MapWindow;
             if (Config.GetBool("AlwaysOnTop"))
             {
-                if (Engine.MainWindow.TopMost && !razorfocus)
+                if (Core.Engine.MainWindow.TopMost && !razorfocus)
                 {
-                    Engine.MainWindow.SafeAction(s =>
+                    Core.Engine.MainWindow.SafeAction(s =>
                     {
                         s.TopMost = false;
                         s.SendToBack();
@@ -631,11 +635,11 @@ namespace Assistant
             }
 
             // always use smartness for the map window
-            if (Engine.MainWindow.MapWindow != null && Engine.MainWindow.MapWindow.Visible && !razorfocus)
+            if (Core.Engine.MainWindow.MapWindow != null && Core.Engine.MainWindow.MapWindow.Visible && !razorfocus)
             {
-                if (Engine.MainWindow.MapWindow.TopMost)
+                if (Core.Engine.MainWindow.MapWindow.TopMost)
                 {
-                    Engine.MainWindow.MapWindow.SafeAction(s =>
+                    Core.Engine.MainWindow.MapWindow.SafeAction(s =>
                     {
                         s.TopMost = false;
                         s.SendToBack();

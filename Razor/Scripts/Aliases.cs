@@ -18,6 +18,7 @@
 
 #endregion
 
+using Assistant.Core;
 using Assistant.Scripts.Engine;
 
 namespace Assistant.Scripts

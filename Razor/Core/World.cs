@@ -19,8 +19,9 @@
 #endregion
 
 using System.Collections.Generic;
+using Assistant.Network;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class World
     {
@@ -137,7 +138,7 @@ namespace Assistant
 
         internal static void RequestMobileStatus(Mobile m)
         {
-            Client.Instance.SendToServer(new StatusQuery(m));
+            Client.Client.Instance.SendToServer(new StatusQuery(m));
         }
 
         internal static void RemoveMobile(Mobile mob)

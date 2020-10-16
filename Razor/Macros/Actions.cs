@@ -23,8 +23,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using Assistant.Client;
 using Assistant.Core;
+using Assistant.HotKeys;
+using Assistant.Network;
 using Assistant.UI;
+using Assistant.UltimaSDK;
+using Engine = Assistant.Core.Engine;
 
 namespace Assistant.Macros
 {
@@ -900,8 +905,8 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
-            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI,
+            Client.Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
+            Client.Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI,
                 m_ButtonID, m_Switches, m_TextEntries));
             World.Player.HasGump = false;
             World.Player.HasCompressedGump = false;
@@ -987,7 +992,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            Client.Instance.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, m_Index,
+            Client.Client.Instance.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, m_Index,
                 m_ItemID, m_Hue));
             World.Player.HasMenu = false;
             return true;
@@ -1441,7 +1446,7 @@ namespace Assistant.Macros
             short z = (short) World.Player.Position.Z;
             try
             {
-                Ultima.HuedTile tile = Map.GetTileNear(World.Player.Map, x, y, z);
+                HuedTile tile = Core.Map.GetTileNear(World.Player.Map, x, y, z);
                 Targeting.Target(new Point3D(x, y, tile.Z), (ushort) tile.ID);
             }
             catch (Exception e)
@@ -1708,7 +1713,7 @@ namespace Assistant.Macros
                 hue = World.Player.SpeechHue;
             }
 
-            Client.Instance.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech));
+            Client.Client.Instance.SendToServer(new ClientUniMessage(m_Type, hue, m_Font, m_Lang, m_Keywords, m_Speech));
             return true;
         }
 
@@ -1890,7 +1895,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            Client.Instance.SendToServer(new UseSkill(m_Skill));
+            Client.Client.Instance.SendToServer(new UseSkill(m_Skill));
             return true;
         }
 
@@ -2057,7 +2062,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            Client.Instance.SendToServer(new UseAbility(m_Ability));
+            Client.Client.Instance.SendToServer(new UseAbility(m_Ability));
             return true;
         }
 
@@ -2265,7 +2270,7 @@ namespace Assistant.Macros
                 //Client.Instance.SendToServer(new WalkRequest(m_Dir, World.Player.WalkSequence));
                 //World.Player.MoveReq(m_Dir, World.Player.WalkSequence);
 
-                Client.Instance.RequestMove(m_Dir);
+                Client.Client.Instance.RequestMove(m_Dir);
                 return false;
             }
         }
@@ -2790,7 +2795,7 @@ namespace Assistant.Macros
         private IfVarType m_Var;
         private string m_Counter;
         private int m_SkillId = -1;
-        private Assistant.Counter m_CountObj;
+        private Counter m_CountObj;
 
         public sbyte Op
         {
@@ -3097,7 +3102,7 @@ namespace Assistant.Macros
 
                 case IfVarType.Poisoned:
                 {
-                    if (Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                    if (Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                         return World.Player.Poisoned;
                     else
                         return false;
@@ -3157,7 +3162,7 @@ namespace Assistant.Macros
                 {
                     if (m_CountObj == null)
                     {
-                        foreach (Assistant.Counter c in Assistant.Counter.List)
+                        foreach (Counter c in Core.Counter.List)
                         {
                             if (c.Name == m_Counter)
                             {
@@ -3347,7 +3352,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            if (Client.Instance.AllowBit(FeatureBit.LoopingMacros) ||
+            if (Client.Client.Instance.AllowBit(FeatureBit.LoopingMacros) ||
                 m_Key.DispName.IndexOf(Language.GetString(LocString.PlayA1).Replace(@"{0}", "")) == -1)
                 m_Key.Callback();
             return true;
@@ -3486,7 +3491,7 @@ namespace Assistant.Macros
         private WhileVarType m_Var;
         private string m_Counter;
         private int m_SkillId = -1;
-        private Assistant.Counter m_CountObj;
+        private Counter m_CountObj;
 
         public sbyte Op
         {
@@ -3792,7 +3797,7 @@ namespace Assistant.Macros
 
                 case WhileVarType.Poisoned:
                 {
-                    if (Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                    if (Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                         return World.Player.Poisoned;
                     else
                         return false;
@@ -3851,7 +3856,7 @@ namespace Assistant.Macros
                 {
                     if (m_CountObj == null)
                     {
-                        foreach (Assistant.Counter c in Assistant.Counter.List)
+                        foreach (Counter c in Core.Counter.List)
                         {
                             if (c.Name == m_Counter)
                             {
@@ -4037,7 +4042,7 @@ namespace Assistant.Macros
         private DoWhileVarType m_Var;
         private string m_Counter;
         private int m_SkillId = -1;
-        private Assistant.Counter m_CountObj;
+        private Counter m_CountObj;
 
         public sbyte Op
         {
@@ -4278,7 +4283,7 @@ namespace Assistant.Macros
 
                 case DoWhileVarType.Poisoned:
                 {
-                    if (Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                    if (Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                         return World.Player.Poisoned;
                     else
                         return false;
@@ -4337,7 +4342,7 @@ namespace Assistant.Macros
                 {
                     if (m_CountObj == null)
                     {
-                        foreach (Assistant.Counter c in Assistant.Counter.List)
+                        foreach (Counter c in Core.Counter.List)
                         {
                             if (c.Name == m_Counter)
                             {
@@ -4490,8 +4495,8 @@ namespace Assistant.Macros
             if (s == Serial.Zero && World.Player != null)
                 s = World.Player.Serial;
 
-            Client.Instance.SendToServer(new ContextMenuRequest(s));
-            Client.Instance.SendToServer(new ContextMenuResponse(s, m_Idx));
+            Client.Client.Instance.SendToServer(new ContextMenuRequest(s));
+            Client.Client.Instance.SendToServer(new ContextMenuResponse(s, m_Idx));
             return true;
         }
 

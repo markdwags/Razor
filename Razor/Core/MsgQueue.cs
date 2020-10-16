@@ -21,8 +21,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Assistant.Network;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class MessageQueue
     {
@@ -82,12 +84,12 @@ namespace Assistant
 
                                     break;
                                 case "A":
-                                    Client.Instance.SendToClient(new AsciiMessage(msg.Serial, msg.Body, msg.Type,
+                                    Client.Client.Instance.SendToClient(new AsciiMessage(msg.Serial, msg.Body, msg.Type,
                                         msg.Hue, msg.Font, msg.Name,
                                         msg.Count > 1 ? $"{txt} [{msg.Count}]" : txt));
                                     break;
                                 default:
-                                    Client.Instance.SendToClient(new UnicodeMessage(msg.Serial, msg.Body, msg.Type,
+                                    Client.Client.Instance.SendToClient(new UnicodeMessage(msg.Serial, msg.Body, msg.Type,
                                         msg.Hue, msg.Font, msg.Lang, msg.Name,
                                         msg.Count > 1 ? $"{txt} [{msg.Count}]" : txt));
                                     break;

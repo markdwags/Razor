@@ -24,8 +24,10 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
+using Assistant.Core;
+using Assistant.UltimaSDK;
 
-namespace Assistant
+namespace Assistant.UI
 {
     public class WelcomeForm : System.Windows.Forms.Form
     {
@@ -457,7 +459,7 @@ namespace Assistant
 
                     try
                     {
-                        string fileName = Ultima.Files.GetFilePath("Login.cfg");
+                        string fileName = Files.GetFilePath("Login.cfg");
                         if (string.IsNullOrEmpty(fileName))
                             return;
                         string server = null, port = null;

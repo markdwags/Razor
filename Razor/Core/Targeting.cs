@@ -21,11 +21,14 @@
 using System;
 using System.Collections.Generic;
 using Assistant.Agents;
-using Assistant.Core;
+using Assistant.Client;
+using Assistant.HotKeys;
 using Assistant.Macros;
+using Assistant.Network;
 using Assistant.Scripts;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class TargetInfo
     {
@@ -163,7 +166,7 @@ namespace Assistant
         {
             if (m_LastCombatant.IsMobile)
             {
-                Client.Instance.SendToServer(new AttackReq(m_LastCombatant));
+                Client.Client.Instance.SendToServer(new AttackReq(m_LastCombatant));
                 ShowAttackOverhead(m_LastCombatant);
             }
                 
@@ -188,7 +191,7 @@ namespace Assistant
 
             if (targ != null && targ.Serial.IsMobile)
             {
-                Client.Instance.SendToServer(new AttackReq(targ.Serial));
+                Client.Client.Instance.SendToServer(new AttackReq(targ.Serial));
                 ShowAttackOverhead(targ.Serial);
             }
         }
@@ -272,7 +275,7 @@ namespace Assistant
             m_OnCancel = onCancel;
 
             m_ClientTarget = m_HasTarget = true;
-            Client.Instance.SendToClient(new Target(LocalTargID, ground));
+            Client.Client.Instance.SendToClient(new Target(LocalTargID, ground));
             ClearQueue();
         }
 
@@ -280,7 +283,7 @@ namespace Assistant
         {
             m_ClientTarget = m_HasTarget = m_FromGrabHotKey = false;
 
-            Client.Instance.SendToClient(new CancelTarget(LocalTargID));
+            Client.Client.Instance.SendToClient(new CancelTarget(LocalTargID));
             EndIntercept();
         }
 
@@ -327,7 +330,7 @@ namespace Assistant
             if (serial.IsMobile)
             {
                 LastTargetChanged();
-                Client.Instance.SendToClient(new ChangeCombatant(serial));
+                Client.Client.Instance.SendToClient(new ChangeCombatant(serial));
                 m_LastCombatant = serial;
             }
         }
@@ -510,7 +513,7 @@ namespace Assistant
                     if (m != null)
                     {
                         if (lth)
-                            Client.Instance.SendToClient(new MobileIncoming(m));
+                            Client.Client.Instance.SendToClient(new MobileIncoming(m));
 
                         RemoveTextFlags(m);
                     }
@@ -526,7 +529,7 @@ namespace Assistant
                     if (m != null)
                     {
                         if (IsLastTarget(m) && lth)
-                            Client.Instance.SendToClient(new MobileIncoming(m));
+                            Client.Client.Instance.SendToClient(new MobileIncoming(m));
 
                         CheckLastTargetRange(m);
 
@@ -646,7 +649,7 @@ namespace Assistant
             targ.Y = m.Position.Y;
             targ.Z = m.Position.Z;
 
-            Client.Instance.SendToClient(new ChangeCombatant(m));
+            Client.Client.Instance.SendToClient(new ChangeCombatant(m));
             m_LastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
@@ -733,7 +736,7 @@ namespace Assistant
             }
             else
             {
-                Client.Instance.SendToServer(new TargetResponse(m_CurrentID, World.Player));
+                Client.Client.Instance.SendToServer(new TargetResponse(m_CurrentID, World.Player));
             }
 
             return true;
@@ -853,7 +856,7 @@ namespace Assistant
                 }
             }
 
-            if (Config.GetBool("RangeCheckLT") && Client.Instance.AllowBit(FeatureBit.RangeCheckLT) &&
+            if (Config.GetBool("RangeCheckLT") && Client.Client.Instance.AllowBit(FeatureBit.RangeCheckLT) &&
                 (pos == Point3D.Zero || !Utility.InRange(World.Player.Position, pos, Config.GetInt("LTRange"))))
             {
                 if (Config.GetBool("QueueTargets"))
@@ -873,7 +876,7 @@ namespace Assistant
             if (m_Intercept)
                 OneTimeResponse(targ);
             else
-                Client.Instance.SendToServer(new TargetResponse(targ));
+                Client.Client.Instance.SendToServer(new TargetResponse(targ));
             return true;
         }
 
@@ -920,7 +923,7 @@ namespace Assistant
 
             if (m_HasTarget)
             {
-                Client.Instance.SendToServer(new TargetCancelResponse(m_CurrentID));
+                Client.Client.Instance.SendToServer(new TargetCancelResponse(m_CurrentID));
                 m_HasTarget = false;
             }
         }
@@ -930,7 +933,7 @@ namespace Assistant
             if (m_ClientTarget)
             {
                 m_FilterCancel.Add((uint) m_CurrentID);
-                Client.Instance.SendToClient(new CancelTarget(m_CurrentID));
+                Client.Client.Instance.SendToClient(new CancelTarget(m_CurrentID));
                 m_ClientTarget = false;
             }
         }
@@ -945,7 +948,7 @@ namespace Assistant
             {
                 info.TargID = m_CurrentID;
                 m_LastGroundTarg = m_LastTarget = info;
-                Client.Instance.SendToServer(new TargetResponse(info));
+                Client.Client.Instance.SendToServer(new TargetResponse(info));
             }
 
             CancelClientTarget();
@@ -1148,7 +1151,7 @@ namespace Assistant
             if (m_HasTarget && m != null && m_LastTarget != null && m.Serial == m_LastTarget.Serial &&
                 m_QueueTarget == LastTargetAction)
             {
-                if (Config.GetBool("RangeCheckLT") && Client.Instance.AllowBit(FeatureBit.RangeCheckLT))
+                if (Config.GetBool("RangeCheckLT") && Client.Client.Instance.AllowBit(FeatureBit.RangeCheckLT))
                 {
                     if (Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                     {
@@ -1166,7 +1169,7 @@ namespace Assistant
 
             if (targID == m_SpellTargID && ser.IsMobile &&
                 (World.Player.LastSpell == Spell.ToID(1, 4) || World.Player.LastSpell == Spell.ToID(4, 5)) &&
-                Config.GetBool("BlockHealPoison") && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                Config.GetBool("BlockHealPoison") && Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
             {
                 Mobile m = World.FindMobile(ser);
 
@@ -1425,7 +1428,7 @@ namespace Assistant
             {
                 CancelClientTarget();
                 m_ClientTarget = m_HasTarget = true;
-                Client.Instance.SendToClient(new Target(m_CurrentID, m_AllowGround, m_CurFlags));
+                Client.Client.Instance.SendToClient(new Target(m_CurrentID, m_AllowGround, m_CurFlags));
             }
         }
 
@@ -1470,7 +1473,7 @@ namespace Assistant
 
         private static bool IsSmartTargetingEnabled()
         {
-            return Config.GetBool("SmartLastTarget") && Client.Instance.AllowBit(FeatureBit.SmartLT);
+            return Config.GetBool("SmartLastTarget") && Client.Client.Instance.AllowBit(FeatureBit.SmartLT);
         }
     }
 }

@@ -21,7 +21,7 @@
 using System.Collections;
 using System.IO;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class Animdata
     {

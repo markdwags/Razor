@@ -71,7 +71,7 @@ namespace Assistant.Core
             }
 
             DamageTrackerTimer.Start();
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
 
             if (World.Player != null)
                 World.Player.SendMessage(MsgLevel.Force, "-- [Damage Tracking Started] ---");
@@ -85,7 +85,7 @@ namespace Assistant.Core
             _gump.CloseGump();
 
             DamageTrackerTimer.Stop();
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
 
             if (World.Player != null)
             {

@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class GoldPerHourTimer
     {
@@ -62,13 +62,13 @@ namespace Assistant
             }
 
             m_Timer.Start();
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         public static void Stop()
         {
             m_Timer.Stop();
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         private class InternalTimer : Timer
@@ -110,7 +110,7 @@ namespace Assistant
 
                 TotalMinutes = span.TotalMinutes;
 
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
 
                 m_PrevGoldAmount = (int) World.Player.Gold;
             }

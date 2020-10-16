@@ -18,6 +18,10 @@
 
 #endregion
 
+using Assistant.Client;
+using Assistant.Network;
+using Assistant.UI;
+
 namespace Assistant.Filters
 {
     public class WeatherFilter : Filter
@@ -43,7 +47,7 @@ namespace Assistant.Filters
 
         public override void OnFilter(PacketReader p, PacketHandlerEventArgs args)
         {
-            if (Client.Instance.AllowBit(FeatureBit.WeatherFilter))
+            if (Client.Client.Instance.AllowBit(FeatureBit.WeatherFilter))
                 args.Block = true;
         }
     }

@@ -20,10 +20,12 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Assistant.Core;
 using Assistant.Filters;
+using Assistant.HotKeys;
+using Assistant.Network;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public partial class Targeting
     {
@@ -220,7 +222,7 @@ namespace Assistant
 
             if (!isFriend || Config.GetBool("HighlightFriend"))
             {
-                Client.Instance.SendToClient(new ChangeCombatant(mobile));
+                Client.Client.Instance.SendToClient(new ChangeCombatant(mobile));
                 m_LastCombatant = mobile.Serial;
             }
 

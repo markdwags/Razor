@@ -24,7 +24,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class UOSound
     {

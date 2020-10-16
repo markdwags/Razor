@@ -22,7 +22,12 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Client;
+using Assistant.Core;
+using Assistant.HotKeys;
+using Assistant.Network;
 using Assistant.UI;
+using Engine = Assistant.Core.Engine;
 
 namespace Assistant.Agents
 {
@@ -95,8 +100,8 @@ namespace Assistant.Agents
 
                 if (item.Serial == serial)
                 {
-                    Client.Instance.SendToClient(new UnicodeMessage(item.Serial, item.ItemID,
-                        Assistant.MessageType.Label, 0x3B2, 3, Language.CliLocName, "",
+                    Client.Client.Instance.SendToClient(new UnicodeMessage(item.Serial, item.ItemID,
+                        MessageType.Label, 0x3B2, 3, Language.CliLocName, "",
                         Language.Format(LocString.UseOnceHBA1, i + 1)));
                     break;
                 }
@@ -141,7 +146,7 @@ namespace Assistant.Agents
 
             m_SubList.EndUpdate();
 
-            if (!Client.Instance.AllowBit(FeatureBit.UseOnceAgent) && Engine.MainWindow != null)
+            if (!Client.Client.Instance.AllowBit(FeatureBit.UseOnceAgent) && Engine.MainWindow != null)
             {
                 for (int i = 0; i < buttons.Length; i++)
                 {
@@ -341,7 +346,7 @@ namespace Assistant.Agents
 
         public void OnHotKey()
         {
-            if (World.Player == null || !Client.Instance.AllowBit(FeatureBit.UseOnceAgent))
+            if (World.Player == null || !Client.Client.Instance.AllowBit(FeatureBit.UseOnceAgent))
             {
                 return;
             }

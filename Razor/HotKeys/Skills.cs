@@ -19,6 +19,8 @@
 #endregion
 
 using System.Collections.Generic;
+using Assistant.Core;
+using Assistant.Network;
 
 namespace Assistant.HotKeys
 {
@@ -103,7 +105,7 @@ namespace Assistant.HotKeys
         private static void OnHotKey(ref object state)
         {
             int sk = (int) state;
-            Client.Instance.SendToServer(new UseSkill(sk));
+            Client.Client.Instance.SendToServer(new UseSkill(sk));
             if (World.Player != null)
             {
                 World.Player.LastSkill = sk;

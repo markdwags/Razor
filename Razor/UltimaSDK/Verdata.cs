@@ -41,7 +41,7 @@ using System.IO;
 //30 - tiledata.mul
 //31 - animdata.mul 
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class Verdata
     {

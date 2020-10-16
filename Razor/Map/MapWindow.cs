@@ -20,11 +20,15 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Assistant.Core;
+using Assistant.HotKeys;
+using Assistant.Network;
 using Assistant.UI;
+using Timer = Assistant.Core.Timer;
 
-namespace Assistant.MapUO
+namespace Assistant.Map
 {
     /// <summary>
     /// Summary description for MapWindow.
@@ -33,7 +37,7 @@ namespace Assistant.MapUO
     {
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
-        private Assistant.MapUO.UOMapControl Map;
+        private UOMapControl Map;
 
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
@@ -70,7 +74,7 @@ namespace Assistant.MapUO
             //
 
             this.Map.FullUpdate();
-            Client.Instance.SetMapWndHandle(this);
+            Client.Client.Instance.SetMapWndHandle(this);
         }
 
         public class MapMenuItem : MenuItem
@@ -139,7 +143,7 @@ namespace Assistant.MapUO
                 {
                     Engine.MainWindow.SafeAction(s =>
                     {
-                        s.MapWindow = new Assistant.MapUO.MapWindow();
+                        s.MapWindow = new MapWindow();
                         s.MapWindow.Show();
                         s.MapWindow.BringToFront();
                     });
@@ -153,14 +157,14 @@ namespace Assistant.MapUO
                             s.MapWindow.Hide();
                             s.BringToFront();
                         });
-                        Platform.BringToFront(Client.Instance.GetWindowHandle());
+                        Platform.BringToFront(Client.Client.Instance.GetWindowHandle());
                     }
                     else
                     {
                         Engine.MainWindow.MapWindow.Show();
                         Engine.MainWindow.MapWindow.BringToFront();
                         Engine.MainWindow.MapWindow.TopMost = true;
-                        Client.Instance.SetMapWndHandle(Engine.MainWindow.MapWindow);
+                        Client.Client.Instance.SetMapWndHandle(Engine.MainWindow.MapWindow);
                     }
                 }
             }
@@ -191,7 +195,7 @@ namespace Assistant.MapUO
         private void InitializeComponent()
         {
             System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MapWindow));
-            this.Map = new Assistant.MapUO.UOMapControl();
+            this.Map = new UOMapControl();
             this.SuspendLayout();
             //
             // Map
@@ -296,7 +300,7 @@ namespace Assistant.MapUO
             protected override void OnTick()
             {
                 // never send this packet to encrypted servers (could lead to OSI detecting razor)
-                if (Client.Instance.ServerEncrypted)
+                if (Client.Client.Instance.ServerEncrypted)
                 {
                     Stop();
                     return;
@@ -340,7 +344,7 @@ namespace Assistant.MapUO
                     if (send)
                     {
                         PacketHandlers.SpecialPartySent++;
-                        Client.Instance.SendToServer(new QueryPartyLocs());
+                        Client.Client.Instance.SendToServer(new QueryPartyLocs());
                     }
                 }
                 else
@@ -353,12 +357,12 @@ namespace Assistant.MapUO
         private void RequestPartyLocations()
         {
             if (World.Player != null && PacketHandlers.Party.Count > 0)
-                Client.Instance.SendToServer(new QueryPartyLocs());
+                Client.Client.Instance.SendToServer(new QueryPartyLocs());
         }
 
         public void UpdateMap()
         {
-            Client.Instance.SetMapWndHandle(this);
+            Client.Client.Instance.SetMapWndHandle(this);
             this.Map.UpdateMap();
         }
 

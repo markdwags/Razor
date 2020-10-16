@@ -23,8 +23,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Assistant.Agents;
+using Assistant.HotKeys;
+using Assistant.Network;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public delegate void DropDoneCallback(Serial iser, Serial dser, Point3D newPos);
 
@@ -124,10 +127,10 @@ namespace Assistant
             if (m_Holding.IsItem)
             {
                 if (World.Player.Backpack != null)
-                    Client.Instance.SendToServer(new DropRequest(m_Holding, Point3D.MinusOne,
+                    Client.Client.Instance.SendToServer(new DropRequest(m_Holding, Point3D.MinusOne,
                         World.Player.Backpack.Serial));
                 else
-                    Client.Instance.SendToServer(new DropRequest(m_Holding, World.Player.Position, Serial.Zero));
+                    Client.Client.Instance.SendToServer(new DropRequest(m_Holding, World.Player.Position, Serial.Zero));
             }
             else
             {
@@ -243,7 +246,7 @@ namespace Assistant
             {
                 World.Player.SendMessage(MsgLevel.Error, LocString.DragDropQueueFull);
                 if (fromClient)
-                    Client.Instance.SendToClient(new LiftRej());
+                    Client.Client.Instance.SendToClient(new LiftRej());
                 return 0;
             }
 
@@ -281,7 +284,7 @@ namespace Assistant
             if (m_Pending == i.Serial)
             {
                 Log("Equipping {0} to {1} (@{2})", i, to.Serial, layer);
-                Client.Instance.SendToServer(new EquipRequest(i.Serial, to, layer));
+                Client.Client.Instance.SendToServer(new EquipRequest(i.Serial, to, layer));
                 m_Pending = Serial.Zero;
                 EndHolding(i.Serial);
                 m_Lifted = DateTime.MinValue;
@@ -325,7 +328,7 @@ namespace Assistant
             {
                 Log("Dropping {0} to {1} (@{2})", i, dest, pt);
 
-                Client.Instance.SendToServer(new DropRequest(i.Serial, pt, dest));
+                Client.Client.Instance.SendToServer(new DropRequest(i.Serial, pt, dest));
                 m_Pending = Serial.Zero;
                 EndHolding(i.Serial);
                 m_Lifted = DateTime.MinValue;
@@ -489,10 +492,10 @@ namespace Assistant
                         World.Player.SendMessage(MsgLevel.Force, LocString.ForceEndHolding);
 
                         if (World.Player.Backpack != null)
-                            Client.Instance.SendToServer(new DropRequest(m_Pending, Point3D.MinusOne,
+                            Client.Client.Instance.SendToServer(new DropRequest(m_Pending, Point3D.MinusOne,
                                 World.Player.Backpack.Serial));
                         else
-                            Client.Instance.SendToServer(new DropRequest(m_Pending, World.Player.Position,
+                            Client.Client.Instance.SendToServer(new DropRequest(m_Pending, World.Player.Position,
                                 Serial.Zero));
                     }
 
@@ -535,7 +538,7 @@ namespace Assistant
                     }
                 }
 
-                Client.Instance.SendToServer(new LiftRequest(lr.Serial, lr.Amount));
+                Client.Client.Instance.SendToServer(new LiftRequest(lr.Serial, lr.Amount));
 
                 m_LastID = lr.Id;
                 m_Holding = lr.Serial;
@@ -552,9 +555,9 @@ namespace Assistant
                     Log("Dropping {0} to {1}", lr, dr.Serial);
 
                     if (dr.Serial.IsMobile && dr.Layer > Layer.Invalid && dr.Layer <= Layer.LastUserValid)
-                        Client.Instance.SendToServer(new EquipRequest(lr.Serial, dr.Serial, dr.Layer));
+                        Client.Client.Instance.SendToServer(new EquipRequest(lr.Serial, dr.Serial, dr.Layer));
                     else
-                        Client.Instance.SendToServer(new DropRequest(lr.Serial, dr.Point, dr.Serial));
+                        Client.Client.Instance.SendToServer(new DropRequest(lr.Serial, dr.Point, dr.Serial));
                 }
                 else
                 {
@@ -716,7 +719,7 @@ namespace Assistant
                         else
                         {
                             m_Queue.Dequeue();
-                            Client.Instance.SendToServer(new DoubleClick(s));
+                            Client.Client.Instance.SendToServer(new DoubleClick(s));
                             break;
                         }
                     }

@@ -20,12 +20,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
 using System.Windows.Forms;
+using System.Xml;
+using Assistant.HotKeys;
 using Assistant.Scripts;
 using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class DressList
     {

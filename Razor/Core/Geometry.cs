@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public interface IPoint2D
     {

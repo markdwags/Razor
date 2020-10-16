@@ -19,16 +19,18 @@
 #endregion
 
 using System;
-using System.Reflection;
-using System.Threading;
-using System.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Security.Principal;
+using System.Threading;
+using System.Windows.Forms;
+using Assistant.UI;
+using Assistant.UltimaSDK;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public partial class Engine
     {
@@ -36,7 +38,7 @@ namespace Assistant
         {
             if (e.IsTerminating)
             {
-                Client.Instance.Close();
+                Client.Client.Instance.Close();
                 m_Running = false;
 
                 new MessageDialog("Unhandled Exception", !e.IsTerminating, e.ExceptionObject.ToString()).ShowDialog(
@@ -69,7 +71,7 @@ namespace Assistant
             {
                 if (m_ClientVersion == null || m_ClientVersion.Major < 2)
                 {
-                    string[] split = Client.Instance.GetClientVersion().Split('.');
+                    string[] split = Client.Client.Instance.GetClientVersion().Split('.');
 
                     if (split.Length < 3)
                         return new Version(4, 0, 0, 0);
@@ -195,6 +197,7 @@ namespace Assistant
         public static bool Running
         {
             get { return m_Running; }
+            set { m_Running = value; }
         }
 
         public static Form ActiveWindow
@@ -262,10 +265,10 @@ namespace Assistant
                 defLang = "ENU";
             }
 
-            if (Client.IsOSI)
+            if (Client.Client.IsOSI)
             {
-                Ultima.Files.ReLoadDirectory();
-                Ultima.Files.LoadMulPath();
+                Files.ReLoadDirectory();
+                Files.LoadMulPath();
             }
 
             if (!Language.Load(defLang))
@@ -280,10 +283,10 @@ namespace Assistant
             m_Running = true;
 
             /* Load settings from configuration file */
-            Ultima.Files.SetMulPath(Config.GetAppSetting<string>("UODataDir"));
-            Ultima.Multis.PostHSFormat = UsePostHSChanges;
-            Client.Instance.ClientEncrypted = Config.GetAppSetting<int>("ClientEncrypted") == 1;
-            Client.Instance.ServerEncrypted = Config.GetAppSetting<int>("ServerEncrypted") == 1;
+            Files.SetMulPath(Config.GetAppSetting<string>("UODataDir"));
+            Multis.PostHSFormat = UsePostHSChanges;
+            Client.Client.Instance.ClientEncrypted = Config.GetAppSetting<int>("ClientEncrypted") == 1;
+            Client.Client.Instance.ServerEncrypted = Config.GetAppSetting<int>("ServerEncrypted") == 1;
 
             Language.LoadCliLoc();
 
@@ -301,7 +304,7 @@ namespace Assistant
 
             /* Start client */
             SplashScreen.Message = LocString.LoadingClient;
-            string clientPath = Ultima.Files.GetFilePath("client.exe");
+            string clientPath = Files.GetFilePath("client.exe");
             if (clientPath == null || !File.Exists(clientPath))
             {
                 MessageBox.Show(SplashScreen.Instance,
@@ -312,8 +315,8 @@ namespace Assistant
                 return;
             }
 
-            var result = Client.Instance.LaunchClient(clientPath);
-            if (result != Client.Loader_Error.SUCCESS)
+            var result = Client.Client.Instance.LaunchClient(clientPath);
+            if (result != Client.Client.Loader_Error.SUCCESS)
             {
                 MessageBox.Show(SplashScreen.Instance,
                     String.Format("Unable to launch the client specified. (Error: {1})\n \"{0}\"",
@@ -335,7 +338,7 @@ namespace Assistant
                 return;
             }
 
-            Client.Instance.SetConnectionInfo(ip, port);
+            Client.Client.Instance.SetConnectionInfo(ip, port);
 
             SplashScreen.Message = LocString.WaitingForClient;
         }
@@ -344,7 +347,7 @@ namespace Assistant
         {
             m_Running = false;
 
-            Client.Instance.Close();
+            Client.Client.Instance.Close();
             Counter.Save();
             Macros.MacroManager.Save();
             Config.Save();
@@ -378,12 +381,12 @@ namespace Assistant
                 defLang = "ENU";
             }
 
-            Client.Init(true);
+            Client.Client.Init(true);
 
-            if (Client.IsOSI)
+            if (Client.Client.IsOSI)
             {
-                Ultima.Files.ReLoadDirectory();
-                Ultima.Files.LoadMulPath();
+                Files.ReLoadDirectory();
+                Files.LoadMulPath();
             }
 
             if (!Language.Load(defLang))
@@ -432,7 +435,7 @@ namespace Assistant
                 Directory.CreateDirectory(dir);
         }
 
-        private static void Initialize(Assembly a)
+        public static void Initialize(Assembly a)
         {
             Type[] types = a.GetTypes();
 

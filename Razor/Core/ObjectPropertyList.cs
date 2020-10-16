@@ -19,10 +19,11 @@
 #endregion
 
 using System;
-using System.Text;
 using System.Collections.Generic;
+using System.Text;
+using Assistant.Network;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class ObjectPropertyList
     {

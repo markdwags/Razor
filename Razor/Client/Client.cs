@@ -18,14 +18,17 @@
 
 #endregion
 
-using Assistant.Core;
 using System;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using Assistant.Core;
+using Assistant.Network;
+using Assistant.UI;
+using Timer = Assistant.Core.Timer;
 
-namespace Assistant
+namespace Assistant.Client
 {
     public class FeatureBit
     {
@@ -218,7 +221,7 @@ namespace Assistant
             {
                 m_LastPlayerName = p.Name;
 
-                Engine.MainWindow.UpdateTitle();
+                Core.Engine.MainWindow.UpdateTitle();
             }
 
             sb.Replace(@"{shard}", World.ShardName);

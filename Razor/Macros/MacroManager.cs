@@ -22,8 +22,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using Assistant.Client;
+using Assistant.Core;
+using Assistant.HotKeys;
 using Assistant.Scripts;
 using Assistant.UI;
+using Engine = Assistant.Core.Engine;
+using Timer = Assistant.Core.Timer;
 
 namespace Assistant.Macros
 {

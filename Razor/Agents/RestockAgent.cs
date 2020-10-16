@@ -22,7 +22,13 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Client;
+using Assistant.Core;
+using Assistant.HotKeys;
+using Assistant.Network;
 using Assistant.UI;
+using Engine = Assistant.Core.Engine;
+using Timer = Assistant.Core.Timer;
 
 namespace Assistant.Agents
 {
@@ -89,7 +95,7 @@ namespace Assistant.Agents
                     gfx = c.ItemID.Value;
                 }
 
-                Client.Instance.SendToClient(new UnicodeMessage(m_HotBag, gfx, Assistant.MessageType.Label, 0x3B2, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(m_HotBag, gfx, MessageType.Label, 0x3B2, 3,
                     Language.CliLocName, "", Language.Format(LocString.RestockHBA1, Number)));
             }
         }
@@ -132,7 +138,7 @@ namespace Assistant.Agents
 
             subList.EndUpdate();
 
-            if (!Client.Instance.AllowBit(FeatureBit.RestockAgent) && Engine.MainWindow != null)
+            if (!Client.Client.Instance.AllowBit(FeatureBit.RestockAgent) && Engine.MainWindow != null)
             {
                 for (int i = 0; i < buttons.Length; i++)
                 {
@@ -277,7 +283,7 @@ namespace Assistant.Agents
 
         public void OnHotKey()
         {
-            if (Client.Instance.AllowBit(FeatureBit.RestockAgent))
+            if (Client.Client.Instance.AllowBit(FeatureBit.RestockAgent))
             {
                 World.Player.SendMessage(MsgLevel.Force, LocString.RestockTarget);
                 Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnRestockTarget));

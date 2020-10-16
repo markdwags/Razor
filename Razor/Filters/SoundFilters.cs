@@ -18,6 +18,9 @@
 
 #endregion
 
+using Assistant.Network;
+using Assistant.UI;
+
 namespace Assistant.Filters
 {
     public class SoundFilter : Filter

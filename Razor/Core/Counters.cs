@@ -19,15 +19,17 @@
 #endregion
 
 using System;
-using System.IO;
-using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Client;
+using Assistant.Network;
 using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class CounterLVIComparer : IComparer
     {
@@ -243,7 +245,7 @@ namespace Assistant
                             m_Count = 0;
 
                         //Engine.MainWindow.RefreshCounters();
-                        Client.Instance.RequestTitlebarUpdate();
+                        Client.Client.Instance.RequestTitlebarUpdate();
                     }
 
                     m_LVI.SubItems[1].Text = m_Count.ToString();

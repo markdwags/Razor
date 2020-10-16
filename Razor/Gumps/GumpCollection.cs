@@ -17,6 +17,7 @@
 
 using System.Collections.Concurrent;
 using System.Linq;
+using Assistant.Network;
 
 namespace Assistant.Gumps
 {

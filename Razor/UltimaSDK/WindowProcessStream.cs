@@ -18,7 +18,7 @@
 
 #endregion
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public class WindowProcessStream : ProcessStream
     {

@@ -21,6 +21,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Assistant.UI;
 
 namespace Assistant.Core
 {

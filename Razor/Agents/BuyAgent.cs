@@ -23,7 +23,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Client;
+using Assistant.Core;
+using Assistant.Network;
 using Assistant.UI;
+using Engine = Assistant.Core.Engine;
 
 namespace Assistant.Agents
 {
@@ -119,7 +123,7 @@ namespace Assistant.Agents
             Serial serial = p.ReadUInt32();
             ushort gump = p.ReadUInt16();
 
-            if (gump != 0x30 || !serial.IsMobile || !Client.Instance.AllowBit(FeatureBit.BuyAgent) ||
+            if (gump != 0x30 || !serial.IsMobile || !Client.Client.Instance.AllowBit(FeatureBit.BuyAgent) ||
                 World.Player == null)
             {
                 return;
@@ -254,7 +258,7 @@ namespace Assistant.Agents
             {
                 args.Block = true;
                 BuyLists[serial] = buyList;
-                Client.Instance.SendToServer(new VendorBuyResponse(serial, buyList));
+                Client.Client.Instance.SendToServer(new VendorBuyResponse(serial, buyList));
                 World.Player.SendMessage(MsgLevel.Force, LocString.BuyTotals, total, cost);
             }
 
@@ -302,7 +306,7 @@ namespace Assistant.Agents
 
         private static void EndVendorBuy(PacketReader p, PacketHandlerEventArgs args)
         {
-            if (!Client.Instance.AllowBit(FeatureBit.BuyAgent) || World.Player == null)
+            if (!Client.Client.Instance.AllowBit(FeatureBit.BuyAgent) || World.Player == null)
                 return;
             uint serial = p.ReadUInt32();
             if (BuyLists.TryGetValue(serial, out var list))
@@ -371,7 +375,7 @@ namespace Assistant.Agents
 
             m_SubList.EndUpdate();
 
-            if (!Client.Instance.AllowBit(FeatureBit.BuyAgent) && Engine.MainWindow != null)
+            if (!Client.Client.Instance.AllowBit(FeatureBit.BuyAgent) && Engine.MainWindow != null)
             {
                 for (int i = 0; i < buttons.Length; i++)
                 {

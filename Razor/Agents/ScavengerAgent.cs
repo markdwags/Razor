@@ -22,6 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Core;
+using Assistant.HotKeys;
+using Assistant.Network;
 using Assistant.UI;
 
 namespace Assistant.Agents
@@ -133,7 +136,7 @@ namespace Assistant.Agents
                     gfx = c.ItemID.Value;
                 }
 
-                Client.Instance.SendToClient(new UnicodeMessage(m_Bag, gfx, Assistant.MessageType.Label, 0x3B2, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(m_Bag, gfx, MessageType.Label, 0x3B2, 3,
                     Language.CliLocName, "", Language.GetString(LocString.ScavengerHB)));
             }
         }

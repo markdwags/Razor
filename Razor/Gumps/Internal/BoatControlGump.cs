@@ -18,6 +18,9 @@
 
 #endregion
 
+using Assistant.Core;
+using Assistant.Network;
+
 namespace Assistant.Gumps.Internal
 {
     public sealed class BoatControlGump : Gump

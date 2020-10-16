@@ -18,6 +18,10 @@
 
 #endregion
 
+using Assistant.Core;
+using Assistant.Network;
+using Assistant.UI;
+
 namespace Assistant.Filters
 {
     public class StaffItemFilter : Filter
@@ -97,7 +101,7 @@ namespace Assistant.Filters
                 foreach (Item i in World.Items.Values)
                 {
                     if (IsStaffItem(i))
-                        Client.Instance.SendToClient(new RemoveObject(i));
+                        Client.Client.Instance.SendToClient(new RemoveObject(i));
                 }
             }
         }
@@ -111,7 +115,7 @@ namespace Assistant.Filters
                 foreach (Item i in World.Items.Values)
                 {
                     if (IsStaffItem(i))
-                        Client.Instance.SendToClient(new WorldItem(i));
+                        Client.Client.Instance.SendToClient(new WorldItem(i));
                 }
             }
         }

@@ -21,8 +21,10 @@
 using System;
 using System.IO;
 using System.Text;
+using Assistant.Core;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Network
 {
     public enum PacketPath
     {

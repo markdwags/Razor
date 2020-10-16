@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class CalibrationInfo
     {

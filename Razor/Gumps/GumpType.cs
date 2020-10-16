@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with UO Machine.  If not, see <http://www.gnu.org/licenses/>. */
 
-namespace Assistant.Core.Gumps
+namespace Assistant.Gumps
 {
     public enum ElementType : byte
     {

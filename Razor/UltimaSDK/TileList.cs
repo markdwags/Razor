@@ -20,7 +20,7 @@
 
 using System.Collections.Generic;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class HuedTileList
     {

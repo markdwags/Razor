@@ -23,6 +23,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Assistant.Core;
+using Assistant.UltimaSDK;
 
 namespace Assistant.UI
 {
@@ -52,7 +54,7 @@ namespace Assistant.UI
                 int hueIdx = h.Hue;
                 Config.SetProperty(cfg, hueIdx);
                 if (hueIdx > 0 && hueIdx < 3000)
-                    ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                    ctrl.BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
                 else
                     ctrl.BackColor = Color.White;
                 ctrl.ForeColor = (ctrl.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
@@ -63,7 +65,7 @@ namespace Assistant.UI
         {
             int hueIdx = Config.GetInt(cfg);
             if (hueIdx > 0 && hueIdx < 3000)
-                ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                ctrl.BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
             else
                 ctrl.BackColor = SystemColors.Control;
             ctrl.ForeColor = (ctrl.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);

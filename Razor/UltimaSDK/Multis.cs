@@ -24,7 +24,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class Multis
     {

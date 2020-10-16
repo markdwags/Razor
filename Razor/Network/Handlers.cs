@@ -19,11 +19,12 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Assistant.Agents;
+using Assistant.Client;
 using Assistant.Core;
 using Assistant.Filters;
 using Assistant.Gumps;
@@ -32,8 +33,9 @@ using Assistant.Macros;
 using Assistant.Scripts;
 using Assistant.UI;
 using ContainerLabels = Assistant.Core.ContainerLabels;
+using Engine = Assistant.Core.Engine;
 
-namespace Assistant
+namespace Assistant.Network
 {
     public class PacketHandlers
     {
@@ -1027,11 +1029,11 @@ namespace Assistant
             m.Position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadInt16());
             m.Direction = (Direction) p.ReadByte();
 
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
             UOAssist.PostLogin((int) serial.Value);
             Engine.MainWindow.SafeAction(s => s.UpdateTitle()); // update player name & shard name
 
-            Client.Instance.SetPosition((uint) m.Position.X, (uint) m.Position.Y, (uint) m.Position.Z,
+            Client.Client.Instance.SetPosition((uint) m.Position.X, (uint) m.Position.Y, (uint) m.Position.Z,
                 (byte) m.Direction);
 
             if (World.Player != null)
@@ -1090,11 +1092,11 @@ namespace Assistant
 
                 if (m == World.Player)
                 {
-                    Client.Instance.SetPosition((uint) m.Position.X, (uint) m.Position.Y, (uint) m.Position.Z,
+                    Client.Client.Instance.SetPosition((uint) m.Position.X, (uint) m.Position.Y, (uint) m.Position.Z,
                         (byte) m.Direction);
 
                     if (wasPoisoned != m.Poisoned || (oldNoto != m.Notoriety && Config.GetBool("ShowNotoHue")))
-                        Client.Instance.RequestTitlebarUpdate();
+                        Client.Client.Instance.RequestTitlebarUpdate();
                 }
             }
         }
@@ -1114,11 +1116,11 @@ namespace Assistant
 
                 if (m == World.Player)
                 {
-                    Client.Instance.RequestTitlebarUpdate();
+                    Client.Client.Instance.RequestTitlebarUpdate();
                     UOAssist.PostHitsUpdate();
                 }
 
-                if (Client.Instance.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowHealth"))
+                if (Client.Client.Instance.AllowBit(FeatureBit.OverheadHealth) && Config.GetBool("ShowHealth"))
                 {
                     int percent = (int) (m.Hits * 100 / (m.HitsMax == 0 ? (ushort) 1 : m.HitsMax));
 
@@ -1153,11 +1155,11 @@ namespace Assistant
 
                 if (m == World.Player)
                 {
-                    Client.Instance.RequestTitlebarUpdate();
+                    Client.Client.Instance.RequestTitlebarUpdate();
                     UOAssist.PostStamUpdate();
                 }
 
-                if (m != World.Player && Client.Instance.AllowBit(FeatureBit.OverheadHealth) &&
+                if (m != World.Player && Client.Client.Instance.AllowBit(FeatureBit.OverheadHealth) &&
                     Config.GetBool("ShowPartyStats"))
                 {
                     int stamPercent = (int) (m.Stam * 100 / (m.StamMax == 0 ? (ushort) 1 : m.StamMax));
@@ -1194,11 +1196,11 @@ namespace Assistant
 
                 if (m == World.Player)
                 {
-                    Client.Instance.RequestTitlebarUpdate();
+                    Client.Client.Instance.RequestTitlebarUpdate();
                     UOAssist.PostManaUpdate();
                 }
 
-                if (m != World.Player && Client.Instance.AllowBit(FeatureBit.OverheadHealth) &&
+                if (m != World.Player && Client.Client.Instance.AllowBit(FeatureBit.OverheadHealth) &&
                     Config.GetBool("ShowPartyStats"))
                 {
                     int stamPercent = (int) (m.Stam * 100 / (m.StamMax == 0 ? (ushort) 1 : m.StamMax));
@@ -1240,7 +1242,7 @@ namespace Assistant
 
             if (m == World.Player)
             {
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
                 UOAssist.PostHitsUpdate();
                 UOAssist.PostStamUpdate();
                 UOAssist.PostManaUpdate();
@@ -1278,7 +1280,7 @@ namespace Assistant
                 m.Poisoned = (flag != 0);
 
                 if (m == World.Player && wasPoisoned != m.Poisoned)
-                    Client.Instance.RequestTitlebarUpdate();
+                    Client.Client.Instance.RequestTitlebarUpdate();
             }
         }
 
@@ -1436,7 +1438,7 @@ namespace Assistant
                     }
                 }
 
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
 
                 UOAssist.PostHitsUpdate();
                 UOAssist.PostStamUpdate();
@@ -1478,7 +1480,7 @@ namespace Assistant
 
             if (m == World.Player)
             {
-                Client.Instance.SetPosition((uint) m.Position.X, (uint) m.Position.Y, (uint) m.Position.Z,
+                Client.Client.Instance.SetPosition((uint) m.Position.X, (uint) m.Position.Y, (uint) m.Position.Z,
                     (byte) m.Direction);
 
                 if (!wasHidden && !m.Visible)
@@ -1492,7 +1494,7 @@ namespace Assistant
                 }
 
                 if (wasPoisoned != m.Poisoned)
-                    Client.Instance.RequestTitlebarUpdate();
+                    Client.Client.Instance.RequestTitlebarUpdate();
             }
 
             Item.UpdateContainers();
@@ -1520,7 +1522,7 @@ namespace Assistant
             bool wasHidden = !m.Visible;
 
             if (m != World.Player && Config.GetBool("ShowMobNames"))
-                Client.Instance.SendToServer(new SingleClick(m));
+                Client.Client.Instance.SendToServer(new SingleClick(m));
             if (Config.GetBool("LastTargTextFlags"))
                 Targeting.CheckTextFlags(m);
 
@@ -1560,7 +1562,7 @@ namespace Assistant
                 }
 
                 if (wasPoisoned != m.Poisoned || (oldNoto != m.Notoriety && Config.GetBool("ShowNotoHue")))
-                    Client.Instance.RequestTitlebarUpdate();
+                    Client.Client.Instance.RequestTitlebarUpdate();
             }
 
             while (true)
@@ -1617,7 +1619,7 @@ namespace Assistant
                     {
                         item.Hue = 0;
                         if (isLT)
-                            Client.Instance.SendToClient(new EquipmentItem(item, (ushort) (ltHue & 0x3FFF), m.Serial));
+                            Client.Client.Instance.SendToClient(new EquipmentItem(item, (ushort) (ltHue & 0x3FFF), m.Serial));
                     }
                 }
 
@@ -1728,7 +1730,7 @@ namespace Assistant
                 if (item.ItemID == 0x2006) // corpse itemid = 0x2006
                 {
                     if (Config.GetBool("ShowCorpseNames"))
-                        Client.Instance.SendToServer(new SingleClick(item));
+                        Client.Client.Instance.SendToServer(new SingleClick(item));
 
                     if (Config.GetBool("AutoOpenCorpses") &&
                         Utility.InRange(item.Position, World.Player.Position, Config.GetInt("CorpseRange")) &&
@@ -1890,7 +1892,7 @@ namespace Assistant
                 if (item.ItemID == 0x2006) // corpse itemid = 0x2006
                 {
                     if (Config.GetBool("ShowCorpseNames"))
-                        Client.Instance.SendToServer(new SingleClick(item));
+                        Client.Client.Instance.SendToServer(new SingleClick(item));
                     if (Config.GetBool("AutoOpenCorpses") &&
                         Utility.InRange(item.Position, World.Player.Position, Config.GetInt("CorpseRange")) &&
                         World.Player != null && World.Player.Visible)
@@ -1949,7 +1951,7 @@ namespace Assistant
 
                     if (newText != null && newText != "" && newText != text)
                     {
-                        Client.Instance.SendToClient(new AsciiMessage(ser, body, MessageType.Spell, s.GetHue(hue), font,
+                        Client.Client.Instance.SendToClient(new AsciiMessage(ser, body, MessageType.Spell, s.GetHue(hue), font,
                             name, newText));
                         
                         replaced = true;
@@ -2019,12 +2021,12 @@ namespace Assistant
                             //ContainerLabelStyle
                             if (Config.GetInt("ContainerLabelStyle") == 0)
                             {
-                                Client.Instance.SendToClient(new AsciiMessage(ser, item.ItemID.Value, MessageType.Label,
+                                Client.Client.Instance.SendToClient(new AsciiMessage(ser, item.ItemID.Value, MessageType.Label,
                                     label.Hue, 3, Language.CliLocName, labelDisplay));
                             }
                             else
                             {
-                                Client.Instance.SendToClient(new UnicodeMessage(ser, item.ItemID.Value,
+                                Client.Client.Instance.SendToClient(new UnicodeMessage(ser, item.ItemID.Value,
                                     MessageType.Label, label.Hue, 3, Language.CliLocName, "", labelDisplay));
                             }
 
@@ -2091,7 +2093,7 @@ namespace Assistant
             {
                 args.Block = true;
 
-                Client.Instance.SendToServer(new ACKTalk());
+                Client.Client.Instance.SendToServer(new ACKTalk());
             }
             else
             {
@@ -2274,7 +2276,7 @@ namespace Assistant
         {
             args.Block = true;
 
-            Client.Instance.ForceSendToServer(new AssistVersion());
+            Client.Client.Instance.ForceSendToServer(new AssistVersion());
         }
 
         private static void ExtendedPacket(PacketReader p, PacketHandlerEventArgs args)
@@ -2403,7 +2405,7 @@ namespace Assistant
         {
             // Only block this packet if they are using the OSI client
             // since ClassicUO actually has support for it now
-            args.Block = Client.IsOSI;
+            args.Block = Client.Client.IsOSI;
 
             switch (p.ReadByte())
             {
@@ -2449,8 +2451,8 @@ namespace Assistant
                 {
                     ulong features = ((ulong) p.ReadUInt32() << 32) | (ulong) p.ReadUInt32();
 
-                    Client.Instance.SetFeatures(features);
-                    Client.Instance.SendToServer(new RazorNegotiateResponse());
+                    Client.Client.Instance.SetFeatures(features);
+                    Client.Client.Instance.SendToServer(new RazorNegotiateResponse());
                     Engine.MainWindow.SafeAction(s => s.UpdateControlLocks());
 
                     break;
@@ -2526,7 +2528,7 @@ namespace Assistant
 
                     if (Config.GetBool("BlockPartyInvites"))
                     {
-                        Client.Instance.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
+                        Client.Client.Instance.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
                     }
 
                     if (Config.GetBool("AutoAcceptParty"))
@@ -2538,7 +2540,7 @@ namespace Assistant
                             {
                                 World.Player.SendMessage($"Auto accepted party invite from: {leaderMobile.Name}");
 
-                                Client.Instance.SendToServer(new AcceptParty(PartyLeader));
+                                Client.Client.Instance.SendToServer(new AcceptParty(PartyLeader));
                                 PartyLeader = Serial.Zero;
                             }
                         }
@@ -2606,7 +2608,7 @@ namespace Assistant
 
             if (pass == "")
             {
-                pass = PasswordMemory.Find(World.AccountName, Client.Instance.LastConnection);
+                pass = PasswordMemory.Find(World.AccountName, Client.Client.Instance.LastConnection);
                 if (pass != null && pass != "")
                 {
                     p.Seek(31, SeekOrigin.Begin);
@@ -2616,7 +2618,7 @@ namespace Assistant
             }
             else
             {
-                PasswordMemory.Add(World.AccountName, pass, Client.Instance.LastConnection);
+                PasswordMemory.Add(World.AccountName, pass, Client.Client.Instance.LastConnection);
             }
         }
 
@@ -2762,8 +2764,8 @@ namespace Assistant
                 World.Player.LocalLightLevel = 0;
                 World.Player.GlobalLightLevel = (byte) lightLevel;
 
-                Client.Instance.SendToClient(new GlobalLightLevel(lightLevel));
-                Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
+                Client.Client.Instance.SendToClient(new GlobalLightLevel(lightLevel));
+                Client.Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
 
                 return true;
             }
@@ -3052,7 +3054,7 @@ namespace Assistant
                         break;
                 }
 
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
             }
 
             if (World.Player != null && World.Player.BuffsDebuffs.Count > 0)

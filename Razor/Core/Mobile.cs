@@ -19,13 +19,14 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Assistant.Agents;
+using Assistant.Network;
 using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     [Flags]
     public enum Direction : byte
@@ -607,11 +608,11 @@ namespace Assistant
 
             if (ascii)
             {
-                Client.Instance.SendToClient(new AsciiMessage(Serial, m_Body, MessageType.Regular, hue, 3, from, text));
+                Client.Client.Instance.SendToClient(new AsciiMessage(Serial, m_Body, MessageType.Regular, hue, 3, from, text));
             }
             else
             {
-                Client.Instance.SendToClient(new UnicodeMessage(Serial, m_Body, MessageType.Regular, hue, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(Serial, m_Body, MessageType.Regular, hue, 3,
                     Language.CliLocName, from, text));
             }
         }
@@ -702,7 +703,7 @@ namespace Assistant
                 if (i.ItemID == 0x204E && i.Hue == 0x08FD) // death shroud
                     i.ItemID = 0x1F03;
 
-                Client.Instance.SendToClient(new EquipmentItem(i, i.Hue, Serial));
+                Client.Client.Instance.SendToClient(new EquipmentItem(i, i.Hue, Serial));
             }
         }
 
@@ -717,7 +718,7 @@ namespace Assistant
                 if (i == null)
                     continue;
 
-                Client.Instance.SendToClient(new EquipmentItem(i, (ushort) hue, Serial));
+                Client.Client.Instance.SendToClient(new EquipmentItem(i, (ushort) hue, Serial));
             }
         }
 

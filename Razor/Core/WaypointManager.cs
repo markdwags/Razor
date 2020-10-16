@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.HotKeys;
+using Assistant.Network;
 using Assistant.UI;
 
 namespace Assistant.Core
@@ -101,7 +103,7 @@ namespace Assistant.Core
 
         public static void ShowWaypoint(Waypoint waypoint)
         {
-            Client.Instance.SendToClient(new QuestArrow(true, Convert.ToUInt16(waypoint.X), Convert.ToUInt16(waypoint.Y)));
+            Client.Client.Instance.SendToClient(new QuestArrow(true, Convert.ToUInt16(waypoint.X), Convert.ToUInt16(waypoint.Y)));
             
             CurrentWaypoint = waypoint;
 
@@ -115,7 +117,7 @@ namespace Assistant.Core
 
         public static void ClearWaypoint()
         {
-            Client.Instance.SendToClient(new QuestArrow(false, 0, 0));
+            Client.Client.Instance.SendToClient(new QuestArrow(false, 0, 0));
 
             CurrentWaypoint = null;
 

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using Assistant.Core;
 
 namespace Assistant.Macros
 {

@@ -19,12 +19,12 @@
 #endregion
 
 using System;
-using System.Xml;
-using System.Text;
 using System.Collections;
 using System.Net;
+using System.Text;
+using System.Xml;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class PasswordMemory
     {

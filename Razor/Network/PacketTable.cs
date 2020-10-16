@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Assistant
+namespace Assistant.Network
 {
     public static class PacketsTable
     {

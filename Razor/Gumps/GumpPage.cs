@@ -16,7 +16,7 @@
  * along with UO Machine.  If not, see <http://www.gnu.org/licenses/>. */
 
 using System.Linq;
-using Assistant.Core.Gumps;
+using Assistant.Core;
 
 namespace Assistant.Gumps
 {

@@ -22,7 +22,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace Assistant
+namespace Assistant.UI
 {
     /// <summary>
     /// Summary description for NewProfile.

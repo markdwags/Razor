@@ -19,8 +19,9 @@
 #endregion
 
 using System;
+using Assistant.Network;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class Ping
     {
@@ -84,7 +85,7 @@ namespace Assistant
         {
             m_Seq = (byte) Utility.Random(256);
             m_Start = DateTime.UtcNow;
-            Client.Instance.SendToServer(new PingPacket(m_Seq));
+            Client.Client.Instance.SendToServer(new PingPacket(m_Seq));
         }
     }
 }

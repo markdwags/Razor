@@ -21,7 +21,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Assistant
+namespace Assistant.UI
 {
     /// <summary>
     /// Summary description for MessageDialog.

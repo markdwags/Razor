@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public struct Serial : IComparable
     {

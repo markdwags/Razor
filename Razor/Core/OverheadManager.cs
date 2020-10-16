@@ -24,7 +24,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 using Assistant.UI;
-using Ultima;
+using Assistant.UltimaSDK;
 
 namespace Assistant.Core
 {

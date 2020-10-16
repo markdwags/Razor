@@ -21,7 +21,7 @@
 using System;
 using System.Collections;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class MinHeap
     {

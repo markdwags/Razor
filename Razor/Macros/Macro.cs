@@ -24,7 +24,11 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
 using System.Text;
+using Assistant.Client;
+using Assistant.Core;
+using Assistant.Network;
 using Assistant.UI;
+using Engine = Assistant.Core.Engine;
 
 namespace Assistant.Macros
 {
@@ -88,7 +92,7 @@ namespace Assistant.Macros
 
         public bool Loop
         {
-            get { return m_Loop && Client.Instance.AllowBit(FeatureBit.LoopingMacros); }
+            get { return m_Loop && Client.Client.Instance.AllowBit(FeatureBit.LoopingMacros); }
             set { m_Loop = value; }
         }
 
@@ -189,7 +193,7 @@ namespace Assistant.Macros
         {
             if (m_Playing && World.Player != null && DragDropManager.Holding != null &&
                 DragDropManager.Holding == LiftAction.LastLift)
-                Client.Instance.SendToServer(new DropRequest(DragDropManager.Holding, World.Player.Serial));
+                Client.Client.Instance.SendToServer(new DropRequest(DragDropManager.Holding, World.Player.Serial));
 
             m_Wait = null;
 
@@ -568,7 +572,7 @@ namespace Assistant.Macros
                                 action = (MacroAction) m_Actions[m_CurrentAction];
                         }
                     }
-                    else if (action is EndForAction && Client.Instance.AllowBit(FeatureBit.LoopingMacros))
+                    else if (action is EndForAction && Client.Client.Instance.AllowBit(FeatureBit.LoopingMacros))
                     {
                         int ca = m_CurrentAction - 1;
                         int forcount = 0;
@@ -593,7 +597,7 @@ namespace Assistant.Macros
                         if (ca >= 0 && m_Actions[ca] is ForAction)
                             m_CurrentAction = ca - 1;
                     }
-                    else if (action is WhileAction && Client.Instance.AllowBit(FeatureBit.LoopingMacros))
+                    else if (action is WhileAction && Client.Client.Instance.AllowBit(FeatureBit.LoopingMacros))
                     {
                         bool val = ((WhileAction) action).Evaluate();
 
@@ -623,7 +627,7 @@ namespace Assistant.Macros
                             }
                         }
                     }
-                    else if (action is EndWhileAction && Client.Instance.AllowBit(FeatureBit.LoopingMacros))
+                    else if (action is EndWhileAction && Client.Client.Instance.AllowBit(FeatureBit.LoopingMacros))
                     {
                         int ca = m_CurrentAction - 1;
                         int whilecount = 0;
@@ -648,7 +652,7 @@ namespace Assistant.Macros
                         if (ca >= 0 && m_Actions[ca] is WhileAction)
                             m_CurrentAction = ca - 1;
                     }
-                    else if (action is DoWhileAction && Client.Instance.AllowBit(FeatureBit.LoopingMacros))
+                    else if (action is DoWhileAction && Client.Client.Instance.AllowBit(FeatureBit.LoopingMacros))
                     {
                         bool val = ((DoWhileAction) action).Evaluate();
 

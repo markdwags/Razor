@@ -19,11 +19,12 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Collections;
+using System.Drawing;
 using System.Windows.Forms;
+using Assistant.UltimaSDK;
 
-namespace Assistant.MapUO
+namespace Assistant.Map
 {
     class UOMapRuneButton
     {
@@ -40,7 +41,7 @@ namespace Assistant.MapUO
             this.m_X = x;
             this.m_Y = y;
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                this.m_Icon = Ultima.Art.GetStatic(7956);
+                this.m_Icon = Art.GetStatic(7956);
         }
 
         public static ArrayList Load(string path)

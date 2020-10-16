@@ -18,6 +18,10 @@
 
 #endregion
 
+using Assistant.Core;
+using Assistant.Network;
+using Assistant.UI;
+
 namespace Assistant.Filters
 {
     public class AsciiMessageFilter : Filter

@@ -24,7 +24,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Ultima;
+using Assistant.Core;
+using Assistant.Network;
+using Assistant.UltimaSDK;
 
 namespace Assistant.UI
 {
@@ -51,7 +53,7 @@ namespace Assistant.UI
                 int hueIdx = list.Hue;
 
                 if (hueIdx > 0 && hueIdx < 3000)
-                    item.SubItems[2].BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                    item.SubItems[2].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
                 else
                     item.SubItems[2].BackColor = SystemColors.Control;
 
@@ -81,7 +83,7 @@ namespace Assistant.UI
             int hueIdx = Config.GetInt(cfg);
 
             if (hueIdx > 0 && hueIdx < 3000)
-                ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                ctrl.BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
             else
                 ctrl.BackColor = SystemColors.Control;
 
@@ -193,7 +195,7 @@ namespace Assistant.UI
                         int hueIdx = Config.GetInt("ContainerLabelColor");
 
                         if (hueIdx > 0 && hueIdx < 3000)
-                            lvItem.SubItems[2].BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                            lvItem.SubItems[2].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
                         else
                             lvItem.SubItems[2].BackColor = SystemColors.Control;
 
@@ -239,7 +241,7 @@ namespace Assistant.UI
                 int hueIdx = h.Hue;
                 Config.SetProperty(cfg, hueIdx);
                 if (hueIdx > 0 && hueIdx < 3000)
-                    ctrl.BackColor = Ultima.Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
+                    ctrl.BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
                 else
                     ctrl.BackColor = Color.White;
                 ctrl.ForeColor = (ctrl.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
@@ -354,7 +356,7 @@ namespace Assistant.UI
 
             World.Player.SendMessage(MsgLevel.Force, "Opening container");
 
-            Client.Instance.SendToServer(new DoubleClick(container.Serial));
+            Client.Client.Instance.SendToServer(new DoubleClick(container.Serial));
         }
 
         private void setAlias_Click(object sender, EventArgs e)

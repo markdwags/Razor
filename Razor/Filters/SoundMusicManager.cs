@@ -23,7 +23,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Core;
 using Assistant.UI;
+using Assistant.UltimaSDK;
 
 namespace Assistant.Filters
 {
@@ -146,10 +148,10 @@ namespace Assistant.Filters
         {
             MusicList.Clear();
 
-            if (File.Exists($"{Client.Instance.GetUoFilePath()}\\Music\\Digital\\Config.txt"))
+            if (File.Exists($"{Client.Client.Instance.GetUoFilePath()}\\Music\\Digital\\Config.txt"))
             {
                 string[] musicInfo =
-                    File.ReadAllLines($"{Client.Instance.GetUoFilePath()}\\Music\\Digital\\Config.txt");
+                    File.ReadAllLines($"{Client.Client.Instance.GetUoFilePath()}\\Music\\Digital\\Config.txt");
 
                 foreach (string music in musicInfo)
                 {
@@ -696,7 +698,7 @@ namespace Assistant.Filters
 
                 for (int i = 1; i <= 0xFFF; ++i)
                 {
-                    if (Ultima.Sounds.IsValidSound(i - 1, out string wavName))
+                    if (Sounds.IsValidSound(i - 1, out string wavName))
                     {
                         Serial serial = Serial.Parse($"0x{i:X3}");
 

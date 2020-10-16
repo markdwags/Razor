@@ -22,6 +22,8 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Core;
+using Assistant.Network;
 using Assistant.UI;
 
 namespace Assistant.Agents
@@ -183,7 +185,7 @@ namespace Assistant.Agents
                 Item item = World.FindItem(serial);
                 if (item != null)
                 {
-                    Client.Instance.SendToClient(new ContainerItem(item));
+                    Client.Client.Instance.SendToClient(new ContainerItem(item));
                     m_SubList.Items.Add(item.ToString());
                 }
                 else
@@ -225,7 +227,7 @@ namespace Assistant.Agents
                         Item item = World.FindItem(serial);
                         if (item != null)
                         {
-                            Client.Instance.SendToClient(new ContainerItem(item));
+                            Client.Client.Instance.SendToClient(new ContainerItem(item));
                         }
 
                         return;

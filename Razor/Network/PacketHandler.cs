@@ -20,8 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+using Assistant.Core;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Network
 {
     public delegate void PacketViewerCallback(PacketReader p, PacketHandlerEventArgs args);
 

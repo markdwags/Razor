@@ -19,14 +19,15 @@
 #endregion
 
 using System;
-using System.IO;
-using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Assistant.HotKeys;
 using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class ScreenCapManager
     {
@@ -100,7 +101,7 @@ namespace Assistant
 
             try
             {
-                IntPtr hBmp = Platform.CaptureScreen(Client.Instance.GetWindowHandle(), Config.GetBool("CapFullScreen"),
+                IntPtr hBmp = Platform.CaptureScreen(Client.Client.Instance.GetWindowHandle(), Config.GetBool("CapFullScreen"),
                     imageTimestampTag);
                 using (Image img = Image.FromHbitmap(hBmp))
                     img.Save(filename, GetFormat(type));

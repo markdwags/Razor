@@ -23,7 +23,7 @@ using System.Drawing.Imaging;
 using System.IO;
 
 // ascii text support written by arul
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class ASCIIFont
     {

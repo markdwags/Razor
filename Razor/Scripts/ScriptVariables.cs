@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using Assistant.Core;
 using Assistant.Scripts.Engine;
 
 namespace Assistant.Scripts
@@ -83,7 +84,7 @@ namespace Assistant.Scripts
 
                 // Save and reload the vars
                 if (foundVar)
-                    Assistant.Engine.MainWindow.SaveScriptVariables();
+                    Core.Engine.MainWindow.SaveScriptVariables();
 
                 TargetWasSet = true;
             }

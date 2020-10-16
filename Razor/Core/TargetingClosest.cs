@@ -19,10 +19,12 @@
 #endregion
 
 using System.Collections.Generic;
-using Assistant.Core;
+using Assistant.Client;
 using Assistant.Filters;
+using Assistant.HotKeys;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public partial class Targeting
     {
@@ -203,7 +205,7 @@ namespace Assistant
 
         private static void ClosestTarget(params int[] noto)
         {
-            if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
 
             var list = new List<Mobile>();
@@ -246,7 +248,7 @@ namespace Assistant
 
         private static void ClosestHumanoidTarget(params int[] noto)
         {
-            if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
 
             var list = new List<Mobile>();
@@ -294,7 +296,7 @@ namespace Assistant
 
         private static void ClosestMonsterTarget(params int[] noto)
         {
-            if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
 
             var list = new List<Mobile>();
@@ -342,7 +344,7 @@ namespace Assistant
 
         private static void ClosestFriendTarget()
         {
-            if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
 
             var list = new List<Mobile>();

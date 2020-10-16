@@ -21,13 +21,14 @@
 //#define LOG_CONTROL_TEXT
 
 using System;
-using System.Text;
-using System.IO;
 using System.Collections;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
-using Ultima;
+using Assistant.Core;
+using Assistant.UltimaSDK;
 
-namespace Assistant
+namespace Assistant.UI
 {
     #region Localization enum
 
@@ -597,7 +598,7 @@ namespace Assistant
     {
         private static Hashtable m_Controls;
         private static Hashtable m_Strings;
-        private static Ultima.StringList m_CliLoc = null;
+        private static StringList m_CliLoc = null;
         private static bool m_Loaded = false;
         private static string m_Current;
         private static string m_CliLocName = "ENU";
@@ -617,7 +618,7 @@ namespace Assistant
             get { return m_CliLocName; }
         }
 
-        public static Ultima.StringList CliLoc
+        public static StringList CliLoc
         {
             get { return m_CliLoc; }
         }
@@ -836,14 +837,14 @@ namespace Assistant
 
             try
             {
-                m_CliLoc = new Ultima.StringList(m_CliLocName.ToLower());
+                m_CliLoc = new StringList(m_CliLocName.ToLower());
             }
             catch (Exception e)
             {
                 string fileName = "[CliLoc]";
                 try
                 {
-                    fileName = Ultima.Files.GetFilePath(String.Format("cliloc.{0}", m_CliLocName));
+                    fileName = Files.GetFilePath(String.Format("cliloc.{0}", m_CliLocName));
                 }
                 catch
                 {

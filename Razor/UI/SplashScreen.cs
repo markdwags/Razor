@@ -21,7 +21,7 @@
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Assistant
+namespace Assistant.UI
 {
     public class SplashScreen : System.Windows.Forms.Form
     {

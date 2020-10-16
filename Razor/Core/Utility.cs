@@ -19,11 +19,11 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Globalization;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class Utility
     {

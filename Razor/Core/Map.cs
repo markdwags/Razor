@@ -19,9 +19,9 @@
 #endregion
 
 using System;
-using Ultima;
+using Assistant.UltimaSDK;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class MultiTileEntry
     {
@@ -33,17 +33,17 @@ namespace Assistant
 
     public class Map
     {
-        public static Ultima.Map GetMap(int mapNum)
+        public static UltimaSDK.Map GetMap(int mapNum)
         {
             switch (mapNum)
             {
-                case 1: return Ultima.Map.Trammel;
-                case 2: return Ultima.Map.Ilshenar;
-                case 3: return Ultima.Map.Malas;
-                case 4: return Ultima.Map.Tokuno;
-                case 5: return Ultima.Map.TerMur;
+                case 1: return UltimaSDK.Map.Trammel;
+                case 2: return UltimaSDK.Map.Ilshenar;
+                case 3: return UltimaSDK.Map.Malas;
+                case 4: return UltimaSDK.Map.Tokuno;
+                case 5: return UltimaSDK.Map.TerMur;
                 case 0:
-                default: return Ultima.Map.Felucca;
+                default: return UltimaSDK.Map.Felucca;
             }
         }
 
@@ -72,7 +72,7 @@ namespace Assistant
         {
             try
             {
-                Ultima.Map map = GetMap(mapNum);
+                UltimaSDK.Map map = GetMap(mapNum);
 
                 HuedTile[] tiles = map.Tiles.GetStaticTiles(x, y);
                 if (tiles != null && tiles.Length > 0)
@@ -91,7 +91,7 @@ namespace Assistant
             return new HuedTile(0, 0, (sbyte) z);
         }
 
-        private static void GetAverageZ(Ultima.Map map, int x, int y, ref int z, ref int avg, ref int top)
+        private static void GetAverageZ(UltimaSDK.Map map, int x, int y, ref int z, ref int avg, ref int top)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace Assistant
         {
             try
             {
-                Ultima.Map map = GetMap(mapNum);
+                UltimaSDK.Map map = GetMap(mapNum);
 
                 Tile landTile = map.Tiles.GetLandTile(xCheck, yCheck);
                 int landZ = 0, landCenter = 0, zTop = 0;

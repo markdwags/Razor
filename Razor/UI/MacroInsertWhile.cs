@@ -20,9 +20,10 @@
 
 using System;
 using System.Windows.Forms;
+using Assistant.Core;
 using Assistant.Macros;
 
-namespace Assistant
+namespace Assistant.UI
 {
     /// <summary>
     /// Summary description for MacroInsertIf.

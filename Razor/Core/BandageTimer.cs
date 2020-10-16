@@ -19,8 +19,9 @@
 #endregion
 
 using System;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class BandageTimer
     {
@@ -166,13 +167,13 @@ namespace Assistant
             if (m_Timer.Running)
                 m_Timer.Stop();
             m_Timer.Start();
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         public static void Stop()
         {
             m_Timer.Stop();
-            Client.Instance.RequestTitlebarUpdate();
+            Client.Client.Instance.RequestTitlebarUpdate();
         }
 
         public static void ShowBandagingStatusMessage(string msg)
@@ -216,7 +217,7 @@ namespace Assistant
                 if (m_Count > 30)
                     Stop();
 
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
             }
         }
     }

@@ -19,8 +19,9 @@
 #endregion
 
 using System;
+using Assistant.UltimaSDK;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public struct ItemID
     {
@@ -50,7 +51,7 @@ namespace Assistant
         {
             try
             {
-                return string.Format("{0} ({1:X4})", Ultima.TileData.ItemTable[m_ID].Name, m_ID);
+                return string.Format("{0} ({1:X4})", TileData.ItemTable[m_ID].Name, m_ID);
             }
             catch
             {
@@ -58,17 +59,17 @@ namespace Assistant
             }
         }
 
-        public Ultima.ItemData ItemData
+        public ItemData ItemData
         {
             get
             {
                 try
                 {
-                    return Ultima.TileData.ItemTable[m_ID];
+                    return TileData.ItemTable[m_ID];
                 }
                 catch
                 {
-                    return new Ultima.ItemData("", Ultima.TileFlag.None, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                    return new ItemData("", TileFlag.None, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                 }
             }
         }

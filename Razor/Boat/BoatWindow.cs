@@ -20,6 +20,7 @@
 
 using System;
 using System.Windows.Forms;
+using Assistant.Core;
 
 namespace Assistant.Boat
 {

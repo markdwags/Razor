@@ -19,9 +19,11 @@
 #endregion
 
 using System;
+using Assistant.Client;
 using Assistant.Core;
 using Assistant.Scripts.Engine;
-using Ultima;
+using Assistant.UI;
+using Assistant.UltimaSDK;
 
 namespace Assistant.Scripts
 {
@@ -210,7 +212,7 @@ namespace Assistant.Scripts
 
         private static bool Poisoned(string expression, Argument[] args, bool quiet)
         {
-            return World.Player != null && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned) &&
+            return World.Player != null && Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned) &&
                    World.Player.Poisoned;
         }
 

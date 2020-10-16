@@ -24,7 +24,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class Gumps
     {

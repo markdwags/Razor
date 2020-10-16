@@ -23,7 +23,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     /// <summary>
     /// Represents land tile data.

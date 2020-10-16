@@ -18,6 +18,11 @@
 
 #endregion
 
+using Assistant.Client;
+using Assistant.Core;
+using Assistant.Network;
+using Assistant.UI;
+
 namespace Assistant.Filters
 {
     public class LightFilter : Filter
@@ -43,7 +48,7 @@ namespace Assistant.Filters
 
         public override void OnFilter(PacketReader p, PacketHandlerEventArgs args)
         {
-            if (Client.Instance.AllowBit(FeatureBit.LightFilter))
+            if (Client.Client.Instance.AllowBit(FeatureBit.LightFilter))
             {
                 args.Block = true;
                 if (World.Player != null)
@@ -58,13 +63,13 @@ namespace Assistant.Filters
         {
             base.OnEnable();
 
-            if (Client.Instance.AllowBit(FeatureBit.LightFilter) && World.Player != null)
+            if (Client.Client.Instance.AllowBit(FeatureBit.LightFilter) && World.Player != null)
             {
                 World.Player.LocalLightLevel = 0;
                 World.Player.GlobalLightLevel = 0;
 
-                Client.Instance.SendToClient(new GlobalLightLevel(0));
-                Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
+                Client.Client.Instance.SendToClient(new GlobalLightLevel(0));
+                Client.Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
             }
         }
 
@@ -72,13 +77,13 @@ namespace Assistant.Filters
         {
             base.OnDisable();
 
-            if (Client.Instance.AllowBit(FeatureBit.LightFilter) && World.Player != null)
+            if (Client.Client.Instance.AllowBit(FeatureBit.LightFilter) && World.Player != null)
             {
                 World.Player.LocalLightLevel = 6;
                 World.Player.GlobalLightLevel = 2;
 
-                Client.Instance.SendToClient(new GlobalLightLevel(26));
-                Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
+                Client.Client.Instance.SendToClient(new GlobalLightLevel(26));
+                Client.Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
             }
         }
     }

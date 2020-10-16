@@ -22,9 +22,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assistant.Client;
 using Assistant.Core;
 using Assistant.HotKeys;
+using Assistant.Network;
 using Assistant.Scripts.Engine;
+using Assistant.UI;
+using Assistant.UltimaSDK;
 
 namespace Assistant.Scripts
 {
@@ -368,7 +372,7 @@ namespace Assistant.Scripts
 
             try
             {
-                Ultima.HuedTile tile = Map.GetTileNear(World.Player.Map, x, y, z);
+                HuedTile tile = Core.Map.GetTileNear(World.Player.Map, x, y, z);
                 Targeting.Target(new Point3D(x, y, tile.Z), tile.ID);
             }
             catch (Exception e)
@@ -493,10 +497,10 @@ namespace Assistant.Scripts
                         SpecialMoves.SetSecondaryAbility();
                         break;
                     case "stun":
-                        Client.Instance.SendToServer(new StunRequest());
+                        Client.Client.Instance.SendToServer(new StunRequest());
                         break;
                     case "disarm":
-                        Client.Instance.SendToServer(new DisarmRequest());
+                        Client.Client.Instance.SendToServer(new DisarmRequest());
                         break;
                     default:
                         break;
@@ -504,8 +508,8 @@ namespace Assistant.Scripts
             }
             else if (args.Length == 2 && args[1].AsString() == "off")
             {
-                Client.Instance.SendToServer(new UseAbility(AOSAbility.Clear));
-                Client.Instance.SendToClient(ClearAbility.Instance);
+                Client.Client.Instance.SendToServer(new UseAbility(AOSAbility.Clear));
+                Client.Client.Instance.SendToClient(ClearAbility.Instance);
             }
 
             return true;
@@ -860,7 +864,7 @@ namespace Assistant.Scripts
             ScriptManager.LastWalk = DateTime.UtcNow;
 
             Direction dir = (Direction) Enum.Parse(typeof(Direction), args[0].AsString(), true);
-            Client.Instance.RequestMove(dir);
+            Client.Client.Instance.RequestMove(dir);
 
             return true;
         }
@@ -873,9 +877,9 @@ namespace Assistant.Scripts
             }
 
             if (args[0].AsString() == "last")
-                Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
+                Client.Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
             else if (SkillHotKeys.UsableSkillsByName.TryGetValue(args[0].AsString().ToLower(), out int skillId))
-                Client.Instance.SendToServer(new UseSkill(skillId));
+                Client.Client.Instance.SendToServer(new UseSkill(skillId));
 
             return true;
         }
@@ -974,7 +978,7 @@ namespace Assistant.Scripts
             else
             {
                 if (serial.IsMobile)
-                    Client.Instance.SendToServer(new AttackReq(serial));
+                    Client.Client.Instance.SendToServer(new AttackReq(serial));
             }
 
             return true;
@@ -1112,8 +1116,8 @@ namespace Assistant.Scripts
             //Assistant.Macros.GumpResponseAction|1|0|1|0&Hello How are you?
             //Assistant.Macros.GumpResponseAction|501|0|2|1&box2|0&box1
 
-            Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
-            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI,
+            Client.Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
+            Client.Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI,
                 buttonId, new int[] { }, new GumpTextEntry[] { }));
 
             World.Player.HasGump = false;
@@ -1124,8 +1128,8 @@ namespace Assistant.Scripts
 
         public static bool GumpClose(string command, Argument[] args, bool quiet, bool force)
         {
-            Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
-            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, 0,
+            Client.Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
+            Client.Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, 0,
                 new int[] { }, new GumpTextEntry[] { }));
 
             World.Player.HasGump = false;
@@ -1147,8 +1151,8 @@ namespace Assistant.Scripts
             if (s == Serial.Zero && World.Player != null)
                 s = World.Player.Serial;
 
-            Client.Instance.SendToServer(new ContextMenuRequest(s));
-            Client.Instance.SendToServer(new ContextMenuResponse(s, index));
+            Client.Client.Instance.SendToServer(new ContextMenuRequest(s));
+            Client.Client.Instance.SendToServer(new ContextMenuResponse(s, index));
             return true;
         }
 
@@ -1166,7 +1170,7 @@ namespace Assistant.Scripts
             if (args.Length == 3)
                 hue = args[2].AsUShort();
 
-            Client.Instance.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, index,
+            Client.Client.Instance.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, index,
                 menuId, hue));
             World.Player.HasMenu = false;
             return true;
@@ -1230,7 +1234,7 @@ namespace Assistant.Scripts
             if (PotionList.TryGetValue(args[0].AsString().ToLower(), out ushort potionId))
             {
                 if (potionId == 3852 && World.Player.Poisoned && Config.GetBool("BlockHealPoison") &&
-                    Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                    Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                 {
                     World.Player.SendMessage(MsgLevel.Force, LocString.HealPoisonBlocked);
                     return true;

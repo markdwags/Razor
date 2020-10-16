@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public unsafe abstract class ProcessStream : Stream
     {

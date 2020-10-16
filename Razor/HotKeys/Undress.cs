@@ -19,6 +19,7 @@
 #endregion
 
 using Assistant.Core;
+using Assistant.UI;
 
 namespace Assistant.HotKeys
 {

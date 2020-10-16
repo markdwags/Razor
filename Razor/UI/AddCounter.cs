@@ -20,9 +20,9 @@
 
 using System;
 using System.Windows.Forms;
-using Assistant.UI;
+using Assistant.Core;
 
-namespace Assistant
+namespace Assistant.UI
 {
     /// <summary>
     /// Summary description for AddCounter.

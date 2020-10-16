@@ -19,6 +19,9 @@
 #endregion
 
 using System.Linq;
+using Assistant.HotKeys;
+using Assistant.Network;
+using Assistant.UI;
 
 namespace Assistant.Gumps.Internal
 {

@@ -21,7 +21,7 @@
 using System;
 using Microsoft.Win32.SafeHandles;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public class ClientWindowHandle : CriticalHandleZeroOrMinusOneIsInvalid
     {

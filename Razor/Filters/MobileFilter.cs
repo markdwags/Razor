@@ -19,6 +19,9 @@
 #endregion
 
 using System.IO;
+using Assistant.Core;
+using Assistant.Network;
+using Assistant.UI;
 
 namespace Assistant.Filters
 {

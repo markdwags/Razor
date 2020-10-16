@@ -19,16 +19,17 @@
 #endregion
 
 using System;
-using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Assistant.Agents;
-using Assistant.Core;
 using Assistant.Gumps.Internal;
 using Assistant.Macros;
+using Assistant.Network;
 using Assistant.Scripts;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class Commands
     {
@@ -103,10 +104,10 @@ namespace Assistant
             {
                 m_LastSync = DateTime.UtcNow;
 
-                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", "Updating and resyncing with server"));
 
-                Client.Instance.SendToServer(new ResyncReq());
+                Client.Client.Instance.SendToServer(new ResyncReq());
             }
         }
 
@@ -200,24 +201,24 @@ namespace Assistant
 
         private static void SetWeather(string[] param)
         {
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Setting weather.."));
 
-            Client.Instance.SendToClient(new SetWeather(Convert.ToInt32(param[0]), Convert.ToInt32(param[1])));
+            Client.Client.Instance.SendToClient(new SetWeather(Convert.ToInt32(param[0]), Convert.ToInt32(param[1])));
         }
 
         private static void SetSeason(string[] param)
         {
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Setting season.."));
 
-            Client.Instance.ForceSendToClient(new SeasonChange(Convert.ToInt32(param[0]), true));
+            Client.Client.Instance.ForceSendToClient(new SeasonChange(Convert.ToInt32(param[0]), true));
         }
 
         private static void GetGumpInfo(string[] param)
         {
             Targeting.OneTimeTarget(OnGetItemInfoTarget);
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Select an item or mobile to view/inspect"));
         }
 
@@ -245,7 +246,7 @@ namespace Assistant
         private static void GetItemHue(string[] param)
         {
             Targeting.OneTimeTarget(OnGetItemHueTarget);
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Select an item to get the hue value"));
         }
 
@@ -254,7 +255,7 @@ namespace Assistant
             Item item = World.FindItem(serial);
             if (item != null)
             {
-                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System",
                     $"Item Name: '{item.ItemID.ItemData.Name}' Serial: '{item.Serial}' Id: '{item.ItemID.Value}' Hue: '{item.Hue}'"));
             }
@@ -263,7 +264,7 @@ namespace Assistant
         private static void GetMobile(string[] param)
         {
             Targeting.OneTimeTarget(OnGetMobileTarget);
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", "Select a mobile to get information on"));
         }
 
@@ -273,10 +274,10 @@ namespace Assistant
 
             if (mobile != null)
             {
-                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System", $"Name: '{mobile.Name}'"));
 
-                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                     Language.CliLocName, "System",
                     $"Serial: '{mobile.Serial}' Hue: '{mobile.Hue}' IsGhost: '{mobile.IsGhost}' IsHuman: '{mobile.IsHuman}' IsMonster: '{mobile.IsMonster}'"));
             }
@@ -288,7 +289,7 @@ namespace Assistant
             StringBuilder sb = new StringBuilder("Note To Self: ");
             for (int i = 0; i < param.Length; i++)
                 sb.Append(param[i]);
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+            Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
                 Language.CliLocName, "System", sb.ToString()));
         }
 
@@ -352,7 +353,7 @@ namespace Assistant
             if (count > 10)
                 count = 10;
 
-            Assistant.Ping.StartPing(count);
+            Core.Ping.StartPing(count);
         }
 
         private static void MacroCmd(string[] param)
@@ -478,7 +479,7 @@ namespace Assistant
 
             text = text.Trim();
 
-            char commandToggle = Client.IsOSI ? '-' : '>';
+            char commandToggle = Client.Client.IsOSI ? '-' : '>';
 
             if (text.Length > 0)
             {

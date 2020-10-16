@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
-namespace Assistant
+namespace Assistant.UI
 {
     public partial class MainForm : System.Windows.Forms.Form
     {

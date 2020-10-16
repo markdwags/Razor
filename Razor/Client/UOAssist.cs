@@ -20,10 +20,13 @@
 
 using System;
 using System.Collections;
-using System.Text;
 using System.Runtime.InteropServices;
+using System.Text;
+using Assistant.Core;
+using Assistant.Network;
+using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Client
 {
     public unsafe sealed class UOAssist
     {

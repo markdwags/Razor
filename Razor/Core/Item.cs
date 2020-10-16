@@ -19,11 +19,14 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using Assistant.Agents;
+using Assistant.Network;
+using Assistant.UI;
+using Assistant.UltimaSDK;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public enum Layer : byte
     {
@@ -249,16 +252,16 @@ namespace Assistant
             }
         }
 
-        public string DisplayName => m_ItemID.Value < Ultima.TileData.ItemTable.Length ? Ultima.TileData.ItemTable[m_ItemID.Value].Name : string.Empty;
+        public string DisplayName => m_ItemID.Value < TileData.ItemTable.Length ? TileData.ItemTable[m_ItemID.Value].Name : string.Empty;
 
         public Layer Layer
         {
             get
             {
                 if ((m_Layer < Layer.FirstValid || m_Layer > Layer.LastValid) &&
-                    ((this.ItemID.ItemData.Flags & Ultima.TileFlag.Wearable) != 0 ||
-                     (this.ItemID.ItemData.Flags & Ultima.TileFlag.Armor) != 0 ||
-                     (this.ItemID.ItemData.Flags & Ultima.TileFlag.Weapon) != 0
+                    ((this.ItemID.ItemData.Flags & TileFlag.Wearable) != 0 ||
+                     (this.ItemID.ItemData.Flags & TileFlag.Armor) != 0 ||
+                     (this.ItemID.ItemData.Flags & TileFlag.Weapon) != 0
                     ))
                 {
                     m_Layer = (Layer) this.ItemID.ItemData.Quality;
@@ -790,7 +793,7 @@ namespace Assistant
                 //"Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.OrigPlayerName
                 //"Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.Player.Name );
                 //"Desktop/{0}/Multicache.dat", World.AccountName );
-                string path = Ultima.Files.GetFilePath(String.Format("Desktop/{0}/{1}/{2}/Multicache.dat",
+                string path = Files.GetFilePath(String.Format("Desktop/{0}/{1}/{2}/Multicache.dat",
                     World.AccountName, World.ShardName, World.OrigPlayerName));
                 if (string.IsNullOrEmpty(path) || !File.Exists(path))
                     return;
@@ -822,7 +825,7 @@ namespace Assistant
                             MultiTileEntry[] tiles = new MultiTileEntry[lines];
                             count = 0;
 
-                            Ultima.MultiComponentList mcl = Ultima.Multis.GetComponents(m_ItemID);
+                            MultiComponentList mcl = Multis.GetComponents(m_ItemID);
 
                             while ((line = reader.ReadLine()) != null && count < lines)
                             {

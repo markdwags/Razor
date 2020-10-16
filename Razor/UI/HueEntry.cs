@@ -20,8 +20,11 @@
 
 using System.Drawing;
 using System.Windows.Forms;
+using Assistant.Core;
+using Assistant.Network;
+using Assistant.UltimaSDK;
 
-namespace Assistant
+namespace Assistant.UI
 {
     /// <summary>
     /// Summary description for HueEntry.
@@ -193,7 +196,7 @@ namespace Assistant
         private void SetPreview(int hue)
         {
             if (hue > 0 && hue < 3000)
-                preview.BackColor = Ultima.Hues.GetHue(hue - 1).GetColor(TextHueIDX);
+                preview.BackColor = Hues.GetHue(hue - 1).GetColor(TextHueIDX);
             else
                 preview.BackColor = Color.Black;
             preview.ForeColor = (preview.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
@@ -207,7 +210,7 @@ namespace Assistant
             Callback = null;
 
             //Engine.MainWindow.SafeAction(s => s.ShowMe());
-            if (Client.IsOSI) // With CUO, this cancels the window not saving the result
+            if (Client.Client.IsOSI) // With CUO, this cancels the window not saving the result
                 this.Hide();
 
             this.SendToBack();
@@ -222,7 +225,7 @@ namespace Assistant
                 return;
 
             Callback = new HueEntryCallback(HueResp);
-            Client.Instance.SendToClient(new HuePicker());
+            Client.Client.Instance.SendToClient(new HuePicker());
             World.Player.SendMessage(MsgLevel.Force, LocString.SelHue);
         }
 

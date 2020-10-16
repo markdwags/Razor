@@ -19,6 +19,8 @@
 #endregion
 
 using System;
+using Assistant.Network;
+using Assistant.UI;
 
 namespace Assistant.Filters
 {
@@ -49,7 +51,7 @@ namespace Assistant.Filters
         public override void OnFilter(PacketReader p, PacketHandlerEventArgs args)
         {
             // completely skip this filter if we've been connected for more thn 1 minute
-            if (Client.Instance.ConnectionStart + TimeSpan.FromMinutes(1.0) < DateTime.UtcNow)
+            if (Client.Client.Instance.ConnectionStart + TimeSpan.FromMinutes(1.0) < DateTime.UtcNow)
                 return;
 
             try

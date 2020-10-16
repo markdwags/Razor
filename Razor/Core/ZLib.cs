@@ -22,7 +22,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public enum ZLibError : int
     {

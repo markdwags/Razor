@@ -19,6 +19,9 @@
 #endregion
 
 using System.Windows.Forms;
+using Assistant.Core;
+using Assistant.Network;
+using Assistant.UI;
 
 namespace Assistant.Gumps.Internal
 {

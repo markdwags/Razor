@@ -18,7 +18,9 @@
 
 #endregion
 
-namespace Assistant
+using Assistant.UI;
+
+namespace Assistant.Core
 {
     public class StealthSteps
     {

@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Assistant.Core;
+using Assistant.Network;
 
 namespace Assistant.Gumps.Internal
 {

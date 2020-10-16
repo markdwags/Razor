@@ -19,23 +19,22 @@
 #endregion
 
 using System;
-using System.Xml;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Filters;
+using Assistant.HotKeys;
 using Assistant.Macros;
 using Assistant.Scripts;
-using Assistant.UI;
-using ContainerLabels = Assistant.Core.ContainerLabels;
 
-namespace Assistant
+namespace Assistant.UI
 {
     public class Profile
     {
@@ -59,7 +58,7 @@ namespace Assistant
             AddProperty("ShowCorpseNames", false);
             AddProperty("DisplaySkillChanges", false);
 
-            if (Client.IsOSI)
+            if (Client.Client.IsOSI)
                 AddProperty("TitleBarText", @"UO - {char} {crimtime}- {mediumstatbar} {bp} {bm} {gl} {gs} {mr} {ns} {ss} {sa} {aids}");
             else
                 AddProperty("TitleBarText", @"UO - {char}");
@@ -237,7 +236,7 @@ namespace Assistant
             AddProperty("GrabHotBag", "0");
 
             // Enable it for OSI client by default, CUO turn it off
-            AddProperty("MacroActionDelay", Client.IsOSI);
+            AddProperty("MacroActionDelay", Client.Client.IsOSI);
 
             AddProperty("AutoOpenDoorWhenHidden", false);
 
@@ -329,7 +328,7 @@ namespace Assistant
             TextFilterManager.ClearAll();
             DressList.ClearAll();
             OverheadManager.ClearAll();
-            ContainerLabels.ClearAll();
+            Core.ContainerLabels.ClearAll();
             MacroVariables.ClearAll();
             ScriptVariables.ClearAll();
         }
@@ -440,7 +439,7 @@ namespace Assistant
             HotKey.Load(root["hotkeys"]);
             PasswordMemory.Load(root["passwords"]);
             OverheadManager.Load(root["overheadmessages"]);
-            ContainerLabels.Load(root["containerlabels"]);
+            Core.ContainerLabels.Load(root["containerlabels"]);
             MacroVariables.Load(root["macrovariables"]);
             //imports previous absolutetargets and doubleclickvariables if present in profile
             if ((root.SelectSingleNode("absolutetargets") != null) ||
@@ -621,7 +620,7 @@ namespace Assistant
             xml.WriteEndElement();
 
             xml.WriteStartElement("containerlabels");
-            ContainerLabels.Save(xml);
+            Core.ContainerLabels.Save(xml);
             xml.WriteEndElement();
 
             xml.WriteStartElement("macrovariables");

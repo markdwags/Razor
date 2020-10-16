@@ -22,8 +22,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assistant.Agents;
+using Assistant.Core;
+using Assistant.HotKeys;
+using Assistant.UI;
+using Assistant.UltimaSDK;
 
-namespace Assistant
+namespace Assistant.Network
 {
     public enum MessageType
     {
@@ -1568,7 +1572,7 @@ namespace Assistant
                 bool floor = false;
                 try
                 {
-                    floor = (Ultima.TileData.ItemTable[mte.m_ItemID & 0x3FFF].Height <= 0);
+                    floor = (TileData.ItemTable[mte.m_ItemID & 0x3FFF].Height <= 0);
                 }
                 catch
                 {

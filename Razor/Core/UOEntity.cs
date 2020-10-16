@@ -18,10 +18,11 @@
 
 #endregion
 
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using Assistant.Network;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public class UOEntity
     {
@@ -160,7 +161,7 @@ namespace Assistant
         public void OPLChanged()
         {
             //Client.Instance.SendToClient( m_ObjPropList.BuildPacket() );
-            Client.Instance.SendToClient(new OPLInfo(Serial, OPLHash));
+            Client.Client.Instance.SendToClient(new OPLInfo(Serial, OPLHash));
         }
     }
 }

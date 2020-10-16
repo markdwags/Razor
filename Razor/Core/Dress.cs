@@ -18,6 +18,8 @@
 
 #endregion
 
+using Assistant.UI;
+
 namespace Assistant.Core
 {
     public static class Dress

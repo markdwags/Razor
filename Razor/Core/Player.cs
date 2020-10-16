@@ -20,16 +20,17 @@
 
 using System;
 using System.Collections;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Assistant.Agents;
-using Assistant.Core;
+using Assistant.Client;
 using Assistant.Gumps;
 using Assistant.Macros;
+using Assistant.Network;
 using Assistant.UI;
 
-namespace Assistant
+namespace Assistant.Core
 {
     public enum LockType : byte
     {
@@ -644,7 +645,7 @@ namespace Assistant
 
             protected override void OnTick()
             {
-                Client.Instance.SendToServer(new OpenDoorMacro());
+                Client.Client.Instance.SendToServer(new OpenDoorMacro());
             }
         }
 
@@ -657,7 +658,7 @@ namespace Assistant
 
             if (Body != 0x03DB && !IsGhost && ((int) (Direction & Direction.Mask)) % 2 == 0 &&
                 Config.GetBool("AutoOpenDoors") &&
-                Client.Instance.AllowBit(FeatureBit.AutoOpenDoors))
+                Client.Client.Instance.AllowBit(FeatureBit.AutoOpenDoors))
             {
                 int x = Position.X, y = Position.Y, z = Position.Z;
 
@@ -668,9 +669,9 @@ namespace Assistant
                     s.IsDoor && s.Position.X == x && s.Position.Y == y && s.Position.Z - 15 <= z &&
                     s.Position.Z + 15 >= z))
                 {
-                    if (Client.IsOSI)
+                    if (Client.Client.IsOSI)
                     {
-                        Client.Instance.SendToServer(new OpenDoorMacro());
+                        Client.Client.Instance.SendToServer(new OpenDoorMacro());
                     }
                     else
                     {
@@ -682,7 +683,7 @@ namespace Assistant
                         }
                         else
                         {
-                            Client.Instance.SendToServer(new OpenDoorMacro());
+                            Client.Client.Instance.SendToServer(new OpenDoorMacro());
                         }
                     }
                 }
@@ -792,7 +793,7 @@ namespace Assistant
                 if (m_CriminalTime != null)
                     m_CriminalTime.Stop();
                 m_CriminalStart = DateTime.MinValue;
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
             }
             else if ((cur == 3 || cur == 4) && (old != 3 && old != 4 && old != 0))
             {
@@ -809,7 +810,7 @@ namespace Assistant
                 if (m_CriminalTime == null)
                     m_CriminalTime = new CriminalTimer(this);
                 m_CriminalTime.Start();
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
             }
         }
 
@@ -824,7 +825,7 @@ namespace Assistant
 
             protected override void OnTick()
             {
-                Client.Instance.RequestTitlebarUpdate();
+                Client.Client.Instance.RequestTitlebarUpdate();
             }
         }
 
@@ -850,7 +851,7 @@ namespace Assistant
 
         internal void SendMessage(int hue, string text)
         {
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3,
+            Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3,
                 Language.CliLocName, "System", text));
         }
 
@@ -899,7 +900,7 @@ namespace Assistant
                     }
                 }
 
-                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, hue, 3,
                     Language.CliLocName, "System", text));
             }
         }
@@ -910,12 +911,12 @@ namespace Assistant
 
             if (keywords.Count == 1 && (int) keywords[0] == 0)
             {
-                Client.Instance.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Regular, hue, 3,
+                Client.Client.Instance.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Regular, hue, 3,
                     Language.CliLocName, keywords, msg));
             }
             else
             {
-                Client.Instance.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Encoded, hue, 3,
+                Client.Client.Instance.SendToServer(new ClientUniEncodedCommandMessage(MessageType.Encoded, hue, 3,
                     Language.CliLocName, keywords, msg));
             }
         }
@@ -927,13 +928,13 @@ namespace Assistant
 
         internal void Whisper(string msg, int hue)
         {
-            Client.Instance.SendToServer(new ClientUniMessage(MessageType.Whisper, hue, 3,
+            Client.Client.Instance.SendToServer(new ClientUniMessage(MessageType.Whisper, hue, 3,
                 Language.CliLocName, new ArrayList(), msg));
         }
 
         internal void Yell(string msg, int hue)
         {
-            Client.Instance.SendToServer(new ClientUniMessage(MessageType.Yell, hue, 3,
+            Client.Client.Instance.SendToServer(new ClientUniMessage(MessageType.Yell, hue, 3,
                 Language.CliLocName, new ArrayList(), msg));
         }
 
@@ -941,7 +942,7 @@ namespace Assistant
         {
             msg = $"*{msg}*";
 
-            Client.Instance.SendToServer(new ClientUniMessage(MessageType.Emote, hue, 3,
+            Client.Client.Instance.SendToServer(new ClientUniMessage(MessageType.Emote, hue, 3,
                 Language.CliLocName, new ArrayList(), msg));
         }
 
@@ -965,14 +966,14 @@ namespace Assistant
 
         public void CancelPrompt()
         {
-            Client.Instance.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 0,
+            Client.Client.Instance.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 0,
                 Language.CliLocName, string.Empty));
             World.Player.HasPrompt = false;
         }
 
         public void ResponsePrompt(string text)
         {
-            Client.Instance.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 1,
+            Client.Client.Instance.SendToServer(new PromptResponse(World.Player.PromptSenderSerial, World.Player.PromptID, 1,
                 Language.CliLocName, text));
 
             PromptInputText = text;
@@ -1053,9 +1054,9 @@ namespace Assistant
 
             protected override void OnTick()
             {
-                if (World.Player != null && Client.Instance != null)
+                if (World.Player != null && Client.Client.Instance != null)
                 {
-                    Client.Instance.ForceSendToClient(new SeasonChange(World.Player.Season, true));
+                    Client.Client.Instance.ForceSendToClient(new SeasonChange(World.Player.Season, true));
                     m_SeasonTimer.Stop();
                 }
             }
@@ -1102,7 +1103,7 @@ namespace Assistant
         
         public bool UseItem(Item cont, ushort find)
         {
-            if (!Client.Instance.AllowBit(FeatureBit.PotionHotkeys))
+            if (!Client.Client.Instance.AllowBit(FeatureBit.PotionHotkeys))
                 return false;
 
             for (int i = 0; i < cont.Contains.Count; i++)
@@ -1145,7 +1146,7 @@ namespace Assistant
             {
                 Item free = null, pack = World.Player.Backpack;
                 if (s.IsItem && pack != null && Config.GetBool("PotionEquip") &&
-                    Client.Instance.AllowBit(FeatureBit.AutoPotionEquip))
+                    Client.Client.Instance.AllowBit(FeatureBit.AutoPotionEquip))
                 {
                     Item i = World.FindItem(s);
                     if (i != null && i.IsPotion && i.ItemID != 3853) // dont unequip for exploison potions

@@ -24,7 +24,7 @@ using System.Configuration;
 using System.IO;
 using Microsoft.Win32;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class Files
     {
@@ -341,9 +341,9 @@ namespace Ultima
             string dir = ConfigurationManager.AppSettings["UODataDir"];
 
             // If they're using the ClassicUO client, pull the UO data dir from the plugin
-            if (!Assistant.Client.IsOSI)
+            if (!Assistant.Client.Client.IsOSI)
             {
-                dir = Assistant.Client.Instance.GetUoFilePath();
+                dir = Assistant.Client.Client.Instance.GetUoFilePath();
             }
 
 
@@ -491,23 +491,23 @@ namespace Ultima
         }
 
         /// <summary>
-        /// Checks if map1.mul exists and sets <see cref="Ultima.Map"/>
+        /// Checks if map1.mul exists and sets <see cref="Map"/>
         /// </summary>
         public static void CheckForNewMapSize()
         {
             if (Files.GetFilePath("map1.mul") != null)
             {
-                if (Ultima.Map.Trammel.Width == 7168)
-                    Ultima.Map.Trammel = new Ultima.Map(1, 1, 7168, 4096);
+                if (Map.Trammel.Width == 7168)
+                    Map.Trammel = new Map(1, 1, 7168, 4096);
                 else
-                    Ultima.Map.Trammel = new Ultima.Map(1, 1, 6144, 4096);
+                    Map.Trammel = new Map(1, 1, 6144, 4096);
             }
             else
             {
-                if (Ultima.Map.Trammel.Width == 7168)
-                    Ultima.Map.Trammel = new Ultima.Map(0, 1, 7168, 4096);
+                if (Map.Trammel.Width == 7168)
+                    Map.Trammel = new Map(0, 1, 7168, 4096);
                 else
-                    Ultima.Map.Trammel = new Ultima.Map(0, 1, 6144, 4096);
+                    Map.Trammel = new Map(0, 1, 6144, 4096);
             }
         }
     }

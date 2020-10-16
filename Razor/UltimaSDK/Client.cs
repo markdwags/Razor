@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     /// <summary>
     /// Provides methods to interact with the Ultima Online client.

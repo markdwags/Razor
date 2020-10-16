@@ -25,7 +25,7 @@ using System.IO;
 
 //using System.Windows.Media.Imaging;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class AnimationEdit
     {

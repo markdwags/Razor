@@ -25,7 +25,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Ultima
+namespace Assistant.UltimaSDK
 {
     public sealed class SpeechList
     {

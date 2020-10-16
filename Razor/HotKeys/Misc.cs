@@ -19,8 +19,12 @@
 #endregion
 
 using System;
+using Assistant.Client;
 using Assistant.Core;
 using Assistant.Gumps.Internal;
+using Assistant.Network;
+using Assistant.UI;
+using Engine = Assistant.Core.Engine;
 
 namespace Assistant.HotKeys
 {
@@ -189,7 +193,7 @@ namespace Assistant.HotKeys
         {
             if (PacketHandlers.PartyLeader != Serial.Zero)
             {
-                Client.Instance.SendToServer(new AcceptParty(PacketHandlers.PartyLeader));
+                Client.Client.Instance.SendToServer(new AcceptParty(PacketHandlers.PartyLeader));
                 PacketHandlers.PartyLeader = Serial.Zero;
             }
         }
@@ -198,14 +202,14 @@ namespace Assistant.HotKeys
         {
             if (PacketHandlers.PartyLeader != Serial.Zero)
             {
-                Client.Instance.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
+                Client.Client.Instance.SendToServer(new DeclineParty(PacketHandlers.PartyLeader));
                 PacketHandlers.PartyLeader = Serial.Zero;
             }
         }
 
         private static void PartyAdd()
         {
-            Client.Instance.SendToServer(new AddParty());
+            Client.Client.Instance.SendToServer(new AddParty());
         }
 
         private static void Dismount()
@@ -223,7 +227,7 @@ namespace Assistant.HotKeys
             foreach (Mobile m in World.MobilesInRange())
             {
                 if (m != World.Player)
-                    Client.Instance.SendToServer(new SingleClick(m));
+                    Client.Client.Instance.SendToServer(new SingleClick(m));
 
                 if (textFlags)
                     Targeting.CheckTextFlags(m);
@@ -234,7 +238,7 @@ namespace Assistant.HotKeys
             foreach (Item i in World.Items.Values)
             {
                 if (i.IsCorpse)
-                    Client.Instance.SendToServer(new SingleClick(i));
+                    Client.Client.Instance.SendToServer(new SingleClick(i));
             }
         }
 
@@ -243,7 +247,7 @@ namespace Assistant.HotKeys
             foreach (Item i in World.Items.Values)
             {
                 if (i.IsCorpse)
-                    Client.Instance.SendToServer(new SingleClick(i));
+                    Client.Client.Instance.SendToServer(new SingleClick(i));
             }
         }
 
@@ -254,7 +258,7 @@ namespace Assistant.HotKeys
             foreach (Mobile m in World.MobilesInRange())
             {
                 if (m != World.Player)
-                    Client.Instance.SendToServer(new SingleClick(m));
+                    Client.Client.Instance.SendToServer(new SingleClick(m));
 
                 if (textFlags)
                     Targeting.CheckTextFlags(m);
@@ -266,7 +270,7 @@ namespace Assistant.HotKeys
         private static void LastSkill()
         {
             if (World.Player != null && World.Player.LastSkill != -1)
-                Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
+                Client.Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
         }
 
         private static void LastObj()
@@ -293,7 +297,7 @@ namespace Assistant.HotKeys
             {
                 m_LastSync = DateTime.UtcNow;
 
-                Client.Instance.SendToServer(new ResyncReq());
+                Client.Client.Instance.SendToServer(new ResyncReq());
             }
         }
 
@@ -370,7 +374,7 @@ namespace Assistant.HotKeys
 
             ushort id = (ushort) state;
             if (id == 3852 && World.Player.Poisoned && Config.GetBool("BlockHealPoison") &&
-                Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
+                Client.Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
             {
                 World.Player.SendMessage(MsgLevel.Force, LocString.HealPoisonBlocked);
                 return;
@@ -470,7 +474,7 @@ namespace Assistant.HotKeys
                     gfx = c.ItemID.Value;
                 }
 
-                Client.Instance.SendToClient(new UnicodeMessage(_grabHotBag, gfx, MessageType.Label, 0x3B2, 3,
+                Client.Client.Instance.SendToClient(new UnicodeMessage(_grabHotBag, gfx, MessageType.Label, 0x3B2, 3,
                     Language.CliLocName, "", Language.GetString(LocString.GrabHB)));
             }
         }

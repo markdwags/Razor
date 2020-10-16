@@ -18,10 +18,10 @@
 
 #endregion
 
-using System.IO;
 using System.Collections;
+using System.IO;
 
-namespace Assistant.MapUO
+namespace Assistant.Map
 {
     class Region
     {
