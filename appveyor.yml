@@ -41,10 +41,4 @@ deploy:
   prerelease: true
   force_update: true
 skip_commits:
-  message: /\[chore\]/
-  files:    
-    - help/
-    - docs/
-    - '**/*.md'
-    - '**/*.ps1'
-    - '**/*.yml'
+  message: /\[chore\]/  

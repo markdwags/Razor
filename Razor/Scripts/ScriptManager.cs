@@ -480,7 +480,9 @@ namespace Assistant.Scripts
                     "promptresponse", "restock", "say", "whisper", "yell", "emote", "script", "scavenger", "sell", "setability",
                     "setlasttarget",
                     "setvar", "skill", "sysmsg", "target", "targettype", "targetrelloc", "undress", "useonce", "walk",
-                    "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget", "clearsysmsg", "clearjournal"
+                    "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget", "clearsysmsg", "clearjournal",
+                    "waitforsysmsg"
+
                 };
 
             #endregion
@@ -728,6 +730,12 @@ namespace Assistant.Scripts
                 "This command (same as clearjournal) will clear the internal system message queue used with insysmsg.",
                 "clearjournal\n");
             descriptionCommands.Add("clearjournal", tooltip);
+
+            tooltip = new ToolTipDescriptions("waitforsysmsg",
+                new[] { "waitforsysmsg" }, "N/A",
+                "This command will pause the script until the message defined is in the system message queue.",
+                "waitforsysmsg 'message here'\n");
+            descriptionCommands.Add("waitforsysmsg", tooltip);
 
             #endregion
 

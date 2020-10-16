@@ -683,6 +683,19 @@ waitforprompt
 promptresponse 'to home'
 ```
 
+## waitforsysmsg
+
+Syntax: `waitforsysmsg` or `wfsysmsg`
+
+Description: This command will wait a specific message to be added to the system message queue before continuing.
+
+Example:
+
+```csharp
+waitforsysmsg 'ready to go'
+overhead 'Ready!'
+```
+
 ## waitfortarget
 
 Syntax: `waitfortarget [pause in milliseconds]` or `wft [pause in milliseconds]`

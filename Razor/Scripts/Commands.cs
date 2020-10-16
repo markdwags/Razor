@@ -94,6 +94,8 @@ namespace Assistant.Scripts
             // General Waits/Pauses
             Interpreter.RegisterCommandHandler("wait", Pause); //PauseAction
             Interpreter.RegisterCommandHandler("pause", Pause); //PauseAction
+            Interpreter.RegisterCommandHandler("waitforsysmsg", WaitForSysMsg);
+            Interpreter.RegisterCommandHandler("wfsysmsg", WaitForSysMsg);
 
             // Misc
             Interpreter.RegisterCommandHandler("setability", SetAbility); //SetAbilityAction
@@ -1245,6 +1247,16 @@ namespace Assistant.Scripts
             }
 
             return true;
+        }
+
+        public static bool WaitForSysMsg(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                throw new RunTimeError(null, "Usage: waitforsysmsg 'message to wait for'");
+            }
+
+            return SystemMessages.Exists(args[0].AsString());
         }
     }
 }
