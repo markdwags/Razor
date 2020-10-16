@@ -270,7 +270,7 @@ namespace Assistant.Scripts
                 {
                     list.AddRange(World.FindItemsByName(gfxStr).Where(item => !item.IsInBank).ToList());
                 }
-                
+
                 if (list.Count == 0) // no item found, search mobile by name
                 {
                     List<Mobile> mobiles = World.FindMobilesByName(gfxStr);
@@ -543,7 +543,7 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                throw new RunTimeError(null, 
+                throw new RunTimeError(null,
                     "Usage: dclicktype|usetype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
             }
 
@@ -1009,7 +1009,7 @@ namespace Assistant.Scripts
             {
                 throw new RunTimeError(null, "Usage: overhead ('text') [color] [serial]");
             }
-            
+
             if (args.Length == 1)
                 World.Player.OverheadMessage(Config.GetInt("SysColor"), args[0].AsString());
             else
@@ -1222,7 +1222,7 @@ namespace Assistant.Scripts
             {
                 throw new RunTimeError(null, "Usage: potion ('type')");
             }
-            
+
             Item pack = World.Player.Backpack;
             if (pack == null)
                 return true;

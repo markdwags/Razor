@@ -599,7 +599,7 @@ namespace Assistant.Scripts.Engine
             // parts of lists. We call those second two FOREACH.
 
             // We're intentionally deprecating two of the variants here.
-            // The for X to Y variant, where both X and Y are integers, 
+            // The for X to Y variant, where both X and Y are integers,
             // is useless. It can be just written as for X.
             // The for X to Y in LIST variant may have some niche uses, but
             // is annoying to implement.

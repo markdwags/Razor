@@ -58,7 +58,7 @@ namespace Assistant.Gumps.Internal
                     continue;
 
                 AddHtml(20, labelY, 500, 20, $"<BASEFONT COLOR=#FFFFFF>{data.DispName}</BASEFONT> <BASEFONT COLOR=#E0E70B>({data.KeyString()})</BASEFONT>", false, false);
-                
+
                 labelY += 20;
                 count++;
 

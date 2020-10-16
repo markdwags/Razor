@@ -470,7 +470,7 @@ namespace Ultima
         }
 
         /// <summary>
-        /// Draws in given Bitmap with Statics 
+        /// Draws in given Bitmap with Statics
         /// </summary>
         /// <param name="x">8x8 Block</param>
         /// <param name="y">8x8 Block</param>

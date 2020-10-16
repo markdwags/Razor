@@ -304,7 +304,7 @@ namespace Assistant
             {
                 if (World.Player.Poisoned && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
                 {
-                    s = Get(2, 3); // cure 
+                    s = Get(2, 3); // cure
                 }
                 else if (World.Player.Hits + 2 < World.Player.HitsMax)
                 {

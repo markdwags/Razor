@@ -77,7 +77,7 @@ namespace Assistant.Core
                 byte[] buffer = new byte[0x400];
                 fixed (byte* numRef = buffer)
                 {
-                    using(var file = new FileStream(path, FileMode.Open,FileAccess.Read)) 
+                    using(var file = new FileStream(path, FileMode.Open,FileAccess.Read))
                         while (file.Position < file.Length)
                         {
                             int id = (ushort)((file.ReadByte() << 8) | file.ReadByte());

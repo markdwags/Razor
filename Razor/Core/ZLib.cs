@@ -64,7 +64,7 @@ namespace Assistant
 
     // Be careful when writing raw data, as it may confuse the GZBlockIn if not accounted for when reading.
     // Seeking in the compressed stream is HIGHLY unrecommended
-    // If you need to seek, use BufferAll to keep all data in the buffer, seek as much as you want, then 
+    // If you need to seek, use BufferAll to keep all data in the buffer, seek as much as you want, then
     // turn off BufferAll and flush the data to disk.
     // Once the data is flushed, you CANNOT seek back to it!
     public class GZBlockOut : Stream
@@ -252,10 +252,10 @@ namespace Assistant
     }
 
     // Represents a block compressed stream written by GZBlockOut
-    // If there is uncompressed data in the stream, you may seek to 
+    // If there is uncompressed data in the stream, you may seek to
     // it and read from is as you wish using Raw/RawStream.  If you have
-    // not yet started reading compressed data, you must position rawstream 
-    // at the begining of the compressed data.  If you've already read 
+    // not yet started reading compressed data, you must position rawstream
+    // at the begining of the compressed data.  If you've already read
     // compressed data, you must reposition the file pointer back to its previous
     // position in the stream.  This is really important.
     //

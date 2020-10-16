@@ -969,7 +969,7 @@ namespace Assistant.Scripts.Engine
     {
         // Aliases only hold serial numbers
         private static Dictionary<string, uint> _aliases = new Dictionary<string, uint>();
-        
+
         // Expressions
         public delegate IComparable ExpressionHandler(string expression, Argument[] args, bool quiet);
         public delegate T ExpressionHandler<T>(string expression, Argument[] args, bool quiet) where T : IComparable;

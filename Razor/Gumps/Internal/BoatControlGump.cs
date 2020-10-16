@@ -76,7 +76,7 @@ namespace Assistant.Gumps.Internal
                     speed = 1;
                     break;
                 }
-                
+
                 if (check == (int)Buttons.One)
                 {
                     speed = 2;

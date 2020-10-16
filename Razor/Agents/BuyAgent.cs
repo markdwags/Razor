@@ -78,7 +78,7 @@ namespace Assistant.Agents
         }
 
         private static readonly ArrayList m_Instances = new ArrayList();
-        
+
         public static List<BuyAgent> Agents { get; set; }
 
         public static void Initialize()

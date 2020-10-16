@@ -190,7 +190,7 @@ namespace Assistant.Core
                 }
             }
         }
-        
+
         public static void Save(XmlTextWriter xml)
         {
             foreach (var waypoint in Waypoints)

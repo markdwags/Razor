@@ -353,7 +353,7 @@ namespace Assistant
         {
             // hue color #30
             0x000000, // black		unused 0
-            0x30d0e0, // blue		0x0059 1 
+            0x30d0e0, // blue		0x0059 1
             0x60e000, // green		0x003F 2
             0x9090b2, // greyish	0x03b2 3
             0x909090, // grey		   "   4

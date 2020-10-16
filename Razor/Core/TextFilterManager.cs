@@ -30,9 +30,9 @@ namespace Assistant.Core
     public static class TextFilterManager
     {
         private static ListBox _filterTextList;
-        
+
         public static List<string> FilteredText = new List<string>();
-        
+
         public static void SetControls(ListBox filterTextList)
         {
             _filterTextList = filterTextList;

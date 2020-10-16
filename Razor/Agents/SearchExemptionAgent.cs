@@ -32,7 +32,7 @@ namespace Assistant.Agents
         {
             get { return Instance.m_Items.Count; }
         }
-        
+
         public static SearchExemptionAgent Instance { get; private set; }
 
         public static void Initialize()

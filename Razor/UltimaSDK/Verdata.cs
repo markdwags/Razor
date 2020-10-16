@@ -39,7 +39,7 @@ using System.IO;
 //15 - skills.idx
 //16 - skills.mul
 //30 - tiledata.mul
-//31 - animdata.mul 
+//31 - animdata.mul
 
 namespace Ultima
 {

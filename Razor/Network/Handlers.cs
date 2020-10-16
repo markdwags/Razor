@@ -1951,7 +1951,7 @@ namespace Assistant
                     {
                         Client.Instance.SendToClient(new AsciiMessage(ser, body, MessageType.Spell, s.GetHue(hue), font,
                             name, newText));
-                        
+
                         replaced = true;
                         args.Block = true;
                     }

@@ -632,7 +632,7 @@ namespace Assistant
 
             NextPrevTarget(mobiles, false, false, false, true);
         }
-        
+
         private static void PrevTargetNonFriend()
         {
             var mobiles = World.MobilesInRange()

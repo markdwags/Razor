@@ -799,7 +799,7 @@ namespace Assistant
                     new StreamReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
                     string line;
-                    reader.ReadLine(); // ver 
+                    reader.ReadLine(); // ver
                     int skip = 0;
                     int count = 0;
                     while ((line = reader.ReadLine()) != null)

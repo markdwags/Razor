@@ -960,7 +960,7 @@ namespace Assistant
         public uint PromptID;
         public uint PromptType;
         public string PromptInputText;
-        
+
         public GumpCollection InternalGumps { get; set; } = new GumpCollection();
 
         public void CancelPrompt()
@@ -1099,7 +1099,7 @@ namespace Assistant
 
         //private UOEntity m_LastCtxM = null;
         //public UOEntity LastContextMenu { get { return m_LastCtxM; } set { m_LastCtxM = value; } }
-        
+
         public bool UseItem(Item cont, ushort find)
         {
             if (!Client.Instance.AllowBit(FeatureBit.PotionHotkeys))

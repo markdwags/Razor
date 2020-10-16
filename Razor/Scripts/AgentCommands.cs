@@ -80,7 +80,7 @@ namespace Assistant.Scripts
                 if (args[0].AsString().IndexOf("add", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     add = true;
-                } 
+                }
                 else if (args[0].AsString().IndexOf("addcontainer", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     container = true;
