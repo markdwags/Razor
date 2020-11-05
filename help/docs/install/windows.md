@@ -3,6 +3,24 @@
 
     When using ClassicUO, some features in Razor are disabled since they either won't work and/or may cause conflicts with ClassicUO.
 
+# Install: New ClassicUO with Razor Install (Installer)
+
+This is a simple install process for Razor with the option to install ClassicUO.
+
+* Download the [latest release](https://github.com/markdwags/razor-installer/releases)
+* Extract `RazorInstaller.zip` and run `RazorInstaller.exe`
+* Select an installation path (this is where Razor and/or ClassicUO will install)
+* Select the path to your UO data files (this is where you installed Ultima Online)
+* Enter the client version for the UO files (for example, 5.0.8.3 or 7.0.15.1)
+* Enter the server host name to the shard you play on
+* Enter the port (it's usually 2593)
+
+If you want to run the dev preview of Razor or ClassicUO, check the box.
+
+* When ready, click `Install / Update`
+
+When complete, you will be prompted to run either Razor or ClassicUO.
+
 # Install: New ClassicUO with Razor Install (Powershell)
 
 This [Powershell script](https://github.com/markdwags/Razor/blob/master/InstallClassicUOAndRazor-NoDefaults.ps1) is designed to help you install ClassicUO and Razor.
