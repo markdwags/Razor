@@ -15,6 +15,7 @@ If the command you're using requires a `layername` (such as `dropitem`) can use 
 - `Hair`
 - `Waist`
 - `InnerTorso`
+- `Face`
 - `Bracelet`
 - `FacialHair`
 - `MiddleTorso`
