@@ -2343,12 +2343,12 @@ namespace Assistant
                 return (Macro) macroTree.SelectedNode.Tag;
         }
 
-        public ScriptManager.RazorScript GetScriptSel()
+        public RazorScript GetScriptSel()
         {
-            if (scriptList.SelectedItem == null || !(scriptList.SelectedItem is ScriptManager.RazorScript))
+            if (scriptList.SelectedItem == null || !(scriptList.SelectedItem is RazorScript))
                 return null;
 
-            return (ScriptManager.RazorScript) scriptList.SelectedItem;
+            return (RazorScript) scriptList.SelectedItem;
         }
 
         public void playMacro_Click(object sender, System.EventArgs e)
@@ -2718,7 +2718,7 @@ namespace Assistant
 
                 File.WriteAllLines(path, scriptLines.ToArray());
 
-                ScriptManager.RazorScript script = new ScriptManager.RazorScript
+                RazorScript script = new RazorScript
                 {
                     Lines = File.ReadAllLines(path),
                     Name = name,
@@ -5979,7 +5979,7 @@ namespace Assistant
 
                 File.WriteAllText(filePath, scriptEditor.Text);
 
-                ScriptManager.RazorScript script = new ScriptManager.RazorScript
+                RazorScript script = new RazorScript
                 {
                     Lines = File.ReadAllLines(filePath),
                     Name = Path.GetFileNameWithoutExtension(filePath),
@@ -5990,7 +5990,7 @@ namespace Assistant
 
                 for (int i = 0; i < scriptList.Items.Count; i++)
                 {
-                    ScriptManager.RazorScript scriptItem = (ScriptManager.RazorScript) scriptList.Items[i];
+                    RazorScript scriptItem = (RazorScript) scriptList.Items[i];
                     if (scriptItem.Name.Equals(script.Name))
                     {
                         scriptList.SelectedIndex = i;
@@ -6004,10 +6004,16 @@ namespace Assistant
             {
                 int curIndex = scriptList.SelectedIndex;
 
-                ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
-                File.WriteAllText(script.Path, scriptEditor.Text);
+                RazorScript script = (RazorScript) scriptList.SelectedItem;
 
-                script.Lines = File.ReadAllLines(script.Path);
+                foreach (RazorScript razorScript in ScriptManager.Scripts)
+                {
+                    if (razorScript.Name.Equals(script.Name))
+                    {
+                        File.WriteAllText(razorScript.Path, scriptEditor.Text);
+                        razorScript.Lines = File.ReadAllLines(razorScript.Path);
+                    }
+                }
 
                 scriptList.SelectedIndex = curIndex;
             }
@@ -6020,7 +6026,7 @@ namespace Assistant
 
             ScriptManager.ClearHighlightLine();
 
-            ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
+            RazorScript script = (RazorScript) scriptList.SelectedItem;
 
             scriptEditor.Text = string.Join("\n", script.Lines);
         }
@@ -6070,7 +6076,7 @@ namespace Assistant
 
                 File.CreateText(path).Close();
 
-                ScriptManager.RazorScript script = new ScriptManager.RazorScript
+                RazorScript script = new RazorScript
                 {
                     Lines = File.ReadAllLines(path),
                     Name = name,
@@ -6102,7 +6108,7 @@ namespace Assistant
             if (scriptList.SelectedIndex < 0)
                 return;
 
-            ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
+            RazorScript script = (RazorScript) scriptList.SelectedItem;
 
             if (MessageBox.Show(this, Language.Format(LocString.DelConf, $"{scriptList.SelectedItem}"),
                     "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -6132,7 +6138,7 @@ namespace Assistant
             {
                 Engine.MainWindow.SafeAction(s =>
                 {
-                    ScriptManager.RazorScript script = GetScriptSel();
+                    RazorScript script = GetScriptSel();
 
                     tabs.SelectedTab = hotkeysTab;
 
@@ -6276,7 +6282,7 @@ namespace Assistant
 
         private void CopyScriptToClipboard(object sender, EventArgs e)
         {
-            ScriptManager.RazorScript script = GetScriptSel();
+            RazorScript script = GetScriptSel();
             if (script == null)
                 return;
 
@@ -6298,7 +6304,7 @@ namespace Assistant
 
         private void OpenScriptExternally(object sender, EventArgs args)
         {
-            ScriptManager.RazorScript script = GetScriptSel();
+            RazorScript script = GetScriptSel();
             if (script == null)
                 return;
 
@@ -6467,7 +6473,7 @@ namespace Assistant
                     return;
                 }
 
-                ScriptManager.RazorScript script = (ScriptManager.RazorScript) scriptList.SelectedItem;
+                RazorScript script = (RazorScript) scriptList.SelectedItem;
 
                 string newScriptPath = Path.Combine(ScriptManager.ScriptPath, $"{name}.razor");
 
@@ -6516,7 +6522,7 @@ namespace Assistant
 
                  if (!string.IsNullOrEmpty(scriptFilter.Text))
                  {
-                     foreach (ScriptManager.RazorScript script in ScriptManager.Scripts)
+                     foreach (RazorScript script in ScriptManager.Scripts)
                      {
                          if (script.Name.IndexOf(scriptFilter.Text, StringComparison.OrdinalIgnoreCase) != -1)
                          {
@@ -6526,7 +6532,7 @@ namespace Assistant
                  }
                  else
                  {
-                     foreach (ScriptManager.RazorScript script in ScriptManager.Scripts)
+                     foreach (RazorScript script in ScriptManager.Scripts)
                      {
                          s.Items.Add(script);
                      }

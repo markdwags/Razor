@@ -330,19 +330,7 @@ namespace Assistant.Scripts
         {
             Timer.Start();
         }
-
-        public class RazorScript
-        {
-            public string Path { get; set; }
-            public string[] Lines { get; set; }
-            public string Name { get; set; }
-
-            public override string ToString()
-            {
-                return Name;
-            }
-        }
-
+        
         public static List<RazorScript> Scripts { get; set; }
 
         public static void LoadScripts()
