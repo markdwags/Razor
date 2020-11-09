@@ -321,17 +321,14 @@ namespace Assistant.Scripts
 
         public static void OnLogout()
         {
+            StopScript();
             Timer.Stop();
+            Assistant.Engine.MainWindow.LockScriptUI(false);
         }
 
         public static void StartEngine()
         {
             Timer.Start();
-        }
-
-        public static void StopEngine()
-        {
-            Timer.Stop();
         }
 
         public class RazorScript

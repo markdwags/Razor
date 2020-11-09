@@ -29,6 +29,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Assistant.Scripts;
 
 namespace Assistant
 {
@@ -438,6 +439,7 @@ namespace Assistant
             World.Items.Clear();
             World.Mobiles.Clear();
             Macros.MacroManager.Stop();
+            ScriptManager.OnLogout();
             ActionQueue.Stop();
             Counter.Reset();
             GoldPerHourTimer.Stop();
