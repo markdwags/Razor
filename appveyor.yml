@@ -18,27 +18,8 @@ build:
   project: Razor.sln
   verbosity: minimal
 test: off
-after_build:
-- cmd: SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
-- cmd: python --version
-- cmd: python.exe -m pip install --upgrade pip
-- cmd: pip install mkdocs
-- cmd: pip install mkdocs-material
-- cmd: pip install mkdocs-git-revision-date-plugin
-- cmd: cd help
-- cmd: mkdocs build
 artifacts:
 - path: bin\Win32\Release
   name: Razor-dev-preview
-- path: help\site
-  name: Razor-site
-deploy:
-- provider: GitHub
-  release: Razor-dev-preview
-  description: Auto-build by AppVeyor\n\nThis is built automatically after each commit to master, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk.\n\nOfficial releases will be listed here and given proper version numbers with release notes.
-  auth_token:
-    secure: 8F11pQiKmjN7rkwx4TfXay3Z3Ocj+5zpKGeXWYuK/LLGY8HCtFYoXzmGzlePwDwX
-  prerelease: true
-  force_update: true
 skip_commits:
   message: /\[chore\]/  

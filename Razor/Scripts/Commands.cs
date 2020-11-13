@@ -104,6 +104,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("skill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("useskill", UseSkill); //SkillAction
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
+            Interpreter.RegisterCommandHandler("pathfind", Pathfind);
             Interpreter.RegisterCommandHandler("potion", Potion);
 
             // Script related
@@ -863,6 +864,22 @@ namespace Assistant.Scripts
 
             Direction dir = (Direction) Enum.Parse(typeof(Direction), args[0].AsString(), true);
             Client.Instance.RequestMove(dir);
+
+            return true;
+        }
+
+        private static bool Pathfind(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 3)
+            {
+                throw new RunTimeError(null, "Usage: pathfind ('x', 'y', 'z')");
+            }
+
+            int x = Utility.ToInt32(args[0].AsString(), 0);
+            int y = Utility.ToInt32(args[1].AsString(), 0);
+            int z = Utility.ToInt32(args[2].AsString(), 0) ;
+
+            Client.Instance.Pathfind(x, y, z);
 
             return true;
         }

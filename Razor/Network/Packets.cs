@@ -1054,6 +1054,16 @@ namespace Assistant
         }
     }
 
+    public sealed class Pathfind : Packet
+    {
+        public Pathfind(int x, int y, int z) : base(0x38, 7)
+        {
+            Write((ushort) x);
+            Write((ushort) y);
+            Write((ushort) z);
+        }
+    }
+
     public sealed class ResyncReq : Packet
     {
         public ResyncReq() : base(0x22, 3)
