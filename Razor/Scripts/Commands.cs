@@ -879,7 +879,7 @@ namespace Assistant.Scripts
             int y = Utility.ToInt32(args[1].AsString(), 0);
             int z = Utility.ToInt32(args[2].AsString(), 0) ;
 
-            Client.Instance.Pathfind(x, y, z);
+            Client.Instance.SendToClient(new Pathfind(x, y, z));
 
             return true;
         }
