@@ -744,9 +744,9 @@ namespace Assistant
                        (iid == 0x1438 || iid == 0x1439) || // war hammer
                        (iid == 0x1442 || iid == 0x1443) || // 2handed axe
                        (iid == 0x1402 || iid == 0x1403) || // short spear
-                       (iid == 0x26c1 || iid == 0x26cb) || // aos gay blade
-                       (iid == 0x26c2 || iid == 0x26cc) || // aos gay bow
-                       (iid == 0x26c3 || iid == 0x26cd) // aos gay xbow
+                       (iid == 0x26c1 || iid == 0x26cb) || // aos blade
+                       (iid == 0x26c2 || iid == 0x26cc) || // aos bow
+                       (iid == 0x26c3 || iid == 0x26cd) // aos xbow
                     ;
             }
         }
