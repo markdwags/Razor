@@ -6135,12 +6135,7 @@ namespace Assistant
 
                 File.CreateText(path).Close();
 
-                RazorScript script = new RazorScript
-                {
-                    Lines = File.ReadAllLines(path),
-                    Name = name,
-                    Path = path
-                };
+                RazorScript script = ScriptManager.AddScript(path);
 
                 ScriptManager.AddHotkey(script);
 
@@ -6185,7 +6180,7 @@ namespace Assistant
                 try
                 {
                     File.Delete(selScript.Path);
-                    ScriptManager.RemoveHotkey(selScript.Name);
+                    ScriptManager.RemoveHotkey(selScript);
                 }
                 catch
                 {
@@ -6538,7 +6533,7 @@ namespace Assistant
                 {
                     Engine.MainWindow.SafeAction(s =>
                     {
-                        ScriptManager.RemoveHotkey(selScript.Name);
+                        ScriptManager.RemoveHotkey(selScript);
 
                         File.Move(selScript.Path, newScriptPath);
 

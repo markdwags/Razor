@@ -239,9 +239,9 @@ namespace Assistant.Scripts
                 script);
         }
 
-        public static void RemoveHotkey(string script)
+        public static void RemoveHotkey(RazorScript script)
         {
-            HotKey.Remove(Language.Format(LocString.PlayScript, script));
+            HotKey.Remove(Language.Format(LocString.PlayScript, script.ToString()));
         }
 
         public static void OnHotKey(ref object state)
@@ -256,6 +256,30 @@ namespace Assistant.Scripts
             _queuedScript = null;
 
             Interpreter.StopScript();
+        }
+
+        public static RazorScript AddScript(string file)
+        {
+            RazorScript script = new RazorScript
+            {
+                Lines = File.ReadAllLines(file),
+                Name = Path.GetFileNameWithoutExtension(file),
+                Path = file
+            };
+
+            if (Path.GetDirectoryName(script.Path).Equals(Config.GetUserDirectory("Scripts")))
+            {
+                script.Category = string.Empty;
+            }
+            else
+            {
+                string cat = file.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                script.Category = Path.GetDirectoryName(cat);
+            }
+
+            Scripts.Add(script);
+
+            return script;
         }
 
         public static void PlayScript(string scriptName)
@@ -346,24 +370,7 @@ namespace Assistant.Scripts
 
             foreach (var file in razorFiles)
             {
-                RazorScript script = new RazorScript
-                {
-                    Lines = File.ReadAllLines(file),
-                    Name = Path.GetFileNameWithoutExtension(file),
-                    Path = file
-                };
-
-                if (Path.GetDirectoryName(script.Path).Equals(Config.GetUserDirectory("Scripts")))
-                {
-                    script.Category = string.Empty;
-                }
-                else
-                {
-                    string cat = file.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
-                    script.Category = Path.GetDirectoryName(cat);
-                }
-
-                Scripts.Add(script);
+                AddScript(file);
             }
         }
 
@@ -913,24 +920,7 @@ namespace Assistant.Scripts
 
                 foreach (var file in razorFiles)
                 {
-                    RazorScript script = new RazorScript
-                    {
-                        Lines = File.ReadAllLines(file),
-                        Name = Path.GetFileNameWithoutExtension(file),
-                        Path = file
-                    };
-
-                    if (Path.GetDirectoryName(script.Path).Equals(Config.GetUserDirectory("Scripts")))
-                    {
-                        script.Category = string.Empty;
-                    }
-                    else
-                    {
-                        string cat = file.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
-                        script.Category = Path.GetDirectoryName(cat);
-                    }
-
-                    Scripts.Add(script);
+                    RazorScript script = AddScript(file);
 
                     if (nodes != null)
                     {
