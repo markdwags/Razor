@@ -29,7 +29,7 @@ namespace Assistant.Scripts
 
         public override string ToString()
         {
-            return $"{Category}\\{Name}";
+            return string.IsNullOrEmpty(Category) ? Name : $"{Category}\\{Name}";
         }
     }
 }

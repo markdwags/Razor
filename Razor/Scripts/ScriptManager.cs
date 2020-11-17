@@ -346,12 +346,24 @@ namespace Assistant.Scripts
 
             foreach (var file in razorFiles)
             {
-                Scripts.Add(new RazorScript
+                RazorScript script = new RazorScript
                 {
                     Lines = File.ReadAllLines(file),
                     Name = Path.GetFileNameWithoutExtension(file),
                     Path = file
-                });
+                };
+
+                if (Path.GetDirectoryName(script.Path).Equals(Config.GetUserDirectory("Scripts")))
+                {
+                    script.Category = string.Empty;
+                }
+                else
+                {
+                    string cat = file.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                    script.Category = Path.GetDirectoryName(cat);
+                }
+
+                Scripts.Add(script);
             }
         }
 
@@ -908,9 +920,15 @@ namespace Assistant.Scripts
                         Path = file
                     };
 
-                    script.Category = Path.GetDirectoryName(script.Path).Equals(Config.GetUserDirectory("Scripts"))
-                        ? string.Empty
-                        : Path.GetDirectoryName(file.Replace(Config.GetUserDirectory("Scripts"), "")).ToLower();
+                    if (Path.GetDirectoryName(script.Path).Equals(Config.GetUserDirectory("Scripts")))
+                    {
+                        script.Category = string.Empty;
+                    }
+                    else
+                    {
+                        string cat = file.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                        script.Category = Path.GetDirectoryName(cat);
+                    }
 
                     Scripts.Add(script);
 
