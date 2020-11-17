@@ -314,6 +314,7 @@ namespace Assistant
         private Button playMusic;
         private ComboBox playableMusicList;
         private TreeView _macroTreeViewCache = new TreeView();
+        private TreeView _scriptTreeViewCache = new TreeView();
 
 
         public Label WaitDisplay
@@ -700,18 +701,19 @@ namespace Assistant
             this.scriptsTab = new System.Windows.Forms.TabPage();
             this.subTabScripts = new System.Windows.Forms.TabControl();
             this.subScripts = new System.Windows.Forms.TabPage();
+            this.scriptTree = new System.Windows.Forms.TreeView();
             this.scriptGuide = new System.Windows.Forms.Button();
             this.scriptFilter = new System.Windows.Forms.TextBox();
             this.renameScript = new System.Windows.Forms.Button();
             this.saveScript = new System.Windows.Forms.Button();
             this.deleteScript = new System.Windows.Forms.Button();
             this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
-            this.scriptList = new System.Windows.Forms.ListBox();
             this.newScript = new System.Windows.Forms.Button();
             this.setScriptHotkey = new System.Windows.Forms.Button();
             this.recordScript = new System.Windows.Forms.Button();
             this.playScript = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.disableScriptTooltips = new System.Windows.Forms.CheckBox();
             this.scriptDisablePlayFinish = new System.Windows.Forms.CheckBox();
             this.scriptFindTypeRange = new System.Windows.Forms.CheckBox();
             this.scriptDClickTypeRange = new System.Windows.Forms.CheckBox();
@@ -786,7 +788,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.disableScriptTooltips = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -4338,13 +4339,13 @@ namespace Assistant
             // subScripts
             // 
             this.subScripts.BackColor = System.Drawing.SystemColors.Control;
+            this.subScripts.Controls.Add(this.scriptTree);
             this.subScripts.Controls.Add(this.scriptGuide);
             this.subScripts.Controls.Add(this.scriptFilter);
             this.subScripts.Controls.Add(this.renameScript);
             this.subScripts.Controls.Add(this.saveScript);
             this.subScripts.Controls.Add(this.deleteScript);
             this.subScripts.Controls.Add(this.scriptEditor);
-            this.subScripts.Controls.Add(this.scriptList);
             this.subScripts.Controls.Add(this.newScript);
             this.subScripts.Controls.Add(this.setScriptHotkey);
             this.subScripts.Controls.Add(this.recordScript);
@@ -4355,6 +4356,15 @@ namespace Assistant
             this.subScripts.Size = new System.Drawing.Size(498, 285);
             this.subScripts.TabIndex = 0;
             this.subScripts.Text = "Scripts";
+            // 
+            // scriptTree
+            // 
+            this.scriptTree.Location = new System.Drawing.Point(7, 38);
+            this.scriptTree.Name = "scriptTree";
+            this.scriptTree.Size = new System.Drawing.Size(121, 241);
+            this.scriptTree.TabIndex = 27;
+            this.scriptTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.scriptTree_AfterSelect);
+            this.scriptTree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptTree_MouseDown);
             // 
             // scriptGuide
             // 
@@ -4446,18 +4456,6 @@ namespace Assistant
             this.scriptEditor.LostFocus += new System.EventHandler(this.scriptEditor_LostFocus);
             this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
             // 
-            // scriptList
-            // 
-            this.scriptList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scriptList.FormattingEnabled = true;
-            this.scriptList.ItemHeight = 17;
-            this.scriptList.Location = new System.Drawing.Point(6, 41);
-            this.scriptList.Name = "scriptList";
-            this.scriptList.Size = new System.Drawing.Size(114, 225);
-            this.scriptList.TabIndex = 19;
-            this.scriptList.SelectedIndexChanged += new System.EventHandler(this.scriptList_SelectedIndexChanged);
-            this.scriptList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptList_MouseDown);
-            // 
             // newScript
             // 
             this.newScript.Location = new System.Drawing.Point(432, 125);
@@ -4509,12 +4507,23 @@ namespace Assistant
             this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
             this.tabPage3.Controls.Add(this.autoSaveScript);
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 285);
+            this.tabPage3.Size = new System.Drawing.Size(498, 287);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
+            // 
+            // disableScriptTooltips
+            // 
+            this.disableScriptTooltips.AutoSize = true;
+            this.disableScriptTooltips.Location = new System.Drawing.Point(252, 203);
+            this.disableScriptTooltips.Name = "disableScriptTooltips";
+            this.disableScriptTooltips.Size = new System.Drawing.Size(107, 19);
+            this.disableScriptTooltips.TabIndex = 20;
+            this.disableScriptTooltips.Text = "Disable tooltips";
+            this.disableScriptTooltips.UseVisualStyleBackColor = true;
+            this.disableScriptTooltips.CheckedChanged += new System.EventHandler(this.disableScriptTooltips_CheckedChanged);
             // 
             // scriptDisablePlayFinish
             // 
@@ -5324,17 +5333,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // disableScriptTooltips
-            // 
-            this.disableScriptTooltips.AutoSize = true;
-            this.disableScriptTooltips.Location = new System.Drawing.Point(252, 203);
-            this.disableScriptTooltips.Name = "disableScriptTooltips";
-            this.disableScriptTooltips.Size = new System.Drawing.Size(107, 19);
-            this.disableScriptTooltips.TabIndex = 20;
-            this.disableScriptTooltips.Text = "Disable tooltips";
-            this.disableScriptTooltips.UseVisualStyleBackColor = true;
-            this.disableScriptTooltips.CheckedChanged += new System.EventHandler(this.disableScriptTooltips_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5453,7 +5451,6 @@ namespace Assistant
         private Button saveScript;
         private Button deleteScript;
         private FastColoredTextBoxNS.FastColoredTextBox scriptEditor;
-        private ListBox scriptList;
         private Button newScript;
         private Button setScriptHotkey;
         private Button recordScript;
@@ -5572,5 +5569,6 @@ namespace Assistant
         private CheckBox filterSnoop;
         private CheckBox enableTextFilter;
         private CheckBox disableScriptTooltips;
+        private TreeView scriptTree;
     }
 }

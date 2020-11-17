@@ -74,7 +74,7 @@ namespace Assistant
             DressList.SetControls(dressList, dressItems);
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
-            ScriptManager.SetControls(scriptEditor, scriptList);
+            ScriptManager.SetControls(scriptEditor, scriptTree);
             WaypointManager.SetControls(waypointList);
             OverheadManager.SetControls(cliLocOverheadView);
             TextFilterManager.SetControls(textFilterList);
@@ -687,9 +687,6 @@ namespace Assistant
             else if (tabs.SelectedTab == scriptsTab)
             {
                 RedrawScripts();
-
-                if (scriptList.SelectedIndex < 0)
-                    ScriptManager.RedrawScripts();
             }
             else if (tabs.SelectedTab == friendsTab)
             {
@@ -720,6 +717,16 @@ namespace Assistant
             foreach (TreeNode node in macroTree.Nodes)
             {
                 _macroTreeViewCache.Nodes.Add((TreeNode) node.Clone());
+            }
+        }
+
+        private void RebuildScriptCache()
+        {
+            _scriptTreeViewCache = new TreeView();
+
+            foreach (TreeNode node in scriptTree.Nodes)
+            {
+                _scriptTreeViewCache.Nodes.Add((TreeNode)node.Clone());
             }
         }
 
@@ -2345,10 +2352,14 @@ namespace Assistant
 
         public RazorScript GetScriptSel()
         {
-            if (scriptList.SelectedItem == null || !(scriptList.SelectedItem is RazorScript))
+            if (scriptTree.SelectedNode == null || !(scriptTree.SelectedNode.Tag is RazorScript))
+            {
                 return null;
-
-            return (RazorScript) scriptList.SelectedItem;
+            }
+            else
+            {
+                return (RazorScript)scriptTree.SelectedNode.Tag;
+            }
         }
 
         public void playMacro_Click(object sender, System.EventArgs e)
@@ -2500,6 +2511,23 @@ namespace Assistant
             }
         }
 
+        private TreeNode GetScriptDirNode()
+        {
+            if (scriptTree.SelectedNode == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (scriptTree.SelectedNode.Tag is string)
+                    return scriptTree.SelectedNode;
+                else if (scriptTree.SelectedNode.Parent == null || !(scriptTree.SelectedNode.Parent.Tag is string))
+                    return null;
+                else
+                    return scriptTree.SelectedNode.Parent;
+            }
+        }
+
         private void Macro_AddCategory(object sender, EventArgs args)
         {
             if (!InputBox.Show(this, Language.GetString(LocString.CatName)))
@@ -2564,6 +2592,30 @@ namespace Assistant
             TreeNode node = FindNode(macroTree.Nodes, path);
             if (node != null)
                 node.Remove();
+        }
+
+        private void Script_DeleteCategory(object sender, EventArgs args)
+        {
+            string path = null;
+            if (scriptTree.SelectedNode != null)
+                path = scriptTree.SelectedNode.Tag as string;
+
+            if (path == null)
+                return;
+
+            try
+            {
+                Directory.Delete(path);
+            }
+            catch
+            {
+                MessageBox.Show(this, Language.GetString(LocString.CantDelDir), "Unable to Delete Directory",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            TreeNode node = FindNode(scriptTree.Nodes, path);
+            node?.Remove();
         }
 
         private void Macro_Move2Category(object sender, EventArgs args)
@@ -2727,11 +2779,11 @@ namespace Assistant
 
                 ScriptManager.AddHotkey(script.Name);
 
-                ScriptManager.RedrawScripts();
+                RedrawScripts();
 
                 tabs.SelectedTab = scriptsTab;
 
-                scriptList.SelectedIndex = scriptList.FindString(name);
+                //scriptList.SelectedIndex = scriptList.FindString(name);
             }
             catch (Exception ex)
             {
@@ -2780,7 +2832,17 @@ namespace Assistant
 
         private void RedrawScripts()
         {
-            ScriptManager.LoadScripts();
+            RazorScript rs = GetScriptSel();
+
+            ScriptManager.RedrawScripts();
+
+            if (rs != null)
+            {
+                scriptTree.SelectedNode = FindNode(scriptTree.Nodes, rs);
+            }
+
+            RebuildScriptCache();
+
             ScriptManager.DisplayScriptVariables(scriptVariables);
         }
 
@@ -5930,7 +5992,7 @@ namespace Assistant
                 scriptEditor.Enabled = !enabled;
                 recordScript.Enabled = !enabled;
                 setScriptHotkey.Enabled = !enabled;
-                scriptList.Enabled = !enabled;
+                macroTree.Enabled = !enabled;
 
                 saveScript.Enabled = !enabled;
                 deleteScript.Enabled = !enabled;
@@ -5973,7 +6035,9 @@ namespace Assistant
 
         private void SaveScript()
         {
-            if (scriptList.SelectedIndex < 0)
+            RazorScript selectedScript = GetScriptSel();
+
+            if (selectedScript == null)
             {
                 string filePath = $"{ScriptManager.ScriptPath}\\auto-{Guid.NewGuid().ToString().Substring(0, 4)}.razor";
 
@@ -5986,49 +6050,39 @@ namespace Assistant
                     Path = filePath
                 };
 
-                ScriptManager.RedrawScripts();
 
-                for (int i = 0; i < scriptList.Items.Count; i++)
+                TreeNode node = GetScriptDirNode();
+
+                ScriptManager.LoadScripts();
+
+
+                TreeNode newNode = new TreeNode(script.Name)
                 {
-                    RazorScript scriptItem = (RazorScript) scriptList.Items[i];
-                    if (scriptItem.Name.Equals(script.Name))
-                    {
-                        scriptList.SelectedIndex = i;
-                        break;
-                    }
+                    Tag = script
+                };
+
+                if (node == null)
+                {
+                    scriptTree.Nodes.Add(newNode);
+                }
+                else
+                {
+                    node.Nodes.Add(newNode);
                 }
 
-                ScriptManager.RedrawScripts();
+                scriptTree.SelectedNode = newNode;
             }
             else
             {
-                int curIndex = scriptList.SelectedIndex;
-
-                RazorScript script = (RazorScript) scriptList.SelectedItem;
-
                 foreach (RazorScript razorScript in ScriptManager.Scripts)
                 {
-                    if (razorScript.Name.Equals(script.Name))
+                    if (razorScript.Name.Equals(selectedScript.Name))
                     {
                         File.WriteAllText(razorScript.Path, scriptEditor.Text);
                         razorScript.Lines = File.ReadAllLines(razorScript.Path);
                     }
                 }
-
-                scriptList.SelectedIndex = curIndex;
             }
-        }
-
-        private void scriptList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (scriptList.SelectedIndex < 0)
-                return;
-
-            ScriptManager.ClearHighlightLine();
-
-            RazorScript script = (RazorScript) scriptList.SelectedItem;
-
-            scriptEditor.Text = string.Join("\n", script.Lines);
         }
 
         private void recordScript_Click(object sender, EventArgs e)
@@ -6085,16 +6139,25 @@ namespace Assistant
 
                 ScriptManager.AddHotkey(script.Name);
 
-                ScriptManager.RedrawScripts();
+                ScriptManager.LoadScripts();
 
-                for (int i = 0; i < scriptList.Items.Count; i++)
+                TreeNode newNode = new TreeNode(script.Name)
                 {
-                    if (scriptList.Items[i].ToString().Equals(script.Name))
-                    {
-                        scriptList.SelectedIndex = i;
-                        break;
-                    }
+                    Tag = script
+                };
+
+                TreeNode node = GetScriptDirNode();
+
+                if (node == null)
+                {
+                    macroTree.Nodes.Add(newNode);
                 }
+                else
+                {
+                    node.Nodes.Add(newNode);
+                }
+
+                macroTree.SelectedNode = newNode;
             }
         }
 
@@ -6105,31 +6168,34 @@ namespace Assistant
 
         private void deleteScript_Click(object sender, EventArgs e)
         {
-            if (scriptList.SelectedIndex < 0)
+            RazorScript selScript = GetScriptSel();
+
+            if (selScript == null)
+            {
+                Script_DeleteCategory(sender, e);
                 return;
+            }
 
-            RazorScript script = (RazorScript) scriptList.SelectedItem;
-
-            if (MessageBox.Show(this, Language.Format(LocString.DelConf, $"{scriptList.SelectedItem}"),
-                    "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show(this, Language.Format(LocString.DelConf, $"{selScript.Name}"),
+                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 try
                 {
-                    File.Delete(script.Path);
-                    ScriptManager.RemoveHotkey(script.Name);
+                    File.Delete(selScript.Path);
+                    ScriptManager.RemoveHotkey(selScript.Name);
                 }
                 catch
                 {
                     return;
                 }
 
-                ScriptManager.RedrawScripts();
+                RedrawScripts();
 
-                if (scriptList.Items.Count > 0)
-                {
-                    scriptList.SelectedIndex = 0;
-                }
+                TreeNode node = FindNode(macroTree.Nodes, selScript);
+                node?.Remove();
             }
+
+            RebuildScriptCache();
         }
 
         private void setScriptHotkey_Click(object sender, EventArgs e)
@@ -6260,26 +6326,6 @@ namespace Assistant
             Config.SetProperty("AutoSaveScript", autoSaveScript.Checked);
         }
 
-        private ContextMenu m_ScriptContextMenu = null;
-        private void scriptList_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && e.Clicks == 1)
-            {
-                if (m_ScriptContextMenu == null)
-                {
-                    m_ScriptContextMenu = new ContextMenu(new[]
-                    {
-                        new MenuItem("Open Externally", OpenScriptExternally),
-                        new MenuItem("Copy to Clipboard", CopyScriptToClipboard),
-                        new MenuItem("-"),
-                        new MenuItem("Reload Scripts", ReloadScripts)
-                    });
-                }
-
-                m_ScriptContextMenu.Show(scriptList, new Point(e.X, e.Y));
-            }
-        }
-
         private void CopyScriptToClipboard(object sender, EventArgs e)
         {
             RazorScript script = GetScriptSel();
@@ -6299,7 +6345,7 @@ namespace Assistant
 
         private void ReloadScripts(object sender, EventArgs e)
         {
-            ScriptManager.RedrawScripts();
+            RedrawScripts();
         }
 
         private void OpenScriptExternally(object sender, EventArgs args)
@@ -6458,7 +6504,9 @@ namespace Assistant
 
         private void renameScript_Click(object sender, EventArgs e)
         {
-            if (scriptList.SelectedIndex < 0)
+            RazorScript selScript = GetScriptSel();
+
+            if (selScript == null)
                 return;
 
             if (InputBox.Show(this, "Enter a new name for the script", "Rename Script"))
@@ -6472,8 +6520,6 @@ namespace Assistant
                         Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
-                RazorScript script = (RazorScript) scriptList.SelectedItem;
 
                 string newScriptPath = Path.Combine(ScriptManager.ScriptPath, $"{name}.razor");
 
@@ -6489,16 +6535,16 @@ namespace Assistant
                 {
                     Engine.MainWindow.SafeAction(s =>
                     {
-                        ScriptManager.RemoveHotkey(script.Name);
+                        ScriptManager.RemoveHotkey(selScript.Name);
 
-                        File.Move(script.Path, newScriptPath);
+                        File.Move(selScript.Path, newScriptPath);
 
-                        script.Path = newScriptPath;
-                        script.Name = Path.GetFileNameWithoutExtension(newScriptPath);
+                        selScript.Path = newScriptPath;
+                        selScript.Name = Path.GetFileNameWithoutExtension(newScriptPath);
 
-                        ScriptManager.RedrawScripts();
+                        RedrawScripts();
 
-                        ScriptManager.AddHotkey(script.Name);
+                        ScriptManager.AddHotkey(selScript.Name);
                     });
                 }
                 catch
@@ -6515,31 +6561,40 @@ namespace Assistant
 
         private void scriptFilter_TextChanged(object sender, EventArgs e)
         {
-             scriptList.SafeAction(s =>
-             {
-                 s.BeginUpdate();
-                 s.Items.Clear();
+            scriptTree.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Nodes.Clear();
 
-                 if (!string.IsNullOrEmpty(scriptFilter.Text))
-                 {
-                     foreach (RazorScript script in ScriptManager.Scripts)
-                     {
-                         if (script.Name.IndexOf(scriptFilter.Text, StringComparison.OrdinalIgnoreCase) != -1)
-                         {
-                             s.Items.Add(script);
-                         }
-                     }
-                 }
-                 else
-                 {
-                     foreach (RazorScript script in ScriptManager.Scripts)
-                     {
-                         s.Items.Add(script);
-                     }
-                 }
+                if (scriptFilter.Text != string.Empty)
+                {
+                    foreach (TreeNode _parentNode in _scriptTreeViewCache.Nodes) // We won't filter on the top parent domain
+                    {
+                        if (_parentNode.Text.ToLower().Contains(scriptFilter.Text.ToLower()))
+                        {
+                            s.Nodes.Add((TreeNode)_parentNode.Clone());
+                        }
 
-                 s.EndUpdate();
-             });
+                        if (_parentNode.Nodes.Count > 0) // Just in case
+                        {
+                            foreach (TreeNode _subSubChildNode in _parentNode.Nodes)
+                            {
+                                if (_subSubChildNode.Text.ToLower().Contains(s.Text.ToLower()))
+                                {
+                                    s.Nodes.Add((TreeNode)_subSubChildNode.Clone());
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    RedrawScripts();
+                }
+
+                //enables redrawing tree after all objects have been added
+                s.EndUpdate();
+            });
         }
 
         private void scriptTargetTypeRange_CheckedChanged(object sender, EventArgs e)
@@ -7003,6 +7058,63 @@ namespace Assistant
             Config.SetProperty("DisableScriptTooltips", disableScriptTooltips.Checked);
 
             ScriptManager.InitScriptEditor();
+        }
+
+        private void scriptTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            RazorScript script = e.Node.Tag as RazorScript;
+
+            if (script == null)
+                return;
+
+            Engine.MainWindow.SafeAction(s =>
+            {
+                if (hotkeyTree.TopNode == null)
+                {
+                    HotKey.RebuildList(hotkeyTree);
+                    RebuildHotKeyCache();
+                }
+
+                TreeNode resultNode = SearchTreeView(script.Name, hotkeyTree.Nodes);
+
+                if (resultNode != null)
+                {
+                    KeyData hk = (KeyData)resultNode.Tag;
+
+                    if (hk != null && !string.IsNullOrEmpty(hk.KeyString()))
+                    {
+                        macroActGroup.Text = $"Actions ({hk.KeyString()})";
+                    }
+                    else
+                    {
+                        macroActGroup.Text = $"Actions (Not Set)";
+                    }
+                }
+
+                ScriptManager.ClearHighlightLine();
+                scriptEditor.Text = string.Join("\n", script.Lines);
+            });
+        }
+
+        private ContextMenu m_ScriptContextMenu = null;
+
+        private void scriptTree_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                if (m_ScriptContextMenu == null)
+                {
+                    m_ScriptContextMenu = new ContextMenu(new[]
+                    {
+                        new MenuItem("Open Externally", OpenScriptExternally),
+                        new MenuItem("Copy to Clipboard", CopyScriptToClipboard),
+                        new MenuItem("-"),
+                        new MenuItem("Reload Scripts", ReloadScripts)
+                    });
+                }
+
+                m_ScriptContextMenu.Show(scriptTree, new Point(e.X, e.Y));
+            }
         }
     }
 }

@@ -49,7 +49,8 @@ namespace Assistant.Scripts
 
         private static FastColoredTextBox ScriptEditor { get; set; }
 
-        private static ListBox ScriptList { get; set; }
+        //private static ListBox ScriptList { get; set; }
+        private static TreeView ScriptTree { get; set; }
 
         private static Script _queuedScript;
 
@@ -303,10 +304,10 @@ namespace Assistant.Scripts
             Timer = new ScriptTimer();
         }
 
-        public static void SetControls(FastColoredTextBox scriptEditor, ListBox scriptList)
+        public static void SetControls(FastColoredTextBox scriptEditor, TreeView scriptTree)
         {
             ScriptEditor = scriptEditor;
-            ScriptList = scriptList;
+            ScriptTree = scriptTree;
         }
 
         public static void OnLogin()
@@ -330,7 +331,7 @@ namespace Assistant.Scripts
         {
             Timer.Start();
         }
-        
+
         public static List<RazorScript> Scripts { get; set; }
 
         public static void LoadScripts()
@@ -874,7 +875,7 @@ namespace Assistant.Scripts
 
         public static void RedrawScripts()
         {
-            ScriptList.SafeAction(s =>
+            /*ScriptList.SafeAction(s =>
             {
                 int curIndex = 0;
 
@@ -896,7 +897,76 @@ namespace Assistant.Scripts
                     s.SelectedIndex = curIndex - 1;
 
                 s.EndUpdate();
-            });
+            });*/
+
+            LoadScripts();
+
+            ScriptTree.BeginUpdate();
+            ScriptTree.Nodes.Clear();
+            Recurse(ScriptTree.Nodes, Config.GetUserDirectory("Scripts"));
+            ScriptTree.EndUpdate();
+            ScriptTree.Refresh();
+            ScriptTree.Update();
+        }
+
+        private static void Recurse(TreeNodeCollection nodes, string path)
+        {
+            try
+            {
+                var razorFiles = Directory.GetFiles(ScriptPath, "*.razor");
+                razorFiles = razorFiles.OrderBy(fileName => fileName).ToArray();
+                foreach (var file in razorFiles)
+                {
+                    RazorScript script = new RazorScript
+                    {
+                        Lines = File.ReadAllLines(file),
+                        Name = Path.GetFileNameWithoutExtension(file),
+                        Path = file
+                    };
+
+                    Scripts.Add(script);
+
+                    if (nodes != null)
+                    {
+                        TreeNode node = new TreeNode(script.Name)
+                        {
+                            Tag = script
+                        };
+
+                        nodes.Add(node);
+                    }
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+
+            try
+            {
+
+                foreach (string directory in Directory.GetDirectories(path))
+                {
+                    if (!string.IsNullOrEmpty(directory) && !directory.Equals(".") && !directory.Equals(".."))
+                    {
+                        if (nodes != null)
+                        {
+                            TreeNode node = new TreeNode($"[{Path.GetFileName(directory)}]");
+                            node.Tag = directory;
+                            nodes.Add(node);
+                            Recurse(node.Nodes, directory);
+                        }
+                        else
+                        {
+                            Recurse(null, directory);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // ignored
+            }
         }
     }
 }
