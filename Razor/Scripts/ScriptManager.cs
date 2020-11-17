@@ -156,7 +156,7 @@ namespace Assistant.Scripts
 
             foreach (RazorScript script in Scripts)
             {
-                AddHotkey(script.Name);
+                AddHotkey(script);
             }
         }
 
@@ -233,7 +233,7 @@ namespace Assistant.Scripts
             StopScript();
         }
 
-        public static void AddHotkey(string script)
+        public static void AddHotkey(RazorScript script)
         {
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayScript, script), HotkeyCallback,
                 script);
@@ -246,7 +246,9 @@ namespace Assistant.Scripts
 
         public static void OnHotKey(ref object state)
         {
-            PlayScript((string) state);
+            RazorScript script = (RazorScript) state;
+
+            PlayScript(script.Lines);
         }
 
         public static void StopScript()
@@ -332,14 +334,16 @@ namespace Assistant.Scripts
             Timer.Start();
         }
 
-        public static List<RazorScript> Scripts { get; set; }
+        public static List<RazorScript> Scripts { get; private set; }
 
         public static void LoadScripts()
         {
             Scripts.Clear();
 
-            var razorFiles = Directory.GetFiles(ScriptPath, "*.razor");
+            var razorFiles = Directory.GetFiles(ScriptPath, "*.razor", SearchOption.AllDirectories);
+
             razorFiles = razorFiles.OrderBy(fileName => fileName).ToArray();
+
             foreach (var file in razorFiles)
             {
                 Scripts.Add(new RazorScript
@@ -875,46 +879,26 @@ namespace Assistant.Scripts
 
         public static void RedrawScripts()
         {
-            /*ScriptList.SafeAction(s =>
+            ScriptTree.SafeAction(s =>
             {
-                int curIndex = 0;
-
-                if (s.SelectedIndex > -1)
-                    curIndex = s.SelectedIndex;
+                Scripts.Clear();
 
                 s.BeginUpdate();
-                s.Items.Clear();
-
-                LoadScripts();
-
-                foreach (RazorScript script in Scripts)
-                {
-                    if (script != null)
-                        s.Items.Add(script);
-                }
-
-                if (s.Items.Count > 0 && (curIndex - 1 != -1))
-                    s.SelectedIndex = curIndex - 1;
-
+                s.Nodes.Clear();
+                Recurse(s.Nodes, Config.GetUserDirectory("Scripts"));
                 s.EndUpdate();
-            });*/
-
-            LoadScripts();
-
-            ScriptTree.BeginUpdate();
-            ScriptTree.Nodes.Clear();
-            Recurse(ScriptTree.Nodes, Config.GetUserDirectory("Scripts"));
-            ScriptTree.EndUpdate();
-            ScriptTree.Refresh();
-            ScriptTree.Update();
+                s.Refresh();
+                s.Update();
+            });
         }
 
         private static void Recurse(TreeNodeCollection nodes, string path)
         {
             try
             {
-                var razorFiles = Directory.GetFiles(ScriptPath, "*.razor");
+                var razorFiles = Directory.GetFiles(path, "*.razor");
                 razorFiles = razorFiles.OrderBy(fileName => fileName).ToArray();
+
                 foreach (var file in razorFiles)
                 {
                     RazorScript script = new RazorScript
@@ -923,6 +907,10 @@ namespace Assistant.Scripts
                         Name = Path.GetFileNameWithoutExtension(file),
                         Path = file
                     };
+
+                    script.Category = Path.GetDirectoryName(script.Path).Equals(Config.GetUserDirectory("Scripts"))
+                        ? string.Empty
+                        : Path.GetDirectoryName(file.Replace(Config.GetUserDirectory("Scripts"), "")).ToLower();
 
                     Scripts.Add(script);
 
@@ -951,9 +939,13 @@ namespace Assistant.Scripts
                     {
                         if (nodes != null)
                         {
-                            TreeNode node = new TreeNode($"[{Path.GetFileName(directory)}]");
-                            node.Tag = directory;
+                            TreeNode node = new TreeNode($"[{Path.GetFileName(directory)}]")
+                            {
+                                Tag = directory
+                            };
+
                             nodes.Add(node);
+
                             Recurse(node.Nodes, directory);
                         }
                         else

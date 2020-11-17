@@ -2777,7 +2777,7 @@ namespace Assistant
                     Path = path
                 };
 
-                ScriptManager.AddHotkey(script.Name);
+                ScriptManager.AddHotkey(script);
 
                 RedrawScripts();
 
@@ -6076,7 +6076,7 @@ namespace Assistant
             {
                 foreach (RazorScript razorScript in ScriptManager.Scripts)
                 {
-                    if (razorScript.Name.Equals(selectedScript.Name))
+                    if (razorScript.Path.Equals(selectedScript.Path))
                     {
                         File.WriteAllText(razorScript.Path, scriptEditor.Text);
                         razorScript.Lines = File.ReadAllLines(razorScript.Path);
@@ -6119,7 +6119,12 @@ namespace Assistant
                     return;
                 }
 
-                string path = Path.Combine(ScriptManager.ScriptPath, $"{name}.razor");
+                TreeNode node = GetScriptDirNode();
+
+                string path = (node == null || !(node.Tag is string))
+                    ? Config.GetUserDirectory("Scripts")
+                    : (string)node.Tag;
+                path = Path.Combine(path, $"{name}.razor");
 
                 if (File.Exists(path))
                 {
@@ -6137,7 +6142,7 @@ namespace Assistant
                     Path = path
                 };
 
-                ScriptManager.AddHotkey(script.Name);
+                ScriptManager.AddHotkey(script);
 
                 ScriptManager.LoadScripts();
 
@@ -6146,18 +6151,16 @@ namespace Assistant
                     Tag = script
                 };
 
-                TreeNode node = GetScriptDirNode();
-
                 if (node == null)
                 {
-                    macroTree.Nodes.Add(newNode);
+                    scriptTree.Nodes.Add(newNode);
                 }
                 else
                 {
                     node.Nodes.Add(newNode);
                 }
 
-                macroTree.SelectedNode = newNode;
+                scriptTree.SelectedNode = newNode;
             }
         }
 
@@ -6521,7 +6524,7 @@ namespace Assistant
                     return;
                 }
 
-                string newScriptPath = Path.Combine(ScriptManager.ScriptPath, $"{name}.razor");
+                string newScriptPath = Path.Combine(Path.GetDirectoryName(selScript.Path), $"{name}.razor");
 
                 if (File.Exists(newScriptPath))
                 {
@@ -6544,7 +6547,7 @@ namespace Assistant
 
                         RedrawScripts();
 
-                        ScriptManager.AddHotkey(selScript.Name);
+                        ScriptManager.AddHotkey(selScript);
                     });
                 }
                 catch
@@ -6579,7 +6582,7 @@ namespace Assistant
                         {
                             foreach (TreeNode _subSubChildNode in _parentNode.Nodes)
                             {
-                                if (_subSubChildNode.Text.ToLower().Contains(s.Text.ToLower()))
+                                if (_subSubChildNode.Text.ToLower().Contains(scriptFilter.Text.ToLower()))
                                 {
                                     s.Nodes.Add((TreeNode)_subSubChildNode.Clone());
                                 }

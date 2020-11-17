@@ -4362,6 +4362,7 @@ namespace Assistant
             this.scriptTree.Location = new System.Drawing.Point(7, 38);
             this.scriptTree.Name = "scriptTree";
             this.scriptTree.Size = new System.Drawing.Size(121, 241);
+            this.scriptTree.Sorted = true;
             this.scriptTree.TabIndex = 27;
             this.scriptTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.scriptTree_AfterSelect);
             this.scriptTree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptTree_MouseDown);
