@@ -701,13 +701,10 @@ namespace Assistant
             this.scriptsTab = new System.Windows.Forms.TabPage();
             this.subTabScripts = new System.Windows.Forms.TabControl();
             this.subScripts = new System.Windows.Forms.TabPage();
-            this.scriptTree = new System.Windows.Forms.TreeView();
             this.scriptGuide = new System.Windows.Forms.Button();
-            this.scriptFilter = new System.Windows.Forms.TextBox();
             this.renameScript = new System.Windows.Forms.Button();
             this.saveScript = new System.Windows.Forms.Button();
             this.deleteScript = new System.Windows.Forms.Button();
-            this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
             this.newScript = new System.Windows.Forms.Button();
             this.setScriptHotkey = new System.Windows.Forms.Button();
             this.recordScript = new System.Windows.Forms.Button();
@@ -788,6 +785,10 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.scriptSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.scriptTree = new System.Windows.Forms.TreeView();
+            this.scriptFilter = new System.Windows.Forms.TextBox();
+            this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -837,7 +838,6 @@ namespace Assistant
             this.scriptsTab.SuspendLayout();
             this.subTabScripts.SuspendLayout();
             this.subScripts.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.scriptVariablesBox.SuspendLayout();
             this.friendsTab.SuspendLayout();
@@ -847,6 +847,11 @@ namespace Assistant
             this.advancedTab.SuspendLayout();
             this.groupBox16.SuspendLayout();
             this.aboutTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scriptSplitContainer)).BeginInit();
+            this.scriptSplitContainer.Panel1.SuspendLayout();
+            this.scriptSplitContainer.Panel2.SuspendLayout();
+            this.scriptSplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).BeginInit();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
@@ -4339,13 +4344,11 @@ namespace Assistant
             // subScripts
             // 
             this.subScripts.BackColor = System.Drawing.SystemColors.Control;
-            this.subScripts.Controls.Add(this.scriptTree);
+            this.subScripts.Controls.Add(this.scriptSplitContainer);
             this.subScripts.Controls.Add(this.scriptGuide);
-            this.subScripts.Controls.Add(this.scriptFilter);
             this.subScripts.Controls.Add(this.renameScript);
             this.subScripts.Controls.Add(this.saveScript);
             this.subScripts.Controls.Add(this.deleteScript);
-            this.subScripts.Controls.Add(this.scriptEditor);
             this.subScripts.Controls.Add(this.newScript);
             this.subScripts.Controls.Add(this.setScriptHotkey);
             this.subScripts.Controls.Add(this.recordScript);
@@ -4357,16 +4360,6 @@ namespace Assistant
             this.subScripts.TabIndex = 0;
             this.subScripts.Text = "Scripts";
             // 
-            // scriptTree
-            // 
-            this.scriptTree.Location = new System.Drawing.Point(7, 38);
-            this.scriptTree.Name = "scriptTree";
-            this.scriptTree.Size = new System.Drawing.Size(121, 241);
-            this.scriptTree.Sorted = true;
-            this.scriptTree.TabIndex = 27;
-            this.scriptTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.scriptTree_AfterSelect);
-            this.scriptTree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptTree_MouseDown);
-            // 
             // scriptGuide
             // 
             this.scriptGuide.Location = new System.Drawing.Point(432, 253);
@@ -4376,15 +4369,6 @@ namespace Assistant
             this.scriptGuide.Text = "Help";
             this.scriptGuide.UseVisualStyleBackColor = true;
             this.scriptGuide.Click += new System.EventHandler(this.scriptGuide_Click);
-            // 
-            // scriptFilter
-            // 
-            this.scriptFilter.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scriptFilter.Location = new System.Drawing.Point(6, 7);
-            this.scriptFilter.Name = "scriptFilter";
-            this.scriptFilter.Size = new System.Drawing.Size(114, 25);
-            this.scriptFilter.TabIndex = 25;
-            this.scriptFilter.TextChanged += new System.EventHandler(this.scriptFilter_TextChanged);
             // 
             // renameScript
             // 
@@ -4415,47 +4399,6 @@ namespace Assistant
             this.deleteScript.Text = "Delete";
             this.deleteScript.UseVisualStyleBackColor = true;
             this.deleteScript.Click += new System.EventHandler(this.deleteScript_Click);
-            // 
-            // scriptEditor
-            // 
-            this.scriptEditor.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
-            this.scriptEditor.BackBrush = null;
-            this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
-            this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.scriptEditor.CharHeight = 15;
-            this.scriptEditor.CharWidth = 7;
-            this.scriptEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.scriptEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.scriptEditor.Font = new System.Drawing.Font("Consolas", 9.75F);
-            this.scriptEditor.ForeColor = System.Drawing.Color.White;
-            this.scriptEditor.IsReplaceMode = false;
-            this.scriptEditor.LeftBracket = '(';
-            this.scriptEditor.LeftBracket2 = '[';
-            this.scriptEditor.LineNumberColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(144)))), ((int)(((byte)(175)))));
-            this.scriptEditor.Location = new System.Drawing.Point(123, 6);
-            this.scriptEditor.Name = "scriptEditor";
-            this.scriptEditor.Paddings = new System.Windows.Forms.Padding(0);
-            this.scriptEditor.RightBracket = ')';
-            this.scriptEditor.RightBracket2 = ']';
-            this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
-            this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(303, 273);
-            this.scriptEditor.TabIndex = 20;
-            this.scriptEditor.Zoom = 100;
-            this.scriptEditor.LostFocus += new System.EventHandler(this.scriptEditor_LostFocus);
-            this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
             // 
             // newScript
             // 
@@ -5334,6 +5277,88 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // scriptSplitContainer
+            // 
+            this.scriptSplitContainer.BackColor = System.Drawing.SystemColors.Control;
+            this.scriptSplitContainer.Location = new System.Drawing.Point(7, 7);
+            this.scriptSplitContainer.Name = "scriptSplitContainer";
+            // 
+            // scriptSplitContainer.Panel1
+            // 
+            this.scriptSplitContainer.Panel1.Controls.Add(this.scriptTree);
+            this.scriptSplitContainer.Panel1.Controls.Add(this.scriptFilter);
+            // 
+            // scriptSplitContainer.Panel2
+            // 
+            this.scriptSplitContainer.Panel2.Controls.Add(this.scriptEditor);
+            this.scriptSplitContainer.Size = new System.Drawing.Size(419, 272);
+            this.scriptSplitContainer.SplitterDistance = 110;
+            this.scriptSplitContainer.SplitterWidth = 10;
+            this.scriptSplitContainer.TabIndex = 28;
+            // 
+            // scriptTree
+            // 
+            this.scriptTree.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.scriptTree.Location = new System.Drawing.Point(0, 31);
+            this.scriptTree.Name = "scriptTree";
+            this.scriptTree.Size = new System.Drawing.Size(110, 241);
+            this.scriptTree.Sorted = true;
+            this.scriptTree.TabIndex = 29;
+            this.scriptTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.scriptTree_AfterSelect);
+            this.scriptTree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptTree_MouseDown);
+            // 
+            // scriptFilter
+            // 
+            this.scriptFilter.Dock = System.Windows.Forms.DockStyle.Top;
+            this.scriptFilter.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scriptFilter.Location = new System.Drawing.Point(0, 0);
+            this.scriptFilter.Name = "scriptFilter";
+            this.scriptFilter.Size = new System.Drawing.Size(110, 25);
+            this.scriptFilter.TabIndex = 28;
+            this.scriptFilter.TextChanged += new System.EventHandler(this.scriptFilter_TextChanged);
+            // 
+            // scriptEditor
+            // 
+            this.scriptEditor.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
+            this.scriptEditor.BackBrush = null;
+            this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
+            this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.scriptEditor.CharHeight = 15;
+            this.scriptEditor.CharWidth = 7;
+            this.scriptEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.scriptEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.scriptEditor.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.scriptEditor.Font = new System.Drawing.Font("Consolas", 9.75F);
+            this.scriptEditor.ForeColor = System.Drawing.Color.White;
+            this.scriptEditor.IsReplaceMode = false;
+            this.scriptEditor.LeftBracket = '(';
+            this.scriptEditor.LeftBracket2 = '[';
+            this.scriptEditor.LineNumberColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(144)))), ((int)(((byte)(175)))));
+            this.scriptEditor.Location = new System.Drawing.Point(0, 6);
+            this.scriptEditor.Name = "scriptEditor";
+            this.scriptEditor.Paddings = new System.Windows.Forms.Padding(0);
+            this.scriptEditor.RightBracket = ')';
+            this.scriptEditor.RightBracket2 = ']';
+            this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
+            this.scriptEditor.ShowCaretWhenInactive = false;
+            this.scriptEditor.Size = new System.Drawing.Size(299, 266);
+            this.scriptEditor.TabIndex = 21;
+            this.scriptEditor.Zoom = 100;
+            this.scriptEditor.LostFocus += new System.EventHandler(this.scriptEditor_LostFocus);
+            this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5423,8 +5448,6 @@ namespace Assistant
             this.scriptsTab.ResumeLayout(false);
             this.subTabScripts.ResumeLayout(false);
             this.subScripts.ResumeLayout(false);
-            this.subScripts.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.scriptVariablesBox.ResumeLayout(false);
@@ -5440,6 +5463,12 @@ namespace Assistant
             this.groupBox16.ResumeLayout(false);
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
+            this.scriptSplitContainer.Panel1.ResumeLayout(false);
+            this.scriptSplitContainer.Panel1.PerformLayout();
+            this.scriptSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.scriptSplitContainer)).EndInit();
+            this.scriptSplitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -5451,7 +5480,6 @@ namespace Assistant
         private TabPage subScripts;
         private Button saveScript;
         private Button deleteScript;
-        private FastColoredTextBoxNS.FastColoredTextBox scriptEditor;
         private Button newScript;
         private Button setScriptHotkey;
         private Button recordScript;
@@ -5465,7 +5493,6 @@ namespace Assistant
         private CheckBox autoSaveScript;
         private CheckBox autoSaveScriptPlay;
         private Button renameScript;
-        private TextBox scriptFilter;
         private CheckBox scriptDClickTypeRange;
         private CheckBox scriptTargetTypeRange;
         private CheckBox scriptFindTypeRange;
@@ -5570,6 +5597,9 @@ namespace Assistant
         private CheckBox filterSnoop;
         private CheckBox enableTextFilter;
         private CheckBox disableScriptTooltips;
+        private SplitContainer scriptSplitContainer;
         private TreeView scriptTree;
+        private TextBox scriptFilter;
+        private FastColoredTextBoxNS.FastColoredTextBox scriptEditor;
     }
 }
