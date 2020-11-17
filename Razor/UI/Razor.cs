@@ -2554,7 +2554,7 @@ namespace Assistant
             }
             catch
             {
-                MessageBox.Show(this, Language.Format(LocString.CanCreateDir, path), "Unabled to Create Directory",
+                MessageBox.Show(this, Language.Format(LocString.CanCreateDir, path), "Unable to Create Directory",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -7104,6 +7104,9 @@ namespace Assistant
                 {
                     m_ScriptContextMenu = new ContextMenu(new[]
                     {
+                        new MenuItem("Add Category", AddScriptCategory),
+                        new MenuItem("Move to Category", MoveScriptCategory),
+                        new MenuItem("-"),
                         new MenuItem("Open Externally", OpenScriptExternally),
                         new MenuItem("Copy to Clipboard", CopyScriptToClipboard),
                         new MenuItem("-"),
@@ -7113,6 +7116,91 @@ namespace Assistant
 
                 m_ScriptContextMenu.Show(scriptTree, new Point(e.X, e.Y));
             }
+        }
+
+        private void MoveScriptCategory(object sender, EventArgs e)
+        {
+            RazorScript sel = GetScriptSel();
+
+            if (sel == null)
+                return;
+
+            List<string> dirNames = new List<string>
+            {
+                "<None>"
+            };
+
+            foreach (string dir in Directory.GetDirectories(Config.GetUserDirectory("Scripts")))
+            {
+                dirNames.Add(dir.Substring(dir.LastIndexOf('\\') + 1));
+            }
+
+            if (!InputDropdown.Show(this, Language.GetString(LocString.CatName), dirNames.ToArray()))
+                return;
+
+            try
+            {
+                File.Move(sel.Path, InputDropdown.GetString().Equals("<None>")
+                    ? Path.Combine(Config.GetUserDirectory("Scripts"), $"{Path.GetFileName(sel.Path)}")
+                    : Path.Combine(Config.GetUserDirectory("Scripts"),
+                        $"{InputDropdown.GetString()}/{Path.GetFileName(sel.Path)}"));
+            }
+            catch
+            {
+                MessageBox.Show(this, Language.GetString(LocString.CantMoveMacro), "Unable to Move Script",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            RedrawScripts();
+            scriptTree.SelectedNode = FindNode(scriptTree.Nodes, sel);
+        }
+
+        private void AddScriptCategory(object sender, EventArgs args)
+        {
+            if (!InputBox.Show(this, Language.GetString(LocString.CatName)))
+                return;
+
+            string path = InputBox.GetString();
+
+            if (string.IsNullOrEmpty(path) || path.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+                path.IndexOfAny(m_InvalidNameChars) != -1)
+            {
+                MessageBox.Show(this, Language.GetString(LocString.InvalidChars), "Invalid Path", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            TreeNode node = GetScriptDirNode();
+
+            try
+            {
+                if (node == null || !(node.Tag is string))
+                    path = Path.Combine(Config.GetUserDirectory("Scripts"), path);
+                else
+                    path = Path.Combine((string)node.Tag, path);
+
+                Engine.EnsureDirectory(path);
+            }
+            catch
+            {
+                MessageBox.Show(this, Language.Format(LocString.CanCreateDir, path), "Unable to Create Directory",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            TreeNode newNode = new TreeNode($"[{Path.GetFileName(path)}]")
+            {
+                Tag = path
+            };
+
+            if (node == null)
+                scriptTree.Nodes.Add(newNode);
+            else
+                node.Nodes.Add(newNode);
+
+            RedrawScripts();
+
+            scriptTree.SelectedNode = newNode;
         }
     }
 }
