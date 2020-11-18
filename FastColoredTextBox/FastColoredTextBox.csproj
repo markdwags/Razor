@@ -70,7 +70,7 @@
   <ItemGroup>
     <Compile Include="AutocompleteItem.cs" />
     <Compile Include="AutocompleteMenu.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Bookmarks.cs" />
     <Compile Include="Char.cs" />

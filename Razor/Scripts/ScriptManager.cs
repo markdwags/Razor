@@ -49,7 +49,8 @@ namespace Assistant.Scripts
 
         private static FastColoredTextBox ScriptEditor { get; set; }
 
-        private static ListBox ScriptList { get; set; }
+        //private static ListBox ScriptList { get; set; }
+        private static TreeView ScriptTree { get; set; }
 
         private static Script _queuedScript;
 
@@ -155,7 +156,7 @@ namespace Assistant.Scripts
 
             foreach (RazorScript script in Scripts)
             {
-                AddHotkey(script.Name);
+                AddHotkey(script);
             }
         }
 
@@ -232,20 +233,22 @@ namespace Assistant.Scripts
             StopScript();
         }
 
-        public static void AddHotkey(string script)
+        public static void AddHotkey(RazorScript script)
         {
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayScript, script), HotkeyCallback,
                 script);
         }
 
-        public static void RemoveHotkey(string script)
+        public static void RemoveHotkey(RazorScript script)
         {
-            HotKey.Remove(Language.Format(LocString.PlayScript, script));
+            HotKey.Remove(Language.Format(LocString.PlayScript, script.ToString()));
         }
 
         public static void OnHotKey(ref object state)
         {
-            PlayScript((string) state);
+            RazorScript script = (RazorScript) state;
+
+            PlayScript(script.Lines);
         }
 
         public static void StopScript()
@@ -255,11 +258,35 @@ namespace Assistant.Scripts
             Interpreter.StopScript();
         }
 
+        public static RazorScript AddScript(string file)
+        {
+            RazorScript script = new RazorScript
+            {
+                Lines = File.ReadAllLines(file),
+                Name = Path.GetFileNameWithoutExtension(file),
+                Path = file
+            };
+
+            if (Path.GetDirectoryName(script.Path).Equals(Config.GetUserDirectory("Scripts")))
+            {
+                script.Category = string.Empty;
+            }
+            else
+            {
+                string cat = file.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                script.Category = Path.GetDirectoryName(cat);
+            }
+
+            Scripts.Add(script);
+
+            return script;
+        }
+
         public static void PlayScript(string scriptName)
         {
             foreach (RazorScript razorScript in Scripts)
             {
-                if (razorScript.Name.Equals(scriptName, StringComparison.OrdinalIgnoreCase))
+                if (razorScript.ToString().Equals(scriptName, StringComparison.OrdinalIgnoreCase))
                 {
                     PlayScript(razorScript.Lines);
                     break;
@@ -303,10 +330,10 @@ namespace Assistant.Scripts
             Timer = new ScriptTimer();
         }
 
-        public static void SetControls(FastColoredTextBox scriptEditor, ListBox scriptList)
+        public static void SetControls(FastColoredTextBox scriptEditor, TreeView scriptTree)
         {
             ScriptEditor = scriptEditor;
-            ScriptList = scriptList;
+            ScriptTree = scriptTree;
         }
 
         public static void OnLogin()
@@ -330,23 +357,20 @@ namespace Assistant.Scripts
         {
             Timer.Start();
         }
-        
-        public static List<RazorScript> Scripts { get; set; }
+
+        public static List<RazorScript> Scripts { get; private set; }
 
         public static void LoadScripts()
         {
             Scripts.Clear();
 
-            var razorFiles = Directory.GetFiles(ScriptPath, "*.razor");
+            var razorFiles = Directory.GetFiles(ScriptPath, "*.razor", SearchOption.AllDirectories);
+
             razorFiles = razorFiles.OrderBy(fileName => fileName).ToArray();
+
             foreach (var file in razorFiles)
             {
-                Scripts.Add(new RazorScript
-                {
-                    Lines = File.ReadAllLines(file),
-                    Name = Path.GetFileNameWithoutExtension(file),
-                    Path = file
-                });
+                AddScript(file);
             }
         }
 
@@ -874,29 +898,75 @@ namespace Assistant.Scripts
 
         public static void RedrawScripts()
         {
-            ScriptList.SafeAction(s =>
+            ScriptTree.SafeAction(s =>
             {
-                int curIndex = 0;
-
-                if (s.SelectedIndex > -1)
-                    curIndex = s.SelectedIndex;
+                Scripts.Clear();
 
                 s.BeginUpdate();
-                s.Items.Clear();
-
-                LoadScripts();
-
-                foreach (RazorScript script in Scripts)
-                {
-                    if (script != null)
-                        s.Items.Add(script);
-                }
-
-                if (s.Items.Count > 0 && (curIndex - 1 != -1))
-                    s.SelectedIndex = curIndex - 1;
-
+                s.Nodes.Clear();
+                Recurse(s.Nodes, Config.GetUserDirectory("Scripts"));
                 s.EndUpdate();
+                s.Refresh();
+                s.Update();
             });
+        }
+
+        private static void Recurse(TreeNodeCollection nodes, string path)
+        {
+            try
+            {
+                var razorFiles = Directory.GetFiles(path, "*.razor");
+                razorFiles = razorFiles.OrderBy(fileName => fileName).ToArray();
+
+                foreach (var file in razorFiles)
+                {
+                    RazorScript script = AddScript(file);
+
+                    if (nodes != null)
+                    {
+                        TreeNode node = new TreeNode(script.Name)
+                        {
+                            Tag = script
+                        };
+
+                        nodes.Add(node);
+                    }
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+
+            try
+            {
+
+                foreach (string directory in Directory.GetDirectories(path))
+                {
+                    if (!string.IsNullOrEmpty(directory) && !directory.Equals(".") && !directory.Equals(".."))
+                    {
+                        if (nodes != null)
+                        {
+                            TreeNode node = new TreeNode($"[{Path.GetFileName(directory)}]")
+                            {
+                                Tag = directory
+                            };
+
+                            nodes.Add(node);
+
+                            Recurse(node.Nodes, directory);
+                        }
+                        else
+                        {
+                            Recurse(null, directory);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // ignored
+            }
         }
     }
 }

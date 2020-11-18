@@ -20,15 +20,16 @@
 
 namespace Assistant.Scripts
 {
-    public class RazorScript
+    public sealed class RazorScript
     {
         public string Path { get; set; }
         public string[] Lines { get; set; }
         public string Name { get; set; }
+        public string Category { get; set; }
 
         public override string ToString()
         {
-            return Name;
+            return string.IsNullOrEmpty(Category) ? Name : $"{Category}\\{Name}";
         }
     }
 }
