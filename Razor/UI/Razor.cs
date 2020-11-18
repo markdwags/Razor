@@ -2534,7 +2534,7 @@ namespace Assistant
                 return;
 
             string path = InputBox.GetString();
-            if (path == null || path == "" || path.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+            if (string.IsNullOrEmpty(path) || path.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
                 path.IndexOfAny(m_InvalidNameChars) != -1)
             {
                 MessageBox.Show(this, Language.GetString(LocString.InvalidChars), "Invalid Path", MessageBoxButtons.OK,
@@ -2590,8 +2590,7 @@ namespace Assistant
             }
 
             TreeNode node = FindNode(macroTree.Nodes, path);
-            if (node != null)
-                node.Remove();
+            node?.Remove();
         }
 
         private void Script_DeleteCategory(object sender, EventArgs args)
@@ -2717,16 +2716,6 @@ namespace Assistant
                 {
                     return;
                 }
-
-                /*Macro m = new Macro(newMacro);
-                MacroManager.Add(m);
-                TreeNode newNode = new TreeNode(Path.GetFileNameWithoutExtension(m.Filename));
-                newNode.Tag = m;
-                if (node == null)
-                    macroTree.Nodes.Add(newNode);
-                else
-                    node.Nodes.Add(newNode);
-                macroTree.SelectedNode = newNode;*/
 
                 RedrawMacros();
             }
@@ -2882,7 +2871,7 @@ namespace Assistant
                     }
                     else
                     {
-                        macroActGroup.Text = $"Actions (Not Set)";
+                        macroActGroup.Text = "Actions (Not Set)";
                     }
                 }
             });
@@ -2915,8 +2904,7 @@ namespace Assistant
                 MacroManager.Remove(m);
 
                 TreeNode node = FindNode(macroTree.Nodes, m);
-                if (node != null)
-                    node.Remove();
+                node?.Remove();
             }
 
             RebuildMacroCache();
@@ -5992,37 +5980,19 @@ namespace Assistant
                 scriptEditor.Enabled = !enabled;
                 recordScript.Enabled = !enabled;
                 setScriptHotkey.Enabled = !enabled;
-                macroTree.Enabled = !enabled;
+                scriptTree.Enabled = !enabled;
 
                 saveScript.Enabled = !enabled;
-                deleteScript.Enabled = !enabled;
                 newScript.Enabled = !enabled;
-                renameScript.Enabled = !enabled;
 
                 playScript.Text = !enabled ? "Play" : "Stop";
+
+                recMacro.Enabled = !enabled;
+                playMacro.Enabled = !enabled;
+                macroTree.Enabled = actionList.Enabled = !enabled;
+                newMacro.Enabled = delMacro.Enabled = !enabled;
+                nextMacroAction.Enabled = !enabled;
             });
-        }
-
-        private void onScriptReload(object sender, System.EventArgs e)
-        {
-            /*Macro m = GetMacroSel();
-
-            if (m == null)
-                return;
-
-            m.Load();
-            RedrawActionList(m);*/
-        }
-
-        private void onScriptSave(object sender, System.EventArgs e)
-        {
-            /*Macro m = GetMacroSel();
-
-            if (m == null)
-                return;
-
-            m.Save();
-            RedrawActionList(m);*/
         }
 
         private void scriptEditor_LostFocus(object sender, EventArgs e)
@@ -6162,38 +6132,6 @@ namespace Assistant
         private void saveScript_Click(object sender, EventArgs e)
         {
             SaveScript();
-        }
-
-        private void deleteScript_Click(object sender, EventArgs e)
-        {
-            RazorScript selScript = GetScriptSel();
-
-            if (selScript == null)
-            {
-                Script_DeleteCategory(sender, e);
-                return;
-            }
-
-            if (MessageBox.Show(this, Language.Format(LocString.DelConf, $"{selScript.Name}"),
-                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                try
-                {
-                    File.Delete(selScript.Path);
-                    ScriptManager.RemoveHotkey(selScript);
-                }
-                catch
-                {
-                    return;
-                }
-
-                RedrawScripts();
-
-                TreeNode node = FindNode(macroTree.Nodes, selScript);
-                node?.Remove();
-            }
-
-            RebuildScriptCache();
         }
 
         private void setScriptHotkey_Click(object sender, EventArgs e)
@@ -6499,59 +6437,7 @@ namespace Assistant
         {
             Config.SetProperty("AutoSaveScriptPlay", autoSaveScriptPlay.Checked);
         }
-
-        private void renameScript_Click(object sender, EventArgs e)
-        {
-            RazorScript selScript = GetScriptSel();
-
-            if (selScript == null)
-                return;
-
-            if (InputBox.Show(this, "Enter a new name for the script", "Rename Script"))
-            {
-                string name = InputBox.GetString();
-
-                if (string.IsNullOrEmpty(name) || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
-                    name.IndexOfAny(m_InvalidNameChars) != -1)
-                {
-                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
-                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                string newScriptPath = Path.Combine(Path.GetDirectoryName(selScript.Path), $"{name}.razor");
-
-                if (File.Exists(newScriptPath))
-                {
-                    MessageBox.Show(this, "A script with that name already exists.",
-                        Language.GetString(LocString.Invalid),
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                try
-                {
-                    Engine.MainWindow.SafeAction(s =>
-                    {
-                        ScriptManager.RemoveHotkey(selScript);
-
-                        File.Move(selScript.Path, newScriptPath);
-
-                        selScript.Path = newScriptPath;
-                        selScript.Name = Path.GetFileNameWithoutExtension(newScriptPath);
-
-                        RedrawScripts();
-
-                        ScriptManager.AddHotkey(selScript);
-                    });
-                }
-                catch
-                {
-                    // ignore
-                }
-            }
-        }
-
+        
         private void highlightFriend_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("HighlightFriend", highlightFriend.Checked);
@@ -7081,11 +6967,11 @@ namespace Assistant
 
                     if (hk != null && !string.IsNullOrEmpty(hk.KeyString()))
                     {
-                        macroActGroup.Text = $"Actions ({hk.KeyString()})";
+                        scriptHotkey.Text = hk.KeyString();
                     }
                     else
                     {
-                        macroActGroup.Text = $"Actions (Not Set)";
+                        scriptHotkey.Text = "Not Set";
                     }
                 }
 
@@ -7100,21 +6986,119 @@ namespace Assistant
         {
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                if (m_ScriptContextMenu == null)
+                RazorScript selScript = GetScriptSel();
+
+                if (selScript == null)
+                {
+                    m_ScriptContextMenu = new ContextMenu(new[]
+                    {
+                        new MenuItem("Add Category", AddScriptCategory),
+                        new MenuItem("-"),
+                        new MenuItem("Reload Scripts", ReloadScripts)
+                    });
+                }
+                else
                 {
                     m_ScriptContextMenu = new ContextMenu(new[]
                     {
                         new MenuItem("Add Category", AddScriptCategory),
                         new MenuItem("Move to Category", MoveScriptCategory),
                         new MenuItem("-"),
+                        new MenuItem($"Rename '{selScript.Name}'", RenameScript),
+                        new MenuItem($"Delete '{selScript.Name}'", DeleteScript),
+                        new MenuItem("-"),
                         new MenuItem("Open Externally", OpenScriptExternally),
                         new MenuItem("Copy to Clipboard", CopyScriptToClipboard),
                         new MenuItem("-"),
-                        new MenuItem("Reload Scripts", ReloadScripts)
+                        new MenuItem("Reload all scripts", ReloadScripts)
                     });
                 }
 
                 m_ScriptContextMenu.Show(scriptTree, new Point(e.X, e.Y));
+            }
+        }
+
+        private void DeleteScript(object sender, EventArgs e)
+        {
+            RazorScript selScript = GetScriptSel();
+
+            if (selScript == null)
+            {
+                Script_DeleteCategory(sender, e);
+                return;
+            }
+
+            if (MessageBox.Show(this, Language.Format(LocString.DelConf, $"{selScript.Name}"),
+                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try
+                {
+                    File.Delete(selScript.Path);
+                    ScriptManager.RemoveHotkey(selScript);
+                }
+                catch
+                {
+                    return;
+                }
+
+                RedrawScripts();
+
+                TreeNode node = FindNode(macroTree.Nodes, selScript);
+                node?.Remove();
+            }
+
+            RebuildScriptCache();
+        }
+
+        private void RenameScript(object sender, EventArgs e)
+        {
+            RazorScript selScript = GetScriptSel();
+
+            if (selScript == null)
+                return;
+
+            if (InputBox.Show(this, "Enter a new name for the script", "Rename Script"))
+            {
+                string name = InputBox.GetString();
+
+                if (string.IsNullOrEmpty(name) || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
+                    name.IndexOfAny(m_InvalidNameChars) != -1)
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string newScriptPath = Path.Combine(Path.GetDirectoryName(selScript.Path), $"{name}.razor");
+
+                if (File.Exists(newScriptPath))
+                {
+                    MessageBox.Show(this, "A script with that name already exists.",
+                        Language.GetString(LocString.Invalid),
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                try
+                {
+                    Engine.MainWindow.SafeAction(s =>
+                    {
+                        ScriptManager.RemoveHotkey(selScript);
+
+                        File.Move(selScript.Path, newScriptPath);
+
+                        selScript.Path = newScriptPath;
+                        selScript.Name = Path.GetFileNameWithoutExtension(newScriptPath);
+
+                        RedrawScripts();
+
+                        ScriptManager.AddHotkey(selScript);
+                    });
+                }
+                catch
+                {
+                    // ignore
+                }
             }
         }
 
