@@ -2597,6 +2597,7 @@ namespace Assistant
         private void Script_DeleteCategory(object sender, EventArgs args)
         {
             string path = null;
+
             if (scriptTree.SelectedNode != null)
                 path = scriptTree.SelectedNode.Tag as string;
 
@@ -2606,16 +2607,15 @@ namespace Assistant
             try
             {
                 Directory.Delete(path);
+
+                TreeNode node = FindNode(scriptTree.Nodes, path);
+                node?.Remove();
             }
             catch
             {
                 MessageBox.Show(this, Language.GetString(LocString.CantDelDir), "Unable to Delete Directory",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
             }
-
-            TreeNode node = FindNode(scriptTree.Nodes, path);
-            node?.Remove();
         }
 
         private void Macro_Move2Category(object sender, EventArgs args)
