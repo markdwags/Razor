@@ -2807,6 +2807,27 @@ namespace Assistant
             return null;
         }
 
+        private static TreeNode FindScriptNode(TreeNodeCollection nodes, object tag)
+        {
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                TreeNode node = nodes[i];
+
+                if (node.Tag.ToString().Equals(tag.ToString()))
+                {
+                    return node;
+                }
+                else if (node.Nodes.Count > 0)
+                {
+                    node = FindScriptNode(node.Nodes, tag);
+                    if (node != null)
+                        return node;
+                }
+            }
+
+            return null;
+        }
+
         private void RedrawMacros()
         {
             Macro ms = GetMacroSel();
@@ -2827,7 +2848,7 @@ namespace Assistant
 
             if (rs != null)
             {
-                scriptTree.SelectedNode = FindNode(scriptTree.Nodes, rs);
+                scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, rs);
             }
 
             RebuildScriptCache();
@@ -7102,6 +7123,8 @@ namespace Assistant
 
                         RedrawScripts();
 
+                        scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, selScript);
+
                         ScriptManager.AddHotkey(selScript);
                     });
                 }
@@ -7146,7 +7169,7 @@ namespace Assistant
             }
 
             RedrawScripts();
-            scriptTree.SelectedNode = FindNode(scriptTree.Nodes, sel);
+            scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, sel);
         }
 
         private void AddScriptCategory(object sender, EventArgs args)
