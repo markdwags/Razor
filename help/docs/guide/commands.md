@@ -381,13 +381,17 @@ say 'Hello world!' 454
 
 ## script
 
-Syntax: `script 'name'`
+Syntax: `script 'name'` or `script 'category\name'`
 
-Description: This command will call another script.
+Description: This command will call another script. You can call scripts in categories using `cat1\cat2\scriptname` format.
 
 ```csharp
 if hp = 40
    script 'healself'
+endif
+
+if mana = 40
+   script 'magery\domeditation'
 endif
 ```
 

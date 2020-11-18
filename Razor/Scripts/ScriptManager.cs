@@ -286,7 +286,7 @@ namespace Assistant.Scripts
         {
             foreach (RazorScript razorScript in Scripts)
             {
-                if (razorScript.Name.Equals(scriptName, StringComparison.OrdinalIgnoreCase))
+                if (razorScript.ToString().Equals(scriptName, StringComparison.OrdinalIgnoreCase))
                 {
                     PlayScript(razorScript.Lines);
                     break;

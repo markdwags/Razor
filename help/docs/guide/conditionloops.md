@@ -14,6 +14,16 @@ else
 endif
 ```
 
+```php
+if not (statement)
+
+elseif not (statement)
+
+else
+
+endif
+```
+
 Example(s):
 
 ```php
