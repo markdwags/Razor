@@ -6988,16 +6988,17 @@ namespace Assistant
             {
                 RazorScript selScript = GetScriptSel();
 
-                if (selScript == null)
+                if (scriptTree.SelectedNode.Tag is string)
                 {
                     m_ScriptContextMenu = new ContextMenu(new[]
                     {
                         new MenuItem("Add Category", AddScriptCategory),
+                        new MenuItem("Delete Category", Script_DeleteCategory),
                         new MenuItem("-"),
                         new MenuItem("Reload Scripts", ReloadScripts)
                     });
                 }
-                else
+                else if (selScript != null)
                 {
                     m_ScriptContextMenu = new ContextMenu(new[]
                     {
@@ -7011,6 +7012,15 @@ namespace Assistant
                         new MenuItem("Copy to Clipboard", CopyScriptToClipboard),
                         new MenuItem("-"),
                         new MenuItem("Reload all scripts", ReloadScripts)
+                    });
+                }
+                else
+                {
+                    m_ScriptContextMenu = new ContextMenu(new[]
+                    {
+                        new MenuItem("Add Category", AddScriptCategory),
+                        new MenuItem("-"),
+                        new MenuItem("Reload Scripts", ReloadScripts)
                     });
                 }
 
