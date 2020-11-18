@@ -6327,17 +6327,14 @@ namespace Assistant
         {
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
-                    return;
+                ContextMenu menu = new ContextMenu();
 
                 if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
                 {
-                    ContextMenu menu = new ContextMenu();
-
                     menu.MenuItems.Add("Comment", OnScriptComment);
                     menu.MenuItems.Add("Uncomment", OnScriptUncomment);
 
-                    if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
+                    if (!string.IsNullOrEmpty(scriptEditor.SelectedText) && !ScriptManager.Running && !ScriptManager.Recording && World.Player == null)
                     {
                         menu.MenuItems.Add("-");
                         menu.MenuItems.Add("Play selected script code", OnScriptPlaySelected);
@@ -6357,14 +6354,24 @@ namespace Assistant
                         }
                     }
 
-                    menu.Show(scriptEditor, new Point(e.X, e.Y));
+                    menu.MenuItems.Add("-");
                 }
+
+                menu.MenuItems.Add(scriptSplitContainer.Panel1Collapsed ? "Show script tree" : "Hide script tree",
+                    OnScriptHideTreeView);
+
+                menu.Show(scriptEditor, new Point(e.X, e.Y));
             }
             else if (e.Button == MouseButtons.Left && e.Clicks == 2)
             {
                 if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
                     return;
             }
+        }
+
+        private void OnScriptHideTreeView(object sender, EventArgs e)
+        {
+            scriptSplitContainer.Panel1Collapsed = !scriptSplitContainer.Panel1Collapsed;
         }
 
         private void OnScriptComment(object sender, System.EventArgs e)
@@ -7009,44 +7016,36 @@ namespace Assistant
             {
                 RazorScript selScript = GetScriptSel();
 
-                if (scriptTree.SelectedNode.Tag is string)
+                m_ScriptContextMenu = new ContextMenu();
+
+                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Add Category", AddScriptCategory));
+
+                if (scriptTree.SelectedNode != null && scriptTree.SelectedNode.Tag is string)
                 {
-                    m_ScriptContextMenu = new ContextMenu(new[]
-                    {
-                        new MenuItem("Add Category", AddScriptCategory),
-                        new MenuItem("Delete Category", Script_DeleteCategory),
-                        new MenuItem("-"),
-                        new MenuItem("Reload Scripts", ReloadScripts)
-                    });
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Delete Category", Script_DeleteCategory));
                 }
                 else if (selScript != null)
                 {
-                    m_ScriptContextMenu = new ContextMenu(new[]
-                    {
-                        new MenuItem("Add Category", AddScriptCategory),
-                        new MenuItem("Move to Category", MoveScriptCategory),
-                        new MenuItem("-"),
-                        new MenuItem($"Rename '{selScript.Name}'", RenameScript),
-                        new MenuItem($"Delete '{selScript.Name}'", DeleteScript),
-                        new MenuItem("-"),
-                        new MenuItem("Open Externally", OpenScriptExternally),
-                        new MenuItem("Copy to Clipboard", CopyScriptToClipboard),
-                        new MenuItem("-"),
-                        new MenuItem("Reload all scripts", ReloadScripts)
-                    });
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Move to Category", MoveScriptCategory));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Rename '{selScript.Name}'", RenameScript));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Delete '{selScript.Name}'", DeleteScript));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Open Externally", OpenScriptExternally));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Copy to Clipboard", CopyScriptToClipboard));
                 }
-                else
-                {
-                    m_ScriptContextMenu = new ContextMenu(new[]
-                    {
-                        new MenuItem("Add Category", AddScriptCategory),
-                        new MenuItem("-"),
-                        new MenuItem("Reload Scripts", ReloadScripts)
-                    });
-                }
+
+                m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
+                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Reload Scripts", ReloadScripts));
+                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Hide script tree", HideScriptTreeView));
 
                 m_ScriptContextMenu.Show(scriptTree, new Point(e.X, e.Y));
             }
+        }
+
+        private void HideScriptTreeView(object sender, EventArgs e)
+        {
+            scriptSplitContainer.Panel1Collapsed = true;
         }
 
         private void DeleteScript(object sender, EventArgs e)
