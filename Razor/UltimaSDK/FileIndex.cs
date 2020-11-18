@@ -254,7 +254,7 @@ namespace Ultima
 
                         for (int i = 0; i < length; i++)
                         {
-                            string entryName = string.Format("build/{0}/{1:D8}{2}", uopPattern, i, uopEntryExtension);
+                            string entryName = $"build/{uopPattern}/{i:D8}{uopEntryExtension}";
                             ulong hash = HashFileName(entryName);
 
                             if (!hashes.ContainsKey(hash))

@@ -625,7 +625,7 @@ namespace Assistant
 
         public static string GetControlText(string name)
         {
-            name = String.Format("{0}::Text", name);
+            name = $"{name}::Text";
             if (m_Controls.ContainsKey(name))
                 return m_Controls[name] as string;
             else
@@ -642,8 +642,7 @@ namespace Assistant
         {
             string value = m_Strings[key] as string;
             if (value == null)
-                value = String.Format("LanguageString \"{0}\" not found!",
-                    key); //throw new MissingFieldException( String.Format( "Razor requested Language Pack string '{0}', but it does not exist in the current language pack.", key ) );
+                value = $"LanguageString \"{key}\" not found!"; //throw new MissingFieldException( String.Format( "Razor requested Language Pack string '{0}', but it does not exist in the current language pack.", key ) );
             return value;
         }
 
@@ -656,7 +655,7 @@ namespace Assistant
                 value = m_CliLoc.GetString(key);
 
             if (value == null)
-                value = String.Format("LanguageString \"{0}\" not found!", key);
+                value = $"LanguageString \"{key}\" not found!";
             return value;
         }
 
@@ -681,7 +680,7 @@ namespace Assistant
             if (m_CliLoc != null)
                 value = m_CliLoc.GetString(1044060 + skill);
             if (value == null)
-                value = String.Format("LanguageString \"{0}\" not found!", 1044060 + skill);
+                value = $"LanguageString \"{1044060 + skill}\" not found!";
             return value;
         }
 
@@ -702,7 +701,7 @@ namespace Assistant
 
             m_CliLocName = "enu";
             string filename = Path.Combine(Config.GetInstallDirectory("Language"),
-                String.Format("Razor_lang.{0}", lang.ToLower()));
+                $"Razor_lang.{lang.ToLower()}");
             if (!File.Exists(filename))
                 return false;
             m_Current = lang;
@@ -843,7 +842,7 @@ namespace Assistant
                 string fileName = "[CliLoc]";
                 try
                 {
-                    fileName = Ultima.Files.GetFilePath(String.Format("cliloc.{0}", m_CliLocName));
+                    fileName = Ultima.Files.GetFilePath($"cliloc.{m_CliLocName}");
                 }
                 catch
                 {
@@ -917,7 +916,7 @@ namespace Assistant
 
             for (int i = 0; i < controls.Count; i++)
             {
-                string find = String.Format("{0}::{1}", name, controls[i].Name);
+                string find = $"{name}::{controls[i].Name}";
                 string str = m_Controls[find] as string;
                 if (str != null)
                     controls[i].Text = str;
@@ -926,7 +925,7 @@ namespace Assistant
                 {
                     foreach (ColumnHeader ch in ((ListView) controls[i]).Columns)
                     {
-                        find = String.Format("{0}::{1}::{2}", name, controls[i].Name, ch.Index);
+                        find = $"{name}::{controls[i].Name}::{ch.Index}";
                         str = m_Controls[find] as string;
                         if (str != null)
                             ch.Text = str;
@@ -944,7 +943,7 @@ namespace Assistant
 #endif
 
             LoadControls(form.Name, form.Controls);
-            string text = m_Controls[String.Format("{0}::Text", form.Name)] as string;
+            string text = m_Controls[$"{form.Name}::Text"] as string;
             if (text != null)
                 form.Text = text;
 

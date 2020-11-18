@@ -243,7 +243,7 @@ namespace Assistant
 
             sb.Replace(@"{luck}", p.Luck.ToString());
 
-            sb.Replace(@"{damage}", String.Format("{0}-{1}", p.DamageMin, p.DamageMax));
+            sb.Replace(@"{damage}", $"{p.DamageMin}-{p.DamageMax}");
 
             sb.Replace(@"{maxweight}", World.Player.MaxWeight.ToString());
 

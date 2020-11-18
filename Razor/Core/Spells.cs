@@ -89,7 +89,7 @@ namespace Assistant
 
         public override string ToString()
         {
-            return String.Format("{0} (#{1})", Language.GetString(this.Name), GetID());
+            return $"{Language.GetString(this.Name)} (#{GetID()})";
         }
 
         public string GetName()

@@ -545,7 +545,7 @@ namespace Assistant
             {
                 try
                 {
-                    m_Mutex = new System.Threading.Mutex(true, String.Format("Razor_Profile_{0}", m_Name));
+                    m_Mutex = new System.Threading.Mutex(true, $"Razor_Profile_{m_Name}");
 
                     if (!m_Mutex.WaitOne(10, false))
                         throw new Exception("Can't grab profile mutex, must be in use!");

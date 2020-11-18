@@ -2157,7 +2157,7 @@ namespace Assistant
             }
             catch (Exception e)
             {
-                Engine.LogCrash(new Exception(String.Format("Exception in Ultima.dll cliloc: {0}, {1}", num, ext_str),
+                Engine.LogCrash(new Exception($"Exception in Ultima.dll cliloc: {num}, {ext_str}",
                     e));
             }
         }
@@ -2189,9 +2189,9 @@ namespace Assistant
 
             string text;
             if ((affixType & 1) != 0) // prepend
-                text = String.Format("{0}{1}", affix, Language.ClilocFormat(num, args));
+                text = $"{affix}{Language.ClilocFormat(num, args)}";
             else // 0 == append, 2 = system
-                text = String.Format("{0}{1}", Language.ClilocFormat(num, args), affix);
+                text = $"{Language.ClilocFormat(num, args)}{affix}";
             HandleSpeech(p, phea, serial, body, type, hue, font, Language.CliLocName.ToUpper(), name, text);
         }
 

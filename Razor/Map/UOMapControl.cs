@@ -194,8 +194,8 @@ namespace Assistant.MapUO
             if (Format(new Point(focus.X, focus.Y), Ultima.Map.Felucca, ref xLong, ref yLat, ref xMins, ref yMins,
                 ref xEast, ref ySouth))
             {
-                string locString = String.Format("{0}°{1}'{2} {3}°{4}'{5} | ({6},{7})", yLat, yMins, ySouth ? "S" : "N",
-                    xLong, xMins, xEast ? "E" : "W", World.Player.Position.X, World.Player.Position.Y);
+                string locString =
+                    $"{yLat}°{yMins}'{(ySouth ? "S" : "N")} {xLong}°{xMins}'{(xEast ? "E" : "W")} | ({World.Player.Position.X},{World.Player.Position.Y})";
                 SizeF size = gfx.MeasureString(locString, m_RegFont);
                 gfx.FillRectangle(Brushes.Wheat, 0, 0, size.Width + 2, size.Height + 2);
                 gfx.DrawRectangle(Pens.Black, 0, 0, size.Width + 2, size.Height + 2);

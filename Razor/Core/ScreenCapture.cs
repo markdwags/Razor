@@ -165,7 +165,7 @@ namespace Assistant
             if (list.Items.Count >= 500)
                 return;
 
-            string[] files = Directory.GetFiles(path, String.Format("*.{0}", ext));
+            string[] files = Directory.GetFiles(path, $"*.{ext}");
             for (int i = 0; i < files.Length && list.Items.Count < 500; i++)
                 list.Items.Add(Path.GetFileName(files[i]));
         }

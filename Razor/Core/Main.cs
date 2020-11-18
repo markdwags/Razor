@@ -271,9 +271,7 @@ namespace Assistant
             if (!Language.Load(defLang))
             {
                 MessageBox.Show(
-                    String.Format(
-                        "WARNING: Razor was unable to load the file Language/Razor_lang.{0}\n.",
-                        defLang), "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    $"WARNING: Razor was unable to load the file Language/Razor_lang.{defLang}\n.", "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -305,8 +303,7 @@ namespace Assistant
             if (clientPath == null || !File.Exists(clientPath))
             {
                 MessageBox.Show(SplashScreen.Instance,
-                    String.Format("Unable to find the client specified.\n\"{0}\"",
-                        clientPath != null ? clientPath : "-null-"), "Could Not Find Client",
+                    $"Unable to find the client specified.\n\"{(clientPath != null ? clientPath : "-null-")}\"", "Could Not Find Client",
                     MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 SplashScreen.End();
                 return;
@@ -389,9 +386,7 @@ namespace Assistant
             if (!Language.Load(defLang))
             {
                 MessageBox.Show(
-                    String.Format(
-                        "WARNING: Razor was unable to load the file Language/Razor_lang.{0}\n.",
-                        defLang), "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    $"WARNING: Razor was unable to load the file Language/Razor_lang.{defLang}\n.", "Language Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

@@ -102,10 +102,10 @@ namespace Ultima
             }
             else
             {
-                mapDataPath = Path.Combine(path, String.Format("mapdif{0}.mul", index));
+                mapDataPath = Path.Combine(path, $"mapdif{index}.mul");
                 if (!File.Exists(mapDataPath))
                     mapDataPath = null;
-                mapIndexPath = Path.Combine(path, String.Format("mapdifl{0}.mul", index));
+                mapIndexPath = Path.Combine(path, $"mapdifl{index}.mul");
                 if (!File.Exists(mapIndexPath))
                     mapIndexPath = null;
             }
@@ -125,13 +125,13 @@ namespace Ultima
             }
             else
             {
-                staDataPath = Path.Combine(path, String.Format("stadif{0}.mul", index));
+                staDataPath = Path.Combine(path, $"stadif{index}.mul");
                 if (!File.Exists(staDataPath))
                     staDataPath = null;
-                staIndexPath = Path.Combine(path, String.Format("stadifl{0}.mul", index));
+                staIndexPath = Path.Combine(path, $"stadifl{index}.mul");
                 if (!File.Exists(staIndexPath))
                     staIndexPath = null;
-                staLookupPath = Path.Combine(path, String.Format("stadifi{0}.mul", index));
+                staLookupPath = Path.Combine(path, $"stadifi{index}.mul");
                 if (!File.Exists(staLookupPath))
                     staLookupPath = null;
             }

@@ -59,7 +59,7 @@ namespace Assistant.Macros
 
         public override string ToString()
         {
-            return String.Format("?{0}?", GetType().Name);
+            return $"?{GetType().Name}?";
         }
 
         public abstract string ToScript();
@@ -175,7 +175,7 @@ namespace Assistant.Macros
             if (m_Comment == null)
                 m_Comment = "";
 
-            return String.Format("// {0}", m_Comment);
+            return $"// {m_Comment}";
         }
 
         private MenuItem[] m_MenuItems;
@@ -431,7 +431,7 @@ namespace Assistant.Macros
                 PlayerData.DoubleClick(click);
             else
                 World.Player.SendMessage(MsgLevel.Force, LocString.NoItemOfType,
-                    m_Item ? ((ItemID) m_Gfx).ToString() : String.Format("(Character) 0x{0:X}", m_Gfx));
+                    m_Item ? ((ItemID) m_Gfx).ToString() : $"(Character) 0x{m_Gfx:X}");
             return true;
         }
 
@@ -448,7 +448,7 @@ namespace Assistant.Macros
         public override string ToString()
         {
             return Language.Format(LocString.DClickA1,
-                m_Item ? ((ItemID) m_Gfx).ToString() : String.Format("(Character) 0x{0:X}", m_Gfx));
+                m_Item ? ((ItemID) m_Gfx).ToString() : $"(Character) 0x{m_Gfx:X}");
         }
 
         private MenuItem[] m_MenuItems;
@@ -921,7 +921,7 @@ namespace Assistant.Macros
             list.AddRange(m_Switches);
             list.Add(m_TextEntries.Length);
             for (int i = 0; i < m_TextEntries.Length; i++)
-                list.Add(String.Format("{0}&{1}", m_TextEntries[i].EntryID, m_TextEntries[i].Text));
+                list.Add($"{m_TextEntries[i].EntryID}&{m_TextEntries[i].Text}");
             return DoSerialize((object[]) list.ToArray(typeof(object)));
         }
 
@@ -1352,7 +1352,7 @@ namespace Assistant.Macros
             else
             {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType,
-                    m_Mobile ? String.Format("Character [{0}]", m_Gfx) : ((ItemID) m_Gfx).ToString());
+                    m_Mobile ? $"Character [{m_Gfx}]" : ((ItemID) m_Gfx).ToString());
             }
 
             return true;
@@ -1518,7 +1518,7 @@ namespace Assistant.Macros
 
         public override string ToString()
         {
-            return String.Format("Exec: {0}", Language.GetString(LocString.LastTarget));
+            return $"Exec: {Language.GetString(LocString.LastTarget)}";
         }
 
         public override string ToScript()
@@ -2472,9 +2472,9 @@ namespace Assistant.Macros
 
             if (!m_Strict)
                 m_MenuItems[1].Text =
-                    String.Format("Change to \"{0}\"", Language.Format(LocString.WaitGumpA1, m_GumpID));
+                    $"Change to \"{Language.Format(LocString.WaitGumpA1, m_GumpID)}\"";
             else
-                m_MenuItems[1].Text = String.Format("Change to \"{0}\"", Language.GetString(LocString.WaitAnyGump));
+                m_MenuItems[1].Text = $"Change to \"{Language.GetString(LocString.WaitAnyGump)}\"";
             m_MenuItems[1].Enabled = m_GumpID != 0 || m_Strict;
 
             return m_MenuItems;
@@ -3234,7 +3234,7 @@ namespace Assistant.Macros
                     string str = (string) m_Value;
                     if (str.Length > 10)
                         str = str.Substring(0, 7) + "...";
-                    return String.Format("If ( SysMessage \"{0}\" )", str);
+                    return $"If ( SysMessage \"{str}\" )";
                 }
 
                 case IfVarType.Skill:
@@ -3365,7 +3365,7 @@ namespace Assistant.Macros
 
         public override string ToString()
         {
-            return String.Format("Exec: {0}", m_Key.DispName);
+            return $"Exec: {m_Key.DispName}";
         }
     }
 
@@ -3411,7 +3411,7 @@ namespace Assistant.Macros
 
         public override string ToString()
         {
-            return String.Format("For ( 1 to {0} )", m_Max);
+            return $"For ( 1 to {m_Max} )";
         }
 
         private MenuItem[] m_MenuItems;
@@ -4414,7 +4414,7 @@ namespace Assistant.Macros
                     string str = (string) m_Value;
                     if (str.Length > 10)
                         str = str.Substring(0, 7) + "...";
-                    return String.Format("Do While ( SysMessage \"{0}\" )", str);
+                    return $"Do While ( SysMessage \"{str}\" )";
                 }
 
                 case DoWhileVarType.Skill:

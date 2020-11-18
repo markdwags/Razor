@@ -290,9 +290,9 @@ namespace Assistant
         public override string ToString()
         {
             if (Key != 0)
-                return String.Format("{0} ({1})", this.DispName, KeyString());
+                return $"{this.DispName} ({KeyString()})";
             else
-                return String.Format("{0} ({1})", this.DispName, Language.GetString(LocString.NotAssigned));
+                return $"{this.DispName} ({Language.GetString(LocString.NotAssigned)})";
         }
     }
 

@@ -50,11 +50,11 @@ namespace Assistant
         {
             try
             {
-                return string.Format("{0} ({1:X4})", Ultima.TileData.ItemTable[m_ID].Name, m_ID);
+                return $"{Ultima.TileData.ItemTable[m_ID].Name} ({m_ID:X4})";
             }
             catch
             {
-                return String.Format(" ({0:X4})", m_ID);
+                return $" ({m_ID:X4})";
             }
         }
 

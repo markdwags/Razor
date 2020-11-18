@@ -877,10 +877,10 @@ namespace Assistant
                 ListViewItem cur = skillList.Items[i];
                 if (cur.Tag == skill)
                 {
-                    cur.SubItems[1].Text = String.Format("{0:F1}", skill.Value);
-                    cur.SubItems[2].Text = String.Format("{0:F1}", skill.Base);
-                    cur.SubItems[3].Text = String.Format("{0}{1:F1}", (skill.Delta > 0 ? "+" : ""), skill.Delta);
-                    cur.SubItems[4].Text = String.Format("{0:F1}", skill.Cap);
+                    cur.SubItems[1].Text = $"{skill.Value:F1}";
+                    cur.SubItems[2].Text = $"{skill.Base:F1}";
+                    cur.SubItems[3].Text = $"{(skill.Delta > 0 ? "+" : "")}{skill.Delta:F1}";
+                    cur.SubItems[4].Text = $"{skill.Cap:F1}";
                     cur.SubItems[5].Text = skill.Lock.ToString()[0].ToString();
                     SortSkills();
                     return;
@@ -919,10 +919,10 @@ namespace Assistant
                     Skill sk = World.Player.Skills[i];
                     Total += sk.Base;
                     items[0] = Language.Skill2Str(i); //((SkillName)i).ToString();
-                    items[1] = String.Format("{0:F1}", sk.Value);
-                    items[2] = String.Format("{0:F1}", sk.Base);
-                    items[3] = String.Format("{0}{1:F1}", (sk.Delta > 0 ? "+" : ""), sk.Delta);
-                    items[4] = String.Format("{0:F1}", sk.Cap);
+                    items[1] = $"{sk.Value:F1}";
+                    items[2] = $"{sk.Base:F1}";
+                    items[3] = $"{(sk.Delta > 0 ? "+" : "")}{sk.Delta:F1}";
+                    items[4] = $"{sk.Cap:F1}";
                     items[5] = sk.Lock.ToString()[0].ToString();
 
                     ListViewItem lvi = new ListViewItem(items);
@@ -935,7 +935,7 @@ namespace Assistant
             }
 
             skillList.EndUpdate();
-            baseTotal.Text = String.Format("{0:F1}", Total);
+            baseTotal.Text = $"{Total:F1}";
         }
 
         private void OnFilterCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
@@ -1287,7 +1287,7 @@ namespace Assistant
                 return;
             }
 
-            string file = String.Format("Profiles/{0}.xml", remove);
+            string file = $"Profiles/{remove}.xml";
             if (File.Exists(file))
                 File.Delete(file);
 
@@ -2144,7 +2144,7 @@ namespace Assistant
         {
             int o = opacity.Value;
             Config.SetProperty("Opacity", o);
-            opacityLabel.Text = String.Format("Opacity: {0}%", o);
+            opacityLabel.Text = $"Opacity: {o}%";
             this.Opacity = ((double) o) / 100.0;
         }
 
@@ -2559,7 +2559,7 @@ namespace Assistant
                 return;
             }
 
-            TreeNode newNode = new TreeNode(String.Format("[{0}]", Path.GetFileName(path)));
+            TreeNode newNode = new TreeNode($"[{Path.GetFileName(path)}]");
             newNode.Tag = path;
             if (node == null)
                 macroTree.Nodes.Add(newNode);
@@ -3738,7 +3738,7 @@ namespace Assistant
             }
             catch
             {
-                MessageBox.Show(String.Format("Unable to open browser to '{0}'", site), "Error", MessageBoxButtons.OK,
+                MessageBox.Show($"Unable to open browser to '{site}'", "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
         }

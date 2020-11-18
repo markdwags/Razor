@@ -753,7 +753,7 @@ namespace Assistant
 
         public override string ToString()
         {
-            return String.Format("{0} ({1})", this.Name, this.Serial);
+            return $"{this.Name} ({this.Serial})";
         }
 
         public int Price
@@ -790,8 +790,8 @@ namespace Assistant
                 //"Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.OrigPlayerName
                 //"Desktop/{0}/{1}/{2}/Multicache.dat", World.AccountName, World.ShardName, World.Player.Name );
                 //"Desktop/{0}/Multicache.dat", World.AccountName );
-                string path = Ultima.Files.GetFilePath(String.Format("Desktop/{0}/{1}/{2}/Multicache.dat",
-                    World.AccountName, World.ShardName, World.OrigPlayerName));
+                string path = Ultima.Files.GetFilePath(
+                    $"Desktop/{World.AccountName}/{World.ShardName}/{World.OrigPlayerName}/Multicache.dat");
                 if (string.IsNullOrEmpty(path) || !File.Exists(path))
                     return;
 

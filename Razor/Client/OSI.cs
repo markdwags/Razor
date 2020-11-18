@@ -321,10 +321,10 @@ namespace Assistant
             double perc = ((double) val) / ((double) max);
 
             if (perc <= 0.25)
-                return String.Format("~#FF0000{0}~#~", val);
+                return $"~#FF0000{val}~#~";
 
             if (perc <= 0.75)
-                return String.Format("~#FFFF00{0}~#~", val);
+                return $"~#FFFF00{val}~#~";
 
             return val.ToString();
         }
@@ -360,11 +360,8 @@ namespace Assistant
 
                 TitleBarBuilder.Replace(@"{bandage}", BandageTimer.Running ? $"~#FF8000{BandageTimer.Count}~#~" : "-");
 
-                string statStr = String.Format("{0}{1:X2}{2:X2}{3:X2}",
-                    (int) (World.Player.GetStatusCode()),
-                    (int) (World.Player.HitsMax == 0 ? 0 : (double) World.Player.Hits / World.Player.HitsMax * 99),
-                    (int) (World.Player.ManaMax == 0 ? 0 : (double) World.Player.Mana / World.Player.ManaMax * 99),
-                    (int) (World.Player.StamMax == 0 ? 0 : (double) World.Player.Stam / World.Player.StamMax * 99));
+                string statStr =
+                    $"{(int) (World.Player.GetStatusCode())}{(int) (World.Player.HitsMax == 0 ? 0 : (double) World.Player.Hits / World.Player.HitsMax * 99):X2}{(int) (World.Player.ManaMax == 0 ? 0 : (double) World.Player.Mana / World.Player.ManaMax * 99):X2}{(int) (World.Player.StamMax == 0 ? 0 : (double) World.Player.Stam / World.Player.StamMax * 99):X2}";
 
                 TitleBarBuilder.Replace(@"{statbar}", $"~SR{statStr}");
                 TitleBarBuilder.Replace(@"{mediumstatbar}", $"~SL{statStr}");
