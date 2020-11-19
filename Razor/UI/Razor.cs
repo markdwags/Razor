@@ -7146,9 +7146,9 @@ namespace Assistant
                 "<None>"
             };
 
-            foreach (string dir in Directory.GetDirectories(Config.GetUserDirectory("Scripts")))
+            foreach (string dir in Directory.GetDirectories(Config.GetUserDirectory("Scripts"), "*", SearchOption.AllDirectories))
             {
-                dirNames.Add(dir.Substring(dir.LastIndexOf('\\') + 1));
+                dirNames.Add(dir.Replace(Config.GetUserDirectory("Scripts"), "").Substring(1));
             }
 
             if (!InputDropdown.Show(this, Language.GetString(LocString.CatName), dirNames.ToArray()))
@@ -7168,6 +7168,7 @@ namespace Assistant
             }
 
             RedrawScripts();
+
             scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, sel);
         }
 
