@@ -313,17 +313,17 @@ namespace Assistant
             if (last < first)
                 last = first;
 
-            return String.Format("{0}...{1}", path.Substring(0, first), path.Substring(last));
+            return $"{path.Substring(0, first)}...{path.Substring(last)}";
         }
 
         public static string FormatSize(long size)
         {
             if (size < 1024) // 1 K
-                return String.Format("{0:#,##0} B", size);
+                return $"{size:#,##0} B";
             else if (size < 1048576) // 1 M
-                return String.Format("{0:#,###.0} KB", size / 1024.0);
+                return $"{size / 1024.0:#,###.0} KB";
             else
-                return String.Format("{0:#,###.0} MB", size / 1048576.0);
+                return $"{size / 1048576.0:#,###.0} MB";
         }
 
         public static string FormatTime(int sec)
@@ -331,7 +331,7 @@ namespace Assistant
             int m = sec / 60;
             int h = m / 60;
             m = m % 60;
-            return String.Format("{0:#0}:{1:00}:{2:00}", h, m, sec % 60);
+            return $"{h:#0}:{m:00}:{sec % 60:00}";
         }
 
         public static string FormatTimeMS(int ms)
@@ -345,9 +345,9 @@ namespace Assistant
             m = m % 60;
 
             if (h > 0 || m > 55)
-                return String.Format("{0:#0}:{1:00}:{2:00}.{3:000}", h, m, s, ms);
+                return $"{h:#0}:{m:00}:{s:00}.{ms:000}";
             else
-                return String.Format("{0:00}:{1:00}.{2:000}", m, s, ms);
+                return $"{m:00}:{s:00}.{ms:000}";
         }
 
         public static int ToInt32(string str, int def)

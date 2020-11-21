@@ -645,7 +645,7 @@ namespace Assistant
                     time = init + time * m_Queue.Count;
                     if (time < 0)
                         time = 0;
-                    return String.Format("{0:F1} seconds", time);
+                    return $"{time:F1} seconds";
                 }
                 else
                 {

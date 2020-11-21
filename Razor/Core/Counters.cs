@@ -303,7 +303,7 @@ namespace Assistant
 
         public override string ToString()
         {
-            return String.Format("{0} ({1})", Name, Format);
+            return $"{Name} ({Format})";
         }
 
         private static bool m_NeedXMLSave = false;

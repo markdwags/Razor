@@ -111,7 +111,7 @@ namespace Ultima
                 Tex.WriteLine("Order;ID;KeyWord");
                 foreach (SpeechEntry entry in Entries)
                 {
-                    Tex.WriteLine(String.Format("{0};{1};{2}", entry.Order, entry.ID, entry.KeyWord));
+                    Tex.WriteLine($"{entry.Order};{entry.ID};{entry.KeyWord}");
                 }
             }
         }

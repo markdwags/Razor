@@ -104,10 +104,10 @@ namespace Ultima
             }
             else
             {
-                mapPath = Path.Combine(path, String.Format("map{0}.mul", fileIndex));
+                mapPath = Path.Combine(path, $"map{fileIndex}.mul");
 
                 if (!File.Exists(mapPath))
-                    mapPath = Path.Combine(path, String.Format("map{0}LegacyMUL.uop", fileIndex));
+                    mapPath = Path.Combine(path, $"map{fileIndex}LegacyMUL.uop");
 
                 if (!File.Exists(mapPath))
                     mapPath = null;
@@ -129,7 +129,7 @@ namespace Ultima
                 indexPath = Files.GetFilePath("staidx{0}.mul", fileIndex);
             else
             {
-                indexPath = Path.Combine(path, String.Format("staidx{0}.mul", fileIndex));
+                indexPath = Path.Combine(path, $"staidx{fileIndex}.mul");
                 if (!File.Exists(indexPath))
                     indexPath = null;
             }
@@ -138,7 +138,7 @@ namespace Ultima
                 staticsPath = Files.GetFilePath("statics{0}.mul", fileIndex);
             else
             {
-                staticsPath = Path.Combine(path, String.Format("statics{0}.mul", fileIndex));
+                staticsPath = Path.Combine(path, $"statics{fileIndex}.mul");
                 if (!File.Exists(staticsPath))
                     staticsPath = null;
             }
@@ -434,7 +434,7 @@ namespace Ultima
 
             for (int i = 0; i < count; i++)
             {
-                string file = string.Format("build/{0}/{1:D8}.dat", pattern, i);
+                string file = $"build/{pattern}/{i:D8}.dat";
                 ulong hash = FileIndex.HashFileName(file);
 
                 if (!hashes.ContainsKey(hash))
@@ -474,9 +474,8 @@ namespace Ultima
                     }
                     else
                     {
-                        throw new ArgumentException(string.Format(
-                            "File with hash 0x{0:X8} was not found in hashes dictionary! EA Mythic changed UOP format!",
-                            hash));
+                        throw new ArgumentException(
+                            $"File with hash 0x{hash:X8} was not found in hashes dictionary! EA Mythic changed UOP format!");
                     }
                 }
             } while (m_UOPReader.BaseStream.Seek(nextBlock, SeekOrigin.Begin) != 0);

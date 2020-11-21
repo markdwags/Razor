@@ -1001,11 +1001,11 @@ namespace Ultima
                 for (int i = 0; i < m_ItemData.Length; ++i)
                 {
                     ItemData tile = m_ItemData[i];
-                    Tex.Write(String.Format("0x{0:X4}", i));
-                    Tex.Write(String.Format(";{0}", tile.Name));
+                    Tex.Write($"0x{i:X4}");
+                    Tex.Write($";{tile.Name}");
                     Tex.Write(";" + tile.Weight);
                     Tex.Write(";" + tile.Quality);
-                    Tex.Write(String.Format(";0x{0:X4}", tile.Animation));
+                    Tex.Write($";0x{tile.Animation:X4}");
                     Tex.Write(";" + tile.Height);
                     Tex.Write(";" + tile.Hue);
                     Tex.Write(";" + tile.Quantity);
@@ -1068,9 +1068,9 @@ namespace Ultima
                 for (int i = 0; i < m_LandData.Length; ++i)
                 {
                     LandData tile = m_LandData[i];
-                    Tex.Write(String.Format("0x{0:X4}", i));
+                    Tex.Write($"0x{i:X4}");
                     Tex.Write(";" + tile.Name);
-                    Tex.Write(";" + String.Format("0x{0:X4}", tile.TextureID));
+                    Tex.Write(";" + $"0x{tile.TextureID:X4}");
                     Tex.Write(";" + tile.Unk1);
 
                     Tex.Write(";" + (((tile.Flags & TileFlag.Background) != 0) ? "1" : "0"));

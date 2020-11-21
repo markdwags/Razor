@@ -877,10 +877,10 @@ namespace Assistant
                 ListViewItem cur = skillList.Items[i];
                 if (cur.Tag == skill)
                 {
-                    cur.SubItems[1].Text = String.Format("{0:F1}", skill.Value);
-                    cur.SubItems[2].Text = String.Format("{0:F1}", skill.Base);
-                    cur.SubItems[3].Text = String.Format("{0}{1:F1}", (skill.Delta > 0 ? "+" : ""), skill.Delta);
-                    cur.SubItems[4].Text = String.Format("{0:F1}", skill.Cap);
+                    cur.SubItems[1].Text = $"{skill.Value:F1}";
+                    cur.SubItems[2].Text = $"{skill.Base:F1}";
+                    cur.SubItems[3].Text = $"{(skill.Delta > 0 ? "+" : "")}{skill.Delta:F1}";
+                    cur.SubItems[4].Text = $"{skill.Cap:F1}";
                     cur.SubItems[5].Text = skill.Lock.ToString()[0].ToString();
                     SortSkills();
                     return;
@@ -919,10 +919,10 @@ namespace Assistant
                     Skill sk = World.Player.Skills[i];
                     Total += sk.Base;
                     items[0] = Language.Skill2Str(i); //((SkillName)i).ToString();
-                    items[1] = String.Format("{0:F1}", sk.Value);
-                    items[2] = String.Format("{0:F1}", sk.Base);
-                    items[3] = String.Format("{0}{1:F1}", (sk.Delta > 0 ? "+" : ""), sk.Delta);
-                    items[4] = String.Format("{0:F1}", sk.Cap);
+                    items[1] = $"{sk.Value:F1}";
+                    items[2] = $"{sk.Base:F1}";
+                    items[3] = $"{(sk.Delta > 0 ? "+" : "")}{sk.Delta:F1}";
+                    items[4] = $"{sk.Cap:F1}";
                     items[5] = sk.Lock.ToString()[0].ToString();
 
                     ListViewItem lvi = new ListViewItem(items);
@@ -935,7 +935,7 @@ namespace Assistant
             }
 
             skillList.EndUpdate();
-            baseTotal.Text = String.Format("{0:F1}", Total);
+            baseTotal.Text = $"{Total:F1}";
         }
 
         private void OnFilterCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
@@ -1287,7 +1287,7 @@ namespace Assistant
                 return;
             }
 
-            string file = String.Format("Profiles/{0}.xml", remove);
+            string file = $"Profiles/{remove}.xml";
             if (File.Exists(file))
                 File.Delete(file);
 
@@ -2144,7 +2144,7 @@ namespace Assistant
         {
             int o = opacity.Value;
             Config.SetProperty("Opacity", o);
-            opacityLabel.Text = String.Format("Opacity: {0}%", o);
+            opacityLabel.Text = $"Opacity: {o}%";
             this.Opacity = ((double) o) / 100.0;
         }
 
@@ -2559,7 +2559,7 @@ namespace Assistant
                 return;
             }
 
-            TreeNode newNode = new TreeNode(String.Format("[{0}]", Path.GetFileName(path)));
+            TreeNode newNode = new TreeNode($"[{Path.GetFileName(path)}]");
             newNode.Tag = path;
             if (node == null)
                 macroTree.Nodes.Add(newNode);
@@ -3738,7 +3738,7 @@ namespace Assistant
             }
             catch
             {
-                MessageBox.Show(String.Format("Unable to open browser to '{0}'", site), "Error", MessageBoxButtons.OK,
+                MessageBox.Show($"Unable to open browser to '{site}'", "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
         }
@@ -7018,25 +7018,25 @@ namespace Assistant
 
                 m_ScriptContextMenu = new ContextMenu();
 
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Add Category", AddScriptCategory));
+                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Add category", AddScriptCategory));
 
                 if (scriptTree.SelectedNode != null && scriptTree.SelectedNode.Tag is string)
                 {
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Delete Category", Script_DeleteCategory));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Delete category", Script_DeleteCategory));
                 }
                 else if (selScript != null)
                 {
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Move to Category", MoveScriptCategory));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Move to category", MoveScriptCategory));
                     m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
                     m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Rename '{selScript.Name}'", RenameScript));
                     m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Delete '{selScript.Name}'", DeleteScript));
                     m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Open Externally", OpenScriptExternally));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Copy to Clipboard", CopyScriptToClipboard));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Open '{selScript.Name}' externally", OpenScriptExternally));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Copy to clipboard", CopyScriptToClipboard));
                 }
 
                 m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Reload Scripts", ReloadScripts));
+                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Reload all scripts", ReloadScripts));
                 m_ScriptContextMenu.MenuItems.Add(new MenuItem("Hide script tree", HideScriptTreeView));
 
                 m_ScriptContextMenu.Show(scriptTree, new Point(e.X, e.Y));
@@ -7087,7 +7087,7 @@ namespace Assistant
             if (selScript == null)
                 return;
 
-            if (InputBox.Show(this, "Enter a new name for the script", "Rename Script"))
+            if (InputBox.Show(this, "Enter a new name for the script", "Rename Script", selScript.Name))
             {
                 string name = InputBox.GetString();
 
@@ -7120,6 +7120,9 @@ namespace Assistant
                         selScript.Path = newScriptPath;
                         selScript.Name = Path.GetFileNameWithoutExtension(newScriptPath);
 
+                        string cat = newScriptPath.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                        selScript.Category = Path.GetDirectoryName(cat);
+
                         RedrawScripts();
 
                         scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, selScript);
@@ -7136,9 +7139,9 @@ namespace Assistant
 
         private void MoveScriptCategory(object sender, EventArgs e)
         {
-            RazorScript sel = GetScriptSel();
+            RazorScript selScript = GetScriptSel();
 
-            if (sel == null)
+            if (selScript == null)
                 return;
 
             List<string> dirNames = new List<string>
@@ -7146,9 +7149,9 @@ namespace Assistant
                 "<None>"
             };
 
-            foreach (string dir in Directory.GetDirectories(Config.GetUserDirectory("Scripts")))
+            foreach (string dir in Directory.GetDirectories(Config.GetUserDirectory("Scripts"), "*", SearchOption.AllDirectories))
             {
-                dirNames.Add(dir.Substring(dir.LastIndexOf('\\') + 1));
+                dirNames.Add(dir.Replace(Config.GetUserDirectory("Scripts"), "").Substring(1));
             }
 
             if (!InputDropdown.Show(this, Language.GetString(LocString.CatName), dirNames.ToArray()))
@@ -7156,10 +7159,26 @@ namespace Assistant
 
             try
             {
-                File.Move(sel.Path, InputDropdown.GetString().Equals("<None>")
-                    ? Path.Combine(Config.GetUserDirectory("Scripts"), $"{Path.GetFileName(sel.Path)}")
-                    : Path.Combine(Config.GetUserDirectory("Scripts"),
-                        $"{InputDropdown.GetString()}/{Path.GetFileName(sel.Path)}"));
+                string newPath = string.Empty;
+
+                if (InputDropdown.GetString().Equals("<None>"))
+                {
+                    newPath = Path.Combine(Config.GetUserDirectory("Scripts"), $"{Path.GetFileName(selScript.Path)}");
+                }
+                else
+                {
+                    newPath = Path.Combine(Config.GetUserDirectory("Scripts"), $"{InputDropdown.GetString()}/{Path.GetFileName(selScript.Path)}");
+                }
+
+                File.Move(selScript.Path, newPath);
+                ScriptManager.RemoveHotkey(selScript);
+
+                selScript.Path = newPath;
+                
+                string cat = newPath.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                selScript.Category = Path.GetDirectoryName(cat);
+
+                ScriptManager.AddHotkey(selScript);
             }
             catch
             {
@@ -7168,7 +7187,8 @@ namespace Assistant
             }
 
             RedrawScripts();
-            scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, sel);
+
+            scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, selScript);
         }
 
         private void AddScriptCategory(object sender, EventArgs args)

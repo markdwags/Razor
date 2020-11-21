@@ -768,7 +768,7 @@ namespace Assistant
     {
         public UseSkill(int sk) : base(0x12)
         {
-            string cmd = String.Format("{0} 0", sk);
+            string cmd = $"{sk} 0";
             EnsureCapacity(4 + cmd.Length + 1);
             Write((byte) 0x24);
             WriteAsciiNull(cmd);
@@ -798,9 +798,9 @@ namespace Assistant
         {
             string cmd;
             if (book.IsItem)
-                cmd = String.Format("{0} {1}", spell, book.Value);
+                cmd = $"{spell} {book.Value}";
             else
-                cmd = String.Format("{0}", spell);
+                cmd = $"{spell}";
             EnsureCapacity(3 + 1 + cmd.Length + 1);
             Write((byte) 0x27);
             WriteAsciiNull(cmd);

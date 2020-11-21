@@ -374,11 +374,11 @@ namespace Ultima
         {
             try
             {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(string.Format(@"SOFTWARE\{0}", regkey));
+                RegistryKey key = Registry.LocalMachine.OpenSubKey($@"SOFTWARE\{regkey}");
 
                 if (key == null)
                 {
-                    key = Registry.CurrentUser.OpenSubKey(string.Format(@"SOFTWARE\{0}", regkey));
+                    key = Registry.CurrentUser.OpenSubKey($@"SOFTWARE\{regkey}");
 
                     if (key == null)
                         return null;
@@ -466,7 +466,7 @@ namespace Ultima
         /// <returns></returns>
         public static bool CompareHashFile(string what, string path)
         {
-            string FileName = Path.Combine(path, String.Format("UOFiddler{0}.hash", what));
+            string FileName = Path.Combine(path, $"UOFiddler{what}.hash");
             if (File.Exists(FileName))
             {
                 try
@@ -478,7 +478,7 @@ namespace Ultima
                         byte[] buffer = new byte[length];
                         bin.Read(buffer, 0, length);
                         string hashold = BitConverter.ToString(buffer).Replace("-", "").ToLower();
-                        return Files.CompareMD5(Files.GetFilePath(String.Format("{0}.mul", what)), hashold);
+                        return Files.CompareMD5(Files.GetFilePath($"{what}.mul"), hashold);
                     }
                 }
                 catch

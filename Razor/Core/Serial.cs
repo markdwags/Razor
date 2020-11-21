@@ -112,7 +112,7 @@ namespace Assistant
 
         public override string ToString()
         {
-            return String.Format("0x{0:X}", m_Serial);
+            return $"0x{m_Serial:X}";
         }
 
         public static Serial Parse(string s)

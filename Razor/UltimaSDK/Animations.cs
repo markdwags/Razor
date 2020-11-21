@@ -809,7 +809,7 @@ namespace Ultima
             if (fileType == 1)
                 return "anim.mul";
             else
-                return String.Format("anim{0}.mul", fileType);
+                return $"anim{fileType}.mul";
         }
     }
 
