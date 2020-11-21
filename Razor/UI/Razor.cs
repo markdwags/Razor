@@ -7120,7 +7120,7 @@ namespace Assistant
                         selScript.Path = newScriptPath;
                         selScript.Name = Path.GetFileNameWithoutExtension(newScriptPath);
 
-                        string cat = newScriptPath.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                        string cat = newScriptPath.Replace(Config.GetUserDirectory("Scripts"), "").Substring(1);
                         selScript.Category = Path.GetDirectoryName(cat);
 
                         RedrawScripts();
@@ -7175,7 +7175,7 @@ namespace Assistant
 
                 selScript.Path = newPath;
                 
-                string cat = newPath.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                string cat = newPath.Replace(Config.GetUserDirectory("Scripts"), "").Substring(1);
                 selScript.Category = Path.GetDirectoryName(cat);
 
                 ScriptManager.AddHotkey(selScript);

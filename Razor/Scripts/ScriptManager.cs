@@ -273,7 +273,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                string cat = file.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                string cat = file.Replace(Config.GetUserDirectory("Scripts"), "").Substring(1);
                 script.Category = Path.GetDirectoryName(cat);
             }
 
