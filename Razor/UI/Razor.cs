@@ -7018,25 +7018,25 @@ namespace Assistant
 
                 m_ScriptContextMenu = new ContextMenu();
 
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Add Category", AddScriptCategory));
+                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Add category", AddScriptCategory));
 
                 if (scriptTree.SelectedNode != null && scriptTree.SelectedNode.Tag is string)
                 {
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Delete Category", Script_DeleteCategory));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Delete category", Script_DeleteCategory));
                 }
                 else if (selScript != null)
                 {
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Move to Category", MoveScriptCategory));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Move to category", MoveScriptCategory));
                     m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
                     m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Rename '{selScript.Name}'", RenameScript));
                     m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Delete '{selScript.Name}'", DeleteScript));
                     m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Open Externally", OpenScriptExternally));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Copy to Clipboard", CopyScriptToClipboard));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Open '{selScript.Name}' externally", OpenScriptExternally));
+                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Copy to clipboard", CopyScriptToClipboard));
                 }
 
                 m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Reload Scripts", ReloadScripts));
+                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Reload all scripts", ReloadScripts));
                 m_ScriptContextMenu.MenuItems.Add(new MenuItem("Hide script tree", HideScriptTreeView));
 
                 m_ScriptContextMenu.Show(scriptTree, new Point(e.X, e.Y));
@@ -7087,7 +7087,7 @@ namespace Assistant
             if (selScript == null)
                 return;
 
-            if (InputBox.Show(this, "Enter a new name for the script", "Rename Script"))
+            if (InputBox.Show(this, "Enter a new name for the script", "Rename Script", selScript.Name))
             {
                 string name = InputBox.GetString();
 
