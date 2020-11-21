@@ -7120,6 +7120,9 @@ namespace Assistant
                         selScript.Path = newScriptPath;
                         selScript.Name = Path.GetFileNameWithoutExtension(newScriptPath);
 
+                        string cat = newScriptPath.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                        selScript.Category = Path.GetDirectoryName(cat);
+
                         RedrawScripts();
 
                         scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, selScript);
@@ -7136,9 +7139,9 @@ namespace Assistant
 
         private void MoveScriptCategory(object sender, EventArgs e)
         {
-            RazorScript sel = GetScriptSel();
+            RazorScript selScript = GetScriptSel();
 
-            if (sel == null)
+            if (selScript == null)
                 return;
 
             List<string> dirNames = new List<string>
@@ -7156,10 +7159,26 @@ namespace Assistant
 
             try
             {
-                File.Move(sel.Path, InputDropdown.GetString().Equals("<None>")
-                    ? Path.Combine(Config.GetUserDirectory("Scripts"), $"{Path.GetFileName(sel.Path)}")
-                    : Path.Combine(Config.GetUserDirectory("Scripts"),
-                        $"{InputDropdown.GetString()}/{Path.GetFileName(sel.Path)}"));
+                string newPath = string.Empty;
+
+                if (InputDropdown.GetString().Equals("<None>"))
+                {
+                    newPath = Path.Combine(Config.GetUserDirectory("Scripts"), $"{Path.GetFileName(selScript.Path)}");
+                }
+                else
+                {
+                    newPath = Path.Combine(Config.GetUserDirectory("Scripts"), $"{InputDropdown.GetString()}/{Path.GetFileName(selScript.Path)}");
+                }
+
+                File.Move(selScript.Path, newPath);
+                ScriptManager.RemoveHotkey(selScript);
+
+                selScript.Path = newPath;
+                
+                string cat = newPath.Replace(Config.GetUserDirectory("Scripts"), "").ToLower().Substring(1);
+                selScript.Category = Path.GetDirectoryName(cat);
+
+                ScriptManager.AddHotkey(selScript);
             }
             catch
             {
@@ -7169,7 +7188,7 @@ namespace Assistant
 
             RedrawScripts();
 
-            scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, sel);
+            scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, selScript);
         }
 
         private void AddScriptCategory(object sender, EventArgs args)
