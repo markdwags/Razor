@@ -274,7 +274,7 @@ namespace Assistant.Scripts
             else
             {
                 string cat = file.Replace(Config.GetUserDirectory("Scripts"), "").Substring(1);
-                script.Category = Path.GetDirectoryName(cat);
+                script.Category = Path.GetDirectoryName(cat).Replace("/", "\\");
             }
 
             Scripts.Add(script);
@@ -286,7 +286,7 @@ namespace Assistant.Scripts
         {
             foreach (RazorScript razorScript in Scripts)
             {
-                if (razorScript.ToString().Equals(scriptName, StringComparison.OrdinalIgnoreCase))
+                if (razorScript.ToString().IndexOf(scriptName, StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     PlayScript(razorScript.Lines);
                     break;
