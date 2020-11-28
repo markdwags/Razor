@@ -65,7 +65,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("finddebuff", FindBuff);
         }
 
-        private static bool FindBuff(string expression, Argument[] args, bool quiet)
+        private static bool FindBuffDebuff(string expression, Argument[] args, bool quiet)
         {
             if (args.Length == 0)
             {
