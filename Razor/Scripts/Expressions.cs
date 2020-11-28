@@ -61,8 +61,8 @@ namespace Assistant.Scripts
 
             Interpreter.RegisterExpressionHandler("findtype", FindType);
 
-            Interpreter.RegisterExpressionHandler("findbuff", FindBuff);
-            Interpreter.RegisterExpressionHandler("finddebuff", FindBuff);
+            Interpreter.RegisterExpressionHandler("findbuff", FindBuffDebuff);
+            Interpreter.RegisterExpressionHandler("finddebuff", FindBuffDebuff);
         }
 
         private static bool FindBuffDebuff(string expression, Argument[] args, bool quiet)
