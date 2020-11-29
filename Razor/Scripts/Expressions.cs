@@ -60,6 +60,28 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("insysmessage", InSysMessage);
 
             Interpreter.RegisterExpressionHandler("findtype", FindType);
+
+            Interpreter.RegisterExpressionHandler("findbuff", FindBuffDebuff);
+            Interpreter.RegisterExpressionHandler("finddebuff", FindBuffDebuff);
+        }
+
+        private static bool FindBuffDebuff(string expression, Argument[] args, bool quiet)
+        {
+            if (args.Length == 0)
+            {
+                throw new RunTimeError(null,
+                    "Usage: findbuff/finddebuff ('name of buff')");
+            }
+
+            foreach (BuffsDebuffs buff in World.Player.BuffsDebuffs)
+            {
+                if (buff.ClilocMessage1.IndexOf(args[0].AsString(), StringComparison.CurrentCultureIgnoreCase) != -1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool FindType(string expression, Argument[] args, bool quiet)

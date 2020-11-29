@@ -27,6 +27,22 @@ if count 'garlic' < 5
 endif
 ```
 
+## findbuff
+
+- `findbuff 'name of buff/debuff`
+
+Description: Used to check if a specific buff/debuff is applied to you.
+
+Example(s):
+
+```php
+if findtype 'magic reflection'
+    overhead 'Im set!'
+else
+    cast 'magic reflection'
+endif
+```
+
 ## findtype
 
 - `findtype ('name of item') [inrangecheck (true/false)]` OR `findtype (graphicID) [inrangecheck (true/false)]`
