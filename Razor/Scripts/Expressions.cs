@@ -308,7 +308,7 @@ namespace Assistant.Scripts
         private static double SkillExpression(string expression, Argument[] args, bool quiet)
         {
             if (args.Length < 1)
-                throw new ArgumentException("Usage: skill ('name of skill')");
+                throw new RunTimeError(null, "Usage: skill ('name of skill')");
 
             if (World.Player == null)
                 return 0;
@@ -327,7 +327,7 @@ namespace Assistant.Scripts
         private static int CountExpression(string expression, Argument[] args, bool quiet)
         {
             if (args.Length < 1)
-                throw new ArgumentException("Usage: count ('name of counter item')");
+                throw new RunTimeError(null, "Usage: count ('name of counter item')");
 
             if (World.Player == null)
                 return 0;
@@ -340,7 +340,7 @@ namespace Assistant.Scripts
                 }
             }
 
-            return 0;
+            throw new RunTimeError(null, $"Counter '{args[0].AsString()}' doesn't exist. Set it up in Razor under Display->Counters.");
         }
     }
 }
