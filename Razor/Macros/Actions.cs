@@ -1714,7 +1714,22 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return $"say '{m_Speech}'";
+            switch (m_Type)
+            {
+                case MessageType.Emote:
+                    return $"emote '{m_Speech}'";
+                case MessageType.Whisper:
+                    return $"whisper '{m_Speech}'";
+                case MessageType.Yell:
+                    return $"yell '{m_Speech}'";
+                case MessageType.Alliance:
+                    return $"alliance '{m_Speech}'";
+                case MessageType.Guild:
+                    return $"guild '{m_Speech}'";
+                case MessageType.Regular:
+                default:
+                    return $"say '{m_Speech}'";
+            }
         }
 
         public override string Serialize()
