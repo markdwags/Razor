@@ -24,6 +24,18 @@ say 'Hello friends!'
 
 Here the list of the support commands:
 
+## alliance
+
+Syntax: `alliance ('message to send')`
+
+Description: This command will force your character to say an alliance message passed as the parameter.
+
+Example:
+
+```bash
+alliance 'Hello world!'```
+
+
 ## attack
 
 Syntax: `attack (serial)` or `attack ('variablename')`
@@ -179,6 +191,18 @@ Example:
 emote 'Hello world!'
 
 emote 'Hello world!' 454
+```
+
+## guild
+
+Syntax: `guild ('message to send')`
+
+Description: This command will force your character to say a guild message passed as the parameter.
+
+Example:
+
+```bash
+guild 'Hello guildmates!'
 ```
 
 ## gumpresponse

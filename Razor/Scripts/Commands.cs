@@ -78,12 +78,7 @@ namespace Assistant.Scripts
             // Hotkey execution
             Interpreter.RegisterCommandHandler("hotkey", Hotkey); //HotKeyAction
 
-            // Messages
-            Interpreter.RegisterCommandHandler("say", Say); //SpeechAction
-            Interpreter.RegisterCommandHandler("msg", Say); //SpeechAction
-            Interpreter.RegisterCommandHandler("yell", Yell); //SpeechAction
-            Interpreter.RegisterCommandHandler("whisper", Whisper); //SpeechAction
-            Interpreter.RegisterCommandHandler("emote", Emote); //SpeechAction
+            
 
             Interpreter.RegisterCommandHandler("overhead", HeadMsg); //OverheadMessageAction
             Interpreter.RegisterCommandHandler("headmsg", HeadMsg); //OverheadMessageAction
@@ -909,69 +904,6 @@ namespace Assistant.Scripts
 
             return true;
         }
-
-        public static bool Say(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length == 0)
-            {
-                throw new RunTimeError(null, "Usage: say ('text') [color]");
-            }
-
-            if (args.Length == 1)
-                World.Player.Say(Config.GetInt("SysColor"), args[0].AsString());
-            else
-                World.Player.Say(Utility.ToInt32(args[1].AsString(), 0), args[0].AsString());
-
-            return true;
-        }
-
-        public static bool Whisper(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length == 0)
-            {
-                throw new RunTimeError(null, "Usage: whisper ('text') [color]");
-            }
-
-            MessageType type = MessageType.Whisper & ~MessageType.Encoded;
-
-            if (args.Length == 1)
-                World.Player.Whisper(args[0].AsString(), World.Player.SpeechHue);
-            else
-                World.Player.Whisper(args[0].AsString(), Utility.ToInt32(args[1].AsString(), 0));
-
-            return true;
-        }
-
-        public static bool Yell(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length == 0)
-            {
-                throw new RunTimeError(null, "Usage: yell ('text') [color]");
-            }
-
-            if (args.Length == 1)
-                World.Player.Yell(args[0].AsString(), World.Player.SpeechHue);
-            else
-                World.Player.Yell(args[0].AsString(), Utility.ToInt32(args[1].AsString(), 0));
-
-            return true;
-        }
-
-        public static bool Emote(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length == 0)
-            {
-                throw new RunTimeError(null, "Usage: emote ('text') [color]");
-            }
-
-            if (args.Length == 1)
-                World.Player.Emote(args[0].AsString(), World.Player.SpeechHue);
-            else
-                World.Player.Emote(args[0].AsString(), Utility.ToInt32(args[1].AsString(), 0));
-
-            return true;
-        }
-
 
         public static bool Attack(string command, Argument[] args, bool quiet, bool force)
         {
