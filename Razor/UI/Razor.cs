@@ -6334,7 +6334,7 @@ namespace Assistant
                     menu.MenuItems.Add("Comment", OnScriptComment);
                     menu.MenuItems.Add("Uncomment", OnScriptUncomment);
 
-                    if (!string.IsNullOrEmpty(scriptEditor.SelectedText) && !ScriptManager.Running && !ScriptManager.Recording && World.Player == null)
+                    if (!string.IsNullOrEmpty(scriptEditor.SelectedText) && !ScriptManager.Running && !ScriptManager.Recording && World.Player != null)
                     {
                         menu.MenuItems.Add("-");
                         menu.MenuItems.Add("Play selected script code", OnScriptPlaySelected);
