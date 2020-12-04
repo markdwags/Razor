@@ -132,14 +132,22 @@ namespace Assistant.Filters
 
         public static void AddSoundFilter(Sound filter)
         {
-            if (!SoundFilters.Contains(filter))
+            int index = SoundFilters.FindIndex(x => x.Name == filter.Name && x.Serial == filter.Serial);
+
+            if (index < 0)
+            {
                 SoundFilters.Add(filter);
+            }
         }
 
         public static void RemoveSoundFilter(Sound filter)
         {
-            if (SoundFilters.Contains(filter))
-                SoundFilters.Remove(filter);
+            int index = SoundFilters.FindIndex(x => x.Name == filter.Name && x.Serial == filter.Serial);
+
+            if (index >= 0)
+            {
+                SoundFilters.RemoveAt(index);
+            }
         }
 
         public static void LoadMusic()
@@ -637,6 +645,27 @@ namespace Assistant.Filters
             }
         }
 
+        public static void LoadSounds()
+        {
+            SoundList.Clear();
+
+            for (int i = 0; i <= 0xFFE; ++i)
+            {
+                if (Ultima.Sounds.IsValidSound(i, out string wavName))
+                {
+                    Serial serial = Serial.Parse($"0x{i:X3}");
+
+                    Sound sound = new Sound
+                    {
+                        Name = wavName,
+                        Serial = serial
+                    };
+
+                    SoundList.Add(sound);
+                }
+            }
+        }
+
         public static void Save(XmlTextWriter xml)
         {
             foreach (var filter in SoundFilters)
@@ -692,26 +721,15 @@ namespace Assistant.Filters
                 s.BeginUpdate();
                 s.Items.Clear();
 
-                SoundList.Clear();
-
-                for (int i = 0; i <= 0xFFE; ++i)
+                if (SoundList.Count == 0)
                 {
-                    if (Ultima.Sounds.IsValidSound(i, out string wavName))
-                    {
-                        Serial serial = Serial.Parse($"0x{i:X3}");
+                    LoadSounds();
+                }
 
-                        bool isFiltered = IsFilteredSound(serial, out string name);
-
-                        Sound sound = new Sound
-                        {
-                            Name = wavName,
-                            Serial = serial
-                        };
-
-                        s.Items.Add(sound, isFiltered);
-
-                        SoundList.Add(sound);
-                    }
+                foreach (Sound sound in SoundList)
+                {
+                    bool isFiltered = IsFilteredSound(sound.Serial, out string name);
+                    s.Items.Add(sound, isFiltered);
                 }
 
                 s.EndUpdate();
@@ -722,7 +740,10 @@ namespace Assistant.Filters
                 s.BeginUpdate();
                 s.Items.Clear();
 
-                LoadMusic();
+                if (MusicList.Count == 0)
+                {
+                    LoadMusic();
+                }
 
                 foreach (Music music in MusicList)
                 {
