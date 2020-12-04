@@ -945,6 +945,18 @@ namespace Assistant
                 Language.CliLocName, new ArrayList(), msg));
         }
 
+        internal void Guild(string msg, int hue)
+        {
+            Client.Instance.SendToServer(new ClientUniMessage(MessageType.Guild, hue, 3,
+                Language.CliLocName, new ArrayList(), msg));
+        }
+
+        internal void Alliance(string msg, int hue)
+        {
+            Client.Instance.SendToServer(new ClientUniMessage(MessageType.Alliance, hue, 3,
+                Language.CliLocName, new ArrayList(), msg));
+        }
+
         public uint CurrentGumpS, CurrentGumpI;
         public GumpResponseAction LastGumpResponseAction;
         public bool HasGump;

@@ -340,6 +340,8 @@ namespace Assistant.Scripts
         {
             Commands.Register();
             AgentCommands.Register();
+            SpeechCommands.Register();
+
             Aliases.Register();
             Expressions.Register();
 
