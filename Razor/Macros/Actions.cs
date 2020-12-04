@@ -1755,6 +1755,12 @@ namespace Assistant.Macros
                 case MessageType.Yell:
                     sb.Append("Yell: ");
                     break;
+                case MessageType.Alliance:
+                    sb.Append("Alliance: ");
+                    break;
+                case MessageType.Guild:
+                    sb.Append("Guild: ");
+                    break;
                 case MessageType.Regular:
                 default:
                     sb.Append("Say: ");
