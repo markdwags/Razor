@@ -67,9 +67,10 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("position", Position);
         }
 
-        private static bool Position(string expression, Argument[] args, bool quiet) {
+        private static string Position(string expression, Argument[] args, bool quiet) 
+        {
             if (World.Player == null)
-                return 0;
+                return "0, 0, 0";
 
             return World.Player.Position;
         }

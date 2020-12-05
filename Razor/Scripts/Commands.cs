@@ -106,7 +106,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
             Interpreter.RegisterCommandHandler("pathfind", Pathfind);
             Interpreter.RegisterCommandHandler("potion", Potion);
-			Interpreter.RegisterCommandHandler("where", Where);
+            Interpreter.RegisterCommandHandler("where", Where);
 
             // Script related
             Interpreter.RegisterCommandHandler("script", PlayScript);
@@ -1277,7 +1277,7 @@ namespace Assistant.Scripts
             return SystemMessages.Exists(args[0].AsString());
         }
 
-		public static bool Where(string command, Argument[] args, bool quiet, bool force) {
+        public static bool Where(string command, Argument[] args, bool quiet, bool force) {
             string mapStr;
             switch (World.Player.Map)
             {
@@ -1306,6 +1306,7 @@ namespace Assistant.Scripts
 
             World.Player.SendMessage(MsgLevel.Force, LocString.CurLoc, World.Player.Position, mapStr);
 
-		}
+            return true;
+        }
     }
 }
