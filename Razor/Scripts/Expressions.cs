@@ -63,16 +63,6 @@ namespace Assistant.Scripts
 
             Interpreter.RegisterExpressionHandler("findbuff", FindBuffDebuff);
             Interpreter.RegisterExpressionHandler("finddebuff", FindBuffDebuff);
-
-            Interpreter.RegisterExpressionHandler("position", Position);
-        }
-
-        private static int[] Position(string expression, Argument[] args, bool quiet) 
-        {
-            if (World.Player == null)
-                return [0, 0, 0];
-
-            return [World.Player.Position.X, World.Player.Position.Y, World.Player.Position.Z];
         }
 
         private static bool FindBuffDebuff(string expression, Argument[] args, bool quiet)
