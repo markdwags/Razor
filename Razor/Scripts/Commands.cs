@@ -1277,7 +1277,7 @@ namespace Assistant.Scripts
             return SystemMessages.Exists(args[0].AsString());
         }
 
-		public static bool Where(string command, Argumentp[] args, bool quiet, bool force) {
+		public static bool Where(string command, Argument[] args, bool quiet, bool force) {
             string mapStr;
             switch (World.Player.Map)
             {
