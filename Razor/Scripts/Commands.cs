@@ -106,6 +106,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("walk", Walk); //Move/WalkAction
             Interpreter.RegisterCommandHandler("pathfind", Pathfind);
             Interpreter.RegisterCommandHandler("potion", Potion);
+			Interpreter.RegisterCommandHandler("where", Where);
 
             // Script related
             Interpreter.RegisterCommandHandler("script", PlayScript);
@@ -1275,5 +1276,36 @@ namespace Assistant.Scripts
 
             return SystemMessages.Exists(args[0].AsString());
         }
+
+		public static bool Where(string command, Argumentp[] args, bool quiet, bool force) {
+            string mapStr;
+            switch (World.Player.Map)
+            {
+                case 0:
+                    mapStr = "Felucca";
+                    break;
+                case 1:
+                    mapStr = "Trammel";
+                    break;
+                case 2:
+                    mapStr = "Ilshenar";
+                    break;
+                case 3:
+                    mapStr = "Malas";
+                    break;
+                case 4:
+                    mapStr = "Tokuno";
+                    break;
+                case 0x7F:
+                    mapStr = "Internal";
+                    break;
+                default:
+                    mapStr = $"Unknown (#{World.Player.Map})";
+                    break;
+            }
+
+            World.Player.SendMessage(MsgLevel.Force, LocString.CurLoc, World.Player.Position, mapStr);
+
+		}
     }
 }
