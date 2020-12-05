@@ -303,7 +303,7 @@ namespace Assistant
         private Label lblOwnDeathMs;
         private CheckBox captureOwnDeath;
         private Button setMacroHotKey;
-        private TabPage subFilteroundMusic;
+        private TabPage subFilterSoundMusic;
         private CheckedListBox soundFilterList;
         private CheckBox soundFilterEnabled;
         private Button playSound;
@@ -636,7 +636,7 @@ namespace Assistant
             this.filterRazorMessages = new System.Windows.Forms.CheckBox();
             this.filterSystemMessages = new System.Windows.Forms.CheckBox();
             this.filterSnoop = new System.Windows.Forms.CheckBox();
-            this.subFilteroundMusic = new System.Windows.Forms.TabPage();
+            this.subFilterSoundMusic = new System.Windows.Forms.TabPage();
             this.playableMusicList = new System.Windows.Forms.ComboBox();
             this.playMusic = new System.Windows.Forms.Button();
             this.showPlayingMusic = new System.Windows.Forms.CheckBox();
@@ -701,6 +701,7 @@ namespace Assistant
             this.scriptsTab = new System.Windows.Forms.TabPage();
             this.subTabScripts = new System.Windows.Forms.TabControl();
             this.subScripts = new System.Windows.Forms.TabPage();
+            this.scriptHotkey = new System.Windows.Forms.Label();
             this.scriptSplitContainer = new System.Windows.Forms.SplitContainer();
             this.scriptTree = new System.Windows.Forms.TreeView();
             this.scriptFilter = new System.Windows.Forms.TextBox();
@@ -787,7 +788,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.scriptHotkey = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -824,7 +824,7 @@ namespace Assistant
             this.subFilterText.SuspendLayout();
             this.gbFilterText.SuspendLayout();
             this.gbFilterMessages.SuspendLayout();
-            this.subFilteroundMusic.SuspendLayout();
+            this.subFilterSoundMusic.SuspendLayout();
             this.subFilterTargets.SuspendLayout();
             this.hotkeysTab.SuspendLayout();
             this.groupBox8.SuspendLayout();
@@ -3415,7 +3415,7 @@ namespace Assistant
             // 
             this.filterTabs.Controls.Add(this.subFilterTab);
             this.filterTabs.Controls.Add(this.subFilterText);
-            this.filterTabs.Controls.Add(this.subFilteroundMusic);
+            this.filterTabs.Controls.Add(this.subFilterSoundMusic);
             this.filterTabs.Controls.Add(this.subFilterTargets);
             this.filterTabs.Location = new System.Drawing.Point(6, 3);
             this.filterTabs.Name = "filterTabs";
@@ -3522,9 +3522,9 @@ namespace Assistant
             this.subFilterText.BackColor = System.Drawing.SystemColors.Control;
             this.subFilterText.Controls.Add(this.gbFilterText);
             this.subFilterText.Controls.Add(this.gbFilterMessages);
-            this.subFilterText.Location = new System.Drawing.Point(4, 22);
+            this.subFilterText.Location = new System.Drawing.Point(4, 24);
             this.subFilterText.Name = "subFilterText";
-            this.subFilterText.Size = new System.Drawing.Size(498, 287);
+            this.subFilterText.Size = new System.Drawing.Size(498, 285);
             this.subFilterText.TabIndex = 4;
             this.subFilterText.Text = "Text && Messages  ";
             // 
@@ -3660,23 +3660,23 @@ namespace Assistant
             this.filterSnoop.Text = "Filter snooping messages";
             this.filterSnoop.CheckedChanged += new System.EventHandler(this.filterSnoop_CheckedChanged);
             // 
-            // subFilteroundMusic
+            // subFilterSoundMusic
             // 
-            this.subFilteroundMusic.BackColor = System.Drawing.SystemColors.Control;
-            this.subFilteroundMusic.Controls.Add(this.playableMusicList);
-            this.subFilteroundMusic.Controls.Add(this.playMusic);
-            this.subFilteroundMusic.Controls.Add(this.showPlayingMusic);
-            this.subFilteroundMusic.Controls.Add(this.showPlayingSoundInfo);
-            this.subFilteroundMusic.Controls.Add(this.showFilteredSound);
-            this.subFilteroundMusic.Controls.Add(this.playInClient);
-            this.subFilteroundMusic.Controls.Add(this.playSound);
-            this.subFilteroundMusic.Controls.Add(this.soundFilterEnabled);
-            this.subFilteroundMusic.Controls.Add(this.soundFilterList);
-            this.subFilteroundMusic.Location = new System.Drawing.Point(4, 22);
-            this.subFilteroundMusic.Name = "subFilteroundMusic";
-            this.subFilteroundMusic.Size = new System.Drawing.Size(498, 287);
-            this.subFilteroundMusic.TabIndex = 3;
-            this.subFilteroundMusic.Text = "Sound & Music  ";
+            this.subFilterSoundMusic.BackColor = System.Drawing.SystemColors.Control;
+            this.subFilterSoundMusic.Controls.Add(this.playableMusicList);
+            this.subFilterSoundMusic.Controls.Add(this.playMusic);
+            this.subFilterSoundMusic.Controls.Add(this.showPlayingMusic);
+            this.subFilterSoundMusic.Controls.Add(this.showPlayingSoundInfo);
+            this.subFilterSoundMusic.Controls.Add(this.showFilteredSound);
+            this.subFilterSoundMusic.Controls.Add(this.playInClient);
+            this.subFilterSoundMusic.Controls.Add(this.playSound);
+            this.subFilterSoundMusic.Controls.Add(this.soundFilterEnabled);
+            this.subFilterSoundMusic.Controls.Add(this.soundFilterList);
+            this.subFilterSoundMusic.Location = new System.Drawing.Point(4, 24);
+            this.subFilterSoundMusic.Name = "subFilterSoundMusic";
+            this.subFilterSoundMusic.Size = new System.Drawing.Size(498, 285);
+            this.subFilterSoundMusic.TabIndex = 3;
+            this.subFilterSoundMusic.Text = "Sound & Music  ";
             // 
             // playableMusicList
             // 
@@ -3779,10 +3779,10 @@ namespace Assistant
             this.subFilterTargets.Controls.Add(this.targetFilterAdd);
             this.subFilterTargets.Controls.Add(this.targetFilter);
             this.subFilterTargets.Controls.Add(this.targetFilterEnabled);
-            this.subFilterTargets.Location = new System.Drawing.Point(4, 22);
+            this.subFilterTargets.Location = new System.Drawing.Point(4, 24);
             this.subFilterTargets.Name = "subFilterTargets";
             this.subFilterTargets.Padding = new System.Windows.Forms.Padding(3);
-            this.subFilterTargets.Size = new System.Drawing.Size(498, 287);
+            this.subFilterTargets.Size = new System.Drawing.Size(498, 285);
             this.subFilterTargets.TabIndex = 1;
             this.subFilterTargets.Text = "Target Filter";
             // 
@@ -4358,6 +4358,16 @@ namespace Assistant
             this.subScripts.TabIndex = 0;
             this.subScripts.Text = "Scripts";
             // 
+            // scriptHotkey
+            // 
+            this.scriptHotkey.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.scriptHotkey.Location = new System.Drawing.Point(432, 168);
+            this.scriptHotkey.Name = "scriptHotkey";
+            this.scriptHotkey.Size = new System.Drawing.Size(60, 35);
+            this.scriptHotkey.TabIndex = 29;
+            this.scriptHotkey.Text = "Not Set";
+            this.scriptHotkey.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // scriptSplitContainer
             // 
             this.scriptSplitContainer.BackColor = System.Drawing.SystemColors.Control;
@@ -4411,7 +4421,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -5337,16 +5347,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // scriptHotkey
-            // 
-            this.scriptHotkey.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.scriptHotkey.Location = new System.Drawing.Point(432, 168);
-            this.scriptHotkey.Name = "scriptHotkey";
-            this.scriptHotkey.Size = new System.Drawing.Size(60, 35);
-            this.scriptHotkey.TabIndex = 29;
-            this.scriptHotkey.Text = "Not Set";
-            this.scriptHotkey.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5417,8 +5417,8 @@ namespace Assistant
             this.gbFilterText.PerformLayout();
             this.gbFilterMessages.ResumeLayout(false);
             this.gbFilterMessages.PerformLayout();
-            this.subFilteroundMusic.ResumeLayout(false);
-            this.subFilteroundMusic.PerformLayout();
+            this.subFilterSoundMusic.ResumeLayout(false);
+            this.subFilterSoundMusic.PerformLayout();
             this.subFilterTargets.ResumeLayout(false);
             this.subFilterTargets.PerformLayout();
             this.hotkeysTab.ResumeLayout(false);

@@ -6714,6 +6714,10 @@ namespace Assistant
             {
                 TextFilterManager.RedrawList();
             }
+            else if (filterTabs.SelectedTab == subFilterSoundMusic)
+            {
+                SoundMusicManager.RedrawList();
+            }
         }
 
         private void cliLocSearch_Click(object sender, EventArgs e)
@@ -6877,12 +6881,6 @@ namespace Assistant
             if (displayCountersTabCtrl.SelectedTab == subOverheadTab)
             {
                 OverheadManager.RedrawList();
-            }
-
-            if (displayCountersTabCtrl.SelectedTab == subFilteroundMusic)
-            {
-                SoundMusicManager.RedrawList();
-                return;
             }
 
             if (displayCountersTabCtrl.SelectedTab == subWaypoints)

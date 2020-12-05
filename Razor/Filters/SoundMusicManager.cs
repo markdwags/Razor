@@ -694,11 +694,13 @@ namespace Assistant.Filters
 
                 SoundList.Clear();
 
-                for (int i = 1; i <= 0xFFF; ++i)
+                for (int i = 0; i <= 0xFFE; ++i)
                 {
-                    if (Ultima.Sounds.IsValidSound(i - 1, out string wavName))
+                    if (Ultima.Sounds.IsValidSound(i, out string wavName))
                     {
                         Serial serial = Serial.Parse($"0x{i:X3}");
+
+                        bool isFiltered = IsFilteredSound(serial, out string name);
 
                         Sound sound = new Sound
                         {
@@ -706,7 +708,7 @@ namespace Assistant.Filters
                             Serial = serial
                         };
 
-                        s.Items.Add(sound, IsFilteredSound(serial, out string name));
+                        s.Items.Add(sound, isFiltered);
 
                         SoundList.Add(sound);
                     }
