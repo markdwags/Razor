@@ -2759,14 +2759,7 @@ namespace Assistant
 
                 File.WriteAllLines(path, scriptLines.ToArray());
 
-                RazorScript script = new RazorScript
-                {
-                    Lines = File.ReadAllLines(path),
-                    Name = name,
-                    Path = path
-                };
-
-                ScriptManager.AddHotkey(script);
+                ScriptManager.AddScript(path);
 
                 RedrawScripts();
 
@@ -6041,11 +6034,9 @@ namespace Assistant
                     Path = filePath
                 };
 
-
                 TreeNode node = GetScriptDirNode();
 
-                ScriptManager.LoadScripts();
-
+                ScriptManager.RedrawScripts();
 
                 TreeNode newNode = new TreeNode(script.Name)
                 {
@@ -6065,14 +6056,8 @@ namespace Assistant
             }
             else
             {
-                foreach (RazorScript razorScript in ScriptManager.Scripts)
-                {
-                    if (razorScript.Path.Equals(selectedScript.Path))
-                    {
-                        File.WriteAllText(razorScript.Path, scriptEditor.Text);
-                        razorScript.Lines = File.ReadAllLines(razorScript.Path);
-                    }
-                }
+                File.WriteAllText(selectedScript.Path, scriptEditor.Text);
+                selectedScript.Lines = File.ReadAllLines(selectedScript.Path);
             }
         }
 
@@ -6127,10 +6112,6 @@ namespace Assistant
                 File.CreateText(path).Close();
 
                 RazorScript script = ScriptManager.AddScript(path);
-
-                ScriptManager.AddHotkey(script);
-
-                ScriptManager.LoadScripts();
 
                 TreeNode newNode = new TreeNode(script.Name)
                 {
@@ -7062,7 +7043,7 @@ namespace Assistant
                 try
                 {
                     File.Delete(selScript.Path);
-                    ScriptManager.RemoveHotkey(selScript);
+                    ScriptManager.RemoveScript(selScript);
                 }
                 catch
                 {
@@ -7071,7 +7052,7 @@ namespace Assistant
 
                 RedrawScripts();
 
-                TreeNode node = FindNode(macroTree.Nodes, selScript);
+                TreeNode node = FindNode(scriptTree.Nodes, selScript);
                 node?.Remove();
             }
 
@@ -7111,21 +7092,10 @@ namespace Assistant
                 {
                     Engine.MainWindow.SafeAction(s =>
                     {
-                        ScriptManager.RemoveHotkey(selScript);
-
                         File.Move(selScript.Path, newScriptPath);
-
-                        selScript.Path = newScriptPath;
-                        selScript.Name = Path.GetFileNameWithoutExtension(newScriptPath);
-
-                        string cat = newScriptPath.Replace(Config.GetUserDirectory("Scripts"), "").Substring(1);
-                        selScript.Category = Path.GetDirectoryName(cat);
+                        ScriptManager.RemoveScript(selScript);
 
                         RedrawScripts();
-
-                        scriptTree.SelectedNode = FindScriptNode(scriptTree.Nodes, selScript);
-
-                        ScriptManager.AddHotkey(selScript);
                     });
                 }
                 catch
@@ -7169,14 +7139,6 @@ namespace Assistant
                 }
 
                 File.Move(selScript.Path, newPath);
-                ScriptManager.RemoveHotkey(selScript);
-
-                selScript.Path = newPath;
-                
-                string cat = newPath.Replace(Config.GetUserDirectory("Scripts"), "").Substring(1);
-                selScript.Category = Path.GetDirectoryName(cat);
-
-                ScriptManager.AddHotkey(selScript);
             }
             catch
             {

@@ -139,8 +139,6 @@ namespace Assistant.Scripts
             }
         }
 
-        private static readonly HotKeyCallbackState HotkeyCallback = OnHotKey;
-
         /// <summary>
         /// This is called via reflection when the application starts up
         /// </summary>
@@ -150,14 +148,9 @@ namespace Assistant.Scripts
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, LocString.ScriptDClickType, HotkeyDClickTypeScript);
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, LocString.ScriptTargetType, HotkeyTargetTypeScript);
 
-            Scripts = new List<RazorScript>();
+            _scriptList = new List<RazorScript>();
 
-            LoadScripts();
-
-            foreach (RazorScript script in Scripts)
-            {
-                AddHotkey(script);
-            }
+            Recurse(null, Config.GetUserDirectory("Scripts"));
         }
 
         private static void HotkeyTargetTypeScript()
@@ -233,13 +226,13 @@ namespace Assistant.Scripts
             StopScript();
         }
 
-        public static void AddHotkey(RazorScript script)
+        private static void AddHotkey(RazorScript script)
         {
-            HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayScript, script), HotkeyCallback,
+            HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayScript, script), OnHotKey,
                 script);
         }
 
-        public static void RemoveHotkey(RazorScript script)
+        private static void RemoveHotkey(RazorScript script)
         {
             HotKey.Remove(Language.Format(LocString.PlayScript, script.ToString()));
         }
@@ -277,14 +270,23 @@ namespace Assistant.Scripts
                 script.Category = Path.GetDirectoryName(cat).Replace("/", "\\");
             }
 
-            Scripts.Add(script);
+            AddHotkey(script);
+
+            _scriptList.Add(script);
 
             return script;
         }
 
+        public static void RemoveScript(RazorScript script)
+        {
+            RemoveHotkey(script);
+
+            _scriptList.Remove(script);
+        }
+        
         public static void PlayScript(string scriptName)
         {
-            foreach (RazorScript razorScript in Scripts)
+            foreach (RazorScript razorScript in _scriptList)
             {
                 if (razorScript.ToString().IndexOf(scriptName, StringComparison.OrdinalIgnoreCase) != -1)
                 {
@@ -360,21 +362,7 @@ namespace Assistant.Scripts
             Timer.Start();
         }
 
-        public static List<RazorScript> Scripts { get; private set; }
-
-        public static void LoadScripts()
-        {
-            Scripts.Clear();
-
-            var razorFiles = Directory.GetFiles(ScriptPath, "*.razor", SearchOption.AllDirectories);
-
-            razorFiles = razorFiles.OrderBy(fileName => fileName).ToArray();
-
-            foreach (var file in razorFiles)
-            {
-                AddScript(file);
-            }
-        }
+        private static List<RazorScript> _scriptList { get; set; }
 
         public static void DisplayScriptVariables(ListBox list)
         {
@@ -408,9 +396,9 @@ namespace Assistant.Scripts
 
         private static int GetScriptIndex(string script)
         {
-            for (int i = 0; i < Scripts.Count; i++)
+            for (int i = 0; i < _scriptList.Count; i++)
             {
-                if (Scripts[i].Name.Equals(script, StringComparison.OrdinalIgnoreCase))
+                if (_scriptList[i].Name.Equals(script, StringComparison.OrdinalIgnoreCase))
                     return i;
             }
 
@@ -902,8 +890,6 @@ namespace Assistant.Scripts
         {
             ScriptTree.SafeAction(s =>
             {
-                Scripts.Clear();
-
                 s.BeginUpdate();
                 s.Nodes.Clear();
                 Recurse(s.Nodes, Config.GetUserDirectory("Scripts"));
@@ -922,7 +908,20 @@ namespace Assistant.Scripts
 
                 foreach (var file in razorFiles)
                 {
-                    RazorScript script = AddScript(file);
+                    RazorScript script = null;
+
+                    foreach (RazorScript razorScript in _scriptList)
+                    {
+                        if (razorScript.Path.Equals(file))
+                        {
+                            script = razorScript;
+                        }
+                    }
+
+                    if (script == null)
+                    {
+                        script = AddScript(file);
+                    }
 
                     if (nodes != null)
                     {
