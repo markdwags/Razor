@@ -2747,8 +2747,13 @@ namespace Assistant
 
             try
             {
-                string name = $"{sel.GetName()}-{Guid.NewGuid().ToString().Substring(0, 4)}";
+                string name = sel.GetName();
                 string path = Path.Combine(ScriptManager.ScriptPath, $"{name}.razor");
+
+                if (File.Exists(Path.Combine(Config.GetUserDirectory("Scripts"), name)))
+                {
+                    path = Path.Combine(ScriptManager.ScriptPath, $"{name}-{Guid.NewGuid().ToString().Substring(0, 4)}.razor");
+                }
 
                 List<string> scriptLines = new List<string>();
 
@@ -2759,17 +2764,18 @@ namespace Assistant
 
                 File.WriteAllLines(path, scriptLines.ToArray());
 
-                ScriptManager.AddScript(path);
+                RazorScript script = ScriptManager.AddScript(path);
 
                 RedrawScripts();
 
                 tabs.SelectedTab = scriptsTab;
 
-                //scriptList.SelectedIndex = scriptList.FindString(name);
+                TreeNode node = FindScriptNode(scriptTree.Nodes, script);
+                scriptTree.SelectedNode = node;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, $"Unable to convert macro to script: {ex.Message}", "Macro Conversion",
+                MessageBox.Show(this, $"Unable to convert macro to script: {ex.Message}", "Macro to Script Conversion",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
