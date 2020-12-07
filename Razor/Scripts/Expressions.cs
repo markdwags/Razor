@@ -63,6 +63,8 @@ namespace Assistant.Scripts
 
             Interpreter.RegisterExpressionHandler("findbuff", FindBuffDebuff);
             Interpreter.RegisterExpressionHandler("finddebuff", FindBuffDebuff);
+
+            Interpreter.RegisterExpressionHandler("position", Position);
         }
 
         private static bool FindBuffDebuff(string expression, Argument[] args, bool quiet)
@@ -341,6 +343,28 @@ namespace Assistant.Scripts
             }
 
             throw new RunTimeError(null, $"Counter '{args[0].AsString()}' doesn't exist. Set it up in Razor under Display->Counters.");
+        }
+
+        private static bool Position(string expression, Argument[] args, bool quiet)
+        {
+            if (World.Player == null)
+                return false;
+
+            if (args.Length < 2)
+            {
+                throw new RunTimeError(null,
+                    "Usage: position (x, y) or position (x, y, z)");
+            } 
+
+            int x = args[0].AsInt();
+            int y = args[1].AsInt();
+            int z = (args.Length > 2) 
+                ? args[2].AsInt() 
+                : World.Player.Position.Z;
+
+            return World.Player.Position.X == x
+                && World.Player.Position.Y == y
+                && World.Player.Position.Z == z;
         }
     }
 }
