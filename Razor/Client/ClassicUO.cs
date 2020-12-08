@@ -23,6 +23,7 @@ using CUO_API;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -266,7 +267,7 @@ namespace Assistant
                 Packet packet = null;
                 bool isView = PacketHandler.HasServerViewer(id);
                 bool isFilter = PacketHandler.HasServerFilter(id);
-
+                
                 if (isView)
                 {
                     reader = new PacketReader(ptr, length, PacketsTable.IsDynLength(id));
@@ -280,6 +281,11 @@ namespace Assistant
 
                     data = packet.Compile();
                     length = (int) packet.Length;
+                }
+
+                if (Packet.Logging)
+                {
+                    Packet.Log(PacketPath.ServerToClient, ptr, data.Length, !result);
                 }
 
                 return result;
@@ -298,7 +304,7 @@ namespace Assistant
                 Packet packet = null;
                 bool isView = PacketHandler.HasClientViewer(id);
                 bool isFilter = PacketHandler.HasClientFilter(id);
-
+                
                 if (isView)
                 {
                     reader = new PacketReader(ptr, length, PacketsTable.IsDynLength(id));
@@ -311,6 +317,11 @@ namespace Assistant
 
                     data = packet.Compile();
                     length = (int) packet.Length;
+                }
+
+                if (Packet.Logging)
+                {
+                    Packet.Log(PacketPath.ClientToServer, ptr, data.Length, !result);
                 }
 
                 return result;
@@ -531,20 +542,36 @@ namespace Assistant
             _sendToClient(ref packet, ref length);
         }
 
-        public override void ForceSendToClient(Packet p)
+        public override unsafe void ForceSendToClient(Packet p)
         {
             byte[] data = p.Compile();
             int length = (int) p.Length;
 
             _sendToClient(ref data, ref length);
+
+            if (Packet.Logging)
+            {
+                fixed (byte* ptr = data)
+                {
+                    Packet.Log(PacketPath.RazorToClient, ptr, data.Length);
+                }
+            }
         }
 
-        public override void ForceSendToServer(Packet p)
+        public override unsafe void ForceSendToServer(Packet p)
         {
             byte[] data = p.Compile();
             int length = (int) p.Length;
 
             _sendToServer(ref data, ref length);
+
+            if (Packet.Logging)
+            {
+                fixed (byte* ptr = data)
+                {
+                    Packet.Log(PacketPath.RazorToServer, ptr, data.Length);
+                }
+            }
         }
 
         public override void SetPosition(uint x, uint y, uint z, byte dir)

@@ -29,9 +29,7 @@ namespace Assistant
         ClientToServer,
         RazorToServer,
         ServerToClient,
-        RazorToClient,
-
-        PacketVideo
+        RazorToClient
     }
 
     public class Packet
@@ -166,7 +164,7 @@ namespace Assistant
 
         public static void Log(string line, params object[] args)
         {
-            Log(String.Format(line, args));
+            Log(string.Format(line, args));
         }
 
         public static void Log(string line)
@@ -188,12 +186,7 @@ namespace Assistant
             }
         }
 
-        public static unsafe void Log(PacketPath path, byte* buff, int len)
-        {
-            Log(path, buff, len, false);
-        }
-
-        public static unsafe void Log(PacketPath path, byte* buff, int len, bool blocked)
+        public static unsafe void Log(PacketPath path, byte* buff, int len, bool blocked = false)
         {
             if (!m_Logging)
                 return;
@@ -219,27 +212,23 @@ namespace Assistant
                         case PacketPath.RazorToClient:
                             pathStr = "Razor -> Client";
                             break;
-                        case PacketPath.PacketVideo:
-                            pathStr = "PacketVideo -> Client";
-                            break;
                         default:
                             pathStr = "Unknown -> Unknown";
                             break;
                     }
 
-                    sw.WriteLine("{0}: {1}{2}0x{3:X2} (Length: {4})", Engine.MistedDateTime.ToString("HH:mm:ss.ffff"),
+                    sw.WriteLine("{0:HH:mm:ss.ffff}: {1}{2}0x{3:X2} (Length: {4})", Engine.MistedDateTime,
                         pathStr, blocked ? " [BLOCKED] " : " ", buff[0], len);
-                    //if ( buff[0] != 0x80 && buff[0] != 0x91 )
+                    
                     Utility.FormatBuffer(sw, buff, len);
-                    //else
-                    //	sw.WriteLine( "[Censored for Security Reasons]" );
-
+                    
                     sw.WriteLine();
                     sw.WriteLine();
                 }
             }
             catch
             {
+                // ignored
             }
         }
 
