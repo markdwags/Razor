@@ -619,6 +619,11 @@ namespace Assistant
             if (tabs == null)
                 return;
 
+            if (tabs.SelectedTab != scriptsTab)
+            {
+                UpdateTitle();
+            }
+
             if (tabs.SelectedTab == generalTab)
             {
                 Filter.Draw(filters);
@@ -6023,6 +6028,22 @@ namespace Assistant
             }
         }
 
+        private bool _savedCurrentScript = true;
+
+        private void scriptEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Control | Keys.S))
+            {
+                BeginInvoke(new Action(SaveScript));
+            }
+            
+            if (_savedCurrentScript)
+            {
+                UpdateScriptWindowTitle(false);
+                _savedCurrentScript = false;
+            }
+        }
+
         private void SaveScript()
         {
             RazorScript selectedScript = GetScriptSel();
@@ -6065,6 +6086,8 @@ namespace Assistant
                 File.WriteAllText(selectedScript.Path, scriptEditor.Text);
                 selectedScript.Lines = File.ReadAllLines(selectedScript.Path);
             }
+
+            UpdateScriptWindowTitle(true);
         }
 
         private void recordScript_Click(object sender, EventArgs e)
@@ -6966,6 +6989,8 @@ namespace Assistant
 
             Engine.MainWindow.SafeAction(s =>
             {
+                UpdateScriptWindowTitle(true);
+
                 if (hotkeyTree.TopNode == null)
                 {
                     HotKey.RebuildList(hotkeyTree);
@@ -6988,7 +7013,7 @@ namespace Assistant
                     }
                 }
 
-                ScriptManager.ClearHighlightLine();
+                //ScriptManager.ClearHighlightLine();
                 scriptEditor.Text = string.Join("\n", script.Lines);
             });
         }
@@ -6997,10 +7022,10 @@ namespace Assistant
 
         private void scriptTree_MouseDown(object sender, MouseEventArgs e)
         {
+            RazorScript selScript = GetScriptSel();
+
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                RazorScript selScript = GetScriptSel();
-
                 m_ScriptContextMenu = new ContextMenu();
 
                 m_ScriptContextMenu.MenuItems.Add(new MenuItem("Add category", AddScriptCategory));
@@ -7025,6 +7050,28 @@ namespace Assistant
                 m_ScriptContextMenu.MenuItems.Add(new MenuItem("Hide script tree", HideScriptTreeView));
 
                 m_ScriptContextMenu.Show(scriptTree, new Point(e.X, e.Y));
+            }
+        }
+
+        private void UpdateScriptWindowTitle(bool saved)
+        {
+            RazorScript selScript = GetScriptSel();
+
+            if (selScript != null)
+            {
+                string append;
+
+                if (World.Player != null)
+                {
+                    append = $"{World.Player.Name} ({World.ShardName})";
+                }
+                else
+                {
+                    append = $"Razor v{Engine.Version}";
+                }
+
+                Text = saved ? $"[{selScript.Name}] - {append}" : $"[{selScript.Name}*] - {append}";
+                _savedCurrentScript = true;
             }
         }
 
@@ -7204,5 +7251,7 @@ namespace Assistant
 
             scriptTree.SelectedNode = newNode;
         }
+
+        
     }
 }

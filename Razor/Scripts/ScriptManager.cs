@@ -122,7 +122,7 @@ namespace Assistant.Scripts
                     {
                         World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})");
 
-                        SetHighlightLine(ex.Node.LineNumber, Color.Red);
+                        //SetHighlightLine(ex.Node.LineNumber, Color.Red);
                     }
                     else
                     {
@@ -318,7 +318,7 @@ namespace Assistant.Scripts
             if (World.Player == null)
                 return;
 
-            ClearHighlightLine();
+            //ClearHighlightLine();
 
             Script script = new Script(Lexer.Lex(lines));
 
@@ -427,7 +427,7 @@ namespace Assistant.Scripts
 
         private delegate void SetHighlightLineDelegate(int iline, Color color);
 
-        private static void SetHighlightLine(int iline, Color background)
+        /*private static void SetHighlightLine(int iline, Color background)
         {
             for (int i = 0; i < ScriptEditor.LinesCount; i++)
             {
@@ -446,7 +446,7 @@ namespace Assistant.Scripts
             }
 
             ScriptEditor.Invalidate();
-        }
+        }*/
 
         private static FastColoredTextBoxNS.AutocompleteMenu _autoCompleteMenu;
 

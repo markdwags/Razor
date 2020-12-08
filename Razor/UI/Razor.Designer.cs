@@ -4449,6 +4449,7 @@ namespace Assistant
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.LostFocus += new System.EventHandler(this.scriptEditor_LostFocus);
             this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
+            this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
             // 
             // scriptGuide
             // 
