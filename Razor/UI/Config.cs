@@ -753,12 +753,17 @@ namespace Assistant
         {
             TwoHandedOverride = new Dictionary<ushort, bool>();
 
-            string[] thOverride = GetAppSetting<string>("TwoHandedOverride").Split(',');
+            string overrides = GetAppSetting<string>("TwoHandedOverride");
 
-            foreach (string or in thOverride)
+            if (!string.IsNullOrEmpty(overrides))
             {
-                string[] split = or.Split('=');
-                TwoHandedOverride.Add(Convert.ToUInt16(split[0], 16), Convert.ToBoolean(split[1]));
+                string[] thOverride = GetAppSetting<string>("TwoHandedOverride").Split(',');
+
+                foreach (string or in thOverride)
+                {
+                    string[] split = or.Split('=');
+                    TwoHandedOverride.Add(Convert.ToUInt16(split[0], 16), Convert.ToBoolean(split[1]));
+                }
             }
         }
 
