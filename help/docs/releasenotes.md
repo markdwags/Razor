@@ -2,6 +2,22 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
+## 1.6.7.10 (10/24/2020)
+
+* `>info` command gump will close when you try to close it
+* Split 'Auto-Un/Reequip hands for potions' into 2 options
+* Added in-game gump to show assigned Razor hotkeys. Type `>hotkeys`
+* Added hotkeys for all Razor gumps that were available in commands (`info`, `sysmsg`, `hotkeys`)
+* Added Set Hot Key button to agents
+* New Filters tab on Razor and moved all filtering related features as sub-tabs
+* Ability to block/filter specific text
+* Added `whisper` and `yell` commands to scripting
+* Fixed issue loading files when using the OSI client
+* Option to disable tooltips in the script editor
+* Fixed infinite loop issue with scripts when using nested for loops
+* The script list on the UI will be in alphabetical order on Linux
+* Added `waitforsysmsg` command as this can be achieved already using while loops.
+
 ## 1.6.6.15 (09/14/2020)
 
 * Fixed ancient Razor bug that could cause non-existent items to remain in your queue (ie: when you stack a pile of gold on to another). This should fix some instances where scavenger isn't picking up items (thanks @SaschaKP)

@@ -731,6 +731,12 @@ namespace Assistant
             get
             {
                 ushort iid = m_ItemID.Value;
+
+                if (Config.TwoHandedOverride.TryGetValue(iid, out bool value))
+                {
+                    return value;
+                }
+
                 return (
                            // everything in layer 2 except shields is 2handed
                            Layer == Layer.LeftHand &&

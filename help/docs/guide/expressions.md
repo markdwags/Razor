@@ -175,7 +175,7 @@ endif
 
 ## position
 
-- `position (x, y)` 
+- `position (x, y)`
 - `position (x, y, z)`
 
 Description: Used to check if your current position matches the provided.
@@ -185,7 +185,7 @@ Example(s):
 ```php
 if position 2729 2133
   overhead 'You are currently in front of the Bucs Den teleporter'
-else if position 2728 2133 5
+elseif position 2728 2133 5
   overhead 'You are standing on the Bucs Den teleporter'
 endif
 ```

@@ -296,6 +296,8 @@ namespace Assistant
                 MessageBox.Show(
                     "The selected profile could not be loaded, using default instead.", "Profile Load Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            
+            Config.LoadTwoHandedOverride();
 
             /* Start client */
             SplashScreen.Message = LocString.LoadingClient;

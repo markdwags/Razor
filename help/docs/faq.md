@@ -42,16 +42,65 @@ Scripts are stored in the `Scripts` folder and saved with the `.razor` file exte
 
 ## Files
 
-| File | Descripton |
-| ---- | -----------|
-| animdata.csv | This file contains the list of animations used when filtering different mobiles in |
-| counters.xml | This files contains the list of items that can be counted by Razor. While the use of the counter in the titlebar has been deprecated for the in-game counter bar available in ClassicUO it's still required for the macro and script system to count items. |
-| guidelines.def | This file contains the guardline definitions that display on the UOPS map|
-| Razor.exe.config | This file is the base configuration for Razor and contains a few settings, such as more organizer or restock agents, that require the application to be started when those values are changed.|
-| spells.def | This file contains the list of spells in game and if they are considered Harmful or Beneficial. |
+| File               | Descripton                                                                                                                                                                                                                                                  |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `animdata.csv`     | This file contains the list of animations used when filtering different mobiles in                                                                                                                                                                          |
+| `counters.xml`     | This files contains the list of items that can be counted by Razor. While the use of the counter in the titlebar has been deprecated for the in-game counter bar available in ClassicUO it's still required for the macro and script system to count items. |
+| `guidelines.def`   | This file contains the guardline definitions that display on the UOPS map                                                                                                                                                                                   |
+| `Razor.exe.config` | This file is the base configuration for Razor and contains a few settings, such as more organizer or restock agents, that require the application to be started when those values are changed.                                                              |
+| `spells.def`       | This file contains the list of spells in game and if they are considered Harmful or Beneficial.                                                                                                                                                             |
 
 !!! warning
     Files not listed here the related binaries required for Razor to work. They include files ending with `.dll, .lib, .exe, .exp, .pdb` and **_should not_** be part of restoring Razor files between installations.
+
+## Configuration
+
+| File                   | Description                                                                 |
+| ---------------------- | --------------------------------------------------------------------------- |
+| `Razor.exe.config`     | This configuration is used if you are using Razor with the OSI client       |
+| `ClassicUO.exe.config` | This configuration is used if you are using Razor with the ClassicUO client |
+
+You must manually edit that file if you want to set any of these values.
+
+```xml
+  <appSettings>
+    <add key="UODataDir" value="C:\Games\UO" />
+    <add key="UOClient" value="C:\Games\UO\client.exe" />
+    <add key="LastPort" value="2593" />
+    <add key="LastProfile" value="default" />
+    <add key="LastServer" value="login.server.com" />
+    <add key="LastServerId" value="0" />
+    <add key="ClientEncrypted" value="1" />
+    <add key="ServerEncrypted" value="0" />
+    <add key="ShowWelcome" value="1" />
+    <add key="UId" value="21613fcd" />
+    <add key="MaxOrganizerAgents" value="20" />
+    <add key="MaxBuyAgents" value="10" />
+    <add key="MaxRestockAgents" value="10" />
+    <add key="ImportProfilesAndMacros" value="true" />
+    <add key="BackupPath" value=".\Backup" />    
+  </appSettings>
+```
+
+### Agents
+
+If you need more Organizer, Buy or Restock agents, modify these values or add them to the ClassicUO config.
+
+```xml
+<add key="MaxOrganizerAgents" value="20" />
+<add key="MaxBuyAgents" value="10" />
+<add key="MaxRestockAgents" value="10" />
+```
+
+### Two Handed Weapon Override
+
+If the shard you play on doesn't use the default one-handed and two-handed weapon configurations, this can cause `Auto unequip for potions` to not function correctly.  To override the default settings, add this to the correct application settings file defined above.
+
+For example, if a short spear that is usually a two-handed weapon is a one-handed weapon, you would add this:
+
+```xml
+<add key="TwoHandedOverride" value="0x1402=false,0x1403=false" />
+```
 
 # Overhead Messages
 
