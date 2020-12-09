@@ -747,26 +747,6 @@ namespace Assistant
             m_Current = new Profile(name);
         }
 
-        public static Dictionary<ushort, bool> TwoHandedOverride { get; set; }
-                
-        public static void LoadTwoHandedOverride()
-        {
-            TwoHandedOverride = new Dictionary<ushort, bool>();
-
-            string overrides = GetAppSetting<string>("TwoHandedOverride");
-
-            if (!string.IsNullOrEmpty(overrides))
-            {
-                string[] thOverride = GetAppSetting<string>("TwoHandedOverride").Split(',');
-
-                foreach (string or in thOverride)
-                {
-                    string[] split = or.Split('=');
-                    TwoHandedOverride.Add(Convert.ToUInt16(split[0], 16), Convert.ToBoolean(split[1]));
-                }
-            }
-        }
-
         public static void LoadCharList()
         {
             if (m_Chars == null)

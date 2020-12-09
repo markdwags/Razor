@@ -1,0 +1,10 @@
+# This file allows you to override static values in Razor
+
+## Two-Handed Weapons
+# Razor uses the standard 1H and 2H for weapons to determine if they are one
+# handed or two handed. You can override which weapon is two-handed
+
+# twohanded id true/false
+# Example: Crossbow
+#twohanded 0xF4F false
+#twohanded 0xF50 false

@@ -106,7 +106,7 @@ namespace Assistant
             /* Load Profile */
             SplashScreen.Message = LocString.LoadingLastProfile;
             Config.LoadCharList();
-            Config.LoadTwoHandedOverride();
+            Overrides.Load();
             if (!Config.LoadLastProfile())
                 MessageBox.Show(
                     "The selected profile could not be loaded, using default instead.", "Profile Load Error",

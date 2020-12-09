@@ -27,6 +27,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Security.Principal;
+using Assistant.Core;
 
 namespace Assistant
 {
@@ -292,12 +293,11 @@ namespace Assistant
             /* Load Profile */
             SplashScreen.Message = LocString.LoadingLastProfile;
             Config.LoadCharList();
+            Overrides.Load();
             if (!Config.LoadLastProfile())
                 MessageBox.Show(
                     "The selected profile could not be loaded, using default instead.", "Profile Load Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            
-            Config.LoadTwoHandedOverride();
 
             /* Start client */
             SplashScreen.Message = LocString.LoadingClient;

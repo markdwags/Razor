@@ -22,6 +22,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using Assistant.Agents;
+using Assistant.Core;
 
 namespace Assistant
 {
@@ -732,7 +733,7 @@ namespace Assistant
             {
                 ushort iid = m_ItemID.Value;
 
-                if (Config.TwoHandedOverride.TryGetValue(iid, out bool value))
+                if (Overrides.TwoHanded.TryGetValue(iid, out bool value))
                 {
                     return value;
                 }
