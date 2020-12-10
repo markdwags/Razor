@@ -64,8 +64,13 @@ markdown_extensions:
   - toc:
         baselevel: 3    
         permalink: true    
-  - pymdownx.highlight
+  - pymdownx.highlight:
+        linenums: true
+        linenums_style: pymdownx.inline
   - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.keys
+  - pymdownx.tabbed
 
 plugins:
   - search  

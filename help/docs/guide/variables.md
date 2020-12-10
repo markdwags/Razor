@@ -12,15 +12,17 @@ You can create custom variables that are available in your scripts.  This can be
 
 Simply click Add, give it a name and target the item or mobile and that variable is available in your scripts.  In the screenshot above, `regbag` is set to a bag.  To use this variable in a script, you simply reference it.
 
-```csharp
-// Open your reg bag
+* Open your reg bag
+
+```vim
 dclick 'regbag'
 ```
 
 You can also set variables in scripts by using the `setvar` command.  To update the `regbag` command, you might do something like this:
 
-```csharp
-// Get target cursor to select item or mobile
+* Get target cursor to select item or mobile
+
+```vim
 setvar 'regbag'
 ```
 
@@ -30,30 +32,12 @@ The script will pause until you select a target. After you select a target, it w
 
 Along with defining your own variables, you can use these pre-defined variables in your scripts.
 
-## backpack
-
-`Returns:` The serial of your own backpack
-
-## hand
-
-`Returns:` The serial of the item in either hand
-
-## lasttarget / last
-
-`Returns:` The serial of your current last target in Razor
-
-## lastobject
-
-`Returns:` The serial of your last used object in Razor
-
-## lefthand
-
-`Returns:` The serial of the item in your left hand
-
-## righthand
-
-`Returns:` The serial of the item in your right hand
-
-## self
-
-`Returns:` The serial of your player
+| Variable          | Description                                                |
+| ----------------- | ---------------------------------------------------------- |
+| backpack          | `Returns:` The serial of your own backpack                 |
+| hand              | `Returns:` The serial of the item in either hand           |
+| lasttarget / last | `Returns:` The serial of your current last target in Razor |
+| lastobject        | `Returns:` The serial of your last used object in Razor    |
+| lefthand          | `Returns:` The serial of the item in your left hand        |
+| righthand         | `Returns:` The serial of the item in your right hand       |
+| self              | `Returns:` The serial of your player                       |

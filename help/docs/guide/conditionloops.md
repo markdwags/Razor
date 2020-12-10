@@ -4,7 +4,7 @@ As found in the Razor macro system, you can use `if`, `for` and `while` when wri
 
 ## if
 
-```php
+```vim
 if (statement)
 
 elseif (statement)
@@ -14,61 +14,66 @@ else
 endif
 ```
 
-```php
-if not (statement)
+!!! example
 
-elseif not (statement)
+    === "General"
 
-else
+        ```vim
+        if stam = 100
+            say 'Stamina full'
+        elseif stam < 20
+            say 'Still a ways to go'
+        elseif stam < 60
+            say 'Getting closer'
+        else
+            say 'waiting'
+        endif
+        ```
 
-endif
-```
+    === "Using 'not'"
 
-Example(s):
+        ```vim
+        if not stam = 100
+            say 'Stamina is not full'    
+        endif
+        ```
 
-```php
-if stam = 100
-    say 'Stamina full'
-elseif stam < 20
-    say 'Still a ways to go'
-elseif stam < 60
-    say 'Getting closer'
-else
-    say 'waiting'
-endif
-```
 
 ## for
 
-```php
+```vim
 for (value)
 
 endfor
 ```
 
-Example(s):
+!!! example
 
-```php
-// Say hello 10 times
-for 10
-    say 'hello'
-    wait 1000
-endfor
-```
+    === "For"
+
+        ```vim        
+        for 10
+            say 'hello'
+            wait 1000
+        endfor
+        ```
 
 ## while
 
-```php
+```vim
 while statement
 
 endwhile
 ```
 
-Example(s):
+!!! example
 
-```php
-while hits < 100
-    say 'I need a heal!'
-    wait 1000
-endwhile
-```
+    === "While"
+
+        ```vim
+        while hits < 100
+            say 'I need a heal!'
+            wait 1000
+        endwhile
+        ```
+
