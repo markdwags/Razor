@@ -784,7 +784,12 @@ namespace Assistant.Scripts
                 throw new RunTimeError(null, "lift - invalid serial");
             }
 
-            ushort amount = Utility.ToUInt16(args[1].AsString(), 1);
+            ushort amount = 1;
+
+            if (args.Length == 2)
+            {
+                amount = Utility.ToUInt16(args[1].AsString(), 1);
+            }
 
             Item item = World.FindItem(serial);
             if (item != null)
