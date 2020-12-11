@@ -19,7 +19,6 @@
 #endregion
 
 using Assistant.UI;
-using CUO_API;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -32,11 +31,59 @@ using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.Scripts;
 
+namespace CUO_API
+{
+    [return: MarshalAs(UnmanagedType.I1)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate bool OnPacketSendRecv_new_intptr_r(IntPtr data, ref int length);
+
+    [return: MarshalAs(UnmanagedType.I1)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate bool OnPacketSendRecv_new(byte[] data, ref int length);
+
+
+    public ref struct PluginHeader_R
+    {
+        public int ClientVersion;
+        public IntPtr HWND;
+        public IntPtr OnRecv;
+        public IntPtr OnSend;
+        public IntPtr OnHotkeyPressed;
+        public IntPtr OnMouse;
+        public IntPtr OnPlayerPositionChanged;
+        public IntPtr OnClientClosing;
+        public IntPtr OnInitialize;
+        public IntPtr OnConnected;
+        public IntPtr OnDisconnected;
+        public IntPtr OnFocusGained;
+        public IntPtr OnFocusLost;
+        public IntPtr GetUOFilePath;
+        public IntPtr Recv;
+        public IntPtr Send;
+        public IntPtr GetPacketLength;
+        public IntPtr GetPlayerPosition;
+        public IntPtr CastSpell;
+        public IntPtr GetStaticImage;
+        public IntPtr Tick;
+        public IntPtr RequestMove;
+        public IntPtr SetTitle;
+
+        public IntPtr OnRecv_new, OnSend_new, Recv_new, Send_new;
+
+        public IntPtr OnDrawCmdList;
+        public IntPtr SDL_Window;
+        public IntPtr OnWndProc;
+        public IntPtr GetStaticData;
+        public IntPtr GetTileData;
+        public IntPtr GetCliloc;
+    }
+}
+
 namespace Assistant
 {
     public partial class Engine
     {
-        public static unsafe void Install(PluginHeader* plugin)
+        public static unsafe void Install(void* ptr)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -64,7 +111,7 @@ namespace Assistant
 
             Client.Init(false);
 
-            if (!(Client.Instance as ClassicUOClient).Install(plugin))
+            if (!(Client.Instance as ClassicUOClient).Install(ptr))
             {
                 Process.GetCurrentProcess().Kill();
                 return;
@@ -72,7 +119,7 @@ namespace Assistant
 
             // load ultimasdk before or the Language.Load will throw the cliloc not found warning every time you run cuo
             string clientPath =
-                ((OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(OnGetUOFilePath))
+                ((CUO_API.OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(((CUO_API.PluginHeader_R*) ptr)->GetUOFilePath, typeof(CUO_API.OnGetUOFilePath))
                 )();
 
             // just replicating the static .ctor
@@ -136,26 +183,27 @@ namespace Assistant
         private bool m_ClientRunning = false;
         private string m_ClientVersion;
 
-        private static OnPacketSendRecv _sendToClient, _sendToServer, _recv, _send;
-        private static OnGetPacketLength _getPacketLength;
-        private static OnGetPlayerPosition _getPlayerPosition;
-        private static OnCastSpell _castSpell;
-        private static OnGetStaticImage _getStaticImage;
-        private static OnTick _tick;
-        private static RequestMove _requestMove;
-        private static OnSetTitle _setTitle;
-        private static OnGetUOFilePath _uoFilePath;
+        private static CUO_API.OnPacketSendRecv_new_intptr_r _sendToClient, _sendToServer;
+        private static CUO_API.OnPacketSendRecv_new _recv, _send;
+        private static CUO_API.OnGetPacketLength _getPacketLength;
+        private static CUO_API.OnGetPlayerPosition _getPlayerPosition;
+        private static CUO_API.OnCastSpell _castSpell;
+        private static CUO_API.OnGetStaticImage _getStaticImage;
+        private static CUO_API.OnTick _tick;
+        private static CUO_API.RequestMove _requestMove;
+        private static CUO_API.OnSetTitle _setTitle;
+        private static CUO_API.OnGetUOFilePath _uoFilePath;
 
 
-        private static OnHotkey _onHotkeyPressed;
-        private static OnMouse _onMouse;
-        private static OnUpdatePlayerPosition _onUpdatePlayerPosition;
-        private static OnClientClose _onClientClose;
-        private static OnInitialize _onInitialize;
-        private static OnConnected _onConnected;
-        private static OnDisconnected _onDisconnected;
-        private static OnFocusGained _onFocusGained;
-        private static OnFocusLost _onFocusLost;
+        private static CUO_API.OnHotkey _onHotkeyPressed;
+        private static CUO_API.OnMouse _onMouse;
+        private static CUO_API.OnUpdatePlayerPosition _onUpdatePlayerPosition;
+        private static CUO_API.OnClientClose _onClientClose;
+        private static CUO_API.OnInitialize _onInitialize;
+        private static CUO_API.OnConnected _onConnected;
+        private static CUO_API.OnDisconnected _onDisconnected;
+        private static CUO_API.OnFocusGained _onFocusGained;
+        private static CUO_API.OnFocusLost _onFocusLost;
         private IntPtr m_ClientWindow;
 
         public override void SetMapWndHandle(Form mapWnd)
@@ -187,27 +235,29 @@ namespace Assistant
 
         public override bool ServerEncrypted { get; set; }
 
-        public unsafe bool Install(PluginHeader* header)
+        public unsafe bool Install(void* ptr)
         {
+            CUO_API.PluginHeader_R* header = (CUO_API.PluginHeader_R*) ptr;
+
             _sendToClient =
-                (OnPacketSendRecv) Marshal.GetDelegateForFunctionPointer(header->Recv, typeof(OnPacketSendRecv));
+                (CUO_API.OnPacketSendRecv_new_intptr_r) Marshal.GetDelegateForFunctionPointer(header->Recv_new, typeof(CUO_API.OnPacketSendRecv_new_intptr_r));
             _sendToServer =
-                (OnPacketSendRecv) Marshal.GetDelegateForFunctionPointer(header->Send, typeof(OnPacketSendRecv));
+                (CUO_API.OnPacketSendRecv_new_intptr_r) Marshal.GetDelegateForFunctionPointer(header->Send_new, typeof(CUO_API.OnPacketSendRecv_new_intptr_r));
             _getPacketLength =
-                (OnGetPacketLength) Marshal.GetDelegateForFunctionPointer(header->GetPacketLength,
-                    typeof(OnGetPacketLength));
+                (CUO_API.OnGetPacketLength) Marshal.GetDelegateForFunctionPointer(header->GetPacketLength,
+                                                                                  typeof(CUO_API.OnGetPacketLength));
             _getPlayerPosition =
-                (OnGetPlayerPosition) Marshal.GetDelegateForFunctionPointer(header->GetPlayerPosition,
-                    typeof(OnGetPlayerPosition));
-            _castSpell = (OnCastSpell) Marshal.GetDelegateForFunctionPointer(header->CastSpell, typeof(OnCastSpell));
+                (CUO_API.OnGetPlayerPosition) Marshal.GetDelegateForFunctionPointer(header->GetPlayerPosition,
+                                                                                    typeof(CUO_API.OnGetPlayerPosition));
+            _castSpell = (CUO_API.OnCastSpell) Marshal.GetDelegateForFunctionPointer(header->CastSpell, typeof(CUO_API.OnCastSpell));
             _getStaticImage =
-                (OnGetStaticImage) Marshal.GetDelegateForFunctionPointer(header->GetStaticImage,
-                    typeof(OnGetStaticImage));
+                (CUO_API.OnGetStaticImage) Marshal.GetDelegateForFunctionPointer(header->GetStaticImage,
+                                                                                 typeof(CUO_API.OnGetStaticImage));
             _requestMove =
-                (RequestMove) Marshal.GetDelegateForFunctionPointer(header->RequestMove, typeof(RequestMove));
-            _setTitle = (OnSetTitle) Marshal.GetDelegateForFunctionPointer(header->SetTitle, typeof(OnSetTitle));
+                (CUO_API.RequestMove) Marshal.GetDelegateForFunctionPointer(header->RequestMove, typeof(CUO_API.RequestMove));
+            _setTitle = (CUO_API.OnSetTitle) Marshal.GetDelegateForFunctionPointer(header->SetTitle, typeof(CUO_API.OnSetTitle));
             _uoFilePath =
-                (OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(header->GetUOFilePath, typeof(OnGetUOFilePath));
+                (CUO_API.OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(header->GetUOFilePath, typeof(CUO_API.OnGetUOFilePath));
             m_ClientVersion = new Version((byte) (header->ClientVersion >> 24), (byte) (header->ClientVersion >> 16),
                 (byte) (header->ClientVersion >> 8), (byte) header->ClientVersion).ToString();
             m_ClientRunning = true;
@@ -225,8 +275,8 @@ namespace Assistant
             _onFocusGained = OnFocusGained;
             _onFocusLost = OnFocusLost;
             header->Tick = Marshal.GetFunctionPointerForDelegate(_tick);
-            header->OnRecv = Marshal.GetFunctionPointerForDelegate(_recv);
-            header->OnSend = Marshal.GetFunctionPointerForDelegate(_send);
+            header->OnRecv_new = Marshal.GetFunctionPointerForDelegate(_recv);
+            header->OnSend_new = Marshal.GetFunctionPointerForDelegate(_send);
             header->OnHotkeyPressed = Marshal.GetFunctionPointerForDelegate(_onHotkeyPressed);
             header->OnMouse = Marshal.GetFunctionPointerForDelegate(_onMouse);
             header->OnPlayerPositionChanged = Marshal.GetFunctionPointerForDelegate(_onUpdatePlayerPosition);
@@ -256,13 +306,13 @@ namespace Assistant
             World.Player.Position = new Point3D(x, y, z);
         }
 
-        private unsafe bool OnRecv(ref byte[] data, ref int length)
+        private unsafe bool OnRecv(byte[] buffer, ref int length)
         {
             m_In += (uint) length;
-            fixed (byte* ptr = data)
+            fixed (byte* ptr = buffer)
             {
                 bool result = true;
-                byte id = data[0];
+                byte id = ptr[0];
 
                 PacketReader reader = null;
                 Packet packet = null;
@@ -277,29 +327,41 @@ namespace Assistant
 
                 if (isFilter)
                 {
+                    byte[] data = new byte[length];
+
+                    for (int i = 0; i < length; ++i)
+                    {
+                        data[i] = ptr[i];
+                    }
+
                     packet = new Packet(data, length, PacketsTable.IsDynLength(id));
-                    result = !PacketHandler.OnServerPacket(id, reader, packet);
+                    result = !PacketHandler.OnClientPacket(id, reader, packet);
 
                     data = packet.Compile();
-                    length = (int) packet.Length;
+                    length = (int)packet.Length;
+
+                    for (int i = 0; i < length; ++i)
+                    {
+                        data[i] = ptr[i];
+                    }
                 }
 
                 if (Packet.Logging)
                 {
-                    Packet.Log(PacketPath.ServerToClient, ptr, data.Length, !result);
+                    Packet.Log(PacketPath.ServerToClient, ptr, length, !result);
                 }
 
                 return result;
             }
         }
 
-        private unsafe bool OnSend(ref byte[] data, ref int length)
+        private unsafe bool OnSend(byte[] buffer, ref int length)
         {
             m_Out += (uint) length;
-            fixed (byte* ptr = data)
+            fixed (byte * ptr = buffer)
             {
                 bool result = true;
-                byte id = data[0];
+                byte id = ptr[0];
 
                 PacketReader reader = null;
                 Packet packet = null;
@@ -313,16 +375,28 @@ namespace Assistant
                 }
                 else if (isFilter)
                 {
+                    byte[] data = new byte[length];
+
+                    for (int i = 0; i < length; ++i)
+                    {
+                        data[i] = ptr[i];
+                    }
+
                     packet = new Packet(data, length, PacketsTable.IsDynLength(id));
                     result = !PacketHandler.OnClientPacket(id, reader, packet);
 
                     data = packet.Compile();
                     length = (int) packet.Length;
+
+                    for (int i = 0; i < length; ++i)
+                    {
+                        data[i] = ptr[i];
+                    }
                 }
 
                 if (Packet.Logging)
                 {
-                    Packet.Log(PacketPath.ClientToServer, ptr, data.Length, !result);
+                    Packet.Log(PacketPath.ClientToServer, ptr, length, !result);
                 }
 
                 return result;
@@ -518,11 +592,15 @@ namespace Assistant
             return false;
         }
 
-        public override void SendToServer(Packet p)
+        public override unsafe void SendToServer(Packet p)
         {
             byte[] data = p.Compile();
             int length = (int) p.Length;
-            _sendToServer(ref data, ref length);
+
+            fixed (byte* ptr = data)
+            {
+                _sendToServer((IntPtr) ptr, ref length);
+            }
         }
 
         public override void SendToServer(PacketReader pr)
@@ -530,17 +608,23 @@ namespace Assistant
             SendToServer(MakePacketFrom(pr));
         }
 
-        public override void SendToClient(Packet p)
+        public override unsafe void SendToClient(Packet p)
         {
             byte[] data = p.Compile();
             int length = (int) p.Length;
 
-            _sendToClient(ref data, ref length);
+            fixed (byte* ptr = data)
+            {
+                _sendToClient((IntPtr)ptr, ref length);
+            }
         }
 
-        public override void SendPacketToClient(byte[] packet, int length)
+        public override unsafe void SendPacketToClient(byte[] packet, int length)
         {
-            _sendToClient(ref packet, ref length);
+            fixed (byte* ptr = packet)
+            {
+                _sendToClient((IntPtr) ptr, ref length);
+            }
         }
 
         public override unsafe void ForceSendToClient(Packet p)
@@ -548,11 +632,11 @@ namespace Assistant
             byte[] data = p.Compile();
             int length = (int) p.Length;
 
-            _sendToClient(ref data, ref length);
-
-            if (Packet.Logging)
+            fixed (byte* ptr = data)
             {
-                fixed (byte* ptr = data)
+                _sendToClient((IntPtr) ptr, ref length);
+
+                if (Packet.Logging)
                 {
                     Packet.Log(PacketPath.RazorToClient, ptr, data.Length);
                 }
@@ -564,11 +648,11 @@ namespace Assistant
             byte[] data = p.Compile();
             int length = (int) p.Length;
 
-            _sendToServer(ref data, ref length);
-
-            if (Packet.Logging)
+            fixed (byte* ptr = data)
             {
-                fixed (byte* ptr = data)
+                _sendToServer((IntPtr) ptr, ref length);
+
+                if (Packet.Logging)
                 {
                     Packet.Log(PacketPath.RazorToServer, ptr, data.Length);
                 }
