@@ -36,9 +36,9 @@ In June 2019 integration into [ClassicUO](https://github.com/andreakarasho/Class
 
 ## UO:R Community Edition
 
-When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](http://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](http://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) has came from the [UO:Renaissance](http://www.uorenaissance.com) community where the rules there only allow for the use of Razor and so that name was used to not only distinguish between other versions of Razor that are available but give credit to a community that provided so much support early on.
+When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](http://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](http://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community where the rules there only allow for the use of Razor and so that name was used to not only distinguish between other versions of Razor that are available but give credit to a community that provided so much support early on.
 
-Since then, this version of Razor was updated to support the ClassicUO client with feedback and contributions coming from  all different corners of the freeshard UO community -- from large to small shards.
+Since then, this version of Razor was updated to support the ClassicUO client with feedback and contributions coming from all different corners of the freeshard UO community -- from large to small shards.
 
 Thank you to all the folks across the whole community who have contributed in some way towards creating this version of Razor. If you'd like contribute, see the [CONTRIBUTING](https://github.com/markdwags/Razor/blob/master/CONTRIBUTING.md) file for more information.
 
@@ -51,7 +51,7 @@ For me, that shard is [UO:Renaissance](http://www.uorenaissance.com).
 If you're unable to find a solution using the information here or you'd like to submit a feature request or bug report, use the following resources.
 
 * Submit a feature/bug/issue on our [official Razor GitHub Repo](https://github.com/markdwags/Razor/issues).
-* Join us in #razor on Discord (this is the official [ClassicUO](https://www.classicuo.eu/) Discord server)
+* Join us in #razor on Discord (we use the the official [ClassicUO](https://www.classicuo.eu/) Discord server)
 
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 

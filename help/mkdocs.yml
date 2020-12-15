@@ -14,6 +14,7 @@ nav:
     - Windows: install/windows.md
     - Linux: install/linux.md
 - Release Notes: releasenotes.md
+- FAQ: faq.md
 - Help Guide:
     - Help Overview: help/index.md    
     - General: help/general.md
@@ -29,7 +30,6 @@ nav:
     - Friends: help/friends.md    
     - Screen Shots: help/screenshots.md
     - Advanced: help/advanced.md
-- FAQ: faq.md
 - Scripting Guide:
     - Scripting Overview: guide/index.md
     - Commands: guide/commands.md
@@ -55,7 +55,9 @@ theme:
         #text: Mulish
         #text: Alata
         #text: Noto Sans JP
-        text: Lato
+        #text: Lato
+        #text: Ubuntu
+        text: Titillium Web
         code: Fira Code
     logo: images/razor.png
 

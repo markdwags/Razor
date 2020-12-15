@@ -30,11 +30,10 @@ This [Powershell script](https://github.com/markdwags/Razor/blob/master/InstallC
 * Execute the following PowerShell commands
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(
-'https://raw.githubusercontent.com/markdwags/Razor/master/InstallClassicUOAndRazor-NoDefaults.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/markdwags/Razor/master/InstallClassicUOAndRazor-NoDefaults.ps1'))
 ```
 
-!!! warning 
+!!! warning
     If you are on an older version of Windows, you may experience issues running this command.  You can get the latest version [here](https://www.microsoft.com/en-us/download/details.aspx?id=54616).
 
 * Follow the on-screen prompts to set up the ClassicUO settings.json file first the first time.

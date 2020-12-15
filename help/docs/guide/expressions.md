@@ -4,13 +4,15 @@ When using the `if` or `while` conditions, you can access the following expressi
 
 The following operators are supported:
 
-- `=`
-- `==`
-- `!=`
-- `<`
-- `<=`
-- `>`
-- `>=`
+| Operator | Description           |
+| -------- | --------------------- |
+| =        | Equal                 |
+| ==       | Equal                 |
+| !=       | Not equal             |
+| <        | Less than             |
+| <=       | Less than or equal    |
+| >        | Greater than          |
+| >=       | Greater than or equal |
 
 ## count/counter
 
@@ -20,7 +22,7 @@ The following operators are supported:
 Description: Used to get the current number of a specific counted item in Razor
 
 !!! note
-    You must have a counter setup in `Display->Counters` before using this expression.
+You must have a counter setup in `Display->Counters` before using this expression. [More info](../help/displaycounters.md#counters)
 
 !!! example
 
@@ -54,13 +56,13 @@ Description: Used to check if a specific buff/debuff is applied to you.
 
 - `findtype ('name of item') [inrangecheck (true/false)]` OR `findtype (graphicID) [inrangecheck (true/false)]`
 
-Description: Used to check if a specific item name of graphic ID exists.  Range check, if true, will check within 2 tiles.
+Description: Used to check if a specific item name of graphic ID exists. Range check, if true, will check within 2 tiles.
 
 !!! example
 
     === "Find a saw"
 
-        ```vim        
+        ```vim
         if findtype 'saw'
             say 'found'
         endif
@@ -81,7 +83,6 @@ Description: Used to check if you are hidden.
             overhead 'they cant see me'
         endif
         ```
-
 
 ## hp & maxhp
 

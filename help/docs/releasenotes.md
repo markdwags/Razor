@@ -7,14 +7,14 @@ Below is a list of the latest releases notes going back to the first release of 
 * Implemented treeview and categories for scripts
 * `script` command can now call the new supported categories
 * Added `findbuff` scripting expression
-* Fixed right-click menu when selecting something in the script editor
+* Fixed right-click menu not opening when selecting something in the script editor
 * Script will throw an error if you use `if count` with an counter that isn't setup
-* Fixed issue with the sound filter being off by 1
+* Fixed issue with the individual sound filter being off by 1
 * Added `guild` and `alliance` scripting commands
-* Coverting macros to scripts will retain the same name if available
+* Converting macros to scripts will retain the same name if available
 * Added `position` scripting expression
 * Added ability to override which weapons Razor consider two handed
-* CTRL-S will save the current script you're editing
+* ++ctrl+s++ will save the current script you're editing
 * Save indicator in main window when editing scripts
 * Fixed issue with `lift` command requiring the optional parameter
 
