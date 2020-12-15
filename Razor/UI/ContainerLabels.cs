@@ -336,8 +336,8 @@ namespace Assistant.UI
 
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add("Open Container (if in range)", new EventHandler(OnContainerDoubleClick));
+                ContextMenuStrip menu = new ContextMenuStrip();
+                menu.Items.Add("Open Container (if in range)", null, new EventHandler(OnContainerDoubleClick));
 
                 menu.Show(containerView, new Point(e.X, e.Y));
             }
