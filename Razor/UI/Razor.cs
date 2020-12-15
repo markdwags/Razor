@@ -7013,7 +7013,7 @@ namespace Assistant
             });
         }
 
-        private ContextMenu m_ScriptContextMenu = null;
+        private ContextMenuStrip m_ScriptContextMenu = null;
 
         private void scriptTree_MouseDown(object sender, MouseEventArgs e)
         {
@@ -7021,28 +7021,28 @@ namespace Assistant
 
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                m_ScriptContextMenu = new ContextMenu();
+                m_ScriptContextMenu = new ContextMenuStrip();
 
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Add category", AddScriptCategory));
+                m_ScriptContextMenu.Items.Add("Add category", null, AddScriptCategory);
 
                 if (scriptTree.SelectedNode != null && scriptTree.SelectedNode.Tag is string)
                 {
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Delete category", Script_DeleteCategory));
+                    m_ScriptContextMenu.Items.Add("Delete category", null, Script_DeleteCategory);
                 }
                 else if (selScript != null)
                 {
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Move to category", MoveScriptCategory));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Rename '{selScript.Name}'", RenameScript));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Delete '{selScript.Name}'", DeleteScript));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem($"Open '{selScript.Name}' externally", OpenScriptExternally));
-                    m_ScriptContextMenu.MenuItems.Add(new MenuItem("Copy to clipboard", CopyScriptToClipboard));
+                    m_ScriptContextMenu.Items.Add("Move to category", null, MoveScriptCategory);
+                    m_ScriptContextMenu.Items.Add("-");
+                    m_ScriptContextMenu.Items.Add($"Rename '{selScript.Name}'", null, RenameScript);
+                    m_ScriptContextMenu.Items.Add($"Delete '{selScript.Name}'", null, DeleteScript);
+                    m_ScriptContextMenu.Items.Add("-");
+                    m_ScriptContextMenu.Items.Add($"Open '{selScript.Name}' externally", null, OpenScriptExternally);
+                    m_ScriptContextMenu.Items.Add("Copy to clipboard", null, CopyScriptToClipboard);
                 }
 
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("-"));
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Reload all scripts", ReloadScripts));
-                m_ScriptContextMenu.MenuItems.Add(new MenuItem("Hide script tree", HideScriptTreeView));
+                m_ScriptContextMenu.Items.Add("-");
+                m_ScriptContextMenu.Items.Add("Reload all scripts", null, ReloadScripts);
+                m_ScriptContextMenu.Items.Add("Hide script tree", null, HideScriptTreeView);
 
                 m_ScriptContextMenu.Show(scriptTree, new Point(e.X, e.Y));
             }
