@@ -2,9 +2,10 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
-## 1.6.8.x (xx/xx/xx)
+## 1.6.8.15 (12/15/2020)
 
 * Implemented treeview and categories for scripts
+* Added ability to adjust the size of the script editing window and the list of scripts
 * `script` command can now call the new supported categories
 * Added `findbuff` scripting expression
 * Fixed right-click menu not opening when selecting something in the script editor

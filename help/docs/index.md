@@ -36,7 +36,7 @@ In June 2019 integration into [ClassicUO](https://github.com/andreakarasho/Class
 
 ## UO:R Community Edition
 
-When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](http://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](http://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community where the rules there only allow for the use of Razor and so that name was used to not only distinguish between other versions of Razor that are available but give credit to a community that provided so much support early on.
+When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](http://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](http://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community, one of the few freeshards where the rules there only allow for the use of Razor and so that name was used to not only distinguish between other versions of Razor that are available but give credit to a community that provided so much support early on.
 
 Since then, this version of Razor was updated to support the ClassicUO client with feedback and contributions coming from all different corners of the freeshard UO community -- from large to small shards.
 
