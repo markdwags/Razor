@@ -7,7 +7,7 @@
 
 Razor is a free tool designed to help with simple tasks while playing Ultima Online.
 
-This guide was written for the **Razor UO:Renaissance Community Edition**.
+This guide was written for the **Razor Community Edition**.
 
 For more information about this version of Razor, read the [history](#history), review the [release notes](./releasenotes.md) and [download](./download.md) Razor.
 
@@ -34,17 +34,13 @@ Another version of Razor exists (the `1.0.14.x` versions) and is/was maintained 
 
 In June 2019 integration into [ClassicUO](https://github.com/andreakarasho/ClassicUO) was officially established.
 
-## UO:R Community Edition
+## Community Edition
 
 When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](http://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](http://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community, one of the few freeshards where the rules there only allow for the use of Razor and so that name was used to not only distinguish between other versions of Razor that are available but give credit to a community that provided so much support early on.
 
-Since then, this version of Razor was updated to support the ClassicUO client with feedback and contributions coming from all different corners of the freeshard UO community -- from large to small shards.
+Since this version was updated to support ClassicUO it has become widely used across the whole UO freeshard community and continued to be built on feedback and contributions  from all different corners of the freeshard UO community -- from large to small shards alike.
 
 Thank you to all the folks across the whole community who have contributed in some way towards creating this version of Razor. If you'd like contribute, see the [CONTRIBUTING](https://github.com/markdwags/Razor/blob/master/CONTRIBUTING.md) file for more information.
-
-**TL;DR:** If you want to use this version of Razor, regardless of the Ultima Online server you play on, this version should work. This version isn't tied to any specific shard. These updates to Razor are for all the Ultima Online Community to use and benefit from. Play UO on the shard that gives you the most enjoyment.
-
-For me, that shard is [UO:Renaissance](http://www.uorenaissance.com).
 
 # Help
 

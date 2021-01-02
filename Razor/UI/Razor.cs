@@ -4630,12 +4630,7 @@ namespace Assistant
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Utility.LaunchBrowser("http://www.uor-razor.com");
-        }
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Utility.LaunchBrowser("http://www.uorenaissance.com");
+            Utility.LaunchBrowser("http://www.razorce.com");
         }
 
         private void targetByTypeDifferent_CheckedChanged(object sender, EventArgs e)
@@ -5169,7 +5164,7 @@ namespace Assistant
 
         private void linkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Utility.LaunchBrowser("http://www.uor-razor.com/help/");
+            Utility.LaunchBrowser("http://www.razorce.com/help/");
         }
 
         private void enableUOAAPI_CheckedChanged(object sender, EventArgs e)
@@ -6630,7 +6625,7 @@ namespace Assistant
 
         private void scriptGuide_Click(object sender, EventArgs e)
         {
-            Utility.LaunchBrowser("http://www.uor-razor.com/guide/");
+            Utility.LaunchBrowser("http://www.razorce.com/guide/");
         }
         private void listWaypoints_MouseDown(object sender, MouseEventArgs e)
         {

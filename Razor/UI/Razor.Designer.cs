@@ -107,7 +107,6 @@ namespace Assistant
         private CheckBox negotiate;
         private Label aboutSubInfo;
         private Label lblCredits1;
-        private LinkLabel linkLabel1;
         private Label label20;
         private Button disableSmartCPU;
         private CheckBox logSkillChanges;
@@ -780,7 +779,6 @@ namespace Assistant
             this.linkHelp = new System.Windows.Forms.LinkLabel();
             this.lblCredits2 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.lblCredits1 = new System.Windows.Forms.Label();
             this.aboutSubInfo = new System.Windows.Forms.Label();
             this.linkMain = new System.Windows.Forms.LinkLabel();
@@ -3520,9 +3518,9 @@ namespace Assistant
             this.subFilterText.BackColor = System.Drawing.SystemColors.Control;
             this.subFilterText.Controls.Add(this.gbFilterText);
             this.subFilterText.Controls.Add(this.gbFilterMessages);
-            this.subFilterText.Location = new System.Drawing.Point(4, 24);
+            this.subFilterText.Location = new System.Drawing.Point(4, 22);
             this.subFilterText.Name = "subFilterText";
-            this.subFilterText.Size = new System.Drawing.Size(498, 285);
+            this.subFilterText.Size = new System.Drawing.Size(498, 287);
             this.subFilterText.TabIndex = 4;
             this.subFilterText.Text = "Text && Messages  ";
             // 
@@ -3670,9 +3668,9 @@ namespace Assistant
             this.subFilterSoundMusic.Controls.Add(this.playSound);
             this.subFilterSoundMusic.Controls.Add(this.soundFilterEnabled);
             this.subFilterSoundMusic.Controls.Add(this.soundFilterList);
-            this.subFilterSoundMusic.Location = new System.Drawing.Point(4, 24);
+            this.subFilterSoundMusic.Location = new System.Drawing.Point(4, 22);
             this.subFilterSoundMusic.Name = "subFilterSoundMusic";
-            this.subFilterSoundMusic.Size = new System.Drawing.Size(498, 285);
+            this.subFilterSoundMusic.Size = new System.Drawing.Size(498, 287);
             this.subFilterSoundMusic.TabIndex = 3;
             this.subFilterSoundMusic.Text = "Sound & Music  ";
             // 
@@ -3777,10 +3775,10 @@ namespace Assistant
             this.subFilterTargets.Controls.Add(this.targetFilterAdd);
             this.subFilterTargets.Controls.Add(this.targetFilter);
             this.subFilterTargets.Controls.Add(this.targetFilterEnabled);
-            this.subFilterTargets.Location = new System.Drawing.Point(4, 24);
+            this.subFilterTargets.Location = new System.Drawing.Point(4, 22);
             this.subFilterTargets.Name = "subFilterTargets";
             this.subFilterTargets.Padding = new System.Windows.Forms.Padding(3);
-            this.subFilterTargets.Size = new System.Drawing.Size(498, 285);
+            this.subFilterTargets.Size = new System.Drawing.Size(498, 287);
             this.subFilterTargets.TabIndex = 1;
             this.subFilterTargets.Text = "Target Filter";
             // 
@@ -4445,9 +4443,9 @@ namespace Assistant
             this.scriptEditor.Size = new System.Drawing.Size(299, 272);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
+            this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
             this.scriptEditor.LostFocus += new System.EventHandler(this.scriptEditor_LostFocus);
             this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
-            this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
             // 
             // scriptGuide
             // 
@@ -5216,7 +5214,6 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.linkHelp);
             this.aboutTab.Controls.Add(this.lblCredits2);
             this.aboutTab.Controls.Add(this.label20);
-            this.aboutTab.Controls.Add(this.linkLabel1);
             this.aboutTab.Controls.Add(this.lblCredits1);
             this.aboutTab.Controls.Add(this.aboutSubInfo);
             this.aboutTab.Controls.Add(this.linkMain);
@@ -5231,7 +5228,7 @@ namespace Assistant
             // linkGitHub
             // 
             this.linkGitHub.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkGitHub.Location = new System.Drawing.Point(6, 163);
+            this.linkGitHub.Location = new System.Drawing.Point(9, 157);
             this.linkGitHub.Name = "linkGitHub";
             this.linkGitHub.Size = new System.Drawing.Size(506, 20);
             this.linkGitHub.TabIndex = 25;
@@ -5276,23 +5273,11 @@ namespace Assistant
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(93, 126);
+            this.label20.Location = new System.Drawing.Point(96, 120);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(343, 17);
             this.label20.TabIndex = 21;
             this.label20.Text = "For feedback, support and the latest releases please visit:\r\n";
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.Location = new System.Drawing.Point(6, 94);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(506, 20);
-            this.linkLabel1.TabIndex = 20;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://www.uorenaissance.com";
-            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // lblCredits1
             // 
@@ -5311,18 +5296,18 @@ namespace Assistant
             this.aboutSubInfo.Name = "aboutSubInfo";
             this.aboutSubInfo.Size = new System.Drawing.Size(506, 19);
             this.aboutSubInfo.TabIndex = 17;
-            this.aboutSubInfo.Text = "UO Renaissance Community Edition";
+            this.aboutSubInfo.Text = "Community Edition";
             this.aboutSubInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkMain
             // 
             this.linkMain.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkMain.Location = new System.Drawing.Point(6, 143);
+            this.linkMain.Location = new System.Drawing.Point(9, 137);
             this.linkMain.Name = "linkMain";
             this.linkMain.Size = new System.Drawing.Size(506, 20);
             this.linkMain.TabIndex = 16;
             this.linkMain.TabStop = true;
-            this.linkMain.Text = "http://www.uor-razor.com";
+            this.linkMain.Text = "http://www.razorce.com";
             this.linkMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkMain.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 

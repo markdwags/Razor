@@ -6,13 +6,13 @@ Razor is a free tool designed to help with simple tasks while playing Ultima Onl
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1815mo6is2t8fl1o?svg=true)](https://ci.appveyor.com/project/markdwags/razor) [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 
-## UO:R Community Edition
+## Community Edition
 
 The goal of this project is to revive and continue development and maintenance of the abandoned Razor project, focusing on "quality of life" improvements while attempting to keep the spirit and vision the original developers had for Razor and not driving down the path of advanced automation and scripting that's found in other UO assistants.
 
 It's recommended that you use the [ClassicUO](https://github.com/andreakarasho/ClassicUO) client with this version of Razor, however it should will work with the original 5.x and 7.x clients though support for any bugs may be limited.
 
-For more information, guides, release notes and download links go to http://www.uor-razor.com
+For more information, guides, release notes and download links go to http://www.razorce.com
 
 ## Project History
 
@@ -45,15 +45,15 @@ Introduced in 1.6.3.x, Razor supports a command-based script language based on t
 
 **NOTE:** This ***is not*** an implementation of the Steam or Razor Enhanced scripting languages or functionality into Razor. The scripting engine attempts to maintain existing Razor functionality while offering quality of life improvements over the existing macro system.
 
-For a comprehensive guide on the language and syntax, visit the [Razor Scripting Guide](http://www.uor-razor.com/guide/).
+For a comprehensive guide on the language and syntax, visit the [Razor Scripting Guide](http://www.razorce.com/guide/).
 
 ## Installation & Help
 
-For information on installing Razor on Windows, [please read this guide](http://www.uor-razor.com/install/windows/).
+For information on installing Razor on Windows, [please read this guide](http://www.razorce.com/install/windows/).
 
-For information on installing Razor on Linux, [please read this guide](http://www.uor-razor.com/install/linux/).
+For information on installing Razor on Linux, [please read this guide](http://www.razorce.com/install/linux/).
 
-If you need more help with using Razor, [please go here](http://www.uor-razor.com/help) and review the documentation and/or join Discord and ask there.
+If you need more help with using Razor, [please go here](http://www.razorce.com/help) and review the documentation and/or join Discord and ask there.
 
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 
