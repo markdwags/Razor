@@ -72,6 +72,7 @@ namespace Assistant.HotKeys
             {"evalint", 16}, // evaluate intelligence
             {"forensicevaluation", 19}, // forensic evaluation
             {"forensiceval", 19}, // forensic evaluation
+            {"forensic", 19}, // forensic evaluation
             {"hiding", 21}, // hiding
             {"provocation", 22}, // provocation
             {"provo", 22}, // provocation
