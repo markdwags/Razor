@@ -79,6 +79,7 @@ namespace Assistant.HotKeys
             {"inscription", 23}, // inscription
             {"poisoning", 30}, // poisoning
             {"spiritspeak", 32}, // spirit speak
+            {"spirit", 32}, // spirit speak
             {"stealing", 33}, // stealing
             {"taming", 35}, // taming
             {"tasteidentification", 36}, // taste id
