@@ -72,12 +72,14 @@ namespace Assistant.HotKeys
             {"evalint", 16}, // evaluate intelligence
             {"forensicevaluation", 19}, // forensic evaluation
             {"forensiceval", 19}, // forensic evaluation
+            {"forensic", 19}, // forensic evaluation
             {"hiding", 21}, // hiding
             {"provocation", 22}, // provocation
             {"provo", 22}, // provocation
             {"inscription", 23}, // inscription
             {"poisoning", 30}, // poisoning
             {"spiritspeak", 32}, // spirit speak
+            {"spirit", 32}, // spirit speak
             {"stealing", 33}, // stealing
             {"taming", 35}, // taming
             {"tasteidentification", 36}, // taste id

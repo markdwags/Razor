@@ -697,6 +697,7 @@ Description: This command will target a specific type of mobile or item based on
         dclick '0x4005ECAF'
         waitfortarget
         targettype '0x1F03' true
+        ```
 
     === "Target by name in backpack" 
            

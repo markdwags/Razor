@@ -40,7 +40,7 @@ Description: The `break` keyword terminate the closest enclosing loop such as a 
 
 Syntax: `continue`
 
-Description: The `continue` keyboard passes control to the next iteration of the enclosing `for` or `while` loop which the keyboard appears.
+Description: The `continue` keyboard passes control to the next iteration of the enclosing `for` or `while` loop which the keyword appears.
 
 !!! example
 
@@ -50,15 +50,15 @@ Description: The `continue` keyboard passes control to the next iteration of the
         while stam < 100
 
             if stam = 50
-            say 'At 50!'
-            continue
+               say 'At 50!'
+               // Skip saying 'Not at 50'
+               continue
             endif
 
             say 'Not at 50'
 
         endwhile
         ```
-
 ## loop/replay
 
 Syntax: `loop` OR `replay`

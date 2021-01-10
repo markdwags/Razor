@@ -46,7 +46,7 @@ namespace Assistant.Scripts
                     TargetWasSet = false;
 
                     Targeting.OneTimeTarget(OnScriptVariableTarget);
-                    World.Player.SendMessage(MsgLevel.Force, $"Select target for ${Name}");
+                    World.Player.SendMessage(MsgLevel.Force, $"Select target for variable '{Name}'");
 
                     //OneTimeTarget(false, new Targeting.TargetResponseCallback(OnMacroVariableTarget), new Targeting.CancelTargetCallback(OnSLTCancel));
                 }
@@ -69,7 +69,7 @@ namespace Assistant.Scripts
                 foreach (ScriptVariable sV in ScriptVariableList
                 )
                 {
-                    if (sV.Name.IndexOf(Name, StringComparison.OrdinalIgnoreCase) != -1)
+                    if (sV.Name.Equals(Name, StringComparison.OrdinalIgnoreCase))
                     {
                         foundVar = true;
                         sV.TargetInfo = t;
@@ -176,7 +176,7 @@ namespace Assistant.Scripts
         {
             foreach (ScriptVariable scriptVariable in ScriptVariableList)
             {
-                if (scriptVariable.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) != -1)
+                if (scriptVariable.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     return scriptVariable;
                 }
