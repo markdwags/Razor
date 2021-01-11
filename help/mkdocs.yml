@@ -3,7 +3,6 @@ site_description: Razor is a free tool designed to help with simple tasks while 
 site_author: Project maintained by Mark Wagner (Quick)
 site_url: http://www.razorce.com
 copyright: Copyright 2020 - Mark Wagner (Quick)
-google_analytics: ['UA-20537997-5', 'uor-razor.com']
 repo_url: https://github.com/markdwags/Razor
 repo_name: Razor
 edit_uri: "tree/master/help/docs"
@@ -42,7 +41,8 @@ nav:
 - UOAssist API: uoaapi.md
 
 theme: 
-    name: material    
+    name: material
+    custom_dir: overrides  
     language: en    
     favicon: images/razor.ico
     icon:

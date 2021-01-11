@@ -1,6 +1,6 @@
 ![razor](images/razor.png)
 
-# Razor (UO:R Community Edition)
+# Razor - Community Edition
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1815mo6is2t8fl1o?svg=true)](https://ci.appveyor.com/project/markdwags/razor)
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
@@ -36,11 +36,15 @@ In June 2019 integration into [ClassicUO](https://github.com/andreakarasho/Class
 
 ## Community Edition
 
-When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](http://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](http://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community, one of the few freeshards where the rules there only allow for the use of Razor and so that name was used to not only distinguish between other versions of Razor that are available but give credit to a community that provided so much support early on.
+When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](http://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](http://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community, one of the few freeshards where the rules only allow for the use of Razor. The original **UO:R Community Edition** name was used to not only distinguish between other versions of Razor that are available but give credit to a community that provided so much support early on.
 
-Since this version was updated to support ClassicUO it has become widely used across the whole UO freeshard community and continued to be built on feedback and contributions  from all different corners of the freeshard UO community -- from large to small shards alike.
+As the popularity of this version of Razor grew, especially after ClassicUO support was implemented, it become widely used across the whole UO freeshard community, from small private shards to some of the largest shards in the community and continues to be built on the feedback and contributions from all different corners of the that community.
 
-Thank you to all the folks across the whole community who have contributed in some way towards creating this version of Razor. If you'd like contribute, see the [CONTRIBUTING](https://github.com/markdwags/Razor/blob/master/CONTRIBUTING.md) file for more information.
+With that said, I find it more appropriate to simply call this version the **Razor Community Edition**.
+
+Thank you to everyone across the whole UO freeshard community who has contributed in some way on this version of Razor.
+
+If you'd like contribute, see the [CONTRIBUTING](https://github.com/markdwags/Razor/blob/master/CONTRIBUTING.md) file for more information.
 
 # Help
 
