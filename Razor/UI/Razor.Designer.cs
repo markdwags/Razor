@@ -712,9 +712,6 @@ namespace Assistant
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.disableScriptTooltips = new System.Windows.Forms.CheckBox();
             this.scriptDisablePlayFinish = new System.Windows.Forms.CheckBox();
-            this.scriptFindTypeRange = new System.Windows.Forms.CheckBox();
-            this.scriptDClickTypeRange = new System.Windows.Forms.CheckBox();
-            this.scriptTargetTypeRange = new System.Windows.Forms.CheckBox();
             this.autoSaveScriptPlay = new System.Windows.Forms.CheckBox();
             this.autoSaveScript = new System.Windows.Forms.CheckBox();
             this.scriptVariablesBox = new System.Windows.Forms.GroupBox();
@@ -4417,7 +4414,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4512,23 +4509,20 @@ namespace Assistant
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage3.Controls.Add(this.disableScriptTooltips);
             this.tabPage3.Controls.Add(this.scriptDisablePlayFinish);
-            this.tabPage3.Controls.Add(this.scriptFindTypeRange);
-            this.tabPage3.Controls.Add(this.scriptDClickTypeRange);
-            this.tabPage3.Controls.Add(this.scriptTargetTypeRange);
             this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
             this.tabPage3.Controls.Add(this.autoSaveScript);
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 287);
+            this.tabPage3.Size = new System.Drawing.Size(498, 285);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
             // 
             // disableScriptTooltips
             // 
             this.disableScriptTooltips.AutoSize = true;
-            this.disableScriptTooltips.Location = new System.Drawing.Point(252, 203);
+            this.disableScriptTooltips.Location = new System.Drawing.Point(252, 115);
             this.disableScriptTooltips.Name = "disableScriptTooltips";
             this.disableScriptTooltips.Size = new System.Drawing.Size(107, 19);
             this.disableScriptTooltips.TabIndex = 20;
@@ -4539,46 +4533,13 @@ namespace Assistant
             // scriptDisablePlayFinish
             // 
             this.scriptDisablePlayFinish.AutoSize = true;
-            this.scriptDisablePlayFinish.Location = new System.Drawing.Point(252, 178);
+            this.scriptDisablePlayFinish.Location = new System.Drawing.Point(252, 90);
             this.scriptDisablePlayFinish.Name = "scriptDisablePlayFinish";
             this.scriptDisablePlayFinish.Size = new System.Drawing.Size(204, 19);
             this.scriptDisablePlayFinish.TabIndex = 19;
             this.scriptDisablePlayFinish.Text = "Disable Playing/Finished Message";
             this.scriptDisablePlayFinish.UseVisualStyleBackColor = true;
             this.scriptDisablePlayFinish.CheckedChanged += new System.EventHandler(this.disableScriptPlayFinish_CheckedChanged);
-            // 
-            // scriptFindTypeRange
-            // 
-            this.scriptFindTypeRange.AutoSize = true;
-            this.scriptFindTypeRange.Location = new System.Drawing.Point(252, 144);
-            this.scriptFindTypeRange.Name = "scriptFindTypeRange";
-            this.scriptFindTypeRange.Size = new System.Drawing.Size(163, 19);
-            this.scriptFindTypeRange.TabIndex = 18;
-            this.scriptFindTypeRange.Text = "Range check on \'findtype\'";
-            this.scriptFindTypeRange.UseVisualStyleBackColor = true;
-            this.scriptFindTypeRange.CheckedChanged += new System.EventHandler(this.scriptFindTypeRange_CheckedChanged);
-            // 
-            // scriptDClickTypeRange
-            // 
-            this.scriptDClickTypeRange.AutoSize = true;
-            this.scriptDClickTypeRange.Location = new System.Drawing.Point(252, 119);
-            this.scriptDClickTypeRange.Name = "scriptDClickTypeRange";
-            this.scriptDClickTypeRange.Size = new System.Drawing.Size(173, 19);
-            this.scriptDClickTypeRange.TabIndex = 17;
-            this.scriptDClickTypeRange.Text = "Range check on \'dclicktype\'";
-            this.scriptDClickTypeRange.UseVisualStyleBackColor = true;
-            this.scriptDClickTypeRange.CheckedChanged += new System.EventHandler(this.scriptDClickTypeRange_CheckedChanged);
-            // 
-            // scriptTargetTypeRange
-            // 
-            this.scriptTargetTypeRange.AutoSize = true;
-            this.scriptTargetTypeRange.Location = new System.Drawing.Point(252, 94);
-            this.scriptTargetTypeRange.Name = "scriptTargetTypeRange";
-            this.scriptTargetTypeRange.Size = new System.Drawing.Size(173, 19);
-            this.scriptTargetTypeRange.TabIndex = 16;
-            this.scriptTargetTypeRange.Text = "Range check on \'targettype\'";
-            this.scriptTargetTypeRange.UseVisualStyleBackColor = true;
-            this.scriptTargetTypeRange.CheckedChanged += new System.EventHandler(this.scriptTargetTypeRange_CheckedChanged);
             // 
             // autoSaveScriptPlay
             // 
@@ -5463,9 +5424,6 @@ namespace Assistant
         private ListBox scriptVariables;
         private CheckBox autoSaveScript;
         private CheckBox autoSaveScriptPlay;
-        private CheckBox scriptDClickTypeRange;
-        private CheckBox scriptTargetTypeRange;
-        private CheckBox scriptFindTypeRange;
         private CheckBox scriptDisablePlayFinish;
         private TabPage friendsTab;
         private CheckBox highlightFriend;

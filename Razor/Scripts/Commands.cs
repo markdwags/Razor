@@ -227,7 +227,7 @@ namespace Assistant.Scripts
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
-            bool inRangeCheck = Config.GetBool("ScriptTargetTypeRange");
+            bool inRangeCheck = false;
             bool backpack = false;
 
             if (args.Length == 2)
@@ -291,7 +291,7 @@ namespace Assistant.Scripts
                 {
                     if (find.Body == gfx)
                     {
-                        if (Config.GetBool("ScriptTargetTypeRange"))
+                        if (inRangeCheck)
                         {
                             if (Utility.InRange(World.Player.Position, find.Position, 2))
                             {
@@ -549,7 +549,7 @@ namespace Assistant.Scripts
             Serial click = Serial.Zero;
             List<Item> items = new List<Item>();
 
-            bool inRangeCheck = Config.GetBool("ScriptDClickTypeRange");
+            bool inRangeCheck = false;
             bool backpack = false;
 
             if (args.Length == 2)

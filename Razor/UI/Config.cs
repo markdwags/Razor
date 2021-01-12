@@ -292,11 +292,7 @@ namespace Assistant
             AddProperty("AutoSaveScriptPlay", false);
 
             AddProperty("HighlightFriend", false);
-
-            AddProperty("ScriptTargetTypeRange", false);
-            AddProperty("ScriptDClickTypeRange", false);
-            AddProperty("ScriptFindTypeRange", false);
-
+            
             AddProperty("ScriptDisablePlayFinish", false);
 
             AddProperty("ShowWaypointOverhead", true);
