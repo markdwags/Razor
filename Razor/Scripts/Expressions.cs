@@ -65,6 +65,13 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("finddebuff", FindBuffDebuff);
 
             Interpreter.RegisterExpressionHandler("position", Position);
+
+            Interpreter.RegisterExpressionHandler("queued", Queued);
+        }
+
+        private static bool Queued(string expression, Argument[] args, bool quiet)
+        {
+            return !ActionQueue.Empty;
         }
 
         private static bool FindBuffDebuff(string expression, Argument[] args, bool quiet)

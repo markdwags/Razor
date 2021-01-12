@@ -216,6 +216,57 @@ Description: Used to check if your current position matches the provided.
         endif
         ```
 
+## queued
+
+- `queued`
+
+Description: Used to check if your current queue is active (from restocking, organizing, etc)
+
+!!! example
+
+    === "General"
+
+        ```vim
+            if queued
+                overhead 'Queue is active'
+            else
+                overhead 'No queue'
+            endif
+        ```
+
+    === "Organizer"
+
+        ```vim
+        overhead 'Organizing'
+
+        organizer 1
+
+        while queued
+            overhead 'Currently Organizing'
+            wait 500 
+        endwhile
+
+        overhead 'Organized'
+        ```
+
+    === "Restock"
+
+        ```vim
+        overhead 'Restocking'
+
+        restock 11
+        waitfortarget 
+        target 'self'
+
+        while queued
+            overhead 'Currently restocking'
+            wait 500 
+        endwhile
+
+        overhead 'Restocked'
+        ```
+
+
 ## rhandempty
 
 - `rhandempty`
