@@ -427,7 +427,7 @@ namespace Assistant
 
             lastBackup.SafeAction(s => { s.Text = $"Last Backup: {Config.GetAppSetting<string>("BackupTime")}"; });
 
-            targetIndictorFormat.SafeAction(s => { s.Text = Config.GetString("TargetIndicatorFormat"); });
+            targetIndicatorFormat.SafeAction(s => { s.Text = Config.GetString("TargetIndicatorFormat"); });
 
             nextPrevIgnoresFriends.SafeAction(s => { s.Checked = Config.GetBool("NextPrevTargetIgnoresFriends"); });
 
@@ -5194,15 +5194,15 @@ namespace Assistant
             }
         }
 
-        private void targetIndictorFormat_TextChanged(object sender, EventArgs e)
+        private void targetIndicatorFormat_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(targetIndictorFormat.Text))
+            if (string.IsNullOrEmpty(targetIndicatorFormat.Text))
             {
                 Config.SetProperty("TargetIndicatorFormat", "* Target *");
-                targetIndictorFormat.Text = "* Target *";
+                targetIndicatorFormat.Text = "* Target *";
             }
 
-            Config.SetProperty("TargetIndicatorFormat", targetIndictorFormat.Text);
+            Config.SetProperty("TargetIndicatorFormat", targetIndicatorFormat.Text);
         }
 
         private void nextPrevIgnoresFriends_CheckedChanged(object sender, EventArgs e)
@@ -5465,7 +5465,7 @@ namespace Assistant
             //FriendOverheadFormat
             if (string.IsNullOrEmpty(friendOverheadFormat.Text))
             {
-                targetIndictorFormat.SafeAction(s => s.Text = "[Friend]");
+                targetIndicatorFormat.SafeAction(s => s.Text = "[Friend]");
             }
 
             friendOverheadFormat.SafeAction(s => FriendsManager.SetOverheadFormat((FriendsManager.FriendGroup)friendsGroup.SelectedItem,

@@ -262,7 +262,7 @@ namespace Assistant
         private Button delProfile;
         private Button newProfile;
         private ComboBox profiles;
-        private TextBox targetIndictorFormat;
+        private TextBox targetIndicatorFormat;
         private Label lblTargetFormat;
         private Label lblStealthFormat;
         private TextBox stealthStepsFormat;
@@ -434,7 +434,7 @@ namespace Assistant
             this.onlyNextPrevBeneficial = new System.Windows.Forms.CheckBox();
             this.smartLT = new System.Windows.Forms.CheckBox();
             this.setTargetIndicatorHue = new System.Windows.Forms.Button();
-            this.targetIndictorFormat = new System.Windows.Forms.TextBox();
+            this.targetIndicatorFormat = new System.Windows.Forms.TextBox();
             this.showtargtext = new System.Windows.Forms.CheckBox();
             this.showAttackTargetNewOnly = new System.Windows.Forms.CheckBox();
             this.showTextTargetIndicator = new System.Windows.Forms.CheckBox();
@@ -1486,7 +1486,7 @@ namespace Assistant
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
             this.subOptionsTargetTab.Controls.Add(this.groupSmartTarget);
             this.subOptionsTargetTab.Controls.Add(this.setTargetIndicatorHue);
-            this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
+            this.subOptionsTargetTab.Controls.Add(this.targetIndicatorFormat);
             this.subOptionsTargetTab.Controls.Add(this.showtargtext);
             this.subOptionsTargetTab.Controls.Add(this.showAttackTargetNewOnly);
             this.subOptionsTargetTab.Controls.Add(this.showTextTargetIndicator);
@@ -1573,14 +1573,14 @@ namespace Assistant
             this.setTargetIndicatorHue.UseVisualStyleBackColor = true;
             this.setTargetIndicatorHue.Click += new System.EventHandler(this.setTargetIndicatorHue_Click);
             // 
-            // targetIndictorFormat
+            // targetIndicatorFormat
             // 
-            this.targetIndictorFormat.Location = new System.Drawing.Point(64, 246);
-            this.targetIndictorFormat.Name = "targetIndictorFormat";
-            this.targetIndictorFormat.Size = new System.Drawing.Size(107, 23);
-            this.targetIndictorFormat.TabIndex = 93;
-            this.targetIndictorFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.targetIndictorFormat.TextChanged += new System.EventHandler(this.targetIndictorFormat_TextChanged);
+            this.targetIndicatorFormat.Location = new System.Drawing.Point(64, 246);
+            this.targetIndicatorFormat.Name = "targetIndicatorFormat";
+            this.targetIndicatorFormat.Size = new System.Drawing.Size(107, 23);
+            this.targetIndicatorFormat.TabIndex = 93;
+            this.targetIndicatorFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.targetIndicatorFormat.TextChanged += new System.EventHandler(this.targetIndicatorFormat_TextChanged);
             // 
             // showtargtext
             // 
