@@ -179,14 +179,14 @@ Description: This command will drop the item you are holding either at your feet
     === "Lift item, drop on your chest/torso"
 
         ```vim
-        lift '0x400D54A7' 1
+        lift '0x400D54A7'
         drop 'self' InnerTorso
         ```
 
     === "Lift item, drop on ground at location"
 
         ```vim
-        lift '0x400D54A7' 1
+        lift '0x400D54A7'
         drop 'ground' 5926 1148 0
         ```
 
@@ -203,7 +203,7 @@ Example:
     === "Drop Relative Location"
 
         ```vim
-        lift '0x400EED2A' 1
+        lift '0x400EED2A'
         wait 1000
         droprelloc 1 1
         ```
@@ -316,7 +316,7 @@ Description: This command will lift a specific item and amount. If no amount is 
     === "Lift item"
 
         ```vim
-        lift '0x400EED2A' 1
+        lift '0x400EED2A'
         wait 1000
         droprelloc 1 1 0
         ```
