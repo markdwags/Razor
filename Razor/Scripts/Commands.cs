@@ -49,11 +49,11 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("wft", WaitForTarget); //WaitForTargetAction
 
             // Using stuff
-            Interpreter.RegisterCommandHandler("dclicktype", UseType); // DoubleClickTypeAction
-            Interpreter.RegisterCommandHandler("dclick", UseObject); //DoubleClickAction
+            Interpreter.RegisterCommandHandler("dclicktype", DClickType); // DoubleClickTypeAction
+            Interpreter.RegisterCommandHandler("dclick", DClick); //DoubleClickAction
 
-            Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAction
-            Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
+            Interpreter.RegisterCommandHandler("usetype", DClickType); // DoubleClickTypeAction
+            Interpreter.RegisterCommandHandler("useobject", DClick); //DoubleClickAction
 
             // Moving stuff
             Interpreter.RegisterCommandHandler("drop", DropItem); //DropAction
@@ -536,7 +536,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool UseType(string command, Argument[] args, bool quiet, bool force)
+        private static bool DClickType(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -684,7 +684,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool UseObject(string command, Argument[] args, bool quiet, bool force)
+        private static bool DClick(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
