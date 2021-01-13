@@ -705,25 +705,30 @@ namespace Assistant.Scripts
 
         private static bool DropItem(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 2)
+            if (args.Length < 1)
             {
                 throw new RunTimeError(null, "Usage: drop (serial) (x y z/layername)");
             }
 
-            Serial serial = args[0].AsSerial();
+            Serial serial = args[0].AsString().IndexOf("ground", StringComparison.InvariantCultureIgnoreCase) > 0
+                ? uint.MaxValue
+                : args[0].AsSerial();
+
             Point3D to = new Point3D(0, 0, 0);
             Layer layer = Layer.Invalid;
 
             switch (args.Length)
             {
-                case 1: // drop at feet
+                case 1: // drop at feet if only serial is provided
                     to = new Point3D(World.Player.Position.X, World.Player.Position.Y, World.Player.Position.Z);
                     break;
                 case 2: // dropping on a layer
                     layer = (Layer) Enum.Parse(typeof(Layer), args[1].AsString(), true);
                     break;
-
-                default: // dropping at x/y/z
+                case 3: // x y
+                    to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0), 0);
+                    break;
+                case 4: // x y z
                     to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0),
                         Utility.ToInt32(args[3].AsString(), 0));
                     break;

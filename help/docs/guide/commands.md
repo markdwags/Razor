@@ -164,28 +164,30 @@ Description: This command will execute a spec dress list you have defined in Raz
         ```
 ## drop
 
-Syntax: `drop (serial) (x/y/z/layername)`
+Syntax: `drop (serial) (x) (y) [z]` or `drop (serial) (layer)` or `drop 'ground' (x) (y) [z]`
 
-Description: This command will drop the item you are holding either at your feet, on a specific layer or at a specific X/Y/Z location.
+Description: This command will drop the item you are holding either at your feet, on a specific layer , at a specific X/Y/Z location on the ground or within the defined serial.
 
 !!! tip
-    Available [layers](./layers.md) for reference
+    The functionality of `drop 'ground' (x) (y) [z]` is also available in with [droprelloc](./#droprelloc).
+
+!!! tip
+    A list of available [layers](./layers.md) for reference that can be used with this command.
 
 !!! example
 
-    === "Lift item, drop on chest/torso"
+    === "Lift item, drop on your chest/torso"
 
         ```vim
         lift '0x400D54A7' 1
-        drop '0x6311' InnerTorso
+        drop 'self' InnerTorso
         ```
 
-    === "Lift item, drop at location"
+    === "Lift item, drop on ground at location"
 
         ```vim
         lift '0x400D54A7' 1
-        wait 5000
-        drop '0xFFFFFFFF' 5926 1148 0
+        drop 'ground' 5926 1148 0
         ```
 
 ## droprelloc

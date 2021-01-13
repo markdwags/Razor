@@ -778,7 +778,12 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return m_Layer != Layer.Invalid ? $"drop '{m_To}' {m_Layer}" : $"drop '{m_To}' {m_At.X} {m_At.Y} {m_At.X}";
+            if (!m_To.IsValid)
+            {
+                return $"droprelloc {m_At.X} {m_At.Y}";
+            }
+
+            return m_Layer != Layer.Invalid ? $"drop '{m_To}' {m_Layer}" : $"drop '{m_To}' {m_At.X} {m_At.Y} {m_At.Z}";
         }
 
         public override string Serialize()
