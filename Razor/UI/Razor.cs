@@ -4985,14 +4985,9 @@ namespace Assistant
 
         private void OnAgentImportFromProfile(object sender, System.EventArgs e)
         {
+            if (agentList.SelectedIndex < 0)
+                return;
 
-            /*Agent agent = (Agent)agentList.SelectedItem;
-
-
-            if (agent is OrganizerAgent)
-            {
-                ((OrganizerAgent) agent).Add();
-            }*/
             Agent agent = (Agent)agentList.SelectedItem;
 
             string file = Path.Combine(Config.GetUserDirectory("Profiles"), $"{sender}.xml");
