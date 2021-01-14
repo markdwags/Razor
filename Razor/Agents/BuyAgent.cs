@@ -29,7 +29,7 @@ namespace Assistant.Agents
 {
     public class BuyAgent : Agent
     {
-        private class BuyEntry
+        public class BuyEntry
         {
             public BuyEntry(ushort id, ushort amount)
             {
@@ -462,14 +462,18 @@ namespace Assistant.Agents
                         return;
                     }
 
-                    BuyEntry be = new BuyEntry(gfx, count);
-                    m_Items.Add(be);
-                    if (m_SubList != null)
-                    {
-                        m_SubList.Items.Add(be);
-                    }
+                    Add(new BuyEntry(gfx, count));
                 }
             }
+        }
+
+        public void Add(BuyEntry entry)
+        {
+            m_Items?.Add(entry);
+
+            m_SubList?.Items.Add(entry);
+
+            World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
         }
 
         public override void Save(XmlTextWriter xml)

@@ -893,6 +893,20 @@ namespace Assistant
             }
         }
 
+        public static List<string> GetProfileList()
+        {
+            List<string> list = new List<string>();
+
+            string[] files = Directory.GetFiles(GetUserDirectory("Profiles"), "*.xml");
+
+            foreach (var file in files)
+            {
+                list.Add(Path.GetFileNameWithoutExtension(file));
+            }
+
+            return list;
+        }
+
         public static T GetAppSetting<T>(string key)
         {
             try

@@ -429,21 +429,26 @@ namespace Assistant.Agents
 
             RestockItem ri = new RestockItem(gfx, InputBox.GetInt(1));
 
+            Add(ri);
+
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
+        }
+
+        public void Add(RestockItem item)
+        {
             foreach (RestockItem restockItem in m_Items)
             {
-                if (restockItem.ItemID.Value == gfx)
+                if (restockItem.ItemID.Value == item.ItemID.Value)
                 {
-                    World.Player.SendMessage(MsgLevel.Force, LocString.ItemExists);
+                    World.Player?.SendMessage(MsgLevel.Force, LocString.ItemExists);
                     return;
                 }
             }
 
-            m_Items.Add(ri);
-            m_SubList.Items.Add(ri);
+            m_Items.Add(item);
+            m_SubList.Items.Add(item);
 
-            World.Player.SendMessage(MsgLevel.Force, LocString.ItemAdded);
-
-            Engine.MainWindow.SafeAction(s => s.ShowMe());
+            World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
         }
 
         public override void Save(XmlTextWriter xml)
@@ -484,7 +489,7 @@ namespace Assistant.Agents
             }
         }
 
-        class RestockItem
+        public class RestockItem
         {
             public ItemID ItemID;
             public int Amount;

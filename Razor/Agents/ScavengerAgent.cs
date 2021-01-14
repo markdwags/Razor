@@ -261,17 +261,17 @@ namespace Assistant.Agents
                 return;
             }
 
-            m_Items.Add(item.ItemID);
+            Add(item.ItemID);
+        }
 
-            if (m_SubList != null)
-            {
-                m_SubList.Items.Add(item.ItemID);
-            }
+        public void Add(ItemID itemId)
+        {
+            m_Items?.Add(itemId);
+            m_SubList?.Items.Add(itemId);
 
+            DebugLog("Added item {0}", itemId);
 
-            DebugLog("Added item {0}", item);
-
-            World.Player.SendMessage(MsgLevel.Force, LocString.ItemAdded);
+            World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
         }
 
         private void OnTargetBag(bool location, Serial serial, Point3D loc, ushort gfx)

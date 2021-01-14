@@ -29,6 +29,7 @@ using System.Text;
 using Assistant.Filters;
 using Assistant.Macros;
 using System.Diagnostics;
+using System.Xml;
 using Assistant.Boat;
 using Assistant.Agents;
 using Assistant.Core;
@@ -4799,11 +4800,33 @@ namespace Assistant
 
         private void agentSubList_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                ContextMenuStrip menu = new ContextMenuStrip();
+                menu.Items.Add("Export (Copy to clipboard)", null, OnAgentExport);
+                menu.Items.Add("-");
+                menu.Items.Add("Import (Copy from clipboard)", null, OnAgentImport);
+
+                ToolStripMenuItem submenu = new ToolStripMenuItem("Import from profile");
+
+                foreach (string profile in Config.GetProfileList())
+                {
+                    submenu.DropDownItems.Add(profile, null, OnAgentImportFromProfile);
+                }
+
+                menu.Items.Add(submenu);
+
+                menu.Show(agentSubList, new Point(e.X, e.Y));
+            }
+
             if (agentList.SelectedIndex < 0 || agentSubList.Items.Count == 0)
                 return;
 
             if (e.Button == MouseButtons.Left && e.Clicks == 2)
             {
+                if (agentList.SelectedIndex < 0)
+                    return;
+
                 Agent a = agentList.SelectedItem as Agent;
 
                 switch (agentList.SelectedItem)
@@ -4816,38 +4839,289 @@ namespace Assistant
                         break;
                 }
             }
-
-            //if (e.Button == MouseButtons.Right && e.Clicks == 1)
-            //{
-            //    ContextMenuStrip menu = new ContextMenuStrip();
-            //    //menu.MenuItems.Add(Language.GetString(LocString.Reload), onMacroReload);
-            //    menu.MenuItems.Add("Import (Copy from clipboard)", OnAgentImport);
-            //    menu.MenuItems.Add("-");
-            //    menu.MenuItems.Add("Export (Copy to clipboard)", OnAgentExport);
-
-            //    menu.Show(agentSubList, new Point(e.X, e.Y));
-            //}
         }
 
         private void OnAgentExport(object sender, System.EventArgs e)
         {
             if (agentList.SelectedIndex < 0 || agentSubList.Items.Count == 0)
                 return;
-
-            //Agent.Select(agentList.SelectedIndex, agentList, agentSubList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6);
-
+            
             StringBuilder sb = new StringBuilder();
 
-            foreach (var item in agentSubList.Items)
+            Agent agent = (Agent)agentList.SelectedItem;
+
+            switch (agent)
             {
-                sb.AppendLine(item.ToString());
+                case OrganizerAgent organizerAgent:
+                    sb.AppendLine("!Razor.Agents.Organizer");
+
+                    foreach (ItemID item in agentSubList.Items)
+                    {
+                        sb.AppendLine(item.Value.ToString());
+                    }
+
+                    break;
+                case BuyAgent buyAgent:
+                    sb.AppendLine("!Razor.Agents.Buy");
+
+                    foreach (BuyAgent.BuyEntry entry in agentSubList.Items)
+                    {
+                        sb.AppendLine($"{entry.Id},{entry.Amount}");
+                    }
+
+                    break;
+                case RestockAgent restockAgent:
+                    sb.AppendLine("!Razor.Agents.Restock");
+
+                    foreach (RestockAgent.RestockItem entry in agentSubList.Items)
+                    {
+                        sb.AppendLine($"{entry.ItemID.Value},{entry.Amount}");
+                    }
+
+                    break;
+                case ScavengerAgent scavAgent:
+                    sb.AppendLine("!Razor.Agents.Scavenger");
+
+                    foreach (ItemID item in agentSubList.Items)
+                    {
+                        sb.AppendLine(item.Value.ToString());
+                    }
+
+                    break;
+                case SellAgent sellAgent:
+                    sb.AppendLine("!Razor.Agents.Sell");
+
+                    foreach (ItemID item in agentSubList.Items)
+                    {
+                        sb.AppendLine(item.Value.ToString());
+                    }
+
+                    break;
             }
 
-            Console.WriteLine(sb.ToString());
+            Clipboard.SetDataObject(sb.ToString(), true);
         }
 
         private void OnAgentImport(object sender, System.EventArgs e)
         {
+            if (agentList.SelectedIndex < 0)
+                return;
+
+            Agent agent = (Agent)agentList.SelectedItem;
+
+            if (!Clipboard.GetText().Contains("!Razor.Agents"))
+            {
+                return;
+            }
+
+            List<string> items = Clipboard.GetText()
+                .Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).ToList();
+
+            if (agent is OrganizerAgent organizerAgent && Clipboard.GetText().Contains("!Razor.Agents.Organizer"))
+            {
+                items.RemoveAt(0);
+
+                foreach (string item in items)
+                {
+                    if (!string.IsNullOrEmpty(item) && ushort.TryParse(item, out ushort gfx))
+                    {
+                        organizerAgent.Add(gfx);
+                    }
+                }
+            }
+            else if (agent is BuyAgent buyAgent && Clipboard.GetText().Contains("!Razor.Agents.Buy"))
+            {
+                items.RemoveAt(0);
+
+                foreach (string item in items)
+                {
+                    string[] split = item.Split(',');
+
+                    if (!string.IsNullOrEmpty(item) && ushort.TryParse(split[0], out ushort id) && ushort.TryParse(split[1], out ushort amount))
+                    {
+                        buyAgent.Add(new BuyAgent.BuyEntry(id, amount));
+                    }
+                }
+            }
+            else if (agent is RestockAgent restockAgent && Clipboard.GetText().Contains("!Razor.Agents.Restock"))
+            {
+                items.RemoveAt(0);
+
+                foreach (string item in items)
+                {
+                    string[] split = item.Split(',');
+
+                    if (!string.IsNullOrEmpty(item) && ushort.TryParse(split[0], out ushort id) && ushort.TryParse(split[1], out ushort amount))
+                    {
+                        restockAgent.Add(new RestockAgent.RestockItem(id, amount));
+                    }
+                }
+            }
+            else if (agent is ScavengerAgent scavengerAgent && Clipboard.GetText().Contains("!Razor.Agents.Scavenger"))
+            {
+                items.RemoveAt(0);
+
+                foreach (string item in items)
+                {
+                    if (!string.IsNullOrEmpty(item) && ushort.TryParse(item, out ushort gfx))
+                    {
+                        scavengerAgent.Add(gfx);
+                    }
+                }
+            }
+            else if (agent is SellAgent sellAgent && Clipboard.GetText().Contains("!Razor.Agents.Sell"))
+            {
+                items.RemoveAt(0);
+
+                foreach (string item in items)
+                {
+                    if (!string.IsNullOrEmpty(item) && ushort.TryParse(item, out ushort gfx))
+                    {
+                        sellAgent.Add(gfx);
+                    }
+                }
+            }
+        }
+
+        private void OnAgentImportFromProfile(object sender, System.EventArgs e)
+        {
+
+            /*Agent agent = (Agent)agentList.SelectedItem;
+
+
+            if (agent is OrganizerAgent)
+            {
+                ((OrganizerAgent) agent).Add();
+            }*/
+            Agent agent = (Agent)agentList.SelectedItem;
+
+            string file = Path.Combine(Config.GetUserDirectory("Profiles"), $"{sender}.xml");
+            if (!File.Exists(file))
+                return;
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(file);
+
+            XmlElement root = doc["profile"];
+            if (root == null)
+                return;
+
+            switch (agent)
+            {
+                case OrganizerAgent organizerAgent:
+
+                    try
+                    {
+                        foreach (XmlElement el in root.GetElementsByTagName("item"))
+                        {
+                            try
+                            {
+                                string gfx = el.GetAttribute("id");
+                                organizerAgent.Add(Convert.ToUInt16(gfx));
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+
+                    break;
+                case BuyAgent buyAgent:
+                    try
+                    {
+                        foreach (XmlElement el in root.GetElementsByTagName("item"))
+                        {
+                            try
+                            {
+                                string gfx = el.GetAttribute("id");
+                                string amount = el.GetAttribute("amount");
+
+                                BuyAgent.BuyEntry entry = new BuyAgent.BuyEntry(Convert.ToUInt16(gfx), Convert.ToUInt16(amount));
+
+                                buyAgent.Add(entry);
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+
+                    break;
+                case RestockAgent restockAgent:
+
+                    foreach (XmlElement el in root.GetElementsByTagName("item"))
+                    {
+                        try
+                        {
+                            string gfx = el.GetAttribute("id");
+                            string amount = el.GetAttribute("amount");
+
+                            RestockAgent.RestockItem entry = new RestockAgent.RestockItem(Convert.ToUInt16(gfx), Convert.ToUInt16(amount));
+
+                            restockAgent.Add(entry);
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+
+                    break;
+                case ScavengerAgent scavAgent:
+                    try
+                    {
+                        foreach (XmlElement el in root.GetElementsByTagName("item"))
+                        {
+                            try
+                            {
+                                string gfx = el.GetAttribute("id");
+                                scavAgent.Add(Convert.ToUInt16(gfx));
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+
+                    break;
+                case SellAgent sellAgent:
+                    try
+                    {
+                        foreach (XmlElement el in root.GetElementsByTagName("item"))
+                        {
+                            try
+                            {
+                                string gfx = el.GetAttribute("id");
+                                sellAgent.Add(Convert.ToUInt16(gfx));
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+
+                    break;
+            }
         }
 
         private void showContainerLabels_CheckedChanged(object sender, EventArgs e)

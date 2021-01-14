@@ -285,9 +285,16 @@ namespace Assistant.Agents
             Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (!location && serial.IsItem)
             {
-                m_Items.Add(gfx);
-                m_SubList.Items.Add((ItemID) gfx);
+                Add(gfx);
             }
+        }
+
+        public void Add(ItemID itemId)
+        {
+            m_Items?.Add(itemId);
+            m_SubList?.Items.Add((ItemID)itemId);
+
+            World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
         }
 
         private void OnHBTarget(bool location, Serial serial, Point3D loc, ushort gfx)

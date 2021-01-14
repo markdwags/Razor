@@ -276,24 +276,23 @@ namespace Assistant.Agents
 
             if (!location && serial.IsItem && World.Player != null)
             {
-                if (m_Items != null && m_Items.Contains(gfx))
-                {
-                    World.Player.SendMessage(MsgLevel.Force, LocString.ItemExists);
-                }
-                else
-                {
-                    if (m_Items != null)
-                    {
-                        m_Items.Add(gfx);
-                    }
+                Add(gfx);
+            }
+        }
 
-                    if (m_SubList != null)
-                    {
-                        m_SubList.Items.Add((ItemID) gfx);
-                    }
+        public void Add(ushort gfx)
+        {
+            if (m_Items != null && m_Items.Contains(gfx))
+            {
+                World.Player?.SendMessage(MsgLevel.Force, LocString.ItemExists);
+            }
+            else
+            {
+                m_Items?.Add(gfx);
 
-                    World.Player.SendMessage(MsgLevel.Force, LocString.ItemAdded);
-                }
+                m_SubList?.Items.Add((ItemID)gfx);
+
+                World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
             }
         }
 
