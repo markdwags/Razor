@@ -19,8 +19,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Assistant.Core;
 using Assistant.Scripts.Engine;
+using Assistant.Scripts.Helpers;
 using Ultima;
 
 namespace Assistant.Scripts
@@ -102,6 +104,8 @@ namespace Assistant.Scripts
 
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
+            List<Item> items;
+            List<Mobile> mobiles;
 
             bool inRangeCheck = false;
             bool backpack = false;
@@ -121,94 +125,41 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                foreach (Item item in World.FindItemsByName(gfxStr))
-                {
-                    if (backpack) // search backpack only
-                    {
-                        if (World.Player.Backpack != null)
-                        {
-                            Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
+                items = CommandHelper.GetItemsByName(gfxStr, backpack, inRangeCheck);
 
-                            if (i != null)
-                                return true;
-                        }
-                    }
-                    else if (inRangeCheck)
-                    {
-                        if (!item.IsInBank &&
-                            (Utility.InRange(World.Player.Position, item.Position, 2) ||
-                             item.RootContainer == World.Player))
-                        {
-                            return true;
-                        }
-                    }
-                    else if (!item.IsInBank)
+                if (items.Count == 0) // no item found, search mobile by name
+                {
+                    mobiles = CommandHelper.GetMobilesByName(gfxStr, inRangeCheck);
+
+                    if (mobiles.Count > 0)
                     {
                         return true;
                     }
-                }
-            }
-            else // Check backpack first
-            {
-                if (World.Player.Backpack != null)
-                {
-                    Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
-
-                    if (i != null)
-                        return true;
-                }
-
-                // Stop searching if they only wanted to search the backpack
-                if (backpack)
-                {
-                    return false;
-                }
-            }
-
-            // Not in backpack? Lets check the world
-            foreach (Item i in World.Items.Values)
-            {
-                if (i.ItemID != gfx || i.RootContainer != null) continue;
-
-                if (inRangeCheck)
-                {
-                    if (Utility.InRange(World.Player.Position, i.Position, 2))
-                        return true;
                 }
                 else
                 {
                     return true;
                 }
             }
-
-            foreach (Item i in World.Items.Values)
+            else // Provided graphic id for type, check backpack first (same behavior as DoubleClickAction in macros
             {
-                if (i.ItemID != gfx || i.IsInBank) continue;
+                ushort id = Utility.ToUInt16(gfxStr, 0);
 
-                if (inRangeCheck)
+                items = CommandHelper.GetItemsById(id, backpack, inRangeCheck);
+
+                // Still no item? Mobile check!
+                if (items.Count == 0)
                 {
-                    if (Utility.InRange(World.Player.Position, i.Position, 2) || i.RootContainer == World.Player)
+                    mobiles = CommandHelper.GetMobilesById(id, inRangeCheck);
+
+                    if (mobiles.Count > 0)
+                    {
                         return true;
+                    }
                 }
                 else
                 {
                     return true;
-                }
-            }
-
-            foreach (Mobile m in World.MobilesInRange())
-            {
-                if (m.Body == gfx)
-                {
-                    if (inRangeCheck)
-                    {
-                        if (Utility.InRange(World.Player.Position, m.Position, 2))
-                            return true;
-                    }
-                    else
-                    {
-                        return true;
-                    }
                 }
             }
 
