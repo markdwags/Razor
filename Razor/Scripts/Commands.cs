@@ -632,6 +632,8 @@ namespace Assistant.Scripts
             return true;
         }
 
+        private static int _lastLiftId;
+
         private static bool LiftItem(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
@@ -653,18 +655,39 @@ namespace Assistant.Scripts
                 amount = Utility.ToUInt16(args[1].AsString(), 1);
             }
 
-            Item item = World.FindItem(serial);
-            if (item != null)
+            if (_lastLiftId > 0)
             {
-                DragDropManager.Drag(item, amount <= item.Amount ? amount : item.Amount);
+                if (DragDropManager.LastIDLifted == _lastLiftId)
+                {
+                    _lastLiftId = 0;
+                    Interpreter.ClearTimeout();
+                    return true;
+                }
+
+                Interpreter.Timeout(30000, () =>
+                {
+                    _lastLiftId = 0;
+                    return true;
+                });
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.MacroItemOutRange);
+                Item item = World.FindItem(serial);
+
+                if (item != null)
+                {
+                    _lastLiftId = DragDropManager.Drag(item, amount <= item.Amount ? amount : item.Amount);
+                }
+                else
+                {
+                    World.Player.SendMessage(MsgLevel.Warning, LocString.MacroItemOutRange);
+                }
             }
 
-            return true;
+            return false;
         }
+
+        private static int _lastLiftTypeId;
 
         private static bool LiftType(string command, Argument[] args, bool quiet, bool force)
         {
@@ -682,36 +705,54 @@ namespace Assistant.Scripts
                 amount = Utility.ToUInt16(args[1].AsString(), 1);
             }
 
-            Item item;
-
-            // No graphic id, maybe searching by name?
-            if (gfx == 0)
+            if (_lastLiftTypeId > 0)
             {
-                item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByName(gfxStr, true) : null;
-
-                if (item == null)
+                if (DragDropManager.LastIDLifted == _lastLiftTypeId)
                 {
-                    throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
+                    _lastLiftTypeId = 0;
+                    Interpreter.ClearTimeout();
+                    return true;
+                }
+
+                Interpreter.Timeout(30000, () =>
+                {
+                    _lastLiftTypeId = 0;
+                    return true;
+                });
+            }
+            else
+            {
+                Item item;
+
+                // No graphic id, maybe searching by name?
+                if (gfx == 0)
+                {
+                    item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByName(gfxStr, true) : null;
+
+                    if (item == null)
+                    {
+                        throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
+                    }
+                }
+                else
+                {
+                    item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(gfx) : null;
+                }
+
+                if (item != null)
+                {
+                    if (item.Amount < amount)
+                        amount = item.Amount;
+
+                    _lastLiftTypeId = DragDropManager.Drag(item, amount);
+                }
+                else
+                {
+                    World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, (ItemID)gfx);
                 }
             }
-            else
-            {
-                item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(gfx) : null;
-            }
 
-            if (item != null)
-            {
-                if (item.Amount < amount)
-                    amount = item.Amount;
-
-                DragDropManager.Drag(item, amount);
-            }
-            else
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, (ItemID) gfx);
-            }
-
-            return true;
+            return false;
         }
 
         private static bool Walk(string command, Argument[] args, bool quiet, bool force)
