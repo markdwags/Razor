@@ -25,6 +25,7 @@ using System.Linq;
 using Assistant.Core;
 using Assistant.HotKeys;
 using Assistant.Scripts.Engine;
+using Assistant.Scripts.Helpers;
 
 namespace Assistant.Scripts
 {
@@ -226,6 +227,8 @@ namespace Assistant.Scripts
 
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
+            List<Item> items;
+            List<Mobile> mobiles = new List<Mobile>();
 
             bool inRangeCheck = false;
             bool backpack = false;
@@ -242,105 +245,40 @@ namespace Assistant.Scripts
                 }
             }
 
-            ArrayList list = new ArrayList();
-
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                if (backpack) // search backpack only
-                {
-                    if (World.Player.Backpack != null)
-                    {
-                        Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
+                items = CommandHelper.GetItemsByName(gfxStr, backpack, inRangeCheck);
 
-                        if (i != null)
-                            list.Add(i);
-                    }
-                }
-                else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
+                if (items.Count == 0) // no item found, search mobile by name
                 {
-                    list.AddRange(World.FindItemsByName(gfxStr).Where(item =>
-                        !item.IsInBank && (Utility.InRange(World.Player.Position, item.Position, 2) ||
-                                           item.RootContainer == World.Player)).ToList());
-                }
-                else
-                {
-                    list.AddRange(World.FindItemsByName(gfxStr).Where(item => !item.IsInBank).ToList());
-                }
-
-                if (list.Count == 0) // no item found, search mobile by name
-                {
-                    List<Mobile> mobiles = World.FindMobilesByName(gfxStr);
-
-                    if (mobiles.Count > 0)
-                    {
-                        list.AddRange(inRangeCheck
-                            ? mobiles.Where(m => Utility.InRange(World.Player.Position, m.Position, 2)).ToList()
-                            : mobiles);
-                    }
-                    else
-                    {
-                        throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
-                    }
+                    mobiles = CommandHelper.GetMobilesByName(gfxStr, inRangeCheck);
                 }
             }
-            else // Using graphic id, so find mobile or item
+            else // Provided graphic id for type, check backpack first (same behavior as DoubleClickAction in macros
             {
-                // Look for a mobile first
-                foreach (Mobile find in World.MobilesInRange())
-                {
-                    if (find.Body == gfx)
-                    {
-                        if (inRangeCheck)
-                        {
-                            if (Utility.InRange(World.Player.Position, find.Position, 2))
-                            {
-                                list.Add(find);
-                            }
-                        }
-                        else
-                        {
-                            list.Add(find);
-                        }
-                    }
-                }
+                ushort id = Utility.ToUInt16(gfxStr, 0);
 
-                if (list.Count == 0) // No mobile found, search for items
-                {
-                    if (backpack) // search backpack only
-                    {
-                        if (World.Player.Backpack != null)
-                        {
-                            Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
+                items = CommandHelper.GetItemsById(id, backpack, inRangeCheck);
 
-                            if (i != null)
-                                list.Add(i);
-                        }
-                    }
-                    else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
-                    {
-                        list.AddRange(World.Items.Values.Where(i =>
-                                i.ItemID == gfx && !i.IsInBank &&
-                                (Utility.InRange(World.Player.Position, i.Position, 2) ||
-                                 i.RootContainer == World.Player))
-                            .ToList());
-                    }
-                    else
-                    {
-                        list.AddRange(World.Items.Values.Where(i => i.ItemID == gfx && !i.IsInBank)
-                            .ToList());
-                    }
+                // Still no item? Mobile check!
+                if (items.Count == 0)
+                {
+                    mobiles = CommandHelper.GetMobilesById(id, inRangeCheck);
                 }
             }
 
-            if (list.Count > 0)
+            if (items.Count > 0)
             {
-                Targeting.Target(list[Utility.Random(list.Count)]);
+                Targeting.Target(items[Utility.Random(items.Count)]);
+            }
+            else if (mobiles.Count > 0)
+            {
+                Targeting.Target(mobiles[Utility.Random(mobiles.Count)]);
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType,
-                    gfx.IsMobile ? $"Character [{gfx}]" : ((ItemID) gfx.Value).ToString());
+                World.Player.SendMessage(MsgLevel.Force, $"{command}: Item or mobile type '{gfxStr}' not found");
             }
 
             return true;
@@ -541,13 +479,13 @@ namespace Assistant.Scripts
             if (args.Length == 0)
             {
                 throw new RunTimeError(null,
-                    "Usage: dclicktype|usetype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
+                    "Usage: dclicktype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
             }
 
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
-            Serial click = Serial.Zero;
-            List<Item> items = new List<Item>();
+            List<Item> items;
+            List<Mobile> mobiles = new List<Mobile>();
 
             bool inRangeCheck = false;
             bool backpack = false;
@@ -567,119 +505,38 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                if (backpack) // search backpack only
-                {
-                    if (World.Player.Backpack != null)
-                    {
-                        Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
+                items = CommandHelper.GetItemsByName(gfxStr, backpack, inRangeCheck);
 
-                        if (i != null)
-                            items.Add(i);
-                    }
-                }
-                else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
+                if (items.Count == 0) // no item found, search mobile by name
                 {
-                    items.AddRange(World.FindItemsByName(gfxStr).Where(item =>
-                        !item.IsInBank && (Utility.InRange(World.Player.Position, item.Position, 2) ||
-                                           item.RootContainer == World.Player)).ToList());
+                    mobiles = CommandHelper.GetMobilesByName(gfxStr, inRangeCheck);
                 }
-                else
-                {
-                    items.AddRange(World.FindItemsByName(gfxStr).Where(item => !item.IsInBank).ToList());
-                }
-
-                if (items.Count == 0)
-                {
-                    throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
-                }
-
-                click = items[Utility.Random(items.Count)].Serial;
             }
             else // Provided graphic id for type, check backpack first (same behavior as DoubleClickAction in macros
             {
-                if (World.Player.Backpack != null)
-                {
-                    Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
+                ushort id = Utility.ToUInt16(gfxStr, 0);
 
-                    if (i != null)
-                        items.Add(i);
-
-                    if (items.Count > 0)
-                        click = items[Utility.Random(items.Count)].Serial;
-                }
-            }
-
-            // Not in backpack? Lets check the world
-            if (items.Count == 0)
-            {
-                foreach (Item i in World.Items.Values)
-                {
-                    if (i.ItemID == gfx && i.RootContainer == null)
-                    {
-                        if (inRangeCheck)
-                        {
-                            if (Utility.InRange(World.Player.Position, i.Position, 2))
-                                items.Add(i);
-                        }
-                        else
-                        {
-                            items.Add(i);
-                        }
-                    }
-                }
-
+                items = CommandHelper.GetItemsById(id, backpack, inRangeCheck);
+                
+                // Still no item? Mobile check!
                 if (items.Count == 0)
                 {
-                    foreach (Item i in World.Items.Values)
-                    {
-                        if (i.ItemID == gfx && !i.IsInBank)
-                        {
-                            if (inRangeCheck)
-                            {
-                                if (Utility.InRange(World.Player.Position, i.Position, 2))
-                                    items.Add(i);
-                            }
-                            else
-                            {
-                                items.Add(i);
-                            }
-                        }
-                    }
+                    mobiles = CommandHelper.GetMobilesById(id, inRangeCheck);
                 }
-
-                if (items.Count > 0)
-                    click = items[Utility.Random(items.Count)].Serial;
             }
 
-            // Still no item? Mobile check!
-            if (items.Count == 0)
+            if (items.Count > 0)
             {
-                List<Mobile> mobiles = new List<Mobile>();
-                foreach (Mobile m in World.MobilesInRange())
-                {
-                    if (m.Body == gfx)
-                    {
-                        if (inRangeCheck)
-                        {
-                            if (Utility.InRange(World.Player.Position, m.Position, 2))
-                                mobiles.Add(m);
-                        }
-                        else
-                        {
-                            mobiles.Add(m);
-                        }
-                    }
-                }
-
-                if (mobiles.Count > 0)
-                    click = mobiles[Utility.Random(mobiles.Count)].Serial;
+                PlayerData.DoubleClick(items[Utility.Random(items.Count)].Serial);
             }
-
-            if (click != Serial.Zero)
-                PlayerData.DoubleClick(click);
+            else if (mobiles.Count > 0)
+            {
+                PlayerData.DoubleClick(mobiles[Utility.Random(mobiles.Count)].Serial);
+            }
             else
-                World.Player.SendMessage(MsgLevel.Force, LocString.NoItemOfType,
-                    gfx.IsItem ? ((ItemID) gfx.Value).ToString() : $"(Character) 0x{gfx:X}");
+            {
+                World.Player.SendMessage(MsgLevel.Force, $"{command}: Item or mobile type '{gfxStr}' not found");
+            }
 
             return true;
         }
@@ -688,14 +545,14 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: dclick/useobject (serial)");
+                throw new RunTimeError(null, "Usage: dclick (serial)");
             }
 
             Serial serial = args[0].AsSerial();
 
             if (!serial.IsValid)
             {
-                throw new RunTimeError(null, "useobject - invalid serial");
+                throw new RunTimeError(null, "dclick - invalid serial");
             }
 
             PlayerData.DoubleClick(serial);

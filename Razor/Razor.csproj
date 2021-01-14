@@ -287,6 +287,7 @@
     <Compile Include="Scripts\Commands.cs" />
     <Compile Include="Scripts\Engine\TextParser.cs" />
     <Compile Include="Scripts\Expressions.cs" />
+    <Compile Include="Scripts\Helpers\CommandHelper.cs" />
     <Compile Include="Scripts\RazorScript.cs" />
     <Compile Include="Scripts\ScriptVariables.cs" />
     <Compile Include="Scripts\ScriptManager.cs" />
