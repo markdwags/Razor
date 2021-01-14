@@ -54,7 +54,7 @@ Description: Used to check if a specific buff/debuff is applied to you.
 
 ## findtype
 
-- `findtype ('name of item') [inrangecheck (true/false)]` OR `findtype (graphicID) [inrangecheck (true/false)]`
+- `findtype ('name of item') [inrangecheck (true/false)/backpack]` OR `findtype (graphicID) [inrangecheck (true/false)/backpack]`
 
 Description: Used to check if a specific item name of graphic ID exists. Range check, if true, will check within 2 tiles.
 
@@ -64,7 +64,23 @@ Description: Used to check if a specific item name of graphic ID exists. Range c
 
         ```vim
         if findtype 'saw'
-            say 'found'
+            say 'found saw'
+        endif
+        ```
+
+    === "Find a saw within 2 tiles"
+
+        ```vim
+        if findtype 'saw' true
+            say 'found saw within 2 tiles'
+        endif
+        ```
+
+    === "Find a saw in your backpack"
+
+        ```vim
+        if findtype 'saw' backpack
+            say 'found saw in my pack'
         endif
         ```
 

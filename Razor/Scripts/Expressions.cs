@@ -97,17 +97,25 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)]");
+                throw new RunTimeError(null, "Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
             }
 
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
 
             bool inRangeCheck = false;
+            bool backpack = false;
 
             if (args.Length == 2)
             {
-                inRangeCheck = args[1].AsBool();
+                if (args[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
+                {
+                    backpack = true;
+                }
+                else
+                {
+                    inRangeCheck = args[1].AsBool();
+                }
             }
 
             // No graphic id, maybe searching by name?
@@ -115,7 +123,17 @@ namespace Assistant.Scripts
             {
                 foreach (Item item in World.FindItemsByName(gfxStr))
                 {
-                    if (inRangeCheck)
+                    if (backpack) // search backpack only
+                    {
+                        if (World.Player.Backpack != null)
+                        {
+                            Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
+
+                            if (i != null)
+                                return true;
+                        }
+                    }
+                    else if (inRangeCheck)
                     {
                         if (!item.IsInBank &&
                             (Utility.InRange(World.Player.Position, item.Position, 2) ||
@@ -138,6 +156,12 @@ namespace Assistant.Scripts
 
                     if (i != null)
                         return true;
+                }
+
+                // Stop searching if they only wanted to search the backpack
+                if (backpack)
+                {
+                    return false;
                 }
             }
 
