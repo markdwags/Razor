@@ -898,6 +898,8 @@ namespace Assistant.Scripts
             return true;
         }
 
+        private static DressList _lastDressList;
+
         public static bool DressCommand(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
@@ -905,29 +907,46 @@ namespace Assistant.Scripts
                 throw new RunTimeError(null, "Usage: dress ('name of dress list')");
             }
 
-            DressList d = DressList.Find(args[0].AsString());
+            if (_lastDressList == null)
+            {
+                _lastDressList = DressList.Find(args[0].AsString());
 
-            if (d != null)
-                d.Dress();
-            else if (!quiet)
-                throw new RunTimeError(null, $"'{args[0].AsString()}' not found");
+                if (_lastDressList != null)
+                {
+                    _lastDressList.Dress();
+                }
+                else if (!quiet)
+                {
+                    throw new RunTimeError(null, $"'{args[0].AsString()}' not found");
+                }
+            }
+            else if (ActionQueue.Empty)
+            {
+                _lastDressList = null;
+                return true;
+            }
 
-            return true;
+            return false;
         }
+
+        private static DressList _lastUndressList;
+        private static bool _undressAll;
 
         public static bool UnDressCommand(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length == 0) // full naked!
-            {
-                HotKeys.UndressHotKeys.OnUndressAll();
-            }
-            else if (args.Length == 1) // either a dress list item or a layer
-            {
-                DressList d = DressList.Find(args[0].AsString());
 
-                if (d != null)
+            if (args.Length == 0 && !_undressAll) // full naked!
+            {
+                _undressAll = true;
+                UndressHotKeys.OnUndressAll();
+            }
+            else if (args.Length == 1 && _lastUndressList == null) // either a dress list item or a layer
+            {
+                _lastUndressList = DressList.Find(args[0].AsString());
+
+                if (_lastUndressList != null)
                 {
-                    d.Undress();
+                    _lastUndressList.Undress();
                 }
                 else // lets find the layer
                 {
@@ -935,10 +954,20 @@ namespace Assistant.Scripts
                     {
                         Dress.Unequip(layer);
                     }
+                    else if (!quiet)
+                    {
+                        throw new RunTimeError(null, $"'{args[0].AsString()}' not found");
+                    }
                 }
             }
+            else if (ActionQueue.Empty)
+            {
+                _undressAll = false;
+                _lastUndressList = null;
+                return true;
+            }
 
-            return true;
+            return false;
         }
 
         public static bool GumpResponse(string command, Argument[] args, bool quiet, bool force)
