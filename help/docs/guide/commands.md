@@ -879,9 +879,9 @@ Description: This command will wait for a prompt before continuing.
 
 ## waitforsysmsg
 
-Syntax: `waitforsysmsg` or `wfsysmsg`
+Syntax: `waitforsysmsg 'message to wait for' [timeout]` or `wfsysmsg 'message to wait for' [timeout]`
 
-Description: This command will wait a specific message to be added to the system message queue before continuing.
+Description: This command will wait a specific message to be added to the system message queue before continuing.  Default timeout is 30 seconds.
 
 !!! example
 
@@ -890,6 +890,13 @@ Description: This command will wait a specific message to be added to the system
         ```vim hl_lines="1"
         waitforsysmsg 'ready to go'
         overhead 'Ready!'
+        ```
+
+    === "Wait for system message for 5 seconds"
+
+        ```vim hl_lines="1"
+        waitforsysmsg 'ready to go' 5000
+        overhead 'Done waiting'
         ```
 
 ## waitfortarget

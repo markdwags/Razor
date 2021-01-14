@@ -1127,10 +1127,18 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: waitforsysmsg 'message to wait for'");
+                throw new RunTimeError(null, "Usage: waitforsysmsg 'message to wait for' [timeout]");
+            }
+            
+            if (SystemMessages.Exists(args[0].AsString()))
+            {
+                Interpreter.ClearTimeout();
+                return true;
             }
 
-            return SystemMessages.Exists(args[0].AsString());
+            Interpreter.Timeout(args.Length > 0 ? args[1].AsUInt() : 30000, () => { return true; });
+
+            return false;
         }
     }
 }
