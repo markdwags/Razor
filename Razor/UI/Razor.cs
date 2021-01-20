@@ -4723,6 +4723,7 @@ namespace Assistant
                 return;
 
             Config.Save();
+            Counter.Save();
 
             string profileToClone = (string) profiles.Items[profiles.SelectedIndex];
             MessageBox.Show(SplashScreen.Instance,
