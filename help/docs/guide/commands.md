@@ -70,6 +70,23 @@ Description: Cast a spell by name
         ```vim
         cast 'blade spirits'
         ```
+
+## clearall
+
+Synatx: `clearall`
+
+Description: Combines the following actions into one commmand: `Cancel Current Target, Clear Target Queue, Drop What You Are Currently Holding and Clear Drag/Drop Queue` into a single command.
+
+!!! example
+
+    === "Clear on sysmsg message"
+
+        ```vim
+        if insysmsg 'cannot find'
+            clearall
+        endif
+        ```
+
 ## clearsysmsg
 
 Syntax: `clearsysmsg`

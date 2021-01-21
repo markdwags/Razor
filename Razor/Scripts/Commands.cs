@@ -108,6 +108,18 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("setvariable", SetVar);
 
             Interpreter.RegisterCommandHandler("stop", Stop);
+
+            Interpreter.RegisterCommandHandler("clearall", ClearAll);
+        }
+
+        private static bool ClearAll(string command, Argument[] args, bool quiet, bool force)
+        {
+
+            DragDropManager.GracefulStop(); // clear drag/drop queue
+            Targeting.CancelTarget(); // clear target queue & cancel current target
+            DragDropManager.DropCurrent(); // drop what you are currently holding
+
+            return true;
         }
 
         private static bool SetLastTarget(string command, Argument[] args, bool quiet, bool force)

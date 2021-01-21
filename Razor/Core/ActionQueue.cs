@@ -117,7 +117,7 @@ namespace Assistant
             HotKey.Add(HKCategory.Misc, LocString.DropCur, new HotKeyCallback(DropCurrent));
         }
 
-        private static void DropCurrent()
+        public static void DropCurrent()
         {
             Log("Drop current requested on {0}", m_Holding);
 

@@ -911,7 +911,7 @@ namespace Assistant
             EndIntercept();
         }
 
-        private static void CancelTarget()
+        public static void CancelTarget()
         {
             OnClearQueue();
             CancelClientTarget();
