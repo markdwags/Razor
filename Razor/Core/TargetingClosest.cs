@@ -108,7 +108,7 @@ namespace Assistant
 
         private static void TargetCloseFriendlyHumanoid()
         {
-            ClosestTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
+            ClosestHumanoidTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
         private static void TargetCloseFriendlyMonster()
