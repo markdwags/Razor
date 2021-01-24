@@ -402,6 +402,8 @@ namespace Assistant.Scripts
                                 case "nonfriendly":
                                     Targeting.NextTargetNonFriend();
                                     break;
+                                default:
+                                    throw new RunTimeError(null, $"Unknown target type: '{args[1].AsString()}' - Missing type? (human/monster)");
                             }
 
                             break;
@@ -502,6 +504,8 @@ namespace Assistant.Scripts
                                     }
 
                                     break;
+                                default:
+                                    throw new RunTimeError(null, $"Unknown target type: '{args[1].AsString()}'");
                             }
 
                             break;
@@ -536,6 +540,8 @@ namespace Assistant.Scripts
                                 case "nonfriendly":
                                     Targeting.PrevTargetNonFriend();
                                     break;
+                                default:
+                                    throw new RunTimeError(null, $"Unknown target type: '{args[1].AsString()}' - Missing type? (human/monster)");
                             }
 
                             break;
@@ -636,6 +642,8 @@ namespace Assistant.Scripts
                                     }
 
                                     break;
+                                default:
+                                    throw new RunTimeError(null, $"Unknown target type: '{args[1].AsString()}'");
                             }
 
                             break;
