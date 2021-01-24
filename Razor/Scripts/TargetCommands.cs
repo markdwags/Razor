@@ -44,7 +44,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: target (serial) OR target (closest/random/next/prev [type]");
+                throw new RunTimeError(null, "Usage: target (serial) OR target (closest/random/next/prev [noto] [type]");
             }
 
             switch (args[0].AsString())
