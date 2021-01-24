@@ -82,120 +82,120 @@ namespace Assistant
         }
 
 
-        private static void TargetRandNonFriendly()
+        public static void TargetRandNonFriendly()
         {
             RandomTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetRandNonFriendlyHumanoid()
+        public static void TargetRandNonFriendlyHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetRandNonFriendlyMonster()
+        public static void TargetRandNonFriendlyMonster()
         {
             RandomMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetRandFriendly()
+        public static void TargetRandFriendly()
         {
             RandomTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetRandFriendlyHumanoid()
+        public static void TargetRandFriendlyHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetRandFriendlyMonster()
+        public static void TargetRandFriendlyMonster()
         {
             RandomMonsterTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetRandEnemy()
+        public static void TargetRandEnemy()
         {
             RandomTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetRandEnemyMonster()
+        public static void TargetRandEnemyMonster()
         {
             RandomMonsterTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetRandEnemyHumanoid()
+        public static void TargetRandEnemyHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetRandRed()
+        public static void TargetRandRed()
         {
             RandomTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetRandRedHumanoid()
+        public static void TargetRandRedHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetRandRedMonster()
+        public static void TargetRandRedMonster()
         {
             RandomMonsterTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetRandGrey()
+        public static void TargetRandGrey()
         {
             RandomTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetRandGreyMonster()
+        public static void TargetRandGreyMonster()
         {
             RandomMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetRandGreyHumanoid()
+        public static void TargetRandGreyHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetRandCriminal()
+        public static void TargetRandCriminal()
         {
             RandomTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetRandCriminalHumanoid()
+        public static void TargetRandCriminalHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetRandCriminalMonster()
+        public static void TargetRandCriminalMonster()
         {
             RandomMonsterTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetRandInnocent()
+        public static void TargetRandInnocent()
         {
             RandomTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetRandInnocentHumanoid()
+        public static void TargetRandInnocentHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetRandInnocentMonster()
+        public static void TargetRandInnocentMonster()
         {
             RandomMonsterTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetRandFriend()
+        public static void TargetRandFriend()
         {
             RandomFriendTarget();
         }
 
-        private static void TargetRandAnyone()
+        public static void TargetRandAnyone()
         {
             RandomTarget();
         }

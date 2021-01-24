@@ -83,120 +83,120 @@ namespace Assistant
         }
 
 
-        private static void TargetCloseNonFriendly()
+        public static void TargetCloseNonFriendly()
         {
             ClosestTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetCloseNonFriendlyHumanoid()
+        public static void TargetCloseNonFriendlyHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetCloseNonFriendlyMonster()
+        public static void TargetCloseNonFriendlyMonster()
         {
             ClosestMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetCloseFriendly()
+        public static void TargetCloseFriendly()
         {
             ClosestTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetCloseFriendlyHumanoid()
+        public static void TargetCloseFriendlyHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetCloseFriendlyMonster()
+        public static void TargetCloseFriendlyMonster()
         {
             ClosestTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetCloseEnemy()
+        public static void TargetCloseEnemy()
         {
             ClosestTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetCloseEnemyHumanoid()
+        public static void TargetCloseEnemyHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetCloseEnemyMonster()
+        public static void TargetCloseEnemyMonster()
         {
             ClosestMonsterTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetCloseRed()
+        public static void TargetCloseRed()
         {
             ClosestTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetCloseRedMonster()
+        public static void TargetCloseRedMonster()
         {
             ClosestMonsterTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetCloseRedHumanoid()
+        public static void TargetCloseRedHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetCloseGrey()
+        public static void TargetCloseGrey()
         {
             ClosestTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetCloseGreyMonster()
+        public static void TargetCloseGreyMonster()
         {
             ClosestMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetCloseGreyHumanoid()
+        public static void TargetCloseGreyHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetCloseCriminal()
+        public static void TargetCloseCriminal()
         {
             ClosestTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetCloseCriminalHumanoid()
+        public static void TargetCloseCriminalHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetCloseCriminalMonster()
+        public static void TargetCloseCriminalMonster()
         {
             ClosestHumanoidTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetCloseInnocent()
+        public static void TargetCloseInnocent()
         {
             ClosestTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetCloseInnocentHumanoid()
+        public static void TargetCloseInnocentHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetCloseInnocentMonster()
+        public static void TargetCloseInnocentMonster()
         {
             ClosestMonsterTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetClosestFriend()
+        public static void TargetClosestFriend()
         {
             ClosestFriendTarget();
         }
 
-        private static void TargetClosest()
+        public static void TargetClosest()
         {
             ClosestTarget();
         }

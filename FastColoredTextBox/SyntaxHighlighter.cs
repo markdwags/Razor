@@ -364,12 +364,12 @@ namespace FastColoredTextBoxNS
 
             RazorLayerRegex =
                 new Regex(
-                    @"\b(RightHand|LeftHand|Shoes|Pants|Shirt|Head|Gloves|Ring|Talisman|Neck|Hair|Waist|InnerTorso|Bracelet|FacialHair|MiddleTorso|Earrings|Arms|Cloak|Backpack|OuterTorso|OuterLegs|InnerLegs|backpack|true|false)\b",
+                    @"\b(RightHand|LeftHand|Shoes|Pants|Shirt|Head|Gloves|Ring|Talisman|Neck|Hair|Waist|InnerTorso|Bracelet|FacialHair|MiddleTorso|Earrings|Arms|Cloak|Backpack|OuterTorso|OuterLegs|InnerLegs|backpack|true|false|criminal|enemy|friend|friendly|grey|gray|innocent|murderer|red|blue|nonfriendly)\b",
                     RegexCompiledOption);
 
             RazorExpressionRegex =
                 new Regex(
-                    @"\b(queued|position|insysmsg|insysmessage|findtype|findbuff|finddebuff|stam|maxstam|hp|maxhp|maxhits|hits|mana|maxmana|str|dex|int|poisoned|hidden|mounted|rhandempty|lhandempty|skill|count|counter|weight|dead)\b",
+                    @"\b(queued|position|insysmsg|insysmessage|findtype|findbuff|finddebuff|stam|maxstam|hp|maxhp|maxhits|hits|mana|maxmana|str|dex|int|poisoned|hidden|mounted|rhandempty|lhandempty|skill|count|counter|weight|dead|closest|random|next|prev|previous|human|humanoid|monster)\b",
                     RegexCompiledOption);
         }
 
