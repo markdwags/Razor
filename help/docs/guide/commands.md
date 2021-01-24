@@ -661,9 +661,9 @@ Description: This command will display a message in the lower-left of the client
 
 ## target
 
-Syntax: `target (serial)` or `target (x) (y) (z)`
+Syntax: `target (closest/random/next/prev) [noto] [type]` or `target (serial)`
 
-Description: This command will target a specific mobile or item or target a specific location based on X/Y/Z coordinates.
+Description: This command will target a specific mobile based either the type searched for or the serial.
 
 !!! example
 
@@ -675,7 +675,69 @@ Description: This command will target a specific mobile or item or target a spec
         target 0xBB3
         ```
 
-    === "Specific location"
+    === "Target closest red"
+
+        ```vim
+        cast 'lightning'
+        waitfortarget
+        target closest red
+        ```
+
+    === "Target closest monster"
+
+        ```vim
+        cast 'lightning'
+        waitfortarget
+        target closest gray monster
+        ```
+
+    === "Target random mobile"
+
+        ```vim
+        cast 'lightning'
+        waitfortarget
+        target random
+        ```
+
+    === "Target random red monster"
+
+        ```vim
+        cast 'lightning'
+        waitfortarget
+        target random red monster
+        ```
+
+    === "Next humanoid target"
+
+        ```vim        
+        target next humanoid
+        ```    
+
+## targetrelloc
+
+Syntax: `targetrelloc (x-offset) (y-offset)`
+
+Description: This command will target a specific location on the map relative to your position.
+
+!!! example
+
+    === "Target 1 X, 1 Y from player location"
+
+        ```vim
+        cast 'fire field'
+        waitfortarget
+        targetrelloc 1 1
+        ```
+
+## targetloc
+
+Syntax: `targetloc (x) (y) (z)`
+
+Description: This command will target a specific location on the map.
+
+!!! example
+
+     === "Specific location"
 
         ```vim
         cast 'fire field'
@@ -724,22 +786,6 @@ Description: This command will target a specific type of mobile or item based on
         dclicktype 'dagger'
         waitfortarget
         targettype 'robe'
-        ```
-
-## targetrelloc
-
-Syntax: `targetrelloc (x-offset) (y-offset)`
-
-Description: This command will target a specific location on the map relative to your position.
-
-!!! example
-
-    === "Target 1 X, 1 Y from player location"
-
-        ```vim
-        cast 'fire field'
-        waitfortarget
-        targetrelloc 1 1
         ```
 
 ## undress
