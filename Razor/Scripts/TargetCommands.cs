@@ -63,13 +63,13 @@ namespace Assistant.Scripts
                             case "enemy":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseEnemyHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseEnemyMonster();
                                     }
@@ -86,13 +86,13 @@ namespace Assistant.Scripts
                             case "friendly":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseFriendlyHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseFriendlyMonster();
                                     }
@@ -107,13 +107,13 @@ namespace Assistant.Scripts
                             case "grey":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseGreyHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseGreyMonster();
                                     }
@@ -127,13 +127,13 @@ namespace Assistant.Scripts
                             case "criminal":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseCriminalHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseCriminalMonster();
                                     }
@@ -148,13 +148,13 @@ namespace Assistant.Scripts
                             case "innocent":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseInnocentHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseInnocentMonster();
                                     }
@@ -169,13 +169,13 @@ namespace Assistant.Scripts
                             case "murderer":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseRedHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseRedMonster();
                                     }
@@ -189,13 +189,13 @@ namespace Assistant.Scripts
                             case "nonfriendly":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseNonFriendlyHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetCloseNonFriendlyMonster();
                                     }
@@ -228,13 +228,13 @@ namespace Assistant.Scripts
                             case "enemy":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandEnemyHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandEnemyMonster();
                                     }
@@ -251,13 +251,13 @@ namespace Assistant.Scripts
                             case "friendly":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandFriendlyHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandFriendlyMonster();
                                     }
@@ -272,13 +272,13 @@ namespace Assistant.Scripts
                             case "grey":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandGreyHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandGreyMonster();
                                     }
@@ -292,13 +292,13 @@ namespace Assistant.Scripts
                             case "criminal":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandCriminalHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandCriminalMonster();
                                     }
@@ -313,13 +313,13 @@ namespace Assistant.Scripts
                             case "innocent":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandInnocentHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandInnocentMonster();
                                     }
@@ -334,13 +334,13 @@ namespace Assistant.Scripts
                             case "murderer":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandRedHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandRedMonster();
                                     }
@@ -354,13 +354,13 @@ namespace Assistant.Scripts
                             case "nonfriendly":
                                 if (args.Length == 3)
                                 {
-                                    if (args[3].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    if (args[2].AsString().IndexOf("human",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandNonFriendlyHumanoid();
                                     }
-                                    else if (args[3].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                    else if (args[2].AsString().IndexOf("monster",
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.TargetRandNonFriendlyMonster();
                                     }
@@ -410,12 +410,12 @@ namespace Assistant.Scripts
                             {
                                 case "enemy":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetEnemyHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetEnemyMonster();
                                     }
@@ -423,12 +423,12 @@ namespace Assistant.Scripts
                                     break;
                                 case "friendly":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetFriendlyHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetFriendlyMonster();
                                     }
@@ -437,12 +437,12 @@ namespace Assistant.Scripts
                                 case "gray":
                                 case "grey":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetGreyHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetGreyMonster();
                                     }
@@ -450,12 +450,12 @@ namespace Assistant.Scripts
                                     break;
                                 case "criminal":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetCriminalHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetCriminalMonster();
                                     }
@@ -464,12 +464,12 @@ namespace Assistant.Scripts
                                 case "blue":
                                 case "innocent":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetInnocentHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetInnocentMonster();
                                     }
@@ -478,12 +478,12 @@ namespace Assistant.Scripts
                                 case "red":
                                 case "murderer":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetMurdererHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetMurdererMonster();
                                     }
@@ -491,12 +491,12 @@ namespace Assistant.Scripts
                                     break;
                                 case "nonfriendly":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetNonFriendlyHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.NextTargetNonFriendlyMonster();
                                     }
@@ -544,12 +544,12 @@ namespace Assistant.Scripts
                             {
                                 case "enemy":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetEnemyHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetEnemyMonster();
                                     }
@@ -557,12 +557,12 @@ namespace Assistant.Scripts
                                     break;
                                 case "friendly":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetFriendlyHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetFriendlyMonster();
                                     }
@@ -571,12 +571,12 @@ namespace Assistant.Scripts
                                 case "gray":
                                 case "grey":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetGreyHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetGreyMonster();
                                     }
@@ -584,12 +584,12 @@ namespace Assistant.Scripts
                                     break;
                                 case "criminal":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetCriminalHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetCriminalMonster();
                                     }
@@ -598,12 +598,12 @@ namespace Assistant.Scripts
                                 case "blue":
                                 case "innocent":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetInnocentHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetInnocentMonster();
                                     }
@@ -612,12 +612,12 @@ namespace Assistant.Scripts
                                 case "red":
                                 case "murderer":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetMurdererHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetMurdererMonster();
                                     }
@@ -625,12 +625,12 @@ namespace Assistant.Scripts
                                     break;
                                 case "nonfriendly":
                                     if (args[2].AsString().IndexOf("human",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetNonFriendlyHumanoid();
                                     }
                                     else if (args[2].AsString().IndexOf("monster",
-                                        StringComparison.InvariantCultureIgnoreCase) > 0)
+                                        StringComparison.InvariantCultureIgnoreCase) != -1)
                                     {
                                         Targeting.PrevTargetNonFriendlyMonster();
                                     }
@@ -691,7 +691,7 @@ namespace Assistant.Scripts
 
             if (args.Length == 2)
             {
-                if (args[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
+                if (args[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) != -1)
                 {
                     backpack = true;
                 }
