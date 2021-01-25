@@ -145,6 +145,14 @@ namespace Assistant.Scripts.Helpers
             return mobiles;
         }
 
+        public static void SendWarning(string message, bool quiet)
+        {
+            if (!quiet)
+            {
+                World.Player.SendMessage(MsgLevel.Warning, message);
+            }
+        }
+
         /// <summary>
         /// Parse the script input to target the correct mobile
         /// </summary>

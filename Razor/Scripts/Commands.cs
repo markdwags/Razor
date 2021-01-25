@@ -146,7 +146,7 @@ namespace Assistant.Scripts
 
             if (var == null)
             {
-                throw new RunTimeError(null, $"Unknown variable '{varname}'");
+                throw new RunTimeError(null, $"{command} - Unknown variable '{varname}'");
             }
 
             if (!ScriptManager.SetVariableActive)
@@ -173,8 +173,6 @@ namespace Assistant.Scripts
             return true;
         }
 
-        
-
         private static bool Hotkey(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
@@ -188,7 +186,7 @@ namespace Assistant.Scripts
 
             if (hk == null)
             {
-                throw new RunTimeError(null, $"Hotkey '{query}' not found");
+                throw new RunTimeError(null, $"{command} - Hotkey '{query}' not found");
             }
 
             hk.Callback();
@@ -383,7 +381,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Force, $"{command}: Item or mobile type '{gfxStr}' not found");
+                CommandHelper.SendWarning($"{command} - Item or mobile type '{gfxStr}' not found", quiet);
             }
 
             return true;
@@ -454,7 +452,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.MacroNoHold);
+                CommandHelper.SendWarning($"{command} - Not holding anything", quiet);
             }
 
             return true;
@@ -471,11 +469,15 @@ namespace Assistant.Scripts
             int y = args[1].AsInt();
 
             if (DragDropManager.Holding != null)
+            {
                 DragDropManager.Drop(DragDropManager.Holding, null,
                     new Point3D((ushort) (World.Player.Position.X + x),
                         (ushort) (World.Player.Position.Y + y), World.Player.Position.Z));
+            }
             else
-                World.Player.SendMessage(LocString.MacroNoHold);
+            {
+                CommandHelper.SendWarning($"{command} - Not holding anything", quiet);
+            }
 
             return true;
         }
@@ -493,7 +495,7 @@ namespace Assistant.Scripts
 
             if (!serial.IsValid)
             {
-                throw new RunTimeError(null, "lift - invalid serial");
+                throw new RunTimeError(null, $"{command} - Invalid serial");
             }
 
             ushort amount = 1;
@@ -528,7 +530,8 @@ namespace Assistant.Scripts
                 }
                 else
                 {
-                    World.Player.SendMessage(MsgLevel.Warning, LocString.MacroItemOutRange);
+                    CommandHelper.SendWarning($"{command} - Item not found or out of range", quiet);
+                    return true;
                 }
             }
 
@@ -575,16 +578,17 @@ namespace Assistant.Scripts
                 // No graphic id, maybe searching by name?
                 if (gfx == 0)
                 {
-                    item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByName(gfxStr, true) : null;
+                    item = World.Player.Backpack?.FindItemByName(gfxStr, true);
 
                     if (item == null)
                     {
-                        throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
+                        CommandHelper.SendWarning($"{command} - Item '{gfxStr}' not found", quiet);
+                        return true;
                     }
                 }
                 else
                 {
-                    item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(gfx) : null;
+                    item = World.Player.Backpack?.FindItemByID(gfx);
                 }
 
                 if (item != null)
@@ -596,7 +600,8 @@ namespace Assistant.Scripts
                 }
                 else
                 {
-                    World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, (ItemID)gfx);
+                    CommandHelper.SendWarning($"{command} - {Language.Format(LocString.NoItemOfType, (ItemID)gfx)}", quiet);
+                    return true;
                 }
             }
 
@@ -627,13 +632,17 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: useskill ('skill name'/'last')");
+                throw new RunTimeError(null, "Usage: skill ('skill name'/'last')");
             }
 
             if (args[0].AsString() == "last")
+            {
                 Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
+            }
             else if (SkillHotKeys.UsableSkillsByName.TryGetValue(args[0].AsString().ToLower(), out int skillId))
+            {
                 Client.Instance.SendToServer(new UseSkill(skillId));
+            }
 
             return true;
         }
@@ -641,14 +650,14 @@ namespace Assistant.Scripts
         private static bool Pause(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
-                throw new RunTimeError(null, "Usage: pause (timeout)");
+                throw new RunTimeError(null, "Usage: pause/wait (timeout)");
 
             Interpreter.Pause(args[0].AsUInt());
 
             return true;
         }
 
-        public static bool Attack(string command, Argument[] args, bool quiet, bool force)
+        private static bool Attack(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -659,7 +668,7 @@ namespace Assistant.Scripts
 
             if (!serial.IsValid)
             {
-                throw new RunTimeError(null, "attack - invalid serial");
+                throw new RunTimeError(null, $"{command} - Invalid serial");
             }
 
             if (serial == Targeting.LastTargetInfo.Serial)
@@ -675,7 +684,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool Cast(string command, Argument[] args, bool quiet, bool force)
+        private static bool Cast(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
@@ -690,15 +699,15 @@ namespace Assistant.Scripts
             {
                 spell.OnCast(new CastSpellFromMacro((ushort) spell.GetID()));
             }
-            else if (!quiet)
+            else
             {
-                throw new RunTimeError(null, "cast - spell name or number not valid");
+                throw new RunTimeError(null, $"{command} - Spell name or number not valid");
             }
 
             return true;
         }
 
-        public static bool HeadMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool HeadMsg(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -706,7 +715,9 @@ namespace Assistant.Scripts
             }
 
             if (args.Length == 1)
+            {
                 World.Player.OverheadMessage(Config.GetInt("SysColor"), args[0].AsString());
+            }
             else
             {
                 int hue = Utility.ToInt32(args[1].AsString(), 0);
@@ -718,13 +729,15 @@ namespace Assistant.Scripts
                     m?.OverheadMessage(hue, args[0].AsString());
                 }
                 else
+                {
                     World.Player.OverheadMessage(hue, args[0].AsString());
+                }
             }
 
             return true;
         }
 
-        public static bool SysMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool SysMsg(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -732,14 +745,18 @@ namespace Assistant.Scripts
             }
 
             if (args.Length == 1)
+            {
                 World.Player.SendMessage(Config.GetInt("SysColor"), args[0].AsString());
+            }
             else if (args.Length == 2)
+            {
                 World.Player.SendMessage(Utility.ToInt32(args[1].AsString(), 0), args[0].AsString());
+            }
 
             return true;
         }
 
-        public static bool ClearSysMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool ClearSysMsg(string command, Argument[] args, bool quiet, bool force)
         {
             SystemMessages.Messages.Clear();
 
@@ -748,7 +765,7 @@ namespace Assistant.Scripts
 
         private static DressList _lastDressList;
 
-        public static bool DressCommand(string command, Argument[] args, bool quiet, bool force)
+        private static bool DressCommand(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -765,7 +782,8 @@ namespace Assistant.Scripts
                 }
                 else if (!quiet)
                 {
-                    throw new RunTimeError(null, $"'{args[0].AsString()}' not found");
+                    CommandHelper.SendWarning($"{command} - '{args[0].AsString()}' not found", quiet);
+                    return true;
                 }
             }
             else if (ActionQueue.Empty)
@@ -780,7 +798,7 @@ namespace Assistant.Scripts
         private static DressList _lastUndressList;
         private static bool _undressAll;
 
-        public static bool UnDressCommand(string command, Argument[] args, bool quiet, bool force)
+        private static bool UnDressCommand(string command, Argument[] args, bool quiet, bool force)
         {
 
             if (args.Length == 0 && !_undressAll) // full naked!
@@ -802,7 +820,7 @@ namespace Assistant.Scripts
                     {
                         Dress.Unequip(layer);
                     }
-                    else if (!quiet)
+                    else
                     {
                         throw new RunTimeError(null, $"'{args[0].AsString()}' not found");
                     }
@@ -818,7 +836,7 @@ namespace Assistant.Scripts
             return false;
         }
 
-        public static bool GumpResponse(string command, Argument[] args, bool quiet, bool force)
+        private static bool GumpResponse(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
@@ -846,7 +864,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool GumpClose(string command, Argument[] args, bool quiet, bool force)
+        private static bool GumpClose(string command, Argument[] args, bool quiet, bool force)
         {
             Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
             Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, 0,
@@ -858,7 +876,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool ContextMenu(string command, Argument[] args, bool quiet, bool force)
+        private static bool ContextMenu(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 2)
             {
@@ -876,7 +894,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool MenuResponse(string command, Argument[] args, bool quiet, bool force)
+        private static bool MenuResponse(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 2)
             {
@@ -896,7 +914,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool PromptResponse(string command, Argument[] args, bool quiet, bool force)
+        private static bool PromptResponse(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
@@ -907,7 +925,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool LastTarget(string command, Argument[] args, bool quiet, bool force)
+        private static bool LastTarget(string command, Argument[] args, bool quiet, bool force)
         {
             if (!Targeting.DoLastTarget())
                 Targeting.ResendTarget();
@@ -915,7 +933,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool PlayScript(string command, Argument[] args, bool quiet, bool force)
+        private static bool PlayScript(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
@@ -961,17 +979,19 @@ namespace Assistant.Scripts
                 }
 
                 if (!World.Player.UseItem(pack, potionId))
-                    World.Player.SendMessage(LocString.NoItemOfType, (ItemID)potionId);
+                {
+                    CommandHelper.SendWarning($"{command} - {Language.Format(LocString.NoItemOfType, (ItemID)potionId)}", quiet);
+                }
             }
             else
             {
-                throw new RunTimeError(null, "Unknown potion type");
+                throw new RunTimeError(null, $"{command} - Unknown potion type");
             }
 
             return true;
         }
 
-        public static bool WaitForSysMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool WaitForSysMsg(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {

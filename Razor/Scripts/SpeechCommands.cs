@@ -36,7 +36,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("alliance", Alliance);
         }
 
-        public static bool Say(string command, Argument[] args, bool quiet, bool force)
+        private static bool Say(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -51,7 +51,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool Whisper(string command, Argument[] args, bool quiet, bool force)
+        private static bool Whisper(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -68,7 +68,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool Yell(string command, Argument[] args, bool quiet, bool force)
+        private static bool Yell(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -83,7 +83,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool Emote(string command, Argument[] args, bool quiet, bool force)
+        private static bool Emote(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -98,7 +98,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool Guild(string command, Argument[] args, bool quiet, bool force)
+        private static bool Guild(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -113,7 +113,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool Alliance(string command, Argument[] args, bool quiet, bool force)
+        private static bool Alliance(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {

@@ -1,4 +1,4 @@
-# Commands Overview
+# Overview
 
 The commands issued in the scripting engine are similar to a commands you might enter into a command prompt or shell.  Each line has a starting command, and a set of parameters.  Some of those parameters are required, some are optional.
 
@@ -22,7 +22,25 @@ You will end up just saying `Hello`.  Instead, you if you wrap the words in sing
 say 'Hello friends!'
 ```
 
-Here the list of the support commands:
+# Symbols
+
+If you prefix a command with the `@` this will silence any warning/output from the command.  For example:
+
+!!! example
+
+    ```csharp
+    // Generate warning if robe is out of reach
+    lifttype 'robe'
+
+    // Silence warning if robe is out of reach
+    @lifttype 'robe'
+    ```
+
+Without the `@` symbol, if a robe isn't available, you would get an warning message telling you that it couldn't find a robe. But since the `@` symbol was provided, no warning is displayed.
+
+# Command List
+
+Here's a list of the support Razor scripting commands:
 
 ## alliance
 

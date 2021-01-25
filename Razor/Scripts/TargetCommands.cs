@@ -163,7 +163,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Force, $"{command}: Item or mobile type '{gfxStr}' not found");
+                CommandHelper.SendWarning($"{command}: Item or mobile type '{gfxStr}' not found", quiet);
             }
 
             return true;
@@ -193,7 +193,7 @@ namespace Assistant.Scripts
             }
             catch (Exception e)
             {
-                throw new RunTimeError(null, $"Error Executing TargetRelLoc: {e.Message}");
+                throw new RunTimeError(null, $"{command} - Error Executing: {e.Message}");
             }
 
             return true;
