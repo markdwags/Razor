@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using Assistant.Core;
 using Assistant.Filters;
+using Assistant.Scripts;
 
 namespace Assistant
 {
@@ -224,9 +225,14 @@ namespace Assistant
                 }
 
             if (list.Count > 0)
+            {
                 SetLastTargetTo(list[Utility.Random(list.Count)]);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
         private static void RandomHumanoidTarget(params int[] noto)
@@ -258,9 +264,14 @@ namespace Assistant
             }
 
             if (list.Count > 0)
+            {
                 SetLastTargetTo(list[Utility.Random(list.Count)]);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
         private static void RandomMonsterTarget(params int[] noto)
@@ -292,9 +303,14 @@ namespace Assistant
             }
 
             if (list.Count > 0)
+            {
                 SetLastTargetTo(list[Utility.Random(list.Count)]);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
         private static void RandomFriendTarget()
@@ -311,9 +327,14 @@ namespace Assistant
                     list.Add(m);
 
             if (list.Count > 0)
+            {
                 SetLastTargetTo(list[Utility.Random(list.Count)]);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
     }
 }

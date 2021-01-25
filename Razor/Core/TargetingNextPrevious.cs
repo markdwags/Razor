@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assistant.Core;
 using Assistant.Filters;
+using Assistant.Scripts;
 
 namespace Assistant
 {
@@ -227,6 +228,8 @@ namespace Assistant
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
             OverheadTargetMessage(target);
+
+            ScriptManager.TargetFound = true;
         }
 
         public static void NextTarget()

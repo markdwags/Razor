@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using Assistant.Core;
 using Assistant.Filters;
+using Assistant.Scripts;
 
 namespace Assistant
 {
@@ -239,9 +240,14 @@ namespace Assistant
             }
 
             if (closest != null)
+            {
                 SetLastTargetTo(closest);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
         private static void ClosestHumanoidTarget(params int[] noto)
@@ -287,9 +293,14 @@ namespace Assistant
             }
 
             if (closest != null)
+            {
                 SetLastTargetTo(closest);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
         private static void ClosestMonsterTarget(params int[] noto)
@@ -308,7 +319,7 @@ namespace Assistant
                     !TargetFilterManager.IsFilteredTarget(m.Serial) &&
                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                 {
-                    for (var i = 0; i < noto.Length; i++)
+                    for (var i = 0; i < noto.Length; i++) 
                         if (noto[i] == m.Notoriety)
                         {
                             list.Add(m);
@@ -335,9 +346,14 @@ namespace Assistant
             }
 
             if (closest != null)
+            {
                 SetLastTargetTo(closest);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
         private static void ClosestFriendTarget()
@@ -347,10 +363,14 @@ namespace Assistant
 
             var list = new List<Mobile>();
             foreach (var m in World.MobilesInRange(12))
+            {
                 if (FriendsManager.IsFriend(m.Serial) && !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
                     !TargetFilterManager.IsFilteredTarget(m.Serial) &&
                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
+                {
                     list.Add(m);
+                }
+            }                
 
             Mobile closest = null;
             var closestDist = double.MaxValue;
@@ -367,9 +387,14 @@ namespace Assistant
             }
 
             if (closest != null)
+            {
                 SetLastTargetTo(closest);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
     }
 }

@@ -661,9 +661,20 @@ Description: This command will display a message in the lower-left of the client
 
 ## target
 
-Syntax: `target (closest/random/next/prev) [noto] [type]` or `target (serial)`
+Syntax: `target (closest/random/next/prev) [type1,type2] [humanoid/monster]` or `target (serial)`
 
 Description: This command will target a specific mobile based either the type searched for or the serial.
+
+| Type              | Notoriety Name                                   | Notoriety Color                            |
+| ----------------- | ------------------------------------------------ | ------------------------------------------ |
+| `nonfriendly`     | Attackable, Criminal, Enemy, Murderer            | Gray (but not criminal), Gray, Orange, Red |
+| `friendly`        | Innocent, Guild/Ally                             | Blue, Green                                |
+| `enemy`           | Enemy                                            | Orange                                     |
+| `red`/`murderer`  | Murderer                                         | Red                                        |
+| `gray`/`grey`     | Attackable, Criminal                             | Gray (but not criminal), Gray              |
+| `criminal`        | Criminal                                         | Gray                                       |
+| `blue`/`innocent` | Innocent                                         | Blue                                       |
+| `friend`          | Based on your [friends list](../../help/friends) | Any                                        |
 
 !!! example
 
@@ -672,7 +683,7 @@ Description: This command will target a specific mobile based either the type se
         ```vim
         cast 'lightning'
         waitfortarget
-        target 0xBB3
+        target '0xBB3'
         ```
 
     === "Target closest red"
@@ -680,15 +691,15 @@ Description: This command will target a specific mobile based either the type se
         ```vim
         cast 'lightning'
         waitfortarget
-        target closest red
+        target closest 'red'
         ```
 
-    === "Target closest monster"
+    === "Target closest gray or red monster"
 
         ```vim
         cast 'lightning'
         waitfortarget
-        target closest gray monster
+        target closest 'gray,red' monster
         ```
 
     === "Target random mobile"
@@ -704,7 +715,7 @@ Description: This command will target a specific mobile based either the type se
         ```vim
         cast 'lightning'
         waitfortarget
-        target random red monster
+        target random 'red' monster
         ```
 
     === "Next humanoid target"

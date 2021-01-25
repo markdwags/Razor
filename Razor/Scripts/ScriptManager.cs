@@ -44,12 +44,13 @@ namespace Assistant.Scripts
         public static bool SetLastTargetActive { get; set; }
 
         public static bool SetVariableActive { get; set; }
+        
+        public static bool TargetFound { get; set; }
 
         public static string ScriptPath => Config.GetUserDirectory("Scripts");
 
         private static FastColoredTextBox ScriptEditor { get; set; }
 
-        //private static ListBox ScriptList { get; set; }
         private static TreeView ScriptTree { get; set; }
 
         private static Script _queuedScript;

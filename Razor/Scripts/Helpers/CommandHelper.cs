@@ -155,6 +155,8 @@ namespace Assistant.Scripts.Helpers
         /// <param name="prev"></param>
         public static void SetTarget(Argument[] args, bool closest, bool random = false, bool next = false, bool prev = false)
         {
+            ScriptManager.TargetFound = false;
+
             if (args.Length == 1)
             {
                 if (closest)
@@ -230,424 +232,434 @@ namespace Assistant.Scripts.Helpers
             }
             else if (args.Length > 1)
             {
-                switch (args[1].AsString())
+                string[] notoList = args[1].AsString().Split(',');
+
+                foreach (string noto in notoList)
                 {
-                    case "enemy":
-                        if (args.Length == 3)
-                        {
-                            if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                    if (ScriptManager.TargetFound)
+                    {
+                        break;
+                    }
+
+                    switch (noto)
+                    {
+                        case "enemy":
+                            if (args.Length == 3)
+                            {
+                                if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseEnemyHumanoid();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandEnemyHumanoid();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetEnemyHumanoid();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetEnemyHumanoid();
+                                    }
+                                }
+                                else if (args[2].AsString()
+                                    .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseEnemyMonster();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandEnemyMonster();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetEnemyMonster();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetEnemyMonster();
+                                    }
+                                }
+                            }
+                            else
                             {
                                 if (closest)
                                 {
-                                    Targeting.TargetCloseEnemyHumanoid();
+                                    Targeting.TargetCloseEnemy();
                                 }
                                 else if (random)
                                 {
-                                    Targeting.TargetRandEnemyHumanoid();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetEnemyHumanoid();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetEnemyHumanoid();
+                                    Targeting.TargetRandEnemy();
                                 }
                             }
-                            else if (args[2].AsString()
-                                .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                if (closest)
-                                {
-                                    Targeting.TargetCloseEnemyMonster();
-                                }
-                                else if (random)
-                                {
-                                    Targeting.TargetRandEnemyMonster();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetEnemyMonster();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetEnemyMonster();
-                                }
-                            }
-                        }
-                        else
-                        {
+
+                            break;
+                        case "friend":
                             if (closest)
                             {
-                                Targeting.TargetCloseEnemy();
+                                Targeting.TargetClosestFriend();
                             }
                             else if (random)
                             {
-                                Targeting.TargetRandEnemy();
+                                Targeting.TargetRandFriend();
                             }
-                        }
+                            else if (next)
+                            {
+                                Targeting.NextTargetFriend();
+                            }
+                            else
+                            {
+                                Targeting.PrevTargetFriend();
+                            }
 
-                        break;
-                    case "friend":
-                        if (closest)
-                        {
-                            Targeting.TargetClosestFriend();
-                        }
-                        else if (random)
-                        {
-                            Targeting.TargetRandFriend();
-                        }
-                        else if (next)
-                        {
-                            Targeting.NextTargetFriend();
-                        }
-                        else
-                        {
-                            Targeting.PrevTargetFriend();
-                        }
+                            break;
+                        case "friendly":
+                            if (args.Length == 3)
+                            {
+                                if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseFriendlyHumanoid();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandFriendlyHumanoid();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetFriendlyHumanoid();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetFriendlyHumanoid();
+                                    }
+                                }
+                                else if (args[2].AsString()
+                                    .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseFriendlyMonster();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandFriendlyMonster();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetFriendlyMonster();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetFriendlyMonster();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (closest)
+                                {
+                                    Targeting.TargetCloseFriendly();
+                                }
+                                else if (random)
+                                {
+                                    Targeting.TargetRandFriendly();
+                                }
+                            }
 
-                        break;
-                    case "friendly":
-                        if (args.Length == 3)
-                        {
-                            if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                            break;
+                        case "gray":
+                        case "grey":
+                            if (args.Length == 3)
+                            {
+                                if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseGreyHumanoid();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandGreyHumanoid();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetGreyHumanoid();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetGreyHumanoid();
+                                    }
+                                }
+                                else if (args[2].AsString()
+                                    .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseGreyMonster();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandGreyMonster();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetGreyMonster();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetGreyMonster();
+                                    }
+                                }
+                            }
+                            else
                             {
                                 if (closest)
                                 {
-                                    Targeting.TargetCloseFriendlyHumanoid();
+                                    Targeting.TargetCloseGrey();
                                 }
                                 else if (random)
                                 {
-                                    Targeting.TargetRandFriendlyHumanoid();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetFriendlyHumanoid();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetFriendlyHumanoid();
+                                    Targeting.TargetRandGrey();
                                 }
                             }
-                            else if (args[2].AsString()
-                                .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                if (closest)
-                                {
-                                    Targeting.TargetCloseFriendlyMonster();
-                                }
-                                else if (random)
-                                {
-                                    Targeting.TargetRandFriendlyMonster();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetFriendlyMonster();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetFriendlyMonster();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (closest)
-                            {
-                                Targeting.TargetCloseFriendly();
-                            }
-                            else if (random)
-                            {
-                                Targeting.TargetRandFriendly();
-                            }
-                        }
 
-                        break;
-                    case "gray":
-                    case "grey":
-                        if (args.Length == 3)
-                        {
-                            if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                            break;
+                        case "criminal":
+                            if (args.Length == 3)
+                            {
+                                if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseCriminalHumanoid();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandCriminalHumanoid();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetCriminalHumanoid();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetCriminalHumanoid();
+                                    }
+                                }
+                                else if (args[2].AsString()
+                                    .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseCriminalMonster();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandCriminalMonster();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetCriminalMonster();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetCriminalMonster();
+                                    }
+                                }
+                            }
+                            else
                             {
                                 if (closest)
                                 {
-                                    Targeting.TargetCloseGreyHumanoid();
+                                    Targeting.TargetCloseCriminal();
                                 }
                                 else if (random)
                                 {
-                                    Targeting.TargetRandGreyHumanoid();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetGreyHumanoid();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetGreyHumanoid();
+                                    Targeting.TargetRandCriminal();
                                 }
                             }
-                            else if (args[2].AsString()
-                                .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                if (closest)
-                                {
-                                    Targeting.TargetCloseGreyMonster();
-                                }
-                                else if (random)
-                                {
-                                    Targeting.TargetRandGreyMonster();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetGreyMonster();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetGreyMonster();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (closest)
-                            {
-                                Targeting.TargetCloseGrey();
-                            }
-                            else if (random)
-                            {
-                                Targeting.TargetRandGrey();
-                            }
-                        }
 
-                        break;
-                    case "criminal":
-                        if (args.Length == 3)
-                        {
-                            if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                            break;
+                        case "blue":
+                        case "innocent":
+                            if (args.Length == 3)
+                            {
+                                if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseInnocentHumanoid();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandInnocentHumanoid();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetInnocentHumanoid();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetInnocentHumanoid();
+                                    }
+                                }
+                                else if (args[2].AsString()
+                                    .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseInnocentMonster();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandInnocentMonster();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetInnocentMonster();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetInnocentMonster();
+                                    }
+                                }
+                            }
+                            else
                             {
                                 if (closest)
                                 {
-                                    Targeting.TargetCloseCriminalHumanoid();
+                                    Targeting.TargetCloseInnocent();
                                 }
                                 else if (random)
                                 {
-                                    Targeting.TargetRandCriminalHumanoid();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetCriminalHumanoid();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetCriminalHumanoid();
+                                    Targeting.TargetRandInnocent();
                                 }
                             }
-                            else if (args[2].AsString()
-                                .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                if (closest)
-                                {
-                                    Targeting.TargetCloseCriminalMonster();
-                                }
-                                else if (random)
-                                {
-                                    Targeting.TargetRandCriminalMonster();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetCriminalMonster();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetCriminalMonster();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (closest)
-                            {
-                                Targeting.TargetCloseCriminal();
-                            }
-                            else if (random)
-                            {
-                                Targeting.TargetRandCriminal();
-                            }
-                        }
 
-                        break;
-                    case "blue":
-                    case "innocent":
-                        if (args.Length == 3)
-                        {
-                            if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                            break;
+                        case "red":
+                        case "murderer":
+                            if (args.Length == 3)
+                            {
+                                if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseRedHumanoid();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandRedHumanoid();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetMurdererHumanoid();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetMurdererHumanoid();
+                                    }
+                                }
+                                else if (args[2].AsString()
+                                    .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseRedMonster();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandRedMonster();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetMurdererMonster();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetMurdererMonster();
+                                    }
+                                }
+                            }
+                            else
                             {
                                 if (closest)
                                 {
-                                    Targeting.TargetCloseInnocentHumanoid();
+                                    Targeting.TargetCloseRed();
                                 }
                                 else if (random)
                                 {
-                                    Targeting.TargetRandInnocentHumanoid();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetInnocentHumanoid();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetInnocentHumanoid();
+                                    Targeting.TargetRandRed();
                                 }
                             }
-                            else if (args[2].AsString()
-                                .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                if (closest)
-                                {
-                                    Targeting.TargetCloseInnocentMonster();
-                                }
-                                else if (random)
-                                {
-                                    Targeting.TargetRandInnocentMonster();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetInnocentMonster();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetInnocentMonster();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (closest)
-                            {
-                                Targeting.TargetCloseInnocent();
-                            }
-                            else if (random)
-                            {
-                                Targeting.TargetRandInnocent();
-                            }
-                        }
 
-                        break;
-                    case "red":
-                    case "murderer":
-                        if (args.Length == 3)
-                        {
-                            if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                            break;
+                        case "nonfriendly":
+                            if (args.Length == 3)
+                            {
+                                if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseNonFriendlyHumanoid();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandNonFriendlyHumanoid();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetNonFriendlyHumanoid();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetNonFriendlyHumanoid();
+                                    }
+                                }
+                                else if (args[2].AsString()
+                                    .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
+                                {
+                                    if (closest)
+                                    {
+                                        Targeting.TargetCloseNonFriendlyMonster();
+                                    }
+                                    else if (random)
+                                    {
+                                        Targeting.TargetRandNonFriendlyMonster();
+                                    }
+                                    else if (next)
+                                    {
+                                        Targeting.NextTargetNonFriendlyMonster();
+                                    }
+                                    else
+                                    {
+                                        Targeting.PrevTargetNonFriendlyMonster();
+                                    }
+                                }
+                            }
+                            else
                             {
                                 if (closest)
                                 {
-                                    Targeting.TargetCloseRedHumanoid();
+                                    Targeting.TargetCloseNonFriendly();
                                 }
                                 else if (random)
                                 {
-                                    Targeting.TargetRandRedHumanoid();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetMurdererHumanoid();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetMurdererHumanoid();
+                                    Targeting.TargetRandNonFriendly();
                                 }
                             }
-                            else if (args[2].AsString()
-                                .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                if (closest)
-                                {
-                                    Targeting.TargetCloseRedMonster();
-                                }
-                                else if (random)
-                                {
-                                    Targeting.TargetRandRedMonster();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetMurdererMonster();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetMurdererMonster();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (closest)
-                            {
-                                Targeting.TargetCloseRed();
-                            }
-                            else if (random)
-                            {
-                                Targeting.TargetRandRed();
-                            }
-                        }
 
-                        break;
-                    case "nonfriendly":
-                        if (args.Length == 3)
-                        {
-                            if (args[2].AsString().IndexOf("human", StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                if (closest)
-                                {
-                                    Targeting.TargetCloseNonFriendlyHumanoid();
-                                }
-                                else if (random)
-                                {
-                                    Targeting.TargetRandNonFriendlyHumanoid();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetNonFriendlyHumanoid();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetNonFriendlyHumanoid();
-                                }
-                            }
-                            else if (args[2].AsString()
-                                .IndexOf("monster", StringComparison.InvariantCultureIgnoreCase) != -1)
-                            {
-                                if (closest)
-                                {
-                                    Targeting.TargetCloseNonFriendlyMonster();
-                                }
-                                else if (random)
-                                {
-                                    Targeting.TargetRandNonFriendlyMonster();
-                                }
-                                else if (next)
-                                {
-                                    Targeting.NextTargetNonFriendlyMonster();
-                                }
-                                else
-                                {
-                                    Targeting.PrevTargetNonFriendlyMonster();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (closest)
-                            {
-                                Targeting.TargetCloseNonFriendly();
-                            }
-                            else if (random)
-                            {
-                                Targeting.TargetRandNonFriendly();
-                            }
-                        }
-
-                        break;
-                    default:
-                        throw new RunTimeError(null, $"Unknown target type: '{args[1].AsString()}'");
+                            break;
+                        default:
+                            throw new RunTimeError(null, $"Unknown target type: '{args[1].AsString()}'");
+                    }
                 }
             }
         }
