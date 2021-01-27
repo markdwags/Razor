@@ -5,6 +5,8 @@
 
 # Install: New ClassicUO with Razor Install (Installer)
 
+![installer](../images/razorinstaller.png)
+
 This is a simple install process for Razor with the option to install ClassicUO.
 
 * Download the [latest release](https://github.com/markdwags/razor-installer/releases)
@@ -93,9 +95,12 @@ If using the standard OSI client, follow these steps.
 
 # Upgrading
 
+!!! tip "Razor Installer"
+    Use the [Razor Installer](../install/windows/) to update Razor and ClassicUO installed with a single click.
+
 Since Razor is portable, upgrading it is a copy/paste exercise.
 
-* [Download the latest release of Razor](../download).
+* [Download the latest release of Razor](../download.md).
 * Extract the zip into your existing Razor location (ie: `C:\UO\Razor`), overwritting all files, with the exception of two:
     * **counters.xml** - This is the default counters file used to display items in your titlebar. If you've added any new counters, they would be lost if overwritten.
     * **Razor.exe.Config** - This is the config file that stores your UO path, server list, etc. Copying this over will overwrite those settings.
@@ -103,7 +108,7 @@ Since Razor is portable, upgrading it is a copy/paste exercise.
 
 # Welcome Screen (OSI Client Only)
 
-!!! warning
+!!! error "ClassicUO Users"
     If you're using ClassicUO, you should *never* see this screen. If you're trying to open ClassicUO and see this screen, click **Quit** and launch ClassicUO.
 
 The first time you run Razor, it will open with a **Welcome Screen** and give you an option to import your exising
