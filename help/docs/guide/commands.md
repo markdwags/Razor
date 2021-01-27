@@ -101,6 +101,25 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         endif
         ```
 
+# clearhands
+
+**Syntax**: `clearhands ('left'/'right'/'both')`
+
+**Description**: Undress your hands based on the param.
+
+!!! example
+
+    === "Undress both hands"
+
+        ```vim
+        clearhands 'both'
+        ```
+
+    === "Undress left hand"
+
+        ```vim
+        clearhands 'left'
+        ```
 # clearsysmsg
 
 **Syntax**: `clearsysmsg`

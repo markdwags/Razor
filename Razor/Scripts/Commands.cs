@@ -102,6 +102,8 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("stop", Stop);
 
             Interpreter.RegisterCommandHandler("clearall", ClearAll);
+
+            Interpreter.RegisterCommandHandler("clearhands", ClearHands);
         }
 
         private static bool ClearAll(string command, Argument[] args, bool quiet, bool force)
@@ -296,8 +298,6 @@ namespace Assistant.Scripts
 
         private static bool ClearHands(string command, Argument[] args, bool quiet, bool force)
         {
-            // expect one STRING node
-
             if (args.Length == 0 || !hands.Contains(args[0].AsString()))
             {
                 throw new RunTimeError(null, "Usage: clearhands ('left'/'right'/'both')");
