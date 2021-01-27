@@ -976,16 +976,29 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```
 # waitforgump
 
-**Syntax**: `waitforgump [gump id]`
+**Syntax**: `waitforgump [gump id/'any'] [timeout]`
 
-**Description**: This command will wait for a gump. If no `gump id` is provided, it will wait for **any** gump.
+**Description**: This command will wait for a gump. If no `gump id` is provided, it will wait for **any** gump. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! tip "Timeout parameter"
+    To modify the default 30 second timeout for any gump, you must include include the `any` keyword before the timeout.
+
+    `waitforgump 'any' 5000` will wait for 5 seconds
+
+    `waitforgump 5000` will wait 30 seconds for a gump with the id of 5000
 
 !!! example
 
     === "Wait for any gump"
 
         ```vim
-        waitforgump
+        waitforgump 'any' 
+        ```
+
+    === "Wait for any gump for 10 seconds"
+
+        ```vim
+        waitforgump 'any' 10000
         ```
 
     === "Wait for specific gump"
@@ -993,11 +1006,25 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```vim
         waitforgump 4
         ```
+
+    === "Wait for specific gump for 5 seconds"
+
+        ```vim
+        waitforgump 34252 5000
+        ```
+
 # waitformenu
 
-**Syntax**: `waitformenu [menu id]`
+**Syntax**: `waitformenu [menu id/'any'] [timeout]`
 
-**Description**: This command will wait for a context menu. If no `menu id` is provided, it will wait for **any** menu.
+**Description**: This command will wait for a context menu. If no `menu id` is provided, it will wait for **any** menu. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! tip "Timeout parameter"
+    To modify the default 30 second timeout for any menu, you must include include the `any` keyword before the timeout.
+
+    `waitformenu 'any' 5000` will wait for 5 seconds
+
+    `waitformenu 5000` will wait 30 seconds for a menu with the id of 5000
 
 !!! example
 
@@ -1005,6 +1032,12 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
         ```vim
         waitformenu
+        ```
+
+    === "Wait for any menu for 5 seconds"
+
+        ```vim
+        waitformenu 'any' 5000
         ```
 
     === "Wait for specific menu"
@@ -1015,9 +1048,16 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # waitforprompt
 
-**Syntax**: `waitforprompt`
+**Syntax**: `waitforprompt [promptid/'any'] [timeout]`
 
-**Description**: This command will wait for a prompt before continuing.
+**Description**: This command will wait for a prompt before continuing. If no `prompt id` is provided, it will wait for **any** prompt. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! tip "Timeout parameter"
+    To modify the default 30 second timeout for any gump, you must include include the `any` keyword before the timeout.
+
+    `waitforprompt 'any' 5000` will wait for 5 seconds
+
+    `waitforprompt 5000` will wait 30 seconds for a prompt with the id of 5000
 
 !!! example
 
@@ -1029,11 +1069,19 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         promptresponse 'to home'
         ```
 
+    === "Rename recalling rune with wait"
+
+        ```vim hl_lines="2"
+        dclicktype 'rune'
+        waitforprompt 'any' 5000
+        promptresponse 'to home'
+        ```
+
 # waitforsysmsg
 
 **Syntax**: `waitforsysmsg 'message to wait for' [timeout]` or `wfsysmsg 'message to wait for' [timeout]`
 
-**Description**: This command will wait a specific message to be added to the system message queue before continuing.  Default timeout is 30 seconds.
+**Description**: This command will wait a specific message to be added to the system message queue before continuing.  Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
 !!! example
 

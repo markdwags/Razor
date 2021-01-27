@@ -205,11 +205,22 @@ namespace Assistant.Scripts
             // Look for a specific gump
             if (args.Length == 1)
             {
-                gumpId = Utility.ToUInt32(args[0].AsString(), 0);
+                if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
+                {
+                    strict = false;
+                }
+                else
+                {
+                    gumpId = Utility.ToUInt32(args[0].AsString(), 0);
 
-                if (gumpId > 0)
-                    strict = true;
+                    if (gumpId > 0)
+                    {
+                        strict = true;
+                    }
+                }
             }
+
+            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
 
             if ((World.Player.HasGump || World.Player.HasCompressedGump) &&
                 (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0))
@@ -228,10 +239,20 @@ namespace Assistant.Scripts
             // Look for a specific menu
             if (args.Length == 1)
             {
-                menuId = Utility.ToUInt32(args[0].AsString(), 0);
+                menuId = args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1
+                    ? 0
+                    : Utility.ToUInt32(args[0].AsString(), 0);
             }
 
-            return (World.Player.HasMenu && (World.Player.CurrentGumpI == menuId || menuId == 0));
+            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
+
+            if (World.Player.HasMenu && (World.Player.CurrentGumpI == menuId || menuId == 0))
+            {
+                Interpreter.ClearTimeout();
+                return true;
+            }
+
+            return false;
         }
 
         private static bool WaitForPrompt(string command, Argument[] args, bool quiet, bool force)
@@ -239,14 +260,25 @@ namespace Assistant.Scripts
             uint promptId = 0;
             bool strict = false;
 
-            // Look for a specific gump
+            // Look for a specific prompt
             if (args.Length == 1)
             {
-                promptId = Utility.ToUInt32(args[0].AsString(), 0);
+                if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
+                {
+                    strict = false;
+                }
+                else
+                {
+                    promptId = Utility.ToUInt32(args[0].AsString(), 0);
 
-                if (promptId > 0)
-                    strict = true;
+                    if (promptId > 0)
+                    {
+                        strict = true;
+                    }
+                }
             }
+
+            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
 
             if (World.Player.HasPrompt && (World.Player.PromptID == promptId || !strict || promptId == 0))
             {
