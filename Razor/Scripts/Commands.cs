@@ -105,6 +105,34 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("clearall", ClearAll);
 
             Interpreter.RegisterCommandHandler("clearhands", ClearHands);
+
+            Interpreter.RegisterCommandHandler("virtue", Virtue);
+        }
+
+        private static string[] virtues = new string[3] { "honor", "sacrifice", "valor" };
+
+        private static bool Virtue(string command, Argument[] args, bool quiet, bool force)
+        {
+
+            if (args.Length == 0 || !virtues.Contains(args[0].AsString()))
+            {
+                throw new RunTimeError(null, "Usage: virtue ('honor'/'sacrifice'/'valor')");
+            }
+
+            switch (args[0].AsString())
+            {
+                case "honor":
+                    World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Honor);
+                    break;
+                case "sacrifice":
+                    World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Sacrifice);
+                    break;
+                case "valor":
+                    World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Valor);
+                    break;
+            }
+
+            return true;
         }
 
         private static bool ClearAll(string command, Argument[] args, bool quiet, bool force)

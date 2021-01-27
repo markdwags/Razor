@@ -933,6 +933,32 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         useonce 'addcontainer'
         ```
 
+# virtue
+
+**Syntax**: `virtue ('honor'/'sacrifice'/'valor')`
+
+**Description**: This command will invoke Honor, Sacrifice or Valor.
+
+!!! example
+
+    === "Invoke Honor"
+
+        ```vim
+        virtue 'honor'
+        ```
+
+    === "Invoke Sacrifice"
+
+        ```vim
+        virtue 'sacrifice'
+        ```
+
+    === "Invoke Valor"
+
+        ```vim
+        virtue 'valor'
+        ```
+
 # walk
 
 **Syntax**: `walk ('direction')`

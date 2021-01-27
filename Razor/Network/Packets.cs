@@ -1814,4 +1814,15 @@ namespace Assistant
             Write((ushort) y);
         }
     }
+
+    internal sealed class VirtueRequest : Packet
+    {
+        internal VirtueRequest(byte id) : base(0x12)
+        {
+            EnsureCapacity(1 + id.ToString().Length + 1);
+
+            Write((byte)0xF4);
+            WriteAsciiNull(id.ToString());
+        }
+    }
 }

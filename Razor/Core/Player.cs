@@ -1192,5 +1192,17 @@ namespace Assistant
 
             return false;
         }
+
+        public enum InvokeVirtues
+        {
+            Honor = 0x01,
+            Sacrifice = 0x02,
+            Valor = 0x03
+        }
+
+        public void InvokeVirtue(InvokeVirtues virtue)
+        {
+            Client.Instance.SendToServer(new VirtueRequest((byte) virtue));
+        }
     }
 }

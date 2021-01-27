@@ -482,7 +482,7 @@ namespace Assistant.Scripts
                     "setlasttarget",
                     "setvar", "skill", "sysmsg", "target", "targettype", "targetrelloc", "undress", "useonce", "walk",
                     "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget", "clearsysmsg", "clearjournal",
-                    "waitforsysmsg"
+                    "waitforsysmsg", "clearhands", "clearall", "virtue"
 
                 };
 
@@ -495,6 +495,18 @@ namespace Assistant.Scripts
             var tooltip = new ToolTipDescriptions("attack", new[] { "attack (serial) or attack ('variablename')" },
                 "N/A", "Attack a specific serial or variable tied to a serial.", "attack 0x2AB4\n\tattack 'attackdummy'");
             descriptionCommands.Add("attack", tooltip);
+
+            tooltip = new ToolTipDescriptions("clearall", new[] { "clearall" }, "N/A", "Clear target, clear queues, drop anything you're holding",
+                "clearall");
+            descriptionCommands.Add("clearall", tooltip);
+
+            tooltip = new ToolTipDescriptions("clearhands", new[] { "clearhands ('right'/'left'/'hands')" }, "N/A", "Use the item in your hands",
+                "clearhands");
+            descriptionCommands.Add("clearhands", tooltip);
+
+            tooltip = new ToolTipDescriptions("virtue", new[] { "virtue ('honor'/'sacrifice'/'valor')" }, "N/A", "Invoke a specific virtue",
+                "virtue 'honor'");
+            descriptionCommands.Add("virtue", tooltip);
 
             tooltip = new ToolTipDescriptions("cast", new[] { "cast ('name of spell')" }, "N/A", "Cast a spell by name",
                 "cast 'blade spirits'");
