@@ -163,7 +163,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                CommandHelper.SendWarning($"{command}: Item or mobile type '{gfxStr}' not found", quiet);
+                CommandHelper.SendWarning(command, $"Item or mobile type '{gfxStr}' not found", quiet);
             }
 
             return true;

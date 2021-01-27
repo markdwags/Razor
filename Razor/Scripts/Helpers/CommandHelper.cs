@@ -146,11 +146,11 @@ namespace Assistant.Scripts.Helpers
             return mobiles;
         }
 
-        public static void SendWarning(string message, bool quiet)
+        public static void SendWarning(string command, string message, bool quiet)
         {
             if (!quiet)
             {
-                World.Player.SendMessage(MsgLevel.Warning, message);
+                World.Player.SendMessage(MsgLevel.Warning, $"{command} - {message}");
             }
         }
 

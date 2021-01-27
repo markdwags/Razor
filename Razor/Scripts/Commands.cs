@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.HotKeys;
 using Assistant.Scripts.Engine;
@@ -294,7 +295,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static string[] hands = new string[3] {"left", "right", "both"};
+        private static string[] hands = new string[4] {"left", "right", "both", "hands"};
 
         private static bool ClearHands(string command, Argument[] args, bool quiet, bool force)
         {
@@ -381,7 +382,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                CommandHelper.SendWarning($"{command} - Item or mobile type '{gfxStr}' not found", quiet);
+                CommandHelper.SendWarning(command, $"Item or mobile type '{gfxStr}' not found", quiet);
             }
 
             return true;
@@ -391,17 +392,46 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: dclick (serial)");
+                throw new RunTimeError(null, "Usage: dclick (serial) or dclick ('left'/'right'/'hands')");
             }
 
-            Serial serial = args[0].AsSerial();
-
-            if (!serial.IsValid)
+            if (hands.Contains(args[0].AsString()))
             {
-                throw new RunTimeError(null, "dclick - invalid serial");
-            }
+                Item item;
 
-            PlayerData.DoubleClick(serial);
+                switch (args[0].AsString())
+                {
+                    case "left":
+                        item = World.Player.GetItemOnLayer(Layer.LeftHand);
+                        break;
+                    case "right":
+                        item = World.Player.GetItemOnLayer(Layer.RightHand);
+                        break;
+                    default:
+                        item = World.Player.GetItemOnLayer(Layer.RightHand) ?? World.Player.GetItemOnLayer(Layer.LeftHand);
+                        break;
+                }
+
+                if (item != null)
+                {
+                    PlayerData.DoubleClick(item);
+                }
+                else
+                {
+                    CommandHelper.SendWarning(command, $"Item not found in '{args[0].AsString()}'", quiet);
+                }
+            }
+            else
+            {
+                Serial serial = args[0].AsSerial();
+
+                if (!serial.IsValid)
+                {
+                    throw new RunTimeError(null, "dclick - invalid serial");
+                }
+
+                PlayerData.DoubleClick(serial);
+            }
 
             return true;
         }
@@ -452,7 +482,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                CommandHelper.SendWarning($"{command} - Not holding anything", quiet);
+                CommandHelper.SendWarning(command, "Not holding anything", quiet);
             }
 
             return true;
@@ -476,7 +506,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                CommandHelper.SendWarning($"{command} - Not holding anything", quiet);
+                CommandHelper.SendWarning(command, "Not holding anything", quiet);
             }
 
             return true;
@@ -530,7 +560,7 @@ namespace Assistant.Scripts
                 }
                 else
                 {
-                    CommandHelper.SendWarning($"{command} - Item not found or out of range", quiet);
+                    CommandHelper.SendWarning(command, "Item not found or out of range", quiet);
                     return true;
                 }
             }
@@ -582,7 +612,7 @@ namespace Assistant.Scripts
 
                     if (item == null)
                     {
-                        CommandHelper.SendWarning($"{command} - Item '{gfxStr}' not found", quiet);
+                        CommandHelper.SendWarning(command, $"Item '{gfxStr}' not found", quiet);
                         return true;
                     }
                 }
@@ -600,7 +630,7 @@ namespace Assistant.Scripts
                 }
                 else
                 {
-                    CommandHelper.SendWarning($"{command} - {Language.Format(LocString.NoItemOfType, (ItemID)gfx)}", quiet);
+                    CommandHelper.SendWarning(command, Language.Format(LocString.NoItemOfType, (ItemID)gfx), quiet);
                     return true;
                 }
             }
@@ -782,7 +812,7 @@ namespace Assistant.Scripts
                 }
                 else if (!quiet)
                 {
-                    CommandHelper.SendWarning($"{command} - '{args[0].AsString()}' not found", quiet);
+                    CommandHelper.SendWarning(command, $"'{args[0].AsString()}' not found", quiet);
                     return true;
                 }
             }
@@ -980,7 +1010,7 @@ namespace Assistant.Scripts
 
                 if (!World.Player.UseItem(pack, potionId))
                 {
-                    CommandHelper.SendWarning($"{command} - {Language.Format(LocString.NoItemOfType, (ItemID)potionId)}", quiet);
+                    CommandHelper.SendWarning(command, Language.Format(LocString.NoItemOfType, (ItemID)potionId), quiet);
                 }
             }
             else

@@ -6,7 +6,7 @@ The commands issued in the scripting engine are similar to a commands you might 
 
 All parameters are shown inside of parenthesis or brackets.  Parameters within parenthesis are **required** while those in brackets are _optional_ and will default to specific value if not provided.
 
-If you want to pass several words as a single parameter you must wrap them using `'` or `"`. For example `"hello goodbye"` is one parameter, while `hello` `goodbye` is two.
+If you want to pass several words as a single parameter you must wrap them using `'` or `"`. For example `'hello goodbye'` is one parameter, while `hello` `goodbye` is two.
 
 For example, if your script is something like:
 
@@ -21,8 +21,6 @@ You will end up just saying `Hello`.  Instead, you if you wrap the words in sing
 # Say 'Hello friends!'
 say 'Hello friends!'
 ```
-
-## Quiet
 
 If you prefix a command with the `@` this will silence any warning/output from the command.  For example:
 
@@ -146,9 +144,9 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         ```
 # dclick
 
-**Syntax**: `dclick (serial)` or `useobject (serial)`
+**Syntax**: `dclick (serial)` or `dclick ('left'/'right'/'hands')`
 
-**Description**: This command will use (double-click) a specific item or mobile.
+**Description**: This command will use (double-click) a specific item or mobile or use the item in one of your hands using `left`, `right` or `hands` to use an item in either hand.
 
 !!! example
 
@@ -162,6 +160,16 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
         ```vim
         dclick 'myvariable'
+        ```
+
+    === "Double-click any item in your hands"
+        ```vim
+        dclick 'hands'
+        ```
+    
+    === "Double-click item in right hand"
+        ```vim
+        dclick 'right'
         ```
 
 # dclicktype
