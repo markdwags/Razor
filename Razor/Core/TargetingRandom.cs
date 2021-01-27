@@ -201,7 +201,7 @@ namespace Assistant
             RandomTarget();
         }
 
-        private static void RandomTarget(params int[] noto)
+        public static void RandomTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
@@ -235,7 +235,7 @@ namespace Assistant
             }
         }
 
-        private static void RandomHumanoidTarget(params int[] noto)
+        public static void RandomHumanoidTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
@@ -274,7 +274,7 @@ namespace Assistant
             }
         }
 
-        private static void RandomMonsterTarget(params int[] noto)
+        public static void RandomMonsterTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
@@ -313,7 +313,7 @@ namespace Assistant
             }
         }
 
-        private static void RandomFriendTarget()
+        public static void RandomFriendTarget()
         {
             if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;

@@ -116,7 +116,7 @@ namespace Assistant
             0x9F, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xB4, 0x4C, 0x4D, 0x3D
         };
 
-        private enum TargetType
+        public enum TargetType
         {
             Invalid, // invalid/across server line
             Innocent, //Blue
@@ -124,7 +124,18 @@ namespace Assistant
             Attackable, //Attackable but not criminal (gray)
             Criminal, //gray
             Enemy, //orange
-            Murderer //red
+            Murderer, //red
+
+            // Razor specfic
+            NonFriendly, //Attackable, Criminal, Enemy, Murderer
+            Friendly, //Innocent, Guild/Ally 
+            Red, //Murderer
+            Blue, //Innocent
+            //Friend, //Friend list
+            Gray, //Attackable, Criminal
+            Grey, //Attackable, Criminal
+            Green, //GuildAlly
+            Guild, //GuildAlly
         }
 
 

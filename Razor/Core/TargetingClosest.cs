@@ -202,7 +202,7 @@ namespace Assistant
             ClosestTarget();
         }
 
-        private static void ClosestTarget(params int[] noto)
+        public static void ClosestTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
@@ -250,7 +250,7 @@ namespace Assistant
             }
         }
 
-        private static void ClosestHumanoidTarget(params int[] noto)
+        public static void ClosestHumanoidTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
@@ -303,7 +303,7 @@ namespace Assistant
             }
         }
 
-        private static void ClosestMonsterTarget(params int[] noto)
+        public static void ClosestMonsterTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
@@ -356,7 +356,7 @@ namespace Assistant
             }
         }
 
-        private static void ClosestFriendTarget()
+        public static void ClosestFriendTarget()
         {
             if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;

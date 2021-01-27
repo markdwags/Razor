@@ -117,7 +117,7 @@ namespace Assistant
                 PrevTargetInnocentMonster);
         }
 
-        private static bool IsNextPrevFriend(Mobile mobile)
+        public static bool IsNextPrevFriend(Mobile mobile)
         {
             return Config.GetBool("NextPrevTargetIgnoresFriends") && FriendsManager.IsFriend(mobile.Serial);
         }
@@ -131,7 +131,7 @@ namespace Assistant
         /// <param name="isFriend">Indicates this was the Next/Prev Friend hot key</param>
         /// <param name="isFriendly"></param>
         /// <param name="isNonFriendly"></param>
-        private static void NextPrevTarget(List<Mobile> targets, bool nextTarget, bool isFriend = false,
+        public static void NextPrevTarget(List<Mobile> targets, bool nextTarget, bool isFriend = false,
             bool isFriendly = false, bool isNonFriendly = false)
         {
             if (targets.Count <= 0)
@@ -648,6 +648,39 @@ namespace Assistant
                 .ToList();
 
             NextPrevTarget(mobiles, false, false, false, true);
+        }
+
+        public static void NextPrevTargetNotoriety(bool next, params int[] notoriety)
+        {
+            var mobiles = World.MobilesInRange()
+                .Where(x => notoriety.Contains(x.Notoriety) &&
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
+
+            NextPrevTarget(mobiles, next);
+        }
+
+        public static void NextPrevTargetNotorietyMonster(bool next, params int[] notoriety)
+        {
+            var mobiles = World.MobilesInRange()
+                .Where(x => x.IsMonster && notoriety.Contains(x.Notoriety) &&
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
+
+            NextPrevTarget(mobiles, next);
+        }
+
+        public static void NextPrevTargetNotorietyHumanoid(bool next, params int[] notoriety)
+        {
+            var mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && notoriety.Contains(x.Notoriety) &&
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
+
+            NextPrevTarget(mobiles, next);
         }
     }
 }

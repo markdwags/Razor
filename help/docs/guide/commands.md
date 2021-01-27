@@ -22,7 +22,7 @@ You will end up just saying `Hello`.  Instead, you if you wrap the words in sing
 say 'Hello friends!'
 ```
 
-# Symbols
+## Quiet
 
 If you prefix a command with the `@` this will silence any warning/output from the command.  For example:
 
@@ -38,15 +38,11 @@ If you prefix a command with the `@` this will silence any warning/output from t
 
 Without the `@` symbol, if a robe isn't available, you would get an warning message telling you that it couldn't find a robe. But since the `@` symbol was provided, no warning is displayed.
 
-# Command List
+# alliance
 
-Here's a list of the support Razor scripting commands:
+**Syntax**: `alliance ('message to send')`
 
-## alliance
-
-Syntax: `alliance ('message to send')`
-
-Description: This command will force your character to say an alliance message passed as the parameter.
+**Description**: This command will force your character to say an alliance message passed as the parameter.
 
 !!! example
 
@@ -56,11 +52,11 @@ Description: This command will force your character to say an alliance message p
         alliance 'Allies assemble!'
         ```
 
-## attack
+# attack
 
-Syntax: `attack (serial)` or `attack ('variablename')`
+**Syntax**: `attack (serial)` or `attack ('variablename')`
 
-Description: Attack a specific serial or variable tied to a serial.
+**Description**: Attack a specific serial or variable tied to a serial.
 
 !!! example
 
@@ -75,11 +71,11 @@ Description: Attack a specific serial or variable tied to a serial.
         ```vim
         attack 'attackdummy'
         ```
-## cast
+# cast
 
-Syntax: `cast ('name of spell')`
+**Syntax**: `cast ('name of spell')`
 
-Description: Cast a spell by name
+**Description**: Cast a spell by name
 
 !!! example
 
@@ -89,11 +85,11 @@ Description: Cast a spell by name
         cast 'blade spirits'
         ```
 
-## clearall
+# clearall
 
-Synatx: `clearall`
+**Syntax**: `clearall`
 
-Description: Combines the following actions into one commmand: `Cancel Current Target, Clear Target Queue, Drop What You Are Currently Holding and Clear Drag/Drop Queue` into a single command.
+**Description**: Combines the following actions into one commmand: `Cancel Current Target, Clear Target Queue, Drop What You Are Currently Holding and Clear Drag/Drop Queue` into a single command.
 
 !!! example
 
@@ -105,11 +101,11 @@ Description: Combines the following actions into one commmand: `Cancel Current T
         endif
         ```
 
-## clearsysmsg
+# clearsysmsg
 
-Syntax: `clearsysmsg`
+**Syntax**: `clearsysmsg`
 
-Description: Clears the internal system message queue
+**Description**: Clears the internal system message queue
 
 !!! example
 
@@ -129,11 +125,11 @@ Description: Clears the internal system message queue
             say 'this condition wont be met since it was cleared on line 8'
         endif
         ```
-## dclick
+# dclick
 
-Syntax: `dclick (serial)` or `useobject (serial)`
+**Syntax**: `dclick (serial)` or `useobject (serial)`
 
-Description: This command will use (double-click) a specific item or mobile.
+**Description**: This command will use (double-click) a specific item or mobile.
 
 !!! example
 
@@ -149,14 +145,19 @@ Description: This command will use (double-click) a specific item or mobile.
         dclick 'myvariable'
         ```
 
-## dclicktype
+# dclicktype
 
-Syntax: `dclicktype ('name of item') OR (graphicID) [true/backpack]`
+**Syntax**: `dclicktype ('name of item') OR (graphicID) [true/backpack]`
 
-Description: This command will use (double-click) an item type either provided by the name or the graphic ID.
+**Description**: This command will use (double-click) an item type either provided by the name or the graphic ID.
 
-!!! tip
+!!! tip "Range Check"
     If you include the optional `true` parameter, items within range (2 tiles) will only be considered. If you include the optional `backpack` parameter, items in your backpack only be considered.
+
+!!! tip "Getting the graphic name or ID"
+    To get the name or the ID of item, use the `>info` command in Razor and click on the item. You can use either the `Item Name` or `Id`.
+
+    ![item-command](../images/infocommand.png)
 
 !!! example
 
@@ -184,11 +185,11 @@ Description: This command will use (double-click) an item type either provided b
         targettype 'robe' backpack
         ```
 
-## dress
+# dress
 
-Syntax: `dress ('name of dress list')`
+**Syntax**: `dress ('name of dress list')`
 
-Description: This command will execute a spec dress list you have defined in Razor.
+**Description**: This command will execute a spec dress list you have defined in Razor.
 
 !!! example
 
@@ -197,11 +198,11 @@ Description: This command will execute a spec dress list you have defined in Raz
         ```vim
         dress 'My Sunday Best'
         ```
-## drop
+# drop
 
-Syntax: `drop (serial) (x) (y) [z]` or `drop (serial) (layer)` or `drop 'ground' (x) (y) [z]`
+**Syntax**: `drop (serial) (x) (y) [z]` or `drop (serial) (layer)` or `drop 'ground' (x) (y) [z]`
 
-Description: This command will drop the item you are holding either at your feet, on a specific layer , at a specific X/Y/Z location on the ground or within the defined serial.
+**Description**: This command will drop the item you are holding either at your feet, on a specific layer , at a specific X/Y/Z location on the ground or within the defined serial.
 
 !!! tip
     The functionality of `drop 'ground' (x) (y) [z]` is also available in with [droprelloc](./#droprelloc).
@@ -225,11 +226,11 @@ Description: This command will drop the item you are holding either at your feet
         drop 'ground' 5926 1148 0
         ```
 
-## droprelloc
+# droprelloc
 
-Syntax: `droprelloc (x) (y)`
+**Syntax**: `droprelloc (x) (y)`
 
-Description: This command will drop the item you're holding to a location relative to your position.
+**Description**: This command will drop the item you're holding to a location relative to your position.
 
 Example:
 
@@ -243,11 +244,11 @@ Example:
         droprelloc 1 1
         ```
 
-## emote
+# emote
 
-Syntax: `emote ('message to send') [hue]`
+**Syntax**: `emote ('message to send') [hue]`
 
-Description: This command will force your character to emote the message passed as the parameter.
+**Description**: This command will force your character to emote the message passed as the parameter.
 
 !!! tip
     This command will append `*` around the emote so `emote 'smiles'` will be displayed in game as `*smiles*`.
@@ -266,11 +267,11 @@ Description: This command will force your character to emote the message passed 
         emote 'smiles in another color' 454
         ```
 
-## guild
+# guild
 
-Syntax: `guild ('message to send')`
+**Syntax**: `guild ('message to send')`
 
-Description: This command will force your character to say a guild message passed as the parameter.
+**Description**: This command will force your character to say a guild message passed as the parameter.
 
 !!! example
 
@@ -280,11 +281,11 @@ Description: This command will force your character to say a guild message passe
         guild 'Hello fellow guildmates!'
         ```
 
-## gumpresponse
+# gumpresponse
 
-Syntax: `gumpresponse (buttonID)`
+**Syntax**: `gumpresponse (buttonID)`
 
-Description: Responds to a specific gump button
+**Description**: Responds to a specific gump button
 
 !!! example
 
@@ -294,11 +295,11 @@ Description: Responds to a specific gump button
         gumpresponse 4
         ```
 
-## gumpclose
+# gumpclose
 
-Syntax: `gumpclose`
+**Syntax**: `gumpclose`
 
-Description: This command will close the last gump that opened.
+**Description**: This command will close the last gump that opened.
 
 !!! example
 
@@ -308,11 +309,11 @@ Description: This command will close the last gump that opened.
         gumpclose
         ```
 
-## hotkey
+# hotkey
 
-Syntax: `hotkey ('name of hotkey')`
+**Syntax**: `hotkey ('name of hotkey')`
 
-Description: This command will execute any Razor hotkey by name.
+**Description**: This command will execute any Razor hotkey by name.
 
 !!! example
 
@@ -324,11 +325,11 @@ Description: This command will execute any Razor hotkey by name.
         hotkey 'target self'
         ```
 
-## lasttarget
+# lasttarget
 
-Syntax: `lasttarget`
+**Syntax**: `lasttarget`
 
-Description: This command will target your last target set in Razor.
+**Description**: This command will target your last target set in Razor.
 
 !!! example
 
@@ -340,11 +341,11 @@ Description: This command will target your last target set in Razor.
         lasttarget
         ```
 
-## lift
+# lift
 
-Syntax: `lift (serial) [amount]`
+**Syntax**: `lift (serial) [amount]`
 
-Description: This command will lift a specific item and amount. If no amount is provided, `1` is defaulted.
+**Description**: This command will lift a specific item and amount. If no amount is provided, `1` is defaulted.
 
 !!! example
 
@@ -356,11 +357,11 @@ Description: This command will lift a specific item and amount. If no amount is 
         droprelloc 1 1 0
         ```
 
-## lifttype
+# lifttype
 
-Syntax: `lifttype (gfx) [amount]` or `lifttype ('name of item') [amount]`
+**Syntax**: `lifttype (gfx) [amount]` or `lifttype ('name of item') [amount]`
 
-Description: This command will lift a specific item by type either by the graphic id or by the name. If no amount is provided, `1` is defaulted.
+**Description**: This command will lift a specific item by type either by the graphic id or by the name. If no amount is provided, `1` is defaulted.
 
 !!! example
 
@@ -380,11 +381,11 @@ Description: This command will lift a specific item by type either by the graphi
         droprelloc 1 1
         ```
 
-## menu
+# menu
 
-Syntax: `menu (serial) (index)`
+**Syntax**: `menu (serial) (index)`
 
-Description: Selects a specific index within a context menu
+**Description**: Selects a specific index within a context menu
 
 !!! example
 
@@ -394,11 +395,11 @@ Description: Selects a specific index within a context menu
         menu '0x123ABC' 4
         ```
 
-## menuresponse
+# menuresponse
 
-Syntax: `menuresponse (index) (menuId) [hue]`
+**Syntax**: `menuresponse (index) (menuId) [hue]`
 
-Description: Responds to a specific menu and menu ID
+**Description**: Responds to a specific menu and menu ID
 
 !!! example
 
@@ -408,11 +409,11 @@ Description: Responds to a specific menu and menu ID
         menuresponse 3 4
         ```
 
-## organizer
+# organizer
 
-Syntax: `organizer (number) ['set']`
+**Syntax**: `organizer (number) ['set']`
 
-Description: This command will execute a specific organizer agent. If the `set` parameter is included, you will instead be prompted to set the organizer agent's hotbag.
+**Description**: This command will execute a specific organizer agent. If the `set` parameter is included, you will instead be prompted to set the organizer agent's hotbag.
 
 !!! example
 
@@ -428,11 +429,11 @@ Description: This command will execute a specific organizer agent. If the `set` 
         organizer 4 'set'
         ```
 
-## overhead
+# overhead
 
-Syntax: `overhead ('text') [color] [serial]`
+**Syntax**: `overhead ('text') [color] [serial]`
 
-Description: This command will display a message over your head. Only you can see this.
+**Description**: This command will display a message over your head. Only you can see this.
 
 !!! example
 
@@ -444,13 +445,13 @@ Description: This command will display a message over your head. Only you can se
         endif
         ```
 
-## potion
+# potion
 
-Syntax: `potion ('potion type')`
+**Syntax**: `potion ('potion type')`
 
 Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
-Description: This command will use a specific potion based on the type.
+**Description**: This command will use a specific potion based on the type.
 
 !!! example
 
@@ -466,11 +467,11 @@ Description: This command will use a specific potion based on the type.
         potion 'heal'
         ```
 
-## promptresponse
+# promptresponse
 
-Syntax: `promptresponse ('prompt response')`
+**Syntax**: `promptresponse ('prompt response')`
 
-Description: This command will respond to a prompt triggered from actions such as renaming runes or giving a guild title.
+**Description**: This command will respond to a prompt triggered from actions such as renaming runes or giving a guild title.
 
 !!! example
 
@@ -482,11 +483,11 @@ Description: This command will respond to a prompt triggered from actions such a
         promptresponse 'to home'
         ```
 
-## restock
+# restock
 
-Syntax: `restock (number) ['set']`
+**Syntax**: `restock (number) ['set']`
 
-Description: This command will execute a specific restock agent. If the `set` parameter is included, you will instead be prompted to set the restock agent's hotbag.
+**Description**: This command will execute a specific restock agent. If the `set` parameter is included, you will instead be prompted to set the restock agent's hotbag.
 
 !!! example
 
@@ -504,11 +505,11 @@ Description: This command will execute a specific restock agent. If the `set` pa
         restock 4 'set'
         ```
 
-## say
+# say
 
-Syntax: `say ('message to send') [hue]` or `msg ('message to send') [hue]`
+**Syntax**: `say ('message to send') [hue]` or `msg ('message to send') [hue]`
 
-Description: This command will force your character to say the message passed as the parameter.
+**Description**: This command will force your character to say the message passed as the parameter.
 
 !!! example
 
@@ -524,11 +525,11 @@ Description: This command will force your character to say the message passed as
         say 'Hello world!' 454
         ```
 
-## script
+# script
 
-Syntax: `script 'name'` or `script 'category\name'`
+**Syntax**: `script 'name'` or `script 'category\name'`
 
-Description: This command will call another script.
+**Description**: This command will call another script.
 
 !!! tip
     You can call scripts in categories using `cat1\cat2\scriptname` format.
@@ -550,11 +551,11 @@ Description: This command will call another script.
             script 'magery\meditation'
         endif
         ```
-## scavenger
+# scavenger
 
-Syntax: `scavenger ['clear'/'add'/'on'/'off'/'set']`
+**Syntax**: `scavenger ['clear'/'add'/'on'/'off'/'set']`
 
-Description: This command will control the scavenger agent.
+**Description**: This command will control the scavenger agent.
 
 * `clear`: Clear scavenger agent cache
 * `add`: Select an item to add to the list
@@ -570,11 +571,11 @@ Description: This command will control the scavenger agent.
         scavenger 'off'
         ```
 
-## sell
+# sell
 
-Syntax: `sell`
+**Syntax**: `sell`
 
-Description: This command will set the Sell agent's hotbag.
+**Description**: This command will set the Sell agent's hotbag.
 
 !!! example
 
@@ -584,11 +585,11 @@ Description: This command will set the Sell agent's hotbag.
         sell
         ```
 
-## setability
+# setability
 
-Syntax: `setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']`
+**Syntax**: `setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']`
 
-Description: This will set a specific ability on or off. If `on` or `off` is missing, `on` is defaulted.
+**Description**: This will set a specific ability on or off. If `on` or `off` is missing, `on` is defaulted.
 
 !!! example
 
@@ -604,11 +605,11 @@ Description: This will set a specific ability on or off. If `on` or `off` is mis
         setability 'stun' off
         ```
 
-## setlasttarget
+# setlasttarget
 
-Syntax: `setlasttarget`
+**Syntax**: `setlasttarget`
 
-Description: This command will pause the script until you select a target to be set as Last Target.
+**Description**: This command will pause the script until you select a target to be set as Last Target.
 
 !!! example
 
@@ -622,11 +623,11 @@ Description: This command will pause the script until you select a target to be 
         waitfortarget
         target 'last'
         ```
-## setvar
+# setvar
 
-Syntax: `setvar ('variable')` or `setvariable ('variable')`
+**Syntax**: `setvar ('variable')` or `setvariable ('variable')`
 
-Description: This command will pause the script until you select a target to be assigned a variable. Please note, the variable must exist before you can assign values to it.
+**Description**: This command will pause the script until you select a target to be assigned a variable. Please note, the variable must exist before you can assign values to it.
 
 !!! example
 
@@ -640,11 +641,11 @@ Description: This command will pause the script until you select a target to be 
         target 'dummy'
         ```
 
-## skill
+# skill
 
-Syntax: `skill 'name of skill'` or `skill last`
+**Syntax**: `skill 'name of skill'` or `skill last`
 
-Description: This command will use a specific skill (assuming it's a usable skill).
+**Description**: This command will use a specific skill (assuming it's a usable skill).
 
 !!! tip "Supported skill names"
     `anatomy, animallore, itemidentification, itemid, armslore, begging, peacemaking, peace, cartography, detectinghidden, discord, discordance, evaluatingintelligence, evalint, forensicevaluation, forensiceval, hiding, provocation, provo, inscription, poisoning, spiritspeak, stealing, taming, tasteidentification, tasteid, tracking, meditation, stealth, removetrap, imbuing`
@@ -661,11 +662,11 @@ Description: This command will use a specific skill (assuming it's a usable skil
         endwhile
         ```
 
-## sysmsg
+# sysmsg
 
-Syntax: `sysmsg ('message to display in system message')`
+**Syntax**: `sysmsg ('message to display in system message')`
 
-Description: This command will display a message in the lower-left of the client.
+**Description**: This command will display a message in the lower-left of the client.
 
 !!! example
 
@@ -677,11 +678,11 @@ Description: This command will display a message in the lower-left of the client
         endif
         ```
 
-## target
+# target
 
-Syntax: `target (closest/random/next/prev) [type1,type2] [humanoid/monster]` or `target (serial)`
+**Syntax**: `target (closest/random/next/prev) [type1,type2] [humanoid/monster]` or `target (closest/random/next/prev) [type1!type2] [humanoid/monster]` or `target (serial)`
 
-Description: This command will target a specific mobile based either the type searched for or the serial.
+**Description**: This command will target a specific mobile based either the type searched for or the serial. If you provide a list of target types, you can use `,` for a general list and `!` for a priority list.
 
 | Type              | Notoriety Name                                   | Notoriety Color                            |
 | ----------------- | ------------------------------------------------ | ------------------------------------------ |
@@ -694,6 +695,11 @@ Description: This command will target a specific mobile based either the type se
 | `blue`/`innocent` | Innocent                                         | Blue                                       |
 | `friend`          | Based on your [friends list](../../help/friends) | Any                                        |
 
+| List Type | Delimiter | Description                                                                                                        |
+| --------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| General   | `,`       | When the script tries to acquire a target, it will look for all the target types passed in the list. See Examples. |
+| Priority  | `!`       | When the script tries to acquire a target, it will prioritize each type. See Examples.                             |
+
 !!! example
 
     === "Specific target"
@@ -702,6 +708,28 @@ Description: This command will target a specific mobile based either the type se
         cast 'lightning'
         waitfortarget
         target '0xBB3'
+        ```
+
+    === "General list"
+
+        ```csharp
+        cast 'lightning'
+        waitfortarget
+
+        // General list using a ,
+        // If a red mobile is closer than a gray mobile, this will target the red mobile
+        target closest gray,red
+        ```
+
+    === "Priority list"
+
+        ```csharp
+        cast 'lightning'
+        waitfortarget
+
+        // Priority list using a !
+        // If a red mobile is closer than a gray mobile, this will target the gray mobile
+        target closest gray!red
         ```
 
     === "Target closest red"
@@ -742,11 +770,11 @@ Description: This command will target a specific mobile based either the type se
         target next humanoid
         ```    
 
-## targetrelloc
+# targetrelloc
 
-Syntax: `targetrelloc (x-offset) (y-offset)`
+**Syntax**: `targetrelloc (x-offset) (y-offset)`
 
-Description: This command will target a specific location on the map relative to your position.
+**Description**: This command will target a specific location on the map relative to your position.
 
 !!! example
 
@@ -758,11 +786,11 @@ Description: This command will target a specific location on the map relative to
         targetrelloc 1 1
         ```
 
-## targetloc
+# targetloc
 
-Syntax: `targetloc (x) (y) (z)`
+**Syntax**: `targetloc (x) (y) (z)`
 
-Description: This command will target a specific location on the map.
+**Description**: This command will target a specific location on the map.
 
 !!! example
 
@@ -774,14 +802,19 @@ Description: This command will target a specific location on the map.
         target 5923 1145 0
         ```
 
-## targettype
+# targettype
 
-Syntax: `targettype (graphic)` or `targettype ('name of item or mobile type') true` or `targettype ('name of item or mobile type') backpack`
+**Syntax**: `targettype (graphic)` or `targettype ('name of item or mobile type') true` or `targettype ('name of item or mobile type') backpack`
 
-Description: This command will target a specific type of mobile or item based on the graphic id or based on the name of the item or mobile.
+**Description**: This command will target a specific type of mobile or item based on the graphic id or based on the name of the item or mobile.
 
-!!! tip
+!!! tip "Range Check"
     If the optional parameter is passed in as `true` only items within the range of 2 tiles will be considered. If the optional parameter is passed in as `backpack` only items in your backpack will be considered.
+
+!!! tip "Getting the graphic name or ID"
+    To get the name or the ID of item, use the `>info` command in Razor and click on the item. You can use either the `Item Name` or `Id`.
+
+    ![item-command](../images/infocommand.png)
 
 !!! example
 
@@ -817,11 +850,11 @@ Description: This command will target a specific type of mobile or item based on
         targettype 'robe'
         ```
 
-## undress
+# undress
 
-Syntax: `undress ['name of dress list']'` or `undress 'LayerName'`
+**Syntax**: `undress ['name of dress list']'` or `undress 'LayerName'`
 
-Description: This command will either undress you completely if no dress list is provided. If you provide a dress list, only those specific items will be undressed. Lastly, you can define a layer name to undress.
+**Description**: This command will either undress you completely if no dress list is provided. If you provide a dress list, only those specific items will be undressed. Lastly, you can define a layer name to undress.
 
 !!! tip
     Available [layers](./layers.md) for reference
@@ -847,11 +880,11 @@ Description: This command will either undress you completely if no dress list is
         undrsss 'Pants'
         ```
 
-## useonce
+# useonce
 
-Syntax: `useonce ['add'/'addcontainer']`
+**Syntax**: `useonce ['add'/'addcontainer']`
 
-Description: This command will execute the UseOnce agent. If the `add` parameter is included, you can add items to your UseOnce list. If the `addcontainer` parameter is included, you can add all items in a container to your UseOnce list.
+**Description**: This command will execute the UseOnce agent. If the `add` parameter is included, you can add items to your UseOnce list. If the `addcontainer` parameter is included, you can add all items in a container to your UseOnce list.
 
 !!! example
 
@@ -873,11 +906,11 @@ Description: This command will execute the UseOnce agent. If the `add` parameter
         useonce 'addcontainer'
         ```
 
-## walk
+# walk
 
-Syntax: `walk ('direction')`
+**Syntax**: `walk ('direction')`
 
-Description: This command will turn and/or walk your player in a certain direction.
+**Description**: This command will turn and/or walk your player in a certain direction.
 
 !!! example
 
@@ -894,11 +927,11 @@ Description: This command will turn and/or walk your player in a certain directi
         walk 'Right'
         ```
 
-## wait & pause
+# wait & pause
 
-Syntax: `wait [time in milliseconds` or `pause [time in milliseconds]`
+**Syntax**: `wait [time in milliseconds` or `pause [time in milliseconds]`
 
-Description: This command will pause the execution of a script for a given time.
+**Description**: This command will pause the execution of a script for a given time.
 
 !!! tip
     `1000` milliseconds is equal to `1` second.
@@ -914,11 +947,11 @@ Description: This command will pause the execution of a script for a given time.
             wait 5000
         endwhile
         ```
-## waitforgump
+# waitforgump
 
-Syntax: `waitforgump [gump id]`
+**Syntax**: `waitforgump [gump id]`
 
-Description: This command will wait for a gump. If no `gump id` is provided, it will wait for **any** gump.
+**Description**: This command will wait for a gump. If no `gump id` is provided, it will wait for **any** gump.
 
 !!! example
 
@@ -933,11 +966,11 @@ Description: This command will wait for a gump. If no `gump id` is provided, it 
         ```vim
         waitforgump 4
         ```
-## waitformenu
+# waitformenu
 
-Syntax: `waitformenu [menu id]`
+**Syntax**: `waitformenu [menu id]`
 
-Description: This command will wait for a context menu. If no `menu id` is provided, it will wait for **any** menu.
+**Description**: This command will wait for a context menu. If no `menu id` is provided, it will wait for **any** menu.
 
 !!! example
 
@@ -953,11 +986,11 @@ Description: This command will wait for a context menu. If no `menu id` is provi
         waitformenu 4
         ```
 
-## waitforprompt
+# waitforprompt
 
-Syntax: `waitforprompt`
+**Syntax**: `waitforprompt`
 
-Description: This command will wait for a prompt before continuing.
+**Description**: This command will wait for a prompt before continuing.
 
 !!! example
 
@@ -969,11 +1002,11 @@ Description: This command will wait for a prompt before continuing.
         promptresponse 'to home'
         ```
 
-## waitforsysmsg
+# waitforsysmsg
 
-Syntax: `waitforsysmsg 'message to wait for' [timeout]` or `wfsysmsg 'message to wait for' [timeout]`
+**Syntax**: `waitforsysmsg 'message to wait for' [timeout]` or `wfsysmsg 'message to wait for' [timeout]`
 
-Description: This command will wait a specific message to be added to the system message queue before continuing.  Default timeout is 30 seconds.
+**Description**: This command will wait a specific message to be added to the system message queue before continuing.  Default timeout is 30 seconds.
 
 !!! example
 
@@ -991,11 +1024,11 @@ Description: This command will wait a specific message to be added to the system
         overhead 'Done waiting'
         ```
 
-## waitfortarget
+# waitfortarget
 
-Syntax: `waitfortarget [pause in milliseconds]` or `wft [pause in milliseconds]`
+**Syntax**: `waitfortarget [pause in milliseconds]` or `wft [pause in milliseconds]`
 
-Description: This command will cause the script to pause until you have a target cursor.  By default it will wait 30 seconds but you can define a specific wait time if you prefer.
+**Description**: This command will cause the script to pause until you have a target cursor.  By default it will wait 30 seconds but you can define a specific wait time if you prefer.
 
 !!! example
 
@@ -1015,11 +1048,11 @@ Description: This command will cause the script to pause until you have a target
         target 'last'
         ```
 
-## whisper
+# whisper
 
-Syntax: `whisper ('message to send') [hue]`
+**Syntax**: `whisper ('message to send') [hue]`
 
-Description: This command will force your character to whisper the message passed as the parameter.
+**Description**: This command will force your character to whisper the message passed as the parameter.
 
 !!! example
 
@@ -1035,11 +1068,11 @@ Description: This command will force your character to whisper the message passe
         whisper 'Hello world!' 454
         ```
 
-## yell
+# yell
 
-Syntax: `yell ('message to send') [hue]`
+**Syntax**: `yell ('message to send') [hue]`
 
-Description: This command will force your character to yell the message passed as the parameter.
+**Description**: This command will force your character to yell the message passed as the parameter.
 
 !!! example
 

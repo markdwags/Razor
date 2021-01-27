@@ -51,24 +51,24 @@ namespace Assistant.Scripts
             {
                 case "close":
                 case "closest":
-                    CommandHelper.SetTarget(args, true);
+                    CommandHelper.FindTarget(args, true);
 
                     break;
 
                 case "rand":
                 case "random":
-                    CommandHelper.SetTarget(args, false, true);
+                    CommandHelper.FindTarget(args, false, true);
 
                     break;
 
                 case "next":
-                    CommandHelper.SetTarget(args, false, false, true);
+                    CommandHelper.FindTarget(args, false, false, true);
 
                     break;
 
                 case "prev":
                 case "previous":
-                    CommandHelper.SetTarget(args, false, false, false, true);
+                    CommandHelper.FindTarget(args, false, false, false, true);
 
                     break;
 
