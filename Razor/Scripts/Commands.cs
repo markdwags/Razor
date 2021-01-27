@@ -1094,7 +1094,7 @@ namespace Assistant.Scripts
                 return true;
             }
 
-            Interpreter.Timeout(args.Length > 0 ? args[1].AsUInt() : 30000, () => { return true; });
+            Interpreter.Timeout(args.Length > 1 ? args[1].AsUInt() : 30000, () => { return true; });
 
             return false;
         }
