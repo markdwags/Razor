@@ -92,15 +92,13 @@ Common text editor shortcuts (such as `ctrl-C` and `ctrl-V` for copy/paste are n
 
 - ++ctrl+f++: Find/Search dialog
 - ++f3++: Find next
-- ++ctrl+r++: Search & replace dialog
+- ++ctrl+h++: Search & replace dialog
 - ++ctrl+shift+c++: Comment / Uncomment selected code
 - ++alt+"Mouse Drag"++: Select multiple lines of text
 - ++ctrl+home++: Go to the first line
 - ++ctrl+end++: Go to the last line
 - ++alt+up++: Move selected lines up
 - ++alt+down++: Move selected lines down
-- ++shift+up++: Move selected lines up
-- ++shift+down++: Move selected lines down
 
 ## Bookmarks
 

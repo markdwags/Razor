@@ -227,24 +227,25 @@ namespace Assistant.Scripts
 
         private static bool WaitForGump(string command, Argument[] args, bool quiet, bool force)
         {
+            if (args.Length < 1)
+            {
+                throw new RunTimeError(null, "Usage: waitforgump (gumpId/'any') [timeout]");
+            }
+
             uint gumpId = 0;
             bool strict = false;
 
-            // Look for a specific gump
-            if (args.Length == 1)
+            if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
             {
-                if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
-                {
-                    strict = false;
-                }
-                else
-                {
-                    gumpId = Utility.ToUInt32(args[0].AsString(), 0);
+                strict = false;
+            }
+            else
+            {
+                gumpId = Utility.ToUInt32(args[0].AsString(), 0);
 
-                    if (gumpId > 0)
-                    {
-                        strict = true;
-                    }
+                if (gumpId > 0)
+                {
+                    strict = true;
                 }
             }
 
@@ -262,15 +263,17 @@ namespace Assistant.Scripts
 
         private static bool WaitForMenu(string command, Argument[] args, bool quiet, bool force)
         {
+            if (args.Length < 1)
+            {
+                throw new RunTimeError(null, "Usage: waitformenu (menuId/'any') [timeout]");
+            }
+
             uint menuId = 0;
 
             // Look for a specific menu
-            if (args.Length == 1)
-            {
-                menuId = args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1
-                    ? 0
-                    : Utility.ToUInt32(args[0].AsString(), 0);
-            }
+            menuId = args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1
+                ? 0
+                : Utility.ToUInt32(args[0].AsString(), 0);
 
             Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
 
@@ -285,24 +288,26 @@ namespace Assistant.Scripts
 
         private static bool WaitForPrompt(string command, Argument[] args, bool quiet, bool force)
         {
+            if (args.Length < 1)
+            {
+                throw new RunTimeError(null, "Usage: waitforprompt (promptId/'any') [timeout]");
+            }
+
             uint promptId = 0;
             bool strict = false;
 
             // Look for a specific prompt
-            if (args.Length == 1)
+            if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
             {
-                if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
-                {
-                    strict = false;
-                }
-                else
-                {
-                    promptId = Utility.ToUInt32(args[0].AsString(), 0);
+                strict = false;
+            }
+            else
+            {
+                promptId = Utility.ToUInt32(args[0].AsString(), 0);
 
-                    if (promptId > 0)
-                    {
-                        strict = true;
-                    }
+                if (promptId > 0)
+                {
+                    strict = true;
                 }
             }
 
