@@ -18,6 +18,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace Assistant
@@ -76,7 +77,20 @@ namespace Assistant
 
             foreach (KeyValuePair<Serial, Item> item in m_Items)
             {
-                if (item.Value.ItemID.ItemData.Name.ToLower().StartsWith(name.ToLower()))
+                if (item.Value.ItemID.ItemData.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                    items.Add(item.Value);
+            }
+
+            return items;
+        }
+
+        internal static List<Item> FindItemsById(ushort id)
+        {
+            List<Item> items = new List<Item>();
+
+            foreach (KeyValuePair<Serial, Item> item in m_Items)
+            {
+                if (item.Value.ItemID == id)
                     items.Add(item.Value);
             }
 

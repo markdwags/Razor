@@ -59,42 +59,15 @@ namespace Assistant.Scripts.Helpers
                 if (i != null)
                     items.Add(i);
             } 
+            else if (inRange)
+            {
+                items.AddRange(World.FindItemsById(id).Where(item =>
+                    !item.IsInBank && (Utility.InRange(World.Player.Position, item.Position, 2) ||
+                                       item.RootContainer == World.Player)).ToList());
+            }
             else
             {
-                foreach (Item i in World.Items.Values)
-                {
-                    if (i.ItemID == id && i.RootContainer == null)
-                    {
-                        if (inRange)
-                        {
-                            if (Utility.InRange(World.Player.Position, i.Position, 2))
-                                items.Add(i);
-                        }
-                        else
-                        {
-                            items.Add(i);
-                        }
-                    }
-                }
-
-                if (items.Count == 0)
-                {
-                    foreach (Item i in World.Items.Values)
-                    {
-                        if (i.ItemID == id && !i.IsInBank)
-                        {
-                            if (inRange)
-                            {
-                                if (Utility.InRange(World.Player.Position, i.Position, 2))
-                                    items.Add(i);
-                            }
-                            else
-                            {
-                                items.Add(i);
-                            }
-                        }
-                    }
-                }
+                items.AddRange(World.FindItemsById(id).Where(item => !item.IsInBank).ToList());
             }
 
             return items;
