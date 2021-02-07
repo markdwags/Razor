@@ -229,25 +229,164 @@ namespace Assistant
         {
             XRaiseWindow(Display, window);
         }
+        
+        // This list is by no means complete.
+        static Dictionary<int, int> m_MapX11Key = new Dictionary<int, int>()
+        {
+            {0x08, 0xFF08}, // Backspace
+            {0x09, 0xFF09}, // Tab
+            {0x0C, 0xFF0B}, // Clear
+            {0x0D, 0xFF0D}, // Return
+            
+            //{0x10, 0xFF??}, // Shift
+            //{0x11, 0xFF??}, // Control
+            //{0x12, 0xFF??}, // Alt
+                
+            {0x13, 0xFF13}, // Pause
+            {0x1B, 0xFF1B}, // Escape
+            {0x91, 0xFF14}, // Scroll Lock
+            {0x14, 0xFFE5}, // Caps Lock
+            //{0x91, 0xFF15}, // SysRq
 
-        internal static ushort GetAsyncKeyState(int key)
+            {0x26, 0xFF52}, // Up arrow
+            {0x28, 0xFF54}, // Down arrow
+            {0x25, 0xFF51}, // Left arrow
+            {0x27, 0xFF53}, // Right arrow
+            {0x2D, 0xFF63}, // Insert
+            {0x2E, 0xFFFF}, // Delete
+            {0x24, 0xFF50}, // Home
+            {0x23, 0xFF57}, // End
+            {0x21, 0xFF55}, // Page Up
+            {0x22, 0xFF56}, // Page Down
+            
+            
+            // Keypad
+            {0x90, 0xFFBE}, // Num lock
+            
+            {0x60, 0xFFB0}, // Numpad0
+            {0x61, 0xFFB1},
+            {0x62, 0xFFB2},
+            {0x63, 0xFFB3},
+            {0x64, 0xFFB4},
+            {0x65, 0xFFB5},
+            {0x66, 0xFFB6},
+            {0x67, 0xFFB7},
+            {0x68, 0xFFB8},
+            {0x69, 0xFFB0}, // Numpad9
+
+            
+            //{0x, 0xFF95}, // KP_Home
+            //{0x, 0xFF97}, // KP_Up
+            //{0x, 0xFF9A}, // KP_PageUp
+            //{0x, 0xFF96}, // KP_Left
+            //{0x, 0xFF98}, // KP_Right
+            //{0x, 0xFF9C}, // KP_End
+            //{0x, 0xFF99}, // KP_Down
+            //{0x, 0xFF9B}, // KP_PageDown
+
+            
+            {0x6F, 0xFFAF}, // Divide
+            {0x6A, 0xFFAA}, // Multiply
+            {0x6D, 0xFFAD}, // Subtract
+            {0x6B, 0xFFAB}, // Add
+            // Cannot remap the same key twice
+            // {0x0D, 0xFF8D}, // Enter
+            {0x6C, 0xFFAE}, // Decimal
+            
+
+            // F1-F24
+            {0x70, 0xFFBE},
+            {0x71, 0xFFBF},
+            {0x72, 0xFFC0},
+            {0x73, 0xFFC1},
+            {0x74, 0xFFC2},
+            {0x75, 0xFFC3},
+            {0x76, 0xFFC4},
+            {0x77, 0xFFC5},
+            {0x78, 0xFFC6},
+            {0x79, 0xFFC7},
+            {0x7A, 0xFFC8},
+            {0x7B, 0xFFC9},
+            {0x7C, 0xFFCA},
+            {0x7D, 0xFFCB},
+            {0x7E, 0xFFCC},
+            {0x7F, 0xFFCD},
+            {0x80, 0xFFCE},
+            {0x81, 0xFFCF},
+            {0x82, 0xFFD0},
+            {0x83, 0xFFD1},
+            {0x84, 0xFFD2},
+            {0x85, 0xFFD3},
+            {0x86, 0xFFD4},
+            {0x87, 0xFFD5},
+
+            // Modifiers
+            {0xA0, 0xFFE1}, // LSHIFT
+            {0xA1, 0xFFE2}, // RSHIFT
+            {0xA2, 0xFFE3}, // LCONTROL
+            {0xA3, 0xFFE4}, // RCONTROL
+            {0xA4, 0xFFE9}, // LALT
+            {0xA5, 0xFFEA}, // RALT
+
+            // 0-9, Capital A-Z map directly
+            // Windows will never pass lowercase A-Z
+            
+        };
+        
+        internal static int MapX11Key(int key)
+        {
+            int keycode;
+
+            if (!m_MapX11Key.TryGetValue(key, out keycode))
+                keycode = key;
+
+            return keycode;
+        }
+
+        // A linux-version of WinUser.dll's GetAsyncKeyState()
+        // Take the (Windows) Virtual Key Code, convert it to an X11 KeySym, then back to the X11 Keycode, then check if it's pressed.
+        internal static ushort GetAsyncKeyState(int winkey)
         {
             try
             {
+                int key = 0; int key2 = 0;
+                
+                // Code elsewhere distills R/L mod keys to Window's single keycode. Un-distill them here
+                if (winkey == 0x10)      { key = 0xFFE1; key2 = 0xFFE2; } // Any shift key
+                else if (winkey == 0x11) { key = 0xFFE3; key2 = 0xFFE4; } // Any ctrl key
+                else if (winkey == 0x12) { key = 0xFFE9; key2 = 0xFFEA; } // Any alt key
+                else                     { key = LinuxPlatform.MapX11Key (winkey); }
+
+                // Get physical keyboard state - every key being pressed is listed in the byte array
                 var szKey = new byte[32];
                 int res = XQueryKeymap(Display, szKey);
-                //foreach(var xx in szKey)
-                //Console.WriteLine(xx + "-");
+
+                // Convert physical keypress to X11 keycode
                 int code = XKeysymToKeycode(Display, (int) key);
-                bool pressed = (szKey[code >> 3] & (1 << (code & 7))) == 0;
+
+                // Check if keycode is included in the keyboard state.
                 var r = szKey[code / 8];
                 var s = (1 << (code % 8));
-                var x = r & s;
-                return r == s ? (ushort) 0xFF00 : (ushort) 0;
+                bool pressed = Convert.ToBoolean(r & s);
+
+                // Check the second modifier key if required
+                bool pressed2 = false;
+                if (key2 > 0)
+                {
+                    int code2 = XKeysymToKeycode(Display, (int) key2);
+                    var r2 = szKey[code2 / 8];
+                    var s2 = (1 << (code2 % 8));
+                    pressed2 = Convert.ToBoolean(r2 & s2);
+                }
+
+                if (pressed || pressed2)
+                    return (ushort) 0xFF00;
+                else
+                    return (ushort) 0;
             }
             catch
             {
-                return 0;
+                return (ushort) 0;
             }
         }
 
