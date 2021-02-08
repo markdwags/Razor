@@ -687,18 +687,13 @@ namespace Assistant
                     {
                         if (hk.Key == key)
                         {
-                            // Force a keycheck using the platform-specific code.
-                            // If running on a non-windows OS, we can't trust the keycode received as key.
-                            if (KeyDown ((Keys) hk.Key))
-                            {
-                                if (Macros.MacroManager.AcceptActions)
-                                    Macros.MacroManager.Action(new Macros.HotKeyAction(hk));
+                            if (Macros.MacroManager.AcceptActions)
+                                Macros.MacroManager.Action(new Macros.HotKeyAction(hk));
 
-                                ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
+                            ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
 
-                                hk.Callback();
-                                return hk.SendToUO;
-                            }
+                            hk.Callback();
+                            return hk.SendToUO;
                         }
                     }
                 }
