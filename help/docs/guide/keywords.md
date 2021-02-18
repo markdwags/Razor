@@ -40,7 +40,7 @@ Description: The `break` keyword terminate the closest enclosing loop such as a 
 
 Syntax: `continue`
 
-Description: The `continue` keyboard passes control to the next iteration of the enclosing `for` or `while` loop which the keyword appears.
+Description: The `continue` keyword passes control to the next iteration of the enclosing `for` or `while` loop which the keyword appears.
 
 !!! example
 

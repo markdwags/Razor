@@ -4,7 +4,6 @@ Below is a list of the latest releases notes going back to the first release of 
 
 ## 1.6.9.X (X/X/2021)
 
-* Additional support for dotnet core 3.1
 * Fixed issue with `setvar` and similar named variables
 * `spirit` and `forensic` are valid `skill` entries for scripting
 * Added `queued` expression to scripting
@@ -25,6 +24,7 @@ Below is a list of the latest releases notes going back to the first release of 
 * Added `clearhands` command to drop what you have in your hands
 * `dclick` now supports `left`, `right` and `hands` to use an item in your hand
 * Added `virtue` command to invoke honor, valor or sacrifice.
+* Additional support for dotnet core 3.1
 
 ## 1.6.8.15 (12/15/2020)
 

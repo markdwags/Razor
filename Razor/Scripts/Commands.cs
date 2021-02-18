@@ -168,7 +168,7 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: setvar ('variable')");
+                throw new RunTimeError(null, "Usage: setvar ('variable') [timeout]");
             }
 
             string varname = args[0].AsString();
@@ -180,6 +180,9 @@ namespace Assistant.Scripts
                 throw new RunTimeError(null, $"{command} - Unknown variable '{varname}'");
             }
 
+            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
+            
+
             if (!ScriptManager.SetVariableActive)
             {
                 var.SetTarget();
@@ -190,6 +193,7 @@ namespace Assistant.Scripts
 
             if (var.TargetWasSet)
             {
+                Interpreter.ClearTimeout();
                 ScriptManager.SetVariableActive = false;
                 return true;
             }

@@ -652,9 +652,9 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```
 # setvar
 
-**Syntax**: `setvar ('variable')` or `setvariable ('variable')`
+**Syntax**: `setvar ('variable') [timeout` or `setvariable ('variable') [timeout]`
 
-**Description**: This command will pause the script until you select a target to be assigned a variable. Please note, the variable must exist before you can assign values to it.
+**Description**: This command will pause the script until you select a target to be assigned a variable. Please note, the variable must exist before you can assign values to it. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
 !!! example
 
