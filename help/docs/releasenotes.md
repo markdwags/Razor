@@ -2,7 +2,7 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
-## 1.6.9.X (X/X/2021)
+## 1.6.9.21 (02/27/2021)
 
 * Fixed issue with `setvar` and similar named variables
 * `spirit` and `forensic` are valid `skill` entries for scripting
@@ -23,7 +23,11 @@ Below is a list of the latest releases notes going back to the first release of 
 * Added support for `@` quiet prefix for commands
 * Added `clearhands` command to drop what you have in your hands
 * `dclick` now supports `left`, `right` and `hands` to use an item in your hand
-* Added `virtue` command to invoke honor, valor or sacrifice.
+* Added `virtue` command to invoke honor, valor or sacrifice
+* `Cancel Target` will cancel setting a varible if it's active
+* Fixed `TargetByType` and `DoubleClickType` in macros with range check. The range checks were always meant to include in your backpack too
+* Added `random` command to generate a random number you can use with `insysmsg` to help perform a random action
+* Improved support for keycode differences between Windows and X11
 * Additional support for dotnet core 3.1
 
 ## 1.6.8.15 (12/15/2020)

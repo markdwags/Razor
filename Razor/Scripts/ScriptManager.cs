@@ -482,7 +482,7 @@ namespace Assistant.Scripts
                     "setlasttarget",
                     "setvar", "skill", "sysmsg", "target", "targettype", "targetrelloc", "undress", "useonce", "walk",
                     "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget", "clearsysmsg", "clearjournal",
-                    "waitforsysmsg", "clearhands", "clearall", "virtue"
+                    "waitforsysmsg", "clearhands", "clearall", "virtue", "random"
 
                 };
 
@@ -749,6 +749,12 @@ namespace Assistant.Scripts
                 "This command will pause the script until the message defined is in the system message queue.",
                 "waitforsysmsg 'message here'\n");
             descriptionCommands.Add("waitforsysmsg", tooltip);
+
+            tooltip = new ToolTipDescriptions("random",
+                new[] { "random [max number]" }, "N/A",
+                "This command output a random number between 1 and the max number provided.",
+                "random '15'\n");
+            descriptionCommands.Add("random", tooltip);
 
             #endregion
 

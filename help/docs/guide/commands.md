@@ -510,6 +510,27 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         promptresponse 'to home'
         ```
 
+# random
+
+**Syntax**: `random (max number)`
+
+**Description**: This command will generate a random number between 1 and the max number.
+
+!!! example
+
+    === "Random Message Check"
+
+        ```vim
+        clearsysmsg
+
+        random 10
+
+        if insysmsg 'Random: 5'
+            say 'Hello!'
+        else
+            say 'Hail!'
+        endif
+        ```
 # restock
 
 **Syntax**: `restock (number) ['set']`

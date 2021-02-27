@@ -107,6 +107,8 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("clearhands", ClearHands);
 
             Interpreter.RegisterCommandHandler("virtue", Virtue);
+
+            Interpreter.RegisterCommandHandler("random", Random);
         }
 
         private static string[] virtues = new string[3] { "honor", "sacrifice", "valor" };
@@ -1106,6 +1108,20 @@ namespace Assistant.Scripts
             Interpreter.Timeout(args.Length > 1 ? args[1].AsUInt() : 30000, () => { return true; });
 
             return false;
+        }
+
+        private static bool Random(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                throw new RunTimeError(null, "Usage: random 'max value'");
+            }
+
+            int max = args[0].AsInt();
+
+            World.Player.SendMessage(MsgLevel.Info, $"Random: {Utility.Random(1, max)}");
+
+            return true;
         }
     }
 }
