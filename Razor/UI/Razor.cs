@@ -694,6 +694,10 @@ namespace Assistant
             {
                 FriendsManager.RedrawGroup();
             }
+            else if (tabs.SelectedTab == screenshotTab)
+            {
+                ReloadScreenShotsList();
+            }
         }
 
         private void subGeneralTab_IndexChanged(object sender, EventArgs e)
@@ -3640,8 +3644,10 @@ namespace Assistant
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
                 ContextMenuStrip menu = new ContextMenuStrip();
-               
-                menu.Items.Add("Delete", null, DeleteScreenCap);
+
+                menu.Items.Add("Copy Image", null, CopyScreenshot);
+                menu.Items.Add("-");
+                menu.Items.Add("Delete Image", null, DeleteScreenCap);
 
                 if (screensList.SelectedIndex == -1)
                     menu.Items[menu.Items.Count - 1].Enabled = false;
@@ -3651,6 +3657,15 @@ namespace Assistant
 
                 menu.Show(screensList, new Point(e.X, e.Y));
             }
+        }
+
+        private void CopyScreenshot(object sender, System.EventArgs e)
+        {
+            int sel = screensList.SelectedIndex;
+            if (sel == -1)
+                return;
+
+            Clipboard.SetImage(screenPrev.Image);
         }
 
         private void DeleteScreenCap(object sender, System.EventArgs e)
@@ -7493,6 +7508,17 @@ namespace Assistant
             scriptTree.SelectedNode = newNode;
         }
 
-        
+        private void openScreenshotFolder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(Config.GetString("CapPath"));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Unable to open directory", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+        }
     }
 }

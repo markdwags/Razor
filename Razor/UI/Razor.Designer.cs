@@ -781,6 +781,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.openScreenshotFolder = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -4512,10 +4513,10 @@ namespace Assistant
             this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
             this.tabPage3.Controls.Add(this.autoSaveScript);
             this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 285);
+            this.tabPage3.Size = new System.Drawing.Size(498, 287);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Options";
             // 
@@ -4821,6 +4822,7 @@ namespace Assistant
             // 
             // screenshotTab
             // 
+            this.screenshotTab.Controls.Add(this.openScreenshotFolder);
             this.screenshotTab.Controls.Add(this.captureOwnDeathDelay);
             this.screenshotTab.Controls.Add(this.lblOwnDeathMs);
             this.screenshotTab.Controls.Add(this.captureOwnDeath);
@@ -4917,18 +4919,18 @@ namespace Assistant
             // 
             // capNow
             // 
-            this.capNow.Location = new System.Drawing.Point(371, 9);
+            this.capNow.Location = new System.Drawing.Point(266, 173);
             this.capNow.Name = "capNow";
-            this.capNow.Size = new System.Drawing.Size(141, 22);
+            this.capNow.Size = new System.Drawing.Size(155, 22);
             this.capNow.TabIndex = 8;
             this.capNow.Text = "Take Screen Shot Now";
             this.capNow.Click += new System.EventHandler(this.capNow_Click);
             // 
             // screenPath
             // 
-            this.screenPath.Location = new System.Drawing.Point(8, 8);
+            this.screenPath.Location = new System.Drawing.Point(8, 12);
             this.screenPath.Name = "screenPath";
-            this.screenPath.Size = new System.Drawing.Size(316, 23);
+            this.screenPath.Size = new System.Drawing.Size(463, 23);
             this.screenPath.TabIndex = 7;
             this.screenPath.TextChanged += new System.EventHandler(this.screenPath_TextChanged);
             // 
@@ -4961,9 +4963,9 @@ namespace Assistant
             // 
             // setScnPath
             // 
-            this.setScnPath.Location = new System.Drawing.Point(330, 9);
+            this.setScnPath.Location = new System.Drawing.Point(477, 12);
             this.setScnPath.Name = "setScnPath";
-            this.setScnPath.Size = new System.Drawing.Size(35, 22);
+            this.setScnPath.Size = new System.Drawing.Size(35, 23);
             this.setScnPath.TabIndex = 3;
             this.setScnPath.Text = "...";
             this.setScnPath.Click += new System.EventHandler(this.setScnPath_Click);
@@ -4972,9 +4974,9 @@ namespace Assistant
             // 
             this.screensList.IntegralHeight = false;
             this.screensList.ItemHeight = 15;
-            this.screensList.Location = new System.Drawing.Point(8, 36);
+            this.screensList.Location = new System.Drawing.Point(8, 41);
             this.screensList.Name = "screensList";
-            this.screensList.Size = new System.Drawing.Size(252, 195);
+            this.screensList.Size = new System.Drawing.Size(252, 190);
             this.screensList.Sorted = true;
             this.screensList.TabIndex = 1;
             this.screensList.SelectedIndexChanged += new System.EventHandler(this.screensList_SelectedIndexChanged);
@@ -4983,9 +4985,9 @@ namespace Assistant
             // screenPrev
             // 
             this.screenPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.screenPrev.Location = new System.Drawing.Point(266, 36);
+            this.screenPrev.Location = new System.Drawing.Point(266, 41);
             this.screenPrev.Name = "screenPrev";
-            this.screenPrev.Size = new System.Drawing.Size(246, 131);
+            this.screenPrev.Size = new System.Drawing.Size(246, 126);
             this.screenPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.screenPrev.TabIndex = 0;
             this.screenPrev.TabStop = false;
@@ -5292,6 +5294,16 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // openScreenshotFolder
+            // 
+            this.openScreenshotFolder.Location = new System.Drawing.Point(266, 201);
+            this.openScreenshotFolder.Name = "openScreenshotFolder";
+            this.openScreenshotFolder.Size = new System.Drawing.Size(155, 23);
+            this.openScreenshotFolder.TabIndex = 62;
+            this.openScreenshotFolder.Text = "Open Screen Shot Folder";
+            this.openScreenshotFolder.UseVisualStyleBackColor = true;
+            this.openScreenshotFolder.Click += new System.EventHandler(this.openScreenshotFolder_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5530,5 +5542,6 @@ namespace Assistant
         private TextBox scriptFilter;
         private FastColoredTextBoxNS.FastColoredTextBox scriptEditor;
         private Label scriptHotkey;
+        private Button openScreenshotFolder;
     }
 }

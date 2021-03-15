@@ -14,17 +14,20 @@ To learn more about each version, view the [release notes](releasenotes.md).
 
 ## Razor with ClassicUO Support
 
+You can also view all the releases on [Github](https://github.com/markdwags/Razor/releases).
+
 | Razor Version                                                                |
 | ---------------------------------------------------------------------------- |
-| [Razor v1.6.8.15](https://github.com/markdwags/Razor/releases/tag/v1.6.8.15) |
-| [Razor v1.6.7.10](https://github.com/markdwags/Razor/releases/tag/v1.6.7.10) |
-| [Razor v1.6.6.15](https://github.com/markdwags/Razor/releases/tag/v1.6.6.15) |
-| [Razor v1.6.5.16](https://github.com/markdwags/Razor/releases/tag/v1.6.5.16) |
-| [Razor v1.6.4.32](https://github.com/markdwags/Razor/releases/tag/v1.6.4.32) |
-| [Razor v1.6.4.2](https://github.com/markdwags/Razor/releases/tag/v1.6.4.2)   |
-| [Razor v1.6.2.23](https://github.com/markdwags/Razor/releases/tag/1.6.2.23)  |
-| [Razor v1.6.1.32](https://github.com/markdwags/Razor/releases/tag/v1.6.1.32) |
-| [Razor v1.6.0.57](https://github.com/markdwags/Razor/releases/tag/v1.6.0.57) |
+| [Razor v1.6.9.21](https://github.com/markdwags/Razor/releases/tag/v1.6.9.21) (Feb 27th 2021)|
+| [Razor v1.6.8.15](https://github.com/markdwags/Razor/releases/tag/v1.6.8.15) (Dec 15th 2020)|
+| [Razor v1.6.7.10](https://github.com/markdwags/Razor/releases/tag/v1.6.7.10) (Oct 24th 2020)|
+| [Razor v1.6.6.15](https://github.com/markdwags/Razor/releases/tag/v1.6.6.15) (Sept 14th 2020)|
+| [Razor v1.6.5.16](https://github.com/markdwags/Razor/releases/tag/v1.6.5.16) (Aug 8th 2020)|
+| [Razor v1.6.4.32](https://github.com/markdwags/Razor/releases/tag/v1.6.4.32) (May 17th 2020)|
+| [Razor v1.6.4.2](https://github.com/markdwags/Razor/releases/tag/v1.6.4.2)   (Mar 13th 2020)|
+| [Razor v1.6.2.23](https://github.com/markdwags/Razor/releases/tag/1.6.2.23)  (Dec 18th 2019)|
+| [Razor v1.6.1.32](https://github.com/markdwags/Razor/releases/tag/v1.6.1.32) (Aug 5th 2019)|
+| [Razor v1.6.0.57](https://github.com/markdwags/Razor/releases/tag/v1.6.0.57) (June 28th 2019)|
 
 ### Developer Preview
 
