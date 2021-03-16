@@ -898,6 +898,7 @@ namespace Assistant.Scripts
 
         private static DressList _lastUndressList;
         private static bool _undressAll;
+        private static bool _undressLayer;
 
         private static bool UnDressCommand(string command, Argument[] args, bool quiet, bool force)
         {
@@ -907,7 +908,7 @@ namespace Assistant.Scripts
                 _undressAll = true;
                 UndressHotKeys.OnUndressAll();
             }
-            else if (args.Length == 1 && _lastUndressList == null) // either a dress list item or a layer
+            else if (args.Length == 1 && _lastUndressList == null && !_undressLayer) // either a dress list item or a layer
             {
                 _lastUndressList = DressList.Find(args[0].AsString());
 
@@ -920,6 +921,7 @@ namespace Assistant.Scripts
                     if (Enum.TryParse(args[0].AsString(), true, out Layer layer))
                     {
                         Dress.Unequip(layer);
+                        _undressLayer = true;
                     }
                     else
                     {
@@ -930,6 +932,7 @@ namespace Assistant.Scripts
             else if (ActionQueue.Empty)
             {
                 _undressAll = false;
+                _undressLayer = false;
                 _lastUndressList = null;
                 return true;
             }
