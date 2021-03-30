@@ -23,6 +23,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Collections;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace Assistant.MapUO
 {
@@ -62,7 +63,7 @@ namespace Assistant.MapUO
             this.prevPoint = new Point(0, 0);
             this.BorderStyle = BorderStyle.Fixed3D;
             this.m_MapButtons = new ArrayList();
-            m_Regions = Assistant.MapUO.Region.Load("guardlines.def");
+            m_Regions = Assistant.MapUO.Region.Load(Path.Combine(Config.GetInstallDirectory(), "guardlines.def"));
             m_MapButtons = UOMapRuneButton.Load("test.xml");
         }
 
