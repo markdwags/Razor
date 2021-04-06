@@ -847,7 +847,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```vim
         cast 'fire field'
         waitfortarget
-        target 5923 1145 0
+        targetloc 5923 1145 0
         ```
 
 # targettype
