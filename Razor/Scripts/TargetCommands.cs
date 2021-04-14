@@ -201,7 +201,7 @@ namespace Assistant.Scripts
 
         private static bool TargetLocation(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 3)
+            if (args.Length < 2)
             {
                 throw new RunTimeError(null, "Usage: targetloc (x) (y) (z)");
             }
@@ -213,7 +213,7 @@ namespace Assistant.Scripts
                 Serial = Serial.Zero,
                 X = args[0].AsInt(),
                 Y = args[1].AsInt(),
-                Z = args[2].AsInt(),
+                Z = args.Length == 3 ? args[2].AsInt() : 0,
                 Gfx = 0
             });
 
