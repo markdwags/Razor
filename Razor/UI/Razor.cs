@@ -6674,7 +6674,7 @@ namespace Assistant
                 e.Cancel = true;
                 s.Hide();
 
-                ScriptManager.SetEditor(scriptEditor);
+                ScriptManager.SetEditor(scriptEditor, false);
             });
         }
 
@@ -7291,9 +7291,10 @@ namespace Assistant
                         scriptHotkey.Text = "Not Set";
                     }
                 }
-
-                //ScriptManager.ClearHighlightLine();
+                
                 ScriptManager.SetEditorText(selectedScript);
+
+                ScriptManager.ClearAllHighlightLines();
             });
         }
 

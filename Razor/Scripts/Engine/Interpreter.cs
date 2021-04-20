@@ -256,6 +256,9 @@ namespace Assistant.Scripts.Engine
     {
         private ASTNode _statement;
 
+        // Delegate fires when this script executes a new statement
+        public Action<ASTNode> StatementExecuted;
+
         private Scope _scope;
 
         public Argument Lookup(string name)
@@ -769,6 +772,8 @@ namespace Assistant.Scripts.Engine
 
         private bool ExecuteCommand(ASTNode node)
         {
+            StatementExecuted.Invoke(node);
+
             node = EvaluateModifiers(node, out bool quiet, out bool force, out _);
 
             var handler = Interpreter.GetCommandHandler(node.Lexeme);
@@ -786,6 +791,8 @@ namespace Assistant.Scripts.Engine
 
         private bool EvaluateExpression(ref ASTNode expr)
         {
+            StatementExecuted.Invoke(expr);
+
             if (expr == null || (expr.Type != ASTNodeType.UNARY_EXPRESSION && expr.Type != ASTNodeType.BINARY_EXPRESSION && expr.Type != ASTNodeType.LOGICAL_EXPRESSION))
                 throw new RunTimeError(expr, "No expression following control statement");
 
@@ -986,6 +993,8 @@ namespace Assistant.Scripts.Engine
 
         private static Script _activeScript = null;
 
+        public static Action<ASTNode> ActiveScriptStatementExecuted;
+
         private enum ExecutionState
         {
             RUNNING,
@@ -1060,12 +1069,27 @@ namespace Assistant.Scripts.Engine
             _aliases[alias] = serial;
         }
 
+        private static void SetActiveScript(Script script)
+        {
+            if (script != null)
+            {
+                script.StatementExecuted += ActiveScriptStatementExecuted;
+            }
+
+            if (_activeScript != null)
+            {
+                _activeScript.StatementExecuted -= ActiveScriptStatementExecuted;
+            }
+
+            _activeScript = script;
+        }
+
         public static bool StartScript(Script script)
         {
             if (_activeScript != null)
                 return false;
 
-            _activeScript = script;
+            SetActiveScript(script);
             _executionState = ExecutionState.RUNNING;
 
             ExecuteScript();
@@ -1075,7 +1099,7 @@ namespace Assistant.Scripts.Engine
 
         public static void StopScript()
         {
-            _activeScript = null;
+            SetActiveScript(null);
             _executionState = ExecutionState.RUNNING;
         }
 
@@ -1111,7 +1135,7 @@ namespace Assistant.Scripts.Engine
                      */
                     if (_executionState != ExecutionState.RUNNING)
                     {
-                        _activeScript = null;
+                        SetActiveScript(null);
                         return false;
                     }
                 }
@@ -1119,7 +1143,7 @@ namespace Assistant.Scripts.Engine
 
             if (!_activeScript.ExecuteNext())
             {
-                _activeScript = null;
+                SetActiveScript(null);
                 return false;
             }
 

@@ -54,8 +54,29 @@ namespace Assistant.Scripts
         private static TreeView ScriptTree { get; set; }
 
         private static Script _queuedScript;
+        
+        public enum HighlightType
+        {
+            Error,
+            Execution
+        }
+
+        private static Dictionary<HighlightType, List<int>> HighlightLines { get; } = new Dictionary<HighlightType, List<int>>();
+
+        private static Dictionary<HighlightType, Brush> HighlightLineColors { get; } = new Dictionary<HighlightType, Brush>()
+        {
+            { HighlightType.Error, new SolidBrush(Color.Red) },
+            { HighlightType.Execution, new SolidBrush(Color.Blue) }
+        };
+
+        private static HighlightType[] GetHighlightTypes()
+        {
+            return (HighlightType[])Enum.GetValues(typeof(HighlightType));
+        }
 
         public static RazorScript SelectedScript { get; set; }
+
+        public static bool PopoutEditor { get; set; }
 
         private class ScriptTimer : Timer
         {
@@ -116,6 +137,8 @@ namespace Assistant.Scripts
 
                             Assistant.Engine.MainWindow.LockScriptUI(false);
                             ScriptRunning = false;
+
+                            ClearHighlightLine(HighlightType.Execution);
                         }
                     }
                 }
@@ -125,7 +148,7 @@ namespace Assistant.Scripts
                     {
                         World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})");
 
-                        //SetHighlightLine(ex.Node.LineNumber, Color.Red);
+                        SetHighlightLine(ex.Node.LineNumber, HighlightType.Error);
                     }
                     else
                     {
@@ -154,6 +177,13 @@ namespace Assistant.Scripts
             _scriptList = new List<RazorScript>();
 
             Recurse(null, Config.GetUserDirectory("Scripts"));
+
+            Interpreter.ActiveScriptStatementExecuted += ActiveScriptStatementExecuted;
+
+            foreach (HighlightType type in GetHighlightTypes())
+            {
+                HighlightLines[type] = new List<int>();
+            }
         }
 
         private static void HotkeyTargetTypeScript()
@@ -304,6 +334,8 @@ namespace Assistant.Scripts
             if (World.Player == null || ScriptEditor == null || lines == null)
                 return;
 
+            ClearAllHighlightLines();
+
             if (MacroManager.Playing || MacroManager.StepThrough)
                 MacroManager.Stop();
 
@@ -328,6 +360,19 @@ namespace Assistant.Scripts
             _queuedScript = script;
         }
 
+        private static void ActiveScriptStatementExecuted(ASTNode statement)
+        {
+            if (statement != null)
+            {
+                var lineNum = statement.LineNumber;
+
+                SetHighlightLine(lineNum, HighlightType.Execution);
+                // Scrolls to relevant line, per this suggestion: https://github.com/PavelTorgashov/FastColoredTextBox/issues/115
+                ScriptEditor.Selection.Start = new Place(0, lineNum);
+                ScriptEditor.DoSelectionVisible();
+            }
+        }
+
         private static ScriptTimer Timer { get; }
 
         static ScriptManager()
@@ -335,10 +380,12 @@ namespace Assistant.Scripts
             Timer = new ScriptTimer();
         }
 
-        public static void SetEditor(FastColoredTextBox scriptEditor)
+        public static void SetEditor(FastColoredTextBox scriptEditor, bool popoutEditor)
         {
             ScriptEditor = scriptEditor;
             ScriptEditor.Visible = true;
+
+            PopoutEditor = popoutEditor;
 
             InitScriptEditor();
         }
@@ -446,26 +493,70 @@ namespace Assistant.Scripts
 
         private delegate void SetHighlightLineDelegate(int iline, Color color);
 
-        /*private static void SetHighlightLine(int iline, Color background)
+        /// <summary>
+        /// Adds a new highlight of specified type
+        /// </summary>
+        /// <param name="iline">Line number to highlight</param>
+        /// <param name="type">Type of highlight to set</param>
+        private static void AddHighlightLine(int iline, HighlightType type)
         {
-            for (int i = 0; i < ScriptEditor.LinesCount; i++)
-            {
-                ScriptEditor[i].BackgroundBrush = ScriptEditor.BackBrush;
-            }
-
-            ScriptEditor[iline].BackgroundBrush = new SolidBrush(background);
-            ScriptEditor.Invalidate();
+            HighlightLines[type].Add(iline);
+            RefreshHighlightLines();
         }
 
-        public static void ClearHighlightLine()
+        /// <summary>
+        /// Clears existing highlight lines of this type, and adds a new one at specified line number
+        /// </summary>
+        /// <param name="iline">Line number to highlight</param>
+        /// <param name="type">Type of highlight to set</param>
+        private static void SetHighlightLine(int iline, HighlightType type)
+        {
+            if (!PopoutEditor)
+                return;
+
+            ClearHighlightLine(type);
+            AddHighlightLine(iline, type);
+        }
+
+        public static void ClearHighlightLine(HighlightType type)
+        {
+            if (!PopoutEditor)
+                return;
+
+            HighlightLines[type].Clear();
+            RefreshHighlightLines();
+        }
+
+        public static void ClearAllHighlightLines()
+        {
+            if (!PopoutEditor)
+                return;
+
+            foreach (HighlightType type in GetHighlightTypes())
+            {
+                HighlightLines[type].Clear();
+            }
+
+            RefreshHighlightLines();
+        }
+
+        private static void RefreshHighlightLines()
         {
             for (int i = 0; i < ScriptEditor.LinesCount; i++)
             {
                 ScriptEditor[i].BackgroundBrush = ScriptEditor.BackBrush;
             }
 
+            foreach (HighlightType type in GetHighlightTypes())
+            {
+                foreach (int lineNum in HighlightLines[type])
+                {
+                    ScriptEditor[lineNum].BackgroundBrush = HighlightLineColors[type];
+                }
+            }
+
             ScriptEditor.Invalidate();
-        }*/
+        }
 
         private static FastColoredTextBoxNS.AutocompleteMenu _autoCompleteMenu;
 

@@ -43,6 +43,9 @@ namespace Assistant.UI
             this.scriptLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
             this.scriptDocMap = new FastColoredTextBoxNS.DocumentMap();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.alwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptToolStrip.SuspendLayout();
             this.scriptLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).BeginInit();
@@ -55,7 +58,9 @@ namespace Assistant.UI
             this.scriptSave,
             this.toolStripSeparator1,
             this.scriptRecord,
-            this.scriptPlay});
+            this.scriptPlay,
+            this.toolStripSeparator2,
+            this.toolStripDropDownButton1});
             this.scriptToolStrip.Location = new System.Drawing.Point(0, 0);
             this.scriptToolStrip.Name = "scriptToolStrip";
             this.scriptToolStrip.Size = new System.Drawing.Size(801, 25);
@@ -169,6 +174,27 @@ namespace Assistant.UI
             this.scriptDocMap.TabIndex = 24;
             this.scriptDocMap.Target = null;
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.alwaysOnTopToolStripMenuItem});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(78, 22);
+            this.toolStripDropDownButton1.Text = "Settings";
+            // 
+            // alwaysOnTopToolStripMenuItem
+            // 
+            this.alwaysOnTopToolStripMenuItem.Name = "alwaysOnTopToolStripMenuItem";
+            this.alwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.alwaysOnTopToolStripMenuItem.Text = "Always On Top";
+            // 
             // RazorScriptEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -202,5 +228,8 @@ namespace Assistant.UI
         private System.Windows.Forms.TableLayoutPanel scriptLayoutPanel;
         private FastColoredTextBoxNS.FastColoredTextBox scriptEditor;
         private FastColoredTextBoxNS.DocumentMap scriptDocMap;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem alwaysOnTopToolStripMenuItem;
     }
 }

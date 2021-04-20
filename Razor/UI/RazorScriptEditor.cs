@@ -25,7 +25,7 @@ namespace Assistant.UI
 
         private void InitScriptEditorPopout()
         {
-            ScriptManager.SetEditor(scriptEditor);
+            ScriptManager.SetEditor(scriptEditor, true);
 
             scriptDocMap.Target = scriptEditor;
 
