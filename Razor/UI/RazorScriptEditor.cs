@@ -13,6 +13,8 @@ namespace Assistant.UI
 {
     public partial class RazorScriptEditor : Form
     {
+        private bool _savedCurrentScript = true;
+
         public RazorScriptEditor()
         {
             InitializeComponent();
@@ -34,7 +36,7 @@ namespace Assistant.UI
                 scriptEditor.SafeAction(s =>
                 {
                     ScriptManager.SetEditorText(ScriptManager.SelectedScript);
-                    UpdateScriptWindowTitle(true);
+                    UpdateScriptWindowTitle();
                 });
             }
         }
@@ -50,11 +52,11 @@ namespace Assistant.UI
             });
         }
 
-        private void UpdateScriptWindowTitle(bool saved)
+        private void UpdateScriptWindowTitle()
         {
             if (ScriptManager.SelectedScript != null)
             {
-                Text = saved ? $"[{ScriptManager.SelectedScript.Name}] - Razor Script Editor" : $"[*{ScriptManager.SelectedScript.Name}] - Razor Script Editor";
+                Text = _savedCurrentScript ? $"[{ScriptManager.SelectedScript.Name}] - Razor Script Editor" : $"[*{ScriptManager.SelectedScript.Name}] - Razor Script Editor";
             }
         }
 
@@ -112,7 +114,9 @@ namespace Assistant.UI
                 ScriptManager.SelectedScript.Lines = File.ReadAllLines(ScriptManager.SelectedScript.Path);
             }
 
-            UpdateScriptWindowTitle(true);
+            _savedCurrentScript = true;
+
+            UpdateScriptWindowTitle();
         }
 
         private void scriptRecord_Click(object sender, EventArgs e)
@@ -181,6 +185,21 @@ namespace Assistant.UI
         private void scriptSave_Click(object sender, EventArgs e)
         {
             SaveScript();
+        }
+
+        private void scriptEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Control | Keys.S))
+            {
+                BeginInvoke(new Action(SaveScript));
+            }
+
+            if (_savedCurrentScript)
+            {
+                _savedCurrentScript = false;
+
+                UpdateScriptWindowTitle();
+            }
         }
     }
 }

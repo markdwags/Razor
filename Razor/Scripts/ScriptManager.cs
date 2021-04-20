@@ -388,6 +388,11 @@ namespace Assistant.Scripts
             PopoutEditor = popoutEditor;
 
             InitScriptEditor();
+
+            if (SelectedScript != null)
+            {
+                SetEditorText(SelectedScript);
+            }
         }
 
         public static void SetEditorText(RazorScript selectedScript)
