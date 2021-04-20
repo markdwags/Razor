@@ -22,6 +22,7 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 using System.IO;
 using System.Linq;
@@ -2510,23 +2511,6 @@ namespace Assistant
                     return null;
                 else
                     return macroTree.SelectedNode.Parent;
-            }
-        }
-
-        private TreeNode GetScriptDirNode()
-        {
-            if (scriptTree.SelectedNode == null)
-            {
-                return null;
-            }
-            else
-            {
-                if (scriptTree.SelectedNode.Tag is string)
-                    return scriptTree.SelectedNode;
-                else if (scriptTree.SelectedNode.Parent == null || !(scriptTree.SelectedNode.Parent.Tag is string))
-                    return null;
-                else
-                    return scriptTree.SelectedNode.Parent;
             }
         }
 
@@ -6331,7 +6315,7 @@ namespace Assistant
                     Path = filePath
                 };
 
-                TreeNode node = GetScriptDirNode();
+                TreeNode node = ScriptManager.GetScriptDirNode();
 
                 ScriptManager.RedrawScripts();
 
@@ -6394,7 +6378,7 @@ namespace Assistant
                     return;
                 }
 
-                TreeNode node = GetScriptDirNode();
+                TreeNode node = ScriptManager.GetScriptDirNode();
 
                 string path = (node == null || !(node.Tag is string))
                     ? Config.GetUserDirectory("Scripts")
@@ -6641,6 +6625,8 @@ namespace Assistant
                     null,
                     OnScriptHideTreeView);
 
+                menu.Items.Add("Popout script editor", null, OnScriptEditorPopout);
+
                 menu.Show(scriptEditor, new Point(e.X, e.Y));
             }
             else if (e.Button == MouseButtons.Left && e.Clicks == 2)
@@ -6653,6 +6639,43 @@ namespace Assistant
         private void OnScriptHideTreeView(object sender, EventArgs e)
         {
             scriptSplitContainer.Panel1Collapsed = !scriptSplitContainer.Panel1Collapsed;
+        }
+
+        private RazorScriptEditor _razorScriptEditor;
+
+        private void OnScriptEditorPopout(object sender, EventArgs e)
+        {
+            if (_razorScriptEditor != null)
+            {
+                _razorScriptEditor.SafeAction(s =>
+                {
+                    s.Closing += RazorScriptEditor_Closing;
+                    s.Show();
+                });
+            }
+            else
+            {
+                _razorScriptEditor = new RazorScriptEditor();
+
+                _razorScriptEditor.SafeAction(s =>
+                {
+                    s.Closing += RazorScriptEditor_Closing;
+                    s.Show();
+                });
+            }
+
+            scriptEditor.Visible = !scriptEditor.Visible;
+        }
+
+        private void RazorScriptEditor_Closing(object sender, CancelEventArgs e)
+        {
+            _razorScriptEditor?.SafeAction(s =>
+            {
+                e.Cancel = true;
+                s.Hide();
+
+                ScriptManager.SetEditor(scriptEditor);
+            });
         }
 
         private void OnScriptComment(object sender, System.EventArgs e)
@@ -7238,9 +7261,9 @@ namespace Assistant
 
         private void scriptTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            RazorScript script = e.Node.Tag as RazorScript;
+            RazorScript selectedScript = e.Node.Tag as RazorScript;
 
-            if (script == null)
+            if (selectedScript == null)
                 return;
 
             Engine.MainWindow.SafeAction(s =>
@@ -7253,7 +7276,7 @@ namespace Assistant
                     RebuildHotKeyCache();
                 }
 
-                TreeNode resultNode = SearchTreeView(script.Name, hotkeyTree.Nodes);
+                TreeNode resultNode = SearchTreeView(selectedScript.Name, hotkeyTree.Nodes);
 
                 if (resultNode != null)
                 {
@@ -7270,7 +7293,7 @@ namespace Assistant
                 }
 
                 //ScriptManager.ClearHighlightLine();
-                scriptEditor.Text = string.Join("\n", script.Lines);
+                ScriptManager.SetEditorText(selectedScript);
             });
         }
 
@@ -7326,7 +7349,7 @@ namespace Assistant
                     append = $"Razor v{Engine.Version}";
                 }
 
-                Text = saved ? $"[{selScript.Name}] - {append}" : $"[{selScript.Name}*] - {append}";
+                Text = saved ? $"[{selScript.Name}] - {append}" : $"[*{selScript.Name}] - {append}";
                 _savedCurrentScript = true;
             }
         }
@@ -7475,7 +7498,7 @@ namespace Assistant
                 return;
             }
 
-            TreeNode node = GetScriptDirNode();
+            TreeNode node = ScriptManager.GetScriptDirNode();
 
             try
             {

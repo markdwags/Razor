@@ -55,6 +55,8 @@ namespace Assistant.Scripts
 
         private static Script _queuedScript;
 
+        public static RazorScript SelectedScript { get; set; }
+
         private class ScriptTimer : Timer
         {
             // Only run scripts once every 25ms to avoid spamming.
@@ -331,6 +333,21 @@ namespace Assistant.Scripts
         static ScriptManager()
         {
             Timer = new ScriptTimer();
+        }
+
+        public static void SetEditor(FastColoredTextBox scriptEditor)
+        {
+            ScriptEditor = scriptEditor;
+            ScriptEditor.Visible = true;
+
+            InitScriptEditor();
+        }
+
+        public static void SetEditorText(RazorScript selectedScript)
+        {
+            SelectedScript = selectedScript;
+
+            ScriptEditor.Text = string.Join("\n", SelectedScript.Lines);
         }
 
         public static void SetControls(FastColoredTextBox scriptEditor, TreeView scriptTree)
@@ -917,6 +934,36 @@ namespace Assistant.Scripts
                 s.Refresh();
                 s.Update();
             });
+        }
+
+        public static TreeNode GetScriptDirNode()
+        {
+            if (ScriptTree.SelectedNode == null)
+            {
+                return null;
+            }
+
+            if (ScriptTree.SelectedNode.Tag is string)
+                return ScriptTree.SelectedNode;
+                
+            if (!(ScriptTree.SelectedNode.Parent?.Tag is string))
+                return null;
+                
+            return ScriptTree.SelectedNode.Parent;
+        }
+
+        public static void AddScriptNode(TreeNode node)
+        {
+            if (node == null)
+            {
+                ScriptTree.Nodes.Add(node);
+            }
+            else
+            {
+                node.Nodes.Add(node);
+            }
+
+            ScriptTree.SelectedNode = node;
         }
 
         private static void Recurse(TreeNodeCollection nodes, string path)
