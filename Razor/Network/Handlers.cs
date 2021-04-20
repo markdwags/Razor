@@ -1509,7 +1509,15 @@ namespace Assistant
             Mobile m = World.FindMobile(serial);
 
             if (m == null)
+            {
                 World.AddMobile(m = new Mobile(serial));
+
+                if (m != World.Player && Config.GetBool("ShowMobNames"))
+                    Client.Instance.SendToServer(new SingleClick(m));
+
+                if (Config.GetBool("LastTargTextFlags"))
+                    Targeting.CheckTextFlags(m);
+            }
 
             MobileFilter.ApplyDragonFilter(p, m);
             MobileFilter.ApplyDrakeFilter(p, m);
@@ -1518,11 +1526,6 @@ namespace Assistant
             Point3D position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
             bool wasHidden = !m.Visible;
-
-            if (m != World.Player && Config.GetBool("ShowMobNames"))
-                Client.Instance.SendToServer(new SingleClick(m));
-            if (Config.GetBool("LastTargTextFlags"))
-                Targeting.CheckTextFlags(m);
 
             int ltHue = Config.GetInt("LTHilight");
             bool isLT;
