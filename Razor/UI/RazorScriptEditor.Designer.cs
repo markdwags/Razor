@@ -48,6 +48,8 @@ namespace Assistant.UI
             this.scriptLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
             this.scriptDocMap = new FastColoredTextBoxNS.DocumentMap();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptInfo = new System.Windows.Forms.ToolStripButton();
             this.scriptToolStrip.SuspendLayout();
             this.scriptLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).BeginInit();
@@ -58,11 +60,13 @@ namespace Assistant.UI
             this.scriptToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.scriptSave,
             this.toolStripSeparator1,
-            this.scriptRecord,
             this.scriptPlay,
+            this.scriptRecord,
             this.toolStripSeparator2,
             this.scriptSettings,
-            this.scriptHelp});
+            this.scriptHelp,
+            this.toolStripSeparator3,
+            this.scriptInfo});
             this.scriptToolStrip.Location = new System.Drawing.Point(0, 0);
             this.scriptToolStrip.Name = "scriptToolStrip";
             this.scriptToolStrip.Size = new System.Drawing.Size(801, 25);
@@ -129,12 +133,13 @@ namespace Assistant.UI
             // 
             // scriptHelp
             // 
+            this.scriptHelp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.scriptHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.scriptHelp.Image = ((System.Drawing.Image)(resources.GetObject("scriptHelp.Image")));
             this.scriptHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.scriptHelp.Name = "scriptHelp";
-            this.scriptHelp.Size = new System.Drawing.Size(36, 22);
-            this.scriptHelp.Text = "Help";
+            this.scriptHelp.Size = new System.Drawing.Size(72, 22);
+            this.scriptHelp.Text = "Help/Guide";
             this.scriptHelp.Click += new System.EventHandler(this.scriptHelp_Click);
             // 
             // scriptLayoutPanel
@@ -191,9 +196,9 @@ namespace Assistant.UI
             this.scriptEditor.Size = new System.Drawing.Size(675, 505);
             this.scriptEditor.TabIndex = 23;
             this.scriptEditor.Zoom = 100;
+            this.scriptEditor.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.scriptEditor_TextChanged);
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
             this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
-            this.scriptEditor.TextChanged += new EventHandler<TextChangedEventArgs>(this.scriptEditor_TextChanged);
             // 
             // scriptDocMap
             // 
@@ -205,6 +210,21 @@ namespace Assistant.UI
             this.scriptDocMap.Size = new System.Drawing.Size(114, 505);
             this.scriptDocMap.TabIndex = 24;
             this.scriptDocMap.Target = null;
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // scriptInfo
+            // 
+            this.scriptInfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.scriptInfo.Image = ((System.Drawing.Image)(resources.GetObject("scriptInfo.Image")));
+            this.scriptInfo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.scriptInfo.Name = "scriptInfo";
+            this.scriptInfo.Size = new System.Drawing.Size(32, 22);
+            this.scriptInfo.Text = "Info";
+            this.scriptInfo.Click += new System.EventHandler(this.scriptInfo_Click);
             // 
             // RazorScriptEditor
             // 
@@ -242,5 +262,7 @@ namespace Assistant.UI
         private System.Windows.Forms.ToolStripDropDownButton scriptSettings;
         private System.Windows.Forms.ToolStripMenuItem alwaysOnTop;
         private ToolStripButton scriptHelp;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripButton scriptInfo;
     }
 }

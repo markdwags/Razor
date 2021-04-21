@@ -6644,37 +6644,28 @@ namespace Assistant
             scriptSplitContainer.Panel1Collapsed = !scriptSplitContainer.Panel1Collapsed;
         }
 
-        private RazorScriptEditor _razorScriptEditor;
-
         private void OnScriptEditorPopout(object sender, EventArgs e)
         {
-            if (_razorScriptEditor != null)
+            if (Engine.RazorScriptEditorWindow == null)
             {
-                _razorScriptEditor.SafeAction(s =>
-                {
-                    s.Closing += RazorScriptEditor_Closing;
-                    s.Show();
-                });
+                Engine.RazorScriptEditorWindow = new RazorScriptEditor();
             }
-            else
-            {
-                _razorScriptEditor = new RazorScriptEditor();
 
-                _razorScriptEditor.SafeAction(s =>
-                {
-                    s.Closing += RazorScriptEditor_Closing;
-                    s.Show();
-                });
-            }
+            Engine.RazorScriptEditorWindow.SafeAction(s =>
+            {
+                s.Closing += RazorScriptEditor_Closing;
+                s.Show();
+            });
 
             scriptEditor.Visible = !scriptEditor.Visible;
         }
 
         private void RazorScriptEditor_Closing(object sender, CancelEventArgs e)
         {
-            _razorScriptEditor?.SafeAction(s =>
+            Engine.RazorScriptEditorWindow?.SafeAction(s =>
             {
                 e.Cancel = true;
+                s.TopMost = false;
                 s.Hide();
 
                 ScriptManager.SetEditor(scriptEditor, false);

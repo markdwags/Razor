@@ -24,6 +24,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Assistant.Gumps.Internal;
 using Assistant.Macros;
 using Assistant.Scripts.Engine;
 using Assistant.UI;
@@ -125,6 +126,7 @@ namespace Assistant.Scripts
                                 World.Player?.SendMessage(LocString.ScriptPlaying);
 
                             Assistant.Engine.MainWindow.LockScriptUI(true);
+                            Assistant.Engine.RazorScriptEditorWindow.LockScriptUI(true);
                             ScriptRunning = true;
                         }
                     }
@@ -136,6 +138,7 @@ namespace Assistant.Scripts
                                 World.Player?.SendMessage(LocString.ScriptFinished);
 
                             Assistant.Engine.MainWindow.LockScriptUI(false);
+                            Assistant.Engine.RazorScriptEditorWindow.LockScriptUI(false);
                             ScriptRunning = false;
 
                             ClearHighlightLine(HighlightType.Execution);
@@ -424,6 +427,7 @@ namespace Assistant.Scripts
             StopScript();
             Timer.Stop();
             Assistant.Engine.MainWindow.LockScriptUI(false);
+            Assistant.Engine.RazorScriptEditorWindow.LockScriptUI(false);
         }
 
         public static void StartEngine()
@@ -1128,6 +1132,34 @@ namespace Assistant.Scripts
             catch
             {
                 // ignored
+            }
+        }
+
+        public static void GetGumpInfo(string[] param)
+        {
+            Targeting.OneTimeTarget(OnGetItemInfoTarget);
+            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Language.CliLocName, "System", "Select an item or mobile to view/inspect"));
+        }
+
+        private static void OnGetItemInfoTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            Item item = World.FindItem(serial);
+
+            if (item == null)
+            {
+                Mobile mobile = World.FindMobile(serial);
+
+                if (mobile == null)
+                    return;
+
+                MobileInfoGump gump = new MobileInfoGump(mobile);
+                gump.SendGump();
+            }
+            else
+            {
+                ItemInfoGump gump = new ItemInfoGump(item);
+                gump.SendGump();
             }
         }
     }

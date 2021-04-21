@@ -64,6 +64,11 @@ namespace Assistant.UI
 
         private void scriptPlay_Click(object sender, EventArgs e)
         {
+            PlayScript();
+        }
+
+        private void PlayScript()
+        {
             if (ScriptManager.Running)
             {
                 ScriptManager.StopScript();
@@ -117,9 +122,6 @@ namespace Assistant.UI
                 scriptPlay.Enabled = false;
             }
         }
-
-        private static readonly char[] _invalidNameChars = { '/', '\\', ';', '?', ':', '*' };
-
         
         private void scriptSave_Click(object sender, EventArgs e)
         {
@@ -131,6 +133,10 @@ namespace Assistant.UI
             if (e.KeyData == (Keys.Control | Keys.S))
             {
                 BeginInvoke(new Action(SaveScript));
+            } 
+            else if (e.KeyData == (Keys.F5))
+            {
+                BeginInvoke(new Action(PlayScript));
             }
 
             if (_savedCurrentScript)
@@ -293,6 +299,26 @@ namespace Assistant.UI
 
                 UpdateScriptWindowTitle();
             }
+        }
+
+        public void LockScriptUI(bool enabled)
+        {
+            Engine.RazorScriptEditorWindow.SafeAction(s =>
+            {
+                scriptEditor.Enabled = !enabled;
+                scriptRecord.Enabled = !enabled;
+                scriptSave.Enabled = !enabled;
+
+                scriptPlay.Text = !enabled ? "Play" : "Stop";
+
+                scriptRecord.Enabled = !enabled;
+                scriptInfo.Enabled = !enabled;
+            });
+        }
+
+        private void scriptInfo_Click(object sender, EventArgs e)
+        {
+            ScriptManager.GetGumpInfo(null);
         }
     }
 }

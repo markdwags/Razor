@@ -216,30 +216,7 @@ namespace Assistant
 
         private static void GetGumpInfo(string[] param)
         {
-            Targeting.OneTimeTarget(OnGetItemInfoTarget);
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                Language.CliLocName, "System", "Select an item or mobile to view/inspect"));
-        }
-
-        private static void OnGetItemInfoTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
-        {
-            Item item = World.FindItem(serial);
-
-            if (item == null)
-            {
-                Mobile mobile = World.FindMobile(serial);
-
-                if (mobile == null)
-                    return;
-
-                MobileInfoGump gump = new MobileInfoGump(mobile);
-                gump.SendGump();
-            }
-            else
-            {
-                ItemInfoGump gump = new ItemInfoGump(item);
-                gump.SendGump();
-            }
+            ScriptManager.GetGumpInfo(param);
         }
 
         private static void GetItemHue(string[] param)
@@ -262,26 +239,8 @@ namespace Assistant
 
         private static void GetMobile(string[] param)
         {
-            Targeting.OneTimeTarget(OnGetMobileTarget);
-            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                Language.CliLocName, "System", "Select a mobile to get information on"));
+            ScriptManager.GetGumpInfo(param);
         }
-
-        private static void OnGetMobileTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
-        {
-            Mobile mobile = World.FindMobile(serial);
-
-            if (mobile != null)
-            {
-                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                    Language.CliLocName, "System", $"Name: '{mobile.Name}'"));
-
-                Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
-                    Language.CliLocName, "System",
-                    $"Serial: '{mobile.Serial}' Hue: '{mobile.Hue}' IsGhost: '{mobile.IsGhost}' IsHuman: '{mobile.IsHuman}' IsMonster: '{mobile.IsMonster}'"));
-            }
-        }
-
 
         private static void Echo(string[] param)
         {
