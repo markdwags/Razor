@@ -8,12 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Assistant.Scripts;
+using FastColoredTextBoxNS;
 
 namespace Assistant.UI
 {
     public partial class RazorScriptEditor : Form
     {
         private bool _savedCurrentScript = true;
+        private RazorScript _currentScript;
 
         public RazorScriptEditor()
         {
@@ -279,6 +281,18 @@ namespace Assistant.UI
             string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
             ScriptManager.PlayScript(lines);
+        }
+
+        private void scriptEditor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_currentScript != ScriptManager.SelectedScript)
+            {
+                _currentScript = ScriptManager.SelectedScript;
+
+                _savedCurrentScript = true;
+
+                UpdateScriptWindowTitle();
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using FastColoredTextBoxNS;
 
 namespace Assistant.UI
 {
@@ -192,6 +193,7 @@ namespace Assistant.UI
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
             this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
+            this.scriptEditor.TextChanged += new EventHandler<TextChangedEventArgs>(this.scriptEditor_TextChanged);
             // 
             // scriptDocMap
             // 
