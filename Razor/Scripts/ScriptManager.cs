@@ -353,8 +353,6 @@ namespace Assistant.Scripts
             if (World.Player == null)
                 return;
 
-            //ClearHighlightLine();
-
             Script script = new Script(Lexer.Lex(lines));
 
             _queuedScript = script;

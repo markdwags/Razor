@@ -6625,7 +6625,10 @@ namespace Assistant
                     null,
                     OnScriptHideTreeView);
 
-                menu.Items.Add("Popout script editor", null, OnScriptEditorPopout);
+                if (ScriptManager.SelectedScript != null)
+                {
+                    menu.Items.Add("Open in popout script editor", null, OnScriptEditorPopout);
+                }
 
                 menu.Show(scriptEditor, new Point(e.X, e.Y));
             }
@@ -7325,6 +7328,8 @@ namespace Assistant
                     m_ScriptContextMenu.Items.Add("Copy to clipboard", null, CopyScriptToClipboard);
                 }
 
+                m_ScriptContextMenu.Items.Add("-");
+                m_ScriptContextMenu.Items.Add("Open in popout script editor", null, OnScriptEditorPopout);
                 m_ScriptContextMenu.Items.Add("-");
                 m_ScriptContextMenu.Items.Add("Reload all scripts", null, ReloadScripts);
                 m_ScriptContextMenu.Items.Add("Hide script tree", null, HideScriptTreeView);

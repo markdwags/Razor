@@ -84,39 +84,15 @@ namespace Assistant.UI
 
         private void SaveScript()
         {
-            if (ScriptManager.SelectedScript == null)
-            {
-                string filePath = $"{ScriptManager.ScriptPath}\\auto-{Guid.NewGuid().ToString().Substring(0, 4)}.razor";
-
-                File.WriteAllText(filePath, scriptEditor.Text);
-
-                RazorScript script = new RazorScript
-                {
-                    Lines = File.ReadAllLines(filePath),
-                    Name = Path.GetFileNameWithoutExtension(filePath),
-                    Path = filePath
-                };
-
-                TreeNode node = ScriptManager.GetScriptDirNode();
-
-                ScriptManager.RedrawScripts();
-
-                TreeNode newNode = new TreeNode(script.Name)
-                {
-                    Tag = script
-                };
-
-                ScriptManager.AddScriptNode(newNode);
-            }
-            else
+            if (ScriptManager.SelectedScript != null)
             {
                 File.WriteAllText(ScriptManager.SelectedScript.Path, scriptEditor.Text);
                 ScriptManager.SelectedScript.Lines = File.ReadAllLines(ScriptManager.SelectedScript.Path);
+
+                _savedCurrentScript = true;
+
+                UpdateScriptWindowTitle();
             }
-
-            _savedCurrentScript = true;
-
-            UpdateScriptWindowTitle();
         }
 
         private void scriptRecord_Click(object sender, EventArgs e)
@@ -142,46 +118,7 @@ namespace Assistant.UI
 
         private static readonly char[] _invalidNameChars = { '/', '\\', ';', '?', ':', '*' };
 
-        private void scriptNew_Click(object sender, EventArgs e)
-        {
-            if (InputBox.Show(this, "New Razor Script", "Enter the name of the script"))
-            {
-                string name = InputBox.GetString();
-                if (string.IsNullOrEmpty(name) || name.IndexOfAny(Path.GetInvalidPathChars()) != -1 ||
-                    name.IndexOfAny(_invalidNameChars) != -1)
-                {
-                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
-                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                TreeNode node = ScriptManager.GetScriptDirNode();
-
-                string path = (node == null || !(node.Tag is string))
-                    ? Config.GetUserDirectory("Scripts")
-                    : (string)node.Tag;
-                path = Path.Combine(path, $"{name}.razor");
-
-                if (File.Exists(path))
-                {
-                    MessageBox.Show(this, Language.GetString(LocString.MacroExists),
-                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                File.CreateText(path).Close();
-
-                RazorScript script = ScriptManager.AddScript(path);
-
-                TreeNode newNode = new TreeNode(script.Name)
-                {
-                    Tag = script
-                };
-
-                ScriptManager.AddScriptNode(newNode);
-            }
-        }
-
+        
         private void scriptSave_Click(object sender, EventArgs e)
         {
             SaveScript();
@@ -200,6 +137,148 @@ namespace Assistant.UI
 
                 UpdateScriptWindowTitle();
             }
+        }
+
+        private void alwaysOnTop_Click(object sender, EventArgs e)
+        {
+            TopMost = !TopMost;
+
+            alwaysOnTop.Checked = TopMost;
+        }
+
+        private void scriptHelp_Click(object sender, EventArgs e)
+        {
+            Utility.LaunchBrowser("http://www.razorce.com/guide/");
+        }
+
+        private void scriptEditor_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                ContextMenuStrip menu = new ContextMenuStrip();
+
+                if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
+                {
+                    menu.Items.Add("Comment", null, OnScriptComment);
+                    menu.Items.Add("Uncomment", null, OnScriptUncomment);
+
+                    if (!string.IsNullOrEmpty(scriptEditor.SelectedText) && !ScriptManager.Running && !ScriptManager.Recording && World.Player != null)
+                    {
+                        menu.Items.Add("-");
+                        menu.Items.Add("Play selected script code", null, OnScriptPlaySelected);
+
+                        int space = scriptEditor.SelectedText.IndexOf(" ", StringComparison.Ordinal);
+
+                        if (space > -1)
+                        {
+                            string command = scriptEditor.SelectedText.Substring(0, space);
+
+                            if (command.Equals("dclick"))
+                            {
+                                menu.Items.Add("-");
+                                menu.Items.Add("Convert to 'dclicktype' by gfxid", null, OnScriptDclickTypeId);
+                                menu.Items.Add("Convert to 'dclicktype' by name", null, OnScriptDclickTypeName);
+                            }
+                        }
+                    }
+
+                    menu.Items.Add("-");
+                }
+
+                menu.Show(scriptEditor, new Point(e.X, e.Y));
+            }
+            else if (e.Button == MouseButtons.Left && e.Clicks == 2)
+            {
+                if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
+                    return;
+            }
+        }
+
+        private void OnScriptComment(object sender, System.EventArgs e)
+        {
+            string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+            scriptEditor.SelectedText = "";
+            for (int i = 0; i < lines.Count(); i++)
+            {
+                scriptEditor.SelectedText += "#" + lines[i];
+                if (i < lines.Count() - 1)
+                    scriptEditor.SelectedText += "\r\n";
+            }
+        }
+
+        private void OnScriptUncomment(object sender, System.EventArgs e)
+        {
+            string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+            scriptEditor.SelectedText = "";
+            for (int i = 0; i < lines.Count(); i++)
+            {
+                scriptEditor.SelectedText += lines[i].TrimStart('#');
+                if (i < lines.Count() - 1)
+                    scriptEditor.SelectedText += "\r\n";
+            }
+        }
+
+        private void OnScriptDclickTypeId(object sender, System.EventArgs e)
+        {
+            Serial itemId = Serial.Zero;
+
+            try
+            {
+                itemId = Serial.Parse(scriptEditor.SelectedText.Split(' ')[1]);
+            }
+            catch
+            {
+                return;
+            }
+
+            Item item = World.FindItem(itemId);
+
+            if (item == null)
+                return;
+
+            scriptEditor.SelectedText = "";
+            scriptEditor.SelectedText = $"dclicktype '{item.ItemID.Value}'";
+        }
+
+        private void OnScriptDclickTypeName(object sender, System.EventArgs e)
+        {
+            Serial gfxid = Serial.Zero;
+
+            try
+            {
+                gfxid = Serial.Parse(scriptEditor.SelectedText.Split(' ')[1]);
+            }
+            catch
+            {
+                return;
+            }
+
+
+            Item item = World.FindItem(gfxid);
+
+            if (item == null)
+                return;
+
+            scriptEditor.SelectedText = "";
+            scriptEditor.SelectedText = $"dclicktype '{item.ItemID.ItemData.Name}'";
+        }
+
+        private void OnScriptPlaySelected(object sender, System.EventArgs e)
+        {
+            if (ScriptManager.Running)
+            {
+                ScriptManager.StopScript();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(scriptEditor.SelectedText))
+                return;
+
+            string[] lines = scriptEditor.SelectedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+            ScriptManager.PlayScript(lines);
         }
     }
 }
