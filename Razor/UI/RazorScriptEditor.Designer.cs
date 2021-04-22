@@ -39,17 +39,18 @@ namespace Assistant.UI
             this.scriptToolStrip = new System.Windows.Forms.ToolStrip();
             this.scriptSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.scriptRecord = new System.Windows.Forms.ToolStripButton();
             this.scriptPlay = new System.Windows.Forms.ToolStripButton();
+            this.scriptRecord = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.scriptSettings = new System.Windows.Forms.ToolStripDropDownButton();
             this.alwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptHelp = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptInfo = new System.Windows.Forms.ToolStripButton();
             this.scriptLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
             this.scriptDocMap = new FastColoredTextBoxNS.DocumentMap();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.scriptInfo = new System.Windows.Forms.ToolStripButton();
+            this.scriptStatusStrip = new System.Windows.Forms.StatusStrip();
             this.scriptToolStrip.SuspendLayout();
             this.scriptLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).BeginInit();
@@ -88,16 +89,6 @@ namespace Assistant.UI
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // scriptRecord
-            // 
-            this.scriptRecord.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.scriptRecord.Image = ((System.Drawing.Image)(resources.GetObject("scriptRecord.Image")));
-            this.scriptRecord.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.scriptRecord.Name = "scriptRecord";
-            this.scriptRecord.Size = new System.Drawing.Size(48, 22);
-            this.scriptRecord.Text = "Record";
-            this.scriptRecord.Click += new System.EventHandler(this.scriptRecord_Click);
-            // 
             // scriptPlay
             // 
             this.scriptPlay.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -107,6 +98,16 @@ namespace Assistant.UI
             this.scriptPlay.Size = new System.Drawing.Size(33, 22);
             this.scriptPlay.Text = "Play";
             this.scriptPlay.Click += new System.EventHandler(this.scriptPlay_Click);
+            // 
+            // scriptRecord
+            // 
+            this.scriptRecord.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.scriptRecord.Image = ((System.Drawing.Image)(resources.GetObject("scriptRecord.Image")));
+            this.scriptRecord.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.scriptRecord.Name = "scriptRecord";
+            this.scriptRecord.Size = new System.Drawing.Size(48, 22);
+            this.scriptRecord.Text = "Record";
+            this.scriptRecord.Click += new System.EventHandler(this.scriptRecord_Click);
             // 
             // toolStripSeparator2
             // 
@@ -141,6 +142,21 @@ namespace Assistant.UI
             this.scriptHelp.Size = new System.Drawing.Size(72, 22);
             this.scriptHelp.Text = "Help/Guide";
             this.scriptHelp.Click += new System.EventHandler(this.scriptHelp_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // scriptInfo
+            // 
+            this.scriptInfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.scriptInfo.Image = ((System.Drawing.Image)(resources.GetObject("scriptInfo.Image")));
+            this.scriptInfo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.scriptInfo.Name = "scriptInfo";
+            this.scriptInfo.Size = new System.Drawing.Size(32, 22);
+            this.scriptInfo.Text = "Info";
+            this.scriptInfo.Click += new System.EventHandler(this.scriptInfo_Click);
             // 
             // scriptLayoutPanel
             // 
@@ -211,26 +227,20 @@ namespace Assistant.UI
             this.scriptDocMap.TabIndex = 24;
             this.scriptDocMap.Target = null;
             // 
-            // toolStripSeparator3
+            // scriptStatusStrip
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            // 
-            // scriptInfo
-            // 
-            this.scriptInfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.scriptInfo.Image = ((System.Drawing.Image)(resources.GetObject("scriptInfo.Image")));
-            this.scriptInfo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.scriptInfo.Name = "scriptInfo";
-            this.scriptInfo.Size = new System.Drawing.Size(32, 22);
-            this.scriptInfo.Text = "Info";
-            this.scriptInfo.Click += new System.EventHandler(this.scriptInfo_Click);
+            this.scriptStatusStrip.Location = new System.Drawing.Point(0, 514);
+            this.scriptStatusStrip.Name = "scriptStatusStrip";
+            this.scriptStatusStrip.Size = new System.Drawing.Size(801, 22);
+            this.scriptStatusStrip.TabIndex = 25;
+            this.scriptStatusStrip.Text = "statusStrip1";
             // 
             // RazorScriptEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(801, 536);
+            this.Controls.Add(this.scriptStatusStrip);
             this.Controls.Add(this.scriptLayoutPanel);
             this.Controls.Add(this.scriptToolStrip);
             this.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -264,5 +274,6 @@ namespace Assistant.UI
         private ToolStripButton scriptHelp;
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripButton scriptInfo;
+        private StatusStrip scriptStatusStrip;
     }
 }
