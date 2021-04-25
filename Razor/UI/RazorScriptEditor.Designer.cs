@@ -77,7 +77,6 @@ namespace Assistant.UI
             // scriptSave
             // 
             this.scriptSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.scriptSave.Image = ((System.Drawing.Image)(resources.GetObject("scriptSave.Image")));
             this.scriptSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.scriptSave.Name = "scriptSave";
             this.scriptSave.Size = new System.Drawing.Size(35, 22);
@@ -92,7 +91,6 @@ namespace Assistant.UI
             // scriptPlay
             // 
             this.scriptPlay.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.scriptPlay.Image = ((System.Drawing.Image)(resources.GetObject("scriptPlay.Image")));
             this.scriptPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.scriptPlay.Name = "scriptPlay";
             this.scriptPlay.Size = new System.Drawing.Size(33, 22);
@@ -102,7 +100,6 @@ namespace Assistant.UI
             // scriptRecord
             // 
             this.scriptRecord.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.scriptRecord.Image = ((System.Drawing.Image)(resources.GetObject("scriptRecord.Image")));
             this.scriptRecord.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.scriptRecord.Name = "scriptRecord";
             this.scriptRecord.Size = new System.Drawing.Size(48, 22);
@@ -119,7 +116,6 @@ namespace Assistant.UI
             this.scriptSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.scriptSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.alwaysOnTop});
-            this.scriptSettings.Image = ((System.Drawing.Image)(resources.GetObject("scriptSettings.Image")));
             this.scriptSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.scriptSettings.Name = "scriptSettings";
             this.scriptSettings.Size = new System.Drawing.Size(62, 22);
@@ -128,7 +124,7 @@ namespace Assistant.UI
             // alwaysOnTop
             // 
             this.alwaysOnTop.Name = "alwaysOnTop";
-            this.alwaysOnTop.Size = new System.Drawing.Size(152, 22);
+            this.alwaysOnTop.Size = new System.Drawing.Size(180, 22);
             this.alwaysOnTop.Text = "Always On Top";
             this.alwaysOnTop.Click += new System.EventHandler(this.alwaysOnTop_Click);
             // 
@@ -151,7 +147,6 @@ namespace Assistant.UI
             // scriptInfo
             // 
             this.scriptInfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.scriptInfo.Image = ((System.Drawing.Image)(resources.GetObject("scriptInfo.Image")));
             this.scriptInfo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.scriptInfo.Name = "scriptInfo";
             this.scriptInfo.Size = new System.Drawing.Size(32, 22);
