@@ -128,7 +128,7 @@ namespace Assistant.Scripts
                                 World.Player?.SendMessage(LocString.ScriptPlaying);
 
                             Assistant.Engine.MainWindow.LockScriptUI(true);
-                            Assistant.Engine.RazorScriptEditorWindow.LockScriptUI(true);
+                            Assistant.Engine.RazorScriptEditorWindow?.LockScriptUI(true);
                             ScriptRunning = true;
                         }
                     }
@@ -140,7 +140,7 @@ namespace Assistant.Scripts
                                 World.Player?.SendMessage(LocString.ScriptFinished);
 
                             Assistant.Engine.MainWindow.LockScriptUI(false);
-                            Assistant.Engine.RazorScriptEditorWindow.LockScriptUI(false);
+                            Assistant.Engine.RazorScriptEditorWindow?.LockScriptUI(false);
                             ScriptRunning = false;
 
                             ClearHighlightLine(HighlightType.Execution);
