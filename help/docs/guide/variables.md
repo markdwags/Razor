@@ -35,7 +35,7 @@ Along with defining your own variables, you can use these pre-defined variables 
 | Variable          | Description                                                |
 | ----------------- | ---------------------------------------------------------- |
 | backpack          | `Returns:` The serial of your own backpack                 |
-| hand              | `Returns:` The serial of the item in either hand           |
+| hands              | `Returns:` The serial of the item in either hand           |
 | lasttarget / last | `Returns:` The serial of your current last target in Razor |
 | lastobject        | `Returns:` The serial of your last used object in Razor    |
 | lefthand          | `Returns:` The serial of the item in your left hand        |
