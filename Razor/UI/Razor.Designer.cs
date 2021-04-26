@@ -709,7 +709,7 @@ namespace Assistant
             this.setScriptHotkey = new System.Windows.Forms.Button();
             this.recordScript = new System.Windows.Forms.Button();
             this.playScript = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.subScriptOptions = new System.Windows.Forms.TabPage();
             this.disableScriptTooltips = new System.Windows.Forms.CheckBox();
             this.scriptDisablePlayFinish = new System.Windows.Forms.CheckBox();
             this.autoSaveScriptPlay = new System.Windows.Forms.CheckBox();
@@ -739,6 +739,7 @@ namespace Assistant
             this.friendsGroup = new System.Windows.Forms.ComboBox();
             this.friendsListEnabled = new System.Windows.Forms.CheckBox();
             this.screenshotTab = new System.Windows.Forms.TabPage();
+            this.openScreenshotFolder = new System.Windows.Forms.Button();
             this.captureOwnDeathDelay = new System.Windows.Forms.TextBox();
             this.lblOwnDeathMs = new System.Windows.Forms.Label();
             this.captureOwnDeath = new System.Windows.Forms.CheckBox();
@@ -781,7 +782,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.openScreenshotFolder = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -836,7 +836,7 @@ namespace Assistant
             this.scriptSplitContainer.Panel2.SuspendLayout();
             this.scriptSplitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).BeginInit();
-            this.tabPage3.SuspendLayout();
+            this.subScriptOptions.SuspendLayout();
             this.scriptVariablesBox.SuspendLayout();
             this.friendsTab.SuspendLayout();
             this.friendsGroupBox.SuspendLayout();
@@ -4327,7 +4327,7 @@ namespace Assistant
             // subTabScripts
             // 
             this.subTabScripts.Controls.Add(this.subScripts);
-            this.subTabScripts.Controls.Add(this.tabPage3);
+            this.subTabScripts.Controls.Add(this.subScriptOptions);
             this.subTabScripts.Location = new System.Drawing.Point(6, 3);
             this.subTabScripts.Name = "subTabScripts";
             this.subTabScripts.SelectedIndex = 0;
@@ -4505,20 +4505,20 @@ namespace Assistant
             this.playScript.UseVisualStyleBackColor = true;
             this.playScript.Click += new System.EventHandler(this.playScript_Click);
             // 
-            // tabPage3
+            // subScriptOptions
             // 
-            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage3.Controls.Add(this.disableScriptTooltips);
-            this.tabPage3.Controls.Add(this.scriptDisablePlayFinish);
-            this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
-            this.tabPage3.Controls.Add(this.autoSaveScript);
-            this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 287);
-            this.tabPage3.TabIndex = 1;
-            this.tabPage3.Text = "Options";
+            this.subScriptOptions.BackColor = System.Drawing.SystemColors.Control;
+            this.subScriptOptions.Controls.Add(this.disableScriptTooltips);
+            this.subScriptOptions.Controls.Add(this.scriptDisablePlayFinish);
+            this.subScriptOptions.Controls.Add(this.autoSaveScriptPlay);
+            this.subScriptOptions.Controls.Add(this.autoSaveScript);
+            this.subScriptOptions.Controls.Add(this.scriptVariablesBox);
+            this.subScriptOptions.Location = new System.Drawing.Point(4, 24);
+            this.subScriptOptions.Name = "subScriptOptions";
+            this.subScriptOptions.Padding = new System.Windows.Forms.Padding(3);
+            this.subScriptOptions.Size = new System.Drawing.Size(498, 285);
+            this.subScriptOptions.TabIndex = 1;
+            this.subScriptOptions.Text = "Options";
             // 
             // disableScriptTooltips
             // 
@@ -4844,6 +4844,16 @@ namespace Assistant
             this.screenshotTab.Size = new System.Drawing.Size(519, 322);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
+            // 
+            // openScreenshotFolder
+            // 
+            this.openScreenshotFolder.Location = new System.Drawing.Point(266, 201);
+            this.openScreenshotFolder.Name = "openScreenshotFolder";
+            this.openScreenshotFolder.Size = new System.Drawing.Size(155, 23);
+            this.openScreenshotFolder.TabIndex = 62;
+            this.openScreenshotFolder.Text = "Open Screen Shot Folder";
+            this.openScreenshotFolder.UseVisualStyleBackColor = true;
+            this.openScreenshotFolder.Click += new System.EventHandler(this.openScreenshotFolder_Click);
             // 
             // captureOwnDeathDelay
             // 
@@ -5294,16 +5304,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // openScreenshotFolder
-            // 
-            this.openScreenshotFolder.Location = new System.Drawing.Point(266, 201);
-            this.openScreenshotFolder.Name = "openScreenshotFolder";
-            this.openScreenshotFolder.Size = new System.Drawing.Size(155, 23);
-            this.openScreenshotFolder.TabIndex = 62;
-            this.openScreenshotFolder.Text = "Open Screen Shot Folder";
-            this.openScreenshotFolder.UseVisualStyleBackColor = true;
-            this.openScreenshotFolder.Click += new System.EventHandler(this.openScreenshotFolder_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5399,8 +5399,8 @@ namespace Assistant
             ((System.ComponentModel.ISupportInitialize)(this.scriptSplitContainer)).EndInit();
             this.scriptSplitContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.subScriptOptions.ResumeLayout(false);
+            this.subScriptOptions.PerformLayout();
             this.scriptVariablesBox.ResumeLayout(false);
             this.friendsTab.ResumeLayout(false);
             this.friendsTab.PerformLayout();
@@ -5428,7 +5428,7 @@ namespace Assistant
         private Button setScriptHotkey;
         private Button recordScript;
         private Button playScript;
-        private TabPage tabPage3;
+        private TabPage subScriptOptions;
         private GroupBox scriptVariablesBox;
         private Button changeScriptVariable;
         private Button removeScriptVariable;

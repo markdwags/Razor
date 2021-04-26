@@ -76,7 +76,7 @@ namespace Assistant
             DressList.SetControls(dressList, dressItems);
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
-            ScriptManager.SetControls(scriptEditor, scriptTree);
+            ScriptManager.SetControls(scriptEditor, scriptTree, scriptVariables);
             WaypointManager.SetControls(waypointList);
             OverheadManager.SetControls(cliLocOverheadView);
             TextFilterManager.SetControls(textFilterList);
@@ -2838,7 +2838,7 @@ namespace Assistant
 
             RebuildScriptCache();
 
-            ScriptManager.DisplayScriptVariables(scriptVariables);
+            ScriptManager.RedrawScriptVariables();
         }
 
         public Macro LastSelectedMacro { get; set; }
@@ -6135,7 +6135,7 @@ namespace Assistant
 
         public void SaveScriptVariables()
         {
-            ScriptManager.DisplayScriptVariables(scriptVariables);
+            ScriptManager.RedrawScripts();
         }
 
         private void filterDaemonGraphics_CheckedChanged(object sender, EventArgs e)
@@ -6490,7 +6490,7 @@ namespace Assistant
 
                 ScriptVariables.RegisterVariable(name);
 
-                ScriptManager.DisplayScriptVariables(scriptVariables);
+                ScriptManager.RedrawScripts();
             }
 
             Engine.MainWindow.ShowMe();
@@ -6510,7 +6510,7 @@ namespace Assistant
 
             ScriptVariables.ScriptVariableList[scriptVariables.SelectedIndex].TargetInfo = t;
 
-            ScriptManager.DisplayScriptVariables(scriptVariables);
+            ScriptManager.RedrawScripts();
 
             Engine.MainWindow.ShowMe();
         }
@@ -6539,7 +6539,7 @@ namespace Assistant
             ScriptVariables.UnregisterVariable(ScriptVariables.ScriptVariableList[scriptVariables.SelectedIndex].Name);
             ScriptVariables.ScriptVariableList.RemoveAt(scriptVariables.SelectedIndex);
 
-            ScriptManager.DisplayScriptVariables(scriptVariables);
+            ScriptManager.RedrawScripts();
         }
 
         private void autoSaveScript_CheckedChanged(object sender, EventArgs e)

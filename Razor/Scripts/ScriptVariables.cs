@@ -32,7 +32,7 @@ namespace Assistant.Scripts
             public TargetInfo TargetInfo { get; set; }
             public string Name { get; set; }
             public bool TargetWasSet { get; set; }
-
+            
             public ScriptVariable(string targetVarName, TargetInfo t)
             {
                 TargetInfo = t;

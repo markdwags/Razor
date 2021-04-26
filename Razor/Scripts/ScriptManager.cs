@@ -54,6 +54,8 @@ namespace Assistant.Scripts
 
         private static TreeView ScriptTree { get; set; }
 
+        private static ListBox ScriptVariableList { get; set; }
+
         private static Script _queuedScript;
         
         public enum HighlightType
@@ -403,10 +405,11 @@ namespace Assistant.Scripts
             ScriptEditor.Text = string.Join("\n", SelectedScript.Lines);
         }
 
-        public static void SetControls(FastColoredTextBox scriptEditor, TreeView scriptTree)
+        public static void SetControls(FastColoredTextBox scriptEditor, TreeView scriptTree, ListBox scriptVariables)
         {
             ScriptEditor = scriptEditor;
             ScriptTree = scriptTree;
+            ScriptVariableList = scriptVariables;
         }
 
         public static void OnLogin()
@@ -437,9 +440,9 @@ namespace Assistant.Scripts
 
         private static List<RazorScript> _scriptList { get; set; }
 
-        public static void DisplayScriptVariables(ListBox list)
+        public static void RedrawScriptVariables()
         {
-            list.SafeAction(s =>
+            ScriptVariableList?.SafeAction(s =>
             {
                 s.BeginUpdate();
                 s.Items.Clear();
@@ -1032,6 +1035,8 @@ namespace Assistant.Scripts
                 s.Refresh();
                 s.Update();
             });
+
+            RedrawScriptVariables();
         }
 
         public static TreeNode GetScriptDirNode()

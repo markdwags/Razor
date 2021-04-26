@@ -175,11 +175,19 @@ namespace Assistant.Scripts
 
             string varname = args[0].AsString();
 
-            ScriptVariables.ScriptVariable var = ScriptVariables.GetVariable(varname);
+            ScriptVariables.ScriptVariable variable = ScriptVariables.GetVariable(varname);
 
-            if (var == null)
+            if (variable == null)
             {
-                throw new RunTimeError(null, $"{command} - Unknown variable '{varname}'");
+                World.Player.SendMessage(Config.GetInt("SysColor"), $"'{varname}' not found, creating new variable");
+
+                variable = new ScriptVariables.ScriptVariable(varname, new TargetInfo());
+
+                ScriptVariables.ScriptVariableList.Add(variable);
+
+                ScriptVariables.RegisterVariable(varname);
+
+                ScriptManager.RedrawScriptVariables();
             }
 
             Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
@@ -187,13 +195,13 @@ namespace Assistant.Scripts
 
             if (!ScriptManager.SetVariableActive)
             {
-                var.SetTarget();
+                variable.SetTarget();
                 ScriptManager.SetVariableActive = true;
 
                 return false;
             }
 
-            if (var.TargetWasSet)
+            if (variable.TargetWasSet)
             {
                 Interpreter.ClearTimeout();
                 ScriptManager.SetVariableActive = false;
