@@ -365,7 +365,7 @@ namespace Assistant.Scripts
 
         private static void ActiveScriptStatementExecuted(ASTNode statement)
         {
-            if (statement != null)
+            if (statement != null && PopoutEditor)
             {
                 var lineNum = statement.LineNumber;
 
