@@ -744,13 +744,25 @@ namespace Assistant.Scripts
                 throw new RunTimeError(null, "Usage: skill ('skill name'/'last')");
             }
 
+            int skillId = 0;
+
+            if (World.Player.LastSkill != -1)
+            {
+                skillId = World.Player.LastSkill;
+            }
+
             if (args[0].AsString() == "last")
             {
                 Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
             }
-            else if (SkillHotKeys.UsableSkillsByName.TryGetValue(args[0].AsString().ToLower(), out int skillId))
+            else if (SkillHotKeys.UsableSkillsByName.TryGetValue(args[0].AsString().ToLower(), out skillId))
             {
                 Client.Instance.SendToServer(new UseSkill(skillId));
+            }
+
+            if (skillId == (int)SkillName.Stealth && !World.Player.Visible)
+            {
+                StealthSteps.Hide();
             }
 
             return true;

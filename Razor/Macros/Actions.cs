@@ -1919,6 +1919,12 @@ namespace Assistant.Macros
         public override bool Perform()
         {
             Client.Instance.SendToServer(new UseSkill(m_Skill));
+
+            if (m_Skill == (int)SkillName.Stealth && !World.Player.Visible)
+            {
+                StealthSteps.Hide();
+            }
+
             return true;
         }
 
