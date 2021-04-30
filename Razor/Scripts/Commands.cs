@@ -758,6 +758,8 @@ namespace Assistant.Scripts
             else if (SkillHotKeys.UsableSkillsByName.TryGetValue(args[0].AsString().ToLower(), out skillId))
             {
                 Client.Instance.SendToServer(new UseSkill(skillId));
+
+                World.Player.LastSkill = skillId;
             }
 
             if (skillId == (int)SkillName.Stealth && !World.Player.Visible)

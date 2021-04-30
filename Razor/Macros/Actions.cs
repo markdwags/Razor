@@ -1925,6 +1925,8 @@ namespace Assistant.Macros
                 StealthSteps.Hide();
             }
 
+            World.Player.LastSkill = m_Skill;
+
             return true;
         }
 
