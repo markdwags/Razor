@@ -49,6 +49,8 @@ Description: Used to check if a specific buff/debuff is applied to you.
             overhead 'Im set!'
         else
             cast 'magic reflection'
+            wft
+            target 'self'
         endif
         ```
 
@@ -58,12 +60,27 @@ Description: Used to check if a specific buff/debuff is applied to you.
 
 Description: Used to check if a specific item name of graphic ID exists. Range check, if true, will check within 2 tiles.
 
+!!! tip "In-Game Info Gump"
+    Not sure what name to enter or graphic ID to enter? Type `>info` and click on any item or mobile for more information.
+
+    ![item-command](../images/infocommand.png)
+
+    Click the blue dot next to the value you want to copy to the clipboard.
+
 !!! example
 
     === "Find a saw"
 
         ```vim
         if findtype 'saw'
+            say 'found saw'
+        endif
+        ```
+    
+    === "Find a saw using graphic id"
+
+        ```vim
+        if findtype '4148'
             say 'found saw'
         endif
         ```
@@ -135,6 +152,11 @@ Description: Used to get your current or max hit points/health levels.
 
 Description: Used to check if certain text appears within the system message log.
 
+!!! tip "System Message Queue"
+    Not sure if a specific message is in Razor's system message queue? Type `>sysmsgs` to see what Razor can find.
+
+    Using `clearsysmsg` will clear out the queue completely.
+
 !!! example
 
     === "Check for message"
@@ -143,7 +165,7 @@ Description: Used to check if certain text appears within the system message log
         if insysmsg 'too far away'
             overhead 'You are too far away'
         endif
-        ```
+        ```   
 
 ## lhandempty
 
@@ -226,9 +248,9 @@ Description: Used to check if your current position matches the provided.
 
         ```vim
         if position 2729 2133
-        overhead 'You are currently in front of the Bucs Den teleporter'
+            overhead 'You are currently in front of the Bucs Den teleporter'
         elseif position 2728 2133 5
-        overhead 'You are standing on the Bucs Den teleporter'
+            overhead 'You are standing on the Bucs Den teleporter'
         endif
         ```
 
@@ -304,6 +326,9 @@ Description: Used to check if your right hand is empty
 - `skill ('name')`
 
 Description: Used to get the current skill level for a given skill.
+
+!!! tip "Supported skill names"
+    `anatomy, animallore, itemidentification, itemid, armslore, begging, peacemaking, peace, cartography, detectinghidden, discord, discordance, evaluatingintelligence, evalint, forensicevaluation, forensiceval, hiding, provocation, provo, inscription, poisoning, spiritspeak, stealing, taming, tasteidentification, tasteid, tracking, meditation, stealth, removetrap, imbuing`
 
 !!! example
 

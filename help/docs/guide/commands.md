@@ -99,6 +99,22 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         endif
         ```
 
+# cleardragdrop
+
+**Syntax**: `cleardragdrop`
+
+**Description**: Clears Razor's the drag/drop queue
+
+!!! example
+
+    === "Clear on sysmsg message"
+
+        ```vim
+        if insysmsg 'cannot reach'
+            cleardragdrop
+        endif
+        ```
+
 # clearhands
 
 **Syntax**: `clearhands ('left'/'right'/'both')`
@@ -351,6 +367,29 @@ Example:
         waitfortarget
         hotkey 'target self'
         ```
+
+# interrupt
+**Syntax**: `interrupt`
+
+**Description**: This command will interrupt a casting action. 
+
+!!! example
+
+    === "Example"
+
+        ```vim
+        cast 'energy bolt'
+        if hp < 10
+            interrupt
+            cast 'greater healing'
+            wft
+            target 'self'
+        end if
+        
+        wft
+        target 'last'    
+        ```
+
 
 # lasttarget
 

@@ -40,7 +40,7 @@ In March 2020 the [Razor Scripting Engine](http://www.razorce.com/guide/) was ad
 
 When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](https://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](https://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community, one of the only freeshards where the rules only allow for the use of Razor. The original **UO:R Community Edition** name was used to not only distinguish between other versions of Razor that were available but give credit to a community that provided so much support early on.
 
-As the popularity of this version grew, especially after the implementation of ClassicUO support, it become widely used across the whole UO freeshard community, from small private shards to some of the largest shards in the community and continues to be built on the feedback and contributions from all different corners of the community.
+As the popularity of this version grew, especially after the implementation of ClassicUO support, it became widely used across the whole UO freeshard community, from small private shards to some of the largest shards in the community and continues to be built on the feedback and contributions from all different corners of the community.
 
 With that said, I find it more appropriate to simply call this version the **Razor Community Edition**.
 

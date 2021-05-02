@@ -109,6 +109,9 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("virtue", Virtue);
 
             Interpreter.RegisterCommandHandler("random", Random);
+
+            Interpreter.RegisterCommandHandler("cleardragdrop", ClearDragDrop);
+            Interpreter.RegisterCommandHandler("interrupt", Interrupt);
         }
 
         private static string[] virtues = new string[3] { "honor", "sacrifice", "valor" };
@@ -1145,6 +1148,20 @@ namespace Assistant.Scripts
             int max = args[0].AsInt();
 
             World.Player.SendMessage(MsgLevel.Info, $"Random: {Utility.Random(1, max)}");
+
+            return true;
+        }
+
+        private static bool ClearDragDrop(string command, Argument[] args, bool quiet, bool force)
+        {
+            DragDropManager.GracefulStop();
+
+            return true;
+        }
+        
+        private static bool Interrupt(string command, Argument[] args, bool quiet, bool force)
+        {
+            Spell.Interrupt();
 
             return true;
         }
