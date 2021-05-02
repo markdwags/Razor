@@ -72,6 +72,11 @@ namespace Assistant.Scripts
 
                     break;
 
+                case "cancel":
+                    Targeting.CancelTarget();
+
+                    break;
+
                 default:
                     Serial serial = args[0].AsSerial();
 

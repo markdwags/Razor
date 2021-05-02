@@ -767,7 +767,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # target
 
-**Syntax**: `target (closest/random/next/prev) [type1,type2] [humanoid/monster]` or `target (closest/random/next/prev) [type1!type2] [humanoid/monster]` or `target (serial)`
+**Syntax**: `target (cancel/closest/random/next/prev) [type1,type2] [humanoid/monster]` or `target (cancel/closest/random/next/prev) [type1!type2] [humanoid/monster]` or `target (serial)`
 
 **Description**: This command will target a specific mobile based either the type searched for or the serial. If you provide a list of target types, you can use `,` for a general list and `!` for a priority list.
 
@@ -856,6 +856,12 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```vim        
         target next humanoid
         ```    
+
+    === "Cancel current target"
+
+        ```vim        
+        target cancel
+        ```
 
 # targetrelloc
 

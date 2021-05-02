@@ -364,7 +364,7 @@ namespace FastColoredTextBoxNS
 
             RazorLayerRegex =
                 new Regex(
-                    @"\b(RightHand|LeftHand|Shoes|Pants|Shirt|Head|Gloves|Ring|Talisman|Neck|Hair|Waist|InnerTorso|Bracelet|FacialHair|MiddleTorso|Earrings|Arms|Cloak|Backpack|OuterTorso|OuterLegs|InnerLegs|backpack|true|false|criminal|enemy|friend|friendly|grey|gray|innocent|murderer|red|blue|nonfriendly)\b",
+                    @"\b(RightHand|LeftHand|Shoes|Pants|Shirt|Head|Gloves|Ring|Talisman|Neck|Hair|Waist|InnerTorso|Bracelet|FacialHair|MiddleTorso|Earrings|Arms|Cloak|Backpack|OuterTorso|OuterLegs|InnerLegs|backpack|true|false|criminal|enemy|friend|friendly|grey|gray|innocent|murderer|red|blue|nonfriendly|cancel)\b",
                     RegexCompiledOption);
 
             RazorExpressionRegex =
