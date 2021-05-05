@@ -678,8 +678,6 @@ namespace Assistant.Scripts.Engine
                         {
                             if (depth == 0)
                             {
-                                PopScope();
-
                                 // Go one past the end so the loop doesn't repeat
                                 _statement = _statement.Next();
                                 break;
