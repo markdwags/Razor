@@ -77,6 +77,11 @@ namespace Assistant.Scripts
 
                     break;
 
+                case "clear":
+                    Targeting.OnClearQueue();
+
+                    break;
+
                 default:
                     Serial serial = args[0].AsSerial();
 

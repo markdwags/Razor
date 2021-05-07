@@ -224,7 +224,7 @@ namespace Assistant
             _lastOverheadMessageAttack = serial;
         }
 
-        private static void OnClearQueue()
+        public static void OnClearQueue()
         {
             ClearQueue();
 
