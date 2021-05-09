@@ -4378,8 +4378,17 @@ namespace Assistant
                     return;
                 }
 
+                string newXml = Path.Combine(Config.GetUserDirectory("Profiles"), $"{newProfileName}.xml");
+
+                if (File.Exists(newXml))
+                {
+                    MessageBox.Show(this, "A profile with that name exists, try another name.",
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 File.Copy(Path.Combine(Config.GetUserDirectory("Profiles"), $"{profileToClone}.xml"),
-                    Path.Combine(Config.GetUserDirectory("Profiles"), $"{newProfileName}.xml"));
+                        Path.Combine(Config.GetUserDirectory("Profiles"), $"{newProfileName}.xml"));
 
                 profiles.Items.Add(newProfileName);
             }

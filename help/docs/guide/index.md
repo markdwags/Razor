@@ -6,7 +6,7 @@ To learn more about this version of Razor, please visit the [home page](http://w
 
 # Design
 
-This is not an implementation of the **Steam** or **Razor Enhanced** scripting languages or functionality into Razor. The scripting engine attempts to maintain and improve existing Razor  functionality while offering quality of life improvements over the existing macro system.
+This is not an implementation of the **Steam** or **Razor Enhanced** scripting languages or functionality into Razor. This scripting engine attempts to maintain and improve existing Razor functionality while offering quality of life improvements over the existing macro system.
 
 For example, instead of having to do the following:
 
