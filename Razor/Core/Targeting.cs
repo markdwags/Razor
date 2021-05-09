@@ -1327,22 +1327,21 @@ namespace Assistant
             }
             else
             {
-                if (Macros.MacroManager.AcceptActions)
+                KeyData hk = HotKey.Get((int)LocString.TargetSelf);
+
+                if (MacroManager.AcceptActions)
                 {
-                    KeyData hk = HotKey.Get((int) LocString.TargetSelf);
                     if (hk != null)
                     {
                         MacroManager.Action(new HotKeyAction(hk));
-
-                        ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
                     }
                     else
                     {
                         MacroManager.Action(new AbsoluteTargetAction(info));
-
-                        ScriptManager.AddToScript($"target {info.Serial}");
                     }
                 }
+
+                ScriptManager.AddToScript(hk != null ? "target 'self'" : $"target {info.Serial}");
             }
 
             if (World.Player.LastSpell == 52 && !GateTimer.Running)
