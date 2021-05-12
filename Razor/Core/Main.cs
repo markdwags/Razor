@@ -289,7 +289,6 @@ namespace Assistant
 
             /* Load settings from configuration file */
             Ultima.Files.SetMulPath(Config.GetAppSetting<string>("UODataDir"));
-            Ultima.Multis.PostHSFormat = UsePostHSChanges;
             Client.Instance.ClientEncrypted = Config.GetAppSetting<int>("ClientEncrypted") == 1;
             Client.Instance.ServerEncrypted = Config.GetAppSetting<int>("ServerEncrypted") == 1;
 
@@ -330,6 +329,8 @@ namespace Assistant
                 SplashScreen.End();
                 return;
             }
+
+            Ultima.Multis.PostHSFormat = UsePostHSChanges;
 
             string addr = Config.GetAppSetting<string>("LastServer");
             int port = Config.GetAppSetting<int>("LastPort");
