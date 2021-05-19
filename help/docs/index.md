@@ -3,7 +3,7 @@
 # Razor Community Edition
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1815mo6is2t8fl1o?svg=true)](https://ci.appveyor.com/project/markdwags/razor)
-[![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
+[![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/zrdyYcc)
 
 Razor is a free tool designed to help with simple tasks while playing Ultima Online.
 
@@ -55,7 +55,7 @@ If you're unable to find a solution using the information here or you'd like to 
 * Submit a feature/bug/issue on our [official Razor GitHub Repo](https://github.com/markdwags/Razor/issues).
 * Join us in #razor on Discord (we use the the official [ClassicUO](https://www.classicuo.eu/) Discord server)
 
-[![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
+[![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/zrdyYcc)
 
 For more information about the Razor Scripting Engine, go [here](http://www.razorce.com/guide/).
 
