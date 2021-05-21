@@ -18,6 +18,7 @@
 
 #endregion
 
+using Assistant.Core;
 using System;
 
 namespace Assistant
@@ -58,6 +59,8 @@ namespace Assistant
         static BandageTimer()
         {
             m_Timer = new InternalTimer();
+
+            MessageManager.OnSystemMessage += OnSystemMessage;
         }
 
         public static void OnLocalizedMessage(int num)
@@ -97,7 +100,9 @@ namespace Assistant
             }
         }
 
-        public static void OnAsciiMessage(string msg)
+        private static void OnSystemMessage(Packet p, PacketHandlerEventArgs args, Serial source, ushort graphic,
+                                            MessageType type, ushort hue, ushort font, string lang, string sourceName,
+                                            string msg)
         {
             if (Running)
             {

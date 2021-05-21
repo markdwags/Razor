@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Core;
 using Assistant.UI;
 
 namespace Assistant.Agents
@@ -33,6 +34,21 @@ namespace Assistant.Agents
         public static void Initialize()
         {
             Agent.Add(Instance = new IgnoreAgent());
+
+            MessageManager.OnMobileMessage += HandleMobileMessage;
+        }
+
+        public static void HandleMobileMessage(Packet p, PacketHandlerEventArgs args, Serial source, ushort graphic,
+                                 MessageType type, ushort hue, ushort font, string lang, string sourceName,
+                                 string text)
+        {
+            if (Instance == null)
+                return;
+
+            if (Instance.IsSerialIgnored(source))
+            {
+                args.Block = true;
+            }
         }
 
         public static bool IsIgnored(Serial ser)

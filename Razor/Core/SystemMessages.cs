@@ -27,6 +27,43 @@ namespace Assistant.Core
     {
         public static List<string> Messages { get; } = new List<string>();
 
+        public static void Initialize()
+        {
+            MessageManager.OnSystemMessage += HandleSystemMessage;
+        }
+
+        private static void HandleSystemMessage(Packet p, PacketHandlerEventArgs args, Serial source, ushort graphic,
+                         MessageType type, ushort hue, ushort font, string lang, string sourceName,
+                         string text)
+        {
+            if (Config.GetBool("FilterSnoopMsg") && text.IndexOf(World.Player.Name) == -1 &&
+                text.StartsWith("You notice") && text.IndexOf("attempting to peek into") != -1 &&
+                text.IndexOf("belongings") != -1)
+            {
+                args.Block = true;
+                return;
+            }
+
+            if (text.StartsWith("You've committed a criminal act") || text.StartsWith("You are now a criminal"))
+            {
+                World.Player.ResetCriminalTimer();
+            }
+
+            if (Config.GetBool("FilterSystemMessages"))
+            {
+                if (!MessageQueue.Enqueue(source, null, graphic, type, hue, font, lang, sourceName, text))
+                {
+                    args.Block = true;
+                    return;
+                }
+            }
+
+            // Overhead message override
+            OverheadManager.DisplayOverheadMessage(text);
+
+            Add(text);
+        }
+
         public static void Add(string text)
         {
             if (string.IsNullOrEmpty(text))

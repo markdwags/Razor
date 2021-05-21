@@ -18,6 +18,7 @@
 
 #endregion
 
+using Assistant.Core;
 using System;
 using System.Linq;
 
@@ -35,6 +36,8 @@ namespace Assistant
         static GateTimer()
         {
             m_Timer = new InternalTimer();
+
+            MessageManager.OnSystemMessage += OnSystemMessage;
         }
 
         public static int Count
@@ -42,7 +45,9 @@ namespace Assistant
             get { return m_Count; }
         }
 
-        public static void OnAsciiMessage(string msg)
+        private static void OnSystemMessage(Packet p, PacketHandlerEventArgs args, Serial source, ushort graphic,
+                                            MessageType type, ushort hue, ushort font, string lang, string sourceName,
+                                            string msg)
         {
             if (Running)
             {

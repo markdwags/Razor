@@ -1918,284 +1918,104 @@ namespace Assistant
                 args.Block = WallStaticFilter.MakeWallStatic(item);
         }
 
-        public static System.Text.StringBuilder SpellPowerwordsBuilder { get; set; } = new System.Text.StringBuilder(Config.GetString("SpellFormat"));
-
-        private static void ResetSpellPowerwordsBuilder()
-        {
-            SpellPowerwordsBuilder.Remove(0, SpellPowerwordsBuilder.Length);
-            SpellPowerwordsBuilder.Insert(0, Config.GetString("SpellFormat"));
-        }
-
-        public static void HandleSpeech(Packet p, PacketHandlerEventArgs args, Serial ser, ushort body,
-            MessageType type, ushort hue, ushort font, string lang, string name, string text)
-        {
-            if (World.Player == null)
-                return;
-
-            if (type == MessageType.Spell)
-            {
-                Spell s = Spell.Get(text.Trim());
-                bool replaced = false;
-
-                if (Config.GetBool("OverrideSpellFormat") && s != null)
-                {
-                    ResetSpellPowerwordsBuilder();
-
-                    System.Text.StringBuilder sb = SpellPowerwordsBuilder;
-                    sb.Replace(@"{power}", s.WordsOfPower);
-                    string spell = Language.GetString(s.Name);
-                    sb.Replace(@"{spell}", spell);
-                    sb.Replace(@"{name}", spell);
-                    sb.Replace(@"{circle}", s.Circle.ToString());
-
-                    string newText = sb.ToString();
-
-                    if (newText != null && newText != "" && newText != text)
-                    {
-                        Client.Instance.SendToClient(new AsciiMessage(ser, body, MessageType.Spell, s.GetHue(hue), font,
-                            name, newText));
-
-                        replaced = true;
-                        args.Block = true;
-                    }
-                }
-
-                if (!replaced && Config.GetBool("ForceSpellHue"))
-                {
-                    p.Seek(10, SeekOrigin.Begin);
-                    if (s != null)
-                        p.Write((ushort) s.GetHue(hue));
-                    else
-                        p.Write((ushort) Config.GetInt("NeutralSpellHue"));
-                }
-            }
-            else if (ser.IsMobile && type == MessageType.Label)
-            {
-                Mobile m = World.FindMobile(ser);
-                if (m != null /*&& ( m.Name == null || m.Name == "" || m.Name == "(Not Seen)" )*/ &&
-                    m.Name.IndexOf(text) != 5 && m != World.Player && !(text.StartsWith("(") && text.EndsWith(")")))
-                    m.Name = text;
-            }
-            /*else if ( Spell.Get( text.Trim() ) != null )
-            { // send fake spells to bottom left
-                 p.Seek( 3, SeekOrigin.Begin );
-                 p.Write( (uint)0xFFFFFFFF );
-            }*/
-            else
-            {
-                if (ser == Serial.MinusOne && name == "System")
-                {
-                    if (Config.GetBool("FilterSnoopMsg") && text.IndexOf(World.Player.Name) == -1 &&
-                        text.StartsWith("You notice") && text.IndexOf("attempting to peek into") != -1 &&
-                        text.IndexOf("belongings") != -1)
-                    {
-                        args.Block = true;
-                        return;
-                    }
-
-                    if (text.StartsWith("You've committed a criminal act") || text.StartsWith("You are now a criminal"))
-                    {
-                        World.Player.ResetCriminalTimer();
-                    }
-
-                    // Overhead message override
-                    OverheadManager.DisplayOverheadMessage(text);
-                }
-
-                if (Config.GetBool("ShowContainerLabels") && ser.IsItem)
-                {
-                    Item item = World.FindItem(ser);
-
-                    if (item == null || !item.IsContainer)
-                        return;
-
-                    foreach (ContainerLabels.ContainerLabel label in ContainerLabels.ContainerLabelList)
-                    {
-                        // Check if its the serial match and if the text matches the name (since we override that for the label)
-                        if (Serial.Parse(label.Id) == ser &&
-                            (item.ItemID.ItemData.Name.Equals(text) ||
-                             label.Alias.Equals(text, StringComparison.InvariantCultureIgnoreCase)))
-                        {
-                            string labelDisplay =
-                                $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{type}", text)}";
-
-                            //ContainerLabelStyle
-                            if (Config.GetInt("ContainerLabelStyle") == 0)
-                            {
-                                Client.Instance.SendToClient(new AsciiMessage(ser, item.ItemID.Value, MessageType.Label,
-                                    label.Hue, 3, Language.CliLocName, labelDisplay));
-                            }
-                            else
-                            {
-                                Client.Instance.SendToClient(new UnicodeMessage(ser, item.ItemID.Value,
-                                    MessageType.Label, label.Hue, 3, Language.CliLocName, "", labelDisplay));
-                            }
-
-                            // block the actual message from coming through since we have it in the label
-                            args.Block = true;
-
-                            ContainerLabels.LastContainerLabelDisplayed = ser;
-
-                            break;
-                        }
-                    }
-                }
-
-                if ((type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper ||
-                     type == MessageType.Yell) && ser.IsMobile && ser != World.Player.Serial)
-                {
-                    if (ser.IsMobile && IgnoreAgent.IsIgnored(ser))
-                    {
-                        args.Block = true;
-                        return;
-                    }
-
-                    if (ser.IsMobile && TextFilterManager.IsFiltered(text))
-                    {
-                        args.Block = true;
-                        return;
-                    }
-
-                    if (Config.GetBool("ForceSpeechHue"))
-                    {
-                        p.Seek(10, SeekOrigin.Begin);
-                        p.Write((ushort) Config.GetInt("SpeechHue"));
-                    }
-                }
-
-                if (!ser.IsValid || ser == World.Player.Serial || ser.IsItem)
-                {
-                    SystemMessages.Add(text);
-                }
-
-                if (Config.GetBool("FilterSystemMessages") && ser == Serial.MinusOne || ser == Serial.Zero)
-                {
-                    if (!MessageQueue.Enqueue(ser, null, body, type, hue, font, lang, name, text))
-                    {
-                        args.Block = true;
-                    }
-                }
-            }
-        }
-
         public static void AsciiSpeech(Packet p, PacketHandlerEventArgs args)
         {
-            // 0, 1, 2
-            Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
-            ushort body = p.ReadUInt16(); // 7, 8
-            MessageType type = (MessageType) p.ReadByte(); // 9
-            ushort hue = p.ReadUInt16(); // 10, 11
+            Serial serial = p.ReadUInt32();
+            ushort graphic = p.ReadUInt16();
+            MessageType type = (MessageType)p.ReadByte();
+            ushort hue = p.ReadUInt16();
             ushort font = p.ReadUInt16();
-            string name = p.ReadStringSafe(30);
+            string sourceName = p.ReadStringSafe(30);
             string text = p.ReadStringSafe();
 
-            if (World.Player != null && serial == Serial.Zero && body == 0 && type == MessageType.Regular &&
-                hue == 0xFFFF && font == 0xFFFF && name == "SYSTEM")
+            if (World.Player != null && serial == Serial.Zero && graphic == 0 && type == MessageType.Regular &&
+                hue == 0xFFFF && font == 0xFFFF && sourceName == "SYSTEM")
             {
                 args.Block = true;
-
                 Client.Instance.SendToServer(new ACKTalk());
+                return;
             }
-            else
-            {
-                HandleSpeech(p, args, serial, body, type, hue, font, "A", name, text);
 
-                if (!serial.IsValid)
-                {
-                    BandageTimer.OnAsciiMessage(text);
-                }
-
-                GateTimer.OnAsciiMessage(text);
-            }
+            MessageManager.HandleMessage(p, args, serial, graphic, type, hue, font, "A", sourceName, text);
         }
 
         public static void UnicodeSpeech(Packet p, PacketHandlerEventArgs args)
         {
-            // 0, 1, 2
-            Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
-            ushort body = p.ReadUInt16(); // 7, 8
-            MessageType type = (MessageType) p.ReadByte(); // 9
-            ushort hue = p.ReadUInt16(); // 10, 11
+            Serial serial = p.ReadUInt32();
+            ushort graphic = p.ReadUInt16();
+            MessageType type = (MessageType)p.ReadByte();
+            ushort hue = p.ReadUInt16();
             ushort font = p.ReadUInt16();
             string lang = p.ReadStringSafe(4);
             string name = p.ReadStringSafe(30);
             string text = p.ReadUnicodeStringSafe();
 
-            HandleSpeech(p, args, serial, body, type, hue, font, lang, name, text);
-
-            if (!serial.IsValid)
-            {
-                BandageTimer.OnAsciiMessage(text);
-            }
+            MessageManager.HandleMessage(p, args, serial, graphic, type, hue, font, lang, name, text);
         }
 
         private static void OnLocalizedMessage(Packet p, PacketHandlerEventArgs args)
         {
-            // 0, 1, 2
-            Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
-            ushort body = p.ReadUInt16(); // 7, 8
-            MessageType type = (MessageType) p.ReadByte(); // 9
-            ushort hue = p.ReadUInt16(); // 10, 11
+            Serial serial = p.ReadUInt32();
+            ushort graphic = p.ReadUInt16();
+            MessageType type = (MessageType)p.ReadByte();
+            ushort hue = p.ReadUInt16();
             ushort font = p.ReadUInt16();
-            int num = p.ReadInt32();
+            int cliloc = p.ReadInt32();
             string name = p.ReadStringSafe(30);
-            string ext_str = p.ReadUnicodeStringLESafe();
+            string parameters = p.ReadUnicodeStringLESafe();
 
-            if ((num >= 3002011 && num < 3002011 + 64) || // reg spells
-                (num >= 1060509 && num < 1060509 + 16) || // necro
-                (num >= 1060585 && num < 1060585 + 10) || // chiv
-                (num >= 1060493 && num < 1060493 + 10) || // chiv
-                (num >= 1060595 && num < 1060595 + 6) || // bush
-                (num >= 1060610 && num < 1060610 + 8)) // ninj
+            if ((cliloc >= 3002011 && cliloc < 3002011 + 64) || // reg spells
+                (cliloc >= 1060509 && cliloc < 1060509 + 16) || // necro
+                (cliloc >= 1060585 && cliloc < 1060585 + 10) || // chiv
+                (cliloc >= 1060493 && cliloc < 1060493 + 10) || // chiv
+                (cliloc >= 1060595 && cliloc < 1060595 + 6) || // bush
+                (cliloc >= 1060610 && cliloc < 1060610 + 8)) // ninj
             {
                 type = MessageType.Spell;
             }
 
-            BandageTimer.OnLocalizedMessage(num);
+            string text = Language.ClilocFormat(cliloc, parameters);
 
-            try
-            {
-                string text = Language.ClilocFormat(num, ext_str);
-                HandleSpeech(p, args, serial, body, type, hue, font, Language.CliLocName.ToUpper(), name, text);
-            }
-            catch (Exception e)
-            {
-                Engine.LogCrash(new Exception($"Exception in Ultima.dll cliloc: {num}, {ext_str}",
-                    e));
-            }
+            MessageManager.HandleMessage(p, args, serial, graphic, type, hue, font, Language.CliLocName.ToUpper(), name, text);
         }
 
         private static void OnLocalizedMessageAffix(Packet p, PacketHandlerEventArgs phea)
         {
-            // 0, 1, 2
-            Serial serial = p.ReadUInt32(); // 3, 4, 5, 6
-            ushort body = p.ReadUInt16(); // 7, 8
-            MessageType type = (MessageType) p.ReadByte(); // 9
-            ushort hue = p.ReadUInt16(); // 10, 11
+            Serial serial = p.ReadUInt32();
+            ushort body = p.ReadUInt16();
+            MessageType type = (MessageType)p.ReadByte();
+            ushort hue = p.ReadUInt16();
             ushort font = p.ReadUInt16();
-            int num = p.ReadInt32();
+            int cliloc = p.ReadInt32();
             byte affixType = p.ReadByte();
-            string name = p.ReadStringSafe(30);
+            string sourceName = p.ReadStringSafe(30);
             string affix = p.ReadStringSafe();
             string args = p.ReadUnicodeStringSafe();
 
-            if ((num >= 3002011 && num < 3002011 + 64) || // reg spells
-                (num >= 1060509 && num < 1060509 + 16) || // necro
-                (num >= 1060585 && num < 1060585 + 10) || // chiv
-                (num >= 1060493 && num < 1060493 + 10) || // chiv
-                (num >= 1060595 && num < 1060595 + 6) || // bush
-                (num >= 1060610 && num < 1060610 + 8) // ninj
+            if ((cliloc >= 3002011 && cliloc < 3002011 + 64) || // reg spells
+                (cliloc >= 1060509 && cliloc < 1060509 + 16) || // necro
+                (cliloc >= 1060585 && cliloc < 1060585 + 10) || // chiv
+                (cliloc >= 1060493 && cliloc < 1060493 + 10) || // chiv
+                (cliloc >= 1060595 && cliloc < 1060595 + 6) || // bush
+                (cliloc >= 1060610 && cliloc < 1060610 + 8) // ninj
             )
             {
                 type = MessageType.Spell;
             }
 
             string text;
-            if ((affixType & 1) != 0) // prepend
-                text = $"{affix}{Language.ClilocFormat(num, args)}";
-            else // 0 == append, 2 = system
-                text = $"{Language.ClilocFormat(num, args)}{affix}";
-            HandleSpeech(p, phea, serial, body, type, hue, font, Language.CliLocName.ToUpper(), name, text);
+            if ((affixType & 1) != 0)
+            {
+                // prepend
+                text = $"{affix}{Language.ClilocFormat(cliloc, args)}";
+            }
+            else
+            {
+                // 0 == append, 2 = system
+                text = $"{Language.ClilocFormat(cliloc, args)}{affix}";
+            }
+
+            MessageManager.HandleMessage(p, phea, serial, body, type, hue, font, Language.CliLocName.ToUpper(), sourceName, text);
         }
 
         private static void SendGump(PacketReader p, PacketHandlerEventArgs args)
