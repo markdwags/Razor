@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Assistant.Gumps.Internal;
 using Assistant.Macros;
 using Assistant.Scripts.Engine;
 using Assistant.UI;
@@ -44,15 +45,41 @@ namespace Assistant.Scripts
         public static bool SetLastTargetActive { get; set; }
 
         public static bool SetVariableActive { get; set; }
+        
+        public static bool TargetFound { get; set; }
 
         public static string ScriptPath => Config.GetUserDirectory("Scripts");
 
         private static FastColoredTextBox ScriptEditor { get; set; }
 
-        //private static ListBox ScriptList { get; set; }
         private static TreeView ScriptTree { get; set; }
 
+        private static ListBox ScriptVariableList { get; set; }
+
         private static Script _queuedScript;
+        
+        public enum HighlightType
+        {
+            Error,
+            Execution
+        }
+
+        private static Dictionary<HighlightType, List<int>> HighlightLines { get; } = new Dictionary<HighlightType, List<int>>();
+
+        private static Dictionary<HighlightType, Brush> HighlightLineColors { get; } = new Dictionary<HighlightType, Brush>()
+        {
+            { HighlightType.Error, new SolidBrush(Color.Red) },
+            { HighlightType.Execution, new SolidBrush(Color.Blue) }
+        };
+
+        private static HighlightType[] GetHighlightTypes()
+        {
+            return (HighlightType[])Enum.GetValues(typeof(HighlightType));
+        }
+
+        public static RazorScript SelectedScript { get; set; }
+
+        public static bool PopoutEditor { get; set; }
 
         private class ScriptTimer : Timer
         {
@@ -101,6 +128,7 @@ namespace Assistant.Scripts
                                 World.Player?.SendMessage(LocString.ScriptPlaying);
 
                             Assistant.Engine.MainWindow.LockScriptUI(true);
+                            Assistant.Engine.RazorScriptEditorWindow?.LockScriptUI(true);
                             ScriptRunning = true;
                         }
                     }
@@ -112,7 +140,10 @@ namespace Assistant.Scripts
                                 World.Player?.SendMessage(LocString.ScriptFinished);
 
                             Assistant.Engine.MainWindow.LockScriptUI(false);
+                            Assistant.Engine.RazorScriptEditorWindow?.LockScriptUI(false);
                             ScriptRunning = false;
+
+                            ClearHighlightLine(HighlightType.Execution);
                         }
                     }
                 }
@@ -122,7 +153,7 @@ namespace Assistant.Scripts
                     {
                         World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})");
 
-                        //SetHighlightLine(ex.Node.LineNumber, Color.Red);
+                        SetHighlightLine(ex.Node.LineNumber, HighlightType.Error);
                     }
                     else
                     {
@@ -151,6 +182,13 @@ namespace Assistant.Scripts
             _scriptList = new List<RazorScript>();
 
             Recurse(null, Config.GetUserDirectory("Scripts"));
+
+            Interpreter.ActiveScriptStatementExecuted += ActiveScriptStatementExecuted;
+
+            foreach (HighlightType type in GetHighlightTypes())
+            {
+                HighlightLines[type] = new List<int>();
+            }
         }
 
         private static void HotkeyTargetTypeScript()
@@ -301,6 +339,8 @@ namespace Assistant.Scripts
             if (World.Player == null || ScriptEditor == null || lines == null)
                 return;
 
+            ClearAllHighlightLines();
+
             if (MacroManager.Playing || MacroManager.StepThrough)
                 MacroManager.Stop();
 
@@ -318,11 +358,22 @@ namespace Assistant.Scripts
             if (World.Player == null)
                 return;
 
-            //ClearHighlightLine();
-
             Script script = new Script(Lexer.Lex(lines));
 
             _queuedScript = script;
+        }
+
+        private static void ActiveScriptStatementExecuted(ASTNode statement)
+        {
+            if (statement != null && PopoutEditor)
+            {
+                var lineNum = statement.LineNumber;
+
+                SetHighlightLine(lineNum, HighlightType.Execution);
+                // Scrolls to relevant line, per this suggestion: https://github.com/PavelTorgashov/FastColoredTextBox/issues/115
+                ScriptEditor.Selection.Start = new Place(0, lineNum);
+                ScriptEditor.DoSelectionVisible();
+            }
         }
 
         private static ScriptTimer Timer { get; }
@@ -332,10 +383,33 @@ namespace Assistant.Scripts
             Timer = new ScriptTimer();
         }
 
-        public static void SetControls(FastColoredTextBox scriptEditor, TreeView scriptTree)
+        public static void SetEditor(FastColoredTextBox scriptEditor, bool popoutEditor)
+        {
+            ScriptEditor = scriptEditor;
+            ScriptEditor.Visible = true;
+
+            PopoutEditor = popoutEditor;
+
+            InitScriptEditor();
+
+            if (SelectedScript != null)
+            {
+                SetEditorText(SelectedScript);
+            }
+        }
+
+        public static void SetEditorText(RazorScript selectedScript)
+        {
+            SelectedScript = selectedScript;
+
+            ScriptEditor.Text = string.Join("\n", SelectedScript.Lines);
+        }
+
+        public static void SetControls(FastColoredTextBox scriptEditor, TreeView scriptTree, ListBox scriptVariables)
         {
             ScriptEditor = scriptEditor;
             ScriptTree = scriptTree;
+            ScriptVariableList = scriptVariables;
         }
 
         public static void OnLogin()
@@ -343,6 +417,7 @@ namespace Assistant.Scripts
             Commands.Register();
             AgentCommands.Register();
             SpeechCommands.Register();
+            TargetCommands.Register();
 
             Aliases.Register();
             Expressions.Register();
@@ -355,6 +430,7 @@ namespace Assistant.Scripts
             StopScript();
             Timer.Stop();
             Assistant.Engine.MainWindow.LockScriptUI(false);
+            Assistant.Engine.RazorScriptEditorWindow.LockScriptUI(false);
         }
 
         public static void StartEngine()
@@ -364,9 +440,9 @@ namespace Assistant.Scripts
 
         private static List<RazorScript> _scriptList { get; set; }
 
-        public static void DisplayScriptVariables(ListBox list)
+        public static void RedrawScriptVariables()
         {
-            list.SafeAction(s =>
+            ScriptVariableList?.SafeAction(s =>
             {
                 s.BeginUpdate();
                 s.Items.Clear();
@@ -427,26 +503,70 @@ namespace Assistant.Scripts
 
         private delegate void SetHighlightLineDelegate(int iline, Color color);
 
-        /*private static void SetHighlightLine(int iline, Color background)
+        /// <summary>
+        /// Adds a new highlight of specified type
+        /// </summary>
+        /// <param name="iline">Line number to highlight</param>
+        /// <param name="type">Type of highlight to set</param>
+        private static void AddHighlightLine(int iline, HighlightType type)
         {
-            for (int i = 0; i < ScriptEditor.LinesCount; i++)
-            {
-                ScriptEditor[i].BackgroundBrush = ScriptEditor.BackBrush;
-            }
-
-            ScriptEditor[iline].BackgroundBrush = new SolidBrush(background);
-            ScriptEditor.Invalidate();
+            HighlightLines[type].Add(iline);
+            RefreshHighlightLines();
         }
 
-        public static void ClearHighlightLine()
+        /// <summary>
+        /// Clears existing highlight lines of this type, and adds a new one at specified line number
+        /// </summary>
+        /// <param name="iline">Line number to highlight</param>
+        /// <param name="type">Type of highlight to set</param>
+        private static void SetHighlightLine(int iline, HighlightType type)
+        {
+            if (!PopoutEditor)
+                return;
+
+            ClearHighlightLine(type);
+            AddHighlightLine(iline, type);
+        }
+
+        public static void ClearHighlightLine(HighlightType type)
+        {
+            if (!PopoutEditor)
+                return;
+
+            HighlightLines[type].Clear();
+            RefreshHighlightLines();
+        }
+
+        public static void ClearAllHighlightLines()
+        {
+            if (!PopoutEditor)
+                return;
+
+            foreach (HighlightType type in GetHighlightTypes())
+            {
+                HighlightLines[type].Clear();
+            }
+
+            RefreshHighlightLines();
+        }
+
+        private static void RefreshHighlightLines()
         {
             for (int i = 0; i < ScriptEditor.LinesCount; i++)
             {
                 ScriptEditor[i].BackgroundBrush = ScriptEditor.BackBrush;
             }
 
+            foreach (HighlightType type in GetHighlightTypes())
+            {
+                foreach (int lineNum in HighlightLines[type])
+                {
+                    ScriptEditor[lineNum].BackgroundBrush = HighlightLineColors[type];
+                }
+            }
+
             ScriptEditor.Invalidate();
-        }*/
+        }
 
         private static FastColoredTextBoxNS.AutocompleteMenu _autoCompleteMenu;
 
@@ -480,7 +600,7 @@ namespace Assistant.Scripts
                     "setlasttarget",
                     "setvar", "skill", "sysmsg", "target", "targettype", "targetrelloc", "undress", "useonce", "walk",
                     "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget", "clearsysmsg", "clearjournal",
-                    "waitforsysmsg"
+                    "waitforsysmsg", "clearhands", "clearall", "virtue", "random"
 
                 };
 
@@ -493,6 +613,18 @@ namespace Assistant.Scripts
             var tooltip = new ToolTipDescriptions("attack", new[] { "attack (serial) or attack ('variablename')" },
                 "N/A", "Attack a specific serial or variable tied to a serial.", "attack 0x2AB4\n\tattack 'attackdummy'");
             descriptionCommands.Add("attack", tooltip);
+
+            tooltip = new ToolTipDescriptions("clearall", new[] { "clearall" }, "N/A", "Clear target, clear queues, drop anything you're holding",
+                "clearall");
+            descriptionCommands.Add("clearall", tooltip);
+
+            tooltip = new ToolTipDescriptions("clearhands", new[] { "clearhands ('right'/'left'/'hands')" }, "N/A", "Use the item in your hands",
+                "clearhands");
+            descriptionCommands.Add("clearhands", tooltip);
+
+            tooltip = new ToolTipDescriptions("virtue", new[] { "virtue ('honor'/'sacrifice'/'valor')" }, "N/A", "Invoke a specific virtue",
+                "virtue 'honor'");
+            descriptionCommands.Add("virtue", tooltip);
 
             tooltip = new ToolTipDescriptions("cast", new[] { "cast ('name of spell')" }, "N/A", "Cast a spell by name",
                 "cast 'blade spirits'");
@@ -736,6 +868,12 @@ namespace Assistant.Scripts
                 "waitforsysmsg 'message here'\n");
             descriptionCommands.Add("waitforsysmsg", tooltip);
 
+            tooltip = new ToolTipDescriptions("random",
+                new[] { "random [max number]" }, "N/A",
+                "This command output a random number between 1 and the max number provided.",
+                "random '15'\n");
+            descriptionCommands.Add("random", tooltip);
+
             #endregion
 
             if (!Config.GetBool("DisableScriptTooltips"))
@@ -897,6 +1035,38 @@ namespace Assistant.Scripts
                 s.Refresh();
                 s.Update();
             });
+
+            RedrawScriptVariables();
+        }
+
+        public static TreeNode GetScriptDirNode()
+        {
+            if (ScriptTree.SelectedNode == null)
+            {
+                return null;
+            }
+
+            if (ScriptTree.SelectedNode.Tag is string)
+                return ScriptTree.SelectedNode;
+                
+            if (!(ScriptTree.SelectedNode.Parent?.Tag is string))
+                return null;
+                
+            return ScriptTree.SelectedNode.Parent;
+        }
+
+        public static void AddScriptNode(TreeNode node)
+        {
+            if (node == null)
+            {
+                ScriptTree.Nodes.Add(node);
+            }
+            else
+            {
+                node.Nodes.Add(node);
+            }
+
+            ScriptTree.SelectedNode = node;
         }
 
         private static void Recurse(TreeNodeCollection nodes, string path)
@@ -967,6 +1137,34 @@ namespace Assistant.Scripts
             catch
             {
                 // ignored
+            }
+        }
+
+        public static void GetGumpInfo(string[] param)
+        {
+            Targeting.OneTimeTarget(OnGetItemInfoTarget);
+            Client.Instance.SendToClient(new UnicodeMessage(0xFFFFFFFF, -1, MessageType.Regular, 0x3B2, 3,
+                Language.CliLocName, "System", "Select an item or mobile to view/inspect"));
+        }
+
+        private static void OnGetItemInfoTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
+        {
+            Item item = World.FindItem(serial);
+
+            if (item == null)
+            {
+                Mobile mobile = World.FindMobile(serial);
+
+                if (mobile == null)
+                    return;
+
+                MobileInfoGump gump = new MobileInfoGump(mobile);
+                gump.SendGump();
+            }
+            else
+            {
+                ItemInfoGump gump = new ItemInfoGump(item);
+                gump.SendGump();
             }
         }
     }

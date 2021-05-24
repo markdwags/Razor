@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProductVersion>8.0.50727</ProductVersion>
@@ -17,7 +17,7 @@
     <RootNamespace>Assistant</RootNamespace>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <StartupObject>Assistant.Engine</StartupObject>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <OldToolsVersion>2.0</OldToolsVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -58,6 +58,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\bin\Win32\Release\</OutputPath>
@@ -70,6 +71,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
@@ -104,6 +106,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -116,6 +119,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="cuoapi, Version=1.3.0.0, Culture=neutral, processorArchitecture=AMD64">
@@ -287,6 +291,7 @@
     <Compile Include="Scripts\Commands.cs" />
     <Compile Include="Scripts\Engine\TextParser.cs" />
     <Compile Include="Scripts\Expressions.cs" />
+    <Compile Include="Scripts\Helpers\CommandHelper.cs" />
     <Compile Include="Scripts\RazorScript.cs" />
     <Compile Include="Scripts\ScriptVariables.cs" />
     <Compile Include="Scripts\ScriptManager.cs" />
@@ -365,6 +370,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\TargetingRandom.cs" />
+    <Compile Include="Scripts\TargetCommands.cs" />
     <Compile Include="Scripts\SpeechCommands.cs" />
     <Compile Include="UI\AddCounter.cs">
       <SubType>Form</SubType>
@@ -420,6 +426,12 @@
     </Compile>
     <Compile Include="UI\Razor.Designer.cs">
       <DependentUpon>Razor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RazorScriptEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RazorScriptEditor.Designer.cs">
+      <DependentUpon>RazorScriptEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\SplashScreen.cs">
       <SubType>Form</SubType>
@@ -527,6 +539,9 @@
     <EmbeddedResource Include="UI\Razor.resx">
       <DependentUpon>Razor.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\RazorScriptEditor.resx">
+      <DependentUpon>RazorScriptEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>

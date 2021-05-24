@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -116,7 +116,7 @@ namespace Assistant
             0x9F, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xB4, 0x4C, 0x4D, 0x3D
         };
 
-        private enum TargetType
+        public enum TargetType
         {
             Invalid, // invalid/across server line
             Innocent, //Blue
@@ -124,7 +124,18 @@ namespace Assistant
             Attackable, //Attackable but not criminal (gray)
             Criminal, //gray
             Enemy, //orange
-            Murderer //red
+            Murderer, //red
+
+            // Razor specfic
+            NonFriendly, //Attackable, Criminal, Enemy, Murderer
+            Friendly, //Innocent, Guild/Ally 
+            Red, //Murderer
+            Blue, //Innocent
+            //Friend, //Friend list
+            Gray, //Attackable, Criminal
+            Grey, //Attackable, Criminal
+            Green, //GuildAlly
+            Guild, //GuildAlly
         }
 
 
@@ -213,7 +224,7 @@ namespace Assistant
             _lastOverheadMessageAttack = serial;
         }
 
-        private static void OnClearQueue()
+        public static void OnClearQueue()
         {
             ClearQueue();
 
@@ -911,12 +922,15 @@ namespace Assistant
             EndIntercept();
         }
 
-        private static void CancelTarget()
+        public static void CancelTarget()
         {
             OnClearQueue();
             CancelClientTarget();
 
             m_FromGrabHotKey = false;
+
+            ScriptManager.SetVariableActive = false;
+            ScriptManager.SetLastTargetActive = false;
 
             if (m_HasTarget)
             {
@@ -1313,22 +1327,21 @@ namespace Assistant
             }
             else
             {
-                if (Macros.MacroManager.AcceptActions)
+                KeyData hk = HotKey.Get((int)LocString.TargetSelf);
+
+                if (MacroManager.AcceptActions)
                 {
-                    KeyData hk = HotKey.Get((int) LocString.TargetSelf);
                     if (hk != null)
                     {
                         MacroManager.Action(new HotKeyAction(hk));
-
-                        ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
                     }
                     else
                     {
                         MacroManager.Action(new AbsoluteTargetAction(info));
-
-                        ScriptManager.AddToScript($"target {info.Serial}");
                     }
                 }
+
+                ScriptManager.AddToScript(hk != null ? "target 'self'" : $"target {info.Serial}");
             }
 
             if (World.Player.LastSpell == 52 && !GateTimer.Running)

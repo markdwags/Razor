@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Assistant.Scripts
             public TargetInfo TargetInfo { get; set; }
             public string Name { get; set; }
             public bool TargetWasSet { get; set; }
-
+            
             public ScriptVariable(string targetVarName, TargetInfo t)
             {
                 TargetInfo = t;
@@ -46,7 +46,7 @@ namespace Assistant.Scripts
                     TargetWasSet = false;
 
                     Targeting.OneTimeTarget(OnScriptVariableTarget);
-                    World.Player.SendMessage(MsgLevel.Force, $"Select target for ${Name}");
+                    World.Player.SendMessage(MsgLevel.Force, $"Select target for variable '{Name}'");
 
                     //OneTimeTarget(false, new Targeting.TargetResponseCallback(OnMacroVariableTarget), new Targeting.CancelTargetCallback(OnSLTCancel));
                 }
@@ -69,7 +69,7 @@ namespace Assistant.Scripts
                 foreach (ScriptVariable sV in ScriptVariableList
                 )
                 {
-                    if (sV.Name.IndexOf(Name, StringComparison.OrdinalIgnoreCase) != -1)
+                    if (sV.Name.Equals(Name, StringComparison.OrdinalIgnoreCase))
                     {
                         foundVar = true;
                         sV.TargetInfo = t;
@@ -176,7 +176,7 @@ namespace Assistant.Scripts
         {
             foreach (ScriptVariable scriptVariable in ScriptVariableList)
             {
-                if (scriptVariable.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) != -1)
+                if (scriptVariable.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     return scriptVariable;
                 }

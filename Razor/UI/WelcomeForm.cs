@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -617,9 +617,7 @@ namespace Assistant
             LoginCFG_SE lse = new LoginCFG_SE();
 
             serverList.BeginUpdate();
-
-            AddUORServers();
-
+            
             // Load any custom servers they might have added
             NameValueCollection servers =
                 (NameValueCollection) ConfigurationManager.GetSection("Servers");
@@ -676,22 +674,7 @@ namespace Assistant
                 Config.SetAppSetting("ImportProfilesAndMacros", "false");
             }
         }
-
-        private void AddUORServers()
-        {
-            Custom_SE cse;
-            // Always add the default UOR servers
-            serverList.Items.Add(cse = new Custom_SE("UO Renaissance (Prod)", "login.uorenaissance.com", 2593));
-
-            if (serverList.SelectedItem == null)
-            {
-                serverList.SelectedItem = cse;
-            }
-
-            serverList.Items.Add(new Custom_SE("UO Renaissance (Test)", "test.uorenaissance.com", 2597));
-            serverList.Items.Add(new Custom_SE("UO Renaissance (Dev)", "dev.uorenaissance.com", 2598));
-        }
-
+        
         private System.Windows.Forms.Timer _ShowTimer;
 
         private void timer_Tick(object sender, EventArgs e)
@@ -959,9 +942,7 @@ namespace Assistant
 
                 servers.Settings.Clear();
                 serverList.Items.Clear();
-
-                AddUORServers();
-
+                
                 foreach (KeyValuePair<string, string> entry in entries)
                 {
                     servers.Settings.Add(entry.Key, entry.Value);
@@ -1026,9 +1007,7 @@ namespace Assistant
 
             servers.Settings.Clear();
             serverList.Items.Clear();
-
-            AddUORServers();
-
+            
             foreach (KeyValuePair<string, string> entry in entries)
             {
                 servers.Settings.Add(entry.Key, entry.Value);

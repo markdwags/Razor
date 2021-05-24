@@ -1,9 +1,8 @@
 site_name: Razor - Ultima Online Assistant
 site_description: Razor is a free tool designed to help with simple tasks while playing Ultima Online
 site_author: Project maintained by Mark Wagner (Quick)
-site_url: http://www.uor-razor.com
+site_url: http://www.razorce.com
 copyright: Copyright 2020 - Mark Wagner (Quick)
-google_analytics: ['UA-20537997-5', 'uor-razor.com']
 repo_url: https://github.com/markdwags/Razor
 repo_name: Razor
 edit_uri: "tree/master/help/docs"
@@ -14,6 +13,7 @@ nav:
     - Windows: install/windows.md
     - Linux: install/linux.md
 - Release Notes: releasenotes.md
+- FAQ: faq.md
 - Help Guide:
     - Help Overview: help/index.md    
     - General: help/general.md
@@ -29,7 +29,6 @@ nav:
     - Friends: help/friends.md    
     - Screen Shots: help/screenshots.md
     - Advanced: help/advanced.md
-- FAQ: faq.md
 - Scripting Guide:
     - Scripting Overview: guide/index.md
     - Commands: guide/commands.md
@@ -42,7 +41,8 @@ nav:
 - UOAssist API: uoaapi.md
 
 theme: 
-    name: material    
+    name: material
+    custom_dir: overrides  
     language: en    
     favicon: images/razor.ico
     icon:
@@ -55,7 +55,9 @@ theme:
         #text: Mulish
         #text: Alata
         #text: Noto Sans JP
-        text: Lato
+        #text: Lato
+        #text: Ubuntu
+        text: Titillium Web
         code: Fira Code
     logo: images/razor.png
 
@@ -64,8 +66,13 @@ markdown_extensions:
   - toc:
         baselevel: 3    
         permalink: true    
-  - pymdownx.highlight
+  - pymdownx.highlight:
+        linenums: true
+        linenums_style: pymdownx.inline
   - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.keys
+  - pymdownx.tabbed
 
 plugins:
   - search  

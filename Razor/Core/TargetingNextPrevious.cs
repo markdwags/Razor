@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assistant.Core;
 using Assistant.Filters;
+using Assistant.Scripts;
 
 namespace Assistant
 {
@@ -116,7 +117,7 @@ namespace Assistant
                 PrevTargetInnocentMonster);
         }
 
-        private static bool IsNextPrevFriend(Mobile mobile)
+        public static bool IsNextPrevFriend(Mobile mobile)
         {
             return Config.GetBool("NextPrevTargetIgnoresFriends") && FriendsManager.IsFriend(mobile.Serial);
         }
@@ -130,7 +131,7 @@ namespace Assistant
         /// <param name="isFriend">Indicates this was the Next/Prev Friend hot key</param>
         /// <param name="isFriendly"></param>
         /// <param name="isNonFriendly"></param>
-        private static void NextPrevTarget(List<Mobile> targets, bool nextTarget, bool isFriend = false,
+        public static void NextPrevTarget(List<Mobile> targets, bool nextTarget, bool isFriend = false,
             bool isFriendly = false, bool isNonFriendly = false)
         {
             if (targets.Count <= 0)
@@ -227,9 +228,11 @@ namespace Assistant
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
             OverheadTargetMessage(target);
+
+            ScriptManager.TargetFound = true;
         }
 
-        private static void NextTarget()
+        public static void NextTarget()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => !IsNextPrevFriend(x) && !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
@@ -237,7 +240,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetHumanoid()
+        public static void NextTargetHumanoid()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsHuman && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
@@ -247,7 +250,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetEnemyHumanoid()
+        public static void NextTargetEnemyHumanoid()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsHuman && x.Notoriety == (int) TargetType.Enemy && !IsNextPrevFriend(x) && !x.Blessed &&
@@ -257,7 +260,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetEnemyMonster()
+        public static void NextTargetEnemyMonster()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsMonster && x.Notoriety == (int) TargetType.Enemy && !IsNextPrevFriend(x) && !x.Blessed &&
@@ -267,7 +270,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetMonster()
+        public static void NextTargetMonster()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsMonster && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost &&
@@ -277,7 +280,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetFriend()
+        public static void NextTargetFriend()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     FriendsManager.IsFriend(x.Serial) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial)
@@ -286,7 +289,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true, true);
         }
 
-        private static void NextTargetNonFriend()
+        public static void NextTargetNonFriend()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => (x.Notoriety == (int) TargetType.Attackable ||
@@ -300,7 +303,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true, false, false, true);
         }
 
-        private static void PrevTarget()
+        public static void PrevTarget()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => !IsNextPrevFriend(x) && !TargetFilterManager.IsFilteredTarget(x.Serial)).ToList();
@@ -308,7 +311,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetHumanoid()
+        public static void PrevTargetHumanoid()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsHuman && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
@@ -318,7 +321,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetEnemyHumanoid()
+        public static void PrevTargetEnemyHumanoid()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsHuman && x.Notoriety == (int) TargetType.Enemy && !IsNextPrevFriend(x) && !x.Blessed &&
@@ -328,7 +331,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetEnemyMonster()
+        public static void PrevTargetEnemyMonster()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsMonster && x.Notoriety == (int) TargetType.Enemy && !IsNextPrevFriend(x) && !x.Blessed &&
@@ -338,7 +341,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetMonster()
+        public static void PrevTargetMonster()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsMonster && !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost &&
@@ -348,7 +351,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetFriend()
+        public static void PrevTargetFriend()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                 FriendsManager.IsFriend(x.Serial) && !x.Blessed && !x.IsGhost &&
@@ -357,7 +360,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false, true);
         }
 
-        private static void NextTargetCriminalHumanoid()
+        public static void NextTargetCriminalHumanoid()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsHuman && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) && !x.Blessed &&
@@ -367,7 +370,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetMurdererHumanoid()
+        public static void NextTargetMurdererHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Murderer && !IsNextPrevFriend(x) &&
@@ -377,7 +380,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetInnocentHumanoid()
+        public static void NextTargetInnocentHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Innocent && !IsNextPrevFriend(x) &&
@@ -387,7 +390,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetCriminalMonster()
+        public static void NextTargetCriminalMonster()
         {
             var mobiles = World.MobilesInRange().Where(x =>
                     x.IsMonster && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) && !x.Blessed &&
@@ -397,7 +400,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetMurdererMonster()
+        public static void NextTargetMurdererMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Murderer && !IsNextPrevFriend(x) &&
@@ -407,7 +410,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetInnocentMonster()
+        public static void NextTargetInnocentMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Innocent && !IsNextPrevFriend(x) &&
@@ -417,7 +420,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void PrevTargetCriminalHumanoid()
+        public static void PrevTargetCriminalHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) &&
@@ -427,7 +430,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetCriminalMonster()
+        public static void PrevTargetCriminalMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Criminal && !IsNextPrevFriend(x) &&
@@ -437,7 +440,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetMurdererHumanoid()
+        public static void PrevTargetMurdererHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Murderer && !IsNextPrevFriend(x) &&
@@ -447,7 +450,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetMurdererMonster()
+        public static void PrevTargetMurdererMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Murderer && !IsNextPrevFriend(x) &&
@@ -457,7 +460,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetInnocentHumanoid()
+        public static void PrevTargetInnocentHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && x.Notoriety == (int) TargetType.Innocent && !IsNextPrevFriend(x) &&
@@ -467,7 +470,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetInnocentMonster()
+        public static void PrevTargetInnocentMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && x.Notoriety == (int) TargetType.Innocent && !IsNextPrevFriend(x) &&
@@ -477,7 +480,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void NextTargetFriendlyHumanoid()
+        public static void NextTargetFriendlyHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Innocent ||
@@ -490,7 +493,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true, false, true);
         }
 
-        private static void NextTargetFriendlyMonster()
+        public static void NextTargetFriendlyMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Innocent ||
@@ -503,7 +506,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true, false, true);
         }
 
-        private static void NextTargetGreyHumanoid()
+        public static void NextTargetGreyHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
@@ -515,7 +518,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetGreyMonster()
+        public static void NextTargetGreyMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Attackable ||
@@ -527,7 +530,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true);
         }
 
-        private static void NextTargetNonFriendlyHumanoid()
+        public static void NextTargetNonFriendlyHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
@@ -541,7 +544,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true, false, false, true);
         }
 
-        private static void NextTargetNonFriendlyMonster()
+        public static void NextTargetNonFriendlyMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Attackable ||
@@ -555,7 +558,7 @@ namespace Assistant
             NextPrevTarget(mobiles, true, false, false, true);
         }
 
-        private static void PrevTargetFriendlyHumanoid()
+        public static void PrevTargetFriendlyHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Innocent ||
@@ -568,7 +571,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false, false, true);
         }
 
-        private static void PrevTargetFriendlyMonster()
+        public static void PrevTargetFriendlyMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Innocent ||
@@ -581,7 +584,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false, false, true);
         }
 
-        private static void PrevTargetGreyHumanoid()
+        public static void PrevTargetGreyHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
@@ -593,7 +596,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetGreyMonster()
+        public static void PrevTargetGreyMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Attackable ||
@@ -605,7 +608,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false);
         }
 
-        private static void PrevTargetNonFriendlyHumanoid()
+        public static void PrevTargetNonFriendlyHumanoid()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Attackable ||
@@ -619,7 +622,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false, false, false, true);
         }
 
-        private static void PrevTargetNonFriendlyMonster()
+        public static void PrevTargetNonFriendlyMonster()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => x.IsMonster && (x.Notoriety == (int) TargetType.Attackable ||
@@ -633,7 +636,7 @@ namespace Assistant
             NextPrevTarget(mobiles, false, false, false, true);
         }
 
-        private static void PrevTargetNonFriend()
+        public static void PrevTargetNonFriend()
         {
             var mobiles = World.MobilesInRange()
                 .Where(x => (x.Notoriety == (int) TargetType.Attackable ||
@@ -645,6 +648,39 @@ namespace Assistant
                 .ToList();
 
             NextPrevTarget(mobiles, false, false, false, true);
+        }
+
+        public static void NextPrevTargetNotoriety(bool next, params int[] notoriety)
+        {
+            var mobiles = World.MobilesInRange()
+                .Where(x => notoriety.Contains(x.Notoriety) &&
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
+
+            NextPrevTarget(mobiles, next);
+        }
+
+        public static void NextPrevTargetNotorietyMonster(bool next, params int[] notoriety)
+        {
+            var mobiles = World.MobilesInRange()
+                .Where(x => x.IsMonster && notoriety.Contains(x.Notoriety) &&
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
+
+            NextPrevTarget(mobiles, next);
+        }
+
+        public static void NextPrevTargetNotorietyHumanoid(bool next, params int[] notoriety)
+        {
+            var mobiles = World.MobilesInRange()
+                .Where(x => x.IsHuman && notoriety.Contains(x.Notoriety) &&
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
+
+            NextPrevTarget(mobiles, next);
         }
     }
 }

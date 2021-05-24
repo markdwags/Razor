@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -52,8 +52,8 @@ namespace Assistant.MapUO
             // Required for Windows Form Designer support
             //
             InitializeComponent();
-            this.ContextMenu = new ContextMenu();
-            this.ContextMenu.Popup += new EventHandler(ContextMenu_Popup);
+            this.ContextMenuStrip = new ContextMenuStrip();
+            this.ContextMenuStrip.Opening += ContextMenu_Popup;
             this.Location = new Point(Config.GetInt("MapX"), Config.GetInt("MapY"));
             this.ClientSize = new Size(Config.GetInt("MapW"), Config.GetInt("MapH"));
 
@@ -73,9 +73,9 @@ namespace Assistant.MapUO
             Client.Instance.SetMapWndHandle(this);
         }
 
-        public class MapMenuItem : MenuItem
+        public class MapMenuItem : ToolStripMenuItem
         {
-            public MapMenuItem(System.String text, System.EventHandler onClick) : base(text, onClick)
+            public MapMenuItem(System.String text, System.EventHandler onClick) : base(text, null, onClick)
             {
                 Tag = null;
             }
@@ -83,13 +83,13 @@ namespace Assistant.MapUO
 
         void ContextMenu_Popup(object sender, EventArgs e)
         {
-            ContextMenu cm = this.ContextMenu;
-            cm.MenuItems.Clear();
+            ContextMenuStrip cm = this.ContextMenuStrip;
+            cm.Items.Clear();
             if (World.Player != null && PacketHandlers.Party.Count > 0)
             {
                 MapMenuItem mi = new MapMenuItem("You", new EventHandler(FocusChange));
                 mi.Tag = World.Player.Serial;
-                cm.MenuItems.Add(mi);
+                cm.Items.Add(mi);
                 foreach (Serial s in PacketHandlers.Party)
                 {
                     Mobile m = World.FindMobile(s);
@@ -99,12 +99,12 @@ namespace Assistant.MapUO
                         mi.Tag = s;
                         if (this.Map.FocusMobile == m)
                             mi.Checked = true;
-                        cm.MenuItems.Add(mi);
+                        cm.Items.Add(mi);
                     }
                 }
             }
 
-            this.ContextMenu = cm;
+            this.ContextMenuStrip = cm;
         }
 
 

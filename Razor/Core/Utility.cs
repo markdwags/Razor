@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,9 @@ using System;
 using System.IO;
 using System.Text;
 using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace Assistant
 {
@@ -412,6 +415,37 @@ namespace Assistant
                 return val;
 
             return def;
+        }
+
+        public static void LaunchBrowser(string url)
+        {
+            try
+            {
+                Process.Start(url);
+
+                /*if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    ProcessStartInfo psi = new ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    };
+                    Process.Start(psi);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", url);
+                }
+                else
+                {
+                    Process.Start("xdg-open", url);
+                }*/
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(null, ex.Message, "Unable to open directory", MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
         }
     }
 }

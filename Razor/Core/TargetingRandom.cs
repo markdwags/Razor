@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using Assistant.Core;
 using Assistant.Filters;
+using Assistant.Scripts;
 
 namespace Assistant
 {
@@ -82,125 +83,125 @@ namespace Assistant
         }
 
 
-        private static void TargetRandNonFriendly()
+        public static void TargetRandNonFriendly()
         {
             RandomTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetRandNonFriendlyHumanoid()
+        public static void TargetRandNonFriendlyHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetRandNonFriendlyMonster()
+        public static void TargetRandNonFriendlyMonster()
         {
             RandomMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetRandFriendly()
+        public static void TargetRandFriendly()
         {
             RandomTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetRandFriendlyHumanoid()
+        public static void TargetRandFriendlyHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetRandFriendlyMonster()
+        public static void TargetRandFriendlyMonster()
         {
             RandomMonsterTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetRandEnemy()
+        public static void TargetRandEnemy()
         {
             RandomTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetRandEnemyMonster()
+        public static void TargetRandEnemyMonster()
         {
             RandomMonsterTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetRandEnemyHumanoid()
+        public static void TargetRandEnemyHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetRandRed()
+        public static void TargetRandRed()
         {
             RandomTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetRandRedHumanoid()
+        public static void TargetRandRedHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetRandRedMonster()
+        public static void TargetRandRedMonster()
         {
             RandomMonsterTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetRandGrey()
+        public static void TargetRandGrey()
         {
             RandomTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetRandGreyMonster()
+        public static void TargetRandGreyMonster()
         {
             RandomMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetRandGreyHumanoid()
+        public static void TargetRandGreyHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetRandCriminal()
+        public static void TargetRandCriminal()
         {
             RandomTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetRandCriminalHumanoid()
+        public static void TargetRandCriminalHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetRandCriminalMonster()
+        public static void TargetRandCriminalMonster()
         {
             RandomMonsterTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetRandInnocent()
+        public static void TargetRandInnocent()
         {
             RandomTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetRandInnocentHumanoid()
+        public static void TargetRandInnocentHumanoid()
         {
             RandomHumanoidTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetRandInnocentMonster()
+        public static void TargetRandInnocentMonster()
         {
             RandomMonsterTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetRandFriend()
+        public static void TargetRandFriend()
         {
             RandomFriendTarget();
         }
 
-        private static void TargetRandAnyone()
+        public static void TargetRandAnyone()
         {
             RandomTarget();
         }
 
-        private static void RandomTarget(params int[] noto)
+        public static void RandomTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
@@ -224,12 +225,17 @@ namespace Assistant
                 }
 
             if (list.Count > 0)
+            {
                 SetLastTargetTo(list[Utility.Random(list.Count)]);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
-        private static void RandomHumanoidTarget(params int[] noto)
+        public static void RandomHumanoidTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
@@ -258,12 +264,17 @@ namespace Assistant
             }
 
             if (list.Count > 0)
+            {
                 SetLastTargetTo(list[Utility.Random(list.Count)]);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
-        private static void RandomMonsterTarget(params int[] noto)
+        public static void RandomMonsterTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
@@ -292,12 +303,17 @@ namespace Assistant
             }
 
             if (list.Count > 0)
+            {
                 SetLastTargetTo(list[Utility.Random(list.Count)]);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
-        private static void RandomFriendTarget()
+        public static void RandomFriendTarget()
         {
             if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
                 return;
@@ -311,9 +327,14 @@ namespace Assistant
                     list.Add(m);
 
             if (list.Count > 0)
+            {
                 SetLastTargetTo(list[Utility.Random(list.Count)]);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
     }
 }

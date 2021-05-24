@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -1509,7 +1509,15 @@ namespace Assistant
             Mobile m = World.FindMobile(serial);
 
             if (m == null)
+            {
                 World.AddMobile(m = new Mobile(serial));
+
+                if (m != World.Player && Config.GetBool("ShowMobNames"))
+                    Client.Instance.SendToServer(new SingleClick(m));
+
+                if (Config.GetBool("LastTargTextFlags"))
+                    Targeting.CheckTextFlags(m);
+            }
 
             MobileFilter.ApplyDragonFilter(p, m);
             MobileFilter.ApplyDrakeFilter(p, m);
@@ -1518,11 +1526,6 @@ namespace Assistant
             Point3D position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
             bool wasHidden = !m.Visible;
-
-            if (m != World.Player && Config.GetBool("ShowMobNames"))
-                Client.Instance.SendToServer(new SingleClick(m));
-            if (Config.GetBool("LastTargTextFlags"))
-                Targeting.CheckTextFlags(m);
 
             int ltHue = Config.GetInt("LTHilight");
             bool isLT;

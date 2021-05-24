@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -1812,6 +1812,17 @@ namespace Assistant
             Write((byte) (active ? 1 : 0));
             Write((ushort) x);
             Write((ushort) y);
+        }
+    }
+
+    internal sealed class VirtueRequest : Packet
+    {
+        internal VirtueRequest(byte id) : base(0x12)
+        {
+            EnsureCapacity(1 + id.ToString().Length + 1);
+
+            Write((byte)0xF4);
+            WriteAsciiNull(id.ToString());
         }
     }
 }

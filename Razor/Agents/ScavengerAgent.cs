@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -261,17 +261,17 @@ namespace Assistant.Agents
                 return;
             }
 
-            m_Items.Add(item.ItemID);
+            Add(item.ItemID);
+        }
 
-            if (m_SubList != null)
-            {
-                m_SubList.Items.Add(item.ItemID);
-            }
+        public void Add(ItemID itemId)
+        {
+            m_Items?.Add(itemId);
+            m_SubList?.Items.Add(itemId);
 
+            DebugLog("Added item {0}", itemId);
 
-            DebugLog("Added item {0}", item);
-
-            World.Player.SendMessage(MsgLevel.Force, LocString.ItemAdded);
+            World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
         }
 
         private void OnTargetBag(bool location, Serial serial, Point3D loc, ushort gfx)

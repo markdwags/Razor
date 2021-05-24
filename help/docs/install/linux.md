@@ -3,12 +3,14 @@
 To run Razor with [ClassicUO](https://www.classicuo.eu/) on Linux, you will need to install [Mono](https://www.mono-project.com/)
 
 !!! info
-    These steps are based on a fresh installation of Linux Mint 19.1 which is based on Ubuntu. Based on your current configuration and Linux distribution, the steps may vary.
+    These steps were tested and validated a fresh installation of Linux Mint 19.1 and Ubuntu 20.04.
+    
+    Based on your current configuration and Linux distribution, the steps may vary.
 
 ## Install Mono
 
 !!! warning
-    If you're running another version of Linux, please find the the installation steps from the main Mono site and follow those instead.
+    If you're running another version of Linux, please read the [installation steps](https://www.mono-project.com/download/stable/#download-lin) from the main Mono site and follow those instead.
 
 * Open the command/console/terminal and add the Mono repo to your system
 
@@ -27,7 +29,7 @@ sudo apt install -y mono-complete
 
 * Run the following commands from the console:
 
-```
+```bash
 sudo apt-get install -y libmono-system-windows-forms4.0-cil
 sudo apt-get install -y libmono-system-net-http4.0-cil
 sudo apt-get install -y libmono-system-runtime-serialization4.0-cil
@@ -39,11 +41,11 @@ This package is required for ClassicUO to load gumps successfully.
 
 * Install `libz`
 
-```
+```bash
 sudo apt-get install -y libz-dev
 ```
 
-## Install ClassicUO
+## Install ClassicUO (Launcher)
 
 * Download the latest version of the [ClassicUO Launcher](https://www.classicuo.eu/).
   
@@ -66,6 +68,7 @@ chmod +x ClassicUOLauncher
 * Install ClassicUO by clicking **Update Available**
 
 ![cuoinstall](../images/cuolauncher-update.png)
+
 
 ## Install Razor
 

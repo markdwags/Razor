@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,6 +35,19 @@ namespace Assistant
             Neutral = 'N'
         }
 
+        public enum SpellKind
+        {
+            Magery,
+            Necromancy,
+            Chivalry,
+            Bushido,
+            Ninjutsu,
+            Spellweaving,
+            Mysticism,
+            Masteries,
+            Unknown
+        }
+
         readonly public SpellFlag Flag;
         readonly public int Circle;
         readonly public int Number;
@@ -52,38 +65,81 @@ namespace Assistant
             Reagents = reags;
         }
 
+        public SpellKind Kind
+        {
+            get
+            {
+                switch(Circle)
+                {
+                    case int circle when circle <= 8:
+                        return SpellKind.Magery;
+                    case 10:
+                        return SpellKind.Necromancy;
+                    case 20:
+                        return SpellKind.Chivalry;
+                    case 40:
+                        return SpellKind.Bushido;
+                    case 50:
+                        return SpellKind.Ninjutsu;
+                    case 60:
+                        return SpellKind.Spellweaving;
+                    case 65:
+                        return SpellKind.Mysticism;
+                    case 70:
+                        return SpellKind.Masteries;
+                    default:
+                        return SpellKind.Unknown;
+                }
+            }
+        }
+
+        public bool NeedsChanneling
+        {
+            get
+            {
+                return (Kind == SpellKind.Magery || Kind == SpellKind.Mysticism);
+            }
+        }
+
         public int Name
         {
             get
             {
-                if (Circle <= 8) // Mage
-                    return 3002011 + ((Circle - 1) * 8) + (Number - 1);
-                
-                if (Circle == 10) // Necr
-                    return 1060509 + Number - 1;
-                
-                if (Circle == 20) // Chiv
-                    return 1060585 + Number - 1;
-                
-                if (Circle == 40) // Bush
-                    return 1060595 + Number - 1;
-                
-                if (Circle == 50) // Ninj
-                    return 1060610 + Number - 1;
-                
-                if (Circle == 60) // Elfs
-                    return 1071026 + Number - 1;
-                
-                if (Circle == 65) // Myst
-                    return 1031678 + this.Number - 28;
+                switch(Kind)
+                {
+                    case SpellKind.Magery:
+                        return 3002011 + ((Circle - 1) * 8) + (Number - 1);
 
-                if (Circle != 70)
-                    return -1;
+                    case SpellKind.Necromancy:
+                        return 1060509 + Number - 1;
 
-                if (Number <= 6)
-                    return 1115683 + Number - 1;
+                    case SpellKind.Chivalry:
+                        return 1060585 + Number - 1;
 
-                return 1155896 + Number - 7;
+                    case SpellKind.Bushido:
+                        return 1060595 + Number - 1;
+
+                    case SpellKind.Ninjutsu:
+                        return 1060610 + Number - 1;
+
+                    case SpellKind.Spellweaving:
+                        return 1071026 + Number - 1;
+
+                    case SpellKind.Mysticism:
+                        return 1031678 + this.Number - 28;
+
+                    case SpellKind.Masteries:
+                    {
+                        if (Number <= 6)
+                            return 1115683 + Number - 1;
+
+                        return 1155896 + Number - 7;
+                    }
+
+                    default:
+                        return -1;
+
+                }
             }
         }
 
@@ -138,7 +194,9 @@ namespace Assistant
 
         private void Cast()
         {
-            if (Config.GetBool("SpellUnequip") && Client.Instance.AllowBit(FeatureBit.UnequipBeforeCast))
+            if (Config.GetBool("SpellUnequip")
+                && Client.Instance.AllowBit(FeatureBit.UnequipBeforeCast)
+                && NeedsChanneling)
             {
                 Item pack = World.Player.Backpack;
                 if (pack != null)

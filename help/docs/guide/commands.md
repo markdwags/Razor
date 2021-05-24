@@ -1,4 +1,4 @@
-# Commands Overview
+# Overview
 
 The commands issued in the scripting engine are similar to a commands you might enter into a command prompt or shell.  Each line has a starting command, and a set of parameters.  Some of those parameters are required, some are optional.
 
@@ -6,424 +6,643 @@ The commands issued in the scripting engine are similar to a commands you might 
 
 All parameters are shown inside of parenthesis or brackets.  Parameters within parenthesis are **required** while those in brackets are _optional_ and will default to specific value if not provided.
 
-If you want to pass several words as a single parameter you must wrap them using `'` or `"`. For example `"hello goodbye"` is one parameter, while `hello` `goodbye` is two.
+If you want to pass several words as a single parameter you must wrap them using `'` or `"`. For example `'hello goodbye'` is one parameter, while `hello` `goodbye` is two.
 
 For example, if your script is something like:
 
-```csharp
-// Say 'Hello'
+```python
+# Say 'Hello'
 say Hello friends!
 ```
 
 You will end up just saying `Hello`.  Instead, you if you wrap the words in single (') or double quotes (") the engine will see it as a single parameter.
 
-```csharp
-// Say 'Hello friends!'
+```python
+# Say 'Hello friends!'
 say 'Hello friends!'
 ```
 
-Here the list of the support commands:
+If you prefix a command with the `@` this will silence any warning/output from the command.  For example:
 
-## alliance
+!!! example
 
-Syntax: `alliance ('message to send')`
+    ```csharp
+    // Generate warning if robe is out of reach
+    lifttype 'robe'
 
-Description: This command will force your character to say an alliance message passed as the parameter.
+    // Silence warning if robe is out of reach
+    @lifttype 'robe'
+    ```
 
-Example:
+Without the `@` symbol, if a robe isn't available, you would get an warning message telling you that it couldn't find a robe. But since the `@` symbol was provided, no warning is displayed.
 
-```bash
-alliance 'Hello world!'```
+# alliance
 
+**Syntax**: `alliance ('message to send')`
 
-## attack
+**Description**: This command will force your character to say an alliance message passed as the parameter.
 
-Syntax: `attack (serial)` or `attack ('variablename')`
+!!! example
 
-Description: Attack a specific serial or variable tied to a serial.
+    === "General"
 
-Example(s):
+        ```vim
+        alliance 'Allies assemble!'
+        ```
 
-```csharp
-attack 0x2AB4
+# attack
 
-attack 'attackdummy'
-```
+**Syntax**: `attack (serial)` or `attack ('variablename')`
 
-## cast
+**Description**: Attack a specific serial or variable tied to a serial.
 
-Syntax: `cast ('name of spell')`
+!!! example
 
-Description: Cast a spell by name
+    === "Attack Target"
 
-Example(s):
+        ```vim
+        attack '0x21B4'
+        ```
 
-```csharp
-cast 'blade spirits'
-```
+    === "Attack Variable"
 
-## clearsysmsg
+        ```vim
+        attack 'attackdummy'
+        ```
+# cast
 
-Syntax: `clearsysmsg`
+**Syntax**: `cast ('name of spell')`
 
-Description: Clears the internal system message queue ()
+**Description**: Cast a spell by name
 
-Example(s):
+!!! example
 
-```csharp
+    === "Cast specific spell"
 
-sysmsg 'hello'
-sysmsg 'bye'
+        ```vim
+        cast 'blade spirits'
+        ```
 
-// You say hello!
-if insysmsg 'hello'
-   say 'hello!'
-endif
+# clearall
 
-clearsysmsg
+**Syntax**: `clearall`
 
-// You say nothing
-if insysmsg 'bye'
-   say 'cya!'
-endif
+**Description**: Combines the following actions into one commmand: `Cancel Current Target, Clear Target Queue, Drop What You Are Currently Holding and Clear Drag/Drop Queue` into a single command.
 
-```
+!!! example
 
-## dclick
+    === "Clear on sysmsg message"
 
-Syntax: `dclick (serial)` or `useobject (serial)`
+        ```vim
+        if insysmsg 'cannot find'
+            clearall
+        endif
+        ```
 
-Description: This command will use (double-click) a specific item or mobile.
+# cleardragdrop
 
-Example:
+**Syntax**: `cleardragdrop`
 
-```csharp
-dclick 0x34AB
-```
+**Description**: Clears Razor's the drag/drop queue
 
-## dclicktype
+!!! example
 
-Syntax: `dclicktype ('name of item') OR (graphicID) [inrange]` or `usetype ('name of item') OR (graphicID) [inrange]` or `usetype ('name of item') OR (graphicID) backpack`
+    === "Clear on sysmsg message"
 
-Description: This command will use (double-click) an item type either provided by the name or the graphic ID.
+        ```vim
+        if insysmsg 'cannot reach'
+            cleardragdrop
+        endif
+        ```
 
-!!! tip
+# clearhands
+
+**Syntax**: `clearhands ('left'/'right'/'both')`
+
+**Description**: Undress your hands based on the param.
+
+!!! example
+
+    === "Undress both hands"
+
+        ```vim
+        clearhands 'both'
+        ```
+
+    === "Undress left hand"
+
+        ```vim
+        clearhands 'left'
+        ```
+# clearsysmsg
+
+**Syntax**: `clearsysmsg`
+
+**Description**: Clears the internal system message queue
+
+!!! example
+
+    === "General"
+
+        ```vim
+        sysmsg 'hello'
+        sysmsg 'bye'
+
+        if insysmsg 'hello'
+            say 'hello!'
+        endif
+
+        clearsysmsg
+
+        if insysmsg 'bye'
+            say 'this condition wont be met since it was cleared on line 8'
+        endif
+        ```
+# dclick
+
+**Syntax**: `dclick (serial)` or `dclick ('left'/'right'/'hands')`
+
+**Description**: This command will use (double-click) a specific item or mobile or use the item in one of your hands using `left`, `right` or `hands` to use an item in either hand.
+
+!!! example
+
+    === "Double-click a specific item id"
+
+        ```vim
+        dclick '0x34AB'
+        ```
+
+    === "Double-click a variable"
+
+        ```vim
+        dclick 'myvariable'
+        ```
+
+    === "Double-click any item in your hands"
+        ```vim
+        dclick 'hands'
+        ```
+    
+    === "Double-click item in right hand"
+        ```vim
+        dclick 'right'
+        ```
+
+# dclicktype
+
+**Syntax**: `dclicktype ('name of item') OR (graphicID) [true/backpack]`
+
+**Description**: This command will use (double-click) an item type either provided by the name or the graphic ID.
+
+!!! tip "Range Check"
     If you include the optional `true` parameter, items within range (2 tiles) will only be considered. If you include the optional `backpack` parameter, items in your backpack only be considered.
 
-Example:
+!!! tip "Getting the graphic name or ID"
+    To get the name or the ID of item, use the `>info` command in Razor and click on the item. You can use either the `Item Name` or `Id`.
 
-```csharp
-dclicktype 'dagger'
-waitfortarget
-targettype 'robe'
-```
+    ![item-command](../images/infocommand.png)
 
-```csharp
-// Same as above, but only items in range
-dclicktype 'dagger' true
-waitfortarget
-targettype 'robe' true
-```
+!!! example
 
-```csharp
-// Same as above, but only items in your pack
-dclicktype 'dagger' backpack
-waitfortarget
-targettype 'robe' backpack
-```
+    === "Use any item"
 
-## dress
+        ```vim
+        dclicktype 'dagger'
+        waitfortarget
+        targettype 'robe'
+        ```
 
-Syntax: `dress ('name of dress list')`
+    === "..with range check"
 
-Description: This command will execute a spec dress list you have defined in Razor.
+        ```vim hl_lines="1 3"
+        dclicktype 'dagger' true
+        waitfortarget
+        targettype 'robe' true
+        ```
 
-Example(s):
+    === "..with backpack only"
 
-```csharp
-dress 'My Sunday Best'
-```
+        ```vim hl_lines="1 3"
+        dclicktype 'dagger' backpack
+        waitfortarget
+        targettype 'robe' backpack
+        ```
 
-## drop
+# dress
 
-Syntax: `drop (serial) (x/y/z/layername)`
+**Syntax**: `dress ('name of dress list')`
 
-Description: This command will drop the item you are holding either at your feet, on a specific layer or at a specific X/Y/Z location.
+**Description**: This command will execute a spec dress list you have defined in Razor.
 
-Example(s):
+!!! example
 
-```csharp
-// Lift a specific item and drop on chest/torso
-lift 0x400D54A7 1
-drop 0x6311 InnerTorso
-```
+    === "Use existing dress list"
 
-```csharp
-// Lift a specific item, wait 5 seconds, drop it on a specific location
-lift 0x400D54A7 1
-wait 5000
-drop 0xFFFFFFFF 5926 1148 0
-```
+        ```vim
+        dress 'My Sunday Best'
+        ```
+# drop
 
-## droprelloc
+**Syntax**: `drop (serial) (x) (y) [z]` or `drop (serial) (layer)` or `drop 'ground' (x) (y) [z]`
 
-Syntax: `droprelloc (x) (y)`
+**Description**: This command will drop the item you are holding either at your feet, on a specific layer , at a specific X/Y/Z location on the ground or within the defined serial.
 
-Description: This command will drop the item you're holding to a location relative to your position.
+!!! tip
+    The functionality of `drop 'ground' (x) (y) [z]` is also available in with [droprelloc](./#droprelloc).
 
-Example:
+!!! tip
+    A list of available [layers](./layers.md) for reference that can be used with this command.
 
-```csharp
-lift 0x400EED2A 1
-wait 1000
-droprelloc 1 1
-```
+!!! example
 
-## emote
+    === "Lift item, drop on your chest/torso"
 
-Syntax: `emote ('message to send') [hue]`
+        ```vim
+        lift '0x400D54A7'
+        drop 'self' InnerTorso
+        ```
 
-Description: This command will force your character to emote the message passed as the parameter.
+    === "Lift item, drop on ground at location"
 
-Example:
+        ```vim
+        lift '0x400D54A7'
+        drop 'ground' 5926 1148 0
+        ```
 
-```bash
-emote 'Hello world!'
+# droprelloc
 
-emote 'Hello world!' 454
-```
+**Syntax**: `droprelloc (x) (y)`
 
-## guild
-
-Syntax: `guild ('message to send')`
-
-Description: This command will force your character to say a guild message passed as the parameter.
+**Description**: This command will drop the item you're holding to a location relative to your position.
 
 Example:
 
-```bash
-guild 'Hello guildmates!'
-```
+!!! example
 
-## gumpresponse
+    === "Drop Relative Location"
 
-Syntax: `gumpresponse (buttonID)`
+        ```vim
+        lift '0x400EED2A'
+        wait 1000
+        droprelloc 1 1
+        ```
 
-Description: Responds to a specific gump button
+# emote
 
-Example:
+**Syntax**: `emote ('message to send') [hue]`
 
-```csharp
-gumpresponse 4
-```
+**Description**: This command will force your character to emote the message passed as the parameter.
 
-## gumpclose
+!!! tip
+    This command will append `*` around the emote so `emote 'smiles'` will be displayed in game as `*smiles*`.
 
-Syntax: `gumpclose`
+!!! example
 
-Description: This command will close the last gump that opened.
+    === "Emote"
 
-Example:
+        ```vim
+        emote 'smiles'
+        ```
 
-```csharp
-gumpclose
-```
+    === "Emote with hue"
 
-## hotkey
+        ```vim
+        emote 'smiles in another color' 454
+        ```
 
-Syntax: `hotkey ('name of hotkey')`
+# guild
 
-Description: This command will execute any Razor hotkey by name.
+**Syntax**: `guild ('message to send')`
 
-Example:
+**Description**: This command will force your character to say a guild message passed as the parameter.
 
-```csharp
-skill 'detect hidden'
-waitfortarget
-hotkey 'target self'
-```
+!!! example
 
-## lasttarget
+    === "Guild message"
 
-Syntax: `lasttarget`
+        ```vim
+        guild 'Hello fellow guildmates!'
+        ```
 
-Description: This command will target your last target set in Razor.
+# gumpresponse
 
-Example:
+**Syntax**: `gumpresponse (buttonID)`
 
-```csharp
-cast 'magic arrow'
-waitfortarget
-lasttarget
-```
+**Description**: Responds to a specific gump button
 
-## lift
+!!! example
 
-Syntax: `lift (serial) [amount]`
+    === "Gump Response"
 
-Description: This command will lift a specific item and amount. If no amount is provided, `1` is defaulted.
+        ```vim
+        gumpresponse 4
+        ```
 
-Example(s):
+# gumpclose
 
-```csharp
-lift 0x400EED2A 1
-wait 1000
-droprelloc 1 1 0
-```
+**Syntax**: `gumpclose`
 
-## lifttype
+**Description**: This command will close the last gump that opened.
 
-Syntax: `lifttype (gfx) [amount]` or `lifttype ('name of item') [amount]`
+!!! example
 
-Description: This command will lift a specific item by type either by the graphic id or by the name. If no amount is provided, `1` is defaulted.
+    === "Close gump"
 
-Example(s):
+        ```vim
+        gumpclose
+        ```
 
-```csharp
-lifttype 'robe'
-wait 1000
-droprelloc 1 1 0
+# hotkey
 
-lifttype 0x1FCD
-wait 1000
-droprelloc 1 1
-```
+**Syntax**: `hotkey ('name of hotkey')`
 
-## menu
+**Description**: This command will execute any Razor hotkey by name.
 
-Syntax: `menu (serial) (index)`
+!!! example
 
-Description: Selects a specific index within a context menu
+    === "Hotkey"
 
-Example:
+        ```vim
+        skill 'detect hidden'
+        waitfortarget
+        hotkey 'target self'
+        ```
 
-```bash
-menu 0x123ABC 4
-```
+# interrupt
+**Syntax**: `interrupt`
 
-## menuresponse
+**Description**: This command will interrupt a casting action. 
 
-Syntax: `menuresponse (index) (menuId) [hue]`
+!!! example
 
-Description: Responds to a specific menu and menu ID
+    === "Example"
 
-Example:
+        ```vim
+        cast 'energy bolt'
+        if hp < 10
+            interrupt
+            cast 'greater healing'
+            wft
+            target 'self'
+        end if
+        
+        wft
+        target 'last'    
+        ```
 
-```bash
-menuresponse 3 4
-```
 
-## organizer
+# lasttarget
 
-Syntax: `organizer (number) ['set']`
+**Syntax**: `lasttarget`
 
-Description: This command will execute a specific organizer agent. If the `set` parameter is included, you will instead be prompted to set the organizer agent's hotbag.
+**Description**: This command will target your last target set in Razor.
 
-Example:
+!!! example
 
-```csharp
-// Execute organizer agent 1
-organizer 1
+    === "Cast on last target"
 
-// Set a hotbag on organizer agent 4
-organizer 4 'set'
-```
+        ```vim
+        cast 'magic arrow'
+        waitfortarget
+        lasttarget
+        ```
 
-## overhead
+# lift
 
-Syntax: `overhead ('text') [color] [serial]`
+**Syntax**: `lift (serial) [amount]`
 
-Description: This command will display a message over your head. Only you can see this.
+**Description**: This command will lift a specific item and amount. If no amount is provided, `1` is defaulted.
 
-Example:
+!!! example
 
-```php
-if stam = 100
-    overhead 'ready to go!'
-endif
-```
+    === "Lift item"
 
-## potion
+        ```vim
+        lift '0x400EED2A'
+        wait 1000
+        droprelloc 1 1 0
+        ```
 
-Syntax: `potion ('potion type')`
+# lifttype
+
+**Syntax**: `lifttype (gfx) [amount]` or `lifttype ('name of item') [amount]`
+
+**Description**: This command will lift a specific item by type either by the graphic id or by the name. If no amount is provided, `1` is defaulted.
+
+!!! example
+
+    === "Lift by name"
+
+        ```vim
+        lifttype 'robe'
+        wait 1000
+        droprelloc 1 1
+        ```
+
+    === "Lift by item id"
+
+        ```vim
+        lifttype '0x1FCD'
+        wait 1000
+        droprelloc 1 1
+        ```
+
+# menu
+
+**Syntax**: `menu (serial) (index)`
+
+**Description**: Selects a specific index within a context menu
+
+!!! example
+
+    === "Menu"
+
+        ```vim
+        menu '0x123ABC' 4
+        ```
+
+# menuresponse
+
+**Syntax**: `menuresponse (index) (menuId) [hue]`
+
+**Description**: Responds to a specific menu and menu ID
+
+!!! example
+
+    === "Description"
+
+        ```vim
+        menuresponse 3 4
+        ```
+
+# organizer
+
+**Syntax**: `organizer (number) ['set']`
+
+**Description**: This command will execute a specific organizer agent. If the `set` parameter is included, you will instead be prompted to set the organizer agent's hotbag.
+
+!!! example
+
+    === "Execute organizer agent 1"
+
+        ```vim
+        organizer 1
+        ```
+
+    === "Set a hotbag on organizer agent 4"
+
+        ```vim
+        organizer 4 'set'
+        ```
+
+# overhead
+
+**Syntax**: `overhead ('text') [color] [serial]`
+
+**Description**: This command will display a message over your head. Only you can see this.
+
+!!! example
+
+    === "Overhead message"
+
+        ```vim
+        if stam = 100
+            overhead 'ready to go!'
+        endif
+        ```
+
+# potion
+
+**Syntax**: `potion ('potion type')`
 
 Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
-Description: This command will use a specific potion based on the type.
+**Description**: This command will use a specific potion based on the type.
 
-Example:
+!!! example
 
-```csharp
-potion 'agility'
+    === "Use agility potion"
 
-potion 'heal'
-```
+        ```vim
+        potion 'agility'
+        ```
 
-## promptresponse
+    === "Use heal potion"
 
-Syntax: `promptresponse ('prompt response')`
+        ```vim
+        potion 'heal'
+        ```
 
-Description: This command will respond to a prompt triggered from actions such as renaming runes or giving a guild title.
+# promptresponse
 
-Example:
+**Syntax**: `promptresponse ('prompt response')`
 
-```csharp
-dclicktype 'rune'
-waitforprompt
-promptresponse 'to home'
-```
+**Description**: This command will respond to a prompt triggered from actions such as renaming runes or giving a guild title.
 
-## restock
+!!! example
 
-Syntax: `restock (number) ['set']`
+    === "Rename a recall rune"
 
-Description: This command will execute a specific restock agent. If the `set` parameter is included, you will instead be prompted to set the restock agent's hotbag.
+        ```vim
+        dclicktype 'rune'
+        waitforprompt
+        promptresponse 'to home'
+        ```
 
-Example:
+# random
 
-```csharp
-// Execute restock agent 1
-restock 1
+**Syntax**: `random (max number)`
 
-// Set a hotbag on restock agent 4
-restock 4 'set'
-```
+**Description**: This command will generate a random number between 1 and the max number.
 
-## say
+!!! example
 
-Syntax: `say ('message to send') [hue]` or `msg ('message to send') [hue]`
+    === "Random Message Check"
 
-Description: This command will force your character to say the message passed as the parameter.
+        ```vim
+        clearsysmsg
 
-Example:
+        random 10
 
-```bash
-say 'Hello world!'
+        if insysmsg 'Random: 5'
+            say 'Hello!'
+        else
+            say 'Hail!'
+        endif
+        ```
+# restock
 
-say 'Hello world!' 454
-```
+**Syntax**: `restock (number) ['set']`
 
-## script
+**Description**: This command will execute a specific restock agent. If the `set` parameter is included, you will instead be prompted to set the restock agent's hotbag.
 
-Syntax: `script 'name'` or `script 'category\name'`
+!!! example
 
-Description: This command will call another script. You can call scripts in categories using `cat1\cat2\scriptname` format.
+    === "Use Restock Agent 1"
 
-```csharp
-if hp = 40
-   script 'healself'
-endif
+        ```vim
+        if count garlic < 4
+            restock 1
+        endif
+        ```
 
-if mana = 40
-   script 'magery\domeditation'
-endif
-```
+    === "Set a hotbag on Restock Agent 4"
 
-## scavenger
+        ```vim
+        restock 4 'set'
+        ```
 
-Syntax: `scavenger ['clear'/'add'/'on'/'off'/'set']`
+# say
 
-Description: This command will control the scavenger agent.
+**Syntax**: `say ('message to send') [hue]` or `msg ('message to send') [hue]`
+
+**Description**: This command will force your character to say the message passed as the parameter.
+
+!!! example
+
+    === "Say message"
+
+        ```vim
+        say 'Hello world!'
+        ```
+
+    === "Say message with hue"
+
+        ```vim
+        say 'Hello world!' 454
+        ```
+
+# script
+
+**Syntax**: `script 'name'` or `script 'category\name'`
+
+**Description**: This command will call another script.
+
+!!! tip
+    You can call scripts in categories using `cat1\cat2\scriptname` format.
+
+!!! example
+
+    === "Execute script"
+
+        ```vim hl_lines="2"
+        if hp = 40
+            script 'healcure'
+        endif
+        ```
+
+    === "Execute script in category"
+
+        ```vim hl_lines="2"
+        if mana = 40
+            script 'magery\meditation'
+        endif
+        ```
+# scavenger
+
+**Syntax**: `scavenger ['clear'/'add'/'on'/'off'/'set']`
+
+**Description**: This command will control the scavenger agent.
 
 * `clear`: Clear scavenger agent cache
 * `add`: Select an item to add to the list
@@ -431,343 +650,613 @@ Description: This command will control the scavenger agent.
 * `off`: Turn off the scavenger agent
 * `set`: Set the scavenger agent's hotbag
 
-Example:
+!!! example
 
-```csharp
-// Turn off the agent
-scavenger 'off'
-```
+    === "Turn off scavenger"
 
-## sell
+        ```vim
+        scavenger 'off'
+        ```
 
-Syntax: `sell`
+# sell
 
-Description: This command will set the Sell agent's hotbag.
+**Syntax**: `sell`
 
-Example:
+**Description**: This command will set the Sell agent's hotbag.
 
-```csharp
-// Get a target to set the sell agent hotbag
-sell
-```
+!!! example
 
-## setability
+    === "Set Agent Hotbag"
 
-Syntax: `setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']`
+        ```vim
+        sell
+        ```
 
-Description: This will set a specific ability on or off. If `on` or `off` is missing, `on` is defaulted.
+# setability
 
-Example:
+**Syntax**: `setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']`
 
-```csharp
-// enable stun
-setability stun
-```
+**Description**: This will set a specific ability on or off. If `on` or `off` is missing, `on` is defaulted.
 
-## setlasttarget
+!!! example
 
-Syntax: `setlasttarget`
+    === "Set stun"
 
-Description: This command will pause the script until you select a target to be set as Last Target.
+        ```vim
+        setability 'stun'
+        ```
 
-Example:
+    === "Turn off stun"
 
-```csharp
-overhead 'set last target'
-setlasttarget
-overhead 'set!'
-cast 'magic arrow'
-waitfortarget
-target 'last'
-```
+        ```vim
+        setability 'stun' off
+        ```
 
-## setvar
+# setlasttarget
 
-Syntax: `setvar ('variable')` or `setvariable ('variable')`
+**Syntax**: `setlasttarget`
 
-Description: This command will pause the script until you select a target to be assigned a variable. Please note, the variable must exist before you can assign values to it.
+**Description**: This command will pause the script until you select a target to be set as Last Target.
 
-Example:
+!!! example
 
-```csharp
-// 'dummy' exist in the Razor UI
-setvar 'dummy'
+    === "Set last target and cast"
 
-// Script pauses, cursor should be up
+        ```vim
+        overhead 'set last target'
+        setlasttarget
+        overhead 'set!'
+        cast 'magic arrow'
+        waitfortarget
+        target 'last'
+        ```
+# setvar
 
-cast 'magic arrow'
-waitfortarget
-target 'dummy'
-```
+**Syntax**: `setvar ('variable') [timeout` or `setvariable ('variable') [timeout]`
 
-## skill
+**Description**: This command will pause the script until you select a target to be assigned a variable. Please note, the variable must exist before you can assign values to it. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
-Syntax: `skill 'name of skill'` or `skill last`
+!!! example
 
-Description: This command will use a specific skill (assuming it's a usable skill).
+    === "Set variable and use it"
+
+        ```vim
+        setvar 'dummy'
+
+        cast 'magic arrow'
+        waitfortarget
+        target 'dummy'
+        ```
+
+# skill
+
+**Syntax**: `skill 'name of skill'` or `skill last`
+
+**Description**: This command will use a specific skill (assuming it's a usable skill).
 
 !!! tip "Supported skill names"
     `anatomy, animallore, itemidentification, itemid, armslore, begging, peacemaking, peace, cartography, detectinghidden, discord, discordance, evaluatingintelligence, evalint, forensicevaluation, forensiceval, hiding, provocation, provo, inscription, poisoning, spiritspeak, stealing, taming, tasteidentification, tasteid, tracking, meditation, stealth, removetrap, imbuing`
 
-Example:
+!!! example
 
-```csharp
-while mana < maxmana
-    say 'mediation!'
-    skill 'meditation'
-    wait 11000
-endwhile
-```
+    === "Use meditation"
 
-## sysmsg
+        ```vim
+        while mana < maxmana
+            say 'mediation!'
+            skill 'meditation'
+            wait 11000
+        endwhile
+        ```
 
-Syntax: `sysmsg ('message to display in system message')`
+# sysmsg
 
-Description: This command will display a message in the lower-left of the client.
+**Syntax**: `sysmsg ('message to display in system message')`
 
-Example:
+**Description**: This command will display a message in the lower-left of the client.
 
-```php
-if stam = 100
-    sysmsg 'ready to go!'
-endif
-```
+!!! example
 
-## target
+    === "Description"
 
-Syntax: `target (serial)` or `target (x) (y) (z)`
+        ```vim hl_lines="2"
+        if stam = 100
+            sysmsg 'ready to go!'
+        endif
+        ```
 
-Description: This command will target a specific mobile or item or target a specific location based on X/Y/Z coordinates.
+# target
 
-Example(s):
+**Syntax**: `target (closest/random/next/prev) [type1,type2] [humanoid/monster]` or `target (closest/random/next/prev) [type1!type2] [humanoid/monster]` or `target (serial)` or `target (clear/cancel)`
 
-```csharp
-// Cast lighting, wait for target, target a specific mobile
-cast 'lightning'
-waitfortarget
-target 0xBB3
+**Description**: This command will target a specific mobile based either the type searched for or the serial. If you provide a list of target types, you can use `,` for a general list and `!` for a priority list.
 
-// Cast fire field, wait for target, target the X, Y, Z at 5923 1145 0
-cast 'fire field'
-waitfortarget
-target 5923 1145 0
-```
+| Type              | Notoriety Name                                   | Notoriety Color                            |
+| ----------------- | ------------------------------------------------ | ------------------------------------------ |
+| `nonfriendly`     | Attackable, Criminal, Enemy, Murderer            | Gray (but not criminal), Gray, Orange, Red |
+| `friendly`        | Innocent, Guild/Ally                             | Blue, Green                                |
+| `enemy`           | Enemy                                            | Orange                                     |
+| `red`/`murderer`  | Murderer                                         | Red                                        |
+| `gray`/`grey`     | Attackable, Criminal                             | Gray (but not criminal), Gray              |
+| `criminal`        | Criminal                                         | Gray                                       |
+| `blue`/`innocent` | Innocent                                         | Blue                                       |
+| `friend`          | Based on your [friends list](../../help/friends) | Any                                        |
 
-## targettype
+| List Type | Delimiter | Description                                                                                                        |
+| --------- | --------- | ------------------------------------------------------------------------------------------------------------------ |
+| General   | `,`       | When the script tries to acquire a target, it will look for all the target types passed in the list. See Examples. |
+| Priority  | `!`       | When the script tries to acquire a target, it will prioritize each type. See Examples.                             |
 
-Syntax: `targettype (graphic)` or `targettype ('name of item or mobile type') true` or `targettype ('name of item or mobile type') backpack`
+!!! example
 
-Description: This command will target a specific type of mobile or item based on the graphic id or based on the name of the item or mobile.
+    === "Specific target"
 
-!!! tip
+        ```vim
+        cast 'lightning'
+        waitfortarget
+        target '0xBB3'
+        ```
+
+    === "General list"
+
+        ```csharp
+        cast 'lightning'
+        waitfortarget
+
+        // General list using a ,
+        // If a red mobile is closer than a gray mobile, this will target the red mobile
+        target closest gray,red
+        ```
+
+    === "Priority list"
+
+        ```csharp
+        cast 'lightning'
+        waitfortarget
+
+        // Priority list using a !
+        // If a red mobile is closer than a gray mobile, this will target the gray mobile
+        target closest gray!red
+        ```
+
+    === "Target closest red"
+
+        ```vim
+        cast 'lightning'
+        waitfortarget
+        target closest 'red'
+        ```
+
+    === "Target closest gray or red monster"
+
+        ```vim
+        cast 'lightning'
+        waitfortarget
+        target closest 'gray,red' monster
+        ```
+
+    === "Target random mobile"
+
+        ```vim
+        cast 'lightning'
+        waitfortarget
+        target random
+        ```
+
+    === "Target random red monster"
+
+        ```vim
+        cast 'lightning'
+        waitfortarget
+        target random 'red' monster
+        ```
+
+    === "Next humanoid target"
+
+        ```vim        
+        target next humanoid
+        ```    
+
+    === "Cancel current target"
+
+        ```vim        
+        target cancel
+        ```
+    
+    === "Clear target queue"
+
+        ```vim        
+        target clear
+        ```
+
+# targetrelloc
+
+**Syntax**: `targetrelloc (x-offset) (y-offset)`
+
+**Description**: This command will target a specific location on the map relative to your position.
+
+!!! example
+
+    === "Target 1 X, 1 Y from player location"
+
+        ```vim
+        cast 'fire field'
+        waitfortarget
+        targetrelloc 1 1
+        ```
+
+# targetloc
+
+**Syntax**: `targetloc (x) (y) (z)`
+
+**Description**: This command will target a specific location on the map.
+
+!!! example
+
+     === "Specific location"
+
+        ```vim
+        cast 'fire field'
+        waitfortarget
+        targetloc 5923 1145 0
+        ```
+
+# targettype
+
+**Syntax**: `targettype (graphic)` or `targettype ('name of item or mobile type') true` or `targettype ('name of item or mobile type') backpack`
+
+**Description**: This command will target a specific type of mobile or item based on the graphic id or based on the name of the item or mobile.
+
+!!! tip "Range Check"
     If the optional parameter is passed in as `true` only items within the range of 2 tiles will be considered. If the optional parameter is passed in as `backpack` only items in your backpack will be considered.
 
-Example(s)
+!!! tip "Getting the graphic name or ID"
+    To get the name or the ID of item, use the `>info` command in Razor and click on the item. You can use either the `Item Name` or `Id`.
 
-```csharp
-// Use a dagger, wait and then target any item that is a robe
-usetype 'dagger'
-waitfortarget
-targettype 'robe'
+    ![item-command](../images/infocommand.png)
 
-// Use a specific item, wait and then target a specific type
-useobject 0x4005ECAF
-waitfortarget
-targettype 0x1f03
+!!! example
 
-// Use a specific item, wait and then target a specific type within 2 tiles
-useobject 0x4005ECAF
-waitfortarget
-targettype 0x1f03 true
-```
+    === "Target by name"
 
-## targetrelloc
+        ```vim hl_lines="3"
+        dclicktype 'dagger'
+        waitfortarget
+        targettype 'robe'
+        ```
 
-Syntax: `targetrelloc (x-offset) (y-offset)`
+    === "Target by type"
 
-Description: This command will target a specific location on the map relative to your position.
+        ```vim hl_lines="3"
+        dclick '0x4005ECAF'
+        waitfortarget
+        targettype '0x1F03'
+        ```
 
-Example(s)
+    === "Target by type in range" 
 
-```csharp
-// Cast fire field, wait for target and target the location 1 X, 1 Y from my location
-cast 'fire field'
-waitfortarget
-targetrelloc 1 1
-```
+        ```vim hl_lines="3"
+        dclick '0x4005ECAF'
+        waitfortarget
+        targettype '0x1F03' true
+        ```
 
-## undress
+    === "Target by name in backpack" 
+           
+        ```vim hl_lines="3"
+        dclicktype 'dagger'
+        waitfortarget
+        targettype 'robe'
+        ```
 
-Syntax: `undress ['name of dress list']'` or `undress 'LayerName'`
+# undress
 
-Description: This command will either undress you completely if no dress list is provided. If you provide a dress list, only those specific items will be undressed. Lastly, you can define a layer name to undress.
+**Syntax**: `undress ['name of dress list']'` or `undress 'LayerName'`
 
-Example(s):
+**Description**: This command will either undress you completely if no dress list is provided. If you provide a dress list, only those specific items will be undressed. Lastly, you can define a layer name to undress.
 
-```csharp
-// Remove everything you are wearing
-undress
+!!! tip
+    Available [layers](./layers.md) for reference
 
-// Remove just specific items in a dress list
-undress 'My Sunday Best'
+!!! example
 
-// Remove your shirt and pants
-undress 'Shirt'
-undrsss 'Pants'
-```
+    === "Full naked"
 
-## useonce
+        ```vim
+        undress
+        ```
 
-Syntax: `useonce ['add'/'addcontainer']`
+    === "Specfic items in dress list"
 
-Description: This command will execute the UseOnce agent. If the `add` parameter is included, you can add items to your UseOnce list. If the `addcontainer` parameter is included, you can add all items in a container to your UseOnce list.
+        ```vim
+        undress 'My Sunday Best'
+        ```
 
-Example:
+    === "Remove your shirt and pants"
 
-```csharp
-// Use top item in my UseOnce list
-useonce
+        ```vim
+        undress 'Shirt'
+        undrsss 'Pants'
+        ```
 
-// Add item to my list
-useonce 'add'
+# useonce
 
-// Add all items in a container to my list
-useonce 'addcontainer'
-```
+**Syntax**: `useonce ['add'/'addcontainer']`
 
-## walk
+**Description**: This command will execute the UseOnce agent. If the `add` parameter is included, you can add items to your UseOnce list. If the `addcontainer` parameter is included, you can add all items in a container to your UseOnce list.
 
-Syntax: `walk ('direction')`
+!!! example
 
-Description: This command will turn and/or walk your player in a certain direction.
+    === "Use top item"
 
-Example:
+        ```vim
+        useonce
+        ```
 
-```csharp
-walk 'North'
-walk 'Up'
-walk 'West'
-walk 'Left'
-walk 'South'
-walk 'Down'
-walk 'East'
-walk 'Right'
-```
+    === "Add to list"
 
-## wait & pause
+        ```vim
+        useonce 'add'
+        ```
 
-Syntax: `wait [time in milliseconds` or `pause [time in milliseconds]`
+    === "Add to container"
 
-Description: This command will pause the execution of a script for a given time.
+        ```vim
+        useonce 'addcontainer'
+        ```
 
-Example:
+# virtue
 
-```php
-while stam < 100
-    // Wait 5 seconds
-    wait 5000
-endwhile
-```
+**Syntax**: `virtue ('honor'/'sacrifice'/'valor')`
 
-## waitforgump
+**Description**: This command will invoke Honor, Sacrifice or Valor.
 
-Syntax: `waitforgump [gump id]`
+!!! example
 
-Description: This command will wait for a gump. If no `gump id` is provided, it will wait for **any** gump.
+    === "Invoke Honor"
 
-Example:
+        ```vim
+        virtue 'honor'
+        ```
 
-```csharp
-waitforgump
+    === "Invoke Sacrifice"
 
-waitforgump 4
-```
+        ```vim
+        virtue 'sacrifice'
+        ```
 
-## waitformenu
+    === "Invoke Valor"
 
-Syntax: `waitformenu [menu id]`
+        ```vim
+        virtue 'valor'
+        ```
 
-Description: This command will wait for a context menu. If no `menu id` is provided, it will wait for **any** menu.
+# walk
 
-Example:
+**Syntax**: `walk ('direction')`
 
-```csharp
-waitformenu
+**Description**: This command will turn and/or walk your player in a certain direction.
 
-waitformenu 4
-```
+!!! example
 
-## waitforprompt
+    === "Walk around"
 
-Syntax: `waitforprompt`
+        ```vim
+        walk 'North'
+        walk 'Up'
+        walk 'West'
+        walk 'Left'
+        walk 'South'
+        walk 'Down'
+        walk 'East'
+        walk 'Right'
+        ```
 
-Description: This command will wait for a prompt before continuing.
+# wait & pause
 
-Example:
+**Syntax**: `wait [time in milliseconds` or `pause [time in milliseconds]`
 
-```csharp
-dclicktype 'rune'
-waitforprompt
-promptresponse 'to home'
-```
+**Description**: This command will pause the execution of a script for a given time.
 
-## waitforsysmsg
+!!! tip
+    `1000` milliseconds is equal to `1` second.
+    
+    `1000 x number of seconds = total milliseconds`
 
-Syntax: `waitforsysmsg` or `wfsysmsg`
+!!! example
 
-Description: This command will wait a specific message to be added to the system message queue before continuing.
+    === "Wait 5 seconds"
 
-Example:
+        ```vim
+        while stam < 100    
+            wait 5000
+        endwhile
+        ```
+# waitforgump
 
-```csharp
-waitforsysmsg 'ready to go'
-overhead 'Ready!'
-```
+**Syntax**: `waitforgump [gump id/'any'] [timeout]`
 
-## waitfortarget
+**Description**: This command will wait for a gump. If no `gump id` is provided, it will wait for **any** gump. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
-Syntax: `waitfortarget [pause in milliseconds]` or `wft [pause in milliseconds]`
+!!! tip "Timeout parameter"
+    To modify the default 30 second timeout for any gump, you must include include the `any` keyword before the timeout.
 
-Description: This command will cause the script to pause until you have a target cursor.  By default it will wait 30 seconds but you can define a specific wait time if you prefer.
+    `waitforgump 'any' 5000` will wait for 5 seconds
 
-Example:
+    `waitforgump 5000` will wait 30 seconds for a gump with the id of 5000
 
-```csharp
-cast 'energy bolt'
-waitfortarget
-hotkey 'Target Closest Enemy'
-```
+!!! example
 
-```csharp
-cast 'energy bolt'
-wft
-target 'last'
-```
+    === "Wait for any gump"
 
-## whisper
+        ```vim
+        waitforgump 'any' 
+        ```
 
-Syntax: `whisper ('message to send') [hue]`
+    === "Wait for any gump for 10 seconds"
 
-Description: This command will force your character to whisper the message passed as the parameter.
+        ```vim
+        waitforgump 'any' 10000
+        ```
 
-Example:
+    === "Wait for specific gump"
 
-```bash
-whisper 'Hello world!'
+        ```vim
+        waitforgump 4
+        ```
 
-whisper 'Hello world!' 454
-```
+    === "Wait for specific gump for 5 seconds"
 
-## yell
+        ```vim
+        waitforgump 34252 5000
+        ```
 
-Syntax: `yell ('message to send') [hue]`
+# waitformenu
 
-Description: This command will force your character to yell the message passed as the parameter.
+**Syntax**: `waitformenu [menu id/'any'] [timeout]`
 
-Example:
+**Description**: This command will wait for a context menu. If no `menu id` is provided, it will wait for **any** menu. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
-```bash
-yell 'Hello world!'
+!!! tip "Timeout parameter"
+    To modify the default 30 second timeout for any menu, you must include include the `any` keyword before the timeout.
 
-yell 'Hello world!' 454
-```
+    `waitformenu 'any' 5000` will wait for 5 seconds
+
+    `waitformenu 5000` will wait 30 seconds for a menu with the id of 5000
+
+!!! example
+
+    === "Wait for any menu"
+
+        ```vim
+        waitformenu
+        ```
+
+    === "Wait for any menu for 5 seconds"
+
+        ```vim
+        waitformenu 'any' 5000
+        ```
+
+    === "Wait for specific menu"
+
+        ```vim
+        waitformenu 4
+        ```
+
+# waitforprompt
+
+**Syntax**: `waitforprompt [promptid/'any'] [timeout]`
+
+**Description**: This command will wait for a prompt before continuing. If no `prompt id` is provided, it will wait for **any** prompt. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! tip "Timeout parameter"
+    To modify the default 30 second timeout for any gump, you must include include the `any` keyword before the timeout.
+
+    `waitforprompt 'any' 5000` will wait for 5 seconds
+
+    `waitforprompt 5000` will wait 30 seconds for a prompt with the id of 5000
+
+!!! example
+
+    === "Renaming recalling rune"
+
+        ```vim hl_lines="2"
+        dclicktype 'rune'
+        waitforprompt
+        promptresponse 'to home'
+        ```
+
+    === "Rename recalling rune with wait"
+
+        ```vim hl_lines="2"
+        dclicktype 'rune'
+        waitforprompt 'any' 5000
+        promptresponse 'to home'
+        ```
+
+# waitforsysmsg
+
+**Syntax**: `waitforsysmsg 'message to wait for' [timeout]` or `wfsysmsg 'message to wait for' [timeout]`
+
+**Description**: This command will wait a specific message to be added to the system message queue before continuing.  Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! example
+
+    === "Wait for system message"
+
+        ```vim hl_lines="1"
+        waitforsysmsg 'ready to go'
+        overhead 'Ready!'
+        ```
+
+    === "Wait for system message for 5 seconds"
+
+        ```vim hl_lines="1"
+        waitforsysmsg 'ready to go' 5000
+        overhead 'Done waiting'
+        ```
+
+# waitfortarget
+
+**Syntax**: `waitfortarget [pause in milliseconds]` or `wft [pause in milliseconds]`
+
+**Description**: This command will cause the script to pause until you have a target cursor.  By default it will wait 30 seconds but you can define a specific wait time if you prefer.
+
+!!! example
+
+    === "Cast and wait"
+
+        ```vim hl_lines="2"
+        cast 'energy bolt'
+        waitfortarget
+        hotkey 'Target Closest Enemy'
+        ```
+
+    === "Using 'wft' shorthand on last target"
+
+        ```vim hl_lines="2"
+        cast 'energy bolt'
+        wft
+        target 'last'
+        ```
+
+# whisper
+
+**Syntax**: `whisper ('message to send') [hue]`
+
+**Description**: This command will force your character to whisper the message passed as the parameter.
+
+!!! example
+
+    === "Whisper message"
+
+        ```vim
+        whisper 'Hello world!'
+        ```
+
+    === "Whisper message with hue"
+
+        ```vim
+        whisper 'Hello world!' 454
+        ```
+
+# yell
+
+**Syntax**: `yell ('message to send') [hue]`
+
+**Description**: This command will force your character to yell the message passed as the parameter.
+
+!!! example
+
+    === "Yell message"
+
+        ```vim
+        yell 'Hello world!'
+        ```
+
+    === "Yell message with hue"
+
+        ```vim
+        yell 'Hello world!' 454
+        ```

@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using Assistant.Core;
 using Assistant.Filters;
+using Assistant.Scripts;
 
 namespace Assistant
 {
@@ -83,125 +84,125 @@ namespace Assistant
         }
 
 
-        private static void TargetCloseNonFriendly()
+        public static void TargetCloseNonFriendly()
         {
             ClosestTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetCloseNonFriendlyHumanoid()
+        public static void TargetCloseNonFriendlyHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetCloseNonFriendlyMonster()
+        public static void TargetCloseNonFriendlyMonster()
         {
             ClosestMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal, (int) TargetType.Enemy,
                 (int) TargetType.Murderer);
         }
 
-        private static void TargetCloseFriendly()
+        public static void TargetCloseFriendly()
         {
             ClosestTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetCloseFriendlyHumanoid()
+        public static void TargetCloseFriendlyHumanoid()
+        {
+            ClosestHumanoidTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
+        }
+
+        public static void TargetCloseFriendlyMonster()
         {
             ClosestTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
         }
 
-        private static void TargetCloseFriendlyMonster()
-        {
-            ClosestTarget((int) TargetType.Invalid, (int) TargetType.Innocent, (int) TargetType.GuildAlly);
-        }
-
-        private static void TargetCloseEnemy()
+        public static void TargetCloseEnemy()
         {
             ClosestTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetCloseEnemyHumanoid()
+        public static void TargetCloseEnemyHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetCloseEnemyMonster()
+        public static void TargetCloseEnemyMonster()
         {
             ClosestMonsterTarget((int) TargetType.Enemy);
         }
 
-        private static void TargetCloseRed()
+        public static void TargetCloseRed()
         {
             ClosestTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetCloseRedMonster()
+        public static void TargetCloseRedMonster()
         {
             ClosestMonsterTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetCloseRedHumanoid()
+        public static void TargetCloseRedHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Murderer);
         }
 
-        private static void TargetCloseGrey()
+        public static void TargetCloseGrey()
         {
             ClosestTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetCloseGreyMonster()
+        public static void TargetCloseGreyMonster()
         {
             ClosestMonsterTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetCloseGreyHumanoid()
+        public static void TargetCloseGreyHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Attackable, (int) TargetType.Criminal);
         }
 
-        private static void TargetCloseCriminal()
+        public static void TargetCloseCriminal()
         {
             ClosestTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetCloseCriminalHumanoid()
+        public static void TargetCloseCriminalHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetCloseCriminalMonster()
+        public static void TargetCloseCriminalMonster()
         {
             ClosestHumanoidTarget((int) TargetType.Criminal);
         }
 
-        private static void TargetCloseInnocent()
+        public static void TargetCloseInnocent()
         {
             ClosestTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetCloseInnocentHumanoid()
+        public static void TargetCloseInnocentHumanoid()
         {
             ClosestHumanoidTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetCloseInnocentMonster()
+        public static void TargetCloseInnocentMonster()
         {
             ClosestMonsterTarget((int) TargetType.Innocent);
         }
 
-        private static void TargetClosestFriend()
+        public static void TargetClosestFriend()
         {
             ClosestFriendTarget();
         }
 
-        private static void TargetClosest()
+        public static void TargetClosest()
         {
             ClosestTarget();
         }
 
-        private static void ClosestTarget(params int[] noto)
+        public static void ClosestTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
@@ -239,12 +240,17 @@ namespace Assistant
             }
 
             if (closest != null)
+            {
                 SetLastTargetTo(closest);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
-        private static void ClosestHumanoidTarget(params int[] noto)
+        public static void ClosestHumanoidTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
@@ -287,12 +293,17 @@ namespace Assistant
             }
 
             if (closest != null)
+            {
                 SetLastTargetTo(closest);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
-        private static void ClosestMonsterTarget(params int[] noto)
+        public static void ClosestMonsterTarget(params int[] noto)
         {
             if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
@@ -308,7 +319,7 @@ namespace Assistant
                     !TargetFilterManager.IsFilteredTarget(m.Serial) &&
                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
                 {
-                    for (var i = 0; i < noto.Length; i++)
+                    for (var i = 0; i < noto.Length; i++) 
                         if (noto[i] == m.Notoriety)
                         {
                             list.Add(m);
@@ -335,22 +346,31 @@ namespace Assistant
             }
 
             if (closest != null)
+            {
                 SetLastTargetTo(closest);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
 
-        private static void ClosestFriendTarget()
+        public static void ClosestFriendTarget()
         {
             if (!Client.Instance.AllowBit(FeatureBit.ClosestTargets))
                 return;
 
             var list = new List<Mobile>();
             foreach (var m in World.MobilesInRange(12))
+            {
                 if (FriendsManager.IsFriend(m.Serial) && !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
                     !TargetFilterManager.IsFilteredTarget(m.Serial) &&
                     Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
+                {
                     list.Add(m);
+                }
+            }                
 
             Mobile closest = null;
             var closestDist = double.MaxValue;
@@ -367,9 +387,14 @@ namespace Assistant
             }
 
             if (closest != null)
+            {
                 SetLastTargetTo(closest);
+                ScriptManager.TargetFound = true;
+            }
             else
+            {
                 World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
+            }
         }
     }
 }

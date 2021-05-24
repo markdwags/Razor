@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -1191,6 +1191,18 @@ namespace Assistant
             }
 
             return false;
+        }
+
+        public enum InvokeVirtues
+        {
+            Honor = 0x01,
+            Sacrifice = 0x02,
+            Valor = 0x03
+        }
+
+        public void InvokeVirtue(InvokeVirtues virtue)
+        {
+            Client.Instance.SendToServer(new VirtueRequest((byte) virtue));
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,9 +22,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.HotKeys;
 using Assistant.Scripts.Engine;
+using Assistant.Scripts.Helpers;
 
 namespace Assistant.Scripts
 {
@@ -40,20 +42,12 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("dress", DressCommand); //DressAction
             Interpreter.RegisterCommandHandler("undress", UnDressCommand); //UndressAction
 
-            // Targets
-            Interpreter.RegisterCommandHandler("target", Target); //Absolute Target
-            Interpreter.RegisterCommandHandler("targettype", TargetType); //TargetTypeAction
-            Interpreter.RegisterCommandHandler("targetrelloc", TargetRelLoc); //TargetRelLocAction
-
-            Interpreter.RegisterCommandHandler("waitfortarget", WaitForTarget); //WaitForTargetAction
-            Interpreter.RegisterCommandHandler("wft", WaitForTarget); //WaitForTargetAction
-
             // Using stuff
-            Interpreter.RegisterCommandHandler("dclicktype", UseType); // DoubleClickTypeAction
-            Interpreter.RegisterCommandHandler("dclick", UseObject); //DoubleClickAction
+            Interpreter.RegisterCommandHandler("dclicktype", DClickType); // DoubleClickTypeAction
+            Interpreter.RegisterCommandHandler("dclick", DClick); //DoubleClickAction
 
-            Interpreter.RegisterCommandHandler("usetype", UseType); // DoubleClickTypeAction
-            Interpreter.RegisterCommandHandler("useobject", UseObject); //DoubleClickAction
+            Interpreter.RegisterCommandHandler("usetype", DClickType); // DoubleClickTypeAction
+            Interpreter.RegisterCommandHandler("useobject", DClick); //DoubleClickAction
 
             // Moving stuff
             Interpreter.RegisterCommandHandler("drop", DropItem); //DropAction
@@ -107,6 +101,53 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("setvariable", SetVar);
 
             Interpreter.RegisterCommandHandler("stop", Stop);
+
+            Interpreter.RegisterCommandHandler("clearall", ClearAll);
+
+            Interpreter.RegisterCommandHandler("clearhands", ClearHands);
+
+            Interpreter.RegisterCommandHandler("virtue", Virtue);
+
+            Interpreter.RegisterCommandHandler("random", Random);
+
+            Interpreter.RegisterCommandHandler("cleardragdrop", ClearDragDrop);
+            Interpreter.RegisterCommandHandler("interrupt", Interrupt);
+        }
+
+        private static string[] virtues = new string[3] { "honor", "sacrifice", "valor" };
+
+        private static bool Virtue(string command, Argument[] args, bool quiet, bool force)
+        {
+
+            if (args.Length == 0 || !virtues.Contains(args[0].AsString()))
+            {
+                throw new RunTimeError(null, "Usage: virtue ('honor'/'sacrifice'/'valor')");
+            }
+
+            switch (args[0].AsString())
+            {
+                case "honor":
+                    World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Honor);
+                    break;
+                case "sacrifice":
+                    World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Sacrifice);
+                    break;
+                case "valor":
+                    World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Valor);
+                    break;
+            }
+
+            return true;
+        }
+
+        private static bool ClearAll(string command, Argument[] args, bool quiet, bool force)
+        {
+
+            DragDropManager.GracefulStop(); // clear drag/drop queue
+            Targeting.CancelTarget(); // clear target queue & cancel current target
+            DragDropManager.DropCurrent(); // drop what you are currently holding
+
+            return true;
         }
 
         private static bool SetLastTarget(string command, Argument[] args, bool quiet, bool force)
@@ -132,28 +173,40 @@ namespace Assistant.Scripts
         {
             if (args.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: setvar ('variable')");
+                throw new RunTimeError(null, "Usage: setvar ('variable') [timeout]");
             }
 
             string varname = args[0].AsString();
 
-            ScriptVariables.ScriptVariable var = ScriptVariables.GetVariable(varname);
+            ScriptVariables.ScriptVariable variable = ScriptVariables.GetVariable(varname);
 
-            if (var == null)
+            if (variable == null)
             {
-                throw new RunTimeError(null, $"Unknown variable '{varname}'");
+                World.Player.SendMessage(Config.GetInt("SysColor"), $"'{varname}' not found, creating new variable");
+
+                variable = new ScriptVariables.ScriptVariable(varname, new TargetInfo());
+
+                ScriptVariables.ScriptVariableList.Add(variable);
+
+                ScriptVariables.RegisterVariable(varname);
+
+                ScriptManager.RedrawScriptVariables();
             }
+
+            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
+            
 
             if (!ScriptManager.SetVariableActive)
             {
-                var.SetTarget();
+                variable.SetTarget();
                 ScriptManager.SetVariableActive = true;
 
                 return false;
             }
 
-            if (var.TargetWasSet)
+            if (variable.TargetWasSet)
             {
+                Interpreter.ClearTimeout();
                 ScriptManager.SetVariableActive = false;
                 return true;
             }
@@ -166,227 +219,6 @@ namespace Assistant.Scripts
             ScriptManager.StopScript();
 
             return true;
-        }
-
-        private static bool Target(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length < 1)
-            {
-                throw new RunTimeError(null, "Usage: target (serial) OR (x) (y) (z)");
-            }
-
-            if (args.Length == 1)
-            {
-                Serial serial = args[0].AsSerial();
-
-                if (serial != Serial.Zero) // Target a specific item or mobile
-                {
-                    Item item = World.FindItem(serial);
-
-                    if (item != null)
-                    {
-                        Targeting.Target(item);
-                        return true;
-                    }
-
-                    Mobile mobile = World.FindMobile(serial);
-
-                    if (mobile != null)
-                    {
-                        Targeting.Target(mobile);
-                    }
-                }
-            }
-            else if (args.Length == 3) // target ground at specific x/y/z
-            {
-                Targeting.Target(new TargetInfo
-                {
-                    Type = 1,
-                    Flags = 0,
-                    Serial = Serial.Zero,
-                    X = args[0].AsInt(),
-                    Y = args[1].AsInt(),
-                    Z = args[2].AsInt(),
-                    Gfx = 0
-                });
-            }
-
-            return true;
-        }
-
-        private static bool TargetType(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (Targeting.FromGrabHotKey)
-                return false;
-
-            if (args.Length < 1)
-            {
-                throw new RunTimeError(null, "Usage: targettype (graphic) OR ('name of item or mobile type') [inrangecheck/backpack]");
-            }
-
-            string gfxStr = args[0].AsString();
-            Serial gfx = Utility.ToUInt16(gfxStr, 0);
-
-            bool inRangeCheck = Config.GetBool("ScriptTargetTypeRange");
-            bool backpack = false;
-
-            if (args.Length == 2)
-            {
-                if (args[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
-                {
-                    backpack = true;
-                }
-                else
-                {
-                    inRangeCheck = args[1].AsBool();
-                }
-            }
-
-            ArrayList list = new ArrayList();
-
-            // No graphic id, maybe searching by name?
-            if (gfx == 0)
-            {
-                if (backpack) // search backpack only
-                {
-                    if (World.Player.Backpack != null)
-                    {
-                        Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
-
-                        if (i != null)
-                            list.Add(i);
-                    }
-                }
-                else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
-                {
-                    list.AddRange(World.FindItemsByName(gfxStr).Where(item =>
-                        !item.IsInBank && (Utility.InRange(World.Player.Position, item.Position, 2) ||
-                                           item.RootContainer == World.Player)).ToList());
-                }
-                else
-                {
-                    list.AddRange(World.FindItemsByName(gfxStr).Where(item => !item.IsInBank).ToList());
-                }
-
-                if (list.Count == 0) // no item found, search mobile by name
-                {
-                    List<Mobile> mobiles = World.FindMobilesByName(gfxStr);
-
-                    if (mobiles.Count > 0)
-                    {
-                        list.AddRange(inRangeCheck
-                            ? mobiles.Where(m => Utility.InRange(World.Player.Position, m.Position, 2)).ToList()
-                            : mobiles);
-                    }
-                    else
-                    {
-                        throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
-                    }
-                }
-            }
-            else // Using graphic id, so find mobile or item
-            {
-                // Look for a mobile first
-                foreach (Mobile find in World.MobilesInRange())
-                {
-                    if (find.Body == gfx)
-                    {
-                        if (Config.GetBool("ScriptTargetTypeRange"))
-                        {
-                            if (Utility.InRange(World.Player.Position, find.Position, 2))
-                            {
-                                list.Add(find);
-                            }
-                        }
-                        else
-                        {
-                            list.Add(find);
-                        }
-                    }
-                }
-
-                if (list.Count == 0) // No mobile found, search for items
-                {
-                    if (backpack) // search backpack only
-                    {
-                        if (World.Player.Backpack != null)
-                        {
-                            Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
-
-                            if (i != null)
-                                list.Add(i);
-                        }
-                    }
-                    else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
-                    {
-                        list.AddRange(World.Items.Values.Where(i =>
-                                i.ItemID == gfx && !i.IsInBank &&
-                                (Utility.InRange(World.Player.Position, i.Position, 2) ||
-                                 i.RootContainer == World.Player))
-                            .ToList());
-                    }
-                    else
-                    {
-                        list.AddRange(World.Items.Values.Where(i => i.ItemID == gfx && !i.IsInBank)
-                            .ToList());
-                    }
-                }
-            }
-
-            if (list.Count > 0)
-            {
-                Targeting.Target(list[Utility.Random(list.Count)]);
-            }
-            else
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType,
-                    gfx.IsMobile ? $"Character [{gfx}]" : ((ItemID) gfx.Value).ToString());
-            }
-
-            return true;
-        }
-
-        private static bool TargetRelLoc(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (Targeting.FromGrabHotKey)
-                return false;
-
-            if (args.Length < 2)
-            {
-                throw new RunTimeError(null, "Usage: targetrelloc (x-offset) (y-offset)");
-            }
-
-            int xoffset = Utility.ToInt32(args[0].AsString(), 0);
-            int yoffset = Utility.ToInt32(args[1].AsString(), 0);
-
-            ushort x = (ushort) (World.Player.Position.X + xoffset);
-            ushort y = (ushort) (World.Player.Position.Y + yoffset);
-            short z = (short) World.Player.Position.Z;
-
-            try
-            {
-                Ultima.HuedTile tile = Map.GetTileNear(World.Player.Map, x, y, z);
-                Targeting.Target(new Point3D(x, y, tile.Z), tile.ID);
-            }
-            catch (Exception e)
-            {
-                throw new RunTimeError(null, $"Error Executing TargetRelLoc: {e.Message}");
-            }
-
-            return true;
-        }
-
-        private static bool WaitForTarget(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (Targeting.HasTarget)
-            {
-                Interpreter.ClearTimeout();
-                return true;
-            }
-
-            Interpreter.Timeout(args.Length > 0 ? args[0].AsUInt() : 30000, () => { return true; });
-
-            return false;
         }
 
         private static bool Hotkey(string command, Argument[] args, bool quiet, bool force)
@@ -402,7 +234,7 @@ namespace Assistant.Scripts
 
             if (hk == null)
             {
-                throw new RunTimeError(null, $"Hotkey '{query}' not found");
+                throw new RunTimeError(null, $"{command} - Hotkey '{query}' not found");
             }
 
             hk.Callback();
@@ -412,17 +244,29 @@ namespace Assistant.Scripts
 
         private static bool WaitForGump(string command, Argument[] args, bool quiet, bool force)
         {
+            if (args.Length < 1)
+            {
+                throw new RunTimeError(null, "Usage: waitforgump (gumpId/'any') [timeout]");
+            }
+
             uint gumpId = 0;
             bool strict = false;
 
-            // Look for a specific gump
-            if (args.Length == 1)
+            if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
+            {
+                strict = false;
+            }
+            else
             {
                 gumpId = Utility.ToUInt32(args[0].AsString(), 0);
 
                 if (gumpId > 0)
+                {
                     strict = true;
+                }
             }
+
+            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
 
             if ((World.Player.HasGump || World.Player.HasCompressedGump) &&
                 (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0))
@@ -436,30 +280,55 @@ namespace Assistant.Scripts
 
         private static bool WaitForMenu(string command, Argument[] args, bool quiet, bool force)
         {
+            if (args.Length < 1)
+            {
+                throw new RunTimeError(null, "Usage: waitformenu (menuId/'any') [timeout]");
+            }
+
             uint menuId = 0;
 
             // Look for a specific menu
-            if (args.Length == 1)
+            menuId = args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1
+                ? 0
+                : Utility.ToUInt32(args[0].AsString(), 0);
+
+            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
+
+            if (World.Player.HasMenu && (World.Player.CurrentGumpI == menuId || menuId == 0))
             {
-                menuId = Utility.ToUInt32(args[0].AsString(), 0);
+                Interpreter.ClearTimeout();
+                return true;
             }
 
-            return (World.Player.HasMenu && (World.Player.CurrentGumpI == menuId || menuId == 0));
+            return false;
         }
 
         private static bool WaitForPrompt(string command, Argument[] args, bool quiet, bool force)
         {
+            if (args.Length < 1)
+            {
+                throw new RunTimeError(null, "Usage: waitforprompt (promptId/'any') [timeout]");
+            }
+
             uint promptId = 0;
             bool strict = false;
 
-            // Look for a specific gump
-            if (args.Length == 1)
+            // Look for a specific prompt
+            if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
+            {
+                strict = false;
+            }
+            else
             {
                 promptId = Utility.ToUInt32(args[0].AsString(), 0);
 
                 if (promptId > 0)
+                {
                     strict = true;
+                }
             }
+
+            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
 
             if (World.Player.HasPrompt && (World.Player.PromptID == promptId || !strict || promptId == 0))
             {
@@ -508,12 +377,10 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static string[] hands = new string[3] {"left", "right", "both"};
+        private static string[] hands = new string[4] {"left", "right", "both", "hands"};
 
         private static bool ClearHands(string command, Argument[] args, bool quiet, bool force)
         {
-            // expect one STRING node
-
             if (args.Length == 0 || !hands.Contains(args[0].AsString()))
             {
                 throw new RunTimeError(null, "Usage: clearhands ('left'/'right'/'both')");
@@ -536,20 +403,20 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool UseType(string command, Argument[] args, bool quiet, bool force)
+        private static bool DClickType(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
                 throw new RunTimeError(null,
-                    "Usage: dclicktype|usetype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
+                    "Usage: dclicktype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
             }
 
             string gfxStr = args[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
-            Serial click = Serial.Zero;
-            List<Item> items = new List<Item>();
+            List<Item> items;
+            List<Mobile> mobiles = new List<Mobile>();
 
-            bool inRangeCheck = Config.GetBool("ScriptDClickTypeRange");
+            bool inRangeCheck = false;
             bool backpack = false;
 
             if (args.Length == 2)
@@ -567,163 +434,116 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                if (backpack) // search backpack only
-                {
-                    if (World.Player.Backpack != null)
-                    {
-                        Item i = World.Player.Backpack.FindItemByName(gfxStr, true);
+                items = CommandHelper.GetItemsByName(gfxStr, backpack, inRangeCheck);
 
-                        if (i != null)
-                            items.Add(i);
-                    }
-                }
-                else if (inRangeCheck) // inrange includes both backpack and within 2 tiles
+                if (items.Count == 0) // no item found, search mobile by name
                 {
-                    items.AddRange(World.FindItemsByName(gfxStr).Where(item =>
-                        !item.IsInBank && (Utility.InRange(World.Player.Position, item.Position, 2) ||
-                                           item.RootContainer == World.Player)).ToList());
+                    mobiles = CommandHelper.GetMobilesByName(gfxStr, inRangeCheck);
                 }
-                else
-                {
-                    items.AddRange(World.FindItemsByName(gfxStr).Where(item => !item.IsInBank).ToList());
-                }
-
-                if (items.Count == 0)
-                {
-                    throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
-                }
-
-                click = items[Utility.Random(items.Count)].Serial;
             }
             else // Provided graphic id for type, check backpack first (same behavior as DoubleClickAction in macros
             {
-                if (World.Player.Backpack != null)
-                {
-                    Item i = World.Player.Backpack.FindItemByID(Utility.ToUInt16(gfxStr, 0));
+                ushort id = Utility.ToUInt16(gfxStr, 0);
 
-                    if (i != null)
-                        items.Add(i);
-
-                    if (items.Count > 0)
-                        click = items[Utility.Random(items.Count)].Serial;
-                }
-            }
-
-            // Not in backpack? Lets check the world
-            if (items.Count == 0)
-            {
-                foreach (Item i in World.Items.Values)
-                {
-                    if (i.ItemID == gfx && i.RootContainer == null)
-                    {
-                        if (inRangeCheck)
-                        {
-                            if (Utility.InRange(World.Player.Position, i.Position, 2))
-                                items.Add(i);
-                        }
-                        else
-                        {
-                            items.Add(i);
-                        }
-                    }
-                }
-
+                items = CommandHelper.GetItemsById(id, backpack, inRangeCheck);
+                
+                // Still no item? Mobile check!
                 if (items.Count == 0)
                 {
-                    foreach (Item i in World.Items.Values)
-                    {
-                        if (i.ItemID == gfx && !i.IsInBank)
-                        {
-                            if (inRangeCheck)
-                            {
-                                if (Utility.InRange(World.Player.Position, i.Position, 2))
-                                    items.Add(i);
-                            }
-                            else
-                            {
-                                items.Add(i);
-                            }
-                        }
-                    }
+                    mobiles = CommandHelper.GetMobilesById(id, inRangeCheck);
                 }
-
-                if (items.Count > 0)
-                    click = items[Utility.Random(items.Count)].Serial;
             }
 
-            // Still no item? Mobile check!
-            if (items.Count == 0)
+            if (items.Count > 0)
             {
-                List<Mobile> mobiles = new List<Mobile>();
-                foreach (Mobile m in World.MobilesInRange())
-                {
-                    if (m.Body == gfx)
-                    {
-                        if (inRangeCheck)
-                        {
-                            if (Utility.InRange(World.Player.Position, m.Position, 2))
-                                mobiles.Add(m);
-                        }
-                        else
-                        {
-                            mobiles.Add(m);
-                        }
-                    }
-                }
-
-                if (mobiles.Count > 0)
-                    click = mobiles[Utility.Random(mobiles.Count)].Serial;
+                PlayerData.DoubleClick(items[Utility.Random(items.Count)].Serial);
             }
-
-            if (click != Serial.Zero)
-                PlayerData.DoubleClick(click);
+            else if (mobiles.Count > 0)
+            {
+                PlayerData.DoubleClick(mobiles[Utility.Random(mobiles.Count)].Serial);
+            }
             else
-                World.Player.SendMessage(MsgLevel.Force, LocString.NoItemOfType,
-                    gfx.IsItem ? ((ItemID) gfx.Value).ToString() : $"(Character) 0x{gfx:X}");
+            {
+                CommandHelper.SendWarning(command, $"Item or mobile type '{gfxStr}' not found", quiet);
+            }
 
             return true;
         }
 
-        private static bool UseObject(string command, Argument[] args, bool quiet, bool force)
+        private static bool DClick(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: dclick/useobject (serial)");
+                throw new RunTimeError(null, "Usage: dclick (serial) or dclick ('left'/'right'/'hands')");
             }
 
-            Serial serial = args[0].AsSerial();
-
-            if (!serial.IsValid)
+            if (hands.Contains(args[0].AsString()))
             {
-                throw new RunTimeError(null, "useobject - invalid serial");
-            }
+                Item item;
 
-            PlayerData.DoubleClick(serial);
+                switch (args[0].AsString())
+                {
+                    case "left":
+                        item = World.Player.GetItemOnLayer(Layer.LeftHand);
+                        break;
+                    case "right":
+                        item = World.Player.GetItemOnLayer(Layer.RightHand);
+                        break;
+                    default:
+                        item = World.Player.GetItemOnLayer(Layer.RightHand) ?? World.Player.GetItemOnLayer(Layer.LeftHand);
+                        break;
+                }
+
+                if (item != null)
+                {
+                    PlayerData.DoubleClick(item);
+                }
+                else
+                {
+                    CommandHelper.SendWarning(command, $"Item not found in '{args[0].AsString()}'", quiet);
+                }
+            }
+            else
+            {
+                Serial serial = args[0].AsSerial();
+
+                if (!serial.IsValid)
+                {
+                    throw new RunTimeError(null, "dclick - invalid serial");
+                }
+
+                PlayerData.DoubleClick(serial);
+            }
 
             return true;
         }
 
         private static bool DropItem(string command, Argument[] args, bool quiet, bool force)
         {
-            if (args.Length < 2)
+            if (args.Length < 1)
             {
                 throw new RunTimeError(null, "Usage: drop (serial) (x y z/layername)");
             }
 
-            Serial serial = args[0].AsSerial();
+            Serial serial = args[0].AsString().IndexOf("ground", StringComparison.InvariantCultureIgnoreCase) > 0
+                ? uint.MaxValue
+                : args[0].AsSerial();
+
             Point3D to = new Point3D(0, 0, 0);
             Layer layer = Layer.Invalid;
 
             switch (args.Length)
             {
-                case 1: // drop at feet
+                case 1: // drop at feet if only serial is provided
                     to = new Point3D(World.Player.Position.X, World.Player.Position.Y, World.Player.Position.Z);
                     break;
                 case 2: // dropping on a layer
                     layer = (Layer) Enum.Parse(typeof(Layer), args[1].AsString(), true);
                     break;
-
-                default: // dropping at x/y/z
+                case 3: // x y
+                    to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0), 0);
+                    break;
+                case 4: // x y z
                     to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0),
                         Utility.ToInt32(args[3].AsString(), 0));
                     break;
@@ -744,7 +564,7 @@ namespace Assistant.Scripts
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.MacroNoHold);
+                CommandHelper.SendWarning(command, "Not holding anything", quiet);
             }
 
             return true;
@@ -761,14 +581,20 @@ namespace Assistant.Scripts
             int y = args[1].AsInt();
 
             if (DragDropManager.Holding != null)
+            {
                 DragDropManager.Drop(DragDropManager.Holding, null,
                     new Point3D((ushort) (World.Player.Position.X + x),
                         (ushort) (World.Player.Position.Y + y), World.Player.Position.Z));
+            }
             else
-                World.Player.SendMessage(LocString.MacroNoHold);
+            {
+                CommandHelper.SendWarning(command, "Not holding anything", quiet);
+            }
 
             return true;
         }
+
+        private static int _lastLiftId;
 
         private static bool LiftItem(string command, Argument[] args, bool quiet, bool force)
         {
@@ -781,23 +607,50 @@ namespace Assistant.Scripts
 
             if (!serial.IsValid)
             {
-                throw new RunTimeError(null, "lift - invalid serial");
+                throw new RunTimeError(null, $"{command} - Invalid serial");
             }
 
-            ushort amount = Utility.ToUInt16(args[1].AsString(), 1);
+            ushort amount = 1;
 
-            Item item = World.FindItem(serial);
-            if (item != null)
+            if (args.Length == 2)
             {
-                DragDropManager.Drag(item, amount <= item.Amount ? amount : item.Amount);
+                amount = Utility.ToUInt16(args[1].AsString(), 1);
+            }
+
+            if (_lastLiftId > 0)
+            {
+                if (DragDropManager.LastIDLifted == _lastLiftId)
+                {
+                    _lastLiftId = 0;
+                    Interpreter.ClearTimeout();
+                    return true;
+                }
+
+                Interpreter.Timeout(30000, () =>
+                {
+                    _lastLiftId = 0;
+                    return true;
+                });
             }
             else
             {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.MacroItemOutRange);
+                Item item = World.FindItem(serial);
+
+                if (item != null)
+                {
+                    _lastLiftId = DragDropManager.Drag(item, amount <= item.Amount ? amount : item.Amount);
+                }
+                else
+                {
+                    CommandHelper.SendWarning(command, "Item not found or out of range", quiet);
+                    return true;
+                }
             }
 
-            return true;
+            return false;
         }
+
+        private static int _lastLiftTypeId;
 
         private static bool LiftType(string command, Argument[] args, bool quiet, bool force)
         {
@@ -808,38 +661,63 @@ namespace Assistant.Scripts
 
             string gfxStr = args[0].AsString();
             ushort gfx = Utility.ToUInt16(gfxStr, 0);
-            ushort amount = Utility.ToUInt16(args[1].AsString(), 1);
+            ushort amount = 1;
 
-            Item item;
-
-            // No graphic id, maybe searching by name?
-            if (gfx == 0)
+            if (args.Length == 2)
             {
-                item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByName(gfxStr, true) : null;
+                amount = Utility.ToUInt16(args[1].AsString(), 1);
+            }
 
-                if (item == null)
+            if (_lastLiftTypeId > 0)
+            {
+                if (DragDropManager.LastIDLifted == _lastLiftTypeId)
                 {
-                    throw new RunTimeError(null, $"Script Error: Couldn't find '{gfxStr}'");
+                    _lastLiftTypeId = 0;
+                    Interpreter.ClearTimeout();
+                    return true;
+                }
+
+                Interpreter.Timeout(30000, () =>
+                {
+                    _lastLiftTypeId = 0;
+                    return true;
+                });
+            }
+            else
+            {
+                Item item;
+
+                // No graphic id, maybe searching by name?
+                if (gfx == 0)
+                {
+                    item = World.Player.Backpack?.FindItemByName(gfxStr, true);
+
+                    if (item == null)
+                    {
+                        CommandHelper.SendWarning(command, $"Item '{gfxStr}' not found", quiet);
+                        return true;
+                    }
+                }
+                else
+                {
+                    item = World.Player.Backpack?.FindItemByID(gfx);
+                }
+
+                if (item != null)
+                {
+                    if (item.Amount < amount)
+                        amount = item.Amount;
+
+                    _lastLiftTypeId = DragDropManager.Drag(item, amount);
+                }
+                else
+                {
+                    CommandHelper.SendWarning(command, Language.Format(LocString.NoItemOfType, (ItemID)gfx), quiet);
+                    return true;
                 }
             }
-            else
-            {
-                item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(gfx) : null;
-            }
 
-            if (item != null)
-            {
-                if (item.Amount < amount)
-                    amount = item.Amount;
-
-                DragDropManager.Drag(item, amount);
-            }
-            else
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.NoItemOfType, (ItemID) gfx);
-            }
-
-            return true;
+            return false;
         }
 
         private static bool Walk(string command, Argument[] args, bool quiet, bool force)
@@ -866,13 +744,31 @@ namespace Assistant.Scripts
         {
             if (args.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: useskill ('skill name'/'last')");
+                throw new RunTimeError(null, "Usage: skill ('skill name'/'last')");
+            }
+
+            int skillId = 0;
+
+            if (World.Player.LastSkill != -1)
+            {
+                skillId = World.Player.LastSkill;
             }
 
             if (args[0].AsString() == "last")
+            {
                 Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
-            else if (SkillHotKeys.UsableSkillsByName.TryGetValue(args[0].AsString().ToLower(), out int skillId))
+            }
+            else if (SkillHotKeys.UsableSkillsByName.TryGetValue(args[0].AsString().ToLower(), out skillId))
+            {
                 Client.Instance.SendToServer(new UseSkill(skillId));
+
+                World.Player.LastSkill = skillId;
+            }
+
+            if (skillId == (int)SkillName.Stealth && !World.Player.Visible)
+            {
+                StealthSteps.Hide();
+            }
 
             return true;
         }
@@ -880,14 +776,14 @@ namespace Assistant.Scripts
         private static bool Pause(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
-                throw new RunTimeError(null, "Usage: pause (timeout)");
+                throw new RunTimeError(null, "Usage: pause/wait (timeout)");
 
             Interpreter.Pause(args[0].AsUInt());
 
             return true;
         }
 
-        public static bool Attack(string command, Argument[] args, bool quiet, bool force)
+        private static bool Attack(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -898,7 +794,7 @@ namespace Assistant.Scripts
 
             if (!serial.IsValid)
             {
-                throw new RunTimeError(null, "attack - invalid serial");
+                throw new RunTimeError(null, $"{command} - Invalid serial");
             }
 
             if (serial == Targeting.LastTargetInfo.Serial)
@@ -914,7 +810,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool Cast(string command, Argument[] args, bool quiet, bool force)
+        private static bool Cast(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
@@ -929,15 +825,15 @@ namespace Assistant.Scripts
             {
                 spell.OnCast(new CastSpellFromMacro((ushort) spell.GetID()));
             }
-            else if (!quiet)
+            else
             {
-                throw new RunTimeError(null, "cast - spell name or number not valid");
+                throw new RunTimeError(null, $"{command} - Spell name or number not valid");
             }
 
             return true;
         }
 
-        public static bool HeadMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool HeadMsg(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -945,7 +841,9 @@ namespace Assistant.Scripts
             }
 
             if (args.Length == 1)
+            {
                 World.Player.OverheadMessage(Config.GetInt("SysColor"), args[0].AsString());
+            }
             else
             {
                 int hue = Utility.ToInt32(args[1].AsString(), 0);
@@ -957,13 +855,15 @@ namespace Assistant.Scripts
                     m?.OverheadMessage(hue, args[0].AsString());
                 }
                 else
+                {
                     World.Player.OverheadMessage(hue, args[0].AsString());
+                }
             }
 
             return true;
         }
 
-        public static bool SysMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool SysMsg(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
@@ -971,64 +871,101 @@ namespace Assistant.Scripts
             }
 
             if (args.Length == 1)
+            {
                 World.Player.SendMessage(Config.GetInt("SysColor"), args[0].AsString());
+            }
             else if (args.Length == 2)
+            {
                 World.Player.SendMessage(Utility.ToInt32(args[1].AsString(), 0), args[0].AsString());
+            }
 
             return true;
         }
 
-        public static bool ClearSysMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool ClearSysMsg(string command, Argument[] args, bool quiet, bool force)
         {
             SystemMessages.Messages.Clear();
 
             return true;
         }
 
-        public static bool DressCommand(string command, Argument[] args, bool quiet, bool force)
+        private static DressList _lastDressList;
+
+        private static bool DressCommand(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length == 0)
             {
                 throw new RunTimeError(null, "Usage: dress ('name of dress list')");
             }
 
-            DressList d = DressList.Find(args[0].AsString());
+            if (_lastDressList == null)
+            {
+                _lastDressList = DressList.Find(args[0].AsString());
 
-            if (d != null)
-                d.Dress();
-            else if (!quiet)
-                throw new RunTimeError(null, $"'{args[0].AsString()}' not found");
+                if (_lastDressList != null)
+                {
+                    _lastDressList.Dress();
+                }
+                else if (!quiet)
+                {
+                    CommandHelper.SendWarning(command, $"'{args[0].AsString()}' not found", quiet);
+                    return true;
+                }
+            }
+            else if (ActionQueue.Empty)
+            {
+                _lastDressList = null;
+                return true;
+            }
 
-            return true;
+            return false;
         }
 
-        public static bool UnDressCommand(string command, Argument[] args, bool quiet, bool force)
-        {
-            if (args.Length == 0) // full naked!
-            {
-                HotKeys.UndressHotKeys.OnUndressAll();
-            }
-            else if (args.Length == 1) // either a dress list item or a layer
-            {
-                DressList d = DressList.Find(args[0].AsString());
+        private static DressList _lastUndressList;
+        private static bool _undressAll;
+        private static bool _undressLayer;
 
-                if (d != null)
+        private static bool UnDressCommand(string command, Argument[] args, bool quiet, bool force)
+        {
+
+            if (args.Length == 0 && !_undressAll) // full naked!
+            {
+                _undressAll = true;
+                UndressHotKeys.OnUndressAll();
+            }
+            else if (args.Length == 1 && _lastUndressList == null && !_undressLayer) // either a dress list item or a layer
+            {
+                _lastUndressList = DressList.Find(args[0].AsString());
+
+                if (_lastUndressList != null)
                 {
-                    d.Undress();
+                    _lastUndressList.Undress();
                 }
                 else // lets find the layer
                 {
                     if (Enum.TryParse(args[0].AsString(), true, out Layer layer))
                     {
                         Dress.Unequip(layer);
+                        _undressLayer = true;
+                    }
+                    else
+                    {
+                        throw new RunTimeError(null, $"'{args[0].AsString()}' not found");
                     }
                 }
             }
+            else if (ActionQueue.Empty)
+            {
+                _undressAll = false;
+                _undressLayer = false;
+                _lastUndressList = null;
+                return true;
+            }
 
-            return true;
+            return false;
         }
 
-        public static bool GumpResponse(string command, Argument[] args, bool quiet, bool force)
+        private static bool GumpResponse(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
@@ -1056,7 +993,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool GumpClose(string command, Argument[] args, bool quiet, bool force)
+        private static bool GumpClose(string command, Argument[] args, bool quiet, bool force)
         {
             Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
             Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, 0,
@@ -1068,7 +1005,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool ContextMenu(string command, Argument[] args, bool quiet, bool force)
+        private static bool ContextMenu(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 2)
             {
@@ -1086,7 +1023,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool MenuResponse(string command, Argument[] args, bool quiet, bool force)
+        private static bool MenuResponse(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 2)
             {
@@ -1106,7 +1043,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool PromptResponse(string command, Argument[] args, bool quiet, bool force)
+        private static bool PromptResponse(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
@@ -1117,7 +1054,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool LastTarget(string command, Argument[] args, bool quiet, bool force)
+        private static bool LastTarget(string command, Argument[] args, bool quiet, bool force)
         {
             if (!Targeting.DoLastTarget())
                 Targeting.ResendTarget();
@@ -1125,7 +1062,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        public static bool PlayScript(string command, Argument[] args, bool quiet, bool force)
+        private static bool PlayScript(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
@@ -1171,24 +1108,62 @@ namespace Assistant.Scripts
                 }
 
                 if (!World.Player.UseItem(pack, potionId))
-                    World.Player.SendMessage(LocString.NoItemOfType, (ItemID)potionId);
+                {
+                    CommandHelper.SendWarning(command, Language.Format(LocString.NoItemOfType, (ItemID)potionId), quiet);
+                }
             }
             else
             {
-                throw new RunTimeError(null, "Unknown potion type");
+                throw new RunTimeError(null, $"{command} - Unknown potion type");
             }
 
             return true;
         }
 
-        public static bool WaitForSysMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool WaitForSysMsg(string command, Argument[] args, bool quiet, bool force)
         {
             if (args.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: waitforsysmsg 'message to wait for'");
+                throw new RunTimeError(null, "Usage: waitforsysmsg 'message to wait for' [timeout]");
+            }
+            
+            if (SystemMessages.Exists(args[0].AsString()))
+            {
+                Interpreter.ClearTimeout();
+                return true;
             }
 
-            return SystemMessages.Exists(args[0].AsString());
+            Interpreter.Timeout(args.Length > 1 ? args[1].AsUInt() : 30000, () => { return true; });
+
+            return false;
+        }
+
+        private static bool Random(string command, Argument[] args, bool quiet, bool force)
+        {
+            if (args.Length < 1)
+            {
+                throw new RunTimeError(null, "Usage: random 'max value'");
+            }
+
+            int max = args[0].AsInt();
+
+            World.Player.SendMessage(MsgLevel.Info, $"Random: {Utility.Random(1, max)}");
+
+            return true;
+        }
+
+        private static bool ClearDragDrop(string command, Argument[] args, bool quiet, bool force)
+        {
+            DragDropManager.GracefulStop();
+
+            return true;
+        }
+        
+        private static bool Interrupt(string command, Argument[] args, bool quiet, bool force)
+        {
+            Spell.Interrupt();
+
+            return true;
         }
     }
 }

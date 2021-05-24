@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -292,11 +292,7 @@ namespace Assistant
             AddProperty("AutoSaveScriptPlay", false);
 
             AddProperty("HighlightFriend", false);
-
-            AddProperty("ScriptTargetTypeRange", false);
-            AddProperty("ScriptDClickTypeRange", false);
-            AddProperty("ScriptFindTypeRange", false);
-
+            
             AddProperty("ScriptDisablePlayFinish", false);
 
             AddProperty("ShowWaypointOverhead", true);
@@ -895,6 +891,20 @@ namespace Assistant
                 if (name.ToLower() == compare)
                     list.SelectedIndex = i;
             }
+        }
+
+        public static List<string> GetProfileList()
+        {
+            List<string> list = new List<string>();
+
+            string[] files = Directory.GetFiles(GetUserDirectory("Profiles"), "*.xml");
+
+            foreach (var file in files)
+            {
+                list.Add(Path.GetFileNameWithoutExtension(file));
+            }
+
+            return list;
         }
 
         public static T GetAppSetting<T>(string key)

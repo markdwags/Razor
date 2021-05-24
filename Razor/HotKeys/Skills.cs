@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -72,12 +72,14 @@ namespace Assistant.HotKeys
             {"evalint", 16}, // evaluate intelligence
             {"forensicevaluation", 19}, // forensic evaluation
             {"forensiceval", 19}, // forensic evaluation
+            {"forensic", 19}, // forensic evaluation
             {"hiding", 21}, // hiding
             {"provocation", 22}, // provocation
             {"provo", 22}, // provocation
             {"inscription", 23}, // inscription
             {"poisoning", 30}, // poisoning
             {"spiritspeak", 32}, // spirit speak
+            {"spirit", 32}, // spirit speak
             {"stealing", 33}, // stealing
             {"taming", 35}, // taming
             {"tasteidentification", 36}, // taste id

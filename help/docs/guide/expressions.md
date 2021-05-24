@@ -4,13 +4,15 @@ When using the `if` or `while` conditions, you can access the following expressi
 
 The following operators are supported:
 
-- `=`
-- `==`
-- `!=`
-- `<`
-- `<=`
-- `>`
-- `>=`
+| Operator | Description           |
+| -------- | --------------------- |
+| =        | Equal                 |
+| ==       | Equal                 |
+| !=       | Not equal             |
+| <        | Less than             |
+| <=       | Less than or equal    |
+| >        | Greater than          |
+| >=       | Greater than or equal |
 
 ## count/counter
 
@@ -19,13 +21,18 @@ The following operators are supported:
 
 Description: Used to get the current number of a specific counted item in Razor
 
-Example(s):
+!!! note
+You must have a counter setup in `Display->Counters` before using this expression. [More info](../help/displaycounters.md#counters)
 
-```php
-if count 'garlic' < 5
-    say 'getting low on garlic'
-endif
-```
+!!! example
+
+    === "Counting garlic"
+
+        ```vim
+        if count 'garlic' < 5
+            say 'getting low on garlic'
+        endif
+        ```
 
 ## findbuff
 
@@ -33,30 +40,66 @@ endif
 
 Description: Used to check if a specific buff/debuff is applied to you.
 
-Example(s):
+!!! example
 
-```php
-if findtype 'magic reflection'
-    overhead 'Im set!'
-else
-    cast 'magic reflection'
-endif
-```
+    === "Check for magic reflection"
+
+        ```vim
+        if findbuff 'magic reflection'
+            overhead 'Im set!'
+        else
+            cast 'magic reflection'
+            wft
+            target 'self'
+        endif
+        ```
 
 ## findtype
 
-- `findtype ('name of item') [inrangecheck (true/false)]` OR `findtype (graphicID) [inrangecheck (true/false)]`
+- `findtype ('name of item') [inrangecheck (true/false)/backpack]` OR `findtype (graphicID) [inrangecheck (true/false)/backpack]`
 
-Description: Used to check if a specific item name of graphic ID exists.  Range check, if true, will check within 2 tiles.
+Description: Used to check if a specific item name of graphic ID exists. Range check, if true, will check within 2 tiles.
 
-Example(s):
+!!! tip "In-Game Info Gump"
+    Not sure what name to enter or graphic ID to enter? Type `>info` and click on any item or mobile for more information.
 
-```php
-// Look for a saw
-if findtype 'saw'
-    say 'found'
-endif
-```
+    ![item-command](../images/infocommand.png)
+
+    Click the blue dot next to the value you want to copy to the clipboard.
+
+!!! example
+
+    === "Find a saw"
+
+        ```vim
+        if findtype 'saw'
+            say 'found saw'
+        endif
+        ```
+    
+    === "Find a saw using graphic id"
+
+        ```vim
+        if findtype '4148'
+            say 'found saw'
+        endif
+        ```
+
+    === "Find a saw within 2 tiles"
+
+        ```vim
+        if findtype 'saw' true
+            say 'found saw within 2 tiles'
+        endif
+        ```
+
+    === "Find a saw in your backpack"
+
+        ```vim
+        if findtype 'saw' backpack
+            say 'found saw in my pack'
+        endif
+        ```
 
 ## hidden
 
@@ -64,14 +107,15 @@ endif
 
 Description: Used to check if you are hidden.
 
-Example(s):
+!!! example
 
-```php
-// Look for a saw
-if hidden
-    overhead 'they cant see me'
-endif
-```
+    === "Check if hidden"
+
+        ```vim
+        if hidden
+            overhead 'they cant see me'
+        endif
+        ```
 
 ## hp & maxhp
 
@@ -82,20 +126,24 @@ endif
 
 Description: Used to get your current or max hit points/health levels.
 
-Example(s):
+!!! example
 
-```php
-while hp < 100
-    say 'not at 100 yet'
-    wait 5000
-endwhile
-```
+    === "Example 1"
 
-```php
-if maxhp = 120
-    say 'Full hp!'
-endif
-```
+        ```vim
+        while hp < 100
+            say 'not at 100 yet'
+            wait 5000
+        endwhile
+        ```
+
+    === "Example 2"
+
+        ```vim
+        if maxhp = 120
+            say 'Full hp!'
+        endif
+        ```
 
 ## insysmsg
 
@@ -104,14 +152,20 @@ endif
 
 Description: Used to check if certain text appears within the system message log.
 
-Example(s):
+!!! tip "System Message Queue"
+    Not sure if a specific message is in Razor's system message queue? Type `>sysmsgs` to see what Razor can find.
 
-```php
-// Check if system message has a specific message
-if insysmsg 'too far away'
-    overhead 'You are too far away'
-endif
-```
+    Using `clearsysmsg` will clear out the queue completely.
+
+!!! example
+
+    === "Check for message"
+
+        ```vim
+        if insysmsg 'too far away'
+            overhead 'You are too far away'
+        endif
+        ```   
 
 ## lhandempty
 
@@ -119,13 +173,15 @@ endif
 
 Description: Used to check if your left hand is empty
 
-Example(s):
+!!! example
 
-```php
-if lhandempty
-    hotkey 'empty right hand!'
-endif
-```
+    === "General"
+
+        ```vim
+        if lhandempty
+            hotkey 'empty right hand!'
+        endif
+        ```
 
 ## mana & maxmana
 
@@ -134,14 +190,16 @@ endif
 
 Description: Used to get your current or max mana levels.
 
-Example(s):
+!!! example
 
-```php
-while mana < maxmana
-    skill 'meditation'
-    wait 11000
-endwhile
-```
+    === "General"
+
+        ```vim
+        while mana < maxmana
+            skill 'meditation'
+            wait 11000
+        endwhile
+        ```
 
 ## mounted
 
@@ -149,15 +207,17 @@ endwhile
 
 Description: Used to check if you are currently on a mount
 
-Example(s):
+!!! example
 
-```php
-if mounted
-    say 'mounted'
-else
-    say 'not mounted'
-endif
-```
+    === "General"
+
+        ```vim
+        if mounted
+            say 'mounted'
+        else
+            say 'not mounted'
+        endif
+        ```
 
 ## poisoned
 
@@ -165,13 +225,15 @@ endif
 
 Description: Used to check if you are currently poisoned.
 
-Example(s):
+!!! example
 
-```php
-if poisoned
-    hotkey 'drink cure'
-endif
-```
+    === "General"
+
+        ```vim
+        if poisoned
+            hotkey 'drink cure'
+        endif
+        ```
 
 ## position
 
@@ -180,15 +242,68 @@ endif
 
 Description: Used to check if your current position matches the provided.
 
-Example(s):
+!!! example
 
-```php
-if position 2729 2133
-  overhead 'You are currently in front of the Bucs Den teleporter'
-elseif position 2728 2133 5
-  overhead 'You are standing on the Bucs Den teleporter'
-endif
-```
+    === "General"
+
+        ```vim
+        if position 2729 2133
+            overhead 'You are currently in front of the Bucs Den teleporter'
+        elseif position 2728 2133 5
+            overhead 'You are standing on the Bucs Den teleporter'
+        endif
+        ```
+
+## queued
+
+- `queued`
+
+Description: Used to check if your current queue is active (from restocking, organizing, etc)
+
+!!! example
+
+    === "General"
+
+        ```vim
+            if queued
+                overhead 'Queue is active'
+            else
+                overhead 'No queue'
+            endif
+        ```
+
+    === "Organizer"
+
+        ```vim
+        overhead 'Organizing'
+
+        organizer 1
+
+        while queued
+            overhead 'Currently Organizing'
+            wait 500 
+        endwhile
+
+        overhead 'Organized'
+        ```
+
+    === "Restock"
+
+        ```vim
+        overhead 'Restocking'
+
+        restock 11
+        waitfortarget 
+        target 'self'
+
+        while queued
+            overhead 'Currently restocking'
+            wait 500 
+        endwhile
+
+        overhead 'Restocked'
+        ```
+
 
 ## rhandempty
 
@@ -196,13 +311,15 @@ endif
 
 Description: Used to check if your right hand is empty
 
-Example(s):
+!!! example
 
-```php
-if rhandempty
-    hotkey 'empty right hand!'
-endif
-```
+    === "General"
+
+        ```vim
+        if rhandempty
+            hotkey 'empty right hand!'
+        endif
+        ```
 
 ## skill
 
@@ -210,15 +327,20 @@ endif
 
 Description: Used to get the current skill level for a given skill.
 
-Example(s):
+!!! tip "Supported skill names"
+    `anatomy, animallore, itemidentification, itemid, armslore, begging, peacemaking, peace, cartography, detectinghidden, discord, discordance, evaluatingintelligence, evalint, forensicevaluation, forensiceval, hiding, provocation, provo, inscription, poisoning, spiritspeak, stealing, taming, tasteidentification, tasteid, tracking, meditation, stealth, removetrap, imbuing`
 
-```php
-if skill 'magery' < 62.5
-    cast 'invisibility'
-    waitfortarget
-    target 'self'
-endif
-```
+!!! example
+
+    === "General"
+
+        ```vim
+        if skill 'magery' < 62.5
+            cast 'invisibility'
+            waitfortarget
+            target 'self'
+        endif
+        ```
 
 ## stam & maxstam
 
@@ -227,19 +349,21 @@ endif
 
 Description: Used to get your current stamina or max stamina.
 
-Example(s):
+!!! example
 
-```php
-if stam < 30
-say 'I need to rest'
-endif
-```
+    === "General"
 
-```php
-if maxstam = 120
-say 'I feel so powerful!'
-endif
-```
+        ```vim
+        if stam < 30
+        say 'I need to rest'
+        endif
+        ```
+
+        ```vim
+        if maxstam = 120
+        say 'I feel so powerful!'
+        endif
+        ```
 
 ## str, dex & int
 
@@ -249,13 +373,15 @@ endif
 
 Description: Used to get your current strength, dexterity and intelligence.
 
-Example(s):
+!!! example
 
-```php
-if str = 100
-    say 'I am a strong person'
-endif
-```
+    === "General"
+
+        ```vim
+        if str = 100
+            say 'I am a strong person'
+        endif
+        ```
 
 ## weight
 
@@ -263,10 +389,12 @@ endif
 
 Description: Used to get your current weight.
 
-Example(s):
+!!! example
 
-```php
-if weight = 300
-    say 'I feel heavy'
-endif
-```
+    === "General"
+
+        ```vim
+        if weight = 300
+            say 'I feel heavy'
+        endif
+        ```

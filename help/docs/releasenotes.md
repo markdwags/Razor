@@ -2,6 +2,51 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
+## 1.6.9.21 (02/27/2021)
+
+* Fixed issue with `setvar` and similar named variables
+* `spirit` and `forensic` are valid `skill` entries for scripting
+* Added `queued` expression to scripting
+* Removed global script range checkboxes, review the guide for the correct syntax
+* Fixed `drop` command to check for the correct params
+* `lifttype` will default to 1 if not value is provided
+* Import/export agents from the UI by clipboard or other profiles
+* `findtype` supports the `backpack` param
+* `lift` and `lifttype` will correctly wait before continuing
+* `dress` and `undress` will also correctly wait before continuing
+* `waitforsysmsg`, `waitforgump`, `waitgformenu`, `waitforprompt` will accept a timeout param
+* Check if a spell needs channeling before triggering unequip
+* Counters correctly save when you click Save
+* Added `clearall` command. See scripting guide for details.
+* Target Closest Friendly Humanoid will only target a humanoid
+* Updated `target` command with new features. See scripting guide for details
+* Added support for `@` quiet prefix for commands
+* Added `clearhands` command to drop what you have in your hands
+* `dclick` now supports `left`, `right` and `hands` to use an item in your hand
+* Added `virtue` command to invoke honor, valor or sacrifice
+* `Cancel Target` will cancel setting a varible if it's active
+* Fixed `TargetByType` and `DoubleClickType` in macros with range check. The range checks were always meant to include in your backpack too
+* Added `random` command to generate a random number you can use with `insysmsg` to help perform a random action
+* Improved support for keycode differences between Windows and X11
+* Additional support for dotnet core 3.1
+
+## 1.6.8.15 (12/15/2020)
+
+* Implemented treeview and categories for scripts
+* Added ability to adjust the size of the script editing window and the list of scripts
+* `script` command can now call the new supported categories
+* Added `findbuff` scripting expression
+* Fixed right-click menu not opening when selecting something in the script editor
+* Script will throw an error if you use `if count` with an counter that isn't setup
+* Fixed issue with the individual sound filter being off by 1
+* Added `guild` and `alliance` scripting commands
+* Converting macros to scripts will retain the same name if available
+* Added `position` scripting expression
+* Added ability to override which weapons Razor consider two handed
+* ++ctrl+s++ will save the current script you're editing
+* Save indicator in main window when editing scripts
+* Fixed issue with `lift` command requiring the optional parameter
+
 ## 1.6.7.10 (10/24/2020)
 
 * `>info` command gump will close when you try to close it
@@ -79,7 +124,7 @@ Below is a list of the latest releases notes going back to the first release of 
 
 This version introduces a new scripting engine that makes it easier to create and share macros.
 
-For more information, visit the [Razor Scripting Engine Guide](http://www.uor-razor.com/guide/).
+For more information, visit the [Razor Scripting Engine Guide](http://www.razorce.com/guide/).
 
 * Introduction of the Razor Scripting Engine (thanks to everyone for your time testing and providing feedback)
 * New Sound & Music Tab: Filter out any game sound, trigger music and listen to any sound

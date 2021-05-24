@@ -3,108 +3,103 @@
 
     When using ClassicUO, some features in Razor are disabled since they either won't work and/or may cause conflicts with ClassicUO.
 
-# Install: New ClassicUO with Razor Install (Installer)
+# Install: Razor and ClassicUO
 
-This is a simple install process for Razor with the option to install ClassicUO.
+First, we need to download and install ClassicUO.
 
-* Download the [latest release](https://github.com/markdwags/razor-installer/releases)
-* Extract `RazorInstaller.zip` and run `RazorInstaller.exe`
-* Select an installation path (this is where Razor and/or ClassicUO will install)
-* Select the path to your UO data files (this is where you installed Ultima Online)
-* Enter the client version for the UO files (for example, 5.0.8.3 or 7.0.15.1)
-* Enter the server host name to the shard you play on
-* Enter the port (it's usually 2593)
+1. Download the [ClassicUO Launcher](https://www.classicuo.eu) and extract the `.zip` file to any location of your choosing (ie: `C:\CUOLauncher`)
+2. Run `ClassicUOLauncher.exe`
+3. When `ClassicUOLauncher.exe` opens, it will automatically download the latest version of ClassicUO and install it in a sub-folder called `ClassicUO` in the folder you extracted the launcher (ie: `C:\CUOLauncher\ClassicUO`). This process should only takes a few seconds.
+4. Setup a profile to connect to your shard by clicking `Edit Profiles`
+5. On the `Profile` tab click `Add`  
+    - Give your profile a name
+    - Enter your username and password if you'd like it to be saved
+    - Enter the server IP and port number of the shard you're connecting to
+    - Enter (or search for) the path to your UO files. These are the actual game files for the shard you're connecting to
+    - Enter the client version number if it isn't auto-detected
+  
+Example of a completed profile:
 
-If you want to run the dev preview of Razor or ClassicUO, check the box.
+![cuolauncher](../images/cuolauncher-profile.png)
 
-* When ready, click `Install / Update`
+Now, we need to install Razor.
 
-When complete, you will be prompted to run either Razor or ClassicUO.
+1. [Download](../download.md) the latest version of Razor and extract the `.zip` file to `C:\CUOLauncher\ClassicUO\Data\Plugins\Razor` (replacing `C:\CUOLauncher` with the location you selected above if you picked something different)
 
-# Install: New ClassicUO with Razor Install (Powershell)
+    !!! hint
+        If the `Data` and/or `Plugins` folders don't exist (most likely scenario on a new install) you can just create them first.
 
-This [Powershell script](https://github.com/markdwags/Razor/blob/master/InstallClassicUOAndRazor-NoDefaults.ps1) is designed to help you install ClassicUO and Razor.
+2. In the ClassicUO Launcher, go to the `Plugins` tab and click `Add`
+3. Browse to the `\Data\Plugins\Razor` folder and select `Razor.exe`
 
-* Create a new folder on your local computer (ie: C:\Games\ClassicUO)
-* Open PowerShell prompt and go to folder you created
-* Execute the following PowerShell commands
+    ![cuolauncher-plugins](../images/cuolauncher-plugin.png)
 
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(
-'https://raw.githubusercontent.com/markdwags/Razor/master/InstallClassicUOAndRazor-NoDefaults.ps1'))
-```
+4. Click `Save Profile` and then `Back`
+5. Select your profile and click `Launch`
 
-!!! warning 
-    If you are on an older version of Windows, you may experience issues running this command.  You can get the latest version [here](https://www.microsoft.com/en-us/download/details.aspx?id=54616).
+If everything was setup correctly, you should see ClassicUO along with Razor open.
 
-* Follow the on-screen prompts to set up the ClassicUO settings.json file first the first time.
+## Advanced: settings.json
 
-# Install: Existing ClassicUO and/or Standard Client
-
-These steps assume that you already have obtained and installed the Ultima Online game asset files in the local system and are already using ClassicUO or the standard client.
-
-* Download the latest release
-* Extract into any location (ie: `C:\UO\Razor`)
-
-!!! warning
-    Windows 10 will block `.dll` files downloaded, so you may have to open up a Powershell prompt from within the Razor folder and run `gci | Unblock-File`
-
-* ***(Optional)*** If you have an existing version of Razor, copy the Profiles, Macros and Scripts folders from `%AppData%\Razor` into the folder you extracted the zip above to. If you have custom counters, also copy `counters.xml` over.
-
-## ClassicUO Client
-
-If using the ClassicUO client, follow these steps.
-
-* Go to the folder where you have ClassicUO installed and edit `settings.json`.
+If you would like to configure ClassicUO and Razor without the launcher, create a file called `settings.json` and copy/paste this template into it and change the following values: `ip, port, ultimaonlinedirectory, clientversion, plugins`
 
 ```json
-  "plugins": [
-    ".\\Assistant\\Razor.dll"
+{
+  username: "",
+  password: "",
+  ip: "login.myshard.com",
+  port: 2593,
+  ultimaonlinedirectory: "C:\Path\To\UO\Files",
+  clientversion: "5.0.8.3",
+  lastcharactername: "",
+  cliloc: "Cliloc.enu",
+  lastservernum: 1,
+  fps: 60,
+  window_position: null,
+  window_size: null,
+  is_win_maximized: true,
+  saveaccount: false,
+  autologin: false,
+  reconnect: false,
+  reconnect_time: 30,
+  login_music: true,
+  login_music_volume: 30,
+  shard_type: 0,
+  fixed_time_step: true,
+  run_mouse_in_separate_thread: true,
+  force_driver: 0,
+  use_verdata: false,
+  encryption: 0,
+  plugins: [
+  "C:\Path\To\Razor\Razor.exe"
   ]
+}
 ```
 
-* Find the section above and edit the path to point to where you extract Razor in the above step. For example, if I extracted it to `C:\UO\Razor` my `settings.json` would look like one of these depending on the slashes you use.
+# Update: Razor and ClassicUO
 
-!!! tip "Slashes"
-    If you use backslash (`\`) you must use double backslashes `\\`.  You can also use a single forward slashes (`/`) such as `"C:/UO/Razor/Razor.exe"`
+These steps assume that you already have obtained and installed the Ultima Online game asset files in the local system and are already using ClassicUO.
 
-```json
-  "plugins": [
-    "C:\\UO\\Razor\\Razor.exe"
-  ]
-```
+- [Download the latest release of Razor](../download.md).
 
-or
+    !!! warning
+        Windows 10 will sometimes block `.dll` and `.exe` files from being ran after they're downloaded so you may have to open up a Powershell prompt from within the Razor folder and run `gci | Unblock-File`
 
-```json
-  "plugins": [
-    "C:/UO/Razor/Razor.exe"
-  ]
-```
+- Extract the `.zip` into your existing Razor location (ie: `C:\CUOLauncher\ClassicUO\Data\Plugins\Razor`), overwriting all files, with the exception of one file:
+    - **counters.xml** - This is the default counters file used to display items in your titlebar. If you've added any new counters, they would be lost if overwritten.
+- Open ClassicUO back up and verify Razor is running the version you upgraded to.  
 
-* When you launch ClassicUO, Razor will load up during the startup process.
+!!! hint "Standard OSI Client"
 
-## Standard Client
+    The upgrade steps above should also work if you're using the standard OSI client, follow these steps.
 
-If using the standard OSI client, follow these steps.
-
-* Right-click on the Razor shortcut or Razor.exe, go to Properties. On the Compatibility tab, select **Run this program in compatibility mode** for and select **Windows XP SP2**. Also select **Run this program as an administrator**
-* Run Razor either via the shortcut or clicking the Razor.exe directly.
-* Razor should prompt to **Run As Administrator**. You must allow this for Razor to function correctly.
-
-# Upgrading
-
-Since Razor is portable, upgrading it is a copy/paste exercise.
-
-* [Download the latest release of Razor](../download).
-* Extract the zip into your existing Razor location (ie: `C:\UO\Razor`), overwritting all files, with the exception of two:
-    * **counters.xml** - This is the default counters file used to display items in your titlebar. If you've added any new counters, they would be lost if overwritten.
-    * **Razor.exe.Config** - This is the config file that stores your UO path, server list, etc. Copying this over will overwrite those settings.
-* Open ClassicUO or Razor back up and log back in.
+    * Right-click on the Razor shortcut or Razor.exe, go to Properties. On the Compatibility tab, select **Run this program in compatibility mode** for and select **Windows XP SP2**. Also select **Run this program as an administrator**
+    * Run Razor either via the shortcut or clicking the Razor.exe directly.
+    * Razor should prompt to **Run As Administrator**. You must allow this for Razor to function correctly.
 
 # Welcome Screen (OSI Client Only)
 
-!!! warning
+!!! error "ClassicUO Users"
     If you're using ClassicUO, you should *never* see this screen. If you're trying to open ClassicUO and see this screen, click **Quit** and launch ClassicUO.
 
 The first time you run Razor, it will open with a **Welcome Screen** and give you an option to import your exising
@@ -130,7 +125,7 @@ The **Welcome Screen** will control some of these settings, but some settings ca
     <add key="MaxRestockAgents" value="10" /> <!-- Override the default Restock agent count -->
     <add key="ImportProfilesAndMacros" value="false" />  <!-- If true, will import macros and profiles from %AppData%\Razor -->
     <add key="LastProfile" value="Test" /> <!-- Last profile used in Razor -->
-    <add key="LastServer" value="test.uorenaissance.com" /> <!-- Last server connected to in Razor -->
+    <add key="LastServer" value="test.server.com" /> <!-- Last server connected to in Razor -->
     <add key="LastPort" value="2597" /> <!-- Last server port connected to in Razor -->
     <add key="LastServerId" value="1" /> <!-- Index of the server selected in the dropdown -->
     <add key="ShowWelcome" value="1" /> <!-- Show the Welcome Screen when loading Razor -->

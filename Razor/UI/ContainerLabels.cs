@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -336,8 +336,8 @@ namespace Assistant.UI
 
             if (e.Button == MouseButtons.Right && e.Clicks == 1)
             {
-                ContextMenu menu = new ContextMenu();
-                menu.MenuItems.Add("Open Container (if in range)", new EventHandler(OnContainerDoubleClick));
+                ContextMenuStrip menu = new ContextMenuStrip();
+                menu.Items.Add("Open Container (if in range)", null, new EventHandler(OnContainerDoubleClick));
 
                 menu.Show(containerView, new Point(e.X, e.Y));
             }

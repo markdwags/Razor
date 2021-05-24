@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -117,7 +117,7 @@ namespace Assistant
             HotKey.Add(HKCategory.Misc, LocString.DropCur, new HotKeyCallback(DropCurrent));
         }
 
-        private static void DropCurrent()
+        public static void DropCurrent()
         {
             Log("Drop current requested on {0}", m_Holding);
 

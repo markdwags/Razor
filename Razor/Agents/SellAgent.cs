@@ -1,7 +1,7 @@
 ﻿#region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -285,9 +285,16 @@ namespace Assistant.Agents
             Engine.MainWindow.SafeAction(s => s.ShowMe());
             if (!location && serial.IsItem)
             {
-                m_Items.Add(gfx);
-                m_SubList.Items.Add((ItemID) gfx);
+                Add(gfx);
             }
+        }
+
+        public void Add(ItemID itemId)
+        {
+            m_Items?.Add(itemId);
+            m_SubList?.Items.Add((ItemID)itemId);
+
+            World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
         }
 
         private void OnHBTarget(bool location, Serial serial, Point3D loc, ushort gfx)

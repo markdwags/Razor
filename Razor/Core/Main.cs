@@ -1,7 +1,7 @@
 #region license
 
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2020 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using System.IO;
 using System.Net;
 using System.Security.Principal;
 using Assistant.Core;
+using Assistant.UI;
 
 namespace Assistant
 {
@@ -193,6 +194,12 @@ namespace Assistant
             get { return m_MainWnd; }
         }
 
+        public static RazorScriptEditor RazorScriptEditorWindow
+        {
+            get { return m_RazorScriptEditorWnd; }
+            set { m_RazorScriptEditorWnd = value; }
+        }
+
         public static bool Running
         {
             get { return m_Running; }
@@ -219,6 +226,8 @@ namespace Assistant
         }
 
         private static MainForm m_MainWnd;
+
+        private static RazorScriptEditor m_RazorScriptEditorWnd;
 
         private static Form m_ActiveWnd;
 
@@ -280,7 +289,6 @@ namespace Assistant
 
             /* Load settings from configuration file */
             Ultima.Files.SetMulPath(Config.GetAppSetting<string>("UODataDir"));
-            Ultima.Multis.PostHSFormat = UsePostHSChanges;
             Client.Instance.ClientEncrypted = Config.GetAppSetting<int>("ClientEncrypted") == 1;
             Client.Instance.ServerEncrypted = Config.GetAppSetting<int>("ServerEncrypted") == 1;
 
@@ -321,6 +329,8 @@ namespace Assistant
                 SplashScreen.End();
                 return;
             }
+
+            Ultima.Multis.PostHSFormat = UsePostHSChanges;
 
             string addr = Config.GetAppSetting<string>("LastServer");
             int port = Config.GetAppSetting<int>("LastPort");

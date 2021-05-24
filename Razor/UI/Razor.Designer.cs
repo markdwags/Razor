@@ -107,7 +107,6 @@ namespace Assistant
         private CheckBox negotiate;
         private Label aboutSubInfo;
         private Label lblCredits1;
-        private LinkLabel linkLabel1;
         private Label label20;
         private Button disableSmartCPU;
         private CheckBox logSkillChanges;
@@ -263,7 +262,7 @@ namespace Assistant
         private Button delProfile;
         private Button newProfile;
         private ComboBox profiles;
-        private TextBox targetIndictorFormat;
+        private TextBox targetIndicatorFormat;
         private Label lblTargetFormat;
         private Label lblStealthFormat;
         private TextBox stealthStepsFormat;
@@ -331,17 +330,15 @@ namespace Assistant
             //
             InitializeComponent();
 
-            m_NotifyIcon.ContextMenu =
-                new ContextMenu(new MenuItem[]
-                {
-                    new MenuItem("Show Razor", new EventHandler(DoShowMe)),
-                    new MenuItem("Hide Razor", new EventHandler(HideMe)),
-                    new MenuItem("-"),
-                    new MenuItem("Toggle Razor Visibility", new EventHandler(ToggleVisible)),
-                    new MenuItem("-"),
-                    new MenuItem("Close Razor && UO", new EventHandler(OnClose))
-                });
-            m_NotifyIcon.ContextMenu.MenuItems[0].DefaultItem = true;
+            m_NotifyIcon.ContextMenuStrip = new ContextMenuStrip();
+            m_NotifyIcon.ContextMenuStrip.Items.Add("Show Razor", null, new EventHandler(DoShowMe));
+            m_NotifyIcon.ContextMenuStrip.Items.Add("Hide Razor", null, new EventHandler(HideMe));
+            m_NotifyIcon.ContextMenuStrip.Items.Add("-");
+            m_NotifyIcon.ContextMenuStrip.Items.Add("Toggle Razor Visibility", null, new EventHandler(ToggleVisible));
+            m_NotifyIcon.ContextMenuStrip.Items.Add("-");
+            m_NotifyIcon.ContextMenuStrip.Items.Add("Close Razor && UO", null, new EventHandler(OnClose));
+
+            m_NotifyIcon.ContextMenuStrip.Items[0].Select();
         }
 
         /// <summary>
@@ -437,7 +434,7 @@ namespace Assistant
             this.onlyNextPrevBeneficial = new System.Windows.Forms.CheckBox();
             this.smartLT = new System.Windows.Forms.CheckBox();
             this.setTargetIndicatorHue = new System.Windows.Forms.Button();
-            this.targetIndictorFormat = new System.Windows.Forms.TextBox();
+            this.targetIndicatorFormat = new System.Windows.Forms.TextBox();
             this.showtargtext = new System.Windows.Forms.CheckBox();
             this.showAttackTargetNewOnly = new System.Windows.Forms.CheckBox();
             this.showTextTargetIndicator = new System.Windows.Forms.CheckBox();
@@ -712,12 +709,9 @@ namespace Assistant
             this.setScriptHotkey = new System.Windows.Forms.Button();
             this.recordScript = new System.Windows.Forms.Button();
             this.playScript = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.subScriptOptions = new System.Windows.Forms.TabPage();
             this.disableScriptTooltips = new System.Windows.Forms.CheckBox();
             this.scriptDisablePlayFinish = new System.Windows.Forms.CheckBox();
-            this.scriptFindTypeRange = new System.Windows.Forms.CheckBox();
-            this.scriptDClickTypeRange = new System.Windows.Forms.CheckBox();
-            this.scriptTargetTypeRange = new System.Windows.Forms.CheckBox();
             this.autoSaveScriptPlay = new System.Windows.Forms.CheckBox();
             this.autoSaveScript = new System.Windows.Forms.CheckBox();
             this.scriptVariablesBox = new System.Windows.Forms.GroupBox();
@@ -745,6 +739,7 @@ namespace Assistant
             this.friendsGroup = new System.Windows.Forms.ComboBox();
             this.friendsListEnabled = new System.Windows.Forms.CheckBox();
             this.screenshotTab = new System.Windows.Forms.TabPage();
+            this.openScreenshotFolder = new System.Windows.Forms.Button();
             this.captureOwnDeathDelay = new System.Windows.Forms.TextBox();
             this.lblOwnDeathMs = new System.Windows.Forms.Label();
             this.captureOwnDeath = new System.Windows.Forms.CheckBox();
@@ -782,7 +777,6 @@ namespace Assistant
             this.linkHelp = new System.Windows.Forms.LinkLabel();
             this.lblCredits2 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.lblCredits1 = new System.Windows.Forms.Label();
             this.aboutSubInfo = new System.Windows.Forms.Label();
             this.linkMain = new System.Windows.Forms.LinkLabel();
@@ -842,7 +836,7 @@ namespace Assistant
             this.scriptSplitContainer.Panel2.SuspendLayout();
             this.scriptSplitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).BeginInit();
-            this.tabPage3.SuspendLayout();
+            this.subScriptOptions.SuspendLayout();
             this.scriptVariablesBox.SuspendLayout();
             this.friendsTab.SuspendLayout();
             this.friendsGroupBox.SuspendLayout();
@@ -1493,7 +1487,7 @@ namespace Assistant
             this.subOptionsTargetTab.BackColor = System.Drawing.SystemColors.Control;
             this.subOptionsTargetTab.Controls.Add(this.groupSmartTarget);
             this.subOptionsTargetTab.Controls.Add(this.setTargetIndicatorHue);
-            this.subOptionsTargetTab.Controls.Add(this.targetIndictorFormat);
+            this.subOptionsTargetTab.Controls.Add(this.targetIndicatorFormat);
             this.subOptionsTargetTab.Controls.Add(this.showtargtext);
             this.subOptionsTargetTab.Controls.Add(this.showAttackTargetNewOnly);
             this.subOptionsTargetTab.Controls.Add(this.showTextTargetIndicator);
@@ -1580,14 +1574,14 @@ namespace Assistant
             this.setTargetIndicatorHue.UseVisualStyleBackColor = true;
             this.setTargetIndicatorHue.Click += new System.EventHandler(this.setTargetIndicatorHue_Click);
             // 
-            // targetIndictorFormat
+            // targetIndicatorFormat
             // 
-            this.targetIndictorFormat.Location = new System.Drawing.Point(64, 246);
-            this.targetIndictorFormat.Name = "targetIndictorFormat";
-            this.targetIndictorFormat.Size = new System.Drawing.Size(107, 23);
-            this.targetIndictorFormat.TabIndex = 93;
-            this.targetIndictorFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.targetIndictorFormat.TextChanged += new System.EventHandler(this.targetIndictorFormat_TextChanged);
+            this.targetIndicatorFormat.Location = new System.Drawing.Point(64, 246);
+            this.targetIndicatorFormat.Name = "targetIndicatorFormat";
+            this.targetIndicatorFormat.Size = new System.Drawing.Size(107, 23);
+            this.targetIndicatorFormat.TabIndex = 93;
+            this.targetIndicatorFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.targetIndicatorFormat.TextChanged += new System.EventHandler(this.targetIndicatorFormat_TextChanged);
             // 
             // showtargtext
             // 
@@ -3522,9 +3516,9 @@ namespace Assistant
             this.subFilterText.BackColor = System.Drawing.SystemColors.Control;
             this.subFilterText.Controls.Add(this.gbFilterText);
             this.subFilterText.Controls.Add(this.gbFilterMessages);
-            this.subFilterText.Location = new System.Drawing.Point(4, 24);
+            this.subFilterText.Location = new System.Drawing.Point(4, 22);
             this.subFilterText.Name = "subFilterText";
-            this.subFilterText.Size = new System.Drawing.Size(498, 285);
+            this.subFilterText.Size = new System.Drawing.Size(498, 287);
             this.subFilterText.TabIndex = 4;
             this.subFilterText.Text = "Text && Messages  ";
             // 
@@ -3672,9 +3666,9 @@ namespace Assistant
             this.subFilterSoundMusic.Controls.Add(this.playSound);
             this.subFilterSoundMusic.Controls.Add(this.soundFilterEnabled);
             this.subFilterSoundMusic.Controls.Add(this.soundFilterList);
-            this.subFilterSoundMusic.Location = new System.Drawing.Point(4, 24);
+            this.subFilterSoundMusic.Location = new System.Drawing.Point(4, 22);
             this.subFilterSoundMusic.Name = "subFilterSoundMusic";
-            this.subFilterSoundMusic.Size = new System.Drawing.Size(498, 285);
+            this.subFilterSoundMusic.Size = new System.Drawing.Size(498, 287);
             this.subFilterSoundMusic.TabIndex = 3;
             this.subFilterSoundMusic.Text = "Sound & Music  ";
             // 
@@ -3779,10 +3773,10 @@ namespace Assistant
             this.subFilterTargets.Controls.Add(this.targetFilterAdd);
             this.subFilterTargets.Controls.Add(this.targetFilter);
             this.subFilterTargets.Controls.Add(this.targetFilterEnabled);
-            this.subFilterTargets.Location = new System.Drawing.Point(4, 24);
+            this.subFilterTargets.Location = new System.Drawing.Point(4, 22);
             this.subFilterTargets.Name = "subFilterTargets";
             this.subFilterTargets.Padding = new System.Windows.Forms.Padding(3);
-            this.subFilterTargets.Size = new System.Drawing.Size(498, 285);
+            this.subFilterTargets.Size = new System.Drawing.Size(498, 287);
             this.subFilterTargets.TabIndex = 1;
             this.subFilterTargets.Text = "Target Filter";
             // 
@@ -4333,7 +4327,7 @@ namespace Assistant
             // subTabScripts
             // 
             this.subTabScripts.Controls.Add(this.subScripts);
-            this.subTabScripts.Controls.Add(this.tabPage3);
+            this.subTabScripts.Controls.Add(this.subScriptOptions);
             this.subTabScripts.Location = new System.Drawing.Point(6, 3);
             this.subTabScripts.Name = "subTabScripts";
             this.subTabScripts.SelectedIndex = 0;
@@ -4421,7 +4415,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4447,9 +4441,9 @@ namespace Assistant
             this.scriptEditor.Size = new System.Drawing.Size(299, 272);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
+            this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
             this.scriptEditor.LostFocus += new System.EventHandler(this.scriptEditor_LostFocus);
             this.scriptEditor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scriptEditor_MouseDown);
-            this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
             // 
             // scriptGuide
             // 
@@ -4511,28 +4505,25 @@ namespace Assistant
             this.playScript.UseVisualStyleBackColor = true;
             this.playScript.Click += new System.EventHandler(this.playScript_Click);
             // 
-            // tabPage3
+            // subScriptOptions
             // 
-            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage3.Controls.Add(this.disableScriptTooltips);
-            this.tabPage3.Controls.Add(this.scriptDisablePlayFinish);
-            this.tabPage3.Controls.Add(this.scriptFindTypeRange);
-            this.tabPage3.Controls.Add(this.scriptDClickTypeRange);
-            this.tabPage3.Controls.Add(this.scriptTargetTypeRange);
-            this.tabPage3.Controls.Add(this.autoSaveScriptPlay);
-            this.tabPage3.Controls.Add(this.autoSaveScript);
-            this.tabPage3.Controls.Add(this.scriptVariablesBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(498, 287);
-            this.tabPage3.TabIndex = 1;
-            this.tabPage3.Text = "Options";
+            this.subScriptOptions.BackColor = System.Drawing.SystemColors.Control;
+            this.subScriptOptions.Controls.Add(this.disableScriptTooltips);
+            this.subScriptOptions.Controls.Add(this.scriptDisablePlayFinish);
+            this.subScriptOptions.Controls.Add(this.autoSaveScriptPlay);
+            this.subScriptOptions.Controls.Add(this.autoSaveScript);
+            this.subScriptOptions.Controls.Add(this.scriptVariablesBox);
+            this.subScriptOptions.Location = new System.Drawing.Point(4, 24);
+            this.subScriptOptions.Name = "subScriptOptions";
+            this.subScriptOptions.Padding = new System.Windows.Forms.Padding(3);
+            this.subScriptOptions.Size = new System.Drawing.Size(498, 285);
+            this.subScriptOptions.TabIndex = 1;
+            this.subScriptOptions.Text = "Options";
             // 
             // disableScriptTooltips
             // 
             this.disableScriptTooltips.AutoSize = true;
-            this.disableScriptTooltips.Location = new System.Drawing.Point(252, 203);
+            this.disableScriptTooltips.Location = new System.Drawing.Point(252, 115);
             this.disableScriptTooltips.Name = "disableScriptTooltips";
             this.disableScriptTooltips.Size = new System.Drawing.Size(107, 19);
             this.disableScriptTooltips.TabIndex = 20;
@@ -4543,46 +4534,13 @@ namespace Assistant
             // scriptDisablePlayFinish
             // 
             this.scriptDisablePlayFinish.AutoSize = true;
-            this.scriptDisablePlayFinish.Location = new System.Drawing.Point(252, 178);
+            this.scriptDisablePlayFinish.Location = new System.Drawing.Point(252, 90);
             this.scriptDisablePlayFinish.Name = "scriptDisablePlayFinish";
             this.scriptDisablePlayFinish.Size = new System.Drawing.Size(204, 19);
             this.scriptDisablePlayFinish.TabIndex = 19;
             this.scriptDisablePlayFinish.Text = "Disable Playing/Finished Message";
             this.scriptDisablePlayFinish.UseVisualStyleBackColor = true;
             this.scriptDisablePlayFinish.CheckedChanged += new System.EventHandler(this.disableScriptPlayFinish_CheckedChanged);
-            // 
-            // scriptFindTypeRange
-            // 
-            this.scriptFindTypeRange.AutoSize = true;
-            this.scriptFindTypeRange.Location = new System.Drawing.Point(252, 144);
-            this.scriptFindTypeRange.Name = "scriptFindTypeRange";
-            this.scriptFindTypeRange.Size = new System.Drawing.Size(163, 19);
-            this.scriptFindTypeRange.TabIndex = 18;
-            this.scriptFindTypeRange.Text = "Range check on \'findtype\'";
-            this.scriptFindTypeRange.UseVisualStyleBackColor = true;
-            this.scriptFindTypeRange.CheckedChanged += new System.EventHandler(this.scriptFindTypeRange_CheckedChanged);
-            // 
-            // scriptDClickTypeRange
-            // 
-            this.scriptDClickTypeRange.AutoSize = true;
-            this.scriptDClickTypeRange.Location = new System.Drawing.Point(252, 119);
-            this.scriptDClickTypeRange.Name = "scriptDClickTypeRange";
-            this.scriptDClickTypeRange.Size = new System.Drawing.Size(173, 19);
-            this.scriptDClickTypeRange.TabIndex = 17;
-            this.scriptDClickTypeRange.Text = "Range check on \'dclicktype\'";
-            this.scriptDClickTypeRange.UseVisualStyleBackColor = true;
-            this.scriptDClickTypeRange.CheckedChanged += new System.EventHandler(this.scriptDClickTypeRange_CheckedChanged);
-            // 
-            // scriptTargetTypeRange
-            // 
-            this.scriptTargetTypeRange.AutoSize = true;
-            this.scriptTargetTypeRange.Location = new System.Drawing.Point(252, 94);
-            this.scriptTargetTypeRange.Name = "scriptTargetTypeRange";
-            this.scriptTargetTypeRange.Size = new System.Drawing.Size(173, 19);
-            this.scriptTargetTypeRange.TabIndex = 16;
-            this.scriptTargetTypeRange.Text = "Range check on \'targettype\'";
-            this.scriptTargetTypeRange.UseVisualStyleBackColor = true;
-            this.scriptTargetTypeRange.CheckedChanged += new System.EventHandler(this.scriptTargetTypeRange_CheckedChanged);
             // 
             // autoSaveScriptPlay
             // 
@@ -4864,6 +4822,7 @@ namespace Assistant
             // 
             // screenshotTab
             // 
+            this.screenshotTab.Controls.Add(this.openScreenshotFolder);
             this.screenshotTab.Controls.Add(this.captureOwnDeathDelay);
             this.screenshotTab.Controls.Add(this.lblOwnDeathMs);
             this.screenshotTab.Controls.Add(this.captureOwnDeath);
@@ -4885,6 +4844,16 @@ namespace Assistant
             this.screenshotTab.Size = new System.Drawing.Size(519, 322);
             this.screenshotTab.TabIndex = 8;
             this.screenshotTab.Text = "Screen Shots";
+            // 
+            // openScreenshotFolder
+            // 
+            this.openScreenshotFolder.Location = new System.Drawing.Point(266, 201);
+            this.openScreenshotFolder.Name = "openScreenshotFolder";
+            this.openScreenshotFolder.Size = new System.Drawing.Size(155, 23);
+            this.openScreenshotFolder.TabIndex = 62;
+            this.openScreenshotFolder.Text = "Open Screen Shot Folder";
+            this.openScreenshotFolder.UseVisualStyleBackColor = true;
+            this.openScreenshotFolder.Click += new System.EventHandler(this.openScreenshotFolder_Click);
             // 
             // captureOwnDeathDelay
             // 
@@ -4960,18 +4929,18 @@ namespace Assistant
             // 
             // capNow
             // 
-            this.capNow.Location = new System.Drawing.Point(371, 9);
+            this.capNow.Location = new System.Drawing.Point(266, 173);
             this.capNow.Name = "capNow";
-            this.capNow.Size = new System.Drawing.Size(141, 22);
+            this.capNow.Size = new System.Drawing.Size(155, 22);
             this.capNow.TabIndex = 8;
             this.capNow.Text = "Take Screen Shot Now";
             this.capNow.Click += new System.EventHandler(this.capNow_Click);
             // 
             // screenPath
             // 
-            this.screenPath.Location = new System.Drawing.Point(8, 8);
+            this.screenPath.Location = new System.Drawing.Point(8, 12);
             this.screenPath.Name = "screenPath";
-            this.screenPath.Size = new System.Drawing.Size(316, 23);
+            this.screenPath.Size = new System.Drawing.Size(463, 23);
             this.screenPath.TabIndex = 7;
             this.screenPath.TextChanged += new System.EventHandler(this.screenPath_TextChanged);
             // 
@@ -5004,9 +4973,9 @@ namespace Assistant
             // 
             // setScnPath
             // 
-            this.setScnPath.Location = new System.Drawing.Point(330, 9);
+            this.setScnPath.Location = new System.Drawing.Point(477, 12);
             this.setScnPath.Name = "setScnPath";
-            this.setScnPath.Size = new System.Drawing.Size(35, 22);
+            this.setScnPath.Size = new System.Drawing.Size(35, 23);
             this.setScnPath.TabIndex = 3;
             this.setScnPath.Text = "...";
             this.setScnPath.Click += new System.EventHandler(this.setScnPath_Click);
@@ -5015,9 +4984,9 @@ namespace Assistant
             // 
             this.screensList.IntegralHeight = false;
             this.screensList.ItemHeight = 15;
-            this.screensList.Location = new System.Drawing.Point(8, 36);
+            this.screensList.Location = new System.Drawing.Point(8, 41);
             this.screensList.Name = "screensList";
-            this.screensList.Size = new System.Drawing.Size(252, 195);
+            this.screensList.Size = new System.Drawing.Size(252, 190);
             this.screensList.Sorted = true;
             this.screensList.TabIndex = 1;
             this.screensList.SelectedIndexChanged += new System.EventHandler(this.screensList_SelectedIndexChanged);
@@ -5026,9 +4995,9 @@ namespace Assistant
             // screenPrev
             // 
             this.screenPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.screenPrev.Location = new System.Drawing.Point(266, 36);
+            this.screenPrev.Location = new System.Drawing.Point(266, 41);
             this.screenPrev.Name = "screenPrev";
-            this.screenPrev.Size = new System.Drawing.Size(246, 131);
+            this.screenPrev.Size = new System.Drawing.Size(246, 126);
             this.screenPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.screenPrev.TabIndex = 0;
             this.screenPrev.TabStop = false;
@@ -5218,7 +5187,6 @@ namespace Assistant
             this.aboutTab.Controls.Add(this.linkHelp);
             this.aboutTab.Controls.Add(this.lblCredits2);
             this.aboutTab.Controls.Add(this.label20);
-            this.aboutTab.Controls.Add(this.linkLabel1);
             this.aboutTab.Controls.Add(this.lblCredits1);
             this.aboutTab.Controls.Add(this.aboutSubInfo);
             this.aboutTab.Controls.Add(this.linkMain);
@@ -5233,7 +5201,7 @@ namespace Assistant
             // linkGitHub
             // 
             this.linkGitHub.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkGitHub.Location = new System.Drawing.Point(6, 163);
+            this.linkGitHub.Location = new System.Drawing.Point(9, 157);
             this.linkGitHub.Name = "linkGitHub";
             this.linkGitHub.Size = new System.Drawing.Size(506, 20);
             this.linkGitHub.TabIndex = 25;
@@ -5278,23 +5246,11 @@ namespace Assistant
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(93, 126);
+            this.label20.Location = new System.Drawing.Point(96, 120);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(343, 17);
             this.label20.TabIndex = 21;
             this.label20.Text = "For feedback, support and the latest releases please visit:\r\n";
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.Location = new System.Drawing.Point(6, 94);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(506, 20);
-            this.linkLabel1.TabIndex = 20;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://www.uorenaissance.com";
-            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // lblCredits1
             // 
@@ -5313,18 +5269,18 @@ namespace Assistant
             this.aboutSubInfo.Name = "aboutSubInfo";
             this.aboutSubInfo.Size = new System.Drawing.Size(506, 19);
             this.aboutSubInfo.TabIndex = 17;
-            this.aboutSubInfo.Text = "UO Renaissance Community Edition";
+            this.aboutSubInfo.Text = "Community Edition";
             this.aboutSubInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkMain
             // 
             this.linkMain.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkMain.Location = new System.Drawing.Point(6, 143);
+            this.linkMain.Location = new System.Drawing.Point(9, 137);
             this.linkMain.Name = "linkMain";
             this.linkMain.Size = new System.Drawing.Size(506, 20);
             this.linkMain.TabIndex = 16;
             this.linkMain.TabStop = true;
-            this.linkMain.Text = "http://www.uor-razor.com";
+            this.linkMain.Text = "http://www.razorce.com";
             this.linkMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkMain.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
@@ -5443,8 +5399,8 @@ namespace Assistant
             ((System.ComponentModel.ISupportInitialize)(this.scriptSplitContainer)).EndInit();
             this.scriptSplitContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.subScriptOptions.ResumeLayout(false);
+            this.subScriptOptions.PerformLayout();
             this.scriptVariablesBox.ResumeLayout(false);
             this.friendsTab.ResumeLayout(false);
             this.friendsTab.PerformLayout();
@@ -5472,7 +5428,7 @@ namespace Assistant
         private Button setScriptHotkey;
         private Button recordScript;
         private Button playScript;
-        private TabPage tabPage3;
+        private TabPage subScriptOptions;
         private GroupBox scriptVariablesBox;
         private Button changeScriptVariable;
         private Button removeScriptVariable;
@@ -5480,9 +5436,6 @@ namespace Assistant
         private ListBox scriptVariables;
         private CheckBox autoSaveScript;
         private CheckBox autoSaveScriptPlay;
-        private CheckBox scriptDClickTypeRange;
-        private CheckBox scriptTargetTypeRange;
-        private CheckBox scriptFindTypeRange;
         private CheckBox scriptDisablePlayFinish;
         private TabPage friendsTab;
         private CheckBox highlightFriend;
@@ -5589,5 +5542,6 @@ namespace Assistant
         private TextBox scriptFilter;
         private FastColoredTextBoxNS.FastColoredTextBox scriptEditor;
         private Label scriptHotkey;
+        private Button openScreenshotFolder;
     }
 }
