@@ -74,11 +74,7 @@ namespace Assistant
 
     [return: MarshalAs(UnmanagedType.I1)]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate bool dOnPacketSendRecv_new(byte[] data, ref int length);
-
-    [return: MarshalAs(UnmanagedType.I1)]
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate bool dOnPacketSendRecv_new_intptr(IntPtr data, ref int length);
+    public delegate bool dOnPacketSendRecv(IntPtr data, ref int length);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int dOnDrawCmdList([Out] out IntPtr cmdlist, ref int size);
@@ -279,8 +275,7 @@ namespace Assistant
         private bool m_ClientRunning = false;
         private string m_ClientVersion;
 
-        private static dOnPacketSendRecv_new_intptr _sendToClient, _sendToServer;
-        private static dOnPacketSendRecv_new_intptr _recv, _send;
+        private static dOnPacketSendRecv _sendToClient, _sendToServer, _recv, _send;;
         private static dOnGetPacketLength _getPacketLength;
         private static dOnGetPlayerPosition _getPlayerPosition;
         private static dOnCastSpell _castSpell;
@@ -332,9 +327,9 @@ namespace Assistant
         public unsafe bool Install(PluginHeader* header)
         {
             _sendToClient =
-                (dOnPacketSendRecv_new_intptr) Marshal.GetDelegateForFunctionPointer(header->Recv_new, typeof(dOnPacketSendRecv_new_intptr));
+                (dOnPacketSendRecv) Marshal.GetDelegateForFunctionPointer(header->Recv_new, typeof(dOnPacketSendRecv));
             _sendToServer =
-                (dOnPacketSendRecv_new_intptr) Marshal.GetDelegateForFunctionPointer(header->Send_new, typeof(dOnPacketSendRecv_new_intptr));
+                (dOnPacketSendRecv) Marshal.GetDelegateForFunctionPointer(header->Send_new, typeof(dOnPacketSendRecv));
             _getPacketLength =
                 (dOnGetPacketLength) Marshal.GetDelegateForFunctionPointer(header->GetPacketLength,
                     typeof(dOnGetPacketLength));
