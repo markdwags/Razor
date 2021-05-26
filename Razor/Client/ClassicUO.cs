@@ -37,8 +37,8 @@ namespace Assistant
     {
         public int ClientVersion;
         public IntPtr HWND;
-        public IntPtr OnRecv;
-        public IntPtr OnSend;
+        [Obsolete] public IntPtr OnRecv_OBSOLETE_DO_NOT_USE;
+        [Obsolete] public IntPtr OnSend_OBSOLETE_DO_NOT_USE;
         public IntPtr OnHotkeyPressed;
         public IntPtr OnMouse;
         public IntPtr OnPlayerPositionChanged;
@@ -49,8 +49,8 @@ namespace Assistant
         public IntPtr OnFocusGained;
         public IntPtr OnFocusLost;
         public IntPtr GetUOFilePath;
-        public IntPtr Recv;
-        public IntPtr Send;
+        [Obsolete] public IntPtr Recv_OBSOLETE_DO_NOT_USE;
+        [Obsolete] public IntPtr Send_OBSOLETE_DO_NOT_USE;
         public IntPtr GetPacketLength;
         public IntPtr GetPlayerPosition;
         public IntPtr CastSpell;
@@ -70,25 +70,25 @@ namespace Assistant
     }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    unsafe delegate void OnInstall(void* header);
+    public unsafe delegate void dOnInstall(void* header);
 
     [return: MarshalAs(UnmanagedType.I1)]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate bool OnPacketSendRecv_new(byte[] data, ref int length);
+    public delegate bool dOnPacketSendRecv_new(byte[] data, ref int length);
 
     [return: MarshalAs(UnmanagedType.I1)]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate bool OnPacketSendRecv_new_intptr(IntPtr data, ref int length);
+    public delegate bool dOnPacketSendRecv_new_intptr(IntPtr data, ref int length);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate int OnDrawCmdList([Out] out IntPtr cmdlist, ref int size);
+    public delegate int dOnDrawCmdList([Out] out IntPtr cmdlist, ref int size);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    unsafe delegate int OnWndProc(void* ev);
+    public unsafe delegate int dOnWndProc(void* ev);
 
     [return: MarshalAs(UnmanagedType.I1)]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate bool OnGetStaticData
+    public delegate bool dOnGetStaticData
     (
         int index,
         ref ulong flags,
@@ -103,26 +103,27 @@ namespace Assistant
 
     [return: MarshalAs(UnmanagedType.I1)]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate bool OnGetTileData(int index, ref ulong flags, ref ushort textid, ref string name);
+    public delegate bool dOnGetTileData(int index, ref ulong flags, ref ushort textid, ref string name);
 
     [return: MarshalAs(UnmanagedType.I1)]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate bool OnGetCliloc(int cliloc, [MarshalAs(UnmanagedType.LPStr)] string args, bool capitalize, [Out][MarshalAs(UnmanagedType.LPStr)] out string buffer);
+    public delegate bool dOnGetCliloc(int cliloc, [MarshalAs(UnmanagedType.LPStr)] string args, bool capitalize, [Out][MarshalAs(UnmanagedType.LPStr)] out string buffer);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate string OnGetUOFilePath();
+    public delegate string dOnGetUOFilePath();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate short OnGetPacketLength(int id);
+    public delegate short dOnGetPacketLength(int id);
+
+    [return: MarshalAs(UnmanagedType.I1)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate bool dOnGetPlayerPosition(out int x, out int y, out int z);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate bool OnGetPlayerPosition(out int x, out int y, out int z);
-   
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnCastSpell(int idx);
+    public delegate void dOnCastSpell(int idx);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnGetStaticImage(ushort g, ref ArtInfo art);
+    public delegate void dOnGetStaticImage(ushort g, ref ArtInfo art);
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct ArtInfo
@@ -133,44 +134,47 @@ namespace Assistant
     }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnTick();
+    public delegate void dOnTick();
+
+    [return: MarshalAs(UnmanagedType.I1)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate bool dRequestMove(int dir, bool run);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate bool RequestMove(int dir, bool run);
+    public delegate void dOnSetTitle(string title);
+
+    [return: MarshalAs(UnmanagedType.I1)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate bool dOnHotkey(int key, int mod, bool pressed);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnSetTitle(string title);
+    public delegate void dOnMouse(int button, int wheel);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate bool OnHotkey(int key, int mod, bool pressed);
+    public delegate void dOnUpdatePlayerPosition(int x, int y, int z);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnMouse(int button, int wheel);
+    public delegate void dOnClientClose();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnUpdatePlayerPosition(int x, int y, int z);
+    public delegate void dOnInitialize();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnClientClose();
+    public delegate void dOnConnected();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnInitialize();
+    public delegate void dOnDisconnected();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnConnected();
+    public delegate void dOnFocusGained();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnDisconnected();
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnFocusGained();
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void OnFocusLost();
+    public delegate void dOnFocusLost();
 
 
     public partial class Engine
     {
+        [DllExport]
         public static unsafe void Install(PluginHeader* plugin)
         {
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
@@ -211,7 +215,7 @@ namespace Assistant
 
             // load ultimasdk before or the Language.Load will throw the cliloc not found warning every time you run cuo
             string clientPath =
-                ((OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(OnGetUOFilePath))
+                ((dOnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(plugin->GetUOFilePath, typeof(dOnGetUOFilePath))
                 )();
 
             // just replicating the static .ctor
@@ -275,27 +279,25 @@ namespace Assistant
         private bool m_ClientRunning = false;
         private string m_ClientVersion;
 
-        private static OnPacketSendRecv_new_intptr _sendToClient, _sendToServer;
-        private static OnPacketSendRecv_new_intptr _recv, _send;
-        private static OnGetPacketLength _getPacketLength;
-        private static OnGetPlayerPosition _getPlayerPosition;
-        private static OnCastSpell _castSpell;
-        private static OnGetStaticImage _getStaticImage;
-        private static OnTick _tick;
-        private static RequestMove _requestMove;
-        private static OnSetTitle _setTitle;
-        private static OnGetUOFilePath _uoFilePath;
-
-
-        private static OnHotkey _onHotkeyPressed;
-        private static OnMouse _onMouse;
-        private static OnUpdatePlayerPosition _onUpdatePlayerPosition;
-        private static OnClientClose _onClientClose;
-        private static OnInitialize _onInitialize;
-        private static OnConnected _onConnected;
-        private static OnDisconnected _onDisconnected;
-        private static OnFocusGained _onFocusGained;
-        private static OnFocusLost _onFocusLost;
+        private static dOnPacketSendRecv_new_intptr _sendToClient, _sendToServer;
+        private static dOnPacketSendRecv_new_intptr _recv, _send;
+        private static dOnGetPacketLength _getPacketLength;
+        private static dOnGetPlayerPosition _getPlayerPosition;
+        private static dOnCastSpell _castSpell;
+        private static dOnGetStaticImage _getStaticImage;
+        private static dOnTick _tick;
+        private static dRequestMove _requestMove;
+        private static dOnSetTitle _setTitle;
+        private static dOnGetUOFilePath _uoFilePath;
+        private static dOnHotkey _onHotkeyPressed;
+        private static dOnMouse _onMouse;
+        private static dOnUpdatePlayerPosition _onUpdatePlayerPosition;
+        private static dOnClientClose _onClientClose;
+        private static dOnInitialize _onInitialize;
+        private static dOnConnected _onConnected;
+        private static dOnDisconnected _onDisconnected;
+        private static dOnFocusGained _onFocusGained;
+        private static dOnFocusLost _onFocusLost;
         private IntPtr m_ClientWindow;
 
         public override void SetMapWndHandle(Form mapWnd)
@@ -330,24 +332,24 @@ namespace Assistant
         public unsafe bool Install(PluginHeader* header)
         {
             _sendToClient =
-                (OnPacketSendRecv_new_intptr) Marshal.GetDelegateForFunctionPointer(header->Recv_new, typeof(OnPacketSendRecv_new_intptr));
+                (dOnPacketSendRecv_new_intptr) Marshal.GetDelegateForFunctionPointer(header->Recv_new, typeof(dOnPacketSendRecv_new_intptr));
             _sendToServer =
-                (OnPacketSendRecv_new_intptr) Marshal.GetDelegateForFunctionPointer(header->Send_new, typeof(OnPacketSendRecv_new_intptr));
+                (dOnPacketSendRecv_new_intptr) Marshal.GetDelegateForFunctionPointer(header->Send_new, typeof(dOnPacketSendRecv_new_intptr));
             _getPacketLength =
-                (OnGetPacketLength) Marshal.GetDelegateForFunctionPointer(header->GetPacketLength,
-                    typeof(OnGetPacketLength));
+                (dOnGetPacketLength) Marshal.GetDelegateForFunctionPointer(header->GetPacketLength,
+                    typeof(dOnGetPacketLength));
             _getPlayerPosition =
-                (OnGetPlayerPosition) Marshal.GetDelegateForFunctionPointer(header->GetPlayerPosition,
-                    typeof(OnGetPlayerPosition));
-            _castSpell = (OnCastSpell) Marshal.GetDelegateForFunctionPointer(header->CastSpell, typeof(OnCastSpell));
+                (dOnGetPlayerPosition) Marshal.GetDelegateForFunctionPointer(header->GetPlayerPosition,
+                    typeof(dOnGetPlayerPosition));
+            _castSpell = (dOnCastSpell) Marshal.GetDelegateForFunctionPointer(header->CastSpell, typeof(dOnCastSpell));
             _getStaticImage =
-                (OnGetStaticImage) Marshal.GetDelegateForFunctionPointer(header->GetStaticImage,
-                    typeof(OnGetStaticImage));
+                (dOnGetStaticImage) Marshal.GetDelegateForFunctionPointer(header->GetStaticImage,
+                    typeof(dOnGetStaticImage));
             _requestMove =
-                (RequestMove) Marshal.GetDelegateForFunctionPointer(header->RequestMove, typeof(RequestMove));
-            _setTitle = (OnSetTitle) Marshal.GetDelegateForFunctionPointer(header->SetTitle, typeof(OnSetTitle));
+                (dRequestMove) Marshal.GetDelegateForFunctionPointer(header->RequestMove, typeof(dRequestMove));
+            _setTitle = (dOnSetTitle) Marshal.GetDelegateForFunctionPointer(header->SetTitle, typeof(dOnSetTitle));
             _uoFilePath =
-                (OnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(header->GetUOFilePath, typeof(OnGetUOFilePath));
+                (dOnGetUOFilePath) Marshal.GetDelegateForFunctionPointer(header->GetUOFilePath, typeof(dOnGetUOFilePath));
             m_ClientVersion = new Version((byte) (header->ClientVersion >> 24), (byte) (header->ClientVersion >> 16),
                 (byte) (header->ClientVersion >> 8), (byte) header->ClientVersion).ToString();
             m_ClientRunning = true;
