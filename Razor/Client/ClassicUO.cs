@@ -174,7 +174,7 @@ namespace Assistant
 
     public partial class Engine
     {
-        [DllExport]
+        //[DllExport] experimental
         public static unsafe void Install(PluginHeader* plugin)
         {
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
