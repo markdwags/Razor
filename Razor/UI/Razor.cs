@@ -6313,7 +6313,7 @@ namespace Assistant
 
             if (selectedScript == null)
             {
-                string filePath = $"{ScriptManager.ScriptPath}\\auto-{Guid.NewGuid().ToString().Substring(0, 4)}.razor";
+                string filePath = $"{Path.Combine(ScriptManager.ScriptPath, $"auto-{Guid.NewGuid().ToString().Substring(0, 4)}.razor")}";
 
                 File.WriteAllText(filePath, scriptEditor.Text);
 
@@ -6323,7 +6323,7 @@ namespace Assistant
                     Name = Path.GetFileNameWithoutExtension(filePath),
                     Path = filePath
                 };
-
+                
                 TreeNode node = ScriptManager.GetScriptDirNode();
 
                 ScriptManager.RedrawScripts();
