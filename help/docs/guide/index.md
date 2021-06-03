@@ -84,8 +84,10 @@ As you can see, while maintaining the same functionality of macros, a Razor scri
 
 Razor scripts can be written using any text editor. The script editor built into Razor offers syntax highlighting and auto-completion.
 
+[Notepad++ User Defined Language File]()
+
 !!! tip "Popout Editor"
-    **Right-Click** on any script to use the popout editor (available in 1.6.10.x) for a larger editor with highlighting and a code lens view.
+    **Right-Click** on any script to use the popout editor (available in 1.7.x.x+) for a larger editor with highlighting and a code lens view.
 
 Here are a list of some of keyboard shortcuts available in the editor:
 

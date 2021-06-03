@@ -2,6 +2,28 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
+## 1.7.0.12 (5/29/2021)
+
+This version has two key updates. First, it updates the .NET framework from 4.0 to 4.7.2, bringing it inline with ClassicUO. Secondly, to make script editing a bit easier, there is now a popout editor available.
+
+* Updated Razor to .NET 4.7.2 and increased the version to from 1.6.x to 1.7.x
+* Added a new popout script editor. Right-click on the script editor to use it.
+* Copy screenshots to clipboard and open screenshot folder from UI
+* Fixed undress command when using a layer
+* Fixed issue with guardlines.ref not being read by UOPS
+* Added syntax highlighting for `targetloc` command
+* `targetloc` requires two params, z will default to 0 if not included
+* Show incoming name/target only for new mobiles
+* `setvar` command will create the variable if it doesn't exist
+* Added `cleardragdrop` command
+* Added `interrupt` command
+* Added `cancel` param to the `target` command
+* Added `clear` param to the `target` command to clear the target queue
+* Fixed issue with nested for loops and the `break` statement
+* If you clone a profile to an existing name, it will block that
+* When recording a script, it will capture `target 'self'`
+* Fix how auto-script save works on Linux
+
 ## 1.6.9.21 (02/27/2021)
 
 * Fixed issue with `setvar` and similar named variables

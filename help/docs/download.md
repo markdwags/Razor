@@ -13,6 +13,7 @@ To learn more about each version, view the [release notes](releasenotes.md). You
 
 | Version                                                                      | Release Date   |
 | ---------------------------------------------------------------------------- | -------------- |
+| [Razor v1.7.0.12](https://github.com/markdwags/Razor/releases/tag/v1.7.0.12) | May 29th 2021  |
 | [Razor v1.6.9.21](https://github.com/markdwags/Razor/releases/tag/v1.6.9.21) | Feb 27th 2021  |
 | [Razor v1.6.8.15](https://github.com/markdwags/Razor/releases/tag/v1.6.8.15) | Dec 15th 2020  |
 | [Razor v1.6.7.10](https://github.com/markdwags/Razor/releases/tag/v1.6.7.10) | Oct 24th 2020  |

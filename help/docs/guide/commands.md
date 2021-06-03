@@ -80,7 +80,9 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
     === "Cast specific spell"
 
         ```vim
-        cast 'blade spirits'
+        cast 'greater heal'
+        wft
+        target 'self'
         ```
 
 # clearall
@@ -908,7 +910,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 **Description**: This command will target a specific type of mobile or item based on the graphic id or based on the name of the item or mobile.
 
 !!! tip "Range Check"
-    If the optional parameter is passed in as `true` only items within the range of 2 tiles will be considered. If the optional parameter is passed in as `backpack` only items in your backpack will be considered.
+    If the optional parameter is passed in as `true` only items within the range of `2` tiles will be considered. If the optional parameter is passed in as `backpack` only items in your backpack will be considered.
 
 !!! tip "Getting the graphic name or ID"
     To get the name or the ID of item, use the `>info` command in Razor and click on the item. You can use either the `Item Name` or `Id`.
@@ -917,7 +919,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 !!! example
 
-    === "Target by name"
+    === "Target by name (any range)"
 
         ```vim hl_lines="3"
         dclicktype 'dagger'
@@ -925,7 +927,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         targettype 'robe'
         ```
 
-    === "Target by type"
+    === "Target by type (any range)"
 
         ```vim hl_lines="3"
         dclick '0x4005ECAF'
@@ -933,20 +935,28 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         targettype '0x1F03'
         ```
 
-    === "Target by type in range" 
+    === "Target by type using serial (in range)" 
 
         ```vim hl_lines="3"
         dclick '0x4005ECAF'
         waitfortarget
         targettype '0x1F03' true
         ```
+    
+    === "Target by type using name (in range)" 
 
-    === "Target by name in backpack" 
+        ```vim hl_lines="3"
+        dclick 'dagger'
+        waitfortarget
+        targettype 'robe' true
+        ```
+
+    === "Target by name (in backpack)" 
            
         ```vim hl_lines="3"
         dclicktype 'dagger'
         waitfortarget
-        targettype 'robe'
+        targettype 'robe' backpack
         ```
 
 # undress
