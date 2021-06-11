@@ -275,7 +275,7 @@ namespace Assistant
         private bool m_ClientRunning = false;
         private string m_ClientVersion;
 
-        private static dOnPacketSendRecv _sendToClient, _sendToServer, _recv, _send;;
+        private static dOnPacketSendRecv _sendToClient, _sendToServer, _recv, _send;
         private static dOnGetPacketLength _getPacketLength;
         private static dOnGetPlayerPosition _getPlayerPosition;
         private static dOnCastSpell _castSpell;
