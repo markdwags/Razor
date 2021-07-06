@@ -6309,9 +6309,7 @@ namespace Assistant
 
         private void SaveScript()
         {
-            RazorScript selectedScript = GetScriptSel();
-
-            if (selectedScript == null)
+            if (_selectedScript == null)
             {
                 string filePath = $"{Path.Combine(ScriptManager.ScriptPath, $"auto-{Guid.NewGuid().ToString().Substring(0, 4)}.razor")}";
 
@@ -6346,8 +6344,8 @@ namespace Assistant
             }
             else
             {
-                File.WriteAllText(selectedScript.Path, scriptEditor.Text);
-                selectedScript.Lines = File.ReadAllLines(selectedScript.Path);
+                File.WriteAllText(_selectedScript.Path, scriptEditor.Text);
+                _selectedScript.Lines = File.ReadAllLines(_selectedScript.Path);
             }
 
             UpdateScriptWindowTitle(true);
@@ -7262,11 +7260,18 @@ namespace Assistant
             ScriptManager.InitScriptEditor();
         }
 
+        private RazorScript _selectedScript;
+
         private void scriptTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            RazorScript selectedScript = e.Node.Tag as RazorScript;
+            if (e.Node.Tag is string)
+            {
+                return;
+            }
 
-            if (selectedScript == null)
+            _selectedScript = e.Node.Tag as RazorScript;
+
+            if (_selectedScript == null)
                 return;
 
             Engine.MainWindow.SafeAction(s =>
@@ -7279,7 +7284,7 @@ namespace Assistant
                     RebuildHotKeyCache();
                 }
 
-                TreeNode resultNode = SearchTreeView(selectedScript.Name, hotkeyTree.Nodes);
+                TreeNode resultNode = SearchTreeView(_selectedScript.Name, hotkeyTree.Nodes);
 
                 if (resultNode != null)
                 {
@@ -7295,7 +7300,7 @@ namespace Assistant
                     }
                 }
                 
-                ScriptManager.SetEditorText(selectedScript);
+                ScriptManager.SetEditorText(_selectedScript);
 
                 ScriptManager.ClearAllHighlightLines();
             });
@@ -7340,9 +7345,7 @@ namespace Assistant
 
         private void UpdateScriptWindowTitle(bool saved)
         {
-            RazorScript selScript = GetScriptSel();
-
-            if (selScript != null)
+            if (_selectedScript != null)
             {
                 string append;
 
@@ -7355,7 +7358,7 @@ namespace Assistant
                     append = $"Razor v{Engine.Version}";
                 }
 
-                Text = saved ? $"[{selScript.Name}] - {append}" : $"[*{selScript.Name}] - {append}";
+                Text = saved ? $"[{_selectedScript.Name}] - {append}" : $"[*{_selectedScript.Name}] - {append}";
                 _savedCurrentScript = true;
             }
         }
