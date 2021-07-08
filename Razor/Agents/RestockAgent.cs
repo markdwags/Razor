@@ -485,6 +485,7 @@ namespace Assistant.Agents
                 }
                 catch
                 {
+                    // ignored
                 }
             }
         }

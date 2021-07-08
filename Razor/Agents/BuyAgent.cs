@@ -498,7 +498,7 @@ namespace Assistant.Agents
         {
             try
             {
-                m_Enabled = Boolean.Parse(node.GetAttribute("enabled"));
+                m_Enabled = bool.Parse(node.GetAttribute("enabled"));
             }
             catch
             {
@@ -509,14 +509,14 @@ namespace Assistant.Agents
             {
                 try
                 {
-                    ushort id, amount;
-                    id = Convert.ToUInt16(el.GetAttribute("id"));
-                    amount = Convert.ToUInt16(el.GetAttribute("amount"));
+                    ushort id = Convert.ToUInt16(el.GetAttribute("id"));
+                    ushort amount = Convert.ToUInt16(el.GetAttribute("amount"));
 
                     m_Items.Add(new BuyEntry(id, amount));
                 }
                 catch
                 {
+                    // ignored
                 }
             }
         }

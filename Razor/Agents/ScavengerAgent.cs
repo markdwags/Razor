@@ -392,7 +392,7 @@ namespace Assistant.Agents
         {
             try
             {
-                m_Enabled = Boolean.Parse(node.GetAttribute("enabled"));
+                m_Enabled = bool.Parse(node.GetAttribute("enabled"));
             }
             catch
             {
@@ -401,7 +401,7 @@ namespace Assistant.Agents
 
             try
             {
-                m_Bag = Serial.Parse(node["bag"].GetAttribute("serial"));
+                m_Bag = node["bag"] != null ? Serial.Parse(node["bag"].GetAttribute("serial")) : Serial.Zero;
             }
             catch
             {
@@ -417,6 +417,7 @@ namespace Assistant.Agents
                 }
                 catch
                 {
+                    // ignored
                 }
             }
         }

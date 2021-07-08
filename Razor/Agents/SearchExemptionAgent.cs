@@ -262,17 +262,19 @@ namespace Assistant.Agents
                 {
                     string ser = el.GetAttribute("serial");
                     string iid = el.GetAttribute("id");
-                    if (ser != null)
+
+                    if (!string.IsNullOrEmpty(ser))
                     {
                         m_Items.Add((Serial) Convert.ToUInt32(ser));
                     }
-                    else if (iid != null)
+                    else if (!string.IsNullOrEmpty(iid))
                     {
                         m_Items.Add((ItemID) Convert.ToUInt16(iid));
                     }
                 }
                 catch
                 {
+                    // ignored
                 }
             }
         }

@@ -361,6 +361,7 @@ namespace Assistant.Agents
             }
             catch
             {
+                // ignored
             }
 
             if (m_BagBTN != null)
@@ -377,6 +378,7 @@ namespace Assistant.Agents
                 }
                 catch
                 {
+                    // ignored
                 }
             }
         }

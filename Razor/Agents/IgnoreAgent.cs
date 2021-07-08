@@ -315,6 +315,7 @@ namespace Assistant.Agents
             }
             catch
             {
+                // ignored
             }
 
             foreach (XmlElement el in node.GetElementsByTagName("ignore"))
@@ -329,13 +330,14 @@ namespace Assistant.Agents
                     }
 
                     string name = el.GetAttribute("name");
-                    if (name != null && name != "")
+                    if (!string.IsNullOrEmpty(name))
                     {
                         m_Names.Add(toAdd, name.Trim());
                     }
                 }
                 catch
                 {
+                    // ignored
                 }
             }
         }
