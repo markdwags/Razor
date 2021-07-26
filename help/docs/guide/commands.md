@@ -451,23 +451,36 @@ Example:
 
 # menu
 
-**Syntax**: `menu (serial) (index)`
+**Syntax**: `menu (serial) (index) [false]`
 
-**Description**: Selects a specific index within a context menu
+**Description**: Selects a specific index within a context menu. Razor will block the menu from appearing by default. If you include the optional `false` parameter, the context menu won't be blocked by Razor.
+
+!!! tip "Context Menu"
+    This command applies to the context menu accessed on some servers via a single-click (such as on yourself, to open your paperdoll or backpack).
+
+    ![context-menu](../images/contextmenu.png)
 
 !!! example
 
-    === "Menu"
+    === "Open Paperdoll"
 
         ```vim
-        menu '0x123ABC' 4
+        menu 0 0
         ```
 
+    === "Open Backpack"
+
+        ```vim
+        menu 0 1
+        ```
 # menuresponse
 
 **Syntax**: `menuresponse (index) (menuId) [hue]`
 
 **Description**: Responds to a specific menu and menu ID
+
+!!! warning
+    This command does not work on context menus, they are for a less used menu type.  See the `menu` command to use context/popup menus.
 
 !!! example
 
@@ -1133,6 +1146,9 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
     `waitformenu 'any' 5000` will wait for 5 seconds
 
     `waitformenu 5000` will wait 30 seconds for a menu with the id of 5000
+
+!!! warning
+    This command does not work on context menus, they are for an less used menu type.  See the `menu` command to use context/popup menus.
 
 !!! example
 

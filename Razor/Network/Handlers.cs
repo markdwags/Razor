@@ -2344,7 +2344,14 @@ namespace Assistant
                         }
                         catch
                         {
+                            // ignored
                         }
+                    }
+
+                    if (ScriptManager.BlockPopupMenu)
+                    {
+                        args.Block = true;
+                        ScriptManager.BlockPopupMenu = false;
                     }
 
                     break;

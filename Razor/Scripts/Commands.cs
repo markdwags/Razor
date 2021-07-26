@@ -1014,9 +1014,17 @@ namespace Assistant.Scripts
 
             Serial s = args[0].AsSerial();
             ushort index = args[1].AsUShort();
+            bool blockPopup = true;
+
+            if (args.Length > 2)
+            {
+                blockPopup = args[2].AsBool();
+            }
 
             if (s == Serial.Zero && World.Player != null)
                 s = World.Player.Serial;
+            
+            ScriptManager.BlockPopupMenu = blockPopup;
 
             Client.Instance.SendToServer(new ContextMenuRequest(s));
             Client.Instance.SendToServer(new ContextMenuResponse(s, index));

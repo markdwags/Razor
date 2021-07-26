@@ -57,7 +57,9 @@ namespace Assistant.Scripts
         private static ListBox ScriptVariableList { get; set; }
 
         private static Script _queuedScript;
-        
+
+        public static bool BlockPopupMenu { get; set; }
+
         public enum HighlightType
         {
             Error,
@@ -690,12 +692,12 @@ namespace Assistant.Scripts
                 "lifttype 'robe'\n\twait 1000\n\tdroprelloc 1 1 0\n\tlifttype 0x1FCD\n\twait 1000\n\tdroprelloc 1 1");
             descriptionCommands.Add("lifttype", tooltip);
 
-            tooltip = new ToolTipDescriptions("menu", new[] { "menu (serial) (index)" }, "N/A",
-                "Selects a specific index within a context menu", "menu 0x123ABC 4");
+            tooltip = new ToolTipDescriptions("menu", new[] { "menu (serial) (index) [false]" }, "N/A",
+                "Selects a specific index within a context menu", "# open backpack\n\tmenu 0 1");
             descriptionCommands.Add("menu", tooltip);
 
             tooltip = new ToolTipDescriptions("menuresponse", new[] { "menuresponse (index) (menuId) [hue]" }, "N/A",
-                "Responds to a specific menu and menu ID", "menuresponse 3 4");
+                "Responds to a specific menu and menu ID (not a context menu)", "menuresponse 3 4");
             descriptionCommands.Add("menuresponse", tooltip);
 
             tooltip = new ToolTipDescriptions("organizer", new[] { "organizer (number) ['set']" }, "N/A",
@@ -835,7 +837,7 @@ namespace Assistant.Scripts
             descriptionCommands.Add("waitforgump", tooltip);
 
             tooltip = new ToolTipDescriptions("waitformenu", new[] { "waitformenu [menu id]" }, "N/A",
-                "This command will wait for a context menu. If no menu id is provided, it will wait for **any * *menu.",
+                "This command will wait for menu (not a context menu). If no menu id is provided, it will wait for **any * *menu.",
                 "waitformenu\n\twaitformenu 4");
             descriptionCommands.Add("waitformenu", tooltip);
 
