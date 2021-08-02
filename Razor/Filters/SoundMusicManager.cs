@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using Assistant.UI;
@@ -653,7 +654,7 @@ namespace Assistant.Filters
             {
                 if (Ultima.Sounds.IsValidSound(i, out string wavName))
                 {
-                    Serial serial = Serial.Parse($"0x{i:X3}");
+                    Serial serial = Serial.Parse($"0x{i + 1:X3}");
 
                     Sound sound = new Sound
                     {
@@ -664,6 +665,8 @@ namespace Assistant.Filters
                     SoundList.Add(sound);
                 }
             }
+
+            SoundList = SoundList.OrderBy(s => s.Name).ToList();
         }
 
         public static void Save(XmlTextWriter xml)
