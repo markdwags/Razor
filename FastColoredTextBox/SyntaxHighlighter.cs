@@ -344,7 +344,8 @@ namespace FastColoredTextBoxNS
 
         protected void InitRazorRegex()
         {
-            RazorStringRegex1 = new Regex("\"[^\"\\\\]*(\\\\.[^\"\\\\]*)*\"", RegexCompiledOption);
+            RazorStringRegex1 = new Regex("([\"'])(?:(?=(\\\\?))\\2.)*?\\1", RegexCompiledOption);
+
             RazorStringRegex2 = new Regex("'[^'\\\\]*(\\\\.[^'\\\\]*)*'", RegexCompiledOption);
 
             RazorCommentRegex = new Regex("(//.*$|#.*$)", RegexOptions.Multiline | RegexCompiledOption);
