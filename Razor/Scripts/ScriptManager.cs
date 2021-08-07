@@ -432,7 +432,7 @@ namespace Assistant.Scripts
             StopScript();
             Timer.Stop();
             Assistant.Engine.MainWindow.LockScriptUI(false);
-            Assistant.Engine.RazorScriptEditorWindow.LockScriptUI(false);
+            Assistant.Engine.RazorScriptEditorWindow?.LockScriptUI(false);
         }
 
         public static void StartEngine()
