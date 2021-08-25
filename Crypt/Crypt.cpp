@@ -1628,6 +1628,16 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 
 		InitThemes();
 
+		if (pShared)
+		{
+			pShared->AllowNegotiate = (wParam & 0x04) != 0;
+
+			pShared->UOVersion[0] = 0;
+
+			if (NativeGetUOVersion != NULL)
+				strncpy(pShared->UOVersion, NativeGetUOVersion(), 16);
+		}
+
 		if ( !pShared )
 			PostMessage( hRazorWnd, WM_UONETEVENT, NOT_READY, NO_SHAREMEM );
 		else if ( CopyFailed )
@@ -1636,16 +1646,6 @@ void MessageProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam, MSG *pMsg 
 			PostMessage( hRazorWnd, WM_UONETEVENT, NOT_READY, NO_PATCH );
 		else
 			PostMessage( hRazorWnd, WM_UONETEVENT, READY, SUCCESS );
-
-		if ( pShared )
-		{
-			pShared->AllowNegotiate = (wParam & 0x04) != 0;
-
-			pShared->UOVersion[0] = 0;
-
-			if ( NativeGetUOVersion != NULL )
-				strncpy( pShared->UOVersion, NativeGetUOVersion(), 16 );
-		}
 
 		/* Start a timer that will call a callback each tick. We use this to implement
 		 * timers as well as scan client memory for position updates. */

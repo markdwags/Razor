@@ -122,7 +122,7 @@ namespace Assistant
         private static unsafe extern void SetServer(uint ip, ushort port);
 
         [DllImport("Crypt.dll")]
-        internal static unsafe extern string GetUOVersion();
+        internal static unsafe extern IntPtr GetUOVersion();
 
         [DllImport("Loader.dll")]
         private static unsafe extern uint Load(string exe, string dll, string func, void* dllData, int dataLen,
@@ -898,7 +898,7 @@ namespace Assistant
 
         public override string GetClientVersion()
         {
-            return GetUOVersion();
+            return Marshal.PtrToStringAnsi(GetUOVersion());
         }
 
         public override string GetUoFilePath()

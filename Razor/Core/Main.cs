@@ -330,8 +330,6 @@ namespace Assistant
                 return;
             }
 
-            Ultima.Multis.PostHSFormat = UsePostHSChanges;
-
             string addr = Config.GetAppSetting<string>("LastServer");
             int port = Config.GetAppSetting<int>("LastPort");
 
