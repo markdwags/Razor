@@ -94,7 +94,7 @@ namespace Assistant.Scripts
             return false;
         }
 
-        private static bool FindType(string expression, Variable[] vars, bool quiet, bool force)
+        private static uint FindType(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (vars.Length == 0)
             {
@@ -132,12 +132,12 @@ namespace Assistant.Scripts
 
                     if (mobiles.Count > 0)
                     {
-                        return true;
+                        return mobiles[Utility.Random(mobiles.Count)].Serial;
                     }
                 }
                 else
                 {
-                    return true;
+                    return items[Utility.Random(items.Count)].Serial;
                 }
             }
             else // Provided graphic id for type, check backpack first (same behavior as DoubleClickAction in macros
@@ -153,16 +153,16 @@ namespace Assistant.Scripts
 
                     if (mobiles.Count > 0)
                     {
-                        return true;
+                        return mobiles[Utility.Random(mobiles.Count)].Serial;
                     }
                 }
                 else
                 {
-                    return true;
+                    return items[Utility.Random(items.Count)].Serial;
                 }
             }
 
-            return false;
+            return Serial.Zero;
         }
 
         private static bool Mounted(string expression, Variable[] vars, bool quiet, bool force)

@@ -112,6 +112,33 @@ namespace Assistant.Scripts
 
             Interpreter.RegisterCommandHandler("cleardragdrop", ClearDragDrop);
             Interpreter.RegisterCommandHandler("interrupt", Interrupt);
+
+            //Interpreter.RegisterCommandHandler("ignore", AddIgnore);
+            //Interpreter.RegisterCommandHandler("clearignore", ClearIgnore);
+        }
+
+        private static bool AddIgnore(string commands, Variable[] vars, bool quiet, bool force)
+        {
+            if (vars.Length != 1)
+            {
+                throw new RunTimeError("Usage: ignore (serial)");
+            }
+
+            var serial = vars[0].AsSerial();
+            Interpreter.AddIgnore(serial);
+
+            CommandHelper.SendMessage($"Added {serial} to ignore list", quiet);
+
+            return true;
+        }
+
+        private static bool ClearIgnore(string commands, Variable[] vars, bool quiet, bool force)
+        {
+            Interpreter.ClearIgnore();
+
+            CommandHelper.SendMessage("Ignore List cleared", quiet);
+
+            return true;
         }
 
         private static string[] virtues = new string[3] { "honor", "sacrifice", "valor" };

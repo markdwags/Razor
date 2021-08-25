@@ -967,7 +967,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
     === "Target by name (in backpack)" 
            
         ```vim hl_lines="3"
-        dclicktype 'dagger'
+        dclicktype 'dagger' backpack
         waitfortarget
         targettype 'robe' backpack
         ```

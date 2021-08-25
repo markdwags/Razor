@@ -478,7 +478,6 @@ namespace Assistant.Scripts.Engine
                 case "<=":
                 case ">":
                 case ">=":
-                case "in":
                 case "as":
                     return true;
             }

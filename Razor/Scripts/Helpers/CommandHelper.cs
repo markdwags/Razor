@@ -127,6 +127,22 @@ namespace Assistant.Scripts.Helpers
             }
         }
 
+        public static void SendMessage(string message, bool quiet)
+        {
+            if (!quiet)
+            {
+                World.Player.SendMessage(MsgLevel.Force, message);
+            }
+        }
+
+        public static void SendInfo(string message, bool quiet)
+        {
+            if (!quiet)
+            {
+                World.Player.SendMessage(MsgLevel.Info, message);
+            }
+        }
+
         /// <summary>
         /// Parse the script input to target the correct mobile
         /// </summary>

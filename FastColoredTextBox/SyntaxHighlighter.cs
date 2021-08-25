@@ -355,7 +355,7 @@ namespace FastColoredTextBoxNS
             RazorNumberRegex = new Regex(@"\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b", RegexCompiledOption);
             RazorKeywordRegex =
                 new Regex(
-                    @"\b(if|elseif|else|endif|while|endwhile|for|endfor|break|continue|not|and|or|stop|replay|loop)\b",
+                    @"\b(if|elseif|else|endif|while|endwhile|for|endfor|break|continue|not|and|or|stop|replay|loop|as)\b",
                     RegexCompiledOption);
 
             RazorCommandRegex =

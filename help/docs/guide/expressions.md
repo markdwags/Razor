@@ -60,6 +60,9 @@ Description: Used to check if a specific buff/debuff is applied to you.
 
 Description: Used to check if a specific item name of graphic ID exists. Range check, if true, will check within 2 tiles.
 
+!!! tip "The `as` keyword"
+    If you use `findtype` along with `as` you can assign a temporary variable to use throughout the script. See example below.
+
 !!! tip "In-Game Info Gump"
     Not sure what name to enter or graphic ID to enter? Type `>info` and click on any item or mobile for more information.
 
@@ -98,6 +101,15 @@ Description: Used to check if a specific item name of graphic ID exists. Range c
         ```vim
         if findtype 'saw' backpack
             say 'found saw in my pack'
+        endif
+        ```
+
+    === "Find a dagger and use it (using as)"
+
+        ```vim hl_lines="1"
+        if findtype 'dagger' as 'mydagger'
+            overhead 'found dagger'
+            dclick 'mydagger'
         endif
         ```
 

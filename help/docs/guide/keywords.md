@@ -16,6 +16,23 @@ Description: The `and` keyword links statements together and if all statements a
         endif
         ```
 
+## as
+
+Syntax: `(statement) as (variable)`
+
+Description: The `as` keyword works in conjunction with the `findtype` expression.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if findtype 'dagger' as 'mydagger'
+            overhead 'found dagger'
+            dclick 'mydagger'
+        endif
+        ```
+
 ## break
 
 Syntax: `break`
