@@ -718,10 +718,10 @@ namespace Assistant
             m_AppSettings["ClientEncrypted"] = "1";
             m_AppSettings["ServerEncrypted"] = "0";
             m_AppSettings["ShowWelcome"] = "1";
-            m_AppSettings["UId"] = "21613fcd";
+            m_AppSettings["UId"] = "";
             m_AppSettings["MaxOrganizerAgents"] = "20";
-            m_AppSettings["MaxBuyAgents"] = "10";
-            m_AppSettings["MaxRestockAgents"] = "10";
+            m_AppSettings["MaxBuyAgents"] = "20";
+            m_AppSettings["MaxRestockAgents"] = "20";
             m_AppSettings["ImportProfilesAndMacros"] = "true";
             m_AppSettings["BackupPath"] = @".\Backup";
 
