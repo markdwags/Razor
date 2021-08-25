@@ -116,15 +116,15 @@ namespace Assistant.Scripts
 
         private static string[] virtues = new string[3] { "honor", "sacrifice", "valor" };
 
-        private static bool Virtue(string command, Argument[] args, bool quiet, bool force)
+        private static bool Virtue(string command, Variable[] vars, bool quiet, bool force)
         {
 
-            if (args.Length == 0 || !virtues.Contains(args[0].AsString()))
+            if (vars.Length == 0 || !virtues.Contains(vars[0].AsString()))
             {
-                throw new RunTimeError(null, "Usage: virtue ('honor'/'sacrifice'/'valor')");
+                throw new RunTimeError("Usage: virtue ('honor'/'sacrifice'/'valor')");
             }
 
-            switch (args[0].AsString())
+            switch (vars[0].AsString())
             {
                 case "honor":
                     World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Honor);
@@ -140,7 +140,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool ClearAll(string command, Argument[] args, bool quiet, bool force)
+        private static bool ClearAll(string command, Variable[] vars, bool quiet, bool force)
         {
 
             DragDropManager.GracefulStop(); // clear drag/drop queue
@@ -150,7 +150,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool SetLastTarget(string command, Argument[] args, bool quiet, bool force)
+        private static bool SetLastTarget(string command, Variable[] vars, bool quiet, bool force)
         {
             if (!ScriptManager.SetLastTargetActive)
             {
@@ -169,14 +169,14 @@ namespace Assistant.Scripts
             return false;
         }
 
-        private static bool SetVar(string command, Argument[] args, bool quiet, bool force)
+        private static bool SetVar(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: setvar ('variable') [timeout]");
+                throw new RunTimeError("Usage: setvar ('variable') [timeout]");
             }
 
-            string varname = args[0].AsString();
+            string varname = vars[0].AsString();
 
             ScriptVariables.ScriptVariable variable = ScriptVariables.GetVariable(varname);
 
@@ -193,7 +193,7 @@ namespace Assistant.Scripts
                 ScriptManager.RedrawScriptVariables();
             }
 
-            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
+            Interpreter.Timeout(vars.Length == 2 ? vars[1].AsUInt() : 30000, () => { return true; });
             
 
             if (!ScriptManager.SetVariableActive)
@@ -214,27 +214,27 @@ namespace Assistant.Scripts
             return false;
         }
 
-        private static bool Stop(string command, Argument[] args, bool quiet, bool force)
+        private static bool Stop(string command, Variable[] vars, bool quiet, bool force)
         {
             ScriptManager.StopScript();
 
             return true;
         }
 
-        private static bool Hotkey(string command, Argument[] args, bool quiet, bool force)
+        private static bool Hotkey(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: hotkey ('name of hotkey') OR (hotkeyId)");
+                throw new RunTimeError("Usage: hotkey ('name of hotkey') OR (hotkeyId)");
             }
 
-            string query = args[0].AsString();
+            string query = vars[0].AsString();
 
             KeyData hk = HotKey.GetByNameOrId(query);
 
             if (hk == null)
             {
-                throw new RunTimeError(null, $"{command} - Hotkey '{query}' not found");
+                throw new RunTimeError($"{command} - Hotkey '{query}' not found");
             }
 
             hk.Callback();
@@ -242,23 +242,23 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool WaitForGump(string command, Argument[] args, bool quiet, bool force)
+        private static bool WaitForGump(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: waitforgump (gumpId/'any') [timeout]");
+                throw new RunTimeError("Usage: waitforgump (gumpId/'any') [timeout]");
             }
 
             uint gumpId = 0;
             bool strict = false;
 
-            if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
+            if (vars[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 strict = false;
             }
             else
             {
-                gumpId = Utility.ToUInt32(args[0].AsString(), 0);
+                gumpId = Utility.ToUInt32(vars[0].AsString(), 0);
 
                 if (gumpId > 0)
                 {
@@ -266,7 +266,7 @@ namespace Assistant.Scripts
                 }
             }
 
-            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
+            Interpreter.Timeout(vars.Length == 2 ? vars[1].AsUInt() : 30000, () => { return true; });
 
             if ((World.Player.HasGump || World.Player.HasCompressedGump) &&
                 (World.Player.CurrentGumpI == gumpId || !strict || gumpId == 0))
@@ -278,21 +278,21 @@ namespace Assistant.Scripts
             return false;
         }
 
-        private static bool WaitForMenu(string command, Argument[] args, bool quiet, bool force)
+        private static bool WaitForMenu(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: waitformenu (menuId/'any') [timeout]");
+                throw new RunTimeError("Usage: waitformenu (menuId/'any') [timeout]");
             }
 
             uint menuId = 0;
 
             // Look for a specific menu
-            menuId = args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1
+            menuId = vars[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1
                 ? 0
-                : Utility.ToUInt32(args[0].AsString(), 0);
+                : Utility.ToUInt32(vars[0].AsString(), 0);
 
-            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
+            Interpreter.Timeout(vars.Length == 2 ? vars[1].AsUInt() : 30000, () => { return true; });
 
             if (World.Player.HasMenu && (World.Player.CurrentGumpI == menuId || menuId == 0))
             {
@@ -303,24 +303,24 @@ namespace Assistant.Scripts
             return false;
         }
 
-        private static bool WaitForPrompt(string command, Argument[] args, bool quiet, bool force)
+        private static bool WaitForPrompt(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: waitforprompt (promptId/'any') [timeout]");
+                throw new RunTimeError("Usage: waitforprompt (promptId/'any') [timeout]");
             }
 
             uint promptId = 0;
             bool strict = false;
 
             // Look for a specific prompt
-            if (args[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
+            if (vars[0].AsString().IndexOf("any", StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 strict = false;
             }
             else
             {
-                promptId = Utility.ToUInt32(args[0].AsString(), 0);
+                promptId = Utility.ToUInt32(vars[0].AsString(), 0);
 
                 if (promptId > 0)
                 {
@@ -328,7 +328,7 @@ namespace Assistant.Scripts
                 }
             }
 
-            Interpreter.Timeout(args.Length == 2 ? args[1].AsUInt() : 30000, () => { return true; });
+            Interpreter.Timeout(vars.Length == 2 ? vars[1].AsUInt() : 30000, () => { return true; });
 
             if (World.Player.HasPrompt && (World.Player.PromptID == promptId || !strict || promptId == 0))
             {
@@ -341,16 +341,16 @@ namespace Assistant.Scripts
 
         private static string[] abilities = new string[4] {"primary", "secondary", "stun", "disarm"};
 
-        private static bool SetAbility(string command, Argument[] args, bool quiet, bool force)
+        private static bool SetAbility(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1 || !abilities.Contains(args[0].AsString()))
+            if (vars.Length < 1 || !abilities.Contains(vars[0].AsString()))
             {
-                throw new RunTimeError(null, "Usage: setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']");
+                throw new RunTimeError("Usage: setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']");
             }
 
-            if (args.Length == 2 && args[1].AsString() == "on" || args.Length == 1)
+            if (vars.Length == 2 && vars[1].AsString() == "on" || vars.Length == 1)
             {
-                switch (args[0].AsString())
+                switch (vars[0].AsString())
                 {
                     case "primary":
                         SpecialMoves.SetPrimaryAbility();
@@ -368,7 +368,7 @@ namespace Assistant.Scripts
                         break;
                 }
             }
-            else if (args.Length == 2 && args[1].AsString() == "off")
+            else if (vars.Length == 2 && vars[1].AsString() == "off")
             {
                 Client.Instance.SendToServer(new UseAbility(AOSAbility.Clear));
                 Client.Instance.SendToClient(ClearAbility.Instance);
@@ -379,14 +379,14 @@ namespace Assistant.Scripts
 
         private static string[] hands = new string[4] {"left", "right", "both", "hands"};
 
-        private static bool ClearHands(string command, Argument[] args, bool quiet, bool force)
+        private static bool ClearHands(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0 || !hands.Contains(args[0].AsString()))
+            if (vars.Length == 0 || !hands.Contains(vars[0].AsString()))
             {
-                throw new RunTimeError(null, "Usage: clearhands ('left'/'right'/'both')");
+                throw new RunTimeError("Usage: clearhands ('left'/'right'/'both')");
             }
 
-            switch (args[0].AsString())
+            switch (vars[0].AsString())
             {
                 case "left":
                     Dress.Unequip(Layer.LeftHand);
@@ -403,15 +403,14 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool DClickType(string command, Argument[] args, bool quiet, bool force)
+        private static bool DClickType(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null,
-                    "Usage: dclicktype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
+                throw new RunTimeError("Usage: dclicktype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
             }
 
-            string gfxStr = args[0].AsString();
+            string gfxStr = vars[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
             List<Item> items;
             List<Mobile> mobiles = new List<Mobile>();
@@ -419,15 +418,15 @@ namespace Assistant.Scripts
             bool inRangeCheck = false;
             bool backpack = false;
 
-            if (args.Length == 2)
+            if (vars.Length == 2)
             {
-                if (args[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
+                if (vars[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
                 {
                     backpack = true;
                 }
                 else
                 {
-                    inRangeCheck = args[1].AsBool();
+                    inRangeCheck = vars[1].AsBool();
                 }
             }
 
@@ -470,18 +469,18 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool DClick(string command, Argument[] args, bool quiet, bool force)
+        private static bool DClick(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: dclick (serial) or dclick ('left'/'right'/'hands')");
+                throw new RunTimeError("Usage: dclick (serial) or dclick ('left'/'right'/'hands')");
             }
 
-            if (hands.Contains(args[0].AsString()))
+            if (hands.Contains(vars[0].AsString()))
             {
                 Item item;
 
-                switch (args[0].AsString())
+                switch (vars[0].AsString())
                 {
                     case "left":
                         item = World.Player.GetItemOnLayer(Layer.LeftHand);
@@ -500,16 +499,16 @@ namespace Assistant.Scripts
                 }
                 else
                 {
-                    CommandHelper.SendWarning(command, $"Item not found in '{args[0].AsString()}'", quiet);
+                    CommandHelper.SendWarning(command, $"Item not found in '{vars[0].AsString()}'", quiet);
                 }
             }
             else
             {
-                Serial serial = args[0].AsSerial();
+                Serial serial = vars[0].AsSerial();
 
                 if (!serial.IsValid)
                 {
-                    throw new RunTimeError(null, "dclick - invalid serial");
+                    throw new RunTimeError("dclick - invalid serial");
                 }
 
                 PlayerData.DoubleClick(serial);
@@ -518,34 +517,34 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool DropItem(string command, Argument[] args, bool quiet, bool force)
+        private static bool DropItem(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: drop (serial) (x y z/layername)");
+                throw new RunTimeError("Usage: drop (serial) (x y z/layername)");
             }
 
-            Serial serial = args[0].AsString().IndexOf("ground", StringComparison.InvariantCultureIgnoreCase) > 0
+            Serial serial = vars[0].AsString().IndexOf("ground", StringComparison.InvariantCultureIgnoreCase) > 0
                 ? uint.MaxValue
-                : args[0].AsSerial();
+                : vars[0].AsSerial();
 
             Point3D to = new Point3D(0, 0, 0);
             Layer layer = Layer.Invalid;
 
-            switch (args.Length)
+            switch (vars.Length)
             {
                 case 1: // drop at feet if only serial is provided
                     to = new Point3D(World.Player.Position.X, World.Player.Position.Y, World.Player.Position.Z);
                     break;
                 case 2: // dropping on a layer
-                    layer = (Layer) Enum.Parse(typeof(Layer), args[1].AsString(), true);
+                    layer = (Layer) Enum.Parse(typeof(Layer), vars[1].AsString(), true);
                     break;
                 case 3: // x y
-                    to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0), 0);
+                    to = new Point3D(Utility.ToInt32(vars[1].AsString(), 0), Utility.ToInt32(vars[2].AsString(), 0), 0);
                     break;
                 case 4: // x y z
-                    to = new Point3D(Utility.ToInt32(args[1].AsString(), 0), Utility.ToInt32(args[2].AsString(), 0),
-                        Utility.ToInt32(args[3].AsString(), 0));
+                    to = new Point3D(Utility.ToInt32(vars[1].AsString(), 0), Utility.ToInt32(vars[2].AsString(), 0),
+                        Utility.ToInt32(vars[3].AsString(), 0));
                     break;
             }
 
@@ -570,15 +569,15 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool DropRelLoc(string command, Argument[] args, bool quiet, bool force)
+        private static bool DropRelLoc(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 2)
+            if (vars.Length < 2)
             {
-                throw new RunTimeError(null, "Usage: droprelloc (x) (y)");
+                throw new RunTimeError("Usage: droprelloc (x) (y)");
             }
 
-            int x = args[0].AsInt();
-            int y = args[1].AsInt();
+            int x = vars[0].AsInt();
+            int y = vars[1].AsInt();
 
             if (DragDropManager.Holding != null)
             {
@@ -596,25 +595,25 @@ namespace Assistant.Scripts
 
         private static int _lastLiftId;
 
-        private static bool LiftItem(string command, Argument[] args, bool quiet, bool force)
+        private static bool LiftItem(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: lift (serial) [amount]");
+                throw new RunTimeError("Usage: lift (serial) [amount]");
             }
 
-            Serial serial = args[0].AsSerial();
+            Serial serial = vars[0].AsSerial();
 
             if (!serial.IsValid)
             {
-                throw new RunTimeError(null, $"{command} - Invalid serial");
+                throw new RunTimeError($"{command} - Invalid serial");
             }
 
             ushort amount = 1;
 
-            if (args.Length == 2)
+            if (vars.Length == 2)
             {
-                amount = Utility.ToUInt16(args[1].AsString(), 1);
+                amount = Utility.ToUInt16(vars[1].AsString(), 1);
             }
 
             if (_lastLiftId > 0)
@@ -652,20 +651,20 @@ namespace Assistant.Scripts
 
         private static int _lastLiftTypeId;
 
-        private static bool LiftType(string command, Argument[] args, bool quiet, bool force)
+        private static bool LiftType(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: lifttype (gfx/'name of item') [amount]");
+                throw new RunTimeError("Usage: lifttype (gfx/'name of item') [amount]");
             }
 
-            string gfxStr = args[0].AsString();
+            string gfxStr = vars[0].AsString();
             ushort gfx = Utility.ToUInt16(gfxStr, 0);
             ushort amount = 1;
 
-            if (args.Length == 2)
+            if (vars.Length == 2)
             {
-                amount = Utility.ToUInt16(args[1].AsString(), 1);
+                amount = Utility.ToUInt16(vars[1].AsString(), 1);
             }
 
             if (_lastLiftTypeId > 0)
@@ -720,11 +719,11 @@ namespace Assistant.Scripts
             return false;
         }
 
-        private static bool Walk(string command, Argument[] args, bool quiet, bool force)
+        private static bool Walk(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: walk ('direction')");
+                throw new RunTimeError("Usage: walk ('direction')");
             }
 
             if (ScriptManager.LastWalk + TimeSpan.FromSeconds(0.4) >= DateTime.UtcNow)
@@ -734,17 +733,17 @@ namespace Assistant.Scripts
 
             ScriptManager.LastWalk = DateTime.UtcNow;
 
-            Direction dir = (Direction) Enum.Parse(typeof(Direction), args[0].AsString(), true);
+            Direction dir = (Direction) Enum.Parse(typeof(Direction), vars[0].AsString(), true);
             Client.Instance.RequestMove(dir);
 
             return true;
         }
 
-        private static bool UseSkill(string command, Argument[] args, bool quiet, bool force)
+        private static bool UseSkill(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: skill ('skill name'/'last')");
+                throw new RunTimeError("Usage: skill ('skill name'/'last')");
             }
 
             int skillId = 0;
@@ -754,11 +753,11 @@ namespace Assistant.Scripts
                 skillId = World.Player.LastSkill;
             }
 
-            if (args[0].AsString() == "last")
+            if (vars[0].AsString() == "last")
             {
                 Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
             }
-            else if (SkillHotKeys.UsableSkillsByName.TryGetValue(args[0].AsString().ToLower(), out skillId))
+            else if (SkillHotKeys.UsableSkillsByName.TryGetValue(vars[0].AsString().ToLower(), out skillId))
             {
                 Client.Instance.SendToServer(new UseSkill(skillId));
 
@@ -773,28 +772,28 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool Pause(string command, Argument[] args, bool quiet, bool force)
+        private static bool Pause(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
-                throw new RunTimeError(null, "Usage: pause/wait (timeout)");
+            if (vars.Length == 0)
+                throw new RunTimeError("Usage: pause/wait (timeout)");
 
-            Interpreter.Pause(args[0].AsUInt());
+            Interpreter.Pause(vars[0].AsUInt());
 
             return true;
         }
 
-        private static bool Attack(string command, Argument[] args, bool quiet, bool force)
+        private static bool Attack(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: attack (serial)");
+                throw new RunTimeError("Usage: attack (serial)");
             }
 
-            Serial serial = args[0].AsSerial();
+            Serial serial = vars[0].AsSerial();
 
             if (!serial.IsValid)
             {
-                throw new RunTimeError(null, $"{command} - Invalid serial");
+                throw new RunTimeError($"{command} - Invalid serial");
             }
 
             if (serial == Targeting.LastTargetInfo.Serial)
@@ -810,16 +809,16 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool Cast(string command, Argument[] args, bool quiet, bool force)
+        private static bool Cast(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: cast 'name of spell'");
+                throw new RunTimeError("Usage: cast 'name of spell'");
             }
 
-            Spell spell = int.TryParse(args[0].AsString(), out int spellnum)
+            Spell spell = int.TryParse(vars[0].AsString(), out int spellnum)
                 ? Spell.Get(spellnum)
-                : Spell.GetByName(args[0].AsString());
+                : Spell.GetByName(vars[0].AsString());
 
             if (spell != null)
             {
@@ -827,62 +826,62 @@ namespace Assistant.Scripts
             }
             else
             {
-                throw new RunTimeError(null, $"{command} - Spell name or number not valid");
+                throw new RunTimeError($"{command} - Spell name or number not valid");
             }
 
             return true;
         }
 
-        private static bool HeadMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool HeadMsg(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: overhead ('text') [color] [serial]");
+                throw new RunTimeError("Usage: overhead ('text') [color] [serial]");
             }
 
-            if (args.Length == 1)
+            if (vars.Length == 1)
             {
-                World.Player.OverheadMessage(Config.GetInt("SysColor"), args[0].AsString());
+                World.Player.OverheadMessage(Config.GetInt("SysColor"), vars[0].AsString());
             }
             else
             {
-                int hue = Utility.ToInt32(args[1].AsString(), 0);
+                int hue = Utility.ToInt32(vars[1].AsString(), 0);
 
-                if (args.Length == 3)
+                if (vars.Length == 3)
                 {
-                    uint serial = args[2].AsSerial();
+                    uint serial = vars[2].AsSerial();
                     Mobile m = World.FindMobile(serial);
-                    m?.OverheadMessage(hue, args[0].AsString());
+                    m?.OverheadMessage(hue, vars[0].AsString());
                 }
                 else
                 {
-                    World.Player.OverheadMessage(hue, args[0].AsString());
+                    World.Player.OverheadMessage(hue, vars[0].AsString());
                 }
             }
 
             return true;
         }
 
-        private static bool SysMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool SysMsg(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: sysmsg ('text') [color]");
+                throw new RunTimeError("Usage: sysmsg ('text') [color]");
             }
 
-            if (args.Length == 1)
+            if (vars.Length == 1)
             {
-                World.Player.SendMessage(Config.GetInt("SysColor"), args[0].AsString());
+                World.Player.SendMessage(Config.GetInt("SysColor"), vars[0].AsString());
             }
-            else if (args.Length == 2)
+            else if (vars.Length == 2)
             {
-                World.Player.SendMessage(Utility.ToInt32(args[1].AsString(), 0), args[0].AsString());
+                World.Player.SendMessage(Utility.ToInt32(vars[1].AsString(), 0), vars[0].AsString());
             }
 
             return true;
         }
 
-        private static bool ClearSysMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool ClearSysMsg(string command, Variable[] vars, bool quiet, bool force)
         {
             SystemMessages.Messages.Clear();
 
@@ -891,16 +890,16 @@ namespace Assistant.Scripts
 
         private static DressList _lastDressList;
 
-        private static bool DressCommand(string command, Argument[] args, bool quiet, bool force)
+        private static bool DressCommand(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: dress ('name of dress list')");
+                throw new RunTimeError("Usage: dress ('name of dress list')");
             }
 
             if (_lastDressList == null)
             {
-                _lastDressList = DressList.Find(args[0].AsString());
+                _lastDressList = DressList.Find(vars[0].AsString());
 
                 if (_lastDressList != null)
                 {
@@ -908,7 +907,7 @@ namespace Assistant.Scripts
                 }
                 else if (!quiet)
                 {
-                    CommandHelper.SendWarning(command, $"'{args[0].AsString()}' not found", quiet);
+                    CommandHelper.SendWarning(command, $"'{vars[0].AsString()}' not found", quiet);
                     return true;
                 }
             }
@@ -925,17 +924,17 @@ namespace Assistant.Scripts
         private static bool _undressAll;
         private static bool _undressLayer;
 
-        private static bool UnDressCommand(string command, Argument[] args, bool quiet, bool force)
+        private static bool UnDressCommand(string command, Variable[] vars, bool quiet, bool force)
         {
 
-            if (args.Length == 0 && !_undressAll) // full naked!
+            if (vars.Length == 0 && !_undressAll) // full naked!
             {
                 _undressAll = true;
                 UndressHotKeys.OnUndressAll();
             }
-            else if (args.Length == 1 && _lastUndressList == null && !_undressLayer) // either a dress list item or a layer
+            else if (vars.Length == 1 && _lastUndressList == null && !_undressLayer) // either a dress list item or a layer
             {
-                _lastUndressList = DressList.Find(args[0].AsString());
+                _lastUndressList = DressList.Find(vars[0].AsString());
 
                 if (_lastUndressList != null)
                 {
@@ -943,14 +942,14 @@ namespace Assistant.Scripts
                 }
                 else // lets find the layer
                 {
-                    if (Enum.TryParse(args[0].AsString(), true, out Layer layer))
+                    if (Enum.TryParse(vars[0].AsString(), true, out Layer layer))
                     {
                         Dress.Unequip(layer);
                         _undressLayer = true;
                     }
                     else
                     {
-                        throw new RunTimeError(null, $"'{args[0].AsString()}' not found");
+                        throw new RunTimeError($"'{vars[0].AsString()}' not found");
                     }
                 }
             }
@@ -965,15 +964,15 @@ namespace Assistant.Scripts
             return false;
         }
 
-        private static bool GumpResponse(string command, Argument[] args, bool quiet, bool force)
+        private static bool GumpResponse(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: gumpresponse (buttondId)");
-                //throw new RunTimeError(null, "Usage: gumpresponse (buttondId) [option] ['text1'|fieldId] ['text2'|fieldId]");
+                throw new RunTimeError("Usage: gumpresponse (buttondId)");
+                //throw new RunTimeError("Usage: gumpresponse (buttondId) [option] ['text1'|fieldId] ['text2'|fieldId]");
             }
 
-            int buttonId = args[0].AsInt();
+            int buttonId = vars[0].AsInt();
 
             /*private int m_ButtonID;
                     private int[] m_Switches;
@@ -993,7 +992,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool GumpClose(string command, Argument[] args, bool quiet, bool force)
+        private static bool GumpClose(string command, Variable[] vars, bool quiet, bool force)
         {
             Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
             Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, 0,
@@ -1005,20 +1004,20 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool ContextMenu(string command, Argument[] args, bool quiet, bool force)
+        private static bool ContextMenu(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 2)
+            if (vars.Length < 2)
             {
-                throw new RunTimeError(null, "Usage: menu (serial) (index)");
+                throw new RunTimeError("Usage: menu (serial) (index)");
             }
 
-            Serial s = args[0].AsSerial();
-            ushort index = args[1].AsUShort();
+            Serial s = vars[0].AsSerial();
+            ushort index = vars[1].AsUShort();
             bool blockPopup = true;
 
-            if (args.Length > 2)
+            if (vars.Length > 2)
             {
-                blockPopup = args[2].AsBool();
+                blockPopup = vars[2].AsBool();
             }
 
             if (s == Serial.Zero && World.Player != null)
@@ -1031,19 +1030,19 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool MenuResponse(string command, Argument[] args, bool quiet, bool force)
+        private static bool MenuResponse(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 2)
+            if (vars.Length < 2)
             {
-                throw new RunTimeError(null, "Usage: menuresponse (index) (menuId) [hue]");
+                throw new RunTimeError("Usage: menuresponse (index) (menuId) [hue]");
             }
 
-            ushort index = args[0].AsUShort();
-            ushort menuId = args[1].AsUShort();
+            ushort index = vars[0].AsUShort();
+            ushort menuId = vars[1].AsUShort();
             ushort hue = 0;
 
-            if (args.Length == 3)
-                hue = args[2].AsUShort();
+            if (vars.Length == 3)
+                hue = vars[2].AsUShort();
 
             Client.Instance.SendToServer(new MenuResponse(World.Player.CurrentMenuS, World.Player.CurrentMenuI, index,
                 menuId, hue));
@@ -1051,18 +1050,18 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool PromptResponse(string command, Argument[] args, bool quiet, bool force)
+        private static bool PromptResponse(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: promptresponse ('response to the prompt')");
+                throw new RunTimeError("Usage: promptresponse ('response to the prompt')");
             }
 
-            World.Player.ResponsePrompt(args[0].AsString());
+            World.Player.ResponsePrompt(vars[0].AsString());
             return true;
         }
 
-        private static bool LastTarget(string command, Argument[] args, bool quiet, bool force)
+        private static bool LastTarget(string command, Variable[] vars, bool quiet, bool force)
         {
             if (!Targeting.DoLastTarget())
                 Targeting.ResendTarget();
@@ -1070,14 +1069,14 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool PlayScript(string command, Argument[] args, bool quiet, bool force)
+        private static bool PlayScript(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: script 'name of script'");
+                throw new RunTimeError("Usage: script 'name of script'");
             }
 
-            ScriptManager.PlayScript(args[0].AsString());
+            ScriptManager.PlayScript(vars[0].AsString());
 
             return true;
         }
@@ -1095,18 +1094,18 @@ namespace Assistant.Scripts
             {"agility", 3848}
         };
 
-        private static bool Potion(string command, Argument[] args, bool quiet, bool force)
+        private static bool Potion(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: potion ('type')");
+                throw new RunTimeError("Usage: potion ('type')");
             }
 
             Item pack = World.Player.Backpack;
             if (pack == null)
                 return true;
 
-            if (PotionList.TryGetValue(args[0].AsString().ToLower(), out ushort potionId))
+            if (PotionList.TryGetValue(vars[0].AsString().ToLower(), out ushort potionId))
             {
                 if (potionId == 3852 && World.Player.Poisoned && Config.GetBool("BlockHealPoison") &&
                     Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned))
@@ -1122,52 +1121,52 @@ namespace Assistant.Scripts
             }
             else
             {
-                throw new RunTimeError(null, $"{command} - Unknown potion type");
+                throw new RunTimeError($"{command} - Unknown potion type");
             }
 
             return true;
         }
 
-        private static bool WaitForSysMsg(string command, Argument[] args, bool quiet, bool force)
+        private static bool WaitForSysMsg(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: waitforsysmsg 'message to wait for' [timeout]");
+                throw new RunTimeError("Usage: waitforsysmsg 'message to wait for' [timeout]");
             }
             
-            if (SystemMessages.Exists(args[0].AsString()))
+            if (SystemMessages.Exists(vars[0].AsString()))
             {
                 Interpreter.ClearTimeout();
                 return true;
             }
 
-            Interpreter.Timeout(args.Length > 1 ? args[1].AsUInt() : 30000, () => { return true; });
+            Interpreter.Timeout(vars.Length > 1 ? vars[1].AsUInt() : 30000, () => { return true; });
 
             return false;
         }
 
-        private static bool Random(string command, Argument[] args, bool quiet, bool force)
+        private static bool Random(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: random 'max value'");
+                throw new RunTimeError("Usage: random 'max value'");
             }
 
-            int max = args[0].AsInt();
+            int max = vars[0].AsInt();
 
             World.Player.SendMessage(MsgLevel.Info, $"Random: {Utility.Random(1, max)}");
 
             return true;
         }
 
-        private static bool ClearDragDrop(string command, Argument[] args, bool quiet, bool force)
+        private static bool ClearDragDrop(string command, Variable[] vars, bool quiet, bool force)
         {
             DragDropManager.GracefulStop();
 
             return true;
         }
         
-        private static bool Interrupt(string command, Argument[] args, bool quiet, bool force)
+        private static bool Interrupt(string command, Variable[] vars, bool quiet, bool force)
         {
             Spell.Interrupt();
 

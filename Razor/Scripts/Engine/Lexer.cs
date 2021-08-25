@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Assistant.Scripts.Engine
 {
@@ -68,6 +69,7 @@ namespace Assistant.Scripts.Engine
         LESS_THAN_OR_EQUAL,
         GREATER_THAN,
         GREATER_THAN_OR_EQUAL,
+        AS,
 
         // Logical Operators
         NOT,
@@ -241,7 +243,6 @@ namespace Assistant.Scripts.Engine
         }
 
         private static TextParser _tfp = new TextParser("", new char[] { ' ' }, new char[] { }, new char[] { '\'', '\'', '"', '"' });
-
         private static void ParseLine(ASTNode node, string line)
         {
             line = line.Trim();
@@ -319,32 +320,41 @@ namespace Assistant.Scripts.Engine
                 node.Push(ASTNodeType.OPERAND, lexeme, _curLine);
         }
 
-        private static void ParseOperator(ASTNode node, string lexeme)
+        private static ASTNodeType ParseOperator(ASTNode node, string lexeme)
         {
+            ASTNodeType type;
+
             switch (lexeme)
             {
                 case "==":
                 case "=":
-                    node.Push(ASTNodeType.EQUAL, null, _curLine);
+                    type = ASTNodeType.EQUAL;
                     break;
                 case "!=":
-                    node.Push(ASTNodeType.NOT_EQUAL, null, _curLine);
+                    type = ASTNodeType.NOT_EQUAL;
                     break;
                 case "<":
-                    node.Push(ASTNodeType.LESS_THAN, null, _curLine);
+                    type = ASTNodeType.LESS_THAN;
                     break;
                 case "<=":
-                    node.Push(ASTNodeType.LESS_THAN_OR_EQUAL, null, _curLine);
+                    type = ASTNodeType.LESS_THAN_OR_EQUAL;
                     break;
                 case ">":
-                    node.Push(ASTNodeType.GREATER_THAN, null, _curLine);
+                    type = ASTNodeType.GREATER_THAN;
                     break;
                 case ">=":
-                    node.Push(ASTNodeType.GREATER_THAN_OR_EQUAL, null, _curLine);
+                    type = ASTNodeType.GREATER_THAN_OR_EQUAL;
+                    break;
+                case "as":
+                    type = ASTNodeType.AS;
                     break;
                 default:
                     throw new SyntaxError(node, "Invalid operator in binary expression");
             }
+
+            node.Push(type, null, _curLine);
+
+            return type;
         }
 
         private static void ParseStatement(ASTNode node, string[] lexemes)
@@ -468,6 +478,8 @@ namespace Assistant.Scripts.Engine
                 case "<=":
                 case ">":
                 case ">=":
+                case "in":
+                case "as":
                     return true;
             }
 
@@ -579,9 +591,16 @@ namespace Assistant.Scripts.Engine
                 ParseValue(expr, lexemes[i], ASTNodeType.STRING);
             }
 
-            ParseOperator(expr, lexemes[i++]);
+            var op = ParseOperator(expr, lexemes[i++]);
 
-            ParseOperand(expr, lexemes[i++]);
+            if (op == ASTNodeType.AS)
+            {
+                expr.Push(ASTNodeType.STRING, lexemes[i++], _curLine);
+            }
+            else
+            {
+                ParseOperand(expr, lexemes[i++]);
+            }
 
             for (; i < lexemes.Length; i++)
             {

@@ -40,35 +40,35 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("wft", WaitForTarget); //WaitForTargetAction
         }
 
-        private static bool Target(string command, Argument[] args, bool quiet, bool force)
+        private static bool Target(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: target (serial) OR target (closest/random/next/prev [noto] [type]");
+                throw new RunTimeError("Usage: target (serial) OR target (closest/random/next/prev [noto] [type]");
             }
 
-            switch (args[0].AsString())
+            switch (vars[0].AsString())
             {
                 case "close":
                 case "closest":
-                    CommandHelper.FindTarget(args, true);
+                    CommandHelper.FindTarget(vars, true);
 
                     break;
 
                 case "rand":
                 case "random":
-                    CommandHelper.FindTarget(args, false, true);
+                    CommandHelper.FindTarget(vars, false, true);
 
                     break;
 
                 case "next":
-                    CommandHelper.FindTarget(args, false, false, true);
+                    CommandHelper.FindTarget(vars, false, false, true);
 
                     break;
 
                 case "prev":
                 case "previous":
-                    CommandHelper.FindTarget(args, false, false, false, true);
+                    CommandHelper.FindTarget(vars, false, false, false, true);
 
                     break;
 
@@ -83,7 +83,7 @@ namespace Assistant.Scripts
                     break;
 
                 default:
-                    Serial serial = args[0].AsSerial();
+                    Serial serial = vars[0].AsSerial();
 
                     if (serial != Serial.Zero) // Target a specific item or mobile
                     {
@@ -109,18 +109,17 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool TargetType(string command, Argument[] args, bool quiet, bool force)
+        private static bool TargetType(string command, Variable[] vars, bool quiet, bool force)
         {
             if (Targeting.FromGrabHotKey)
                 return false;
 
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null,
-                    "Usage: targettype (graphic) OR ('name of item or mobile type') [inrangecheck/backpack]");
+                throw new RunTimeError("Usage: targettype (graphic) OR ('name of item or mobile type') [inrangecheck/backpack]");
             }
 
-            string gfxStr = args[0].AsString();
+            string gfxStr = vars[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
             List<Item> items;
             List<Mobile> mobiles = new List<Mobile>();
@@ -128,15 +127,15 @@ namespace Assistant.Scripts
             bool inRangeCheck = false;
             bool backpack = false;
 
-            if (args.Length == 2)
+            if (vars.Length == 2)
             {
-                if (args[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) != -1)
+                if (vars[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) != -1)
                 {
                     backpack = true;
                 }
                 else
                 {
-                    inRangeCheck = args[1].AsBool();
+                    inRangeCheck = vars[1].AsBool();
                 }
             }
 
@@ -179,18 +178,18 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool TargetRelLoc(string command, Argument[] args, bool quiet, bool force)
+        private static bool TargetRelLoc(string command, Variable[] vars, bool quiet, bool force)
         {
             if (Targeting.FromGrabHotKey)
                 return false;
 
-            if (args.Length < 2)
+            if (vars.Length < 2)
             {
-                throw new RunTimeError(null, "Usage: targetrelloc (x-offset) (y-offset)");
+                throw new RunTimeError("Usage: targetrelloc (x-offset) (y-offset)");
             }
 
-            int xoffset = Utility.ToInt32(args[0].AsString(), 0);
-            int yoffset = Utility.ToInt32(args[1].AsString(), 0);
+            int xoffset = Utility.ToInt32(vars[0].AsString(), 0);
+            int yoffset = Utility.ToInt32(vars[1].AsString(), 0);
 
             ushort x = (ushort) (World.Player.Position.X + xoffset);
             ushort y = (ushort) (World.Player.Position.Y + yoffset);
@@ -203,17 +202,17 @@ namespace Assistant.Scripts
             }
             catch (Exception e)
             {
-                throw new RunTimeError(null, $"{command} - Error Executing: {e.Message}");
+                throw new RunTimeError($"{command} - Error Executing: {e.Message}");
             }
 
             return true;
         }
 
-        private static bool TargetLocation(string command, Argument[] args, bool quiet, bool force)
+        private static bool TargetLocation(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 2)
+            if (vars.Length < 2)
             {
-                throw new RunTimeError(null, "Usage: targetloc (x) (y) (z)");
+                throw new RunTimeError("Usage: targetloc (x) (y) (z)");
             }
 
             Targeting.Target(new TargetInfo
@@ -221,16 +220,16 @@ namespace Assistant.Scripts
                 Type = 1,
                 Flags = 0,
                 Serial = Serial.Zero,
-                X = args[0].AsInt(),
-                Y = args[1].AsInt(),
-                Z = args.Length == 3 ? args[2].AsInt() : 0,
+                X = vars[0].AsInt(),
+                Y = vars[1].AsInt(),
+                Z = vars.Length == 3 ? vars[2].AsInt() : 0,
                 Gfx = 0
             });
 
             return true;
         }
 
-        private static bool WaitForTarget(string command, Argument[] args, bool quiet, bool force)
+        private static bool WaitForTarget(string command, Variable[] vars, bool quiet, bool force)
         {
             if (Targeting.HasTarget)
             {
@@ -238,7 +237,7 @@ namespace Assistant.Scripts
                 return true;
             }
 
-            Interpreter.Timeout(args.Length > 0 ? args[0].AsUInt() : 30000, () => { return true; });
+            Interpreter.Timeout(vars.Length > 0 ? vars[0].AsUInt() : 30000, () => { return true; });
 
             return false;
         }

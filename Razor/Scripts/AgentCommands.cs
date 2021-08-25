@@ -39,20 +39,20 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("sell", SellAgentCommand);
         }
 
-        private static bool RestockAgentCommand(string command, Argument[] args, bool quiet, bool force)
+        private static bool RestockAgentCommand(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: restock (number) ['set']");
+                throw new RunTimeError( "Usage: restock (number) ['set']");
             }
 
-            int agentNum = args[0].AsInt();
+            int agentNum = vars[0].AsInt();
 
             bool setBag = false;
 
-            if (args.Length == 2)
+            if (vars.Length == 2)
             {
-                if (args[1].AsString().IndexOf("set", StringComparison.OrdinalIgnoreCase) != -1)
+                if (vars[1].AsString().IndexOf("set", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     setBag = true;
                 }
@@ -70,18 +70,18 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool UseOnceCommand(string command, Argument[] args, bool quiet, bool force)
+        private static bool UseOnceCommand(string command, Variable[] vars, bool quiet, bool force)
         {
             bool add = false;
             bool container = false;
 
-            if (args.Length == 1)
+            if (vars.Length == 1)
             {
-                if (args[0].AsString().IndexOf("add", StringComparison.OrdinalIgnoreCase) != -1)
+                if (vars[0].AsString().IndexOf("add", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     add = true;
                 }
-                else if (args[0].AsString().IndexOf("addcontainer", StringComparison.OrdinalIgnoreCase) != -1)
+                else if (vars[0].AsString().IndexOf("addcontainer", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     container = true;
                 }
@@ -103,20 +103,20 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool OrganizerAgentCommand(string command, Argument[] args, bool quiet, bool force)
+        private static bool OrganizerAgentCommand(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: organizer (number) ['set']");
+                throw new RunTimeError("Usage: organizer (number) ['set']");
             }
 
-            int agentNum = args[0].AsInt();
+            int agentNum = vars[0].AsInt();
 
             bool setBag = false;
 
-            if (args.Length == 2)
+            if (vars.Length == 2)
             {
-                if (args[1].AsString().IndexOf("set", StringComparison.OrdinalIgnoreCase) != -1)
+                if (vars[1].AsString().IndexOf("set", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     setBag = true;
                 }
@@ -134,11 +134,11 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool ScavAgentCommand(string command, Argument[] args, bool quiet, bool force)
+        private static bool ScavAgentCommand(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
+            if (vars.Length < 1)
             {
-                throw new RunTimeError(null, "Usage: scavenger ['clear'/'add'/'on'/'off'/'set']");
+                throw new RunTimeError("Usage: scavenger ['clear'/'add'/'on'/'off'/'set']");
             }
 
             bool clear = false;
@@ -148,26 +148,26 @@ namespace Assistant.Scripts
             bool status = false;
             bool enabled = true;
 
-            if (args.Length == 1)
+            if (vars.Length == 1)
             {
-                if (args[0].AsString().IndexOf("clear", StringComparison.OrdinalIgnoreCase) != -1)
+                if (vars[0].AsString().IndexOf("clear", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     clear = true;
                 }
-                else if (args[0].AsString().IndexOf("add", StringComparison.OrdinalIgnoreCase) != -1)
+                else if (vars[0].AsString().IndexOf("add", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     add = true;
                 }
-                else if (args[0].AsString().IndexOf("on", StringComparison.OrdinalIgnoreCase) != -1)
+                else if (vars[0].AsString().IndexOf("on", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     status = true;
                 }
-                else if (args[0].AsString().IndexOf("off", StringComparison.OrdinalIgnoreCase) != -1)
+                else if (vars[0].AsString().IndexOf("off", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     status = true;
                     enabled = false;
                 }
-                else if (args[0].AsString().IndexOf("set", StringComparison.OrdinalIgnoreCase) != -1)
+                else if (vars[0].AsString().IndexOf("set", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     set = true;
                 }
@@ -200,7 +200,7 @@ namespace Assistant.Scripts
             return true;
         }
 
-        private static bool SellAgentCommand(string command, Argument[] args, bool quiet, bool force)
+        private static bool SellAgentCommand(string command, Variable[] vars, bool quiet, bool force)
         {
             SellAgent.Instance.SetHotBag();
 

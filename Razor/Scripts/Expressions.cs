@@ -71,22 +71,21 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("queued", Queued);
         }
 
-        private static bool Queued(string expression, Argument[] args, bool quiet)
+        private static bool Queued(string expression, Variable[] vars, bool quiet, bool force)
         {
             return !ActionQueue.Empty;
         }
 
-        private static bool FindBuffDebuff(string expression, Argument[] args, bool quiet)
+        private static bool FindBuffDebuff(string expression, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null,
-                    "Usage: findbuff/finddebuff ('name of buff')");
+                throw new RunTimeError("Usage: findbuff/finddebuff ('name of buff')");
             }
 
             foreach (BuffsDebuffs buff in World.Player.BuffsDebuffs)
             {
-                if (buff.ClilocMessage1.IndexOf(args[0].AsString(), StringComparison.CurrentCultureIgnoreCase) != -1)
+                if (buff.ClilocMessage1.IndexOf(vars[0].AsString(), StringComparison.CurrentCultureIgnoreCase) != -1)
                 {
                     return true;
                 }
@@ -95,14 +94,14 @@ namespace Assistant.Scripts
             return false;
         }
 
-        private static bool FindType(string expression, Argument[] args, bool quiet)
+        private static bool FindType(string expression, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
+                throw new RunTimeError("Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
             }
 
-            string gfxStr = args[0].AsString();
+            string gfxStr = vars[0].AsString();
             Serial gfx = Utility.ToUInt16(gfxStr, 0);
             List<Item> items;
             List<Mobile> mobiles;
@@ -110,15 +109,15 @@ namespace Assistant.Scripts
             bool inRangeCheck = false;
             bool backpack = false;
 
-            if (args.Length == 2)
+            if (vars.Length == 2)
             {
-                if (args[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
+                if (vars[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
                 {
                     backpack = true;
                 }
                 else
                 {
-                    inRangeCheck = args[1].AsBool();
+                    inRangeCheck = vars[1].AsBool();
                 }
             }
 
@@ -166,39 +165,39 @@ namespace Assistant.Scripts
             return false;
         }
 
-        private static bool Mounted(string expression, Argument[] args, bool quiet)
+        private static bool Mounted(string expression, Variable[] vars, bool quiet, bool force)
         {
             return World.Player != null && World.Player.GetItemOnLayer(Layer.Mount) != null;
         }
 
-        private static bool RHandEmpty(string expression, Argument[] args, bool quiet)
+        private static bool RHandEmpty(string expression, Variable[] vars, bool quiet, bool force)
         {
             return World.Player != null && World.Player.GetItemOnLayer(Layer.RightHand) == null;
         }
 
-        private static bool LHandEmpty(string expression, Argument[] args, bool quiet)
+        private static bool LHandEmpty(string expression, Variable[] vars, bool quiet, bool force)
         {
             return World.Player != null && World.Player.GetItemOnLayer(Layer.LeftHand) == null;
         }
 
-        private static bool Dead(string expression, Argument[] args, bool quiet)
+        private static bool Dead(string expression, Variable[] vars, bool quiet, bool force)
         {
             return World.Player != null && World.Player.IsGhost;
         }
 
-        private static bool InSysMessage(string expression, Argument[] args, bool quiet)
+        private static bool InSysMessage(string expression, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: insysmsg ('text')");
+                throw new RunTimeError("Usage: insysmsg ('text')");
             }
 
-            string text = args[0].AsString();
+            string text = vars[0].AsString();
 
             return SystemMessages.Exists(text);
         }
 
-        private static int Mana(string expression, Argument[] args, bool quiet)
+        private static int Mana(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -206,7 +205,7 @@ namespace Assistant.Scripts
             return World.Player.Mana;
         }
 
-        private static int MaxMana(string expression, Argument[] args, bool quiet)
+        private static int MaxMana(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -214,18 +213,18 @@ namespace Assistant.Scripts
             return World.Player.ManaMax;
         }
 
-        private static bool Poisoned(string expression, Argument[] args, bool quiet)
+        private static bool Poisoned(string expression, Variable[] vars, bool quiet, bool force)
         {
             return World.Player != null && Client.Instance.AllowBit(FeatureBit.BlockHealPoisoned) &&
                    World.Player.Poisoned;
         }
 
-        private static bool Hidden(string expression, Argument[] args, bool quiet)
+        private static bool Hidden(string expression, Variable[] vars, bool quiet, bool force)
         {
             return World.Player != null && !World.Player.Visible;
         }
 
-        private static int Hp(string expression, Argument[] args, bool quiet)
+        private static int Hp(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -233,7 +232,7 @@ namespace Assistant.Scripts
             return World.Player.Hits;
         }
 
-        private static int MaxHp(string expression, Argument[] args, bool quiet)
+        private static int MaxHp(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -241,7 +240,7 @@ namespace Assistant.Scripts
             return World.Player.HitsMax;
         }
 
-        private static int Stam(string expression, Argument[] args, bool quiet)
+        private static int Stam(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -249,7 +248,7 @@ namespace Assistant.Scripts
             return World.Player.Stam;
         }
 
-        private static int MaxStam(string expression, Argument[] args, bool quiet)
+        private static int MaxStam(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -257,7 +256,7 @@ namespace Assistant.Scripts
             return World.Player.StamMax;
         }
 
-        private static int Str(string expression, Argument[] args, bool quiet)
+        private static int Str(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -265,7 +264,7 @@ namespace Assistant.Scripts
             return World.Player.Str;
         }
 
-        private static int Dex(string expression, Argument[] args, bool quiet)
+        private static int Dex(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -273,7 +272,7 @@ namespace Assistant.Scripts
             return World.Player.Dex;
         }
 
-        private static int Int(string expression, Argument[] args, bool quiet)
+        private static int Int(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -281,7 +280,7 @@ namespace Assistant.Scripts
             return World.Player.Int;
         }
 
-        private static int Weight(string expression, Argument[] args, bool quiet)
+        private static int Weight(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return 0;
@@ -289,17 +288,17 @@ namespace Assistant.Scripts
             return World.Player.Weight;
         }
 
-        private static double SkillExpression(string expression, Argument[] args, bool quiet)
+        private static double SkillExpression(string expression, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
-                throw new RunTimeError(null, "Usage: skill ('name of skill')");
+            if (vars.Length < 1)
+                throw new RunTimeError("Usage: skill ('name of skill')");
 
             if (World.Player == null)
                 return 0;
 
             foreach (SkillInfo skill in Skills.SkillEntries)
             {
-                if (skill.Name.IndexOf(args[0].AsString(), StringComparison.CurrentCultureIgnoreCase) != -1)
+                if (skill.Name.IndexOf(vars[0].AsString(), StringComparison.CurrentCultureIgnoreCase) != -1)
                 {
                     return World.Player.Skills[skill.Index].Value;
                 }
@@ -308,40 +307,39 @@ namespace Assistant.Scripts
             return 0;
         }
 
-        private static int CountExpression(string expression, Argument[] args, bool quiet)
+        private static int CountExpression(string expression, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length < 1)
-                throw new RunTimeError(null, "Usage: count ('name of counter item')");
+            if (vars.Length < 1)
+                throw new RunTimeError("Usage: count ('name of counter item')");
 
             if (World.Player == null)
                 return 0;
 
             foreach (Counter c in Counter.List)
             {
-                if (c.Name.Equals(args[0].AsString(), StringComparison.OrdinalIgnoreCase))
+                if (c.Name.Equals(vars[0].AsString(), StringComparison.OrdinalIgnoreCase))
                 {
                     return c.Enabled ? c.Amount : 0;
                 }
             }
 
-            throw new RunTimeError(null, $"Counter '{args[0].AsString()}' doesn't exist. Set it up in Razor under Display->Counters.");
+            throw new RunTimeError($"Counter '{vars[0].AsString()}' doesn't exist. Set it up in Razor under Display->Counters.");
         }
 
-        private static bool Position(string expression, Argument[] args, bool quiet)
+        private static bool Position(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (World.Player == null)
                 return false;
 
-            if (args.Length < 2)
+            if (vars.Length < 2)
             {
-                throw new RunTimeError(null,
-                    "Usage: position (x, y) or position (x, y, z)");
+                throw new RunTimeError("Usage: position (x, y) or position (x, y, z)");
             } 
 
-            int x = args[0].AsInt();
-            int y = args[1].AsInt();
-            int z = (args.Length > 2) 
-                ? args[2].AsInt() 
+            int x = vars[0].AsInt();
+            int y = vars[1].AsInt();
+            int z = (vars.Length > 2) 
+                ? vars[2].AsInt() 
                 : World.Player.Position.Z;
 
             return World.Player.Position.X == x

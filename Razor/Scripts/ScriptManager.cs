@@ -113,12 +113,18 @@ namespace Assistant.Scripts
                         var script = _queuedScript;
 
                         running = Interpreter.StartScript(script);
+                        UpdateLineNumber(Interpreter.CurrentLine);
 
                         _queuedScript = null;
                     }
                     else
                     {
                         running = Interpreter.ExecuteScript();
+
+                        if (running)
+                        {
+                            UpdateLineNumber(Interpreter.CurrentLine);
+                        }
                     }
 
 
@@ -149,24 +155,12 @@ namespace Assistant.Scripts
                         }
                     }
                 }
-                catch (RunTimeError ex)
-                {
-                    if (ex.Node != null)
-                    {
-                        World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message} (Line: {ex.Node.LineNumber + 1})");
-
-                        SetHighlightLine(ex.Node.LineNumber, HighlightType.Error);
-                    }
-                    else
-                    {
-                        World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message}");
-                    }
-
-                    StopScript();
-                }
                 catch (Exception ex)
                 {
-                    World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message}");
+                    World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message} (Line: {Interpreter.CurrentLine + 1})");
+
+                    SetHighlightLine(Interpreter.CurrentLine, HighlightType.Error);
+
                     StopScript();
                 }
             }
@@ -184,9 +178,7 @@ namespace Assistant.Scripts
             _scriptList = new List<RazorScript>();
 
             Recurse(null, Config.GetUserDirectory("Scripts"));
-
-            Interpreter.ActiveScriptStatementExecuted += ActiveScriptStatementExecuted;
-
+            
             foreach (HighlightType type in GetHighlightTypes())
             {
                 HighlightLines[type] = new List<int>();
@@ -383,6 +375,17 @@ namespace Assistant.Scripts
         static ScriptManager()
         {
             Timer = new ScriptTimer();
+        }
+
+        private static void UpdateLineNumber(int lineNum)
+        {
+            if (PopoutEditor)
+            {
+                SetHighlightLine(lineNum, HighlightType.Execution);
+                // Scrolls to relevant line, per this suggestion: https://github.com/PavelTorgashov/FastColoredTextBox/issues/115
+                ScriptEditor.Selection.Start = new Place(0, lineNum);
+                ScriptEditor.DoSelectionVisible();
+            }
         }
 
         public static void SetEditor(FastColoredTextBox scriptEditor, bool popoutEditor)

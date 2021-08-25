@@ -36,94 +36,94 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("alliance", Alliance);
         }
 
-        private static bool Say(string command, Argument[] args, bool quiet, bool force)
+        private static bool Say(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: say ('text') [color]");
+                throw new RunTimeError("Usage: say ('text') [color]");
             }
 
-            if (args.Length == 1)
-                World.Player.Say(Config.GetInt("SysColor"), args[0].AsString());
+            if (vars.Length == 1)
+                World.Player.Say(Config.GetInt("SysColor"), vars[0].AsString());
             else
-                World.Player.Say(Utility.ToInt32(args[1].AsString(), 0), args[0].AsString());
+                World.Player.Say(Utility.ToInt32(vars[1].AsString(), 0), vars[0].AsString());
 
             return true;
         }
 
-        private static bool Whisper(string command, Argument[] args, bool quiet, bool force)
+        private static bool Whisper(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: whisper ('text') [color]");
+                throw new RunTimeError("Usage: whisper ('text') [color]");
             }
 
             MessageType type = MessageType.Whisper & ~MessageType.Encoded;
 
-            if (args.Length == 1)
-                World.Player.Whisper(args[0].AsString(), World.Player.SpeechHue);
+            if (vars.Length == 1)
+                World.Player.Whisper(vars[0].AsString(), World.Player.SpeechHue);
             else
-                World.Player.Whisper(args[0].AsString(), Utility.ToInt32(args[1].AsString(), 0));
+                World.Player.Whisper(vars[0].AsString(), Utility.ToInt32(vars[1].AsString(), 0));
 
             return true;
         }
 
-        private static bool Yell(string command, Argument[] args, bool quiet, bool force)
+        private static bool Yell(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: yell ('text') [color]");
+                throw new RunTimeError("Usage: yell ('text') [color]");
             }
 
-            if (args.Length == 1)
-                World.Player.Yell(args[0].AsString(), World.Player.SpeechHue);
+            if (vars.Length == 1)
+                World.Player.Yell(vars[0].AsString(), World.Player.SpeechHue);
             else
-                World.Player.Yell(args[0].AsString(), Utility.ToInt32(args[1].AsString(), 0));
+                World.Player.Yell(vars[0].AsString(), Utility.ToInt32(vars[1].AsString(), 0));
 
             return true;
         }
 
-        private static bool Emote(string command, Argument[] args, bool quiet, bool force)
+        private static bool Emote(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: emote ('text') [color]");
+                throw new RunTimeError("Usage: emote ('text') [color]");
             }
 
-            if (args.Length == 1)
-                World.Player.Emote(args[0].AsString(), World.Player.SpeechHue);
+            if (vars.Length == 1)
+                World.Player.Emote(vars[0].AsString(), World.Player.SpeechHue);
             else
-                World.Player.Emote(args[0].AsString(), Utility.ToInt32(args[1].AsString(), 0));
+                World.Player.Emote(vars[0].AsString(), Utility.ToInt32(vars[1].AsString(), 0));
 
             return true;
         }
 
-        private static bool Guild(string command, Argument[] args, bool quiet, bool force)
+        private static bool Guild(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: guild ('text')");
+                throw new RunTimeError("Usage: guild ('text')");
             }
 
-            if (args.Length == 1)
-                World.Player.Guild(args[0].AsString(), World.Player.SpeechHue);
+            if (vars.Length == 1)
+                World.Player.Guild(vars[0].AsString(), World.Player.SpeechHue);
             else
-                World.Player.Guild(args[0].AsString(), Utility.ToInt32(args[1].AsString(), 0));
+                World.Player.Guild(vars[0].AsString(), Utility.ToInt32(vars[1].AsString(), 0));
 
             return true;
         }
 
-        private static bool Alliance(string command, Argument[] args, bool quiet, bool force)
+        private static bool Alliance(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (args.Length == 0)
+            if (vars.Length == 0)
             {
-                throw new RunTimeError(null, "Usage: alliance ('text')");
+                throw new RunTimeError("Usage: alliance ('text')");
             }
 
-            if (args.Length == 1)
-                World.Player.Alliance(args[0].AsString(), World.Player.SpeechHue);
+            if (vars.Length == 1)
+                World.Player.Alliance(vars[0].AsString(), World.Player.SpeechHue);
             else
-                World.Player.Alliance(args[0].AsString(), Utility.ToInt32(args[1].AsString(), 0));
+                World.Player.Alliance(vars[0].AsString(), Utility.ToInt32(vars[1].AsString(), 0));
 
             return true;
         }
