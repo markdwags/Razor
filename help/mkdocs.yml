@@ -2,7 +2,7 @@ site_name: Razor - Ultima Online Assistant
 site_description: Razor is a free tool designed to help with simple tasks while playing Ultima Online
 site_author: Project maintained by Mark Wagner (Quick)
 site_url: http://www.razorce.com
-copyright: Copyright 2020 - Mark Wagner (Quick)
+copyright: Copyright 2021 - Mark Wagner (Quick)
 repo_url: https://github.com/markdwags/Razor
 repo_name: Razor
 edit_uri: "tree/master/help/docs"
@@ -41,16 +41,28 @@ nav:
 - UOAssist API: uoaapi.md
 
 theme: 
-    name: material
-    custom_dir: overrides  
+    name: material    
     language: en    
     favicon: images/razor.ico
+    features:
+        - navigation.top
+        - navigation.instant
     icon:
-        repo: fontawesome/brands/github
+        repo: fontawesome/brands/git-alt
     palette:
-        primary: red
-        accent: blue
-        scheme: slate
+        - media: "(prefers-color-scheme: dark)"
+          scheme: slate
+          primary: red
+          accent: blue
+          toggle:
+            icon: material/weather-sunny
+            name: Switch to light mode            
+        - media: "(prefers-color-scheme: light)"
+          scheme: default
+          primary: red
+          toggle:
+            icon: material/weather-night
+            name: Switch to dark mode
     font:
         #text: Mulish
         #text: Alata
@@ -75,5 +87,13 @@ markdown_extensions:
   - pymdownx.tabbed
 
 plugins:
-  - search  
+  - search
   - git-revision-date
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/markdwags/Razor
+  analytics:
+    provider: google
+    property: G-9ER2MNGL02
