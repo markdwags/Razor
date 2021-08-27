@@ -62,6 +62,12 @@ namespace Assistant
 
             protected override void OnTick()
             {
+                if (World.Player == null)
+                {
+                    BuffsTimer.Stop();
+                    return;
+                }
+
                 Client.Instance.RequestTitlebarUpdate();
 
                 if (!Config.GetBool("BuffDebuffEveryXSeconds") || !Config.GetBool("ShowBuffDebuffOverhead"))

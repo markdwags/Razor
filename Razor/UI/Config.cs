@@ -702,6 +702,52 @@ namespace Assistant
         private static Profile m_Current;
         private static Dictionary<Serial, string> m_Chars;
 
+        private static Dictionary<string, string> m_AppSettings = new Dictionary<string, string>();
+
+        static Config()
+        {
+            var path = Path.Combine(Engine.RootPath, "settings.csv");
+
+            // Set defaults
+            m_AppSettings["UODataDir"] = @"D:\Games\UO";
+            m_AppSettings["UOClient"] = @"D:\Games\UO\client.exe";
+            m_AppSettings["LastPort"] = "2593";
+            m_AppSettings["LastProfile"] = "default";
+            m_AppSettings["LastServer"] = "127.0.0.1";
+            m_AppSettings["LastServerId"] = "0";
+            m_AppSettings["ClientEncrypted"] = "1";
+            m_AppSettings["ServerEncrypted"] = "0";
+            m_AppSettings["ShowWelcome"] = "1";
+            m_AppSettings["UId"] = "";
+            m_AppSettings["MaxOrganizerAgents"] = "20";
+            m_AppSettings["MaxBuyAgents"] = "20";
+            m_AppSettings["MaxRestockAgents"] = "20";
+            m_AppSettings["ImportProfilesAndMacros"] = "true";
+            m_AppSettings["BackupPath"] = @".\Backup";
+
+            try
+            {
+                if (!File.Exists(path))
+                {
+                    File.Create(path);
+                }
+                else
+                {
+                    foreach (var line in File.ReadLines(path))
+                    {
+                        var strs = line.Split(',');
+
+                        m_AppSettings[strs[0].Trim()] = strs[1].Trim();
+                    }
+                }
+            }
+            catch (Exception)
+            { }
+            finally
+            {
+            }
+        }
+
         public static Profile CurrentProfile
         {
             get
@@ -717,6 +763,7 @@ namespace Assistant
             if (m_Current != null)
                 m_Current.Save();
             SaveCharList();
+            SaveAppSettings();
         }
 
         public static bool LoadProfile(string name)
@@ -907,11 +954,31 @@ namespace Assistant
             return list;
         }
 
+        private static void SaveAppSettings()
+        {
+            var path = Path.Combine(Engine.RootPath, "settings.csv");
+
+            Engine.EnsureDirectory(Engine.RootPath);
+
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+            }
+
+            var data = "";
+            foreach (var setting in m_AppSettings)
+            {
+                data += $"{setting.Key}, {setting.Value}\n";
+            }
+
+            File.WriteAllText(path, data);
+        }
+
         public static T GetAppSetting<T>(string key)
         {
             try
             {
-                var appSetting = ConfigurationManager.AppSettings[key];
+                var appSetting = m_AppSettings[key];
 
                 if (!string.IsNullOrWhiteSpace(appSetting))
                 {
@@ -966,13 +1033,8 @@ namespace Assistant
         {
             try
             {
-                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                config.AppSettings.Settings.Remove(key);
-                config.AppSettings.Settings.Add(key, value);
-
-                config.Save(ConfigurationSaveMode.Modified, true);
-
-                ConfigurationManager.RefreshSection("appSettings");
+                m_AppSettings[key] = value;
+                SaveAppSettings();
 
                 return true;
             }

@@ -903,7 +903,7 @@ namespace Assistant
 
         public override string GetUoFilePath()
         {
-            return ConfigurationManager.AppSettings["UODataDir"];
+            return Config.GetAppSetting<string>("UODataDir");
         }
 
         public override IntPtr GetWindowHandle()

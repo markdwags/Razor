@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using Assistant;
 using Microsoft.Win32;
 
 namespace Ultima
@@ -338,7 +339,7 @@ namespace Ultima
 
         private static string LoadDirectory()
         {
-            string dir = ConfigurationManager.AppSettings["UODataDir"];
+            string dir = Config.GetAppSetting<string>("UODataDir");
 
             // If they're using the ClassicUO client, pull the UO data dir from the plugin
             if (!Assistant.Client.IsOSI)
