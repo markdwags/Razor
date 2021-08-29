@@ -2720,7 +2720,12 @@ namespace Assistant
         private static void Features(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player != null)
-                World.Player.Features = p.ReadUInt16();
+            {
+                if (p.Length > 3)
+                    World.Player.Features = p.ReadUInt32();
+                else
+                    World.Player.Features = p.ReadUInt16();
+            }
         }
 
         private static void PersonalLight(PacketReader p, PacketHandlerEventArgs args)

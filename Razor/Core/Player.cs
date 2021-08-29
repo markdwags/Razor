@@ -306,7 +306,7 @@ namespace Assistant
         private int m_Tithe;
         private sbyte m_LocalLight;
         private byte m_GlobalLight;
-        private ushort m_Features;
+        private uint m_Features;
         private byte m_Season;
         private byte m_DefaultSeason;
         private int[] m_MapPatches = new int[10];
@@ -447,7 +447,7 @@ namespace Assistant
 
             m_LocalLight = reader.ReadSByte();
             m_GlobalLight = reader.ReadByte();
-            m_Features = reader.ReadUInt16();
+            m_Features = reader.ReadUInt32();
             m_Season = reader.ReadByte();
 
             if (version >= 4)
@@ -1073,7 +1073,7 @@ namespace Assistant
             }
         }
 
-        public ushort Features
+        public uint Features
         {
             get { return m_Features; }
             set { m_Features = value; }
