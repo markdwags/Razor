@@ -20,11 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
 using System.Xml;
-using Assistant.UI;
-using Ultima;
 
 namespace Assistant.Core
 {
@@ -37,14 +33,7 @@ namespace Assistant.Core
 
     public static class OverheadManager
     {
-        private static ListView _listView;
-
         public static List<OverheadMessage> OverheadMessages = new List<OverheadMessage>();
-
-        public static void SetControls(ListView listView)
-        {
-            _listView = listView;
-        }
 
         public static void Save(XmlTextWriter xml)
         {
@@ -101,31 +90,6 @@ namespace Assistant.Core
             }
         }
 
-        public static void RedrawList()
-        {
-            _listView.SafeAction(s => s.Items.Clear());
-
-            foreach (OverheadMessage message in OverheadMessages)
-            {
-                ListViewItem item = new ListViewItem($"{message.SearchMessage}");
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, message.MessageOverhead));
-
-                int hueIdx = message.Hue;
-
-                if (hueIdx > 0 && hueIdx < 3000)
-                    item.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-                else
-                    item.SubItems[1].BackColor = SystemColors.Control;
-
-                item.SubItems[1].ForeColor =
-                    (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
-
-                item.UseItemStyleForSubItems = false;
-
-                _listView.SafeAction(s => s.Items.Add(item));
-            }
-        }
-
         public static void DisplayOverheadMessage(string text)
         {
             if (Config.GetBool("ShowOverheadMessages") && OverheadMessages.Count > 0)
@@ -148,36 +112,6 @@ namespace Assistant.Core
                         }
 
                         World.Player.OverheadMessage(message.Hue, ohMessage);
-                        break;
-                    }
-                }
-            }
-        }
-
-        public static void SetOverheadHue()
-        {
-            ListViewItem selectedItem = _listView.Items[_listView.SelectedIndices[0]];
-
-            HueEntry h = new HueEntry(GetHue(selectedItem.SubItems[1].Text));
-
-            if (h.ShowDialog(Engine.MainWindow) == DialogResult.OK)
-            {
-                int hueIdx = h.Hue;
-
-                if (hueIdx > 0 && hueIdx < 3000)
-                    selectedItem.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-                else
-                    selectedItem.SubItems[1].BackColor = Color.White;
-
-                selectedItem.SubItems[1].ForeColor = (selectedItem.SubItems[1].BackColor.GetBrightness() < 0.35
-                    ? Color.White
-                    : Color.Black);
-
-                foreach (OverheadMessage list in OverheadManager.OverheadMessages)
-                {
-                    if (list.SearchMessage.Equals(selectedItem.Text))
-                    {
-                        list.Hue = hueIdx;
                         break;
                     }
                 }
