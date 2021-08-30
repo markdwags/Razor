@@ -22,9 +22,8 @@ using System;
 using System.IO;
 using System.Text;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
-using System.Windows.Forms;
+using Assistant.Core;
 
 namespace Assistant
 {
@@ -443,8 +442,7 @@ namespace Assistant
             }
             catch (Exception ex)
             {
-                MessageBox.Show(null, ex.Message, "Unable to open directory", MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                Notifications.SendWarning("Unable to open directory", ex.Message);
             }
         }
     }

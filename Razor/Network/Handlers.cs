@@ -2711,8 +2711,7 @@ namespace Assistant
                 }
                 catch
                 {
-                    System.Windows.Forms.MessageBox.Show(Engine.MainWindow, "Error parsing Proxy Settings.",
-                        "Force Proxy Error.");
+                    Notifications.SendError("Force Proxy Error.", "Error parsing Proxy Settings.");
                 }
             }
         }
