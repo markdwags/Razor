@@ -75,12 +75,12 @@ namespace Assistant
 
             FriendsManager.SetControls(friendsGroup, friendsList);
             DressList.SetControls(dressList, dressItems);
-            TargetFilterManager.SetControls(targetFilter);
+            TargetFilterManager.OnItemsChanged += this.refreshTargetFilters;
+            TargetFilterManager.OnAddTarget += this.onTargetFilterAdd;
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
             ScriptManager.SetControls(scriptEditor, scriptTree, scriptVariables);
             WaypointManager.OnWaypointsChanged += this.refreshWaypoints;
             WaypointManager.ResetTimer();
-
             TextFilterManager.OnItemsChanged += this.refreshTextFilters;
 
             bool st = Config.GetBool("Systray");
@@ -7033,11 +7033,21 @@ namespace Assistant
             updateListBox(textFilterList, TextFilterManager.FilteredText);
         }
 
+        private void onTargetFilterAdd()
+        {
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
+        }
+
+        private void refreshTargetFilters()
+        {
+            updateListBox(targetFilter, TargetFilterManager.TargetFilters);
+        }
+
         private void filterTabs_IndexChanged(object sender, EventArgs e)
         {
             if (filterTabs.SelectedTab == subFilterTargets)
             {
-                TargetFilterManager.RedrawList();
+                refreshTargetFilters();
             }
             else if (filterTabs.SelectedTab == subFilterText)
             {
