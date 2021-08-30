@@ -78,7 +78,8 @@ namespace Assistant
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
             ScriptManager.SetControls(scriptEditor, scriptTree, scriptVariables);
-            WaypointManager.SetControls(waypointList);
+            WaypointManager.OnWaypointsChanged += this.onWaypointsChanged;
+            WaypointManager.ResetTimer();
             OverheadManager.SetControls(cliLocOverheadView);
             TextFilterManager.SetControls(textFilterList);
 
@@ -6946,13 +6947,29 @@ namespace Assistant
             }
         }
 
+        private void onWaypointsChanged(IList<WaypointManager.Waypoint> waypoints)
+        {
+            waypointList?.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (var waypoint in waypoints)
+                {
+                    s.Items.Add(waypoint);
+                }
+
+                s.EndUpdate();
+            });
+        }
+
         private void onClearWaypoints(object sender, EventArgs e)
         {
             if (MessageBox.Show(this, "Are you sure you want to clear all of your waypoints?", "Clear Waypoints?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 WaypointManager.ClearAll();
-                WaypointManager.RedrawList();
+                onWaypointsChanged(WaypointManager.Waypoints);
             }
         }
 
@@ -7190,7 +7207,7 @@ namespace Assistant
 
             if (displayCountersTabCtrl.SelectedTab == subWaypoints)
             {
-                WaypointManager.RedrawList();
+                onWaypointsChanged(WaypointManager.Waypoints);
             }
         }
 
