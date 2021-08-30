@@ -613,6 +613,20 @@ namespace Assistant
             }
         }
 
+        private void updateFilterList(IList<Filter> filters)
+        {
+            this.filters.BeginUpdate();
+            this.filters.Items.Clear();
+
+            for (int i = 0; i < filters.Count; ++i)
+            {
+                Filter filter = filters[i];
+                this.filters.Items.Add(filter, filter.Enabled);
+            }
+
+            this.filters.EndUpdate();
+        }
+
         private void tabs_IndexChanged(object sender, System.EventArgs e)
         {
             if (tabs == null)
@@ -625,7 +639,7 @@ namespace Assistant
 
             if (tabs.SelectedTab == generalTab)
             {
-                Filter.Draw(filters);
+                updateFilterList(Filter.List);
                 langSel.BeginUpdate();
                 langSel.Items.Clear();
                 langSel.Items.AddRange(Language.GetPackNames());

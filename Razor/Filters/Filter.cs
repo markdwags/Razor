@@ -19,7 +19,7 @@
 #endregion
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -27,9 +27,9 @@ namespace Assistant.Filters
 {
     public abstract class Filter
     {
-        private static ArrayList m_Filters = new ArrayList();
+        private static List<Filter> m_Filters = new List<Filter>();
 
-        public static ArrayList List
+        public static IList<Filter> List
         {
             get { return m_Filters; }
         }
@@ -89,21 +89,6 @@ namespace Assistant.Filters
                     xml.WriteEndElement();
                 }
             }
-        }
-
-        public static void Draw(CheckedListBox list)
-        {
-            list.BeginUpdate();
-            list.Items.Clear();
-
-            for (int i = 0; i < m_Filters.Count; i++)
-            {
-                Filter f = (Filter) m_Filters[i];
-                list.Items.Add(f);
-                list.SetItemChecked(i, f.Enabled);
-            }
-
-            list.EndUpdate();
         }
 
         public abstract void OnFilter(PacketReader p, PacketHandlerEventArgs args);
