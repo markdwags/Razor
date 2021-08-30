@@ -77,7 +77,8 @@ namespace Assistant
             DressList.SetControls(dressList, dressItems);
             TargetFilterManager.OnItemsChanged += this.refreshTargetFilters;
             TargetFilterManager.OnAddTarget += this.onTargetFilterAdd;
-            SoundMusicManager.SetControls(soundFilterList, playableMusicList);
+            SoundMusicManager.OnPlayableMusicChanged += this.refreshMusicList;
+            SoundMusicManager.OnSoundFiltersChanged += this.refreshSoundFilter;
             ScriptManager.SetControls(scriptEditor, scriptTree, scriptVariables);
             WaypointManager.OnWaypointsChanged += this.refreshWaypoints;
             WaypointManager.ResetTimer();
@@ -7017,15 +7018,36 @@ namespace Assistant
 
         private void updateListBox(ListBox listBox, IList items)
         {
-            listBox.BeginUpdate();
-            listBox.Items.Clear();
-
-            foreach (var item in items)
+            listBox?.SafeAction(s =>
             {
-                listBox.Items.Add(item);
-            }
+                s.BeginUpdate();
+                s.Items.Clear();
 
-            listBox.EndUpdate();
+                foreach (var item in items)
+                {
+                    s.Items.Add(item);
+                }
+
+                s.EndUpdate();
+            });
+        }
+
+        private void updateComboBox(ComboBox comboBox, IList items)
+        {
+            comboBox?.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (var item in items)
+                {
+                    s.Items.Add(item);
+                }
+
+                s.SelectedIndex = 0;
+                s.EndUpdate();
+            });
+;
         }
 
         private void refreshTextFilters()
@@ -7043,6 +7065,37 @@ namespace Assistant
             updateListBox(targetFilter, TargetFilterManager.TargetFilters);
         }
 
+        private void refreshMusicList()
+        {
+            if (SoundMusicManager.MusicList.Count == 0)
+            {
+                SoundMusicManager.LoadMusic();
+            }
+            updateComboBox(playableMusicList, SoundMusicManager.MusicList);
+        }
+
+        private void refreshSoundFilter()
+        {
+            if (SoundMusicManager.SoundList.Count == 0)
+            {
+                SoundMusicManager.LoadSounds();
+            }
+
+            soundFilterList?.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (var sound in SoundMusicManager.SoundList)
+                {
+                    bool isFiltered = SoundMusicManager.IsFilteredSound(sound.Serial, out string name);
+                    s.Items.Add(sound, isFiltered);
+                }
+
+                s.EndUpdate();
+            });
+        }
+
         private void filterTabs_IndexChanged(object sender, EventArgs e)
         {
             if (filterTabs.SelectedTab == subFilterTargets)
@@ -7055,7 +7108,8 @@ namespace Assistant
             }
             else if (filterTabs.SelectedTab == subFilterSoundMusic)
             {
-                SoundMusicManager.RedrawList();
+                refreshMusicList();
+                refreshSoundFilter();
             }
         }
 
