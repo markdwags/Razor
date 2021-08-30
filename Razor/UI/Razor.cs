@@ -962,7 +962,7 @@ namespace Assistant
 
         private void OnFilterCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
         {
-            ((Filter) filters.Items[e.Index]).OnCheckChanged(e.NewValue);
+            ((Filter) filters.Items[e.Index]).OnCheckChanged(e.NewValue == CheckState.Checked);
         }
 
         private void incomingMob_CheckedChanged(object sender, System.EventArgs e)

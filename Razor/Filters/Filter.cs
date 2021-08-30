@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Xml;
 
 namespace Assistant.Filters
@@ -128,11 +127,11 @@ namespace Assistant.Filters
                 PacketHandler.RemoveServerToClientViewer(PacketIDs[i], m_Callback);
         }
 
-        public void OnCheckChanged(CheckState newValue)
+        public void OnCheckChanged(bool newValue)
         {
-            if (Enabled && newValue == CheckState.Unchecked)
+            if (Enabled && !newValue)
                 OnDisable();
-            else if (!Enabled && newValue == CheckState.Checked)
+            else if (!Enabled && newValue)
                 OnEnable();
         }
     }
