@@ -39,6 +39,7 @@ using Assistant.UI;
 using Ultima;
 using ContainerLabels = Assistant.UI.ContainerLabels;
 using Exception = System.Exception;
+using Clipboard = System.Windows.Forms.Clipboard;
 
 namespace Assistant
 {

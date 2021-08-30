@@ -19,10 +19,8 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.HotKeys;
 using Assistant.Scripts.Engine;

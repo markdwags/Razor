@@ -19,7 +19,7 @@
 #endregion
 
 using System.Text;
-using System.Windows.Forms;
+using Assistant.Core;
 
 namespace Assistant.Gumps.Internal
 {
