@@ -7161,33 +7161,23 @@ namespace Assistant
                 newItemText = cliLocTextSearch.Text;
             }
 
-            ListViewItem item = new ListViewItem(newItemText);
-
             if (InputBox.Show(this,
                 "Enter text to display overhead",
                 newItemText))
             {
                 string overheadMessage = InputBox.GetString();
 
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, overheadMessage));
-
-                if (hueIdx > 0 && hueIdx < 3000)
-                    item.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-                else
-                    item.SubItems[1].BackColor = SystemColors.Control;
-
-                item.SubItems[1].ForeColor =
-                    (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
-                item.UseItemStyleForSubItems = false;
-
-                cliLocOverheadView.SafeAction(s => s.Items.Add(item));
-
-                OverheadManager.OverheadMessages.Add(new OverheadMessage
+                var newMessage = new OverheadMessage
                 {
                     SearchMessage = newItemText,
                     Hue = hueIdx,
                     MessageOverhead = overheadMessage
-                });
+                };
+
+                var item = makeOverheadMessageItem(newMessage);
+                cliLocOverheadView.SafeAction(s => s.Items.Add(item));
+
+                OverheadManager.AddOverheadMessage(newMessage);
             }
         }
 
@@ -7209,15 +7199,7 @@ namespace Assistant
                     return;
 
                 selectedItem.SubItems[1].Text = newMessage;
-
-                foreach (OverheadMessage list in OverheadManager.OverheadMessages)
-                {
-                    if (list.MessageOverhead.Equals(oldMessage))
-                    {
-                        list.MessageOverhead = newMessage;
-                        break;
-                    }
-                }
+                OverheadManager.ReplaceOverheadMessage(oldMessage, newMessage);
             }
         }
 
@@ -7310,15 +7292,7 @@ namespace Assistant
             if (hueEntry.ShowDialog(Engine.MainWindow) == DialogResult.OK)
             {
                 fillOverheadMessageSubItem(selectedItem.SubItems[1], hueEntry.Hue);
-
-                foreach (OverheadMessage list in OverheadManager.OverheadMessages)
-                {
-                    if (list.SearchMessage.Equals(selectedItem.Text))
-                    {
-                        list.Hue = hueEntry.Hue;
-                        break;
-                    }
-                }
+                OverheadManager.SetMessageHue(selectedItem.Text, hueEntry.Hue);
             }
         }
 
