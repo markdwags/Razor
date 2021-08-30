@@ -78,9 +78,11 @@ namespace Assistant
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
             ScriptManager.SetControls(scriptEditor, scriptTree, scriptVariables);
-            WaypointManager.OnWaypointsChanged += this.onWaypointsChanged;
+            WaypointManager.OnWaypointsChanged += this.refreshWaypoints;
             WaypointManager.ResetTimer();
             OverheadManager.SetControls(cliLocOverheadView);
+
+            TextFilterManager.OnItemsChanged += this.refreshTextFilters;
             TextFilterManager.SetControls(textFilterList);
 
             bool st = Config.GetBool("Systray");
@@ -6947,20 +6949,9 @@ namespace Assistant
             }
         }
 
-        private void onWaypointsChanged(IList<WaypointManager.Waypoint> waypoints)
+        private void refreshWaypoints()
         {
-            waypointList?.SafeAction(s =>
-            {
-                s.BeginUpdate();
-                s.Items.Clear();
-
-                foreach (var waypoint in waypoints)
-                {
-                    s.Items.Add(waypoint);
-                }
-
-                s.EndUpdate();
-            });
+            updateListBox(waypointList, WaypointManager.Waypoints);
         }
 
         private void onClearWaypoints(object sender, EventArgs e)
@@ -6969,7 +6960,7 @@ namespace Assistant
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 WaypointManager.ClearAll();
-                onWaypointsChanged(WaypointManager.Waypoints);
+                refreshWaypoints();
             }
         }
 
@@ -7026,6 +7017,24 @@ namespace Assistant
             Config.SetProperty("ShowPartyFriendOverhead", showPartyFriendOverhead.Checked);
         }
 
+        private void updateListBox(ListBox listBox, IList items)
+        {
+            listBox.BeginUpdate();
+            listBox.Items.Clear();
+
+            foreach (var item in items)
+            {
+                listBox.Items.Add(item);
+            }
+
+            listBox.EndUpdate();
+        }
+
+        private void refreshTextFilters()
+        {
+            updateListBox(textFilterList, TextFilterManager.FilteredText);
+        }
+
         private void filterTabs_IndexChanged(object sender, EventArgs e)
         {
             if (filterTabs.SelectedTab == subFilterTargets)
@@ -7034,7 +7043,7 @@ namespace Assistant
             }
             else if (filterTabs.SelectedTab == subFilterText)
             {
-                TextFilterManager.RedrawList();
+                refreshTextFilters();
             }
             else if (filterTabs.SelectedTab == subFilterSoundMusic)
             {
@@ -7207,7 +7216,7 @@ namespace Assistant
 
             if (displayCountersTabCtrl.SelectedTab == subWaypoints)
             {
-                onWaypointsChanged(WaypointManager.Waypoints);
+                refreshWaypoints();
             }
         }
 

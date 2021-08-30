@@ -34,7 +34,7 @@ namespace Assistant.Core
 
         public static List<Waypoint> Waypoints = new List<Waypoint>();
 
-        public delegate void WaypointsChangedCallback(IList<Waypoint> waypoints);
+        public delegate void WaypointsChangedCallback();
 
         public static WaypointsChangedCallback OnWaypointsChanged;
 
@@ -80,14 +80,14 @@ namespace Assistant.Core
         public static void AddWaypoint(Waypoint waypoint)
         {
             Waypoints.Add(waypoint);
-            OnWaypointsChanged?.Invoke(Waypoints);
+            OnWaypointsChanged?.Invoke();
         }
 
         public static void RemoveWaypoint(Waypoint waypoint)
         {
             ClearWaypoint();
             Waypoints.Remove(waypoint);
-            OnWaypointsChanged?.Invoke(Waypoints);
+            OnWaypointsChanged?.Invoke();
         }
 
         public static void ShowWaypoint(Waypoint waypoint)
@@ -212,7 +212,7 @@ namespace Assistant.Core
                     Waypoints.Add(waypoint);
                 }
 
-                OnWaypointsChanged?.Invoke(Waypoints);
+                OnWaypointsChanged?.Invoke();
             }
             catch (Exception ex)
             {
