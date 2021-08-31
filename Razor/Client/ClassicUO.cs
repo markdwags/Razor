@@ -158,7 +158,7 @@ namespace Assistant
         private static OnFocusLost _onFocusLost;
         private IntPtr m_ClientWindow;
 
-        public override void SetMapWndHandle(Form mapWnd)
+        public override void SetMapWndHandle(IntPtr mapWndHandle)
         {
         }
 
