@@ -115,7 +115,7 @@ namespace Assistant.Core
 
         public static void ResetTimer()
         {
-            if (_waypointTimer.Running)
+            if (_waypointTimer != null && _waypointTimer.Running)
             {
                 _waypointTimer.Stop();
                 _waypointTimer = new WaypointDistanceTimer();
