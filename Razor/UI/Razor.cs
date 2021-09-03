@@ -612,6 +612,19 @@ namespace Assistant
             }
         }
 
+        private void UpdateFilterList()
+        {
+            filters.BeginUpdate();
+            filters.Items.Clear();
+
+            foreach (Filter filter in Filter.List)
+            {
+                filters.Items.Add(filter, filter.Enabled);
+            }
+
+            filters.EndUpdate();
+        }
+
         private void tabs_IndexChanged(object sender, System.EventArgs e)
         {
             if (tabs == null)
@@ -624,7 +637,7 @@ namespace Assistant
 
             if (tabs.SelectedTab == generalTab)
             {
-                Filter.Draw(filters);
+                UpdateFilterList();
                 langSel.BeginUpdate();
                 langSel.Items.Clear();
                 langSel.Items.AddRange(Language.GetPackNames());
@@ -947,7 +960,8 @@ namespace Assistant
 
         private void OnFilterCheck(object sender, System.Windows.Forms.ItemCheckEventArgs e)
         {
-            ((Filter) filters.Items[e.Index]).OnCheckChanged(e.NewValue);
+            var filter = filters.Items[e.Index] as Filter;
+            filter.Enabled = (e.NewValue == CheckState.Checked);
         }
 
         private void incomingMob_CheckedChanged(object sender, System.EventArgs e)
