@@ -20,11 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
 using System.Xml;
-using Assistant.UI;
-using Ultima;
 
 namespace Assistant.Core
 {
@@ -37,13 +33,10 @@ namespace Assistant.Core
 
     public static class OverheadManager
     {
-        private static ListView _listView;
-
-        public static List<OverheadMessage> OverheadMessages = new List<OverheadMessage>();
-
-        public static void SetControls(ListView listView)
+        private static List<OverheadMessage> m_overheadMessages = new List<OverheadMessage>();
+        public static IReadOnlyList<OverheadMessage> OverheadMessages
         {
-            _listView = listView;
+            get { return m_overheadMessages; }
         }
 
         public static void Save(XmlTextWriter xml)
@@ -75,7 +68,7 @@ namespace Assistant.Core
                             : Convert.ToInt32(el.GetAttribute("hue"))
                     };
 
-                    OverheadMessages.Add(overheadMessage);
+                    m_overheadMessages.Add(overheadMessage);
                 }
             }
             catch
@@ -86,7 +79,7 @@ namespace Assistant.Core
 
         public static void ClearAll()
         {
-            OverheadMessages.Clear();
+            m_overheadMessages.Clear();
         }
 
         public static void Remove(string text)
@@ -95,34 +88,9 @@ namespace Assistant.Core
             {
                 if (message.SearchMessage.Equals(text))
                 {
-                    OverheadMessages.Remove(message);
+                    m_overheadMessages.Remove(message);
                     break;
                 }
-            }
-        }
-
-        public static void RedrawList()
-        {
-            _listView.SafeAction(s => s.Items.Clear());
-
-            foreach (OverheadMessage message in OverheadMessages)
-            {
-                ListViewItem item = new ListViewItem($"{message.SearchMessage}");
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, message.MessageOverhead));
-
-                int hueIdx = message.Hue;
-
-                if (hueIdx > 0 && hueIdx < 3000)
-                    item.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-                else
-                    item.SubItems[1].BackColor = SystemColors.Control;
-
-                item.SubItems[1].ForeColor =
-                    (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
-
-                item.UseItemStyleForSubItems = false;
-
-                _listView.SafeAction(s => s.Items.Add(item));
             }
         }
 
@@ -154,32 +122,31 @@ namespace Assistant.Core
             }
         }
 
-        public static void SetOverheadHue()
+        public static void SetMessageHue(string text, int hue)
         {
-            ListViewItem selectedItem = _listView.Items[_listView.SelectedIndices[0]];
-
-            HueEntry h = new HueEntry(GetHue(selectedItem.SubItems[1].Text));
-
-            if (h.ShowDialog(Engine.MainWindow) == DialogResult.OK)
+            foreach (var message in OverheadMessages)
             {
-                int hueIdx = h.Hue;
-
-                if (hueIdx > 0 && hueIdx < 3000)
-                    selectedItem.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-                else
-                    selectedItem.SubItems[1].BackColor = Color.White;
-
-                selectedItem.SubItems[1].ForeColor = (selectedItem.SubItems[1].BackColor.GetBrightness() < 0.35
-                    ? Color.White
-                    : Color.Black);
-
-                foreach (OverheadMessage list in OverheadManager.OverheadMessages)
+                if (message.SearchMessage.Equals(text))
                 {
-                    if (list.SearchMessage.Equals(selectedItem.Text))
-                    {
-                        list.Hue = hueIdx;
-                        break;
-                    }
+                    message.Hue = hue;
+                    break;
+                }
+            }
+        }
+
+        public static void AddOverheadMessage(OverheadMessage message)
+        {
+            m_overheadMessages.Add(message);
+        }
+
+        public static void ReplaceOverheadMessage(string oldMessage, string newMessage)
+        {
+            foreach (var message in OverheadMessages)
+            {
+                if (message.MessageOverhead.Equals(oldMessage))
+                {
+                    message.MessageOverhead = newMessage;
+                    break;
                 }
             }
         }
