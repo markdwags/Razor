@@ -74,7 +74,8 @@ namespace Assistant
 
             FriendsManager.SetControls(friendsGroup, friendsList);
             DressList.SetControls(dressList, dressItems);
-            TargetFilterManager.SetControls(targetFilter);
+            TargetFilterManager.OnItemsChanged += this.RefreshTargetFilters;
+            TargetFilterManager.OnAddFriendTarget += this.OnFriendTargetFilterAdd;
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
             ScriptManager.SetControls(scriptEditor, scriptTree, scriptVariables);
             WaypointManager.SetControls(waypointList);
@@ -7010,11 +7011,21 @@ namespace Assistant
             });
         }
 
+        private void OnFriendTargetFilterAdd()
+        {
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
+        }
+
+        private void RefreshTargetFilters()
+        {
+            UpdateListBox(targetFilter, TargetFilterManager.TargetFilters);
+        }
+
         private void filterTabs_IndexChanged(object sender, EventArgs e)
         {
             if (filterTabs.SelectedTab == subFilterTargets)
             {
-                TargetFilterManager.RedrawList();
+                RefreshTargetFilters();
             }
             else if (filterTabs.SelectedTab == subFilterText)
             {
