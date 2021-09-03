@@ -6994,6 +6994,22 @@ namespace Assistant
             Config.SetProperty("ShowPartyFriendOverhead", showPartyFriendOverhead.Checked);
         }
 
+        private void UpdateListBox(ListBox listBox, IList items)
+        {
+            listBox?.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (var item in items)
+                {
+                    s.Items.Add(item);
+                }
+
+                s.EndUpdate();
+            });
+        }
+
         private void filterTabs_IndexChanged(object sender, EventArgs e)
         {
             if (filterTabs.SelectedTab == subFilterTargets)
