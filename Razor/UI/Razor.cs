@@ -76,7 +76,8 @@ namespace Assistant
             DressList.SetControls(dressList, dressItems);
             TargetFilterManager.OnItemsChanged += this.RefreshTargetFilters;
             TargetFilterManager.OnAddFriendTarget += this.OnFriendTargetFilterAdd;
-            SoundMusicManager.SetControls(soundFilterList, playableMusicList);
+            SoundMusicManager.OnPlayableMusicChanged += this.RefreshMusicList;
+            SoundMusicManager.OnSoundFiltersChanged += this.RefreshSoundFilter;
             ScriptManager.SetControls(scriptEditor, scriptTree, scriptVariables);
             WaypointManager.OnWaypointsChanged += this.RefreshWaypoints;
             WaypointManager.ResetTimer();
@@ -7031,6 +7032,55 @@ namespace Assistant
             });
         }
 
+        private void UpdateComboBox(ComboBox comboBox, IList items)
+        {
+            comboBox?.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (var item in items)
+                {
+                    s.Items.Add(item);
+                }
+
+                s.SelectedIndex = 0;
+                s.EndUpdate();
+            });
+;
+        }
+
+        private void RefreshMusicList()
+        {
+            if (SoundMusicManager.MusicList.Count == 0)
+            {
+                SoundMusicManager.LoadMusic();
+            }
+            UpdateComboBox(playableMusicList, SoundMusicManager.MusicList);
+        }
+
+        private void RefreshSoundFilter()
+        {
+            if (SoundMusicManager.SoundList.Count == 0)
+            {
+                SoundMusicManager.LoadSounds();
+            }
+
+            soundFilterList?.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (var sound in SoundMusicManager.SoundList)
+                {
+                    bool isFiltered = SoundMusicManager.IsFilteredSound(sound.Serial, out string name);
+                    s.Items.Add(sound, isFiltered);
+                }
+
+                s.EndUpdate();
+            });
+        }
+
         private void RefreshTextFilters()
         {
             UpdateListBox(textFilterList, TextFilterManager.FilteredText);
@@ -7058,7 +7108,8 @@ namespace Assistant
             }
             else if (filterTabs.SelectedTab == subFilterSoundMusic)
             {
-                SoundMusicManager.RedrawList();
+                RefreshMusicList();
+                RefreshSoundFilter();
             }
         }
 
