@@ -79,7 +79,7 @@ namespace Assistant
             ScriptManager.SetControls(scriptEditor, scriptTree, scriptVariables);
             WaypointManager.SetControls(waypointList);
             OverheadManager.SetControls(cliLocOverheadView);
-            TextFilterManager.SetControls(textFilterList);
+            TextFilterManager.OnItemsChanged += this.RefreshTextFilters;
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -6994,6 +6994,27 @@ namespace Assistant
             Config.SetProperty("ShowPartyFriendOverhead", showPartyFriendOverhead.Checked);
         }
 
+        private void UpdateListBox(ListBox listBox, IList items)
+        {
+            listBox?.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (var item in items)
+                {
+                    s.Items.Add(item);
+                }
+
+                s.EndUpdate();
+            });
+        }
+
+        private void RefreshTextFilters()
+        {
+            UpdateListBox(textFilterList, TextFilterManager.FilteredText);
+        }
+
         private void filterTabs_IndexChanged(object sender, EventArgs e)
         {
             if (filterTabs.SelectedTab == subFilterTargets)
@@ -7002,7 +7023,7 @@ namespace Assistant
             }
             else if (filterTabs.SelectedTab == subFilterText)
             {
-                TextFilterManager.RedrawList();
+                RefreshTextFilters();
             }
             else if (filterTabs.SelectedTab == subFilterSoundMusic)
             {
