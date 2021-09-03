@@ -21,15 +21,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Forms;
 using System.Xml;
-using Assistant.UI;
 
 namespace Assistant.Core
 {
     public static class WaypointManager
     {
-        private static ListBox _waypointList;
         private static WaypointDistanceTimer _waypointTimer;
 
         public static Waypoint CurrentWaypoint;
@@ -37,18 +34,15 @@ namespace Assistant.Core
 
         public static List<Waypoint> Waypoints = new List<Waypoint>();
 
+        public delegate void WaypointsChangedCallback();
+
+        public static WaypointsChangedCallback OnWaypointsChanged;
+
         public static void Initialize()
         {
             HotKey.Add(HKCategory.Misc, LocString.NextWaypoint, new HotKeyCallback(NextWaypoint));
             HotKey.Add(HKCategory.Misc, LocString.PrevWaypoint, new HotKeyCallback(PrevWaypoint));
             HotKey.Add(HKCategory.Misc, LocString.HideWaypoint, new HotKeyCallback(ClearWaypoint));
-        }
-
-        public static void SetControls(ListBox waypointList)
-        {
-            _waypointList = waypointList;
-            _waypointTimer = new WaypointDistanceTimer();
-            _waypointTimer.Stop();
         }
 
         public class Waypoint
@@ -86,17 +80,14 @@ namespace Assistant.Core
         public static void AddWaypoint(Waypoint waypoint)
         {
             Waypoints.Add(waypoint);
-
-            RedrawList();
+            OnWaypointsChanged?.Invoke();
         }
 
         public static void RemoveWaypoint(Waypoint waypoint)
         {
             ClearWaypoint();
-
             Waypoints.Remove(waypoint);
-
-            RedrawList();
+            OnWaypointsChanged?.Invoke();
         }
 
         public static void ShowWaypoint(Waypoint waypoint)
@@ -124,7 +115,7 @@ namespace Assistant.Core
 
         public static void ResetTimer()
         {
-            if (_waypointTimer.Running)
+            if (_waypointTimer != null && _waypointTimer.Running)
             {
                 _waypointTimer.Stop();
                 _waypointTimer = new WaypointDistanceTimer();
@@ -221,7 +212,7 @@ namespace Assistant.Core
                     Waypoints.Add(waypoint);
                 }
 
-                RedrawList();
+                OnWaypointsChanged?.Invoke();
             }
             catch (Exception ex)
             {
@@ -232,22 +223,6 @@ namespace Assistant.Core
         public static void ClearAll()
         {
             Waypoints.Clear();
-        }
-
-        public static void RedrawList()
-        {
-            _waypointList?.SafeAction(s =>
-            {
-                s.BeginUpdate();
-                s.Items.Clear();
-
-                foreach (Waypoint waypoint in Waypoints)
-                {
-                    s.Items.Add(waypoint);
-                }
-
-                s.EndUpdate();
-            });
         }
     }
 }

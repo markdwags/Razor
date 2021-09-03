@@ -77,7 +77,8 @@ namespace Assistant
             TargetFilterManager.SetControls(targetFilter);
             SoundMusicManager.SetControls(soundFilterList, playableMusicList);
             ScriptManager.SetControls(scriptEditor, scriptTree, scriptVariables);
-            WaypointManager.SetControls(waypointList);
+            WaypointManager.OnWaypointsChanged += this.RefreshWaypoints;
+            WaypointManager.ResetTimer();
             OverheadManager.SetControls(cliLocOverheadView);
             TextFilterManager.SetControls(textFilterList);
 
@@ -6931,13 +6932,18 @@ namespace Assistant
             }
         }
 
+        private void RefreshWaypoints()
+        {
+            UpdateListBox(waypointList, WaypointManager.Waypoints);
+        }
+
         private void onClearWaypoints(object sender, EventArgs e)
         {
             if (MessageBox.Show(this, "Are you sure you want to clear all of your waypoints?", "Clear Waypoints?",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 WaypointManager.ClearAll();
-                WaypointManager.RedrawList();
+                RefreshWaypoints();
             }
         }
 
@@ -6992,6 +6998,22 @@ namespace Assistant
         private void showPartyFriendOverhead_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowPartyFriendOverhead", showPartyFriendOverhead.Checked);
+        }
+
+        private void UpdateListBox(ListBox listBox, IList items)
+        {
+            listBox?.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.Items.Clear();
+
+                foreach (var item in items)
+                {
+                    s.Items.Add(item);
+                }
+
+                s.EndUpdate();
+            });
         }
 
         private void filterTabs_IndexChanged(object sender, EventArgs e)
@@ -7175,7 +7197,7 @@ namespace Assistant
 
             if (displayCountersTabCtrl.SelectedTab == subWaypoints)
             {
-                WaypointManager.RedrawList();
+                RefreshWaypoints();
             }
         }
 
