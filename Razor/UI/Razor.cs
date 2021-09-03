@@ -7070,7 +7070,7 @@ namespace Assistant
                     MessageOverhead = overheadMessage
                 };
 
-                var item = makeOverheadMessageItem(newMessage);
+                var item = MakeOverheadMessageItem(newMessage);
                 cliLocOverheadView.SafeAction(s => s.Items.Add(item));
 
                 OverheadManager.AddOverheadMessage(newMessage);
@@ -7115,7 +7115,7 @@ namespace Assistant
         {
             if (cliLocOverheadView.SelectedItems.Count > 0)
             {
-                setOverheadMessageHue();
+                SetOverheadMessageHue();
             }
         }
 
@@ -7147,7 +7147,7 @@ namespace Assistant
             Config.SetProperty("ShowOverheadMessages", showOverheadMessages.Checked);
         }
 
-        private void fillOverheadMessageSubItem(ListViewItem.ListViewSubItem subItem, int hueIdx)
+        private void FillOverheadMessageSubItem(ListViewItem.ListViewSubItem subItem, int hueIdx)
         {
             if (hueIdx > 0 && hueIdx < 3000)
                 subItem.BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
@@ -7157,28 +7157,28 @@ namespace Assistant
             subItem.ForeColor = (subItem.BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
         }
 
-        private ListViewItem makeOverheadMessageItem(OverheadMessage message)
+        private ListViewItem MakeOverheadMessageItem(OverheadMessage message)
         {
             var item = new ListViewItem($"{message.SearchMessage}");
             var subItem = new ListViewItem.ListViewSubItem(item, message.MessageOverhead);
-            fillOverheadMessageSubItem(subItem, message.Hue);
+            FillOverheadMessageSubItem(subItem, message.Hue);
             item.SubItems.Add(subItem);
             item.UseItemStyleForSubItems = false;
             return item;
         }
 
-        private void refreshOverheadMessages()
+        private void RefreshOverheadMessages()
         {
             cliLocOverheadView?.SafeAction(s => s.Items.Clear());
 
             foreach (OverheadMessage message in OverheadManager.OverheadMessages)
             {
-                var item = makeOverheadMessageItem(message);
+                var item = MakeOverheadMessageItem(message);
                 cliLocOverheadView?.SafeAction(s => s.Items.Add(item));
             }
         }
 
-        private void setOverheadMessageHue()
+        private void SetOverheadMessageHue()
         {
             ListViewItem selectedItem = cliLocOverheadView.Items[cliLocOverheadView.SelectedIndices[0]];
 
@@ -7187,7 +7187,7 @@ namespace Assistant
 
             if (hueEntry.ShowDialog(Engine.MainWindow) == DialogResult.OK)
             {
-                fillOverheadMessageSubItem(selectedItem.SubItems[1], hueEntry.Hue);
+                FillOverheadMessageSubItem(selectedItem.SubItems[1], hueEntry.Hue);
                 OverheadManager.SetMessageHue(selectedItem.Text, hueEntry.Hue);
             }
         }
@@ -7196,7 +7196,7 @@ namespace Assistant
         {
             if (displayCountersTabCtrl.SelectedTab == subOverheadTab)
             {
-                refreshOverheadMessages();
+                RefreshOverheadMessages();
             }
 
             if (displayCountersTabCtrl.SelectedTab == subWaypoints)
