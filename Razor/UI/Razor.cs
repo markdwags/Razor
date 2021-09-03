@@ -80,7 +80,7 @@ namespace Assistant
             WaypointManager.OnWaypointsChanged += this.RefreshWaypoints;
             WaypointManager.ResetTimer();
             OverheadManager.SetControls(cliLocOverheadView);
-            TextFilterManager.SetControls(textFilterList);
+            TextFilterManager.OnItemsChanged += this.RefreshTextFilters;
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -7030,6 +7030,11 @@ namespace Assistant
             });
         }
 
+        private void RefreshTextFilters()
+        {
+            UpdateListBox(textFilterList, TextFilterManager.FilteredText);
+        }
+
         private void filterTabs_IndexChanged(object sender, EventArgs e)
         {
             if (filterTabs.SelectedTab == subFilterTargets)
@@ -7038,7 +7043,7 @@ namespace Assistant
             }
             else if (filterTabs.SelectedTab == subFilterText)
             {
-                TextFilterManager.RedrawList();
+                RefreshTextFilters();
             }
             else if (filterTabs.SelectedTab == subFilterSoundMusic)
             {
