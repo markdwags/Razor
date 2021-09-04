@@ -24,18 +24,15 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-
-    # Install the .NET Core workload
-    - name: Install .NET Core
+    
+    - name: Install .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
 
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore Razor
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
       env:
@@ -45,5 +42,23 @@ jobs:
       run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
+
+    - name: Delete Dev Release
+      uses: dev-drprasad/delete-tag-and-release@v0.2.0
+      with:
+        delete_release: true
+        tag_name: Razor-dev-preview
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Dev Release
+      uses: ncipollo/release-action@v1
+      with:
+        name: "Razor Dev Preview"
+        body: "This is built automatically after each commit to master, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk."
+        artifacts: "Razor-dev-preview.zip,bin/Win32/Release/*"          
+        prerelease: true
+        tag: Razor-dev-preview
+        token: ${{ secrets.GITHUB_TOKEN }}
 
 
