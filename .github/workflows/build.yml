@@ -43,6 +43,9 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    - name: Archive build artifacts
+      run: 7z a -tzip "Razor-dev-preview.zip" "bin/Win32/Release/*"
+
     - name: Delete Dev Release
       uses: dev-drprasad/delete-tag-and-release@v0.2.0
       with:
@@ -56,7 +59,7 @@ jobs:
       with:
         name: "Razor Dev Preview"
         body: "This is built automatically after each commit to master, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk."
-        artifacts: "Razor-dev-preview.zip,bin/Win32/Release/*"          
+        artifacts: "Razor-dev-preview.zip"          
         prerelease: true
         tag: Razor-dev-preview
         token: ${{ secrets.GITHUB_TOKEN }}
