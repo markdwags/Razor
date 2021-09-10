@@ -33,10 +33,10 @@ namespace Assistant.Core
 
     public static class OverheadManager
     {
-        private static List<OverheadMessage> m_overheadMessages = new List<OverheadMessage>();
+        private static readonly List<OverheadMessage> _overheadMessages = new List<OverheadMessage>();
         public static IReadOnlyList<OverheadMessage> OverheadMessages
         {
-            get { return m_overheadMessages; }
+            get { return _overheadMessages; }
         }
 
         public static void Save(XmlTextWriter xml)
@@ -68,7 +68,7 @@ namespace Assistant.Core
                             : Convert.ToInt32(el.GetAttribute("hue"))
                     };
 
-                    m_overheadMessages.Add(overheadMessage);
+                    _overheadMessages.Add(overheadMessage);
                 }
             }
             catch
@@ -79,7 +79,7 @@ namespace Assistant.Core
 
         public static void ClearAll()
         {
-            m_overheadMessages.Clear();
+            _overheadMessages.Clear();
         }
 
         public static void Remove(string text)
@@ -88,7 +88,7 @@ namespace Assistant.Core
             {
                 if (message.SearchMessage.Equals(text))
                 {
-                    m_overheadMessages.Remove(message);
+                    _overheadMessages.Remove(message);
                     break;
                 }
             }
@@ -136,7 +136,7 @@ namespace Assistant.Core
 
         public static void AddOverheadMessage(OverheadMessage message)
         {
-            m_overheadMessages.Add(message);
+            _overheadMessages.Add(message);
         }
 
         public static void ReplaceOverheadMessage(string oldMessage, string newMessage)

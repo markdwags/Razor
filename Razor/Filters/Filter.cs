@@ -26,16 +26,16 @@ namespace Assistant.Filters
 {
     public abstract class Filter
     {
-        private static List<Filter> m_Filters = new List<Filter>();
+        private static readonly List<Filter> _filters = new List<Filter>();
 
         public static IList<Filter> List
         {
-            get { return m_Filters; }
+            get { return _filters; }
         }
 
         public static void Register(Filter filter)
         {
-            m_Filters.Add(filter);
+            _filters.Add(filter);
         }
 
         public static void Load(XmlElement xml)
@@ -52,9 +52,9 @@ namespace Assistant.Filters
                     LocString name = (LocString) Convert.ToInt32(el.GetAttribute("name"));
                     string enable = el.GetAttribute("enable");
 
-                    for (int i = 0; i < m_Filters.Count; i++)
+                    for (int i = 0; i < _filters.Count; i++)
                     {
-                        Filter f = (Filter) m_Filters[i];
+                        Filter f = (Filter) _filters[i];
                         if (f.Name == name)
                         {
                             if (Convert.ToBoolean(enable))
@@ -71,15 +71,15 @@ namespace Assistant.Filters
 
         public static void DisableAll()
         {
-            for (int i = 0; i < m_Filters.Count; i++)
-                ((Filter) m_Filters[i]).OnDisable();
+            for (int i = 0; i < _filters.Count; i++)
+                ((Filter) _filters[i]).OnDisable();
         }
 
         public static void Save(XmlTextWriter xml)
         {
-            for (int i = 0; i < m_Filters.Count; i++)
+            for (int i = 0; i < _filters.Count; i++)
             {
-                Filter f = (Filter) m_Filters[i];
+                Filter f = (Filter) _filters[i];
                 if (f.Enabled)
                 {
                     xml.WriteStartElement("filter");
@@ -96,10 +96,10 @@ namespace Assistant.Filters
 
         public bool Enabled
         {
-            get { return m_Enabled; }
+            get { return _enabled; }
             set
             {
-                if (value == m_Enabled)
+                if (value == _enabled)
                     return;
 
                 if (value)
@@ -109,13 +109,13 @@ namespace Assistant.Filters
             }
         }
 
-        private bool m_Enabled;
-        private PacketViewerCallback m_Callback;
+        private bool _enabled;
+        private PacketViewerCallback _callback;
 
         protected Filter()
         {
-            m_Enabled = false;
-            m_Callback = new PacketViewerCallback(this.OnFilter);
+            _enabled = false;
+            _callback = new PacketViewerCallback(this.OnFilter);
         }
 
         public override string ToString()
@@ -125,16 +125,16 @@ namespace Assistant.Filters
 
         public virtual void OnEnable()
         {
-            m_Enabled = true;
+            _enabled = true;
             for (int i = 0; i < PacketIDs.Length; i++)
-                PacketHandler.RegisterServerToClientViewer(PacketIDs[i], m_Callback);
+                PacketHandler.RegisterServerToClientViewer(PacketIDs[i], _callback);
         }
 
         public virtual void OnDisable()
         {
-            m_Enabled = false;
+            _enabled = false;
             for (int i = 0; i < PacketIDs.Length; i++)
-                PacketHandler.RemoveServerToClientViewer(PacketIDs[i], m_Callback);
+                PacketHandler.RemoveServerToClientViewer(PacketIDs[i], _callback);
         }
     }
 }
