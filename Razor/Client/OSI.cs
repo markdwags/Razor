@@ -177,9 +177,9 @@ namespace Assistant
             }
         }
 
-        public override void SetMapWndHandle(Form mapWnd)
+        public override void SetMapWndHandle(IntPtr mapWndHandle)
         {
-            Platform.PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr) UONetMessage.SetMapHWnd, mapWnd.Handle);
+            Platform.PostMessage(FindUOWindow(), WM_UONETEVENT, (IntPtr) UONetMessage.SetMapHWnd, mapWndHandle);
         }
 
         public override void RequestStatbarPatch(bool preAOS)

@@ -21,35 +21,28 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Forms;
 using System.Xml;
-using Assistant.UI;
 
 namespace Assistant.Core
 {
     public static class TextFilterManager
     {
-        private static ListBox _filterTextList;
-
         public static List<string> FilteredText = new List<string>();
 
-        public static void SetControls(ListBox filterTextList)
-        {
-            _filterTextList = filterTextList;
-        }
+        public delegate void ItemsChangedCallback();
+
+        public static ItemsChangedCallback OnItemsChanged { get; set; }
 
         public static void AddFilter(string filter)
         {
             FilteredText.Add(filter);
-
-            RedrawList();
+            OnItemsChanged?.Invoke();
         }
 
         public static void RemoveFilter(string filter)
         {
             FilteredText.Remove(filter);
-
-            RedrawList();
+            OnItemsChanged?.Invoke();
         }
 
         public static void Save(XmlTextWriter xml)
@@ -89,7 +82,7 @@ namespace Assistant.Core
                     FilteredText.Add(Convert.ToString(el.GetAttribute("text")));
                 }
 
-                RedrawList();
+                OnItemsChanged?.Invoke();
             }
             catch (Exception ex)
             {
@@ -100,22 +93,6 @@ namespace Assistant.Core
         public static void ClearAll()
         {
             FilteredText.Clear();
-        }
-
-        public static void RedrawList()
-        {
-            _filterTextList?.SafeAction(s =>
-            {
-                s.BeginUpdate();
-                s.Items.Clear();
-
-                foreach (string text in FilteredText)
-                {
-                    s.Items.Add(text);
-                }
-
-                s.EndUpdate();
-            });
         }
     }
 }

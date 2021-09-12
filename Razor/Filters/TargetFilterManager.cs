@@ -20,23 +20,20 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using System.Xml;
 using Assistant.Core;
-using Assistant.UI;
 
 namespace Assistant.Filters
 {
     public static class TargetFilterManager
     {
-        private static ListBox _targetFilterList;
+        public static List<TargetFilter> TargetFilters = new List<TargetFilter>();
 
-        private static List<TargetFilter> TargetFilters = new List<TargetFilter>();
+        public delegate void ItemsChangedCallback();
+        public delegate void AddFriendTargetCallback();
 
-        public static void SetControls(ListBox targetFilterList)
-        {
-            _targetFilterList = targetFilterList;
-        }
+        public static ItemsChangedCallback OnItemsChanged { get; set; }
+        public static AddFriendTargetCallback OnAddFriendTarget { get; set; }
 
         public static void OnTargetAddTargetFilter()
         {
@@ -46,7 +43,7 @@ namespace Assistant.Filters
 
         public static void OnAddFriendTargetFilter(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.SafeAction(s => s.ShowMe());
+            OnAddFriendTarget?.Invoke();
 
             if (!location && serial.IsMobile && serial != World.Player.Serial)
             {
@@ -57,7 +54,7 @@ namespace Assistant.Filters
 
                 AddTargetFilter(m.Name, serial);
 
-                RedrawList();
+                OnItemsChanged?.Invoke();
             }
         }
 
@@ -157,7 +154,7 @@ namespace Assistant.Filters
         public static bool RemoveTargetFilter(int index)
         {
             TargetFilters.RemoveAt(index);
-            RedrawList();
+            OnItemsChanged?.Invoke();
 
             return true;
         }
@@ -165,7 +162,7 @@ namespace Assistant.Filters
         public static void ClearTargetFilters()
         {
             TargetFilters.Clear();
-            RedrawList();
+            OnItemsChanged?.Invoke();
         }
 
         public static void Save(XmlTextWriter xml)
@@ -208,28 +205,12 @@ namespace Assistant.Filters
                 // must not be in the profile, move on
             }
 
-            RedrawList();
+            OnItemsChanged?.Invoke();
         }
 
         public static void ClearAll()
         {
             TargetFilters.Clear();
-        }
-
-        public static void RedrawList()
-        {
-            _targetFilterList?.SafeAction(s =>
-            {
-                s.BeginUpdate();
-                s.Items.Clear();
-
-                foreach (var target in TargetFilters)
-                {
-                    s.Items.Add(target);
-                }
-
-                s.EndUpdate();
-            });
         }
     }
 }

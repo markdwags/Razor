@@ -23,7 +23,6 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Assistant
 {
@@ -98,7 +97,7 @@ namespace Assistant
 
         public abstract bool ClientRunning { get; }
 
-        public abstract void SetMapWndHandle(Form mapWnd);
+        public abstract void SetMapWndHandle(IntPtr mapWndHandle);
 
         public abstract void RequestStatbarPatch(bool preAOS);
 

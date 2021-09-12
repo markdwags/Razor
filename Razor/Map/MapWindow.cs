@@ -70,7 +70,7 @@ namespace Assistant.MapUO
             //
 
             this.Map.FullUpdate();
-            Client.Instance.SetMapWndHandle(this);
+            Client.Instance.SetMapWndHandle(this.Handle);
         }
 
         public class MapMenuItem : ToolStripMenuItem
@@ -160,7 +160,7 @@ namespace Assistant.MapUO
                         Engine.MainWindow.MapWindow.Show();
                         Engine.MainWindow.MapWindow.BringToFront();
                         Engine.MainWindow.MapWindow.TopMost = true;
-                        Client.Instance.SetMapWndHandle(Engine.MainWindow.MapWindow);
+                        Client.Instance.SetMapWndHandle(Engine.MainWindow.MapWindow.Handle);
                     }
                 }
             }
@@ -358,7 +358,7 @@ namespace Assistant.MapUO
 
         public void UpdateMap()
         {
-            Client.Instance.SetMapWndHandle(this);
+            Client.Instance.SetMapWndHandle(this.Handle);
             this.Map.UpdateMap();
         }
 
