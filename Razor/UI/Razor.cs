@@ -514,6 +514,8 @@ namespace Assistant
 
             disableScriptTooltips.SafeAction(s => { s.Checked = Config.GetBool("DisableScriptTooltips"); });
 
+            buyAgentIgnoreGold.SafeAction(s => { s.Checked = Config.GetBool("BuyAgentsIgnoreGold"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -7552,6 +7554,11 @@ namespace Assistant
                 MessageBox.Show(this, ex.Message, "Unable to open directory", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
+        }
+
+        private void buyAgentIgnoreGold_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("BuyAgentsIgnoreGold", buyAgentIgnoreGold.Checked);
         }
     }
 }

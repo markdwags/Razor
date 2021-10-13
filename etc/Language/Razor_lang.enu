@@ -177,6 +177,7 @@ MainForm::filterSystemMessages=Filter repeating system messages
 MainForm::filterRazorMessages=Filter repeating Razor messages
 MainForm::filterOverheadMessages=Filter repeating overhead messages
 MainForm::overrideSpellFormat=Override spell format
+MainForm::buyAgentIgnoreGold=Buy Agents ignore player gold
 
 HueEntry::Text=Select a Hue
 HueEntry::cancel=Cancel
@@ -822,3 +823,4 @@ InputBox::ok=&OK
 2117=Gump: System Messages
 2118=Gump: Hot Keys
 2119=Gump: Boat Control
+2120=Buy Agent attempted to buy {0} item(s) for {1}gp.

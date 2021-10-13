@@ -314,6 +314,8 @@ namespace Assistant
 
             AddProperty("DisableScriptTooltips", false);
 
+            AddProperty("BuyAgentsIgnoreGold", false);            
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

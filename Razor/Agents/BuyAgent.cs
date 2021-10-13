@@ -221,41 +221,52 @@ namespace Assistant.Agents
                 }
             }
 
-            if (cost > World.Player.Gold && cost < 2000 && buyList.Count > 0)
+            if (!Config.GetBool("BuyAgentsIgnoreGold"))
             {
-                lowGoldWarn = true;
-                do
+                if (cost > World.Player.Gold && cost < 2000 && buyList.Count > 0)
                 {
-                    VendorBuyItem vbi = (VendorBuyItem) buyList[0];
-                    if (cost - vbi.TotalCost <= World.Player.Gold)
+                    lowGoldWarn = true;
+                    do
                     {
-                        while (cost > World.Player.Gold && vbi.Amount > 0)
+                        VendorBuyItem vbi = (VendorBuyItem)buyList[0];
+                        if (cost - vbi.TotalCost <= World.Player.Gold)
                         {
-                            cost -= vbi.Price;
-                            --vbi.Amount;
-                            --total;
-                        }
+                            while (cost > World.Player.Gold && vbi.Amount > 0)
+                            {
+                                cost -= vbi.Price;
+                                --vbi.Amount;
+                                --total;
+                            }
 
-                        if (vbi.Amount <= 0)
+                            if (vbi.Amount <= 0)
+                            {
+                                buyList.RemoveAt(0);
+                            }
+                        }
+                        else
                         {
+                            cost -= vbi.TotalCost;
+                            total -= vbi.Amount;
                             buyList.RemoveAt(0);
                         }
-                    }
-                    else
-                    {
-                        cost -= vbi.TotalCost;
-                        total -= vbi.Amount;
-                        buyList.RemoveAt(0);
-                    }
-                } while (cost > World.Player.Gold && buyList.Count > 0);
-            }
+                    } while (cost > World.Player.Gold && buyList.Count > 0);
+                }
+            }            
 
             if (buyList.Count > 0)
             {
                 args.Block = true;
                 BuyLists[serial] = buyList;
                 Client.Instance.SendToServer(new VendorBuyResponse(serial, buyList));
-                World.Player.SendMessage(MsgLevel.Force, LocString.BuyTotals, total, cost);
+
+                if (Config.GetBool("BuyAgentsIgnoreGold"))
+                {
+                    World.Player.SendMessage(MsgLevel.Force, LocString.BuyAgentAttempt, total, cost);
+                }
+                else
+                {
+                    World.Player.SendMessage(MsgLevel.Force, LocString.BuyTotals, total, cost);
+                }
             }
 
             if (lowGoldWarn)

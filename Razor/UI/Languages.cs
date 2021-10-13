@@ -588,6 +588,7 @@ namespace Assistant
         GumpSysMsg,
         GumpHotKeys,
         GumpBoatControl,
+        BuyAgentAttempt,
         __End
     }
 
