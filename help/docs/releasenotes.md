@@ -1,6 +1,17 @@
 # Razor Release Notes
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
+## 1.7.1.7 (10/13/2021)
+
+* Added the keyword `as` when scripting to assign temp variables. See scripting guide.
+* Fixed issue with auto-save of scripts
+* `AutoSearchExemption` will now save by type
+* `menu` command will block popup unless you pass a parameter
+* Sound filter list and sound names are in sync, sorts in alphabetical order, block correct sounds
+* Fixed syntax highlighting on nested quotes in scripts
+* Razor should now run again with the legacy OSI client
+* Razor settings are stored in a simple csv file now
+* Feature flags can be 32-bit
 
 ## 1.7.0.12 (5/29/2021)
 
