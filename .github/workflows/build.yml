@@ -2,70 +2,73 @@ name: Build
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - pipeline
   #pull_request:
   # branches: [ master ]
 
 jobs:
-
   build:
-
     strategy:
       matrix:
         configuration: [Release]
 
-    runs-on: windows-latest 
+    runs-on: windows-latest
 
     #if: ${{ !contains(github.event.head_commit.message, '[chore]') }}
 
     env:
-      Solution_Name: Razor.sln 
+      SOLUTION_NAME: Razor.sln
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    
-    - name: Install .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
+      - name: Install .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
 
-    - name: Restore Razor
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Build Razor
-      run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      - name: Update Assembly Version
+        run: |
+          ./AssemblyVersion.ps1
 
-    - name: Archive build artifacts      
-      run: |
-        cd bin/Win32/Release/
-        7z a -tzip "Razor-dev-preview.zip" "*"
+      - name: Restore Razor
+        run: msbuild $env:SOLUTION_NAME /t:Restore /p:Configuration=$env:Configuration
+        env:
+          Configuration: ${{ matrix.configuration }}
 
-    - name: Delete Dev Release
-      uses: dev-drprasad/delete-tag-and-release@v0.2.0
-      with:
-        delete_release: true
-        tag_name: Razor-dev-preview
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Razor
+        run: msbuild $env:SOLUTION_NAME /t:Build /p:Configuration=$env:Configuration
+        env:
+          Configuration: ${{ matrix.configuration }}
 
-    - name: Create Dev Release
-      uses: ncipollo/release-action@v1
-      with:
-        name: "Razor Dev Preview"
-        body: "This is built automatically after each commit to master, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk."
-        artifacts: "bin/Win32/Release/Razor-dev-preview.zip"          
-        prerelease: true
-        tag: Razor-dev-preview
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Archive build artifacts
+        run: |
+          cd bin/Win32/Release/
+          7z a -tzip "Razor-dev-preview.zip" "*"
 
+      - name: Delete Dev Release
+        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true
+          tag_name: Razor-dev-preview
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Dev Release
+        uses: ncipollo/release-action@v1
+        with:
+          name: 'Razor Dev Preview'
+          body: 'This is built automatically after each commit to master, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk.'
+          artifacts: 'bin/Win32/Release/Razor-dev-preview.zip'
+          prerelease: true
+          tag: Razor-dev-preview
+          token: ${{ secrets.GITHUB_TOKEN }}
 
