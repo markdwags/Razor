@@ -300,7 +300,8 @@ namespace Assistant
             foreach (var i in m_Items)
             {
                 Item item = i;
-                if (item.ItemID.ItemData.Name.ToLower().Contains(name.ToLower()))
+                
+                if (item.ItemID.ItemData.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     return item;
                 }
