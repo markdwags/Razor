@@ -99,6 +99,8 @@ namespace Assistant.Agents
             get { return $"{Language.GetString(LocString.Organizer)}-{Number}"; }
         }
 
+        public override string Alias { get; set; }
+
         public override int Number { get; }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)
@@ -345,6 +347,8 @@ namespace Assistant.Agents
         public override void Save(XmlTextWriter xml)
         {
             xml.WriteAttributeString("hotbag", m_Cont.ToString());
+            xml.WriteAttributeString("alias", Alias);
+
             for (int i = 0; i < m_Items.Count; i++)
             {
                 xml.WriteStartElement("item");
@@ -362,6 +366,15 @@ namespace Assistant.Agents
             catch
             {
                 // ignored
+            }
+
+            try
+            {
+                Alias = node.GetAttribute("alias");
+            }
+            catch
+            {
+                Alias = string.Empty;
             }
 
             if (m_BagBTN != null)

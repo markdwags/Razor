@@ -108,6 +108,8 @@ namespace Assistant.Agents
             get { return Language.GetString(LocString.UseOnce); }
         }
 
+        public override string Alias { get; set; }
+
         public override int Number { get; }
 
         public override void OnSelected(ListBox subList, params Button[] buttons)

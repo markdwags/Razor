@@ -350,10 +350,9 @@ namespace Assistant.Agents
             BuyLists.Clear();
         }
 
-        public override string Name
-        {
-            get { return $"{Language.GetString(LocString.Buy)}-{Number}"; }
-        }
+        public override string Name => $"{Language.GetString(LocString.Buy)}-{Number}";
+
+        public override string Alias { get; set; }
 
         public override int Number { get; }
 
@@ -495,6 +494,7 @@ namespace Assistant.Agents
             }
 
             xml.WriteAttributeString("enabled", m_Enabled.ToString());
+            xml.WriteAttributeString("alias", Alias);
 
             foreach (BuyEntry b in m_Items)
             {
@@ -514,6 +514,15 @@ namespace Assistant.Agents
             catch
             {
                 m_Enabled = false;
+            }
+
+            try
+            {
+                Alias = node.GetAttribute("alias");
+            }
+            catch
+            {
+                Alias = string.Empty;
             }
 
             foreach (XmlElement el in node.GetElementsByTagName("item"))

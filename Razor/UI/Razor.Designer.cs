@@ -451,6 +451,7 @@ namespace Assistant
             this.queueTargets = new System.Windows.Forms.CheckBox();
             this.lblTargetFormat = new System.Windows.Forms.Label();
             this.subOptionsMiscTab = new System.Windows.Forms.TabPage();
+            this.buyAgentIgnoreGold = new System.Windows.Forms.CheckBox();
             this.reequipHandsPotion = new System.Windows.Forms.CheckBox();
             this.autoOpenDoorWhenHidden = new System.Windows.Forms.CheckBox();
             this.lblStealthFormat = new System.Windows.Forms.Label();
@@ -782,7 +783,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.buyAgentIgnoreGold = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1759,11 +1759,22 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
+            // 
+            // buyAgentIgnoreGold
+            // 
+            this.buyAgentIgnoreGold.AutoSize = true;
+            this.buyAgentIgnoreGold.Location = new System.Drawing.Point(260, 244);
+            this.buyAgentIgnoreGold.Name = "buyAgentIgnoreGold";
+            this.buyAgentIgnoreGold.Size = new System.Drawing.Size(185, 19);
+            this.buyAgentIgnoreGold.TabIndex = 126;
+            this.buyAgentIgnoreGold.Text = "Buy Agents ignore player gold";
+            this.buyAgentIgnoreGold.UseVisualStyleBackColor = true;
+            this.buyAgentIgnoreGold.CheckedChanged += new System.EventHandler(this.buyAgentIgnoreGold_CheckedChanged);
             // 
             // reequipHandsPotion
             // 
@@ -3344,6 +3355,7 @@ namespace Assistant
             this.agentList.Size = new System.Drawing.Size(130, 23);
             this.agentList.TabIndex = 2;
             this.agentList.SelectedIndexChanged += new System.EventHandler(this.agentList_SelectedIndexChanged);
+            this.agentList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.agentList_MouseDown);
             // 
             // agentGroup
             // 
@@ -3359,9 +3371,9 @@ namespace Assistant
             this.agentSubList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.agentSubList.IntegralHeight = false;
             this.agentSubList.ItemHeight = 15;
-            this.agentSubList.Location = new System.Drawing.Point(6, 15);
+            this.agentSubList.Location = new System.Drawing.Point(6, 22);
             this.agentSubList.Name = "agentSubList";
-            this.agentSubList.Size = new System.Drawing.Size(356, 288);
+            this.agentSubList.Size = new System.Drawing.Size(356, 281);
             this.agentSubList.TabIndex = 0;
             this.agentSubList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.agentSubList_MouseDown);
             // 
@@ -5305,17 +5317,6 @@ namespace Assistant
             this.aboutVer.TabIndex = 14;
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // buyAgentIgnoreGold
-            // 
-            this.buyAgentIgnoreGold.AutoSize = true;
-            this.buyAgentIgnoreGold.Location = new System.Drawing.Point(260, 244);
-            this.buyAgentIgnoreGold.Name = "buyAgentIgnoreGold";
-            this.buyAgentIgnoreGold.Size = new System.Drawing.Size(185, 19);
-            this.buyAgentIgnoreGold.TabIndex = 126;
-            this.buyAgentIgnoreGold.Text = "Buy Agents ignore player gold";
-            this.buyAgentIgnoreGold.UseVisualStyleBackColor = true;
-            this.buyAgentIgnoreGold.CheckedChanged += new System.EventHandler(this.buyAgentIgnoreGold_CheckedChanged);
             // 
             // MainForm
             // 

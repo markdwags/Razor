@@ -7560,5 +7560,49 @@ namespace Assistant
         {
             Config.SetProperty("BuyAgentsIgnoreGold", buyAgentIgnoreGold.Checked);
         }
+
+        private ContextMenuStrip m_AgentsMenu = null;
+
+        private void agentList_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Agent agent = (Agent)agentList.SelectedItem;
+
+                if (agent != null && (agent is OrganizerAgent || agent is RestockAgent || agent is BuyAgent))
+                {
+                    m_AgentsMenu = new ContextMenuStrip();
+                    m_AgentsMenu.Items.Add($"Set alias for '{agent.Name}'", null, OnAgentAlias);
+                    m_AgentsMenu.Show(agentList, new Point(e.X, e.Y));
+                }
+            }
+        }
+
+        private void OnAgentAlias(object sender, EventArgs e)
+        {
+            Agent agent = (Agent)agentList.SelectedItem;
+
+            if (InputBox.Show(this, $"Set '{agent}' Alias", "Enter an alias for this agent"))
+            {
+                string alias = InputBox.GetString();
+
+                if (string.IsNullOrEmpty(alias) || alias.IndexOfAny(Path.GetInvalidPathChars()) != -1 || alias.IndexOfAny(m_InvalidNameChars) != -1)
+                {
+                    MessageBox.Show(this, Language.GetString(LocString.InvalidChars),
+                        Language.GetString(LocString.Invalid), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    agent.Alias = alias;
+
+                    int sel = agentList.SelectedIndex;
+
+                    Agent.Redraw(agentList, agentGroup, agentB1, agentB2, agentB3, agentB4, agentB5, agentB6);
+                    if (sel >= 0 && sel < agentList.Items.Count)
+                        agentList.SelectedIndex = sel;
+                }
+
+            }
+        }
     }
 }

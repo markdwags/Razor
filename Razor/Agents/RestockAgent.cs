@@ -98,11 +98,13 @@ namespace Assistant.Agents
         {
             m_Items.Clear();
         }
-
         public override string Name
         {
+
             get { return $"{Language.GetString(LocString.Restock)}-{Number}"; }
         }
+
+        public override string Alias { get; set; }
 
         public override int Number { get; }
 
@@ -454,6 +456,8 @@ namespace Assistant.Agents
         public override void Save(XmlTextWriter xml)
         {
             xml.WriteAttributeString("hotbag", m_HotBag.Value.ToString());
+            xml.WriteAttributeString("alias", Alias);
+
             for (int i = 0; i < m_Items.Count; i++)
             {
                 xml.WriteStartElement("item");
@@ -473,6 +477,15 @@ namespace Assistant.Agents
             catch
             {
                 m_HotBag = Serial.Zero;
+            }
+
+            try
+            {
+                Alias = node.GetAttribute("alias");
+            }
+            catch
+            {
+                Alias = string.Empty;
             }
 
             foreach (XmlElement el in node.GetElementsByTagName("item"))
