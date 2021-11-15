@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Scripts;
 using Assistant.UI;
 
 namespace Assistant.Agents
@@ -247,7 +248,10 @@ namespace Assistant.Agents
 
         private void OnHBTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.SafeAction(s => s.ShowMe());
+            if (Engine.MainWindow != null && !ScriptManager.Running)
+            {
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
+            }
 
             Item hb = World.FindItem(m_HotBag);
             if (hb != null)

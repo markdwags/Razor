@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Scripts;
 using Assistant.UI;
 
 namespace Assistant.Agents
@@ -300,7 +301,7 @@ namespace Assistant.Agents
 
         private void OnTargetBag(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            if (Engine.MainWindow != null)
+            if (Engine.MainWindow != null && !ScriptManager.Running)
             {
                 Engine.MainWindow.SafeAction(s => s.ShowMe());
             }
