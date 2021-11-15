@@ -45,9 +45,7 @@ namespace Assistant.Scripts
             {
                 throw new RunTimeError( "Usage: restock (number) ['set']");
             }
-
-            int agentNum = vars[0].AsInt();
-
+            
             bool setBag = false;
 
             if (vars.Length == 2)
@@ -55,6 +53,20 @@ namespace Assistant.Scripts
                 if (vars[1].AsString().IndexOf("set", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     setBag = true;
+                }
+            }
+
+            if (!int.TryParse(vars[0].AsString(), out var agentNum))
+            {
+                string alias = vars[0].AsString();
+
+                foreach (RestockAgent agent in RestockAgent.Agents)
+                {
+                    if (agent.Alias.IndexOf(alias, StringComparison.OrdinalIgnoreCase) != -1)
+                    {
+                        agentNum = agent.Number;
+                        break;
+                    }
                 }
             }
 
@@ -110,8 +122,6 @@ namespace Assistant.Scripts
                 throw new RunTimeError("Usage: organizer (number) ['set']");
             }
 
-            int agentNum = vars[0].AsInt();
-
             bool setBag = false;
 
             if (vars.Length == 2)
@@ -119,6 +129,20 @@ namespace Assistant.Scripts
                 if (vars[1].AsString().IndexOf("set", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     setBag = true;
+                }
+            }
+
+            if (!int.TryParse(vars[0].AsString(), out var agentNum))
+            {
+                string alias = vars[0].AsString();
+
+                foreach (OrganizerAgent agent in OrganizerAgent.Agents)
+                {
+                    if (agent.Alias.IndexOf(alias, StringComparison.OrdinalIgnoreCase) != -1)
+                    {
+                        agentNum = agent.Number;
+                        break;
+                    }
                 }
             }
 
