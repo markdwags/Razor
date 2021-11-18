@@ -53,6 +53,7 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("dex", Dex);
 
             Interpreter.RegisterExpressionHandler("weight", Weight);
+            Interpreter.RegisterExpressionHandler("maxweight", MaxWeight);
 
             Interpreter.RegisterExpressionHandler("skill", SkillExpression);
             Interpreter.RegisterExpressionHandler("count", CountExpression);
@@ -288,6 +289,14 @@ namespace Assistant.Scripts
                 return 0;
 
             return World.Player.Weight;
+        }
+
+        private static int MaxWeight(string expression, Variable[] vars, bool quiet, bool force)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.MaxWeight;
         }
 
         private static double SkillExpression(string expression, Variable[] vars, bool quiet, bool force)

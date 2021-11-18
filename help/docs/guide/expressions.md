@@ -213,6 +213,23 @@ Description: Used to get your current or max mana levels.
         endwhile
         ```
 
+## maxweight
+
+- `maxweight`
+
+Description: Used to get your max allowed weight.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if weight <= maxweight
+            say 'I am overweight'
+        endif
+        ```
+
+
 ## mounted
 
 - `mounted`
