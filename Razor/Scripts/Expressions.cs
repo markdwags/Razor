@@ -83,9 +83,11 @@ namespace Assistant.Scripts
                 throw new RunTimeError("Usage: findbuff/finddebuff ('name of buff')");
             }
 
-            foreach (BuffsDebuffs buff in World.Player.BuffsDebuffs)
+            string name = vars[0].AsString();
+
+            foreach (BuffDebuff buff in World.Player.BuffsDebuffs)
             {
-                if (buff.ClilocMessage1.IndexOf(vars[0].AsString(), StringComparison.CurrentCultureIgnoreCase) != -1)
+                if (buff.ClilocMessage1.IndexOf(name, StringComparison.CurrentCultureIgnoreCase) != -1)
                 {
                     return true;
                 }

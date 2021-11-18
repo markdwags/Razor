@@ -262,8 +262,6 @@ namespace Assistant
             sb.Replace(@"{gate}", GateTimer.Running ? $"{GateTimer.Count}" : "-");
 
             sb.Replace(@"{stealthsteps}", StealthSteps.Counting ? StealthSteps.Count.ToString() : "-");
-            //Client.ConnectionStart != DateTime.MinValue )
-            //time = (int)((DateTime.UtcNow - Client.ConnectionStart).TotalSeconds);
             sb.Replace(@"{uptime}",
                 ConnectionStart != DateTime.MinValue
                     ? Utility.FormatTime((int) ((DateTime.UtcNow - ConnectionStart).TotalSeconds))
@@ -276,34 +274,34 @@ namespace Assistant
             sb.Replace(@"{totaldamagedealt}", DamageTracker.Running ? $"{DamageTracker.TotalDamageDealt}" : "-");
             sb.Replace(@"{totaldamagetaken}", DamageTracker.Running ? $"{DamageTracker.TotalDamageTaken}" : "-");
 
-
-            string buffList = string.Empty;
-
-            if (BuffsTimer.Running)
+            if (IsOSI)
             {
-                StringBuilder buffs = new StringBuilder();
-                foreach (BuffsDebuffs buff in World.Player.BuffsDebuffs)
+                if (World.Player.BuffsDebuffs.Count > 0)
                 {
-                    int timeLeft = 0;
-
-                    if (buff.Duration > 0)
+                    StringBuilder buffs = new StringBuilder();
+                    foreach (BuffDebuff buff in World.Player.BuffsDebuffs)
                     {
-                        TimeSpan diff = DateTime.UtcNow - buff.Timestamp;
-                        timeLeft = buff.Duration - (int) diff.TotalSeconds;
+                        int timeLeft = 0;
+
+                        if (buff.Duration > 0)
+                        {
+                            TimeSpan diff = DateTime.UtcNow - buff.Timestamp;
+                            timeLeft = buff.Duration - (int)diff.TotalSeconds;
+                        }
+
+                        buffs.Append(timeLeft <= 0
+                            ? $"{buff.ClilocMessage1}, "
+                            : $"{buff.ClilocMessage1} ({timeLeft}), ");
                     }
 
-                    buffs.Append(timeLeft <= 0
-                        ? $"{buff.ClilocMessage1}, "
-                        : $"{buff.ClilocMessage1} ({timeLeft}), ");
+                    buffs.Length = Math.Max(0, buffs.Length - 2);
+                    string buffList = buffs.ToString();
+                    sb.Replace(@"{buffsdebuffs}", buffList);
                 }
-
-                buffs.Length = Math.Max(0, buffs.Length - 2);
-                buffList = buffs.ToString();
-                sb.Replace(@"{buffsdebuffs}", buffList);
-            }
-            else
-            {
-                sb.Replace(@"{buffsdebuffs}", "-");
+                else
+                {
+                    sb.Replace(@"{buffsdebuffs}", "-");
+                }
             }
 
             SetTitleStr(sb.ToString());

@@ -1,6 +1,6 @@
 ﻿namespace Assistant.UI
 {
-    partial class BuffDebuff
+    partial class BuffDebuffOptions
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuffDebuff));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuffDebuffOptions));
             this.grpFilter = new System.Windows.Forms.GroupBox();
             this.removeFilter = new System.Windows.Forms.Button();
             this.addFilter = new System.Windows.Forms.Button();
@@ -41,9 +41,9 @@
             this.lblDebuffHue = new System.Windows.Forms.Label();
             this.setBuffHue = new System.Windows.Forms.Button();
             this.lblBuffHue = new System.Windows.Forms.Label();
-            this.lblFormat = new System.Windows.Forms.Label();
             this.buffFormatKey = new System.Windows.Forms.Button();
             this.okClose = new System.Windows.Forms.Button();
+            this.overrideBuffDebuffFormat = new System.Windows.Forms.CheckBox();
             this.grpFilter.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,7 +91,7 @@
             // lblSeconds
             // 
             this.lblSeconds.AutoSize = true;
-            this.lblSeconds.Location = new System.Drawing.Point(225, 265);
+            this.lblSeconds.Location = new System.Drawing.Point(225, 213);
             this.lblSeconds.Name = "lblSeconds";
             this.lblSeconds.Size = new System.Drawing.Size(50, 15);
             this.lblSeconds.TabIndex = 82;
@@ -99,7 +99,7 @@
             // 
             // buffDebuffSeconds
             // 
-            this.buffDebuffSeconds.Location = new System.Drawing.Point(175, 262);
+            this.buffDebuffSeconds.Location = new System.Drawing.Point(175, 210);
             this.buffDebuffSeconds.Name = "buffDebuffSeconds";
             this.buffDebuffSeconds.Size = new System.Drawing.Size(47, 23);
             this.buffDebuffSeconds.TabIndex = 81;
@@ -110,7 +110,7 @@
             // displayBuffDebuffEvery
             // 
             this.displayBuffDebuffEvery.AutoSize = true;
-            this.displayBuffDebuffEvery.Location = new System.Drawing.Point(18, 264);
+            this.displayBuffDebuffEvery.Location = new System.Drawing.Point(18, 212);
             this.displayBuffDebuffEvery.Name = "displayBuffDebuffEvery";
             this.displayBuffDebuffEvery.Size = new System.Drawing.Size(160, 19);
             this.displayBuffDebuffEvery.TabIndex = 80;
@@ -120,17 +120,17 @@
             // 
             // buffDebuffFormat
             // 
-            this.buffDebuffFormat.Location = new System.Drawing.Point(18, 173);
+            this.buffDebuffFormat.Location = new System.Drawing.Point(18, 183);
             this.buffDebuffFormat.Name = "buffDebuffFormat";
             this.buffDebuffFormat.Size = new System.Drawing.Size(224, 23);
             this.buffDebuffFormat.TabIndex = 79;
-            this.buffDebuffFormat.Text = "[{action}{name} ({duration}s)]";
+            this.buffDebuffFormat.Text = "[{action}{name} {duration}]";
             this.buffDebuffFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.buffDebuffFormat.TextChanged += new System.EventHandler(this.BuffDebuffFormat_TextChanged);
             // 
             // setDebuffHue
             // 
-            this.setDebuffHue.Location = new System.Drawing.Point(175, 229);
+            this.setDebuffHue.Location = new System.Drawing.Point(175, 260);
             this.setDebuffHue.Name = "setDebuffHue";
             this.setDebuffHue.Size = new System.Drawing.Size(47, 20);
             this.setDebuffHue.TabIndex = 78;
@@ -139,7 +139,7 @@
             // 
             // lblDebuffHue
             // 
-            this.lblDebuffHue.Location = new System.Drawing.Point(15, 231);
+            this.lblDebuffHue.Location = new System.Drawing.Point(15, 262);
             this.lblDebuffHue.Name = "lblDebuffHue";
             this.lblDebuffHue.Size = new System.Drawing.Size(207, 18);
             this.lblDebuffHue.TabIndex = 77;
@@ -147,7 +147,7 @@
             // 
             // setBuffHue
             // 
-            this.setBuffHue.Location = new System.Drawing.Point(175, 206);
+            this.setBuffHue.Location = new System.Drawing.Point(175, 237);
             this.setBuffHue.Name = "setBuffHue";
             this.setBuffHue.Size = new System.Drawing.Size(47, 20);
             this.setBuffHue.TabIndex = 76;
@@ -156,24 +156,15 @@
             // 
             // lblBuffHue
             // 
-            this.lblBuffHue.Location = new System.Drawing.Point(15, 208);
+            this.lblBuffHue.Location = new System.Drawing.Point(15, 239);
             this.lblBuffHue.Name = "lblBuffHue";
             this.lblBuffHue.Size = new System.Drawing.Size(207, 18);
             this.lblBuffHue.TabIndex = 75;
             this.lblBuffHue.Text = "Buff Hue:";
             // 
-            // lblFormat
-            // 
-            this.lblFormat.AutoSize = true;
-            this.lblFormat.Location = new System.Drawing.Point(15, 155);
-            this.lblFormat.Name = "lblFormat";
-            this.lblFormat.Size = new System.Drawing.Size(114, 15);
-            this.lblFormat.TabIndex = 74;
-            this.lblFormat.Text = "Buff/Debuff Format:";
-            // 
             // buffFormatKey
             // 
-            this.buffFormatKey.Location = new System.Drawing.Point(248, 173);
+            this.buffFormatKey.Location = new System.Drawing.Point(248, 183);
             this.buffFormatKey.Name = "buffFormatKey";
             this.buffFormatKey.Size = new System.Drawing.Size(16, 23);
             this.buffFormatKey.TabIndex = 84;
@@ -183,7 +174,7 @@
             // 
             // okClose
             // 
-            this.okClose.Location = new System.Drawing.Point(248, 301);
+            this.okClose.Location = new System.Drawing.Point(248, 251);
             this.okClose.Name = "okClose";
             this.okClose.Size = new System.Drawing.Size(83, 29);
             this.okClose.TabIndex = 85;
@@ -191,11 +182,23 @@
             this.okClose.UseVisualStyleBackColor = true;
             this.okClose.Click += new System.EventHandler(this.OkClose_Click);
             // 
+            // overrideBuffDebuffFormat
+            // 
+            this.overrideBuffDebuffFormat.AutoSize = true;
+            this.overrideBuffDebuffFormat.Location = new System.Drawing.Point(18, 158);
+            this.overrideBuffDebuffFormat.Name = "overrideBuffDebuffFormat";
+            this.overrideBuffDebuffFormat.Size = new System.Drawing.Size(175, 19);
+            this.overrideBuffDebuffFormat.TabIndex = 86;
+            this.overrideBuffDebuffFormat.Text = "Override buff/debuff format";
+            this.overrideBuffDebuffFormat.UseVisualStyleBackColor = true;
+            this.overrideBuffDebuffFormat.CheckedChanged += new System.EventHandler(this.overrideBuffDebuffFormat_CheckedChanged);
+            // 
             // BuffDebuff
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(341, 336);
+            this.ClientSize = new System.Drawing.Size(341, 291);
+            this.Controls.Add(this.overrideBuffDebuffFormat);
             this.Controls.Add(this.okClose);
             this.Controls.Add(this.buffFormatKey);
             this.Controls.Add(this.lblSeconds);
@@ -206,7 +209,6 @@
             this.Controls.Add(this.lblDebuffHue);
             this.Controls.Add(this.setBuffHue);
             this.Controls.Add(this.lblBuffHue);
-            this.Controls.Add(this.lblFormat);
             this.Controls.Add(this.grpFilter);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -216,11 +218,11 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Buff/Debuff Options";
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.BuffDebuff_Closing);
             this.Load += new System.EventHandler(this.BuffDebuff_Load);
             this.grpFilter.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-            this.Closing += new System.ComponentModel.CancelEventHandler(this.BuffDebuff_Closing);
 
         }
 
@@ -238,8 +240,8 @@
         private System.Windows.Forms.Label lblDebuffHue;
         private System.Windows.Forms.Button setBuffHue;
         private System.Windows.Forms.Label lblBuffHue;
-        private System.Windows.Forms.Label lblFormat;
         private System.Windows.Forms.Button buffFormatKey;
         private System.Windows.Forms.Button okClose;
+        private System.Windows.Forms.CheckBox overrideBuffDebuffFormat;
     }
 }

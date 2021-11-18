@@ -3004,12 +3004,6 @@ namespace Assistant
             {
                 BuffIcon buff = (BuffIcon) icon;
 
-                string format = Config.GetString("BuffDebuffFormat");
-                if (string.IsNullOrEmpty(format))
-                {
-                    format = "[{action}{name}]";
-                }
-
                 switch (action)
                 {
                     case 0x01: // show
@@ -3022,7 +3016,7 @@ namespace Assistant
                         p.ReadUInt16(); //0x0000
                         p.ReadByte(); //0x0
 
-                        BuffsDebuffs buffInfo = new BuffsDebuffs
+                        BuffDebuff buffInfo = new BuffDebuff
                         {
                             IconNumber = icon,
                             BuffIcon = (BuffIcon) icon,
@@ -3036,13 +3030,7 @@ namespace Assistant
                         {
                             World.Player.BuffsDebuffs.Add(buffInfo);
 
-                            if (Config.GetBool("ShowBuffDebuffOverhead") &&
-                                !BuffsTimer.IsFiltered(buffInfo.ClilocMessage1))
-                            {
-                                World.Player.OverheadMessage(Config.GetInt("BuffHue"),
-                                    format.Replace("{action}", "+").Replace("{name}", buffInfo.ClilocMessage1)
-                                        .Replace("{duration}", buffInfo.Duration.ToString()));
-                            }
+                            BuffDebuffManager.DisplayOverheadBuff(buffInfo);
                         }
 
                         break;
@@ -3050,16 +3038,7 @@ namespace Assistant
                     case 0x0: // remove
                         if (World.Player != null) // && World.Player.BuffsDebuffs.Any(b => b.BuffIcon == buff))
                         {
-                            if (Config.GetBool("ShowBuffDebuffOverhead"))
-                            {
-                                string buffRemoveInfo = World.Player.BuffsDebuffs.Where(b => b.BuffIcon == buff)
-                                    .Select(x => x.ClilocMessage1).FirstOrDefault();
-
-                                if (!BuffsTimer.IsFiltered(buffRemoveInfo))
-                                    World.Player.OverheadMessage(Config.GetInt("DebuffHue"),
-                                        format.Replace("{action}", "-").Replace("{name}", buffRemoveInfo)
-                                            .Replace("{duration}", string.Empty));
-                            }
+                            BuffDebuffManager.DisplayOverheadDebuff(buff);
 
                             World.Player.BuffsDebuffs.RemoveAll(b => b.BuffIcon == buff);
                         }

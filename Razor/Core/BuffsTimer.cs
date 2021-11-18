@@ -73,40 +73,11 @@ namespace Assistant
                 if (!Config.GetBool("BuffDebuffEveryXSeconds") || !Config.GetBool("ShowBuffDebuffOverhead"))
                     return;
 
-                foreach (BuffsDebuffs buffsDebuff in World.Player.BuffsDebuffs)
+                foreach (BuffDebuff buffsDebuff in World.Player.BuffsDebuffs)
                 {
-                    TimeSpan diff = DateTime.UtcNow - buffsDebuff.Timestamp;
-                    int timeLeft = buffsDebuff.Duration - (int) diff.TotalSeconds;
-
-                    if (!IsFiltered(buffsDebuff.ClilocMessage1) && timeLeft % Config.GetInt("BuffDebuffSeconds") == 0)
-                    {
-                        World.Player.OverheadMessage(Config.GetInt("BuffHue"),
-                            Config.GetString("BuffDebuffFormat").Replace("{action}", string.Empty)
-                                .Replace("{name}", buffsDebuff.ClilocMessage1)
-                                .Replace("{duration}", timeLeft.ToString()));
-                    }
+                    BuffDebuffManager.DisplayOverheadBuff(buffsDebuff, true);
                 }
             }
-        }
-
-        public static bool IsFiltered(string name)
-        {
-            if (string.IsNullOrEmpty(Config.GetString("BuffDebuffFilter")))
-                return false;
-
-            if (string.IsNullOrEmpty(name))
-                return false;
-
-            foreach (string filter in Config.GetString("BuffDebuffFilter").ToLower().Split(','))
-            {
-                if (string.IsNullOrEmpty(filter))
-                    continue;
-
-                if (name.ToLower().Contains(filter))
-                    return true;
-            }
-
-            return false;
         }
     }
 }

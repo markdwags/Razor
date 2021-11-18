@@ -166,8 +166,8 @@
     <Compile Include="Agents\Agents.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\BuffDebuffManager.cs" />
     <Compile Include="Core\BuffsTimer.cs" />
-    <Compile Include="Core\BuffsDebuffs.cs" />
     <Compile Include="Core\BodCapture.cs" />
     <Compile Include="Core\Dress.cs" />
     <Compile Include="Core\EncodedSpeech.cs" />
@@ -378,11 +378,11 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\BuffDebuff.cs">
+    <Compile Include="UI\BuffDebuffOptions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\BuffDebuff.Designer.cs">
-      <DependentUpon>BuffDebuff.cs</DependentUpon>
+    <Compile Include="UI\BuffDebuffOptions.Designer.cs">
+      <DependentUpon>BuffDebuffOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Config.cs">
       <SubType>Code</SubType>
@@ -506,8 +506,8 @@
       <DependentUpon>AddCounter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\App.ico" />
-    <EmbeddedResource Include="UI\BuffDebuff.resx">
-      <DependentUpon>BuffDebuff.cs</DependentUpon>
+    <EmbeddedResource Include="UI\BuffDebuffOptions.resx">
+      <DependentUpon>BuffDebuffOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\HueEntry.resx">
       <DependentUpon>HueEntry.cs</DependentUpon>

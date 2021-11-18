@@ -5988,7 +5988,7 @@ namespace Assistant
             Config.SetProperty("BandageEndMessage", bandageEndMessage.Text);
         }
 
-        private BuffDebuff _buffDebuffOptions = null;
+        private BuffDebuffOptions _buffDebuffOptions = null;
 
         private void BuffDebuffOptions_Click(object sender, EventArgs e)
         {
@@ -5998,7 +5998,7 @@ namespace Assistant
             }
             else
             {
-                _buffDebuffOptions = new BuffDebuff();
+                _buffDebuffOptions = new BuffDebuffOptions();
 
                 _buffDebuffOptions.SafeAction(s => s.Show());
             }

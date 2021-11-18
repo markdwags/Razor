@@ -19,6 +19,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Assistant.Agents;
 
 namespace Assistant.Core
 {
@@ -150,7 +153,7 @@ namespace Assistant.Core
         CityTradeDeal = 1126
     }
 
-    public class BuffsDebuffs
+    public class BuffDebuff
     {
         public int IconNumber { get; set; }
         public int Duration { get; set; }
@@ -158,5 +161,98 @@ namespace Assistant.Core
         public string ClilocMessage2 { get; set; }
         public BuffIcon BuffIcon { get; set; }
         public DateTime Timestamp { get; set; }
+    }
+
+    public static class BuffDebuffManager
+    {
+        private static List<string> _buffDebuffFilter = new List<string>();
+
+        public static void DisplayOverheadBuff(BuffDebuff buff, bool ignoreAction = false)
+        {
+            if (Config.GetBool("ShowBuffDebuffOverhead") && !IsFiltered(buff.ClilocMessage1))
+            {
+                TimeSpan diff = DateTime.UtcNow - buff.Timestamp;
+                int timeLeft = buff.Duration - (int)diff.TotalSeconds;
+
+                if (Config.GetBool("OverrideBuffDebuffFormat"))
+                {
+                    string format = Config.GetString("BuffDebuffFormat");
+
+                    if (string.IsNullOrEmpty(format))
+                    {
+                        format = "[{action}{name} {duration}]";
+                    }
+                    
+                    World.Player.OverheadMessage(Config.GetInt("BuffHue"), format.Replace("{action}", ignoreAction ? string.Empty : "+").Replace("{name}", buff.ClilocMessage1)
+                            .Replace("{duration}", timeLeft < 1 ? string.Empty : $"({timeLeft}s)"));
+                }
+                else
+                {
+                    World.Player.OverheadMessage(Config.GetInt("BuffHue"), timeLeft < 1 ? $"[+{buff.ClilocMessage1}]" : $"[+{buff.ClilocMessage1} ({timeLeft}s)]");
+                }
+            }
+        }
+
+        public static void DisplayOverheadDebuff(BuffIcon debuffIcon)
+        {
+            if (Config.GetBool("ShowBuffDebuffOverhead"))
+            {
+                BuffDebuff debuff = World.Player.BuffsDebuffs.FirstOrDefault(b => b.BuffIcon == debuffIcon);
+
+                if (debuff == null)
+                    return;
+
+                if (IsFiltered(debuff.ClilocMessage1))
+                    return;
+
+                if (Config.GetBool("OverrideBuffDebuffFormat"))
+                {
+                    string format = Config.GetString("BuffDebuffFormat");
+
+                    if (string.IsNullOrEmpty(format))
+                    {
+                        format = "[{action}{name} {duration}]";
+                    }
+                    
+                    World.Player.OverheadMessage(Config.GetInt("DebuffHue"),
+                        format.Replace("{action}", "-").Replace("{name}", debuff.ClilocMessage1)
+                            .Replace("{duration}", string.Empty));
+                }
+                else
+                {
+                    World.Player.OverheadMessage(Config.GetInt("DebuffHue"), $"[-{debuff.ClilocMessage1}]");
+                }
+            }
+        }
+
+        public static void ReloadFilter()
+        {
+            _buffDebuffFilter.Clear();
+
+            foreach (string filter in Config.GetString("BuffDebuffFilter").Split(','))
+            {
+                if (!string.IsNullOrEmpty(filter))
+                {
+                    _buffDebuffFilter.Add(filter);
+                }
+            }
+        }
+
+        private static bool IsFiltered(string name)
+        {
+            if (string.IsNullOrEmpty(Config.GetString("BuffDebuffFilter")))
+                return false;
+
+            if (string.IsNullOrEmpty(name))
+                return false;
+
+            foreach (string filter in _buffDebuffFilter)
+            {
+                if (name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1)
+                    return true;
+            }
+
+            return false;
+        }
     }
 }

@@ -23,12 +23,13 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Assistant.Core;
 
 namespace Assistant.UI
 {
-    public partial class BuffDebuff : Form
+    public partial class BuffDebuffOptions : Form
     {
-        public BuffDebuff()
+        public BuffDebuffOptions()
         {
             InitializeComponent();
         }
@@ -73,7 +74,7 @@ namespace Assistant.UI
         {
             if (string.IsNullOrEmpty(buffDebuffFormat.Text))
             {
-                Config.SetProperty("BuffDebuffFormat", "[{action}{name} ({duration}s)]");
+                Config.SetProperty("BuffDebuffFormat", "[{action}{name} {duration}]");
             }
             else
             {
@@ -108,7 +109,7 @@ namespace Assistant.UI
 
                 if (!string.IsNullOrEmpty(name))
                 {
-                    buffDebuffFilters.Items.Add(name);
+                    buffDebuffFilters.Items.Add(name.Trim());
                 }
             }
 
@@ -130,6 +131,7 @@ namespace Assistant.UI
             buffDebuffFormat.SafeAction(s => s.Text = Config.GetString("BuffDebuffFormat"));
             buffDebuffSeconds.SafeAction(s => s.Text = Convert.ToString(Config.GetInt("BuffDebuffSeconds")));
             displayBuffDebuffEvery.SafeAction(s => s.Checked = Config.GetBool("BuffDebuffEveryXSeconds"));
+            overrideBuffDebuffFormat.SafeAction(s => s.Checked = Config.GetBool("OverrideBuffDebuffFormat"));
 
             lblBuffHue.SafeAction(s => { InitPreviewHue(s, "BuffHue"); });
             lblDebuffHue.SafeAction(s => { InitPreviewHue(s, "DebuffHue"); });
@@ -167,6 +169,8 @@ namespace Assistant.UI
             }
 
             Config.SetProperty("BuffDebuffFilter", sb.ToString());
+
+            BuffDebuffManager.ReloadFilter();
         }
 
         private void OkClose_Click(object sender, EventArgs e)
@@ -181,6 +185,11 @@ namespace Assistant.UI
                 e.Cancel = true;
                 s.Hide();
             });
+        }
+
+        private void overrideBuffDebuffFormat_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("OverrideBuffDebuffFormat", displayBuffDebuffEvery.Checked);
         }
     }
 }
