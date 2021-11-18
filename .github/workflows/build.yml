@@ -33,7 +33,7 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.1.1
+      uses: microsoft/setup-msbuild@v1.1
 
     - name: Restore Razor
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
