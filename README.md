@@ -4,7 +4,7 @@
 
 Razor is a free tool designed to help with simple tasks while playing Ultima Online.
 
-[![Build](https://github.com/markdwags/Razor/actions/workflows/build.yml/badge.svg)](https://github.com/markdwags/Razor/actions/workflows/build.yml) [![Build status](https://ci.appveyor.com/api/projects/status/1815mo6is2t8fl1o?svg=true)](https://ci.appveyor.com/project/markdwags/razor) [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
+[![Build](https://github.com/markdwags/Razor/actions/workflows/build.yml/badge.svg)](https://github.com/markdwags/Razor/actions/workflows/build.yml) [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 
 ## Community Edition (CE)
 

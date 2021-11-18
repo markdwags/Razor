@@ -1,4 +1,4 @@
-name: Build & Deploy Dev Preview
+name: build
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
     #if: ${{ !contains(github.event.head_commit.message, '[chore]') }}
 
     env:
-      Solution_Name: Razor.sln 
+      Solution_Name: Razor.sln       
 
     steps:
     - name: Checkout
