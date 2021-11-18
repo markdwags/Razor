@@ -75,7 +75,13 @@ namespace Assistant
 
                 foreach (BuffDebuff buffsDebuff in World.Player.BuffsDebuffs)
                 {
-                    BuffDebuffManager.DisplayOverheadBuff(buffsDebuff, true);
+                    TimeSpan diff = DateTime.UtcNow - buffsDebuff.Timestamp;
+                    int timeLeft = buffsDebuff.Duration - (int)diff.TotalSeconds;
+
+                    if (timeLeft % Config.GetInt("BuffDebuffSeconds") == 0)
+                    {
+                        BuffDebuffManager.DisplayOverheadBuff(buffsDebuff, true);
+                    }
                 }
             }
         }
