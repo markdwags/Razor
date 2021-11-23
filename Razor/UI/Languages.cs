@@ -589,6 +589,8 @@ namespace Assistant
         GumpHotKeys,
         GumpBoatControl,
         BuyAgentAttempt,
+        NextTargetFriendly,
+        PrevTargetFriendly,
         __End
     }
 

@@ -53,6 +53,8 @@ namespace Assistant
                 NextTargetInnocentHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.NextTargetFriendlyHumanoid,
                 NextTargetFriendlyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.NextTargetFriendly,
+                NextTargetFriendly);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.NextTargetGreyHumanoid,
                 NextTargetGreyHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.NextTargetNonFriendlyHumanoid,
@@ -89,6 +91,8 @@ namespace Assistant
                 PrevTargetEnemyHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.PrevTargetFriendlyHumanoid,
                 PrevTargetFriendlyHumanoid);
+            HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetFriendly, LocString.PrevTargetFriendly,
+                PrevTargetFriendly);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetGrey, LocString.PrevTargetGreyHumanoid,
                 PrevTargetGreyHumanoid);
             HotKey.Add(HKCategory.Targets, HKSubCat.SubTargetNonFriendly, LocString.PrevTargetNonFriendlyHumanoid,
@@ -493,6 +497,19 @@ namespace Assistant
             NextPrevTarget(mobiles, true, false, true);
         }
 
+        public static void NextTargetFriendly()
+        {
+            var mobiles = World.MobilesInRange()
+                .Where(x => (x.Notoriety == (int)TargetType.Innocent ||
+                                          x.Notoriety == (int)TargetType.Invalid ||
+                                          x.Notoriety == (int)TargetType.GuildAlly) &&
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
+
+            NextPrevTarget(mobiles, true, false, true);
+        }
+
         public static void NextTargetFriendlyMonster()
         {
             var mobiles = World.MobilesInRange()
@@ -564,6 +581,19 @@ namespace Assistant
                 .Where(x => x.IsHuman && (x.Notoriety == (int) TargetType.Innocent ||
                                           x.Notoriety == (int) TargetType.Invalid ||
                                           x.Notoriety == (int) TargetType.GuildAlly) &&
+                            !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
+                            !TargetFilterManager.IsFilteredTarget(x.Serial))
+                .ToList();
+
+            NextPrevTarget(mobiles, false, false, true);
+        }
+
+        public static void PrevTargetFriendly()
+        {
+            var mobiles = World.MobilesInRange()
+                .Where(x => (x.Notoriety == (int)TargetType.Innocent ||
+                                          x.Notoriety == (int)TargetType.Invalid ||
+                                          x.Notoriety == (int)TargetType.GuildAlly) &&
                             !IsNextPrevFriend(x) && !x.Blessed && !x.IsGhost && x.Serial != World.Player.Serial &&
                             !TargetFilterManager.IsFilteredTarget(x.Serial))
                 .ToList();

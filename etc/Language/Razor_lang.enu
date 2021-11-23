@@ -824,3 +824,5 @@ InputBox::ok=&OK
 2118=Gump: Hot Keys
 2119=Gump: Boat Control
 2120=Buy Agent attempted to buy {0} item(s) for {1}gp.
+2121=Next Friendly Target
+2122=Previous Friendly Target

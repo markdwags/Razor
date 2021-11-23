@@ -214,6 +214,17 @@ namespace Assistant.Scripts.Helpers
                         }
 
                         break;
+                    case "friendly":
+                        if (next)
+                        {
+                            Targeting.NextTargetFriendly();
+                        }
+                        else
+                        {
+                            Targeting.PrevTargetFriendly();
+                        }
+
+                        break;
                     case "nonfriendly":
                         if (next)
                         {
