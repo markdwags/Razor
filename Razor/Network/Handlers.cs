@@ -2014,7 +2014,7 @@ namespace Assistant
                         // Check if its the serial match and if the text matches the name (since we override that for the label)
                         if (Serial.Parse(label.Id) == ser &&
                             (item.ItemID.ItemData.Name.Equals(text) ||
-                             label.Alias.Equals(text, StringComparison.InvariantCultureIgnoreCase)))
+                             label.Alias.Equals(text, StringComparison.OrdinalIgnoreCase)))
                         {
                             string labelDisplay =
                                 $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{type}", text)}";

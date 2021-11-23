@@ -77,7 +77,7 @@ namespace Assistant
 
             foreach (KeyValuePair<Serial, Item> item in m_Items)
             {
-                if (item.Value.ItemID.ItemData.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                if (item.Value.ItemID.ItemData.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     items.Add(item.Value);
             }
 

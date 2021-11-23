@@ -129,7 +129,7 @@ namespace Assistant.Scripts
 
             if (vars.Length == 2)
             {
-                if (vars[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) != -1)
+                if (vars[1].AsString().IndexOf("pack", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     backpack = true;
                 }

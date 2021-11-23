@@ -88,7 +88,7 @@ namespace Assistant.Scripts
 
             foreach (BuffDebuff buff in World.Player.BuffsDebuffs)
             {
-                if (buff.ClilocMessage1.IndexOf(name, StringComparison.CurrentCultureIgnoreCase) != -1)
+                if (buff.ClilocMessage1.IndexOf(name, StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     return true;
                 }
@@ -114,7 +114,7 @@ namespace Assistant.Scripts
 
             if (vars.Length == 2)
             {
-                if (vars[1].AsString().IndexOf("pack", StringComparison.InvariantCultureIgnoreCase) > 0)
+                if (vars[1].AsString().IndexOf("pack", StringComparison.OrdinalIgnoreCase) > 0)
                 {
                     backpack = true;
                 }
@@ -309,7 +309,7 @@ namespace Assistant.Scripts
 
             foreach (SkillInfo skill in Skills.SkillEntries)
             {
-                if (skill.Name.IndexOf(vars[0].AsString(), StringComparison.CurrentCultureIgnoreCase) != -1)
+                if (skill.Name.IndexOf(vars[0].AsString(), StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     return World.Player.Skills[skill.Index].Value;
                 }
