@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
@@ -457,7 +457,6 @@ namespace FastColoredTextBoxNS
                 if (foundSelected)
                 {
                     AdjustScroll();
-                    DoSelectedVisible();
                 }
             }
 
@@ -767,7 +766,6 @@ namespace FastColoredTextBoxNS
         {
             FocussedItemIndex = Math.Max(0, Math.Min(FocussedItemIndex + shift, visibleItems.Count - 1));
             DoSelectedVisible();
-            //
             Invalidate();
         }
 
@@ -812,15 +810,11 @@ namespace FastColoredTextBoxNS
                 var location = new Point(Right + 3 + Menu.Left, Menu.Top);
 
                 if (string.IsNullOrEmpty(text))
-                {
                     toolTip.ToolTipTitle = null;
-                    toolTip.Show(title, window, location.X, location.Y, ToolTipDuration);
-                }
                 else
-                {
                     toolTip.ToolTipTitle = title;
-                    toolTip.Show(text, window, location.X, location.Y, ToolTipDuration);
-                }
+
+                toolTip.Show(text, window, location.X, location.Y, ToolTipDuration);
             }
         }
 
