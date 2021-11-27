@@ -826,3 +826,6 @@ InputBox::ok=&OK
 2120=Buy Agent attempted to buy {0} item(s) for {1}gp.
 2121=Next Friendly Target
 2122=Previous Friendly Target
+2123=> Pause Current Script
+2124=Script resuming from line {0}
+2125=Script pausing on line {0}

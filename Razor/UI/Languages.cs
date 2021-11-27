@@ -591,6 +591,9 @@ namespace Assistant
         BuyAgentAttempt,
         NextTargetFriendly,
         PrevTargetFriendly,
+        PauseScript,
+        ResumeScriptMessage,
+        PauseScriptMessage,
         __End
     }
 

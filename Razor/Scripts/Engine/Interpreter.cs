@@ -1215,6 +1215,16 @@ namespace Assistant.Scripts.Engine
             _executionState = ExecutionState.RUNNING;
         }
 
+        public static void PauseScript()
+        {
+            _pauseTimeout = DateTime.MaxValue.Ticks;
+            _executionState = ExecutionState.PAUSED;
+        }
+        public static void ResumeScript()
+        {
+            _executionState = ExecutionState.RUNNING;
+        }
+
         public static bool ExecuteScript()
         {
             if (_activeScript == null)

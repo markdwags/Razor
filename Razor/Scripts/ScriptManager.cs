@@ -36,6 +36,8 @@ namespace Assistant.Scripts
     {
         public static bool Recording { get; set; }
 
+        public static bool Paused { get; set; }
+
         public static bool Running => ScriptRunning;
 
         private static bool ScriptRunning { get; set; }
@@ -110,7 +112,7 @@ namespace Assistant.Scripts
                     if (_queuedScript != null)
                     {
                         // Starting a new script. This relies on the atomicity for references in CLR
-                        var script = _queuedScript;
+                        Script script = _queuedScript;
 
                         running = Interpreter.StartScript(script);
                         UpdateLineNumber(Interpreter.CurrentLine);
@@ -172,8 +174,10 @@ namespace Assistant.Scripts
         public static void Initialize()
         {
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, LocString.StopScript, HotkeyStopScript);
+            HotKey.Add(HKCategory.Scripts, HKSubCat.None, LocString.PauseScript, HotkeyPauseScript);
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, LocString.ScriptDClickType, HotkeyDClickTypeScript);
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, LocString.ScriptTargetType, HotkeyTargetTypeScript);
+
 
             _scriptList = new List<RazorScript>();
 
@@ -258,6 +262,25 @@ namespace Assistant.Scripts
             StopScript();
         }
 
+        private static void HotkeyPauseScript()
+        {
+            if (!ScriptRunning)
+            {
+                return;
+            }
+
+            if (Paused)
+            {
+                ResumeScript();
+                World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ResumeScriptMessage, Interpreter.CurrentLine), false);
+            }
+            else
+            {
+                World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.PauseScriptMessage, Interpreter.CurrentLine), false);
+                PauseScript();
+            }
+        }
+
         private static void AddHotkey(RazorScript script)
         {
             HotKey.Add(HKCategory.Scripts, HKSubCat.None, Language.Format(LocString.PlayScript, script), OnHotKey,
@@ -281,6 +304,18 @@ namespace Assistant.Scripts
             _queuedScript = null;
 
             Interpreter.StopScript();
+        }
+
+        public static void PauseScript()
+        {
+            Paused = true;
+            Interpreter.PauseScript();
+        }
+
+        public static void ResumeScript()
+        {
+            Paused = false;
+            Interpreter.ResumeScript();
         }
 
         public static RazorScript AddScript(string file)
