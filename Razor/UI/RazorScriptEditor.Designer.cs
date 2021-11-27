@@ -51,6 +51,7 @@ namespace Assistant.UI
             this.scriptEditor = new FastColoredTextBoxNS.FastColoredTextBox();
             this.scriptDocMap = new FastColoredTextBoxNS.DocumentMap();
             this.scriptStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.scriptPause = new System.Windows.Forms.ToolStripButton();
             this.scriptToolStrip.SuspendLayout();
             this.scriptLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scriptEditor)).BeginInit();
@@ -63,6 +64,7 @@ namespace Assistant.UI
             this.toolStripSeparator1,
             this.scriptPlay,
             this.scriptRecord,
+            this.scriptPause,
             this.toolStripSeparator2,
             this.scriptSettings,
             this.scriptHelp,
@@ -124,7 +126,7 @@ namespace Assistant.UI
             // alwaysOnTop
             // 
             this.alwaysOnTop.Name = "alwaysOnTop";
-            this.alwaysOnTop.Size = new System.Drawing.Size(180, 22);
+            this.alwaysOnTop.Size = new System.Drawing.Size(152, 22);
             this.alwaysOnTop.Text = "Always On Top";
             this.alwaysOnTop.Click += new System.EventHandler(this.alwaysOnTop_Click);
             // 
@@ -204,7 +206,7 @@ namespace Assistant.UI
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(675, 505);
+            this.scriptEditor.Size = new System.Drawing.Size(676, 505);
             this.scriptEditor.TabIndex = 23;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.scriptEditor_TextChanged);
@@ -216,9 +218,9 @@ namespace Assistant.UI
             this.scriptDocMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptDocMap.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scriptDocMap.ForeColor = System.Drawing.Color.Maroon;
-            this.scriptDocMap.Location = new System.Drawing.Point(684, 3);
+            this.scriptDocMap.Location = new System.Drawing.Point(685, 3);
             this.scriptDocMap.Name = "scriptDocMap";
-            this.scriptDocMap.Size = new System.Drawing.Size(114, 505);
+            this.scriptDocMap.Size = new System.Drawing.Size(113, 505);
             this.scriptDocMap.TabIndex = 24;
             this.scriptDocMap.Target = null;
             // 
@@ -229,6 +231,15 @@ namespace Assistant.UI
             this.scriptStatusStrip.Size = new System.Drawing.Size(801, 22);
             this.scriptStatusStrip.TabIndex = 25;
             this.scriptStatusStrip.Text = "statusStrip1";
+            // 
+            // scriptPause
+            // 
+            this.scriptPause.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.scriptPause.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.scriptPause.Name = "scriptPause";
+            this.scriptPause.Size = new System.Drawing.Size(42, 22);
+            this.scriptPause.Text = "Pause";
+            this.scriptPause.Click += new System.EventHandler(this.scriptPause_Click);
             // 
             // RazorScriptEditor
             // 
@@ -270,5 +281,6 @@ namespace Assistant.UI
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripButton scriptInfo;
         private StatusStrip scriptStatusStrip;
+        private ToolStripButton scriptPause;
     }
 }

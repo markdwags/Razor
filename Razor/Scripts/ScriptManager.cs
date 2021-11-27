@@ -36,7 +36,9 @@ namespace Assistant.Scripts
     {
         public static bool Recording { get; set; }
 
-        public static bool Paused { get; set; }
+        public static bool Paused => ScriptPaused;
+
+        private static bool ScriptPaused { get; set; }
 
         public static bool Running => ScriptRunning;
 
@@ -269,7 +271,7 @@ namespace Assistant.Scripts
                 return;
             }
 
-            if (Paused)
+            if (ScriptPaused)
             {
                 ResumeScript();
                 World.Player.SendMessage(MsgLevel.Force, Language.Format(LocString.ResumeScriptMessage, Interpreter.CurrentLine), false);
@@ -302,19 +304,20 @@ namespace Assistant.Scripts
         public static void StopScript()
         {
             _queuedScript = null;
+            ScriptPaused = false;
 
             Interpreter.StopScript();
         }
 
         public static void PauseScript()
         {
-            Paused = true;
+            ScriptPaused = true;
             Interpreter.PauseScript();
         }
 
         public static void ResumeScript()
         {
-            Paused = false;
+            ScriptPaused = false;
             Interpreter.ResumeScript();
         }
 

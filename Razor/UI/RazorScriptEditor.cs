@@ -88,6 +88,8 @@ namespace Assistant.UI
             if (ScriptManager.Running)
             {
                 ScriptManager.StopScript();
+                scriptPause.Text = "Pause";
+
                 return;
             }
 
@@ -335,6 +337,20 @@ namespace Assistant.UI
         private void scriptInfo_Click(object sender, EventArgs e)
         {
             ScriptManager.GetGumpInfo(null);
+        }
+
+        private void scriptPause_Click(object sender, EventArgs e)
+        {
+            if (ScriptManager.Paused)
+            {
+                scriptPause.Text = "Pause";
+                ScriptManager.ResumeScript();
+            }
+            else
+            {
+                scriptPause.Text = "Resume";
+                ScriptManager.PauseScript();
+            }
         }
     }
 }
