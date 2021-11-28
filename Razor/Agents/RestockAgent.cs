@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Gumps;
+using Assistant.Gumps.Internal;
 using Assistant.Scripts;
 using Assistant.UI;
 
@@ -30,6 +32,12 @@ namespace Assistant.Agents
     public class RestockAgent : Agent
     {
         public static List<RestockAgent> Agents { get; set; }
+
+        public delegate void RestockAddInputCallback(ushort gfx, string input);
+        public delegate void RestockChangeInputCallback(int restockId, string input);
+
+        public static RestockAddInputCallback AddInputCallback;
+        public static RestockChangeInputCallback ChangeInputCallback;
 
         public static void Initialize()
         {
@@ -177,23 +185,12 @@ namespace Assistant.Agents
                     }
 
                     RestockItem ri = (RestockItem) m_Items[i];
-                    if (!InputBox.Show(Engine.MainWindow, Language.GetString(LocString.EnterAmount),
-                        Language.GetString(LocString.InputReq), ri.Amount.ToString()))
-                    {
-                        return;
-                    }
+                    
+                    InputDialogGump inputGump = new InputDialogGump(InputDialogGump.InputDialogTypes.BuyAgentUpdate, (ushort)m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), ri.Amount.ToString());
+                    inputGump.SendGump();
 
-                    ri.Amount = InputBox.GetInt(ri.Amount);
+                    ChangeInputCallback = new RestockChangeInputCallback(OnItemTargetChangeResponse);
 
-                    m_SubList.BeginUpdate();
-                    m_SubList.Items.Clear();
-                    for (int j = 0; j < m_Items.Count; j++)
-                    {
-                        m_SubList.Items.Add(m_Items[j]);
-                    }
-
-                    m_SubList.SelectedIndex = i;
-                    m_SubList.EndUpdate();
                     break;
                 }
 
@@ -427,15 +424,46 @@ namespace Assistant.Agents
                 return;
             }
 
-            if (!InputBox.Show(Engine.MainWindow, Language.GetString(LocString.EnterAmount),
-                Language.GetString(LocString.InputReq), "1"))
+            
+            InputDialogGump inputGump = new InputDialogGump(InputDialogGump.InputDialogTypes.RestockAgent, gfx, Language.GetString(LocString.EnterAmount),"1");
+            inputGump.SendGump();
+
+            AddInputCallback = new RestockAddInputCallback(OnItemTargetAmountResponse);
+        }
+
+        private void OnItemTargetAmountResponse(ushort gfx, string input)
+        {
+            if (int.TryParse(input, out int amount))
             {
-                return;
+                RestockItem ri = new RestockItem(gfx, amount);
+                Add(ri);
+
+                AddInputCallback = null;
             }
 
-            RestockItem ri = new RestockItem(gfx, InputBox.GetInt(1));
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
+        }
 
-            Add(ri);
+        private void OnItemTargetChangeResponse(int restockId, string input)
+        {
+            if (int.TryParse(input, out int amount))
+            {
+                RestockItem ri = (RestockItem)m_Items[restockId];
+                
+                ri.Amount = amount;
+
+                m_SubList.BeginUpdate();
+                m_SubList.Items.Clear();
+                for (int j = 0; j < m_Items.Count; j++)
+                {
+                    m_SubList.Items.Add(m_Items[j]);
+                }
+
+                m_SubList.SelectedIndex = restockId;
+                m_SubList.EndUpdate();
+
+                ChangeInputCallback = null;
+            }
 
             Engine.MainWindow.SafeAction(s => s.ShowMe());
         }

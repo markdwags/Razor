@@ -235,6 +235,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gumps\Internal\DamageTrackerListGump.cs" />
+    <Compile Include="Gumps\Internal\InputDialogGump.cs" />
     <Compile Include="Gumps\Internal\MobileInfoGump.cs" />
     <Compile Include="Gumps\Internal\ItemInfoGump.cs" />
     <Compile Include="Gumps\Internal\DamageTrackerGump.cs" />

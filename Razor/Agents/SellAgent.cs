@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Gumps.Internal;
 using Assistant.UI;
 
 namespace Assistant.Agents
@@ -42,6 +43,9 @@ namespace Assistant.Agents
         private readonly List<ushort> m_Items;
         private Serial m_HotBag;
         private bool m_Enabled;
+
+        public delegate void SellChangeMaxInputCallback(string input);
+        public static SellChangeMaxInputCallback ChangeMaxInputCallback;
 
         public SellAgent()
         {
@@ -260,18 +264,32 @@ namespace Assistant.Agents
 
                     break;
                 case 5:
-                    if (InputBox.Show(Language.GetString(LocString.EnterAmount)))
-                    {
-                        Config.SetProperty("SellAgentMax", InputBox.GetInt(100));
-                    }
 
-                    m_AmountButton.Text = Language.Format(LocString.SellAmount, Config.GetInt("SellAgentMax"));
+                    InputDialogGump gump = new InputDialogGump(InputDialogGump.InputDialogTypes.SellAgent, 0,
+                        Language.GetString(LocString.EnterAmount), Config.GetInt("SellAgentMax").ToString());
+
+                    gump.SendGump();
+
+                    ChangeMaxInputCallback = new SellChangeMaxInputCallback(OnChangeSellMaxAmount);
+
                     break;
                 case 6:
                     m_Enabled = !m_Enabled;
                     m_EnableBTN.Text = Language.GetString(m_Enabled ? LocString.PushDisable : LocString.PushEnable);
                     break;
             }
+        }
+        
+        private void OnChangeSellMaxAmount(string amount)
+        {
+            if (int.TryParse(amount, out int parsedAmount))
+            {
+                Config.SetProperty("SellAgentMax", parsedAmount);
+
+                ChangeMaxInputCallback = null;
+            }
+
+            m_AmountButton.Text = Language.Format(LocString.SellAmount, Config.GetInt("SellAgentMax"));
         }
 
         private void SetHBText()

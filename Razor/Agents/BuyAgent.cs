@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Gumps.Internal;
 using Assistant.UI;
 
 namespace Assistant.Agents
@@ -107,6 +108,12 @@ namespace Assistant.Agents
         private Button m_EnableBTN;
         private readonly List<BuyEntry> m_Items;
         private bool m_Enabled;
+
+        public delegate void BuyAgentAddInputCallback(ushort gfx, string input);
+        public delegate void BuyAgentChangeInputCallback(int entryId, string input);
+
+        public static BuyAgentAddInputCallback AddInputCallback;
+        public static BuyAgentChangeInputCallback ChangeInputCallback;
 
         public BuyAgent(int num)
         {
@@ -408,21 +415,12 @@ namespace Assistant.Agents
 
                     if (m_SubList.SelectedIndex >= 0)
                     {
-                        BuyEntry e = (BuyEntry) m_Items[m_SubList.SelectedIndex];
-                        ushort amount = e.Amount;
-                        if (InputBox.Show(Engine.MainWindow, Language.GetString(LocString.EnterAmount),
-                            Language.GetString(LocString.InputReq), amount.ToString()))
-                        {
-                            e.Amount = (ushort) InputBox.GetInt(1);
-                            m_SubList.BeginUpdate();
-                            m_SubList.Items.Clear();
-                            for (int i = 0; i < m_Items.Count; i++)
-                            {
-                                m_SubList.Items.Add(m_Items[i]);
-                            }
+                        BuyEntry e = (BuyEntry)m_Items[m_SubList.SelectedIndex];
 
-                            m_SubList.EndUpdate();
-                        }
+                        InputDialogGump inputGump = new InputDialogGump(InputDialogGump.InputDialogTypes.BuyAgentUpdate, (ushort)m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), e.Amount.ToString());
+                        inputGump.SendGump();
+
+                        ChangeInputCallback = new BuyAgentChangeInputCallback(OnItemChangeAmountResponse);
                     }
 
                     break;
@@ -459,21 +457,56 @@ namespace Assistant.Agents
 
         private void OnTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            Engine.MainWindow.SafeAction(s => s.ShowMe());
-
             if (!location && !serial.IsMobile)
             {
-                if (InputBox.Show(Engine.MainWindow, Language.GetString(LocString.EnterAmount),
-                    Language.GetString(LocString.InputReq)))
-                {
-                    ushort count = (ushort) InputBox.GetInt(0);
-                    if (count <= 0)
-                    {
-                        return;
-                    }
+                InputDialogGump inputGump = new InputDialogGump(InputDialogGump.InputDialogTypes.BuyAgent, gfx, Language.GetString(LocString.EnterAmount), "0");
+                inputGump.SendGump();
 
-                    Add(new BuyEntry(gfx, count));
+                AddInputCallback = new BuyAgentAddInputCallback(OnItemTargetAmountResponse);
+
+            }
+
+            Engine.MainWindow.SafeAction(s => s.ShowMe());
+        }
+
+        private void OnItemTargetAmountResponse(ushort gfx, string input)
+        {
+            if (ushort.TryParse(input, out ushort count))
+            {
+                if (count <= 0)
+                {
+                    return;
                 }
+
+                Add(new BuyEntry(gfx, count));
+
+                AddInputCallback = null;
+            }
+        }
+
+        private void OnItemChangeAmountResponse(int entryId, string input)
+        {
+            if (ushort.TryParse(input, out ushort amount))
+            {
+                if (amount <= 0)
+                {
+                    return;
+                }
+
+                BuyEntry e = (BuyEntry)m_Items[entryId];
+
+                e.Amount = amount;
+                m_SubList.BeginUpdate();
+                m_SubList.Items.Clear();
+
+                for (int i = 0; i < m_Items.Count; i++)
+                {
+                    m_SubList.Items.Add(m_Items[i]);
+                }
+
+                m_SubList.EndUpdate();
+
+                ChangeInputCallback = null;
             }
         }
 
