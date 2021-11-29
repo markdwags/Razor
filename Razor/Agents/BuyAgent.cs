@@ -109,12 +109,6 @@ namespace Assistant.Agents
         private readonly List<BuyEntry> m_Items;
         private bool m_Enabled;
 
-        public delegate void BuyAgentAddInputCallback(ushort gfx, string input);
-        public delegate void BuyAgentChangeInputCallback(int entryId, string input);
-
-        public static BuyAgentAddInputCallback AddInputCallback;
-        public static BuyAgentChangeInputCallback ChangeInputCallback;
-
         public BuyAgent(int num)
         {
             Number = num;
@@ -417,10 +411,8 @@ namespace Assistant.Agents
                     {
                         BuyEntry e = (BuyEntry)m_Items[m_SubList.SelectedIndex];
 
-                        InputDialogGump inputGump = new InputDialogGump(InputDialogGump.InputDialogTypes.BuyAgentUpdate, (ushort)m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), e.Amount.ToString());
+                        InputDialogGump inputGump = new InputDialogGump(OnItemChangeAmountResponse, (ushort)m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), e.Amount.ToString());
                         inputGump.SendGump();
-
-                        ChangeInputCallback = new BuyAgentChangeInputCallback(OnItemChangeAmountResponse);
                     }
 
                     break;
@@ -459,38 +451,40 @@ namespace Assistant.Agents
         {
             if (!location && !serial.IsMobile)
             {
-                InputDialogGump inputGump = new InputDialogGump(InputDialogGump.InputDialogTypes.BuyAgent, gfx, Language.GetString(LocString.EnterAmount), "0");
+                InputDialogGump inputGump = new InputDialogGump(OnItemTargetAmountResponse, gfx, Language.GetString(LocString.EnterAmount), "0");
                 inputGump.SendGump();
 
-                AddInputCallback = new BuyAgentAddInputCallback(OnItemTargetAmountResponse);
+                //AddInputCallback = new BuyAgentAddInputCallback(OnItemTargetAmountResponse);
 
             }
 
             Engine.MainWindow.SafeAction(s => s.ShowMe());
         }
 
-        private void OnItemTargetAmountResponse(ushort gfx, string input)
+        private bool OnItemTargetAmountResponse(int gfx, string input)
         {
             if (ushort.TryParse(input, out ushort count))
             {
                 if (count <= 0)
                 {
-                    return;
+                    return false;
                 }
 
-                Add(new BuyEntry(gfx, count));
-
-                AddInputCallback = null;
+                Add(new BuyEntry((ushort) gfx, count));
+                
+                return true;
             }
+
+            return false;
         }
 
-        private void OnItemChangeAmountResponse(int entryId, string input)
+        private bool OnItemChangeAmountResponse(int entryId, string input)
         {
             if (ushort.TryParse(input, out ushort amount))
             {
                 if (amount <= 0)
                 {
-                    return;
+                    return false;
                 }
 
                 BuyEntry e = (BuyEntry)m_Items[entryId];
@@ -505,9 +499,11 @@ namespace Assistant.Agents
                 }
 
                 m_SubList.EndUpdate();
-
-                ChangeInputCallback = null;
+                
+                return true;
             }
+
+            return false;
         }
 
         public void Add(BuyEntry entry)

@@ -32,13 +32,7 @@ namespace Assistant.Agents
     public class RestockAgent : Agent
     {
         public static List<RestockAgent> Agents { get; set; }
-
-        public delegate void RestockAddInputCallback(ushort gfx, string input);
-        public delegate void RestockChangeInputCallback(int restockId, string input);
-
-        public static RestockAddInputCallback AddInputCallback;
-        public static RestockChangeInputCallback ChangeInputCallback;
-
+        
         public static void Initialize()
         {
             int maxAgents = Config.GetAppSetting<int>("MaxRestockAgents") == 0
@@ -186,10 +180,8 @@ namespace Assistant.Agents
 
                     RestockItem ri = (RestockItem) m_Items[i];
                     
-                    InputDialogGump inputGump = new InputDialogGump(InputDialogGump.InputDialogTypes.BuyAgentUpdate, (ushort)m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), ri.Amount.ToString());
+                    InputDialogGump inputGump = new InputDialogGump(OnItemTargetChangeResponse, (ushort)m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), ri.Amount.ToString());
                     inputGump.SendGump();
-
-                    ChangeInputCallback = new RestockChangeInputCallback(OnItemTargetChangeResponse);
 
                     break;
                 }
@@ -425,26 +417,28 @@ namespace Assistant.Agents
             }
 
             
-            InputDialogGump inputGump = new InputDialogGump(InputDialogGump.InputDialogTypes.RestockAgent, gfx, Language.GetString(LocString.EnterAmount),"1");
+            InputDialogGump inputGump = new InputDialogGump(OnItemTargetAmountResponse, gfx, Language.GetString(LocString.EnterAmount),"1");
             inputGump.SendGump();
-
-            AddInputCallback = new RestockAddInputCallback(OnItemTargetAmountResponse);
         }
 
-        private void OnItemTargetAmountResponse(ushort gfx, string input)
+        private bool OnItemTargetAmountResponse(int gfx, string input)
         {
             if (int.TryParse(input, out int amount))
             {
-                RestockItem ri = new RestockItem(gfx, amount);
+                RestockItem ri = new RestockItem((ushort) gfx, amount);
                 Add(ri);
+                
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
 
-                AddInputCallback = null;
+                return true;
             }
-
+            
             Engine.MainWindow.SafeAction(s => s.ShowMe());
+
+            return false;
         }
 
-        private void OnItemTargetChangeResponse(int restockId, string input)
+        private bool OnItemTargetChangeResponse(int restockId, string input)
         {
             if (int.TryParse(input, out int amount))
             {
@@ -462,10 +456,14 @@ namespace Assistant.Agents
                 m_SubList.SelectedIndex = restockId;
                 m_SubList.EndUpdate();
 
-                ChangeInputCallback = null;
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
+
+                return true;
             }
 
             Engine.MainWindow.SafeAction(s => s.ShowMe());
+
+            return false;
         }
 
         public void Add(RestockItem item)

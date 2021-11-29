@@ -18,6 +18,7 @@
 
 #endregion
 
+using System;
 using Assistant.Agents;
 
 namespace Assistant.Gumps.Internal
@@ -29,20 +30,12 @@ namespace Assistant.Gumps.Internal
             Okay,
             InputEntry,
         }
-
-        public enum InputDialogTypes
-        {
-            RestockAgent,
-            RestockAgentUpdate,
-            BuyAgent,
-            BuyAgentUpdate,
-            SellAgent
-        }
         
         private ushort _inputReference { get; set; }
-        private InputDialogTypes _type { get; set; }
+        //private InputDialogTypes _type { get; set; }
+        private readonly Func<int, string, bool> _inputCallback;
 
-        public InputDialogGump(InputDialogTypes type, ushort inputReference, string inputRequest, string defaultInput = "") : base(100, 100)
+        public InputDialogGump(Func<int, string, bool> inputCallback, ushort inputReference, string inputRequest, string defaultInput = "") : base(100, 100)
         {
             Closable = true;
             Disposable = true;
@@ -51,7 +44,7 @@ namespace Assistant.Gumps.Internal
             Resend = false;
 
             _inputReference = inputReference;
-            _type = type;
+            _inputCallback = inputCallback;
 
             AddBackground(105, 70, 253, 121, 3600);
             AddBackground(129, 115, 209, 22, 9200);
@@ -67,24 +60,7 @@ namespace Assistant.Gumps.Internal
             {
                 if (!string.IsNullOrEmpty(textEntries?[0]?.Text))
                 {
-                    switch (_type)
-                    {
-                        case InputDialogTypes.RestockAgent:
-                            RestockAgent.AddInputCallback(_inputReference, textEntries[0].Text);
-                            break;
-                        case InputDialogTypes.RestockAgentUpdate:
-                            RestockAgent.ChangeInputCallback(_inputReference, textEntries[0].Text);
-                            break;
-                        case InputDialogTypes.BuyAgent:
-                            BuyAgent.AddInputCallback(_inputReference, textEntries[0].Text);
-                            break;
-                        case InputDialogTypes.BuyAgentUpdate:
-                            BuyAgent.ChangeInputCallback(_inputReference, textEntries[0].Text);
-                            break;
-                        case InputDialogTypes.SellAgent:
-                            SellAgent.ChangeMaxInputCallback(textEntries[0].Text);
-                            break;
-                    }
+                    _inputCallback(_inputReference, textEntries[0].Text);
 
                     CloseGump();
                 }

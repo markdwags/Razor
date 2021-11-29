@@ -43,10 +43,7 @@ namespace Assistant.Agents
         private readonly List<ushort> m_Items;
         private Serial m_HotBag;
         private bool m_Enabled;
-
-        public delegate void SellChangeMaxInputCallback(string input);
-        public static SellChangeMaxInputCallback ChangeMaxInputCallback;
-
+        
         public SellAgent()
         {
             m_Items = new List<ushort>();
@@ -265,12 +262,8 @@ namespace Assistant.Agents
                     break;
                 case 5:
 
-                    InputDialogGump gump = new InputDialogGump(InputDialogGump.InputDialogTypes.SellAgent, 0,
-                        Language.GetString(LocString.EnterAmount), Config.GetInt("SellAgentMax").ToString());
-
+                    InputDialogGump gump = new InputDialogGump(OnChangeSellMaxAmount, 0, Language.GetString(LocString.EnterAmount), Config.GetInt("SellAgentMax").ToString());
                     gump.SendGump();
-
-                    ChangeMaxInputCallback = new SellChangeMaxInputCallback(OnChangeSellMaxAmount);
 
                     break;
                 case 6:
@@ -280,16 +273,17 @@ namespace Assistant.Agents
             }
         }
         
-        private void OnChangeSellMaxAmount(string amount)
+        private bool OnChangeSellMaxAmount(int gfx, string amount)
         {
             if (int.TryParse(amount, out int parsedAmount))
             {
                 Config.SetProperty("SellAgentMax", parsedAmount);
+                m_AmountButton.Text = Language.Format(LocString.SellAmount, Config.GetInt("SellAgentMax"));
 
-                ChangeMaxInputCallback = null;
+                return true;
             }
 
-            m_AmountButton.Text = Language.Format(LocString.SellAmount, Config.GetInt("SellAgentMax"));
+            return false;
         }
 
         private void SetHBText()
