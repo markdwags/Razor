@@ -180,7 +180,7 @@ namespace Assistant.Agents
 
                     RestockItem ri = (RestockItem) m_Items[i];
                     
-                    InputDialogGump inputGump = new InputDialogGump(OnItemTargetChangeResponse, (ushort)m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), ri.Amount.ToString());
+                    InputDialogGump inputGump = new InputDialogGump(OnItemTargetChangeResponse, m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), ri.Amount.ToString());
                     inputGump.SendGump();
 
                     break;

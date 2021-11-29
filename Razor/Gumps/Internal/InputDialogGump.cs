@@ -31,11 +31,18 @@ namespace Assistant.Gumps.Internal
             InputEntry,
         }
         
-        private ushort _inputReference { get; set; }
+        private int _inputReference { get; set; }
         //private InputDialogTypes _type { get; set; }
         private readonly Func<int, string, bool> _inputCallback;
 
-        public InputDialogGump(Func<int, string, bool> inputCallback, ushort inputReference, string inputRequest, string defaultInput = "") : base(100, 100)
+        /// <summary>
+        /// Simple input dialog to replace UI based input boxes
+        /// </summary>
+        /// <param name="inputCallback">Method to execute when Okay is pressed</param>
+        /// <param name="inputReference">Optional int to be used as a reference on the callback</param>
+        /// <param name="inputRequest">The text in the gump asking the user to enter something specific</param>
+        /// <param name="defaultInput">Optional string to pre-populate the gump textbox input with</param>
+        public InputDialogGump(Func<int, string, bool> inputCallback, int inputReference, string inputRequest, string defaultInput = "") : base(100, 100)
         {
             Closable = true;
             Disposable = true;

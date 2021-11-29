@@ -411,7 +411,7 @@ namespace Assistant.Agents
                     {
                         BuyEntry e = (BuyEntry)m_Items[m_SubList.SelectedIndex];
 
-                        InputDialogGump inputGump = new InputDialogGump(OnItemChangeAmountResponse, (ushort)m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), e.Amount.ToString());
+                        InputDialogGump inputGump = new InputDialogGump(OnItemChangeAmountResponse, m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), e.Amount.ToString());
                         inputGump.SendGump();
                     }
 
