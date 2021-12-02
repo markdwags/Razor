@@ -619,10 +619,14 @@ namespace Assistant
             if (tabs == null)
                 return;
 
+            // UseMnemonic toggle is an ugly hack for github issue #177
             if (tabs.SelectedTab != scriptsTab)
             {
                 UpdateTitle();
+                newProfile.UseMnemonic = true;
             }
+            else
+                newProfile.UseMnemonic = false;
 
             if (tabs.SelectedTab == generalTab)
             {
