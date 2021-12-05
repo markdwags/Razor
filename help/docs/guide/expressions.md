@@ -412,6 +412,28 @@ Description: Used to get your current strength, dexterity and intelligence.
         endif
         ```
 
+## varexist
+
+- `varexist`
+- `varexists`
+
+Description: Used to check if a variable exists.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if not varexist 'myrunebook'
+            overhead 'Runebook variable not found -- select one'
+            setvar 'myrunebook'
+        endif
+
+        dclick 'myrunebook'
+        waitforgump 'any'
+        gumpresponse 5
+        ```
+
 ## weight
 
 - `weight`

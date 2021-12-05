@@ -1099,6 +1099,11 @@ namespace Assistant.Scripts.Engine
             _aliasHandlers.Remove(keyword);
         }
 
+        public static bool AliasHandlerExist(string alias)
+        {
+            return _aliasHandlers.TryGetValue(alias, out _);
+        }
+
         public static void PushScope(ASTNode node)
         {
             _currentScope = new Scope(_currentScope, node);

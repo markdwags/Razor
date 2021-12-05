@@ -70,6 +70,21 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("position", Position);
 
             Interpreter.RegisterExpressionHandler("queued", Queued);
+
+            Interpreter.RegisterExpressionHandler("varexist", VarExist);
+            Interpreter.RegisterExpressionHandler("varexists", VarExist);
+        }
+
+        private static bool VarExist(string expression, Variable[] vars, bool quiet, bool force)
+        {
+            if (vars.Length != 1)
+            {
+                throw new RunTimeError("Usage: varexist ('name')");
+            }
+
+            string varName = vars[0].AsString(false);
+            
+            return Interpreter.AliasHandlerExist(varName);
         }
 
         private static bool Queued(string expression, Variable[] vars, bool quiet, bool force)
