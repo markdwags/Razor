@@ -3,8 +3,6 @@ name: build
 on:
   push:
     branches: [ master ]
-  #pull_request:
-  # branches: [ master ]
 
 jobs:
 
@@ -15,8 +13,6 @@ jobs:
         configuration: [Release]
 
     runs-on: windows-2022
-
-    #if: ${{ !contains(github.event.head_commit.message, '[chore]') }}
 
     env:
       Solution_Name: Razor.sln       
