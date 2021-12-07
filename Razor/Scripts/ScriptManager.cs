@@ -637,15 +637,15 @@ namespace Assistant.Scripts
 
             string[] commands =
             {
-                    "attack", "cast", "dclick", "dclicktype", "dress", "drop", "droprelloc", "gumpresponse", "gumpclose",
-                    "hotkey", "lasttarget", "lift", "lifttype", "menu", "menuresponse", "organizer", "overhead", "potion",
-                    "promptresponse", "restock", "say", "whisper", "yell", "emote", "script", "scavenger", "sell", "setability",
-                    "setlasttarget",
-                    "setvar", "skill", "sysmsg", "target", "targettype", "targetrelloc", "undress", "useonce", "walk",
-                    "wait", "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget", "clearsysmsg", "clearjournal",
-                    "waitforsysmsg", "clearhands", "clearall", "virtue", "random"
-
-                };
+                "alliance", "clearall", "cleardragdrop", "clearhands", "emote", "guild", "attack", "interrupt", "virtue", "yell",
+                "cast", "dclick", "dclicktype",
+                "dress", "drop", "droprelloc", "gumpresponse", "gumpclose", "hotkey", "lasttarget", "lift", "lifttype",
+                "menu", "menuresponse", "organizer", "overhead", "potion", "promptresponse", "restock", "say",
+                "whisper", "yell", "emote", "script", "scavenger", "sell", "setability", "setlasttarget", "setvar",
+                "skill", "sysmsg", "target", "targettype", "targetrelloc", "undress", "useonce", "walk", "wait",
+                "pause", "waitforgump", "waitformenu", "waitforprompt", "waitfortarget", "waitforsysmsg", "clearsysmsg", "clearjournal",
+                "waitforsysmsg", "random"
+            };
 
             #endregion
 
