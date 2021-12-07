@@ -270,12 +270,12 @@ namespace Assistant
             set { m_Layer = value; }
         }
 
-        public Item FindItemByID(ItemID id)
+        public Item FindItemById(ItemID id)
         {
-            return FindItemByID(id, true);
+            return FindItemById(id, true);
         }
 
-        public Item FindItemByID(ItemID id, bool recurse)
+        public Item FindItemById(ItemID id, bool recurse)
         {
             for (int i = 0; i < m_Items.Count; i++)
             {
@@ -284,15 +284,42 @@ namespace Assistant
                 {
                     return item;
                 }
-                else if (recurse)
+
+                if (recurse)
                 {
-                    item = item.FindItemByID(id, true);
+                    item = item.FindItemById(id, true);
                     if (item != null)
                         return item;
                 }
             }
 
             return null;
+        }
+
+        public List<Item> FindItemsById(ItemID id, bool recurse)
+        {
+            List<Item> items = new List<Item>();
+
+            for (int i = 0; i < m_Items.Count; i++)
+            {
+                Item item = m_Items[i];
+                if (item.ItemID == id)
+                {
+                    items.Add(item);
+                }
+                
+                if (recurse)
+                {
+                    List<Item> recurseItems = item.FindItemsById(id, true);
+
+                    if (recurseItems.Count > 0)
+                    {
+                        items.AddRange(recurseItems);
+                    }
+                }
+            }
+
+            return items;
         }
 
         public Item FindItemByName(string name, bool recurse)
@@ -305,7 +332,8 @@ namespace Assistant
                 {
                     return item;
                 }
-                else if (recurse)
+
+                if (recurse)
                 {
                     item = item.FindItemByName(name, true);
                     if (item != null)
@@ -314,6 +342,30 @@ namespace Assistant
             }
 
             return null;
+        }
+
+        public List<Item> FindItemsByName(string name, bool recurse)
+        {
+            List<Item> items = new List<Item>();
+
+            foreach (Item i in m_Items)
+            {
+                if (i.ItemID.ItemData.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    items.Add(i);
+                }
+                
+                if (recurse)
+                {
+                    List<Item> recurseItems = i.FindItemsByName(name, true);
+                    if (recurseItems.Count > 0)
+                    {
+                        items.AddRange(recurseItems);
+                    }
+                }
+            }
+
+            return items;
         }
 
         public int GetCount(ushort iid)
