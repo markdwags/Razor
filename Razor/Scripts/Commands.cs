@@ -688,16 +688,25 @@ namespace Assistant.Scripts
         {
             if (vars.Length < 1)
             {
-                throw new RunTimeError("Usage: lifttype (gfx/'name of item') [amount]");
+                throw new RunTimeError("Usage: lifttype (gfx/'name of item') [amount] [hue]");
             }
 
             string gfxStr = vars[0].AsString();
             ushort gfx = Utility.ToUInt16(gfxStr, 0);
             ushort amount = 1;
+            int hue = 0;
 
-            if (vars.Length == 2)
+            if (vars.Length > 1)
             {
-                amount = Utility.ToUInt16(vars[1].AsString(), 1);
+                if (vars.Length == 2)
+                {
+                    amount = Utility.ToUInt16(vars[1].AsString(), 1);
+                }
+
+                if (vars.Length == 3)
+                {
+                    hue = Utility.ToUInt16(vars[2].AsString(), 0);
+                }
             }
 
             if (_lastLiftTypeId > 0)
@@ -717,14 +726,14 @@ namespace Assistant.Scripts
             }
             else
             {
-                Item item;
+                List<Item> items = new List<Item>();
 
                 // No graphic id, maybe searching by name?
                 if (gfx == 0)
                 {
-                    item = World.Player.Backpack?.FindItemByName(gfxStr, true);
+                    items = World.Player.Backpack.FindItemsByName(gfxStr, true);
 
-                    if (item == null)
+                    if (items.Count == 0)
                     {
                         CommandHelper.SendWarning(command, $"Item '{gfxStr}' not found", quiet);
                         return true;
@@ -732,11 +741,18 @@ namespace Assistant.Scripts
                 }
                 else
                 {
-                    item = World.Player.Backpack?.FindItemById(gfx);
+                    items = World.Player.Backpack.FindItemsById(gfx);
                 }
 
-                if (item != null)
+                if (hue > 0)
                 {
+                    items.RemoveAll(item => item.Hue != hue);
+                }
+
+                if (items.Count > 0)
+                {
+                    Item item = items[Utility.Random(items.Count)];
+
                     if (item.Amount < amount)
                         amount = item.Amount;
 
