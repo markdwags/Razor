@@ -275,6 +275,11 @@ namespace Assistant
             return FindItemById(id, true);
         }
 
+        public List<Item> FindItemsById(ItemID id)
+        {
+            return FindItemsById(id, true);
+        }
+
         public Item FindItemById(ItemID id, bool recurse)
         {
             for (int i = 0; i < m_Items.Count; i++)

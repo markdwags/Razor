@@ -360,7 +360,6 @@ Description: Used to check if your current queue is active (from restocking, org
         overhead 'Restocked'
         ```
 
-
 ## rhandempty
 
 - `rhandempty`
@@ -407,13 +406,15 @@ Description: Used to get your current stamina or max stamina.
 
 !!! example
 
-    === "General"
+    === "General (stam)"
 
         ```vim
         if stam < 30
         say 'I need to rest'
         endif
         ```
+
+    === "General (maxstam)"       
 
         ```vim
         if maxstam = 120

@@ -435,9 +435,9 @@ Example:
 
 # lifttype
 
-**Syntax**: `lifttype (gfx) [amount]` or `lifttype ('name of item') [amount]`
+**Syntax**: `lifttype (gfx) [amount] [hue]` or `lifttype ('name of item') [amount] [hue]`
 
-**Description**: This command will lift a specific item by type either by the graphic id or by the name. If no amount is provided, `1` is defaulted.
+**Description**: This command will lift a specific item by type either by the graphic id or by the name from your backpack. If no amount is provided, `1` is defaulted.
 
 !!! example
 
@@ -453,6 +453,22 @@ Example:
 
         ```vim
         lifttype '0x1FCD'
+        wait 1000
+        droprelloc 1 1
+        ```
+
+    === "Lift by name, max 5"
+
+        ```vim
+        lifttype 'fish steak%s%' 5
+        wait 1000
+        droprelloc 1 1
+        ```
+
+    === "Lift by name, max 5, specific hue"
+
+        ```vim
+        lifttype 'fish steak%s%' 5 45
         wait 1000
         droprelloc 1 1
         ```
