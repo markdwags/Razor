@@ -386,7 +386,7 @@ namespace Assistant
                     }
                     else
                     {
-                        item = World.Player.Backpack.FindItemByID(id);
+                        item = World.Player.Backpack.FindItemById(id);
                         if (item == null)
                             gone++;
                         else
