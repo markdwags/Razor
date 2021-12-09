@@ -126,7 +126,7 @@ namespace Assistant.Scripts
 
             bool inRangeCheck = false;
             bool backpack = false;
-            int hue = 0;
+            int hue = -1;
 
             if (vars.Length > 1)
             {

@@ -444,7 +444,7 @@ namespace Assistant.Scripts
 
             bool inRangeCheck = false;
             bool backpack = false;
-            int hue = 0;
+            int hue = -1;
 
             if (vars.Length > 1)
             {
@@ -694,7 +694,7 @@ namespace Assistant.Scripts
             string gfxStr = vars[0].AsString();
             ushort gfx = Utility.ToUInt16(gfxStr, 0);
             ushort amount = 1;
-            int hue = 0;
+            int hue = -1;
 
             if (vars.Length > 1)
             {
@@ -744,7 +744,7 @@ namespace Assistant.Scripts
                     items = World.Player.Backpack.FindItemsById(gfx);
                 }
 
-                if (hue > 0)
+                if (hue > -1)
                 {
                     items.RemoveAll(item => item.Hue != hue);
                 }

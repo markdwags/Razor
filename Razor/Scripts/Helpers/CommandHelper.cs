@@ -36,7 +36,7 @@ namespace Assistant.Scripts.Helpers
                 items.AddRange(World.FindItemsByName(name).Where(item => !item.IsInBank).ToList());
             }
 
-            if (hue > 0)
+            if (hue > -1)
             {
                 items.RemoveAll(item => item.Hue != hue);
             }
@@ -71,7 +71,7 @@ namespace Assistant.Scripts.Helpers
                 items.AddRange(World.FindItemsById(id).Where(item => !item.IsInBank).ToList());
             }
 
-            if (hue > 0)
+            if (hue > -1)
             {
                 items.RemoveAll(item => item.Hue != hue);
             }
