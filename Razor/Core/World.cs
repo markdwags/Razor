@@ -108,7 +108,7 @@ namespace Assistant
             List<Mobile> mobiles = new List<Mobile>();
             foreach (KeyValuePair<Serial, Mobile> item in m_Mobiles)
             {
-                if (item.Value.Name.ToLower().Equals(name.ToLower()))
+                if (item.Value.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) != -1)
                     mobiles.Add(item.Value);
             }
 
