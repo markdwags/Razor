@@ -336,20 +336,41 @@ namespace Assistant.Scripts
         private static int CountExpression(string expression, Variable[] vars, bool quiet, bool force)
         {
             if (vars.Length < 1)
-                throw new RunTimeError("Usage: count ('name of counter item')");
+                throw new RunTimeError("Usage: count ('name of counter') OR count ('name of item' OR graphicID) [hue]");
 
             if (World.Player == null)
                 return 0;
 
-            foreach (Counter c in Counter.List)
+            var counter = Counter.FindCounter(vars[0].AsString());
+            if (counter != null)
             {
-                if (c.Name.Equals(vars[0].AsString(), StringComparison.OrdinalIgnoreCase))
+                return counter.Amount;
+            }
+
+            string gfxStr = vars[0].AsString();
+            Serial gfx = Utility.ToUInt16(gfxStr, 0);
+            ushort hue = 0xFFFF;
+
+            if (vars.Length == 2)
+            {
+                hue = Utility.ToUInt16(vars[1].AsString(), 0xFFFF);
+            }
+
+            // No graphic id, maybe searching by name?
+            if (gfx == 0)
+            {
+                var items = CommandHelper.GetItemsByName(gfxStr, true, false);
+                if (items.Count == 0) // no item found
                 {
-                    return c.Enabled ? c.Amount : 0;
+                    return 0;
+                }
+                else
+                {
+                    return Counter.GetCount(items[0].ItemID, hue);
                 }
             }
 
-            throw new RunTimeError($"Counter '{vars[0].AsString()}' doesn't exist. Set it up in Razor under Display->Counters.");
+            return Counter.GetCount(new ItemID((ushort)gfx.Value), hue);
         }
 
         private static bool Position(string expression, Variable[] vars, bool quiet, bool force)

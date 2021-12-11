@@ -16,13 +16,15 @@ The following operators are supported:
 
 ## count/counter
 
-- `count ('name of counted item')`
-- `counter ('name of counted item')`
+- `count ('name of counter')`
+- `counter ('name of counter')`
+- `count ('name of item') [hue]`
+- `count (graphicID) [hue]`
 
-Description: Used to get the current number of a specific counted item in Razor
-
-!!! note
-You must have a counter setup in `Display->Counters` before using this expression. [More info](../help/displaycounters.md#counters)
+Description: Used to get the current amount of a specific item in player's backpack.
+Omitting the hue argument will result in count of all items of the specified type regardless of their hue.
+The expression can be used either directly by item type and hue, or by referencing a named counter manually set up in the Counters tab.
+[More info](../help/displaycounters.md#counters)
 
 !!! example
 
@@ -31,6 +33,22 @@ You must have a counter setup in `Display->Counters` before using this expressio
         ```vim
         if count 'garlic' < 5
             say 'getting low on garlic'
+        endif
+        ```
+        
+    === "Counting runebooks"
+    
+        ```vim
+        if count 'spellbook' '1121' == 0
+            say 'no runebooks found!'
+        endif
+        ```
+        
+    === "Detecting fancy coins"
+
+        ```vim
+        if count 'gold coin' > count 'gold coin' 0
+            overhead 'woot woot fancy coins in the pack!'
         endif
         ```
 

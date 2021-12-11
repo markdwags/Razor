@@ -53,6 +53,198 @@ namespace Assistant
         }
     }
 
+    public class ItemCountCache
+    {
+        private Dictionary<Item, ulong> _cache = new Dictionary<Item, ulong>();
+
+        public long Add(Item item)
+        {
+            if (_cache.TryGetValue(item, out var old))
+            {
+                var diff = item.Amount - old;
+                _cache[item] = item.Amount;
+                return (long)diff;
+            }
+            else
+            {
+                _cache.Add(item, item.Amount);
+                return item.Amount;
+            }
+        }
+
+        public long Remove(Item item)
+        {
+            if (_cache.TryGetValue(item, out var old))
+            {
+                var diff = Math.Min(item.Amount, old);
+                _cache.Remove(item);
+                return -(long)diff;
+            }
+
+            // Item was untracked in the first place, hence no change
+            return 0;
+        }
+
+        public void Reset()
+        {
+            _cache.Clear();
+        }
+    }
+
+    public struct CounterID
+    {
+        public CounterID(ItemID itemID, ushort hue = 0xFFFF)
+        {
+            ItemID = itemID;
+            Hue = hue;
+        }
+
+        public ItemID ItemID;
+        public ushort Hue;
+    }
+
+    public class CounterChangeSet
+    {
+        public Dictionary<CounterID, long> Changes = new Dictionary<CounterID, long>();
+
+        private void AddValue(CounterID id, long diff)
+        {
+            if (Changes.ContainsKey(id))
+            {
+                Changes[id] += diff;
+            }
+            else
+            {
+                Changes.Add(id, diff);
+            }
+
+            if (Changes[id] == 0)
+            {
+                Changes.Remove(id);
+            }
+        }
+
+        public void Add(CounterChangeSet other)
+        {
+            foreach (var item in other.Changes)
+            {
+                AddValue(item.Key, item.Value);
+            }
+        }
+
+        public void Add(Item item, long diff)
+        {
+            AddValue(new CounterID(item.ItemID, item.Hue), diff);
+            AddValue(new CounterID(item.ItemID), diff);
+        }
+
+        public void Reset()
+        {
+            Changes.Clear();
+        }
+    }
+
+    public class ItemChangeTracker
+    {
+        private ItemCountCache _cache = new ItemCountCache();
+
+        public void Add(Item item, ref CounterChangeSet changes)
+        {
+            var diff = _cache.Add(item);
+            if (diff != 0)
+            {
+                changes.Add(item, diff);
+            }
+        }
+
+        public void Remove(Item item, ref CounterChangeSet changes)
+        {
+            var diff = _cache.Remove(item);
+            if (diff != 0)
+            {
+                changes.Add(item, diff);
+            }
+        }
+
+        public void Reset()
+        {
+            _cache.Reset();
+        }
+    }
+
+    public class RecursiveItemChangeTracker
+    {
+        private ItemChangeTracker _tracker = new ItemChangeTracker();
+
+        public void Add(Item item, ref CounterChangeSet changes)
+        {
+            _tracker.Add(item, ref changes);
+
+            foreach (var child in item.Contains)
+            {
+                Add(child, ref changes);
+            }
+        }
+
+        public void Remove(Item item, ref CounterChangeSet changes)
+        {
+            foreach (var child in item.Contains)
+            {
+                Remove(child, ref changes);
+            }
+
+            _tracker.Remove(item, ref changes);
+        }
+
+        public void Reset()
+        {
+            _tracker.Reset();
+        }
+    }
+
+    public class ItemTypeCounter
+    {
+        private CounterChangeSet _counters = new CounterChangeSet();
+        private RecursiveItemChangeTracker _tracker = new RecursiveItemChangeTracker();
+
+        public CounterChangeSet Count(Item item)
+        {
+            var changes = new CounterChangeSet();
+            _tracker.Add(item, ref changes);
+            _counters.Add(changes);
+            return changes;
+        }
+
+        public CounterChangeSet Uncount(Item item)
+        {
+            var changes = new CounterChangeSet();
+            _tracker.Remove(item, ref changes);
+            _counters.Add(changes);
+            return changes;
+        }
+
+        public ulong GetValue(ItemID itemID, ushort hue)
+        {
+            return GetValue(new CounterID(itemID, hue));
+        }
+
+        public ulong GetValue(CounterID id)
+        {
+            if (_counters.Changes.TryGetValue(id, out var value))
+            {
+                return (value > 0) ? (ulong)value : 0;
+            }
+
+            return 0;
+        }
+
+        public void Reset()
+        {
+            _counters.Reset();
+            _tracker.Reset();
+        }
+    }
+
     public class Counter : IComparable
     {
         private string m_Name;
@@ -187,68 +379,97 @@ namespace Assistant
             return sb.ToString();
         }
 
-        public int Amount
+        public CounterID CounterID
         {
-            get { return m_Count; }
-            set
+            get
             {
-                if (m_Count != value)
+                return new CounterID(ItemID, (ushort)((Hue == -1) ? 0xFFFF : Hue));
+            }
+        }
+
+        public static int GetCount(ItemID itemID, int hue)
+        {
+            ushort fixedHue = (ushort)((hue == -1) ? 0xFFFF : hue);
+            return (int)m_PackCounter.GetValue(itemID, fixedHue);
+        }
+
+        public static Counter FindCounter(string name)
+        {
+            foreach (Counter c in List)
+            {
+                if (c.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (m_Enabled)
-                    {
-                        if (!SupressWarnings && m_LastWarning + TimeSpan.FromSeconds(1.0) < DateTime.UtcNow &&
-                            World.Player != null && value < m_Count && Config.GetBool("CounterWarn") &&
-                            value < Config.GetInt("CounterWarnAmount"))
-                        {
-                            World.Player.SendMessage(MsgLevel.Warning, LocString.CountLow, Name, value);
-                            m_LastWarning = DateTime.UtcNow;
-                        }
-
-                        if (UOAssist.NotificationCount > 0)
-                        {
-                            int wp = 0;
-                            if (Format == "bm")
-                                wp = 1;
-                            else if (Format == "bp")
-                                wp = 2;
-                            else if (Format == "gl")
-                                wp = 3;
-                            else if (Format == "gs")
-                                wp = 4;
-                            else if (Format == "mr")
-                                wp = 5;
-                            else if (Format == "ns")
-                                wp = 6;
-                            else if (Format == "sa")
-                                wp = 7;
-                            else if (Format == "ss")
-                                wp = 8;
-                            else if (Format == "bw")
-                                wp = 100;
-                            else if (Format == "db")
-                                wp = 101;
-                            else if (Format == "gd")
-                                wp = 102;
-                            else if (Format == "nc")
-                                wp = 103;
-                            else if (Format == "pi")
-                                wp = 104;
-
-                            if (wp != 0)
-                                UOAssist.PostCounterUpdate(wp, value);
-                        }
-
-                        m_Count = value;
-                        if (m_Count < 0)
-                            m_Count = 0;
-
-                        //Engine.MainWindow.RefreshCounters();
-                        Client.Instance.RequestTitlebarUpdate();
-                    }
-
-                    m_LVI.SubItems[1].Text = m_Count.ToString();
+                    return c.Enabled ? c : null;
                 }
             }
+
+            return null;
+        }
+        
+        private void OnUpdate()
+        {
+            var newValue = (int)m_PackCounter.GetValue(CounterID);
+            if (m_Count != newValue)
+            {
+                if (m_Enabled)
+                {
+                    if (!SupressWarnings && m_LastWarning + TimeSpan.FromSeconds(1.0) < DateTime.UtcNow &&
+                        World.Player != null && newValue < m_Count && Config.GetBool("CounterWarn") &&
+                        newValue < Config.GetInt("CounterWarnAmount"))
+                    {
+                        World.Player.SendMessage(MsgLevel.Warning, LocString.CountLow, Name, newValue);
+                        m_LastWarning = DateTime.UtcNow;
+                    }
+
+                    if (UOAssist.NotificationCount > 0)
+                    {
+                        int wp = 0;
+                        if (Format == "bm")
+                            wp = 1;
+                        else if (Format == "bp")
+                            wp = 2;
+                        else if (Format == "gl")
+                            wp = 3;
+                        else if (Format == "gs")
+                            wp = 4;
+                        else if (Format == "mr")
+                            wp = 5;
+                        else if (Format == "ns")
+                            wp = 6;
+                        else if (Format == "sa")
+                            wp = 7;
+                        else if (Format == "ss")
+                            wp = 8;
+                        else if (Format == "bw")
+                            wp = 100;
+                        else if (Format == "db")
+                            wp = 101;
+                        else if (Format == "gd")
+                            wp = 102;
+                        else if (Format == "nc")
+                            wp = 103;
+                        else if (Format == "pi")
+                            wp = 104;
+
+                        if (wp != 0)
+                            UOAssist.PostCounterUpdate(wp, newValue);
+                    }
+
+                    m_Count = newValue;
+                    if (m_Count < 0)
+                        m_Count = 0;
+
+                    //Engine.MainWindow.RefreshCounters();
+                    Client.Instance.RequestTitlebarUpdate();
+                }
+
+                m_LVI.SubItems[1].Text = m_Count.ToString();
+            }
+        }
+
+        public int Amount
+        {
+            get => m_Count;
         }
 
         public void SetEnabled(bool value)
@@ -309,7 +530,7 @@ namespace Assistant
         private static bool m_NeedXMLSave = false;
         private static List<Counter> m_List = new List<Counter>();
         private static bool m_SupressWarn, m_SupressChecks;
-        private static Dictionary<Item, ushort> m_Cache = new Dictionary<Item, ushort>();
+        private static ItemTypeCounter m_PackCounter = new ItemTypeCounter();
 
         public static List<Counter> List
         {
@@ -319,7 +540,6 @@ namespace Assistant
         static Counter()
         {
             m_List = new List<Counter>();
-            m_Cache = new Dictionary<Item, ushort>();
             Load();
         }
 
@@ -508,58 +728,30 @@ namespace Assistant
             Engine.MainWindow.SafeAction(s => s.RedrawCounters());
         }
 
-        public static void Uncount(Item item)
+        private static void OnCountsChanged(CounterChangeSet changes)
         {
-            for (int i = 0; i < item.Contains.Count; i++)
-                Uncount((Item) item.Contains[i]);
-
-            for (int i = 0; i < m_List.Count; i++)
+            foreach (var c in m_List)
             {
-                Counter c = m_List[i];
-                if (c.Enabled)
+                ushort hue = (ushort)((c.Hue == -1 || c.Hue == 0xFFFF) ? 0xFFFF : c.Hue);
+                var id = new CounterID(c.ItemID, hue);
+
+                if (changes.Changes.ContainsKey(id))
                 {
-                    if (c.ItemID == item.ItemID && (c.Hue == item.Hue || c.Hue == -1 || c.Hue == 0xFFFF))
-                    {
-                        if (m_Cache.TryGetValue(item, out ushort rem))
-                        {
-                            if (rem >= c.Amount)
-                                c.Amount = 0;
-                            else
-                                c.Amount -= rem;
-
-                            m_Cache.Remove(item);
-                        }
-
-                        break;
-                    }
+                    c.OnUpdate();
                 }
             }
         }
 
+        public static void Uncount(Item item)
+        {
+            var changes = m_PackCounter.Uncount(item);
+            OnCountsChanged(changes);
+        }
+
         public static void Count(Item item)
         {
-            for (int i = 0; i < m_List.Count; i++)
-            {
-                Counter c = m_List[i];
-                if (c.Enabled)
-                {
-                    if (c.ItemID == item.ItemID && (c.Hue == item.Hue || c.Hue == 0xFFFF || c.Hue == -1))
-                    {
-                        if (m_Cache.TryGetValue(item, out var old))
-                        {
-                            if (old == item.Amount)
-                                break; // dont change result cause we dont need an update
-                        }
-
-                        c.Amount += (item.Amount - old);
-                        m_Cache[item] = item.Amount;
-                        break;
-                    }
-                }
-            }
-
-            for (int c = 0; c < item.Contains.Count; c++)
-                Count((Item) item.Contains[c]);
+            var changes = m_PackCounter.Count(item);
+            OnCountsChanged(changes);
         }
 
         public static void QuickRecount()
@@ -611,10 +803,12 @@ namespace Assistant
         public static void Reset()
         {
             SupressWarnings = true;
-            m_Cache.Clear();
+            m_PackCounter.Reset();
 
-            for (int i = 0; i < m_List.Count; i++)
-                m_List[i].Amount = 0;
+            foreach (var c in m_List)
+            {
+                c.OnUpdate();
+            }
             SupressWarnings = false;
         }
 
