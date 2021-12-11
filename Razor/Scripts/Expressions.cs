@@ -365,15 +365,9 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                var items = CommandHelper.GetItemsByName(gfxStr, true, false);
-                if (items.Count == 0) // no item found
-                {
-                    return 0;
-                }
-                else
-                {
-                    return Counter.GetCount(items[0].ItemID, hue);
-                }
+                var items = CommandHelper.GetItemsByName(gfxStr, true, false, -1);
+                
+                return items.Count == 0 ? 0 : Counter.GetCount(items[0].ItemID, hue);
             }
 
             return Counter.GetCount(new ItemID((ushort)gfx.Value), hue);
