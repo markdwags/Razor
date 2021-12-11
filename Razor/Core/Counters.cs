@@ -732,10 +732,7 @@ namespace Assistant
         {
             foreach (var c in m_List)
             {
-                ushort hue = (ushort)((c.Hue == -1 || c.Hue == 0xFFFF) ? 0xFFFF : c.Hue);
-                var id = new CounterID(c.ItemID, hue);
-
-                if (changes.Changes.ContainsKey(id))
+                if (changes.Changes.ContainsKey(c.CounterID))
                 {
                     c.OnUpdate();
                 }
