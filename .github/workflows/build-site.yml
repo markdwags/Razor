@@ -39,6 +39,7 @@ jobs:
       - name: Build site
         run: mkdocs build
 
+      # Setup AWS
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
