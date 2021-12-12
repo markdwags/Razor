@@ -6,11 +6,13 @@ on:
       - master
     paths:
     - 'help/**'
+    - '.github/workflows/build-site.yml'
   pull_request:
     branches:
       - master
     paths:
     - 'help/**'
+    - '.github/workflows/build-site.yml'
 
 jobs:
   build:
@@ -20,7 +22,7 @@ jobs:
         working-directory: ./help
     strategy:
       matrix:
-        python-version: [3.10]
+        python-version: [3.10.0]
     
     steps:
       - uses: actions/checkout@v2
