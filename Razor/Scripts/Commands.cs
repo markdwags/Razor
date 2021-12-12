@@ -434,7 +434,7 @@ namespace Assistant.Scripts
         {
             if (vars.Length == 0)
             {
-                throw new RunTimeError("Usage: dclicktype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
+                throw new RunTimeError("Usage: dclicktype ('name of item'/'graphicID') [inrangecheck (true/false)/backpack] [hue]");
             }
 
             string gfxStr = vars[0].AsString();
@@ -444,9 +444,15 @@ namespace Assistant.Scripts
 
             bool inRangeCheck = false;
             bool backpack = false;
+            int hue = -1;
 
-            if (vars.Length == 2)
+            if (vars.Length > 1)
             {
+                if (vars.Length == 3)
+                {
+                    hue = vars[2].AsInt();
+                }
+
                 if (vars[1].AsString().IndexOf("pack", StringComparison.OrdinalIgnoreCase) > 0)
                 {
                     backpack = true;
@@ -460,7 +466,7 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                items = CommandHelper.GetItemsByName(gfxStr, backpack, inRangeCheck);
+                items = CommandHelper.GetItemsByName(gfxStr, backpack, inRangeCheck, hue);
 
                 if (items.Count == 0) // no item found, search mobile by name
                 {
@@ -471,7 +477,7 @@ namespace Assistant.Scripts
             {
                 ushort id = Utility.ToUInt16(gfxStr, 0);
 
-                items = CommandHelper.GetItemsById(id, backpack, inRangeCheck);
+                items = CommandHelper.GetItemsById(id, backpack, inRangeCheck, hue);
                 
                 // Still no item? Mobile check!
                 if (items.Count == 0)
@@ -682,16 +688,25 @@ namespace Assistant.Scripts
         {
             if (vars.Length < 1)
             {
-                throw new RunTimeError("Usage: lifttype (gfx/'name of item') [amount]");
+                throw new RunTimeError("Usage: lifttype (gfx/'name of item') [amount] [hue]");
             }
 
             string gfxStr = vars[0].AsString();
             ushort gfx = Utility.ToUInt16(gfxStr, 0);
             ushort amount = 1;
+            int hue = -1;
 
-            if (vars.Length == 2)
+            if (vars.Length > 1)
             {
-                amount = Utility.ToUInt16(vars[1].AsString(), 1);
+                if (vars.Length == 2)
+                {
+                    amount = Utility.ToUInt16(vars[1].AsString(), 1);
+                }
+
+                if (vars.Length == 3)
+                {
+                    hue = Utility.ToUInt16(vars[2].AsString(), 0);
+                }
             }
 
             if (_lastLiftTypeId > 0)
@@ -711,14 +726,14 @@ namespace Assistant.Scripts
             }
             else
             {
-                Item item;
+                List<Item> items = new List<Item>();
 
                 // No graphic id, maybe searching by name?
                 if (gfx == 0)
                 {
-                    item = World.Player.Backpack?.FindItemByName(gfxStr, true);
+                    items = World.Player.Backpack.FindItemsByName(gfxStr, true);
 
-                    if (item == null)
+                    if (items.Count == 0)
                     {
                         CommandHelper.SendWarning(command, $"Item '{gfxStr}' not found", quiet);
                         return true;
@@ -726,11 +741,18 @@ namespace Assistant.Scripts
                 }
                 else
                 {
-                    item = World.Player.Backpack?.FindItemByID(gfx);
+                    items = World.Player.Backpack.FindItemsById(gfx);
                 }
 
-                if (item != null)
+                if (hue > -1)
                 {
+                    items.RemoveAll(item => item.Hue != hue);
+                }
+
+                if (items.Count > 0)
+                {
+                    Item item = items[Utility.Random(items.Count)];
+
                     if (item.Amount < amount)
                         amount = item.Amount;
 

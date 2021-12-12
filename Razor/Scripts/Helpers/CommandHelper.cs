@@ -15,17 +15,15 @@ namespace Assistant.Scripts.Helpers
         /// <param name="name"></param>
         /// <param name="backpack"></param>
         /// <param name="inRange"></param>
+        /// <param name="hue"></param>
         /// <returns></returns>
-        public static List<Item> GetItemsByName(string name, bool backpack, bool inRange)
+        public static List<Item> GetItemsByName(string name, bool backpack, bool inRange, int hue)
         {
             List<Item> items = new List<Item>();
 
             if (backpack && World.Player.Backpack != null) // search backpack only
             {
-                Item i = World.Player.Backpack.FindItemByName(name, true);
-
-                if (i != null)
-                    items.Add(i);
+                items = World.Player.Backpack.FindItemsByName(name, true);
             }
             else if (inRange) // inrange includes both backpack and within 2 tiles
             {
@@ -38,6 +36,11 @@ namespace Assistant.Scripts.Helpers
                 items.AddRange(World.FindItemsByName(name).Where(item => !item.IsInBank).ToList());
             }
 
+            if (hue > -1)
+            {
+                items.RemoveAll(item => item.Hue != hue);
+            }
+
             return items;
         }
 
@@ -47,17 +50,15 @@ namespace Assistant.Scripts.Helpers
         /// <param name="id"></param>
         /// <param name="backpack"></param>
         /// <param name="inRange"></param>
+        /// <param name="hue"></param>
         /// <returns></returns>
-        public static List<Item> GetItemsById(ushort id, bool backpack, bool inRange)
+        public static List<Item> GetItemsById(ushort id, bool backpack, bool inRange, int hue)
         {
             List<Item> items = new List<Item>();
 
             if (backpack && World.Player.Backpack != null)
             {
-                Item i = World.Player.Backpack.FindItemByID(id);
-
-                if (i != null)
-                    items.Add(i);
+                items = World.Player.Backpack.FindItemsById(id, true);
             } 
             else if (inRange)
             {
@@ -68,6 +69,11 @@ namespace Assistant.Scripts.Helpers
             else
             {
                 items.AddRange(World.FindItemsById(id).Where(item => !item.IsInBank).ToList());
+            }
+
+            if (hue > -1)
+            {
+                items.RemoveAll(item => item.Hue != hue);
             }
 
             return items;

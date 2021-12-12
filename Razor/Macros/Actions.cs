@@ -352,7 +352,7 @@ namespace Assistant.Macros
 
             if (m_Item)
             {
-                Item item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(m_Gfx) : null;
+                Item item = World.Player.Backpack != null ? World.Player.Backpack.FindItemById(m_Gfx) : null;
                 ArrayList list = new ArrayList();
                 if (item == null)
                 {
@@ -624,7 +624,7 @@ namespace Assistant.Macros
 
         public override bool Perform()
         {
-            Item item = World.Player.Backpack != null ? World.Player.Backpack.FindItemByID(m_Gfx) : null;
+            Item item = World.Player.Backpack != null ? World.Player.Backpack.FindItemById(m_Gfx) : null;
             /*if ( item == null )
             {
                  ArrayList list = new ArrayList();

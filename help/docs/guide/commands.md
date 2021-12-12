@@ -192,7 +192,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
 # dclicktype
 
-**Syntax**: `dclicktype ('name of item') OR (graphicID) [true/backpack]`
+**Syntax**: `dclicktype ('name of item'/'graphicId') [inrange (true/false)/backpack] [hue]`
 
 **Description**: This command will use (double-click) an item type either provided by the name or the graphic ID.
 
@@ -216,7 +216,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "..with range check"
 
-        ```vim hl_lines="1 3"
+        ```vim hl_lines="1"
         dclicktype 'dagger' true
         waitfortarget
         targettype 'robe' true
@@ -224,8 +224,16 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "..with backpack only"
 
-        ```vim hl_lines="1 3"
+        ```vim hl_lines="1"
         dclicktype 'dagger' backpack
+        waitfortarget
+        targettype 'robe' backpack
+        ```
+
+    === "..with backpack and hue only"
+
+        ```vim hl_lines="1"
+        dclicktype 'dagger' backpack 45
         waitfortarget
         targettype 'robe' backpack
         ```
@@ -427,9 +435,9 @@ Example:
 
 # lifttype
 
-**Syntax**: `lifttype (gfx) [amount]` or `lifttype ('name of item') [amount]`
+**Syntax**: `lifttype (gfx) [amount] [hue]` or `lifttype ('name of item') [amount] [hue]`
 
-**Description**: This command will lift a specific item by type either by the graphic id or by the name. If no amount is provided, `1` is defaulted.
+**Description**: This command will lift a specific item by type either by the graphic id or by the name from your backpack. If no amount is provided, `1` is defaulted.
 
 !!! example
 
@@ -445,6 +453,22 @@ Example:
 
         ```vim
         lifttype '0x1FCD'
+        wait 1000
+        droprelloc 1 1
+        ```
+
+    === "Lift by name, max 5"
+
+        ```vim
+        lifttype 'fish steak%s%' 5
+        wait 1000
+        droprelloc 1 1
+        ```
+
+    === "Lift by name, max 5, specific hue"
+
+        ```vim
+        lifttype 'fish steak%s%' 5 45
         wait 1000
         droprelloc 1 1
         ```
@@ -918,7 +942,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # targettype
 
-**Syntax**: `targettype (graphic)` or `targettype ('name of item or mobile type') true` or `targettype ('name of item or mobile type') backpack`
+**Syntax**: `targettype ('name of item or mobile type'/'graphicId') [inrange (true/false)/backpack] [hue]`
 
 **Description**: This command will target a specific type of mobile or item based on the graphic id or based on the name of the item or mobile.
 
@@ -970,6 +994,14 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         dclicktype 'dagger' backpack
         waitfortarget
         targettype 'robe' backpack
+        ```
+    
+    === "Target by name with hue (in backpack)" 
+           
+        ```vim hl_lines="3"
+        dclicktype 'dagger' backpack
+        waitfortarget
+        targettype 'robe' backpack 45
         ```
 
 # undress

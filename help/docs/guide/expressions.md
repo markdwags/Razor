@@ -74,7 +74,7 @@ Description: Used to check if a specific buff/debuff is applied to you.
 
 ## findtype
 
-- `findtype ('name of item') [inrangecheck (true/false)/backpack]` OR `findtype (graphicID) [inrangecheck (true/false)/backpack]`
+- `findtype ('name of item') [inrangecheck (true/false)/backpack] [hue]` OR `findtype (graphicID) [inrangecheck (true/false)/backpack] [hue]`
 
 Description: Used to check if a specific item name of graphic ID exists. Range check, if true, will check within 2 tiles.
 
@@ -126,6 +126,15 @@ Description: Used to check if a specific item name of graphic ID exists. Range c
 
         ```vim hl_lines="1"
         if findtype 'dagger' as 'mydagger'
+            overhead 'found dagger'
+            dclick 'mydagger'
+        endif
+        ```
+
+    === "Find a dagger in backpack with a hue"
+
+        ```vim
+        if findtype 'dagger' backpack 45 as 'mydagger'
             overhead 'found dagger'
             dclick 'mydagger'
         endif
@@ -351,7 +360,6 @@ Description: Used to check if your current queue is active (from restocking, org
         overhead 'Restocked'
         ```
 
-
 ## rhandempty
 
 - `rhandempty`
@@ -398,13 +406,15 @@ Description: Used to get your current stamina or max stamina.
 
 !!! example
 
-    === "General"
+    === "General (stam)"
 
         ```vim
         if stam < 30
         say 'I need to rest'
         endif
         ```
+
+    === "General (maxstam)"       
 
         ```vim
         if maxstam = 120

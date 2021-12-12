@@ -116,7 +116,7 @@ namespace Assistant.Scripts
         {
             if (vars.Length == 0)
             {
-                throw new RunTimeError("Usage: findtype ('name of item') OR (graphicID) [inrangecheck (true/false)/backpack]");
+                throw new RunTimeError("Usage: findtype ('name of item'/'graphicID) [inrangecheck (true/false)/backpack] [hue]");
             }
 
             string gfxStr = vars[0].AsString();
@@ -126,9 +126,15 @@ namespace Assistant.Scripts
 
             bool inRangeCheck = false;
             bool backpack = false;
+            int hue = -1;
 
-            if (vars.Length == 2)
+            if (vars.Length > 1)
             {
+                if (vars.Length == 3)
+                {
+                    hue = vars[2].AsInt();
+                }
+
                 if (vars[1].AsString().IndexOf("pack", StringComparison.OrdinalIgnoreCase) > 0)
                 {
                     backpack = true;
@@ -142,7 +148,7 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                items = CommandHelper.GetItemsByName(gfxStr, backpack, inRangeCheck);
+                items = CommandHelper.GetItemsByName(gfxStr, backpack, inRangeCheck, hue);
 
                 if (items.Count == 0) // no item found, search mobile by name
                 {
@@ -162,7 +168,7 @@ namespace Assistant.Scripts
             {
                 ushort id = Utility.ToUInt16(gfxStr, 0);
 
-                items = CommandHelper.GetItemsById(id, backpack, inRangeCheck);
+                items = CommandHelper.GetItemsById(id, backpack, inRangeCheck, hue);
 
                 // Still no item? Mobile check!
                 if (items.Count == 0)
@@ -359,15 +365,9 @@ namespace Assistant.Scripts
             // No graphic id, maybe searching by name?
             if (gfx == 0)
             {
-                var items = CommandHelper.GetItemsByName(gfxStr, true, false);
-                if (items.Count == 0) // no item found
-                {
-                    return 0;
-                }
-                else
-                {
-                    return Counter.GetCount(items[0].ItemID, hue);
-                }
+                var items = CommandHelper.GetItemsByName(gfxStr, true, false, -1);
+                
+                return items.Count == 0 ? 0 : Counter.GetCount(items[0].ItemID, hue);
             }
 
             return Counter.GetCount(new ItemID((ushort)gfx.Value), hue);
