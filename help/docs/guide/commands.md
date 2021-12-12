@@ -1112,7 +1112,6 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 **Syntax**: `wait [time in milliseconds]` or `pause [time in milliseconds]` or `wait [duration] (shorthand)`
 
 **Description**: This command will pause the execution of a script for a given time.
-    
 
 !!! tip "Tips"
     `1000` milliseconds is equal to `1` second.

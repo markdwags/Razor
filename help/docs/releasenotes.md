@@ -1,6 +1,22 @@
 # Razor Release Notes
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
+
+## 1.7.2.x (Dev Preview)
+
+* Option for buy agents to ignore the amount of gold you have
+* `findtype`, `targettype`, `liftype` will match on the full item name only
+* Agents can be assigned an alias to be more easily identified in the dropdown
+* Agent aliases can be used in scripts
+* Organizer and restock agent won't force the UI to come to the front when executing via scripts
+* Added Next/Prev Friendly hotkey
+* Added a pause script hotkey
+* Added Pause/Resume to popout script editor
+* When changing values in agents, it will be an in-game gump vs. a Razor UI inputbox
+* Added `varexist` expression
+* Added a `hue` parameter to `findtype`, `targettype`, `dclicktype` and `lifttype` for items
+* Updated how the script `count/counter` expression works, it no longer requires you to have a counter setup under Display->Counters (thanks @sorsarre)
+
 ## 1.7.1.7 (10/13/2021)
 
 * Added the keyword `as` when scripting to assign temp variables. See scripting guide.

@@ -49,7 +49,7 @@ If you would like to configure ClassicUO and Razor without the launcher, create 
   password: "",
   ip: "login.myshard.com",
   port: 2593,
-  ultimaonlinedirectory: "C:\Path\To\UO\Files",
+  ultimaonlinedirectory: "C:/Path/To/UO/Files",
   clientversion: "5.0.8.3",
   lastcharactername: "",
   cliloc: "Cliloc.enu",
@@ -71,7 +71,7 @@ If you would like to configure ClassicUO and Razor without the launcher, create 
   use_verdata: false,
   encryption: 0,
   plugins: [
-  "C:\Path\To\Razor\Razor.exe"
+  "C:/Path/To/Razor/Razor.exe"
   ]
 }
 ```
@@ -83,7 +83,7 @@ These steps assume that you already have obtained and installed the Ultima Onlin
 - [Download the latest release of Razor](../download.md).
 
     !!! warning
-        Windows 10 will sometimes block `.dll` and `.exe` files from being ran after they're downloaded so you may have to open up a Powershell prompt from within the Razor folder and run `gci | Unblock-File`
+        Windows will sometimes block `.dll` and `.exe` files from being ran after they're downloaded so you may have to open up a Powershell prompt from within the Razor folder and run `gci | Unblock-File`
 
 - Extract the `.zip` into your existing Razor location (ie: `C:\CUOLauncher\ClassicUO\Data\Plugins\Razor`), overwriting all files, with the exception of one file:
     - **counters.xml** - This is the default counters file used to display items in your titlebar. If you've added any new counters, they would be lost if overwritten.

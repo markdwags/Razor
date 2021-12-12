@@ -4,6 +4,12 @@ The Agents tab is for organizing, restocking and moving items.
 
 ![agents](../images/agents.png)
 
+!!! tip "Aliases"
+
+    You can right-click on an agent and assign it an aliases to help identify it easier.
+
+    ![agent-aliases](../images/agent-aliases.gif)
+
 ## Use Once Agent
 
 This agent lets you set item(s) in your backpack to be used via a hotkey.

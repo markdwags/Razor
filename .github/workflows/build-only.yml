@@ -2,7 +2,10 @@ name: Build Only
 
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+    paths-ignore:
+      - 'help/**'     
 
 jobs:
 

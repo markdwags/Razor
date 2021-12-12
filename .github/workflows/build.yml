@@ -1,8 +1,11 @@
-name: build
+name: Build Dev Preview
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+    paths-ignore:
+      - 'help/**'
 
 jobs:
 
