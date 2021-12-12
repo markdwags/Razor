@@ -1077,24 +1077,53 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # wait & pause
 
-**Syntax**: `wait [time in milliseconds` or `pause [time in milliseconds]`
+**Syntax**: `wait [time in milliseconds]` or `pause [time in milliseconds]` or `wait [duration] (shorthand)`
 
 **Description**: This command will pause the execution of a script for a given time.
+    
 
-!!! tip
+!!! tip "Tips"
     `1000` milliseconds is equal to `1` second.
     
     `1000 x number of seconds = total milliseconds`
+
+    To make your script easier to read, you can **shorthand** instead of defining the full time in milliseconds.
+
+    | Accepted Shorthand              |
+    | ------------------------------- |
+    | `seconds`, `second`, `sec`, `s` |
+    | `minutes`, `minute`, `min`, `m` |
 
 !!! example
 
     === "Wait 5 seconds"
 
-        ```vim
+        ```vim hl_lines="2"
         while stam < 100    
             wait 5000
         endwhile
         ```
+
+    === "Wait 2 seconds (with shorthand)"
+
+        ```vim hl_lines="2 6"
+        while stam < 100    
+            wait 2 sec
+        endwhile
+
+        while stam < 100    
+            wait 2 seconds
+        endwhile
+        ```
+
+    === "Wait 3 minutes (with shorthand)"
+
+        ```vim hl_lines="2"
+        say 'AFK for 3 minutes'
+        wait 3 minutes
+        say 'Back!'
+        ```
+
 # waitforgump
 
 **Syntax**: `waitforgump [gump id/'any'] [timeout]`

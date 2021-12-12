@@ -799,12 +799,37 @@ namespace Assistant.Scripts
             return true;
         }
 
+        private static char[] _digits = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
         private static bool Pause(string command, Variable[] vars, bool quiet, bool force)
         {
             if (vars.Length == 0)
-                throw new RunTimeError("Usage: pause/wait (timeout)");
+                throw new RunTimeError("Usage: wait (timeout) [shorthand]");
 
-            Interpreter.Pause(vars[0].AsUInt());
+            uint timeout = vars[0].AsUInt();
+
+            if (vars.Length == 2)
+            {
+                switch (vars[1].AsString())
+                {
+                    case "s":
+                    case "sec":
+                    case "secs":
+                    case "second":
+                    case "seconds":
+                        timeout *= 1000;
+                        break;
+                    case "m":
+                    case "min":
+                    case "mins":
+                    case "minute":
+                    case "minutes":
+                        timeout *= 60000;
+                        break;
+                }
+            }
+
+            Interpreter.Pause(timeout);
 
             return true;
         }
