@@ -37,7 +37,7 @@ This version has two key updates. First, it updates the .NET framework from 4.0 
 * Added a new popout script editor. Right-click on the script editor to use it.
 * Copy screenshots to clipboard and open screenshot folder from UI
 * Fixed undress command when using a layer
-* Fixed issue with guardlines.ref not being read by UOPS
+* Fixed issue with `guardlines.ref` not being read by UOPS
 * Added syntax highlighting for `targetloc` command
 * `targetloc` requires two params, z will default to 0 if not included
 * Show incoming name/target only for new mobiles
