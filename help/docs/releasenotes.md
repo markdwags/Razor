@@ -2,7 +2,7 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
-## 1.7.2.x (Dev Preview)
+## 1.7.2.25 (12/17/2021)
 
 * Option for buy agents to ignore the amount of gold you have
 * `findtype`, `targettype`, `liftype` will match on the full item name only
