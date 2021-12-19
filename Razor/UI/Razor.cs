@@ -6602,8 +6602,24 @@ namespace Assistant
             {
                 ContextMenuStrip menu = new ContextMenuStrip();
 
+                menu.Items.Add("Cut", null, OnScriptCut);
+                menu.Items.Add("Copy", null, OnScriptCopy);
+                menu.Items.Add("Paste", null, OnScriptPaste);
+                menu.Items.Add("Delete", null, OnScriptDelete);
+                menu.Items.Add("-");
+                menu.Items.Add("Select All", null, OnScriptSelectAll);
+                menu.Items.Add("-");
+
+                menu.Items[0].Enabled = false;
+                menu.Items[1].Enabled = false;
+                menu.Items[3].Enabled = false;
+
                 if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
                 {
+                    menu.Items[0].Enabled = true;
+                    menu.Items[1].Enabled = true;
+                    menu.Items[3].Enabled = true;
+
                     menu.Items.Add("Comment", null, OnScriptComment);
                     menu.Items.Add("Uncomment", null, OnScriptUncomment);
 
@@ -6645,6 +6661,40 @@ namespace Assistant
             {
                 if (ScriptManager.Running || ScriptManager.Recording || World.Player == null)
                     return;
+            }
+        }
+
+        private void OnScriptSelectAll(object sender, EventArgs e)
+        {
+            scriptEditor.SelectAll();
+        }
+
+        private void OnScriptDelete(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
+            {
+                scriptEditor.SelectedText = string.Empty;
+            }
+        }
+
+        private void OnScriptPaste(object sender, EventArgs e)
+        {
+            scriptEditor.Paste();
+        }
+
+        private void OnScriptCopy(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
+            {
+                scriptEditor.Copy();
+            }
+        }
+
+        private void OnScriptCut(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(scriptEditor.SelectedText))
+            {
+                scriptEditor.Cut();
             }
         }
 
