@@ -958,7 +958,7 @@ namespace Assistant
             {
                 Item item = (Item) m.Contains[i];
 
-                int itemID = item.ItemID & 0x3FFF;
+                int itemID = item.ItemID;
                 bool writeHue = (item.Hue != 0);
                 if (writeHue || isLT)
                     itemID |= 0x8000;
