@@ -27,6 +27,7 @@ using Assistant.Core;
 using Assistant.HotKeys;
 using Assistant.Scripts.Engine;
 using Assistant.Scripts.Helpers;
+using Ultima;
 
 namespace Assistant.Scripts
 {
@@ -806,11 +807,22 @@ namespace Assistant.Scripts
             {
                 Client.Instance.SendToServer(new UseSkill(World.Player.LastSkill));
             }
-            else if (SkillHotKeys.UsableSkillsByName.TryGetValue(vars[0].AsString().ToLower(), out skillId))
+            else if (Skills.SkillsByName.TryGetValue(vars[0].AsString(), out SkillInfo skill))
             {
-                Client.Instance.SendToServer(new UseSkill(skillId));
+                if (skill.IsAction)
+                {
+                    Client.Instance.SendToServer(new UseSkill(skill.Index));
 
-                World.Player.LastSkill = skillId;
+                    World.Player.LastSkill = skill.Index;
+                }
+                else
+                {
+                    CommandHelper.SendWarning(command, $"Skill '{vars[0].AsString()}' is not usable. Available usable skills: {string.Join(", ", Skills.GetUsableSkillNames())}", quiet);
+                }
+            }
+            else
+            {
+                CommandHelper.SendWarning(command, $"Skill '{vars[0].AsString()}' not found. Available usable skills: {string.Join(", ", Skills.GetUsableSkillNames())}", quiet);
             }
 
             if (skillId == (int)SkillName.Stealth && !World.Player.Visible)

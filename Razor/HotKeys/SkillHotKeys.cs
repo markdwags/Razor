@@ -19,86 +19,22 @@
 #endregion
 
 using System.Collections.Generic;
+using Ultima;
 
 namespace Assistant.HotKeys
 {
     public class SkillHotKeys
     {
-        private static HotKeyCallbackState m_Callback;
-
-        private static readonly int[] m_UsableSkills = new int[]
-        {
-            1, // anatomy
-            2, // animal lore
-            3, // item identification
-            4, // arms lore
-            6, // begging
-            9, // peacemaking
-            12, // cartography
-            14, // detect hidden
-            15, // Discordance
-            16, // evaluate intelligence
-            19, // forensic evaluation
-            21, // hiding
-            22, // provocation
-            23, // inscription
-            30, // poisoning
-            32, // spirit speak
-            33, // stealing
-            35, // taming
-            36, // taste id
-            38, // tracking
-            46, // Meditation
-            47, // Stealth
-            48, // RemoveTrap
-            56 // Imbuing
-        };
-
-        public static readonly Dictionary<string, int> UsableSkillsByName = new Dictionary<string, int>()
-        {
-            {"anatomy", 1}, // anatomy
-            {"animallore", 2}, // animal lore
-            {"itemidentification", 3}, // item identification
-            {"itemid", 3}, // item identification
-            {"armslore", 4}, // arms lore
-            {"begging", 6}, // begging
-            {"peacemaking", 9}, // peacemaking
-            {"peace", 9}, // peacemaking
-            {"cartography", 12}, // cartography
-            {"detectinghidden", 14}, // detect hidden
-            {"discord", 15}, // Discordance
-            {"discordance", 15}, // Discordance
-            {"evaluatingintelligence", 16}, // evaluate intelligence
-            {"evalint", 16}, // evaluate intelligence
-            {"forensicevaluation", 19}, // forensic evaluation
-            {"forensiceval", 19}, // forensic evaluation
-            {"forensic", 19}, // forensic evaluation
-            {"hiding", 21}, // hiding
-            {"provocation", 22}, // provocation
-            {"provo", 22}, // provocation
-            {"inscription", 23}, // inscription
-            {"poisoning", 30}, // poisoning
-            {"spiritspeak", 32}, // spirit speak
-            {"spirit", 32}, // spirit speak
-            {"stealing", 33}, // stealing
-            {"taming", 35}, // taming
-            {"tasteidentification", 36}, // taste id
-            {"tasteid", 36}, // taste id
-            {"tracking", 38}, // tracking
-            {"meditation", 46}, // Meditation
-            {"stealth", 47}, // Stealth
-            {"removetrap", 48}, // RemoveTrap
-            {"imbuing", 56} // Imbuing
-        };
-
+        private static HotKeyCallbackState _callback;
+        
         public static void Initialize()
         {
-            m_Callback = new HotKeyCallbackState(OnHotKey);
+            _callback = new HotKeyCallbackState(OnHotKey);
             //1044060 = Alchemy in UO cliloc
             
-            foreach (int t in m_UsableSkills)
+            foreach (int t in Skills.GetUsableSkillIndexes())
             {
-                HotKey.Add(HKCategory.Skills, (1044060 + t), m_Callback, t);
+                HotKey.Add(HKCategory.Skills, (1044060 + t), _callback, t);
             }
         }
 

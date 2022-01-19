@@ -31,6 +31,7 @@ using Assistant.HotKeys;
 using Assistant.Macros;
 using Assistant.Scripts;
 using Assistant.UI;
+using Ultima;
 using ContainerLabels = Assistant.Core.ContainerLabels;
 
 namespace Assistant
@@ -414,11 +415,11 @@ namespace Assistant
                     if (MacroManager.AcceptActions)
                         MacroManager.Action(new UseSkillAction(skillIndex));
 
-                    if (SkillHotKeys.UsableSkillsByName.ContainsValue(skillIndex))
+                    if (Ultima.Skills.SkillsByIndex.TryGetValue(skillIndex, out SkillInfo skill))
                     {
-                        ScriptManager.AddToScript($"skill '{SkillHotKeys.UsableSkillsByName.FirstOrDefault(x => x.Value.Equals(skillIndex)).Key}'");
+                        ScriptManager.AddToScript($"skill '{skill.Name}'");
                     }
-
+                    
                     if (World.Player != null && (skillIndex == (int) SkillName.Stealth && !World.Player.Visible))
                         StealthSteps.Hide();
 

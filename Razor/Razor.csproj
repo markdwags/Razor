@@ -252,9 +252,7 @@
     <Compile Include="HotKeys\Misc.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HotKeys\Skills.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="HotKeys\SkillHotKeys.cs" />
     <Compile Include="HotKeys\SpecialMoves.cs">
       <SubType>Code</SubType>
     </Compile>

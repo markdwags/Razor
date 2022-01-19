@@ -328,13 +328,12 @@ namespace Assistant.Scripts
             if (World.Player == null)
                 return 0;
 
-            foreach (SkillInfo skill in Skills.SkillEntries)
+            if (Skills.SkillsByName.TryGetValue(vars[0].AsString(), out var skill))
             {
-                if (skill.Name.IndexOf(vars[0].AsString(), StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    return World.Player.Skills[skill.Index].Value;
-                }
+                return World.Player.Skills[skill.Index].Value;
             }
+
+            CommandHelper.SendWarning(expression, $"Skill '{vars[0].AsString()}' not found", quiet);
 
             return 0;
         }
