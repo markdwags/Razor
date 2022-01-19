@@ -126,6 +126,11 @@ namespace Ultima
             return string.Empty;
         }
 
+        public static int TotalSkills()
+        {
+            return SkillsByIndex.Count;
+        }
+
         /// <summary>
         /// Returns <see cref="SkillInfo"/> of index
         /// </summary>

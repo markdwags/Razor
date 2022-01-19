@@ -50,8 +50,6 @@ namespace Assistant
 
     public class Skill
     {
-        public static int Count = 52;
-
         private LockType m_Lock;
         private ushort m_Value;
         private ushort m_Base;
@@ -270,7 +268,7 @@ namespace Assistant
 
         public PlayerData(Serial serial) : base(serial)
         {
-            m_Skills = new Skill[Skill.Count];
+            m_Skills = new Skill[Ultima.Skills.TotalSkills()];
             for (int i = 0; i < m_Skills.Length; i++)
                 m_Skills[i] = new Skill(i);
         }

@@ -838,7 +838,7 @@ namespace Assistant
         {
             int i = p.ReadUInt16();
 
-            if (i >= 0 && i < Skill.Count)
+            if (i >= 0 && i < Skills.TotalSkills())
             {
                 Skill skill = World.Player.Skills[i];
 
@@ -860,7 +860,7 @@ namespace Assistant
                     int i;
                     while ((i = p.ReadUInt16()) > 0)
                     {
-                        if (i > 0 && i <= Skill.Count)
+                        if (i > 0 && i <= Skills.TotalSkills())
                         {
                             Skill skill = World.Player.Skills[i - 1];
 
@@ -892,7 +892,7 @@ namespace Assistant
                     int i;
                     while ((i = p.ReadUInt16()) > 0)
                     {
-                        if (i > 0 && i <= Skill.Count)
+                        if (i > 0 && i <= Skills.TotalSkills())
                         {
                             Skill skill = World.Player.Skills[i - 1];
 
@@ -923,7 +923,7 @@ namespace Assistant
                 {
                     int i = p.ReadUInt16();
 
-                    if (i >= 0 && i < Skill.Count)
+                    if (i >= 0 && i < Skills.TotalSkills())
                     {
                         Skill skill = World.Player.Skills[i];
 
@@ -965,7 +965,7 @@ namespace Assistant
                 {
                     int i = p.ReadUInt16();
 
-                    if (i >= 0 && i < Skill.Count)
+                    if (i >= 0 && i < Skills.TotalSkills())
                     {
                         Skill skill = World.Player.Skills[i];
 

@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assistant.Agents;
+using Ultima;
 
 namespace Assistant
 {
@@ -363,10 +364,10 @@ namespace Assistant
     {
         public SkillsList() : base(0x3A)
         {
-            EnsureCapacity(3 + 1 + Skill.Count * 9 + 2);
+            EnsureCapacity(3 + 1 + Skills.TotalSkills() * 9 + 2);
 
             Write((byte) 0x02);
-            for (int i = 0; i < Skill.Count; i++)
+            for (int i = 0; i < Skills.TotalSkills(); i++)
             {
                 Write((short) (i + 1));
                 Write(World.Player.Skills[i].FixedValue);

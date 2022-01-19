@@ -848,7 +848,7 @@ namespace Assistant
         public void UpdateSkill(Skill skill)
         {
             double total = 0;
-            for (int i = 0; i < Skill.Count; i++)
+            for (int i = 0; i < Skills.TotalSkills(); i++)
             {
                 total += World.Player.Skills[i].Base;
             }
@@ -923,7 +923,7 @@ namespace Assistant
             if (World.Player != null && World.Player.SkillsSent)
             {
                 string[] items = new string[6];
-                for (int i = 0; i < Skill.Count; i++)
+                for (int i = 0; i < Skills.TotalSkills(); i++)
                 {
                     Skill sk = World.Player.Skills[i];
                     Total += sk.Base;
@@ -1118,7 +1118,7 @@ namespace Assistant
             if (World.Player == null)
                 return;
 
-            for (int i = 0; i < Skill.Count; i++)
+            for (int i = 0; i < Skills.TotalSkills(); i++)
                 World.Player.Skills[i].Delta = 0;
 
             RedrawSkills();
@@ -1131,7 +1131,7 @@ namespace Assistant
 
             LockType type = (LockType) locks.SelectedIndex;
 
-            for (short i = 0; i < Skill.Count; i++)
+            for (short i = 0; i < Skills.TotalSkills(); i++)
             {
                 World.Player.Skills[i].Lock = type;
                 Client.Instance.SendToServer(new SetSkillLock(i, type));
@@ -1441,7 +1441,7 @@ namespace Assistant
                 return;
 
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < Skill.Count; i++)
+            for (int i = 0; i < Skills.TotalSkills(); i++)
             {
                 Skill sk = World.Player.Skills[i];
                 sb.AppendFormat("{0,-20} {1,-5:F1} {2,-5:F1} {3}{4,-5:F1} {5,-5:F1}\n", Ultima.Skills.GetSkillDisplayName(i), sk.Value,
