@@ -72,6 +72,25 @@ namespace Ultima
                     case "Stealth":
                         StealthIndex = i;
                         break;
+                    case "Item Identification":
+                        SkillsByName.Add("itemid", info);
+                        break;
+                    case "Evaluating Intelligence":
+                        SkillsByName.Add("evalint", info);
+                        break;
+                    case "Forensic Evaluation":
+                        SkillsByName.Add("forensiceval", info);
+                        SkillsByName.Add("forensic", info);
+                        break;
+                    case "Provocation":
+                        SkillsByName.Add("provo", info);
+                        break;
+                    case "Spirit Speak":
+                        SkillsByName.Add("spirit", info);
+                        break;
+                    case "Taste Identification":
+                        SkillsByName.Add("tasteid", info);
+                        break;
                 }
             }
         }
