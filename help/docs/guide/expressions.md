@@ -52,6 +52,32 @@ The expression can be used either directly by item type and hue, or by referenci
         endif
         ```
 
+## followers
+
+Description: Used to get the current number of followers.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if followers = 0
+            overhead 'No one following me!'
+        else
+            overhead 'I have followers'
+        endif
+        ```
+
+    === "..used with maxfollowers"
+
+        ```vim
+        if followers < maxfollowers
+            overhead 'You can have more followers!'
+        else
+            overhead 'You hit your followers limit'
+        endif
+        ```
+
 ## findbuff
 
 - `findbuff 'name of buff/debuff`
@@ -238,6 +264,30 @@ Description: Used to get your current or max mana levels.
             skill 'meditation'
             wait 11000
         endwhile
+        ```
+
+## maxfollowers
+
+Description: Used to get the maximum number of allowed followers.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if followers = maxfollowers
+            overhead 'You hit your limit'       
+        endif
+        ```
+
+    === "..used with followers"
+
+        ```vim
+        if followers < maxfollowers
+            overhead 'You can have more followers!'
+        else
+            overhead 'You hit your followers limit'
+        endif
         ```
 
 ## maxweight

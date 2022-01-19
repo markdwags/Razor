@@ -73,6 +73,25 @@ namespace Assistant.Scripts
 
             Interpreter.RegisterExpressionHandler("varexist", VarExist);
             Interpreter.RegisterExpressionHandler("varexists", VarExist);
+
+            Interpreter.RegisterExpressionHandler("followers", Followers);
+            Interpreter.RegisterExpressionHandler("maxfollowers", MaxFollowers);
+        }
+
+        private static int MaxFollowers(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.FollowersMax;
+        }
+
+        private static int Followers(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.Followers;
         }
 
         private static bool VarExist(string expression, Variable[] vars, bool quiet, bool force)
