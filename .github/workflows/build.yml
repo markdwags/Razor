@@ -43,17 +43,27 @@ jobs:
     - name: Set AssemblyInfo
       uses: dannevesdantas/set-version-assemblyinfo@v.1.0.0
       with:                     
-        version: '1.7.3.${{ github.run_number }}'
+        version: '1.7.4.${{ github.run_number }}'
 
-    - name: Build Razor
-      run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration
+    - name: Build Razor (x86)
+      run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration /p:Platform="Any CPU"
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: Archive build artifacts      
+    - name: Build Razor (x64)
+      run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration /p:Platform=x64
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    - name: Archive Razor x86 build artifacts      
       run: |
         cd bin/Win32/Release/
-        7z a -tzip "Razor-dev-preview.zip" "*"
+        7z a -tzip "Razor-dev-x86-preview.zip" "*"
+
+    - name: Archive Razor x64 build artifacts      
+      run: |
+        cd bin/x64/Release/
+        7z a -tzip "Razor-dev-x64-preview.zip" "*"
 
     - name: Delete Dev Release
       uses: dev-drprasad/delete-tag-and-release@v0.2.0
@@ -68,7 +78,7 @@ jobs:
       with:
         name: "Razor Dev Preview"
         body: "This is built automatically after each commit to master, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk."
-        artifacts: "bin/Win32/Release/Razor-dev-preview.zip"          
+        artifacts: "bin/Win32/Release/Razor-dev-x86-preview.zip,bin/x64/Release/Razor-dev-x64-preview.zip"          
         prerelease: true
         tag: Razor-dev-preview
         token: ${{ secrets.GITHUB_TOKEN }}
