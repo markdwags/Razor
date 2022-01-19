@@ -46,25 +46,6 @@ namespace Assistant
             get { return m_ObjPropList; }
         }
 
-        public virtual void SaveState(BinaryWriter writer)
-        {
-            writer.Write((uint) m_Serial);
-            writer.Write((int) m_Pos.X);
-            writer.Write((int) m_Pos.Y);
-            writer.Write((int) m_Pos.Z);
-            writer.Write((ushort) m_Hue);
-        }
-
-        public UOEntity(BinaryReader reader, int version)
-        {
-            m_Serial = reader.ReadUInt32();
-            m_Pos = new Point3D(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
-            m_Hue = reader.ReadUInt16();
-            m_Deleted = false;
-
-            m_ObjPropList = new ObjectPropertyList(this);
-        }
-
         public virtual void AfterLoad()
         {
         }

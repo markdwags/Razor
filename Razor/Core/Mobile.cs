@@ -82,73 +82,7 @@ namespace Assistant
         private List<Item> m_Items = new List<Item>();
 
         private byte m_Map;
-
-        //private static BodyType[] m_Types;
-
-        //public static void Initialize()
-        //{
-        //    using (StreamReader ip = new StreamReader(Path.Combine(Ultima.Files.RootDir, "mobtypes.txt")))
-        //    {
-        //        m_Types = new BodyType[0x1000];
-
-        //        string line;
-
-        //        while ((line = ip.ReadLine()) != null)
-        //        {
-        //            if (line.Length == 0 || line.StartsWith("#"))
-        //                continue;
-
-        //            string[] split = line.Split('\t');
-
-        //            BodyType type;
-        //            int bodyID;
-
-        //            if (int.TryParse(split[0], out bodyID) && Enum.TryParse(split[1], true, out type) && bodyID >= 0 &&
-        //                bodyID < m_Types.Length)
-        //            {
-        //                m_Types[bodyID] = type;
-        //            }
-        //        }
-        //    }
-        //}
-
-        public override void SaveState(BinaryWriter writer)
-        {
-            base.SaveState(writer);
-
-            writer.Write(m_Body);
-            writer.Write((byte) m_Direction);
-            writer.Write(m_Name == null ? "" : m_Name);
-            writer.Write(m_Notoriety);
-            writer.Write((byte) GetPacketFlags());
-            writer.Write(m_HitsMax);
-            writer.Write(m_Hits);
-            writer.Write(m_Map);
-
-            writer.Write((int) m_Items.Count);
-            for (int i = 0; i < m_Items.Count; i++)
-                writer.Write((uint) (((Item) m_Items[i]).Serial));
-            //writer.Write(	(int)0 );
-        }
-
-        public Mobile(BinaryReader reader, int version) : base(reader, version)
-        {
-            m_Body = reader.ReadUInt16();
-            m_Direction = (Direction) reader.ReadByte();
-            m_Name = reader.ReadString();
-            m_Notoriety = reader.ReadByte();
-            ProcessPacketFlags(reader.ReadByte());
-            m_HitsMax = reader.ReadUInt16();
-            m_Hits = reader.ReadUInt16();
-            m_Map = reader.ReadByte();
-
-            int count = reader.ReadInt32();
-            m_LoadSerials = new List<Serial>();
-
-            for (int i = count - 1; i >= 0; --i)
-                m_LoadSerials.Add(reader.ReadUInt32());
-        }
-
+        
         public override void AfterLoad()
         {
             int count = m_LoadSerials.Count;
