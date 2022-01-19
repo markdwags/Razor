@@ -21,6 +21,7 @@
 using System;
 using System.Windows.Forms;
 using Assistant.Macros;
+using Ultima;
 
 namespace Assistant
 {
@@ -66,7 +67,7 @@ namespace Assistant
             {
                 foreach (Skill skill in World.Player.Skills)
                 {
-                    varList.Items.Add(Language.Skill2Str(skill.Index));
+                    varList.Items.Add(Skills.GetSkillDisplayName(skill.Index));
                 }
             }
         }
@@ -88,7 +89,7 @@ namespace Assistant
             {
                 foreach (Skill skill in World.Player.Skills)
                 {
-                    varList.Items.Add(Language.Skill2Str(skill.Index));
+                    varList.Items.Add(Skills.GetSkillDisplayName(skill.Index));
                 }
             }
         }
@@ -262,7 +263,7 @@ namespace Assistant
 
                     foreach (Skill skill in World.Player.Skills)
                     {
-                        if (Language.Skill2Str(skill.Index).Equals(varList.SelectedItem as string))
+                        if (Skills.GetSkillDisplayName(skill.Index).Equals(varList.SelectedItem as string))
                         {
                             skillId = skill.Index;
                             break;
@@ -349,7 +350,7 @@ namespace Assistant
                     ((DoWhileAction) m_Action).Variable == DoWhileAction.DoWhileVarType.Skill)
                     try
                     {
-                        varList.SelectedItem = Language.Skill2Str(((DoWhileAction) m_Action).SkillId);
+                        varList.SelectedItem = Skills.GetSkillDisplayName(((DoWhileAction) m_Action).SkillId);
                     }
                     catch
                     {

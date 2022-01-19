@@ -667,26 +667,28 @@ namespace Assistant
 
         public static string Format(int key, params object[] args)
         {
-            return String.Format(GetString(key), args);
+            return string.Format(GetString(key), args);
         }
 
         public static string Format(LocString key, params object[] args)
         {
-            return String.Format(GetString(key), args);
+            return string.Format(GetString(key), args);
         }
-
-        public static string Skill2Str(SkillName sk)
-        {
-            return Skill2Str((int) sk);
-        }
-
-        public static string Skill2Str(int skill)
+        
+        public static string GetSkillCliloc(int skill)
         {
             string value = null;
+            
             if (m_CliLoc != null)
+            {
                 value = m_CliLoc.GetString(1044060 + skill);
+            }
+
             if (value == null)
+            {
                 value = $"LanguageString \"{1044060 + skill}\" not found!";
+            }
+
             return value;
         }
 

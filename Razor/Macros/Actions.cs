@@ -25,6 +25,7 @@ using System.Text;
 using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.UI;
+using Ultima;
 
 namespace Assistant.Macros
 {
@@ -1932,7 +1933,7 @@ namespace Assistant.Macros
 
         public override string ToScript()
         {
-            return $"skill '{Language.Skill2Str(m_Skill)}'";
+            return $"skill '{Skills.GetSkillDisplayName(m_Skill)}'";
         }
 
         public override string Serialize()
@@ -1942,7 +1943,7 @@ namespace Assistant.Macros
 
         public override string ToString()
         {
-            return Language.Format(LocString.UseSkillA1, Language.Skill2Str(m_Skill));
+            return Language.Format(LocString.UseSkillA1, Skills.GetSkillDisplayName(m_Skill));
         }
     }
 
@@ -2998,7 +2999,7 @@ namespace Assistant.Macros
                     expression = $"count '{m_Counter}'";
                     break;
                 case IfVarType.Skill:
-                    expression = $"skill '{Language.Skill2Str(m_SkillId)}'";
+                    expression = $"skill '{Skills.GetSkillDisplayName(m_SkillId)}'";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -3274,7 +3275,7 @@ namespace Assistant.Macros
                 }
 
                 case IfVarType.Skill:
-                    return $"If ( \"{Language.Skill2Str(m_SkillId)}\" {DirectionString()} {m_Value})";
+                    return $"If ( \"{Skills.GetSkillDisplayName(m_SkillId)}\" {DirectionString()} {m_Value})";
                 case IfVarType.Mounted:
                     return "If ( Mounted )";
                 case IfVarType.RHandEmpty:
@@ -3694,7 +3695,7 @@ namespace Assistant.Macros
                     expression = $"count '{m_Counter}'";
                     break;
                 case WhileVarType.Skill:
-                    expression = $"skill '{Language.Skill2Str(m_SkillId)}'";
+                    expression = $"skill '{Skills.GetSkillDisplayName(m_SkillId)}'";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -3968,7 +3969,7 @@ namespace Assistant.Macros
                 }
 
                 case WhileVarType.Skill:
-                    return $"While ( \"{Language.Skill2Str(m_SkillId)}\" {DirectionString()} {m_Value})";
+                    return $"While ( \"{Skills.GetSkillDisplayName(m_SkillId)}\" {DirectionString()} {m_Value})";
                 case WhileVarType.Mounted:
                     return "While ( Mounted )";
                 case WhileVarType.RHandEmpty:
@@ -4454,7 +4455,7 @@ namespace Assistant.Macros
                 }
 
                 case DoWhileVarType.Skill:
-                    return $"Do While ( \"{Language.Skill2Str(m_SkillId)}\" {DirectionString()} {m_Value})";
+                    return $"Do While ( \"{Skills.GetSkillDisplayName(m_SkillId)}\" {DirectionString()} {m_Value})";
                 case DoWhileVarType.Mounted:
                     return "Do While ( Mounted )";
                 case DoWhileVarType.RHandEmpty:

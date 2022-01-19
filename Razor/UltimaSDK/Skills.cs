@@ -103,6 +103,16 @@ namespace Ultima
             return names;
         }
 
+        public static string GetSkillDisplayName(int index)
+        {
+            if (SkillsByIndex.TryGetValue(index, out SkillInfo skill))
+            {
+                return skill.DisplayName;
+            }
+
+            return string.Empty;
+        }
+
         /// <summary>
         /// Returns <see cref="SkillInfo"/> of index
         /// </summary>
@@ -121,7 +131,7 @@ namespace Ultima
                 {
                     bool action = bin.ReadBoolean();
                     string name = ReadNameString(bin, length - 1);
-                    string displayName = Language.Skill2Str(index);
+                    string displayName = Language.GetSkillCliloc(index);
                     return new SkillInfo(index, name, displayName, action, extra);
                 }
             }

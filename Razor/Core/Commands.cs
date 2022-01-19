@@ -27,6 +27,7 @@ using Assistant.Core;
 using Assistant.Gumps.Internal;
 using Assistant.Macros;
 using Assistant.Scripts;
+using Ultima;
 
 namespace Assistant
 {
@@ -62,6 +63,13 @@ namespace Assistant
             Command.Register("HotKeys", ShowHotKeyGump);
 
             Command.Register("Boat", ShowBoatControlGump);
+
+            Command.Register("Skills", ShowUsableSkills);
+        }
+
+        private static void ShowUsableSkills(string[] param)
+        {
+            World.Player.SendMessage(MsgLevel.Info, $"Usable skills: {string.Join(", ", Skills.GetUsableSkillNames())}");
         }
 
         private static void GetSystemMessages(string[] param)
