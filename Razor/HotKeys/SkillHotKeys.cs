@@ -47,7 +47,7 @@ namespace Assistant.HotKeys
                 World.Player.LastSkill = sk;
             }
 
-            if (sk == (int) SkillName.Stealth && !World.Player.Visible)
+            if (sk == Skills.StealthIndex && !World.Player.Visible)
             {
                 StealthSteps.Hide();
             }

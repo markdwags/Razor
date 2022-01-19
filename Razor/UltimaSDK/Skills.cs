@@ -32,9 +32,12 @@ namespace Ultima
         public static Dictionary<string, SkillInfo> SkillsByName { get; private set; }
         public static Dictionary<int, SkillInfo> SkillsByIndex { get; private set; }
 
+        public static int StealthIndex { get; private set; }
+        public static int MageryIndex { get; private set; }
+
         public static void Initialize()
         {
-            Reload();
+            Load();
         }
         
         public Skills()
@@ -44,7 +47,7 @@ namespace Ultima
         /// <summary>
         /// ReReads skills.mul
         /// </summary>
-        private static void Reload()
+        private static void Load()
         {
             _fileIndex = new FileIndex("skills.idx", "skills.mul", 16);
 
@@ -60,6 +63,16 @@ namespace Ultima
 
                 SkillsByIndex.Add(i, info);
                 SkillsByName.Add(info.Name.Replace(" ", string.Empty), info);
+                
+                switch (info.Name)
+                {
+                    case "Magery":
+                        MageryIndex = i;
+                        break;
+                    case "Stealth":
+                        StealthIndex = i;
+                        break;
+                }
             }
         }
 
@@ -67,7 +80,7 @@ namespace Ultima
         {
             if (SkillsByIndex == null)
             {
-                Reload();
+                Load();
             }
 
             List<int> indexes = new List<int>();
@@ -87,7 +100,7 @@ namespace Ultima
         {
             if (SkillsByName == null)
             {
-                Reload();
+                Load();
             }
 
             List<string> names = new List<string>();

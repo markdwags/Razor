@@ -825,16 +825,14 @@ namespace Assistant.Scripts
                 CommandHelper.SendWarning(command, $"Skill '{vars[0].AsString()}' not found. Available usable skills: {string.Join(", ", Skills.GetUsableSkillNames())}", quiet);
             }
 
-            if (skillId == (int)SkillName.Stealth && !World.Player.Visible)
+            if (skillId == Skills.StealthIndex && !World.Player.Visible)
             {
                 StealthSteps.Hide();
             }
 
             return true;
         }
-
-        private static char[] _digits = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-
+        
         private static bool Pause(string command, Variable[] vars, bool quiet, bool force)
         {
             if (vars.Length == 0)

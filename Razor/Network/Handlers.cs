@@ -88,7 +88,7 @@ namespace Assistant
             PacketHandler.RegisterServerToClientViewer(0x27, new PacketViewerCallback(LiftReject));
             PacketHandler.RegisterServerToClientViewer(0x2D, new PacketViewerCallback(MobileStatInfo));
             PacketHandler.RegisterServerToClientFilter(0x2E, new PacketFilterCallback(EquipmentUpdate));
-            PacketHandler.RegisterServerToClientViewer(0x3A, new PacketViewerCallback(Skills));
+            PacketHandler.RegisterServerToClientViewer(0x3A, new PacketViewerCallback(PlayerSkills));
             PacketHandler.RegisterServerToClientFilter(0x3C, new PacketFilterCallback(ContainerContent));
             PacketHandler.RegisterServerToClientViewer(0x4E, new PacketViewerCallback(PersonalLight));
             PacketHandler.RegisterServerToClientViewer(0x4F, new PacketViewerCallback(GlobalLight));
@@ -415,12 +415,12 @@ namespace Assistant
                     if (MacroManager.AcceptActions)
                         MacroManager.Action(new UseSkillAction(skillIndex));
 
-                    if (Ultima.Skills.SkillsByIndex.TryGetValue(skillIndex, out SkillInfo skill))
+                    if (Skills.SkillsByIndex.TryGetValue(skillIndex, out SkillInfo skill))
                     {
                         ScriptManager.AddToScript($"skill '{skill.Name}'");
                     }
                     
-                    if (World.Player != null && (skillIndex == (int) SkillName.Stealth && !World.Player.Visible))
+                    if (World.Player != null && (skillIndex == Skills.StealthIndex && !World.Player.Visible))
                         StealthSteps.Hide();
 
                     SkillTimer.Start();
@@ -847,7 +847,7 @@ namespace Assistant
             }
         }
 
-        private static void Skills(PacketReader p, PacketHandlerEventArgs args)
+        private static void PlayerSkills(PacketReader p, PacketHandlerEventArgs args)
         {
             if (World.Player == null || World.Player.Skills == null || Engine.MainWindow == null)
                 return;
@@ -942,15 +942,14 @@ namespace Assistant
                         {
                             if (Config.GetBool("DisplaySkillChangesOverhead"))
                             {
-                                World.Player.OverheadMessage(LocString.SkillChangeOverhead, (SkillName) i,
+                                World.Player.OverheadMessage(LocString.SkillChangeOverhead, Skills.GetSkillDisplayName(i),
                                     skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
                                     skill.FixedBase - old > 0 ? "+" : "",
                                     (skill.FixedBase - old) / 10.0);
                             }
                             else
                             {
-                                //                                                                    0                    1                    2            3                        4                                        5
-                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName) i,
+                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, Skills.GetSkillDisplayName(i),
                                     skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
                                     skill.FixedBase - old > 0 ? "+" : "", ((double) (skill.FixedBase - old)) / 10.0);
                             }
@@ -983,14 +982,14 @@ namespace Assistant
                         {
                             if (Config.GetBool("DisplaySkillChangesOverhead"))
                             {
-                                World.Player.OverheadMessage(LocString.SkillChangeOverhead, (SkillName) i,
+                                World.Player.OverheadMessage(LocString.SkillChangeOverhead, Skills.GetSkillDisplayName(i),
                                     skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
                                     skill.FixedBase - old > 0 ? "+" : "",
                                     (skill.FixedBase - old) / 10.0);
                             }
                             else
                             {
-                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, (SkillName) i,
+                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, Skills.GetSkillDisplayName(i),
                                     skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
                                     ((double) (skill.FixedBase - old)) / 10.0, skill.FixedBase - old > 0 ? "+" : "");
                             }

@@ -877,7 +877,7 @@ namespace Assistant
                 using (StreamWriter sw = File.AppendText(skillLog))
                 {
                     sw.WriteLine(
-                        $"{DateTime.Now},{(SkillName) skill.Index},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
+                        $"{DateTime.Now},{Skills.GetSkillDisplayName(skill.Index)},{skill.Value},{skill.Base},{skill.Delta},{skill.Cap}");
                 }
             }
 
@@ -1444,7 +1444,7 @@ namespace Assistant
             for (int i = 0; i < Skill.Count; i++)
             {
                 Skill sk = World.Player.Skills[i];
-                sb.AppendFormat("{0,-20} {1,-5:F1} {2,-5:F1} {3}{4,-5:F1} {5,-5:F1}\n", (SkillName) i, sk.Value,
+                sb.AppendFormat("{0,-20} {1,-5:F1} {2,-5:F1} {3}{4,-5:F1} {5,-5:F1}\n", Ultima.Skills.GetSkillDisplayName(i), sk.Value,
                     sk.Base, sk.Delta > 0 ? "+" : "", sk.Delta, sk.Cap);
             }
 

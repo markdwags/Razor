@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Text;
 using System.Runtime.InteropServices;
+using Ultima;
 
 namespace Assistant
 {
@@ -192,7 +193,7 @@ namespace Assistant
                         {
                             try
                             {
-                                return GlobalAddAtom(((SkillName) wParam).ToString());
+                                return GlobalAddAtom(Skills.GetSkillDisplayName(wParam));
                             }
                             catch
                             {
@@ -374,7 +375,7 @@ namespace Assistant
         public static void PostSkillUpdate(int skill, int val)
         {
             PostToWndReg((uint) UOAMessage.SKILL_LEVEL, (IntPtr) skill, (IntPtr) val);
-            if (skill == (int) SkillName.Magery)
+            if (skill == Skills.MageryIndex)
                 PostToWndReg((uint) UOAMessage.MAGERY_LEVEL, (IntPtr) ((int) (val / 10)), (IntPtr) (val % 10));
         }
 

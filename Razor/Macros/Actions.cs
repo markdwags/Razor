@@ -1921,7 +1921,7 @@ namespace Assistant.Macros
         {
             Client.Instance.SendToServer(new UseSkill(m_Skill));
 
-            if (m_Skill == (int)SkillName.Stealth && !World.Player.Visible)
+            if (m_Skill == Skills.StealthIndex && !World.Player.Visible)
             {
                 StealthSteps.Hide();
             }

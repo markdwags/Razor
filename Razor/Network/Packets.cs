@@ -773,10 +773,6 @@ namespace Assistant
             Write((byte) 0x24);
             WriteAsciiNull(cmd);
         }
-
-        public UseSkill(SkillName sk) : this((int) sk)
-        {
-        }
     }
 
     public sealed class ExtCastSpell : Packet
