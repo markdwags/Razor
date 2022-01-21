@@ -46,11 +46,11 @@ namespace Assistant.Gumps.Internal
             {
                 AddBackground(1, 0, 453, 397, 3600);
 
-                AddButton(21, 355, 4029, 4031, (int)Buttons.btnAddTarget, GumpButtonType.Reply, 0);
+                AddButton(21, 355, 4029, 4031, (int)Buttons.AddTarget, GumpButtonType.Reply, 0);
                 AddLabel(58, 357, 990, Language.GetString(LocString.AddTarg));
                 AddLabel(300, 25, 990, "Set Amount  Remove");
                 
-                AddButton(152, 355, 4014, 4016, (int)Buttons.btnAgentAction, GumpButtonType.Reply, 0);
+                AddButton(152, 355, 4014, 4016, (int)Buttons.AgentAction, GumpButtonType.Reply, 0);
                 AddLabel(191, 357, 990, "Restock Now");
 
                 string title = !string.IsNullOrEmpty(agent.Alias)
@@ -91,11 +91,11 @@ namespace Assistant.Gumps.Internal
 
                             AddLabel(27, 23, 252, title);
 
-                            AddButton(21, 355, 4029, 4031, (int)Buttons.btnAddTarget, GumpButtonType.Reply, 0);
+                            AddButton(21, 355, 4029, 4031, (int)Buttons.AddTarget, GumpButtonType.Reply, 0);
                             AddLabel(58, 357, 990, Language.GetString(LocString.AddTarg));
                             AddLabel(300, 25, 990, "Set Amount  Remove");
 
-                            AddButton(152, 355, 4014, 4016, (int)Buttons.btnAgentAction, GumpButtonType.Reply, 0);
+                            AddButton(152, 355, 4014, 4016, (int)Buttons.AgentAction, GumpButtonType.Reply, 0);
                             AddLabel(191, 357, 990, "Restock Now");
 
                             AddButton(388, 356, 9910, 9911, pageCount + 1, GumpButtonType.Page, pageCount - 1);
@@ -114,11 +114,11 @@ namespace Assistant.Gumps.Internal
             {
                 AddBackground(1, 0, 453, 397, 3600);
 
-                AddButton(21, 355, 4029, 4031, (int)Buttons.btnAddTarget, GumpButtonType.Reply, 0);
+                AddButton(21, 355, 4029, 4031, (int)Buttons.AddTarget, GumpButtonType.Reply, 0);
                 AddLabel(58, 357, 990, Language.GetString(LocString.AddTarg));
-                AddLabel(420, 25, 990, "Remove");
+                AddLabel(380, 25, 990, "Remove");
 
-                AddButton(152, 355, 4014, 4016, (int)Buttons.btnAgentAction, GumpButtonType.Reply, 0);
+                AddButton(152, 355, 4014, 4016, (int)Buttons.AgentAction, GumpButtonType.Reply, 0);
                 AddLabel(191, 357, 990, "Organize Now");
 
                 string title = !string.IsNullOrEmpty(agent.Alias)
@@ -157,11 +157,11 @@ namespace Assistant.Gumps.Internal
 
                             AddLabel(27, 23, 252, title);
 
-                            AddButton(21, 355, 4029, 4031, (int)Buttons.btnAddTarget, GumpButtonType.Reply, 0);
+                            AddButton(21, 355, 4029, 4031, (int)Buttons.AddTarget, GumpButtonType.Reply, 0);
                             AddLabel(58, 357, 990, Language.GetString(LocString.AddTarg));
-                            AddLabel(420, 25, 990, "Remove");
+                            AddLabel(380, 25, 990, "Remove");
 
-                            AddButton(152, 355, 4014, 4016, (int)Buttons.btnAgentAction, GumpButtonType.Reply, 0);
+                            AddButton(152, 355, 4014, 4016, (int)Buttons.AgentAction, GumpButtonType.Reply, 0);
                             AddLabel(191, 357, 990, "Organize Now");
 
                             AddButton(388, 356, 9910, 9911, pageCount + 1, GumpButtonType.Page, pageCount - 1);
@@ -180,7 +180,7 @@ namespace Assistant.Gumps.Internal
             {
                 AddBackground(1, 0, 453, 397, 3600);
 
-                AddButton(21, 355, 4029, 4031, (int)Buttons.btnAddTarget, GumpButtonType.Reply, 0);
+                AddButton(21, 355, 4029, 4031, (int)Buttons.AddTarget, GumpButtonType.Reply, 0);
                 AddLabel(58, 357, 990, Language.GetString(LocString.AddTarg));
                 AddLabel(300, 25, 990, "Set Amount  Remove");
 
@@ -222,7 +222,7 @@ namespace Assistant.Gumps.Internal
 
                             AddLabel(27, 23, 252, title);
 
-                            AddButton(21, 355, 4029, 4031, (int)Buttons.btnAddTarget, GumpButtonType.Reply, 0);
+                            AddButton(21, 355, 4029, 4031, (int)Buttons.AddTarget, GumpButtonType.Reply, 0);
                             AddLabel(58, 357, 990, Language.GetString(LocString.AddTarg));
                             AddLabel(300, 25, 990, "Set Amount  Remove");
 
@@ -242,12 +242,12 @@ namespace Assistant.Gumps.Internal
 
         public enum Buttons
         {
-            btnAddTarget = 1,
-            btnRemove,
-            btnSetAmount,
-            btnNextPage,
-            btnPrevPage,
-            btnAgentAction
+            AddTarget = 1,
+            Remove,
+            SetAmount,
+            NextPage,
+            PrevPage,
+            AgentAction
         }
 
         public override void OnResponse(int buttonId, int[] switches, GumpTextEntry[] textEntries = null)
@@ -261,10 +261,10 @@ namespace Assistant.Gumps.Internal
                 {
                     switch (buttonId)
                     {
-                        case (int)Buttons.btnAddTarget:
+                        case (int)Buttons.AddTarget:
                             restockAgent.AddItemTarget(true);
                             break;
-                        case (int) Buttons.btnAgentAction:
+                        case (int) Buttons.AgentAction:
                             restockAgent.OnHotKey();
                             break;
                         default:
@@ -292,10 +292,10 @@ namespace Assistant.Gumps.Internal
                 {
                     switch (buttonId)
                     {
-                        case (int)Buttons.btnAddTarget:
+                        case (int)Buttons.AddTarget:
                             orgAgent.AddItemTarget(true);
                             break;
-                        case (int)Buttons.btnAgentAction:
+                        case (int)Buttons.AgentAction:
                             orgAgent.Organize();
                             break;
                         default:
@@ -316,7 +316,7 @@ namespace Assistant.Gumps.Internal
                 {
                     switch (buttonId)
                     {
-                        case (int)Buttons.btnAddTarget:
+                        case (int)Buttons.AddTarget:
                             buyAgent.AddItemTarget(true);
                             break;
                         default:

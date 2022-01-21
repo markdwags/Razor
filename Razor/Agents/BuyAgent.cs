@@ -33,23 +33,18 @@ namespace Assistant.Agents
     {
         public class BuyEntry
         {
-            public BuyEntry(ushort id, ushort amount)
+            public BuyEntry(ItemID id, ushort amount)
             {
                 Id = id;
                 Amount = amount;
             }
 
-            public readonly ushort Id;
+            public readonly ItemID Id;
             public ushort Amount;
-
-            private ItemID ItemID
-            {
-                get { return Id; }
-            }
 
             public override string ToString()
             {
-                return $"{ItemID}\t{Amount}";
+                return $"{Id}\t{Amount}";
             }
         }
 
