@@ -52,13 +52,15 @@ namespace Assistant.Gumps.Internal
             AddPage(0);
             
             AddBackground(106, 70, 253, 189, 3600);
-            
+
+            AddLabel(197, 87, 2954, "Item Data");
+            AddItem(290, 98, item.ItemID);
+
             AddLabel(143, 115, 2954, "Item Name:");
             AddLabel(142, 140, 2954, "Serial:");
             AddLabel(142, 164, 2954, "Id:");
             AddLabel(142, 188, 2954, "Hue:");
-            AddLabel(197, 87, 2954, "Item Data");
-            
+
             AddButton(274, 218, 247, 248, (int)ItemInfoButtons.Okay, GumpButtonType.Reply, 0);
             AddButton(124, 121, 2103, 2104, (int)ItemInfoButtons.CopyItemName, GumpButtonType.Reply, 0);
             AddButton(124, 144, 2103, 2104, (int)ItemInfoButtons.CopySerial, GumpButtonType.Reply, 0);
