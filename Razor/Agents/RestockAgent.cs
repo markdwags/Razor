@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using Assistant.Gumps;
@@ -51,15 +52,17 @@ namespace Assistant.Agents
         }
 
         private ListBox m_SubList;
-        private readonly List<RestockItem> m_Items;
+        public readonly List<RestockItem> Items;
         private Button m_HotBTN;
         private Serial m_HotBag;
+
+        private bool _fromGump { get; set; }
 
         public RestockAgent(int num)
         {
             Number = num;
 
-            m_Items = new List<RestockItem>();
+            Items = new List<RestockItem>();
 
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
                 $"{Language.GetString(LocString.RestockAgent)}-{Number:D2}",
@@ -99,7 +102,7 @@ namespace Assistant.Agents
 
         public override void Clear()
         {
-            m_Items.Clear();
+            Items.Clear();
         }
         public override string Name
         {
@@ -130,9 +133,9 @@ namespace Assistant.Agents
             m_SubList = subList;
             subList.BeginUpdate();
             subList.Items.Clear();
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
-                subList.Items.Add(m_Items[i]);
+                subList.Items.Add(Items[i]);
             }
 
             subList.EndUpdate();
@@ -154,16 +157,15 @@ namespace Assistant.Agents
             {
                 case 1:
                 {
-                    Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnItemTarget));
-                    World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
+                    AddItemTarget();
                     break;
                 }
 
                 case 2:
                 {
-                    if (m_SubList.SelectedIndex >= 0 && m_SubList.SelectedIndex < m_Items.Count)
+                    if (m_SubList.SelectedIndex >= 0 && m_SubList.SelectedIndex < Items.Count)
                     {
-                        m_Items.RemoveAt(m_SubList.SelectedIndex);
+                        Items.RemoveAt(m_SubList.SelectedIndex);
                         m_SubList.Items.RemoveAt(m_SubList.SelectedIndex);
                     }
 
@@ -173,12 +175,12 @@ namespace Assistant.Agents
                 case 3:
                 {
                     int i = m_SubList.SelectedIndex;
-                    if (i < 0 || i > m_Items.Count)
+                    if (i < 0 || i > Items.Count)
                     {
                         return;
                     }
 
-                    RestockItem ri = (RestockItem) m_Items[i];
+                    RestockItem ri = (RestockItem) Items[i];
                     
                     InputDialogGump inputGump = new InputDialogGump(OnItemTargetChangeResponse, m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), ri.Amount.ToString());
                     inputGump.SendGump();
@@ -192,7 +194,7 @@ namespace Assistant.Agents
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         m_SubList.Items.Clear();
-                        m_Items.Clear();
+                        Items.Clear();
                     }
 
                     break;
@@ -359,9 +361,9 @@ namespace Assistant.Agents
             }
 
             int num = 0;
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
-                RestockItem ri = m_Items[i];
+                RestockItem ri = Items[i];
                 int count = World.Player.Backpack.GetCount(ri.ItemID);
 
                 num += Recurse(bag, m_Cont.Contains, ri, ref count);
@@ -415,7 +417,6 @@ namespace Assistant.Agents
             {
                 return;
             }
-
             
             InputDialogGump inputGump = new InputDialogGump(OnItemTargetAmountResponse, gfx, Language.GetString(LocString.EnterAmount),"1");
             inputGump.SendGump();
@@ -426,14 +427,34 @@ namespace Assistant.Agents
             if (int.TryParse(input, out int amount))
             {
                 RestockItem ri = new RestockItem((ushort) gfx, amount);
-                Add(ri);
-                
-                Engine.MainWindow.SafeAction(s => s.ShowMe());
+                AddItem(ri);
+
+                if (_fromGump)
+                {
+                    _fromGump = false;
+
+                    AgentsGump agent = new AgentsGump(this);
+                    agent.SendGump();
+                }
+                else
+                {
+                    Engine.MainWindow.SafeAction(s => s.ShowMe());
+                }
 
                 return true;
             }
-            
-            Engine.MainWindow.SafeAction(s => s.ShowMe());
+
+            if (_fromGump)
+            {
+                _fromGump = false;
+
+                AgentsGump agent = new AgentsGump(this);
+                agent.SendGump();
+            }
+            else
+            {
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
+            }
 
             return false;
         }
@@ -442,33 +463,65 @@ namespace Assistant.Agents
         {
             if (int.TryParse(input, out int amount))
             {
-                RestockItem ri = (RestockItem)m_Items[restockId];
+                RestockItem ri = (RestockItem)Items[restockId];
                 
                 ri.Amount = amount;
 
-                m_SubList.BeginUpdate();
-                m_SubList.Items.Clear();
-                for (int j = 0; j < m_Items.Count; j++)
+                if (m_SubList != null)
                 {
-                    m_SubList.Items.Add(m_Items[j]);
+                    m_SubList.BeginUpdate();
+                    m_SubList.Items.Clear();
+
+                    for (int j = 0; j < Items.Count; j++)
+                    {
+                        m_SubList.Items.Add(Items[j]);
+                    }
+
+                    m_SubList.SelectedIndex = restockId;
+                    m_SubList.EndUpdate();
                 }
 
-                m_SubList.SelectedIndex = restockId;
-                m_SubList.EndUpdate();
+                if (_fromGump)
+                {
+                    _fromGump = false;
 
-                Engine.MainWindow.SafeAction(s => s.ShowMe());
+                    AgentsGump agent = new AgentsGump(this);
+                    agent.SendGump();
+                }
+                else
+                {
+                    Engine.MainWindow.SafeAction(s => s.ShowMe());
+                }
 
                 return true;
             }
 
-            Engine.MainWindow.SafeAction(s => s.ShowMe());
+            if (_fromGump)
+            {
+                _fromGump = false;
+
+                AgentsGump agent = new AgentsGump(this);
+                agent.SendGump();
+            }
+            else
+            {
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
+            }
 
             return false;
         }
 
-        public void Add(RestockItem item)
+        public void AddItemTarget(bool fromGump = false)
         {
-            foreach (RestockItem restockItem in m_Items)
+            _fromGump = fromGump;
+
+            Targeting.OneTimeTarget(OnItemTarget);
+            World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
+        }
+
+        public void AddItem(RestockItem item)
+        {
+            foreach (RestockItem restockItem in Items)
             {
                 if (restockItem.ItemID.Value == item.ItemID.Value)
                 {
@@ -477,10 +530,37 @@ namespace Assistant.Agents
                 }
             }
 
-            m_Items.Add(item);
-            m_SubList.Items.Add(item);
+            Items.Add(item);
+            m_SubList?.Items?.Add(item);
 
             World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
+        }
+
+        public void RemoveItem(int itemId)
+        {
+            RestockItem item = Items.FirstOrDefault(a => a.ItemID == itemId);
+
+            if (item != null)
+            {
+                Items.Remove(item);
+                m_SubList?.Items?.Remove(item);
+
+                World.Player?.SendMessage(MsgLevel.Force, LocString.ItemRemoved);
+            }
+        }
+
+        public void SetItemAmount(int itemId, bool fromGump = false)
+        {
+            int itemIndex = Items.FindIndex(a => a.ItemID == itemId);
+            RestockItem item = Items[itemIndex];
+
+            if (item != null)
+            {
+                _fromGump = fromGump;
+
+                InputDialogGump inputGump = new InputDialogGump(OnItemTargetChangeResponse, itemIndex, Language.GetString(LocString.EnterAmount), item.Amount.ToString());
+                inputGump.SendGump();
+            }
         }
 
         public override void Save(XmlTextWriter xml)
@@ -488,10 +568,10 @@ namespace Assistant.Agents
             xml.WriteAttributeString("hotbag", m_HotBag.Value.ToString());
             xml.WriteAttributeString("alias", Alias);
 
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
                 xml.WriteStartElement("item");
-                RestockItem ri = (RestockItem) m_Items[i];
+                RestockItem ri = (RestockItem) Items[i];
                 xml.WriteAttributeString("id", ri.ItemID.Value.ToString());
                 xml.WriteAttributeString("amount", ri.Amount.ToString());
                 xml.WriteEndElement();
@@ -524,7 +604,7 @@ namespace Assistant.Agents
                 {
                     string iid = el.GetAttribute("id");
                     string amt = el.GetAttribute("amount");
-                    m_Items.Add(new RestockItem((ItemID) Convert.ToInt32(iid), Convert.ToInt32(amt)));
+                    Items.Add(new RestockItem((ItemID) Convert.ToInt32(iid), Convert.ToInt32(amt)));
                 }
                 catch
                 {

@@ -4936,7 +4936,7 @@ namespace Assistant
                 {
                     if (!string.IsNullOrEmpty(item) && ushort.TryParse(item, out ushort gfx))
                     {
-                        organizerAgent.Add(gfx);
+                        organizerAgent.AddItem(gfx);
                     }
                 }
             }
@@ -4950,7 +4950,7 @@ namespace Assistant
 
                     if (!string.IsNullOrEmpty(item) && ushort.TryParse(split[0], out ushort id) && ushort.TryParse(split[1], out ushort amount))
                     {
-                        buyAgent.Add(new BuyAgent.BuyEntry(id, amount));
+                        buyAgent.AddItem(new BuyAgent.BuyEntry(id, amount));
                     }
                 }
             }
@@ -4964,7 +4964,7 @@ namespace Assistant
 
                     if (!string.IsNullOrEmpty(item) && ushort.TryParse(split[0], out ushort id) && ushort.TryParse(split[1], out ushort amount))
                     {
-                        restockAgent.Add(new RestockAgent.RestockItem(id, amount));
+                        restockAgent.AddItem(new RestockAgent.RestockItem(id, amount));
                     }
                 }
             }
@@ -5023,7 +5023,7 @@ namespace Assistant
                             try
                             {
                                 string gfx = el.GetAttribute("id");
-                                organizerAgent.Add(Convert.ToUInt16(gfx));
+                                organizerAgent.AddItem(Convert.ToUInt16(gfx));
                             }
                             catch
                             {
@@ -5049,7 +5049,7 @@ namespace Assistant
 
                                 BuyAgent.BuyEntry entry = new BuyAgent.BuyEntry(Convert.ToUInt16(gfx), Convert.ToUInt16(amount));
 
-                                buyAgent.Add(entry);
+                                buyAgent.AddItem(entry);
                             }
                             catch
                             {
@@ -5074,7 +5074,7 @@ namespace Assistant
 
                             RestockAgent.RestockItem entry = new RestockAgent.RestockItem(Convert.ToUInt16(gfx), Convert.ToUInt16(amount));
 
-                            restockAgent.Add(entry);
+                            restockAgent.AddItem(entry);
                         }
                         catch
                         {

@@ -364,6 +364,8 @@ namespace Assistant.Gumps
             Client.Instance.SendToClient(new CloseGump(ID));
         }
 
+        public int GetButtonId(int type, int index) => 1 + index * 11 + type;
+
         public void Add(GumpElement e)
         {
             e.ParentGump = this;

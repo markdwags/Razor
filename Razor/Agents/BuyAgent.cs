@@ -21,6 +21,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using Assistant.Gumps.Internal;
@@ -106,13 +107,14 @@ namespace Assistant.Agents
 
         private ListBox m_SubList;
         private Button m_EnableBTN;
-        private readonly List<BuyEntry> m_Items;
+        public readonly List<BuyEntry> Items;
         private bool m_Enabled;
+        private bool _fromGump;
 
         public BuyAgent(int num)
         {
             Number = num;
-            m_Items = new List<BuyEntry>();
+            Items = new List<BuyEntry>();
         }
 
         private static void DisplayBuy(PacketReader p, PacketHandlerEventArgs args)
@@ -155,14 +157,14 @@ namespace Assistant.Agents
 
                 foreach (BuyAgent ba in m_Instances)
                 {
-                    if (ba == null || ba.m_Items == null || !ba.m_Enabled)
+                    if (ba == null || ba.Items == null || !ba.m_Enabled)
                     {
                         continue;
                     }
 
-                    for (int a = 0; a < ba.m_Items.Count; a++)
+                    for (int a = 0; a < ba.Items.Count; a++)
                     {
-                        BuyEntry b = (BuyEntry) ba.m_Items[a];
+                        BuyEntry b = (BuyEntry) ba.Items[a];
                         if (b == null)
                         {
                             continue;
@@ -343,7 +345,7 @@ namespace Assistant.Agents
 
         public override void Clear()
         {
-            m_Items.Clear();
+            Items.Clear();
         }
 
         internal static void OnDisconnected()
@@ -375,9 +377,9 @@ namespace Assistant.Agents
 
             m_SubList.BeginUpdate();
             m_SubList.Items.Clear();
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
-                m_SubList.Items.Add(m_Items[i]);
+                m_SubList.Items.Add(Items[i]);
             }
 
             m_SubList.EndUpdate();
@@ -409,7 +411,7 @@ namespace Assistant.Agents
 
                     if (m_SubList.SelectedIndex >= 0)
                     {
-                        BuyEntry e = (BuyEntry)m_Items[m_SubList.SelectedIndex];
+                        BuyEntry e = (BuyEntry)Items[m_SubList.SelectedIndex];
 
                         InputDialogGump inputGump = new InputDialogGump(OnItemChangeAmountResponse, m_SubList.SelectedIndex, Language.GetString(LocString.EnterAmount), e.Amount.ToString());
                         inputGump.SendGump();
@@ -423,7 +425,7 @@ namespace Assistant.Agents
                     {
                         if (m_SubList.SelectedIndex >= 0)
                         {
-                            m_Items.RemoveAt(m_SubList.SelectedIndex);
+                            Items.RemoveAt(m_SubList.SelectedIndex);
                             m_SubList.Items.RemoveAt(m_SubList.SelectedIndex);
                             m_SubList.SelectedIndex = -1;
                         }
@@ -436,7 +438,7 @@ namespace Assistant.Agents
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         m_SubList.Items.Clear();
-                        m_Items.Clear();
+                        Items.Clear();
                     }
 
                     break;
@@ -453,12 +455,12 @@ namespace Assistant.Agents
             {
                 InputDialogGump inputGump = new InputDialogGump(OnItemTargetAmountResponse, gfx, Language.GetString(LocString.EnterAmount), "0");
                 inputGump.SendGump();
-
-                //AddInputCallback = new BuyAgentAddInputCallback(OnItemTargetAmountResponse);
-
             }
 
-            Engine.MainWindow.SafeAction(s => s.ShowMe());
+            if (!_fromGump)
+            {
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
+            }
         }
 
         private bool OnItemTargetAmountResponse(int gfx, string input)
@@ -470,9 +472,33 @@ namespace Assistant.Agents
                     return false;
                 }
 
-                Add(new BuyEntry((ushort) gfx, count));
+                AddItem(new BuyEntry((ushort) gfx, count));
                 
+                if (_fromGump)
+                {
+                    _fromGump = false;
+
+                    AgentsGump agent = new AgentsGump(this);
+                    agent.SendGump();
+                }
+                else
+                {
+                    Engine.MainWindow.SafeAction(s => s.ShowMe());
+                }
+
                 return true;
+            }
+
+            if (_fromGump)
+            {
+                _fromGump = false;
+
+                AgentsGump agent = new AgentsGump(this);
+                agent.SendGump();
+            }
+            else
+            {
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
             }
 
             return false;
@@ -487,37 +513,100 @@ namespace Assistant.Agents
                     return false;
                 }
 
-                BuyEntry e = (BuyEntry)m_Items[entryId];
+                BuyEntry e = (BuyEntry)Items[entryId];
 
                 e.Amount = amount;
-                m_SubList.BeginUpdate();
-                m_SubList.Items.Clear();
 
-                for (int i = 0; i < m_Items.Count; i++)
+                if (m_SubList != null)
                 {
-                    m_SubList.Items.Add(m_Items[i]);
+                    m_SubList.BeginUpdate();
+                    m_SubList.Items.Clear();
+
+                    for (int i = 0; i < Items.Count; i++)
+                    {
+                        m_SubList.Items.Add(Items[i]);
+                    }
+
+                    m_SubList.EndUpdate();
                 }
 
-                m_SubList.EndUpdate();
-                
+                if (_fromGump)
+                {
+                    _fromGump = false;
+
+                    AgentsGump agent = new AgentsGump(this);
+                    agent.SendGump();
+                }
+                else
+                {
+                    Engine.MainWindow.SafeAction(s => s.ShowMe());
+                }
+
                 return true;
+            }
+
+            if (_fromGump)
+            {
+                _fromGump = false;
+
+                AgentsGump agent = new AgentsGump(this);
+                agent.SendGump();
+            }
+            else
+            {
+                Engine.MainWindow.SafeAction(s => s.ShowMe());
             }
 
             return false;
         }
 
-        public void Add(BuyEntry entry)
+        public void AddItemTarget(bool fromGump = false)
         {
-            m_Items?.Add(entry);
+            _fromGump = fromGump;
+
+            World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
+            Targeting.OneTimeTarget(OnTarget);
+        }
+
+        public void AddItem(BuyEntry entry)
+        {
+            Items?.Add(entry);
 
             m_SubList?.Items.Add(entry);
 
             World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
         }
 
+        public void RemoveItem(int itemId)
+        {
+            BuyEntry item = Items.FirstOrDefault(a => a.Id == itemId);
+
+            if (item != null)
+            {
+                Items.Remove(item);
+                m_SubList?.Items?.Remove(item);
+
+                World.Player?.SendMessage(MsgLevel.Force, LocString.ItemRemoved);
+            }
+        }
+
+        public void SetItemAmount(int itemId, bool fromGump = false)
+        {
+            int itemIndex = Items.FindIndex(a => a.Id == itemId);
+            BuyEntry item = Items[itemIndex];
+
+            if (item != null)
+            {
+                _fromGump = fromGump;
+
+                InputDialogGump inputGump = new InputDialogGump(OnItemChangeAmountResponse, itemIndex, Language.GetString(LocString.EnterAmount), item.Amount.ToString());
+                inputGump.SendGump();
+            }
+        }
+
         public override void Save(XmlTextWriter xml)
         {
-            if (m_Items == null)
+            if (Items == null)
             {
                 return;
             }
@@ -525,7 +614,7 @@ namespace Assistant.Agents
             xml.WriteAttributeString("enabled", m_Enabled.ToString());
             xml.WriteAttributeString("alias", Alias);
 
-            foreach (BuyEntry b in m_Items)
+            foreach (BuyEntry b in Items)
             {
                 xml.WriteStartElement("item");
                 xml.WriteAttributeString("id", b.Id.ToString());
@@ -561,7 +650,7 @@ namespace Assistant.Agents
                     ushort id = Convert.ToUInt16(el.GetAttribute("id"));
                     ushort amount = Convert.ToUInt16(el.GetAttribute("amount"));
 
-                    m_Items.Add(new BuyEntry(id, amount));
+                    Items.Add(new BuyEntry(id, amount));
                 }
                 catch
                 {

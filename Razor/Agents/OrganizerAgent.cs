@@ -20,8 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Gumps.Internal;
 using Assistant.Scripts;
 using Assistant.UI;
 
@@ -52,12 +54,13 @@ namespace Assistant.Agents
         private ListBox m_SubList;
         private Button m_BagBTN;
         private Button m_ArrBTN;
-        private readonly List<ItemID> m_Items;
+        public readonly List<ItemID> Items;
         private uint m_Cont;
+        private bool _fromGump;
 
         public OrganizerAgent(int num)
         {
-            m_Items = new List<ItemID>();
+            Items = new List<ItemID>();
             Number = num;
             HotKey.Add(HKCategory.Agents, HKSubCat.None,
                 $"{Language.GetString(LocString.OrganizerAgent)}-{Number:D2}",
@@ -132,9 +135,9 @@ namespace Assistant.Agents
 
             m_SubList.BeginUpdate();
             m_SubList.Items.Clear();
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
-                m_SubList.Items.Add((ItemID) (m_Items[i]));
+                m_SubList.Items.Add((ItemID) (Items[i]));
             }
 
             m_SubList.EndUpdate();
@@ -151,8 +154,7 @@ namespace Assistant.Agents
             switch (num)
             {
                 case 1:
-                    World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
-                    Targeting.OneTimeTarget(new Targeting.TargetResponseCallback(OnTarget));
+                    AddItemTarget();
                     break;
                 case 2:
                     SetHotBag();
@@ -161,9 +163,9 @@ namespace Assistant.Agents
                     Organize();
                     break;
                 case 4:
-                    if (m_SubList.SelectedIndex >= 0 && m_SubList.SelectedIndex < m_Items.Count)
+                    if (m_SubList.SelectedIndex >= 0 && m_SubList.SelectedIndex < Items.Count)
                     {
-                        m_Items.RemoveAt(m_SubList.SelectedIndex);
+                        Items.RemoveAt(m_SubList.SelectedIndex);
                         m_SubList.Items.RemoveAt(m_SubList.SelectedIndex);
                     }
 
@@ -181,7 +183,7 @@ namespace Assistant.Agents
                         }
 
                         m_SubList.Items.Clear();
-                        m_Items.Clear();
+                        Items.Clear();
                         m_Cont = 0;
                         m_BagBTN.Text = Language.GetString(LocString.SetHB);
                     }
@@ -251,7 +253,7 @@ namespace Assistant.Agents
                 if (item.Serial != m_Cont && !item.IsChildOf(dest))
                 {
                     count += OrganizeChildren(item, dest);
-                    if (m_Items.Contains(item.ItemID.Value))
+                    if (Items.Contains(item.ItemID.Value))
                     {
                         if (dest is Item)
                         {
@@ -272,30 +274,57 @@ namespace Assistant.Agents
 
         private void OnTarget(bool location, Serial serial, Point3D loc, ushort gfx)
         {
-            if (Engine.MainWindow != null)
+            if (!location && serial.IsItem && World.Player != null)
+            {
+                AddItem(gfx);
+            }
+
+            if (_fromGump)
+            {
+                _fromGump = false;
+
+                AgentsGump agent = new AgentsGump(this);
+                agent.SendGump();
+            } 
+            else if (Engine.MainWindow != null)
             {
                 Engine.MainWindow.SafeAction(s => s.ShowMe());
             }
+        }
+        public void AddItemTarget(bool fromGump = false)
+        {
+            _fromGump = fromGump;
 
-            if (!location && serial.IsItem && World.Player != null)
-            {
-                Add(gfx);
-            }
+            World.Player.SendMessage(MsgLevel.Force, LocString.TargItemAdd);
+            Targeting.OneTimeTarget(OnTarget);
         }
 
-        public void Add(ushort gfx)
+        public void AddItem(ushort gfx)
         {
-            if (m_Items != null && m_Items.Contains(gfx))
+            if (Items != null && Items.Contains(gfx))
             {
                 World.Player?.SendMessage(MsgLevel.Force, LocString.ItemExists);
             }
             else
             {
-                m_Items?.Add(gfx);
+                Items?.Add(gfx);
 
                 m_SubList?.Items.Add((ItemID)gfx);
 
                 World.Player?.SendMessage(MsgLevel.Force, LocString.ItemAdded);
+            }
+        }
+
+        public void RemoveItem(int itemId)
+        {
+            ItemID item = Items.FirstOrDefault(a => a == itemId);
+
+            if (item != null)
+            {
+                Items.Remove(item);
+                m_SubList?.Items?.Remove(item);
+
+                World.Player?.SendMessage(MsgLevel.Force, LocString.ItemRemoved);
             }
         }
 
@@ -337,7 +366,7 @@ namespace Assistant.Agents
 
         public override void Clear()
         {
-            m_Items.Clear();
+            Items.Clear();
             m_Cont = 0;
             if (m_BagBTN != null)
             {
@@ -350,10 +379,10 @@ namespace Assistant.Agents
             xml.WriteAttributeString("hotbag", m_Cont.ToString());
             xml.WriteAttributeString("alias", Alias);
 
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
                 xml.WriteStartElement("item");
-                xml.WriteAttributeString("id", m_Items[i].Value.ToString());
+                xml.WriteAttributeString("id", Items[i].Value.ToString());
                 xml.WriteEndElement();
             }
         }
@@ -388,7 +417,7 @@ namespace Assistant.Agents
                 try
                 {
                     string gfx = el.GetAttribute("id");
-                    m_Items.Add(Convert.ToUInt16(gfx));
+                    Items.Add(Convert.ToUInt16(gfx));
                 }
                 catch
                 {

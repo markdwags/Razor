@@ -271,6 +271,7 @@
     <Compile Include="Gumps\Internal\HotKeyGump.cs" />
     <Compile Include="Gumps\Internal\BoatControlGump.cs" />
     <Compile Include="Gumps\Internal\SystemMessagesGump.cs" />
+    <Compile Include="Gumps\Internal\AgentsGump.cs" />
     <Compile Include="Gumps\Internal\TestMessageGump.cs" />
     <Compile Include="HotKeys\Counters.cs">
       <SubType>Code</SubType>

@@ -65,6 +65,100 @@ namespace Assistant
             Command.Register("Boat", ShowBoatControlGump);
 
             Command.Register("Skills", ShowUsableSkills);
+
+            Command.Register("Restock", ShowRestockGump);
+            Command.Register("Org", ShowOrgGump);
+            Command.Register("Buy", ShowBuyGump);
+        }
+
+        private static void ShowBuyGump(string[] param)
+        {
+            if (string.IsNullOrEmpty(param[0]))
+            {
+                World.Player.SendMessage(MsgLevel.Error, "You must include an id or alias");
+                return;
+            }
+
+            if (int.TryParse(param[0], out int agentIndex))
+            {
+                BuyAgent agent = BuyAgent.Agents[agentIndex - 1];
+
+                AgentsGump gump = new AgentsGump(agent);
+                gump.SendGump();
+            }
+            else
+            {
+                foreach (BuyAgent agent in BuyAgent.Agents)
+                {
+                    if (agent.Alias.Equals(param[0], StringComparison.OrdinalIgnoreCase))
+                    {
+                        AgentsGump gump = new AgentsGump(agent);
+                        gump.SendGump();
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        private static void ShowOrgGump(string[] param)
+        {
+            if (string.IsNullOrEmpty(param[0]))
+            {
+                World.Player.SendMessage(MsgLevel.Error, "You must include an id or alias");
+                return;
+            }
+
+            if (int.TryParse(param[0], out int agentIndex))
+            {
+                OrganizerAgent agent = OrganizerAgent.Agents[agentIndex - 1];
+
+                AgentsGump gump = new AgentsGump(agent);
+                gump.SendGump();
+            }
+            else
+            {
+                foreach (OrganizerAgent agent in OrganizerAgent.Agents)
+                {
+                    if (agent.Alias.Equals(param[0], StringComparison.OrdinalIgnoreCase))
+                    {
+                        AgentsGump gump = new AgentsGump(agent);
+                        gump.SendGump();
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        private static void ShowRestockGump(string[] param)
+        {
+            if (string.IsNullOrEmpty(param[0]))
+            {
+                World.Player.SendMessage(MsgLevel.Error, "You must include an id or alias");
+                return;
+            }
+
+            if (int.TryParse(param[0], out int agentIndex))
+            {
+                RestockAgent agent = RestockAgent.Agents[agentIndex - 1];
+
+                AgentsGump gump = new AgentsGump(agent);
+                gump.SendGump();
+            }
+            else
+            {
+                foreach (RestockAgent agent in RestockAgent.Agents)
+                {
+                    if (agent.Alias.Equals(param[0], StringComparison.OrdinalIgnoreCase))
+                    {
+                        AgentsGump gump = new AgentsGump(agent);
+                        gump.SendGump();
+
+                        break;
+                    }
+                }
+            }
         }
 
         private static void ShowUsableSkills(string[] param)
