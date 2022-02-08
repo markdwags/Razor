@@ -173,7 +173,7 @@ This version has two key updates. First, it updates the .NET framework from 4.0 
 
 This version introduces a new scripting engine that makes it easier to create and share macros.
 
-For more information, visit the [Razor Scripting Engine Guide](http://www.razorce.com/guide/).
+For more information, visit the [Razor Scripting Engine Guide](https://www.razorce.com/guide/).
 
 * Introduction of the Razor Scripting Engine (thanks to everyone for your time testing and providing feedback)
 * New Sound & Music Tab: Filter out any game sound, trigger music and listen to any sound

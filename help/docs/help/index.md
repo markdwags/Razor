@@ -23,4 +23,4 @@ If you're unable to find a solution using the information here or you'd like to 
 
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 
-For more information about the Razor Scripting Engine, go [here](http://www.razorce.com/guide/).
+For more information about the Razor Scripting Engine, go [here](https://www.razorce.com/guide/).

@@ -34,7 +34,7 @@ Another closed source version of Razor exists (the `1.0.14.x` versions) that was
 
 In June 2019 integration into [ClassicUO](https://github.com/andreakarasho/ClassicUO) was officially established.
 
-In March 2020 the [Razor Scripting Engine](http://www.razorce.com/guide/) was added to make it easier to read, create, edit and share Razor scripts while staying true to the project's state goals.
+In March 2020 the [Razor Scripting Engine](https://www.razorce.com/guide/) was added to make it easier to read, create, edit and share Razor scripts while staying true to the project's state goals.
 
 ## Community Edition
 
@@ -57,7 +57,7 @@ If you're unable to find a solution using the information here or you'd like to 
 
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/zrdyYcc)
 
-For more information about the Razor Scripting Engine, go [here](http://www.razorce.com/guide/).
+For more information about the Razor Scripting Engine, go [here](https://www.razorce.com/guide/).
 
 # Other
 

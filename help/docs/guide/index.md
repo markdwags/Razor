@@ -2,7 +2,7 @@
 
 The **Razor Scripting Engine** is a _"command based scripting language"_ designed to make it easier to read, create, edit and share Razor scripts.
 
-To learn more about this version of Razor, please visit the [home page](http://www.razorce.com).
+To learn more about this version of Razor, please visit the [home page](https://www.razorce.com).
 
 # Design
 
