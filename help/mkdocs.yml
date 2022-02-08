@@ -42,8 +42,9 @@ nav:
 
 theme: 
     name: material    
+    custom_dir: overrides
     language: en    
-    favicon: images/razor.ico
+    #favicon: images/razor.ico
     features:
         - navigation.top
         - navigation.instant
@@ -76,16 +77,16 @@ theme:
 markdown_extensions:
   - admonition
   - toc:
-        baselevel: 3    
-        permalink: true    
+      baselevel: 3    
+      permalink: true    
   - pymdownx.highlight:
-        linenums: true
-        linenums_style: pymdownx.inline
+      linenums: true
+      linenums_style: pymdownx.inline
   - pymdownx.inlinehilite
   - pymdownx.superfences
   - pymdownx.keys
   - pymdownx.tabbed:
-      alternate_style: true 
+      alternate_style: true
 
 plugins:
   - search

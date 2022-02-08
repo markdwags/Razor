@@ -51,3 +51,9 @@ jobs:
 
       - name: Deploy static site to S3 bucket
         run: aws s3 sync ./site s3://www.razorce.com
+
+      # Invalidate the distributons
+      - name: Create CloudFront Invalidation
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_A }} --paths "/*" 
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_B }} --paths "/*" 
