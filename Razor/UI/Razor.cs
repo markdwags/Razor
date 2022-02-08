@@ -516,6 +516,8 @@ namespace Assistant
 
             buyAgentIgnoreGold.SafeAction(s => { s.Checked = Config.GetBool("BuyAgentsIgnoreGold"); });
 
+            nextPrevAbcOrder.SafeAction(s => { s.Checked = Config.GetBool("NextPrevAlphabetical"); });
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -7653,6 +7655,11 @@ namespace Assistant
                 }
 
             }
+        }
+
+        private void nextPrevAbcOrder_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("NextPrevAlphabetical", nextPrevAbcOrder.Checked);
         }
     }
 }

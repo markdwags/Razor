@@ -318,6 +318,8 @@ namespace Assistant
             
             AddProperty("OverrideBuffDebuffFormat", false);
 
+            AddProperty("NextPrevAlphabetical", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

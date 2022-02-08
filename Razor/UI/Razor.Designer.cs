@@ -783,6 +783,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.nextPrevAbcOrder = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1504,22 +1505,23 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
             // groupSmartTarget
             // 
+            this.groupSmartTarget.Controls.Add(this.nextPrevAbcOrder);
             this.groupSmartTarget.Controls.Add(this.nonFriendlyHarmfulOnly);
             this.groupSmartTarget.Controls.Add(this.friendBeneficialOnly);
             this.groupSmartTarget.Controls.Add(this.onlyNextPrevBeneficial);
             this.groupSmartTarget.Controls.Add(this.smartLT);
             this.groupSmartTarget.Location = new System.Drawing.Point(257, 11);
             this.groupSmartTarget.Name = "groupSmartTarget";
-            this.groupSmartTarget.Size = new System.Drawing.Size(239, 126);
+            this.groupSmartTarget.Size = new System.Drawing.Size(239, 153);
             this.groupSmartTarget.TabIndex = 138;
             this.groupSmartTarget.TabStop = false;
             this.groupSmartTarget.Text = "Smart Targeting:";
@@ -5318,6 +5320,16 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // nextPrevAbcOrder
+            // 
+            this.nextPrevAbcOrder.Location = new System.Drawing.Point(6, 123);
+            this.nextPrevAbcOrder.Name = "nextPrevAbcOrder";
+            this.nextPrevAbcOrder.Size = new System.Drawing.Size(232, 19);
+            this.nextPrevAbcOrder.TabIndex = 142;
+            this.nextPrevAbcOrder.Text = "\'Next/Prev\' by alphabetical order";
+            this.nextPrevAbcOrder.UseVisualStyleBackColor = true;
+            this.nextPrevAbcOrder.CheckedChanged += new System.EventHandler(this.nextPrevAbcOrder_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5558,5 +5570,6 @@ namespace Assistant
         private Label scriptHotkey;
         private Button openScreenshotFolder;
         private CheckBox buyAgentIgnoreGold;
+        private CheckBox nextPrevAbcOrder;
     }
 }

@@ -18,7 +18,9 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Assistant.Core;
 using Assistant.Filters;
@@ -144,6 +146,11 @@ namespace Assistant
                 return;
             }
 
+            if (Config.GetBool("NextPrevAlphabetical"))
+            {
+                targets = targets.OrderBy(m => m.Name).ToList();
+            }
+
             Mobile mobile = null, old = World.FindMobile(m_LastTarget?.Serial ?? Serial.Zero);
             var target = new TargetInfo();
 
@@ -192,13 +199,13 @@ namespace Assistant
 
             if (IsSmartTargetingEnabled())
             {
-                if ((Config.GetBool("OnlyNextPrevBeneficial") && isFriend) ||
-                    (Config.GetBool("FriendlyBeneficialOnly") && isFriendly))
+                if (Config.GetBool("OnlyNextPrevBeneficial") && isFriend ||
+                    Config.GetBool("FriendlyBeneficialOnly") && isFriendly)
                 {
                     m_LastBeneTarg = target;
                 }
-                else if ((Config.GetBool("OnlyNextPrevBeneficial") && !isFriend) ||
-                         (Config.GetBool("NonFriendlyHarmfulOnly") && isNonFriendly))
+                else if (Config.GetBool("OnlyNextPrevBeneficial") && !isFriend ||
+                         Config.GetBool("NonFriendlyHarmfulOnly") && isNonFriendly)
                 {
                     m_LastHarmTarg = target;
                 }
