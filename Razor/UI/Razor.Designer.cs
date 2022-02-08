@@ -5296,7 +5296,7 @@ namespace Assistant
             this.linkMain.Size = new System.Drawing.Size(506, 20);
             this.linkMain.TabIndex = 16;
             this.linkMain.TabStop = true;
-            this.linkMain.Text = "http://www.razorce.com";
+            this.linkMain.Text = "https://www.razorce.com";
             this.linkMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkMain.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 

@@ -174,7 +174,7 @@ namespace Assistant.UI
 
         private void scriptHelp_Click(object sender, EventArgs e)
         {
-            Utility.LaunchBrowser("http://www.razorce.com/guide/");
+            Utility.LaunchBrowser("https://www.razorce.com/guide/");
         }
 
         private void scriptEditor_MouseDown(object sender, MouseEventArgs e)

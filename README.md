@@ -14,27 +14,25 @@ It's recommended that you use the [ClassicUO](https://github.com/ClassicUO/Class
 
 Learn more about this version of Razor by exploring the links below.
 
-- [Home](http://www.razorce.com)
-- [Download](http://www.razorce.com/download/)
-- [Release Notes](http://www.razorce.com/releasenotes/)
-- [Project History](http://www.razorce.com/#history)
-- [Help Overview](http://www.razorce.com/help/)
-- [Scripting Guide](http://www.razorce.com/guide/)
+- [Home](https://www.razorce.com)
+- [Download](https://www.razorce.com/download/)
+- [Release Notes](https://www.razorce.com/releasenotes/)
+- [Project History](https://www.razorce.com/#history)
+- [Help Overview](https://www.razorce.com/help/)
+- [Scripting Guide](https://www.razorce.com/guide/)
 
 ## Installation & Help
 
-- [Installing Razor on Windows](http://www.razorce.com/install/windows/)
-- [Installing Razor on Linux](http://www.razorce.com/install/linux/)
+- [Installing Razor on Windows](https://www.razorce.com/install/windows/)
+- [Installing Razor on Linux](https://www.razorce.com/install/linux/)
 
-If you need more help, [please go here](http://www.razorce.com/help) and review the documentation and/or join Discord and ask there.
+If you need more help, [please go here](https://www.razorce.com/help) and review the documentation and/or join Discord and ask there.
 
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/VdyCpjQ)
 
 ## Razor Scripting Engine
 
-Introduced in 1.6.4.2, Razor supports a command-based script language based on the lexer and parser by designed by [Jaedan](https://github.com/jaedan).
-
-For a comprehensive guide on the language and syntax, visit the [Razor Scripting Guide](http://www.razorce.com/guide/).
+Introduced in 1.6.4.2, Razor supports a command-based script language. For a comprehensive guide on the language and syntax, visit the [Razor Scripting Guide](https://www.razorce.com/guide/).
 
 ## Contributing & Code of Conduct
 
