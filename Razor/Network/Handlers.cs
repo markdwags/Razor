@@ -1289,32 +1289,31 @@ namespace Assistant
 
             if (Config.GetBool("ShowDamageTaken") || Config.GetBool("ShowDamageDealt"))
             {
-                Mobile m = World.FindMobile(serial);
-
-                if (m == null)
-                    return;
-
                 if (serial == World.Player.Serial && Config.GetBool("ShowDamageTaken"))
                 {
                     if (Config.GetBool("ShowDamageTakenOverhead"))
                     {
-                        World.Player.OverheadMessage(38, $"[{damage}]", true);
+                        World.Player.OverheadMessage(37, $"[{damage}]", true);
                     }
                     else
                     {
-                        World.Player.SendMessage(MsgLevel.Force, $"{damage} dmg->{m.Name}");
+                        World.Player.SendMessage(MsgLevel.Info, $"{World.Player.Name}: {damage} damage taken");
                     }
                 }
-
-                if (Config.GetBool("ShowDamageDealt"))
+                else if (Config.GetBool("ShowDamageDealt"))
                 {
+                    Mobile m = World.FindMobile(serial);
+
+                    if (m == null)
+                        return;
+
                     if (Config.GetBool("ShowDamageDealtOverhead"))
                     {
-                        m.OverheadMessageFrom(38, m.Name, $"[{damage}]", true);
+                        m.OverheadMessageFrom(37, m.Name, $"[{damage}]", true);
                     }
                     else
                     {
-                        World.Player.SendMessage(MsgLevel.Force, $"{World.Player.Name}->{m.Name}: {damage} damage");
+                        World.Player.SendMessage(MsgLevel.Info, $"{World.Player.Name}: {damage} damage on '{m.Name}'");
                     }
                 }
             }
