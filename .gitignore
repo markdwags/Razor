@@ -6,6 +6,9 @@
 .vscode
 packages/
 
+# Rider
+.idea
+
 # Build Output
 [Dd]ebug/
 [Rr]elease/

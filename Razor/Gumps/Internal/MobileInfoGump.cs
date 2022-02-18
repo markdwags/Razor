@@ -54,11 +54,11 @@ namespace Assistant.Gumps.Internal
 
             AddBackground(106, 72, 253, 289, 3600);
 
-            AddLabel(143, 115, 2954, "Name:");
-            AddLabel(142, 140, 2954, "Serial:");
-            AddLabel(142, 164, 2954, "Hue:");
-            AddLabel(142, 188, 2954, "Body:");
-            AddLabel(197, 87, 2954, "Mobile Data");
+            AddLabel(143, 115, 900, "Name:");
+            AddLabel(142, 140, 900, "Serial:");
+            AddLabel(142, 164, 900, "Hue:");
+            AddLabel(142, 188, 900, "Body:");
+            AddLabel(197, 87, 154, "Mobile Data");
 
             AddButton(276, 318, 247, 248, (int)MobileInfoButtons.Okay, GumpButtonType.Reply, 0);
 
@@ -69,25 +69,16 @@ namespace Assistant.Gumps.Internal
 
             AddTextEntry(219, 118, 116, 20, 62, (int)MobileInfoButtons.Name, $"{mobile.Name}");
             AddTextEntry(219, 142, 116, 20, 62, (int)MobileInfoButtons.Serial, $"{mobile.Serial}");
-
-            if (mobile.Hue == 0)
-                AddTextEntry(219, 166, 116, 20, 62, (int)MobileInfoButtons.Hue, "Default (0)");
-            else
-                AddTextEntry(219, 166, 116, 20, mobile.Hue, (int)MobileInfoButtons.Hue, $"{mobile.Hue}");
+            AddTextEntry(219, 166, 116, 20, 62, (int)MobileInfoButtons.Hue, $"{mobile.Hue}");
 
             AddTextEntry(219, 190, 116, 20, 62, (int) MobileInfoButtons.Body, $"{mobile.Body}");
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Position: {_mobile.Position}");
             sb.AppendLine($"Notoriety: {_mobile.Notoriety}");
-            
-            if (mobile.IsGhost)
-                sb.AppendLine("IsGhost: True");
-            if (mobile.IsHuman)
-                sb.AppendLine("IsHuman: True");
-            if (mobile.IsMonster)
-                sb.AppendLine("IsMonster: True");
-
+            sb.AppendLine($"IsGhost: {mobile.IsGhost}");
+            sb.AppendLine($"IsHuman: {mobile.IsHuman}");
+            sb.AppendLine($"IsMonster: {mobile.IsMonster}");
             sb.AppendLine($"Blessed: {mobile.Blessed}");
 
             AddHtml(124, 223, 211, 88, sb.ToString(), true, true);

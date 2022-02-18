@@ -1,13 +1,13 @@
-site_name: Razor - Ultima Online Assistant
-site_description: Razor is a free tool designed to help with simple tasks while playing Ultima Online
-site_author: Project maintained by Mark Wagner (Quick)
+site_name: UO Razor - Ultima Online Assistant
+site_description: UO Razor is a free tool designed to help with simple tasks while playing Ultima Online
+site_author: Project maintained by Quick
 site_url: https://www.razorce.com
-copyright: Copyright 2021 - Mark Wagner (Quick)
+copyright: Copyright 2022 - Quick
 repo_url: https://github.com/markdwags/Razor
 repo_name: Razor
 edit_uri: "tree/master/help/docs"
 nav:
-- Home: index.md
+- UO Razor Home: index.md
 - Download: download.md
 - Install:
     - Windows: install/windows.md

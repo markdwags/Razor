@@ -53,28 +53,28 @@ namespace Assistant.Gumps.Internal
             
             AddBackground(106, 70, 253, 189, 3600);
 
-            AddLabel(197, 87, 2954, "Item Data");
+            AddLabel(197, 87, 154, "Item Data");
             AddItem(290, 98, item.ItemID);
 
-            AddLabel(143, 115, 2954, "Item Name:");
-            AddLabel(142, 140, 2954, "Serial:");
-            AddLabel(142, 164, 2954, "Id:");
-            AddLabel(142, 188, 2954, "Hue:");
+            AddLabel(143, 115, 900, "Item Name:");
+            AddLabel(142, 140, 900, "Serial:");
+            AddLabel(142, 164, 900, "Id:");
+            AddLabel(142, 188, 900, "Hue:");
 
-            AddButton(274, 218, 247, 248, (int)ItemInfoButtons.Okay, GumpButtonType.Reply, 0);
-            AddButton(124, 121, 2103, 2104, (int)ItemInfoButtons.CopyItemName, GumpButtonType.Reply, 0);
-            AddButton(124, 144, 2103, 2104, (int)ItemInfoButtons.CopySerial, GumpButtonType.Reply, 0);
-            AddButton(124, 169, 2103, 2104, (int)ItemInfoButtons.CopyId, GumpButtonType.Reply, 0);
-            AddButton(124, 194, 2103, 2104, (int)ItemInfoButtons.CopyHue, GumpButtonType.Reply, 0);
+            AddButton(274, 217, 247, 248, (int)ItemInfoButtons.Okay, GumpButtonType.Reply, 0);
+            AddButton(124, 120, 2103, 2104, (int)ItemInfoButtons.CopyItemName, GumpButtonType.Reply, 0);
+            AddButton(124, 143, 2103, 2104, (int)ItemInfoButtons.CopySerial, GumpButtonType.Reply, 0);
+            AddButton(124, 168, 2103, 2104, (int)ItemInfoButtons.CopyId, GumpButtonType.Reply, 0);
+            AddButton(124, 191, 2103, 2104, (int)ItemInfoButtons.CopyHue, GumpButtonType.Reply, 0);
             
             AddTextEntry(219, 115, 116, 20, 62, (int)ItemInfoButtons.ItemName, $"{item.ItemID.ItemData.Name}");
             AddTextEntry(219, 141, 116, 20, 62, (int)ItemInfoButtons.Serial, $"{item.Serial}");
-            AddTextEntry(219, 164, 116, 20, 62, (int)ItemInfoButtons.Id, $"{item.ItemID.Value}");
+            AddTextEntry(219, 165, 116, 20, 62, (int)ItemInfoButtons.Id, $"{item.ItemID.Value}");
 
             if (item.Hue == 0)
                 AddTextEntry(219, 188, 116, 20, 62, (int)ItemInfoButtons.Hue, "Default (0)");
             else
-                AddTextEntry(219, 188, 116, 20, item.Hue, (int)ItemInfoButtons.Hue, $"{item.Hue}");
+                AddTextEntry(219, 188, 116, 20, item.Hue - 1, (int)ItemInfoButtons.Hue, $"{item.Hue}");
 
         }
 
