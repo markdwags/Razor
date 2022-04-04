@@ -624,6 +624,7 @@ namespace Assistant
             this.gbFilterText = new System.Windows.Forms.GroupBox();
             this.removeFilterText = new System.Windows.Forms.Button();
             this.addFilterText = new System.Windows.Forms.Button();
+            this.editFilterText = new System.Windows.Forms.Button();
             this.textFilterList = new System.Windows.Forms.ListBox();
             this.enableTextFilter = new System.Windows.Forms.CheckBox();
             this.gbFilterMessages = new System.Windows.Forms.GroupBox();
@@ -3540,6 +3541,7 @@ namespace Assistant
             // 
             this.gbFilterText.Controls.Add(this.removeFilterText);
             this.gbFilterText.Controls.Add(this.addFilterText);
+            this.gbFilterText.Controls.Add(this.editFilterText);
             this.gbFilterText.Controls.Add(this.textFilterList);
             this.gbFilterText.Controls.Add(this.enableTextFilter);
             this.gbFilterText.Location = new System.Drawing.Point(3, 3);
@@ -3554,7 +3556,7 @@ namespace Assistant
             this.removeFilterText.Location = new System.Drawing.Point(148, 244);
             this.removeFilterText.Name = "removeFilterText";
             this.removeFilterText.Size = new System.Drawing.Size(75, 29);
-            this.removeFilterText.TabIndex = 2;
+            this.removeFilterText.TabIndex = 3;
             this.removeFilterText.Text = "Remove";
             this.removeFilterText.UseVisualStyleBackColor = true;
             this.removeFilterText.Click += new System.EventHandler(this.removeFilterText_Click);
@@ -3564,10 +3566,20 @@ namespace Assistant
             this.addFilterText.Location = new System.Drawing.Point(67, 244);
             this.addFilterText.Name = "addFilterText";
             this.addFilterText.Size = new System.Drawing.Size(75, 29);
-            this.addFilterText.TabIndex = 1;
+            this.addFilterText.TabIndex = 2;
             this.addFilterText.Text = "Add";
             this.addFilterText.UseVisualStyleBackColor = true;
             this.addFilterText.Click += new System.EventHandler(this.addFilterText_Click);
+            // 
+            // editFilterText
+            // 
+            this.editFilterText.Location = new System.Drawing.Point(5, 244);
+            this.editFilterText.Name = "editFilterText";
+            this.editFilterText.Size = new System.Drawing.Size(75, 29);
+            this.editFilterText.TabIndex = 1;
+            this.editFilterText.Text = "Add";
+            this.editFilterText.UseVisualStyleBackColor = true;
+            this.editFilterText.Click += new System.EventHandler(this.editFilterText_Click);
             // 
             // textFilterList
             // 
@@ -5540,6 +5552,7 @@ namespace Assistant
         private GroupBox gbFilterText;
         private Button removeFilterText;
         private Button addFilterText;
+        private Button editFilterText;
         private ListBox textFilterList;
         private GroupBox gbFilterMessages;
         private CheckBox filterOverheadMessages;

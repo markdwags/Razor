@@ -7285,11 +7285,26 @@ namespace Assistant
         }
         private void addFilterText_Click(object sender, EventArgs e)
         {
-            if (InputBox.Show(this, "Enter text to filter", "Text Filter"))
-            {
-                string message = InputBox.GetString();
-                TextFilterManager.AddFilter(message);
-            }
+            // if (InputBox.Show(this, "Enter text to filter", "Text Filter"))
+            // {
+            //     string message = InputBox.GetString();
+            //     TextFilterManager.AddFilter(message);
+            // }
+            new TextFilterEntry().ShowDialog(Engine.MainWindow);
+
+        }
+
+        private void editFilterText_Click(object sender, EventArgs e)
+        {
+            // if (InputBox.Show(this, "Enter text to filter", "Text Filter"))
+            // {
+            //     string message = InputBox.GetString();
+            //     TextFilterManager.AddFilter(message);
+            // }
+            if (textFilterList.SelectedIndex < 0)
+                return;
+
+            new TextFilterEntry(textFilterList.SelectedItem as TextFilterEntryModel, textFilterList.SelectedIndex).ShowDialog(Engine.MainWindow);
         }
 
         private void removeFilterText_Click(object sender, EventArgs e)

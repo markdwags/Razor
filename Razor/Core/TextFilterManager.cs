@@ -20,13 +20,33 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Serialization;
 using Assistant.UI;
 
 namespace Assistant.Core
 {
+    public class TextFilterEntryModel
+    {
+        [XmlAttribute("text")]
+        public string Text { get; set; }
+        [DefaultValue(false)]
+        [XmlAttribute("sysmessages")]
+        public bool FilterSysMessages { get; set; }
+        [DefaultValue(false)]
+        [XmlAttribute("overhead")]
+        public bool FilterOverhead { get; set; }
+        [DefaultValue(true)]
+        [XmlAttribute("speech")]
+        public bool FilterSpeech { get; set; }
+        [DefaultValue(true)]
+        [XmlAttribute("ignoreinscripts")]
+        public bool IgnoreFilteredMessageInScripts { get; set; }
+    }
+
     public static class TextFilterManager
     {
         private static ListBox _filterTextList;
