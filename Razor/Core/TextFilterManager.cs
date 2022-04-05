@@ -30,6 +30,13 @@ using Assistant.UI;
 
 namespace Assistant.Core
 {
+    public enum SysMessageFilterResult
+    {
+        Allow,
+        Hide,
+        HideAndBlock
+    }
+
     public class TextFilterEntryModel
     {
         public string Text { get; set; }
@@ -112,14 +119,14 @@ namespace Assistant.Core
             }
         }
 
-        public static bool IsFiltered(string text)
+        public static bool IsSpeechFiltered(string text)
         {
             if (!Config.GetBool("EnableTextFilter"))
                 return false;
 
             foreach (var entry in FilteredText)
             {
-                if (text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
+                if (entry.FilterSpeech && text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     return true;
                 }
@@ -127,6 +134,40 @@ namespace Assistant.Core
 
             return false;
         }
+
+        public static bool IsOverheadFiltered(string text)
+        {
+            if (!Config.GetBool("EnableTextFilter"))
+                return false;
+
+            foreach (var entry in FilteredText)
+            {
+                if (entry.FilterOverhead && text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static SysMessageFilterResult IsSysMessageFiltered(string text)
+        {
+            if (!Config.GetBool("EnableTextFilter"))
+                return SysMessageFilterResult.Allow;
+
+            foreach (var entry in FilteredText)
+            {
+                if (entry.FilterSysMessages && text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    return entry.IgnoreFilteredMessageInScripts ? SysMessageFilterResult.HideAndBlock : SysMessageFilterResult.Hide;
+                }
+            }
+
+            return SysMessageFilterResult.Allow;
+        }
+
+        
 
         public static void Load(XmlElement node)
         {

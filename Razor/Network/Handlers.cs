@@ -1999,7 +1999,14 @@ namespace Assistant
                     }
 
                     // Overhead message override
-                    OverheadManager.DisplayOverheadMessage(text);
+                    var filterResult = TextFilterManager.IsSysMessageFiltered(text);
+                    if(filterResult != SysMessageFilterResult.HideAndBlock)
+                        OverheadManager.DisplayOverheadMessage(text);
+                    if (filterResult != SysMessageFilterResult.Allow)
+                    {
+                        args.Block = true;
+                        return;
+                    }
                 }
 
                 if (Config.GetBool("ShowContainerLabels") && ser.IsItem)
@@ -2050,7 +2057,7 @@ namespace Assistant
                         return;
                     }
 
-                    if (ser.IsMobile && TextFilterManager.IsFiltered(text))
+                    if (ser.IsMobile && TextFilterManager.IsSpeechFiltered(text))
                     {
                         args.Block = true;
                         return;
@@ -2065,7 +2072,14 @@ namespace Assistant
 
                 if (!ser.IsValid || ser == World.Player.Serial || ser.IsItem)
                 {
-                    SystemMessages.Add(text);
+                    var filterResult = TextFilterManager.IsSysMessageFiltered(text);
+                    if (filterResult != SysMessageFilterResult.HideAndBlock)
+                        SystemMessages.Add(text);
+                    if (filterResult != SysMessageFilterResult.Allow)
+                    {
+                        args.Block = true;
+                        return;
+                    }
                 }
 
                 if (Config.GetBool("FilterSystemMessages") && ser == Serial.MinusOne || ser == Serial.Zero)
