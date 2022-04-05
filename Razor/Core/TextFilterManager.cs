@@ -30,18 +30,17 @@ using Assistant.UI;
 
 namespace Assistant.Core
 {
-    [XmlType("filter")]
     public class TextFilterEntryModel
     {
-        [XmlAttribute("text")] public string Text { get; set; }
+        public string Text { get; set; }
 
-        [XmlAttribute("sysmessages")] public bool FilterSysMessages { get; set; }
+        public bool FilterSysMessages { get; set; }
 
-        [XmlAttribute("overhead")] public bool FilterOverhead { get; set; }
+        public bool FilterOverhead { get; set; }
 
-        [XmlAttribute("speech")] public bool FilterSpeech { get; set; }
+        public bool FilterSpeech { get; set; }
 
-        [XmlAttribute("ignoreinscripts")] public bool IgnoreFilteredMessageInScripts { get; set; }
+        public bool IgnoreFilteredMessageInScripts { get; set; }
 
         public TextFilterEntryModel()
         {
@@ -101,12 +100,15 @@ namespace Assistant.Core
 
         public static void Save(XmlTextWriter xml)
         {
-            var ns = new XmlSerializerNamespaces();
-            ns.Add("", "");
-            var serializer = new XmlSerializer(typeof(TextFilterEntryModel));
             foreach (var entry in FilteredText)
             {
-                serializer.Serialize(xml, entry, ns);
+                xml.WriteStartElement("filter");
+                xml.WriteAttributeString("text", entry.Text);
+                xml.WriteAttributeString("sysmessages", entry.FilterSysMessages.ToString());
+                xml.WriteAttributeString("overhead", entry.FilterOverhead.ToString());
+                xml.WriteAttributeString("speech", entry.FilterSpeech.ToString());
+                xml.WriteAttributeString("ignoreinscripts", entry.IgnoreFilteredMessageInScripts.ToString());
+                xml.WriteEndElement();
             }
         }
 
