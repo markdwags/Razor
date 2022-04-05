@@ -12,7 +12,6 @@ namespace Assistant.UI
 
         public TextFilterEntry() : this(new TextFilterEntryModel(), -1)
         {
-            InitializeComponent();
             _isNewEntry = true;
         }
 
@@ -22,6 +21,7 @@ namespace Assistant.UI
             _entryModel = entryModel;
             _index = index;
 
+            InitializeComponent();
             ApplyEntryModelToControls();
         }
 
@@ -34,16 +34,42 @@ namespace Assistant.UI
             checkBoxIgnoreFilteredInScripts.Checked = _entryModel.IgnoreFilteredMessageInScripts;
         }
 
+        private TextFilterEntryModel GetModelFromConfig()
+        {
+            return new TextFilterEntryModel()
+            {
+                Text = filterTextBox.Text,
+                FilterOverhead = checkBoxFilterOverhead.Checked,
+                FilterSpeech = checkBoxFilterSpeech.Checked,
+                FilterSysMessages = checkBoxFilterSysMessages.Checked,
+                IgnoreFilteredMessageInScripts = checkBoxIgnoreFilteredInScripts.Checked
+            };
+        }
+
         private void label1_Click(object sender, EventArgs e)
         {
         }
 
         private void cancel_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         private void ok_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
+
+            if (_isNewEntry)
+            {
+                TextFilterManager.AddFilter(GetModelFromConfig());
+            }
+            else
+            {
+                TextFilterManager.UpdateFilter(GetModelFromConfig(), _index);
+            }
+
+            Close();
         }
     }
 }

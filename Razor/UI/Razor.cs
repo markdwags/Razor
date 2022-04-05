@@ -7312,7 +7312,7 @@ namespace Assistant
             if (textFilterList.SelectedIndex < 0)
                 return;
 
-            TextFilterManager.RemoveFilter((string) textFilterList.SelectedItem);
+            TextFilterManager.RemoveFilter(textFilterList.SelectedIndex);
         }
 
         private void enableTextFilter_CheckedChanged(object sender, EventArgs e)

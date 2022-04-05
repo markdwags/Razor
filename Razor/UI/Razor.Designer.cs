@@ -3577,7 +3577,7 @@ namespace Assistant
             this.editFilterText.Name = "editFilterText";
             this.editFilterText.Size = new System.Drawing.Size(75, 29);
             this.editFilterText.TabIndex = 1;
-            this.editFilterText.Text = "Add";
+            this.editFilterText.Text = "Edit";
             this.editFilterText.UseVisualStyleBackColor = true;
             this.editFilterText.Click += new System.EventHandler(this.editFilterText_Click);
             // 

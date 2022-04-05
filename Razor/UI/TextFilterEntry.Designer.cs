@@ -42,26 +42,28 @@ namespace Assistant.UI
             // checkBoxFilterSysMessages
             // 
             this.checkBoxFilterSysMessages.AutoSize = true;
-            this.checkBoxFilterSysMessages.Location = new System.Drawing.Point(12, 57);
+            this.checkBoxFilterSysMessages.Location = new System.Drawing.Point(12, 71);
+            this.checkBoxFilterSysMessages.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxFilterSysMessages.Name = "checkBoxFilterSysMessages";
-            this.checkBoxFilterSysMessages.Size = new System.Drawing.Size(177, 21);
+            this.checkBoxFilterSysMessages.Size = new System.Drawing.Size(181, 24);
             this.checkBoxFilterSysMessages.TabIndex = 1;
             this.checkBoxFilterSysMessages.Text = "Filter system messages";
             this.checkBoxFilterSysMessages.UseVisualStyleBackColor = true;
             // 
             // filterTextBox
             // 
-            this.filterTextBox.Location = new System.Drawing.Point(12, 29);
+            this.filterTextBox.Location = new System.Drawing.Point(12, 36);
+            this.filterTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.filterTextBox.Name = "filterTextBox";
-            this.filterTextBox.Size = new System.Drawing.Size(355, 22);
+            this.filterTextBox.Size = new System.Drawing.Size(355, 27);
             this.filterTextBox.TabIndex = 0;
             // 
             // enterTextLabel
             // 
             this.enterTextLabel.AutoSize = true;
-            this.enterTextLabel.Location = new System.Drawing.Point(12, 9);
+            this.enterTextLabel.Location = new System.Drawing.Point(12, 11);
             this.enterTextLabel.Name = "enterTextLabel";
-            this.enterTextLabel.Size = new System.Drawing.Size(115, 17);
+            this.enterTextLabel.Size = new System.Drawing.Size(125, 20);
             this.enterTextLabel.TabIndex = 2;
             this.enterTextLabel.Text = "Enter text to filter";
             this.enterTextLabel.Click += new System.EventHandler(this.label1_Click);
@@ -69,9 +71,10 @@ namespace Assistant.UI
             // checkBoxFilterOverhead
             // 
             this.checkBoxFilterOverhead.AutoSize = true;
-            this.checkBoxFilterOverhead.Location = new System.Drawing.Point(12, 84);
+            this.checkBoxFilterOverhead.Location = new System.Drawing.Point(12, 105);
+            this.checkBoxFilterOverhead.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxFilterOverhead.Name = "checkBoxFilterOverhead";
-            this.checkBoxFilterOverhead.Size = new System.Drawing.Size(125, 21);
+            this.checkBoxFilterOverhead.Size = new System.Drawing.Size(130, 24);
             this.checkBoxFilterOverhead.TabIndex = 2;
             this.checkBoxFilterOverhead.Text = "Filter overhead";
             this.checkBoxFilterOverhead.UseVisualStyleBackColor = true;
@@ -79,9 +82,10 @@ namespace Assistant.UI
             // checkBoxFilterSpeech
             // 
             this.checkBoxFilterSpeech.AutoSize = true;
-            this.checkBoxFilterSpeech.Location = new System.Drawing.Point(12, 111);
+            this.checkBoxFilterSpeech.Location = new System.Drawing.Point(12, 139);
+            this.checkBoxFilterSpeech.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxFilterSpeech.Name = "checkBoxFilterSpeech";
-            this.checkBoxFilterSpeech.Size = new System.Drawing.Size(111, 21);
+            this.checkBoxFilterSpeech.Size = new System.Drawing.Size(114, 24);
             this.checkBoxFilterSpeech.TabIndex = 3;
             this.checkBoxFilterSpeech.Text = "Filter speech";
             this.checkBoxFilterSpeech.UseVisualStyleBackColor = true;
@@ -89,9 +93,10 @@ namespace Assistant.UI
             // checkBoxIgnoreFilteredInScripts
             // 
             this.checkBoxIgnoreFilteredInScripts.AutoSize = true;
-            this.checkBoxIgnoreFilteredInScripts.Location = new System.Drawing.Point(12, 148);
+            this.checkBoxIgnoreFilteredInScripts.Location = new System.Drawing.Point(12, 185);
+            this.checkBoxIgnoreFilteredInScripts.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxIgnoreFilteredInScripts.Name = "checkBoxIgnoreFilteredInScripts";
-            this.checkBoxIgnoreFilteredInScripts.Size = new System.Drawing.Size(337, 21);
+            this.checkBoxIgnoreFilteredInScripts.Size = new System.Drawing.Size(351, 24);
             this.checkBoxIgnoreFilteredInScripts.TabIndex = 4;
             this.checkBoxIgnoreFilteredInScripts.Text = "Ignore filtered messages in overhead and scripts";
             this.checkBoxIgnoreFilteredInScripts.UseVisualStyleBackColor = true;
@@ -99,27 +104,31 @@ namespace Assistant.UI
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(12, 175);
+            this.cancel.Location = new System.Drawing.Point(12, 219);
+            this.cancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(117, 38);
+            this.cancel.Size = new System.Drawing.Size(117, 48);
             this.cancel.TabIndex = 6;
             this.cancel.Text = "Cancel";
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
             // 
             // ok
             // 
-            this.ok.Location = new System.Drawing.Point(250, 175);
+            this.ok.Location = new System.Drawing.Point(250, 219);
+            this.ok.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ok.Name = "ok";
-            this.ok.Size = new System.Drawing.Size(117, 38);
+            this.ok.Size = new System.Drawing.Size(117, 48);
             this.ok.TabIndex = 5;
             this.ok.Text = "Okay";
             this.ok.Click += new System.EventHandler(this.ok_Click);
             // 
             // TextFilterEntry
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 222);
+            this.CancelButton = this.cancel;
+            this.ClientSize = new System.Drawing.Size(379, 278);
+            this.ControlBox = false;
             this.Controls.Add(this.ok);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.checkBoxIgnoreFilteredInScripts);
@@ -128,7 +137,12 @@ namespace Assistant.UI
             this.Controls.Add(this.enterTextLabel);
             this.Controls.Add(this.filterTextBox);
             this.Controls.Add(this.checkBoxFilterSysMessages);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "TextFilterEntry";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Text filter options";
             this.ResumeLayout(false);
             this.PerformLayout();
