@@ -1998,14 +1998,11 @@ namespace Assistant
                         World.Player.ResetCriminalTimer();
                     }
 
-                    // Overhead message override
                     var filterResult = TextFilterManager.IsSysMessageFiltered(text);
-                    if(filterResult != SysMessageFilterResult.HideAndBlock)
-                        OverheadManager.DisplayOverheadMessage(text);
-                    if (filterResult != SysMessageFilterResult.Allow)
+                    if (filterResult != SysMessageFilterResult.HideAndBlock)
                     {
-                        args.Block = true;
-                        return;
+                        // Overhead message override
+                        OverheadManager.DisplayOverheadMessage(text);
                     }
                 }
 
@@ -2070,9 +2067,13 @@ namespace Assistant
                     }
                 }
 
-                if (!ser.IsValid || ser == World.Player.Serial || ser.IsItem)
+                if(ser.IsItem)
+                    SystemMessages.Add(text);
+
+                // Invalid serial means system message, serial == player means overhead
+                if (ser == World.Player.Serial || !ser.IsValid)
                 {
-                    var filterResult = TextFilterManager.IsSysMessageFiltered(text);
+                    var filterResult = !ser.IsValid ? TextFilterManager.IsSysMessageFiltered(text) : TextFilterManager.IsOverheadFiltered(text);
                     if (filterResult != SysMessageFilterResult.HideAndBlock)
                         SystemMessages.Add(text);
                     if (filterResult != SysMessageFilterResult.Allow)
@@ -2081,7 +2082,7 @@ namespace Assistant
                         return;
                     }
                 }
-
+                
                 if (Config.GetBool("FilterSystemMessages") && ser == Serial.MinusOne || ser == Serial.Zero)
                 {
                     if (!MessageQueue.Enqueue(ser, null, body, type, hue, font, lang, name, text))

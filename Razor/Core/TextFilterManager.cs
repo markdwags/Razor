@@ -135,20 +135,22 @@ namespace Assistant.Core
             return false;
         }
 
-        public static bool IsOverheadFiltered(string text)
+        public static SysMessageFilterResult IsOverheadFiltered(string text)
         {
             if (!Config.GetBool("EnableTextFilter"))
-                return false;
+                return SysMessageFilterResult.Allow;
 
             foreach (var entry in FilteredText)
             {
                 if (entry.FilterOverhead && text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    return true;
+                    return entry.IgnoreFilteredMessageInScripts
+                        ? SysMessageFilterResult.HideAndBlock
+                        : SysMessageFilterResult.Hide;
                 }
             }
 
-            return false;
+            return SysMessageFilterResult.Allow;
         }
 
         public static SysMessageFilterResult IsSysMessageFiltered(string text)
@@ -160,14 +162,15 @@ namespace Assistant.Core
             {
                 if (entry.FilterSysMessages && text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    return entry.IgnoreFilteredMessageInScripts ? SysMessageFilterResult.HideAndBlock : SysMessageFilterResult.Hide;
+                    return entry.IgnoreFilteredMessageInScripts
+                        ? SysMessageFilterResult.HideAndBlock
+                        : SysMessageFilterResult.Hide;
                 }
             }
 
             return SysMessageFilterResult.Allow;
         }
 
-        
 
         public static void Load(XmlElement node)
         {
