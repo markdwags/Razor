@@ -1060,9 +1060,7 @@ namespace Assistant
             {
                 m.Body = p.ReadUInt16();
 
-                MobileFilter.ApplyDragonFilter(p, m);
-                MobileFilter.ApplyDrakeFilter(p, m);
-                MobileFilter.ApplyDaemonFilter(p, m);
+                MobileFilter.Apply(p, m);
 
                 m.Position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 
@@ -1518,9 +1516,7 @@ namespace Assistant
                     Targeting.CheckTextFlags(m);
             }
 
-            MobileFilter.ApplyDragonFilter(p, m);
-            MobileFilter.ApplyDrakeFilter(p, m);
-            MobileFilter.ApplyDaemonFilter(p, m);
+            MobileFilter.Apply(p, body);
 
             Point3D position = new Point3D(p.ReadUInt16(), p.ReadUInt16(), p.ReadSByte());
 

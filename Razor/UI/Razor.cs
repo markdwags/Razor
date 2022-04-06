@@ -482,6 +482,7 @@ namespace Assistant
             targetFilterEnabled.SafeAction(s => { s.Checked = Config.GetBool("TargetFilterEnabled"); });
 
             filterDaemonGraphics.SafeAction(s => { s.Checked = Config.GetBool("FilterDaemonGraphics"); });
+            filterWhiteWyrm.SafeAction(s => { s.Checked = Config.GetBool("FilterWyrmGraphics"); });
 
             soundFilterEnabled.SafeAction(s => { s.Checked = Config.GetBool("SoundFilterEnabled"); });
             showFilteredSound.SafeAction(s => { s.Checked = Config.GetBool("ShowFilteredSound"); });
@@ -567,6 +568,7 @@ namespace Assistant
                         dragonAnimationList.Items.Add(animData.Name);
                         drakeAnimationList.Items.Add(animData.Name);
                         daemonAnimationList.Items.Add(animData.Name);
+                        wyrmAnimationList.Items.Add(animData.Name);
                     }
                 }
                 catch //Unable to verify animation, lets add it anyway
@@ -575,6 +577,7 @@ namespace Assistant
                     dragonAnimationList.Items.Add(animData.Name);
                     drakeAnimationList.Items.Add(animData.Name);
                     daemonAnimationList.Items.Add(animData.Name);
+                    wyrmAnimationList.Items.Add(animData.Name);
                 }
             }
 
@@ -609,6 +612,18 @@ namespace Assistant
                 if (animData.BodyId.Equals(Config.GetInt("DaemonGraphic")))
                 {
                     daemonAnimationList.SelectedIndex = animIndex;
+                    break;
+                }
+
+                animIndex++;
+            }
+
+            animIndex = 0;
+            foreach (AnimData animData in _animationData)
+            {
+                if (animData.BodyId.Equals(Config.GetInt("WyrmGraphic")))
+                {
+                    wyrmAnimationList.SelectedIndex = animIndex;
                     break;
                 }
 
@@ -7660,6 +7675,27 @@ namespace Assistant
         private void nextPrevAbcOrder_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("NextPrevAlphabetical", nextPrevAbcOrder.Checked);
+        }
+
+        private void wyrmAnimationList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (wyrmAnimationList.SelectedIndex < 0)
+                    return;
+
+                Config.SetProperty("WyrmGraphic", _animationData[wyrmAnimationList.SelectedIndex].BodyId);
+            }
+            catch
+            {
+                MessageBox.Show(this, "Unable to find animation in file", "Animation Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void filterWhiteWyrm_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("FilterWyrmGraphics", filterWhiteWyrm.Checked);
         }
     }
 }

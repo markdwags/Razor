@@ -41,6 +41,15 @@ jobs:
       - name: Build site
         run: mkdocs build
 
+      - name: Generate robots.txt
+        run: |
+          cat > ./site/robots.txt <<EOF
+          User-agent: *
+          Allow: /
+
+          Sitemap: https://www.razorce.com/sitemap.xml
+          EOF          
+
       # Setup AWS
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1

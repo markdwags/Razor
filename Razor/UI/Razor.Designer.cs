@@ -429,6 +429,7 @@ namespace Assistant
             this.label3 = new System.Windows.Forms.Label();
             this.subOptionsTargetTab = new System.Windows.Forms.TabPage();
             this.groupSmartTarget = new System.Windows.Forms.GroupBox();
+            this.nextPrevAbcOrder = new System.Windows.Forms.CheckBox();
             this.nonFriendlyHarmfulOnly = new System.Windows.Forms.CheckBox();
             this.friendBeneficialOnly = new System.Windows.Forms.CheckBox();
             this.onlyNextPrevBeneficial = new System.Windows.Forms.CheckBox();
@@ -783,7 +784,8 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.nextPrevAbcOrder = new System.Windows.Forms.CheckBox();
+            this.wyrmAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterWhiteWyrm = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1505,10 +1507,10 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 288);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
@@ -1525,6 +1527,16 @@ namespace Assistant
             this.groupSmartTarget.TabIndex = 138;
             this.groupSmartTarget.TabStop = false;
             this.groupSmartTarget.Text = "Smart Targeting:";
+            // 
+            // nextPrevAbcOrder
+            // 
+            this.nextPrevAbcOrder.Location = new System.Drawing.Point(6, 123);
+            this.nextPrevAbcOrder.Name = "nextPrevAbcOrder";
+            this.nextPrevAbcOrder.Size = new System.Drawing.Size(232, 19);
+            this.nextPrevAbcOrder.TabIndex = 142;
+            this.nextPrevAbcOrder.Text = "\'Next/Prev\' by alphabetical order";
+            this.nextPrevAbcOrder.UseVisualStyleBackColor = true;
+            this.nextPrevAbcOrder.CheckedChanged += new System.EventHandler(this.nextPrevAbcOrder_CheckedChanged);
             // 
             // nonFriendlyHarmfulOnly
             // 
@@ -3437,6 +3449,8 @@ namespace Assistant
             // subFilterTab
             // 
             this.subFilterTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subFilterTab.Controls.Add(this.wyrmAnimationList);
+            this.subFilterTab.Controls.Add(this.filterWhiteWyrm);
             this.subFilterTab.Controls.Add(this.daemonAnimationList);
             this.subFilterTab.Controls.Add(this.filterDaemonGraphics);
             this.subFilterTab.Controls.Add(this.drakeAnimationList);
@@ -5320,15 +5334,27 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // nextPrevAbcOrder
+            // wyrmAnimationList
             // 
-            this.nextPrevAbcOrder.Location = new System.Drawing.Point(6, 123);
-            this.nextPrevAbcOrder.Name = "nextPrevAbcOrder";
-            this.nextPrevAbcOrder.Size = new System.Drawing.Size(232, 19);
-            this.nextPrevAbcOrder.TabIndex = 142;
-            this.nextPrevAbcOrder.Text = "\'Next/Prev\' by alphabetical order";
-            this.nextPrevAbcOrder.UseVisualStyleBackColor = true;
-            this.nextPrevAbcOrder.CheckedChanged += new System.EventHandler(this.nextPrevAbcOrder_CheckedChanged);
+            this.wyrmAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.wyrmAnimationList.DropDownWidth = 250;
+            this.wyrmAnimationList.FormattingEnabled = true;
+            this.wyrmAnimationList.Location = new System.Drawing.Point(313, 93);
+            this.wyrmAnimationList.Name = "wyrmAnimationList";
+            this.wyrmAnimationList.Size = new System.Drawing.Size(163, 23);
+            this.wyrmAnimationList.TabIndex = 129;
+            this.wyrmAnimationList.SelectedIndexChanged += new System.EventHandler(this.wyrmAnimationList_SelectedIndexChanged);
+            // 
+            // filterWhiteWyrm
+            // 
+            this.filterWhiteWyrm.AutoSize = true;
+            this.filterWhiteWyrm.Location = new System.Drawing.Point(209, 95);
+            this.filterWhiteWyrm.Name = "filterWhiteWyrm";
+            this.filterWhiteWyrm.Size = new System.Drawing.Size(90, 19);
+            this.filterWhiteWyrm.TabIndex = 128;
+            this.filterWhiteWyrm.Text = "Filter wyrms";
+            this.filterWhiteWyrm.UseVisualStyleBackColor = true;
+            this.filterWhiteWyrm.CheckedChanged += new System.EventHandler(this.filterWhiteWyrm_CheckedChanged);
             // 
             // MainForm
             // 
@@ -5571,5 +5597,7 @@ namespace Assistant
         private Button openScreenshotFolder;
         private CheckBox buyAgentIgnoreGold;
         private CheckBox nextPrevAbcOrder;
+        private ComboBox wyrmAnimationList;
+        private CheckBox filterWhiteWyrm;
     }
 }

@@ -24,39 +24,32 @@ namespace Assistant.Filters
 {
     public static class MobileFilter
     {
-        public static void ApplyDragonFilter(Packet p, Mobile m)
+        public static void Apply(Packet p, Mobile m)
         {
-            if (Config.GetBool("FilterDragonGraphics"))
-            {
-                if (m.Body == 0xC || m.Body == 0x3B)
-                {
-                    p.Seek(-2, SeekOrigin.Current);
-                    p.Write((ushort) Config.GetInt("DragonGraphic"));
-                }
-            }
+            Apply(p, m.Body);
         }
 
-        public static void ApplyDrakeFilter(Packet p, Mobile m)
+        public static void Apply(Packet p, ushort body)
         {
-            if (Config.GetBool("FilterDrakeGraphics"))
+            if ((body == 0xC || body == 0x3B) && Config.GetBool("FilterDragonGraphics"))
             {
-                if (m.Body == 0x3C || m.Body == 0x3D)
-                {
-                    p.Seek(-2, SeekOrigin.Current);
-                    p.Write((ushort) Config.GetInt("DrakeGraphic"));
-                }
+                p.Seek(-2, SeekOrigin.Current);
+                p.Write((ushort)Config.GetInt("DragonGraphic"));
             }
-        }
-
-        public static void ApplyDaemonFilter(Packet p, Mobile m)
-        {
-            if (Config.GetBool("FilterDaemonGraphics"))
+            else if ((body == 0x3C || body == 0x3D) && Config.GetBool("FilterDrakeGraphics"))
             {
-                if (m.Body == 0x9)
-                {
-                    p.Seek(-2, SeekOrigin.Current);
-                    p.Write((ushort) Config.GetInt("DaemonGraphic"));
-                }
+                p.Seek(-2, SeekOrigin.Current);
+                p.Write((ushort)Config.GetInt("DrakeGraphic"));
+            }
+            else if (body == 0x9 && Config.GetBool("FilterDaemonGraphics"))
+            {
+                p.Seek(-2, SeekOrigin.Current);
+                p.Write((ushort)Config.GetInt("DaemonGraphic"));
+            }
+            else if ((body == 0x31 || body == 0xB4) && Config.GetBool("FilterWyrmGraphics"))
+            {
+                p.Seek(-2, SeekOrigin.Current);
+                p.Write((ushort)Config.GetInt("WyrmGraphic"));
             }
         }
     }

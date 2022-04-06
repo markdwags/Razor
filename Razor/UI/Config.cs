@@ -320,6 +320,9 @@ namespace Assistant
 
             AddProperty("NextPrevAlphabetical", false);
 
+            AddProperty("FilterWyrmGraphics", false);
+            AddProperty("WyrmGraphic", 0);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
