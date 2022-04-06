@@ -629,6 +629,8 @@ namespace Assistant
 
                 animIndex++;
             }
+
+            MobileFilter.Load();
         }
 
         private void tabs_IndexChanged(object sender, System.EventArgs e)
@@ -5352,6 +5354,11 @@ namespace Assistant
         private void filterDragonGraphics_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("FilterDragonGraphics", filterDragonGraphics.Checked);
+
+            if (filterDragonGraphics.Checked)
+            {
+                MobileFilter.ApplyToMobiles();
+            }
         }
 
         private void dragonAnimationList_SelectedIndexChanged(object sender, EventArgs e)
@@ -5362,6 +5369,8 @@ namespace Assistant
                     return;
 
                 Config.SetProperty("DragonGraphic", _animationData[dragonAnimationList.SelectedIndex].BodyId);
+
+                MobileFilter.Load();
             }
             catch
             {
@@ -5378,6 +5387,8 @@ namespace Assistant
                     return;
 
                 Config.SetProperty("DrakeGraphic", _animationData[drakeAnimationList.SelectedIndex].BodyId);
+
+                MobileFilter.Load();
             }
             catch
             {
@@ -5421,6 +5432,11 @@ namespace Assistant
         private void filterDrakeGraphics_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("FilterDrakeGraphics", filterDrakeGraphics.Checked);
+
+            if (filterDrakeGraphics.Checked)
+            {
+                MobileFilter.ApplyToMobiles();
+            }
         }
 
         private void showInRazorTitleBar_CheckedChanged(object sender, EventArgs e)
@@ -6169,6 +6185,11 @@ namespace Assistant
         private void filterDaemonGraphics_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("FilterDaemonGraphics", filterDaemonGraphics.Checked);
+
+            if (filterDaemonGraphics.Checked)
+            {
+                MobileFilter.ApplyToMobiles();
+            }
         }
 
         private void daemonAnimationList_SelectedIndexChanged(object sender, EventArgs e)
@@ -6179,6 +6200,8 @@ namespace Assistant
                     return;
 
                 Config.SetProperty("DaemonGraphic", _animationData[daemonAnimationList.SelectedIndex].BodyId);
+
+                MobileFilter.Load();
             }
             catch
             {
@@ -7685,6 +7708,8 @@ namespace Assistant
                     return;
 
                 Config.SetProperty("WyrmGraphic", _animationData[wyrmAnimationList.SelectedIndex].BodyId);
+
+                MobileFilter.Load();
             }
             catch
             {
@@ -7696,6 +7721,11 @@ namespace Assistant
         private void filterWhiteWyrm_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("FilterWyrmGraphics", filterWhiteWyrm.Checked);
+
+            if (filterWhiteWyrm.Checked)
+            {
+                MobileFilter.ApplyToMobiles();
+            }
         }
     }
 }
