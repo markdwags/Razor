@@ -598,7 +598,7 @@ namespace Assistant
 
         internal void OverheadMessageFrom(int hue, string from, string text, bool ascii)
         {
-            if (TextFilterManager.IsOverheadFiltered(text) != SysMessageFilterResult.Allow)
+            if (TextFilterManager.IsTextFiltered(text, TextFilterType.Overhead) != TextFilterResult.Allow)
             {
                 return;
             }

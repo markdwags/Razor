@@ -30,11 +30,18 @@ using Assistant.UI;
 
 namespace Assistant.Core
 {
-    public enum SysMessageFilterResult
+    public enum TextFilterResult
     {
         Allow,
         Hide,
         HideAndBlock
+    }
+
+    public enum TextFilterType
+    {
+        SysMessage,
+        Overhead,
+        Speech
     }
 
     public class TextFilterEntryModel
@@ -119,59 +126,25 @@ namespace Assistant.Core
             }
         }
 
-        public static bool IsSpeechFiltered(string text)
+        public static TextFilterResult IsTextFiltered(string text, TextFilterType type)
         {
             if (!Config.GetBool("EnableTextFilter"))
-                return false;
+                return TextFilterResult.Allow;
 
             foreach (var entry in FilteredText)
             {
-                if (entry.FilterSpeech && text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
+                if ((type == TextFilterType.Overhead && entry.FilterOverhead ||
+                     type == TextFilterType.Speech && entry.FilterSpeech ||
+                     type == TextFilterType.SysMessage && entry.FilterSysMessages) &&
+                    text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    return true;
+                    return entry.IgnoreFilteredMessageInScripts ? TextFilterResult.HideAndBlock : TextFilterResult.Hide;
                 }
             }
 
-            return false;
+            return TextFilterResult.Allow;
         }
-
-        public static SysMessageFilterResult IsOverheadFiltered(string text)
-        {
-            if (!Config.GetBool("EnableTextFilter"))
-                return SysMessageFilterResult.Allow;
-
-            foreach (var entry in FilteredText)
-            {
-                if (entry.FilterOverhead && text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    return entry.IgnoreFilteredMessageInScripts
-                        ? SysMessageFilterResult.HideAndBlock
-                        : SysMessageFilterResult.Hide;
-                }
-            }
-
-            return SysMessageFilterResult.Allow;
-        }
-
-        public static SysMessageFilterResult IsSysMessageFiltered(string text)
-        {
-            if (!Config.GetBool("EnableTextFilter"))
-                return SysMessageFilterResult.Allow;
-
-            foreach (var entry in FilteredText)
-            {
-                if (entry.FilterSysMessages && text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    return entry.IgnoreFilteredMessageInScripts
-                        ? SysMessageFilterResult.HideAndBlock
-                        : SysMessageFilterResult.Hide;
-                }
-            }
-
-            return SysMessageFilterResult.Allow;
-        }
-
-
+        
         public static void Load(XmlElement node)
         {
             ClearAll();
