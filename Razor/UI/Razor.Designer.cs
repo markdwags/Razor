@@ -3553,9 +3553,9 @@ namespace Assistant
             // 
             // removeFilterText
             // 
-            this.removeFilterText.Location = new System.Drawing.Point(148, 244);
+            this.removeFilterText.Location = new System.Drawing.Point(153, 244);
             this.removeFilterText.Name = "removeFilterText";
-            this.removeFilterText.Size = new System.Drawing.Size(75, 29);
+            this.removeFilterText.Size = new System.Drawing.Size(70, 29);
             this.removeFilterText.TabIndex = 3;
             this.removeFilterText.Text = "Remove";
             this.removeFilterText.UseVisualStyleBackColor = true;
@@ -3563,9 +3563,9 @@ namespace Assistant
             // 
             // addFilterText
             // 
-            this.addFilterText.Location = new System.Drawing.Point(67, 244);
+            this.addFilterText.Location = new System.Drawing.Point(80, 244);
             this.addFilterText.Name = "addFilterText";
-            this.addFilterText.Size = new System.Drawing.Size(75, 29);
+            this.addFilterText.Size = new System.Drawing.Size(68, 29);
             this.addFilterText.TabIndex = 2;
             this.addFilterText.Text = "Add";
             this.addFilterText.UseVisualStyleBackColor = true;
@@ -3575,7 +3575,7 @@ namespace Assistant
             // 
             this.editFilterText.Location = new System.Drawing.Point(5, 244);
             this.editFilterText.Name = "editFilterText";
-            this.editFilterText.Size = new System.Drawing.Size(75, 29);
+            this.editFilterText.Size = new System.Drawing.Size(70, 29);
             this.editFilterText.TabIndex = 1;
             this.editFilterText.Text = "Edit";
             this.editFilterText.UseVisualStyleBackColor = true;
