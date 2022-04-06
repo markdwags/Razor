@@ -42,7 +42,7 @@ namespace Assistant.UI
             // checkBoxFilterSysMessages
             // 
             this.checkBoxFilterSysMessages.AutoSize = true;
-            this.checkBoxFilterSysMessages.Location = new System.Drawing.Point(12, 71);
+            this.checkBoxFilterSysMessages.Location = new System.Drawing.Point(8, 68);
             this.checkBoxFilterSysMessages.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxFilterSysMessages.Name = "checkBoxFilterSysMessages";
             this.checkBoxFilterSysMessages.Size = new System.Drawing.Size(181, 24);
@@ -52,25 +52,25 @@ namespace Assistant.UI
             // 
             // filterTextBox
             // 
-            this.filterTextBox.Location = new System.Drawing.Point(12, 36);
+            this.filterTextBox.Location = new System.Drawing.Point(8, 33);
             this.filterTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.filterTextBox.Name = "filterTextBox";
             this.filterTextBox.Size = new System.Drawing.Size(355, 27);
             this.filterTextBox.TabIndex = 0;
+            this.filterTextBox.TextChanged += new System.EventHandler(this.filterTextBox_TextChanged);
             // 
             // enterTextLabel
             // 
             this.enterTextLabel.AutoSize = true;
-            this.enterTextLabel.Location = new System.Drawing.Point(12, 11);
+            this.enterTextLabel.Location = new System.Drawing.Point(5, 9);
             this.enterTextLabel.Name = "enterTextLabel";
             this.enterTextLabel.Size = new System.Drawing.Size(125, 20);
             this.enterTextLabel.TabIndex = 2;
             this.enterTextLabel.Text = "Enter text to filter";
-            this.enterTextLabel.Click += new System.EventHandler(this.label1_Click);
             // 
             // checkBoxFilterOverhead
             // 
-            this.checkBoxFilterOverhead.Location = new System.Drawing.Point(12, 103);
+            this.checkBoxFilterOverhead.Location = new System.Drawing.Point(8, 100);
             this.checkBoxFilterOverhead.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxFilterOverhead.Name = "checkBoxFilterOverhead";
             this.checkBoxFilterOverhead.Size = new System.Drawing.Size(130, 24);
@@ -81,7 +81,7 @@ namespace Assistant.UI
             // checkBoxFilterSpeech
             // 
             this.checkBoxFilterSpeech.AutoSize = true;
-            this.checkBoxFilterSpeech.Location = new System.Drawing.Point(12, 135);
+            this.checkBoxFilterSpeech.Location = new System.Drawing.Point(8, 132);
             this.checkBoxFilterSpeech.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxFilterSpeech.Name = "checkBoxFilterSpeech";
             this.checkBoxFilterSpeech.Size = new System.Drawing.Size(114, 24);
@@ -92,7 +92,7 @@ namespace Assistant.UI
             // checkBoxIgnoreFilteredInScripts
             // 
             this.checkBoxIgnoreFilteredInScripts.AutoSize = true;
-            this.checkBoxIgnoreFilteredInScripts.Location = new System.Drawing.Point(12, 176);
+            this.checkBoxIgnoreFilteredInScripts.Location = new System.Drawing.Point(8, 164);
             this.checkBoxIgnoreFilteredInScripts.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxIgnoreFilteredInScripts.Name = "checkBoxIgnoreFilteredInScripts";
             this.checkBoxIgnoreFilteredInScripts.Size = new System.Drawing.Size(351, 24);
@@ -103,20 +103,20 @@ namespace Assistant.UI
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(9, 208);
+            this.cancel.Location = new System.Drawing.Point(8, 196);
             this.cancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(117, 41);
+            this.cancel.Size = new System.Drawing.Size(117, 29);
             this.cancel.TabIndex = 6;
             this.cancel.Text = "Cancel";
             this.cancel.Click += new System.EventHandler(this.cancel_Click);
             // 
             // ok
             // 
-            this.ok.Location = new System.Drawing.Point(250, 208);
+            this.ok.Location = new System.Drawing.Point(250, 196);
             this.ok.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ok.Name = "ok";
-            this.ok.Size = new System.Drawing.Size(117, 41);
+            this.ok.Size = new System.Drawing.Size(117, 29);
             this.ok.TabIndex = 5;
             this.ok.Text = "Okay";
             this.ok.Click += new System.EventHandler(this.ok_Click);
@@ -126,7 +126,7 @@ namespace Assistant.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(379, 261);
+            this.ClientSize = new System.Drawing.Size(379, 238);
             this.ControlBox = false;
             this.Controls.Add(this.ok);
             this.Controls.Add(this.cancel);

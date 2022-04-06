@@ -32,6 +32,8 @@ namespace Assistant.UI
             checkBoxFilterOverhead.Checked = _entryModel.FilterOverhead;
             checkBoxFilterSpeech.Checked = _entryModel.FilterSpeech;
             checkBoxIgnoreFilteredInScripts.Checked = _entryModel.IgnoreFilteredMessageInScripts;
+
+            ok.Enabled = !string.IsNullOrWhiteSpace(filterTextBox.Text);
         }
 
         private TextFilterEntryModel GetModelFromConfig()
@@ -45,11 +47,7 @@ namespace Assistant.UI
                 IgnoreFilteredMessageInScripts = checkBoxIgnoreFilteredInScripts.Checked
             };
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-        }
-
+        
         private void cancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
@@ -70,6 +68,11 @@ namespace Assistant.UI
             }
 
             Close();
+        }
+
+        private void filterTextBox_TextChanged(object sender, EventArgs e)
+        {
+            ok.Enabled = !string.IsNullOrWhiteSpace(filterTextBox.Text);
         }
     }
 }
