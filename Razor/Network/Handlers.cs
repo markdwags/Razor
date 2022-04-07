@@ -1993,8 +1993,12 @@ namespace Assistant
                         World.Player.ResetCriminalTimer();
                     }
 
-                    // Overhead message override
-                    OverheadManager.DisplayOverheadMessage(text);
+                    var filterResult = TextFilterManager.IsTextFiltered(text, TextFilterType.SysMessage);
+                    if (filterResult != TextFilterResult.HideAndBlock)
+                    {
+                        // Overhead message override
+                        OverheadManager.DisplayOverheadMessage(text);
+                    }
                 }
 
                 if (Config.GetBool("ShowContainerLabels") && ser.IsItem)
@@ -2045,7 +2049,7 @@ namespace Assistant
                         return;
                     }
 
-                    if (ser.IsMobile && TextFilterManager.IsFiltered(text))
+                    if (ser.IsMobile && TextFilterManager.IsTextFiltered(text, TextFilterType.Speech) != TextFilterResult.Allow)
                     {
                         args.Block = true;
                         return;
@@ -2058,11 +2062,23 @@ namespace Assistant
                     }
                 }
 
-                if (!ser.IsValid || ser == World.Player.Serial || ser.IsItem)
-                {
+                if(ser.IsItem)
                     SystemMessages.Add(text);
-                }
 
+                // Invalid serial means system message, serial == player means overhead
+                if (ser == World.Player.Serial || !ser.IsValid)
+                {
+                    var filterType = !ser.IsValid ? TextFilterType.SysMessage : TextFilterType.Overhead;
+                    var filterResult = TextFilterManager.IsTextFiltered(text, filterType);
+                    if (filterResult != TextFilterResult.HideAndBlock)
+                        SystemMessages.Add(text);
+                    if (filterResult != TextFilterResult.Allow)
+                    {
+                        args.Block = true;
+                        return;
+                    }
+                }
+                
                 if (Config.GetBool("FilterSystemMessages") && ser == Serial.MinusOne || ser == Serial.Zero)
                 {
                     if (!MessageQueue.Enqueue(ser, null, body, type, hue, font, lang, name, text))

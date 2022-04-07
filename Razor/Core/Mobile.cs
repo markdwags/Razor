@@ -23,6 +23,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using Assistant.Agents;
+using Assistant.Core;
 using Assistant.UI;
 
 namespace Assistant
@@ -531,6 +532,11 @@ namespace Assistant
 
         internal void OverheadMessageFrom(int hue, string from, string text, bool ascii)
         {
+            if (TextFilterManager.IsTextFiltered(text, TextFilterType.Overhead) != TextFilterResult.Allow)
+            {
+                return;
+            }
+
             if (Config.GetBool("FilterOverheadMessages"))
             {
                 if (!MessageQueue.Enqueue(this, hue, "O", text))

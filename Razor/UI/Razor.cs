@@ -7325,11 +7325,15 @@ namespace Assistant
         }
         private void addFilterText_Click(object sender, EventArgs e)
         {
-            if (InputBox.Show(this, "Enter text to filter", "Text Filter"))
-            {
-                string message = InputBox.GetString();
-                TextFilterManager.AddFilter(message);
-            }
+            new TextFilterEntry().ShowDialog(Engine.MainWindow);
+        }
+
+        private void editFilterText_Click(object sender, EventArgs e)
+        {
+            if (textFilterList.SelectedIndex < 0)
+                return;
+
+            new TextFilterEntry(textFilterList.SelectedItem as TextFilterEntryModel, textFilterList.SelectedIndex).ShowDialog(Engine.MainWindow);
         }
 
         private void removeFilterText_Click(object sender, EventArgs e)
@@ -7337,7 +7341,7 @@ namespace Assistant
             if (textFilterList.SelectedIndex < 0)
                 return;
 
-            TextFilterManager.RemoveFilter((string) textFilterList.SelectedItem);
+            TextFilterManager.RemoveFilter(textFilterList.SelectedIndex);
         }
 
         private void enableTextFilter_CheckedChanged(object sender, EventArgs e)

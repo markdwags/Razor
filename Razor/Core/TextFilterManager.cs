@@ -20,73 +20,140 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Serialization;
 using Assistant.UI;
 
 namespace Assistant.Core
 {
+    public enum TextFilterResult
+    {
+        Allow,
+        Hide,
+        HideAndBlock
+    }
+
+    public enum TextFilterType
+    {
+        SysMessage,
+        Overhead,
+        Speech
+    }
+
+    public class TextFilterEntryModel
+    {
+        public string Text { get; set; }
+
+        public bool FilterSysMessages { get; set; }
+
+        public bool FilterOverhead { get; set; }
+
+        public bool FilterSpeech { get; set; }
+
+        public bool IgnoreFilteredMessageInScripts { get; set; }
+
+        public TextFilterEntryModel()
+        {
+        }
+
+        public TextFilterEntryModel(XmlElement element)
+        {
+            Text = element.GetAttribute("text");
+            FilterSpeech = ConvertToBool(element.GetAttribute("speech"), true);
+            FilterOverhead = ConvertToBool(element.GetAttribute("overhead"));
+            FilterSysMessages = ConvertToBool(element.GetAttribute("sysmessages"));
+            IgnoreFilteredMessageInScripts = ConvertToBool(element.GetAttribute("ignoreinscripts"), true);
+        }
+
+        private bool ConvertToBool(string attributeString, bool defaultValue = false)
+        {
+            if (string.IsNullOrWhiteSpace(attributeString))
+                return defaultValue;
+
+            return Convert.ToBoolean(attributeString);
+        }
+    }
+
     public static class TextFilterManager
     {
         private static ListBox _filterTextList;
 
-        public static List<string> FilteredText = new List<string>();
+        public static List<TextFilterEntryModel> FilteredText = new List<TextFilterEntryModel>();
 
         public static void SetControls(ListBox filterTextList)
         {
+            filterTextList.DataSource = FilteredText;
+            filterTextList.DisplayMember = nameof(TextFilterEntryModel.Text);
             _filterTextList = filterTextList;
         }
 
-        public static void AddFilter(string filter)
+        public static void AddFilter(TextFilterEntryModel entry)
         {
-            FilteredText.Add(filter);
+            FilteredText.Add(entry);
 
             RedrawList();
         }
 
-        public static void RemoveFilter(string filter)
+        public static void RemoveFilter(int index)
         {
-            FilteredText.Remove(filter);
+            FilteredText.RemoveAt(index);
+
+            RedrawList();
+        }
+
+        public static void UpdateFilter(TextFilterEntryModel entry, int index)
+        {
+            FilteredText[index] = entry;
 
             RedrawList();
         }
 
         public static void Save(XmlTextWriter xml)
         {
-            foreach (var text in FilteredText)
+            foreach (var entry in FilteredText)
             {
                 xml.WriteStartElement("filter");
-                xml.WriteAttributeString("text", text);
+                xml.WriteAttributeString("text", entry.Text);
+                xml.WriteAttributeString("sysmessages", entry.FilterSysMessages.ToString());
+                xml.WriteAttributeString("overhead", entry.FilterOverhead.ToString());
+                xml.WriteAttributeString("speech", entry.FilterSpeech.ToString());
+                xml.WriteAttributeString("ignoreinscripts", entry.IgnoreFilteredMessageInScripts.ToString());
                 xml.WriteEndElement();
             }
         }
 
-        public static bool IsFiltered(string text)
+        public static TextFilterResult IsTextFiltered(string text, TextFilterType type)
         {
             if (!Config.GetBool("EnableTextFilter"))
-                return false;
+                return TextFilterResult.Allow;
 
-            foreach (string filteredText in FilteredText)
+            foreach (var entry in FilteredText)
             {
-                if (text.IndexOf(filteredText, StringComparison.OrdinalIgnoreCase) != -1)
+                if ((type == TextFilterType.Overhead && entry.FilterOverhead ||
+                     type == TextFilterType.Speech && entry.FilterSpeech ||
+                     type == TextFilterType.SysMessage && entry.FilterSysMessages) &&
+                    text.IndexOf(entry.Text, StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    return true;
+                    return entry.IgnoreFilteredMessageInScripts ? TextFilterResult.HideAndBlock : TextFilterResult.Hide;
                 }
             }
 
-            return false;
+            return TextFilterResult.Allow;
         }
-
+        
         public static void Load(XmlElement node)
         {
             ClearAll();
 
             try
             {
-                foreach (XmlElement el in node.GetElementsByTagName("filter"))
+                foreach (var entry in node.ChildNodes.Cast<XmlElement>().Select(el => new TextFilterEntryModel(el)))
                 {
-                    FilteredText.Add(Convert.ToString(el.GetAttribute("text")));
+                    FilteredText.Add(entry);
                 }
 
                 RedrawList();
@@ -104,17 +171,13 @@ namespace Assistant.Core
 
         public static void RedrawList()
         {
-            _filterTextList?.SafeAction(s =>
+            _filterTextList?.SafeAction((lb) =>
             {
-                s.BeginUpdate();
-                s.Items.Clear();
-
-                foreach (string text in FilteredText)
-                {
-                    s.Items.Add(text);
-                }
-
-                s.EndUpdate();
+                lb.BeginUpdate();
+                lb.DataSource = null;
+                lb.DataSource = FilteredText;
+                lb.DisplayMember = nameof(TextFilterEntryModel.Text);
+                lb.EndUpdate();
             });
         }
     }

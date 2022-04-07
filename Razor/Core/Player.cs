@@ -695,7 +695,11 @@ namespace Assistant
                         break;
                 }
 
-                SystemMessages.Add(text);
+                var filterResult = TextFilterManager.IsTextFiltered(text, TextFilterType.SysMessage);
+                if (filterResult != TextFilterResult.HideAndBlock)
+                    SystemMessages.Add(text);
+                if (filterResult != TextFilterResult.Allow)
+                    return;
 
                 if (Config.GetBool("FilterRazorMessages"))
                 {
