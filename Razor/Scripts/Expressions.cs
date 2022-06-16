@@ -78,6 +78,12 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("maxfollowers", MaxFollowers);
 
             Interpreter.RegisterExpressionHandler("targetexists", TargetExists);
+
+            Interpreter.RegisterExpressionHandler("diffweight", DiffWeight);
+            Interpreter.RegisterExpressionHandler("diffhits", DiffHits);
+            Interpreter.RegisterExpressionHandler("diffhp", DiffHits);
+            Interpreter.RegisterExpressionHandler("diffstam", DiffStam);
+            Interpreter.RegisterExpressionHandler("diffmana", DiffMana);
         }
 
         private static int MaxFollowers(string expression, Variable[] args, bool quiet, bool force)
@@ -441,6 +447,38 @@ namespace Assistant.Scripts
                 return true;
 
             return Targeting.CursorType == type;
+        }
+
+        private static int DiffWeight(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.MaxWeight - World.Player.Weight;
+        }
+
+        private static int DiffHits(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.HitsMax - World.Player.Hits;
+        }
+
+        private static int DiffStam(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.StamMax - World.Player.Stam;
+        }
+
+        private static int DiffMana(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (World.Player == null)
+                return 0;
+
+            return World.Player.ManaMax - World.Player.Mana;
         }
     }
 }

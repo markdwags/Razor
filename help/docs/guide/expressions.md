@@ -52,6 +52,71 @@ The expression can be used either directly by item type and hue, or by referenci
         endif
         ```
 
+## diffhits
+
+- `diffhits`
+- `diffhp`
+
+Description: Used to get the difference between you max hits and current hits.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if diffhits > 40
+            overhead 'I need a heal!'
+        endif
+        ```
+
+## diffmana
+
+- `diffmana`
+
+Description: Used to get the difference between you max mana and current mana.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if diffmana > 40
+            skill 'Meditation'
+        endif
+        ```
+
+## diffstam
+
+- `diffstam`
+
+Description: Used to get the difference between you max stamina and current stamina.
+
+!!! example
+
+    === "General"
+
+        ```vim
+         if diffstam > 30
+            overhead 'Need stamina'
+        endif
+        ```
+
+## diffweight
+
+- `diffweight`
+
+Description: Used to get the difference between you max weight and current weight.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if diffweight > 20
+            overhead 'I can lift 20 more stone'
+        endif
+        ```
+
 ## followers
 
 Description: Used to get the current number of followers.
