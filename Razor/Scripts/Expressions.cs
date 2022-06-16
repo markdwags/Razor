@@ -76,6 +76,8 @@ namespace Assistant.Scripts
 
             Interpreter.RegisterExpressionHandler("followers", Followers);
             Interpreter.RegisterExpressionHandler("maxfollowers", MaxFollowers);
+
+            Interpreter.RegisterExpressionHandler("targetexists", TargetExists);
         }
 
         private static int MaxFollowers(string expression, Variable[] args, bool quiet, bool force)
@@ -410,6 +412,35 @@ namespace Assistant.Scripts
             return World.Player.Position.X == x
                 && World.Player.Position.Y == y
                 && World.Player.Position.Z == z;
+        }
+
+        private static readonly Dictionary<string, byte> TargetMap = new Dictionary<string, byte>
+        {
+            {"neutral", 0},
+            {"harmful", 1},
+            {"beneficial", 2},
+            {"any", 3}
+        };
+
+        private static bool TargetExists(string expression, Variable[] args, bool quiet, bool force)
+        {
+            byte type = 3;
+
+            if (args.Length > 0)
+            {
+                if (!TargetMap.TryGetValue(args[0].AsString().ToLower(), out type))
+                {
+                    throw new RunTimeError("Invalid target type: 0 = neutral, 1 = harmful, 2 = beneficial, any = 3");
+                }
+            }
+
+            if (!Targeting.HasTarget)
+                return false;
+
+            if (type == 3)
+                return true;
+
+            return Targeting.CursorType == type;
         }
     }
 }

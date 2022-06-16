@@ -490,6 +490,24 @@ Description: Used to get your current strength, dexterity and intelligence.
         endif
         ```
 
+## targetexists
+
+- `targetexists ['any'/'beneficial'/'harmful'/'neutral']`
+
+Description: Used to check if the client current has a target cursor up
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if targetexists 'beneficial'
+            overhead 'Beneficial target found'
+        elseif targetexists 'harmful'
+            overhead 'Harmful target found'
+        endif
+        ```
+
 ## varexist
 
 - `varexist`

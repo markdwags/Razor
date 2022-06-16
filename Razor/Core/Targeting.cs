@@ -92,6 +92,8 @@ namespace Assistant
             get { return m_HasTarget; }
         }
 
+        public static short CursorType => m_CurFlags;
+
         public static TargetInfo LastTargetInfo
         {
             get { return m_LastTarget; }
