@@ -189,6 +189,8 @@ namespace Assistant.Scripts
             {
                 HighlightLines[type] = new List<int>();
             }
+
+            Lexer.AllowLoop = Client.Instance.AllowBit(FeatureBit.LoopingMacros);
         }
 
         private static void HotkeyTargetTypeScript()

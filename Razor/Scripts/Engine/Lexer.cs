@@ -159,6 +159,8 @@ namespace Assistant.Scripts.Engine
     {
         private static int _curLine = 0;
 
+        public static bool AllowLoop { get; set; } = true;
+
         public static T[] Slice<T>(this T[] src, int start, int end)
         {
             if (end < start)
@@ -452,7 +454,7 @@ namespace Assistant.Scripts.Engine
                     if (lexemes.Length > 1)
                         throw new SyntaxError(node, "Script compilation error");
 
-                    statement.Push(ASTNodeType.REPLAY, null, _curLine);
+                    statement.Push(AllowLoop ? ASTNodeType.REPLAY : ASTNodeType.STOP, null, _curLine);
                     break;
                 default:
                     // It's a regular statement.
