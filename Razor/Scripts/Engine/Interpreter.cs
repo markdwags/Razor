@@ -484,10 +484,23 @@ namespace Assistant.Scripts.Engine
                     break;
                 case ASTNodeType.WHILE:
                     {
+                        // The iterator variable's name is the hash code of the for loop's ASTNode.
+                        var iterName = node.GetHashCode().ToString();
+
                         // When we first enter the loop, push a new scope
                         if (Interpreter.CurrentScope.StartNode != node)
                         {
                             Interpreter.PushScope(node);
+                            Interpreter.SetVariable(iterName, "0");
+                            Interpreter.SetVariable("index", "0");
+                        }
+                        else
+                        {
+                            // Increment the iterator argument
+                            var arg = Interpreter.GetVariable(iterName);
+                            var index = arg.AsUInt() + 1;
+                            Interpreter.SetVariable(iterName, index.ToString());
+                            Interpreter.SetVariable("index", index.ToString());
                         }
 
                         var expr = node.FirstChild();
@@ -575,12 +588,15 @@ namespace Assistant.Scripts.Engine
 
                             // Create a dummy argument that acts as our loop variable
                             Interpreter.SetVariable(iterName, "0");
+                            Interpreter.SetVariable("index", "0");
                         }
                         else
                         {
                             // Increment the iterator argument
                             var arg = Interpreter.GetVariable(iterName);
-                            Interpreter.SetVariable(iterName, (arg.AsUInt() + 1).ToString());
+                            var index = arg.AsUInt() + 1;
+                            Interpreter.SetVariable(iterName, index.ToString());
+                            Interpreter.SetVariable("index", index.ToString());
                         }
 
                         // Check loop condition

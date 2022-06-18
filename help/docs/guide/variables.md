@@ -34,10 +34,24 @@ Along with defining your own variables, you can use these pre-defined variables 
 
 | Variable          | Description                                                |
 | ----------------- | ---------------------------------------------------------- |
-| backpack          | `Returns:` The serial of your own backpack                 |
-| hands              | `Returns:` The serial of the item in either hand           |
-| lasttarget / last | `Returns:` The serial of your current last target in Razor |
-| lastobject        | `Returns:` The serial of your last used object in Razor    |
-| lefthand          | `Returns:` The serial of the item in your left hand        |
-| righthand         | `Returns:` The serial of the item in your right hand       |
-| self              | `Returns:` The serial of your player                       |
+| `backpack`          | `Returns:` The serial of your own backpack                 |
+| `hands`             | `Returns:` The serial of the item in either hand           |
+| `index`             | `Returns:` The index of the current loop iteration           |
+| `lasttarget` / `last` | `Returns:` The serial of your current last target in Razor |
+| `lastobject`        | `Returns:` The serial of your last used object in Razor    |
+| `lefthand`          | `Returns:` The serial of the item in your left hand        |
+| `righthand`         | `Returns:` The serial of the item in your right hand       |
+| `self`              | `Returns:` The serial of your player                       |
+
+## Index Variable
+
+When using `for` or `while` you have access to the `index` variable. This can be used with `overhead` (for example) to indicate the current loop number.
+
+For example, this script snippet will output the numbers 0-9 overhead every second.
+
+```vim
+for 10
+    wait 1000
+    overhead 'index'
+endfor
+```
