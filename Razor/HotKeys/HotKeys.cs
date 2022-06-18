@@ -100,125 +100,119 @@ namespace Assistant
 
     public class KeyData
     {
-        private int m_Name;
-        private string m_SName;
-        private HotKeyCallback m_Callback;
-        private HotKeyCallbackState m_CallbackState;
-        private bool m_SendToUO;
-        private int m_Key;
-        private ModKeys m_Mod;
-        private TreeNode m_Node;
-        private object m_State;
+        private int _name;
+        private string _sName;
+        private HotKeyCallback _callback;
+        private HotKeyCallbackState _callbackState;
+        private bool _sendToUO;
+        private int _key;
+        private ModKeys _mod;
+        private TreeNode _node;
+        private object _state;
+        private string _command;
 
-        public object pState
+        public object pState => _state;
+
+        private DateTime _lastTriggerTime = DateTime.MinValue;
+
+        public string DisplayName => _name != 0 ? Language.GetString(_name) : _sName;
+
+        public int LocName => _name;
+
+        public string StrName => _sName;
+
+        public string Command
         {
-            get { return m_State; }
+            get => _command;
+            set => _command = value;
         }
-
-        private DateTime m_LastTriggerTime = DateTime.MinValue;
-
-        public string DispName
-        {
-            get { return m_Name != 0 ? Language.GetString(m_Name) : m_SName; }
-        }
-
-        public int LocName
-        {
-            get { return m_Name; }
-        }
-
-        public string StrName
-        {
-            get { return m_SName; }
-        }
-        //public HotKeyCallback Callback{ get{ return m_Callback; } }
 
         public KeyData(int name, HKCategory cat, HKSubCat sub, HotKeyCallback call)
         {
-            m_Name = name;
-            m_SName = null;
-            m_Callback = call;
-            m_CallbackState = null;
-            m_Node = HotKey.MakeNode(HotKey.FindParent(cat, sub), ToString(), this);
+            _name = name;
+            _sName = null;
+            _callback = call;
+            _callbackState = null;
+            _node = HotKey.MakeNode(HotKey.FindParent(cat, sub), ToString(), this);
         }
 
         public KeyData(int name, HKCategory cat, HKSubCat sub, HotKeyCallbackState call, object state)
         {
-            m_Name = name;
-            m_SName = null;
-            m_Callback = null;
-            m_CallbackState = call;
-            m_State = state;
-            m_Node = HotKey.MakeNode(HotKey.FindParent(cat, sub), ToString(), this);
+            _name = name;
+            _sName = null;
+            _callback = null;
+            _callbackState = call;
+            _state = state;
+            _node = HotKey.MakeNode(HotKey.FindParent(cat, sub), ToString(), this);
         }
 
         public KeyData(string name, HKCategory cat, HKSubCat sub, HotKeyCallback call)
         {
-            m_Name = 0;
-            m_SName = name;
-            m_Callback = call;
-            m_CallbackState = null;
-            m_Node = HotKey.MakeNode(HotKey.FindParent(cat, sub), ToString(), this);
+            _name = 0;
+            _sName = name;
+            _callback = call;
+            _callbackState = null;
+            _node = HotKey.MakeNode(HotKey.FindParent(cat, sub), ToString(), this);
         }
 
         public KeyData(string name, HKCategory cat, HKSubCat sub, HotKeyCallbackState call, object state)
         {
-            m_Name = 0;
-            m_SName = name;
-            m_Callback = null;
-            m_CallbackState = call;
-            m_State = state;
-            m_Node = HotKey.MakeNode(HotKey.FindParent(cat, sub), ToString(), this);
+            _name = 0;
+            _sName = name;
+            _callback = null;
+            _callbackState = call;
+            _state = state;
+            _node = HotKey.MakeNode(HotKey.FindParent(cat, sub), ToString(), this);
         }
 
         public void Callback()
         {
             // protect again weird keyboard oddities which "double press" the keys when the user only wanted to do an action once
-            if (m_LastTriggerTime + TimeSpan.FromMilliseconds(20) <= DateTime.UtcNow)
+            if (_lastTriggerTime + TimeSpan.FromMilliseconds(20) <= DateTime.UtcNow)
             {
-                m_LastTriggerTime = DateTime.UtcNow;
+                _lastTriggerTime = DateTime.UtcNow;
 
-                if (m_Callback != null)
-                    m_Callback();
-                else if (m_CallbackState != null)
-                    m_CallbackState(ref m_State);
+                if (_callback != null)
+                    _callback();
+                else if (_callbackState != null)
+                    _callbackState(ref _state);
             }
         }
 
         public void Remove()
         {
-            m_Node.Remove();
-            m_Node.Text = "removed";
+            _node.Remove();
+            _node.Text = "removed";
         }
 
         public bool SendToUO
         {
-            get { return m_SendToUO; }
-            set { m_SendToUO = value; }
+            get => _sendToUO;
+            set => _sendToUO = value;
         }
 
         public int Key
         {
-            get { return m_Key; }
+            get => _key;
             set
             {
-                if (m_Key != value)
+                if (_key != value)
                 {
-                    m_Key = value;
-                    m_Node.Text = ToString();
+                    _key = value;
+                    _node.Text = ToString();
                 }
             }
         }
 
         public ModKeys Mod
         {
-            get { return m_Mod; }
+            get => _mod;
             set
             {
-                if (m_Mod != value)
+                if (_mod != value)
                 {
-                    m_Mod = value;
-                    m_Node.Text = ToString();
+                    _mod = value;
+                    _node.Text = ToString();
                 }
             }
         }
@@ -290,9 +284,9 @@ namespace Assistant
         public override string ToString()
         {
             if (Key != 0)
-                return $"{this.DispName} ({KeyString()})";
-            else
-                return $"{this.DispName} ({Language.GetString(LocString.NotAssigned)})";
+                return $"{this.DisplayName} ({KeyString()})";
+            
+            return $"{this.DisplayName} ({Language.GetString(LocString.NotAssigned)})";
         }
     }
 
@@ -413,6 +407,46 @@ namespace Assistant
             m_Status?.SafeAction(s => { s.Text = msg; });
 
             return msg;
+        }
+
+        public static bool ValidateCommand(string command)
+        {
+            if (string.IsNullOrEmpty(command))
+            {
+                return false;
+            }
+
+            foreach (KeyData keyData in List)
+            {
+                if (!string.IsNullOrEmpty(keyData.Command) && keyData.Command.Equals(command, StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+            }
+
+            foreach (string cmd in Command.GetCommands)
+            {
+                if (!string.IsNullOrEmpty(cmd) && cmd.Equals(command, StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool ExecuteCommand(string command)
+        {
+            foreach (KeyData keyData in List)
+            {
+                if (!string.IsNullOrEmpty(keyData.Command) && keyData.Command.Equals(command, StringComparison.OrdinalIgnoreCase))
+                {
+                    keyData.Callback();
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         static HotKey()
@@ -560,7 +594,7 @@ namespace Assistant
         {
             foreach (KeyData key in m_List)
             {
-                if (key.DispName.ToLower().Equals(query.ToLower()))
+                if (key.DisplayName.ToLower().Equals(query.ToLower()))
                     return key;
             }
 
@@ -690,7 +724,7 @@ namespace Assistant
                             if (Macros.MacroManager.AcceptActions)
                                 Macros.MacroManager.Action(new Macros.HotKeyAction(hk));
 
-                            ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
+                            ScriptManager.AddToScript($"hotkey '{hk.DisplayName}'");
 
                             hk.Callback();
                             return hk.SendToUO;
@@ -709,7 +743,7 @@ namespace Assistant
                             if (Macros.MacroManager.AcceptActions)
                                 Macros.MacroManager.Action(new Macros.HotKeyAction(hk));
 
-                            ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
+                            ScriptManager.AddToScript($"hotkey '{hk.DisplayName}'");
 
                             hk.Callback();
                             return hk.SendToUO;
@@ -873,6 +907,12 @@ namespace Assistant
                     string mod = el.GetAttribute("mod");
                     string key = el.GetAttribute("key");
                     string send = el.GetAttribute("send");
+                    string command = el.GetAttribute("command");
+
+                    if (!ValidateCommand(command))
+                    {
+                        command = string.Empty;
+                    }
 
                     KeyData k = null;
 
@@ -894,6 +934,7 @@ namespace Assistant
                             }
                             catch
                             {
+                                // ignored
                             }
                         }
                         else
@@ -907,10 +948,12 @@ namespace Assistant
                         k.Mod = (ModKeys) Convert.ToInt32(mod);
                         k.Key = Convert.ToInt32(key);
                         k.SendToUO = Convert.ToBoolean(send);
+                        k.Command = command;
                     }
                 }
                 catch
                 {
+                    // ignored
                 }
             }
         }
@@ -920,12 +963,14 @@ namespace Assistant
             for (int i = 0; i < m_List.Count; i++)
             {
                 KeyData k = (KeyData) m_List[i];
+
                 if (k.Key != 0)
                 {
                     xml.WriteStartElement("key");
                     xml.WriteAttributeString("mod", ((int) k.Mod).ToString());
                     xml.WriteAttributeString("key", k.Key.ToString());
                     xml.WriteAttributeString("send", k.SendToUO.ToString());
+                    xml.WriteAttributeString("command", string.IsNullOrEmpty(k.Command) ? string.Empty : k.Command);
 
                     //xml.WriteAttributeString( "name", ((int)k.LocName).ToString() );
                     if (k.LocName != 0)

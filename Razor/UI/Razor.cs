@@ -1704,37 +1704,39 @@ namespace Assistant
                 switch (hk.Key)
                 {
                     case -1:
-                        key.Text = ("MouseWheel UP");
+                        hkKey.Text = ("MouseWheel UP");
                         break;
                     case -2:
-                        key.Text = ("MouseWheel DOWN");
+                        hkKey.Text = ("MouseWheel DOWN");
                         break;
                     case -3:
-                        key.Text = ("Mouse MID Button");
+                        hkKey.Text = ("Mouse MID Button");
                         break;
                     case -4:
-                        key.Text = ("Mouse XButton 1");
+                        hkKey.Text = ("Mouse XButton 1");
                         break;
                     case -5:
-                        key.Text = ("Mouse XButton 2");
+                        hkKey.Text = ("Mouse XButton 2");
                         break;
                     default:
                         if (hk.Key > 0 && hk.Key < 256)
-                            key.Text = (((Keys) hk.Key).ToString());
+                            hkKey.Text = (((Keys) hk.Key).ToString());
                         else
-                            key.Text = ("");
+                            hkKey.Text = ("");
                         break;
                 }
             }
             catch
             {
-                key.Text = ">>ERROR<<";
+                hkKey.Text = ">>ERROR<<";
             }
 
             chkCtrl.Checked = (hk.Mod & ModKeys.Control) != 0;
             chkAlt.Checked = (hk.Mod & ModKeys.Alt) != 0;
             chkShift.Checked = (hk.Mod & ModKeys.Shift) != 0;
             chkPass.Checked = hk.SendToUO;
+
+            hkCommand.Text = hk.Command;
 
             if ((hk.LocName >= (int) LocString.DrinkHeal && hk.LocName <= (int) LocString.DrinkAg &&
                  !Client.Instance.AllowBit(FeatureBit.PotionHotkeys)) ||
@@ -1748,7 +1750,8 @@ namespace Assistant
                 LockControl(chkAlt);
                 LockControl(chkShift);
                 LockControl(chkPass);
-                LockControl(key);
+                LockControl(hkKey);
+                LockControl(hkCommand);
                 LockControl(unsetHK);
                 LockControl(setHK);
                 LockControl(dohotkey);
@@ -1766,7 +1769,8 @@ namespace Assistant
         private void ClearHKCtrls()
         {
             m_LastKV = 0;
-            key.Text = "";
+            hkKey.Text = "";
+            hkCommand.Text = "";
             chkCtrl.Checked = false;
             chkAlt.Checked = false;
             chkShift.Checked = false;
@@ -1776,7 +1780,8 @@ namespace Assistant
             UnlockControl(chkAlt);
             UnlockControl(chkShift);
             UnlockControl(chkPass);
-            UnlockControl(key);
+            UnlockControl(hkKey);
+            UnlockControl(hkCommand);
             UnlockControl(unsetHK);
             UnlockControl(setHK);
             UnlockControl(dohotkey);
@@ -1798,14 +1803,16 @@ namespace Assistant
 
             KeyData g = HotKey.Get(m_LastKV, mod);
             bool block = false;
+
             if (g != null && g != hk)
             {
-                if (MessageBox.Show(this, Language.Format(LocString.KeyUsed, g.DispName, hk.DispName),
+                if (MessageBox.Show(this, Language.Format(LocString.KeyUsed, g.DisplayName, hk.DisplayName),
                         "Hot Key Conflict", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     g.Key = 0;
                     g.Mod = ModKeys.None;
                     g.SendToUO = false;
+                    g.Command = hkCommand.Text;
                 }
                 else
                 {
@@ -1819,6 +1826,16 @@ namespace Assistant
                 hk.Mod = mod;
 
                 hk.SendToUO = chkPass.Checked;
+            }
+
+            if (HotKey.ValidateCommand(hkCommand.Text.Trim()))
+            {
+                hk.Command = hkCommand.Text.Trim();
+            }
+            else
+            {
+                MessageBox.Show(this, "That hotkey command is already in use, please select another.", "HotKey Command In Use");
+                hk.Command = string.Empty;
             }
 
             if (!string.IsNullOrEmpty(filterHotkeys.Text))
@@ -1843,6 +1860,7 @@ namespace Assistant
             hk.Key = 0;
             hk.Mod = 0;
             hk.SendToUO = false;
+            hk.Command = string.Empty;
 
             ClearHKCtrls();
 
@@ -1862,7 +1880,7 @@ namespace Assistant
         private void key_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             m_LastKV = (int) e.KeyCode;
-            key.Text = e.KeyCode.ToString();
+            hkKey.Text = e.KeyCode.ToString();
 
             e.Handled = true;
         }
@@ -1872,12 +1890,12 @@ namespace Assistant
             if (e.Delta > 0)
             {
                 m_LastKV = -1;
-                key.Text = "MouseWheel UP";
+                hkKey.Text = "MouseWheel UP";
             }
             else if (e.Delta < 0)
             {
                 m_LastKV = -2;
-                key.Text = "MouseWheel DOWN";
+                hkKey.Text = "MouseWheel DOWN";
             }
         }
 
@@ -1886,17 +1904,17 @@ namespace Assistant
             if (e.Button == MouseButtons.Middle)
             {
                 m_LastKV = -3;
-                key.Text = "Mouse MID Button";
+                hkKey.Text = "Mouse MID Button";
             }
             else if (e.Button == MouseButtons.XButton1)
             {
                 m_LastKV = -4;
-                key.Text = "Mouse XButton 1";
+                hkKey.Text = "Mouse XButton 1";
             }
             else if (e.Button == MouseButtons.XButton2)
             {
                 m_LastKV = -5;
-                key.Text = "Mouse XButton 2";
+                hkKey.Text = "Mouse XButton 2";
             }
         }
 
@@ -1908,7 +1926,7 @@ namespace Assistant
                 if (MacroManager.AcceptActions)
                     MacroManager.Action(new HotKeyAction(hk));
 
-                ScriptManager.AddToScript($"hotkey '{hk.DispName}'");
+                ScriptManager.AddToScript($"hotkey '{hk.DisplayName}'");
 
                 hk.Callback();
             }
@@ -6162,7 +6180,7 @@ namespace Assistant
                         KeyData hk = (KeyData) resultNode.Tag;
 
                         hotkeyTree.SelectedNode = resultNode;
-                        key.Focus();
+                        hkKey.Focus();
                     }
                 });
             }
@@ -6486,7 +6504,7 @@ namespace Assistant
                         KeyData hk = (KeyData) resultNode.Tag;
 
                         hotkeyTree.SelectedNode = resultNode;
-                        key.Focus();
+                        hkKey.Focus();
                     }
                 });
             }
@@ -7314,7 +7332,7 @@ namespace Assistant
                         KeyData hk = (KeyData)resultNode.Tag;
 
                         hotkeyTree.SelectedNode = resultNode;
-                        key.Focus();
+                        hkKey.Focus();
                     }
                 });
             }

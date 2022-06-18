@@ -22,6 +22,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Gumps.Internal;
@@ -454,18 +455,20 @@ namespace Assistant
 
     public class Command
     {
-        private static Dictionary<string, CommandCallback> m_List;
+        private static Dictionary<string, CommandCallback> _commandList;
+
+        public static List<string> GetCommands => _commandList.Keys.ToList();
 
         static Command()
         {
-            m_List = new Dictionary<string, CommandCallback>(16, StringComparer.OrdinalIgnoreCase);
+            _commandList = new Dictionary<string, CommandCallback>(16, StringComparer.OrdinalIgnoreCase);
             PacketHandler.RegisterClientToServerFilter(0xAD, OnSpeech);
         }
 
         public static void ListCommands(string[] param)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            foreach (string cmd in m_List.Keys)
+            foreach (string cmd in _commandList.Keys)
             {
                 sb.Append(cmd);
                 sb.Append(" ");
@@ -477,22 +480,22 @@ namespace Assistant
 
         public static void Register(string cmd, CommandCallback callback)
         {
-            m_List[cmd] = callback;
+            _commandList[cmd] = callback;
         }
 
         public static CommandCallback FindCommand(string cmd)
         {
-            return m_List[cmd] as CommandCallback;
+            return _commandList[cmd] as CommandCallback;
         }
 
         public static void RemoveCommand(string cmd)
         {
-            m_List.Remove(cmd);
+            _commandList.Remove(cmd);
         }
 
         public static Dictionary<string, CommandCallback> List
         {
-            get { return m_List; }
+            get { return _commandList; }
         }
 
         public static void OnSpeech(Packet pvSrc, PacketHandlerEventArgs args)
@@ -553,18 +556,23 @@ namespace Assistant
                     text = text.Substring(1);
                     string[] split = text.Split(' ', '\t');
 
-                    if (m_List.ContainsKey(split[0]))
+                    if (_commandList.ContainsKey(split[0]))
                     {
-                        CommandCallback call = (CommandCallback) m_List[split[0]];
+                        CommandCallback call = (CommandCallback) _commandList[split[0]];
+
                         if (call != null)
                         {
-                            string[] param = new String[split.Length - 1];
+                            string[] param = new string[split.Length - 1];
                             for (int i = 0; i < param.Length; i++)
                                 param[i] = split[i + 1];
                             call(param);
 
                             args.Block = true;
                         }
+                    }
+                    else if (HotKey.ExecuteCommand(split[0]))
+                    {
+                        args.Block = true;
                     }
                     else
                     {

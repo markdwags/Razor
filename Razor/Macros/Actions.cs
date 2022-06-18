@@ -3385,14 +3385,14 @@ namespace Assistant.Macros
         public override bool Perform()
         {
             if (Client.Instance.AllowBit(FeatureBit.LoopingMacros) ||
-                m_Key.DispName.IndexOf(Language.GetString(LocString.PlayA1).Replace(@"{0}", "")) == -1)
+                m_Key.DisplayName.IndexOf(Language.GetString(LocString.PlayA1).Replace(@"{0}", "")) == -1)
                 m_Key.Callback();
             return true;
         }
 
         public override string ToScript()
         {
-            return $"hotkey '{m_Key.DispName}'";
+            return $"hotkey '{m_Key.DisplayName}'";
         }
 
         public override string Serialize()
@@ -3402,7 +3402,7 @@ namespace Assistant.Macros
 
         public override string ToString()
         {
-            return $"Exec: {m_Key.DispName}";
+            return $"Exec: {m_Key.DisplayName}";
         }
     }
 

@@ -51,13 +51,13 @@ namespace Assistant.Gumps.Internal
             int labelY = 64;
             int count = 0;
 
-            foreach (KeyData data in HotKey.List.Where(hk => hk.Key != 0).OrderBy(hk => hk.DispName))
+            foreach (KeyData data in HotKey.List.Where(hk => hk.Key != 0).OrderBy(hk => hk.DisplayName))
             {
                 if (!_showAlt && (data.Mod & ModKeys.Alt) != 0 || !_showCtrl && (data.Mod & ModKeys.Control) != 0 ||
                     !_showShift && (data.Mod & ModKeys.Shift) != 0)
                     continue;
 
-                AddHtml(20, labelY, 500, 20, $"<BASEFONT COLOR=#FFFFFF>{data.DispName}</BASEFONT> <BASEFONT COLOR=#E0E70B>({data.KeyString()})</BASEFONT>", false, false);
+                AddHtml(20, labelY, 500, 20, $"<BASEFONT COLOR=#FFFFFF>{data.DisplayName}</BASEFONT> <BASEFONT COLOR=#E0E70B>({data.KeyString()})</BASEFONT>", false, false);
 
                 labelY += 20;
                 count++;

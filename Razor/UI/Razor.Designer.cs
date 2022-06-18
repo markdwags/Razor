@@ -43,7 +43,7 @@ namespace Assistant
         private System.Windows.Forms.CheckBox chkAlt;
         private System.Windows.Forms.CheckBox chkShift;
         private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.TextBox key;
+        private System.Windows.Forms.TextBox hkKey;
         private System.Windows.Forms.Button setHK;
         private System.Windows.Forms.Button unsetHK;
         private System.Windows.Forms.Label label2;
@@ -614,6 +614,8 @@ namespace Assistant
             this.filtersTab = new System.Windows.Forms.TabPage();
             this.filterTabs = new System.Windows.Forms.TabControl();
             this.subFilterTab = new System.Windows.Forms.TabPage();
+            this.wyrmAnimationList = new System.Windows.Forms.ComboBox();
+            this.filterWhiteWyrm = new System.Windows.Forms.CheckBox();
             this.daemonAnimationList = new System.Windows.Forms.ComboBox();
             this.filterDaemonGraphics = new System.Windows.Forms.CheckBox();
             this.drakeAnimationList = new System.Windows.Forms.ComboBox();
@@ -664,7 +666,7 @@ namespace Assistant
             this.label2 = new System.Windows.Forms.Label();
             this.unsetHK = new System.Windows.Forms.Button();
             this.setHK = new System.Windows.Forms.Button();
-            this.key = new System.Windows.Forms.TextBox();
+            this.hkKey = new System.Windows.Forms.TextBox();
             this.chkCtrl = new System.Windows.Forms.CheckBox();
             this.chkShift = new System.Windows.Forms.CheckBox();
             this.macrosTab = new System.Windows.Forms.TabPage();
@@ -784,8 +786,8 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.wyrmAnimationList = new System.Windows.Forms.ComboBox();
-            this.filterWhiteWyrm = new System.Windows.Forms.CheckBox();
+            this.hkCmdLabel = new System.Windows.Forms.Label();
+            this.hkCommand = new System.Windows.Forms.TextBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -3465,6 +3467,28 @@ namespace Assistant
             this.subFilterTab.TabIndex = 0;
             this.subFilterTab.Text = "General";
             // 
+            // wyrmAnimationList
+            // 
+            this.wyrmAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.wyrmAnimationList.DropDownWidth = 250;
+            this.wyrmAnimationList.FormattingEnabled = true;
+            this.wyrmAnimationList.Location = new System.Drawing.Point(313, 93);
+            this.wyrmAnimationList.Name = "wyrmAnimationList";
+            this.wyrmAnimationList.Size = new System.Drawing.Size(163, 23);
+            this.wyrmAnimationList.TabIndex = 129;
+            this.wyrmAnimationList.SelectedIndexChanged += new System.EventHandler(this.wyrmAnimationList_SelectedIndexChanged);
+            // 
+            // filterWhiteWyrm
+            // 
+            this.filterWhiteWyrm.AutoSize = true;
+            this.filterWhiteWyrm.Location = new System.Drawing.Point(209, 95);
+            this.filterWhiteWyrm.Name = "filterWhiteWyrm";
+            this.filterWhiteWyrm.Size = new System.Drawing.Size(90, 19);
+            this.filterWhiteWyrm.TabIndex = 128;
+            this.filterWhiteWyrm.Text = "Filter wyrms";
+            this.filterWhiteWyrm.UseVisualStyleBackColor = true;
+            this.filterWhiteWyrm.CheckedChanged += new System.EventHandler(this.filterWhiteWyrm_CheckedChanged);
+            // 
             // daemonAnimationList
             // 
             this.daemonAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -3903,7 +3927,7 @@ namespace Assistant
             // hkStatus
             // 
             this.hkStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hkStatus.Location = new System.Drawing.Point(337, 206);
+            this.hkStatus.Location = new System.Drawing.Point(337, 226);
             this.hkStatus.Name = "hkStatus";
             this.hkStatus.Size = new System.Drawing.Size(175, 64);
             this.hkStatus.TabIndex = 7;
@@ -3921,7 +3945,7 @@ namespace Assistant
             // 
             // dohotkey
             // 
-            this.dohotkey.Location = new System.Drawing.Point(337, 140);
+            this.dohotkey.Location = new System.Drawing.Point(337, 170);
             this.dohotkey.Name = "dohotkey";
             this.dohotkey.Size = new System.Drawing.Size(175, 29);
             this.dohotkey.TabIndex = 5;
@@ -3930,17 +3954,19 @@ namespace Assistant
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.hkCommand);
+            this.groupBox8.Controls.Add(this.hkCmdLabel);
             this.groupBox8.Controls.Add(this.chkAlt);
             this.groupBox8.Controls.Add(this.chkPass);
             this.groupBox8.Controls.Add(this.label2);
             this.groupBox8.Controls.Add(this.unsetHK);
             this.groupBox8.Controls.Add(this.setHK);
-            this.groupBox8.Controls.Add(this.key);
+            this.groupBox8.Controls.Add(this.hkKey);
             this.groupBox8.Controls.Add(this.chkCtrl);
             this.groupBox8.Controls.Add(this.chkShift);
             this.groupBox8.Location = new System.Drawing.Point(337, 8);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(175, 124);
+            this.groupBox8.Size = new System.Drawing.Size(175, 156);
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Hot Key";
@@ -3955,7 +3981,7 @@ namespace Assistant
             // 
             // chkPass
             // 
-            this.chkPass.Location = new System.Drawing.Point(11, 69);
+            this.chkPass.Location = new System.Drawing.Point(11, 102);
             this.chkPass.Name = "chkPass";
             this.chkPass.Size = new System.Drawing.Size(113, 16);
             this.chkPass.TabIndex = 9;
@@ -3971,7 +3997,7 @@ namespace Assistant
             // 
             // unsetHK
             // 
-            this.unsetHK.Location = new System.Drawing.Point(8, 90);
+            this.unsetHK.Location = new System.Drawing.Point(11, 124);
             this.unsetHK.Name = "unsetHK";
             this.unsetHK.Size = new System.Drawing.Size(56, 26);
             this.unsetHK.TabIndex = 6;
@@ -3980,24 +4006,24 @@ namespace Assistant
             // 
             // setHK
             // 
-            this.setHK.Location = new System.Drawing.Point(113, 90);
+            this.setHK.Location = new System.Drawing.Point(113, 124);
             this.setHK.Name = "setHK";
             this.setHK.Size = new System.Drawing.Size(56, 26);
             this.setHK.TabIndex = 5;
             this.setHK.Text = "Set";
             this.setHK.Click += new System.EventHandler(this.setHK_Click);
             // 
-            // key
+            // hkKey
             // 
-            this.key.Location = new System.Drawing.Point(36, 40);
-            this.key.Name = "key";
-            this.key.ReadOnly = true;
-            this.key.Size = new System.Drawing.Size(133, 23);
-            this.key.TabIndex = 4;
-            this.key.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.key.KeyUp += new System.Windows.Forms.KeyEventHandler(this.key_KeyUp);
-            this.key.MouseDown += new System.Windows.Forms.MouseEventHandler(this.key_MouseDown);
-            this.key.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.key_MouseWheel);
+            this.hkKey.Location = new System.Drawing.Point(36, 40);
+            this.hkKey.Name = "hkKey";
+            this.hkKey.ReadOnly = true;
+            this.hkKey.Size = new System.Drawing.Size(133, 23);
+            this.hkKey.TabIndex = 4;
+            this.hkKey.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.hkKey.KeyUp += new System.Windows.Forms.KeyEventHandler(this.key_KeyUp);
+            this.hkKey.MouseDown += new System.Windows.Forms.MouseEventHandler(this.key_MouseDown);
+            this.hkKey.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.key_MouseWheel);
             // 
             // chkCtrl
             // 
@@ -5334,27 +5360,20 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // wyrmAnimationList
+            // hkCmdLabel
             // 
-            this.wyrmAnimationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.wyrmAnimationList.DropDownWidth = 250;
-            this.wyrmAnimationList.FormattingEnabled = true;
-            this.wyrmAnimationList.Location = new System.Drawing.Point(313, 93);
-            this.wyrmAnimationList.Name = "wyrmAnimationList";
-            this.wyrmAnimationList.Size = new System.Drawing.Size(163, 23);
-            this.wyrmAnimationList.TabIndex = 129;
-            this.wyrmAnimationList.SelectedIndexChanged += new System.EventHandler(this.wyrmAnimationList_SelectedIndexChanged);
+            this.hkCmdLabel.Location = new System.Drawing.Point(8, 76);
+            this.hkCmdLabel.Name = "hkCmdLabel";
+            this.hkCmdLabel.Size = new System.Drawing.Size(68, 20);
+            this.hkCmdLabel.TabIndex = 10;
+            this.hkCmdLabel.Text = "Command";
             // 
-            // filterWhiteWyrm
+            // hkCommand
             // 
-            this.filterWhiteWyrm.AutoSize = true;
-            this.filterWhiteWyrm.Location = new System.Drawing.Point(209, 95);
-            this.filterWhiteWyrm.Name = "filterWhiteWyrm";
-            this.filterWhiteWyrm.Size = new System.Drawing.Size(90, 19);
-            this.filterWhiteWyrm.TabIndex = 128;
-            this.filterWhiteWyrm.Text = "Filter wyrms";
-            this.filterWhiteWyrm.UseVisualStyleBackColor = true;
-            this.filterWhiteWyrm.CheckedChanged += new System.EventHandler(this.filterWhiteWyrm_CheckedChanged);
+            this.hkCommand.Location = new System.Drawing.Point(73, 73);
+            this.hkCommand.Name = "hkCommand";
+            this.hkCommand.Size = new System.Drawing.Size(96, 23);
+            this.hkCommand.TabIndex = 11;
             // 
             // MainForm
             // 
@@ -5599,5 +5618,7 @@ namespace Assistant
         private CheckBox nextPrevAbcOrder;
         private ComboBox wyrmAnimationList;
         private CheckBox filterWhiteWyrm;
+        private TextBox hkCommand;
+        private Label hkCmdLabel;
     }
 }
