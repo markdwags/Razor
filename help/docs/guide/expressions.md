@@ -297,6 +297,24 @@ Description: Used to check if certain text appears within the system message log
         endif
         ```   
 
+## invuln
+
+- `invuln`
+- `invul`
+- `blessed`
+
+Description: Used to get your invulnerable status
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if invuln
+            overhead 'I feel.. so powerful.'
+        endif
+        ```
+
 ## lhandempty
 
 - `lhandempty`
@@ -371,7 +389,6 @@ Description: Used to get your max allowed weight.
         endif
         ```
 
-
 ## mounted
 
 - `mounted`
@@ -387,6 +404,38 @@ Description: Used to check if you are currently on a mount
             say 'mounted'
         else
             say 'not mounted'
+        endif
+        ```
+
+## name
+
+- `name`
+
+Description: Used to get your name of the currently logged in character
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if name = 'Quick'
+            overhead 'thats me!'
+        endif
+        ```
+
+## paralyzed
+
+- `paralyzed`
+
+Description: Used to check if you are currently paralyzed.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if paralyzed
+            overhead 'I cannot move!'
         endif
         ```
 
@@ -593,6 +642,24 @@ Description: Used to check if a variable exists.
         dclick 'myrunebook'
         waitforgump 'any'
         gumpresponse 5
+        ```
+
+## warmode
+
+- `warmode`
+
+Description: Used to get your current combat/war status
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if warmode
+            overhead 'I'm read to fight'
+        else
+            overhead 'Peace to you'
+        endif
         ```
 
 ## weight

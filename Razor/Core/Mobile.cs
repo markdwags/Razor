@@ -65,6 +65,7 @@ namespace Assistant
         private bool m_Female;
         private bool m_Poisoned;
         private bool m_Blessed;
+        private bool m_Paralyze;
         private bool m_Warmode;
 
         //new
@@ -191,6 +192,12 @@ namespace Assistant
         {
             get { return m_Blessed; }
             set { m_Blessed = value; }
+        }
+
+        public bool Paralyzed
+        {
+            get { return m_Paralyze; }
+            set { m_Paralyze = value; }
         }
 
         public bool IsGhost
@@ -478,6 +485,9 @@ namespace Assistant
         {
             int flags = 0x0;
 
+            if (m_Paralyze)
+                flags |= 0x01;
+
             if (m_Female)
                 flags |= 0x02;
 
@@ -510,7 +520,7 @@ namespace Assistant
             if (!PacketHandlers.UseNewStatus)
                 m_Poisoned = (flags & 0x04) != 0;
 
-            m_Unknown = (flags & 0x01) != 0; //new
+            m_Paralyze = (flags & 0x01) != 0;
             m_Female = (flags & 0x02) != 0;
             m_Blessed = (flags & 0x08) != 0;
             m_Unknown2 = (flags & 0x10) != 0; //new

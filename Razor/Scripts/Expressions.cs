@@ -84,22 +84,42 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("diffhp", DiffHits);
             Interpreter.RegisterExpressionHandler("diffstam", DiffStam);
             Interpreter.RegisterExpressionHandler("diffmana", DiffMana);
+
+            Interpreter.RegisterExpressionHandler("name", Name);
+            Interpreter.RegisterExpressionHandler("paralyzed", Paralyzed);
+            Interpreter.RegisterExpressionHandler("invuln", Invulnerable);
+            Interpreter.RegisterExpressionHandler("invul", Invulnerable);
+            Interpreter.RegisterExpressionHandler("blessed", Invulnerable);
+            Interpreter.RegisterExpressionHandler("warmode", Warmode);
+        }
+        private static string Name(string expression, Variable[] args, bool quiet, bool force)
+        {
+            return World.Player == null ? string.Empty : World.Player.Name;
+        }
+
+        private static bool Paralyzed(string expression, Variable[] args, bool quiet, bool force)
+        {
+            return World.Player != null && World.Player.Paralyzed;
+        }
+
+        private static bool Invulnerable(string expression, Variable[] args, bool quiet, bool force)
+        {
+            return World.Player != null && World.Player.Blessed;
+        }
+
+        private static bool Warmode(string expression, Variable[] args, bool quiet, bool force)
+        {
+            return World.Player != null && World.Player.Warmode;
         }
 
         private static int MaxFollowers(string expression, Variable[] args, bool quiet, bool force)
         {
-            if (World.Player == null)
-                return 0;
-
-            return World.Player.FollowersMax;
+            return World.Player == null ? 0 : World.Player.FollowersMax;
         }
 
         private static int Followers(string expression, Variable[] args, bool quiet, bool force)
         {
-            if (World.Player == null)
-                return 0;
-
-            return World.Player.Followers;
+            return World.Player == null ? 0 : World.Player.Followers;
         }
 
         private static bool VarExist(string expression, Variable[] vars, bool quiet, bool force)
