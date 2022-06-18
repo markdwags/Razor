@@ -162,14 +162,26 @@ namespace Assistant.Filters
 
                 foreach (string music in musicInfo)
                 {
+                    if (music.StartsWith("#"))
+                    {
+                        continue;
+                    }
+
                     string[] parsedMusic = music.Split(' ');
 
-                    MusicList.Add(new Music
+                    try
                     {
-                        Id = Convert.ToInt32(parsedMusic[0]),
-                        Name = parsedMusic[1].Split(',')[0],
-                        Loop = parsedMusic[1].Contains(",") && parsedMusic[1].Split(',')[1].Equals("loop")
-                    });
+                        MusicList.Add(new Music
+                        {
+                            Id = Convert.ToInt32(parsedMusic[0]),
+                            Name = parsedMusic[1].Split(',')[0],
+                            Loop = parsedMusic[1].Contains(",") && parsedMusic[1].Split(',')[1].Equals("loop")
+                        });
+                    }
+                    catch
+                    {
+                        // ignored, just don't load that line
+                    }
                 }
             }
             else
