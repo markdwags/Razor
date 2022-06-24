@@ -1828,14 +1828,17 @@ namespace Assistant
                 hk.SendToUO = chkPass.Checked;
             }
 
-            if (HotKey.ValidateCommand(hkCommand.Text.Trim()))
+            if (!string.IsNullOrEmpty(hkCommand.Text))
             {
-                hk.Command = hkCommand.Text.Trim();
-            }
-            else
-            {
-                MessageBox.Show(this, "That hotkey command is already in use, please select another.", "HotKey Command In Use");
-                hk.Command = string.Empty;
+                if (HotKey.ValidateCommand(hkCommand.Text.Trim()))
+                {
+                    hk.Command = hkCommand.Text.Trim();
+                }
+                else
+                {
+                    MessageBox.Show(this, "That hotkey command is already in use, please enter another.", "HotKey Command In Use", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    hk.Command = string.Empty;
+                }
             }
 
             if (!string.IsNullOrEmpty(filterHotkeys.Text))
@@ -2903,8 +2906,8 @@ namespace Assistant
                     HotKey.RebuildList(hotkeyTree);
                     RebuildHotKeyCache();
                 }
-
-                TreeNode resultNode = SearchTreeView(m.GetName(), hotkeyTree.Nodes);
+                
+                TreeNode resultNode = SearchTreeView(Language.Format(LocString.PlayA1, m.GetName()), hotkeyTree.Nodes);
 
                 if (resultNode != null)
                 {
@@ -6173,7 +6176,7 @@ namespace Assistant
 
                     tabs.SelectedTab = hotkeysTab;
 
-                    TreeNode resultNode = SearchTreeView(sel.GetName(), hotkeyTree.Nodes);
+                    TreeNode resultNode = SearchTreeView(Language.Format(LocString.PlayA1, sel.GetName()), hotkeyTree.Nodes);
 
                     if (resultNode != null)
                     {
@@ -7314,23 +7317,29 @@ namespace Assistant
 
                     string search = string.Empty;
 
-                    if (agent is OrganizerAgent)
-                        search = $"{Language.GetString(LocString.OrganizerAgent)}-{agent.Number:D2}";
-                    else if (agent is RestockAgent)
-                        search = $"{Language.GetString(LocString.RestockAgent)}-{agent.Number:D2}";
-                    else if (agent is UseOnceAgent)
-                        search = agent.Name;
-                    else if (agent is ScavengerAgent)
-                        search = Language.GetString(LocString.ScavengerEnableDisable);
-                    else if (agent is SellAgent)
-                        search = Language.GetString(LocString.SetSellAgentHotBag);
+                    switch (agent)
+                    {
+                        case OrganizerAgent _:
+                            search = $"{Language.GetString(LocString.OrganizerAgent)}-{agent.Number:D2}";
+                            break;
+                        case RestockAgent _:
+                            search = $"{Language.GetString(LocString.RestockAgent)}-{agent.Number:D2}";
+                            break;
+                        case UseOnceAgent _:
+                            search = agent.Name;
+                            break;
+                        case ScavengerAgent _:
+                            search = Language.GetString(LocString.ScavengerEnableDisable);
+                            break;
+                        case SellAgent _:
+                            search = Language.GetString(LocString.SetSellAgentHotBag);
+                            break;
+                    }
 
                     TreeNode resultNode = SearchTreeView(search, hotkeyTree.Nodes);
 
                     if (resultNode != null)
                     {
-                        KeyData hk = (KeyData)resultNode.Tag;
-
                         hotkeyTree.SelectedNode = resultNode;
                         hkKey.Focus();
                     }
@@ -7394,7 +7403,7 @@ namespace Assistant
                     RebuildHotKeyCache();
                 }
 
-                TreeNode resultNode = SearchTreeView(_selectedScript.Name, hotkeyTree.Nodes);
+                TreeNode resultNode = SearchTreeView($"{Language.Format(LocString.PlayScript, _selectedScript.Name)}", hotkeyTree.Nodes);
 
                 if (resultNode != null)
                 {
