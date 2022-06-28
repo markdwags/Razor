@@ -22,27 +22,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Xml;
-using Assistant.UI;
 
 namespace Assistant.Filters
 {
     public static class SoundMusicManager
     {
-        private static CheckedListBox _soundFilterList;
-        private static ComboBox _playableMusicList;
-
         private static List<Sound> SoundFilters = new List<Sound>();
-        private static List<Sound> SoundList = new List<Sound>();
 
-        private static List<Music> MusicList = new List<Music>();
+        public static List<Sound> SoundList = new List<Sound>();
+        public static List<Music> MusicList = new List<Music>();
 
-        public static void SetControls(CheckedListBox soundFilterList, ComboBox playableMusicList)
-        {
-            _soundFilterList = soundFilterList;
-            _playableMusicList = playableMusicList;
-        }
+        public delegate void SoundFiltersChangeCallback();
+        public delegate void PlayableMusicChangeCallback();
+
+        public static SoundFiltersChangeCallback OnSoundFiltersChanged { get; set; }
+        public static PlayableMusicChangeCallback OnPlayableMusicChanged { get; set; }
 
         public class Sound
         {
@@ -100,7 +95,9 @@ namespace Assistant.Filters
         public static string GetSoundName(ushort soundId)
         {
             if (SoundList.Count == 0)
-                RedrawList();
+            {
+                NotifySoundFilter();
+            }
 
             foreach (Sound sound in SoundList)
             {
@@ -116,7 +113,9 @@ namespace Assistant.Filters
         public static string GetMusicName(int musicId, out bool loop)
         {
             if (MusicList.Count == 0)
-                RedrawList();
+            {
+                NotifyPlayableMusic();
+            }
 
             foreach (Music music in MusicList)
             {
@@ -721,7 +720,8 @@ namespace Assistant.Filters
                 // must not be in the profile, move on
             }
 
-            RedrawList();
+            NotifySoundFilter();
+            NotifyPlayableMusic();
         }
 
         public static void ClearAll()
@@ -729,45 +729,22 @@ namespace Assistant.Filters
             SoundFilters.Clear();
         }
 
-        public static void RedrawList()
+        private static void NotifySoundFilter()
         {
-            _soundFilterList?.SafeAction(s =>
+            if (SoundList.Count == 0)
             {
-                s.BeginUpdate();
-                s.Items.Clear();
+                LoadSounds();
+            }
+            OnSoundFiltersChanged?.Invoke();
+        }
 
-                if (SoundList.Count == 0)
-                {
-                    LoadSounds();
-                }
-
-                foreach (Sound sound in SoundList)
-                {
-                    bool isFiltered = IsFilteredSound(sound.Serial, out string name);
-                    s.Items.Add(sound, isFiltered);
-                }
-
-                s.EndUpdate();
-            });
-
-            _playableMusicList?.SafeAction(s =>
+        private static void NotifyPlayableMusic()
+        {
+            if (MusicList.Count == 0)
             {
-                s.BeginUpdate();
-                s.Items.Clear();
-
-                if (MusicList.Count == 0)
-                {
-                    LoadMusic();
-                }
-
-                foreach (Music music in MusicList)
-                {
-                    s.Items.Add(music);
-                }
-
-                s.SelectedIndex = 0;
-                s.EndUpdate();
-            });
+                LoadMusic();
+            }
+            OnPlayableMusicChanged?.Invoke();
         }
     }
 }
