@@ -1795,7 +1795,7 @@ namespace Assistant
         {
             var assistVersion = $"Razor {(typeof(AssistVersion).Assembly.GetName().Version)}";
 
-            EnsureCapacity(9 + assistVersion.Length);
+            EnsureCapacity(3 + assistVersion.Length);
 
             WriteAsciiNull(assistVersion);
         }
