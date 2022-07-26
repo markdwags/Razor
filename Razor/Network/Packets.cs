@@ -1793,11 +1793,11 @@ namespace Assistant
         internal AssistVersion()
             : base(0xBE)
         {
-            var version = typeof(AssistVersion).Assembly.GetName().Version.ToString();
+            var assistVersion = $"Razor {(typeof(AssistVersion).Assembly.GetName().Version)}";
 
-            EnsureCapacity(3 + version.Length);
+            EnsureCapacity(3 + assistVersion.Length);
 
-            WriteAsciiNull(version);
+            WriteAsciiNull(assistVersion);
         }
     }
 
