@@ -2,11 +2,29 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
+## 1.7.4.49 (07/26/2022)
+
+* Added `followers` and `maxfollowers` expressions
+* You can manage your agents in-game using `>restock #`, `>org #`, or `>buy #`
+* `>info` command will display an image of the item
+* Added the option for Next/Prev to be alphabetical
+* Updated how damage when dealt or taken is displayed
+* Fixed the mobile filter so it doesn't rely on movement
+* Mobile filter is applied to mobiles on the screen when changing it in the UI
+* Added wyrm as a mobile filter
+* Added `targetexists` expression
+* Added `diffhits, diffweight, diffmana, diffstam` expressions
+* If the server disables macro loops that will also disable script loops
+* Added an [index variable](https://www.razorce.com/guide/variables/#index-variable) to reference in scripts
+* Added `name, paralyzed, invuln, warmode` expressions
+* You can now assign `>custom` commands to hotkeys and execute using a command
+* Fixed issue with the macro/script key binding not always displaying correctly in the UI
+
 ## 1.7.3.36 (01/10/2022)
 
 * Option for buy agents to ignore the amount of gold you have
 * `findtype`, `targettype`, `liftype` will match on the full item name only
-* Agents can be assigned an alias to be more easily identified in the dropdown
+* Agents can be assigned an [alias to be more easily identified in the dropdown](https://www.razorce.com/help/agents/#aliases)
 * Agent aliases can be used in scripts
 * Organizer and restock agent won't force the UI to come to the front when executing via scripts
 * Added Next/Prev Friendly hotkey

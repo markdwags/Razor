@@ -4,6 +4,8 @@ The Agents tab is for organizing, restocking and moving items.
 
 ![agents](../images/agents.png)
 
+## Aliases
+
 !!! tip "Aliases"
 
     You can right-click on an agent and assign it an aliases to help identify it easier.

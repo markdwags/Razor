@@ -13,7 +13,6 @@ nav:
     - Windows: install/windows.md
     - Linux: install/linux.md
 - Release Notes: releasenotes.md
-- FAQ: faq.md
 - Help Guide:
     - Help Overview: help/index.md    
     - General: help/general.md
@@ -38,16 +37,24 @@ nav:
     - Keywords: guide/keywords.md
     - Layers: guide/layers.md
     - Variables: guide/variables.md
-- UOAssist API: uoaapi.md
+- More Information:
+    - FAQ: faq.md
+    - History: history.md
+    - UOAssist API: uoaapi.md
 
 theme: 
     name: material    
     custom_dir: overrides
     language: en    
-    #favicon: images/razor.ico
+    logo: images/razor.png
     features:
         - navigation.top
         - navigation.instant
+        - navigation.tracking
+        - navigation.indexes
+        - search.suggest
+        - search.highlight
+        - search.share
     icon:
         repo: fontawesome/brands/git-alt
     palette:
@@ -87,6 +94,7 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.tabbed:
       alternate_style: true
+  - attr_list
 
 plugins:
   - search
@@ -98,4 +106,4 @@ extra:
       link: https://github.com/markdwags/Razor
   analytics:
     provider: google
-    property: G-9ER2MNGL02
+    property: G-9ER2MNGL02  
