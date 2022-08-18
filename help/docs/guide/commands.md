@@ -514,6 +514,25 @@ Example:
         menuresponse 3 4
         ```
 
+# music
+
+**Syntax**: `music (index)`
+
+**Description**: This command will play music based on the ID.
+
+!!! tip
+    The music ID can often be found in `Music\Digital\Config.txt` in the main client files.
+
+!!! example
+
+    === "Description"
+
+        ```vim hl_lines="3"
+        overhead 'playings bucsden'
+        wait 500
+        music 11
+        ```
+
 # organizer
 
 **Syntax**: `organizer (number) ['set']`
@@ -786,6 +805,22 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
             skill 'meditation'
             wait 11000
         endwhile
+        ```
+
+# sound
+
+**Syntax**: `sound (serial)`
+
+**Description**: This command will play a specific sound based on serial id.
+
+!!! example
+
+    === "Description"
+
+        ```vim hl_lines="3"
+        overhead 'daemon sound'
+        wait 500
+        sound '0x166'
         ```
 
 # sysmsg

@@ -114,8 +114,32 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("cleardragdrop", ClearDragDrop);
             Interpreter.RegisterCommandHandler("interrupt", Interrupt);
 
-            //Interpreter.RegisterCommandHandler("ignore", AddIgnore);
-            //Interpreter.RegisterCommandHandler("clearignore", ClearIgnore);
+            Interpreter.RegisterCommandHandler("sound", Sound);
+            Interpreter.RegisterCommandHandler("music", Music);
+        }
+
+        private static bool Sound(string commands, Variable[] vars, bool quiet, bool force)
+        {
+            if (vars.Length != 1)
+            {
+                throw new RunTimeError("Usage: sound (serial)");
+            }
+
+            Client.Instance.SendToClient(new PlaySound(vars[0].AsInt()));
+
+            return true;
+        }
+
+        private static bool Music(string commands, Variable[] vars, bool quiet, bool force)
+        {
+            if (vars.Length != 1)
+            {
+                throw new RunTimeError("Usage: music (id)");
+            }
+
+            Client.Instance.SendToClient(new PlayMusic(vars[0].AsUShort()));
+
+            return true;
         }
 
         private static bool AddIgnore(string commands, Variable[] vars, bool quiet, bool force)

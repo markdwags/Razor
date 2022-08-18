@@ -17,6 +17,8 @@ In June 2019 integration into [ClassicUO](https://github.com/ClassicUO/ClassicUO
 
 In March 2020 the [Razor Scripting Engine](https://www.razorce.com/guide/) was added to make it easier to read, create, edit and share Razor scripts while staying true to the project's state goals.
 
+In May 2021 Razor moved from .NET 4.0 to 4.7.2 to bring it in line with ClassicUO.
+
 ## Community Edition
 
 When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](https://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](https://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community, one of the only freeshards where the rules only allow for the use of Razor. The original **UO:R Community Edition** name was used to not only distinguish between other versions of Razor that were available but give credit to a community that provided so much support early on.
