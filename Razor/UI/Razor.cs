@@ -1313,11 +1313,14 @@ namespace Assistant
                 return;
             }
 
-            string file = $"Profiles/{remove}.xml";
+            string file = Path.Combine(Config.GetUserDirectory("Profiles"), $"{remove}.xml");
             if (File.Exists(file))
+            {
                 File.Delete(file);
+            }
 
             profiles.Items.Remove(remove);
+
             if (!Config.LoadProfile("default"))
             {
                 Config.CurrentProfile.MakeDefault();
