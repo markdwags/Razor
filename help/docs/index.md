@@ -7,13 +7,13 @@
 
 Razor is a free tool designed to help with simple tasks while playing Ultima Online.
 
-This site was written for the **Razor Community Edition**.
-
 The goal of this project was to revive and continue development and maintenance of the abandoned Razor project, focusing on *quality of life* improvements while attempting to keep the spirit and vision the original developers had for Razor by not driving down the path of advanced automation that's found in other UO assistants.
 
-For more information about this version of Razor, read the [history](#history), review the [release notes](./releasenotes.md) and [download](./download.md) Razor.
+For more information about this version of Razor, read the [history](./history.md), review the [release notes](./releasenotes.md), and [download](./download.md) Razor.
 
 # Help
+
+For more information about the Razor Scripting Engine, go [here](https://www.razorce.com/guide/).
 
 If you're unable to find a solution using the information here or you'd like to submit a feature request or bug report, use the following resources.
 
@@ -21,8 +21,6 @@ If you're unable to find a solution using the information here or you'd like to 
 * Join us in `#razor` on Discord (we use the the official [ClassicUO](https://www.classicuo.eu/) Discord server)
 
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/zrdyYcc)
-
-For more information about the Razor Scripting Engine, go [here](https://www.razorce.com/guide/).
 
 # Other
 

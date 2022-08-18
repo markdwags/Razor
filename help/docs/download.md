@@ -3,7 +3,7 @@
 This version of Razor is portable. All files (Profiles, Macros, Scripts, etc) are contained within the same folder as Razor and can be transferred with a simple copy/paste.
 
 !!! hint "Client Support"
-    It's **highly recommended** that you use the [ClassicUO](https://github.com/andreakarasho/ClassicUO) client with this version of Razor, however it should work with the original 5.x and 7.x clients though support for any bugs may be limited.
+    It's **highly recommended** that you use the [ClassicUO](https://github.com/ClassicUO/ClassicUO) client with this version of Razor, however it should work with the original 5.x and 7.x clients though support for any bugs may be limited.
 
     When using ClassicUO, some features in Razor are disabled since they either won't work and/or may cause conflicts with ClassicUO.
 
@@ -13,6 +13,7 @@ To learn more about each version, view the [release notes](releasenotes.md). You
 
 | Version                                                                      | Release Date   |
 | ---------------------------------------------------------------------------- | -------------- |
+| [Razor v1.7.4.49](https://github.com/markdwags/Razor/releases/tag/v1.7.4.49)   | July 26th 2022  |
 | [Razor v1.7.3.36](https://github.com/markdwags/Razor/releases/tag/v1.7.3.36)   | Jan 10th 2022  |
 | [Razor v1.7.1.7](https://github.com/markdwags/Razor/releases/tag/v1.7.1.7)   | Oct 13th 2021  |
 | [Razor v1.7.0.12](https://github.com/markdwags/Razor/releases/tag/v1.7.0.12) | May 29th 2021  |

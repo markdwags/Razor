@@ -2,7 +2,7 @@
 
 Razor was originally designed by Bryan Pass, known as Zippy in the RunUO community as a replacement to UOAssist. Based on commit notes, active development (new features, bug fixes) on Razor ceased some time in the early 2010's with the source code being released in 2014.
 
-The code initially didn't include `Crypt.dll` and `Loader.dll` which are required to fully integrate with the UO client. At some point, the code for those projects released into the same [GitHub repo](https://github.com/msturgill/razor).
+The code initially didn't include `Crypt.dll` and `Loader.dll` which are required to fully integrate with the UO client. At some point, the code for those projects released into the same GitHub repo (at the time of this edit, `https://github.com/msturgill/razor` no longer is available).
 
 The original project was last updated May 2nd, 2014 which was simply an update from .NET 2.0 to .NET 4.0 and while over 50 forks exist on GitHub, none of them have been active or have made significant changes except for a few exceptions:
 
@@ -13,7 +13,7 @@ I have been actively maintaining this project since early April 2018 and based t
 
 Another closed source version of Razor exists (the `1.0.14.x` versions) that was maintained by a private shard that made some enhancements, notably around targeting. This version of Razor has long since incorporated the majority of changes you can find in that version.
 
-In June 2019 integration into [ClassicUO](https://github.com/andreakarasho/ClassicUO) was officially established.
+In June 2019 integration into [ClassicUO](https://github.com/ClassicUO/ClassicUO) was officially established.
 
 In March 2020 the [Razor Scripting Engine](https://www.razorce.com/guide/) was added to make it easier to read, create, edit and share Razor scripts while staying true to the project's state goals.
 
