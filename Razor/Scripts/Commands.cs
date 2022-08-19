@@ -116,6 +116,50 @@ namespace Assistant.Scripts
 
             Interpreter.RegisterCommandHandler("sound", Sound);
             Interpreter.RegisterCommandHandler("music", Music);
+
+            Interpreter.RegisterCommandHandler("classicuo", ClassicUOProfile);
+            Interpreter.RegisterCommandHandler("cuo", ClassicUOProfile);
+        }
+
+        private static bool ClassicUOProfile(string commands, Variable[] vars, bool quiet, bool force)
+        {
+            if (vars.Length != 2)
+            {
+                throw new RunTimeError("Usage: cuo (setting) (value)");
+            }
+
+            string property = ClassicUOManager.IsValidProperty(vars[0].AsString());
+
+            if (string.IsNullOrEmpty(property))
+            {
+                throw new RunTimeError("Unknown ClassicUO setting/property. Type `>cuo list` for a list of valid settings.");
+            }
+
+            bool isNumeric = int.TryParse(vars[0].AsString(), out var value);
+
+            if (isNumeric)
+            {
+                ClassicUOManager.ProfilePropertySet(property, value);
+            }
+            else
+            {
+                switch (vars[1].AsString())
+                {
+                    case "true":
+                        ClassicUOManager.ProfilePropertySet(property, true);
+                        break;
+                    case "false":
+                        ClassicUOManager.ProfilePropertySet(property, false);
+                        break;
+                    default:
+                        ClassicUOManager.ProfilePropertySet(property, vars[1].AsString());
+                        break;
+                }
+            }
+
+            CommandHelper.SendMessage($"ClassicUO Setting: '{property}' set to '{vars[1].AsString()}'", quiet);
+
+            return true;
         }
 
         private static bool Sound(string commands, Variable[] vars, bool quiet, bool force)

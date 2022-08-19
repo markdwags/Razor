@@ -85,11 +85,36 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         target 'self'
         ```
 
+# classicuo
+
+**Syntax**: `classicuo ('setting') ('value)` or `cuo ('setting') ('value')`
+
+**Description**: This command will change specific settings/properties in your current ClassicUO profile.
+
+!!! tip
+    Type `>cuo list` to get a list of profile settings/properties to change
+
+!!! example
+
+    === "Turn off CUO music"
+
+        ```vim
+        overhead 'Turn off the music!'
+        classicuo 'enablemusic' false
+        ```
+
+    === "Adjust music volume to 50%"
+
+        ```vim
+        overhead 'Turning music to 50%'
+        classicuo 'musicvolume' 50
+        ```
+
 # clearall
 
 **Syntax**: `clearall`
 
-**Description**: Combines the following actions into one commmand: `Cancel Current Target, Clear Target Queue, Drop What You Are Currently Holding and Clear Drag/Drop Queue` into a single command.
+**Description**: Combines the following actions into one command: `Cancel Current Target, Clear Target Queue, Drop What You Are Currently Holding and Clear Drag/Drop Queue` into a single command.
 
 !!! example
 

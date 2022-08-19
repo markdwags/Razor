@@ -70,6 +70,61 @@ namespace Assistant
             Command.Register("Restock", ShowRestockGump);
             Command.Register("Org", ShowOrgGump);
             Command.Register("Buy", ShowBuyGump);
+
+            Command.Register("CUO", ClassicUoProfile);
+        }
+
+        private static void ClassicUoProfile(string[] param)
+        {
+            if (string.IsNullOrEmpty(param[0]))
+            {
+                World.Player.SendMessage(MsgLevel.Error, "You must include a valid ClassicUO profile setting. Type `>cuo list` for a list of valid settings.");
+                return;
+            }
+
+            if (param[0].Equals("list"))
+            {
+                string[] props = ClassicUOManager.GetAllProperties().ToArray();
+
+                for (var i = 0; i < (float)props.Length / 40; i++)
+                {
+                    World.Player.SendMessage(MsgLevel.Info, string.Join(", ", props.Skip(i * 40).Take(40)));
+                }
+
+                return;
+            }
+
+            string property = ClassicUOManager.IsValidProperty(param[0]);
+
+            if (string.IsNullOrEmpty(property))
+            {
+                World.Player.SendMessage("Unknown ClassicUO setting/property. Type `>cuo list` for a list of valid settings.");
+                return;
+            }
+
+            bool isNumeric = int.TryParse(param[1], out var value);
+
+            if (isNumeric)
+            {
+                ClassicUOManager.ProfilePropertySet(property, value);
+            }
+            else
+            {
+                switch (param[1])
+                {
+                    case "true":
+                        ClassicUOManager.ProfilePropertySet(property, true);
+                        break;
+                    case "false":
+                        ClassicUOManager.ProfilePropertySet(property, false);
+                        break;
+                    default:
+                        ClassicUOManager.ProfilePropertySet(property, param[1]);
+                        break;
+                }
+            }
+
+            World.Player.SendMessage($"ClassicUO Setting: '{property}' set to '{param[1]}'");
         }
 
         private static void ShowBuyGump(string[] param)
