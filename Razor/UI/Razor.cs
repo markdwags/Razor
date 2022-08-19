@@ -6269,11 +6269,11 @@ namespace Assistant
 
             if (playInClient.Checked && World.Player != null)
             {
-                Client.Instance.SendToClient(new PlaySound(sound.Serial - 1));
+                Client.Instance.SendToClient(new PlaySound(sound.Serial));
             }
             else
             {
-                Ultima.UOSound s = Ultima.Sounds.GetSound(sound.Serial - 1);
+                Ultima.UOSound s = Ultima.Sounds.GetSound(sound.Serial);
                 using (MemoryStream m = new MemoryStream(s.buffer))
                 {
                     sp.Stream = m;
@@ -7159,7 +7159,7 @@ namespace Assistant
         private void setOverheadMessage_Click(object sender, EventArgs e)
         {
             int hueIdx = Config.GetInt("SysColor");
-            string newItemText = string.Empty;
+            string newItemText;
 
             if (string.IsNullOrEmpty(cliLocTextSearch.Text))
                 return;
@@ -7176,21 +7176,18 @@ namespace Assistant
 
             ListViewItem item = new ListViewItem(newItemText);
 
-            if (InputBox.Show(this,
-                "Enter text to display overhead",
-                newItemText))
+            if (InputBox.Show(this, "Enter text to display overhead", newItemText))
             {
                 string overheadMessage = InputBox.GetString();
 
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, overheadMessage));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, "None"));
 
-                if (hueIdx > 0 && hueIdx < 3000)
-                    item.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-                else
-                    item.SubItems[1].BackColor = SystemColors.Control;
+                item.SubItems[1].BackColor = hueIdx > 0 && hueIdx < 3000
+                    ? Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX)
+                    : SystemColors.Control;
 
-                item.SubItems[1].ForeColor =
-                    (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+                item.SubItems[1].ForeColor = (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
                 item.UseItemStyleForSubItems = false;
 
                 cliLocOverheadView.SafeAction(s => s.Items.Add(item));
@@ -7199,7 +7196,8 @@ namespace Assistant
                 {
                     SearchMessage = newItemText,
                     Hue = hueIdx,
-                    MessageOverhead = overheadMessage
+                    MessageOverhead = overheadMessage,
+                    Sound = 0
                 });
             }
         }
@@ -7755,6 +7753,14 @@ namespace Assistant
             if (filterWhiteWyrm.Checked)
             {
                 MobileFilter.ApplyToMobiles();
+            }
+        }
+
+        private void setSound_Click(object sender, EventArgs e)
+        {
+            if (cliLocOverheadView.SelectedItems.Count > 0)
+            {
+                OverheadManager.SetOverheadSound();
             }
         }
     }

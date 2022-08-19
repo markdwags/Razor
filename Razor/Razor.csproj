@@ -418,6 +418,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Ext.cs" />
+    <Compile Include="UI\SoundEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\HueEntry.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -538,6 +541,9 @@
     <EmbeddedResource Include="UI\App.ico" />
     <EmbeddedResource Include="UI\BuffDebuffOptions.resx">
       <DependentUpon>BuffDebuffOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SoundEntry.resx">
+      <DependentUpon>SoundEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\HueEntry.resx">
       <DependentUpon>HueEntry.cs</DependentUpon>

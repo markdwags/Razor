@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Filters;
 using Assistant.UI;
 using Ultima;
 
@@ -33,6 +34,7 @@ namespace Assistant.Core
         public string SearchMessage { get; set; }
         public string MessageOverhead { get; set; }
         public int Hue { get; set; }
+        public int Sound { get; set; }
     }
 
     public static class OverheadManager
@@ -54,6 +56,7 @@ namespace Assistant.Core
                 xml.WriteAttributeString("searchtext", message.SearchMessage);
                 xml.WriteAttributeString("message", (message.MessageOverhead));
                 xml.WriteAttributeString("hue", Convert.ToString(message.Hue));
+                xml.WriteAttributeString("sound", Convert.ToString(message.Sound));
                 xml.WriteEndElement();
             }
         }
@@ -72,7 +75,10 @@ namespace Assistant.Core
                         SearchMessage = el.GetAttribute("searchtext"),
                         Hue = string.IsNullOrEmpty(el.GetAttribute("hue"))
                             ? 68
-                            : Convert.ToInt32(el.GetAttribute("hue"))
+                            : Convert.ToInt32(el.GetAttribute("hue")),
+                        Sound = string.IsNullOrEmpty(el.GetAttribute("sound"))
+                        ? -1
+                        : Convert.ToInt32(el.GetAttribute("sound"))
                     };
 
                     OverheadMessages.Add(overheadMessage);
@@ -109,16 +115,15 @@ namespace Assistant.Core
             {
                 ListViewItem item = new ListViewItem($"{message.SearchMessage}");
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, message.MessageOverhead));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, SoundMusicManager.GetSoundName((ushort) message.Sound)));
 
                 int hueIdx = message.Hue;
 
-                if (hueIdx > 0 && hueIdx < 3000)
-                    item.SubItems[1].BackColor = Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX);
-                else
-                    item.SubItems[1].BackColor = SystemColors.Control;
+                item.SubItems[1].BackColor = hueIdx > 0 && hueIdx < 3000
+                    ? Hues.GetHue(hueIdx - 1).GetColor(HueEntry.TextHueIDX)
+                    : SystemColors.Control;
 
-                item.SubItems[1].ForeColor =
-                    (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
+                item.SubItems[1].ForeColor = (item.SubItems[1].BackColor.GetBrightness() < 0.35 ? Color.White : Color.Black);
 
                 item.UseItemStyleForSubItems = false;
 
@@ -148,6 +153,12 @@ namespace Assistant.Core
                         }
 
                         World.Player.OverheadMessage(message.Hue, ohMessage);
+
+                        if (message.Sound > -1)
+                        {
+                            Client.Instance.SendToClient(new PlaySound(message.Sound));
+                        }
+
                         break;
                     }
                 }
@@ -197,6 +208,29 @@ namespace Assistant.Core
             }
 
             return hue;
+        }
+
+        public static void SetOverheadSound()
+        {
+            ListViewItem selectedItem = _listView.Items[_listView.SelectedIndices[0]];
+
+            int soundId = SoundMusicManager.GetSoundId(selectedItem.SubItems[2].Text);
+
+            SoundEntry soundDialog = new SoundEntry(soundId, selectedItem.SubItems[2].Text);
+
+            if (soundDialog.ShowDialog(Engine.MainWindow) == DialogResult.OK)
+            {
+                selectedItem.SubItems[2].Text = SoundMusicManager.GetSoundName((ushort) soundId);
+                
+                foreach (OverheadMessage list in OverheadMessages)
+                {
+                    if (list.SearchMessage.Equals(selectedItem.Text))
+                    {
+                        list.Sound = soundDialog.Sound;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

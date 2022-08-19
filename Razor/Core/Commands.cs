@@ -72,6 +72,19 @@ namespace Assistant
             Command.Register("Buy", ShowBuyGump);
 
             Command.Register("CUO", ClassicUoProfile);
+            
+            Command.Register("Sound", PlaySound);
+        }
+        
+        private static void PlaySound(string[] param)
+        {
+            if (param.Length <= 0)
+            {
+                World.Player.SendMessage(MsgLevel.Error, "You must enter sound id.");
+                return;
+            }
+
+            Client.Instance.SendToClient(new PlaySound(Utility.ToInt32(param[0], 0)));
         }
 
         private static void ClassicUoProfile(string[] param)

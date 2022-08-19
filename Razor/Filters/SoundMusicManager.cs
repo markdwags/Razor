@@ -112,6 +112,30 @@ namespace Assistant.Filters
 
             return "(unknown)";
         }
+        
+        public static int GetSoundId(string name)
+        {
+            if (SoundList.Count == 0)
+                RedrawList();
+
+            foreach (Sound sound in SoundList)
+            {
+                if (sound.Name.Equals(name))
+                {
+                    return sound.Serial;
+                }
+            }
+
+            return Serial.MinusOne;
+        }
+
+        public static List<Sound> GetAllSounds()
+        {
+            if (SoundList.Count == 0)
+                RedrawList();
+
+            return SoundList;
+        }
 
         public static string GetMusicName(int musicId, out bool loop)
         {
@@ -666,7 +690,7 @@ namespace Assistant.Filters
             {
                 if (Ultima.Sounds.IsValidSound(i, out string wavName))
                 {
-                    Serial serial = Serial.Parse($"0x{i + 1:X3}");
+                    Serial serial = Serial.Parse($"0x{i:X3}");
 
                     Sound sound = new Sound
                     {

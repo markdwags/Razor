@@ -661,6 +661,8 @@ namespace Assistant
             this.hotkeyTree = new System.Windows.Forms.TreeView();
             this.dohotkey = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.hkCommand = new System.Windows.Forms.TextBox();
+            this.hkCmdLabel = new System.Windows.Forms.Label();
             this.chkAlt = new System.Windows.Forms.CheckBox();
             this.chkPass = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -786,8 +788,8 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.hkCmdLabel = new System.Windows.Forms.Label();
-            this.hkCommand = new System.Windows.Forms.TextBox();
+            this.cliLocSound = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.setSound = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -2589,6 +2591,7 @@ namespace Assistant
             // subOverheadTab
             // 
             this.subOverheadTab.BackColor = System.Drawing.SystemColors.Control;
+            this.subOverheadTab.Controls.Add(this.setSound);
             this.subOverheadTab.Controls.Add(this.label14);
             this.subOverheadTab.Controls.Add(this.unicodeStyle);
             this.subOverheadTab.Controls.Add(this.asciiStyle);
@@ -2604,16 +2607,16 @@ namespace Assistant
             this.subOverheadTab.Controls.Add(this.lblOhSearch);
             this.subOverheadTab.Controls.Add(this.cliLocSearchView);
             this.subOverheadTab.Controls.Add(this.showOverheadMessages);
-            this.subOverheadTab.Location = new System.Drawing.Point(4, 22);
+            this.subOverheadTab.Location = new System.Drawing.Point(4, 24);
             this.subOverheadTab.Name = "subOverheadTab";
-            this.subOverheadTab.Size = new System.Drawing.Size(502, 288);
+            this.subOverheadTab.Size = new System.Drawing.Size(502, 286);
             this.subOverheadTab.TabIndex = 3;
             this.subOverheadTab.Text = "Overhead Messages";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(5, 101);
+            this.label14.Location = new System.Drawing.Point(5, 83);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(84, 15);
             this.label14.TabIndex = 102;
@@ -2622,7 +2625,7 @@ namespace Assistant
             // unicodeStyle
             // 
             this.unicodeStyle.AutoSize = true;
-            this.unicodeStyle.Location = new System.Drawing.Point(8, 119);
+            this.unicodeStyle.Location = new System.Drawing.Point(8, 101);
             this.unicodeStyle.Name = "unicodeStyle";
             this.unicodeStyle.Size = new System.Drawing.Size(69, 19);
             this.unicodeStyle.TabIndex = 101;
@@ -2634,7 +2637,7 @@ namespace Assistant
             // asciiStyle
             // 
             this.asciiStyle.AutoSize = true;
-            this.asciiStyle.Location = new System.Drawing.Point(8, 144);
+            this.asciiStyle.Location = new System.Drawing.Point(8, 126);
             this.asciiStyle.Name = "asciiStyle";
             this.asciiStyle.Size = new System.Drawing.Size(53, 19);
             this.asciiStyle.TabIndex = 100;
@@ -2645,7 +2648,7 @@ namespace Assistant
             // 
             // editOverheadMessage
             // 
-            this.editOverheadMessage.Location = new System.Drawing.Point(8, 179);
+            this.editOverheadMessage.Location = new System.Drawing.Point(8, 153);
             this.editOverheadMessage.Name = "editOverheadMessage";
             this.editOverheadMessage.Size = new System.Drawing.Size(84, 28);
             this.editOverheadMessage.TabIndex = 97;
@@ -2655,7 +2658,7 @@ namespace Assistant
             // 
             // setColorHue
             // 
-            this.setColorHue.Location = new System.Drawing.Point(8, 247);
+            this.setColorHue.Location = new System.Drawing.Point(8, 221);
             this.setColorHue.Name = "setColorHue";
             this.setColorHue.Size = new System.Drawing.Size(84, 28);
             this.setColorHue.TabIndex = 96;
@@ -2665,7 +2668,7 @@ namespace Assistant
             // 
             // removeOverheadMessage
             // 
-            this.removeOverheadMessage.Location = new System.Drawing.Point(8, 213);
+            this.removeOverheadMessage.Location = new System.Drawing.Point(8, 187);
             this.removeOverheadMessage.Name = "removeOverheadMessage";
             this.removeOverheadMessage.Size = new System.Drawing.Size(84, 28);
             this.removeOverheadMessage.TabIndex = 95;
@@ -2706,7 +2709,8 @@ namespace Assistant
             // 
             this.cliLocOverheadView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.cliLocOriginal,
-            this.cliLocOverheadMessage});
+            this.cliLocOverheadMessage,
+            this.cliLocSound});
             this.cliLocOverheadView.HideSelection = false;
             this.cliLocOverheadView.Location = new System.Drawing.Point(98, 156);
             this.cliLocOverheadView.Name = "cliLocOverheadView";
@@ -2723,7 +2727,7 @@ namespace Assistant
             // cliLocOverheadMessage
             // 
             this.cliLocOverheadMessage.Text = "Overhead Message";
-            this.cliLocOverheadMessage.Width = 229;
+            this.cliLocOverheadMessage.Width = 181;
             // 
             // cliLocSearch
             // 
@@ -3720,9 +3724,9 @@ namespace Assistant
             this.subFilterSoundMusic.Controls.Add(this.playSound);
             this.subFilterSoundMusic.Controls.Add(this.soundFilterEnabled);
             this.subFilterSoundMusic.Controls.Add(this.soundFilterList);
-            this.subFilterSoundMusic.Location = new System.Drawing.Point(4, 22);
+            this.subFilterSoundMusic.Location = new System.Drawing.Point(4, 24);
             this.subFilterSoundMusic.Name = "subFilterSoundMusic";
-            this.subFilterSoundMusic.Size = new System.Drawing.Size(498, 287);
+            this.subFilterSoundMusic.Size = new System.Drawing.Size(498, 285);
             this.subFilterSoundMusic.TabIndex = 3;
             this.subFilterSoundMusic.Text = "Sound & Music  ";
             // 
@@ -3970,6 +3974,21 @@ namespace Assistant
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Hot Key";
+            // 
+            // hkCommand
+            // 
+            this.hkCommand.Location = new System.Drawing.Point(73, 73);
+            this.hkCommand.Name = "hkCommand";
+            this.hkCommand.Size = new System.Drawing.Size(96, 23);
+            this.hkCommand.TabIndex = 11;
+            // 
+            // hkCmdLabel
+            // 
+            this.hkCmdLabel.Location = new System.Drawing.Point(8, 76);
+            this.hkCmdLabel.Name = "hkCmdLabel";
+            this.hkCmdLabel.Size = new System.Drawing.Size(68, 20);
+            this.hkCmdLabel.TabIndex = 10;
+            this.hkCmdLabel.Text = "Command";
             // 
             // chkAlt
             // 
@@ -5360,20 +5379,20 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // hkCmdLabel
+            // cliLocSound
             // 
-            this.hkCmdLabel.Location = new System.Drawing.Point(8, 76);
-            this.hkCmdLabel.Name = "hkCmdLabel";
-            this.hkCmdLabel.Size = new System.Drawing.Size(68, 20);
-            this.hkCmdLabel.TabIndex = 10;
-            this.hkCmdLabel.Text = "Command";
+            this.cliLocSound.Text = "Sound";
+            this.cliLocSound.Width = 48;
             // 
-            // hkCommand
+            // setSound
             // 
-            this.hkCommand.Location = new System.Drawing.Point(73, 73);
-            this.hkCommand.Name = "hkCommand";
-            this.hkCommand.Size = new System.Drawing.Size(96, 23);
-            this.hkCommand.TabIndex = 11;
+            this.setSound.Location = new System.Drawing.Point(8, 255);
+            this.setSound.Name = "setSound";
+            this.setSound.Size = new System.Drawing.Size(84, 28);
+            this.setSound.TabIndex = 103;
+            this.setSound.Text = "Set Sound";
+            this.setSound.UseVisualStyleBackColor = true;
+            this.setSound.Click += new System.EventHandler(this.setSound_Click);
             // 
             // MainForm
             // 
@@ -5620,5 +5639,7 @@ namespace Assistant
         private CheckBox filterWhiteWyrm;
         private TextBox hkCommand;
         private Label hkCmdLabel;
+        private ColumnHeader cliLocSound;
+        private Button setSound;
     }
 }
