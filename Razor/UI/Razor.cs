@@ -388,6 +388,8 @@ namespace Assistant
             showAttackTarget.SafeAction(s => { s.Checked = Config.GetBool("ShowAttackTargetOverhead"); });
 
             showBuffDebuffOverhead.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffOverhead"); });
+            
+            BuffDebuffManager.ReloadFilter();
 
             rangeCheckTargetByType.SafeAction(s => { s.Checked = Config.GetBool("RangeCheckTargetByType"); });
 
