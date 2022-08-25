@@ -1,7 +1,6 @@
 #region license
-
 // Razor: An Ultima Online Assistant
-// Copyright (C) 2021 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (c) 2022 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +14,6 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 #endregion
 
 using System;
@@ -196,7 +194,7 @@ namespace Assistant.MapUO
                 ref xEast, ref ySouth))
             {
                 string locString =
-                    $"{yLat}°{yMins}'{(ySouth ? "S" : "N")} {xLong}°{xMins}'{(xEast ? "E" : "W")} | ({World.Player.Position.X},{World.Player.Position.Y})";
+                    $"{yLat}Â°{yMins}'{(ySouth ? "S" : "N")} {xLong}Â°{xMins}'{(xEast ? "E" : "W")} | ({World.Player.Position.X},{World.Player.Position.Y})";
                 SizeF size = gfx.MeasureString(locString, m_RegFont);
                 gfx.FillRectangle(Brushes.Wheat, 0, 0, size.Width + 2, size.Height + 2);
                 gfx.DrawRectangle(Pens.Black, 0, 0, size.Width + 2, size.Height + 2);
