@@ -1130,6 +1130,7 @@ namespace Assistant.Scripts
                         if (razorScript.Path.Equals(file))
                         {
                             script = razorScript;
+                            script.Lines = File.ReadAllLines(script.Path);
                         }
                     }
 
