@@ -519,6 +519,8 @@ namespace Assistant
 
             nextPrevAbcOrder.SafeAction(s => { s.Checked = Config.GetBool("NextPrevAlphabetical"); });
 
+            Engine.MainWindow.Size = new Size(Config.GetInt("WindowSizeX"), Config.GetInt("WindowSizeY"));
+
             // Disable SmartCPU in case it was enabled before the feature was removed
             Client.Instance.SetSmartCPU(false);
 
@@ -2142,6 +2144,44 @@ namespace Assistant
         {
             if (WindowState == FormWindowState.Minimized && !this.ShowInTaskbar)
                 this.Hide();
+        }
+
+        private void MainForm_ResizeEnd(object sender, System.EventArgs e)
+        {
+            cliLocOverheadView.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                s.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                s.EndUpdate();
+            });
+
+            cliLocSearchView.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                s.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                s.EndUpdate();
+            });
+
+            counters.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                s.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                s.EndUpdate();
+            });
+
+            skillList.SafeAction(s =>
+            {
+                s.BeginUpdate();
+                s.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                s.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                s.EndUpdate();
+            });
+
+            Config.SetProperty("WindowSizeX", Engine.MainWindow.Size.Width);
+            Config.SetProperty("WindowSizeY", Engine.MainWindow.Size.Height);
         }
 
         private bool IsNear(int a, int b)
@@ -7761,6 +7801,26 @@ namespace Assistant
             if (cliLocOverheadView.SelectedItems.Count > 0)
             {
                 OverheadManager.SetOverheadSound();
+            }
+        }
+
+        private void fontIncrease_Click(object sender, EventArgs e)
+        {
+            foreach (Control c in Controls)
+            {
+                int size = (int)c.Font.Size;
+                c.Font = new Font("Segoe UI", ++size);
+                c.AutoSize = true;
+            }
+        }
+
+        private void fontDecrease_Click(object sender, EventArgs e)
+        {
+            foreach (Control c in Controls)
+            {
+                int size = (int)c.Font.Size;
+                c.Font = new Font("Segoe UI", ++size);
+                c.AutoSize = true;
             }
         }
     }

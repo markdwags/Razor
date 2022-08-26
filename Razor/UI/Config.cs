@@ -321,6 +321,9 @@ namespace Assistant
             AddProperty("FilterWyrmGraphics", false);
             AddProperty("WyrmGraphic", 0);
 
+            AddProperty("WindowSizeX", 546);
+            AddProperty("WindowSizeY", 411);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();
