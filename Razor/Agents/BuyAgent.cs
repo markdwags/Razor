@@ -610,7 +610,7 @@ namespace Assistant.Agents
             foreach (BuyEntry b in Items)
             {
                 xml.WriteStartElement("item");
-                xml.WriteAttributeString("id", b.Id.ToString());
+                xml.WriteAttributeString("id", b.Id.Value.ToString());
                 xml.WriteAttributeString("amount", b.Amount.ToString());
                 xml.WriteEndElement();
             }
