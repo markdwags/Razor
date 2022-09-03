@@ -765,6 +765,8 @@ namespace Assistant
             this.screenPrev = new System.Windows.Forms.PictureBox();
             this.dispTime = new System.Windows.Forms.CheckBox();
             this.advancedTab = new System.Windows.Forms.TabPage();
+            this.fontDecrease = new System.Windows.Forms.Button();
+            this.fontIncrease = new System.Windows.Forms.Button();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.lastBackup = new System.Windows.Forms.Label();
             this.openBackupFolder = new System.Windows.Forms.Button();
@@ -790,8 +792,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.fontIncrease = new System.Windows.Forms.Button();
-            this.fontDecrease = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -4342,8 +4342,6 @@ namespace Assistant
             // 
             // filterMacros
             // 
-            this.filterMacros.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.filterMacros.Location = new System.Drawing.Point(47, 7);
             this.filterMacros.Name = "filterMacros";
             this.filterMacros.Size = new System.Drawing.Size(147, 23);
@@ -4361,9 +4359,8 @@ namespace Assistant
             // 
             // macroTree
             // 
-            this.macroTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.macroTree.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.macroTree.FullRowSelect = true;
             this.macroTree.HideSelection = false;
             this.macroTree.Location = new System.Drawing.Point(6, 36);
@@ -4705,7 +4702,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(287, 272);
+            this.scriptEditor.Size = new System.Drawing.Size(281, 272);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -5341,6 +5338,26 @@ namespace Assistant
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
             // 
+            // fontDecrease
+            // 
+            this.fontDecrease.Location = new System.Drawing.Point(242, 156);
+            this.fontDecrease.Name = "fontDecrease";
+            this.fontDecrease.Size = new System.Drawing.Size(36, 23);
+            this.fontDecrease.TabIndex = 82;
+            this.fontDecrease.Text = "-";
+            this.fontDecrease.UseVisualStyleBackColor = true;
+            this.fontDecrease.Click += new System.EventHandler(this.fontDecrease_Click);
+            // 
+            // fontIncrease
+            // 
+            this.fontIncrease.Location = new System.Drawing.Point(284, 156);
+            this.fontIncrease.Name = "fontIncrease";
+            this.fontIncrease.Size = new System.Drawing.Size(36, 23);
+            this.fontIncrease.TabIndex = 81;
+            this.fontIncrease.Text = "+";
+            this.fontIncrease.UseVisualStyleBackColor = true;
+            this.fontIncrease.Click += new System.EventHandler(this.fontIncrease_Click);
+            // 
             // groupBox16
             // 
             this.groupBox16.Controls.Add(this.lastBackup);
@@ -5569,13 +5586,13 @@ namespace Assistant
             // label20
             // 
             this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(96, 120);
+            this.label20.Location = new System.Drawing.Point(12, 120);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(343, 17);
+            this.label20.Size = new System.Drawing.Size(499, 17);
             this.label20.TabIndex = 21;
             this.label20.Text = "For feedback, support and the latest releases please visit:\r\n";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCredits1
             // 
@@ -5632,26 +5649,6 @@ namespace Assistant
             this.aboutVer.TabIndex = 14;
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // fontIncrease
-            // 
-            this.fontIncrease.Location = new System.Drawing.Point(284, 156);
-            this.fontIncrease.Name = "fontIncrease";
-            this.fontIncrease.Size = new System.Drawing.Size(36, 23);
-            this.fontIncrease.TabIndex = 81;
-            this.fontIncrease.Text = "+";
-            this.fontIncrease.UseVisualStyleBackColor = true;
-            this.fontIncrease.Click += new System.EventHandler(this.fontIncrease_Click);
-            // 
-            // fontDecrease
-            // 
-            this.fontDecrease.Location = new System.Drawing.Point(242, 156);
-            this.fontDecrease.Name = "fontDecrease";
-            this.fontDecrease.Size = new System.Drawing.Size(36, 23);
-            this.fontDecrease.TabIndex = 82;
-            this.fontDecrease.Text = "-";
-            this.fontDecrease.UseVisualStyleBackColor = true;
-            this.fontDecrease.Click += new System.EventHandler(this.fontDecrease_Click);
             // 
             // MainForm
             // 
