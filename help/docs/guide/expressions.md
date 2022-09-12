@@ -315,6 +315,23 @@ Description: Used to get your invulnerable status
         endif
         ```
 
+## itemcount
+
+- `itemcount`
+
+Description: Used to return the current number of items you're carrying
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if itemcount < 125
+            overhead 'I still have room!'
+        endif
+        ```
+
+
 ## lhandempty
 
 - `lhandempty`

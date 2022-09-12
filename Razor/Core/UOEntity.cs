@@ -32,16 +32,16 @@ namespace Assistant
             }
         }
 
-        private Serial m_Serial;
-        private Point3D m_Pos;
-        private ushort m_Hue;
-        private bool m_Deleted;
-        private ContextMenuList m_ContextMenu = new ContextMenuList();
-        protected ObjectPropertyList m_ObjPropList = null;
+        private Serial _serial;
+        private Point3D _pos;
+        private ushort _hue;
+        private bool _deleted;
+        private ContextMenuList _contextMenu = new ContextMenuList();
+        protected ObjectPropertyList _objPropList = null;
 
         public ObjectPropertyList ObjPropList
         {
-            get { return m_ObjPropList; }
+            get { return _objPropList; }
         }
 
         public virtual void AfterLoad()
@@ -50,26 +50,26 @@ namespace Assistant
 
         public UOEntity(Serial ser)
         {
-            m_ObjPropList = new ObjectPropertyList(this);
+            _objPropList = new ObjectPropertyList(this);
 
-            m_Serial = ser;
-            m_Deleted = false;
+            _serial = ser;
+            _deleted = false;
         }
 
         public Serial Serial
         {
-            get { return m_Serial; }
+            get { return _serial; }
         }
 
         public virtual Point3D Position
         {
-            get { return m_Pos; }
+            get { return _pos; }
             set
             {
-                if (value != m_Pos)
+                if (value != _pos)
                 {
-                    var oldPos = m_Pos;
-                    m_Pos = value;
+                    var oldPos = _pos;
+                    _pos = value;
                     OnPositionChanging(oldPos);
                 }
             }
@@ -77,23 +77,23 @@ namespace Assistant
 
         public bool Deleted
         {
-            get { return m_Deleted; }
+            get { return _deleted; }
         }
 
         public ContextMenuList ContextMenu
         {
-            get { return m_ContextMenu; }
+            get { return _contextMenu; }
         }
 
         public virtual ushort Hue
         {
-            get { return m_Hue; }
-            set { m_Hue = value; }
+            get { return _hue; }
+            set { _hue = value; }
         }
 
         public virtual void Remove()
         {
-            m_Deleted = true;
+            _deleted = true;
         }
 
         public virtual void OnPositionChanging(Point3D oldPos)
@@ -102,33 +102,33 @@ namespace Assistant
 
         public override int GetHashCode()
         {
-            return m_Serial.GetHashCode();
+            return _serial.GetHashCode();
         }
 
         public int OPLHash
         {
             get
             {
-                if (m_ObjPropList != null)
-                    return m_ObjPropList.Hash;
+                if (_objPropList != null)
+                    return _objPropList.Hash;
                 else
                     return 0;
             }
             set
             {
-                if (m_ObjPropList != null)
-                    m_ObjPropList.Hash = value;
+                if (_objPropList != null)
+                    _objPropList.Hash = value;
             }
         }
 
         public bool ModifiedOPL
         {
-            get { return m_ObjPropList.Customized; }
+            get { return _objPropList.Customized; }
         }
 
         public void ReadPropertyList(PacketReader p)
         {
-            m_ObjPropList.Read(p);
+            _objPropList.Read(p);
         }
 
         /*public Packet BuildOPLPacket()

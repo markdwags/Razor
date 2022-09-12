@@ -89,7 +89,15 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("invul", Invulnerable);
             Interpreter.RegisterExpressionHandler("blessed", Invulnerable);
             Interpreter.RegisterExpressionHandler("warmode", Warmode);
+            
+            Interpreter.RegisterExpressionHandler("itemcount", ItemCount);
         }
+        
+        private static int ItemCount(string expression, Variable[] args, bool quiet, bool force)
+        {
+            return World.Player == null ? 0 : World.Player.Backpack.GetTotalCount();
+        }
+        
         private static string Name(string expression, Variable[] args, bool quiet, bool force)
         {
             return World.Player == null ? string.Empty : World.Player.Name;

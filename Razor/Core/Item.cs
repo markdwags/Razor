@@ -68,31 +68,31 @@ namespace Assistant
 
     public class Item : UOEntity
     {
-        private ItemID m_ItemID;
-        private ushort m_Amount;
-        private byte m_Direction;
+        private ItemID _itemId;
+        private ushort _amount;
+        private byte _direction;
 
-        private bool m_Visible;
-        private bool m_Movable;
+        private bool _visible;
+        private bool _movable;
 
-        private Layer m_Layer;
-        private string m_Name;
-        private object m_Parent;
-        private int m_Price;
-        private string m_BuyDesc;
-        private List<Item> m_Items;
+        private Layer _layer;
+        private string _name;
+        private object _parent;
+        private int _price;
+        private string _buyDesc;
+        private List<Item> _items;
 
-        private bool m_IsNew;
-        private bool m_AutoStack;
+        private bool _isNew;
+        private bool _autoStack;
 
-        private byte[] m_HousePacket;
-        private int m_HouseRev;
+        private byte[] _housePacket;
+        private int _houseRev;
 
-        private byte m_GridNum;
+        private byte _gridNum;
         
         public override void AfterLoad()
         {
-            m_Items = new List<Item>();
+            _items = new List<Item>();
 
             for (int i = 0; i < Serial.Serials.Count; i++)
             {
@@ -103,7 +103,7 @@ namespace Assistant
 
                     if (item != null)
                     {
-                        m_Items[i] = item;
+                        _items[i] = item;
                     }
 
                     Serial.Serials.RemoveAt(i);
@@ -116,84 +116,84 @@ namespace Assistant
 
         public Item(Serial serial) : base(serial)
         {
-            m_Items = new List<Item>();
+            _items = new List<Item>();
 
-            m_Visible = true;
-            m_Movable = true;
+            _visible = true;
+            _movable = true;
 
             Agent.InvokeItemCreated(this);
         }
 
         public ItemID ItemID
         {
-            get { return m_ItemID; }
-            set { m_ItemID = value; }
+            get { return _itemId; }
+            set { _itemId = value; }
         }
 
         public ushort Amount
         {
-            get { return m_Amount; }
-            set { m_Amount = value; }
+            get { return _amount; }
+            set { _amount = value; }
         }
 
         public byte Direction
         {
-            get { return m_Direction; }
-            set { m_Direction = value; }
+            get { return _direction; }
+            set { _direction = value; }
         }
 
         public bool Visible
         {
-            get { return m_Visible; }
-            set { m_Visible = value; }
+            get { return _visible; }
+            set { _visible = value; }
         }
 
         public bool Movable
         {
-            get { return m_Movable; }
-            set { m_Movable = value; }
+            get { return _movable; }
+            set { _movable = value; }
         }
 
         public string Name
         {
             get
             {
-                if (!string.IsNullOrEmpty(m_Name))
+                if (!string.IsNullOrEmpty(_name))
                 {
-                    return m_Name;
+                    return _name;
                 }
                 else
                 {
-                    return m_ItemID.ToString();
+                    return _itemId.ToString();
                 }
             }
             set
             {
                 if (value != null)
-                    m_Name = value.Trim();
+                    _name = value.Trim();
                 else
-                    m_Name = null;
+                    _name = null;
             }
         }
 
-        public string DisplayName => m_ItemID.Value < Ultima.TileData.ItemTable.Length ? Ultima.TileData.ItemTable[m_ItemID.Value].Name : string.Empty;
+        public string DisplayName => _itemId.Value < Ultima.TileData.ItemTable.Length ? Ultima.TileData.ItemTable[_itemId.Value].Name : string.Empty;
 
         public Layer Layer
         {
             get
             {
-                if ((m_Layer < Layer.FirstValid || m_Layer > Layer.LastValid) &&
+                if ((_layer < Layer.FirstValid || _layer > Layer.LastValid) &&
                     ((this.ItemID.ItemData.Flags & Ultima.TileFlag.Wearable) != 0 ||
                      (this.ItemID.ItemData.Flags & Ultima.TileFlag.Armor) != 0 ||
                      (this.ItemID.ItemData.Flags & Ultima.TileFlag.Weapon) != 0
                     ))
                 {
-                    m_Layer = (Layer) this.ItemID.ItemData.Quality;
+                    _layer = (Layer) this.ItemID.ItemData.Quality;
                 }
 
-                return m_Layer;
+                return _layer;
             }
-            set { m_Layer = value; }
+            set { _layer = value; }
         }
 
         public Item FindItemById(ItemID id)
@@ -208,9 +208,9 @@ namespace Assistant
 
         public Item FindItemById(ItemID id, bool recurse)
         {
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
-                Item item = (Item) m_Items[i];
+                Item item = (Item) _items[i];
                 if (item.ItemID == id)
                 {
                     return item;
@@ -231,9 +231,9 @@ namespace Assistant
         {
             List<Item> items = new List<Item>();
 
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
-                Item item = m_Items[i];
+                Item item = _items[i];
                 if (item.ItemID == id)
                 {
                     items.Add(item);
@@ -255,7 +255,7 @@ namespace Assistant
 
         public Item FindItemByName(string name, bool recurse)
         {
-            foreach (var i in m_Items)
+            foreach (var i in _items)
             {
                 Item item = i;
                 
@@ -279,7 +279,7 @@ namespace Assistant
         {
             List<Item> items = new List<Item>();
 
-            foreach (Item i in m_Items)
+            foreach (Item i in _items)
             {
                 if (i.ItemID.ItemData.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
@@ -302,9 +302,9 @@ namespace Assistant
         public int GetCount(ushort iid)
         {
             int count = 0;
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
-                Item item = (Item) m_Items[i];
+                Item item = (Item) _items[i];
                 if (item.ItemID == iid)
                     count += item.Amount;
                 // fucking osi blank scrolls
@@ -315,38 +315,55 @@ namespace Assistant
 
             return count;
         }
+        
+        public int GetTotalCount()
+        {
+            int count = 0;
+            
+            foreach (Item item in _items)
+            {
+                count++;
+
+                if (item.IsContainer)
+                {
+                    count += item.GetTotalCount();
+                }
+            }
+
+            return count;
+        }
 
         public object Container
         {
             get
             {
-                if (m_Parent is Serial && UpdateContainer())
+                if (_parent is Serial && UpdateContainer())
                     m_NeedContUpdate.Remove(this);
-                return m_Parent;
+                return _parent;
             }
             set
             {
-                if ((m_Parent != null && m_Parent.Equals(value))
-                    || (value is Serial && m_Parent is UOEntity && ((UOEntity) m_Parent).Serial == (Serial) value)
-                    || (m_Parent is Serial && value is UOEntity && ((UOEntity) value).Serial == (Serial) m_Parent))
+                if ((_parent != null && _parent.Equals(value))
+                    || (value is Serial && _parent is UOEntity && ((UOEntity) _parent).Serial == (Serial) value)
+                    || (_parent is Serial && value is UOEntity && ((UOEntity) value).Serial == (Serial) _parent))
                 {
                     return;
                 }
 
-                if (m_Parent is Mobile)
-                    ((Mobile) m_Parent).RemoveItem(this);
-                else if (m_Parent is Item)
-                    ((Item) m_Parent).RemoveItem(this);
+                if (_parent is Mobile)
+                    ((Mobile) _parent).RemoveItem(this);
+                else if (_parent is Item)
+                    ((Item) _parent).RemoveItem(this);
 
                 if (World.Player != null && (IsChildOf(World.Player.Backpack) || IsChildOf(World.Player.Quiver)))
                     Counter.Uncount(this);
 
                 if (value is Mobile)
-                    m_Parent = ((Mobile) value).Serial;
+                    _parent = ((Mobile) value).Serial;
                 else if (value is Item)
-                    m_Parent = ((Item) value).Serial;
+                    _parent = ((Item) value).Serial;
                 else
-                    m_Parent = value;
+                    _parent = value;
 
                 if (!UpdateContainer() && m_NeedContUpdate != null)
                     m_NeedContUpdate.Add(this);
@@ -355,11 +372,11 @@ namespace Assistant
 
         public bool UpdateContainer()
         {
-            if (!(m_Parent is Serial) || Deleted)
+            if (!(_parent is Serial) || Deleted)
                 return true;
 
             object o = null;
-            Serial contSer = (Serial) m_Parent;
+            Serial contSer = (Serial) _parent;
             if (contSer.IsItem)
                 o = World.FindItem(contSer);
             else if (contSer.IsMobile)
@@ -368,12 +385,12 @@ namespace Assistant
             if (o == null)
                 return false;
 
-            m_Parent = o;
+            _parent = o;
 
-            if (m_Parent is Item)
-                ((Item) m_Parent).AddItem(this);
-            else if (m_Parent is Mobile)
-                ((Mobile) m_Parent).AddItem(this);
+            if (_parent is Item)
+                ((Item) _parent).AddItem(this);
+            else if (_parent is Mobile)
+                ((Mobile) _parent).AddItem(this);
 
             if (World.Player != null && (IsChildOf(World.Player.Backpack) || IsChildOf(World.Player.Quiver)))
             {
@@ -381,9 +398,9 @@ namespace Assistant
                 if (!exempt)
                     Counter.Count(this);
 
-                if (m_IsNew)
+                if (_isNew)
                 {
-                    if (m_AutoStack)
+                    if (_autoStack)
                         AutoStackResource();
 
                     if (IsContainer && !exempt && (!IsPouch || !Config.GetBool("NoSearchPouches")) &&
@@ -406,7 +423,7 @@ namespace Assistant
                 }
             }
 
-            m_AutoStack = m_IsNew = false;
+            _autoStack = _isNew = false;
 
             return true;
         }
@@ -500,30 +517,30 @@ namespace Assistant
 
         private void AddItem(Item item)
         {
-            for (int i = 0; i < m_Items.Count; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
-                if (m_Items[i] == item)
+                if (_items[i] == item)
                     return;
             }
 
-            m_Items.Add(item);
+            _items.Add(item);
         }
 
         private void RemoveItem(Item item)
         {
-            m_Items.Remove(item);
+            _items.Remove(item);
         }
 
         public byte GetPacketFlags()
         {
             byte flags = 0;
 
-            if (!m_Visible)
+            if (!_visible)
             {
                 flags |= 0x80;
             }
 
-            if (m_Movable)
+            if (_movable)
             {
                 flags |= 0x20;
             }
@@ -541,8 +558,8 @@ namespace Assistant
 
         public void ProcessPacketFlags(byte flags)
         {
-            m_Visible = ((flags & 0x80) == 0);
-            m_Movable = ((flags & 0x20) != 0);
+            _visible = ((flags & 0x80) == 0);
+            _movable = ((flags & 0x20) != 0);
         }
 
         private Timer m_RemoveTimer = null;
@@ -575,17 +592,17 @@ namespace Assistant
             /*if ( IsMulti )
                  UOAssist.PostRemoveMulti( this );*/
 
-            List<Item> rem = new List<Item>(m_Items);
-            m_Items.Clear();
+            List<Item> rem = new List<Item>(_items);
+            _items.Clear();
             for (int i = 0; i < rem.Count; i++)
                 (rem[i]).Remove();
 
             Counter.Uncount(this);
 
-            if (m_Parent is Mobile)
-                ((Mobile) m_Parent).RemoveItem(this);
-            else if (m_Parent is Item)
-                ((Item) m_Parent).RemoveItem(this);
+            if (_parent is Mobile)
+                ((Mobile) _parent).RemoveItem(this);
+            else if (_parent is Item)
+                ((Item) _parent).RemoveItem(this);
 
             World.RemoveItem(this);
             base.Remove();
@@ -593,14 +610,14 @@ namespace Assistant
 
         public List<Item> Contains
         {
-            get { return m_Items; }
+            get { return _items; }
         }
 
         // possibly 4 bit x/y - 16x16?
         public byte GridNum
         {
-            get { return m_GridNum; }
-            set { m_GridNum = value; }
+            get { return _gridNum; }
+            set { _gridNum = value; }
         }
 
         public bool OnGround
@@ -612,8 +629,8 @@ namespace Assistant
         {
             get
             {
-                ushort iid = m_ItemID.Value;
-                return (m_Items.Count > 0 && !IsCorpse) || (iid >= 0x9A8 && iid <= 0x9AC) ||
+                ushort iid = _itemId.Value;
+                return (_items.Count > 0 && !IsCorpse) || (iid >= 0x9A8 && iid <= 0x9AC) ||
                        (iid >= 0x9B0 && iid <= 0x9B2) ||
                        (iid >= 0xA2C && iid <= 0xA53) || (iid >= 0xA97 && iid <= 0xA9E) ||
                        (iid >= 0xE3C && iid <= 0xE43) ||
@@ -625,16 +642,16 @@ namespace Assistant
 
         public bool IsBagOfSending
         {
-            get { return Hue >= 0x0400 && m_ItemID.Value == 0xE76; }
+            get { return Hue >= 0x0400 && _itemId.Value == 0xE76; }
         }
 
         public bool IsInBank
         {
             get
             {
-                if (m_Parent is Item)
-                    return ((Item) m_Parent).IsInBank;
-                else if (m_Parent is Mobile)
+                if (_parent is Item)
+                    return ((Item) _parent).IsInBank;
+                else if (_parent is Mobile)
                     return this.Layer == Layer.Bank;
                 else
                     return false;
@@ -643,36 +660,36 @@ namespace Assistant
 
         public bool IsNew
         {
-            get { return m_IsNew; }
-            set { m_IsNew = value; }
+            get { return _isNew; }
+            set { _isNew = value; }
         }
 
         public bool AutoStack
         {
-            get { return m_AutoStack; }
-            set { m_AutoStack = value; }
+            get { return _autoStack; }
+            set { _autoStack = value; }
         }
 
         public bool IsMulti
         {
-            get { return m_ItemID.Value >= 0x4000; }
+            get { return _itemId.Value >= 0x4000; }
         }
 
         public bool IsPouch
         {
-            get { return m_ItemID.Value == 0x0E79; }
+            get { return _itemId.Value == 0x0E79; }
         }
 
         public bool IsCorpse
         {
-            get { return m_ItemID.Value == 0x2006 || (m_ItemID.Value >= 0x0ECA && m_ItemID.Value <= 0x0ED2); }
+            get { return _itemId.Value == 0x2006 || (_itemId.Value >= 0x0ECA && _itemId.Value <= 0x0ED2); }
         }
 
         public bool IsDoor
         {
             get
             {
-                ushort iid = m_ItemID.Value;
+                ushort iid = _itemId.Value;
                 return (iid >= 0x0675 && iid <= 0x06F6) || (iid >= 0x0821 && iid <= 0x0875) ||
                        (iid >= 0x1FED && iid <= 0x1FFC) ||
                        (iid >= 0x241F && iid <= 0x2424) || (iid >= 0x2A05 && iid <= 0x2A1C);
@@ -683,7 +700,7 @@ namespace Assistant
         {
             get
             {
-                ushort iid = m_ItemID.Value;
+                ushort iid = _itemId.Value;
                 return (iid >= 0x19B7 && iid <= 0x19BA) || // ore
                        (iid >= 0x09CC && iid <= 0x09CF) || // fishes
                        (iid >= 0x1BDD && iid <= 0x1BE2) || // logs
@@ -697,8 +714,8 @@ namespace Assistant
         {
             get
             {
-                return (m_ItemID.Value >= 0x0F06 && m_ItemID.Value <= 0x0F0D) ||
-                       m_ItemID.Value == 0x2790 || m_ItemID.Value == 0x27DB; // Ninja belt (works like a potion)
+                return (_itemId.Value >= 0x0F06 && _itemId.Value <= 0x0F0D) ||
+                       _itemId.Value == 0x2790 || _itemId.Value == 0x27DB; // Ninja belt (works like a potion)
             }
         }
 
@@ -706,7 +723,7 @@ namespace Assistant
         {
             get
             {
-                ushort iid = m_ItemID.Value;
+                ushort iid = _itemId.Value;
                 return (iid >= 0x1bc3 && iid <= 0x1bc5); // virtue shields
             }
         }
@@ -715,7 +732,7 @@ namespace Assistant
         {
             get
             {
-                ushort iid = m_ItemID.Value;
+                ushort iid = _itemId.Value;
 
                 if (Overrides.TwoHanded.TryGetValue(iid, out bool value))
                 {
@@ -749,31 +766,31 @@ namespace Assistant
 
         public int Price
         {
-            get { return m_Price; }
-            set { m_Price = value; }
+            get { return _price; }
+            set { _price = value; }
         }
 
         public string BuyDesc
         {
-            get { return m_BuyDesc; }
-            set { m_BuyDesc = value; }
+            get { return _buyDesc; }
+            set { _buyDesc = value; }
         }
 
         public int HouseRevision
         {
-            get { return m_HouseRev; }
-            set { m_HouseRev = value; }
+            get { return _houseRev; }
+            set { _houseRev = value; }
         }
 
         public byte[] HousePacket
         {
-            get { return m_HousePacket; }
-            set { m_HousePacket = value; }
+            get { return _housePacket; }
+            set { _housePacket = value; }
         }
 
         public void MakeHousePacket()
         {
-            m_HousePacket = null;
+            _housePacket = null;
 
             try
             {
@@ -809,11 +826,11 @@ namespace Assistant
 
                         if (ser == this.Serial)
                         {
-                            m_HouseRev = rev;
+                            _houseRev = rev;
                             MultiTileEntry[] tiles = new MultiTileEntry[lines];
                             count = 0;
 
-                            Ultima.MultiComponentList mcl = Ultima.Multis.GetComponents(m_ItemID);
+                            Ultima.MultiComponentList mcl = Ultima.Multis.GetComponents(_itemId);
 
                             while ((line = reader.ReadLine()) != null && count < lines)
                             {
@@ -828,7 +845,7 @@ namespace Assistant
                                 count++;
                             }
 
-                            m_HousePacket = new DesignStateDetailed(Serial, m_HouseRev, mcl.Min.X, mcl.Min.Y, mcl.Max.X,
+                            _housePacket = new DesignStateDetailed(Serial, _houseRev, mcl.Min.X, mcl.Min.Y, mcl.Max.X,
                                 mcl.Max.Y, tiles).Compile();
                             break;
                         }

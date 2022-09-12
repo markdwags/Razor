@@ -7819,7 +7819,7 @@ namespace Assistant
             foreach (Control c in Controls)
             {
                 int size = (int)c.Font.Size;
-                c.Font = new Font("Segoe UI", ++size);
+                c.Font = new Font("Segoe UI", --size);
                 c.AutoSize = true;
             }
         }
