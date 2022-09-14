@@ -7811,6 +7811,11 @@ namespace Assistant
                 int size = (int)c.Font.Size;
                 c.Font = new Font("Segoe UI", ++size);
                 c.AutoSize = true;
+
+                if (c is Button button)
+                {
+                    button.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                }
             }
         }
 
@@ -7821,6 +7826,11 @@ namespace Assistant
                 int size = (int)c.Font.Size;
                 c.Font = new Font("Segoe UI", --size);
                 c.AutoSize = true;
+
+                if (c is Button button)
+                {
+                    button.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                }
             }
         }
     }

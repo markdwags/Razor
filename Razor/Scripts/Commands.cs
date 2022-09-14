@@ -765,7 +765,7 @@ namespace Assistant.Scripts
 
             if (vars.Length > 1)
             {
-                if (vars.Length == 2)
+                if (vars.Length >= 2)
                 {
                     amount = Utility.ToUInt16(vars[1].AsString(), 1);
                 }
