@@ -263,6 +263,7 @@ namespace Assistant
             Write((short) item.Position.Z);
             Write((ushort) item.ItemID);
         }
+        
     }
 
     public sealed class TargetCancelResponse : Packet
@@ -1818,6 +1819,15 @@ namespace Assistant
 
             Write((byte)0xF4);
             WriteAsciiNull(id.ToString());
+        }
+    }
+    
+    public sealed class RenamePacket : Packet
+    {
+        public RenamePacket(uint serial, string newName) : base(0x75, 35)
+        {
+            Write(serial);
+            WriteAsciiFixed(newName, 30);
         }
     }
 }

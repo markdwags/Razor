@@ -1009,5 +1009,10 @@ namespace Assistant
         {
             Client.Instance.SendToServer(new VirtueRequest((byte) virtue));
         }
+
+        public void RenameMobile(Serial serial, string newName)
+        {
+            Client.Instance.SendToServer(new RenamePacket(serial.Value, newName));
+        }
     }
 }

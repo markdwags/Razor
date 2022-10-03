@@ -632,6 +632,34 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         promptresponse 'to home'
         ```
 
+# rename
+
+**Syntax**: `rename (serial) (new name)`
+
+**Description**: This command will attempt to rename the mobile to a new name.
+
+!!! example
+
+    === "Rename using serial"
+
+        ```vim
+        rename '0x453' 'Fluffy'
+        ```
+
+    === "Rename using variables"
+
+        ```vim
+        setvar 'mypet'
+
+        rename 'mypet' 'Fluffy'
+        ```
+
+    === "Rename using last target"
+
+        ```vim
+        rename 'lasttarget' 'Fluffy'
+        ```
+
 # random
 
 **Syntax**: `random (max number)`

@@ -117,6 +117,37 @@ namespace Assistant.Scripts
 
             Interpreter.RegisterCommandHandler("classicuo", ClassicUOProfile);
             Interpreter.RegisterCommandHandler("cuo", ClassicUOProfile);
+            
+            Interpreter.RegisterCommandHandler("rename", Rename);
+        }
+
+        private static bool Rename(string command, Variable[] vars, bool quiet, bool force)
+        {
+            if (vars.Length < 2)
+            {
+                throw new RunTimeError("Usage: rename (serial) (new_name)");
+            }
+
+            string newName = vars[1].AsString();
+            
+            if (newName.Length < 1)
+            {
+                throw new RunTimeError("Mobile name must be longer than one character");
+            }
+
+            if (World.Mobiles.TryGetValue(vars[0].AsSerial(), out var follower))
+            {
+                if (follower.CanRename)
+                {
+                    World.Player.RenameMobile(follower.Serial, newName);
+                }
+                else
+                {
+                    CommandHelper.SendMessage($"Unable to rename mobile", quiet);
+                }
+            }
+            
+            return true;
         }
 
         private static bool ClassicUOProfile(string commands, Variable[] vars, bool quiet, bool force)
