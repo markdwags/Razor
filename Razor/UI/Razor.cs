@@ -5697,6 +5697,11 @@ namespace Assistant
         private void showBandageTimer_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("ShowBandageTimer", showBandageTimer.Checked);
+            
+            if (showBandageTimer.Checked)
+            {
+                MessageManager.OnSystemMessage += BandageTimer.OnSystemMessage;
+            }
         }
 
         private void bandageTimerLocation_SelectedIndexChanged(object sender, EventArgs e)

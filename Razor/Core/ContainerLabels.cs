@@ -73,6 +73,58 @@ namespace Assistant.Core
             }
             catch
             {
+                // ignored
+            }
+            
+            MessageManager.OnLabelMessage += HandleLabelMessage;
+        }
+        
+        private static void HandleLabelMessage(Packet p, PacketHandlerEventArgs args, Serial source, ushort graphic,
+                         MessageType type, ushort hue, ushort font, string lang, string sourceName,
+                         string text)
+        {
+            if (!Config.GetBool("ShowContainerLabels"))
+                return;
+
+            if (!source.IsItem)
+                return;
+
+            Item item = World.FindItem(source);
+
+            if (item == null)
+                return;
+
+            if (!item.IsContainer)
+                return;
+
+            foreach (var label in ContainerLabelList)
+            {
+                // Check if its the serial match and if the text matches the name (since we override that for the label)
+                if (Serial.Parse(label.Id) == source &&
+                    (item.ItemID.ItemData.Name.Equals(text) ||
+                        label.Alias.Equals(text, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    string labelDisplay =
+                        $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{type}", text)}";
+
+                    //ContainerLabelStyle
+                    if (Config.GetInt("ContainerLabelStyle") == 0)
+                    {
+                        Client.Instance.SendToClient(new AsciiMessage(source, item.ItemID.Value, MessageType.Label,
+                            label.Hue, 3, Language.CliLocName, labelDisplay));
+                    }
+                    else
+                    {
+                        Client.Instance.SendToClient(new UnicodeMessage(source, item.ItemID.Value,
+                            MessageType.Label, label.Hue, 3, Language.CliLocName, "", labelDisplay));
+                    }
+
+                    // block the actual message from coming through since we have it in the label
+                    args.Block = true;
+
+                    LastContainerLabelDisplayed = source;
+                    break;
+                }
             }
         }
 

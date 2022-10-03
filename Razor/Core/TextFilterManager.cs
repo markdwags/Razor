@@ -30,6 +30,28 @@ namespace Assistant.Core
         private static ListBox _filterTextList;
 
         public static List<string> FilteredText = new List<string>();
+        
+        public static void Initialize()
+        {
+            MessageManager.OnMobileMessage += HandleMobileMessage;
+        }
+        
+        public static void HandleMobileMessage(Packet p, PacketHandlerEventArgs args, Serial source, ushort graphic,
+            MessageType type, ushort hue, ushort font, string lang, string sourceName,
+            string text)
+        {
+            if (!Config.GetBool("EnableTextFilter"))
+                return;
+
+            foreach (string filteredText in FilteredText)
+            {
+                if (text.IndexOf(filteredText, StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    args.Block = true;
+                    return;
+                }
+            }
+        }
 
         public static void SetControls(ListBox filterTextList)
         {

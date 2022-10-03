@@ -19,7 +19,9 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
+using Assistant.Core;
 
 namespace Assistant
 {
@@ -343,6 +345,55 @@ namespace Assistant
             HotKey.Add(HKCategory.Spells, LocString.MiniHealOrCureSelf, new HotKeyCallback(MiniHealOrCureSelf));
             HotKey.Add(HKCategory.Spells, LocString.GHealOrCureSelf, new HotKeyCallback(GHealOrCureSelf));
             HotKey.Add(HKCategory.Spells, LocString.Interrupt, new HotKeyCallback(Interrupt));
+            
+            MessageManager.OnSpellMessage += HandleSpellMessage;
+        }
+        
+        private static StringBuilder SpellPowerwordsBuilder { get; set; } = new StringBuilder(Config.GetString("SpellFormat"));
+        
+        private static void ResetSpellPowerwordsBuilder()
+        {
+            SpellPowerwordsBuilder.Remove(0, SpellPowerwordsBuilder.Length);
+            SpellPowerwordsBuilder.Insert(0, Config.GetString("SpellFormat"));
+        }
+        
+        private static void HandleSpellMessage(Packet p, PacketHandlerEventArgs args, Serial source, ushort graphic,
+            MessageType type, ushort hue, ushort font, string lang, string sourceName,
+            string text)
+        {
+            Spell s = Get(text.Trim());
+
+            if (Config.GetBool("OverrideSpellFormat") && s != null)
+            {
+                ResetSpellPowerwordsBuilder();
+
+                StringBuilder sb = SpellPowerwordsBuilder;
+                sb.Replace(@"{power}", s.WordsOfPower);
+                string spell = Language.GetString(s.Name);
+                sb.Replace(@"{spell}", spell);
+                sb.Replace(@"{name}", spell);
+                sb.Replace(@"{circle}", s.Circle.ToString());
+
+                string newText = sb.ToString();
+
+                if (newText != null && newText != "" && newText != text)
+                {
+                    Client.Instance.SendToClient(new AsciiMessage(source, graphic, MessageType.Spell, s.GetHue(hue), font,
+                        sourceName, newText));
+
+                    args.Block = true;
+                    return;
+                }
+            }
+
+            if (Config.GetBool("ForceSpellHue"))
+            {
+                p.Seek(10, SeekOrigin.Begin);
+                if (s != null)
+                    p.Write((ushort)s.GetHue(hue));
+                else
+                    p.Write((ushort)Config.GetInt("NeutralSpellHue"));
+            }
         }
 
         public static void HealOrCureSelf()

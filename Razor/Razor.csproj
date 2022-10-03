@@ -202,6 +202,7 @@
     <Compile Include="Core\Dress.cs" />
     <Compile Include="Core\EncodedSpeech.cs" />
     <Compile Include="Core\DamageTracker.cs" />
+    <Compile Include="Core\MessageManager.cs" />
     <Compile Include="Core\Overrides.cs" />
     <Compile Include="Core\SystemMessages.cs" />
     <Compile Include="Core\TextFilterManager.cs" />
