@@ -355,12 +355,12 @@ namespace FastColoredTextBoxNS
             RazorNumberRegex = new Regex(@"\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b", RegexCompiledOption);
             RazorKeywordRegex =
                 new Regex(
-                    @"\b(if|elseif|else|endif|while|endwhile|for|endfor|break|continue|not|and|or|stop|replay|loop|as)\b",
+                    @"\b(if|elseif|else|endif|while|endwhile|for|endfor|break|continue|not|and|or|stop|replay|loop|as|in)\b",
                     RegexCompiledOption);
 
             RazorCommandRegex =
                 new Regex(
-                    @"\b(attack|cast|dress|undress|dressconfig|target|targettype|targetloc|targetrelloc|dress|drop|waitfortarget|wft|dclick|dclicktype|dclickvar|usetype|useobject|droprelloc|lift|lifttype|waitforgump|gumpresponse|gumpclose|menu|menuresponse|waitformenu|promptresponse|waitforprompt|hotkey|say|msg|overhead|sysmsg|wait|pause|waitforstat|setability|setlasttarget|lasttarget|setvar|skill|useskill|walk|script|useonce|organizer|organize|org|restock|scav|scavenger|potion|clearsysmsg|clearjournal|whisper|yell|guild|alliance|emote|waitforsysmsg|wfsysmsg|clearall|virtue|interrupt|sound|music|classicuo|cuo|rename)\b",
+                    @"\b(attack|cast|dress|undress|dressconfig|target|targettype|targetloc|targetrelloc|dress|drop|waitfortarget|wft|dclick|dclicktype|dclickvar|usetype|useobject|droprelloc|lift|lifttype|waitforgump|gumpresponse|gumpclose|menu|menuresponse|waitformenu|promptresponse|waitforprompt|hotkey|say|msg|overhead|sysmsg|wait|pause|waitforstat|setability|setlasttarget|lasttarget|setvar|skill|useskill|walk|script|useonce|organizer|organize|org|restock|scav|scavenger|potion|clearsysmsg|clearjournal|whisper|yell|guild|alliance|emote|waitforsysmsg|wfsysmsg|clearall|virtue|interrupt|sound|music|classicuo|cuo|rename|getlabel)\b",
                     RegexCompiledOption);
 
             RazorLayerRegex =

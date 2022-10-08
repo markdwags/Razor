@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using Assistant.Core;
 using Assistant.HotKeys;
@@ -119,6 +120,115 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("cuo", ClassicUOProfile);
             
             Interpreter.RegisterCommandHandler("rename", Rename);
+            
+            Interpreter.RegisterCommandHandler("getlabel", GetLabel);
+        }
+        
+        private enum GetLabelState
+        {
+            NONE,
+            WAITING_FOR_FIRST_LABEL,
+            WAITING_FOR_REMAINING_LABELS
+        };
+        
+        private static GetLabelState _getLabelState = GetLabelState.NONE;
+        private static Action<Packet, PacketHandlerEventArgs, Serial, ushort, MessageType, ushort, ushort, string, string, string> _onLabelMessage;
+        private static Action _onStop;
+        
+        private static bool GetLabel(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 2)
+                throw new RunTimeError("Usage: getlabel (serial) (name)");
+
+            var serial = args[0].AsSerial();
+            var name = args[1].AsString(false);
+
+            var mobile = World.FindMobile(serial);
+            if (mobile != null)
+            {
+                if (mobile.IsHuman)
+                {
+                    return false;
+                }
+            }
+
+            switch (_getLabelState)
+            {
+                case GetLabelState.NONE:
+                    _getLabelState = GetLabelState.WAITING_FOR_FIRST_LABEL;
+                    Interpreter.Timeout(2000, () =>
+                    {
+                        MessageManager.OnLabelMessage -= _onLabelMessage;
+                        _onLabelMessage = null;
+                        Interpreter.OnStop -= _onStop;
+                        _getLabelState = GetLabelState.NONE;
+                        MessageManager.GetLabelCommand = false;
+                        return true;
+                    });
+
+                    // Single click the object
+                    Client.Instance.SendToServer(new SingleClick((Serial)args[0].AsSerial()));
+
+                    // Capture all message responses
+                    StringBuilder label = new StringBuilder();
+                    
+                    // Some messages from Outlands server are send in sequence of LabelType and RegularType
+                    // so we want to invoke that _onLabelMessage in both cases with delays
+                    MessageManager.GetLabelCommand = true;
+
+                    // Reset the state when script is stopped
+                    _onStop = () =>
+                    {
+                        if (_onLabelMessage != null)
+                        {
+                            MessageManager.OnLabelMessage -= _onLabelMessage;
+                            _onLabelMessage = null;
+                        }
+                        _getLabelState = GetLabelState.NONE;
+                        
+                        Interpreter.OnStop -= _onStop;
+                        MessageManager.GetLabelCommand = false;
+                    };
+
+                    _onLabelMessage = (p, a, source, graphic, type, hue, font, lang, sourceName, text) =>
+                    {
+                        if (source != serial)
+                            return;
+
+                        a.Block = true;
+
+                        if (_getLabelState == GetLabelState.WAITING_FOR_FIRST_LABEL)
+                        {
+                            // After the first message, switch to a pause instead of a timeout.
+                            _getLabelState = GetLabelState.WAITING_FOR_REMAINING_LABELS;
+                            Interpreter.Pause(500);
+                        }
+
+                        label.Append(" " + text);
+
+                        Interpreter.SetVariable(name, label.ToString().Trim());
+                    };
+
+                    Interpreter.OnStop += _onStop;
+                    MessageManager.OnLabelMessage += _onLabelMessage;
+                    
+                    break;
+                case GetLabelState.WAITING_FOR_FIRST_LABEL:
+                    break;
+                case GetLabelState.WAITING_FOR_REMAINING_LABELS:
+                    // We get here after the pause has expired.
+                    Interpreter.OnStop -= _onStop;
+                    MessageManager.OnLabelMessage -= _onLabelMessage;
+                    
+                    _onLabelMessage = null;
+                    _getLabelState = GetLabelState.NONE;
+                    
+                    MessageManager.GetLabelCommand = false;
+                    
+                    return true;
+            }
+
+            return false;
         }
 
         private static bool Rename(string command, Variable[] vars, bool quiet, bool force)
@@ -1019,10 +1129,13 @@ namespace Assistant.Scripts
             {
                 throw new RunTimeError("Usage: overhead ('text') [color] [serial]");
             }
+            
+            string overheadMessage = vars[0].AsString();
+            overheadMessage = CommandHelper.ReplaceStringInterpolations(overheadMessage);
 
             if (vars.Length == 1)
             {
-                World.Player.OverheadMessage(Config.GetInt("SysColor"), vars[0].AsString());
+                World.Player.OverheadMessage(Config.GetInt("SysColor"), overheadMessage);
             }
             else
             {
@@ -1049,10 +1162,13 @@ namespace Assistant.Scripts
             {
                 throw new RunTimeError("Usage: sysmsg ('text') [color]");
             }
+            
+            var sysMessage = vars[0].AsString();
+            sysMessage = CommandHelper.ReplaceStringInterpolations(sysMessage);
 
             if (vars.Length == 1)
             {
-                World.Player.SendMessage(Config.GetInt("SysColor"), vars[0].AsString());
+                World.Player.SendMessage(Config.GetInt("SysColor"), sysMessage);
             }
             else if (vars.Length == 2)
             {

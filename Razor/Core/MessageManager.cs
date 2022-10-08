@@ -25,12 +25,12 @@ namespace Assistant.Core
 {
     public static class MessageManager
     {
-        public static Action<Packet, PacketHandlerEventArgs, Serial, ushort, MessageType, ushort, ushort, string, string, string> OnSpellMessage;
-        public static Action<Packet, PacketHandlerEventArgs, Serial, ushort, MessageType, ushort, ushort, string, string, string> OnLabelMessage;
-        public static Action<Packet, PacketHandlerEventArgs, Serial, ushort, MessageType, ushort, ushort, string, string, string> OnSystemMessage;
-        public static Action<Packet, PacketHandlerEventArgs, Serial, ushort, MessageType, ushort, ushort, string, string, string> OnMobileMessage;
+        public static Action<Packet, PacketHandlerEventArgs, Serial, ushort, MessageType, ushort, ushort, string, string, string> OnSpellMessage { get; set; }
+        public static Action<Packet, PacketHandlerEventArgs, Serial, ushort, MessageType, ushort, ushort, string, string, string> OnLabelMessage { get; set; }
+        public static Action<Packet, PacketHandlerEventArgs, Serial, ushort, MessageType, ushort, ushort, string, string, string> OnSystemMessage { get; set; }
+        public static Action<Packet, PacketHandlerEventArgs, Serial, ushort, MessageType, ushort, ushort, string, string, string> OnMobileMessage { get; set; }
 
-        public static bool GetLabelCommand = false;
+        public static bool GetLabelCommand { get; set; } = false;
 
         public static void Initialize()
         {
@@ -42,7 +42,9 @@ namespace Assistant.Core
                                          string text)
         {
             if (World.Player == null)
+            {
                 return;
+            }
 
             switch (type)
             {
@@ -69,11 +71,16 @@ namespace Assistant.Core
 
                     if (source.IsMobile && source != World.Player.Serial)
                     {
-                        if(GetLabelCommand)
+                        if (GetLabelCommand)
+                        {
                             OnLabelMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
+                        }
                         else
+                        {
                             OnMobileMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
+                        }
                     }
+                    
                     break;
             }
         }

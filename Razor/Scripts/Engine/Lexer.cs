@@ -67,6 +67,7 @@ namespace Assistant.Scripts.Engine
         LESS_THAN_OR_EQUAL,
         GREATER_THAN,
         GREATER_THAN_OR_EQUAL,
+        IN,
         AS,
 
         // Logical Operators
@@ -156,7 +157,7 @@ namespace Assistant.Scripts.Engine
     public static class Lexer
     {
         private static int _curLine = 0;
-
+        
         public static bool AllowLoop { get; set; } = true;
 
         public static T[] Slice<T>(this T[] src, int start, int end)
@@ -345,6 +346,9 @@ namespace Assistant.Scripts.Engine
                 case ">=":
                     type = ASTNodeType.GREATER_THAN_OR_EQUAL;
                     break;
+                case "in":
+                    type = ASTNodeType.IN;
+                    break;
                 case "as":
                     type = ASTNodeType.AS;
                     break;
@@ -478,6 +482,7 @@ namespace Assistant.Scripts.Engine
                 case "<=":
                 case ">":
                 case ">=":
+                case "in":
                 case "as":
                     return true;
             }

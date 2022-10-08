@@ -345,6 +345,44 @@ Example:
         emote 'smiles in another color' 454
         ```
 
+# getlabel
+
+**Syntax**: `getlabel ('serial') ('variable name)`
+
+**Description**: This command will get the label (text obtained by single-clicking an item) and save it to a variable.
+
+!!! example
+
+    === "Find a dog"
+
+        ```vim
+        if findtype '217' as 'a_dog'
+            getlabel 'a_dog' 'dog_label'
+
+            if 'Fido' in 'dog_label'
+                overhead 'found mydog!' 5
+                overhead 'dog_label' 67
+            endif    
+        endif
+        ```
+
+    === "Find a silver kryss"
+
+        ```vim        
+        setvar 'silver_bag'
+
+        if findtype '0x140' as 'kryss'
+            getlabel 'kryss' 'kryss_label'
+
+            if 'silver' in 'kryss_label'
+                overhead 'found silver kryss!' 5
+                
+                lift 'kryss' 1
+                drop 'silver_bag' -1 -1 0
+            endif    
+        endif
+        ```
+
 # guild
 
 **Syntax**: `guild ('message to send')`

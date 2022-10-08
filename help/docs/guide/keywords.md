@@ -76,6 +76,30 @@ Description: The `continue` keyword passes control to the next iteration of the 
 
         endwhile
         ```
+
+## in
+
+Syntax: `(word) in (variable string)`
+
+Description: The `in` keyword works in conjunction with the `getlabel` command.
+
+!!! example
+
+    === "General"
+
+        ```vim hl_lines="4"
+        
+        if findtype '217' as 'a_dog'
+            getlabel 'a_dog' 'dog_label'
+
+            if 'Fido' in 'dog_label'
+                overhead 'found mydog!' 5
+                overhead 'dog_label' 67
+            endif    
+        endif
+        ```
+
+
 ## loop/replay
 
 Syntax: `loop` OR `replay`

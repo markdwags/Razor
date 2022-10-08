@@ -141,6 +141,21 @@ namespace Assistant.Scripts.Engine
             _ignoreList.Add(serial);
         }
 
+        public void AddIgnoreRange(List<Serial> serials)
+        {
+            serials.ForEach(AddIgnore);
+        }
+        public void RemoveIgnore(Serial serial)
+        {
+            if (_ignoreList.Contains(serial))
+                _ignoreList.Remove(serial);
+        }
+
+        public void RemoveIgnoreRange(List<Serial> serials)
+        {
+            _ignoreList.RemoveWhere(serials.Contains);
+        }
+
         public void ClearIgnore()
         {
             _ignoreList.Clear();
@@ -307,6 +322,7 @@ namespace Assistant.Scripts.Engine
                     case ASTNodeType.LESS_THAN_OR_EQUAL:
                     case ASTNodeType.GREATER_THAN:
                     case ASTNodeType.GREATER_THAN_OR_EQUAL:
+                    case ASTNodeType.IN:
                     case ASTNodeType.AS:
                         return args.ToArray();
                 }
@@ -871,7 +887,14 @@ namespace Assistant.Scripts.Engine
 
         private bool CompareOperands(ASTNodeType op, IComparable lhs, IComparable rhs)
         {
-            if (op == ASTNodeType.AS)
+            if (op == ASTNodeType.IN)
+            {
+                if (lhs.GetType() != typeof(string) || rhs.GetType() != typeof(string))
+                {
+                    throw new RunTimeError("The 'in' operator only works on string operands.");
+                }
+            }
+            else if (op == ASTNodeType.AS)
             {
                 if (lhs.GetType() != typeof(uint))
                 {
@@ -922,6 +945,8 @@ namespace Assistant.Scripts.Engine
                         return lhs.CompareTo(rhs) > 0;
                     case ASTNodeType.GREATER_THAN_OR_EQUAL:
                         return lhs.CompareTo(rhs) >= 0;
+                    case ASTNodeType.IN:
+                        return ((string)rhs).Contains((string)lhs);
                     case ASTNodeType.AS:
                         Interpreter.SetVariable(rhs.ToString(), lhs.ToString());
                         return CompareOperands(ASTNodeType.EQUAL, lhs, true);
@@ -1027,6 +1052,8 @@ namespace Assistant.Scripts.Engine
 
     public static class Interpreter
     {
+        public static Action OnStop;
+
         // The "global" scope
         private readonly static Scope _scope = new Scope(null, null);
 
@@ -1112,7 +1139,7 @@ namespace Assistant.Scripts.Engine
         {
             _aliasHandlers.Remove(keyword);
         }
-
+        
         public static bool AliasHandlerExist(string alias)
         {
             return _aliasHandlers.TryGetValue(alias, out _);
@@ -1151,8 +1178,7 @@ namespace Assistant.Scripts.Engine
             Scope scope = global ? _scope : _currentScope;
             scope.ClearIgnore();
         }
-
-
+        
         public static bool CheckIgnored(Serial serial, bool global = true)
         {
             Scope scope = global ? _scope : _currentScope;
@@ -1232,8 +1258,9 @@ namespace Assistant.Scripts.Engine
             _activeScript = null;
             _currentScope = _scope;
             _executionState = ExecutionState.RUNNING;
+            OnStop?.Invoke();
         }
-
+        
         public static void PauseScript()
         {
             _pauseTimeout = DateTime.MaxValue.Ticks;
