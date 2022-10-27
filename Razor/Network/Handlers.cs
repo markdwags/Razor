@@ -1,4 +1,5 @@
 #region license
+
 // Razor: An Ultima Online Assistant
 // Copyright (c) 2022 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
@@ -14,6 +15,7 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #endregion
 
 using System;
@@ -25,111 +27,105 @@ using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Filters;
 using Assistant.Gumps;
-using Assistant.HotKeys;
 using Assistant.Macros;
 using Assistant.Scripts;
 using Assistant.UI;
 using Ultima;
-using ContainerLabels = Assistant.Core.ContainerLabels;
 
 namespace Assistant
 {
     public class PacketHandlers
     {
-        private static List<Item> m_IgnoreGumps = new List<Item>();
+        private static List<Item> _ignoreGumps = new List<Item>();
 
-        public static List<Item> IgnoreGumps
-        {
-            get { return m_IgnoreGumps; }
-        }
+        public static List<Item> IgnoreGumps => _ignoreGumps;
 
         public static void Initialize()
         {
             //Client -> Server handlers
-            PacketHandler.RegisterClientToServerViewer(0x00, new PacketViewerCallback(CreateCharacter));
+            PacketHandler.RegisterClientToServerViewer(0x00, CreateCharacter);
             //PacketHandler.RegisterClientToServerViewer(0x01, new PacketViewerCallback(Disconnect));
-            PacketHandler.RegisterClientToServerFilter(0x02, new PacketFilterCallback(MovementRequest));
-            PacketHandler.RegisterClientToServerFilter(0x05, new PacketFilterCallback(AttackRequest));
-            PacketHandler.RegisterClientToServerViewer(0x06, new PacketViewerCallback(ClientDoubleClick));
-            PacketHandler.RegisterClientToServerViewer(0x07, new PacketViewerCallback(LiftRequest));
-            PacketHandler.RegisterClientToServerViewer(0x08, new PacketViewerCallback(DropRequest));
-            PacketHandler.RegisterClientToServerViewer(0x09, new PacketViewerCallback(ClientSingleClick));
-            PacketHandler.RegisterClientToServerViewer(0x12, new PacketViewerCallback(ClientTextCommand));
-            PacketHandler.RegisterClientToServerViewer(0x13, new PacketViewerCallback(EquipRequest));
+            PacketHandler.RegisterClientToServerFilter(0x02, MovementRequest);
+            PacketHandler.RegisterClientToServerFilter(0x05, AttackRequest);
+            PacketHandler.RegisterClientToServerViewer(0x06, ClientDoubleClick);
+            PacketHandler.RegisterClientToServerViewer(0x07, LiftRequest);
+            PacketHandler.RegisterClientToServerViewer(0x08, DropRequest);
+            PacketHandler.RegisterClientToServerViewer(0x09, ClientSingleClick);
+            PacketHandler.RegisterClientToServerViewer(0x12, ClientTextCommand);
+            PacketHandler.RegisterClientToServerViewer(0x13, EquipRequest);
             // 0x29 - UOKR confirm drop.  0 bytes payload (just a single byte, 0x29, no length or data)
-            PacketHandler.RegisterClientToServerViewer(0x3A, new PacketViewerCallback(SetSkillLock));
-            PacketHandler.RegisterClientToServerViewer(0x5D, new PacketViewerCallback(PlayCharacter));
-            PacketHandler.RegisterClientToServerViewer(0x7D, new PacketViewerCallback(MenuResponse));
-            PacketHandler.RegisterClientToServerFilter(0x80, new PacketFilterCallback(ServerListLogin));
-            PacketHandler.RegisterClientToServerFilter(0x91, new PacketFilterCallback(GameLogin));
-            PacketHandler.RegisterClientToServerViewer(0x95, new PacketViewerCallback(HueResponse));
-            PacketHandler.RegisterClientToServerViewer(0xA0, new PacketViewerCallback(PlayServer));
-            PacketHandler.RegisterClientToServerViewer(0xB1, new PacketViewerCallback(ClientGumpResponse));
-            PacketHandler.RegisterClientToServerFilter(0xBF, new PacketFilterCallback(ExtendedClientCommand));
+            PacketHandler.RegisterClientToServerViewer(0x3A, SetSkillLock);
+            PacketHandler.RegisterClientToServerViewer(0x5D, PlayCharacter);
+            PacketHandler.RegisterClientToServerViewer(0x7D, MenuResponse);
+            PacketHandler.RegisterClientToServerFilter(0x80, ServerListLogin);
+            PacketHandler.RegisterClientToServerFilter(0x91, GameLogin);
+            PacketHandler.RegisterClientToServerViewer(0x95, HueResponse);
+            PacketHandler.RegisterClientToServerViewer(0xA0, PlayServer);
+            PacketHandler.RegisterClientToServerViewer(0xB1, ClientGumpResponse);
+            PacketHandler.RegisterClientToServerFilter(0xBF, ExtendedClientCommand);
             //PacketHandler.RegisterClientToServerViewer( 0xD6, new PacketViewerCallback( BatchQueryProperties ) );
-            PacketHandler.RegisterClientToServerFilter(0xC2, new PacketFilterCallback(UnicodePromptSend));
-            PacketHandler.RegisterClientToServerViewer(0xD7, new PacketViewerCallback(ClientEncodedPacket));
-            PacketHandler.RegisterClientToServerViewer(0xF8, new PacketViewerCallback(CreateCharacter));
+            PacketHandler.RegisterClientToServerFilter(0xC2, UnicodePromptSend);
+            PacketHandler.RegisterClientToServerViewer(0xD7, ClientEncodedPacket);
+            PacketHandler.RegisterClientToServerViewer(0xF8, CreateCharacter);
 
             //Server -> Client handlers
-            PacketHandler.RegisterServerToClientViewer(0x0B, new PacketViewerCallback(Damage));
-            PacketHandler.RegisterServerToClientViewer(0x11, new PacketViewerCallback(MobileStatus));
-            PacketHandler.RegisterServerToClientViewer(0x17, new PacketViewerCallback(NewMobileStatus));
-            PacketHandler.RegisterServerToClientViewer(0x1A, new PacketViewerCallback(WorldItem));
-            PacketHandler.RegisterServerToClientViewer(0x1B, new PacketViewerCallback(LoginConfirm));
-            PacketHandler.RegisterServerToClientViewer(0x55, new PacketViewerCallback(CompleteLogin));
-            PacketHandler.RegisterServerToClientFilter(0x1C, new PacketFilterCallback(AsciiSpeech));
-            PacketHandler.RegisterServerToClientViewer(0x1D, new PacketViewerCallback(RemoveObject));
-            PacketHandler.RegisterServerToClientFilter(0x20, new PacketFilterCallback(MobileUpdate));
-            PacketHandler.RegisterServerToClientViewer(0x24, new PacketViewerCallback(BeginContainerContent));
-            PacketHandler.RegisterServerToClientFilter(0x25, new PacketFilterCallback(ContainerContentUpdate));
-            PacketHandler.RegisterServerToClientViewer(0x27, new PacketViewerCallback(LiftReject));
-            PacketHandler.RegisterServerToClientViewer(0x2D, new PacketViewerCallback(MobileStatInfo));
-            PacketHandler.RegisterServerToClientFilter(0x2E, new PacketFilterCallback(EquipmentUpdate));
-            PacketHandler.RegisterServerToClientViewer(0x3A, new PacketViewerCallback(PlayerSkills));
-            PacketHandler.RegisterServerToClientFilter(0x3C, new PacketFilterCallback(ContainerContent));
-            PacketHandler.RegisterServerToClientViewer(0x4E, new PacketViewerCallback(PersonalLight));
-            PacketHandler.RegisterServerToClientViewer(0x4F, new PacketViewerCallback(GlobalLight));
-            PacketHandler.RegisterServerToClientViewer(0x6F, new PacketViewerCallback(TradeRequest));
-            PacketHandler.RegisterServerToClientViewer(0x72, new PacketViewerCallback(ServerSetWarMode));
-            PacketHandler.RegisterServerToClientViewer(0x73, new PacketViewerCallback(PingResponse));
-            PacketHandler.RegisterServerToClientViewer(0x76, new PacketViewerCallback(ServerChange));
-            PacketHandler.RegisterServerToClientFilter(0x77, new PacketFilterCallback(MobileMoving));
-            PacketHandler.RegisterServerToClientFilter(0x78, new PacketFilterCallback(MobileIncoming));
-            PacketHandler.RegisterServerToClientViewer(0x7C, new PacketViewerCallback(SendMenu));
-            PacketHandler.RegisterServerToClientFilter(0x8C, new PacketFilterCallback(ServerAddress));
-            PacketHandler.RegisterServerToClientViewer(0xA1, new PacketViewerCallback(HitsUpdate));
-            PacketHandler.RegisterServerToClientViewer(0xA2, new PacketViewerCallback(ManaUpdate));
-            PacketHandler.RegisterServerToClientViewer(0xA3, new PacketViewerCallback(StamUpdate));
-            PacketHandler.RegisterServerToClientViewer(0xA8, new PacketViewerCallback(ServerList));
-            PacketHandler.RegisterServerToClientViewer(0xAB, new PacketViewerCallback(DisplayStringQuery));
-            PacketHandler.RegisterServerToClientViewer(0xAF, new PacketViewerCallback(DeathAnimation));
-            PacketHandler.RegisterServerToClientFilter(0xAE, new PacketFilterCallback(UnicodeSpeech));
-            PacketHandler.RegisterServerToClientViewer(0xB0, new PacketViewerCallback(SendGump));
-            PacketHandler.RegisterServerToClientViewer(0xB9, new PacketViewerCallback(Features));
-            PacketHandler.RegisterServerToClientViewer(0xBC, new PacketViewerCallback(ChangeSeason));
-            PacketHandler.RegisterServerToClientFilter(0xBE, new PacketFilterCallback(OnAssistVersion));
-            PacketHandler.RegisterServerToClientViewer(0xBF, new PacketViewerCallback(ExtendedPacket));
-            PacketHandler.RegisterServerToClientFilter(0xC1, new PacketFilterCallback(OnLocalizedMessage));
-            PacketHandler.RegisterServerToClientFilter(0xC2, new PacketFilterCallback(UnicodePromptReceived));
-            PacketHandler.RegisterServerToClientFilter(0xC8, new PacketFilterCallback(SetUpdateRange));
-            PacketHandler.RegisterServerToClientFilter(0xCC, new PacketFilterCallback(OnLocalizedMessageAffix));
-            PacketHandler.RegisterServerToClientViewer(0xD6,
-                new PacketViewerCallback(EncodedPacket)); //0xD6 "encoded" packets
-            PacketHandler.RegisterServerToClientViewer(0xD8, new PacketViewerCallback(CustomHouseInfo));
+            PacketHandler.RegisterServerToClientViewer(0x0B, Damage);
+            PacketHandler.RegisterServerToClientViewer(0x11, MobileStatus);
+            PacketHandler.RegisterServerToClientViewer(0x17, NewMobileStatus);
+            PacketHandler.RegisterServerToClientViewer(0x1A, WorldItem);
+            PacketHandler.RegisterServerToClientViewer(0x1B, LoginConfirm);
+            PacketHandler.RegisterServerToClientViewer(0x55, CompleteLogin);
+            PacketHandler.RegisterServerToClientFilter(0x1C, AsciiSpeech);
+            PacketHandler.RegisterServerToClientViewer(0x1D, RemoveObject);
+            PacketHandler.RegisterServerToClientFilter(0x20, MobileUpdate);
+            PacketHandler.RegisterServerToClientViewer(0x24, BeginContainerContent);
+            PacketHandler.RegisterServerToClientFilter(0x25, ContainerContentUpdate);
+            PacketHandler.RegisterServerToClientViewer(0x27, LiftReject);
+            PacketHandler.RegisterServerToClientViewer(0x2D, MobileStatInfo);
+            PacketHandler.RegisterServerToClientFilter(0x2E, EquipmentUpdate);
+            PacketHandler.RegisterServerToClientViewer(0x3A, PlayerSkills);
+            PacketHandler.RegisterServerToClientFilter(0x3C, ContainerContent);
+            PacketHandler.RegisterServerToClientViewer(0x4E, PersonalLight);
+            PacketHandler.RegisterServerToClientViewer(0x4F, GlobalLight);
+            PacketHandler.RegisterServerToClientViewer(0x6F, TradeRequest);
+            PacketHandler.RegisterServerToClientViewer(0x72, ServerSetWarMode);
+            PacketHandler.RegisterServerToClientViewer(0x73, PingResponse);
+            PacketHandler.RegisterServerToClientViewer(0x76, ServerChange);
+            PacketHandler.RegisterServerToClientFilter(0x77, MobileMoving);
+            PacketHandler.RegisterServerToClientFilter(0x78, MobileIncoming);
+            PacketHandler.RegisterServerToClientViewer(0x7C, SendMenu);
+            PacketHandler.RegisterServerToClientFilter(0x8C, ServerAddress);
+            PacketHandler.RegisterServerToClientViewer(0xA1, HitsUpdate);
+            PacketHandler.RegisterServerToClientViewer(0xA2, ManaUpdate);
+            PacketHandler.RegisterServerToClientViewer(0xA3, StamUpdate);
+            PacketHandler.RegisterServerToClientViewer(0xA8, ServerList);
+            PacketHandler.RegisterServerToClientViewer(0xAB, DisplayStringQuery);
+            PacketHandler.RegisterServerToClientViewer(0xAF, DeathAnimation);
+            PacketHandler.RegisterServerToClientFilter(0xAE, UnicodeSpeech);
+            PacketHandler.RegisterServerToClientViewer(0xB0, SendGump);
+            PacketHandler.RegisterServerToClientViewer(0xB9, Features);
+            PacketHandler.RegisterServerToClientViewer(0xBC, ChangeSeason);
+            PacketHandler.RegisterServerToClientFilter(0xBE, OnAssistVersion);
+            PacketHandler.RegisterServerToClientViewer(0xBF, ExtendedPacket);
+            PacketHandler.RegisterServerToClientFilter(0xC1, OnLocalizedMessage);
+            PacketHandler.RegisterServerToClientFilter(0xC2, UnicodePromptReceived);
+            PacketHandler.RegisterServerToClientFilter(0xC8, SetUpdateRange);
+            PacketHandler.RegisterServerToClientFilter(0xCC, OnLocalizedMessageAffix);
+            PacketHandler.RegisterServerToClientViewer(0xD6, EncodedPacket); //0xD6 "encoded" packets
+            PacketHandler.RegisterServerToClientViewer(0xD8, CustomHouseInfo);
             //PacketHandler.RegisterServerToClientFilter( 0xDC, new PacketFilterCallback( ServOPLHash ) );
-            PacketHandler.RegisterServerToClientViewer(0xDD, new PacketViewerCallback(CompressedGump));
+            PacketHandler.RegisterServerToClientViewer(0xDD, CompressedGump);
             PacketHandler.RegisterServerToClientViewer(0xF0,
-                new PacketViewerCallback(RunUOProtocolExtention)); // Special RunUO protocol extentions (for KUOC/Razor)
+                RunUOProtocolExtention); // Special RunUO protocol extentions (for KUOC/Razor)
 
-            PacketHandler.RegisterServerToClientViewer(0xF3, new PacketViewerCallback(SAWorldItem));
+            PacketHandler.RegisterServerToClientViewer(0xF3, SAWorldItem);
 
-            PacketHandler.RegisterServerToClientViewer(0x2C, new PacketViewerCallback(ResurrectionGump));
+            PacketHandler.RegisterServerToClientViewer(0x2C, ResurrectionGump);
 
-            PacketHandler.RegisterServerToClientViewer(0xDF, new PacketViewerCallback(BuffDebuff));
+            PacketHandler.RegisterServerToClientViewer(0xDF, BuffDebuff);
 
-            PacketHandler.RegisterServerToClientFilter(0x54, new PacketFilterCallback(PlaySoundEffect));
-            PacketHandler.RegisterServerToClientFilter(0x6D, new PacketFilterCallback(PlayMusic));
+            PacketHandler.RegisterServerToClientFilter(0x54, PlaySoundEffect);
+            PacketHandler.RegisterServerToClientFilter(0x6D, PlayMusic);
         }
 
         private static void DisplayStringQuery(PacketReader p, PacketHandlerEventArgs args)
@@ -417,7 +413,7 @@ namespace Assistant
                     {
                         ScriptManager.AddToScript($"skill '{skill.Name}'");
                     }
-                    
+
                     if (World.Player != null && (skillIndex == Skills.StealthIndex && !World.Player.Visible))
                         StealthSteps.Hide();
 
@@ -729,9 +725,9 @@ namespace Assistant
             Item item = World.FindItem(ser);
             if (item != null)
             {
-                if (m_IgnoreGumps.Contains(item))
+                if (_ignoreGumps.Contains(item))
                 {
-                    m_IgnoreGumps.Remove(item);
+                    _ignoreGumps.Remove(item);
                     args.Block = true;
                 }
             }
@@ -827,7 +823,7 @@ namespace Assistant
 
             if (i.Layer == Layer.Backpack && isNew && Config.GetBool("AutoSearch") && ser == World.Player.Serial)
             {
-                m_IgnoreGumps.Add(i);
+                _ignoreGumps.Add(i);
                 PlayerData.DoubleClick(i);
             }
         }
@@ -940,14 +936,16 @@ namespace Assistant
                         {
                             if (Config.GetBool("DisplaySkillChangesOverhead"))
                             {
-                                World.Player.OverheadMessage(LocString.SkillChangeOverhead, Skills.GetSkillDisplayName(i),
+                                World.Player.OverheadMessage(LocString.SkillChangeOverhead,
+                                    Skills.GetSkillDisplayName(i),
                                     skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
                                     skill.FixedBase - old > 0 ? "+" : "",
                                     (skill.FixedBase - old) / 10.0);
                             }
                             else
                             {
-                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, Skills.GetSkillDisplayName(i),
+                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged,
+                                    Skills.GetSkillDisplayName(i),
                                     skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
                                     skill.FixedBase - old > 0 ? "+" : "", ((double) (skill.FixedBase - old)) / 10.0);
                             }
@@ -980,14 +978,16 @@ namespace Assistant
                         {
                             if (Config.GetBool("DisplaySkillChangesOverhead"))
                             {
-                                World.Player.OverheadMessage(LocString.SkillChangeOverhead, Skills.GetSkillDisplayName(i),
+                                World.Player.OverheadMessage(LocString.SkillChangeOverhead,
+                                    Skills.GetSkillDisplayName(i),
                                     skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
                                     skill.FixedBase - old > 0 ? "+" : "",
                                     (skill.FixedBase - old) / 10.0);
                             }
                             else
                             {
-                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged, Skills.GetSkillDisplayName(i),
+                                World.Player.SendMessage(MsgLevel.Force, LocString.SkillChanged,
+                                    Skills.GetSkillDisplayName(i),
                                     skill.Delta > 0 ? "+" : "", skill.Delta, skill.Value,
                                     ((double) (skill.FixedBase - old)) / 10.0, skill.FixedBase - old > 0 ? "+" : "");
                             }
@@ -1620,7 +1620,7 @@ namespace Assistant
                 if (item.Layer == Layer.Backpack && isNew && Config.GetBool("AutoSearch") && m == World.Player &&
                     m != null)
                 {
-                    m_IgnoreGumps.Add(item);
+                    _ignoreGumps.Add(item);
                     PlayerData.DoubleClick(item);
                 }
             }
@@ -1911,165 +1911,14 @@ namespace Assistant
                 args.Block = WallStaticFilter.MakeWallStatic(item);
         }
 
-        public static System.Text.StringBuilder SpellPowerwordsBuilder { get; set; } = new System.Text.StringBuilder(Config.GetString("SpellFormat"));
+        public static System.Text.StringBuilder SpellPowerwordsBuilder { get; set; } =
+            new System.Text.StringBuilder(Config.GetString("SpellFormat"));
 
         private static void ResetSpellPowerwordsBuilder()
         {
             SpellPowerwordsBuilder.Remove(0, SpellPowerwordsBuilder.Length);
             SpellPowerwordsBuilder.Insert(0, Config.GetString("SpellFormat"));
         }
-
-        /*public static void HandleSpeech(Packet p, PacketHandlerEventArgs args, Serial ser, ushort body,
-            MessageType type, ushort hue, ushort font, string lang, string name, string text)
-        {
-            if (World.Player == null)
-                return;
-
-            if (type == MessageType.Spell)
-            {
-                Spell s = Spell.Get(text.Trim());
-                bool replaced = false;
-
-                if (Config.GetBool("OverrideSpellFormat") && s != null)
-                {
-                    ResetSpellPowerwordsBuilder();
-
-                    System.Text.StringBuilder sb = SpellPowerwordsBuilder;
-                    sb.Replace(@"{power}", s.WordsOfPower);
-                    string spell = Language.GetString(s.Name);
-                    sb.Replace(@"{spell}", spell);
-                    sb.Replace(@"{name}", spell);
-                    sb.Replace(@"{circle}", s.Circle.ToString());
-
-                    string newText = sb.ToString();
-
-                    if (newText != null && newText != "" && newText != text)
-                    {
-                        Client.Instance.SendToClient(new AsciiMessage(ser, body, MessageType.Spell, s.GetHue(hue), font,
-                            name, newText));
-
-                        replaced = true;
-                        args.Block = true;
-                    }
-                }
-
-                if (!replaced && Config.GetBool("ForceSpellHue"))
-                {
-                    p.Seek(10, SeekOrigin.Begin);
-                    if (s != null)
-                        p.Write((ushort) s.GetHue(hue));
-                    else
-                        p.Write((ushort) Config.GetInt("NeutralSpellHue"));
-                }
-            }
-            else if (ser.IsMobile && type == MessageType.Label)
-            {
-                Mobile m = World.FindMobile(ser);
-                if (m != null /*&& ( m.Name == null || m.Name == "" || m.Name == "(Not Seen)" )#1# &&
-                    m.Name.IndexOf(text) != 5 && m != World.Player && !(text.StartsWith("(") && text.EndsWith(")")))
-                    m.Name = text;
-            }
-            /*else if ( Spell.Get( text.Trim() ) != null )
-            { // send fake spells to bottom left
-                 p.Seek( 3, SeekOrigin.Begin );
-                 p.Write( (uint)0xFFFFFFFF );
-            }#1#
-            else
-            {
-                if (ser == Serial.MinusOne && name == "System")
-                {
-                    if (Config.GetBool("FilterSnoopMsg") && text.IndexOf(World.Player.Name) == -1 &&
-                        text.StartsWith("You notice") && text.IndexOf("attempting to peek into") != -1 &&
-                        text.IndexOf("belongings") != -1)
-                    {
-                        args.Block = true;
-                        return;
-                    }
-
-                    if (text.StartsWith("You've committed a criminal act") || text.StartsWith("You are now a criminal"))
-                    {
-                        World.Player.ResetCriminalTimer();
-                    }
-
-                    // Overhead message override
-                    OverheadManager.DisplayOverheadMessage(text);
-                }
-
-                if (Config.GetBool("ShowContainerLabels") && ser.IsItem)
-                {
-                    Item item = World.FindItem(ser);
-
-                    if (item == null || !item.IsContainer)
-                        return;
-
-                    foreach (ContainerLabels.ContainerLabel label in ContainerLabels.ContainerLabelList)
-                    {
-                        // Check if its the serial match and if the text matches the name (since we override that for the label)
-                        if (Serial.Parse(label.Id) == ser &&
-                            (item.ItemID.ItemData.Name.Equals(text) ||
-                             label.Alias.Equals(text, StringComparison.OrdinalIgnoreCase)))
-                        {
-                            string labelDisplay =
-                                $"{Config.GetString("ContainerLabelFormat").Replace("{label}", label.Label).Replace("{type}", text)}";
-
-                            //ContainerLabelStyle
-                            if (Config.GetInt("ContainerLabelStyle") == 0)
-                            {
-                                Client.Instance.SendToClient(new AsciiMessage(ser, item.ItemID.Value, MessageType.Label,
-                                    label.Hue, 3, Language.CliLocName, labelDisplay));
-                            }
-                            else
-                            {
-                                Client.Instance.SendToClient(new UnicodeMessage(ser, item.ItemID.Value,
-                                    MessageType.Label, label.Hue, 3, Language.CliLocName, "", labelDisplay));
-                            }
-
-                            // block the actual message from coming through since we have it in the label
-                            args.Block = true;
-
-                            ContainerLabels.LastContainerLabelDisplayed = ser;
-
-                            break;
-                        }
-                    }
-                }
-
-                if ((type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper ||
-                     type == MessageType.Yell) && ser.IsMobile && ser != World.Player.Serial)
-                {
-                    if (ser.IsMobile && IgnoreAgent.IsIgnored(ser))
-                    {
-                        args.Block = true;
-                        return;
-                    }
-
-                    if (ser.IsMobile && TextFilterManager.IsFiltered(text))
-                    {
-                        args.Block = true;
-                        return;
-                    }
-
-                    if (Config.GetBool("ForceSpeechHue"))
-                    {
-                        p.Seek(10, SeekOrigin.Begin);
-                        p.Write((ushort) Config.GetInt("SpeechHue"));
-                    }
-                }
-
-                if (!ser.IsValid || ser == World.Player.Serial || ser.IsItem)
-                {
-                    SystemMessages.Add(text);
-                }
-
-                if (Config.GetBool("FilterSystemMessages") && ser == Serial.MinusOne || ser == Serial.Zero)
-                {
-                    if (!MessageQueue.Enqueue(ser, null, body, type, hue, font, lang, name, text))
-                    {
-                        args.Block = true;
-                    }
-                }
-            }
-        }*/
 
         public static void AsciiSpeech(Packet p, PacketHandlerEventArgs args)
         {
@@ -2081,7 +1930,7 @@ namespace Assistant
             ushort font = p.ReadUInt16();
             string name = p.ReadStringSafe(30);
             string text = p.ReadStringSafe();
-            
+
             if (World.Player != null && serial == Serial.Zero && body == 0 && type == MessageType.Regular &&
                 hue == 0xFFFF && font == 0xFFFF && name == "SYSTEM")
             {
@@ -2137,12 +1986,12 @@ namespace Assistant
             try
             {
                 string text = Language.ClilocFormat(num, ext_str);
-                MessageManager.HandleMessage(p, args, serial, body, type, hue, font, Language.CliLocName.ToUpper(), name, text);
+                MessageManager.HandleMessage(p, args, serial, body, type, hue, font, Language.CliLocName.ToUpper(),
+                    name, text);
             }
             catch (Exception e)
             {
-                Engine.LogCrash(new Exception($"Exception in Ultima.dll cliloc: {num}, {ext_str}",
-                    e));
+                Engine.LogCrash(new Exception($"Exception in Ultima.dll cliloc: {num}, {ext_str}", e));
             }
         }
 
@@ -2166,7 +2015,7 @@ namespace Assistant
                 (num >= 1060493 && num < 1060493 + 10) || // chiv
                 (num >= 1060595 && num < 1060595 + 6) || // bush
                 (num >= 1060610 && num < 1060610 + 8) // ninj
-            )
+               )
             {
                 type = MessageType.Spell;
             }
@@ -2181,7 +2030,8 @@ namespace Assistant
                 text = $"{Language.ClilocFormat(num, args)}{affix}";
             }
 
-            MessageManager.HandleMessage(p, phea, serial, body, type, hue, font, Language.CliLocName.ToUpper(), name, text);
+            MessageManager.HandleMessage(p, phea, serial, body, type, hue, font, Language.CliLocName.ToUpper(), name,
+                text);
         }
 
         private static void SendGump(PacketReader p, PacketHandlerEventArgs args)
@@ -2426,8 +2276,8 @@ namespace Assistant
                         if (mobile.Name == null || mobile.Name.Length <= 0)
                             mobile.Name = "(Not Seen)";
 
-                        if (!m_Party.Contains(serial))
-                            m_Party.Add(serial);
+                        if (!_party.Contains(serial))
+                            _party.Add(serial);
 
                         if (map == World.Player.Map)
                             mobile.Position = new Point3D(x, y, mobile.Position.Z);
@@ -2454,14 +2304,11 @@ namespace Assistant
             }
         }
 
-        private static List<Serial> m_Party = new List<Serial>();
+        private static List<Serial> _party = new List<Serial>();
 
-        public static List<Serial> Party
-        {
-            get { return m_Party; }
-        }
+        public static List<Serial> Party => _party;
 
-        private static Timer m_PartyDeclineTimer = null;
+        private static Timer _partyDeclineTimer = null;
         public static Serial PartyLeader = Serial.Zero;
 
         private static void OnPartyMessage(PacketReader p, PacketHandlerEventArgs args)
@@ -2470,14 +2317,14 @@ namespace Assistant
             {
                 case 0x01: // List
                 {
-                    m_Party.Clear();
+                    _party.Clear();
 
                     int count = p.ReadByte();
                     for (int i = 0; i < count; i++)
                     {
                         Serial s = p.ReadUInt32();
                         if (World.Player == null || s != World.Player.Serial)
-                            m_Party.Add(s);
+                            _party.Add(s);
                     }
 
                     break;
@@ -2485,7 +2332,7 @@ namespace Assistant
 
                 case 0x02: // Remove Member/Re-list
                 {
-                    m_Party.Clear();
+                    _party.Clear();
                     int count = p.ReadByte();
                     Serial remSerial = p.ReadUInt32(); // the serial of who was removed
 
@@ -2500,7 +2347,7 @@ namespace Assistant
                     {
                         Serial s = p.ReadUInt32();
                         if (World.Player == null || s != World.Player.Serial)
-                            m_Party.Add(s);
+                            _party.Add(s);
                     }
 
                     break;
@@ -2541,10 +2388,10 @@ namespace Assistant
                     }
                     else
                     {
-                        if (m_PartyDeclineTimer == null)
-                            m_PartyDeclineTimer = Timer.DelayedCallback(TimeSpan.FromSeconds(10.0),
+                        if (_partyDeclineTimer == null)
+                            _partyDeclineTimer = Timer.DelayedCallback(TimeSpan.FromSeconds(10.0),
                                 new TimerCallback(PartyAutoDecline));
-                        m_PartyDeclineTimer.Start();
+                        _partyDeclineTimer.Start();
                     }
 
                     break;
@@ -2589,11 +2436,11 @@ namespace Assistant
             }
         }
 
-        private static string m_LastPW = "";
+        private static string _lastPassword = "";
 
         private static void ServerListLogin(Packet p, PacketHandlerEventArgs args)
         {
-            m_LastPW = "";
+            _lastPassword = "";
             if (!Config.GetBool("RememberPwds"))
                 return;
 
@@ -2607,7 +2454,7 @@ namespace Assistant
                 {
                     p.Seek(31, SeekOrigin.Begin);
                     p.WriteAsciiFixed(pass, 30);
-                    m_LastPW = pass;
+                    _lastPassword = pass;
                 }
             }
             else
@@ -2623,11 +2470,11 @@ namespace Assistant
             World.AccountName = p.ReadString(30);
             string password = p.ReadString(30);
 
-            if (password == "" && m_LastPW != "" && Config.GetBool("RememberPwds"))
+            if (password == "" && _lastPassword != "" && Config.GetBool("RememberPwds"))
             {
                 p.Seek(35, SeekOrigin.Begin);
-                p.WriteAsciiFixed(m_LastPW, 30);
-                m_LastPW = "";
+                p.WriteAsciiFixed(_lastPassword, 30);
+                _lastPassword = "";
             }
 
             ScriptManager.OnLogin();
