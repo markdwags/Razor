@@ -409,6 +409,12 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\ArtViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ArtViewer.Designer.cs">
+      <DependentUpon>ArtViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\BuffDebuffOptions.cs">
       <SubType>Form</SubType>
     </Compile>
