@@ -756,6 +756,28 @@ namespace Assistant
             this.screenPrev = new System.Windows.Forms.PictureBox();
             this.dispTime = new System.Windows.Forms.CheckBox();
             this.advancedTab = new System.Windows.Forms.TabPage();
+            this.subAdvancedTab = new System.Windows.Forms.TabControl();
+            this.advancedInfoTab = new System.Windows.Forms.TabPage();
+            this.fontDecrease = new System.Windows.Forms.Button();
+            this.fontIncrease = new System.Windows.Forms.Button();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.lastBackup = new System.Windows.Forms.Label();
+            this.openBackupFolder = new System.Windows.Forms.Button();
+            this.setBackupFolder = new System.Windows.Forms.Button();
+            this.createBackup = new System.Windows.Forms.Button();
+            this.enableUOAAPI = new System.Windows.Forms.CheckBox();
+            this.disableSmartCPU = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.negotiate = new System.Windows.Forms.CheckBox();
+            this.openRazorDataDir = new System.Windows.Forms.Button();
+            this.msglvl = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.logPackets = new System.Windows.Forms.CheckBox();
+            this.statusBox = new System.Windows.Forms.TextBox();
+            this.features = new System.Windows.Forms.TextBox();
+            this.advancedStaffTab = new System.Windows.Forms.TabPage();
+            this.itemTree = new System.Windows.Forms.TreeView();
+            this.artViewer = new Assistant.UI.ArtViewer();
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.linkGitHub = new System.Windows.Forms.LinkLabel();
             this.lblCredits3 = new System.Windows.Forms.Label();
@@ -767,26 +789,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.advancedInfoTab = new System.Windows.Forms.TabPage();
-            this.advancedStaffTab = new System.Windows.Forms.TabPage();
-            this.fontDecrease = new System.Windows.Forms.Button();
-            this.fontIncrease = new System.Windows.Forms.Button();
-            this.groupBox16 = new System.Windows.Forms.GroupBox();
-            this.lastBackup = new System.Windows.Forms.Label();
-            this.openBackupFolder = new System.Windows.Forms.Button();
-            this.setBackupFolder = new System.Windows.Forms.Button();
-            this.createBackup = new System.Windows.Forms.Button();
-            this.enableUOAAPI = new System.Windows.Forms.CheckBox();
-            this.disableSmartCPU = new System.Windows.Forms.Button();
-            this.negotiate = new System.Windows.Forms.CheckBox();
-            this.openRazorDataDir = new System.Windows.Forms.Button();
-            this.msglvl = new System.Windows.Forms.ComboBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.logPackets = new System.Windows.Forms.CheckBox();
-            this.statusBox = new System.Windows.Forms.TextBox();
-            this.features = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -848,10 +850,11 @@ namespace Assistant
             this.screenshotTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).BeginInit();
             this.advancedTab.SuspendLayout();
-            this.aboutTab.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.subAdvancedTab.SuspendLayout();
             this.advancedInfoTab.SuspendLayout();
             this.groupBox16.SuspendLayout();
+            this.advancedStaffTab.SuspendLayout();
+            this.aboutTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
@@ -2179,7 +2182,7 @@ namespace Assistant
             this.groupBox11.Controls.Add(this.razorTitleBarKey);
             this.groupBox11.Controls.Add(this.showInRazorTitleBar);
             this.groupBox11.Controls.Add(this.razorTitleBar);
-            this.groupBox11.Location = new System.Drawing.Point(6, 207);
+            this.groupBox11.Location = new System.Drawing.Point(6, 205);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(490, 71);
             this.groupBox11.TabIndex = 51;
@@ -2224,7 +2227,7 @@ namespace Assistant
             // 
             this.trackDps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.trackDps.AutoSize = true;
-            this.trackDps.Location = new System.Drawing.Point(273, 178);
+            this.trackDps.Location = new System.Drawing.Point(273, 176);
             this.trackDps.Name = "trackDps";
             this.trackDps.Size = new System.Drawing.Size(146, 19);
             this.trackDps.TabIndex = 53;
@@ -2236,7 +2239,7 @@ namespace Assistant
             // 
             this.trackIncomingGold.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.trackIncomingGold.AutoSize = true;
-            this.trackIncomingGold.Location = new System.Drawing.Point(273, 152);
+            this.trackIncomingGold.Location = new System.Drawing.Point(273, 150);
             this.trackIncomingGold.Name = "trackIncomingGold";
             this.trackIncomingGold.Size = new System.Drawing.Size(223, 19);
             this.trackIncomingGold.TabIndex = 52;
@@ -2247,7 +2250,7 @@ namespace Assistant
             // showNotoHue
             // 
             this.showNotoHue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.showNotoHue.Location = new System.Drawing.Point(6, 177);
+            this.showNotoHue.Location = new System.Drawing.Point(6, 175);
             this.showNotoHue.Name = "showNotoHue";
             this.showNotoHue.Size = new System.Drawing.Size(221, 20);
             this.showNotoHue.TabIndex = 51;
@@ -2257,7 +2260,7 @@ namespace Assistant
             // highlightSpellReags
             // 
             this.highlightSpellReags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.highlightSpellReags.Location = new System.Drawing.Point(6, 151);
+            this.highlightSpellReags.Location = new System.Drawing.Point(6, 149);
             this.highlightSpellReags.Name = "highlightSpellReags";
             this.highlightSpellReags.Size = new System.Drawing.Size(205, 20);
             this.highlightSpellReags.TabIndex = 50;
@@ -2274,7 +2277,7 @@ namespace Assistant
             this.groupBox3.Controls.Add(this.showInBar);
             this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(490, 139);
+            this.groupBox3.Size = new System.Drawing.Size(490, 137);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Title Bar Display";
@@ -2352,7 +2355,7 @@ namespace Assistant
             this.titleStr.Multiline = true;
             this.titleStr.Name = "titleStr";
             this.titleStr.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.titleStr.Size = new System.Drawing.Size(478, 85);
+            this.titleStr.Size = new System.Drawing.Size(478, 83);
             this.titleStr.TabIndex = 4;
             this.titleStr.TextChanged += new System.EventHandler(this.titleStr_TextChanged);
             // 
@@ -3064,7 +3067,7 @@ namespace Assistant
             this.waypointList.ItemHeight = 15;
             this.waypointList.Location = new System.Drawing.Point(11, 12);
             this.waypointList.Name = "waypointList";
-            this.waypointList.Size = new System.Drawing.Size(164, 259);
+            this.waypointList.Size = new System.Drawing.Size(164, 244);
             this.waypointList.TabIndex = 0;
             this.waypointList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDoubleClick);
             this.waypointList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDown);
@@ -3695,7 +3698,7 @@ namespace Assistant
             this.filters.IntegralHeight = false;
             this.filters.Location = new System.Drawing.Point(6, 6);
             this.filters.Name = "filters";
-            this.filters.Size = new System.Drawing.Size(197, 273);
+            this.filters.Size = new System.Drawing.Size(197, 271);
             this.filters.TabIndex = 114;
             this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
             // 
@@ -3755,7 +3758,7 @@ namespace Assistant
             this.textFilterList.ItemHeight = 15;
             this.textFilterList.Location = new System.Drawing.Point(6, 48);
             this.textFilterList.Name = "textFilterList";
-            this.textFilterList.Size = new System.Drawing.Size(217, 169);
+            this.textFilterList.Size = new System.Drawing.Size(217, 154);
             this.textFilterList.TabIndex = 0;
             // 
             // enableTextFilter
@@ -3959,7 +3962,7 @@ namespace Assistant
             this.soundFilterList.FormattingEnabled = true;
             this.soundFilterList.Location = new System.Drawing.Point(8, 14);
             this.soundFilterList.Name = "soundFilterList";
-            this.soundFilterList.Size = new System.Drawing.Size(201, 256);
+            this.soundFilterList.Size = new System.Drawing.Size(201, 238);
             this.soundFilterList.TabIndex = 0;
             this.soundFilterList.SelectedIndexChanged += new System.EventHandler(this.soundFilterList_SelectedIndexChanged);
             // 
@@ -4029,7 +4032,7 @@ namespace Assistant
             this.targetFilter.ItemHeight = 15;
             this.targetFilter.Location = new System.Drawing.Point(247, 6);
             this.targetFilter.Name = "targetFilter";
-            this.targetFilter.Size = new System.Drawing.Size(245, 229);
+            this.targetFilter.Size = new System.Drawing.Size(245, 214);
             this.targetFilter.TabIndex = 14;
             // 
             // targetFilterEnabled
@@ -4265,7 +4268,7 @@ namespace Assistant
             this.macroActGroup.Controls.Add(this.actionList);
             this.macroActGroup.Location = new System.Drawing.Point(200, 3);
             this.macroActGroup.Name = "macroActGroup";
-            this.macroActGroup.Size = new System.Drawing.Size(296, 272);
+            this.macroActGroup.Size = new System.Drawing.Size(296, 270);
             this.macroActGroup.TabIndex = 18;
             this.macroActGroup.TabStop = false;
             this.macroActGroup.Text = "Actions";
@@ -4303,7 +4306,7 @@ namespace Assistant
             // loopMacro
             // 
             this.loopMacro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.loopMacro.Location = new System.Drawing.Point(233, 242);
+            this.loopMacro.Location = new System.Drawing.Point(233, 240);
             this.loopMacro.Name = "loopMacro";
             this.loopMacro.Size = new System.Drawing.Size(57, 24);
             this.loopMacro.TabIndex = 4;
@@ -4332,7 +4335,7 @@ namespace Assistant
             this.actionList.ItemHeight = 15;
             this.actionList.Location = new System.Drawing.Point(6, 17);
             this.actionList.Name = "actionList";
-            this.actionList.Size = new System.Drawing.Size(218, 249);
+            this.actionList.Size = new System.Drawing.Size(218, 247);
             this.actionList.TabIndex = 0;
             this.actionList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.actionList_KeyDown);
             this.actionList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.actionList_MouseDown);
@@ -4362,7 +4365,7 @@ namespace Assistant
             this.macroTree.HideSelection = false;
             this.macroTree.Location = new System.Drawing.Point(6, 36);
             this.macroTree.Name = "macroTree";
-            this.macroTree.Size = new System.Drawing.Size(188, 203);
+            this.macroTree.Size = new System.Drawing.Size(188, 201);
             this.macroTree.Sorted = true;
             this.macroTree.TabIndex = 15;
             this.macroTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.macroTree_AfterSelect);
@@ -4371,7 +4374,7 @@ namespace Assistant
             // delMacro
             // 
             this.delMacro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.delMacro.Location = new System.Drawing.Point(120, 245);
+            this.delMacro.Location = new System.Drawing.Point(120, 243);
             this.delMacro.Name = "delMacro";
             this.delMacro.Size = new System.Drawing.Size(74, 30);
             this.delMacro.TabIndex = 14;
@@ -4381,7 +4384,7 @@ namespace Assistant
             // newMacro
             // 
             this.newMacro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.newMacro.Location = new System.Drawing.Point(8, 245);
+            this.newMacro.Location = new System.Drawing.Point(8, 243);
             this.newMacro.Name = "newMacro";
             this.newMacro.Size = new System.Drawing.Size(74, 30);
             this.newMacro.TabIndex = 13;
@@ -4632,7 +4635,7 @@ namespace Assistant
             // scriptSplitContainer.Panel2
             // 
             this.scriptSplitContainer.Panel2.Controls.Add(this.scriptEditor);
-            this.scriptSplitContainer.Size = new System.Drawing.Size(419, 272);
+            this.scriptSplitContainer.Size = new System.Drawing.Size(419, 270);
             this.scriptSplitContainer.SplitterDistance = 110;
             this.scriptSplitContainer.SplitterWidth = 10;
             this.scriptSplitContainer.TabIndex = 28;
@@ -4644,7 +4647,7 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptTree.Location = new System.Drawing.Point(0, 31);
             this.scriptTree.Name = "scriptTree";
-            this.scriptTree.Size = new System.Drawing.Size(110, 241);
+            this.scriptTree.Size = new System.Drawing.Size(110, 239);
             this.scriptTree.Sorted = true;
             this.scriptTree.TabIndex = 29;
             this.scriptTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.scriptTree_AfterSelect);
@@ -4699,7 +4702,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(275, 272);
+            this.scriptEditor.Size = new System.Drawing.Size(251, 270);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -4710,7 +4713,7 @@ namespace Assistant
             // 
             this.scriptGuide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptGuide.AutoSize = true;
-            this.scriptGuide.Location = new System.Drawing.Point(432, 253);
+            this.scriptGuide.Location = new System.Drawing.Point(432, 251);
             this.scriptGuide.Name = "scriptGuide";
             this.scriptGuide.Size = new System.Drawing.Size(60, 26);
             this.scriptGuide.TabIndex = 26;
@@ -5317,12 +5320,265 @@ namespace Assistant
             // advancedTab
             // 
             this.advancedTab.BackColor = System.Drawing.SystemColors.Control;
-            this.advancedTab.Controls.Add(this.tabControl1);
+            this.advancedTab.Controls.Add(this.subAdvancedTab);
             this.advancedTab.Location = new System.Drawing.Point(4, 44);
             this.advancedTab.Name = "advancedTab";
             this.advancedTab.Size = new System.Drawing.Size(519, 322);
             this.advancedTab.TabIndex = 12;
             this.advancedTab.Text = "Advanced";
+            // 
+            // subAdvancedTab
+            // 
+            this.subAdvancedTab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.subAdvancedTab.Controls.Add(this.advancedInfoTab);
+            this.subAdvancedTab.Controls.Add(this.advancedStaffTab);
+            this.subAdvancedTab.Location = new System.Drawing.Point(6, 3);
+            this.subAdvancedTab.Name = "subAdvancedTab";
+            this.subAdvancedTab.SelectedIndex = 0;
+            this.subAdvancedTab.Size = new System.Drawing.Size(506, 313);
+            this.subAdvancedTab.TabIndex = 0;
+            this.subAdvancedTab.SelectedIndexChanged += new System.EventHandler(this.subAdvancedTab_SelectedIndexChanged);
+            // 
+            // advancedInfoTab
+            // 
+            this.advancedInfoTab.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedInfoTab.Controls.Add(this.fontDecrease);
+            this.advancedInfoTab.Controls.Add(this.fontIncrease);
+            this.advancedInfoTab.Controls.Add(this.groupBox16);
+            this.advancedInfoTab.Controls.Add(this.enableUOAAPI);
+            this.advancedInfoTab.Controls.Add(this.disableSmartCPU);
+            this.advancedInfoTab.Controls.Add(this.checkBox1);
+            this.advancedInfoTab.Controls.Add(this.negotiate);
+            this.advancedInfoTab.Controls.Add(this.openRazorDataDir);
+            this.advancedInfoTab.Controls.Add(this.msglvl);
+            this.advancedInfoTab.Controls.Add(this.label17);
+            this.advancedInfoTab.Controls.Add(this.logPackets);
+            this.advancedInfoTab.Controls.Add(this.statusBox);
+            this.advancedInfoTab.Controls.Add(this.features);
+            this.advancedInfoTab.Location = new System.Drawing.Point(4, 24);
+            this.advancedInfoTab.Name = "advancedInfoTab";
+            this.advancedInfoTab.Padding = new System.Windows.Forms.Padding(3);
+            this.advancedInfoTab.Size = new System.Drawing.Size(498, 285);
+            this.advancedInfoTab.TabIndex = 0;
+            this.advancedInfoTab.Text = "Information";
+            // 
+            // fontDecrease
+            // 
+            this.fontDecrease.Location = new System.Drawing.Point(237, 135);
+            this.fontDecrease.Name = "fontDecrease";
+            this.fontDecrease.Size = new System.Drawing.Size(36, 23);
+            this.fontDecrease.TabIndex = 94;
+            this.fontDecrease.Text = "-";
+            this.fontDecrease.UseVisualStyleBackColor = true;
+            // 
+            // fontIncrease
+            // 
+            this.fontIncrease.Location = new System.Drawing.Point(279, 136);
+            this.fontIncrease.Name = "fontIncrease";
+            this.fontIncrease.Size = new System.Drawing.Size(36, 23);
+            this.fontIncrease.TabIndex = 93;
+            this.fontIncrease.Text = "+";
+            this.fontIncrease.UseVisualStyleBackColor = true;
+            // 
+            // groupBox16
+            // 
+            this.groupBox16.Controls.Add(this.lastBackup);
+            this.groupBox16.Controls.Add(this.openBackupFolder);
+            this.groupBox16.Controls.Add(this.setBackupFolder);
+            this.groupBox16.Controls.Add(this.createBackup);
+            this.groupBox16.Location = new System.Drawing.Point(6, 182);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Size = new System.Drawing.Size(225, 99);
+            this.groupBox16.TabIndex = 92;
+            this.groupBox16.TabStop = false;
+            this.groupBox16.Text = "Backup";
+            // 
+            // lastBackup
+            // 
+            this.lastBackup.Location = new System.Drawing.Point(100, 55);
+            this.lastBackup.Name = "lastBackup";
+            this.lastBackup.Size = new System.Drawing.Size(119, 37);
+            this.lastBackup.TabIndex = 82;
+            this.lastBackup.Text = "Last Backup: 01/01/2019 5:54PM";
+            this.lastBackup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // openBackupFolder
+            // 
+            this.openBackupFolder.Location = new System.Drawing.Point(6, 55);
+            this.openBackupFolder.Name = "openBackupFolder";
+            this.openBackupFolder.Size = new System.Drawing.Size(88, 30);
+            this.openBackupFolder.TabIndex = 81;
+            this.openBackupFolder.Text = "Open Folder";
+            this.openBackupFolder.UseVisualStyleBackColor = true;
+            // 
+            // setBackupFolder
+            // 
+            this.setBackupFolder.Location = new System.Drawing.Point(134, 22);
+            this.setBackupFolder.Name = "setBackupFolder";
+            this.setBackupFolder.Size = new System.Drawing.Size(85, 30);
+            this.setBackupFolder.TabIndex = 80;
+            this.setBackupFolder.Text = "Set Folder";
+            this.setBackupFolder.UseVisualStyleBackColor = true;
+            // 
+            // createBackup
+            // 
+            this.createBackup.Location = new System.Drawing.Point(6, 22);
+            this.createBackup.Name = "createBackup";
+            this.createBackup.Size = new System.Drawing.Size(122, 30);
+            this.createBackup.TabIndex = 79;
+            this.createBackup.Text = "Create Backup";
+            this.createBackup.UseVisualStyleBackColor = true;
+            // 
+            // enableUOAAPI
+            // 
+            this.enableUOAAPI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.enableUOAAPI.Checked = true;
+            this.enableUOAAPI.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enableUOAAPI.Location = new System.Drawing.Point(240, 82);
+            this.enableUOAAPI.Name = "enableUOAAPI";
+            this.enableUOAAPI.Size = new System.Drawing.Size(146, 19);
+            this.enableUOAAPI.TabIndex = 91;
+            this.enableUOAAPI.Text = "Enable UOA API";
+            // 
+            // disableSmartCPU
+            // 
+            this.disableSmartCPU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.disableSmartCPU.Location = new System.Drawing.Point(373, 136);
+            this.disableSmartCPU.Name = "disableSmartCPU";
+            this.disableSmartCPU.Size = new System.Drawing.Size(119, 22);
+            this.disableSmartCPU.TabIndex = 90;
+            this.disableSmartCPU.Text = "Disable SmartCPU";
+            this.disableSmartCPU.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox1.Location = new System.Drawing.Point(240, 56);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(197, 20);
+            this.checkBox1.TabIndex = 89;
+            this.checkBox1.Text = "Negotiate features with server";
+            // 
+            // negotiate
+            // 
+            this.negotiate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.negotiate.Location = new System.Drawing.Point(240, 56);
+            this.negotiate.Name = "negotiate";
+            this.negotiate.Size = new System.Drawing.Size(197, 20);
+            this.negotiate.TabIndex = 89;
+            this.negotiate.Text = "Negotiate features with server";
+            // 
+            // openRazorDataDir
+            // 
+            this.openRazorDataDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.openRazorDataDir.Location = new System.Drawing.Point(392, 6);
+            this.openRazorDataDir.Name = "openRazorDataDir";
+            this.openRazorDataDir.Size = new System.Drawing.Size(100, 44);
+            this.openRazorDataDir.TabIndex = 88;
+            this.openRazorDataDir.Text = "Open Data Directory";
+            this.openRazorDataDir.UseVisualStyleBackColor = true;
+            // 
+            // msglvl
+            // 
+            this.msglvl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.msglvl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.msglvl.Items.AddRange(new object[] {
+            "Show All",
+            "Warnings & Errors",
+            "Errors Only",
+            "None"});
+            this.msglvl.Location = new System.Drawing.Point(331, 107);
+            this.msglvl.Name = "msglvl";
+            this.msglvl.Size = new System.Drawing.Size(161, 23);
+            this.msglvl.TabIndex = 87;
+            // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label17.Location = new System.Drawing.Point(237, 108);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(99, 18);
+            this.label17.TabIndex = 86;
+            this.label17.Text = "Razor messages:";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // logPackets
+            // 
+            this.logPackets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.logPackets.Location = new System.Drawing.Point(240, 27);
+            this.logPackets.Name = "logPackets";
+            this.logPackets.Size = new System.Drawing.Size(146, 23);
+            this.logPackets.TabIndex = 85;
+            this.logPackets.Text = "Enable packet logging";
+            // 
+            // statusBox
+            // 
+            this.statusBox.BackColor = System.Drawing.SystemColors.Control;
+            this.statusBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.statusBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statusBox.HideSelection = false;
+            this.statusBox.Location = new System.Drawing.Point(6, 6);
+            this.statusBox.Multiline = true;
+            this.statusBox.Name = "statusBox";
+            this.statusBox.ReadOnly = true;
+            this.statusBox.Size = new System.Drawing.Size(225, 170);
+            this.statusBox.TabIndex = 84;
+            // 
+            // features
+            // 
+            this.features.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.features.Cursor = System.Windows.Forms.Cursors.No;
+            this.features.Location = new System.Drawing.Point(237, 164);
+            this.features.Multiline = true;
+            this.features.Name = "features";
+            this.features.ReadOnly = true;
+            this.features.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.features.Size = new System.Drawing.Size(255, 115);
+            this.features.TabIndex = 83;
+            this.features.Visible = false;
+            // 
+            // advancedStaffTab
+            // 
+            this.advancedStaffTab.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedStaffTab.Controls.Add(this.itemTree);
+            this.advancedStaffTab.Controls.Add(this.artViewer);
+            this.advancedStaffTab.Location = new System.Drawing.Point(4, 24);
+            this.advancedStaffTab.Name = "advancedStaffTab";
+            this.advancedStaffTab.Padding = new System.Windows.Forms.Padding(3);
+            this.advancedStaffTab.Size = new System.Drawing.Size(498, 285);
+            this.advancedStaffTab.TabIndex = 1;
+            this.advancedStaffTab.Text = "Staff Tools";
+            // 
+            // itemTree
+            // 
+            this.itemTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemTree.Location = new System.Drawing.Point(6, 6);
+            this.itemTree.Name = "itemTree";
+            this.itemTree.Size = new System.Drawing.Size(209, 273);
+            this.itemTree.TabIndex = 1;
+            this.itemTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.itemTree_AfterSelect);
+            // 
+            // artViewer
+            // 
+            this.artViewer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.artViewer.Animate = false;
+            this.artViewer.Art = Assistant.UI.Art.Items;
+            this.artViewer.ArtIndex = 0;
+            this.artViewer.Hue = 0;
+            this.artViewer.Location = new System.Drawing.Point(313, 6);
+            this.artViewer.Name = "artViewer";
+            this.artViewer.ResizeTallItems = false;
+            this.artViewer.RoomView = true;
+            this.artViewer.ShowHexID = true;
+            this.artViewer.ShowID = true;
+            this.artViewer.Size = new System.Drawing.Size(179, 196);
+            this.artViewer.TabIndex = 0;
             // 
             // aboutTab
             // 
@@ -5457,226 +5713,6 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.advancedInfoTab);
-            this.tabControl1.Controls.Add(this.advancedStaffTab);
-            this.tabControl1.Location = new System.Drawing.Point(6, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(506, 313);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // advancedInfoTab
-            // 
-            this.advancedInfoTab.BackColor = System.Drawing.SystemColors.Control;
-            this.advancedInfoTab.Controls.Add(this.fontDecrease);
-            this.advancedInfoTab.Controls.Add(this.fontIncrease);
-            this.advancedInfoTab.Controls.Add(this.groupBox16);
-            this.advancedInfoTab.Controls.Add(this.enableUOAAPI);
-            this.advancedInfoTab.Controls.Add(this.disableSmartCPU);
-            this.advancedInfoTab.Controls.Add(this.checkBox1);
-            this.advancedInfoTab.Controls.Add(this.negotiate);
-            this.advancedInfoTab.Controls.Add(this.openRazorDataDir);
-            this.advancedInfoTab.Controls.Add(this.msglvl);
-            this.advancedInfoTab.Controls.Add(this.label17);
-            this.advancedInfoTab.Controls.Add(this.logPackets);
-            this.advancedInfoTab.Controls.Add(this.statusBox);
-            this.advancedInfoTab.Controls.Add(this.features);
-            this.advancedInfoTab.Location = new System.Drawing.Point(4, 24);
-            this.advancedInfoTab.Name = "advancedInfoTab";
-            this.advancedInfoTab.Padding = new System.Windows.Forms.Padding(3);
-            this.advancedInfoTab.Size = new System.Drawing.Size(498, 285);
-            this.advancedInfoTab.TabIndex = 0;
-            this.advancedInfoTab.Text = "Information";
-            // 
-            // advancedStaffTab
-            // 
-            this.advancedStaffTab.BackColor = System.Drawing.SystemColors.Control;
-            this.advancedStaffTab.Location = new System.Drawing.Point(4, 24);
-            this.advancedStaffTab.Name = "advancedStaffTab";
-            this.advancedStaffTab.Padding = new System.Windows.Forms.Padding(3);
-            this.advancedStaffTab.Size = new System.Drawing.Size(498, 285);
-            this.advancedStaffTab.TabIndex = 1;
-            this.advancedStaffTab.Text = "Staff Tools";
-            // 
-            // fontDecrease
-            // 
-            this.fontDecrease.Location = new System.Drawing.Point(237, 135);
-            this.fontDecrease.Name = "fontDecrease";
-            this.fontDecrease.Size = new System.Drawing.Size(36, 23);
-            this.fontDecrease.TabIndex = 94;
-            this.fontDecrease.Text = "-";
-            this.fontDecrease.UseVisualStyleBackColor = true;
-            // 
-            // fontIncrease
-            // 
-            this.fontIncrease.Location = new System.Drawing.Point(279, 136);
-            this.fontIncrease.Name = "fontIncrease";
-            this.fontIncrease.Size = new System.Drawing.Size(36, 23);
-            this.fontIncrease.TabIndex = 93;
-            this.fontIncrease.Text = "+";
-            this.fontIncrease.UseVisualStyleBackColor = true;
-            // 
-            // groupBox16
-            // 
-            this.groupBox16.Controls.Add(this.lastBackup);
-            this.groupBox16.Controls.Add(this.openBackupFolder);
-            this.groupBox16.Controls.Add(this.setBackupFolder);
-            this.groupBox16.Controls.Add(this.createBackup);
-            this.groupBox16.Location = new System.Drawing.Point(6, 182);
-            this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(225, 99);
-            this.groupBox16.TabIndex = 92;
-            this.groupBox16.TabStop = false;
-            this.groupBox16.Text = "Backup";
-            // 
-            // lastBackup
-            // 
-            this.lastBackup.Location = new System.Drawing.Point(100, 55);
-            this.lastBackup.Name = "lastBackup";
-            this.lastBackup.Size = new System.Drawing.Size(119, 37);
-            this.lastBackup.TabIndex = 82;
-            this.lastBackup.Text = "Last Backup: 01/01/2019 5:54PM";
-            this.lastBackup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // openBackupFolder
-            // 
-            this.openBackupFolder.Location = new System.Drawing.Point(6, 55);
-            this.openBackupFolder.Name = "openBackupFolder";
-            this.openBackupFolder.Size = new System.Drawing.Size(88, 30);
-            this.openBackupFolder.TabIndex = 81;
-            this.openBackupFolder.Text = "Open Folder";
-            this.openBackupFolder.UseVisualStyleBackColor = true;
-            // 
-            // setBackupFolder
-            // 
-            this.setBackupFolder.Location = new System.Drawing.Point(134, 22);
-            this.setBackupFolder.Name = "setBackupFolder";
-            this.setBackupFolder.Size = new System.Drawing.Size(85, 30);
-            this.setBackupFolder.TabIndex = 80;
-            this.setBackupFolder.Text = "Set Folder";
-            this.setBackupFolder.UseVisualStyleBackColor = true;
-            // 
-            // createBackup
-            // 
-            this.createBackup.Location = new System.Drawing.Point(6, 22);
-            this.createBackup.Name = "createBackup";
-            this.createBackup.Size = new System.Drawing.Size(122, 30);
-            this.createBackup.TabIndex = 79;
-            this.createBackup.Text = "Create Backup";
-            this.createBackup.UseVisualStyleBackColor = true;
-            // 
-            // enableUOAAPI
-            // 
-            this.enableUOAAPI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.enableUOAAPI.Checked = true;
-            this.enableUOAAPI.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enableUOAAPI.Location = new System.Drawing.Point(240, 82);
-            this.enableUOAAPI.Name = "enableUOAAPI";
-            this.enableUOAAPI.Size = new System.Drawing.Size(146, 19);
-            this.enableUOAAPI.TabIndex = 91;
-            this.enableUOAAPI.Text = "Enable UOA API";
-            // 
-            // disableSmartCPU
-            // 
-            this.disableSmartCPU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.disableSmartCPU.Location = new System.Drawing.Point(373, 136);
-            this.disableSmartCPU.Name = "disableSmartCPU";
-            this.disableSmartCPU.Size = new System.Drawing.Size(119, 22);
-            this.disableSmartCPU.TabIndex = 90;
-            this.disableSmartCPU.Text = "Disable SmartCPU";
-            this.disableSmartCPU.UseVisualStyleBackColor = true;
-            // 
-            // negotiate
-            // 
-            this.negotiate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.negotiate.Location = new System.Drawing.Point(240, 56);
-            this.negotiate.Name = "negotiate";
-            this.negotiate.Size = new System.Drawing.Size(197, 20);
-            this.negotiate.TabIndex = 89;
-            this.negotiate.Text = "Negotiate features with server";
-            // 
-            // openRazorDataDir
-            // 
-            this.openRazorDataDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openRazorDataDir.Location = new System.Drawing.Point(392, 6);
-            this.openRazorDataDir.Name = "openRazorDataDir";
-            this.openRazorDataDir.Size = new System.Drawing.Size(100, 44);
-            this.openRazorDataDir.TabIndex = 88;
-            this.openRazorDataDir.Text = "Open Data Directory";
-            this.openRazorDataDir.UseVisualStyleBackColor = true;
-            // 
-            // msglvl
-            // 
-            this.msglvl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.msglvl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.msglvl.Items.AddRange(new object[] {
-            "Show All",
-            "Warnings & Errors",
-            "Errors Only",
-            "None"});
-            this.msglvl.Location = new System.Drawing.Point(331, 107);
-            this.msglvl.Name = "msglvl";
-            this.msglvl.Size = new System.Drawing.Size(161, 23);
-            this.msglvl.TabIndex = 87;
-            // 
-            // label17
-            // 
-            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label17.Location = new System.Drawing.Point(237, 108);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(99, 18);
-            this.label17.TabIndex = 86;
-            this.label17.Text = "Razor messages:";
-            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // logPackets
-            // 
-            this.logPackets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.logPackets.Location = new System.Drawing.Point(240, 27);
-            this.logPackets.Name = "logPackets";
-            this.logPackets.Size = new System.Drawing.Size(146, 23);
-            this.logPackets.TabIndex = 85;
-            this.logPackets.Text = "Enable packet logging";
-            // 
-            // statusBox
-            // 
-            this.statusBox.BackColor = System.Drawing.SystemColors.Control;
-            this.statusBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.statusBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statusBox.HideSelection = false;
-            this.statusBox.Location = new System.Drawing.Point(6, 6);
-            this.statusBox.Multiline = true;
-            this.statusBox.Name = "statusBox";
-            this.statusBox.ReadOnly = true;
-            this.statusBox.Size = new System.Drawing.Size(225, 170);
-            this.statusBox.TabIndex = 84;
-            // 
-            // features
-            // 
-            this.features.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.features.Cursor = System.Windows.Forms.Cursors.No;
-            this.features.Location = new System.Drawing.Point(237, 164);
-            this.features.Multiline = true;
-            this.features.Name = "features";
-            this.features.ReadOnly = true;
-            this.features.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.features.Size = new System.Drawing.Size(255, 117);
-            this.features.TabIndex = 83;
-            this.features.Visible = false;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox1.Location = new System.Drawing.Point(240, 56);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(197, 20);
-            this.checkBox1.TabIndex = 89;
-            this.checkBox1.Text = "Negotiate features with server";
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -5785,12 +5821,13 @@ namespace Assistant
             this.screenshotTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenPrev)).EndInit();
             this.advancedTab.ResumeLayout(false);
-            this.aboutTab.ResumeLayout(false);
-            this.aboutTab.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.subAdvancedTab.ResumeLayout(false);
             this.advancedInfoTab.ResumeLayout(false);
             this.advancedInfoTab.PerformLayout();
             this.groupBox16.ResumeLayout(false);
+            this.advancedStaffTab.ResumeLayout(false);
+            this.aboutTab.ResumeLayout(false);
+            this.aboutTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -5923,7 +5960,7 @@ namespace Assistant
         private Label hkCmdLabel;
         private ColumnHeader cliLocSound;
         private Button setSound;
-        private TabControl tabControl1;
+        private TabControl subAdvancedTab;
         private TabPage advancedInfoTab;
         private Button fontDecrease;
         private Button fontIncrease;
@@ -5943,5 +5980,7 @@ namespace Assistant
         private TextBox features;
         private TabPage advancedStaffTab;
         private CheckBox checkBox1;
+        private UI.ArtViewer artViewer;
+        private TreeView itemTree;
     }
 }

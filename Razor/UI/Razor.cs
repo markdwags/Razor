@@ -35,6 +35,7 @@ using Assistant.Core;
 using Assistant.Scripts;
 using Assistant.UI;
 using Ultima;
+using Art = Assistant.UI.Art;
 using ContainerLabels = Assistant.UI.ContainerLabels;
 using Exception = System.Exception;
 
@@ -7836,6 +7837,102 @@ namespace Assistant
                 {
                     button.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                 }
+            }
+        }
+
+        private void AddTreeNode(XmlNode xmlNode, TreeNode treeNode)
+        {
+            XmlNode xNode;
+            TreeNode tNode;
+            XmlNodeList xNodeList;
+            if (xmlNode.HasChildNodes) //The current node has children
+            {
+                xNodeList = xmlNode.ChildNodes;
+                for (int x = 0; x <= xNodeList.Count - 1; x++)
+                    //Loop through the child nodes
+                {
+                    xNode = xmlNode.ChildNodes[x];
+
+                    if (xNode.Attributes != null)
+                    {
+                        XmlAttribute name = xNode.Attributes["name"];
+                        //XmlAttribute id = xNode.Attributes["ID"];
+
+                        if (name != null)
+                        {
+                            treeNode.Nodes.Add(new TreeNode(name.Value));
+                        } 
+                        /*else if (id != null)
+                        {
+                            treeNode.Nodes.Add(new TreeNode(id.Value));
+                        }*/
+                        else
+                        {
+                            treeNode.Nodes.Add(new TreeNode(xNode.Name));
+                        }
+                    }
+                    else
+                    {
+                        treeNode.Nodes.Add(new TreeNode(xNode.Name));
+                    }
+
+                    tNode = treeNode.Nodes[x];
+                    AddTreeNode(xNode, tNode);
+                }
+            }
+            else
+            {
+                //No children, so add the outer xml (trimming off whitespace)
+                XmlAttribute id = xmlNode.Attributes?["ID"];
+                
+                if (id != null)
+                {
+                    int itemId = Utility.ToInt32(id.Value, 0x0);
+                    string itemName = TileData.ItemTable[itemId].Name;
+
+                    if (string.IsNullOrEmpty(itemName))
+                    {
+                        treeNode.Text = $"{id.Value}";
+                    }
+                    else
+                    {
+                        treeNode.Text = $"{itemName} ({id.Value})";
+                    }
+
+                    treeNode.Tag = itemId;
+
+                }
+                else
+                {
+                    xmlNode.OuterXml.Trim();
+                }
+            }
+        }
+
+        private void subAdvancedTab_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (itemTree.Nodes.Count == 0)
+            {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.Load(Path.Combine(Config.GetInstallDirectory(), "items.xml"));
+
+                itemTree.BeginUpdate();
+
+                itemTree.Nodes.Clear();
+                itemTree.Nodes.Add(new TreeNode(xDoc.DocumentElement.Name));
+
+                TreeNode tNode = itemTree.Nodes[0];
+                AddTreeNode(xDoc.DocumentElement, tNode);
+
+                itemTree.EndUpdate();
+            }
+        }
+
+        private void itemTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Tag != null)
+            {
+                artViewer.ArtIndex = (int)e.Node.Tag;
             }
         }
     }
