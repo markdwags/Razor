@@ -795,7 +795,6 @@ namespace Assistant
             this.doorNorthCW = new System.Windows.Forms.Button();
             this.doorWestCCW = new System.Windows.Forms.Button();
             this.doorWestCW = new System.Windows.Forms.Button();
-            this.advancedStaffLights = new System.Windows.Forms.TabPage();
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.linkGitHub = new System.Windows.Forms.LinkLabel();
             this.lblCredits3 = new System.Windows.Forms.Label();
@@ -4723,7 +4722,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(185, 270);
+            this.scriptEditor.Size = new System.Drawing.Size(173, 270);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -5356,7 +5355,6 @@ namespace Assistant
             this.subAdvancedTab.Controls.Add(this.advancedInfoTab);
             this.subAdvancedTab.Controls.Add(this.advancedStaffDeco);
             this.subAdvancedTab.Controls.Add(this.advancedStaffDoors);
-            this.subAdvancedTab.Controls.Add(this.advancedStaffLights);
             this.subAdvancedTab.Location = new System.Drawing.Point(6, 3);
             this.subAdvancedTab.Name = "subAdvancedTab";
             this.subAdvancedTab.SelectedIndex = 0;
@@ -5575,10 +5573,10 @@ namespace Assistant
             this.advancedStaffDeco.Controls.Add(this.itemAdd);
             this.advancedStaffDeco.Controls.Add(this.itemTree);
             this.advancedStaffDeco.Controls.Add(this.artViewer);
-            this.advancedStaffDeco.Location = new System.Drawing.Point(4, 22);
+            this.advancedStaffDeco.Location = new System.Drawing.Point(4, 24);
             this.advancedStaffDeco.Name = "advancedStaffDeco";
             this.advancedStaffDeco.Padding = new System.Windows.Forms.Padding(3);
-            this.advancedStaffDeco.Size = new System.Drawing.Size(498, 287);
+            this.advancedStaffDeco.Size = new System.Drawing.Size(498, 285);
             this.advancedStaffDeco.TabIndex = 1;
             this.advancedStaffDeco.Text = "Decoration";
             // 
@@ -5652,9 +5650,10 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemTree.Location = new System.Drawing.Point(6, 6);
             this.itemTree.Name = "itemTree";
-            this.itemTree.Size = new System.Drawing.Size(209, 275);
+            this.itemTree.Size = new System.Drawing.Size(209, 273);
             this.itemTree.TabIndex = 1;
             this.itemTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.itemTree_AfterSelect);
+            this.itemTree.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.itemTree_MouseDoubleClick);
             // 
             // artViewer
             // 
@@ -5814,15 +5813,6 @@ namespace Assistant
             this.doorWestCW.UseVisualStyleBackColor = true;
             this.doorWestCW.Click += new System.EventHandler(this.doorWestCW_Click);
             this.doorWestCW.MouseEnter += new System.EventHandler(this.DoorFacingEnter);
-            // 
-            // advancedStaffLights
-            // 
-            this.advancedStaffLights.BackColor = System.Drawing.SystemColors.Control;
-            this.advancedStaffLights.Location = new System.Drawing.Point(4, 22);
-            this.advancedStaffLights.Name = "advancedStaffLights";
-            this.advancedStaffLights.Size = new System.Drawing.Size(498, 287);
-            this.advancedStaffLights.TabIndex = 3;
-            this.advancedStaffLights.Text = "Lights";
             // 
             // aboutTab
             // 
@@ -6245,7 +6235,6 @@ namespace Assistant
         private Button doorNorthCW;
         private Button doorWestCCW;
         private Button doorWestCW;
-        private TabPage advancedStaffLights;
         private TreeView doorTree;
         private UI.ArtViewer doorViewer;
     }
