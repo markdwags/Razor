@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Doors>
+    <Category name="Doors">
+        <Door name="Barred Metal 1" base="1669" item="BarredMetalDoor"></Door>
+        <Door name="Barred Metal 2" base="8173" item="BarredMetalDoor2"></Door>
+        <Door name="Dark Wood" base="1701" item="DarkWoodDoor"></Door>
+        <Door name="Light Wood" base="1749" item="LightWoodDoor"></Door>
+        <Door name="Medium Wood" base="1717" item="MediumWoodDoor"></Door>
+        <Door name="Metal 1" base="1653" item="MetalDoor"></Door>
+        <Door name="Metal 2" base="1733" item="MetalDoor2"></Door>
+        <Door name="Rattan" base="1685" item="RattanDoor"></Door>
+        <Door name="Strong Wood" base="1765" item="StrongWoodDoor"></Door>
+    </Category>
+    <Category name="House Doors">
+        <Door name="Dark Wood" base="1701" item="DarkWoodHouseDoor"></Door>
+        <Door name="Metal" base="1653" item="MetalHouseDoor"></Door>
+    </Category>
+    <Category name="Gates">
+        <Door name="Dark Wood" base="2150" item="DarkWoodGate"></Door>
+        <Door name="Iron" base="2084" item="IronGate"></Door>
+        <Door name="Iron Short" base="2124" item="IronGateShort"></Door>
+        <Door name="Light Wood" base="2105" item="LightWoodGate"></Door>
+    </Category>
+    <Category name="Portcullis" EW="1782" NS="1781" itemEW="PortcullisEW" itemNS="PortcullisNS"></Category>
+    <Category name="Secret Doors">
+        <Door name="Dungeon" base="788" item="SecretDungeonDoor"></Door>
+        <Door name="Light Wood" base="836" item="SecretLightWoodDoor"></Door>
+        <Door name="Stone 1" base="232" item="SecretStoneDoor1"></Door>
+        <Door name="Stone 2" base="804" item="SecretStoneDoor2"></Door>
+        <Door name="Stone 3" base="852" item="SecretStoneDoor3"></Door>
+        <Door name="Wooden" base="820" item="SecretWoodenDoor"></Door>
+    </Category>
+    <Category name="Phantasya Custom">
+        <Door name="Self Locking Door" base="1701" item="SelfLockingDoor"></Door>
+    </Category>
+</Doors>

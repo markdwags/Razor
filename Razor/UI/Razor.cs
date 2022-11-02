@@ -7840,91 +7840,18 @@ namespace Assistant
             }
         }
 
-        private void AddTreeNode(XmlNode xmlNode, TreeNode treeNode)
-        {
-            XmlNode xNode;
-            TreeNode tNode;
-            XmlNodeList xNodeList;
-            if (xmlNode.HasChildNodes) //The current node has children
-            {
-                xNodeList = xmlNode.ChildNodes;
-                for (int x = 0; x <= xNodeList.Count - 1; x++)
-                    //Loop through the child nodes
-                {
-                    xNode = xmlNode.ChildNodes[x];
-
-                    if (xNode.Attributes != null)
-                    {
-                        XmlAttribute name = xNode.Attributes["name"];
-                        //XmlAttribute id = xNode.Attributes["ID"];
-
-                        if (name != null)
-                        {
-                            treeNode.Nodes.Add(new TreeNode(name.Value));
-                        } 
-                        /*else if (id != null)
-                        {
-                            treeNode.Nodes.Add(new TreeNode(id.Value));
-                        }*/
-                        else
-                        {
-                            treeNode.Nodes.Add(new TreeNode(xNode.Name));
-                        }
-                    }
-                    else
-                    {
-                        treeNode.Nodes.Add(new TreeNode(xNode.Name));
-                    }
-
-                    tNode = treeNode.Nodes[x];
-                    AddTreeNode(xNode, tNode);
-                }
-            }
-            else
-            {
-                //No children, so add the outer xml (trimming off whitespace)
-                XmlAttribute id = xmlNode.Attributes?["ID"];
-                
-                if (id != null)
-                {
-                    int itemId = Utility.ToInt32(id.Value, 0x0);
-                    string itemName = TileData.ItemTable[itemId].Name;
-
-                    if (string.IsNullOrEmpty(itemName))
-                    {
-                        treeNode.Text = $"{id.Value}";
-                    }
-                    else
-                    {
-                        treeNode.Text = $"{itemName} ({id.Value})";
-                    }
-
-                    treeNode.Tag = itemId;
-
-                }
-                else
-                {
-                    xmlNode.OuterXml.Trim();
-                }
-            }
-        }
+        
 
         private void subAdvancedTab_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (itemTree.Nodes.Count == 0)
             {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.Load(Path.Combine(Config.GetInstallDirectory(), "items.xml"));
+                StaffToolsManager.LoadItems(itemTree);
+            }
 
-                itemTree.BeginUpdate();
-
-                itemTree.Nodes.Clear();
-                itemTree.Nodes.Add(new TreeNode(xDoc.DocumentElement.Name));
-
-                TreeNode tNode = itemTree.Nodes[0];
-                AddTreeNode(xDoc.DocumentElement, tNode);
-
-                itemTree.EndUpdate();
+            if (doorTree.Nodes.Count == 0)
+            {
+                StaffToolsManager.LoadDoors(doorTree);
             }
         }
 
@@ -7934,6 +7861,190 @@ namespace Assistant
             {
                 artViewer.ArtIndex = (int)e.Node.Tag;
             }
+        }
+
+        private void itemAdd_Click(object sender, EventArgs e)
+        {
+            //string command = "[add static 7893 set movable False hue 0 light Circle225";
+            ItemAddCommand(null, null);
+        }
+
+        private ContextMenuStrip _itemAddContextMenu = null;
+
+        private void itemAdd_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Clicks == 1)
+            {
+                if (_itemAddContextMenu == null)
+                {
+                    _itemAddContextMenu = new ContextMenuStrip();
+                    _itemAddContextMenu.Items.Add("Single", null, ItemAddCommand);
+                    _itemAddContextMenu.Items.Add("Self", null, ItemAddCommand);
+                    _itemAddContextMenu.Items.Add("Multi", null, ItemAddCommand);
+                    _itemAddContextMenu.Items.Add("Contained", null, ItemAddCommand);
+                    _itemAddContextMenu.Items.Add("Area", null, ItemAddCommand);
+                    _itemAddContextMenu.Items.Add("Region", null, ItemAddCommand);
+                    _itemAddContextMenu.Items.Add("Online", null, ItemAddCommand);
+                    _itemAddContextMenu.Items.Add("Global", null, ItemAddCommand);
+                }
+
+                _itemAddContextMenu.Show(itemAdd, new Point(e.X, e.Y));
+            }
+        }
+
+        private void ItemAddCommand(object sender, EventArgs e)
+        {
+            
+            if (itemTree.SelectedNode != null)
+            {
+                TreeNode selectedNode = itemTree.SelectedNode;
+                
+                string command = itemRandomNumber.Value > 0
+                    ? $"[add static {selectedNode.Tag} {itemRandomNumber.Value:F0} set movable {itemMovable.Checked}"
+                    : $"[add static {selectedNode.Tag} set movable {itemMovable.Checked}";
+
+                if (sender == null)
+                {
+                    World.Player.SendMessage(MsgLevel.Info, $"Command: {command}");
+                    World.Player.Say(command);
+                }
+                else
+                {
+                    ToolStripMenuItem item = sender as ToolStripMenuItem;
+
+                    switch (item?.Text)
+                    {
+                        case "Single":
+                            command = $"[single {command.Substring(1)}";
+                            break;
+                        case "Self":
+                            command = $"[self {command.Substring(1)}";
+                            break;
+                        case "Multi":
+                            command = $"[multi {command.Substring(1)}";
+                            break;
+                        case "Contained":
+                            command = $"[contained {command.Substring(1)}";
+                            break;
+                        case "Area":
+                            command = $"[area {command.Substring(1)}";
+                            break;
+                        case "Region":
+                            command = $"[region {command.Substring(1)}";
+                            break;
+                        case "Online":
+                            command = $"[online {command.Substring(1)}";
+                            break;
+                        case "Global":
+                            command = $"[global {command.Substring(1)}";
+                            break;
+                    }
+
+                    World.Player.SendMessage(MsgLevel.Info, $"Command: {command}");
+                    World.Player.Say(command);
+                }
+            }
+        }
+
+        private void itemTile_Click(object sender, EventArgs e)
+        {
+            //[TileZ 0 static 7894 set movable True hue 0 light {light}
+
+            if (itemTree.SelectedNode != null)
+            {
+                TreeNode selectedNode = itemTree.SelectedNode;
+                string command = $"[tilez {itemTileCount.Value:F0} static {selectedNode.Tag} {itemRandomNumber.Value:F0} set movable {itemMovable.Checked.ToString()}";
+
+                World.Player.SendMessage(MsgLevel.Info, $"Command: {command}");
+                World.Player.Say(command);
+            }
+        }
+
+        private void doorTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Tag != null)
+            {
+                doorViewer.ArtIndex = ((DoorInfo)e.Node.Tag).BaseId;
+            }
+        }
+
+        private void doorWestCW_Click(object sender, EventArgs e)
+        {
+            if ((DoorInfo) doorTree.SelectedNode?.Tag != null)
+            {
+                StaffToolsManager.AddDoor((DoorInfo)doorTree.SelectedNode.Tag, "WestCW");
+            }
+        }
+
+        private void doorWestCCW_Click(object sender, EventArgs e)
+        {
+            if ((DoorInfo)doorTree.SelectedNode?.Tag != null)
+            {
+                StaffToolsManager.AddDoor((DoorInfo)doorTree.SelectedNode.Tag, "WestCCW");
+            }
+        }
+
+        private void doorNorthCW_Click(object sender, EventArgs e)
+        {
+            if ((DoorInfo)doorTree.SelectedNode?.Tag != null)
+            {
+                StaffToolsManager.AddDoor((DoorInfo)doorTree.SelectedNode.Tag, "NorthCW");
+            }
+        }
+
+        private void doorNorthCCW_Click(object sender, EventArgs e)
+        {
+            if ((DoorInfo)doorTree.SelectedNode?.Tag != null)
+            {
+                StaffToolsManager.AddDoor((DoorInfo)doorTree.SelectedNode.Tag, "NorthCCW");
+            }
+        }
+
+        private void doorEastCCW_Click(object sender, EventArgs e)
+        {
+            if ((DoorInfo)doorTree.SelectedNode?.Tag != null)
+            {
+                StaffToolsManager.AddDoor((DoorInfo)doorTree.SelectedNode.Tag, "EastCCW");
+            }
+        }
+
+        private void doorEastCW_Click(object sender, EventArgs e)
+        {
+            if ((DoorInfo)doorTree.SelectedNode?.Tag != null)
+            {
+                StaffToolsManager.AddDoor((DoorInfo)doorTree.SelectedNode.Tag, "EastCW");
+            }
+        }
+
+        private void doorSouthCCW_Click(object sender, EventArgs e)
+        {
+            if ((DoorInfo)doorTree.SelectedNode?.Tag != null)
+            {
+                StaffToolsManager.AddDoor((DoorInfo)doorTree.SelectedNode.Tag, "SouthCCW");
+            }
+        }
+
+        private void doorSouthCW_Click(object sender, EventArgs e)
+        {
+            if ((DoorInfo)doorTree.SelectedNode?.Tag != null)
+            {
+                StaffToolsManager.AddDoor((DoorInfo)doorTree.SelectedNode.Tag, "SouthCW");
+            }
+        }
+
+        private void DoorFacingEnter(object sender, EventArgs e)
+        {
+            if ((DoorInfo)doorTree.SelectedNode?.Tag != null)
+            {
+                Button button = sender as Button;
+
+                doorViewer.ArtIndex = ((DoorInfo)doorTree.SelectedNode.Tag).BaseId + StaffToolsManager.GetDoorOffset(button.Name);
+            }
+        }
+
+        private void DoorFacingLeave(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

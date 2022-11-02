@@ -775,9 +775,27 @@ namespace Assistant
             this.logPackets = new System.Windows.Forms.CheckBox();
             this.statusBox = new System.Windows.Forms.TextBox();
             this.features = new System.Windows.Forms.TextBox();
-            this.advancedStaffTab = new System.Windows.Forms.TabPage();
+            this.advancedStaffDeco = new System.Windows.Forms.TabPage();
+            this.itemMovable = new System.Windows.Forms.CheckBox();
+            this.itemRandomNumber = new System.Windows.Forms.NumericUpDown();
+            this.itemRandom = new System.Windows.Forms.CheckBox();
+            this.itemTileCount = new System.Windows.Forms.NumericUpDown();
+            this.itemTile = new System.Windows.Forms.Button();
+            this.itemAdd = new System.Windows.Forms.Button();
             this.itemTree = new System.Windows.Forms.TreeView();
             this.artViewer = new Assistant.UI.ArtViewer();
+            this.advancedStaffDoors = new System.Windows.Forms.TabPage();
+            this.doorViewer = new Assistant.UI.ArtViewer();
+            this.doorTree = new System.Windows.Forms.TreeView();
+            this.doorSouthCW = new System.Windows.Forms.Button();
+            this.doorSouthCCW = new System.Windows.Forms.Button();
+            this.doorEastCW = new System.Windows.Forms.Button();
+            this.doorEastCCW = new System.Windows.Forms.Button();
+            this.doorNorthCCW = new System.Windows.Forms.Button();
+            this.doorNorthCW = new System.Windows.Forms.Button();
+            this.doorWestCCW = new System.Windows.Forms.Button();
+            this.doorWestCW = new System.Windows.Forms.Button();
+            this.advancedStaffLights = new System.Windows.Forms.TabPage();
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.linkGitHub = new System.Windows.Forms.LinkLabel();
             this.lblCredits3 = new System.Windows.Forms.Label();
@@ -853,7 +871,10 @@ namespace Assistant
             this.subAdvancedTab.SuspendLayout();
             this.advancedInfoTab.SuspendLayout();
             this.groupBox16.SuspendLayout();
-            this.advancedStaffTab.SuspendLayout();
+            this.advancedStaffDeco.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.itemRandomNumber)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemTileCount)).BeginInit();
+            this.advancedStaffDoors.SuspendLayout();
             this.aboutTab.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -4702,7 +4723,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(251, 270);
+            this.scriptEditor.Size = new System.Drawing.Size(185, 270);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -5333,7 +5354,9 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.subAdvancedTab.Controls.Add(this.advancedInfoTab);
-            this.subAdvancedTab.Controls.Add(this.advancedStaffTab);
+            this.subAdvancedTab.Controls.Add(this.advancedStaffDeco);
+            this.subAdvancedTab.Controls.Add(this.advancedStaffDoors);
+            this.subAdvancedTab.Controls.Add(this.advancedStaffLights);
             this.subAdvancedTab.Location = new System.Drawing.Point(6, 3);
             this.subAdvancedTab.Name = "subAdvancedTab";
             this.subAdvancedTab.SelectedIndex = 0;
@@ -5541,17 +5564,86 @@ namespace Assistant
             this.features.TabIndex = 83;
             this.features.Visible = false;
             // 
-            // advancedStaffTab
+            // advancedStaffDeco
             // 
-            this.advancedStaffTab.BackColor = System.Drawing.SystemColors.Control;
-            this.advancedStaffTab.Controls.Add(this.itemTree);
-            this.advancedStaffTab.Controls.Add(this.artViewer);
-            this.advancedStaffTab.Location = new System.Drawing.Point(4, 24);
-            this.advancedStaffTab.Name = "advancedStaffTab";
-            this.advancedStaffTab.Padding = new System.Windows.Forms.Padding(3);
-            this.advancedStaffTab.Size = new System.Drawing.Size(498, 285);
-            this.advancedStaffTab.TabIndex = 1;
-            this.advancedStaffTab.Text = "Staff Tools";
+            this.advancedStaffDeco.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedStaffDeco.Controls.Add(this.itemMovable);
+            this.advancedStaffDeco.Controls.Add(this.itemRandomNumber);
+            this.advancedStaffDeco.Controls.Add(this.itemRandom);
+            this.advancedStaffDeco.Controls.Add(this.itemTileCount);
+            this.advancedStaffDeco.Controls.Add(this.itemTile);
+            this.advancedStaffDeco.Controls.Add(this.itemAdd);
+            this.advancedStaffDeco.Controls.Add(this.itemTree);
+            this.advancedStaffDeco.Controls.Add(this.artViewer);
+            this.advancedStaffDeco.Location = new System.Drawing.Point(4, 22);
+            this.advancedStaffDeco.Name = "advancedStaffDeco";
+            this.advancedStaffDeco.Padding = new System.Windows.Forms.Padding(3);
+            this.advancedStaffDeco.Size = new System.Drawing.Size(498, 287);
+            this.advancedStaffDeco.TabIndex = 1;
+            this.advancedStaffDeco.Text = "Decoration";
+            // 
+            // itemMovable
+            // 
+            this.itemMovable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemMovable.AutoSize = true;
+            this.itemMovable.Location = new System.Drawing.Point(221, 109);
+            this.itemMovable.Name = "itemMovable";
+            this.itemMovable.Size = new System.Drawing.Size(72, 19);
+            this.itemMovable.TabIndex = 8;
+            this.itemMovable.Text = "Movable";
+            this.itemMovable.UseVisualStyleBackColor = true;
+            // 
+            // itemRandomNumber
+            // 
+            this.itemRandomNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemRandomNumber.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.itemRandomNumber.Location = new System.Drawing.Point(220, 159);
+            this.itemRandomNumber.Name = "itemRandomNumber";
+            this.itemRandomNumber.Size = new System.Drawing.Size(75, 25);
+            this.itemRandomNumber.TabIndex = 7;
+            // 
+            // itemRandom
+            // 
+            this.itemRandom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemRandom.AutoSize = true;
+            this.itemRandom.Location = new System.Drawing.Point(220, 134);
+            this.itemRandom.Name = "itemRandom";
+            this.itemRandom.Size = new System.Drawing.Size(71, 19);
+            this.itemRandom.TabIndex = 6;
+            this.itemRandom.Text = "Random";
+            this.itemRandom.UseVisualStyleBackColor = true;
+            // 
+            // itemTileCount
+            // 
+            this.itemTileCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemTileCount.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.itemTileCount.Location = new System.Drawing.Point(221, 78);
+            this.itemTileCount.Name = "itemTileCount";
+            this.itemTileCount.Size = new System.Drawing.Size(75, 25);
+            this.itemTileCount.TabIndex = 4;
+            // 
+            // itemTile
+            // 
+            this.itemTile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemTile.Location = new System.Drawing.Point(221, 42);
+            this.itemTile.Name = "itemTile";
+            this.itemTile.Size = new System.Drawing.Size(75, 30);
+            this.itemTile.TabIndex = 3;
+            this.itemTile.Text = "Tile";
+            this.itemTile.UseVisualStyleBackColor = true;
+            this.itemTile.Click += new System.EventHandler(this.itemTile_Click);
+            // 
+            // itemAdd
+            // 
+            this.itemAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemAdd.Location = new System.Drawing.Point(221, 6);
+            this.itemAdd.Name = "itemAdd";
+            this.itemAdd.Size = new System.Drawing.Size(75, 30);
+            this.itemAdd.TabIndex = 2;
+            this.itemAdd.Text = "Add";
+            this.itemAdd.UseVisualStyleBackColor = true;
+            this.itemAdd.Click += new System.EventHandler(this.itemAdd_Click);
+            this.itemAdd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.itemAdd_MouseDown);
             // 
             // itemTree
             // 
@@ -5560,7 +5652,7 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemTree.Location = new System.Drawing.Point(6, 6);
             this.itemTree.Name = "itemTree";
-            this.itemTree.Size = new System.Drawing.Size(209, 273);
+            this.itemTree.Size = new System.Drawing.Size(209, 275);
             this.itemTree.TabIndex = 1;
             this.itemTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.itemTree_AfterSelect);
             // 
@@ -5571,14 +5663,166 @@ namespace Assistant
             this.artViewer.Art = Assistant.UI.Art.Items;
             this.artViewer.ArtIndex = 0;
             this.artViewer.Hue = 0;
-            this.artViewer.Location = new System.Drawing.Point(313, 6);
+            this.artViewer.Location = new System.Drawing.Point(302, 6);
             this.artViewer.Name = "artViewer";
             this.artViewer.ResizeTallItems = false;
             this.artViewer.RoomView = true;
             this.artViewer.ShowHexID = true;
             this.artViewer.ShowID = true;
-            this.artViewer.Size = new System.Drawing.Size(179, 196);
+            this.artViewer.Size = new System.Drawing.Size(190, 178);
             this.artViewer.TabIndex = 0;
+            // 
+            // advancedStaffDoors
+            // 
+            this.advancedStaffDoors.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedStaffDoors.Controls.Add(this.doorViewer);
+            this.advancedStaffDoors.Controls.Add(this.doorTree);
+            this.advancedStaffDoors.Controls.Add(this.doorSouthCW);
+            this.advancedStaffDoors.Controls.Add(this.doorSouthCCW);
+            this.advancedStaffDoors.Controls.Add(this.doorEastCW);
+            this.advancedStaffDoors.Controls.Add(this.doorEastCCW);
+            this.advancedStaffDoors.Controls.Add(this.doorNorthCCW);
+            this.advancedStaffDoors.Controls.Add(this.doorNorthCW);
+            this.advancedStaffDoors.Controls.Add(this.doorWestCCW);
+            this.advancedStaffDoors.Controls.Add(this.doorWestCW);
+            this.advancedStaffDoors.Location = new System.Drawing.Point(4, 24);
+            this.advancedStaffDoors.Name = "advancedStaffDoors";
+            this.advancedStaffDoors.Size = new System.Drawing.Size(498, 285);
+            this.advancedStaffDoors.TabIndex = 2;
+            this.advancedStaffDoors.Text = "Doors";
+            // 
+            // doorViewer
+            // 
+            this.doorViewer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorViewer.Animate = false;
+            this.doorViewer.Art = Assistant.UI.Art.Items;
+            this.doorViewer.ArtIndex = 0;
+            this.doorViewer.Hue = 0;
+            this.doorViewer.Location = new System.Drawing.Point(177, 165);
+            this.doorViewer.MaximumSize = new System.Drawing.Size(318, 318);
+            this.doorViewer.Name = "doorViewer";
+            this.doorViewer.ResizeTallItems = false;
+            this.doorViewer.RoomView = true;
+            this.doorViewer.ShowHexID = true;
+            this.doorViewer.ShowID = true;
+            this.doorViewer.Size = new System.Drawing.Size(318, 117);
+            this.doorViewer.TabIndex = 33;
+            // 
+            // doorTree
+            // 
+            this.doorTree.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.doorTree.Location = new System.Drawing.Point(3, 3);
+            this.doorTree.Name = "doorTree";
+            this.doorTree.Size = new System.Drawing.Size(168, 279);
+            this.doorTree.TabIndex = 32;
+            this.doorTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.doorTree_AfterSelect);
+            // 
+            // doorSouthCW
+            // 
+            this.doorSouthCW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorSouthCW.Image = ((System.Drawing.Image)(resources.GetObject("doorSouthCW.Image")));
+            this.doorSouthCW.Location = new System.Drawing.Point(420, 84);
+            this.doorSouthCW.Name = "doorSouthCW";
+            this.doorSouthCW.Size = new System.Drawing.Size(75, 75);
+            this.doorSouthCW.TabIndex = 31;
+            this.doorSouthCW.UseVisualStyleBackColor = true;
+            this.doorSouthCW.Click += new System.EventHandler(this.doorSouthCW_Click);
+            this.doorSouthCW.MouseEnter += new System.EventHandler(this.DoorFacingEnter);
+            // 
+            // doorSouthCCW
+            // 
+            this.doorSouthCCW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorSouthCCW.Image = ((System.Drawing.Image)(resources.GetObject("doorSouthCCW.Image")));
+            this.doorSouthCCW.Location = new System.Drawing.Point(339, 84);
+            this.doorSouthCCW.Name = "doorSouthCCW";
+            this.doorSouthCCW.Size = new System.Drawing.Size(75, 75);
+            this.doorSouthCCW.TabIndex = 30;
+            this.doorSouthCCW.UseVisualStyleBackColor = true;
+            this.doorSouthCCW.Click += new System.EventHandler(this.doorSouthCCW_Click);
+            this.doorSouthCCW.MouseEnter += new System.EventHandler(this.DoorFacingEnter);
+            // 
+            // doorEastCW
+            // 
+            this.doorEastCW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorEastCW.Image = ((System.Drawing.Image)(resources.GetObject("doorEastCW.Image")));
+            this.doorEastCW.Location = new System.Drawing.Point(258, 84);
+            this.doorEastCW.Name = "doorEastCW";
+            this.doorEastCW.Size = new System.Drawing.Size(75, 75);
+            this.doorEastCW.TabIndex = 29;
+            this.doorEastCW.UseVisualStyleBackColor = true;
+            this.doorEastCW.Click += new System.EventHandler(this.doorEastCW_Click);
+            this.doorEastCW.MouseEnter += new System.EventHandler(this.DoorFacingEnter);
+            // 
+            // doorEastCCW
+            // 
+            this.doorEastCCW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorEastCCW.Image = ((System.Drawing.Image)(resources.GetObject("doorEastCCW.Image")));
+            this.doorEastCCW.Location = new System.Drawing.Point(177, 84);
+            this.doorEastCCW.Name = "doorEastCCW";
+            this.doorEastCCW.Size = new System.Drawing.Size(75, 75);
+            this.doorEastCCW.TabIndex = 28;
+            this.doorEastCCW.UseVisualStyleBackColor = true;
+            this.doorEastCCW.Click += new System.EventHandler(this.doorEastCCW_Click);
+            this.doorEastCCW.MouseEnter += new System.EventHandler(this.DoorFacingEnter);
+            // 
+            // doorNorthCCW
+            // 
+            this.doorNorthCCW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorNorthCCW.Image = ((System.Drawing.Image)(resources.GetObject("doorNorthCCW.Image")));
+            this.doorNorthCCW.Location = new System.Drawing.Point(420, 3);
+            this.doorNorthCCW.Name = "doorNorthCCW";
+            this.doorNorthCCW.Size = new System.Drawing.Size(75, 75);
+            this.doorNorthCCW.TabIndex = 27;
+            this.doorNorthCCW.UseVisualStyleBackColor = true;
+            this.doorNorthCCW.Click += new System.EventHandler(this.doorNorthCCW_Click);
+            this.doorNorthCCW.MouseEnter += new System.EventHandler(this.DoorFacingEnter);
+            // 
+            // doorNorthCW
+            // 
+            this.doorNorthCW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorNorthCW.Image = ((System.Drawing.Image)(resources.GetObject("doorNorthCW.Image")));
+            this.doorNorthCW.Location = new System.Drawing.Point(339, 3);
+            this.doorNorthCW.Name = "doorNorthCW";
+            this.doorNorthCW.Size = new System.Drawing.Size(75, 75);
+            this.doorNorthCW.TabIndex = 26;
+            this.doorNorthCW.UseVisualStyleBackColor = true;
+            this.doorNorthCW.Click += new System.EventHandler(this.doorNorthCW_Click);
+            this.doorNorthCW.MouseEnter += new System.EventHandler(this.DoorFacingEnter);
+            // 
+            // doorWestCCW
+            // 
+            this.doorWestCCW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorWestCCW.Image = ((System.Drawing.Image)(resources.GetObject("doorWestCCW.Image")));
+            this.doorWestCCW.Location = new System.Drawing.Point(258, 3);
+            this.doorWestCCW.Name = "doorWestCCW";
+            this.doorWestCCW.Size = new System.Drawing.Size(75, 75);
+            this.doorWestCCW.TabIndex = 25;
+            this.doorWestCCW.UseVisualStyleBackColor = true;
+            this.doorWestCCW.Click += new System.EventHandler(this.doorWestCCW_Click);
+            this.doorWestCCW.MouseEnter += new System.EventHandler(this.DoorFacingEnter);
+            // 
+            // doorWestCW
+            // 
+            this.doorWestCW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorWestCW.Image = ((System.Drawing.Image)(resources.GetObject("doorWestCW.Image")));
+            this.doorWestCW.Location = new System.Drawing.Point(177, 3);
+            this.doorWestCW.Name = "doorWestCW";
+            this.doorWestCW.Size = new System.Drawing.Size(75, 75);
+            this.doorWestCW.TabIndex = 24;
+            this.doorWestCW.UseVisualStyleBackColor = true;
+            this.doorWestCW.Click += new System.EventHandler(this.doorWestCW_Click);
+            this.doorWestCW.MouseEnter += new System.EventHandler(this.DoorFacingEnter);
+            // 
+            // advancedStaffLights
+            // 
+            this.advancedStaffLights.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedStaffLights.Location = new System.Drawing.Point(4, 22);
+            this.advancedStaffLights.Name = "advancedStaffLights";
+            this.advancedStaffLights.Size = new System.Drawing.Size(498, 287);
+            this.advancedStaffLights.TabIndex = 3;
+            this.advancedStaffLights.Text = "Lights";
             // 
             // aboutTab
             // 
@@ -5825,7 +6069,11 @@ namespace Assistant
             this.advancedInfoTab.ResumeLayout(false);
             this.advancedInfoTab.PerformLayout();
             this.groupBox16.ResumeLayout(false);
-            this.advancedStaffTab.ResumeLayout(false);
+            this.advancedStaffDeco.ResumeLayout(false);
+            this.advancedStaffDeco.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.itemRandomNumber)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemTileCount)).EndInit();
+            this.advancedStaffDoors.ResumeLayout(false);
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
             this.ResumeLayout(false);
@@ -5978,9 +6226,27 @@ namespace Assistant
         private CheckBox logPackets;
         private TextBox statusBox;
         private TextBox features;
-        private TabPage advancedStaffTab;
+        private TabPage advancedStaffDeco;
         private CheckBox checkBox1;
         private UI.ArtViewer artViewer;
         private TreeView itemTree;
+        private NumericUpDown itemRandomNumber;
+        private CheckBox itemRandom;
+        private NumericUpDown itemTileCount;
+        private Button itemTile;
+        private Button itemAdd;
+        private CheckBox itemMovable;
+        private TabPage advancedStaffDoors;
+        private Button doorSouthCW;
+        private Button doorSouthCCW;
+        private Button doorEastCW;
+        private Button doorEastCCW;
+        private Button doorNorthCCW;
+        private Button doorNorthCW;
+        private Button doorWestCCW;
+        private Button doorWestCW;
+        private TabPage advancedStaffLights;
+        private TreeView doorTree;
+        private UI.ArtViewer doorViewer;
     }
 }
