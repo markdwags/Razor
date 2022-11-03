@@ -4704,7 +4704,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4726,7 +4726,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(155, 270);
+            this.scriptEditor.Size = new System.Drawing.Size(296, 272);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -5391,7 +5391,7 @@ namespace Assistant
             // 
             // fontDecrease
             // 
-            this.fontDecrease.Location = new System.Drawing.Point(237, 135);
+            this.fontDecrease.Location = new System.Drawing.Point(237, 136);
             this.fontDecrease.Name = "fontDecrease";
             this.fontDecrease.Size = new System.Drawing.Size(36, 23);
             this.fontDecrease.TabIndex = 94;
@@ -5725,9 +5725,9 @@ namespace Assistant
             this.advancedStaffDoors.Controls.Add(this.doorNorthCW);
             this.advancedStaffDoors.Controls.Add(this.doorWestCCW);
             this.advancedStaffDoors.Controls.Add(this.doorWestCW);
-            this.advancedStaffDoors.Location = new System.Drawing.Point(4, 22);
+            this.advancedStaffDoors.Location = new System.Drawing.Point(4, 24);
             this.advancedStaffDoors.Name = "advancedStaffDoors";
-            this.advancedStaffDoors.Size = new System.Drawing.Size(498, 287);
+            this.advancedStaffDoors.Size = new System.Drawing.Size(498, 285);
             this.advancedStaffDoors.TabIndex = 2;
             this.advancedStaffDoors.Text = "Doors";
             // 
@@ -5746,7 +5746,7 @@ namespace Assistant
             this.doorViewer.RoomView = true;
             this.doorViewer.ShowHexID = true;
             this.doorViewer.ShowID = true;
-            this.doorViewer.Size = new System.Drawing.Size(318, 119);
+            this.doorViewer.Size = new System.Drawing.Size(318, 117);
             this.doorViewer.TabIndex = 33;
             // 
             // doorTree
@@ -5755,7 +5755,7 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Left)));
             this.doorTree.Location = new System.Drawing.Point(3, 3);
             this.doorTree.Name = "doorTree";
-            this.doorTree.Size = new System.Drawing.Size(168, 281);
+            this.doorTree.Size = new System.Drawing.Size(168, 279);
             this.doorTree.TabIndex = 32;
             this.doorTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.doorTree_AfterSelect);
             // 
