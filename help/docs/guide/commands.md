@@ -361,7 +361,7 @@ Example:
 
 # getlabel
 
-**Syntax**: `getlabel ('serial') ('variable name)`
+**Syntax**: `getlabel ('serial') ('variable name')`
 
 **Description**: This command will get the label (text obtained by single-clicking an item) and save it to a variable.
 
@@ -433,10 +433,18 @@ Example:
 
 !!! example
 
-    === "Close gump"
+    === "Close last gump"
 
         ```vim
         gumpclose
+        ```
+
+    === "Close gump with id"
+
+        ```vim
+        dclick 0x4000174B
+        waitforgump 2341449854        
+        gumpclose 2341449854
         ```
 
 # hotkey

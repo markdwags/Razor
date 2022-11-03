@@ -20,6 +20,7 @@ Below is a list of the latest releases notes going back to the first release of 
 * Added Pandora inspired tabs in the Advanced (shard staff specific)
 * Removed the script popout editor now that you can resize the main Razor window
 * Updated the `dress` and `undress` commands to accept a serial or variable
+* Updated `gumpclose` to accept an optional gump id
 
 ## 1.7.4.49 (07/26/2022)
 

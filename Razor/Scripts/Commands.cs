@@ -1320,9 +1320,23 @@ namespace Assistant.Scripts
 
         private static bool GumpClose(string command, Variable[] vars, bool quiet, bool force)
         {
-            Client.Instance.SendToClient(new CloseGump(World.Player.CurrentGumpI));
-            Client.Instance.SendToServer(new GumpResponse(World.Player.CurrentGumpS, World.Player.CurrentGumpI, 0,
-                new int[] { }, new GumpTextEntry[] { }));
+            uint gumpI = World.Player.CurrentGumpI;
+
+            if (vars.Length > 0)
+            {
+                gumpI = vars[0].AsUInt();
+            }
+
+            if (!World.Player.GumpList.ContainsKey(gumpI))
+            {
+                CommandHelper.SendWarning(command, $"'{gumpI}' unknown gump id", quiet);
+                return true;
+            }
+
+            uint gumpS = World.Player.GumpList[gumpI].GumpSerial;
+
+            Client.Instance.SendToClient(new CloseGump(gumpI));
+            Client.Instance.SendToServer(new GumpResponse(gumpS, gumpI, 0, new int[] { }, new GumpTextEntry[] { }));
 
             World.Player.HasGump = false;
             World.Player.HasCompressedGump = false;
