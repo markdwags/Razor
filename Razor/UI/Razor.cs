@@ -79,6 +79,9 @@ namespace Assistant
             WaypointManager.SetControls(waypointList);
             OverheadManager.SetControls(cliLocOverheadView);
             TextFilterManager.SetControls(textFilterList);
+            ScriptManager.SetEditor(scriptEditor);
+
+            scriptDocMap.Target = scriptEditor;
 
             bool st = Config.GetBool("Systray");
             taskbar.Checked = this.ShowInTaskbar = !st;
@@ -110,7 +113,7 @@ namespace Assistant
             Show();
             BringToFront();
             tabs_IndexChanged(this, null); // load first tab
-            ScriptManager.InitScriptEditor();
+            ScriptManager.SetEditor(scriptEditor);
 
             m_ProfileConfirmLoad = false;
             Config.SetupProfilesList(profiles, Config.CurrentProfile.Name);
@@ -6385,7 +6388,7 @@ namespace Assistant
             }
 
             // We want to play the contents of the script editor
-            ScriptManager.PlayScript(scriptEditor.Lines.ToArray());
+            ScriptManager.PlayScript(scriptEditor.Lines.ToArray(), true);
         }
 
         public void LockScriptUI(bool enabled)
@@ -6775,10 +6778,6 @@ namespace Assistant
                     null,
                     OnScriptHideTreeView);
 
-                if (ScriptManager.SelectedScript != null)
-                {
-                    menu.Items.Add("Open in popout script editor", null, OnScriptEditorPopout);
-                }
 
                 menu.Show(scriptEditor, new Point(e.X, e.Y));
             }
@@ -6826,34 +6825,6 @@ namespace Assistant
         private void OnScriptHideTreeView(object sender, EventArgs e)
         {
             scriptSplitContainer.Panel1Collapsed = !scriptSplitContainer.Panel1Collapsed;
-        }
-
-        private void OnScriptEditorPopout(object sender, EventArgs e)
-        {
-            if (Engine.RazorScriptEditorWindow == null)
-            {
-                Engine.RazorScriptEditorWindow = new RazorScriptEditor();
-            }
-
-            Engine.RazorScriptEditorWindow.SafeAction(s =>
-            {
-                s.Closing += RazorScriptEditor_Closing;
-                s.Show();
-            });
-
-            scriptEditor.Visible = !scriptEditor.Visible;
-        }
-
-        private void RazorScriptEditor_Closing(object sender, CancelEventArgs e)
-        {
-            Engine.RazorScriptEditorWindow?.SafeAction(s =>
-            {
-                e.Cancel = true;
-                s.TopMost = false;
-                s.Hide();
-
-                ScriptManager.SetEditor(scriptEditor, false);
-            });
         }
 
         private void OnScriptComment(object sender, System.EventArgs e)
@@ -7513,9 +7484,7 @@ namespace Assistant
                     m_ScriptContextMenu.Items.Add($"Open '{selScript.Name}' externally", null, OpenScriptExternally);
                     m_ScriptContextMenu.Items.Add("Copy to clipboard", null, CopyScriptToClipboard);
                 }
-
-                m_ScriptContextMenu.Items.Add("-");
-                m_ScriptContextMenu.Items.Add("Open in popout script editor", null, OnScriptEditorPopout);
+                
                 m_ScriptContextMenu.Items.Add("-");
                 m_ScriptContextMenu.Items.Add("Reload all scripts", null, ReloadScripts);
                 m_ScriptContextMenu.Items.Add("Hide script tree", null, HideScriptTreeView);

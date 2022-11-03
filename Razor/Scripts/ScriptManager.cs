@@ -62,6 +62,8 @@ namespace Assistant.Scripts
 
         public static bool BlockPopupMenu { get; set; }
 
+        private static bool EnableHighlight { get; set; }
+
         public enum HighlightType
         {
             Error,
@@ -82,9 +84,7 @@ namespace Assistant.Scripts
         }
 
         public static RazorScript SelectedScript { get; set; }
-
-        public static bool PopoutEditor { get; set; }
-
+        
         private class ScriptTimer : Timer
         {
             // Only run scripts once every 25ms to avoid spamming.
@@ -138,7 +138,6 @@ namespace Assistant.Scripts
                                 World.Player?.SendMessage(LocString.ScriptPlaying);
 
                             Assistant.Engine.MainWindow.LockScriptUI(true);
-                            Assistant.Engine.RazorScriptEditorWindow?.LockScriptUI(true);
                             ScriptRunning = true;
                         }
                     }
@@ -150,7 +149,6 @@ namespace Assistant.Scripts
                                 World.Player?.SendMessage(LocString.ScriptFinished);
 
                             Assistant.Engine.MainWindow.LockScriptUI(false);
-                            Assistant.Engine.RazorScriptEditorWindow?.LockScriptUI(false);
                             ScriptRunning = false;
 
                             ClearHighlightLine(HighlightType.Execution);
@@ -161,7 +159,10 @@ namespace Assistant.Scripts
                 {
                     World.Player?.SendMessage(MsgLevel.Error, $"Script Error: {ex.Message} (Line: {Interpreter.CurrentLine + 1})");
 
-                    SetHighlightLine(Interpreter.CurrentLine, HighlightType.Error);
+                    if (EnableHighlight)
+                    {
+                        SetHighlightLine(Interpreter.CurrentLine, HighlightType.Error);
+                    }
 
                     StopScript();
                 }
@@ -366,12 +367,17 @@ namespace Assistant.Scripts
             }
         }
 
-        public static void PlayScript(string[] lines)
+        public static void PlayScript(string[] lines, bool highlight = false)
         {
             if (World.Player == null || ScriptEditor == null || lines == null)
                 return;
 
-            ClearAllHighlightLines();
+            EnableHighlight = highlight;
+
+            if (EnableHighlight)
+            {
+                ClearAllHighlightLines();
+            }
 
             if (MacroManager.Playing || MacroManager.StepThrough)
                 MacroManager.Stop();
@@ -395,9 +401,9 @@ namespace Assistant.Scripts
             _queuedScript = script;
         }
 
-        private static void ActiveScriptStatementExecuted(ASTNode statement)
+        /*private static void ActiveScriptStatementExecuted(ASTNode statement)
         {
-            if (statement != null && PopoutEditor)
+            if (EnableHighlight && statement != null)
             {
                 var lineNum = statement.LineNumber;
 
@@ -406,7 +412,7 @@ namespace Assistant.Scripts
                 ScriptEditor.Selection.Start = new Place(0, lineNum);
                 ScriptEditor.DoSelectionVisible();
             }
-        }
+        }*/
 
         private static ScriptTimer Timer { get; }
 
@@ -417,7 +423,7 @@ namespace Assistant.Scripts
 
         private static void UpdateLineNumber(int lineNum)
         {
-            if (PopoutEditor)
+            if (EnableHighlight)
             {
                 SetHighlightLine(lineNum, HighlightType.Execution);
                 // Scrolls to relevant line, per this suggestion: https://github.com/PavelTorgashov/FastColoredTextBox/issues/115
@@ -426,12 +432,9 @@ namespace Assistant.Scripts
             }
         }
 
-        public static void SetEditor(FastColoredTextBox scriptEditor, bool popoutEditor)
+        public static void SetEditor(FastColoredTextBox scriptEditor)
         {
             ScriptEditor = scriptEditor;
-            ScriptEditor.Visible = true;
-
-            PopoutEditor = popoutEditor;
 
             InitScriptEditor();
 
@@ -473,7 +476,6 @@ namespace Assistant.Scripts
             StopScript();
             Timer.Stop();
             Assistant.Engine.MainWindow.LockScriptUI(false);
-            Assistant.Engine.RazorScriptEditorWindow?.LockScriptUI(false);
         }
 
         public static void StartEngine()
@@ -564,27 +566,18 @@ namespace Assistant.Scripts
         /// <param name="type">Type of highlight to set</param>
         private static void SetHighlightLine(int iline, HighlightType type)
         {
-            if (!PopoutEditor)
-                return;
-
             ClearHighlightLine(type);
             AddHighlightLine(iline, type);
         }
 
         public static void ClearHighlightLine(HighlightType type)
         {
-            if (!PopoutEditor)
-                return;
-
             HighlightLines[type].Clear();
             RefreshHighlightLines();
         }
 
         public static void ClearAllHighlightLines()
         {
-            if (!PopoutEditor)
-                return;
-
             foreach (HighlightType type in GetHighlightTypes())
             {
                 HighlightLines[type].Clear();
