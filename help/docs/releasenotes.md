@@ -2,6 +2,25 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
+## 1.7.5.X (Dev Preview)
+
+* Fix issue with delete profile button
+* Added `sound` and `music` script commands
+* Added `classicuo/cuo` script command, `>cuo` command to control ClassicUO settings directly
+* Added sound trigger option to overhead messages
+* Fixed issue with buffs/debuff filter not loading on a profile change
+* Reload scripts will read all changes made externally to scripting files
+* Added the ability to resize the Razor window
+* Fixed issue with buy agents not saving/loading correctly
+* Added `itemcount` expression
+* Fixed `lifttype` to pull the correct amount when including a hue
+* Added `rename` command
+* Added `getlabel` command with the `in` expression
+* Fixed script tab not displaying the set hotkey
+* Added Pandora inspired tabs in the Advanced (shard staff specific)
+* Removed the script popout editor now that you can resize the main Razor window
+* Updated the `dress` and `undress` commands to accept a serial or variable
+
 ## 1.7.4.49 (07/26/2022)
 
 * Added `followers` and `maxfollowers` expressions

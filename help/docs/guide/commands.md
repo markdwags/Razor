@@ -265,9 +265,9 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
 # dress
 
-**Syntax**: `dress ('name of dress list')`
+**Syntax**: `dress ('name of dress list')` or `dress (serial)`
 
-**Description**: This command will execute a spec dress list you have defined in Razor.
+**Description**: This command will execute a spec dress list you have defined in Razor or dress (left and drop) a specific serial
 
 !!! example
 
@@ -276,6 +276,20 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         ```vim
         dress 'My Sunday Best'
         ```
+    
+    === "Using a serial"
+
+        ```vim hl_lines="1"
+        dress '0x345234'
+        ```
+
+    === "Using a variable"
+
+        ```vim hl_lines="2"
+        setvar 'hat'
+        dress 'hat'
+        ```
+
 # drop
 
 **Syntax**: `drop (serial) (x) (y) [z]` or `drop (serial) (layer)` or `drop 'ground' (x) (y) [z]`
@@ -1132,7 +1146,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # undress
 
-**Syntax**: `undress ['name of dress list']'` or `undress 'LayerName'`
+**Syntax**: `undress ['name of dress list']'` or `undress 'LayerName'` or `undress (serial)`
 
 **Description**: This command will either undress you completely if no dress list is provided. If you provide a dress list, only those specific items will be undressed. Lastly, you can define a layer name to undress.
 
@@ -1157,7 +1171,19 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
         ```vim
         undress 'Shirt'
-        undrsss 'Pants'
+        undress 'Pants'
+        ```
+    === "Using a serial"
+
+        ```vim hl_lines="1"
+        undress '0x345234'
+        ```
+
+    === "Using a variable"
+
+        ```vim hl_lines="2"
+        setvar 'hat'
+        undress 'hat'
         ```
 
 # useonce
