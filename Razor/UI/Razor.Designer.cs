@@ -305,6 +305,7 @@ namespace Assistant
         private ComboBox playableMusicList;
         private TreeView _macroTreeViewCache = new TreeView();
         private TreeView _scriptTreeViewCache = new TreeView();
+        private TreeView _itemTreeCache = new TreeView();
 
 
         public Label WaitDisplay
@@ -776,6 +777,9 @@ namespace Assistant
             this.statusBox = new System.Windows.Forms.TextBox();
             this.features = new System.Windows.Forms.TextBox();
             this.advancedStaffDeco = new System.Windows.Forms.TabPage();
+            this.itemAppendM = new System.Windows.Forms.CheckBox();
+            this.itemCopyToClipboard = new System.Windows.Forms.CheckBox();
+            this.itemSearch = new System.Windows.Forms.TextBox();
             this.itemMovable = new System.Windows.Forms.CheckBox();
             this.itemRandomNumber = new System.Windows.Forms.NumericUpDown();
             this.itemRandom = new System.Windows.Forms.CheckBox();
@@ -4722,7 +4726,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(173, 270);
+            this.scriptEditor.Size = new System.Drawing.Size(155, 270);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -5565,6 +5569,9 @@ namespace Assistant
             // advancedStaffDeco
             // 
             this.advancedStaffDeco.BackColor = System.Drawing.SystemColors.Control;
+            this.advancedStaffDeco.Controls.Add(this.itemAppendM);
+            this.advancedStaffDeco.Controls.Add(this.itemCopyToClipboard);
+            this.advancedStaffDeco.Controls.Add(this.itemSearch);
             this.advancedStaffDeco.Controls.Add(this.itemMovable);
             this.advancedStaffDeco.Controls.Add(this.itemRandomNumber);
             this.advancedStaffDeco.Controls.Add(this.itemRandom);
@@ -5579,6 +5586,40 @@ namespace Assistant
             this.advancedStaffDeco.Size = new System.Drawing.Size(498, 285);
             this.advancedStaffDeco.TabIndex = 1;
             this.advancedStaffDeco.Text = "Decoration";
+            // 
+            // itemAppendM
+            // 
+            this.itemAppendM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemAppendM.AutoSize = true;
+            this.itemAppendM.Location = new System.Drawing.Point(293, 215);
+            this.itemAppendM.Name = "itemAppendM";
+            this.itemAppendM.Size = new System.Drawing.Size(178, 19);
+            this.itemAppendM.TabIndex = 11;
+            this.itemAppendM.Text = "Append [m to the command";
+            this.itemAppendM.UseVisualStyleBackColor = true;
+            // 
+            // itemCopyToClipboard
+            // 
+            this.itemCopyToClipboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemCopyToClipboard.AutoSize = true;
+            this.itemCopyToClipboard.Location = new System.Drawing.Point(293, 190);
+            this.itemCopyToClipboard.Name = "itemCopyToClipboard";
+            this.itemCopyToClipboard.Size = new System.Drawing.Size(199, 19);
+            this.itemCopyToClipboard.TabIndex = 10;
+            this.itemCopyToClipboard.Text = "Copy command to the clipboard";
+            this.itemCopyToClipboard.UseVisualStyleBackColor = true;
+            // 
+            // itemSearch
+            // 
+            this.itemSearch.AcceptsReturn = true;
+            this.itemSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemSearch.Location = new System.Drawing.Point(6, 6);
+            this.itemSearch.Name = "itemSearch";
+            this.itemSearch.Size = new System.Drawing.Size(209, 23);
+            this.itemSearch.TabIndex = 9;
+            this.itemSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.itemSearch_KeyDown);
+            this.itemSearch.LostFocus += new System.EventHandler(this.itemSearch_LostFocus);
             // 
             // itemMovable
             // 
@@ -5648,9 +5689,9 @@ namespace Assistant
             this.itemTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.itemTree.Location = new System.Drawing.Point(6, 6);
+            this.itemTree.Location = new System.Drawing.Point(6, 35);
             this.itemTree.Name = "itemTree";
-            this.itemTree.Size = new System.Drawing.Size(209, 273);
+            this.itemTree.Size = new System.Drawing.Size(209, 244);
             this.itemTree.TabIndex = 1;
             this.itemTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.itemTree_AfterSelect);
             this.itemTree.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.itemTree_MouseDoubleClick);
@@ -5684,9 +5725,9 @@ namespace Assistant
             this.advancedStaffDoors.Controls.Add(this.doorNorthCW);
             this.advancedStaffDoors.Controls.Add(this.doorWestCCW);
             this.advancedStaffDoors.Controls.Add(this.doorWestCW);
-            this.advancedStaffDoors.Location = new System.Drawing.Point(4, 24);
+            this.advancedStaffDoors.Location = new System.Drawing.Point(4, 22);
             this.advancedStaffDoors.Name = "advancedStaffDoors";
-            this.advancedStaffDoors.Size = new System.Drawing.Size(498, 285);
+            this.advancedStaffDoors.Size = new System.Drawing.Size(498, 287);
             this.advancedStaffDoors.TabIndex = 2;
             this.advancedStaffDoors.Text = "Doors";
             // 
@@ -5705,7 +5746,7 @@ namespace Assistant
             this.doorViewer.RoomView = true;
             this.doorViewer.ShowHexID = true;
             this.doorViewer.ShowID = true;
-            this.doorViewer.Size = new System.Drawing.Size(318, 117);
+            this.doorViewer.Size = new System.Drawing.Size(318, 119);
             this.doorViewer.TabIndex = 33;
             // 
             // doorTree
@@ -5714,7 +5755,7 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Left)));
             this.doorTree.Location = new System.Drawing.Point(3, 3);
             this.doorTree.Name = "doorTree";
-            this.doorTree.Size = new System.Drawing.Size(168, 279);
+            this.doorTree.Size = new System.Drawing.Size(168, 281);
             this.doorTree.TabIndex = 32;
             this.doorTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.doorTree_AfterSelect);
             // 
@@ -6237,5 +6278,8 @@ namespace Assistant
         private Button doorWestCW;
         private TreeView doorTree;
         private UI.ArtViewer doorViewer;
+        private TextBox itemSearch;
+        private CheckBox itemCopyToClipboard;
+        private CheckBox itemAppendM;
     }
 }

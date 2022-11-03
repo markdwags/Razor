@@ -22,6 +22,8 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.UI;
+using FastColoredTextBoxNS;
 using Ultima;
 
 namespace Assistant.Core
@@ -38,17 +40,20 @@ namespace Assistant.Core
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load(Path.Combine(Config.GetInstallDirectory(), "items.xml"));
 
-            tree.BeginUpdate();
+            tree.SafeAction(s =>
+            {
+                s.BeginUpdate();
 
-            tree.Nodes.Clear();
-            tree.Nodes.Add(new TreeNode(xDoc.DocumentElement.Name));
+                s.Nodes.Clear();
+                s.Nodes.Add(new TreeNode(xDoc.DocumentElement.Name));
 
-            TreeNode tNode = tree.Nodes[0];
-            AddItemTreeNode(xDoc.DocumentElement, tNode);
+                TreeNode tNode = s.Nodes[0];
+                AddItemTreeNode(xDoc.DocumentElement, tNode);
 
-            tree.Nodes[0].Expand();
+                s.Nodes[0].Expand();
 
-            tree.EndUpdate();
+                s.EndUpdate();
+            });
         }
         
         public static void LoadDoors(TreeView tree)
@@ -56,46 +61,37 @@ namespace Assistant.Core
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load(Path.Combine(Config.GetInstallDirectory(), "doors.xml"));
 
-            tree.BeginUpdate();
+            tree.SafeAction(s =>
+            {
+                s.BeginUpdate();
 
-            tree.Nodes.Clear();
-            tree.Nodes.Add(new TreeNode(xDoc.DocumentElement.Name));
+                s.Nodes.Clear();
+                s.Nodes.Add(new TreeNode(xDoc.DocumentElement.Name));
 
-            TreeNode tNode = tree.Nodes[0];
-            AddDoorTreeNode(xDoc.DocumentElement, tNode);
+                TreeNode tNode = s.Nodes[0];
+                AddDoorTreeNode(xDoc.DocumentElement, tNode);
 
-            tree.Nodes[0].Expand();
+                s.Nodes[0].Expand();
 
-            tree.EndUpdate();
+                s.EndUpdate();
+            });
         }
 
         private static void AddItemTreeNode(XmlNode xmlNode, TreeNode treeNode)
         {
-            if (xmlNode.HasChildNodes) //The current node has children
+            if (xmlNode.HasChildNodes)
             {
                 XmlNodeList xNodeList = xmlNode.ChildNodes;
+
                 for (int x = 0; x <= xNodeList.Count - 1; x++)
-                //Loop through the child nodes
                 {
                     XmlNode xNode = xmlNode.ChildNodes[x];
 
                     if (xNode.Attributes != null)
                     {
                         XmlAttribute name = xNode.Attributes["name"];
-                        //XmlAttribute id = xNode.Attributes["ID"];
 
-                        if (name != null)
-                        {
-                            treeNode.Nodes.Add(new TreeNode(name.Value));
-                        }
-                        /*else if (id != null)
-                        {
-                            treeNode.Nodes.Add(new TreeNode(id.Value));
-                        }*/
-                        else
-                        {
-                            treeNode.Nodes.Add(new TreeNode(xNode.Name));
-                        }
+                        treeNode.Nodes.Add(name != null ? new TreeNode(name.Value) : new TreeNode(xNode.Name));
                     }
                     else
                     {
@@ -108,7 +104,6 @@ namespace Assistant.Core
             }
             else
             {
-                //No children, so add the outer xml (trimming off whitespace)
                 XmlAttribute id = xmlNode.Attributes?["ID"];
 
                 if (id != null)
@@ -116,14 +111,7 @@ namespace Assistant.Core
                     int itemId = Utility.ToInt32(id.Value, 0x0);
                     string itemName = TileData.ItemTable[itemId].Name;
 
-                    if (string.IsNullOrEmpty(itemName))
-                    {
-                        treeNode.Text = $"{id.Value}";
-                    }
-                    else
-                    {
-                        treeNode.Text = $"{itemName} ({id.Value})";
-                    }
+                    treeNode.Text = string.IsNullOrEmpty(itemName) ? $"{id.Value}" : $"{itemName} ({id.Value})";
 
                     treeNode.Tag = itemId;
 
@@ -138,11 +126,11 @@ namespace Assistant.Core
 
         private static void AddDoorTreeNode(XmlNode xmlNode, TreeNode treeNode)
         {
-            if (xmlNode.HasChildNodes) //The current node has children
+            if (xmlNode.HasChildNodes)
             {
                 XmlNodeList xNodeList = xmlNode.ChildNodes;
+
                 for (int x = 0; x <= xNodeList.Count - 1; x++)
-                //Loop through the child nodes
                 {
                     XmlNode xNode = xmlNode.ChildNodes[x];
 
@@ -163,7 +151,6 @@ namespace Assistant.Core
             }
             else
             {
-                //No children, so add the outer xml (trimming off whitespace)
                 XmlAttribute id = xmlNode.Attributes?["base"];
 
                 if (id != null)
@@ -182,7 +169,10 @@ namespace Assistant.Core
 
         public static void AddDoor(DoorInfo door, string facing)
         {
-            World.Player.Say($"[add {door.Item} {facing}");
+            string command = $"[add {door.Item} {facing}";
+
+            World.Player.SendMessage(MsgLevel.Info, $"Command: {command}");
+            World.Player.Say(command);
         }
 
         public static int GetDoorOffset(string facing)

@@ -733,7 +733,7 @@ namespace Assistant
 
         private void RebuildHotKeyCache()
         {
-            _hotkeyTreeViewCache = new TreeView();
+            _hotkeyTreeViewCache.Nodes.Clear();
 
             foreach (TreeNode node in hotkeyTree.Nodes)
             {
@@ -743,7 +743,7 @@ namespace Assistant
 
         private void RebuildMacroCache()
         {
-            _macroTreeViewCache = new TreeView();
+            _macroTreeViewCache.Nodes.Clear();
 
             foreach (TreeNode node in macroTree.Nodes)
             {
@@ -753,11 +753,21 @@ namespace Assistant
 
         private void RebuildScriptCache()
         {
-            _scriptTreeViewCache = new TreeView();
+            _scriptTreeViewCache.Nodes.Clear();
 
             foreach (TreeNode node in scriptTree.Nodes)
             {
                 _scriptTreeViewCache.Nodes.Add((TreeNode)node.Clone());
+            }
+        }
+
+        private void RebuildItemCache()
+        {
+            _itemTreeCache.Nodes.Clear();
+
+            foreach (TreeNode node in itemTree.Nodes)
+            {
+                _itemTreeCache.Nodes.Add((TreeNode)node.Clone());
             }
         }
 
@@ -2927,6 +2937,13 @@ namespace Assistant
             ScriptManager.RedrawScriptVariables();
         }
 
+        private void RedrawItems()
+        {
+            StaffToolsManager.LoadItems(itemTree);
+
+            RebuildItemCache();
+        }
+
         public Macro LastSelectedMacro { get; set; }
 
         private void macroTree_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
@@ -4524,8 +4541,8 @@ namespace Assistant
 
         private void filterMacros_TextChanged(object sender, EventArgs e)
         {
-            this.macroTree.BeginUpdate();
-            this.macroTree.Nodes.Clear();
+            macroTree.BeginUpdate();
+            macroTree.Nodes.Clear();
 
             if (filterMacros.Text != string.Empty)
             {
@@ -4559,8 +4576,6 @@ namespace Assistant
 
         private void openRazorDataDir_Click(object sender, EventArgs e)
         {
-            //C:\Users\Quick\AppData\Roaming\Razor
-
             try
             {
                 Process.Start(Config.GetUserDirectory());
@@ -7846,7 +7861,7 @@ namespace Assistant
         {
             if (itemTree.Nodes.Count == 0)
             {
-                StaffToolsManager.LoadItems(itemTree);
+                RedrawItems();
             }
 
             if (doorTree.Nodes.Count == 0)
@@ -7908,6 +7923,11 @@ namespace Assistant
                     ? $"[add static {selectedNode.Tag} {itemRandomNumber.Value:F0} set movable {itemMovable.Checked}"
                     : $"[add static {selectedNode.Tag} set movable {itemMovable.Checked}";
 
+                if (itemAppendM.Checked)
+                {
+                    command = $"[m {command.Substring(1)}";
+                }
+
                 if (sender == null)
                 {
                     World.Player.SendMessage(MsgLevel.Info, $"Command: {command}");
@@ -7948,15 +7968,24 @@ namespace Assistant
                     World.Player.SendMessage(MsgLevel.Info, $"Command: {command}");
                     World.Player.Say(command);
                 }
+
+
+                if (itemCopyToClipboard.Checked)
+                {
+                    Clipboard.SetDataObject(command, true);
+                }
             }
         }
         
         private void itemTree_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            if (World.Player == null)
+            {
+                return;
+            }
+
             if (itemTree.SelectedNode != null)
             {
-
-
                 ItemAddCommand(sender, e);
             }
         }
@@ -7964,6 +7993,10 @@ namespace Assistant
         private void itemTile_Click(object sender, EventArgs e)
         {
             //[TileZ 0 static 7894 set movable True hue 0 light {light}
+            if (World.Player == null)
+            {
+                return;
+            }
 
             if (itemTree.SelectedNode != null)
             {
@@ -7972,6 +8005,11 @@ namespace Assistant
 
                 World.Player.SendMessage(MsgLevel.Info, $"Command: {command}");
                 World.Player.Say(command);
+
+                if (itemCopyToClipboard.Checked)
+                {
+                    Clipboard.SetDataObject(command, true);
+                }
             }
         }
 
@@ -8055,6 +8093,70 @@ namespace Assistant
 
                 doorViewer.ArtIndex = ((DoorInfo)doorTree.SelectedNode.Tag).BaseId + StaffToolsManager.GetDoorOffset(button.Name);
             }
+        }
+        private void itemSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
+                {
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+                    itemTree.Focus();
+                }
+            }
+        }
+
+        private void itemSearch_LostFocus(object sender, EventArgs e)
+        {
+            if (itemSearch.Text != string.Empty)
+            {
+                string search = itemSearch.Text.ToLower();
+
+                itemTree.SafeAction(s =>
+                {
+                    s.BeginUpdate();
+                    s.Nodes.Clear();
+
+                    foreach (TreeNode node in _itemTreeCache.Nodes)
+                    {
+                        TreeNode[] nodes = FindNodeByString(search, node);
+
+                        s.Nodes.AddRange(nodes);
+                    }
+
+                    s.EndUpdate();
+                });
+            }
+            else
+            {
+                RedrawItems();
+            }
+        }
+
+        private TreeNode[] FindNodeByString(string search, TreeNode parentNode)
+        {
+            List<TreeNode> filteredNodes = new List<TreeNode>();
+
+            foreach (TreeNode currentNode in parentNode.Nodes)
+            {
+                if (currentNode.Text.Contains(search))
+                {
+                    filteredNodes.Add((TreeNode) currentNode.Clone());
+                }
+
+                if (currentNode.Nodes.Count > 0)
+                {
+                    TreeNode[] nodes = FindNodeByString(search, currentNode);
+
+                    if (nodes.Length > 0)
+                    {
+                        filteredNodes.AddRange(nodes);
+                    }
+                }
+            }
+
+            return filteredNodes.ToArray();
         }
     }
 }
