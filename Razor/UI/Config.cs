@@ -324,6 +324,8 @@ namespace Assistant
             AddProperty("WindowSizeX", 546);
             AddProperty("WindowSizeY", 411);
 
+            AddProperty("PlayEmoteSound", false);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

@@ -249,11 +249,11 @@ namespace Assistant.Scripts
             {
                 if (follower.CanRename)
                 {
-                    World.Player.RenameMobile(follower.Serial, newName);
+                    PlayerData.RenameMobile(follower.Serial, newName);
                 }
                 else
                 {
-                    CommandHelper.SendMessage($"Unable to rename mobile", quiet);
+                    CommandHelper.SendMessage("Unable to rename mobile", quiet);
                 }
             }
             
@@ -362,13 +362,13 @@ namespace Assistant.Scripts
             switch (vars[0].AsString())
             {
                 case "honor":
-                    World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Honor);
+                    PlayerData.InvokeVirtue(PlayerData.InvokeVirtues.Honor);
                     break;
                 case "sacrifice":
-                    World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Sacrifice);
+                    PlayerData.InvokeVirtue(PlayerData.InvokeVirtues.Sacrifice);
                     break;
                 case "valor":
-                    World.Player.InvokeVirtue(PlayerData.InvokeVirtues.Valor);
+                    PlayerData.InvokeVirtue(PlayerData.InvokeVirtues.Valor);
                     break;
             }
 

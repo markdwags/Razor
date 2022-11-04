@@ -21,6 +21,7 @@ Below is a list of the latest releases notes going back to the first release of 
 * Removed the script popout editor now that you can resize the main Razor window
 * Updated the `dress` and `undress` commands to accept a serial or variable
 * Updated `gumpclose` to accept an optional gump id
+* Added an option to trigger male or female sounds base on specific emotes (ie: *cheer* or *laugh*)
 
 ## 1.7.4.49 (07/26/2022)
 

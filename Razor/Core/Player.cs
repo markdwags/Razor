@@ -48,170 +48,179 @@ namespace Assistant
 
     public class Skill
     {
-        private LockType m_Lock;
-        private ushort m_Value;
-        private ushort m_Base;
-        private ushort m_Cap;
-        private short m_Delta;
-        private int m_Idx;
+        private LockType _lock;
+        private ushort _value;
+        private ushort _base;
+        private ushort _cap;
+        private short _delta;
+        private int _index;
 
         public Skill(int idx)
         {
-            m_Idx = idx;
+            _index = idx;
         }
 
         public int Index
         {
-            get { return m_Idx; }
+            get { return _index; }
         }
 
         public LockType Lock
         {
-            get { return m_Lock; }
-            set { m_Lock = value; }
+            get { return _lock; }
+            set { _lock = value; }
         }
 
         public ushort FixedValue
         {
-            get { return m_Value; }
-            set { m_Value = value; }
+            get { return _value; }
+            set { _value = value; }
         }
 
         public ushort FixedBase
         {
-            get { return m_Base; }
+            get { return _base; }
             set
             {
-                m_Delta += (short) (value - m_Base);
-                m_Base = value;
+                _delta += (short) (value - _base);
+                _base = value;
             }
         }
 
         public ushort FixedCap
         {
-            get { return m_Cap; }
-            set { m_Cap = value; }
+            get { return _cap; }
+            set { _cap = value; }
         }
 
         public double Value
         {
-            get { return m_Value / 10.0; }
-            set { m_Value = (ushort) (value * 10.0); }
+            get { return _value / 10.0; }
+            set { _value = (ushort) (value * 10.0); }
         }
 
         public double Base
         {
-            get { return m_Base / 10.0; }
-            set { m_Base = (ushort) (value * 10.0); }
+            get { return _base / 10.0; }
+            set { _base = (ushort) (value * 10.0); }
         }
 
         public double Cap
         {
-            get { return m_Cap / 10.0; }
-            set { m_Cap = (ushort) (value * 10.0); }
+            get { return _cap / 10.0; }
+            set { _cap = (ushort) (value * 10.0); }
         }
 
         public double Delta
         {
-            get { return m_Delta / 10.0; }
-            set { m_Delta = (short) (value * 10); }
+            get { return _delta / 10.0; }
+            set { _delta = (short) (value * 10); }
         }
     }
 
     public enum MaleSounds
     {
-        Ah = 0x41A,
-        Ahha = 0x41B,
-        Applaud = 0x41C,
-        BlowNose = 0x41D,
-        Burp = 0x41E,
-        Cheer = 0x41F,
-        ClearThroat = 0x420,
-        Cough = 0x421,
-        CoughBS = 0x422,
-        Cry = 0x423,
-        Fart = 0x429,
-        Gasp = 0x42A,
-        Giggle = 0x42B,
-        Groan = 0x42C,
-        Growl = 0x42D,
-        Hey = 0x42E,
-        Hiccup = 0x42F,
-        Huh = 0x430,
-        Kiss = 0x431,
-        Laugh = 0x432,
-        No = 0x433,
-        Oh = 0x434,
-        Oomph1 = 0x435,
-        Oomph2 = 0x436,
-        Oomph3 = 0x437,
-        Oomph4 = 0x438,
-        Oomph5 = 0x439,
-        Oomph6 = 0x43A,
-        Oomph7 = 0x43B,
-        Oomph8 = 0x43C,
-        Oomph9 = 0x43D,
-        Oooh = 0x43E,
-        Oops = 0x43F,
-        Puke = 0x440,
-        Scream = 0x441,
-        Shush = 0x442,
-        Sigh = 0x443,
-        Sneeze = 0x444,
-        Sniff = 0x445,
-        Snore = 0x446,
-        Spit = 0x447,
-        Whistle = 0x448,
-        Yawn = 0x449,
-        Yea = 0x44A,
-        Yell = 0x44B,
+        Ah = 0x419,
+        Ahha = 0x41A,
+        Applaud = 0x41B,
+        Blownose = 0x41C,
+        Burp = 0x41D,
+        Cheer = 0x41E,
+        Clear_Throat = 0x41F,
+        Cough = 0x420,
+        Coughbs = 0x421,
+        Cry = 0x422,
+        Death_01 = 0x423,
+        Death_02 = 0x424,
+        Death_03 = 0x425,
+        Death_04 = 0x426,
+        Death_05 = 0x427,
+        Fart = 0x428,
+        Gasp = 0x429,
+        Giggle = 0x42A,
+        Groan = 0x42B,
+        Growl = 0x42C,
+        Hey = 0x42D,
+        Hiccup = 0x42E,
+        Huh = 0x42F,
+        Kiss = 0x430,
+        Laugh = 0x431,
+        No = 0x432,
+        Oh = 0x433,
+        Oomph_01 = 0x434,
+        Oomph_02 = 0x435,
+        Oomph_03 = 0x436,
+        Oomph_04 = 0x437,
+        Oomph_05 = 0x438,
+        Oomph_06 = 0x439,
+        Oomph_07 = 0x43A,
+        Oomph_08 = 0x43B,
+        Oomph_09 = 0x43C,
+        Oooh = 0x43D,
+        Oops = 0x43E,
+        Puke = 0x43F,
+        Scream = 0x440,
+        Shush = 0x441,
+        Sigh = 0x442,
+        Sneeze = 0x443,
+        Sniff = 0x444,
+        Snore = 0x445,
+        Spit = 0x446,
+        Whistle = 0x447,
+        Yawn = 0x448,
+        Yea = 0x449,
+        Yell = 0x44A
     }
 
     public enum FemaleSounds
     {
-        Ah = 0x30B,
-        Ahha = 0x30C,
-        Applaud = 0x30D,
-        BlowNose = 0x30E,
-        Burp = 0x30F,
-        Cheer = 0x310,
-        ClearThroat = 0x311,
-        Cough = 0x312,
-        CoughBS = 0x313,
-        Cry = 0x314,
-        Fart = 0x319,
-        Gasp = 0x31A,
-        Giggle = 0x31B,
-        Groan = 0x31C,
-        Growl = 0x31D,
-        Hey = 0x31E,
-        Hiccup = 0x31F,
-        Huh = 0x320,
-        Kiss = 0x321,
-        Laugh = 0x322,
-        No = 0x323,
-        Oh = 0x324,
-        Oomph1 = 0x325,
-        Oomph2 = 0x326,
-        Oomph3 = 0x327,
-        Oomph4 = 0x328,
-        Oomph5 = 0x329,
-        Oomph6 = 0x32A,
-        Oomph7 = 0x32B,
-        Oooh = 0x32C,
-        Oops = 0x32D,
-        Puke = 0x32E,
-        Scream = 0x32F,
-        Shush = 0x330,
-        Sigh = 0x331,
-        Sneeze = 0x332,
-        Sniff = 0x333,
-        Snore = 0x334,
-        Spit = 0x335,
-        Whistle = 0x336,
-        Yawn = 0x337,
-        Yea = 0x338,
-        Yell = 0x339,
+        Ah = 0x30A,
+        Ahha = 0x30B,
+        Applaud = 0x30C,
+        Blownose = 0x30D,
+        Burp = 0x30E,
+        Cheer = 0x30F,
+        Clear_Throat = 0x310,
+        Cough = 0x311,
+        Coughbs = 0x312,
+        Cry = 0x313,
+        Death_01 = 0x314,
+        Death_02 = 0x315,
+        Death_03 = 0x316,
+        Death_04 = 0x317,
+        Fart = 0x318,
+        Gasp = 0x319,
+        Giggle = 0x31A,
+        Groan = 0x31B,
+        Growl = 0x31C,
+        Hey = 0x31D,
+        Hiccup = 0x31E,
+        Huh = 0x31F,
+        Kiss = 0x320,
+        Laugh = 0x321,
+        No = 0x322,
+        Oh = 0x323,
+        Oomph_01 = 0x324,
+        Oomph_02 = 0x325,
+        Oomph_03 = 0x326,
+        Oomph_04 = 0x327,
+        Oomph_05 = 0x328,
+        Oomph_06 = 0x329,
+        Oomph_07 = 0x32A,
+        Oooh = 0x32B,
+        Oops = 0x32C,
+        Puke = 0x32D,
+        Scream = 0x32E,
+        Shush = 0x32F,
+        Sigh = 0x330,
+        Sneeze = 0x331,
+        Sniff = 0x332,
+        Snore = 0x333,
+        Spit = 0x334,
+        Whistle = 0x335,
+        Yawn = 0x336,
+        Yea = 0x337,
+        Yell = 0x338
     }
 
     public class PlayerData : Mobile
@@ -223,209 +232,209 @@ namespace Assistant
             get { return VisRange + 5; }
         }
 
-        private int m_MaxWeight = -1;
+        private int _maxWeight = -1;
 
-        private short m_FireResist, m_ColdResist, m_PoisonResist, m_EnergyResist, m_Luck;
-        private ushort m_DamageMin, m_DamageMax;
+        private short _fireResist, _coldResist, _poisonResist, _energyResist, _luck;
+        private ushort _damageMin, _damageMax;
 
-        private ushort m_Str, m_Dex, m_Int;
-        private LockType m_StrLock, m_DexLock, m_IntLock;
-        private uint m_Gold;
-        private ushort m_Weight;
-        private Skill[] m_Skills;
-        private ushort m_AR;
-        private ushort m_StatCap;
-        private byte m_Followers;
-        private byte m_FollowersMax;
-        private int m_Tithe;
-        private sbyte m_LocalLight;
-        private byte m_GlobalLight;
-        private uint m_Features;
-        private byte m_Season;
-        private byte m_DefaultSeason;
-        private int[] m_MapPatches = new int[10];
+        private ushort _str, _dex, _int;
+        private LockType _strLock, _dexLock, _intLock;
+        private uint _gold;
+        private ushort _weight;
+        private Skill[] _skills;
+        private ushort _ar;
+        private ushort _statCap;
+        private byte _followers;
+        private byte _followersMax;
+        private int _tithe;
+        private sbyte _localLight;
+        private byte _globalLight;
+        private uint _features;
+        private byte _season;
+        private byte _defaultSeason;
+        private int[] _papPatches = new int[10];
 
 
-        private bool m_SkillsSent;
-        private Timer m_CriminalTime;
-        private DateTime m_CriminalStart = DateTime.MinValue;
+        private bool _skillsSent;
+        private Timer _criminalTime;
+        private DateTime _criminalStart = DateTime.MinValue;
 
-        internal List<BuffDebuff> m_BuffsDebuffs = new List<BuffDebuff>();
+        internal List<BuffDebuff> _buffsDebuffs = new List<BuffDebuff>();
 
         internal List<BuffDebuff> BuffsDebuffs
         {
-            get { return m_BuffsDebuffs; }
+            get { return _buffsDebuffs; }
         }
 
-        private List<uint> m_OpenedCorpses = new List<uint>();
+        private List<uint> _openedCorpses = new List<uint>();
 
         public List<uint> OpenedCorpses
         {
-            get { return m_OpenedCorpses; }
+            get { return _openedCorpses; }
         }
 
         public PlayerData(Serial serial) : base(serial)
         {
-            m_Skills = new Skill[Ultima.Skills.TotalSkills()];
-            for (int i = 0; i < m_Skills.Length; i++)
-                m_Skills[i] = new Skill(i);
+            _skills = new Skill[Ultima.Skills.TotalSkills()];
+            for (int i = 0; i < _skills.Length; i++)
+                _skills[i] = new Skill(i);
         }
 
         public ushort Str
         {
-            get { return m_Str; }
-            set { m_Str = value; }
+            get { return _str; }
+            set { _str = value; }
         }
 
         public ushort Dex
         {
-            get { return m_Dex; }
-            set { m_Dex = value; }
+            get { return _dex; }
+            set { _dex = value; }
         }
 
         public ushort Int
         {
-            get { return m_Int; }
-            set { m_Int = value; }
+            get { return _int; }
+            set { _int = value; }
         }
 
         public uint Gold
         {
-            get { return m_Gold; }
-            set { m_Gold = value; }
+            get { return _gold; }
+            set { _gold = value; }
         }
 
         public ushort Weight
         {
-            get { return m_Weight; }
-            set { m_Weight = value; }
+            get { return _weight; }
+            set { _weight = value; }
         }
 
         public ushort MaxWeight
         {
             get
             {
-                if (m_MaxWeight == -1)
-                    return (ushort) ((m_Str * 3.5) + 40);
+                if (_maxWeight == -1)
+                    return (ushort) ((_str * 3.5) + 40);
                 else
-                    return (ushort) m_MaxWeight;
+                    return (ushort) _maxWeight;
             }
-            set { m_MaxWeight = value; }
+            set { _maxWeight = value; }
         }
 
         public short FireResistance
         {
-            get { return m_FireResist; }
-            set { m_FireResist = value; }
+            get { return _fireResist; }
+            set { _fireResist = value; }
         }
 
         public short ColdResistance
         {
-            get { return m_ColdResist; }
-            set { m_ColdResist = value; }
+            get { return _coldResist; }
+            set { _coldResist = value; }
         }
 
         public short PoisonResistance
         {
-            get { return m_PoisonResist; }
-            set { m_PoisonResist = value; }
+            get { return _poisonResist; }
+            set { _poisonResist = value; }
         }
 
         public short EnergyResistance
         {
-            get { return m_EnergyResist; }
-            set { m_EnergyResist = value; }
+            get { return _energyResist; }
+            set { _energyResist = value; }
         }
 
         public short Luck
         {
-            get { return m_Luck; }
-            set { m_Luck = value; }
+            get { return _luck; }
+            set { _luck = value; }
         }
 
         public ushort DamageMin
         {
-            get { return m_DamageMin; }
-            set { m_DamageMin = value; }
+            get { return _damageMin; }
+            set { _damageMin = value; }
         }
 
         public ushort DamageMax
         {
-            get { return m_DamageMax; }
-            set { m_DamageMax = value; }
+            get { return _damageMax; }
+            set { _damageMax = value; }
         }
 
         public LockType StrLock
         {
-            get { return m_StrLock; }
-            set { m_StrLock = value; }
+            get { return _strLock; }
+            set { _strLock = value; }
         }
 
         public LockType DexLock
         {
-            get { return m_DexLock; }
-            set { m_DexLock = value; }
+            get { return _dexLock; }
+            set { _dexLock = value; }
         }
 
         public LockType IntLock
         {
-            get { return m_IntLock; }
-            set { m_IntLock = value; }
+            get { return _intLock; }
+            set { _intLock = value; }
         }
 
         public ushort StatCap
         {
-            get { return m_StatCap; }
-            set { m_StatCap = value; }
+            get { return _statCap; }
+            set { _statCap = value; }
         }
 
         public ushort AR
         {
-            get { return m_AR; }
-            set { m_AR = value; }
+            get { return _ar; }
+            set { _ar = value; }
         }
 
         public byte Followers
         {
-            get { return m_Followers; }
-            set { m_Followers = value; }
+            get { return _followers; }
+            set { _followers = value; }
         }
 
         public byte FollowersMax
         {
-            get { return m_FollowersMax; }
-            set { m_FollowersMax = value; }
+            get { return _followersMax; }
+            set { _followersMax = value; }
         }
 
         public int Tithe
         {
-            get { return m_Tithe; }
-            set { m_Tithe = value; }
+            get { return _tithe; }
+            set { _tithe = value; }
         }
 
         public Skill[] Skills
         {
-            get { return m_Skills; }
+            get { return _skills; }
         }
 
         public bool SkillsSent
         {
-            get { return m_SkillsSent; }
-            set { m_SkillsSent = value; }
+            get { return _skillsSent; }
+            set { _skillsSent = value; }
         }
 
         public int CriminalTime
         {
             get
             {
-                if (m_CriminalStart != DateTime.MinValue)
+                if (_criminalStart != DateTime.MinValue)
                 {
-                    int sec = (int) (DateTime.UtcNow - m_CriminalStart).TotalSeconds;
+                    int sec = (int) (DateTime.UtcNow - _criminalStart).TotalSeconds;
                     if (sec > 300)
                     {
-                        if (m_CriminalTime != null)
-                            m_CriminalTime.Stop();
-                        m_CriminalStart = DateTime.MinValue;
+                        if (_criminalTime != null)
+                            _criminalTime.Stop();
+                        _criminalStart = DateTime.MinValue;
                         return 0;
                     }
                     else
@@ -594,9 +603,9 @@ namespace Assistant
             {
                 // grey is turning off
                 // SendMessage( "You are no longer a criminal." );
-                if (m_CriminalTime != null)
-                    m_CriminalTime.Stop();
-                m_CriminalStart = DateTime.MinValue;
+                if (_criminalTime != null)
+                    _criminalTime.Stop();
+                _criminalStart = DateTime.MinValue;
                 Client.Instance.RequestTitlebarUpdate();
             }
             else if ((cur == 3 || cur == 4) && (old != 3 && old != 4 && old != 0))
@@ -608,23 +617,23 @@ namespace Assistant
 
         public void ResetCriminalTimer()
         {
-            if (m_CriminalStart == DateTime.MinValue || DateTime.UtcNow - m_CriminalStart >= TimeSpan.FromSeconds(1))
+            if (_criminalStart == DateTime.MinValue || DateTime.UtcNow - _criminalStart >= TimeSpan.FromSeconds(1))
             {
-                m_CriminalStart = DateTime.UtcNow;
-                if (m_CriminalTime == null)
-                    m_CriminalTime = new CriminalTimer(this);
-                m_CriminalTime.Start();
+                _criminalStart = DateTime.UtcNow;
+                if (_criminalTime == null)
+                    _criminalTime = new CriminalTimer(this);
+                _criminalTime.Start();
                 Client.Instance.RequestTitlebarUpdate();
             }
         }
 
         private class CriminalTimer : Timer
         {
-            private PlayerData m_Player;
+            private PlayerData _player;
 
             public CriminalTimer(PlayerData player) : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {
-                m_Player = player;
+                _player = player;
             }
 
             protected override void OnTick()
@@ -836,24 +845,24 @@ namespace Assistant
             World.Player.HasPrompt = false;
         }
 
-        private ushort m_SpeechHue;
+        private ushort _speechHue;
 
         public ushort SpeechHue
         {
-            get { return m_SpeechHue; }
-            set { m_SpeechHue = value; }
+            get { return _speechHue; }
+            set { _speechHue = value; }
         }
 
         public sbyte LocalLightLevel
         {
-            get { return m_LocalLight; }
-            set { m_LocalLight = value; }
+            get { return _localLight; }
+            set { _localLight = value; }
         }
 
         public byte GlobalLightLevel
         {
-            get { return m_GlobalLight; }
-            set { m_GlobalLight = value; }
+            get { return _globalLight; }
+            set { _globalLight = value; }
         }
 
         public enum SeasonFlag
@@ -867,14 +876,14 @@ namespace Assistant
 
         public byte Season
         {
-            get { return m_Season; }
-            set { m_Season = value; }
+            get { return _season; }
+            set { _season = value; }
         }
 
         public byte DefaultSeason
         {
-            get { return m_DefaultSeason; }
-            set { m_DefaultSeason = value; }
+            get { return _defaultSeason; }
+            set { _defaultSeason = value; }
         }
 
         /// <summary>
@@ -890,8 +899,8 @@ namespace Assistant
                 World.Player.Season = season;
                 World.Player.DefaultSeason = defaultSeason;
 
-                if (!m_SeasonTimer.Running)
-                    m_SeasonTimer.Start();
+                if (!_seasonTimer.Running)
+                    _seasonTimer.Start();
             }
             else
             {
@@ -900,7 +909,7 @@ namespace Assistant
             }
         }
 
-        public static Timer m_SeasonTimer = new SeasonTimer();
+        public static Timer _seasonTimer = new SeasonTimer();
 
         private class SeasonTimer : Timer
         {
@@ -913,49 +922,46 @@ namespace Assistant
                 if (World.Player != null && Client.Instance != null)
                 {
                     Client.Instance.ForceSendToClient(new SeasonChange(World.Player.Season, true));
-                    m_SeasonTimer.Stop();
+                    _seasonTimer.Stop();
                 }
             }
         }
 
         public uint Features
         {
-            get { return m_Features; }
-            set { m_Features = value; }
+            get { return _features; }
+            set { _features = value; }
         }
 
         public int[] MapPatches
         {
-            get { return m_MapPatches; }
-            set { m_MapPatches = value; }
+            get { return _papPatches; }
+            set { _papPatches = value; }
         }
 
-        private int m_LastSkill = -1;
+        private int _lstSkill = -1;
 
         public int LastSkill
         {
-            get { return m_LastSkill; }
-            set { m_LastSkill = value; }
+            get { return _lstSkill; }
+            set { _lstSkill = value; }
         }
 
-        private Serial m_LastObj = Serial.Zero;
+        private Serial _lastObj = Serial.Zero;
 
         public Serial LastObject
         {
-            get { return m_LastObj; }
-            set { m_LastObj = value; }
+            get { return _lastObj; }
+            set { _lastObj = value; }
         }
 
-        private int m_LastSpell = -1;
+        private int _lastSpell = -1;
 
         public int LastSpell
         {
-            get { return m_LastSpell; }
-            set { m_LastSpell = value; }
+            get { return _lastSpell; }
+            set { _lastSpell = value; }
         }
-
-        //private UOEntity m_LastCtxM = null;
-        //public UOEntity LastContextMenu { get { return m_LastCtxM; } set { m_LastCtxM = value; } }
 
         public bool UseItem(Item cont, ushort find)
         {
@@ -968,10 +974,11 @@ namespace Assistant
 
                 if (item.ItemID == find)
                 {
-                    PlayerData.DoubleClick(item);
+                    DoubleClick(item);
                     return true;
                 }
-                else if (item.Contains != null && item.Contains.Count > 0)
+
+                if (item.Contains != null && item.Contains.Count > 0)
                 {
                     if (UseItem(item, find))
                         return true;
@@ -1032,7 +1039,7 @@ namespace Assistant
                     DragDropManager.DragDrop(free, World.Player, free.Layer, true);
 
                 if (s.IsItem)
-                    World.Player.m_LastObj = s;
+                    World.Player._lastObj = s;
             }
 
             return false;
@@ -1045,12 +1052,12 @@ namespace Assistant
             Valor = 0x03
         }
 
-        public void InvokeVirtue(InvokeVirtues virtue)
+        public static void InvokeVirtue(InvokeVirtues virtue)
         {
             Client.Instance.SendToServer(new VirtueRequest((byte) virtue));
         }
 
-        public void RenameMobile(Serial serial, string newName)
+        public static void RenameMobile(Serial serial, string newName)
         {
             Client.Instance.SendToServer(new RenamePacket(serial.Value, newName));
         }

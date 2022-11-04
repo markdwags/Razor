@@ -63,6 +63,40 @@ namespace Assistant.Core
 
                     OnLabelMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
                     break;
+                case MessageType.Emote:
+
+                    if (Config.GetBool("PlayEmoteSound") && source.IsMobile)
+                    {
+                        Mobile m = World.FindMobile(source);
+
+                        if (m != null)
+                        {
+                            text = text.Trim('*');
+
+                            if (m.Female)
+                            {
+                                if (Enum.TryParse(text, true, out FemaleSounds sound))
+                                {
+                                    if (sound != 0)
+                                    {
+                                        Client.Instance.SendToClient(new PlaySound((int)sound));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (Enum.TryParse(text, true, out MaleSounds sound))
+                                {
+                                    if (sound != 0)
+                                    {
+                                        Client.Instance.SendToClient(new PlaySound((int) sound));
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    break;
                 default:
                     if (source == Serial.MinusOne && sourceName == "System")
                     {
