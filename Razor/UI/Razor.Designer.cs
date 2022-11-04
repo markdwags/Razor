@@ -770,7 +770,6 @@ namespace Assistant
             this.createBackup = new System.Windows.Forms.Button();
             this.enableUOAAPI = new System.Windows.Forms.CheckBox();
             this.disableSmartCPU = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.negotiate = new System.Windows.Forms.CheckBox();
             this.openRazorDataDir = new System.Windows.Forms.Button();
             this.msglvl = new System.Windows.Forms.ComboBox();
@@ -4709,9 +4708,9 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptDocMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptDocMap.ForeColor = System.Drawing.Color.Maroon;
-            this.scriptDocMap.Location = new System.Drawing.Point(167, -4);
+            this.scriptDocMap.Location = new System.Drawing.Point(209, -4);
             this.scriptDocMap.Name = "scriptDocMap";
-            this.scriptDocMap.Size = new System.Drawing.Size(105, 272);
+            this.scriptDocMap.Size = new System.Drawing.Size(87, 272);
             this.scriptDocMap.TabIndex = 22;
             this.scriptDocMap.Target = null;
             // 
@@ -4731,7 +4730,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4753,7 +4752,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(161, 270);
+            this.scriptEditor.Size = new System.Drawing.Size(203, 270);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -5401,7 +5400,6 @@ namespace Assistant
             this.advancedInfoTab.Controls.Add(this.groupBox16);
             this.advancedInfoTab.Controls.Add(this.enableUOAAPI);
             this.advancedInfoTab.Controls.Add(this.disableSmartCPU);
-            this.advancedInfoTab.Controls.Add(this.checkBox1);
             this.advancedInfoTab.Controls.Add(this.negotiate);
             this.advancedInfoTab.Controls.Add(this.openRazorDataDir);
             this.advancedInfoTab.Controls.Add(this.msglvl);
@@ -5466,6 +5464,7 @@ namespace Assistant
             this.openBackupFolder.TabIndex = 81;
             this.openBackupFolder.Text = "Open Folder";
             this.openBackupFolder.UseVisualStyleBackColor = true;
+            this.openBackupFolder.Click += new System.EventHandler(this.openBackupFolder_Click);
             // 
             // setBackupFolder
             // 
@@ -5475,6 +5474,7 @@ namespace Assistant
             this.setBackupFolder.TabIndex = 80;
             this.setBackupFolder.Text = "Set Folder";
             this.setBackupFolder.UseVisualStyleBackColor = true;
+            this.setBackupFolder.Click += new System.EventHandler(this.setBackupFolder_Click);
             // 
             // createBackup
             // 
@@ -5484,6 +5484,7 @@ namespace Assistant
             this.createBackup.TabIndex = 79;
             this.createBackup.Text = "Create Backup";
             this.createBackup.UseVisualStyleBackColor = true;
+            this.createBackup.Click += new System.EventHandler(this.createBackup_Click);
             // 
             // enableUOAAPI
             // 
@@ -5495,6 +5496,7 @@ namespace Assistant
             this.enableUOAAPI.Size = new System.Drawing.Size(146, 19);
             this.enableUOAAPI.TabIndex = 91;
             this.enableUOAAPI.Text = "Enable UOA API";
+            this.enableUOAAPI.CheckedChanged += new System.EventHandler(this.enableUOAAPI_CheckedChanged);
             // 
             // disableSmartCPU
             // 
@@ -5506,15 +5508,6 @@ namespace Assistant
             this.disableSmartCPU.Text = "Disable SmartCPU";
             this.disableSmartCPU.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox1.Location = new System.Drawing.Point(240, 56);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(197, 20);
-            this.checkBox1.TabIndex = 89;
-            this.checkBox1.Text = "Negotiate features with server";
-            // 
             // negotiate
             // 
             this.negotiate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -5523,6 +5516,7 @@ namespace Assistant
             this.negotiate.Size = new System.Drawing.Size(197, 20);
             this.negotiate.TabIndex = 89;
             this.negotiate.Text = "Negotiate features with server";
+            this.negotiate.CheckedChanged += new System.EventHandler(this.negotiate_CheckedChanged);
             // 
             // openRazorDataDir
             // 
@@ -5533,6 +5527,7 @@ namespace Assistant
             this.openRazorDataDir.TabIndex = 88;
             this.openRazorDataDir.Text = "Open Data Directory";
             this.openRazorDataDir.UseVisualStyleBackColor = true;
+            this.openRazorDataDir.Click += new System.EventHandler(this.openRazorDataDir_Click);
             // 
             // msglvl
             // 
@@ -5566,6 +5561,7 @@ namespace Assistant
             this.logPackets.Size = new System.Drawing.Size(146, 23);
             this.logPackets.TabIndex = 85;
             this.logPackets.Text = "Enable packet logging";
+            this.logPackets.CheckedChanged += new System.EventHandler(this.logPackets_CheckedChanged);
             // 
             // statusBox
             // 
@@ -6287,7 +6283,6 @@ namespace Assistant
         private TextBox statusBox;
         private TextBox features;
         private TabPage advancedStaffDeco;
-        private CheckBox checkBox1;
         private UI.ArtViewer artViewer;
         private TreeView itemTree;
         private NumericUpDown itemRandomNumber;

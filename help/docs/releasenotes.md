@@ -6,7 +6,7 @@ Below is a list of the latest releases notes going back to the first release of 
 
 * Fix issue with delete profile button
 * Added `sound` and `music` script commands
-* Added `classicuo/cuo` script command, `>cuo` command to control ClassicUO settings directly
+* Added `classicuo/cuo` script commands, `>cuo` manual command to control ClassicUO settings directly
 * Added sound trigger option to overhead messages
 * Fixed issue with buffs/debuff filter not loading on a profile change
 * Reload scripts will read all changes made externally to scripting files
@@ -22,6 +22,8 @@ Below is a list of the latest releases notes going back to the first release of 
 * Updated the `dress` and `undress` commands to accept a serial or variable
 * Updated `gumpclose` to accept an optional gump id
 * Added an option to trigger male or female sounds base on specific emotes (ie: *cheer* or *laugh*)
+* Script editor will highlight the current line when executed via the Play button in the UI
+* Updated `setvar` to accept a serial (bypassing the target click) and to set temp variables (see docs)
 
 ## 1.7.4.49 (07/26/2022)
 

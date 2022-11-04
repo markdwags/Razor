@@ -408,28 +408,47 @@ namespace Assistant.Scripts
         {
             if (vars.Length < 1)
             {
-                throw new RunTimeError("Usage: setvar ('variable') [timeout]");
+                throw new RunTimeError("Usage: setvar ('variable') ['serial'] [timeout]");
             }
 
-            string varname = vars[0].AsString();
+            string name = vars[0].AsString();
+            Serial serial = Serial.Zero;
 
-            ScriptVariables.ScriptVariable variable = ScriptVariables.GetVariable(varname);
-
-            if (variable == null)
+            if (vars.Length == 2)
             {
-                World.Player.SendMessage(Config.GetInt("SysColor"), $"'{varname}' not found, creating new variable");
+                serial = vars[1].AsSerial();
 
-                variable = new ScriptVariables.ScriptVariable(varname, new TargetInfo());
+                if (force)
+                {
+                    Interpreter.SetVariable(name, serial.ToString());
+                    return true;
+                }
+            }
+
+            ScriptVariables.ScriptVariable variable = ScriptVariables.GetVariable(name);
+            
+            if (variable == null) // new variable
+            {
+                World.Player.SendMessage(MsgLevel.Info, $"'{name}' not found, creating new variable", quiet);
+
+                variable = new ScriptVariables.ScriptVariable(name, new TargetInfo());
 
                 ScriptVariables.ScriptVariableList.Add(variable);
-
-                ScriptVariables.RegisterVariable(varname);
-
-                ScriptManager.RedrawScriptVariables();
+                ScriptVariables.RegisterVariable(name);
             }
 
-            Interpreter.Timeout(vars.Length == 2 ? vars[1].AsUInt() : 30000, () => { return true; });
-            
+
+            if (serial != Serial.Zero) // they supplied a serial
+            {
+                variable.TargetInfo.Serial = serial;
+                World.Player.SendMessage(MsgLevel.Info, $"'{name}' script variable updated to '{variable.TargetInfo.Serial}'", quiet);
+
+                ScriptManager.RedrawScriptVariables();
+
+                return true;
+            }
+
+            Interpreter.Timeout(vars.Length == 3 ? vars[2].AsUInt() : 30000, () => { return true; });
 
             if (!ScriptManager.SetVariableActive)
             {
@@ -443,6 +462,11 @@ namespace Assistant.Scripts
             {
                 Interpreter.ClearTimeout();
                 ScriptManager.SetVariableActive = false;
+
+                World.Player.SendMessage(MsgLevel.Info, $"'{name}' script variable updated to '{variable.TargetInfo.Serial}'", quiet);
+
+                ScriptManager.RedrawScriptVariables();
+
                 return true;
             }
 

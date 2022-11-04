@@ -427,9 +427,9 @@ Example:
 
 # gumpclose
 
-**Syntax**: `gumpclose`
+**Syntax**: `gumpclose [gumpID]`
 
-**Description**: This command will close the last gump that opened.
+**Description**: This command will close the last gump that opened. You may pass an optional gump ID.
 
 !!! example
 
@@ -442,7 +442,7 @@ Example:
     === "Close gump with id"
 
         ```vim
-        dclick 0x4000174B
+        dclick '0x4000174B'
         waitforgump 2341449854        
         gumpclose 2341449854
         ```
@@ -485,7 +485,6 @@ Example:
         target 'last'    
         ```
 
-
 # lasttarget
 
 **Syntax**: `lasttarget`
@@ -508,9 +507,12 @@ Example:
 
 **Description**: This command will lift a specific item and amount. If no amount is provided, `1` is defaulted.
 
+!!! tip "dress command"
+    If you're looking to lift an item to wear, consider using the `dress` command instead.
+
 !!! example
 
-    === "Lift item"
+    === "Lift item and drop to the ground"
 
         ```vim
         lift '0x400EED2A'
@@ -694,7 +696,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # rename
 
-**Syntax**: `rename (serial) (new name)`
+**Syntax**: `rename (serial) ('name')`
 
 **Description**: This command will attempt to rename the mobile to a new name.
 
@@ -785,12 +787,12 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # script
 
-**Syntax**: `script 'name'` or `script 'category\name'`
+**Syntax**: `script ('name')` or `script ('category\name')`
 
 **Description**: This command will call another script.
 
 !!! tip
-    You can call scripts in categories using `cat1\cat2\scriptname` format.
+    You can call scripts in categories using a `category1\category2\scriptname` format.
 
 !!! example
 
@@ -811,7 +813,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```
 # scavenger
 
-**Syntax**: `scavenger ['clear'/'add'/'on'/'off'/'set']`
+**Syntax**: `scavenger ('clear'/'add'/'on'/'off'/'set')`
 
 **Description**: This command will control the scavenger agent.
 
@@ -883,9 +885,12 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```
 # setvar
 
-**Syntax**: `setvar ('variable') [timeout` or `setvariable ('variable') [timeout]`
+**Syntax**: `setvar ('variable') ['serial'] [timeout]` or `setvariable ('variable') ['serial'] [timeout]`
 
-**Description**: This command will pause the script until you select a target to be assigned a variable. Please note, the variable must exist before you can assign values to it. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+**Description**: This command will pause the script until you select a target to be assigned a variable. You can also provide a serial directly, which will bypass the target selection. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! tip "Temp variables"
+    If you issue the `setvar!` (note the `!`) the variable will not be available in Razor's variable list to be used by other scripts and will go away at the end of the script's execution.
 
 !!! example
 
@@ -899,9 +904,25 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         target 'dummy'
         ```
 
+    === "Set variable with serial"
+
+        ```vim
+        setvar 'spellbook' '0x40000D'
+
+        dress 'spellbook'        
+        ```
+    
+    === "Set temp variable with serial"
+
+        ```vim
+        setvar! 'tempvar' '0x40000D'
+
+        dclick 'tempvar'       
+        ```
+
 # skill
 
-**Syntax**: `skill 'name of skill'` or `skill last`
+**Syntax**: `skill ('name of skill')` or `skill last`
 
 **Description**: This command will use a specific skill (assuming it's a usable skill).
 
@@ -1154,7 +1175,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # undress
 
-**Syntax**: `undress ['name of dress list']'` or `undress 'LayerName'` or `undress (serial)`
+**Syntax**: `undress ('name of dress list')'` or `undress 'LayerName'` or `undress (serial)`
 
 **Description**: This command will either undress you completely if no dress list is provided. If you provide a dress list, only those specific items will be undressed. Lastly, you can define a layer name to undress.
 
@@ -1196,7 +1217,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # useonce
 
-**Syntax**: `useonce ['add'/'addcontainer']`
+**Syntax**: `useonce ('add'/'addcontainer')`
 
 **Description**: This command will execute the UseOnce agent. If the `add` parameter is included, you can add items to your UseOnce list. If the `addcontainer` parameter is included, you can add all items in a container to your UseOnce list.
 
@@ -1269,7 +1290,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # wait & pause
 
-**Syntax**: `wait [time in milliseconds]` or `pause [time in milliseconds]` or `wait [duration] (shorthand)`
+**Syntax**: `wait (time in milliseconds)` or `pause (time in milliseconds)` or `wait (duration) (shorthand)`
 
 **Description**: This command will pause the execution of a script for a given time.
 
@@ -1317,7 +1338,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # waitforgump
 
-**Syntax**: `waitforgump [gump id/'any'] [timeout]`
+**Syntax**: `waitforgump (gump id/'any') [timeout]`
 
 **Description**: This command will wait for a gump. If no `gump id` is provided, it will wait for **any** gump. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
@@ -1356,7 +1377,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # waitformenu
 
-**Syntax**: `waitformenu [menu id/'any'] [timeout]`
+**Syntax**: `waitformenu (menu id/'any') [timeout]`
 
 **Description**: This command will wait for a context menu. If no `menu id` is provided, it will wait for **any** menu. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
@@ -1392,7 +1413,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # waitforprompt
 
-**Syntax**: `waitforprompt [promptid/'any'] [timeout]`
+**Syntax**: `waitforprompt (promptid/'any') [timeout]`
 
 **Description**: This command will wait for a prompt before continuing. If no `prompt id` is provided, it will wait for **any** prompt. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
@@ -1423,7 +1444,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # waitforsysmsg
 
-**Syntax**: `waitforsysmsg 'message to wait for' [timeout]` or `wfsysmsg 'message to wait for' [timeout]`
+**Syntax**: `waitforsysmsg ('message to wait for') [timeout]` or `wfsysmsg ('message to wait for') [timeout]`
 
 **Description**: This command will wait a specific message to be added to the system message queue before continuing.  Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
