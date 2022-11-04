@@ -385,6 +385,7 @@ namespace Assistant
             this.moreOptTab = new System.Windows.Forms.TabPage();
             this.optionsTabCtrl = new System.Windows.Forms.TabControl();
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
+            this.playEmoteSound = new System.Windows.Forms.CheckBox();
             this.overrideSpellFormat = new System.Windows.Forms.CheckBox();
             this.buffDebuffOptions = new System.Windows.Forms.Button();
             this.damageTakenOverhead = new System.Windows.Forms.CheckBox();
@@ -811,7 +812,6 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.playEmoteSound = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -1217,6 +1217,17 @@ namespace Assistant
             this.subOptionsSpeechTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsSpeechTab.TabIndex = 0;
             this.subOptionsSpeechTab.Text = "Speech & Messages  ";
+            // 
+            // playEmoteSound
+            // 
+            this.playEmoteSound.AutoSize = true;
+            this.playEmoteSound.Location = new System.Drawing.Point(260, 235);
+            this.playEmoteSound.Name = "playEmoteSound";
+            this.playEmoteSound.Size = new System.Drawing.Size(136, 19);
+            this.playEmoteSound.TabIndex = 131;
+            this.playEmoteSound.Text = "Play *emote* sounds";
+            this.playEmoteSound.UseVisualStyleBackColor = true;
+            this.playEmoteSound.CheckedChanged += new System.EventHandler(this.playEmoteSound_CheckedChanged);
             // 
             // overrideSpellFormat
             // 
@@ -4698,7 +4709,7 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptDocMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptDocMap.ForeColor = System.Drawing.Color.Maroon;
-            this.scriptDocMap.Location = new System.Drawing.Point(179, -4);
+            this.scriptDocMap.Location = new System.Drawing.Point(167, -4);
             this.scriptDocMap.Name = "scriptDocMap";
             this.scriptDocMap.Size = new System.Drawing.Size(105, 272);
             this.scriptDocMap.TabIndex = 22;
@@ -4742,7 +4753,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(173, 270);
+            this.scriptEditor.Size = new System.Drawing.Size(161, 270);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -5413,6 +5424,7 @@ namespace Assistant
             this.fontDecrease.TabIndex = 94;
             this.fontDecrease.Text = "-";
             this.fontDecrease.UseVisualStyleBackColor = true;
+            this.fontDecrease.Click += new System.EventHandler(this.fontDecrease_Click);
             // 
             // fontIncrease
             // 
@@ -5422,6 +5434,7 @@ namespace Assistant
             this.fontIncrease.TabIndex = 93;
             this.fontIncrease.Text = "+";
             this.fontIncrease.UseVisualStyleBackColor = true;
+            this.fontIncrease.Click += new System.EventHandler(this.fontIncrease_Click);
             // 
             // groupBox16
             // 
@@ -6003,17 +6016,6 @@ namespace Assistant
             this.aboutVer.TabIndex = 14;
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // playEmoteSound
-            // 
-            this.playEmoteSound.AutoSize = true;
-            this.playEmoteSound.Location = new System.Drawing.Point(260, 235);
-            this.playEmoteSound.Name = "playEmoteSound";
-            this.playEmoteSound.Size = new System.Drawing.Size(136, 19);
-            this.playEmoteSound.TabIndex = 131;
-            this.playEmoteSound.Text = "Play *emote* sounds";
-            this.playEmoteSound.UseVisualStyleBackColor = true;
-            this.playEmoteSound.CheckedChanged += new System.EventHandler(this.playEmoteSound_CheckedChanged);
             // 
             // MainForm
             // 
