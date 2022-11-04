@@ -2,11 +2,13 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
-## 1.7.5.X (Dev Preview)
+## 1.8.X.X (Dev Preview)
+
+This version includes several new scripting commands, the ability to resize the Razor window, Pandora like features.
 
 * Fix issue with delete profile button
 * Added `sound` and `music` script commands
-* Added `classicuo/cuo` script commands, `>cuo` manual command to control ClassicUO settings directly
+* Added `classicuo/cuo` script commands, `>cuo` manual command to control ClassicUO settings directly.
 * Added sound trigger option to overhead messages
 * Fixed issue with buffs/debuff filter not loading on a profile change
 * Reload scripts will read all changes made externally to scripting files
