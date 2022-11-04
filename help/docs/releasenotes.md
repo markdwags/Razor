@@ -2,7 +2,7 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
-## 1.8.X.X (Dev Preview)
+## 1.8.X.0 (Dev Preview)
 
 This version includes several new scripting commands, the ability to resize the Razor window, Pandora like features.
 

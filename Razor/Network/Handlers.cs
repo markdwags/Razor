@@ -2592,7 +2592,7 @@ namespace Assistant
 
         private static bool EnforceLightLevels(int lightLevel)
         {
-            if (Config.GetBool("MinMaxLightLevelEnabled"))
+            if (Client.Instance.AllowBit(FeatureBit.LightFilter) && Config.GetBool("MinMaxLightLevelEnabled"))
             {
                 // 0 bright, 30 is dark
                 if (lightLevel == -1)
