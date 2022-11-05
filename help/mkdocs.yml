@@ -47,6 +47,7 @@ theme:
     custom_dir: overrides
     language: en    
     logo: images/razor.png
+    favicon: images/razor.ico
     features:
         - navigation.top
         - navigation.instant
@@ -79,7 +80,6 @@ theme:
         #text: Ubuntu
         text: Titillium Web
         code: Fira Code
-    logo: images/razor.png
 
 markdown_extensions:
   - admonition

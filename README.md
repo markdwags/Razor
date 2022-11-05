@@ -17,7 +17,7 @@ Learn more about this version of Razor by exploring the links below.
 - [Home](https://www.razorce.com)
 - [Download](https://www.razorce.com/download/)
 - [Release Notes](https://www.razorce.com/releasenotes/)
-- [Project History](https://www.razorce.com/#history)
+- [Project History](https://www.razorce.com/history/)
 - [Help Overview](https://www.razorce.com/help/)
 - [Scripting Guide](https://www.razorce.com/guide/)
 
