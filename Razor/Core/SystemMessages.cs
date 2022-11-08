@@ -76,7 +76,7 @@ namespace Assistant.Core
 
             Messages.Add(text);
 
-            if (Messages.Count >= 25)
+            if (Messages.Count >= 100)
             {
                 Messages.RemoveRange(0, 10);
             }
