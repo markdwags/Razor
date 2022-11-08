@@ -34,22 +34,25 @@ namespace Assistant.Core
             MessageType type, ushort hue, ushort font, string lang, string sourceName,
             string text)
         {
-            if (Config.GetBool("FilterSnoopMsg") && text.IndexOf(World.Player.Name) == -1 &&
-                text.StartsWith("You notice") && text.IndexOf("attempting to peek into") != -1 &&
-                text.IndexOf("belongings") != -1)
+            if (source == Serial.MinusOne && sourceName == "System")
             {
-                args.Block = true;
-                return;
+                if (Config.GetBool("FilterSnoopMsg") && text.IndexOf(World.Player.Name) == -1 &&
+                    text.StartsWith("You notice") && text.IndexOf("attempting to peek into") != -1 &&
+                    text.IndexOf("belongings") != -1)
+                {
+                    args.Block = true;
+                    return;
+                }
+
+                if (text.StartsWith("You've committed a criminal act") || text.StartsWith("You are now a criminal"))
+                {
+                    World.Player.ResetCriminalTimer();
+                }
+
+                // Overhead message override
+                OverheadManager.DisplayOverheadMessage(text);
             }
 
-            if (text.StartsWith("You've committed a criminal act") || text.StartsWith("You are now a criminal"))
-            {
-                World.Player.ResetCriminalTimer();
-            }
-
-            // Overhead message override
-            OverheadManager.DisplayOverheadMessage(text);
-            
             if (!source.IsValid || source == World.Player.Serial || source.IsItem)
             {
                 Add(text);

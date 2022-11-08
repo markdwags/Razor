@@ -20,6 +20,7 @@
 
 using System;
 using System.IO;
+using Assistant.Agents;
 
 namespace Assistant.Core
 {
@@ -98,23 +99,17 @@ namespace Assistant.Core
 
                     break;
                 default:
-                    if (source == Serial.MinusOne && sourceName == "System")
+                    OnSystemMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
+                    
+                    if (GetLabelCommand)
                     {
-                        OnSystemMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
+                        OnLabelMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
+                    }
+                    else
+                    {
+                        OnMobileMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
                     }
 
-                    if (source.IsMobile && source != World.Player.Serial)
-                    {
-                        if (GetLabelCommand)
-                        {
-                            OnLabelMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
-                        }
-                        else
-                        {
-                            OnMobileMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
-                        }
-                    }
-                    
                     break;
             }
         }
@@ -123,10 +118,26 @@ namespace Assistant.Core
                                  MessageType type, ushort hue, ushort font, string lang, string sourceName,
                                  string text)
         {
-            if (Config.GetBool("ForceSpeechHue"))
+            if ((type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper ||
+                 type == MessageType.Yell) && source.IsMobile && source != World.Player.Serial)
             {
-                p.Seek(10, SeekOrigin.Begin);
-                p.Write((ushort)Config.GetInt("SpeechHue"));
+                if (IgnoreAgent.IsIgnored(source))
+                {
+                    args.Block = true;
+                    return;
+                }
+
+                if (TextFilterManager.IsFiltered(text))
+                {
+                    args.Block = true;
+                    return;
+                }
+
+                if (Config.GetBool("ForceSpeechHue"))
+                {
+                    p.Seek(10, SeekOrigin.Begin);
+                    p.Write((ushort)Config.GetInt("SpeechHue"));
+                }
             }
         }
     }
