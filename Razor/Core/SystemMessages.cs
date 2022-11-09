@@ -58,7 +58,7 @@ namespace Assistant.Core
                 Add(text);
             }
 
-            if (Config.GetBool("FilterSystemMessages"))
+            if (Config.GetBool("FilterSystemMessages") && source == Serial.MinusOne || source == Serial.Zero)
             {
                 if (!MessageQueue.Enqueue(source, null, graphic, type, hue, font, lang, sourceName, text))
                 {
