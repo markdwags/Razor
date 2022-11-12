@@ -19,8 +19,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using System.Xml;
+using Assistant.Agents;
 using Assistant.UI;
 
 namespace Assistant.Core
@@ -40,15 +42,17 @@ namespace Assistant.Core
             MessageType type, ushort hue, ushort font, string lang, string sourceName,
             string text)
         {
-            if (!Config.GetBool("EnableTextFilter"))
-                return;
-
-            foreach (string filteredText in FilteredText)
+            if ((type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper || type == MessageType.Yell) && source.IsMobile && source != World.Player.Serial)
             {
-                if (text.IndexOf(filteredText, StringComparison.OrdinalIgnoreCase) != -1)
+                if (IgnoreAgent.IsIgnored(source))
                 {
                     args.Block = true;
                     return;
+                }
+
+                if (IsFiltered(text))
+                {
+                    args.Block = true;
                 }
             }
         }

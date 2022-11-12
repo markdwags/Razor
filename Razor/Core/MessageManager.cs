@@ -121,18 +121,6 @@ namespace Assistant.Core
             if ((type == MessageType.Emote || type == MessageType.Regular || type == MessageType.Whisper ||
                  type == MessageType.Yell) && source.IsMobile && source != World.Player.Serial)
             {
-                if (IgnoreAgent.IsIgnored(source))
-                {
-                    args.Block = true;
-                    return;
-                }
-
-                if (TextFilterManager.IsFiltered(text))
-                {
-                    args.Block = true;
-                    return;
-                }
-
                 if (Config.GetBool("ForceSpeechHue"))
                 {
                     p.Seek(10, SeekOrigin.Begin);
