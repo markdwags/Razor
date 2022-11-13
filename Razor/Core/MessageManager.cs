@@ -52,6 +52,7 @@ namespace Assistant.Core
                 case MessageType.Spell:
                     OnSpellMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
                     break;
+
                 case MessageType.Label:
                     if (source.IsMobile)
                     {
@@ -64,6 +65,7 @@ namespace Assistant.Core
 
                     OnLabelMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
                     break;
+
                 case MessageType.Emote:
 
                     if (Config.GetBool("PlayEmoteSound") && source.IsMobile)
@@ -98,19 +100,17 @@ namespace Assistant.Core
                     }
 
                     break;
-                default:
-                    OnSystemMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
-                    
-                    if (GetLabelCommand)
-                    {
-                        OnLabelMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
-                    }
-                    else
-                    {
-                        OnMobileMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
-                    }
+            }
 
-                    break;
+            OnSystemMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
+
+            if (GetLabelCommand)
+            {
+                OnLabelMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
+            }
+            else
+            {
+                OnMobileMessage?.Invoke(p, args, source, graphic, type, hue, font, lang, sourceName, text);
             }
         }
 
