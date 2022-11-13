@@ -1980,9 +1980,7 @@ namespace Assistant
             {
                 type = MessageType.Spell;
             }
-
-            BandageTimer.OnLocalizedMessage(num);
-
+            
             try
             {
                 string text = Language.ClilocFormat(num, ext_str);
