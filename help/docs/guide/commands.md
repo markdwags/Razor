@@ -87,7 +87,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
 # classicuo
 
-**Syntax**: `classicuo ('setting') ('value)` or `cuo ('setting') ('value')`
+**Syntax**: `classicuo ('setting') ('value')` or `cuo ('setting') ('value')`
 
 **Description**: This command will change specific settings/properties in your current ClassicUO profile.
 
@@ -161,6 +161,33 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         ```vim
         clearhands 'left'
         ```
+
+# clearignore
+
+**Syntax**: `clearignore`
+
+**Description**: Clears your scripting ignore list
+
+!!! tip
+    Works in conjunction with `ignore` and `unignore`
+
+!!! example
+
+    === "General"
+
+        ```vim hl_lines="1"
+        clearignore
+
+        if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
+            overhead 'found' 44
+            overhead 'wand' 44
+    
+            ignore 'wand'
+        else
+            overhead 'not found' 33
+        endif
+        ```
+
 # clearsysmsg
 
 **Syntax**: `clearsysmsg`
@@ -461,6 +488,37 @@ Example:
         skill 'detect hidden'
         waitfortarget
         hotkey 'target self'
+        ```
+
+# ignore
+
+**Syntax**: `ignore ('serial')`
+
+**Description**: Adds a specific serial to the script engine's ignore list to avoid finding items when using commands like `findtype`
+
+!!! example
+
+    === "Ignore by serial"
+
+        ```vim hl_lines="3"
+        clearignore
+
+        ignore '0x123A'
+        ```
+
+    === "Ignore by variable"
+
+        ```vim hl_lines="7"
+        clearignore
+
+        if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
+            overhead 'found' 44
+            overhead 'wand' 44
+    
+            ignore 'wand'
+        else
+            overhead 'not found' 33
+        endif
         ```
 
 # interrupt
@@ -1213,6 +1271,39 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```vim hl_lines="2"
         setvar 'hat'
         undress 'hat'
+        ```
+
+# unignore
+
+**Syntax**: `unignore ('serial')`
+
+**Description**: Removes a specific serial to the script engine's ignore list
+
+!!! example
+
+    === "Unignore by serial"
+
+        ```vim hl_lines="1"
+        unignore '0x123A'
+        ```
+
+    === "Unignore by variable"
+
+        ```vim hl_lines="11"
+        clearignore
+
+        if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
+            overhead 'found' 44
+            overhead 'wand' 44
+    
+            ignore 'wand'
+
+            wait 1000
+
+            unignore 'wand'
+        else
+            overhead 'not found' 33
+        endif
         ```
 
 # useonce

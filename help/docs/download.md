@@ -1,4 +1,4 @@
-# Download Razor
+# Download UO Razor
 
 This version of Razor is portable. All files (Profiles, Macros, Scripts, etc) are contained within the same folder as Razor and can be transferred with a simple copy/paste.
 

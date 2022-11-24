@@ -4,7 +4,7 @@ Below is a list of the latest releases notes going back to the first release of 
 
 ## 1.8.X.0 (Dev Preview)
 
-This version includes several new scripting commands, the ability to resize the Razor window, Pandora like features.
+This version includes several new scripting commands, the ability to resize the Razor window, and Pandora like features. Versioning will slightly change, next versions will be 1.9.X.0, 1.10.X.0, 1.11.X.0, etc where X indicates the build/run ID.
 
 * Fix issue with delete profile button
 * Added `sound` and `music` script commands that will play specific sound or music in the client
@@ -17,7 +17,7 @@ This version includes several new scripting commands, the ability to resize the 
 * Added `itemcount` expression that returns the number of items you carry in total
 * Fixed `lifttype` to pull the correct amount when including a hue
 * Added `rename` command to allow you to rename a follower
-* Added `getlabel` command with the `in` expression to capture text from single clicked item
+* Added `getlabel` command with the `in` expression to capture text from a single clicked item
 * Fixed script tab not displaying the set hotkey
 * Added Pandora inspired tabs in the Advanced (shard staff specific)
 * Removed the script popout editor now that you can resize the main Razor window
@@ -26,6 +26,11 @@ This version includes several new scripting commands, the ability to resize the 
 * Added an option to trigger male or female sounds base on specific emotes (ie: `*cheer*` or `*laugh*`)
 * Script editor will highlight the current line when executed via the Play button in the UI
 * Updated `setvar` to accept a serial (bypassing the target click) and to set temp variables using `!` (see docs)
+* Fixed issue when using `findtype` with `or` and `as` where the variable wouldn't assign correctly
+* Increased system message queue from 25 to 100 messages
+* Added `ignore`, `unignore`, and `clearignore` commands
+
+
 
 ## 1.7.4.49 (07/26/2022)
 
