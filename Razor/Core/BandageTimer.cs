@@ -23,11 +23,10 @@ namespace Assistant
 {
     public class BandageTimer
     {
-        private static int m_Count;
-        private static Timer m_Timer;
+        private static int _count;
+        private static readonly Timer Timer;
 
-        private static int[] m_ClilocNums = new int[]
-        {
+        private static readonly int[] ClilocNums = {
             500955,
             500962,
             500963,
@@ -56,12 +55,12 @@ namespace Assistant
 
         static BandageTimer()
         {
-            m_Timer = new InternalTimer();
+            Timer = new InternalTimer();
             
             MessageManager.OnSystemMessage += OnSystemMessage;
         }
-        
-        public static void OnSystemMessage(Packet p, PacketHandlerEventArgs args, Serial source, ushort graphic, MessageType type, ushort hue, ushort font, string lang, string sourceName, string msg)
+
+        private static void OnSystemMessage(Packet p, PacketHandlerEventArgs args, Serial source, ushort graphic, MessageType type, ushort hue, ushort font, string lang, string sourceName, string msg)
         {
             if (Running)
             {
@@ -87,7 +86,7 @@ namespace Assistant
                     return;
                 }
 
-                foreach (var t in m_ClilocNums)
+                foreach (var t in ClilocNums)
                 {
                     if (Language.GetCliloc(t) == msg)
                     {
@@ -150,33 +149,30 @@ namespace Assistant
             }
         }
 
-        public static int Count
-        {
-            get { return m_Count; }
-        }
+        public static int Count => _count;
 
-        public static bool Running
-        {
-            get { return m_Timer.Running; }
-        }
+        public static bool Running => Timer.Running;
 
-        public static void Start()
+        private static void Start()
         {
-            m_Count = 0;
+            _count = 0;
 
-            if (m_Timer.Running)
-                m_Timer.Stop();
-            m_Timer.Start();
+            if (Timer.Running)
+            {
+                Timer.Stop();
+            }
+
+            Timer.Start();
             Client.Instance.RequestTitlebarUpdate();
         }
 
         public static void Stop()
         {
-            m_Timer.Stop();
+            Timer.Stop();
             Client.Instance.RequestTitlebarUpdate();
         }
 
-        public static void ShowBandagingStatusMessage(string msg)
+        private static void ShowBandagingStatusMessage(string msg)
         {
             if (Config.GetInt("ShowBandageTimerLocation") == 0)
             {
@@ -202,19 +198,19 @@ namespace Assistant
                     return;
                 }
 
-                m_Count++;
+                _count++;
 
                 if (Config.GetBool("ShowBandageTimer"))
                 {
                     bool showMessage = !(Config.GetBool("OnlyShowBandageTimerEvery") &&
-                                         m_Count % Config.GetInt("OnlyShowBandageTimerSeconds") != 0);
+                                         _count % Config.GetInt("OnlyShowBandageTimerSeconds") != 0);
 
                     if (showMessage)
                         ShowBandagingStatusMessage(Config.GetString("ShowBandageTimerFormat")
-                            .Replace("{count}", m_Count.ToString()));
+                            .Replace("{count}", _count.ToString()));
                 }
 
-                if (m_Count > 30)
+                if (_count > 30)
                     Stop();
 
                 Client.Instance.RequestTitlebarUpdate();
