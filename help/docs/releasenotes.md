@@ -2,7 +2,7 @@
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
-## 1.8.X.0 (Dev Preview)
+## 1.8.61.0 (12/07/2022)
 
 This version includes several new scripting commands, the ability to resize the Razor window, and Pandora like features. Versioning will slightly change, next versions will be 1.9.X.0, 1.10.X.0, 1.11.X.0, etc where X indicates the build/run ID.
 
@@ -29,8 +29,6 @@ This version includes several new scripting commands, the ability to resize the 
 * Fixed issue when using `findtype` with `or` and `as` where the variable wouldn't assign correctly
 * Increased system message queue from 25 to 100 messages
 * Added `ignore`, `unignore`, and `clearignore` commands
-
-
 
 ## 1.7.4.49 (07/26/2022)
 

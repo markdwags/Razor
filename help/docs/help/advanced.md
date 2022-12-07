@@ -2,7 +2,7 @@
 
 ![advanced](../images/advanced.png)
 
-This tab will show some data regarding Razor internals and give you a few options. The data on the left is purely for informational purposes only.
+This tab will show some data regarding Razor internals and give you access to some staff related functionality. The data on the left is purely for informational purposes only.
 
 ## Options
 
@@ -20,3 +20,15 @@ SmartCPU has been completely removed from this version, but the option to disabl
 ## Backup
 
 To create a backup, click the `Create Backup` button. This will copy all your profiles, macros and scripts to the `Backups` folder in the root of your Razor folder.
+
+# Decoration
+
+This tab gives shard staff an easy way to add new items in-game. You can manage the item list by editing `items.xml` in the Razor root path.
+
+![advanced](../images/advanced-deco.png)
+
+# Doors
+
+This tab gives shard staff an easy way to add new doors in-game. You can manage the item list by editing `doors.xml` in the Razor root path.
+
+![advanced](../images/advanced-doors.png)
