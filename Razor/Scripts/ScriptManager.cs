@@ -60,6 +60,8 @@ namespace Assistant.Scripts
 
         private static Script _queuedScript;
 
+        private static string _queuedScriptName;
+
         public static bool BlockPopupMenu { get; set; }
 
         private static bool EnableHighlight { get; set; }
@@ -134,8 +136,8 @@ namespace Assistant.Scripts
                     {
                         if (ScriptManager.Running == false)
                         {
-                            if (Config.GetBool("ScriptDisablePlayFinish"))
-                                World.Player?.SendMessage(LocString.ScriptPlaying);
+                            if (!Config.GetBool("ScriptDisablePlayFinish"))
+                                World.Player?.SendMessage(LocString.ScriptPlaying, _queuedScriptName);
 
                             Assistant.Engine.MainWindow.LockScriptUI(true);
                             ScriptRunning = true;
@@ -145,8 +147,8 @@ namespace Assistant.Scripts
                     {
                         if (ScriptManager.Running)
                         {
-                            if (Config.GetBool("ScriptDisablePlayFinish"))
-                                World.Player?.SendMessage(LocString.ScriptFinished);
+                            if (!Config.GetBool("ScriptDisablePlayFinish"))
+                                World.Player?.SendMessage(LocString.ScriptFinished, _queuedScriptName);
 
                             Assistant.Engine.MainWindow.LockScriptUI(false);
                             ScriptRunning = false;
@@ -298,8 +300,8 @@ namespace Assistant.Scripts
         public static void OnHotKey(ref object state)
         {
             RazorScript script = (RazorScript) state;
-
-            PlayScript(script.Lines);
+            
+            PlayScript(script.Lines, script.Name);
         }
 
         public static void StopScript()
@@ -361,13 +363,13 @@ namespace Assistant.Scripts
             {
                 if (razorScript.ToString().IndexOf(scriptName, StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    PlayScript(razorScript.Lines);
+                    PlayScript(razorScript.Lines, scriptName);
                     break;
                 }
             }
         }
 
-        public static void PlayScript(string[] lines, bool highlight = false)
+        public static void PlayScript(string[] lines, string name, bool highlight = false)
         {
             if (World.Player == null || ScriptEditor == null || lines == null)
                 return;
@@ -399,6 +401,7 @@ namespace Assistant.Scripts
             Script script = new Script(Lexer.Lex(lines));
 
             _queuedScript = script;
+            _queuedScriptName = name;
         }
 
         /*private static void ActiveScriptStatementExecuted(ASTNode statement)
