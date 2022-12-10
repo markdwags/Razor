@@ -25,11 +25,8 @@ namespace Assistant.Gumps.Internal
 {
     public sealed class CooldownGump : Gump
     {
-        public CooldownGump() : base(500, 250, -1)
+        public CooldownGump() : base(50, 50, -1)
         {
-            X = 300;
-            Y = 200;
-
             Closable = true;
             Disposable = true;
             Movable = true;
@@ -37,7 +34,7 @@ namespace Assistant.Gumps.Internal
             
             AddPage(0);
             //background +26 per cooldown
-            AddBackground(96, 64, 138, 68 + (CooldownManager.Cooldowns.Count * 26), 9270);
+            AddBackground(96, 64, 138, 68 + (CooldownManager.Cooldowns.Count * 25), 9270);
             AddHtml(110, 77, 106, 24, $"<CENTER><BIG><BASEFONT COLOR=#E0E70B>Cooldowns</BASEFONT></BIG></CENTER>", false, false);
 
             int labelY = 100;
@@ -50,23 +47,33 @@ namespace Assistant.Gumps.Internal
                 double percent = (diff.TotalSeconds / cooldown.Value.Seconds) * 100;
                 
                 //based on seconds, use a different style bar
-                if (percent > 25) //green
+                if (percent > 50) //green
                 {
                     int hue = 62;
                     if (cooldown.Value.Hue > 0)
                     {
                         hue = cooldown.Value.Hue;
                     }
+
+                    if (cooldown.Value.Icon > 0)
+                    {
+                        AddImage(80, labelY - 4, cooldown.Value.Icon);
+                    }
                     
                     AddProgressBar(110, labelY, 110, 18, $"{cooldown.Key}", timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.Green);
                     AddLabelCropped(120, labelY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s) ");
                 }
-                else if (percent > 10) //yellow
+                else if (percent > 25) //yellow
                 {
                     int hue = 54;
                     if (cooldown.Value.Hue > 0)
                     {
                         hue = cooldown.Value.Hue;
+                    }
+                    
+                    if (cooldown.Value.Icon > 0)
+                    {
+                        AddImage(80, labelY - 4, cooldown.Value.Icon);
                     }
                     
                     AddProgressBar(110, labelY, 110, 18, $"{cooldown.Key}", timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.Yellow);
@@ -81,12 +88,14 @@ namespace Assistant.Gumps.Internal
                         hue = cooldown.Value.Hue;
                     }
                     
+                    if (cooldown.Value.Icon > 0)
+                    {
+                        AddImage(80, labelY - 4, cooldown.Value.Icon);
+                    }
+                    
                     AddProgressBar(110, labelY, 110, 18, $"{cooldown.Key}", timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.Red);
                     AddLabelCropped(120, labelY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s)");
                 }
-                
-                //AddHtml(110, labelY - 4, 100, 18, $"<CENTER><BASEFONT COLOR=#FFFFFF>{cooldown.Key} ({timeLeft}s)</BASEFONT></CENTER>", false, false);
-                //AddLabel(110, labelY - 4, 1001, $"{cooldown.Key} ({timeLeft}s)");
                 
                 labelY += 26;
             }
@@ -97,7 +106,6 @@ namespace Assistant.Gumps.Internal
             string bg = $"<BODYBGCOLOR=#{back.ToArgb():X}>";
             string fg = $"<BODYBGCOLOR=#{fore.ToArgb():X}>";
 
-            //var label = $"<BASEFONT COLOR=#{color.ToArgb():X}><CENTER>{text} {(min / max) * 100:#,0.0}%";
             string label = $"<BASEFONT COLOR=#{color.ToArgb():X}>";
 
             AddHtml(x, y, w, h, bg, false, false);
@@ -107,8 +115,6 @@ namespace Assistant.Gumps.Internal
 
         public override void OnResponse(int buttonId, int[] switches, GumpTextEntry[] textEntries = null)
         {
-            //World.Player.OverheadMessage($"Button {buttonId}");
-
             if (buttonId == 0)
             {
                 World.Player?.SendMessage("All cooldowns have been stopped");

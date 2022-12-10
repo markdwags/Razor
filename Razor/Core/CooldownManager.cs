@@ -62,7 +62,7 @@ namespace Assistant.Core
 
         private class InternalTimer : Timer
         {
-            public InternalTimer() : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+            public InternalTimer() : base(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1))
             {
             }
 
