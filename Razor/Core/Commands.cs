@@ -72,6 +72,34 @@ namespace Assistant
             Command.Register("CUO", ClassicUoProfile);
             
             Command.Register("Sound", PlaySound);
+            
+            Command.Register("Cooldown", Cooldown);
+        }
+        
+        private static void Cooldown(string[] param)
+        {
+            if (param.Length <= 0)
+            {
+                World.Player.SendMessage(MsgLevel.Error, "You must enter a name and seconds.");
+                return;
+            }
+
+            if (param[0].Equals("test"))
+            {
+                CooldownManager.AddCooldown("Test 1", 25, 0, 0);
+                CooldownManager.AddCooldown("Test 2", 20, 0, 0);
+                CooldownManager.AddCooldown("Test 3", 18, 0, 0);
+                CooldownManager.AddCooldown("Bandage", 10, 0, 0);
+                CooldownManager.AddCooldown("Attack", 20, 0, 0);
+                CooldownManager.AddCooldown("Hue 23", 10, 23, 0);
+                CooldownManager.AddCooldown("Hue 94", 35, 94, 0);
+                CooldownManager.AddCooldown("Hue 243", 12, 243, 0);
+            }
+            else
+            {
+                CooldownManager.AddCooldown(param[0], Convert.ToInt32(param[1]));    
+            }
+            
         }
         
         private static void PlaySound(string[] param)
