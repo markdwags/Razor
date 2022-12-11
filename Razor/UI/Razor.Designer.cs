@@ -3169,7 +3169,8 @@ namespace Assistant
             this.buffBarSort.Items.AddRange(new object[] {
             "Alphabetical (A-Z)",
             "Ascending by time",
-            "Descending by time"});
+            "Descending by time"
+            });
             this.buffBarSort.Location = new System.Drawing.Point(65, 223);
             this.buffBarSort.Name = "buffBarSort";
             this.buffBarSort.Size = new System.Drawing.Size(145, 23);

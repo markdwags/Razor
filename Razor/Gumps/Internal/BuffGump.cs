@@ -48,16 +48,16 @@ namespace Assistant.Gumps.Internal
             switch (Config.GetInt("ShowBuffDebuffSort"))
             {
                 case 0:
-                    buffDebuffs = World.Player.BuffsDebuffs.OrderBy(buff => buff.ClilocMessage1);
+                    buffDebuffs = World.Player.BuffsDebuffs.OrderBy(buff => buff.ClilocMessage1).ThenBy(buff => BuffDebuffManager.IsBuff(buff.IconId) ? 1 : 0);
                     break;
                 case 1:
-                    buffDebuffs = World.Player.BuffsDebuffs.OrderBy(buff => (buff.Duration - (DateTime.UtcNow - buff.Timestamp).TotalSeconds));
+                    buffDebuffs = World.Player.BuffsDebuffs.OrderBy(buff => (buff.Duration - (DateTime.UtcNow - buff.Timestamp).TotalSeconds)).ThenBy(buff => BuffDebuffManager.IsBuff(buff.IconId) ? 1 : 0);
                     break;
                 case 2:
-                    buffDebuffs = World.Player.BuffsDebuffs.OrderByDescending(buff => (buff.Duration - (DateTime.UtcNow - buff.Timestamp).TotalSeconds));
+                    buffDebuffs = World.Player.BuffsDebuffs.OrderByDescending(buff => (buff.Duration - (DateTime.UtcNow - buff.Timestamp).TotalSeconds)).ThenBy(buff => BuffDebuffManager.IsBuff(buff.IconId) ? 1 : 0);
                     break;
                 default:
-                    buffDebuffs = World.Player.BuffsDebuffs.OrderByDescending(buff => (buff.Duration - (DateTime.UtcNow - buff.Timestamp).TotalSeconds));
+                    buffDebuffs = World.Player.BuffsDebuffs.OrderByDescending(buff => (buff.Duration - (DateTime.UtcNow - buff.Timestamp).TotalSeconds)).ThenBy(buff => BuffDebuffManager.IsBuff(buff.IconId) ? 1 : 0);
                     break;
             }
 
