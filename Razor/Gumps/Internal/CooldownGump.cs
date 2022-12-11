@@ -34,8 +34,6 @@ namespace Assistant.Gumps.Internal
             Resizable = false;
             
             AddPage(0);
-            //background +26 per cooldown
-            //AddBackground(96, 64, 138, 68 + (CooldownManager.Cooldowns.Count * 25), 9270);
             AddHtml(110, 77, 106, 24, "<CENTER><BIG><BASEFONT COLOR=#E0E70B>Cooldowns</BASEFONT></BIG></CENTER>", false, false);
 
             int currentY = 100;
@@ -104,18 +102,6 @@ namespace Assistant.Gumps.Internal
                 
                 currentY += 26;
             }
-        }
-
-        public void AddProgressBar(int x, int y, int w, int h, double min, double max, Color color, Color back, Color fore)
-        {
-            string bg = $"<BODYBGCOLOR=#{back.ToArgb():X}>";
-            string fg = $"<BODYBGCOLOR=#{fore.ToArgb():X}>";
-
-            string label = $"<BASEFONT COLOR=#{color.ToArgb():X}>";
-
-            AddHtml(x, y, w, h, bg, false, false);
-            AddHtml(x + 2, y + 2, (int) Math.Ceiling((w - 4) * (min / max)), h - 4, fg, false, false);
-            AddHtml(x + 2, y + 2, w - 4, h - 4, label, false, false);
         }
 
         public override void OnResponse(int buttonId, int[] switches, GumpTextEntry[] textEntries = null)
