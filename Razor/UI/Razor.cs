@@ -525,6 +525,13 @@ namespace Assistant
 
             playEmoteSound.SafeAction(s => { s.Checked = Config.GetBool("PlayEmoteSound"); });
 
+            showBuffDebuffGump.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffGump"); });
+            showBuffIcons.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffIcons"); });
+            showSmallBuffBars.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffSmallBars"); });
+            buffBarWidth.SafeAction(s => { s.Text = Config.GetString("ShowBuffDebuffWidth"); });
+            buffBarHeight.SafeAction(s => { s.Text = Config.GetString("ShowBuffDebuffHeight"); });
+            buffBarSort.SafeAction(s => { s.SelectedIndex = Config.GetInt("ShowBuffDebuffSort"); });
+
             Engine.MainWindow.Size = new Size(Config.GetInt("WindowSizeX"), Config.GetInt("WindowSizeY"));
 
             // Disable SmartCPU in case it was enabled before the feature was removed
@@ -6108,7 +6115,7 @@ namespace Assistant
 
         private BuffDebuffOptions _buffDebuffOptions = null;
 
-        private void BuffDebuffOptions_Click(object sender, EventArgs e)
+        private void buffDebuffOptions_Click(object sender, EventArgs e)
         {
             if (_buffDebuffOptions != null)
             {
@@ -8134,6 +8141,39 @@ namespace Assistant
         private void playEmoteSound_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("PlayEmoteSound", playEmoteSound.Checked);
+        }
+
+        private void showBuffDebuffGump_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBuffDebuffGump", showBuffDebuffGump.Checked);
+        }
+
+        private void showBuffIcons_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBuffDebuffIcons", showBuffIcons.Checked);
+        }
+
+        private void showSmallBuffBars_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBuffDebuffSmallBars", showSmallBuffBars.Checked);
+        }
+
+        private void buffBarSort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (buffBarSort.SelectedIndex < 0)
+                return;
+
+            Config.SetProperty("ShowBuffDebuffSort", buffBarSort.SelectedIndex);
+        }
+
+        private void buffBarWidth_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBuffDebuffWidth", Utility.ToInt32(buffBarWidth.Text, 100));
+        }
+
+        private void buffBarHeight_TextChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("ShowBuffDebuffHeight", Utility.ToInt32(buffBarHeight.Text, 100));
         }
     }
 }

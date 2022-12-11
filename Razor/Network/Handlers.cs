@@ -2840,17 +2840,22 @@ namespace Assistant
                 WaypointManager.ShowWaypoint(waypoint);
             }
         }
+        
+        private const ushort BUFF_ICON_START = 0x03E9;
+        private const ushort BUFF_ICON_START_NEW = 0x466;
 
         private static void BuffDebuff(PacketReader p, PacketHandlerEventArgs args)
         {
-            Serial ser = p.ReadUInt32();
+            Serial serial = p.ReadUInt32();
             ushort icon = p.ReadUInt16();
             ushort action = p.ReadUInt16();
 
-            if (Enum.IsDefined(typeof(BuffIcon), icon))
+            if (Enum.IsDefined(typeof(BuffIconType), icon))
             {
-                BuffIcon buff = (BuffIcon) icon;
-
+                BuffIconType buffType = (BuffIconType) icon;
+                
+                ushort iconId = (ushort) buffType >= BUFF_ICON_START_NEW ? (ushort) (buffType - (BUFF_ICON_START_NEW - 125)) : (ushort) ((ushort) buffType - BUFF_ICON_START);
+                
                 switch (action)
                 {
                     case 0x01: // show
@@ -2866,14 +2871,15 @@ namespace Assistant
                         BuffDebuff buffInfo = new BuffDebuff
                         {
                             IconNumber = icon,
-                            BuffIcon = (BuffIcon) icon,
+                            IconId = iconId,
+                            BuffIconType = (BuffIconType) icon,
                             ClilocMessage1 = Language.GetCliloc((int) p.ReadUInt32()),
                             ClilocMessage2 = Language.GetCliloc((int) p.ReadUInt32()),
                             Duration = duration,
                             Timestamp = DateTime.UtcNow
                         };
 
-                        if (World.Player != null && World.Player.BuffsDebuffs.All(b => b.BuffIcon != buff))
+                        if (World.Player != null && World.Player.BuffsDebuffs.All(b => b.BuffIconType != buffType))
                         {
                             World.Player.BuffsDebuffs.Add(buffInfo);
 
@@ -2883,11 +2889,11 @@ namespace Assistant
                         break;
 
                     case 0x0: // remove
-                        if (World.Player != null) // && World.Player.BuffsDebuffs.Any(b => b.BuffIcon == buff))
+                        if (World.Player != null)
                         {
-                            BuffDebuffManager.DisplayOverheadDebuff(buff);
+                            BuffDebuffManager.DisplayOverheadDebuff(buffType);
 
-                            World.Player.BuffsDebuffs.RemoveAll(b => b.BuffIcon == buff);
+                            World.Player.BuffsDebuffs.RemoveAll(b => b.BuffIconType == buffType);
                         }
 
                         break;
@@ -2898,11 +2904,11 @@ namespace Assistant
 
             if (World.Player != null && World.Player.BuffsDebuffs.Count > 0)
             {
-                BuffsTimer.Start();
+                BuffDebuffManager.Start();
             }
             else
             {
-                BuffsTimer.Stop();
+                BuffDebuffManager.Stop();
             }
         }
 

@@ -259,7 +259,7 @@ namespace Assistant
         private Timer _criminalTime;
         private DateTime _criminalStart = DateTime.MinValue;
 
-        internal List<BuffDebuff> _buffsDebuffs = new List<BuffDebuff>();
+        private List<BuffDebuff> _buffsDebuffs = new List<BuffDebuff>();
 
         internal List<BuffDebuff> BuffsDebuffs
         {

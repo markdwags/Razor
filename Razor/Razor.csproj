@@ -196,7 +196,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\BuffDebuffManager.cs" />
-    <Compile Include="Core\BuffsTimer.cs" />
     <Compile Include="Core\BodCapture.cs" />
     <Compile Include="Core\ClassicUOManager.cs" />
     <Compile Include="Core\CooldownManager.cs" />
@@ -267,6 +266,7 @@
     <Compile Include="Core\Geometry.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\Internal\BuffGump.cs" />
     <Compile Include="Gumps\Internal\CooldownGump.cs" />
     <Compile Include="Gumps\Internal\DamageTrackerListGump.cs" />
     <Compile Include="Gumps\Internal\InputDialogGump.cs" />

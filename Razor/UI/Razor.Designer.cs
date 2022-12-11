@@ -131,7 +131,7 @@ namespace Assistant
         private Button recMacro;
         private ListBox actionList;
         private TabControl optionsTabCtrl;
-        private TabPage subOptionsSpeechTab;
+        private System.Windows.Forms.TabPage subOptionsSpeechTab;
         private Button setLTHilight;
         private CheckBox lthilight;
         private Button setHarmHue;
@@ -170,7 +170,7 @@ namespace Assistant
         private CheckBox showtargtext;
         private Button containerLabels;
         private CheckBox showContainerLabels;
-        private CheckBox showBuffDebuffOverhead;
+        private System.Windows.Forms.CheckBox showBuffDebuffOverhead;
         private TextBox healthFmt;
         private Label label10;
         private CheckBox showHealthOH;
@@ -209,14 +209,14 @@ namespace Assistant
         private CheckBox damageDealtOverhead;
         private CheckBox showDamageDealt;
         private CheckBox rememberPwds;
-        private TabControl displayCountersTabCtrl;
+        private System.Windows.Forms.TabControl displayCountersTabCtrl;
         private TabPage subDisplayTab;
         private GroupBox groupBox11;
         private Button razorTitleBarKey;
-        private CheckBox showInRazorTitleBar;
+        private System.Windows.Forms.CheckBox showInRazorTitleBar;
         private TextBox razorTitleBar;
-        private CheckBox trackDps;
-        private CheckBox trackIncomingGold;
+        private System.Windows.Forms.CheckBox trackDps;
+        private System.Windows.Forms.CheckBox trackIncomingGold;
         private CheckBox showNotoHue;
         private CheckBox highlightSpellReags;
         private GroupBox groupBox3;
@@ -229,13 +229,13 @@ namespace Assistant
         private CheckBox excludePouches;
         private CheckBox titlebarImages;
         private CheckBox checkNewConts;
-        private GroupBox groupBox2;
-        private ListView counters;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ListView counters;
         private ColumnHeader cntName;
         private ColumnHeader cntCount;
-        private Button delCounter;
-        private Button addCounter;
-        private Button recount;
+        private System.Windows.Forms.Button delCounter;
+        private System.Windows.Forms.Button addCounter;
+        private System.Windows.Forms.Button recount;
         private TabControl subGeneralTab;
         private TabPage subGenTab;
         private RadioButton systray;
@@ -284,9 +284,9 @@ namespace Assistant
         private CheckBox smartLT;
         private TextBox bandageEndMessage;
         private TextBox bandageStartMessage;
-        private CheckBox showBandageEnd;
-        private CheckBox showBandageStart;
-        private Button buffDebuffOptions;
+        private System.Windows.Forms.CheckBox showBandageEnd;
+        private System.Windows.Forms.CheckBox showBandageStart;
+        private System.Windows.Forms.Button buffDebuffOptions;
         private TextBox captureOthersDeathDelay;
         private Label lblCaptureOthersDeathMs;
         private TextBox captureOwnDeathDelay;
@@ -387,12 +387,10 @@ namespace Assistant
             this.subOptionsSpeechTab = new System.Windows.Forms.TabPage();
             this.playEmoteSound = new System.Windows.Forms.CheckBox();
             this.overrideSpellFormat = new System.Windows.Forms.CheckBox();
-            this.buffDebuffOptions = new System.Windows.Forms.Button();
             this.damageTakenOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageTaken = new System.Windows.Forms.CheckBox();
             this.damageDealtOverhead = new System.Windows.Forms.CheckBox();
             this.showDamageDealt = new System.Windows.Forms.CheckBox();
-            this.showBuffDebuffOverhead = new System.Windows.Forms.CheckBox();
             this.healthFmt = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.showHealthOH = new System.Windows.Forms.CheckBox();
@@ -561,6 +559,17 @@ namespace Assistant
             this.lblWaypoint = new System.Windows.Forms.Label();
             this.btnAddWaypoint = new System.Windows.Forms.Button();
             this.waypointList = new System.Windows.Forms.ListBox();
+            this.subBuffsDebuffs = new System.Windows.Forms.TabPage();
+            this.buffBarGroupBox = new System.Windows.Forms.GroupBox();
+            this.buffBarSort = new System.Windows.Forms.ComboBox();
+            this.lblBuffSortBy = new System.Windows.Forms.Label();
+            this.buffBarWidth = new System.Windows.Forms.TextBox();
+            this.lblBuffBarWidth = new System.Windows.Forms.Label();
+            this.showSmallBuffBars = new System.Windows.Forms.CheckBox();
+            this.showBuffIcons = new System.Windows.Forms.CheckBox();
+            this.showBuffDebuffGump = new System.Windows.Forms.CheckBox();
+            this.buffDebuffOptions = new System.Windows.Forms.Button();
+            this.showBuffDebuffOverhead = new System.Windows.Forms.CheckBox();
             this.dressTab = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.clearDress = new System.Windows.Forms.Button();
@@ -811,6 +820,8 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
+            this.buffBarHeight = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -835,6 +846,8 @@ namespace Assistant
             this.subBandageTimerTab.SuspendLayout();
             this.subOverheadTab.SuspendLayout();
             this.subWaypoints.SuspendLayout();
+            this.subBuffsDebuffs.SuspendLayout();
+            this.buffBarGroupBox.SuspendLayout();
             this.dressTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -1177,12 +1190,10 @@ namespace Assistant
             this.subOptionsSpeechTab.BackColor = System.Drawing.SystemColors.Control;
             this.subOptionsSpeechTab.Controls.Add(this.playEmoteSound);
             this.subOptionsSpeechTab.Controls.Add(this.overrideSpellFormat);
-            this.subOptionsSpeechTab.Controls.Add(this.buffDebuffOptions);
             this.subOptionsSpeechTab.Controls.Add(this.damageTakenOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.showDamageTaken);
             this.subOptionsSpeechTab.Controls.Add(this.damageDealtOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.showDamageDealt);
-            this.subOptionsSpeechTab.Controls.Add(this.showBuffDebuffOverhead);
             this.subOptionsSpeechTab.Controls.Add(this.healthFmt);
             this.subOptionsSpeechTab.Controls.Add(this.label10);
             this.subOptionsSpeechTab.Controls.Add(this.showHealthOH);
@@ -1220,7 +1231,7 @@ namespace Assistant
             // playEmoteSound
             // 
             this.playEmoteSound.AutoSize = true;
-            this.playEmoteSound.Location = new System.Drawing.Point(260, 235);
+            this.playEmoteSound.Location = new System.Drawing.Point(260, 210);
             this.playEmoteSound.Name = "playEmoteSound";
             this.playEmoteSound.Size = new System.Drawing.Size(136, 19);
             this.playEmoteSound.TabIndex = 131;
@@ -1236,17 +1247,6 @@ namespace Assistant
             this.overrideSpellFormat.TabIndex = 130;
             this.overrideSpellFormat.Text = "Override spell format";
             this.overrideSpellFormat.CheckedChanged += new System.EventHandler(this.overrideSpellFormat_CheckedChanged);
-            // 
-            // buffDebuffOptions
-            // 
-            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buffDebuffOptions.Location = new System.Drawing.Point(438, 209);
-            this.buffDebuffOptions.Name = "buffDebuffOptions";
-            this.buffDebuffOptions.Size = new System.Drawing.Size(33, 19);
-            this.buffDebuffOptions.TabIndex = 129;
-            this.buffDebuffOptions.Text = "...";
-            this.buffDebuffOptions.UseVisualStyleBackColor = true;
-            this.buffDebuffOptions.Click += new System.EventHandler(this.BuffDebuffOptions_Click);
             // 
             // damageTakenOverhead
             // 
@@ -1291,17 +1291,6 @@ namespace Assistant
             this.showDamageDealt.Text = "Show damage dealt";
             this.showDamageDealt.UseVisualStyleBackColor = true;
             this.showDamageDealt.CheckedChanged += new System.EventHandler(this.showDamageDealt_CheckedChanged);
-            // 
-            // showBuffDebuffOverhead
-            // 
-            this.showBuffDebuffOverhead.AutoSize = true;
-            this.showBuffDebuffOverhead.Location = new System.Drawing.Point(260, 210);
-            this.showBuffDebuffOverhead.Name = "showBuffDebuffOverhead";
-            this.showBuffDebuffOverhead.Size = new System.Drawing.Size(172, 19);
-            this.showBuffDebuffOverhead.TabIndex = 91;
-            this.showBuffDebuffOverhead.Text = "Show buff/debuff overhead";
-            this.showBuffDebuffOverhead.UseVisualStyleBackColor = true;
-            this.showBuffDebuffOverhead.CheckedChanged += new System.EventHandler(this.showBuffDebuffOverhead_CheckedChanged);
             // 
             // healthFmt
             // 
@@ -2189,6 +2178,7 @@ namespace Assistant
             this.displayCountersTabCtrl.Controls.Add(this.subBandageTimerTab);
             this.displayCountersTabCtrl.Controls.Add(this.subOverheadTab);
             this.displayCountersTabCtrl.Controls.Add(this.subWaypoints);
+            this.displayCountersTabCtrl.Controls.Add(this.subBuffsDebuffs);
             this.displayCountersTabCtrl.Location = new System.Drawing.Point(6, 3);
             this.displayCountersTabCtrl.Name = "displayCountersTabCtrl";
             this.displayCountersTabCtrl.SelectedIndex = 0;
@@ -3104,10 +3094,136 @@ namespace Assistant
             this.waypointList.ItemHeight = 15;
             this.waypointList.Location = new System.Drawing.Point(11, 12);
             this.waypointList.Name = "waypointList";
-            this.waypointList.Size = new System.Drawing.Size(164, 229);
+            this.waypointList.Size = new System.Drawing.Size(164, 214);
             this.waypointList.TabIndex = 0;
             this.waypointList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDoubleClick);
             this.waypointList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDown);
+            // 
+            // subBuffsDebuffs
+            // 
+            this.subBuffsDebuffs.BackColor = System.Drawing.SystemColors.Control;
+            this.subBuffsDebuffs.Controls.Add(this.buffBarGroupBox);
+            this.subBuffsDebuffs.Controls.Add(this.buffDebuffOptions);
+            this.subBuffsDebuffs.Controls.Add(this.showBuffDebuffOverhead);
+            this.subBuffsDebuffs.Location = new System.Drawing.Point(4, 24);
+            this.subBuffsDebuffs.Name = "subBuffsDebuffs";
+            this.subBuffsDebuffs.Size = new System.Drawing.Size(502, 286);
+            this.subBuffsDebuffs.TabIndex = 5;
+            this.subBuffsDebuffs.Text = "Buffs / Debuffs";
+            // 
+            // buffBarGroupBox
+            // 
+            this.buffBarGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buffBarGroupBox.Controls.Add(this.buffBarHeight);
+            this.buffBarGroupBox.Controls.Add(this.label5);
+            this.buffBarGroupBox.Controls.Add(this.buffBarSort);
+            this.buffBarGroupBox.Controls.Add(this.lblBuffSortBy);
+            this.buffBarGroupBox.Controls.Add(this.buffBarWidth);
+            this.buffBarGroupBox.Controls.Add(this.lblBuffBarWidth);
+            this.buffBarGroupBox.Controls.Add(this.showSmallBuffBars);
+            this.buffBarGroupBox.Controls.Add(this.showBuffIcons);
+            this.buffBarGroupBox.Controls.Add(this.showBuffDebuffGump);
+            this.buffBarGroupBox.Location = new System.Drawing.Point(252, 12);
+            this.buffBarGroupBox.Name = "buffBarGroupBox";
+            this.buffBarGroupBox.Size = new System.Drawing.Size(235, 263);
+            this.buffBarGroupBox.TabIndex = 132;
+            this.buffBarGroupBox.TabStop = false;
+            this.buffBarGroupBox.Text = "Buff/Debuff Gump:";
+            // 
+            // buffBarSort
+            // 
+            this.buffBarSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.buffBarSort.FormattingEnabled = true;
+            this.buffBarSort.Items.AddRange(new object[] {
+            "Alphabetical (A-Z)",
+            "Ascending by time remaining",
+            "Descending by time remaining"});
+            this.buffBarSort.Location = new System.Drawing.Point(68, 187);
+            this.buffBarSort.Name = "buffBarSort";
+            this.buffBarSort.Size = new System.Drawing.Size(145, 23);
+            this.buffBarSort.TabIndex = 6;
+            this.buffBarSort.SelectedIndexChanged += new System.EventHandler(this.buffBarSort_SelectedIndexChanged);
+            // 
+            // lblBuffSortBy
+            // 
+            this.lblBuffSortBy.AutoSize = true;
+            this.lblBuffSortBy.Location = new System.Drawing.Point(15, 190);
+            this.lblBuffSortBy.Name = "lblBuffSortBy";
+            this.lblBuffSortBy.Size = new System.Drawing.Size(47, 15);
+            this.lblBuffSortBy.TabIndex = 5;
+            this.lblBuffSortBy.Text = "Sort by:";
+            // 
+            // buffBarWidth
+            // 
+            this.buffBarWidth.Location = new System.Drawing.Point(81, 151);
+            this.buffBarWidth.Name = "buffBarWidth";
+            this.buffBarWidth.Size = new System.Drawing.Size(36, 23);
+            this.buffBarWidth.TabIndex = 4;
+            this.buffBarWidth.TextChanged += new System.EventHandler(this.buffBarWidth_TextChanged);
+            // 
+            // lblBuffBarWidth
+            // 
+            this.lblBuffBarWidth.AutoSize = true;
+            this.lblBuffBarWidth.Location = new System.Drawing.Point(15, 154);
+            this.lblBuffBarWidth.Name = "lblBuffBarWidth";
+            this.lblBuffBarWidth.Size = new System.Drawing.Size(60, 15);
+            this.lblBuffBarWidth.TabIndex = 3;
+            this.lblBuffBarWidth.Text = "Bar width:";
+            // 
+            // showSmallBuffBars
+            // 
+            this.showSmallBuffBars.AutoSize = true;
+            this.showSmallBuffBars.Location = new System.Drawing.Point(15, 90);
+            this.showSmallBuffBars.Name = "showSmallBuffBars";
+            this.showSmallBuffBars.Size = new System.Drawing.Size(80, 19);
+            this.showSmallBuffBars.TabIndex = 2;
+            this.showSmallBuffBars.Text = "Small bars";
+            this.showSmallBuffBars.UseVisualStyleBackColor = true;
+            this.showSmallBuffBars.CheckedChanged += new System.EventHandler(this.showSmallBuffBars_CheckedChanged);
+            // 
+            // showBuffIcons
+            // 
+            this.showBuffIcons.AutoSize = true;
+            this.showBuffIcons.Location = new System.Drawing.Point(15, 65);
+            this.showBuffIcons.Name = "showBuffIcons";
+            this.showBuffIcons.Size = new System.Drawing.Size(86, 19);
+            this.showBuffIcons.TabIndex = 1;
+            this.showBuffIcons.Text = "Show icons";
+            this.showBuffIcons.UseVisualStyleBackColor = true;
+            this.showBuffIcons.CheckedChanged += new System.EventHandler(this.showBuffIcons_CheckedChanged);
+            // 
+            // showBuffDebuffGump
+            // 
+            this.showBuffDebuffGump.AutoSize = true;
+            this.showBuffDebuffGump.Location = new System.Drawing.Point(15, 22);
+            this.showBuffDebuffGump.Name = "showBuffDebuffGump";
+            this.showBuffDebuffGump.Size = new System.Drawing.Size(155, 19);
+            this.showBuffDebuffGump.TabIndex = 0;
+            this.showBuffDebuffGump.Text = "Show buff/debuff gump";
+            this.showBuffDebuffGump.UseVisualStyleBackColor = true;
+            this.showBuffDebuffGump.CheckedChanged += new System.EventHandler(this.showBuffDebuffGump_CheckedChanged);
+            // 
+            // buffDebuffOptions
+            // 
+            this.buffDebuffOptions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buffDebuffOptions.Location = new System.Drawing.Point(26, 37);
+            this.buffDebuffOptions.Name = "buffDebuffOptions";
+            this.buffDebuffOptions.Size = new System.Drawing.Size(140, 30);
+            this.buffDebuffOptions.TabIndex = 131;
+            this.buffDebuffOptions.Text = "Buff / Debuff Options";
+            this.buffDebuffOptions.UseVisualStyleBackColor = true;
+            this.buffDebuffOptions.Click += new System.EventHandler(this.buffDebuffOptions_Click);
+            // 
+            // showBuffDebuffOverhead
+            // 
+            this.showBuffDebuffOverhead.AutoSize = true;
+            this.showBuffDebuffOverhead.Location = new System.Drawing.Point(14, 12);
+            this.showBuffDebuffOverhead.Name = "showBuffDebuffOverhead";
+            this.showBuffDebuffOverhead.Size = new System.Drawing.Size(172, 19);
+            this.showBuffDebuffOverhead.TabIndex = 130;
+            this.showBuffDebuffOverhead.Text = "Show buff/debuff overhead";
+            this.showBuffDebuffOverhead.UseVisualStyleBackColor = true;
+            this.showBuffDebuffOverhead.CheckedChanged += new System.EventHandler(this.showBuffDebuffOverhead_CheckedChanged);
             // 
             // dressTab
             // 
@@ -4708,9 +4824,9 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptDocMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptDocMap.ForeColor = System.Drawing.Color.Maroon;
-            this.scriptDocMap.Location = new System.Drawing.Point(209, -4);
+            this.scriptDocMap.Location = new System.Drawing.Point(185, -4);
             this.scriptDocMap.Name = "scriptDocMap";
-            this.scriptDocMap.Size = new System.Drawing.Size(87, 272);
+            this.scriptDocMap.Size = new System.Drawing.Size(99, 272);
             this.scriptDocMap.TabIndex = 22;
             this.scriptDocMap.Target = null;
             // 
@@ -4730,7 +4846,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4752,7 +4868,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(203, 270);
+            this.scriptEditor.Size = new System.Drawing.Size(179, 270);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -6013,6 +6129,23 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // buffBarHeight
+            // 
+            this.buffBarHeight.Location = new System.Drawing.Point(81, 123);
+            this.buffBarHeight.Name = "buffBarHeight";
+            this.buffBarHeight.Size = new System.Drawing.Size(36, 23);
+            this.buffBarHeight.TabIndex = 8;
+            this.buffBarHeight.TextChanged += new System.EventHandler(this.buffBarHeight_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(15, 126);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(64, 15);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "Bar height:";
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(6, 16);
@@ -6068,6 +6201,10 @@ namespace Assistant
             this.subOverheadTab.PerformLayout();
             this.subWaypoints.ResumeLayout(false);
             this.subWaypoints.PerformLayout();
+            this.subBuffsDebuffs.ResumeLayout(false);
+            this.subBuffsDebuffs.PerformLayout();
+            this.buffBarGroupBox.ResumeLayout(false);
+            this.buffBarGroupBox.PerformLayout();
             this.dressTab.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -6136,6 +6273,8 @@ namespace Assistant
 
         }
 
+        private System.Windows.Forms.TabPage subBuffsDebuffs;
+
         #endregion
 
         private TabPage scriptsTab;
@@ -6176,14 +6315,14 @@ namespace Assistant
         private Button scriptGuide;
         private CheckBox showPartyFriendOverhead;
         private TabPage subWaypoints;
-        private CheckBox waypointOnDeath;
+        private System.Windows.Forms.CheckBox waypointOnDeath;
         private Label lblWaypointTiles;
         private TextBox hideWaypointDist;
-        private CheckBox hideWaypointWithin;
+        private System.Windows.Forms.CheckBox hideWaypointWithin;
         private TextBox txtWaypointDistanceSec;
         private Label lblWaypointSeconds;
-        private CheckBox showWaypointDistance;
-        private CheckBox showWaypointOverhead;
+        private System.Windows.Forms.CheckBox showWaypointDistance;
+        private System.Windows.Forms.CheckBox showWaypointOverhead;
         private Button btnRemoveSelectedWaypoint;
         private Button btnHideWaypoint;
         private Button btnUseCurrentLoc;
@@ -6194,7 +6333,7 @@ namespace Assistant
         private TextBox txtWaypointY;
         private Label lblWaypoint;
         private Button btnAddWaypoint;
-        private ListBox waypointList;
+        private System.Windows.Forms.ListBox waypointList;
         private TabPage filtersTab;
         private TabControl filterTabs;
         private TabPage subFilterTab;
@@ -6223,15 +6362,15 @@ namespace Assistant
         private Label label13;
         private TextBox overheadFormat;
         private Button setOverheadMessage;
-        private ListView cliLocOverheadView;
+        private System.Windows.Forms.ListView cliLocOverheadView;
         private ColumnHeader cliLocOriginal;
         private ColumnHeader cliLocOverheadMessage;
-        private Button editOverheadMessage;
-        private Button setColorHue;
-        private Button removeOverheadMessage;
+        private System.Windows.Forms.Button editOverheadMessage;
+        private System.Windows.Forms.Button setColorHue;
+        private System.Windows.Forms.Button removeOverheadMessage;
         private Label label14;
-        private RadioButton unicodeStyle;
-        private RadioButton asciiStyle;
+        private System.Windows.Forms.RadioButton unicodeStyle;
+        private System.Windows.Forms.RadioButton asciiStyle;
         private CheckBox overrideSpellFormat;
         private CheckBox reequipHandsPotion;
         private Button agentSetHotKey;
@@ -6263,7 +6402,7 @@ namespace Assistant
         private TextBox hkCommand;
         private Label hkCmdLabel;
         private ColumnHeader cliLocSound;
-        private Button setSound;
+        private System.Windows.Forms.Button setSound;
         private TabControl subAdvancedTab;
         private TabPage advancedInfoTab;
         private Button fontDecrease;
@@ -6306,6 +6445,16 @@ namespace Assistant
         private CheckBox itemCopyToClipboard;
         private CheckBox itemAppendM;
         private FastColoredTextBoxNS.DocumentMap scriptDocMap;
-        private CheckBox playEmoteSound;
+        private System.Windows.Forms.CheckBox playEmoteSound;
+        private GroupBox buffBarGroupBox;
+        private ComboBox buffBarSort;
+        private Label lblBuffSortBy;
+        private TextBox buffBarWidth;
+        private Label lblBuffBarWidth;
+        private CheckBox showSmallBuffBars;
+        private CheckBox showBuffIcons;
+        private CheckBox showBuffDebuffGump;
+        private TextBox buffBarHeight;
+        private Label label5;
     }
 }
