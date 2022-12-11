@@ -21,12 +21,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Assistant.Core;
+using Ultima;
 
 namespace Assistant.Gumps.Internal
 {
     public sealed class CooldownGump : Gump
     {
-        public CooldownGump() : base(50, 50, -1)
+        public CooldownGump() : base(100, 100, -1)
         {
             Closable = true;
             Disposable = true;
@@ -48,59 +49,55 @@ namespace Assistant.Gumps.Internal
                 {
                     timeLeft = 0;
                 }
+
+                Color foreColor;
+                int labelHue;
                 
-                //based on seconds, use a different style bar
                 if (timeLeft > 10) //green
                 {
-                    int hue = 62;
+                    foreColor = Color.Green;
+                    labelHue = 62;
+
                     if (cooldown.Value.Hue > 0)
                     {
-                        hue = cooldown.Value.Hue;
+                        labelHue = cooldown.Value.Hue;
                     }
-
-                    if (cooldown.Value.Icon > 0)
-                    {
-                        AddImage(80, currentY - 4, cooldown.Value.Icon);
-                    }
-                    
-                    AddProgressBar(110, currentY, 110, 18, timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.Green);
-                    AddLabelCropped(120, currentY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s) ");
                 }
                 else if (timeLeft > 5) //yellow
                 {
-                    int hue = 52;
+                    foreColor = Color.FromArgb(253, 216, 53);
+                    labelHue = 52;
+
                     if (cooldown.Value.Hue > 0)
                     {
-                        hue = cooldown.Value.Hue;
+                        labelHue = cooldown.Value.Hue;
                     }
-                    
-                    if (cooldown.Value.Icon > 0)
-                    {
-                        AddImage(80, currentY - 4, cooldown.Value.Icon);
-                    }
-                    
-                    AddProgressBar(110, currentY, 110, 18, timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.FromArgb(253, 216, 53));
-                    AddLabelCropped(120, currentY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s)");
-                    
                 }
                 else //red
                 {
-                    int hue = 32;
+                    foreColor = Color.DarkRed;
+                    labelHue = 32;
+
                     if (cooldown.Value.Hue > 0)
                     {
-                        hue = cooldown.Value.Hue;
+                        labelHue = cooldown.Value.Hue;
                     }
-                    
-                    if (cooldown.Value.Icon > 0)
-                    {
-                        AddImage(80, currentY - 4, cooldown.Value.Icon);
-                    }
-                    
-                    AddProgressBar(110, currentY, 110, 18, timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.DarkRed);
-                    AddLabelCropped(120, currentY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s)");
                 }
-                
-                currentY += 26;
+
+                if (cooldown.Value.Icon > 0)
+                {
+                    AddImage(80, currentY, cooldown.Value.Icon);
+                }
+
+                AddProgressBar(110, currentY, 110, 28, timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, foreColor);
+                AddLabelCropped(120, currentY, 100, 28, labelHue, $"{cooldown.Key} ({timeLeft}s)");
+
+                if (timeLeft == 0)
+                {
+                    AddImage(224, currentY + 4, 9009);
+                }
+
+                currentY += 30;
             }
         }
 
