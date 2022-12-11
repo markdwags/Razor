@@ -25,16 +25,17 @@ using Assistant.Gumps.Internal;
 
 namespace Assistant.Core
 {
-    public class CooldownManager
+    public static class CooldownManager
     {
-        private static readonly Timer CooldownTimer;
-        public static Dictionary<string, Cooldown> Cooldowns { get; } = new Dictionary<string, Cooldown>();
+        private static Timer CooldownTimer { get; set; }
+        public static Dictionary<string, Cooldown> Cooldowns { get; private set; }
 
         private static CooldownGump _gump;
 
-        static CooldownManager()
+        public static void Initialize()
         {
             CooldownTimer = new InternalTimer();
+            Cooldowns = new Dictionary<string, Cooldown>();
         }
 
         public static bool Running => CooldownTimer.Running;
@@ -86,7 +87,7 @@ namespace Assistant.Core
             }
         }
 
-        public static void AddCooldown(string name, int seconds, int hue = 0, int icon = 0)
+        public static void AddCooldown(string name, int seconds, int hue = 0, int icon = 0, int sound = 0, bool stayVisible = false)
         {
             Cooldowns[name] = new Cooldown
             {
@@ -94,7 +95,9 @@ namespace Assistant.Core
                 Seconds = seconds,
                 EndTime = DateTime.UtcNow.AddSeconds(seconds),
                 Hue = hue,
-                Icon = icon
+                Icon = icon,
+                SoundId = sound,
+                StayVisible = stayVisible
             };
 
             if (!CooldownTimer.Running)
@@ -105,13 +108,23 @@ namespace Assistant.Core
 
         public static void RemoveExpired()
         {
-            foreach (var cooldown in Cooldowns.ToList())
+            foreach (KeyValuePair<string, Cooldown> cooldown in Cooldowns.ToList())
             {
+                if (cooldown.Value.StayVisible)
+                {
+                    continue;
+                }
+                
                 TimeSpan diff = cooldown.Value.EndTime - DateTime.UtcNow;
                 int timeLeft = (int)diff.TotalSeconds;
 
                 if (timeLeft <= 0)
                 {
+                    if (cooldown.Value.SoundId > 0)
+                    {
+                        Client.Instance.SendToClient(new PlaySound(cooldown.Value.SoundId));
+                    }
+                    
                     Cooldowns.Remove(cooldown.Key);
                 }
             }
@@ -126,5 +139,7 @@ namespace Assistant.Core
         public DateTime EndTime { get; set; }
         public int Hue { get; set; }
         public int Icon { get; set; } //30010 - 30057
+        public int SoundId { get; set; }
+        public bool StayVisible { get; set; }
     }
 }

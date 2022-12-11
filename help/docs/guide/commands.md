@@ -212,6 +212,52 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
             say 'this condition wont be met since it was cleared on line 8'
         endif
         ```
+
+# cooldown
+
+**Syntax**: `cooldown ('name') ('seconds') ['hue'] ['icon'] ['sound'] ['stay visible']`
+
+**Description**: This command will add a custom cooldown that will display as a gump in-game.
+
+!!! tip "Icons"
+    The icon parameter will accept numbers between 30010 and 30057
+
+!!! example
+
+    === "Simple cooldown"
+
+        ```vim
+        cooldown 'Refresh' 20
+        ```
+
+    === "Cooldown with custom hued text"
+
+        ```vim
+        cooldown 'Refresh' 20 234
+        ```
+
+    === "Cooldown with icon"
+
+        ```vim
+        cooldown 'Refresh' 15 0 30012
+        ```
+
+    === "Cooldown a custom sound (flute)"
+
+        ```vim
+        cooldown 'Health Check' 20 0 0 61
+        ```
+
+    === "Cooldown remains when expired"
+
+        ```csharp
+        // default cooldown, 20 seconds, remains after it expires
+        cooldown 'Health Check' 20 0 0 0 true
+
+        // default cooldown, 25 seconds, 235 hue, icon 30012, no sound, remains after it expires
+        cooldown 'Health Check' 20 235 30012 0 true
+        ```
+
 # dclick
 
 **Syntax**: `dclick (serial)` or `dclick ('left'/'right'/'hands')`

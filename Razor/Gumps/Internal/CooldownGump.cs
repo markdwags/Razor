@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Assistant.Core;
 
 namespace Assistant.Gumps.Internal
@@ -34,20 +35,24 @@ namespace Assistant.Gumps.Internal
             
             AddPage(0);
             //background +26 per cooldown
-            AddBackground(96, 64, 138, 68 + (CooldownManager.Cooldowns.Count * 25), 9270);
-            AddHtml(110, 77, 106, 24, $"<CENTER><BIG><BASEFONT COLOR=#E0E70B>Cooldowns</BASEFONT></BIG></CENTER>", false, false);
+            //AddBackground(96, 64, 138, 68 + (CooldownManager.Cooldowns.Count * 25), 9270);
+            AddHtml(110, 77, 106, 24, "<CENTER><BIG><BASEFONT COLOR=#E0E70B>Cooldowns</BASEFONT></BIG></CENTER>", false, false);
 
-            int labelY = 100;
+            int currentY = 100;
             
-            foreach (KeyValuePair<string, Cooldown> cooldown in CooldownManager.Cooldowns)
+            foreach (KeyValuePair<string, Cooldown> cooldown in CooldownManager.Cooldowns.OrderByDescending(c => (c.Value.EndTime - DateTime.UtcNow).TotalSeconds))
             {
                 //get the number of seconds left
                 TimeSpan diff = cooldown.Value.EndTime - DateTime.UtcNow;
                 int timeLeft = (int)diff.TotalSeconds;
-                double percent = (diff.TotalSeconds / cooldown.Value.Seconds) * 100;
+
+                if (timeLeft < 0)
+                {
+                    timeLeft = 0;
+                }
                 
                 //based on seconds, use a different style bar
-                if (percent > 50) //green
+                if (timeLeft > 10) //green
                 {
                     int hue = 62;
                     if (cooldown.Value.Hue > 0)
@@ -57,15 +62,15 @@ namespace Assistant.Gumps.Internal
 
                     if (cooldown.Value.Icon > 0)
                     {
-                        AddImage(80, labelY - 4, cooldown.Value.Icon);
+                        AddImage(80, currentY - 4, cooldown.Value.Icon);
                     }
                     
-                    AddProgressBar(110, labelY, 110, 18, $"{cooldown.Key}", timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.Green);
-                    AddLabelCropped(120, labelY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s) ");
+                    AddProgressBar(110, currentY, 110, 18, timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.Green);
+                    AddLabelCropped(120, currentY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s) ");
                 }
-                else if (percent > 25) //yellow
+                else if (timeLeft > 5) //yellow
                 {
-                    int hue = 54;
+                    int hue = 52;
                     if (cooldown.Value.Hue > 0)
                     {
                         hue = cooldown.Value.Hue;
@@ -73,11 +78,11 @@ namespace Assistant.Gumps.Internal
                     
                     if (cooldown.Value.Icon > 0)
                     {
-                        AddImage(80, labelY - 4, cooldown.Value.Icon);
+                        AddImage(80, currentY - 4, cooldown.Value.Icon);
                     }
                     
-                    AddProgressBar(110, labelY, 110, 18, $"{cooldown.Key}", timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.Yellow);
-                    AddLabelCropped(120, labelY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s)");
+                    AddProgressBar(110, currentY, 110, 18, timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.FromArgb(253, 216, 53));
+                    AddLabelCropped(120, currentY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s)");
                     
                 }
                 else //red
@@ -90,18 +95,18 @@ namespace Assistant.Gumps.Internal
                     
                     if (cooldown.Value.Icon > 0)
                     {
-                        AddImage(80, labelY - 4, cooldown.Value.Icon);
+                        AddImage(80, currentY - 4, cooldown.Value.Icon);
                     }
                     
-                    AddProgressBar(110, labelY, 110, 18, $"{cooldown.Key}", timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.Red);
-                    AddLabelCropped(120, labelY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s)");
+                    AddProgressBar(110, currentY, 110, 18, timeLeft, cooldown.Value.Seconds, Color.Black, Color.Black, Color.DarkRed);
+                    AddLabelCropped(120, currentY, 100, 18, hue, $"{cooldown.Key} ({timeLeft}s)");
                 }
                 
-                labelY += 26;
+                currentY += 26;
             }
         }
 
-        public void AddProgressBar(int x, int y, int w, int h, string text, double min, double max, Color color, Color back, Color fore)
+        public void AddProgressBar(int x, int y, int w, int h, double min, double max, Color color, Color back, Color fore)
         {
             string bg = $"<BODYBGCOLOR=#{back.ToArgb():X}>";
             string fg = $"<BODYBGCOLOR=#{fore.ToArgb():X}>";

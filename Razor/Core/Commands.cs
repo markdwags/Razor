@@ -89,36 +89,18 @@ namespace Assistant
                 CooldownManager.AddCooldown("Test 1", 25, 0, 0);
                 CooldownManager.AddCooldown("Test 2", 20, 0, 0);
                 CooldownManager.AddCooldown("Test 3", 18, 0, 0);
-                CooldownManager.AddCooldown("Bandage", 10, 0, 30037);
-                CooldownManager.AddCooldown("Attack", 20, 0, 0);
-                CooldownManager.AddCooldown("Hue 23", 10, 23, 30051);
-                CooldownManager.AddCooldown("Hue 94", 35, 94, 0);
-                CooldownManager.AddCooldown("Hue 243", 12, 243, 30042);
-            }
-            else if (param[0].Equals("icontest"))
-            {
-                CooldownManager.AddCooldown("Test 1", 25, 0, 30042);
-                CooldownManager.AddCooldown("Test 2", 20, 0, 30051);
-                CooldownManager.AddCooldown("Test 3", 18, 0, 30039);
-                CooldownManager.AddCooldown("Bandage", 10, 0, 30037);
-            }
-            else if (param[0].Equals("overload"))
-            {
-                CooldownManager.AddCooldown("Test 1", 25, 0, 0);
-                CooldownManager.AddCooldown("Test 2", 20, 0, 0);
-                CooldownManager.AddCooldown("Test 3", 18, 0, 0);
                 CooldownManager.AddCooldown("Bandage 1", 10, 0, 30037);
                 CooldownManager.AddCooldown("Attack 1", 20, 0, 0);
                 CooldownManager.AddCooldown("Hue 23", 10, 23, 30051);
-                CooldownManager.AddCooldown("Hue 94", 35, 94, 0);
+                CooldownManager.AddCooldown("Hue 94", 18, 94, 0);
                 CooldownManager.AddCooldown("Hue 243", 12, 243, 30042);
-                CooldownManager.AddCooldown("Test 4", 14, 0, 0);
-                CooldownManager.AddCooldown("Test 5", 12, 0, 0);
-                CooldownManager.AddCooldown("Test 6", 18, 0, 0);
-                CooldownManager.AddCooldown("Bandage 2", 7, 0, 30037);
-                CooldownManager.AddCooldown("Attack 2", 20, 0, 0);
+                CooldownManager.AddCooldown("Stay 1", 18, 0, 0, 0, true);
+                CooldownManager.AddCooldown("Stay 2", 12, 0, 30044, 0, true);
+                CooldownManager.AddCooldown("Stay 3", 6, 0, 0, 0, true);
+                CooldownManager.AddCooldown("Sound 1", 7, 0, 30037, 61);
+                CooldownManager.AddCooldown("Sound 2", 20, 0, 0, 61);
                 CooldownManager.AddCooldown("Hue 23 1", 22, 23, 30051);
-                CooldownManager.AddCooldown("Hue 94 2", 35, 94, 0);
+                CooldownManager.AddCooldown("Hue 94 2", 25, 94, 0);
                 CooldownManager.AddCooldown("Hue 243 3", 12, 243, 30042);
                 CooldownManager.AddCooldown("Test 7", 25, 0, 0);
                 CooldownManager.AddCooldown("Test 8", 9, 0, 30037);

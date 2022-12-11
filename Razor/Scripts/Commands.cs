@@ -124,6 +124,48 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("ignore", AddIgnore);
             Interpreter.RegisterCommandHandler("unignore", RemoveIgnore);
             Interpreter.RegisterCommandHandler("clearignore", ClearIgnore);
+            
+            Interpreter.RegisterCommandHandler("cooldown", Cooldown);
+        }
+
+        private static bool Cooldown(string command, Variable[] vars, bool quiet, bool force)
+        {
+            if (vars.Length < 2)
+            {
+                throw new RunTimeError("Usage: cooldown ('name') ('seconds') ['hue'] ['icon'] ['sound'] ['stay visible']");
+            }
+
+            string name = vars[0].AsString();
+            int seconds = vars[1].AsInt();
+            
+            int hue = 0, icon = 0, sound = 0;
+            bool stay = false;
+            
+            switch (vars.Length)
+            {
+                case 3:
+                    hue = vars[2].AsInt();
+                    break;
+                case 4:
+                    hue = vars[2].AsInt();
+                    icon = vars[3].AsInt();
+                    break;
+                case 5:
+                    hue = vars[2].AsInt();
+                    icon = vars[3].AsInt();
+                    sound = vars[4].AsInt();
+                    break;
+                case 6:
+                    hue = vars[2].AsInt();
+                    icon = vars[3].AsInt();
+                    sound = vars[4].AsInt();
+                    stay = vars[5].AsBool();
+                    break;
+            }
+
+            CooldownManager.AddCooldown(name, seconds, hue, icon, sound, stay);
+
+            return true;
         }
         
         private enum GetLabelState
