@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using Assistant.Core;
 using Ultima;
 
@@ -47,7 +48,7 @@ namespace Assistant.Gumps.Internal
             switch (Config.GetInt("ShowBuffDebuffSort"))
             {
                 case 0:
-                    buffDebuffs = World.Player.BuffsDebuffs.OrderBy(buff => buff);
+                    buffDebuffs = World.Player.BuffsDebuffs.OrderBy(buff => buff.ClilocMessage1);
                     break;
                 case 1:
                     buffDebuffs = World.Player.BuffsDebuffs.OrderBy(buff => (buff.Duration - (DateTime.UtcNow - buff.Timestamp).TotalSeconds));
@@ -62,41 +63,95 @@ namespace Assistant.Gumps.Internal
 
             foreach (BuffDebuff buff in buffDebuffs)
             {
-                //get the number of seconds left
                 TimeSpan diff = DateTime.UtcNow - buff.Timestamp;
-                int timeLeft = buff.Duration - (int)diff.TotalSeconds;
+                var timeLeft = buff.Duration - (int)diff.TotalSeconds;
+
+                string timeLeftDisplay;
 
                 if (timeLeft < 0)
                 {
-                    timeLeft = 0;
+                    timeLeft = 0; 
+                    timeLeftDisplay = "-";
+                }
+                else
+                {
+                    timeLeftDisplay = $"{timeLeft}s";
                 }
 
-                Color barColor = Color.Green;
-                int hue;
+                Color barColor;
+                Color bgColor;
+                int labelHue;
 
-                //based on seconds, use a different style bar
-                if (timeLeft > 10) //green
+                if (BuffDebuffManager.IsBuff(buff.IconId))
                 {
-                    hue = 62;
+                    barColor = Color.Green;
+                    bgColor = Config.GetBool("UseBlackBuffDebuffBg") ? Color.Black : Color.DarkGreen; 
+
+                    labelHue = 62;
                 }
-                else if (timeLeft > 5) //yellow
+                else if (BuffDebuffManager.IsDebuff(buff.IconId))
                 {
-                    hue = 52;
+                    barColor = Color.Red;
+                    bgColor = Config.GetBool("UseBlackBuffDebuffBg") ? Color.Black : Color.DarkRed;
+
+                    labelHue = 32;
+                } 
+                else if (BuffDebuffManager.IsState(buff.IconId))
+                {
+                    barColor = Color.Blue;
+                    bgColor = Config.GetBool("UseBlackBuffDebuffBg") ? Color.Black : Color.DarkBlue;
+
+                    labelHue = 102;
                 }
-                else //red
+                else
                 {
-                    hue = 32;
+                    barColor = Color.Gray;
+                    bgColor = Config.GetBool("UseBlackBuffDebuffBg") ? Color.Black : Color.DarkGray;
+
+                    labelHue = 922;
                 }
 
                 if (showIcons)
                 {
-                    AddImage(80, currentY - 4, BuffDebuffManager.BuffTable[buff.IconId]);
+                    AddImage(80, currentY, buff.IconId);
                 }
 
-                AddProgressBar(110, currentY, barWidth + 110, barHeight, timeLeft, buff.Duration, Color.Black, Color.Black, barColor);
-                AddLabelCropped(120, currentY, barWidth, barHeight, hue, $"{buff} ({timeLeft}s)");
+                AddProgressBar(110, currentY, barWidth, barHeight, timeLeft, buff.Duration == 0 ? 100 : buff.Duration,
+                    Color.Black, bgColor, barColor);
 
-                currentY += 26;
+                switch (Config.GetInt("ShowBuffDebuffTimeType"))
+                {
+                    case 0: //next to name
+                        AddLabelCropped(114, currentY, barWidth, barHeight, labelHue, $"{buff} ({timeLeftDisplay})");
+                        break;
+                    case 1: // outside of bar (left)
+                        AddLabelCropped(114, currentY, barWidth, barHeight, labelHue, $"{buff}");
+                        AddHtml(114 + barWidth, currentY, 50, barHeight, $"<BIG><BASEFONT COLOR=#FFFFFF>{timeLeftDisplay}</BASEFONT></BIG>", false, false);
+                        break;
+                    case 2: // right side of bar (inside)
+                        AddLabelCropped(114, currentY, barWidth, barHeight, labelHue, $"{buff}");
+                        AddHtml(114, currentY, barWidth, barHeight, $"<DIV ALIGN=\"RIGHT\"><BIG><BASEFONT COLOR=#FFFFFF>{timeLeftDisplay}</BASEFONT></BIG></DIV>", false, false);
+                        break;
+                    case 3: // under icon (28x28 icon)
+                        AddLabelCropped(114, currentY, barWidth, barHeight, labelHue, $"{buff}");
+                        AddHtml(80, currentY + 32, 50, barHeight, $"<BIG><BASEFONT COLOR=#FFFFFF>{timeLeftDisplay}</BASEFONT></BIG>", false, false);
+                        break;
+                    case 4: //none
+                        AddLabelCropped(114, currentY, barWidth, barHeight, labelHue, $"{buff}");
+                        break;
+                    default:
+                        AddLabelCropped(114, currentY, barWidth, barHeight, labelHue, $"{buff} ({timeLeftDisplay})");
+                        break;
+                }
+
+                if (barHeight > 28)
+                {
+                    currentY += barHeight + 4;
+                }
+                else
+                {
+                    currentY += 32;
+                }
             }
         }
 

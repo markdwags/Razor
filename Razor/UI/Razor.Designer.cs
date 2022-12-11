@@ -561,11 +561,13 @@ namespace Assistant
             this.waypointList = new System.Windows.Forms.ListBox();
             this.subBuffsDebuffs = new System.Windows.Forms.TabPage();
             this.buffBarGroupBox = new System.Windows.Forms.GroupBox();
+            this.useBlackBuffDebuffBg = new System.Windows.Forms.CheckBox();
+            this.buffBarHeight = new System.Windows.Forms.TextBox();
+            this.lblBuffBarHeight = new System.Windows.Forms.Label();
             this.buffBarSort = new System.Windows.Forms.ComboBox();
             this.lblBuffSortBy = new System.Windows.Forms.Label();
             this.buffBarWidth = new System.Windows.Forms.TextBox();
             this.lblBuffBarWidth = new System.Windows.Forms.Label();
-            this.showSmallBuffBars = new System.Windows.Forms.CheckBox();
             this.showBuffIcons = new System.Windows.Forms.CheckBox();
             this.showBuffDebuffGump = new System.Windows.Forms.CheckBox();
             this.buffDebuffOptions = new System.Windows.Forms.Button();
@@ -820,8 +822,8 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.buffBarHeight = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.showBuffDebuffTimeType = new System.Windows.Forms.ComboBox();
+            this.lblShowBuffTime = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -2209,7 +2211,7 @@ namespace Assistant
             this.groupBox11.Controls.Add(this.razorTitleBarKey);
             this.groupBox11.Controls.Add(this.showInRazorTitleBar);
             this.groupBox11.Controls.Add(this.razorTitleBar);
-            this.groupBox11.Location = new System.Drawing.Point(6, 203);
+            this.groupBox11.Location = new System.Drawing.Point(6, 191);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(490, 71);
             this.groupBox11.TabIndex = 51;
@@ -2254,7 +2256,7 @@ namespace Assistant
             // 
             this.trackDps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.trackDps.AutoSize = true;
-            this.trackDps.Location = new System.Drawing.Point(273, 174);
+            this.trackDps.Location = new System.Drawing.Point(273, 162);
             this.trackDps.Name = "trackDps";
             this.trackDps.Size = new System.Drawing.Size(146, 19);
             this.trackDps.TabIndex = 53;
@@ -2266,7 +2268,7 @@ namespace Assistant
             // 
             this.trackIncomingGold.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.trackIncomingGold.AutoSize = true;
-            this.trackIncomingGold.Location = new System.Drawing.Point(273, 148);
+            this.trackIncomingGold.Location = new System.Drawing.Point(273, 136);
             this.trackIncomingGold.Name = "trackIncomingGold";
             this.trackIncomingGold.Size = new System.Drawing.Size(223, 19);
             this.trackIncomingGold.TabIndex = 52;
@@ -2277,7 +2279,7 @@ namespace Assistant
             // showNotoHue
             // 
             this.showNotoHue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.showNotoHue.Location = new System.Drawing.Point(6, 173);
+            this.showNotoHue.Location = new System.Drawing.Point(6, 161);
             this.showNotoHue.Name = "showNotoHue";
             this.showNotoHue.Size = new System.Drawing.Size(221, 20);
             this.showNotoHue.TabIndex = 51;
@@ -2287,7 +2289,7 @@ namespace Assistant
             // highlightSpellReags
             // 
             this.highlightSpellReags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.highlightSpellReags.Location = new System.Drawing.Point(6, 147);
+            this.highlightSpellReags.Location = new System.Drawing.Point(6, 135);
             this.highlightSpellReags.Name = "highlightSpellReags";
             this.highlightSpellReags.Size = new System.Drawing.Size(205, 20);
             this.highlightSpellReags.TabIndex = 50;
@@ -2304,7 +2306,7 @@ namespace Assistant
             this.groupBox3.Controls.Add(this.showInBar);
             this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(490, 135);
+            this.groupBox3.Size = new System.Drawing.Size(490, 123);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Title Bar Display";
@@ -2382,7 +2384,7 @@ namespace Assistant
             this.titleStr.Multiline = true;
             this.titleStr.Name = "titleStr";
             this.titleStr.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.titleStr.Size = new System.Drawing.Size(478, 81);
+            this.titleStr.Size = new System.Drawing.Size(478, 69);
             this.titleStr.TabIndex = 4;
             this.titleStr.TextChanged += new System.EventHandler(this.titleStr_TextChanged);
             // 
@@ -3094,7 +3096,7 @@ namespace Assistant
             this.waypointList.ItemHeight = 15;
             this.waypointList.Location = new System.Drawing.Point(11, 12);
             this.waypointList.Name = "waypointList";
-            this.waypointList.Size = new System.Drawing.Size(164, 214);
+            this.waypointList.Size = new System.Drawing.Size(164, 199);
             this.waypointList.TabIndex = 0;
             this.waypointList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDoubleClick);
             this.waypointList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listWaypoints_MouseDown);
@@ -3109,18 +3111,20 @@ namespace Assistant
             this.subBuffsDebuffs.Name = "subBuffsDebuffs";
             this.subBuffsDebuffs.Size = new System.Drawing.Size(502, 286);
             this.subBuffsDebuffs.TabIndex = 5;
-            this.subBuffsDebuffs.Text = "Buffs / Debuffs";
+            this.subBuffsDebuffs.Text = "Buffs/Debuffs";
             // 
             // buffBarGroupBox
             // 
             this.buffBarGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buffBarGroupBox.Controls.Add(this.showBuffDebuffTimeType);
+            this.buffBarGroupBox.Controls.Add(this.lblShowBuffTime);
+            this.buffBarGroupBox.Controls.Add(this.useBlackBuffDebuffBg);
             this.buffBarGroupBox.Controls.Add(this.buffBarHeight);
-            this.buffBarGroupBox.Controls.Add(this.label5);
+            this.buffBarGroupBox.Controls.Add(this.lblBuffBarHeight);
             this.buffBarGroupBox.Controls.Add(this.buffBarSort);
             this.buffBarGroupBox.Controls.Add(this.lblBuffSortBy);
             this.buffBarGroupBox.Controls.Add(this.buffBarWidth);
             this.buffBarGroupBox.Controls.Add(this.lblBuffBarWidth);
-            this.buffBarGroupBox.Controls.Add(this.showSmallBuffBars);
             this.buffBarGroupBox.Controls.Add(this.showBuffIcons);
             this.buffBarGroupBox.Controls.Add(this.showBuffDebuffGump);
             this.buffBarGroupBox.Location = new System.Drawing.Point(252, 12);
@@ -3130,15 +3134,43 @@ namespace Assistant
             this.buffBarGroupBox.TabStop = false;
             this.buffBarGroupBox.Text = "Buff/Debuff Gump:";
             // 
+            // useBlackBuffDebuffBg
+            // 
+            this.useBlackBuffDebuffBg.AutoSize = true;
+            this.useBlackBuffDebuffBg.Location = new System.Drawing.Point(15, 87);
+            this.useBlackBuffDebuffBg.Name = "useBlackBuffDebuffBg";
+            this.useBlackBuffDebuffBg.Size = new System.Drawing.Size(143, 19);
+            this.useBlackBuffDebuffBg.TabIndex = 9;
+            this.useBlackBuffDebuffBg.Text = "Use black background";
+            this.useBlackBuffDebuffBg.UseVisualStyleBackColor = true;
+            this.useBlackBuffDebuffBg.CheckedChanged += new System.EventHandler(this.useBlackBuffDebuffBg_CheckedChanged);
+            // 
+            // buffBarHeight
+            // 
+            this.buffBarHeight.Location = new System.Drawing.Point(78, 159);
+            this.buffBarHeight.Name = "buffBarHeight";
+            this.buffBarHeight.Size = new System.Drawing.Size(36, 23);
+            this.buffBarHeight.TabIndex = 8;
+            this.buffBarHeight.TextChanged += new System.EventHandler(this.buffBarHeight_TextChanged);
+            // 
+            // lblBuffBarHeight
+            // 
+            this.lblBuffBarHeight.AutoSize = true;
+            this.lblBuffBarHeight.Location = new System.Drawing.Point(12, 162);
+            this.lblBuffBarHeight.Name = "lblBuffBarHeight";
+            this.lblBuffBarHeight.Size = new System.Drawing.Size(64, 15);
+            this.lblBuffBarHeight.TabIndex = 7;
+            this.lblBuffBarHeight.Text = "Bar height:";
+            // 
             // buffBarSort
             // 
             this.buffBarSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.buffBarSort.FormattingEnabled = true;
             this.buffBarSort.Items.AddRange(new object[] {
             "Alphabetical (A-Z)",
-            "Ascending by time remaining",
-            "Descending by time remaining"});
-            this.buffBarSort.Location = new System.Drawing.Point(68, 187);
+            "Ascending by time",
+            "Descending by time"});
+            this.buffBarSort.Location = new System.Drawing.Point(65, 223);
             this.buffBarSort.Name = "buffBarSort";
             this.buffBarSort.Size = new System.Drawing.Size(145, 23);
             this.buffBarSort.TabIndex = 6;
@@ -3147,7 +3179,7 @@ namespace Assistant
             // lblBuffSortBy
             // 
             this.lblBuffSortBy.AutoSize = true;
-            this.lblBuffSortBy.Location = new System.Drawing.Point(15, 190);
+            this.lblBuffSortBy.Location = new System.Drawing.Point(12, 226);
             this.lblBuffSortBy.Name = "lblBuffSortBy";
             this.lblBuffSortBy.Size = new System.Drawing.Size(47, 15);
             this.lblBuffSortBy.TabIndex = 5;
@@ -3155,7 +3187,7 @@ namespace Assistant
             // 
             // buffBarWidth
             // 
-            this.buffBarWidth.Location = new System.Drawing.Point(81, 151);
+            this.buffBarWidth.Location = new System.Drawing.Point(78, 187);
             this.buffBarWidth.Name = "buffBarWidth";
             this.buffBarWidth.Size = new System.Drawing.Size(36, 23);
             this.buffBarWidth.TabIndex = 4;
@@ -3164,31 +3196,20 @@ namespace Assistant
             // lblBuffBarWidth
             // 
             this.lblBuffBarWidth.AutoSize = true;
-            this.lblBuffBarWidth.Location = new System.Drawing.Point(15, 154);
+            this.lblBuffBarWidth.Location = new System.Drawing.Point(12, 190);
             this.lblBuffBarWidth.Name = "lblBuffBarWidth";
             this.lblBuffBarWidth.Size = new System.Drawing.Size(60, 15);
             this.lblBuffBarWidth.TabIndex = 3;
             this.lblBuffBarWidth.Text = "Bar width:";
             // 
-            // showSmallBuffBars
-            // 
-            this.showSmallBuffBars.AutoSize = true;
-            this.showSmallBuffBars.Location = new System.Drawing.Point(15, 90);
-            this.showSmallBuffBars.Name = "showSmallBuffBars";
-            this.showSmallBuffBars.Size = new System.Drawing.Size(80, 19);
-            this.showSmallBuffBars.TabIndex = 2;
-            this.showSmallBuffBars.Text = "Small bars";
-            this.showSmallBuffBars.UseVisualStyleBackColor = true;
-            this.showSmallBuffBars.CheckedChanged += new System.EventHandler(this.showSmallBuffBars_CheckedChanged);
-            // 
             // showBuffIcons
             // 
             this.showBuffIcons.AutoSize = true;
-            this.showBuffIcons.Location = new System.Drawing.Point(15, 65);
+            this.showBuffIcons.Location = new System.Drawing.Point(15, 62);
             this.showBuffIcons.Name = "showBuffIcons";
-            this.showBuffIcons.Size = new System.Drawing.Size(86, 19);
+            this.showBuffIcons.Size = new System.Drawing.Size(151, 19);
             this.showBuffIcons.TabIndex = 1;
-            this.showBuffIcons.Text = "Show icons";
+            this.showBuffIcons.Text = "Show buff/debuff icons";
             this.showBuffIcons.UseVisualStyleBackColor = true;
             this.showBuffIcons.CheckedChanged += new System.EventHandler(this.showBuffIcons_CheckedChanged);
             // 
@@ -3851,7 +3872,7 @@ namespace Assistant
             this.filters.IntegralHeight = false;
             this.filters.Location = new System.Drawing.Point(6, 6);
             this.filters.Name = "filters";
-            this.filters.Size = new System.Drawing.Size(197, 269);
+            this.filters.Size = new System.Drawing.Size(197, 257);
             this.filters.TabIndex = 114;
             this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
             // 
@@ -3876,7 +3897,7 @@ namespace Assistant
             this.gbFilterText.Controls.Add(this.enableTextFilter);
             this.gbFilterText.Location = new System.Drawing.Point(3, 3);
             this.gbFilterText.Name = "gbFilterText";
-            this.gbFilterText.Size = new System.Drawing.Size(229, 281);
+            this.gbFilterText.Size = new System.Drawing.Size(229, 261);
             this.gbFilterText.TabIndex = 134;
             this.gbFilterText.TabStop = false;
             this.gbFilterText.Text = "Text Filter";
@@ -3884,7 +3905,7 @@ namespace Assistant
             // removeFilterText
             // 
             this.removeFilterText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.removeFilterText.Location = new System.Drawing.Point(148, 246);
+            this.removeFilterText.Location = new System.Drawing.Point(148, 226);
             this.removeFilterText.Name = "removeFilterText";
             this.removeFilterText.Size = new System.Drawing.Size(75, 29);
             this.removeFilterText.TabIndex = 2;
@@ -3895,7 +3916,7 @@ namespace Assistant
             // addFilterText
             // 
             this.addFilterText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.addFilterText.Location = new System.Drawing.Point(67, 246);
+            this.addFilterText.Location = new System.Drawing.Point(67, 226);
             this.addFilterText.Name = "addFilterText";
             this.addFilterText.Size = new System.Drawing.Size(75, 29);
             this.addFilterText.TabIndex = 1;
@@ -3911,7 +3932,7 @@ namespace Assistant
             this.textFilterList.ItemHeight = 15;
             this.textFilterList.Location = new System.Drawing.Point(6, 48);
             this.textFilterList.Name = "textFilterList";
-            this.textFilterList.Size = new System.Drawing.Size(217, 139);
+            this.textFilterList.Size = new System.Drawing.Size(217, 109);
             this.textFilterList.TabIndex = 0;
             // 
             // enableTextFilter
@@ -3939,7 +3960,7 @@ namespace Assistant
             this.gbFilterMessages.Controls.Add(this.filterSnoop);
             this.gbFilterMessages.Location = new System.Drawing.Point(238, 3);
             this.gbFilterMessages.Name = "gbFilterMessages";
-            this.gbFilterMessages.Size = new System.Drawing.Size(257, 281);
+            this.gbFilterMessages.Size = new System.Drawing.Size(257, 261);
             this.gbFilterMessages.TabIndex = 133;
             this.gbFilterMessages.TabStop = false;
             this.gbFilterMessages.Text = "Filter Messages";
@@ -4115,7 +4136,7 @@ namespace Assistant
             this.soundFilterList.FormattingEnabled = true;
             this.soundFilterList.Location = new System.Drawing.Point(8, 14);
             this.soundFilterList.Name = "soundFilterList";
-            this.soundFilterList.Size = new System.Drawing.Size(201, 220);
+            this.soundFilterList.Size = new System.Drawing.Size(201, 184);
             this.soundFilterList.TabIndex = 0;
             this.soundFilterList.SelectedIndexChanged += new System.EventHandler(this.soundFilterList_SelectedIndexChanged);
             // 
@@ -4147,7 +4168,7 @@ namespace Assistant
             // targetFilterClear
             // 
             this.targetFilterClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetFilterClear.Location = new System.Drawing.Point(415, 243);
+            this.targetFilterClear.Location = new System.Drawing.Point(415, 223);
             this.targetFilterClear.Name = "targetFilterClear";
             this.targetFilterClear.Size = new System.Drawing.Size(77, 29);
             this.targetFilterClear.TabIndex = 17;
@@ -4158,7 +4179,7 @@ namespace Assistant
             // targetFilterRemove
             // 
             this.targetFilterRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetFilterRemove.Location = new System.Drawing.Point(335, 243);
+            this.targetFilterRemove.Location = new System.Drawing.Point(335, 223);
             this.targetFilterRemove.Name = "targetFilterRemove";
             this.targetFilterRemove.Size = new System.Drawing.Size(74, 29);
             this.targetFilterRemove.TabIndex = 16;
@@ -4169,7 +4190,7 @@ namespace Assistant
             // targetFilterAdd
             // 
             this.targetFilterAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetFilterAdd.Location = new System.Drawing.Point(247, 243);
+            this.targetFilterAdd.Location = new System.Drawing.Point(247, 223);
             this.targetFilterAdd.Name = "targetFilterAdd";
             this.targetFilterAdd.Size = new System.Drawing.Size(82, 29);
             this.targetFilterAdd.TabIndex = 15;
@@ -4185,7 +4206,7 @@ namespace Assistant
             this.targetFilter.ItemHeight = 15;
             this.targetFilter.Location = new System.Drawing.Point(247, 6);
             this.targetFilter.Name = "targetFilter";
-            this.targetFilter.Size = new System.Drawing.Size(245, 199);
+            this.targetFilter.Size = new System.Drawing.Size(245, 169);
             this.targetFilter.TabIndex = 14;
             // 
             // targetFilterEnabled
@@ -4421,7 +4442,7 @@ namespace Assistant
             this.macroActGroup.Controls.Add(this.actionList);
             this.macroActGroup.Location = new System.Drawing.Point(200, 3);
             this.macroActGroup.Name = "macroActGroup";
-            this.macroActGroup.Size = new System.Drawing.Size(296, 268);
+            this.macroActGroup.Size = new System.Drawing.Size(296, 256);
             this.macroActGroup.TabIndex = 18;
             this.macroActGroup.TabStop = false;
             this.macroActGroup.Text = "Actions";
@@ -4459,7 +4480,7 @@ namespace Assistant
             // loopMacro
             // 
             this.loopMacro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.loopMacro.Location = new System.Drawing.Point(233, 238);
+            this.loopMacro.Location = new System.Drawing.Point(233, 226);
             this.loopMacro.Name = "loopMacro";
             this.loopMacro.Size = new System.Drawing.Size(57, 24);
             this.loopMacro.TabIndex = 4;
@@ -4488,7 +4509,7 @@ namespace Assistant
             this.actionList.ItemHeight = 15;
             this.actionList.Location = new System.Drawing.Point(6, 17);
             this.actionList.Name = "actionList";
-            this.actionList.Size = new System.Drawing.Size(218, 245);
+            this.actionList.Size = new System.Drawing.Size(218, 233);
             this.actionList.TabIndex = 0;
             this.actionList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.actionList_KeyDown);
             this.actionList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.actionList_MouseDown);
@@ -4518,7 +4539,7 @@ namespace Assistant
             this.macroTree.HideSelection = false;
             this.macroTree.Location = new System.Drawing.Point(6, 36);
             this.macroTree.Name = "macroTree";
-            this.macroTree.Size = new System.Drawing.Size(188, 199);
+            this.macroTree.Size = new System.Drawing.Size(188, 187);
             this.macroTree.Sorted = true;
             this.macroTree.TabIndex = 15;
             this.macroTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.macroTree_AfterSelect);
@@ -4527,7 +4548,7 @@ namespace Assistant
             // delMacro
             // 
             this.delMacro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.delMacro.Location = new System.Drawing.Point(120, 241);
+            this.delMacro.Location = new System.Drawing.Point(120, 229);
             this.delMacro.Name = "delMacro";
             this.delMacro.Size = new System.Drawing.Size(74, 30);
             this.delMacro.TabIndex = 14;
@@ -4537,7 +4558,7 @@ namespace Assistant
             // newMacro
             // 
             this.newMacro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.newMacro.Location = new System.Drawing.Point(8, 241);
+            this.newMacro.Location = new System.Drawing.Point(8, 229);
             this.newMacro.Name = "newMacro";
             this.newMacro.Size = new System.Drawing.Size(74, 30);
             this.newMacro.TabIndex = 13;
@@ -4789,7 +4810,7 @@ namespace Assistant
             // 
             this.scriptSplitContainer.Panel2.Controls.Add(this.scriptDocMap);
             this.scriptSplitContainer.Panel2.Controls.Add(this.scriptEditor);
-            this.scriptSplitContainer.Size = new System.Drawing.Size(419, 268);
+            this.scriptSplitContainer.Size = new System.Drawing.Size(419, 256);
             this.scriptSplitContainer.SplitterDistance = 110;
             this.scriptSplitContainer.SplitterWidth = 10;
             this.scriptSplitContainer.TabIndex = 28;
@@ -4801,7 +4822,7 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptTree.Location = new System.Drawing.Point(0, 31);
             this.scriptTree.Name = "scriptTree";
-            this.scriptTree.Size = new System.Drawing.Size(110, 237);
+            this.scriptTree.Size = new System.Drawing.Size(110, 225);
             this.scriptTree.Sorted = true;
             this.scriptTree.TabIndex = 29;
             this.scriptTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.scriptTree_AfterSelect);
@@ -4824,9 +4845,9 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptDocMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptDocMap.ForeColor = System.Drawing.Color.Maroon;
-            this.scriptDocMap.Location = new System.Drawing.Point(185, -4);
+            this.scriptDocMap.Location = new System.Drawing.Point(161, -4);
             this.scriptDocMap.Name = "scriptDocMap";
-            this.scriptDocMap.Size = new System.Drawing.Size(99, 272);
+            this.scriptDocMap.Size = new System.Drawing.Size(99, 260);
             this.scriptDocMap.TabIndex = 22;
             this.scriptDocMap.Target = null;
             // 
@@ -4868,7 +4889,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(179, 270);
+            this.scriptEditor.Size = new System.Drawing.Size(155, 258);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -4879,7 +4900,7 @@ namespace Assistant
             // 
             this.scriptGuide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptGuide.AutoSize = true;
-            this.scriptGuide.Location = new System.Drawing.Point(432, 249);
+            this.scriptGuide.Location = new System.Drawing.Point(432, 237);
             this.scriptGuide.Name = "scriptGuide";
             this.scriptGuide.Size = new System.Drawing.Size(60, 26);
             this.scriptGuide.TabIndex = 26;
@@ -5703,7 +5724,7 @@ namespace Assistant
             this.features.Name = "features";
             this.features.ReadOnly = true;
             this.features.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.features.Size = new System.Drawing.Size(255, 113);
+            this.features.Size = new System.Drawing.Size(255, 101);
             this.features.TabIndex = 83;
             this.features.Visible = false;
             // 
@@ -6129,22 +6150,30 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // buffBarHeight
+            // showBuffDebuffTimeType
             // 
-            this.buffBarHeight.Location = new System.Drawing.Point(81, 123);
-            this.buffBarHeight.Name = "buffBarHeight";
-            this.buffBarHeight.Size = new System.Drawing.Size(36, 23);
-            this.buffBarHeight.TabIndex = 8;
-            this.buffBarHeight.TextChanged += new System.EventHandler(this.buffBarHeight_TextChanged);
+            this.showBuffDebuffTimeType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.showBuffDebuffTimeType.FormattingEnabled = true;
+            this.showBuffDebuffTimeType.Items.AddRange(new object[] {
+            "Next to name",
+            "Outside of bar",
+            "Right side of bar",
+            "Under Icon",
+            "None"});
+            this.showBuffDebuffTimeType.Location = new System.Drawing.Point(84, 112);
+            this.showBuffDebuffTimeType.Name = "showBuffDebuffTimeType";
+            this.showBuffDebuffTimeType.Size = new System.Drawing.Size(126, 23);
+            this.showBuffDebuffTimeType.TabIndex = 12;
+            this.showBuffDebuffTimeType.SelectedIndexChanged += new System.EventHandler(this.showBuffDebuffTimeType_SelectedIndexChanged);
             // 
-            // label5
+            // lblShowBuffTime
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 126);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(64, 15);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Bar height:";
+            this.lblShowBuffTime.AutoSize = true;
+            this.lblShowBuffTime.Location = new System.Drawing.Point(12, 115);
+            this.lblShowBuffTime.Name = "lblShowBuffTime";
+            this.lblShowBuffTime.Size = new System.Drawing.Size(66, 15);
+            this.lblShowBuffTime.TabIndex = 11;
+            this.lblShowBuffTime.Text = "Show time:";
             // 
             // MainForm
             // 
@@ -6451,10 +6480,12 @@ namespace Assistant
         private Label lblBuffSortBy;
         private TextBox buffBarWidth;
         private Label lblBuffBarWidth;
-        private CheckBox showSmallBuffBars;
         private CheckBox showBuffIcons;
         private CheckBox showBuffDebuffGump;
         private TextBox buffBarHeight;
-        private Label label5;
+        private Label lblBuffBarHeight;
+        private CheckBox useBlackBuffDebuffBg;
+        private ComboBox showBuffDebuffTimeType;
+        private Label lblShowBuffTime;
     }
 }

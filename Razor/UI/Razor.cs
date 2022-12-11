@@ -527,10 +527,11 @@ namespace Assistant
 
             showBuffDebuffGump.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffGump"); });
             showBuffIcons.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffIcons"); });
-            showSmallBuffBars.SafeAction(s => { s.Checked = Config.GetBool("ShowBuffDebuffSmallBars"); });
-            buffBarWidth.SafeAction(s => { s.Text = Config.GetString("ShowBuffDebuffWidth"); });
-            buffBarHeight.SafeAction(s => { s.Text = Config.GetString("ShowBuffDebuffHeight"); });
+            buffBarWidth.SafeAction(s => { s.Text = Config.GetInt("ShowBuffDebuffWidth").ToString(); });
+            buffBarHeight.SafeAction(s => { s.Text = Config.GetInt("ShowBuffDebuffHeight").ToString(); });
+            useBlackBuffDebuffBg.SafeAction(s => { s.Checked = Config.GetBool("UseBlackBuffDebuffBg"); });
             buffBarSort.SafeAction(s => { s.SelectedIndex = Config.GetInt("ShowBuffDebuffSort"); });
+            showBuffDebuffTimeType.SafeAction(s => { s.SelectedIndex = Config.GetInt("ShowBuffDebuffTimeType"); });
 
             Engine.MainWindow.Size = new Size(Config.GetInt("WindowSizeX"), Config.GetInt("WindowSizeY"));
 
@@ -8153,11 +8154,6 @@ namespace Assistant
             Config.SetProperty("ShowBuffDebuffIcons", showBuffIcons.Checked);
         }
 
-        private void showSmallBuffBars_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.SetProperty("ShowBuffDebuffSmallBars", showSmallBuffBars.Checked);
-        }
-
         private void buffBarSort_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (buffBarSort.SelectedIndex < 0)
@@ -8173,7 +8169,20 @@ namespace Assistant
 
         private void buffBarHeight_TextChanged(object sender, EventArgs e)
         {
-            Config.SetProperty("ShowBuffDebuffHeight", Utility.ToInt32(buffBarHeight.Text, 100));
+            Config.SetProperty("ShowBuffDebuffHeight", Utility.ToInt32(buffBarHeight.Text, 28));
+        }
+
+        private void useBlackBuffDebuffBg_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("UseBlackBuffDebuffBg", useBlackBuffDebuffBg.Checked);
+        }
+
+        private void showBuffDebuffTimeType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (showBuffDebuffTimeType.SelectedIndex < 0)
+                return;
+
+            Config.SetProperty("ShowBuffDebuffTimeType", showBuffDebuffTimeType.SelectedIndex);
         }
     }
 }

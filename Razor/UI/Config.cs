@@ -328,10 +328,11 @@ namespace Assistant
 
             AddProperty("ShowBuffDebuffGump", false);
             AddProperty("ShowBuffDebuffIcons", true);
-            AddProperty("ShowBuffDebuffSmallBars", false);
             AddProperty("ShowBuffDebuffWidth", 100);
             AddProperty("ShowBuffDebuffHeight", 18);
             AddProperty("ShowBuffDebuffSort", 2);
+            AddProperty("UseBlackBuffDebuffBg", false);
+            AddProperty("ShowBuffDebuffTimeType", 0);
 
             Counter.Default();
             Filter.DisableAll();
