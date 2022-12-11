@@ -487,6 +487,12 @@ namespace Assistant.Core
             return StatesList.Contains(g);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsValid(ushort g)
+        {
+            return BuffList.Contains(g);
+        }
+
         public static void DisplayOverheadBuff(BuffDebuff buff, bool ignoreAction = false)
         {
             if (Config.GetBool("ShowBuffDebuffOverhead") && !IsFiltered(buff.ClilocMessage1))

@@ -163,6 +163,11 @@ namespace Assistant.Scripts
                     break;
             }
 
+            if (!BuffDebuffManager.IsValid((ushort) icon))
+            {
+                icon = 0;
+            }
+
             CooldownManager.AddCooldown(name, seconds, hue, icon, sound, stay);
 
             return true;
