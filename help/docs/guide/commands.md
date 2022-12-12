@@ -215,12 +215,17 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
 # cooldown
 
-**Syntax**: `cooldown ('name') ('seconds') ['hue'] ['icon'] ['sound'] ['stay visible']`
+**Syntax**: `cooldown ('name') ('seconds') ['hue'] ['icon'] ['sound'] ['stay visible'] ['foreground color'] ['background color']`
 
 **Description**: This command will add a custom cooldown that will display as a gump in-game.
 
 !!! tip "Icons"
-    The icon parameter will accept numbers between 30010 and 30057
+    The icon parameter will accept numbers between `30010` and `30057`
+
+!!! tip "Supported Colors"
+    You can set the foreground and background color of the specific cooldown down by using one of the colors below:
+
+    > AliceBlue, AntiqueWhite, Aqua, Aquamarine, Azure, Beige, Bisque, Black, BlanchedAlmond, Blue, BlueViolet, Brown, BurlyWood, CadetBlue, Chartreuse, Chocolate, Coral, CornflowerBlue, Cornsilk, Crimson, Cyan, DarkBlue, DarkCyan, DarkGoldenrod, DarkGray, DarkGreen, DarkKhaki, DarkMagenta, DarkOliveGreen, DarkOrange, DarkOrchid, DarkRed, DarkSalmon, DarkSeaGreen, DarkSlateBlue, DarkSlateGray, DarkTurquoise, DarkViolet, DeepPink, DeepSkyBlue, DimGray, DodgerBlue, Firebrick, FloralWhite, ForestGreen, Fuchsia, Gainsboro, GhostWhite, Gold, Goldenrod, Gray, Green, GreenYellow, Honeydew, HotPink, IndianRed, Indigo, Ivory, Khaki, Lavender, LavenderBlush, LawnGreen, LemonChiffon, LightBlue, LightCoral, LightCyan, LightGoldenrodYellow, LightGray, LightGreen, LightPink, LightSalmon, LightSeaGreen, LightSkyBlue, LightSlateGray, LightSteelBlue, LightYellow, Lime, LimeGreen, Linen, Magenta, Maroon, MediumAquamarine, MediumBlue, MediumOrchid, MediumPurple, MediumSeaGreen, MediumSlateBlue, MediumSpringGreen, MediumTurquoise, MediumVioletRed, MidnightBlue, MintCream, MistyRose, Moccasin, NavajoWhite, Navy, OldLace, Olive, OliveDrab, Orange, OrangeRed, Orchid, PaleGoldenrod, PaleGreen, PaleTurquoise, PaleVioletRed, PapayaWhip, PeachPuff, Peru, Pink, Plum, PowderBlue, Purple, RebeccaPurple, Red, RosyBrown, RoyalBlue, SaddleBrown, Salmon, SandyBrown, SeaGreen, SeaShell, Sienna, Silver, SkyBlue, SlateBlue, SlateGray, Snow, SpringGreen, SteelBlue, Tan, Teal, Thistle, Tomato, Transparent, Turquoise, Violet, Wheat, White, WhiteSmoke, Yellow, YellowGreen
 
 !!! example
 
@@ -256,6 +261,12 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
         // default cooldown, 25 seconds, 235 hue, icon 30012, no sound, remains after it expires
         cooldown 'Health Check' 20 235 30012 0 true
+        ```
+
+    === "Cooldown with custom colors"
+
+        ```vim
+        cooldown 'Stay 1' 20 0 0 0 false Firebrick Peru
         ```
 
 # dclick

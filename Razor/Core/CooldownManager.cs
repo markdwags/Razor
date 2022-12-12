@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using Assistant.Gumps.Internal;
@@ -87,6 +88,16 @@ namespace Assistant.Core
             }
         }
 
+        public static void AddCooldown(Cooldown cooldown)
+        {
+            Cooldowns[cooldown.Name] = cooldown;
+
+            if (!CooldownTimer.Running)
+            {
+                Start();
+            }
+        }
+
         public static void AddCooldown(string name, int seconds, int hue = 0, int icon = 0, int sound = 0, bool stayVisible = false)
         {
             Cooldowns[name] = new Cooldown
@@ -141,5 +152,8 @@ namespace Assistant.Core
         public int Icon { get; set; } //30010 - 30057
         public int SoundId { get; set; }
         public bool StayVisible { get; set; }
+        public Color ForegroundColor { get; set; }
+        public Color BackgroundColor { get; set; }
+
     }
 }

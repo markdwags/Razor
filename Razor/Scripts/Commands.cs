@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using Assistant.Core;
@@ -132,7 +133,7 @@ namespace Assistant.Scripts
         {
             if (vars.Length < 2)
             {
-                throw new RunTimeError("Usage: cooldown ('name') ('seconds') ['hue'] ['icon'] ['sound'] ['stay visible']");
+                throw new RunTimeError("Usage: cooldown ('name') ('seconds') ['hue'] ['icon'] ['sound'] ['stay visible'] ['foreground color'] ['background color']");
             }
 
             string name = vars[0].AsString();
@@ -140,35 +141,76 @@ namespace Assistant.Scripts
             
             int hue = 0, icon = 0, sound = 0;
             bool stay = false;
+
+            Cooldown cooldown = new Cooldown();
+            cooldown.Name = name;
+            cooldown.Seconds = seconds;
+
+            Color foreColor = Color.Empty;
+            Color backColor = Color.Empty;
             
             switch (vars.Length)
             {
                 case 3:
-                    hue = vars[2].AsInt();
+                    cooldown.Hue = vars[2].AsInt();
+
                     break;
                 case 4:
-                    hue = vars[2].AsInt();
-                    icon = vars[3].AsInt();
+                    cooldown.Hue = vars[2].AsInt();
+                    cooldown.Icon = vars[3].AsInt();
+
                     break;
                 case 5:
                     hue = vars[2].AsInt();
                     icon = vars[3].AsInt();
                     sound = vars[4].AsInt();
+
                     break;
                 case 6:
                     hue = vars[2].AsInt();
                     icon = vars[3].AsInt();
                     sound = vars[4].AsInt();
                     stay = vars[5].AsBool();
+
+                    break;
+                case 7:
+                    hue = vars[2].AsInt();
+                    icon = vars[3].AsInt();
+                    sound = vars[4].AsInt();
+                    stay = vars[5].AsBool();
+
+                    foreColor = Color.FromName(vars[6].AsString());
+
+                    break;
+                case 8:
+                    hue = vars[2].AsInt();
+                    icon = vars[3].AsInt();
+                    sound = vars[4].AsInt();
+                    stay = vars[5].AsBool();
+
+                    foreColor = Color.FromName(vars[6].AsString());
+                    backColor = Color.FromName(vars[7].AsString());
+
                     break;
             }
 
-            if (!BuffDebuffManager.IsValid((ushort) icon))
+            if (icon > 0 && !BuffDebuffManager.IsValid((ushort) icon))
             {
                 icon = 0;
             }
 
-            CooldownManager.AddCooldown(name, seconds, hue, icon, sound, stay);
+            CooldownManager.AddCooldown(new Cooldown
+            {
+                Name = name,
+                EndTime = DateTime.UtcNow.AddSeconds(seconds),
+                Hue = hue,
+                Icon = icon,
+                Seconds = seconds,
+                SoundId = sound,
+                StayVisible = stay,
+                ForegroundColor = foreColor,
+                BackgroundColor = backColor
+            });
 
             return true;
         }
