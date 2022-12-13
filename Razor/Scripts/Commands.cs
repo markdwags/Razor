@@ -139,43 +139,40 @@ namespace Assistant.Scripts
             string name = vars[0].AsString();
             int seconds = vars[1].AsInt();
             
-            int hue = 0, icon = 0, sound = 0;
+            int hue = 0, sound = 0;
+            string icon = "none";
             bool stay = false;
-
-            Cooldown cooldown = new Cooldown();
-            cooldown.Name = name;
-            cooldown.Seconds = seconds;
-
+            
             Color foreColor = Color.Empty;
             Color backColor = Color.Empty;
             
             switch (vars.Length)
             {
                 case 3:
-                    cooldown.Hue = vars[2].AsInt();
+                    hue = vars[2].AsInt();
 
                     break;
                 case 4:
-                    cooldown.Hue = vars[2].AsInt();
-                    cooldown.Icon = vars[3].AsInt();
+                    hue = vars[2].AsInt();
+                    icon = vars[3].AsString();
 
                     break;
                 case 5:
                     hue = vars[2].AsInt();
-                    icon = vars[3].AsInt();
+                    icon = vars[3].AsString();
                     sound = vars[4].AsInt();
 
                     break;
                 case 6:
                     hue = vars[2].AsInt();
-                    icon = vars[3].AsInt();
+                    icon = vars[3].AsString();
                     sound = vars[4].AsInt();
                     stay = vars[5].AsBool();
 
                     break;
                 case 7:
                     hue = vars[2].AsInt();
-                    icon = vars[3].AsInt();
+                    icon = vars[3].AsString();
                     sound = vars[4].AsInt();
                     stay = vars[5].AsBool();
 
@@ -184,7 +181,7 @@ namespace Assistant.Scripts
                     break;
                 case 8:
                     hue = vars[2].AsInt();
-                    icon = vars[3].AsInt();
+                    icon = vars[3].AsString();
                     sound = vars[4].AsInt();
                     stay = vars[5].AsBool();
 
@@ -193,18 +190,13 @@ namespace Assistant.Scripts
 
                     break;
             }
-
-            if (icon > 0 && !BuffDebuffManager.IsValid((ushort) icon))
-            {
-                icon = 0;
-            }
-
+            
             CooldownManager.AddCooldown(new Cooldown
             {
                 Name = name,
                 EndTime = DateTime.UtcNow.AddSeconds(seconds),
                 Hue = hue,
-                Icon = icon,
+                Icon = BuffDebuffManager.GetGraphicId(icon),
                 Seconds = seconds,
                 SoundId = sound,
                 StayVisible = stay,

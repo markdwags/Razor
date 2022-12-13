@@ -1,6 +1,8 @@
 # History
 
-Razor was originally designed by Bryan Pass, known as Zippy in the RunUO community as a replacement to UOAssist. Based on commit notes, active development (new features, bug fixes) on Razor ceased some time in the early 2010's with the source code being released in 2014.
+![oldsplash](images/old-splash.jpg){ align=right }
+
+Razor was originally designed by Bryan Pass, known as `Zippy` in the RunUO community as a replacement to UOAssist. Based on commit notes, active development (new features, bug fixes) on Razor ceased some time in the early 2010's with the source code being released in 2014.
 
 The code initially didn't include `Crypt.dll` and `Loader.dll` which are required to fully integrate with the UO client. At some point, the code for those projects released into the same GitHub repo (at the time of this edit, `https://github.com/msturgill/razor` no longer is available).
 
@@ -9,17 +11,15 @@ The original project was last updated May 2nd, 2014 which was simply an update f
 * `Jaedan` (which this version is based on) who updated the original Razor project to compile and work in Visual Studio 2017 and made improvements to `Crypt.dll` that enabled this project to move forward.
 * `SaschaKP` who made several performance changes from generic to non-generic collections that I incorporated in the first release.
 
-I have been actively maintaining this project since early April 2018 and based this version off of `1.4.0.3`, which was simply the version `1.0.13.13` updated to .NET 4.0.
+I have been actively maintaining this project since early April 2018 and based this version off of `1.4.0.3`, which was simply the version `1.0.13.13` updated to .NET 4.0. All the changes for this version of Razor started under version `1.5.0.X`+.
 
 Another closed source version of Razor exists (the `1.0.14.x` versions) that was maintained by a private shard that made some enhancements, notably around targeting. This version of Razor has long since incorporated the majority of changes you can find in that version.
 
-In June 2019 integration into [ClassicUO](https://github.com/ClassicUO/ClassicUO) was officially established.
+* In June 2019 integration into [ClassicUO](https://github.com/ClassicUO/ClassicUO) was officially established.
+* In March 2020 the [Razor Scripting Engine](https://www.razorce.com/guide/) was added to make it easier to read, create, edit and share Razor scripts while staying true to the project's state goals.
+* In May 2021 Razor moved from .NET 4.0 to 4.7.2 to bring it in line with ClassicUO.
 
-In March 2020 the [Razor Scripting Engine](https://www.razorce.com/guide/) was added to make it easier to read, create, edit and share Razor scripts while staying true to the project's state goals.
-
-In May 2021 Razor moved from .NET 4.0 to 4.7.2 to bring it in line with ClassicUO.
-
-## Community Edition
+# Community Edition
 
 When I started this project back in early 2018, nearly all the [feedback, ideas, discussion](https://www.uorforum.com/threads/improving-razor-razor-development.33134/) and [testing](https://www.uorforum.com/threads/razor-1-5-bug-issue-release-tracking.33405/) came from the [UO:Renaissance](http://www.uorenaissance.com) community, one of the only freeshards where the rules only allow for the use of Razor. The original **UO:R Community Edition** name was used to not only distinguish between other versions of Razor that were available but give credit to a community that provided so much support early on.
 

@@ -6,9 +6,9 @@ To learn more about this version of Razor, please visit the [home page](https://
 
 # Design
 
-This is not an implementation of the **Steam** or **Razor Enhanced** scripting languages or functionality into Razor. This scripting engine attempts to maintain and improve existing Razor functionality while offering quality of life improvements over the existing macro system.
+This scripting engine attempts to maintain and improve existing Razor functionality, offer quality of life improvements over the existing macro system, and provide an easily approachable syntax that is accessible regardless of skill level.
 
-For example, instead of having to do the following:
+For example, instead of having to do the following with a Razor macro:
 
 1. Record macro
 2. Double click dagger
@@ -84,10 +84,8 @@ As you can see, while maintaining the same functionality of macros, a Razor scri
 
 Razor scripts can be written using any text editor. The script editor built into Razor offers syntax highlighting and auto-completion.
 
-[Notepad++ User Defined Language File]()
-
-!!! tip "Popout Editor"
-    **Right-Click** on any script to use the popout editor (available in 1.7.x.x+) for a larger editor with highlighting and a code lens view.
+!!! tip "Window Size"
+    You can resize the Razor window to make the script editor larger. You can also adjust the size of the script list to give you additional room.
 
 Here are a list of some of keyboard shortcuts available in the editor:
 

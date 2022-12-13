@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Assistant.Agents;
@@ -491,6 +492,21 @@ namespace Assistant.Core
         public static bool IsValid(ushort g)
         {
             return BuffList.Contains(g);
+        }
+        
+        private const ushort BUFF_ICON_START = 0x03E9;
+        private const ushort BUFF_ICON_START_NEW = 0x466;
+
+        public static ushort GetGraphicId(string name)
+        {
+            if (Enum.TryParse(name, true, out BuffIconType result))
+            {
+                ushort iconId = (ushort)result >= BUFF_ICON_START_NEW ? (ushort)(result - (BUFF_ICON_START_NEW - 125)) : (ushort)((ushort)result - BUFF_ICON_START);
+
+                return BuffTable[iconId];
+            }
+
+            return 0;
         }
 
         public static void DisplayOverheadBuff(BuffDebuff buff, bool ignoreAction = false)

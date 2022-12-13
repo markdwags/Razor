@@ -1,4 +1,4 @@
-![razor](images/razor.png)
+![razor](images/razor.png){ align=right }
 
 # Razor Community Edition
 
@@ -11,9 +11,10 @@ The goal of this project was to revive and continue development and maintenance 
 
 For more information about this version of Razor, read the [history](./history.md), review the [release notes](./releasenotes.md), and [download](./download.md) Razor.
 
-# Help
+# Help & Support
 
-For more information about the Razor Scripting Engine, go [here](https://www.razorce.com/guide/).
+* For information about how to use Razor, please review the [help guide](./help/).
+* For information about Razor scripting, please review the [scripting guide](./guide/).
 
 If you're unable to find a solution using the information here or you'd like to submit a feature request or bug report, use the following resources.
 
@@ -22,8 +23,9 @@ If you're unable to find a solution using the information here or you'd like to 
 
 [![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/zrdyYcc)
 
-# Other
+# License
 
-All work is released under the GPLv3 license. This project does not distribute any copyrighted game assets. In order to run this application you'll need to legally obtain a copy of the Ultima Online Classic Client.
+!!! info
+    All work is released under the GPLv3 license. This project does not distribute any copyrighted game assets. In order to run this application you'll need to legally obtain a copy of the Ultima Online Classic Client.
 
 See the [LICENSE](https://github.com/markdwags/Razor/blob/master/LICENSE.md) file for details.

@@ -215,17 +215,21 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
 # cooldown
 
-**Syntax**: `cooldown ('name') ('seconds') ['hue'] ['icon'] ['sound'] ['stay visible'] ['foreground color'] ['background color']`
+**Syntax**: `cooldown ('name') ('seconds') ['hue'] ['icon name'] ['sound'] ['stay visible'] ['foreground color'] ['background color']`
 
 **Description**: This command will add a custom cooldown that will display as a gump in-game.
 
-!!! tip "Icons"
-    The icon parameter will accept numbers between `30010` and `30057`
-
-!!! tip "Supported Colors"
+??? tip "Supported Foreground & Background Colors"
     You can set the foreground and background color of the specific cooldown down by using one of the colors below:
 
     > AliceBlue, AntiqueWhite, Aqua, Aquamarine, Azure, Beige, Bisque, Black, BlanchedAlmond, Blue, BlueViolet, Brown, BurlyWood, CadetBlue, Chartreuse, Chocolate, Coral, CornflowerBlue, Cornsilk, Crimson, Cyan, DarkBlue, DarkCyan, DarkGoldenrod, DarkGray, DarkGreen, DarkKhaki, DarkMagenta, DarkOliveGreen, DarkOrange, DarkOrchid, DarkRed, DarkSalmon, DarkSeaGreen, DarkSlateBlue, DarkSlateGray, DarkTurquoise, DarkViolet, DeepPink, DeepSkyBlue, DimGray, DodgerBlue, Firebrick, FloralWhite, ForestGreen, Fuchsia, Gainsboro, GhostWhite, Gold, Goldenrod, Gray, Green, GreenYellow, Honeydew, HotPink, IndianRed, Indigo, Ivory, Khaki, Lavender, LavenderBlush, LawnGreen, LemonChiffon, LightBlue, LightCoral, LightCyan, LightGoldenrodYellow, LightGray, LightGreen, LightPink, LightSalmon, LightSeaGreen, LightSkyBlue, LightSlateGray, LightSteelBlue, LightYellow, Lime, LimeGreen, Linen, Magenta, Maroon, MediumAquamarine, MediumBlue, MediumOrchid, MediumPurple, MediumSeaGreen, MediumSlateBlue, MediumSpringGreen, MediumTurquoise, MediumVioletRed, MidnightBlue, MintCream, MistyRose, Moccasin, NavajoWhite, Navy, OldLace, Olive, OliveDrab, Orange, OrangeRed, Orchid, PaleGoldenrod, PaleGreen, PaleTurquoise, PaleVioletRed, PapayaWhip, PeachPuff, Peru, Pink, Plum, PowderBlue, Purple, RebeccaPurple, Red, RosyBrown, RoyalBlue, SaddleBrown, Salmon, SandyBrown, SeaGreen, SeaShell, Sienna, Silver, SkyBlue, SlateBlue, SlateGray, Snow, SpringGreen, SteelBlue, Tan, Teal, Thistle, Tomato, Transparent, Turquoise, Violet, Wheat, White, WhiteSmoke, Yellow, YellowGreen
+
+??? tip "Supported Icon Names"
+    You can use any of the following icons.
+
+    **NOTE:** Icon availability is based on the version of the client you have. If the icon doesn't display, it must be an icon that doesn't exist your data files.
+
+    > AchievePerfection, ActiveMeditation, Agility, AnimalForm, AnticipateHit, ArcaneEmpowerment, ArchProtection, ArmorPierce, AttuneWeapon, AuraOfNausea, BarakoDraftOfMight, BarrabHemolymphConcentrate, Berserk, Bleed, Bless, Block, BloodOathCaster, BloodOathCurse, BloodwormAnemia, Boarding, Bodyguard, BoneBreaker, BoneBreakerImmune, CaddelliteInfused, CalledShot, CityTradeDeal, Clumsy, CombatTraining, Conduit, Confidence, ConsecrateWeapon, CorpseSkin, CounterAttack, CriminalStatus, Cunning, Curse, CurseWeapon, DeathRay, DeathRayDebuff, DeathStrike, DefenseMastery, DespairCaster, DespairTarget, Disarm, Disguised, DivineFury, DragonTurtleDebuff, DualWield, ElementalFury, ElementalFuryDebuff, Enchant, EnchantedSummoning, EnemyOfOne, EnemyOfOneDebuff, EssenceOfWind, EtherealBurst, EtherealVoyage, Evasion, EvilOmen, FactionStatLoss, FanDancerFanFire, FeebleMind, Feint, FeintDebuff, FishPie, FistsOfFury, Fly, FocusedEye, ForceArrow, GazeDespair, GiftOfLife, GiftOfRenewal, GrapesOfWrath, Healing, HeatOfBattleStatus, HeightenedSenses, HidingAndOrStealth, HiryuPhysicalResistance, HitLowerAttack, HitLowerDefense, HonorableExecution, Honored, HonoredDebuff, HorrificBeast, HowlOfCacophony, Humility, HumilityDebuff, ImmolatingWeapon, Incognito, InjectedStrike, InjectedStrikeDebuff, Inspire, Intuition, Invigorate, Invisibility, JukariBurnPoiltice, Knockout, KurakAmbushersEssence, LichForm, LightningStrike, MagicReflection, ManaPhase, ManaShield, MassCurse, MassSleep, MedusaStone, Mindrot, MomentumStrike, MortalStrike, MysticalPolymorphTotem, MysticWeapon, NightSight, Onslaught, OrangePetals, PainSpike, Paralyze, Perfection, Perseverance, Pierce, PlayingTheOdds, PlayingTheOddsDebuff, Poison, PoisonImmunity, Polymorph, Potency, PotionGloriousFortune, Protection, PsychicAttack, Rage, RageFocusingBuff, RageFocusingDebuff, Rampage, ReactiveArmor, ReaperForm, Resilience, RoseOfTrinsic, RotwormBloodDisease, RuneBeetleCorruption, SakkhraProphylaxis, SavingThrow, Shadow, ShieldBash, SkillUseDelay, Sleep, Sparks, SpellFocusingBuff, SpellFocusingDebuff, SpellPlague, Spirituality, SplinteringEffect, Stagger, StoneForm, Strangle, Strength, Surge, Swarm, SwarmImmune, SwingSpeedDebuff, TalonStrike, Thrust, ThrustDebuff, Thunderstorm, Tolerance, Toughness, TribulationCaster, TribulationTarget, TrueFear, UnknownGoblin, UnknownRedDrop, UnknownStar, UnknownTomato, UraliTranceTonic, VampiricEmbrace, Veterinary, Warcry, Warding, Weaken, Webbing, Whispering, WhiteTigerForm, WraithForm    
 
 !!! example
 
@@ -244,7 +248,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
     === "Cooldown with icon"
 
         ```vim
-        cooldown 'Refresh' 15 0 30012
+        cooldown 'Refresh' 15 0 'Agility'
         ```
 
     === "Cooldown a custom sound (flute)"
@@ -266,7 +270,17 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
     === "Cooldown with custom colors"
 
         ```vim
-        cooldown 'Stay 1' 20 0 0 0 false Firebrick Peru
+        cooldown 'Stay 1' 20 0 0 0 false 'Firebrick' 'Peru'
+        ```
+
+    === "Reset existing cooldown"
+
+        ```vim        
+        cooldown 'Refresh' 20
+
+        wait 10 seconds
+
+        cooldown 'Refresh' 20
         ```
 
 # dclick
@@ -497,7 +511,7 @@ Example:
 
 # gumpresponse
 
-**Syntax**: `gumpresponse (buttonID)`
+**Syntax**: `gumpresponse ('buttonID')`
 
 **Description**: Responds to a specific gump button
 
@@ -511,7 +525,7 @@ Example:
 
 # gumpclose
 
-**Syntax**: `gumpclose [gumpID]`
+**Syntax**: `gumpclose ['gumpID']`
 
 **Description**: This command will close the last gump that opened. You may pass an optional gump ID.
 
@@ -618,7 +632,7 @@ Example:
 
 # lift
 
-**Syntax**: `lift (serial) [amount]`
+**Syntax**: `lift ('serial') ['amount']`
 
 **Description**: This command will lift a specific item and amount. If no amount is provided, `1` is defaulted.
 
@@ -637,7 +651,7 @@ Example:
 
 # lifttype
 
-**Syntax**: `lifttype (gfx) [amount] [hue]` or `lifttype ('name of item') [amount] [hue]`
+**Syntax**: `lifttype ('gfx') ['amount'] ['hue']` or `lifttype ('name of item') ['amount'] ['hue']`
 
 **Description**: This command will lift a specific item by type either by the graphic id or by the name from your backpack. If no amount is provided, `1` is defaulted.
 
@@ -677,7 +691,7 @@ Example:
 
 # menu
 
-**Syntax**: `menu (serial) (index) [false]`
+**Syntax**: `menu ('serial') ('index') ['false']`
 
 **Description**: Selects a specific index within a context menu. Razor will block the menu from appearing by default. If you include the optional `false` parameter, the context menu won't be blocked by Razor.
 
@@ -701,7 +715,7 @@ Example:
         ```
 # menuresponse
 
-**Syntax**: `menuresponse (index) (menuId) [hue]`
+**Syntax**: `menuresponse ('index') ('menuId') ['hue']`
 
 **Description**: Responds to a specific menu and menu ID
 
@@ -718,7 +732,7 @@ Example:
 
 # music
 
-**Syntax**: `music (index)`
+**Syntax**: `music ('index')`
 
 **Description**: This command will play music based on the ID.
 
@@ -737,7 +751,7 @@ Example:
 
 # organizer
 
-**Syntax**: `organizer (number) ['set']`
+**Syntax**: `organizer ('number') ['set']`
 
 **Description**: This command will execute a specific organizer agent. If the `set` parameter is included, you will instead be prompted to set the organizer agent's hotbag.
 
@@ -757,7 +771,7 @@ Example:
 
 # overhead
 
-**Syntax**: `overhead ('text') [color] [serial]`
+**Syntax**: `overhead ('text') ['color'] ['serial']`
 
 **Description**: This command will display a message over your head. Only you can see this.
 
@@ -839,7 +853,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # random
 
-**Syntax**: `random (max number)`
+**Syntax**: `random ('max number')`
 
 **Description**: This command will generate a random number between 1 and the max number.
 
@@ -860,7 +874,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```
 # restock
 
-**Syntax**: `restock (number) ['set']`
+**Syntax**: `restock ('number') ['set']`
 
 **Description**: This command will execute a specific restock agent. If the `set` parameter is included, you will instead be prompted to set the restock agent's hotbag.
 
@@ -1000,7 +1014,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```
 # setvar
 
-**Syntax**: `setvar ('variable') ['serial'] [timeout]` or `setvariable ('variable') ['serial'] [timeout]`
+**Syntax**: `setvar ('variable') ['serial'] ['timeout']` or `setvariable ('variable') ['serial'] ['timeout']`
 
 **Description**: This command will pause the script until you select a target to be assigned a variable. You can also provide a serial directly, which will bypass the target selection. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
 
@@ -1058,7 +1072,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # sound
 
-**Syntax**: `sound (serial)`
+**Syntax**: `sound ('serial')`
 
 **Description**: This command will play a specific sound based on serial id.
 
@@ -1090,7 +1104,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # target
 
-**Syntax**: `target (closest/random/next/prev) [type1,type2] [humanoid/monster]` or `target (closest/random/next/prev) [type1!type2] [humanoid/monster]` or `target (serial)` or `target (clear/cancel)`
+**Syntax**: `target ('closest/random/next/prev') [type1,type2] [humanoid/monster]` or `target ('closest/random/next/prev') [type1!type2] [humanoid/monster]` or `target (serial)` or `target (clear/cancel)`
 
 **Description**: This command will target a specific mobile based either the type searched for or the serial. If you provide a list of target types, you can use `,` for a general list and `!` for a priority list.
 

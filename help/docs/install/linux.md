@@ -3,7 +3,7 @@
 To run Razor with [ClassicUO](https://www.classicuo.eu/) on Linux, you will need to install [Mono](https://www.mono-project.com/)
 
 !!! info
-    These steps were tested and validated a fresh installation of Linux Mint 19.1 and Ubuntu 20.04.
+    These steps were tested and validated a fresh installation of Linux Mint 19.1, Ubuntu 20.04, and Debian 11.5
     
     Based on your current configuration and Linux distribution, the steps may vary.
 

@@ -145,3 +145,80 @@ For example, instead of `-where` you would type `>where`. This is due to Classic
 - `sysmsgs` - Show the current system message buffer
 - `boat` - Show in-game boat control gump
 - `hotkeys` - Show in-game gump with used hot keys
+
+# Legacy Versions
+
+These versions were developed before ClassicUO and will only work with the standard OSI client.
+
+!!! warning
+    These versions are no longer supported and while they should work just fine they should be considered legacy.
+
+| Razor Version                                                       | Hash                                                                       |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [Razor v1.5.0.16](https://www.razorce.com/Razor_UOR_CE-1.5.0.16.zip) | `SHA256: 63D0B617FCE217C067A3270323C9E58B63F379F401B4224E0EA937DAA7871B8B` |
+| [Razor v1.5.0.15](https://www.razorce.com/Razor_UOR_CE-1.5.0.15.zip) | `SHA256: 64916F16A72FDE5E9C17B3A180001A896E9472458C8DB69E09DC7E37D78A6B30` |
+| [Razor v1.5.0.14](https://www.razorce.com/Razor_UOR_CE-1.5.0.14.zip) | `SHA256: 1D352F7814311FDBFC3EF16DEAD6664562C85B3817D953112F687099A98D104A` |
+| [Razor v1.5.0.13](https://www.razorce.com/Razor_UOR_CE-1.5.0.13.zip) | `SHA256: 090D753820B791E115532E96703DE1650B4DB0CE88191355D0F65A5799A51571` |
+| [Razor v1.5.0.12](https://www.razorce.com/Razor_UOR_CE-1.5.0.12.zip) | `SHA256: 1AC1DAFBBDEE3DBEB1D031E63CAF904D43B60A05E98CB83ECA4872F892BD4F36` |
+| [Razor v1.5.0.11](https://www.razorce.com/Razor_UOR_CE-1.5.0.11.zip) | `SHA256: 5945E5F9D5C87FEF552881C319167BD4ED012AE01D31FA855449B034129F7225` |
+| [Razor v1.5.0.10](https://www.razorce.com/Razor_UOR_CE-1.5.0.10.zip) | `SHA256: 80FACEE8DB005E5CB7A89EFEBEE4BEE2DA242C0BF9AFA31B20ADEBEC44ED7FEF` |
+| [Razor v1.5.0.9](https://www.razorce.com/Razor_UOR_CE-1.5.0.9.zip)   | `SHA256: 63158C8987BA0E7FBBA5917018595617830CF7B72A699A50A34F79A943365EE0` |
+| [Razor v1.5.0.8](https://www.razorce.com/Razor_UOR_CE-1.5.0.8.zip)   | `SHA256: 0D25D01C85CFC8BA51D4FFEEBF59A3DC23B2400850A4B41C613DFC50AFAD5487` |
+| [Razor v1.5.0.7](https://www.razorce.com/Razor_UOR_CE-1.5.0.7.zip)   | `SHA256: BD239C8F10FB80C3D1F6D185557679A0FCCF0CE35B2DB6D726B0DB0DB8BE7B7A` |
+
+## Experimental
+
+This version of Razor is identical to version `1.5.0.16` except with one major change to how Razor figures our your position to address the Razor "desync" issue.
+
+Some users have reported issues when logging in so that is why this version is marked as experimental. If you experience issues, please revert to 1.5.0.16.
+
+| Razor Version                                                       | Hash                                                                       |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [Razor v1.5.0.17](https://www.razorce.com/Razor_UOR_CE-1.5.0.17.zip) | `SHA256: D26E8B887FC26B94FB5B0C50530BE07A4393783CCBEAA9C3FD5B38171A857571` |
+
+## Validate Checksum
+
+- Windows (using Powershell)
+
+```powershell
+Get-FileHash '.\Razor-1.x.x.x.zip' -Algorithm SHA25
+```
+
+- Mac
+
+```bash
+shasum -a 256 /path/to/Razor-1.x.x.x.zip' -Algorithm SHA256
+```
+
+- Linux
+
+```bash
+sha256sum /path/to/Razor-1.x.x.x.zip
+```
+
+## Configuration File
+
+The **Welcome Screen** will control some of these settings, but some settings can only be changed by editing `.\Razor.exe.config`.
+
+```xml
+<appSettings>
+    <add key="PatchEncy" value="1" /> <!-- Patch client encryption -->
+    <add key="ServerEnc" value="0" /> <!-- Use OSI encryption -->
+    <add key="MaxOrganizerAgents" value="20" /> <!-- Override the default Organizer agent count -->
+    <add key="MaxBuyAgents" value="10" /> <!-- Override the default Buy agent count -->
+    <add key="MaxRestockAgents" value="10" /> <!-- Override the default Restock agent count -->
+    <add key="ImportProfilesAndMacros" value="false" />  <!-- If true, will import macros and profiles from %AppData%\Razor -->
+    <add key="LastProfile" value="Test" /> <!-- Last profile used in Razor -->
+    <add key="LastServer" value="test.server.com" /> <!-- Last server connected to in Razor -->
+    <add key="LastPort" value="2597" /> <!-- Last server port connected to in Razor -->
+    <add key="LastServerId" value="1" /> <!-- Index of the server selected in the dropdown -->
+    <add key="ShowWelcome" value="1" /> <!-- Show the Welcome Screen when loading Razor -->
+    <add key="UOClient" value="D:\Games\UO\client.exe" /> <!-- Location to Ultima Online client -->
+    <add key="UODataDir" value="D:\Games\UO" /> <!-- Location to Ultima Online data directory -->
+</appSettings>
+
+<!-- You can define a list of servers here by adding values between <Servers></Servers> -->
+<Servers>
+    <add key="Custom Server" value="server.someserver.com,2593" />
+</Servers>
+```
