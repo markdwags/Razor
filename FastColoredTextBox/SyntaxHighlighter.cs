@@ -370,7 +370,7 @@ namespace FastColoredTextBoxNS
 
             RazorExpressionRegex =
                 new Regex(
-                    @"\b(queued|position|insysmsg|insysmessage|findtype|findbuff|finddebuff|stam|maxstam|hp|maxhp|maxhits|hits|mana|maxmana|str|dex|int|poisoned|hidden|mounted|rhandempty|lhandempty|skill|count|counter|weight|dead|closest|close|rand|random|next|prev|previous|human|humanoid|monster|varexist|varexist|followers|maxfollowers|targetexists|diffmana|diffstam|diffhits|diffhp|diffweight|blessed|invul|invuln|warmode|name|paralyzed|itemcount)\b",
+                    @"\b(queued|position|insysmsg|insysmessage|findtype|findbuff|finddebuff|stam|maxstam|hp|maxhp|maxhits|hits|mana|maxmana|str|dex|int|poisoned|hidden|mounted|rhandempty|lhandempty|skill|count|counter|weight|dead|closest|close|rand|random|next|prev|previous|human|humanoid|monster|varexist|varexist|followers|maxfollowers|maxweight|targetexists|diffmana|diffstam|diffhits|diffhp|diffweight|blessed|invul|invuln|warmode|name|paralyzed|itemcount)\b",
                     RegexCompiledOption);
         }
 
