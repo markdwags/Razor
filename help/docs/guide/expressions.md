@@ -1,6 +1,138 @@
-# Expressions Overview
+# Statements & Loops
 
-When using the `if` or `while` conditions, you can access the following expressions to check against.
+As found in the Razor macro system, you can use `if`, `for`, `foreach`, and `while` when writing a script to add some basic logic and flows.
+
+## if
+
+**Syntax**:
+
+```csharp
+if (expression)
+    // commands to execute if this expression is true
+elseif (expression)
+    // commands to execute if the first expression was false, and this expression is true
+else
+    // commands to execute if both expressions above were false, default to running these
+endif
+```
+
+**Description**: This selects a path to execute based on the value of a boolean expression. An `if` statement can be combined with `else` or `elseif` to choose two or more distinct paths based on the result of the boolean expression. All `if` statements must end with `endif`.
+
+!!! example
+
+    === "if/endif"
+
+        ```vim
+        if stam = 100
+            overhead 'Stam at 100!'
+        endif
+        ```
+
+    === "if/elseif/else"
+
+        ```vim
+        if stam = 100
+            say 'Stamina full'
+        elseif stam < 20
+            say 'Still a ways to go'
+        elseif stam < 60
+            say 'Getting closer'
+        else
+            say 'waiting'
+        endif
+        ```
+
+    === "if/elseif"
+
+        ```vim
+        if stam = 100
+            say 'Stamina full'
+        elseif stam < 20
+            say 'Still a ways to go'
+        elseif stam < 60
+            say 'Getting closer'
+        endif
+        ```
+
+    === "Using 'not'"
+
+        ```vim
+        if not stam = 100
+            say 'Stamina is not full'    
+        endif
+        ```
+
+## for
+
+**Syntax**:
+
+```csharp
+for ('number')
+    // commmands to execute the number of times defined in the for statement
+endfor
+```
+
+**Description**: This allows you to execute a block of commands a specific number of times. All `for` loops must end with `endfor`.
+
+!!! example
+
+    === "Say 'Hello' 10 times"
+
+        ```vim        
+        for 10
+            say 'hello'
+            wait 1000
+        endfor
+        ```
+
+## foreach
+
+**Syntax**:
+
+```csharp
+foreach ('variable') in ('list')
+    // commands to execute for each item that is in a list
+endfor
+```
+
+**Description**: This allows you to iterate over a list containing values. All `foreach` loops must end with `endfor`.
+
+!!! example
+
+    === "foreach"
+
+        ```vim        
+        foreach item in list
+           overhead item
+        endfor
+        ```
+
+## while
+
+**Syntax**:
+
+```csharp
+while ('expression')
+    // commands to execute as long as the expression is remains true
+endwhile
+```
+
+**Description**: This allows you execute a block of commands while a certain expression is true. All `while` loops must end with `endwhile`.
+
+!!! example
+
+    === "While"
+
+        ```vim
+        while hits < 100
+            say 'I need a heal!'
+            wait 1000
+        endwhile
+        ```
+
+# Expression Operators
+
+When using the `if` or `while` conditions, you can access the following expressions in the statement.
 
 The following operators are supported:
 
@@ -13,6 +145,10 @@ The following operators are supported:
 | <=       | Less than or equal    |
 | >        | Greater than          |
 | >=       | Greater than or equal |
+
+# Expressions
+
+Expressions are combined with statements like `if` and `while` to alter the execution path of your script.
 
 ## count/counter
 
@@ -275,6 +411,22 @@ Description: Used to get your current or max hit points/health levels.
         endif
         ```
 
+## inlist
+
+- `inlist ('list name') ('list item')`
+
+Description: Used to check if a specific item is in a list
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if inlist 'my_list' 'item1'
+            overhead 'found item!'
+        endif
+        ```   
+
 ## insysmsg
 
 - `insysmsg ('message to look for')`
@@ -331,7 +483,6 @@ Description: Used to return the current number of items you're carrying
         endif
         ```
 
-
 ## lhandempty
 
 - `lhandempty`
@@ -345,6 +496,38 @@ Description: Used to check if your left hand is empty
         ```vim
         if lhandempty
             hotkey 'empty right hand!'
+        endif
+        ```
+
+## list
+
+- `list ('list name')`
+
+Description: Used to check how many items are in a specific list
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if list 'mylist' = 10
+            overhead '10 items in your list'
+        endif
+        ```
+
+## listexists
+
+- `listexists ('list name')`
+
+Description: Used to check if a list exists with a specific name.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if not listexists 'mylist'
+            createlist 'mylist'
         endif
         ```
 
@@ -469,6 +652,22 @@ Description: Used to check if you are currently poisoned.
         ```vim
         if poisoned
             hotkey 'drink cure'
+        endif
+        ```
+
+## poplist
+
+- `poplist ('list name') ('list value'/'front'/'back')`
+
+Description: This command will remove an item from the list. You can either pass in the specific item, or use `front` or `back` to remove the item from the front or back of the list.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if poplist sample_list back as item
+            overhead item
         endif
         ```
 
@@ -636,6 +835,50 @@ Description: Used to check if the client current has a target cursor up
             overhead 'Beneficial target found'
         elseif targetexists 'harmful'
             overhead 'Harmful target found'
+        endif
+        ```
+
+## timer
+
+- `timer ('name')`
+
+Description: Used to check how much time is left in an existing timer
+
+!!! example
+
+    === "General"
+
+        ```vim
+        // Create a new timer
+        if not timerexists 'sample'
+            createtimer 'sample'
+        endif
+
+        // Reset every 10 seconds
+        if timer 'sample' > 10000
+            settimer 'sample' 0
+        endif
+        ```
+
+## timerexists
+
+- `timerexist ('name')`
+
+Description: Used to check if a timer exists
+
+!!! example
+
+    === "General"
+
+        ```vim
+        // Create a new timer
+        if not timerexists 'sample'
+            createtimer 'sample'
+        endif
+
+        // Reset every 10 seconds
+        if timer 'sample' > 10000
+            settimer 'sample' 0
         endif
         ```
 

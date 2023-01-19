@@ -283,6 +283,40 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         cooldown 'Refresh' 20
         ```
 
+# createlist
+
+**Syntax**: `createlist ('list name')`
+
+**Description**: This command will create an empty list.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if not listexists 'sample'
+            createlist 'sample'
+        end if
+
+        pushlist 'sample' 'hello'
+        ```
+
+# createtimer
+
+**Syntax**: `createtimer ('timer name')`
+
+**Description**: This command will create a timer and immediately start counting up from 0
+
+!!! example
+
+    === "Create Timer"
+
+        ```vim        
+        if not timerexists 'sample'
+            create removetimer 'sample'
+        endif           
+        ```
+
 # dclick
 
 **Syntax**: `dclick (serial)` or `dclick ('left'/'right'/'hands')`
@@ -785,6 +819,27 @@ Example:
         endif
         ```
 
+# poplist
+
+**Syntax**: `poplist ('list name') ('list value'/'front'/'back')`
+
+**Description**: This command will remove an item from the list. You can either pass in the specific item, or use `front` or `back` to remove the item from the front or back of the list.
+
+!!! tip
+    You can use `poplist` as an [expression](../expressions/#poplist).
+
+!!! example
+
+    === "Remove first item in list"
+
+        ```vim
+        createlist 'list'
+        pushlist 'list' 'hello'
+        pushlist 'list' 'bye'
+
+        poplist 'list' 'front'        
+        ```
+
 # potion
 
 **Syntax**: `potion ('potion type')`
@@ -821,6 +876,60 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         dclicktype 'rune'
         waitforprompt
         promptresponse 'to home'
+        ```
+
+# pushlist
+
+**Syntax**: `pushlist ('list name') ('list item') ['front'/'back']`
+
+**Description**: This command will add an item to the list. You can define where in the list using `front` or `back` to remove the item from the front or back of the list. Default `pushlist` will add the item to end of the list.
+
+!!! example
+
+    === "Add item to list"
+
+        ```vim
+        createlist 'list'
+        pushlist 'list' 'hello'
+        pushlist 'list' 'bye'        
+        ```
+
+    === "Add item to front of list"
+
+        ```vim
+        createlist 'list'
+        pushlist 'list' 'hello'
+        pushlist 'list' 'bye' 'front'
+        ```
+
+# removelist
+
+**Syntax**: `removelist ('list name')`
+
+**Description**: This command will remove a list completely including all items in the list.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        removelist 'list_name'        
+        ```
+
+# removetimer
+
+**Syntax**: `removetimer ('timer name')`
+
+**Description**: This command will remove/delete a specific timer
+
+!!! example
+
+    === "Delete Timer"
+
+        ```vim        
+        if timerexists 'sample'
+            removetimer 'sample'
+        endif           
         ```
 
 # rename
@@ -1012,6 +1121,29 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         waitfortarget
         target 'last'
         ```
+
+# settimer
+
+**Syntax**: `settimer ('timer name') ('number in milliseconds')`
+
+**Description**: This command will set a timer to a specific number and start to count up immediately.
+
+!!! example
+
+    === "Set Timer"
+
+        ```vim
+        // Create a new timer
+        if not timerexists 'sample'
+            createtimer 'sample'
+        endif
+
+        // Reset every 10 seconds
+        if timer 'sample' > 10000
+            settimer 'sample' 0
+        endif            
+        ```
+
 # setvar
 
 **Syntax**: `setvar ('variable') ['serial'] ['timeout']` or `setvariable ('variable') ['serial'] ['timeout']`

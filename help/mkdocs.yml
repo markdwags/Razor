@@ -32,7 +32,6 @@ nav:
     - Scripting Overview: guide/index.md
     - Commands: guide/commands.md
     - Comments: guide/comments.md
-    - Condition & Loops: guide/conditionloops.md
     - Expressions: guide/expressions.md
     - Keywords: guide/keywords.md
     - Layers: guide/layers.md

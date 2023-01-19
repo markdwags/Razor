@@ -91,6 +91,96 @@ namespace Assistant.Scripts
             Interpreter.RegisterExpressionHandler("warmode", Warmode);
             
             Interpreter.RegisterExpressionHandler("itemcount", ItemCount);
+            
+            Interpreter.RegisterExpressionHandler("poplist", PopListExp);
+            Interpreter.RegisterExpressionHandler("listexists", ListExists);
+            Interpreter.RegisterExpressionHandler("list", ListLength);
+            Interpreter.RegisterExpressionHandler("inlist", InList);
+            
+            Interpreter.RegisterExpressionHandler("timer", TimerValue);
+            Interpreter.RegisterExpressionHandler("timerexists", TimerExists);
+        }
+        
+        private static int TimerValue(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: timer ('timer name')");
+
+            var ts = Interpreter.GetTimer(args[0].AsString());
+
+            return (int)ts.TotalMilliseconds;
+        }
+
+        private static bool TimerExists(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: timerexists ('timer name')");
+
+            return Interpreter.TimerExists(args[0].AsString());
+        }
+        
+        private static bool ListExists(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: listexists ('list name')");
+
+            if (Interpreter.ListExists(args[0].AsString()))
+                return true;
+
+            return false;
+        }
+
+        private static int ListLength(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: list (list name) (operator) (value)");
+
+            return Interpreter.ListLength(args[0].AsString());
+        }
+
+        private static bool InList(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 2)
+                throw new RunTimeError("Usage: inlist (list name) (element)");
+
+            if (Interpreter.ListContains(args[0].AsString(), args[1]))
+                return true;
+
+            return false;
+        }
+        
+        private static uint PopListExp(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 2)
+                throw new RunTimeError("Usage: poplist ('list name') ('element value'/'front'/'back')");
+
+            var listName = args[0].AsString();
+            var frontBackOrElementVar = args[1];
+            var isFrontOrBack = frontBackOrElementVar.AsString() == "front" || frontBackOrElementVar.AsString() == "back";
+
+            if (isFrontOrBack)
+            {
+                var isFront = frontBackOrElementVar.AsString() == "front";
+                if (force)
+                {
+                    while (Interpreter.PopList(listName, isFront, out _)) { }
+                    return Serial.Zero;
+                }
+
+                Interpreter.PopList(listName, isFront, out var popped);
+                return popped.AsSerial();
+            }
+
+            var evaluatedVar = new Variable(frontBackOrElementVar.AsString());
+
+            if (force)
+            {
+                while (Interpreter.PopList(listName, evaluatedVar)) { }
+                return Serial.Zero;
+            }
+
+            Interpreter.PopList(listName, evaluatedVar);
+            return evaluatedVar.AsSerial();
         }
         
         private static int ItemCount(string expression, Variable[] args, bool quiet, bool force)

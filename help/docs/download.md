@@ -17,6 +17,8 @@ Use the links below to download the **latest** version of Razor. To learn more a
 
 This is built automatically after each commit to master, so it may contain bugs and/or unfinished features but is generally considered stable.
 
+[![Build & Deploy Dev Preview](https://github.com/markdwags/Razor/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/markdwags/Razor/actions/workflows/build.yml)
+
 [Download Developer Preview (1.9.X.0) (x64)](https://github.com/markdwags/Razor/releases/download/Razor-dev-preview/Razor-dev-x64-preview.zip){ .md-button .md-button--primary }
 
 [Download Developer Preview (1.9.X.0) (x86)](https://github.com/markdwags/Razor/releases/download/Razor-dev-preview/Razor-dev-x86-preview.zip){ .md-button }

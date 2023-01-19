@@ -127,6 +127,124 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("clearignore", ClearIgnore);
             
             Interpreter.RegisterCommandHandler("cooldown", Cooldown);
+            
+            Interpreter.RegisterCommandHandler("poplist", PopList);
+            Interpreter.RegisterCommandHandler("pushlist", PushList);
+            Interpreter.RegisterCommandHandler("removelist", RemoveList);
+            Interpreter.RegisterCommandHandler("createlist", CreateList);
+            Interpreter.RegisterCommandHandler("clearlist", ClearList);
+            
+            Interpreter.RegisterCommandHandler("settimer", SetTimer);
+            Interpreter.RegisterCommandHandler("removetimer", RemoveTimer);
+            Interpreter.RegisterCommandHandler("createtimer", CreateTimer);
+        }
+        
+        private static bool PopList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 2)
+                throw new RunTimeError("Usage: poplist ('list name') ('element value'/'front'/'back')");
+
+            if (args[1].AsString() == "front")
+            {
+                if (force)
+                    while (Interpreter.PopList(args[0].AsString(), true, out _)) { }
+                else
+                    Interpreter.PopList(args[0].AsString(), true, out _);
+            }
+            else if (args[1].AsString() == "back")
+            {
+                if (force)
+                    while (Interpreter.PopList(args[0].AsString(), false, out _)) { }
+                else
+                    Interpreter.PopList(args[0].AsString(), false, out _);
+            }
+            else
+            {
+                var evaluatedVar = new Variable(args[1].AsString());
+                if (force)
+                {
+                    while (Interpreter.PopList(args[0].AsString(), evaluatedVar)) { }
+                }
+                else
+                    Interpreter.PopList(args[0].AsString(), evaluatedVar);
+            }
+
+            return true;
+        }
+
+        private static bool PushList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length < 2 || args.Length > 3)
+                throw new RunTimeError("Usage: pushlist ('list name') ('element value') ['front'/'back']");
+
+            bool front = false;
+            if (args.Length == 3)
+            {
+                if (args[2].AsString() == "front")
+                    front = true;
+            }
+
+            Interpreter.PushList(args[0].AsString(), new Variable(args[1].AsString()), front, force);
+
+            return true;
+        }
+
+        private static bool RemoveList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: removelist ('list name')");
+
+            Interpreter.DestroyList(args[0].AsString());
+
+            return true;
+        }
+
+        private static bool CreateList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: createlist ('list name')");
+
+            Interpreter.CreateList(args[0].AsString());
+
+            return true;
+        }
+
+        private static bool ClearList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: clearlist ('list name')");
+
+            Interpreter.ClearList(args[0].AsString());
+
+            return true;
+        }
+
+        private static bool SetTimer(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 2)
+                throw new RunTimeError("Usage: settimer (timer name) (value)");
+
+
+            Interpreter.SetTimer(args[0].AsString(), args[1].AsInt());
+            return true;
+        }
+
+        private static bool RemoveTimer(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: removetimer (timer name)");
+
+            Interpreter.RemoveTimer(args[0].AsString());
+            return true;
+        }
+
+        private static bool CreateTimer(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: createtimer (timer name)");
+
+            Interpreter.CreateTimer(args[0].AsString());
+            return true;
         }
 
         private static bool Cooldown(string command, Variable[] vars, bool quiet, bool force)

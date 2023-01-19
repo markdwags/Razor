@@ -636,7 +636,7 @@ namespace Assistant.Scripts.Engine
                             {
                                 node = _statement.FirstChild();
 
-                                if (node.Type == ASTNodeType.FOR)
+                                if (node.Type == ASTNodeType.FOR || node.Type == ASTNodeType.FOREACH)
                                 {
                                     depth++;
                                 }
@@ -658,6 +658,89 @@ namespace Assistant.Scripts.Engine
                         }
                     }
                     break;
+                case ASTNodeType.FOREACH:
+                    {
+                        // foreach VAR in LIST
+                        // The iterator's name is the hash code of the for loop's ASTNode.
+                        var varName = node.FirstChild().Lexeme;
+                        var listName = node.FirstChild().Next().Lexeme;
+                        var iterName = node.GetHashCode().ToString();
+
+                        // When we first enter the loop, push a new scope
+                        if (Interpreter.CurrentScope.StartNode != node)
+                        {
+                            Interpreter.PushScope(node);
+
+                            // Create a dummy argument that acts as our iterator object
+                            Interpreter.SetVariable(iterName, "0");
+                            Interpreter.SetVariable("index", "0");
+
+                            // Make the user-chosen variable have the value for the front of the list
+                            var arg = Interpreter.GetListValue(listName, 0);
+
+                            if (arg != null)
+                                Interpreter.SetVariable(varName, arg.AsString());
+                            else
+                                Interpreter.ClearVariable(varName);
+                        }
+                        else
+                        {
+                            // Increment the iterator argument
+                            var idx = Interpreter.GetVariable(iterName).AsInt() + 1;
+                            Interpreter.SetVariable(iterName, idx.ToString()); ;
+                            Interpreter.SetVariable("index", idx.ToString());
+
+                            // Update the user-chosen variable
+                            var arg = Interpreter.GetListValue(listName, idx);
+
+                            if (arg != null)
+                                Interpreter.SetVariable(varName, arg.AsString());
+                            else
+                                Interpreter.ClearVariable(varName);
+                        }
+
+                        // Check loop condition
+                        var i = Interpreter.GetVariable(varName);
+
+                        if (i != null)
+                        {
+                            // enter the loop
+                            Advance();
+                        }
+                        else
+                        {
+                            // Walk until the end of the loop
+                            Advance();
+
+                            depth = 0;
+
+                            while (_statement != null)
+                            {
+                                node = _statement.FirstChild();
+
+                                if (node.Type == ASTNodeType.FOR ||
+                                    node.Type == ASTNodeType.FOREACH)
+                                {
+                                    depth++;
+                                }
+                                else if (node.Type == ASTNodeType.ENDFOR)
+                                {
+                                    if (depth == 0)
+                                    {
+                                        Interpreter.PopScope();
+                                        // Go one past the end so the loop doesn't repeat
+                                        Advance();
+                                        break;
+                                    }
+
+                                    depth--;
+                                }
+
+                                Advance();
+                            }
+                        }
+                        break;
+                    }
                 case ASTNodeType.ENDFOR:
                     // Walk backward to the for statement
                     _statement = _statement.Prev();
@@ -673,7 +756,8 @@ namespace Assistant.Scripts.Engine
                         {
                             depth++;
                         }
-                        else if (node.Type == ASTNodeType.FOR)
+                        else if (node.Type == ASTNodeType.FOR ||
+                                 node.Type == ASTNodeType.FOREACH)
                         {
                             if (depth == 0)
                             {
@@ -700,7 +784,8 @@ namespace Assistant.Scripts.Engine
                         node = _statement.FirstChild();
 
                         if (node.Type == ASTNodeType.WHILE ||
-                            node.Type == ASTNodeType.FOR)
+                            node.Type == ASTNodeType.FOR ||
+                            node.Type == ASTNodeType.FOREACH)
                         {
                             depth++;
                         }
@@ -738,7 +823,8 @@ namespace Assistant.Scripts.Engine
                             depth++;
                         }
                         else if (node.Type == ASTNodeType.WHILE ||
-                                 node.Type == ASTNodeType.FOR)
+                                 node.Type == ASTNodeType.FOR ||
+                                 node.Type == ASTNodeType.FOREACH)
                         {
                             if (depth == 0)
                                 break;
@@ -1064,6 +1150,12 @@ namespace Assistant.Scripts.Engine
 
         // The current scope
         private static Scope _currentScope = _scope;
+        
+        // Lists
+        private static Dictionary<string, List<Variable>> _lists = new Dictionary<string, List<Variable>>();
+
+        // Timers
+        private static Dictionary<string, DateTime> _timers = new Dictionary<string, DateTime>();
 
         // Expressions
         public delegate IComparable ExpressionHandler(string expression, Variable[] args, bool quiet, bool force);
@@ -1241,6 +1333,144 @@ namespace Assistant.Scripts.Engine
         public static bool ExistAlias(string alias)
         {
             return _scope.ExistVariable(alias);
+        }
+        
+        public static void CreateList(string name)
+        {
+            if (_lists.ContainsKey(name))
+                return;
+
+            _lists[name] = new List<Variable>();
+        }
+
+        public static void DestroyList(string name)
+        {
+            _lists.Remove(name);
+        }
+
+        public static void ClearList(string name)
+        {
+            if (!_lists.ContainsKey(name))
+                return;
+
+            _lists[name].Clear();
+        }
+
+        public static bool ListExists(string name)
+        {
+            return _lists.ContainsKey(name);
+        }
+
+        public static List<Variable> GetList(string name)
+        {
+            return _lists.ContainsKey(name) ? _lists[name] : null;
+        }
+        public static bool ListContains(string name, Variable arg)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError("List does not exist");
+
+            var list = _lists[name];
+            var a = arg.AsString();
+
+            foreach (var v in list)
+            {
+                if (v.AsString().Equals(a, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static int ListLength(string name)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError("List does not exist");
+
+            return _lists[name].Count;
+        }
+
+        public static void PushList(string name, Variable arg, bool front, bool unique)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError("List does not exist");
+
+            if (unique && _lists[name].Contains(arg))
+                return;
+
+            if (front)
+                _lists[name].Insert(0, arg);
+            else
+                _lists[name].Add(arg);
+        }
+
+        public static bool PopList(string name, Variable arg)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError("List does not exist");
+
+            return _lists[name].Remove(arg);
+        }
+
+        public static bool PopList(string name, bool front, out Variable removedVar)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError("List does not exist");
+
+            var list = _lists[name];
+            var idx = front ? 0 : _lists[name].Count - 1;
+
+            removedVar = list[idx];
+            list.RemoveAt(idx);
+
+            return list.Count > 0;
+        }
+
+        public static Variable GetListValue(string name, int idx)
+        {
+            if (!_lists.ContainsKey(name))
+                throw new RunTimeError("List does not exist");
+
+            var list = _lists[name];
+
+            if (idx < list.Count)
+                return list[idx];
+
+            return null;
+        }
+
+        public static void CreateTimer(string name)
+        {
+            _timers[name] = DateTime.UtcNow;
+        }
+
+        public static TimeSpan GetTimer(string name)
+        {
+            if (!_timers.TryGetValue(name, out DateTime timestamp))
+                throw new RunTimeError("Timer does not exist");
+
+            TimeSpan elapsed = DateTime.UtcNow - timestamp;
+
+            return elapsed;
+        }
+
+        public static void SetTimer(string name, int elapsed)
+        {
+            // Setting a timer to start at a given value is equivalent to
+            // starting the timer that number of milliseconds in the past.
+            _timers[name] = DateTime.UtcNow.AddMilliseconds(-elapsed);
+        }
+
+        public static void RemoveTimer(string name)
+        {
+            _timers.Remove(name);
+        }
+
+        public static bool TimerExists(string name)
+        {
+            return _timers.ContainsKey(name);
         }
 
         public static bool StartScript(Script script)
