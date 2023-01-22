@@ -333,6 +333,8 @@ namespace Assistant
             AddProperty("ShowBuffDebuffSort", 2);
             AddProperty("UseBlackBuffDebuffBg", false);
             AddProperty("ShowBuffDebuffTimeType", 0);
+            
+            AddProperty("DefaultScriptDelay", true);
 
             Counter.Default();
             Filter.DisableAll();
