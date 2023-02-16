@@ -55,3 +55,11 @@ for 10
     overhead 'index'
 endfor
 ```
+
+```vim
+for 10
+    if index == 7
+        overhead '7th loop'
+    endif
+endfor
+```
