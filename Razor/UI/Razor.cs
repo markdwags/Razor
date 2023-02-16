@@ -33,6 +33,7 @@ using Assistant.Boat;
 using Assistant.Agents;
 using Assistant.Core;
 using Assistant.Scripts;
+using Assistant.Scripts.Engine;
 using Assistant.UI;
 using Ultima;
 using Art = Assistant.UI.Art;
@@ -532,6 +533,8 @@ namespace Assistant
             useBlackBuffDebuffBg.SafeAction(s => { s.Checked = Config.GetBool("UseBlackBuffDebuffBg"); });
             buffBarSort.SafeAction(s => { s.SelectedIndex = Config.GetInt("ShowBuffDebuffSort"); });
             showBuffDebuffTimeType.SafeAction(s => { s.SelectedIndex = Config.GetInt("ShowBuffDebuffTimeType"); });
+            
+            defaultScriptDelay.SafeAction(s => { s.Checked = Config.GetBool("DefaultScriptDelay"); });
 
             Engine.MainWindow.Size = new Size(Config.GetInt("WindowSizeX"), Config.GetInt("WindowSizeY"));
 
@@ -6395,7 +6398,9 @@ namespace Assistant
             RazorScript selScript = GetScriptSel();
             
             // We want to play the contents of the script editor
-            ScriptManager.PlayScript(scriptEditor.Lines.ToArray(), selScript != null ? selScript.ToString() : "N/A", true);
+
+            ScriptManager.PlayScriptFromUI(scriptEditor.Lines.ToArray(), selScript != null ? selScript.ToString() : "N/A",
+                true);
         }
 
         public void LockScriptUI(bool enabled)
@@ -6891,7 +6896,7 @@ namespace Assistant
             RazorScript selScript = GetScriptSel();
             
             // We want to play the contents of the script editor
-            ScriptManager.PlayScript(lines, selScript != null ? selScript.ToString() : "N/A", true);
+            ScriptManager.PlayScriptFromUI(lines, selScript != null ? selScript.ToString() : "N/A", true);
         }
 
         private void autoSaveScriptPlay_CheckedChanged(object sender, EventArgs e)
@@ -8152,6 +8157,13 @@ namespace Assistant
                 return;
 
             Config.SetProperty("ShowBuffDebuffTimeType", showBuffDebuffTimeType.SelectedIndex);
+        }
+
+        private void defaultScriptDelay_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("DefaultScriptDelay", defaultScriptDelay.Checked);
+            
+            ScriptManager.ResetTimer();
         }
     }
 }

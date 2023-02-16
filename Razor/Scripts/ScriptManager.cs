@@ -90,7 +90,7 @@ namespace Assistant.Scripts
         private class ScriptTimer : Timer
         {
             // Only run scripts once every 25ms to avoid spamming.
-            public ScriptTimer() : base(TimeSpan.FromMilliseconds(25), TimeSpan.FromMilliseconds(25))
+            public ScriptTimer(int delay) : base(TimeSpan.FromMilliseconds(delay), TimeSpan.FromMilliseconds(delay))
             {
             }
 
@@ -369,7 +369,39 @@ namespace Assistant.Scripts
             }
         }
 
-        public static void PlayScript(string[] lines, string name, bool highlight = false)
+        public static void PlayScript(string[] lines, string name)
+        {
+            if (World.Player == null || lines == null)
+                return;
+
+            if (MacroManager.Playing || MacroManager.StepThrough)
+                MacroManager.Stop();
+
+            StopScript();
+
+            SetLastTargetActive = false;
+            SetVariableActive = false;
+
+            if (_queuedScript != null)
+                return;
+
+            if (!Client.Instance.ClientRunning)
+                return;
+
+            try
+            {
+                Script script = new Script(Lexer.Lex(lines));
+                
+                _queuedScript = script;
+                _queuedScriptName = name;
+            }
+            catch (SyntaxError syntaxError)
+            {
+                World.Player.SendMessage(MsgLevel.Error, $"{syntaxError.Message}: '{syntaxError.Line}' (Line #{syntaxError.LineNumber + 1})");
+            }
+        }
+        
+        public static void PlayScriptFromUI(string[] lines, string name, bool highlight = false)
         {
             if (World.Player == null || ScriptEditor == null || lines == null)
                 return;
@@ -395,13 +427,22 @@ namespace Assistant.Scripts
             if (!Client.Instance.ClientRunning)
                 return;
 
-            if (World.Player == null)
-                return;
+            try
+            {
+                Script script = new Script(Lexer.Lex(lines));
+                
+                _queuedScript = script;
+                _queuedScriptName = name;
+            }
+            catch (SyntaxError syntaxError)
+            {
+                World.Player.SendMessage(MsgLevel.Error, $"{syntaxError.Message}: '{syntaxError.Line}' (Line #{syntaxError.LineNumber + 1})");
 
-            Script script = new Script(Lexer.Lex(lines));
-
-            _queuedScript = script;
-            _queuedScriptName = name;
+                if (EnableHighlight)
+                {
+                    SetHighlightLine(syntaxError.LineNumber, HighlightType.Error);
+                }
+            }
         }
 
         /*private static void ActiveScriptStatementExecuted(ASTNode statement)
@@ -417,11 +458,18 @@ namespace Assistant.Scripts
             }
         }*/
 
-        private static ScriptTimer Timer { get; }
+        private static ScriptTimer Timer { get; set; }
 
         static ScriptManager()
         {
-            Timer = new ScriptTimer();
+            Timer = new ScriptTimer(Config.GetBool("DefaultScriptDelay") ? 25 : 0);
+        }
+
+        public static void ResetTimer()
+        {
+            Timer.Stop();
+            Timer = new ScriptTimer(Config.GetBool("DefaultScriptDelay") ? 25 : 0);
+            Timer.Start();
         }
 
         private static void UpdateLineNumber(int lineNum)
