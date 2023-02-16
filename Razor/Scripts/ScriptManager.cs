@@ -495,9 +495,9 @@ namespace Assistant.Scripts
                 s.BeginUpdate();
                 s.Items.Clear();
 
-                foreach (ScriptVariables.ScriptVariable at in ScriptVariables.ScriptVariableList)
+                foreach (KeyValuePair<string, Serial> variable in ScriptVariables.Variables)
                 {
-                    s.Items.Add($"'{at.Name}' ({at.TargetInfo.Serial})");
+                    s.Items.Add($"{variable.Key} ({variable.Value})");
                 }
 
                 s.EndUpdate();

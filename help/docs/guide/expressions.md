@@ -88,7 +88,6 @@ for 10
 endfor
 ```
 
-
 !!! example
 
     === "Say 'Hello' 10 times"
