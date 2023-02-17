@@ -127,6 +127,124 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("clearignore", ClearIgnore);
             
             Interpreter.RegisterCommandHandler("cooldown", Cooldown);
+            
+            Interpreter.RegisterCommandHandler("poplist", PopList);
+            Interpreter.RegisterCommandHandler("pushlist", PushList);
+            Interpreter.RegisterCommandHandler("removelist", RemoveList);
+            Interpreter.RegisterCommandHandler("createlist", CreateList);
+            Interpreter.RegisterCommandHandler("clearlist", ClearList);
+            
+            Interpreter.RegisterCommandHandler("settimer", SetTimer);
+            Interpreter.RegisterCommandHandler("removetimer", RemoveTimer);
+            Interpreter.RegisterCommandHandler("createtimer", CreateTimer);
+        }
+        
+        private static bool PopList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 2)
+                throw new RunTimeError("Usage: poplist ('list name') ('element value'/'front'/'back')");
+
+            if (args[1].AsString() == "front")
+            {
+                if (force)
+                    while (Interpreter.PopList(args[0].AsString(), true, out _)) { }
+                else
+                    Interpreter.PopList(args[0].AsString(), true, out _);
+            }
+            else if (args[1].AsString() == "back")
+            {
+                if (force)
+                    while (Interpreter.PopList(args[0].AsString(), false, out _)) { }
+                else
+                    Interpreter.PopList(args[0].AsString(), false, out _);
+            }
+            else
+            {
+                var evaluatedVar = new Variable(args[1].AsString());
+                if (force)
+                {
+                    while (Interpreter.PopList(args[0].AsString(), evaluatedVar)) { }
+                }
+                else
+                    Interpreter.PopList(args[0].AsString(), evaluatedVar);
+            }
+
+            return true;
+        }
+
+        private static bool PushList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length < 2 || args.Length > 3)
+                throw new RunTimeError("Usage: pushlist ('list name') ('element value') ['front'/'back']");
+
+            bool front = false;
+            if (args.Length == 3)
+            {
+                if (args[2].AsString() == "front")
+                    front = true;
+            }
+
+            Interpreter.PushList(args[0].AsString(), new Variable(args[1].AsString()), front, force);
+
+            return true;
+        }
+
+        private static bool RemoveList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: removelist ('list name')");
+
+            Interpreter.DestroyList(args[0].AsString());
+
+            return true;
+        }
+
+        private static bool CreateList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: createlist ('list name')");
+
+            Interpreter.CreateList(args[0].AsString());
+
+            return true;
+        }
+
+        private static bool ClearList(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: clearlist ('list name')");
+
+            Interpreter.ClearList(args[0].AsString());
+
+            return true;
+        }
+
+        private static bool SetTimer(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 2)
+                throw new RunTimeError("Usage: settimer (timer name) (value)");
+
+
+            Interpreter.SetTimer(args[0].AsString(), args[1].AsInt());
+            return true;
+        }
+
+        private static bool RemoveTimer(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: removetimer (timer name)");
+
+            Interpreter.RemoveTimer(args[0].AsString());
+            return true;
+        }
+
+        private static bool CreateTimer(string command, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: createtimer (timer name)");
+
+            Interpreter.CreateTimer(args[0].AsString());
+            return true;
         }
 
         private static bool Cooldown(string command, Variable[] vars, bool quiet, bool force)
@@ -501,71 +619,80 @@ namespace Assistant.Scripts
 
             return false;
         }
+        
+        private enum SetVarState
+        {
+            INITIAL_PROMPT,
+            WAIT_FOR_TARGET,
+            COMPLETE,
+        };
+
+        private static SetVarState _setVarState = SetVarState.INITIAL_PROMPT;
 
         private static bool SetVar(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (vars.Length < 1)
+            if (vars.Length < 1 || vars.Length > 2)
             {
-                throw new RunTimeError("Usage: setvar ('variable') ['serial'] [timeout]");
+                throw new RunTimeError("Usage: setvar ('variable') [serial] [timeout]");
             }
 
-            string name = vars[0].AsString();
-            Serial serial = Serial.Zero;
+            string name = vars[0].AsString(false);
 
             if (vars.Length == 2)
             {
-                serial = vars[1].AsSerial();
+                // No need to target anything. We have the serial.
+                var serial = vars[1].AsSerial();
 
                 if (force)
                 {
-                    Interpreter.SetVariable(name, serial.ToString());
+                    Interpreter.SetVariable(name, serial.ToString(), true);
                     return true;
                 }
-            }
 
-            ScriptVariables.ScriptVariable variable = ScriptVariables.GetVariable(name);
-            
-            if (variable == null) // new variable
-            {
-                World.Player.SendMessage(MsgLevel.Info, $"'{name}' not found, creating new variable", quiet);
+                if (ScriptVariables.GetVariable(name) == Serial.MinusOne && !quiet)
+                {
+                    CommandHelper.SendMessage($"'{name}' not found, creating new variable", quiet);
+                }
 
-                variable = new ScriptVariables.ScriptVariable(name, new TargetInfo());
+                ScriptVariables.RegisterVariable(name, serial);
+                CommandHelper.SendMessage($"'{name}' script variable updated to '{serial}'", quiet);
 
-                ScriptVariables.ScriptVariableList.Add(variable);
-                ScriptVariables.RegisterVariable(name);
-            }
-
-
-            if (serial != Serial.Zero) // they supplied a serial
-            {
-                variable.TargetInfo.Serial = serial;
-                World.Player.SendMessage(MsgLevel.Info, $"'{name}' script variable updated to '{variable.TargetInfo.Serial}'", quiet);
-
-                ScriptManager.RedrawScriptVariables();
+                Assistant.Engine.MainWindow.SaveScriptVariables();
 
                 return true;
             }
 
-            Interpreter.Timeout(vars.Length == 3 ? vars[2].AsUInt() : 30000, () => { return true; });
+            Interpreter.Timeout(vars.Length == 2 ? vars[1].AsUInt() : 30000, () => { _setVarState = SetVarState.INITIAL_PROMPT; return true; } );
 
-            if (!ScriptManager.SetVariableActive)
+            switch (_setVarState)
             {
-                variable.SetTarget();
-                ScriptManager.SetVariableActive = true;
+                case SetVarState.INITIAL_PROMPT:
+                    if (ScriptVariables.GetVariable(name) == Serial.MinusOne)
+                    {
+                        CommandHelper.SendMessage($"'{name}' not found, creating new variable", quiet);
+                    }
+                    World.Player.SendMessage(MsgLevel.Force, $"Select target for variable '{name}'");
 
-                return false;
-            }
+                    _setVarState = SetVarState.WAIT_FOR_TARGET;
 
-            if (variable.TargetWasSet)
-            {
-                Interpreter.ClearTimeout();
-                ScriptManager.SetVariableActive = false;
+                    Targeting.OneTimeTarget((ground, serial, pt, gfx) =>
+                    {
+                        ScriptVariables.RegisterVariable(name, serial);
+                        CommandHelper.SendMessage($"'{name}' script variable updated to '{serial}'", quiet);
 
-                World.Player.SendMessage(MsgLevel.Info, $"'{name}' script variable updated to '{variable.TargetInfo.Serial}'", quiet);
-
-                ScriptManager.RedrawScriptVariables();
-
-                return true;
+                        Assistant.Engine.MainWindow.SaveScriptVariables();
+                        _setVarState = SetVarState.COMPLETE;
+                    },
+                    () =>
+                    {
+                        _setVarState = SetVarState.COMPLETE;
+                    });
+                    break;
+                case SetVarState.WAIT_FOR_TARGET:
+                    break;
+                case SetVarState.COMPLETE:
+                    _setVarState = SetVarState.INITIAL_PROMPT;
+                    return true;
             }
 
             return false;

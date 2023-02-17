@@ -1,6 +1,17 @@
-# Razor Release Notes
+# Release Notes
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
+
+## 1.9.X.0 (Dev Preview)
+
+This version includes more updates to the scripting engine, including the ability to create cooldowns that will display as a gump. This version also introduces lists and timers to the scripting engine. Be sure to review the latest scripting docs for details.
+
+* Added the `cooldown` command that generates a gump-based cooldown timer that can be customized (icon, color, name, order, etc)
+* Added [list commands](guide/commands.md#list-commands) and [list expressions](guide/expressions.md#list-expressions)
+* Added [timer commands](guide/commands.md#timer-commands) and [timer expressions](guide/expressions.md#timer-expressions)
+* Added the `foreach` loop to interact with lists
+* Fixed missing syntax highlight for `maxweight`
+* Running a script will show the name in the system message
 
 ## 1.8.61.0 (12/07/2022)
 
@@ -8,7 +19,7 @@ This version includes several new scripting commands, the ability to resize the 
 
 * Fix issue with delete profile button
 * Added `sound` and `music` script commands that will play specific sound or music in the client
-* Added `classicuo/cuo` script commands, `>cuo` manual command to control ClassicUO settings directly.
+* Added `classicuo/cuo` script commands, `>cuo` manual command to control ClassicUO settings directly
 * Added sound trigger option to overhead messages
 * Fixed issue with buffs/debuff filter not loading on a profile change
 * Reload scripts will read all changes made externally to scripting files

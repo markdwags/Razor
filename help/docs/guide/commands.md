@@ -1,6 +1,6 @@
-# Overview
+# Command Overview
 
-The commands issued in the scripting engine are similar to a commands you might enter into a command prompt or shell.  Each line has a starting command, and a set of parameters.  Some of those parameters are required, some are optional.
+The commands issued in the scripting engine are similar to commands you might enter into a command prompt or shell.  Each line has a starting command, and a set of parameters.  Some of those parameters are required, some are optional.
 
 `command (required) [optional]`
 
@@ -36,21 +36,9 @@ If you prefix a command with the `@` this will silence any warning/output from t
 
 Without the `@` symbol, if a robe isn't available, you would get an warning message telling you that it couldn't find a robe. But since the `@` symbol was provided, no warning is displayed.
 
-# alliance
+# Action Commands
 
-**Syntax**: `alliance ('message to send')`
-
-**Description**: This command will force your character to say an alliance message passed as the parameter.
-
-!!! example
-
-    === "General"
-
-        ```vim
-        alliance 'Allies assemble!'
-        ```
-
-# attack
+## attack
 
 **Syntax**: `attack (serial)` or `attack ('variablename')`
 
@@ -69,7 +57,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         ```vim
         attack 'attackdummy'
         ```
-# cast
+## cast
 
 **Syntax**: `cast ('name of spell')`
 
@@ -85,7 +73,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         target 'self'
         ```
 
-# classicuo
+## classicuo
 
 **Syntax**: `classicuo ('setting') ('value')` or `cuo ('setting') ('value')`
 
@@ -110,23 +98,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         classicuo 'musicvolume' 50
         ```
 
-# clearall
-
-**Syntax**: `clearall`
-
-**Description**: Combines the following actions into one command: `Cancel Current Target, Clear Target Queue, Drop What You Are Currently Holding and Clear Drag/Drop Queue` into a single command.
-
-!!! example
-
-    === "Clear on sysmsg message"
-
-        ```vim
-        if insysmsg 'cannot find'
-            clearall
-        endif
-        ```
-
-# cleardragdrop
+## cleardragdrop
 
 **Syntax**: `cleardragdrop`
 
@@ -142,7 +114,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         endif
         ```
 
-# clearhands
+## clearhands
 
 **Syntax**: `clearhands ('left'/'right'/'both')`
 
@@ -162,58 +134,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         clearhands 'left'
         ```
 
-# clearignore
-
-**Syntax**: `clearignore`
-
-**Description**: Clears your scripting ignore list
-
-!!! tip
-    Works in conjunction with `ignore` and `unignore`
-
-!!! example
-
-    === "General"
-
-        ```vim hl_lines="1"
-        clearignore
-
-        if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
-            overhead 'found' 44
-            overhead 'wand' 44
-    
-            ignore 'wand'
-        else
-            overhead 'not found' 33
-        endif
-        ```
-
-# clearsysmsg
-
-**Syntax**: `clearsysmsg`
-
-**Description**: Clears the internal system message queue
-
-!!! example
-
-    === "General"
-
-        ```vim
-        sysmsg 'hello'
-        sysmsg 'bye'
-
-        if insysmsg 'hello'
-            say 'hello!'
-        endif
-
-        clearsysmsg
-
-        if insysmsg 'bye'
-            say 'this condition wont be met since it was cleared on line 8'
-        endif
-        ```
-
-# cooldown
+## cooldown
 
 **Syntax**: `cooldown ('name') ('seconds') ['hue'] ['icon name'] ['sound'] ['stay visible'] ['foreground color'] ['background color']`
 
@@ -283,7 +204,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         cooldown 'Refresh' 20
         ```
 
-# dclick
+## dclick
 
 **Syntax**: `dclick (serial)` or `dclick ('left'/'right'/'hands')`
 
@@ -313,7 +234,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         dclick 'right'
         ```
 
-# dclicktype
+## dclicktype
 
 **Syntax**: `dclicktype ('name of item'/'graphicId') [inrange (true/false)/backpack] [hue]`
 
@@ -361,7 +282,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         targettype 'robe' backpack
         ```
 
-# dress
+## dress
 
 **Syntax**: `dress ('name of dress list')` or `dress (serial)`
 
@@ -388,7 +309,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         dress 'hat'
         ```
 
-# drop
+## drop
 
 **Syntax**: `drop (serial) (x) (y) [z]` or `drop (serial) (layer)` or `drop 'ground' (x) (y) [z]`
 
@@ -416,7 +337,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
         drop 'ground' 5926 1148 0
         ```
 
-# droprelloc
+## droprelloc
 
 **Syntax**: `droprelloc (x) (y)`
 
@@ -434,30 +355,7 @@ Example:
         droprelloc 1 1
         ```
 
-# emote
-
-**Syntax**: `emote ('message to send') [hue]`
-
-**Description**: This command will force your character to emote the message passed as the parameter.
-
-!!! tip
-    This command will append `*` around the emote so `emote 'smiles'` will be displayed in game as `*smiles*`.
-
-!!! example
-
-    === "Emote"
-
-        ```vim
-        emote 'smiles'
-        ```
-
-    === "Emote with hue"
-
-        ```vim
-        emote 'smiles in another color' 454
-        ```
-
-# getlabel
+## getlabel
 
 **Syntax**: `getlabel ('serial') ('variable name')`
 
@@ -495,57 +393,7 @@ Example:
         endif
         ```
 
-# guild
-
-**Syntax**: `guild ('message to send')`
-
-**Description**: This command will force your character to say a guild message passed as the parameter.
-
-!!! example
-
-    === "Guild message"
-
-        ```vim
-        guild 'Hello fellow guildmates!'
-        ```
-
-# gumpresponse
-
-**Syntax**: `gumpresponse ('buttonID')`
-
-**Description**: Responds to a specific gump button
-
-!!! example
-
-    === "Gump Response"
-
-        ```vim
-        gumpresponse 4
-        ```
-
-# gumpclose
-
-**Syntax**: `gumpclose ['gumpID']`
-
-**Description**: This command will close the last gump that opened. You may pass an optional gump ID.
-
-!!! example
-
-    === "Close last gump"
-
-        ```vim
-        gumpclose
-        ```
-
-    === "Close gump with id"
-
-        ```vim
-        dclick '0x4000174B'
-        waitforgump 2341449854        
-        gumpclose 2341449854
-        ```
-
-# hotkey
+## hotkey
 
 **Syntax**: `hotkey ('name of hotkey')`
 
@@ -561,38 +409,8 @@ Example:
         hotkey 'target self'
         ```
 
-# ignore
+## interrupt
 
-**Syntax**: `ignore ('serial')`
-
-**Description**: Adds a specific serial to the script engine's ignore list to avoid finding items when using commands like `findtype`
-
-!!! example
-
-    === "Ignore by serial"
-
-        ```vim hl_lines="3"
-        clearignore
-
-        ignore '0x123A'
-        ```
-
-    === "Ignore by variable"
-
-        ```vim hl_lines="7"
-        clearignore
-
-        if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
-            overhead 'found' 44
-            overhead 'wand' 44
-    
-            ignore 'wand'
-        else
-            overhead 'not found' 33
-        endif
-        ```
-
-# interrupt
 **Syntax**: `interrupt`
 
 **Description**: This command will interrupt a casting action. 
@@ -614,23 +432,7 @@ Example:
         target 'last'    
         ```
 
-# lasttarget
-
-**Syntax**: `lasttarget`
-
-**Description**: This command will target your last target set in Razor.
-
-!!! example
-
-    === "Cast on last target"
-
-        ```vim
-        cast 'magic arrow'
-        waitfortarget
-        lasttarget
-        ```
-
-# lift
+## lift
 
 **Syntax**: `lift ('serial') ['amount']`
 
@@ -649,7 +451,7 @@ Example:
         droprelloc 1 1 0
         ```
 
-# lifttype
+## lifttype
 
 **Syntax**: `lifttype ('gfx') ['amount'] ['hue']` or `lifttype ('name of item') ['amount'] ['hue']`
 
@@ -689,48 +491,7 @@ Example:
         droprelloc 1 1
         ```
 
-# menu
-
-**Syntax**: `menu ('serial') ('index') ['false']`
-
-**Description**: Selects a specific index within a context menu. Razor will block the menu from appearing by default. If you include the optional `false` parameter, the context menu won't be blocked by Razor.
-
-!!! tip "Context Menu"
-    This command applies to the context menu accessed on some servers via a single-click (such as on yourself, to open your paperdoll or backpack).
-
-    ![context-menu](../images/contextmenu.png)
-
-!!! example
-
-    === "Open Paperdoll"
-
-        ```vim
-        menu 0 0
-        ```
-
-    === "Open Backpack"
-
-        ```vim
-        menu 0 1
-        ```
-# menuresponse
-
-**Syntax**: `menuresponse ('index') ('menuId') ['hue']`
-
-**Description**: Responds to a specific menu and menu ID
-
-!!! warning
-    This command does not work on context menus, they are for a less used menu type.  See the `menu` command to use context/popup menus.
-
-!!! example
-
-    === "Description"
-
-        ```vim
-        menuresponse 3 4
-        ```
-
-# music
+## music
 
 **Syntax**: `music ('index')`
 
@@ -749,43 +510,7 @@ Example:
         music 11
         ```
 
-# organizer
-
-**Syntax**: `organizer ('number') ['set']`
-
-**Description**: This command will execute a specific organizer agent. If the `set` parameter is included, you will instead be prompted to set the organizer agent's hotbag.
-
-!!! example
-
-    === "Execute organizer agent 1"
-
-        ```vim
-        organizer 1
-        ```
-
-    === "Set a hotbag on organizer agent 4"
-
-        ```vim
-        organizer 4 'set'
-        ```
-
-# overhead
-
-**Syntax**: `overhead ('text') ['color'] ['serial']`
-
-**Description**: This command will display a message over your head. Only you can see this.
-
-!!! example
-
-    === "Overhead message"
-
-        ```vim
-        if stam = 100
-            overhead 'ready to go!'
-        endif
-        ```
-
-# potion
+## potion
 
 **Syntax**: `potion ('potion type')`
 
@@ -807,23 +532,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         potion 'heal'
         ```
 
-# promptresponse
-
-**Syntax**: `promptresponse ('prompt response')`
-
-**Description**: This command will respond to a prompt triggered from actions such as renaming runes or giving a guild title.
-
-!!! example
-
-    === "Rename a recall rune"
-
-        ```vim
-        dclicktype 'rune'
-        waitforprompt
-        promptresponse 'to home'
-        ```
-
-# rename
+## rename
 
 **Syntax**: `rename (serial) ('name')`
 
@@ -851,7 +560,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         rename 'lasttarget' 'Fluffy'
         ```
 
-# random
+## random
 
 **Syntax**: `random ('max number')`
 
@@ -872,49 +581,8 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
             say 'Hail!'
         endif
         ```
-# restock
 
-**Syntax**: `restock ('number') ['set']`
-
-**Description**: This command will execute a specific restock agent. If the `set` parameter is included, you will instead be prompted to set the restock agent's hotbag.
-
-!!! example
-
-    === "Use Restock Agent 1"
-
-        ```vim
-        if count garlic < 4
-            restock 1
-        endif
-        ```
-
-    === "Set a hotbag on Restock Agent 4"
-
-        ```vim
-        restock 4 'set'
-        ```
-
-# say
-
-**Syntax**: `say ('message to send') [hue]` or `msg ('message to send') [hue]`
-
-**Description**: This command will force your character to say the message passed as the parameter.
-
-!!! example
-
-    === "Say message"
-
-        ```vim
-        say 'Hello world!'
-        ```
-
-    === "Say message with hue"
-
-        ```vim
-        say 'Hello world!' 454
-        ```
-
-# script
+## script
 
 **Syntax**: `script ('name')` or `script ('category\name')`
 
@@ -940,41 +608,8 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
             script 'magery\meditation'
         endif
         ```
-# scavenger
 
-**Syntax**: `scavenger ('clear'/'add'/'on'/'off'/'set')`
-
-**Description**: This command will control the scavenger agent.
-
-* `clear`: Clear scavenger agent cache
-* `add`: Select an item to add to the list
-* `on`: Turn on the scavenger agent
-* `off`: Turn off the scavenger agent
-* `set`: Set the scavenger agent's hotbag
-
-!!! example
-
-    === "Turn off scavenger"
-
-        ```vim
-        scavenger 'off'
-        ```
-
-# sell
-
-**Syntax**: `sell`
-
-**Description**: This command will set the Sell agent's hotbag.
-
-!!! example
-
-    === "Set Agent Hotbag"
-
-        ```vim
-        sell
-        ```
-
-# setability
+## setability
 
 **Syntax**: `setability ('primary'/'secondary'/'stun'/'disarm') ['on'/'off']`
 
@@ -994,25 +629,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         setability 'stun' off
         ```
 
-# setlasttarget
-
-**Syntax**: `setlasttarget`
-
-**Description**: This command will pause the script until you select a target to be set as Last Target.
-
-!!! example
-
-    === "Set last target and cast"
-
-        ```vim
-        overhead 'set last target'
-        setlasttarget
-        overhead 'set!'
-        cast 'magic arrow'
-        waitfortarget
-        target 'last'
-        ```
-# setvar
+## setvar
 
 **Syntax**: `setvar ('variable') ['serial'] ['timeout']` or `setvariable ('variable') ['serial'] ['timeout']`
 
@@ -1049,7 +666,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         dclick 'tempvar'       
         ```
 
-# skill
+## skill
 
 **Syntax**: `skill ('name of skill')` or `skill last`
 
@@ -1070,7 +687,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         endwhile
         ```
 
-# sound
+## sound
 
 **Syntax**: `sound ('serial')`
 
@@ -1086,7 +703,734 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         sound '0x166'
         ```
 
-# sysmsg
+## virtue
+
+**Syntax**: `virtue ('honor'/'sacrifice'/'valor')`
+
+**Description**: This command will invoke Honor, Sacrifice or Valor.
+
+!!! example
+
+    === "Invoke Honor"
+
+        ```vim
+        virtue 'honor'
+        ```
+
+    === "Invoke Sacrifice"
+
+        ```vim
+        virtue 'sacrifice'
+        ```
+
+    === "Invoke Valor"
+
+        ```vim
+        virtue 'valor'
+        ```
+
+## walk
+
+**Syntax**: `walk ('direction')`
+
+**Description**: This command will turn and/or walk your player in a certain direction.
+
+!!! example
+
+    === "Walk around"
+
+        ```vim
+        walk 'North'
+        walk 'Up'
+        walk 'West'
+        walk 'Left'
+        walk 'South'
+        walk 'Down'
+        walk 'East'
+        walk 'Right'
+        ```
+
+## wait & pause
+
+**Syntax**: `wait (time in milliseconds)` or `pause (time in milliseconds)` or `wait (duration) (shorthand)`
+
+**Description**: This command will pause the execution of a script for a given time.
+
+!!! tip "Tips"
+    `1000` milliseconds is equal to `1` second. `1000 x number of seconds = total milliseconds`
+
+    To make your script easier to read, you can **shorthand** instead of defining the full time in milliseconds.
+
+    | Accepted Shorthand              |
+    | ------------------------------- |
+    | `seconds`, `second`, `sec`, `s` |
+    | `minutes`, `minute`, `min`, `m` |
+
+!!! example
+
+    === "Wait 5 seconds"
+
+        ```vim hl_lines="2"
+        while stam < 100    
+            wait 5000
+        endwhile
+        ```
+
+    === "Wait 2 seconds (with shorthand)"
+
+        ```vim hl_lines="2 6"
+        while stam < 100    
+            wait 2 sec
+        endwhile
+
+        while stam < 100    
+            wait 2 seconds
+        endwhile
+        ```
+
+    === "Wait 3 minutes (with shorthand)"
+
+        ```vim hl_lines="2"
+        say 'AFK for 3 minutes'
+        wait 3 minutes
+        say 'Back!'
+        ```
+
+## undress
+
+**Syntax**: `undress ('name of dress list')'` or `undress 'LayerName'` or `undress (serial)`
+
+**Description**: This command will either undress you completely if no dress list is provided. If you provide a dress list, only those specific items will be undressed. Lastly, you can define a layer name to undress.
+
+!!! tip
+    Available [layers](./layers.md) for reference
+
+!!! example
+
+    === "Full naked"
+
+        ```vim
+        undress
+        ```
+
+    === "Specfic items in dress list"
+
+        ```vim
+        undress 'My Sunday Best'
+        ```
+
+    === "Remove your shirt and pants"
+
+        ```vim
+        undress 'Shirt'
+        undress 'Pants'
+        ```
+    === "Using a serial"
+
+        ```vim hl_lines="1"
+        undress '0x345234'
+        ```
+
+    === "Using a variable"
+
+        ```vim hl_lines="2"
+        setvar 'hat'
+        undress 'hat'
+        ```
+
+# Agent Commands
+
+## organizer
+
+**Syntax**: `organizer ('number') ['set']`
+
+**Description**: This command will execute a specific organizer agent. If the `set` parameter is included, you will instead be prompted to set the organizer agent's hotbag.
+
+!!! example
+
+    === "Execute organizer agent 1"
+
+        ```vim
+        organizer 1
+        ```
+
+    === "Set a hotbag on organizer agent 4"
+
+        ```vim
+        organizer 4 'set'
+        ```
+
+## restock
+
+**Syntax**: `restock ('number') ['set']`
+
+**Description**: This command will execute a specific restock agent. If the `set` parameter is included, you will instead be prompted to set the restock agent's hotbag.
+
+!!! example
+
+    === "Use Restock Agent 1"
+
+        ```vim
+        if count garlic < 4
+            restock 1
+        endif
+        ```
+
+    === "Set a hotbag on Restock Agent 4"
+
+        ```vim
+        restock 4 'set'
+        ```
+
+## scavenger
+
+**Syntax**: `scavenger ('clear'/'add'/'on'/'off'/'set')`
+
+**Description**: This command will control the scavenger agent.
+
+* `clear`: Clear scavenger agent cache
+* `add`: Select an item to add to the list
+* `on`: Turn on the scavenger agent
+* `off`: Turn off the scavenger agent
+* `set`: Set the scavenger agent's hotbag
+
+!!! example
+
+    === "Turn off scavenger"
+
+        ```vim
+        scavenger 'off'
+        ```
+
+## sell
+
+**Syntax**: `sell`
+
+**Description**: This command will set the Sell agent's hotbag.
+
+!!! example
+
+    === "Set Agent Hotbag"
+
+        ```vim
+        sell
+        ```
+
+## useonce
+
+**Syntax**: `useonce ('add'/'addcontainer')`
+
+**Description**: This command will execute the UseOnce agent. If the `add` parameter is included, you can add items to your UseOnce list. If the `addcontainer` parameter is included, you can add all items in a container to your UseOnce list.
+
+!!! example
+
+    === "Use top item"
+
+        ```vim
+        useonce
+        ```
+
+    === "Add to list"
+
+        ```vim
+        useonce 'add'
+        ```
+
+    === "Add to container"
+
+        ```vim
+        useonce 'addcontainer'
+        ```
+
+# Gumps, Menus, & Prompt Commands
+
+## gumpresponse
+
+**Syntax**: `gumpresponse ('buttonID')`
+
+**Description**: Responds to a specific gump button
+
+!!! example
+
+    === "Gump Response"
+
+        ```vim
+        gumpresponse 4
+        ```
+
+## gumpclose
+
+**Syntax**: `gumpclose ['gumpID']`
+
+**Description**: This command will close the last gump that opened. You may pass an optional gump ID.
+
+!!! example
+
+    === "Close last gump"
+
+        ```vim
+        gumpclose
+        ```
+
+    === "Close gump with id"
+
+        ```vim
+        dclick '0x4000174B'
+        waitforgump 2341449854        
+        gumpclose 2341449854
+        ```
+
+## menu
+
+**Syntax**: `menu ('serial') ('index') ['false']`
+
+**Description**: Selects a specific index within a context menu. Razor will block the menu from appearing by default. If you include the optional `false` parameter, the context menu won't be blocked by Razor.
+
+!!! tip "Context Menu"
+    This command applies to the context menu accessed on some servers via a single-click (such as on yourself, to open your paperdoll or backpack).
+
+    ![context-menu](../images/contextmenu.png)
+
+!!! example
+
+    === "Open Paperdoll"
+
+        ```vim
+        menu 0 0
+        ```
+
+    === "Open Backpack"
+
+        ```vim
+        menu 0 1
+        ```
+
+## menuresponse
+
+**Syntax**: `menuresponse ('index') ('menuId') ['hue']`
+
+**Description**: Responds to a specific menu and menu ID
+
+!!! warning
+    This command does not work on context menus, they are for a less used menu type.  See the `menu` command to use context/popup menus.
+
+!!! example
+
+    === "Description"
+
+        ```vim
+        menuresponse 3 4
+        ```
+
+## promptresponse
+
+**Syntax**: `promptresponse ('prompt response')`
+
+**Description**: This command will respond to a prompt triggered from actions such as renaming runes or giving a guild title.
+
+!!! example
+
+    === "Rename a recall rune"
+
+        ```vim
+        dclicktype 'rune'
+        waitforprompt
+        promptresponse 'to home'
+        ```
+
+## waitforgump
+
+**Syntax**: `waitforgump (gump id/'any') [timeout]`
+
+**Description**: This command will wait for a gump. If no `gump id` is provided, it will wait for **any** gump. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! tip "Timeout parameter"
+    To modify the default 30 second timeout for any gump, you must include include the `any` keyword before the timeout.
+
+    `waitforgump 'any' 5000` will wait for 5 seconds
+
+    `waitforgump 5000` will wait 30 seconds for a gump with the id of 5000
+
+!!! example
+
+    === "Wait for any gump"
+
+        ```vim
+        waitforgump 'any' 
+        ```
+
+    === "Wait for any gump for 10 seconds"
+
+        ```vim
+        waitforgump 'any' 10000
+        ```
+
+    === "Wait for specific gump"
+
+        ```vim
+        waitforgump 4
+        ```
+
+    === "Wait for specific gump for 5 seconds"
+
+        ```vim
+        waitforgump 34252 5000
+        ```
+
+## waitformenu
+
+**Syntax**: `waitformenu (menu id/'any') [timeout]`
+
+**Description**: This command will wait for a context menu. If no `menu id` is provided, it will wait for **any** menu. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! tip "Timeout parameter"
+    To modify the default 30 second timeout for any menu, you must include include the `any` keyword before the timeout.
+
+    `waitformenu 'any' 5000` will wait for 5 seconds
+
+    `waitformenu 5000` will wait 30 seconds for a menu with the id of 5000
+
+!!! warning
+    This command does not work on context menus, they are for an less used menu type.  See the `menu` command to use context/popup menus.
+
+!!! example
+
+    === "Wait for any menu"
+
+        ```vim
+        waitformenu
+        ```
+
+    === "Wait for any menu for 5 seconds"
+
+        ```vim
+        waitformenu 'any' 5000
+        ```
+
+    === "Wait for specific menu"
+
+        ```vim
+        waitformenu 4
+        ```
+
+## waitforprompt
+
+**Syntax**: `waitforprompt (promptid/'any') [timeout]`
+
+**Description**: This command will wait for a prompt before continuing. If no `prompt id` is provided, it will wait for **any** prompt. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! tip "Timeout parameter"
+    To modify the default 30 second timeout for any gump, you must include include the `any` keyword before the timeout.
+
+    `waitforprompt 'any' 5000` will wait for 5 seconds
+
+    `waitforprompt 5000` will wait 30 seconds for a prompt with the id of 5000
+
+!!! example
+
+    === "Renaming recalling rune"
+
+        ```vim hl_lines="2"
+        dclicktype 'rune'
+        waitforprompt
+        promptresponse 'to home'
+        ```
+
+    === "Rename recalling rune with wait"
+
+        ```vim hl_lines="2"
+        dclicktype 'rune'
+        waitforprompt 'any' 5000
+        promptresponse 'to home'
+        ```
+
+
+# Ignore Commands
+
+## clearignore
+
+**Syntax**: `clearignore`
+
+**Description**: Clears your scripting ignore list
+
+!!! tip
+    Works in conjunction with `ignore` and `unignore`
+
+!!! example
+
+    === "General"
+
+        ```vim hl_lines="1"
+        clearignore
+
+        if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
+            overhead 'found' 44
+            overhead 'wand' 44
+    
+            ignore 'wand'
+        else
+            overhead 'not found' 33
+        endif
+        ```
+
+## ignore
+
+**Syntax**: `ignore ('serial')`
+
+**Description**: Adds a specific serial to the script engine's ignore list to avoid finding items when using commands like `findtype`
+
+!!! example
+
+    === "Ignore by serial"
+
+        ```vim hl_lines="3"
+        clearignore
+
+        ignore '0x123A'
+        ```
+
+    === "Ignore by variable"
+
+        ```vim hl_lines="7"
+        clearignore
+
+        if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
+            overhead 'found' 44
+            overhead 'wand' 44
+    
+            ignore 'wand'
+        else
+            overhead 'not found' 33
+        endif
+        ```
+
+## unignore
+
+**Syntax**: `unignore ('serial')`
+
+**Description**: Removes a specific serial to the script engine's ignore list
+
+!!! example
+
+    === "Unignore by serial"
+
+        ```vim hl_lines="1"
+        unignore '0x123A'
+        ```
+
+    === "Unignore by variable"
+
+        ```vim hl_lines="11"
+        clearignore
+
+        if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
+            overhead 'found' 44
+            overhead 'wand' 44
+    
+            ignore 'wand'
+
+            wait 1000
+
+            unignore 'wand'
+        else
+            overhead 'not found' 33
+        endif
+        ```
+
+
+# List Commands
+
+## createlist
+
+**Syntax**: `createlist ('list name')`
+
+**Description**: This command will create an empty list.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if not listexists 'sample'
+            createlist 'sample'
+        end if
+
+        pushlist 'sample' 'hello'
+        ```
+
+## poplist
+
+**Syntax**: `poplist ('list name') ('list value'/'front'/'back')`
+
+**Description**: This command will remove an item from the list. You can either pass in the specific item, or use `front` or `back` to remove the item from the front or back of the list.
+
+!!! tip
+    You can use `poplist` as an [expression](../expressions/#poplist).
+
+!!! example
+
+    === "Remove first item in list"
+
+        ```vim
+        createlist 'list'
+        pushlist 'list' 'hello'
+        pushlist 'list' 'bye'
+
+        poplist 'list' 'front'        
+        ```
+
+## pushlist
+
+**Syntax**: `pushlist ('list name') ('list item') ['front'/'back']`
+
+**Description**: This command will add an item to the list. You can define where in the list using `front` or `back` to remove the item from the front or back of the list. Default `pushlist` will add the item to end of the list.
+
+!!! example
+
+    === "Add item to list"
+
+        ```vim
+        createlist 'list'
+        pushlist 'list' 'hello'
+        pushlist 'list' 'bye'        
+        ```
+
+    === "Add item to front of list"
+
+        ```vim
+        createlist 'list'
+        pushlist 'list' 'hello'
+        pushlist 'list' 'bye' 'front'
+        ```
+
+## removelist
+
+**Syntax**: `removelist ('list name')`
+
+**Description**: This command will remove a list completely including all items in the list.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        removelist 'list_name'        
+        ```
+# Messaging Commands
+
+## alliance
+
+**Syntax**: `alliance ('message to send')`
+
+**Description**: This command will force your character to say an alliance message passed as the parameter.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        alliance 'Allies assemble!'
+        ```
+
+## clearsysmsg
+
+**Syntax**: `clearsysmsg`
+
+**Description**: Clears the internal system message queue
+
+!!! example
+
+    === "General"
+
+        ```vim
+        sysmsg 'hello'
+        sysmsg 'bye'
+
+        if insysmsg 'hello'
+            say 'hello!'
+        endif
+
+        clearsysmsg
+
+        if insysmsg 'bye'
+            say 'this condition wont be met since it was cleared on line 8'
+        endif
+        ```
+
+## emote
+
+**Syntax**: `emote ('message to send') [hue]`
+
+**Description**: This command will force your character to emote the message passed as the parameter.
+
+!!! tip
+    This command will append `*` around the emote so `emote 'smiles'` will be displayed in game as `*smiles*`.
+
+!!! example
+
+    === "Emote"
+
+        ```vim
+        emote 'smiles'
+        ```
+
+    === "Emote with hue"
+
+        ```vim
+        emote 'smiles in another color' 454
+        ```
+
+## guild
+
+**Syntax**: `guild ('message to send')`
+
+**Description**: This command will force your character to say a guild message passed as the parameter.
+
+!!! example
+
+    === "Guild message"
+
+        ```vim
+        guild 'Hello fellow guildmates!'
+        ```
+
+## overhead
+
+**Syntax**: `overhead ('text') ['color'] ['serial']`
+
+**Description**: This command will display a message over your head. Only you can see this.
+
+!!! example
+
+    === "Overhead message"
+
+        ```vim
+        if stam = 100
+            overhead 'ready to go!'
+        endif
+        ```
+
+## say
+
+**Syntax**: `say ('message to send') [hue]` or `msg ('message to send') [hue]`
+
+**Description**: This command will force your character to say the message passed as the parameter.
+
+!!! example
+
+    === "Say message"
+
+        ```vim
+        say 'Hello world!'
+        ```
+
+    === "Say message with hue"
+
+        ```vim
+        say 'Hello world!' 454
+        ```
+
+## sysmsg
 
 **Syntax**: `sysmsg ('message to display in system message')`
 
@@ -1102,7 +1446,122 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         endif
         ```
 
-# target
+## waitforsysmsg
+
+**Syntax**: `waitforsysmsg ('message to wait for') [timeout]` or `wfsysmsg ('message to wait for') [timeout]`
+
+**Description**: This command will wait a specific message to be added to the system message queue before continuing.  Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
+
+!!! example
+
+    === "Wait for system message"
+
+        ```vim hl_lines="1"
+        waitforsysmsg 'ready to go'
+        overhead 'Ready!'
+        ```
+
+    === "Wait for system message for 5 seconds"
+
+        ```vim hl_lines="1"
+        waitforsysmsg 'ready to go' 5000
+        overhead 'Done waiting'
+        ```
+
+## whisper
+
+**Syntax**: `whisper ('message to send') [hue]`
+
+**Description**: This command will force your character to whisper the message passed as the parameter.
+
+!!! example
+
+    === "Whisper message"
+
+        ```vim
+        whisper 'Hello world!'
+        ```
+
+    === "Whisper message with hue"
+
+        ```vim
+        whisper 'Hello world!' 454
+        ```
+
+## yell
+
+**Syntax**: `yell ('message to send') [hue]`
+
+**Description**: This command will force your character to yell the message passed as the parameter.
+
+!!! example
+
+    === "Yell message"
+
+        ```vim
+        yell 'Hello world!'
+        ```
+
+    === "Yell message with hue"
+
+        ```vim
+        yell 'Hello world!' 454
+        ```
+
+# Targeting Commands
+
+## clearall
+
+**Syntax**: `clearall`
+
+**Description**: Combines the following actions into one command: `Cancel Current Target, Clear Target Queue, Drop What You Are Currently Holding and Clear Drag/Drop Queue` into a single command.
+
+!!! example
+
+    === "Clear on sysmsg message"
+
+        ```vim
+        if insysmsg 'cannot find'
+            clearall
+        endifF
+        ```
+
+## lasttarget
+
+**Syntax**: `lasttarget`
+
+**Description**: This command will target your last target set in Razor.
+
+!!! example
+
+    === "Cast on last target"
+
+        ```vim
+        cast 'magic arrow'
+        waitfortarget
+        lasttarget
+        ```
+
+## setlasttarget
+
+**Syntax**: `setlasttarget`
+
+**Description**: This command will pause the script until you select a target to be set as Last Target.
+
+!!! example
+
+    === "Set last target and cast"
+
+        ```vim
+        overhead 'set last target'
+        setlasttarget
+        overhead 'set!'
+        cast 'magic arrow'
+        waitfortarget
+        target 'last'
+        ```
+
+## target
 
 **Syntax**: `target ('closest/random/next/prev') [type1,type2] [humanoid/monster]` or `target ('closest/random/next/prev') [type1!type2] [humanoid/monster]` or `target (serial)` or `target (clear/cancel)`
 
@@ -1206,7 +1665,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         target clear
         ```
 
-# targetrelloc
+## targetrelloc
 
 **Syntax**: `targetrelloc (x-offset) (y-offset)`
 
@@ -1222,7 +1681,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         targetrelloc 1 1
         ```
 
-# targetloc
+## targetloc
 
 **Syntax**: `targetloc (x) (y) (z)`
 
@@ -1238,7 +1697,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         targetloc 5923 1145 0
         ```
 
-# targettype
+## targettype
 
 **Syntax**: `targettype ('name of item or mobile type'/'graphicId') [inrange (true/false)/backpack] [hue]`
 
@@ -1302,331 +1761,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         targettype 'robe' backpack 45
         ```
 
-# undress
-
-**Syntax**: `undress ('name of dress list')'` or `undress 'LayerName'` or `undress (serial)`
-
-**Description**: This command will either undress you completely if no dress list is provided. If you provide a dress list, only those specific items will be undressed. Lastly, you can define a layer name to undress.
-
-!!! tip
-    Available [layers](./layers.md) for reference
-
-!!! example
-
-    === "Full naked"
-
-        ```vim
-        undress
-        ```
-
-    === "Specfic items in dress list"
-
-        ```vim
-        undress 'My Sunday Best'
-        ```
-
-    === "Remove your shirt and pants"
-
-        ```vim
-        undress 'Shirt'
-        undress 'Pants'
-        ```
-    === "Using a serial"
-
-        ```vim hl_lines="1"
-        undress '0x345234'
-        ```
-
-    === "Using a variable"
-
-        ```vim hl_lines="2"
-        setvar 'hat'
-        undress 'hat'
-        ```
-
-# unignore
-
-**Syntax**: `unignore ('serial')`
-
-**Description**: Removes a specific serial to the script engine's ignore list
-
-!!! example
-
-    === "Unignore by serial"
-
-        ```vim hl_lines="1"
-        unignore '0x123A'
-        ```
-
-    === "Unignore by variable"
-
-        ```vim hl_lines="11"
-        clearignore
-
-        if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
-            overhead 'found' 44
-            overhead 'wand' 44
-    
-            ignore 'wand'
-
-            wait 1000
-
-            unignore 'wand'
-        else
-            overhead 'not found' 33
-        endif
-        ```
-
-# useonce
-
-**Syntax**: `useonce ('add'/'addcontainer')`
-
-**Description**: This command will execute the UseOnce agent. If the `add` parameter is included, you can add items to your UseOnce list. If the `addcontainer` parameter is included, you can add all items in a container to your UseOnce list.
-
-!!! example
-
-    === "Use top item"
-
-        ```vim
-        useonce
-        ```
-
-    === "Add to list"
-
-        ```vim
-        useonce 'add'
-        ```
-
-    === "Add to container"
-
-        ```vim
-        useonce 'addcontainer'
-        ```
-
-# virtue
-
-**Syntax**: `virtue ('honor'/'sacrifice'/'valor')`
-
-**Description**: This command will invoke Honor, Sacrifice or Valor.
-
-!!! example
-
-    === "Invoke Honor"
-
-        ```vim
-        virtue 'honor'
-        ```
-
-    === "Invoke Sacrifice"
-
-        ```vim
-        virtue 'sacrifice'
-        ```
-
-    === "Invoke Valor"
-
-        ```vim
-        virtue 'valor'
-        ```
-
-# walk
-
-**Syntax**: `walk ('direction')`
-
-**Description**: This command will turn and/or walk your player in a certain direction.
-
-!!! example
-
-    === "Walk around"
-
-        ```vim
-        walk 'North'
-        walk 'Up'
-        walk 'West'
-        walk 'Left'
-        walk 'South'
-        walk 'Down'
-        walk 'East'
-        walk 'Right'
-        ```
-
-# wait & pause
-
-**Syntax**: `wait (time in milliseconds)` or `pause (time in milliseconds)` or `wait (duration) (shorthand)`
-
-**Description**: This command will pause the execution of a script for a given time.
-
-!!! tip "Tips"
-    `1000` milliseconds is equal to `1` second.
-    
-    `1000 x number of seconds = total milliseconds`
-
-    To make your script easier to read, you can **shorthand** instead of defining the full time in milliseconds.
-
-    | Accepted Shorthand              |
-    | ------------------------------- |
-    | `seconds`, `second`, `sec`, `s` |
-    | `minutes`, `minute`, `min`, `m` |
-
-!!! example
-
-    === "Wait 5 seconds"
-
-        ```vim hl_lines="2"
-        while stam < 100    
-            wait 5000
-        endwhile
-        ```
-
-    === "Wait 2 seconds (with shorthand)"
-
-        ```vim hl_lines="2 6"
-        while stam < 100    
-            wait 2 sec
-        endwhile
-
-        while stam < 100    
-            wait 2 seconds
-        endwhile
-        ```
-
-    === "Wait 3 minutes (with shorthand)"
-
-        ```vim hl_lines="2"
-        say 'AFK for 3 minutes'
-        wait 3 minutes
-        say 'Back!'
-        ```
-
-# waitforgump
-
-**Syntax**: `waitforgump (gump id/'any') [timeout]`
-
-**Description**: This command will wait for a gump. If no `gump id` is provided, it will wait for **any** gump. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
-
-!!! tip "Timeout parameter"
-    To modify the default 30 second timeout for any gump, you must include include the `any` keyword before the timeout.
-
-    `waitforgump 'any' 5000` will wait for 5 seconds
-
-    `waitforgump 5000` will wait 30 seconds for a gump with the id of 5000
-
-!!! example
-
-    === "Wait for any gump"
-
-        ```vim
-        waitforgump 'any' 
-        ```
-
-    === "Wait for any gump for 10 seconds"
-
-        ```vim
-        waitforgump 'any' 10000
-        ```
-
-    === "Wait for specific gump"
-
-        ```vim
-        waitforgump 4
-        ```
-
-    === "Wait for specific gump for 5 seconds"
-
-        ```vim
-        waitforgump 34252 5000
-        ```
-
-# waitformenu
-
-**Syntax**: `waitformenu (menu id/'any') [timeout]`
-
-**Description**: This command will wait for a context menu. If no `menu id` is provided, it will wait for **any** menu. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
-
-!!! tip "Timeout parameter"
-    To modify the default 30 second timeout for any menu, you must include include the `any` keyword before the timeout.
-
-    `waitformenu 'any' 5000` will wait for 5 seconds
-
-    `waitformenu 5000` will wait 30 seconds for a menu with the id of 5000
-
-!!! warning
-    This command does not work on context menus, they are for an less used menu type.  See the `menu` command to use context/popup menus.
-
-!!! example
-
-    === "Wait for any menu"
-
-        ```vim
-        waitformenu
-        ```
-
-    === "Wait for any menu for 5 seconds"
-
-        ```vim
-        waitformenu 'any' 5000
-        ```
-
-    === "Wait for specific menu"
-
-        ```vim
-        waitformenu 4
-        ```
-
-# waitforprompt
-
-**Syntax**: `waitforprompt (promptid/'any') [timeout]`
-
-**Description**: This command will wait for a prompt before continuing. If no `prompt id` is provided, it will wait for **any** prompt. Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
-
-!!! tip "Timeout parameter"
-    To modify the default 30 second timeout for any gump, you must include include the `any` keyword before the timeout.
-
-    `waitforprompt 'any' 5000` will wait for 5 seconds
-
-    `waitforprompt 5000` will wait 30 seconds for a prompt with the id of 5000
-
-!!! example
-
-    === "Renaming recalling rune"
-
-        ```vim hl_lines="2"
-        dclicktype 'rune'
-        waitforprompt
-        promptresponse 'to home'
-        ```
-
-    === "Rename recalling rune with wait"
-
-        ```vim hl_lines="2"
-        dclicktype 'rune'
-        waitforprompt 'any' 5000
-        promptresponse 'to home'
-        ```
-
-# waitforsysmsg
-
-**Syntax**: `waitforsysmsg ('message to wait for') [timeout]` or `wfsysmsg ('message to wait for') [timeout]`
-
-**Description**: This command will wait a specific message to be added to the system message queue before continuing.  Default timeout is 30 seconds that can be changed by passing in a new timeout value in milliseconds.
-
-!!! example
-
-    === "Wait for system message"
-
-        ```vim hl_lines="1"
-        waitforsysmsg 'ready to go'
-        overhead 'Ready!'
-        ```
-
-    === "Wait for system message for 5 seconds"
-
-        ```vim hl_lines="1"
-        waitforsysmsg 'ready to go' 5000
-        overhead 'Done waiting'
-        ```
-
-# waitfortarget
+## waitfortarget
 
 **Syntax**: `waitfortarget [pause in milliseconds]` or `wft [pause in milliseconds]`
 
@@ -1650,42 +1785,58 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         target 'last'
         ```
 
-# whisper
+# Timer Commands
 
-**Syntax**: `whisper ('message to send') [hue]`
+## createtimer
 
-**Description**: This command will force your character to whisper the message passed as the parameter.
+**Syntax**: `createtimer ('timer name')`
 
-!!! example
-
-    === "Whisper message"
-
-        ```vim
-        whisper 'Hello world!'
-        ```
-
-    === "Whisper message with hue"
-
-        ```vim
-        whisper 'Hello world!' 454
-        ```
-
-# yell
-
-**Syntax**: `yell ('message to send') [hue]`
-
-**Description**: This command will force your character to yell the message passed as the parameter.
+**Description**: This command will create a timer and immediately start counting up from 0
 
 !!! example
 
-    === "Yell message"
+    === "Create Timer"
 
-        ```vim
-        yell 'Hello world!'
+        ```vim        
+        if not timerexists 'sample'
+            create removetimer 'sample'
+        endif           
         ```
 
-    === "Yell message with hue"
+## removetimer
+
+**Syntax**: `removetimer ('timer name')`
+
+**Description**: This command will remove/delete a specific timer
+
+!!! example
+
+    === "Delete Timer"
+
+        ```vim        
+        if timerexists 'sample'
+            removetimer 'sample'
+        endif           
+        ```
+
+## settimer
+
+**Syntax**: `settimer ('timer name') ('number in milliseconds')`
+
+**Description**: This command will set a timer to a specific number and start to count up immediately.
+
+!!! example
+
+    === "Set Timer"
 
         ```vim
-        yell 'Hello world!' 454
+        // Create a new timer
+        if not timerexists 'sample'
+            createtimer 'sample'
+        endif
+
+        // Reset every 10 seconds
+        if timer 'sample' > 10000
+            settimer 'sample' 0
+        endif            
         ```

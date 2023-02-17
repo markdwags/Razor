@@ -25,83 +25,16 @@ namespace Assistant.Scripts
 {
     public class ScriptVariables
     {
-        public class ScriptVariable
-        {
-            public TargetInfo TargetInfo { get; set; }
-            public string Name { get; set; }
-            public bool TargetWasSet { get; set; }
-            
-            public ScriptVariable(string targetVarName, TargetInfo t)
-            {
-                TargetInfo = t;
-                Name = targetVarName;
-            }
-
-            public void SetTarget()
-            {
-                if (World.Player != null)
-                {
-                    TargetWasSet = false;
-
-                    Targeting.OneTimeTarget(OnScriptVariableTarget);
-                    World.Player.SendMessage(MsgLevel.Force, $"Select target for variable '{Name}'");
-
-                    //OneTimeTarget(false, new Targeting.TargetResponseCallback(OnMacroVariableTarget), new Targeting.CancelTargetCallback(OnSLTCancel));
-                }
-            }
-
-            private void OnScriptVariableTarget(bool ground, Serial serial, Point3D pt, ushort gfx)
-            {
-                TargetInfo t = new TargetInfo
-                {
-                    Gfx = gfx,
-                    Serial = serial,
-                    Type = (byte) (ground ? 1 : 0),
-                    X = pt.X,
-                    Y = pt.Y,
-                    Z = pt.Z
-                };
-
-                bool foundVar = false;
-
-                foreach (ScriptVariable sV in ScriptVariableList
-                )
-                {
-                    if (sV.Name.Equals(Name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        foundVar = true;
-                        sV.TargetInfo = t;
-
-                        World.Player.SendMessage(MsgLevel.Force,
-                            $"'{sV.Name}' script variable updated to '{t.Serial}'");
-
-                        break;
-                    }
-                }
-
-                // Save and reload the vars
-                if (foundVar)
-                    Assistant.Engine.MainWindow.SaveScriptVariables();
-
-                TargetWasSet = true;
-            }
-        }
-
-        public static List<ScriptVariable> ScriptVariableList { get; set; } = new List<ScriptVariable>();
+        private static Dictionary<string, Serial> _variables = new Dictionary<string, Serial>();
+        public static IEnumerable<KeyValuePair<string, Serial>> Variables => _variables;
 
         public static void Save(XmlTextWriter xml)
         {
-            foreach (ScriptVariable target in ScriptVariableList)
+            foreach (KeyValuePair<string, Serial> kv in _variables)
             {
                 xml.WriteStartElement("scriptvariable");
-                xml.WriteAttributeString("type", target.TargetInfo.Type.ToString());
-                xml.WriteAttributeString("flags", target.TargetInfo.Flags.ToString());
-                xml.WriteAttributeString("serial", target.TargetInfo.Serial.ToString());
-                xml.WriteAttributeString("x", target.TargetInfo.X.ToString());
-                xml.WriteAttributeString("y", target.TargetInfo.Y.ToString());
-                xml.WriteAttributeString("z", target.TargetInfo.X.ToString());
-                xml.WriteAttributeString("gfx", target.TargetInfo.Gfx.ToString());
-                xml.WriteAttributeString("name", target.Name);
+                xml.WriteAttributeString("serial", kv.Value.ToString());
+                xml.WriteAttributeString("name", kv.Key);
                 xml.WriteEndElement();
             }
         }
@@ -114,21 +47,10 @@ namespace Assistant.Scripts
             {
                 foreach (XmlElement el in node.GetElementsByTagName("scriptvariable"))
                 {
-                    TargetInfo target = new TargetInfo
-                    {
-                        Type = Convert.ToByte(el.GetAttribute("type")),
-                        Flags = Convert.ToByte(el.GetAttribute("flags")),
-                        Serial = Convert.ToUInt32(Serial.Parse(el.GetAttribute("serial"))),
-                        X = Convert.ToUInt16(el.GetAttribute("x")),
-                        Y = Convert.ToUInt16(el.GetAttribute("y")),
-                        Z = Convert.ToUInt16(el.GetAttribute("z")),
-                        Gfx = Convert.ToUInt16(el.GetAttribute("gfx"))
-                    };
+                    string name = el.GetAttribute("name");
+                    Serial serial = Serial.Parse(el.GetAttribute("serial"));
 
-                    ScriptVariable scriptVariable = new ScriptVariable(el.GetAttribute("name"), target);
-                    ScriptVariableList.Add(scriptVariable);
-
-                    RegisterVariable(scriptVariable.Name);
+                    RegisterVariable(name, serial);
                 }
             }
             catch
@@ -137,50 +59,41 @@ namespace Assistant.Scripts
             }
         }
 
-        public static void RegisterVariable(string name)
+        public static void RegisterVariable(string name, Serial serial)
         {
-            Interpreter.RegisterAliasHandler(name, ScriptVariableHandler);
+            name = name.Trim();
+
+            _variables[name] = serial;
+            Interpreter.SetAlias(name, serial);
         }
 
         public static void UnregisterVariable(string name)
         {
-            Interpreter.UnregisterAliasHandler(name);
-        }
-
-        private static uint ScriptVariableHandler(string alias)
-        {
-            foreach (ScriptVariable scriptVariable in ScriptVariableList)
-            {
-                if (scriptVariable.Name.Equals(alias))
-                {
-                    return scriptVariable.TargetInfo.Serial;
-                }
-            }
-
-            return 0;
+            name = name.Trim();
+            Interpreter.ClearAlias(name);
+            _variables.Remove(name);
         }
 
         public static void ClearAll()
         {
-            foreach (ScriptVariable scriptVariable in ScriptVariableList)
+            foreach (string key in new List<string>(_variables.Keys))
             {
-                Interpreter.UnregisterAliasHandler(scriptVariable.Name);
+                UnregisterVariable(key);
             }
 
-            ScriptVariableList.Clear();
+            _variables.Clear();
         }
 
-        public static ScriptVariable GetVariable(string name)
+        public static Serial GetVariable(string name)
         {
-            foreach (ScriptVariable scriptVariable in ScriptVariableList)
+            name = name.Trim();
+
+            if (_variables.TryGetValue(name, out var val))
             {
-                if (scriptVariable.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                {
-                    return scriptVariable;
-                }
+                return val;
             }
 
-            return null;
+            return Serial.MinusOne;
         }
     }
 }

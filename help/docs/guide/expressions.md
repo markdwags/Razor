@@ -1,6 +1,152 @@
-# Expressions Overview
+# Statements & Loops
 
-When using the `if` or `while` conditions, you can access the following expressions to check against.
+As found in the Razor macro system, you can use `if`, `for`, `foreach`, and `while` when writing a script to add some basic logic and flows.
+
+## if
+
+**Syntax**:
+
+```csharp
+if (expression)
+    // commands to execute if this expression is true
+elseif (expression)
+    // commands to execute if the first expression was false, and this expression is true
+else
+    // commands to execute if both expressions above were false, default to running these
+endif
+```
+
+**Description**: This selects a path to execute based on the value of a boolean expression. An `if` statement can be combined with `else` or `elseif` to choose two or more distinct paths based on the result of the boolean expression. All `if` statements must end with `endif`.
+
+!!! example
+
+    === "if/endif"
+
+        ```vim
+        if stam = 100
+            overhead 'Stam at 100!'
+        endif
+        ```
+
+    === "if/elseif/else"
+
+        ```vim
+        if stam = 100
+            say 'Stamina full'
+        elseif stam < 20
+            say 'Still a ways to go'
+        elseif stam < 60
+            say 'Getting closer'
+        else
+            say 'waiting'
+        endif
+        ```
+
+    === "if/elseif"
+
+        ```vim
+        if stam = 100
+            say 'Stamina full'
+        elseif stam < 20
+            say 'Still a ways to go'
+        elseif stam < 60
+            say 'Getting closer'
+        endif
+        ```
+
+    === "Using 'not'"
+
+        ```vim
+        if not stam = 100
+            say 'Stamina is not full'    
+        endif
+        ```
+
+## for
+
+**Syntax**:
+
+```csharp
+for ('number')
+    // commmands to execute the number of times defined in the for statement
+endfor
+```
+
+**Description**: This allows you to execute a block of commands a specific number of times. All `for` loops must end with `endfor`.
+
+!!! tip
+    You can use the [index](variables.md#index-variable) variable to track your position in the for loop.
+
+When using `for` or `while` you have access to the `index` variable. This can be used with `overhead` (for example) to indicate the current loop number.
+
+For example, this script snippet will output the numbers 0-9 overhead every second.
+
+```vim
+for 10
+    wait 1000
+    overhead 'index'
+endfor
+```
+
+!!! example
+
+    === "Say 'Hello' 10 times"
+
+        ```vim        
+        for 10
+            say 'hello'
+            wait 1000
+        endfor
+        ```
+
+## foreach
+
+**Syntax**:
+
+```csharp
+foreach ('variable') in ('list')
+    // commands to execute for each item that is in a list
+endfor
+```
+
+**Description**: This allows you to iterate over a list containing values. All `foreach` loops must end with `endfor`.
+
+!!! example
+
+    === "foreach"
+
+        ```vim        
+        foreach item in list
+           overhead item
+        endfor
+        ```
+
+## while
+
+**Syntax**:
+
+```csharp
+while ('expression')
+    // commands to execute as long as the expression is remains true
+endwhile
+```
+
+**Description**: This allows you execute a block of commands while a certain expression is true. All `while` loops must end with `endwhile`.
+
+!!! example
+
+    === "While"
+
+        ```vim
+        while hits < 100
+            say 'I need a heal!'
+            wait 1000
+        endwhile
+        ```
+
+# Expression Operators
+
+When using the `if` or `while` conditions, you can access the following expressions in the statement.
 
 The following operators are supported:
 
@@ -13,6 +159,80 @@ The following operators are supported:
 | <=       | Less than or equal    |
 | >        | Greater than          |
 | >=       | Greater than or equal |
+
+# Expressions
+
+Expressions are combined with statements like `if` and `while` to alter the execution path of your script.
+
+Below are the several different types of expressions you can use broken into categories.
+
+# List Expressions
+
+## inlist
+
+- `inlist ('list name') ('list item')`
+
+Description: Used to check if a specific item is in a list
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if inlist 'my_list' 'item1'
+            overhead 'found item!'
+        endif
+        ```   
+
+## list
+
+- `list ('list name')`
+
+Description: Used to check how many items are in a specific list
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if list 'mylist' = 10
+            overhead '10 items in your list'
+        endif
+        ```
+
+## listexists
+
+- `listexists ('list name')`
+
+Description: Used to check if a list exists with a specific name.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if not listexists 'mylist'
+            createlist 'mylist'
+        endif
+        ```
+
+## poplist
+
+- `poplist ('list name') ('list value'/'front'/'back')`
+
+Description: This command will remove an item from the list. You can either pass in the specific item, or use `front` or `back` to remove the item from the front or back of the list.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if poplist sample_list back as item
+            overhead item
+        endif
+        ```
+
+# Misc Expressions
 
 ## count/counter
 
@@ -51,6 +271,204 @@ The expression can be used either directly by item type and hue, or by referenci
             overhead 'woot woot fancy coins in the pack!'
         endif
         ```
+
+## findtype
+
+- `findtype ('name of item') [inrangecheck (true/false)/backpack] [hue]` OR `findtype (graphicID) [inrangecheck (true/false)/backpack] [hue]`
+
+Description: Used to check if a specific item name of graphic ID exists. Range check, if true, will check within 2 tiles.
+
+!!! tip "The `as` keyword"
+    If you use `findtype` along with `as` you can assign a temporary variable to use throughout the script. See example below.
+
+!!! tip "In-Game Info Gump"
+    Not sure what name to enter or graphic ID to enter? Type `>info` and click on any item or mobile for more information.
+
+    ![item-command](../images/infocommand.png)
+
+    Click the blue dot next to the value you want to copy to the clipboard.
+
+!!! example
+
+    === "Find a saw"
+
+        ```vim
+        if findtype 'saw'
+            say 'found saw'
+        endif
+        ```
+    
+    === "Find a saw using graphic id"
+
+        ```vim
+        if findtype '4148'
+            say 'found saw'
+        endif
+        ```
+
+    === "Find a saw within 2 tiles"
+
+        ```vim
+        if findtype 'saw' true
+            say 'found saw within 2 tiles'
+        endif
+        ```
+
+    === "Find a saw in your backpack"
+
+        ```vim
+        if findtype 'saw' backpack
+            say 'found saw in my pack'
+        endif
+        ```
+
+    === "Find a dagger and use it (using as)"
+
+        ```vim hl_lines="1"
+        if findtype 'dagger' as 'mydagger'
+            overhead 'found dagger'
+            dclick 'mydagger'
+        endif
+        ```
+
+    === "Find a dagger in backpack with a hue"
+
+        ```vim
+        if findtype 'dagger' backpack 45 as 'mydagger'
+            overhead 'found dagger'
+            dclick 'mydagger'
+        endif
+        ```
+
+## insysmsg
+
+- `insysmsg ('message to look for')`
+- `insysmessage ('message to look for')`
+
+Description: Used to check if certain text appears within the system message log.
+
+!!! tip "System Message Queue"
+    Not sure if a specific message is in Razor's system message queue? Type `>sysmsgs` to see what Razor can find.
+
+    Using `clearsysmsg` will clear out the queue completely.
+
+!!! example
+
+    === "Check for message"
+
+        ```vim
+        if insysmsg 'too far away'
+            overhead 'You are too far away'
+        endif
+        ```   
+
+## itemcount
+
+- `itemcount`
+
+Description: Used to return the current number of items you're carrying
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if itemcount < 125
+            overhead 'I still have room!'
+        endif
+        ```
+
+## queued
+
+- `queued`
+
+Description: Used to check if your current queue is active (from restocking, organizing, etc)
+
+!!! example
+
+    === "General"
+
+        ```vim
+            if queued
+                overhead 'Queue is active'
+            else
+                overhead 'No queue'
+            endif
+        ```
+
+    === "Organizer"
+
+        ```vim
+        overhead 'Organizing'
+
+        organizer 1
+
+        while queued
+            overhead 'Currently Organizing'
+            wait 500 
+        endwhile
+
+        overhead 'Organized'
+        ```
+
+    === "Restock"
+
+        ```vim
+        overhead 'Restocking'
+
+        restock 11
+        waitfortarget 
+        target 'self'
+
+        while queued
+            overhead 'Currently restocking'
+            wait 500 
+        endwhile
+
+        overhead 'Restocked'
+        ```
+
+## targetexists
+
+- `targetexists ['any'/'beneficial'/'harmful'/'neutral']`
+
+Description: Used to check if the client current has a target cursor up
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if targetexists 'beneficial'
+            overhead 'Beneficial target found'
+        elseif targetexists 'harmful'
+            overhead 'Harmful target found'
+        endif
+        ```
+
+## varexist
+
+- `varexist`
+- `varexists`
+
+Description: Used to check if a variable exists.
+
+!!! example
+
+    === "General"
+
+        ```vim
+        if not varexist 'myrunebook'
+            overhead 'Runebook variable not found -- select one'
+            setvar 'myrunebook'
+        endif
+
+        dclick 'myrunebook'
+        waitforgump 'any'
+        gumpresponse 5
+        ```
+
+# Player Attribute Expressions
 
 ## diffhits
 
@@ -163,74 +581,6 @@ Description: Used to check if a specific buff/debuff is applied to you.
         endif
         ```
 
-## findtype
-
-- `findtype ('name of item') [inrangecheck (true/false)/backpack] [hue]` OR `findtype (graphicID) [inrangecheck (true/false)/backpack] [hue]`
-
-Description: Used to check if a specific item name of graphic ID exists. Range check, if true, will check within 2 tiles.
-
-!!! tip "The `as` keyword"
-    If you use `findtype` along with `as` you can assign a temporary variable to use throughout the script. See example below.
-
-!!! tip "In-Game Info Gump"
-    Not sure what name to enter or graphic ID to enter? Type `>info` and click on any item or mobile for more information.
-
-    ![item-command](../images/infocommand.png)
-
-    Click the blue dot next to the value you want to copy to the clipboard.
-
-!!! example
-
-    === "Find a saw"
-
-        ```vim
-        if findtype 'saw'
-            say 'found saw'
-        endif
-        ```
-    
-    === "Find a saw using graphic id"
-
-        ```vim
-        if findtype '4148'
-            say 'found saw'
-        endif
-        ```
-
-    === "Find a saw within 2 tiles"
-
-        ```vim
-        if findtype 'saw' true
-            say 'found saw within 2 tiles'
-        endif
-        ```
-
-    === "Find a saw in your backpack"
-
-        ```vim
-        if findtype 'saw' backpack
-            say 'found saw in my pack'
-        endif
-        ```
-
-    === "Find a dagger and use it (using as)"
-
-        ```vim hl_lines="1"
-        if findtype 'dagger' as 'mydagger'
-            overhead 'found dagger'
-            dclick 'mydagger'
-        endif
-        ```
-
-    === "Find a dagger in backpack with a hue"
-
-        ```vim
-        if findtype 'dagger' backpack 45 as 'mydagger'
-            overhead 'found dagger'
-            dclick 'mydagger'
-        endif
-        ```
-
 ## hidden
 
 - `hidden`
@@ -275,27 +625,21 @@ Description: Used to get your current or max hit points/health levels.
         endif
         ```
 
-## insysmsg
+## lhandempty
 
-- `insysmsg ('message to look for')`
-- `insysmessage ('message to look for')`
+- `lhandempty`
 
-Description: Used to check if certain text appears within the system message log.
-
-!!! tip "System Message Queue"
-    Not sure if a specific message is in Razor's system message queue? Type `>sysmsgs` to see what Razor can find.
-
-    Using `clearsysmsg` will clear out the queue completely.
+Description: Used to check if your left hand is empty
 
 !!! example
 
-    === "Check for message"
+    === "General"
 
         ```vim
-        if insysmsg 'too far away'
-            overhead 'You are too far away'
+        if lhandempty
+            hotkey 'empty right hand!'
         endif
-        ```   
+        ```
 
 ## invuln
 
@@ -315,38 +659,6 @@ Description: Used to get your invulnerable status
         endif
         ```
 
-## itemcount
-
-- `itemcount`
-
-Description: Used to return the current number of items you're carrying
-
-!!! example
-
-    === "General"
-
-        ```vim
-        if itemcount < 125
-            overhead 'I still have room!'
-        endif
-        ```
-
-
-## lhandempty
-
-- `lhandempty`
-
-Description: Used to check if your left hand is empty
-
-!!! example
-
-    === "General"
-
-        ```vim
-        if lhandempty
-            hotkey 'empty right hand!'
-        endif
-        ```
 
 ## mana & maxmana
 
@@ -491,56 +803,6 @@ Description: Used to check if your current position matches the provided.
         endif
         ```
 
-## queued
-
-- `queued`
-
-Description: Used to check if your current queue is active (from restocking, organizing, etc)
-
-!!! example
-
-    === "General"
-
-        ```vim
-            if queued
-                overhead 'Queue is active'
-            else
-                overhead 'No queue'
-            endif
-        ```
-
-    === "Organizer"
-
-        ```vim
-        overhead 'Organizing'
-
-        organizer 1
-
-        while queued
-            overhead 'Currently Organizing'
-            wait 500 
-        endwhile
-
-        overhead 'Organized'
-        ```
-
-    === "Restock"
-
-        ```vim
-        overhead 'Restocking'
-
-        restock 11
-        waitfortarget 
-        target 'self'
-
-        while queued
-            overhead 'Currently restocking'
-            wait 500 
-        endwhile
-
-        overhead 'Restocked'
-        ```
-
 ## rhandempty
 
 - `rhandempty`
@@ -621,45 +883,6 @@ Description: Used to get your current strength, dexterity and intelligence.
         endif
         ```
 
-## targetexists
-
-- `targetexists ['any'/'beneficial'/'harmful'/'neutral']`
-
-Description: Used to check if the client current has a target cursor up
-
-!!! example
-
-    === "General"
-
-        ```vim
-        if targetexists 'beneficial'
-            overhead 'Beneficial target found'
-        elseif targetexists 'harmful'
-            overhead 'Harmful target found'
-        endif
-        ```
-
-## varexist
-
-- `varexist`
-- `varexists`
-
-Description: Used to check if a variable exists.
-
-!!! example
-
-    === "General"
-
-        ```vim
-        if not varexist 'myrunebook'
-            overhead 'Runebook variable not found -- select one'
-            setvar 'myrunebook'
-        endif
-
-        dclick 'myrunebook'
-        waitforgump 'any'
-        gumpresponse 5
-        ```
 
 ## warmode
 
@@ -692,5 +915,51 @@ Description: Used to get your current weight.
         ```vim
         if weight = 300
             say 'I feel heavy'
+        endif
+        ```
+
+# Timer Expressions
+
+## timer
+
+- `timer ('name')`
+
+Description: Used to check how much time is left in an existing timer
+
+!!! example
+
+    === "General"
+
+        ```vim
+        // Create a new timer
+        if not timerexists 'sample'
+            createtimer 'sample'
+        endif
+
+        // Reset every 10 seconds
+        if timer 'sample' > 10000
+            settimer 'sample' 0
+        endif
+        ```
+
+## timerexists
+
+- `timerexist ('name')`
+
+Description: Used to check if a timer exists
+
+!!! example
+
+    === "General"
+
+        ```vim
+        // Create a new timer
+        if not timerexists 'sample'
+            createtimer 'sample'
+        endif
+
+        // Reset every 10 seconds
+        if timer 'sample' > 10000
+            settimer 'sample' 0
         endif
         ```

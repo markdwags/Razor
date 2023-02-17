@@ -2,9 +2,6 @@
 
 # Razor Community Edition
 
-[![Build & Deploy Dev Preview](https://github.com/markdwags/Razor/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/markdwags/Razor/actions/workflows/build.yml)
-[![Chat on Discord status](https://img.shields.io/discord/458277173208547350.svg?logo=discord)](https://discord.gg/zrdyYcc)
-
 Razor is a free tool designed to help with simple tasks while playing Ultima Online.
 
 The goal of this project was to revive and continue development and maintenance of the abandoned Razor project, focusing on *quality of life* improvements while attempting to keep the spirit and vision the original developers had for Razor by not driving down the path of advanced automation that's found in other UO assistants.
