@@ -378,6 +378,8 @@ namespace Assistant.Scripts
                 MacroManager.Stop();
 
             StopScript();
+            
+            EnableHighlight = false;
 
             SetLastTargetActive = false;
             SetVariableActive = false;
