@@ -1,6 +1,6 @@
 # Command Overview
 
-The commands issued in the scripting engine are similar to commands you might enter into a command prompt or shell.  Each line has a starting command, and a set of parameters.  Some of those parameters are required, some are optional.
+The commands issued in the scripting engine are similar to commands you might enter into a command prompt or shell.  Each line has a starting command and a set of parameters.  Some of those parameters are required, some are optional.
 
 `command (required) [optional]`
 
@@ -1144,7 +1144,6 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         promptresponse 'to home'
         ```
 
-
 # Ignore Commands
 
 ## clearignore
@@ -1175,7 +1174,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 ## ignore
 
-**Syntax**: `ignore ('serial')`
+**Syntax**: `ignore ('serial')` or `ignore ('list name')`
 
 **Description**: Adds a specific serial to the script engine's ignore list to avoid finding items when using commands like `findtype`
 
@@ -1206,7 +1205,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 ## unignore
 
-**Syntax**: `unignore ('serial')`
+**Syntax**: `unignore ('serial')` or `unignore ('list name')`
 
 **Description**: Removes a specific serial to the script engine's ignore list
 
@@ -1236,7 +1235,6 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
             overhead 'not found' 33
         endif
         ```
-
 
 # List Commands
 

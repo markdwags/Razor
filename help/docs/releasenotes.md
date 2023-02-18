@@ -10,8 +10,10 @@ This version includes more updates to the scripting engine, including the abilit
 * Added [list commands](guide/commands.md#list-commands) and [list expressions](guide/expressions.md#list-expressions)
 * Added [timer commands](guide/commands.md#timer-commands) and [timer expressions](guide/expressions.md#timer-expressions)
 * Added the `foreach` loop to interact with lists
+* Updated script variables to be part of the same system that sets variables using the `as` operator
 * Fixed missing syntax highlight for `maxweight`
 * Running a script will show the name in the system message
+* Fixed the `ignore` and `unignore` commands
 
 ## 1.8.61.0 (12/07/2022)
 

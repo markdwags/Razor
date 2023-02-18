@@ -529,30 +529,48 @@ namespace Assistant.Scripts
         private static bool AddIgnore(string commands, Variable[] vars, bool quiet, bool force)
         {
             if (vars.Length != 1)
+                throw new RunTimeError("Usage: ignore (serial)");
+
+            Variable toIgnore = vars[0];
+            string ignoreListName = vars[0].AsString();
+            
+            if (Interpreter.ListExists(ignoreListName))
             {
-                throw new RunTimeError("Usage: ignore ('serial')");
+                List<Serial> list = Interpreter.GetList(ignoreListName).Select(v => (Serial)v.AsSerial()).ToList();
+                Interpreter.AddIgnoreRange(list);
+                CommandHelper.SendMessage($"Added {list.Count} entries to ignore list", quiet);
             }
-
-            var serial = vars[0].AsSerial();
-            Interpreter.AddIgnore(serial);
-
-            CommandHelper.SendMessage($"Added '{serial}' to ignore list", quiet);
-
+            else
+            {
+                uint serial = toIgnore.AsSerial();
+                Interpreter.AddIgnore(serial);
+                CommandHelper.SendMessage($"Added {serial} to ignore list", quiet);
+            }
+            
             return true;
         }
         
         private static bool RemoveIgnore(string commands, Variable[] vars, bool quiet, bool force)
         {
             if (vars.Length != 1)
+                throw new RunTimeError("Usage: unignore (serial or list)");
+            
+            Variable toIgnore = vars[0];
+            string ignoreListName = toIgnore.AsString();
+            
+            if (Interpreter.ListExists(ignoreListName))
             {
-                throw new RunTimeError("Usage: unignore ('serial')");
+                List<Serial> list = Interpreter.GetList(ignoreListName).Select(v => (Serial)v.AsSerial()).ToList();
+                Interpreter.RemoveIgnoreRange(list);
+                CommandHelper.SendMessage($"Removed {list.Count} entries from ignore list", quiet);
             }
-
-            var serial = vars[0].AsSerial();
-            Interpreter.AddIgnore(serial);
-
-            CommandHelper.SendMessage($"Removed '{serial}' from ignore list", quiet);
-
+            else
+            {
+                uint serial = toIgnore.AsSerial();
+                Interpreter.RemoveIgnore(serial);
+                CommandHelper.SendMessage($"Removed {serial} from ignore list", quiet);
+            }
+            
             return true;
         }
 
