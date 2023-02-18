@@ -98,6 +98,8 @@ namespace Assistant.Scripts
             Interpreter.RegisterCommandHandler("script", PlayScript);
             Interpreter.RegisterCommandHandler("setvar", SetVar);
             Interpreter.RegisterCommandHandler("setvariable", SetVar);
+            Interpreter.RegisterCommandHandler("unsetvar", UnsetVar);
+            Interpreter.RegisterCommandHandler("unsetvariable", UnsetVar);
 
             Interpreter.RegisterCommandHandler("stop", Stop);
 
@@ -715,6 +717,34 @@ namespace Assistant.Scripts
 
             return false;
         }
+        
+        private static bool UnsetVar(string expression, Variable[] args, bool quiet, bool force)
+        {
+            if (args.Length != 1)
+                throw new RunTimeError("Usage: unsetvar ('name')");
+
+            var name = args[0].AsString(false);
+
+            if (force)
+            {
+                if (quiet)
+                {
+                    Interpreter.ClearVariable(name);
+                }
+                else
+                {
+                    Interpreter.ClearAlias(name);
+                }
+            }
+            else
+            {
+                ScriptVariables.UnregisterVariable(name);
+                ScriptManager.RedrawScripts();
+            }
+
+            return true;
+        }
+
 
         private static bool Stop(string command, Variable[] vars, bool quiet, bool force)
         {

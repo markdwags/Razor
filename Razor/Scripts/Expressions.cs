@@ -226,8 +226,8 @@ namespace Assistant.Scripts
             }
 
             string varName = vars[0].AsString(false);
-            
-            return Interpreter.AliasHandlerExist(varName);
+
+            return quiet ? Interpreter.ExistVariable(varName) : Interpreter.ExistAlias(varName);
         }
 
         private static bool Queued(string expression, Variable[] vars, bool quiet, bool force)
