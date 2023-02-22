@@ -403,7 +403,7 @@ namespace Assistant.Scripts
             }
         }
         
-        public static void PlayScriptFromUI(string[] lines, string name, bool highlight = false)
+        public static void PlayScriptFromUI(string[] lines, string name, bool highlight)
         {
             if (World.Player == null || ScriptEditor == null || lines == null)
                 return;

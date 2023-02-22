@@ -44,6 +44,7 @@ namespace Assistant
         public static readonly int RandomTargets = 14;
         public static readonly int ClosestTargets = 15;
         public static readonly int OverheadHealth = 16;
+        // These are reserved by Steam, not used in Razor
         public static readonly int AutolootAgent = 17;
         public static readonly int BoneCutterAgent = 18;
         public static readonly int AdvancedMacros = 19;
