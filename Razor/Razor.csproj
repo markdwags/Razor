@@ -176,6 +176,7 @@
   <ItemGroup>
     <Compile Include="Agents\BuyAgent.cs" />
     <Compile Include="Agents\IgnoreAgent.cs" />
+    <Compile Include="Agents\ItemInfoExtractorAgent.cs" />
     <Compile Include="Agents\OrganizerAgent.cs" />
     <Compile Include="Agents\RestockAgent.cs" />
     <Compile Include="Agents\SearchExemptionAgent.cs" />
