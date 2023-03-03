@@ -499,11 +499,20 @@ namespace Assistant.Core
 
         public static ushort GetGraphicId(string name)
         {
-            if (Enum.TryParse(name, true, out BuffIconType result))
+            try
             {
-                ushort iconId = (ushort)result >= BUFF_ICON_START_NEW ? (ushort)(result - (BUFF_ICON_START_NEW - 125)) : (ushort)((ushort)result - BUFF_ICON_START);
+                if (Enum.TryParse(name, true, out BuffIconType result))
+                {
+                    ushort iconId = (ushort) result >= BUFF_ICON_START_NEW
+                        ? (ushort) (result - (BUFF_ICON_START_NEW - 125))
+                        : (ushort) ((ushort) result - BUFF_ICON_START);
 
-                return BuffTable[iconId];
+                    return BuffTable[iconId];
+                }
+            }
+            catch (Exception ex)
+            {
+                // ignored
             }
 
             return 0;

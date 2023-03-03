@@ -316,7 +316,7 @@ namespace Assistant.Scripts
                 Name = name,
                 EndTime = DateTime.UtcNow.AddSeconds(seconds),
                 Hue = hue,
-                Icon = BuffDebuffManager.GetGraphicId(icon),
+                Icon = icon.Equals("0") ? 0 : BuffDebuffManager.GetGraphicId(icon),
                 Seconds = seconds,
                 SoundId = sound,
                 StayVisible = stay,
