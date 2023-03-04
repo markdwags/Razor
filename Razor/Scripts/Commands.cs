@@ -1804,7 +1804,23 @@ namespace Assistant.Scripts
         
         private static bool Interrupt(string command, Variable[] vars, bool quiet, bool force)
         {
-            Spell.Interrupt();
+            if (vars.Length == 1)
+            {
+                Layer layer = (Layer) Enum.Parse(typeof(Layer), vars[0].AsString(), true);
+
+                if (layer > Layer.Invalid && layer <= Layer.LastUserValid)
+                {
+                    Spell.Interrupt(layer);
+                }
+                else
+                {
+                    throw new RunTimeError($"{command} - Invalid layer");
+                }
+            }
+            else
+            {
+                Spell.Interrupt();    
+            }
 
             return true;
         }

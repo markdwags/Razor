@@ -411,9 +411,14 @@ Example:
 
 ## interrupt
 
-**Syntax**: `interrupt`
+**Syntax**: `interrupt ['layer']`
 
-**Description**: This command will interrupt a casting action. 
+**Description**: This command will interrupt a casting action. You can pass an [optional layer](layers.md) if you want interrupt to only attempt an interrupt using a specific layer.
+
+!!! tip
+    If you don't provide a specific layer to use for interrupt, Razor will search in the following order:
+
+    `shirt, shoes, pants, head, gloves, ring, neck, waist, innertorse, bracelet, middletorso, earrings, arms, cloak, outertorso, outerlegs, innerlegs, righthand, lefthand`
 
 !!! example
 
@@ -426,10 +431,25 @@ Example:
             cast 'greater healing'
             wft
             target 'self'
-        end if
-        
-        wft
-        target 'last'    
+        else
+            wft
+            target 'last'    
+        endif        
+        ```
+
+    === "Specific layer"
+
+        ```vim hl_lines="3"
+        cast 'energy bolt'
+        if hp < 10
+            interrupt 'pants'
+            cast 'greater healing'
+            wft
+            target 'self'
+        else
+            wft
+            target 'last'    
+        endif 
         ```
 
 ## lift
