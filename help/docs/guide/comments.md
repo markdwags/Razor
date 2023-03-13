@@ -8,7 +8,7 @@ You can use `//` or `#` at the beginning of the line to leave comments in your s
 
     === "Using //"
 
-        ```gas
+        ```razor
         // Hello world example
         say 'hello'
         //say 'world'
@@ -16,7 +16,7 @@ You can use `//` or `#` at the beginning of the line to leave comments in your s
 
     === "Using #"
 
-        ```gas
+        ```razor
         # Hello world example
         say 'hello'
         # say 'world'

@@ -10,7 +10,7 @@ Description: The `and` keyword links statements together and if all statements a
 
     === "General"
 
-        ```vim
+        ```razor
         if insysmsg 'hello' and insysmsg 'bye'
             say 'found'
         endif
@@ -26,7 +26,7 @@ Description: The `as` keyword works in conjunction with the `findtype` expressio
 
     === "General"
 
-        ```vim
+        ```razor
         if findtype 'dagger' as 'mydagger'
             overhead 'found dagger'
             dclick 'mydagger'
@@ -43,7 +43,7 @@ Description: The `break` keyword terminate the closest enclosing loop such as a 
 
     === "General"
 
-        ```vim
+        ```razor
         for 100
             if stam = 100
                 break
@@ -63,7 +63,7 @@ Description: The `continue` keyword passes control to the next iteration of the 
 
     === "General"
 
-        ```vim
+        ```razor
         while stam < 100
 
             if stam = 50
@@ -87,7 +87,7 @@ Description: The `in` keyword works in conjunction with the `getlabel` command.
 
     === "General"
 
-        ```vim hl_lines="4"
+        ```razor hl_lines="4"
         
         if findtype '217' as 'a_dog'
             getlabel 'a_dog' 'dog_label'
@@ -110,7 +110,7 @@ Description: The `loop` or `replay` keyword will restart the currently run scrip
 
     === "General"
 
-        ```vim
+        ```razor
         if mana = 100
             say 'all done!'
             stop
@@ -133,7 +133,7 @@ Description: They `not` keyword returns the opposite of the statement result.
 
     === "General"
 
-        ```vim
+        ```razor
         if not 'dead'
             say 'I live!'
         endif
@@ -143,7 +143,7 @@ Description: They `not` keyword returns the opposite of the statement result.
         endif
         ```
 
-        ```vim
+        ```razor
         while not hp = 100
             overhead 'My HP isnt full'
         endwhile
@@ -159,7 +159,7 @@ Description: The `or` keyword links statements together and if one statements is
 
     === "General"
 
-        ```vim
+        ```razor
         if insysmsg 'hello' or insysmsg 'bye'
             say 'found'
         endif
@@ -175,7 +175,7 @@ Description: The `stop` keyword will stop the execution of the current script.
 
     === "General"
 
-        ```vim
+        ```razor
         if stam = 100
             say 'all done!'
             stop

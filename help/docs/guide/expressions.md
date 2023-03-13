@@ -6,7 +6,7 @@ As found in the Razor macro system, you can use `if`, `for`, `foreach`, and `whi
 
 **Syntax**:
 
-```csharp
+```razor
 if (expression)
     // commands to execute if this expression is true
 elseif (expression)
@@ -22,7 +22,7 @@ endif
 
     === "if/endif"
 
-        ```vim
+        ```razor
         if stam = 100
             overhead 'Stam at 100!'
         endif
@@ -30,7 +30,7 @@ endif
 
     === "if/elseif/else"
 
-        ```vim
+        ```razor
         if stam = 100
             say 'Stamina full'
         elseif stam < 20
@@ -44,7 +44,7 @@ endif
 
     === "if/elseif"
 
-        ```vim
+        ```razor
         if stam = 100
             say 'Stamina full'
         elseif stam < 20
@@ -56,7 +56,7 @@ endif
 
     === "Using 'not'"
 
-        ```vim
+        ```razor
         if not stam = 100
             say 'Stamina is not full'    
         endif
@@ -66,7 +66,7 @@ endif
 
 **Syntax**:
 
-```csharp
+```razor
 for ('number')
     // commmands to execute the number of times defined in the for statement
 endfor
@@ -79,23 +79,23 @@ endfor
 
 When using `for` or `while` you have access to the `index` variable. This can be used with `overhead` (for example) to indicate the current loop number.
 
-For example, this script snippet will output the numbers 0-9 overhead every second.
-
-```vim
-for 10
-    wait 1000
-    overhead 'index'
-endfor
-```
-
 !!! example
 
     === "Say 'Hello' 10 times"
 
-        ```vim        
+        ```razor        
         for 10
             say 'hello'
             wait 1000
+        endfor
+        ```
+
+    === "Output current loop number"
+
+        ```razor
+        for 10
+            wait 1000
+            overhead 'index'
         endfor
         ```
 
@@ -103,7 +103,7 @@ endfor
 
 **Syntax**:
 
-```csharp
+```razor
 foreach ('variable') in ('list')
     // commands to execute for each item that is in a list
 endfor
@@ -113,11 +113,15 @@ endfor
 
 !!! example
 
-    === "foreach"
+    === "Loop through each item in a list"
 
-        ```vim        
-        foreach item in list
-           overhead item
+        ```razor        
+        createlist 'mylist'
+        pushlist 'mylist' '0x1'
+        pushlist 'mylist' '0x2'
+
+        foreach 'item' in 'mylist'
+           overhead 'item'
         endfor
         ```
 
@@ -125,7 +129,7 @@ endfor
 
 **Syntax**:
 
-```csharp
+```razor
 while ('expression')
     // commands to execute as long as the expression is remains true
 endwhile
@@ -137,7 +141,7 @@ endwhile
 
     === "While"
 
-        ```vim
+        ```razor
         while hits < 100
             say 'I need a heal!'
             wait 1000
@@ -178,7 +182,7 @@ Description: Used to check if a specific item is in a list
 
     === "General"
 
-        ```vim
+        ```razor
         if inlist 'my_list' 'item1'
             overhead 'found item!'
         endif
@@ -194,7 +198,7 @@ Description: Used to check how many items are in a specific list
 
     === "General"
 
-        ```vim
+        ```razor
         if list 'mylist' = 10
             overhead '10 items in your list'
         endif
@@ -210,7 +214,7 @@ Description: Used to check if a list exists with a specific name.
 
     === "General"
 
-        ```vim
+        ```razor
         if not listexists 'mylist'
             createlist 'mylist'
         endif
@@ -220,15 +224,15 @@ Description: Used to check if a list exists with a specific name.
 
 - `poplist ('list name') ('list value'/'front'/'back')`
 
-Description: This command will remove an item from the list. You can either pass in the specific item, or use `front` or `back` to remove the item from the front or back of the list.
+Description: This command will remove (pop) an item from the list. You can either pass in the specific item, or use `front` or `back` to remove the item from the front or back of the list.
 
 !!! example
 
     === "General"
 
-        ```vim
-        if poplist sample_list back as item
-            overhead item
+        ```razor
+        if poplist 'mylist' back as 'item'
+            overhead 'item'
         endif
         ```
 
@@ -250,7 +254,7 @@ The expression can be used either directly by item type and hue, or by referenci
 
     === "Counting garlic"
 
-        ```vim
+        ```razor
         if count 'garlic' < 5
             say 'getting low on garlic'
         endif
@@ -258,7 +262,7 @@ The expression can be used either directly by item type and hue, or by referenci
         
     === "Counting runebooks"
     
-        ```vim
+        ```razor
         if count 'spellbook' '1121' == 0
             say 'no runebooks found!'
         endif
@@ -266,7 +270,7 @@ The expression can be used either directly by item type and hue, or by referenci
         
     === "Detecting fancy coins"
 
-        ```vim
+        ```razor
         if count 'gold coin' > count 'gold coin' 0
             overhead 'woot woot fancy coins in the pack!'
         endif
@@ -292,7 +296,7 @@ Description: Used to check if a specific item name of graphic ID exists. Range c
 
     === "Find a saw"
 
-        ```vim
+        ```razor
         if findtype 'saw'
             say 'found saw'
         endif
@@ -300,7 +304,7 @@ Description: Used to check if a specific item name of graphic ID exists. Range c
     
     === "Find a saw using graphic id"
 
-        ```vim
+        ```razor
         if findtype '4148'
             say 'found saw'
         endif
@@ -308,7 +312,7 @@ Description: Used to check if a specific item name of graphic ID exists. Range c
 
     === "Find a saw within 2 tiles"
 
-        ```vim
+        ```razor
         if findtype 'saw' true
             say 'found saw within 2 tiles'
         endif
@@ -316,7 +320,7 @@ Description: Used to check if a specific item name of graphic ID exists. Range c
 
     === "Find a saw in your backpack"
 
-        ```vim
+        ```razor
         if findtype 'saw' backpack
             say 'found saw in my pack'
         endif
@@ -324,7 +328,7 @@ Description: Used to check if a specific item name of graphic ID exists. Range c
 
     === "Find a dagger and use it (using as)"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         if findtype 'dagger' as 'mydagger'
             overhead 'found dagger'
             dclick 'mydagger'
@@ -333,7 +337,7 @@ Description: Used to check if a specific item name of graphic ID exists. Range c
 
     === "Find a dagger in backpack with a hue"
 
-        ```vim
+        ```razor
         if findtype 'dagger' backpack 45 as 'mydagger'
             overhead 'found dagger'
             dclick 'mydagger'
@@ -356,7 +360,7 @@ Description: Used to check if certain text appears within the system message log
 
     === "Check for message"
 
-        ```vim
+        ```razor
         if insysmsg 'too far away'
             overhead 'You are too far away'
         endif
@@ -372,7 +376,7 @@ Description: Used to return the current number of items you're carrying
 
     === "General"
 
-        ```vim
+        ```razor
         if itemcount < 125
             overhead 'I still have room!'
         endif
@@ -388,7 +392,7 @@ Description: Used to check if your current queue is active (from restocking, org
 
     === "General"
 
-        ```vim
+        ```razor
             if queued
                 overhead 'Queue is active'
             else
@@ -398,7 +402,7 @@ Description: Used to check if your current queue is active (from restocking, org
 
     === "Organizer"
 
-        ```vim
+        ```razor
         overhead 'Organizing'
 
         organizer 1
@@ -413,7 +417,7 @@ Description: Used to check if your current queue is active (from restocking, org
 
     === "Restock"
 
-        ```vim
+        ```razor
         overhead 'Restocking'
 
         restock 11
@@ -438,7 +442,7 @@ Description: Used to check if the client current has a target cursor up
 
     === "General"
 
-        ```vim
+        ```razor
         if targetexists 'beneficial'
             overhead 'Beneficial target found'
         elseif targetexists 'harmful'
@@ -457,7 +461,7 @@ Description: Used to check if a variable exists.
 
     === "General"
 
-        ```vim
+        ```razor
         if not varexist 'myrunebook'
             overhead 'Runebook variable not found -- select one'
             setvar 'myrunebook'
@@ -481,7 +485,7 @@ Description: Used to get the difference between you max hits and current hits.
 
     === "General"
 
-        ```vim
+        ```razor
         if diffhits > 40
             overhead 'I need a heal!'
         endif
@@ -497,7 +501,7 @@ Description: Used to get the difference between you max mana and current mana.
 
     === "General"
 
-        ```vim
+        ```razor
         if diffmana > 40
             skill 'Meditation'
         endif
@@ -513,7 +517,7 @@ Description: Used to get the difference between you max stamina and current stam
 
     === "General"
 
-        ```vim
+        ```razor
          if diffstam > 30
             overhead 'Need stamina'
         endif
@@ -529,7 +533,7 @@ Description: Used to get the difference between you max weight and current weigh
 
     === "General"
 
-        ```vim
+        ```razor
         if diffweight > 20
             overhead 'I can lift 20 more stone'
         endif
@@ -543,7 +547,7 @@ Description: Used to get the current number of followers.
 
     === "General"
 
-        ```vim
+        ```razor
         if followers = 0
             overhead 'No one following me!'
         else
@@ -553,7 +557,7 @@ Description: Used to get the current number of followers.
 
     === "..used with maxfollowers"
 
-        ```vim
+        ```razor
         if followers < maxfollowers
             overhead 'You can have more followers!'
         else
@@ -571,7 +575,7 @@ Description: Used to check if a specific buff/debuff is applied to you.
 
     === "Check for magic reflection"
 
-        ```vim
+        ```razor
         if findbuff 'magic reflection'
             overhead 'Im set!'
         else
@@ -591,7 +595,7 @@ Description: Used to check if you are hidden.
 
     === "Check if hidden"
 
-        ```vim
+        ```razor
         if hidden
             overhead 'they cant see me'
         endif
@@ -610,7 +614,7 @@ Description: Used to get your current or max hit points/health levels.
 
     === "Example 1"
 
-        ```vim
+        ```razor
         while hp < 100
             say 'not at 100 yet'
             wait 5000
@@ -619,7 +623,7 @@ Description: Used to get your current or max hit points/health levels.
 
     === "Example 2"
 
-        ```vim
+        ```razor
         if maxhp = 120
             say 'Full hp!'
         endif
@@ -635,7 +639,7 @@ Description: Used to check if your left hand is empty
 
     === "General"
 
-        ```vim
+        ```razor
         if lhandempty
             hotkey 'empty right hand!'
         endif
@@ -653,7 +657,7 @@ Description: Used to get your invulnerable status
 
     === "General"
 
-        ```vim
+        ```razor
         if invuln
             overhead 'I feel.. so powerful.'
         endif
@@ -671,7 +675,7 @@ Description: Used to get your current or max mana levels.
 
     === "General"
 
-        ```vim
+        ```razor
         while mana < maxmana
             skill 'meditation'
             wait 11000
@@ -686,7 +690,7 @@ Description: Used to get the maximum number of allowed followers.
 
     === "General"
 
-        ```vim
+        ```razor
         if followers = maxfollowers
             overhead 'You hit your limit'       
         endif
@@ -694,7 +698,7 @@ Description: Used to get the maximum number of allowed followers.
 
     === "..used with followers"
 
-        ```vim
+        ```razor
         if followers < maxfollowers
             overhead 'You can have more followers!'
         else
@@ -712,7 +716,7 @@ Description: Used to get your max allowed weight.
 
     === "General"
 
-        ```vim
+        ```razor
         if weight <= maxweight
             say 'I am overweight'
         endif
@@ -728,7 +732,7 @@ Description: Used to check if you are currently on a mount
 
     === "General"
 
-        ```vim
+        ```razor
         if mounted
             say 'mounted'
         else
@@ -746,7 +750,7 @@ Description: Used to get your name of the currently logged in character
 
     === "General"
 
-        ```vim
+        ```razor
         if name = 'Quick'
             overhead 'thats me!'
         endif
@@ -762,7 +766,7 @@ Description: Used to check if you are currently paralyzed.
 
     === "General"
 
-        ```vim
+        ```razor
         if paralyzed
             overhead 'I cannot move!'
         endif
@@ -778,7 +782,7 @@ Description: Used to check if you are currently poisoned.
 
     === "General"
 
-        ```vim
+        ```razor
         if poisoned
             hotkey 'drink cure'
         endif
@@ -795,7 +799,7 @@ Description: Used to check if your current position matches the provided.
 
     === "General"
 
-        ```vim
+        ```razor
         if position 2729 2133
             overhead 'You are currently in front of the Bucs Den teleporter'
         elseif position 2728 2133 5
@@ -813,7 +817,7 @@ Description: Used to check if your right hand is empty
 
     === "General"
 
-        ```vim
+        ```razor
         if rhandempty
             hotkey 'empty right hand!'
         endif
@@ -826,13 +830,13 @@ Description: Used to check if your right hand is empty
 Description: Used to get the current skill level for a given skill.
 
 !!! tip "Supported skill names"
-    `anatomy, animallore, itemidentification, itemid, armslore, begging, peacemaking, peace, cartography, detectinghidden, discord, discordance, evaluatingintelligence, evalint, forensicevaluation, forensiceval, hiding, provocation, provo, inscription, poisoning, spiritspeak, stealing, taming, tasteidentification, tasteid, tracking, meditation, stealth, removetrap, imbuing`
+    Razor used to rely on a static list of names but now reads from your client's skills.mul file for the names of the skill.
 
 !!! example
 
     === "General"
 
-        ```vim
+        ```razor
         if skill 'magery' < 62.5
             cast 'invisibility'
             waitfortarget
@@ -851,17 +855,17 @@ Description: Used to get your current stamina or max stamina.
 
     === "General (stam)"
 
-        ```vim
+        ```razor
         if stam < 30
-        say 'I need to rest'
+            say 'I need to rest'
         endif
         ```
 
     === "General (maxstam)"       
 
-        ```vim
+        ```razor
         if maxstam = 120
-        say 'I feel so powerful!'
+            say 'I feel so powerful!'
         endif
         ```
 
@@ -875,14 +879,29 @@ Description: Used to get your current strength, dexterity and intelligence.
 
 !!! example
 
-    === "General"
+    === "Strength"
 
-        ```vim
+        ```razor
         if str = 100
-            say 'I am a strong person'
+            say 'Strength does not come from physical capacity. It comes from an indomitable will.'
         endif
         ```
 
+    === "Dexterity"
+
+        ```razor
+        if dex = 100
+            say 'Dexterity comes by experience and practice.'
+        endif
+        ```
+
+    === "Intelligence"
+
+        ```razor
+        if str = 100
+            say 'The true sign of intelligence is not knowledge but imagination.'
+        endif
+        ```
 
 ## warmode
 
@@ -894,9 +913,9 @@ Description: Used to get your current combat/war status
 
     === "General"
 
-        ```vim
+        ```razor
         if warmode
-            overhead 'I'm read to fight'
+            overhead 'Lets fight'
         else
             overhead 'Peace to you'
         endif
@@ -912,7 +931,7 @@ Description: Used to get your current weight.
 
     === "General"
 
-        ```vim
+        ```razor
         if weight = 300
             say 'I feel heavy'
         endif
@@ -930,7 +949,7 @@ Description: Used to check how much time is left in an existing timer
 
     === "General"
 
-        ```vim
+        ```razor
         // Create a new timer
         if not timerexists 'sample'
             createtimer 'sample'
@@ -940,6 +959,25 @@ Description: Used to check how much time is left in an existing timer
         if timer 'sample' > 10000
             settimer 'sample' 0
         endif
+        ```
+
+    === "Alert"
+
+        ```razor
+        # Create a new timer
+        createtimer 'alert'
+
+        while not dead            
+    
+            // Reset every 10 seconds
+            if timer 'alert' > 10000
+                overhead 'ALERT TRIGGERED!'
+                settimer 'alert' 0
+            endif
+
+        endwhile
+
+        
         ```
 
 ## timerexists
@@ -952,7 +990,7 @@ Description: Used to check if a timer exists
 
     === "General"
 
-        ```vim
+        ```razor
         // Create a new timer
         if not timerexists 'sample'
             createtimer 'sample'

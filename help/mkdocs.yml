@@ -6,6 +6,8 @@ copyright: Copyright &copy; 2023 Quick
 repo_url: https://github.com/markdwags/Razor
 repo_name: Razor
 edit_uri: "tree/master/help/docs"
+extra_css:
+  - stylesheets/extra.css
 nav:
 - UO Razor Home: index.md
 - Download: download.md

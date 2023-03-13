@@ -18,3 +18,4 @@ packages/
 /Razor.sln.DotSettings
 CSharpGuidelines.Layer.DotSettings
 /help/site
+/help/pygments

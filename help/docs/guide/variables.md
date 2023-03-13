@@ -14,7 +14,7 @@ Simply click Add, give it a name and target the item or mobile and that variable
 
 * Open your reg bag
 
-```vim
+```razor
 dclick 'regbag'
 ```
 
@@ -22,7 +22,7 @@ You can also set variables in scripts by using the `setvar` command.  To update 
 
 * Get target cursor to select item or mobile
 
-```vim
+```razor
 setvar 'regbag'
 ```
 
@@ -49,14 +49,14 @@ When using `for` or `while` you have access to the `index` variable. This can be
 
 For example, this script snippet will output the numbers 0-9 overhead every second.
 
-```vim
+```razor
 for 10
     wait 1000
     overhead 'index'
 endfor
 ```
 
-```vim
+```razor
 for 10
     if index == 7
         overhead '7th loop'

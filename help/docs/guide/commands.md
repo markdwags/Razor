@@ -10,14 +10,14 @@ If you want to pass several words as a single parameter you must wrap them using
 
 For example, if your script is something like:
 
-```python
+```razor
 # Say 'Hello'
 say Hello friends!
 ```
 
 You will end up just saying `Hello`.  Instead, you if you wrap the words in single (') or double quotes (") the engine will see it as a single parameter.
 
-```python
+```razor
 # Say 'Hello friends!'
 say 'Hello friends!'
 ```
@@ -26,7 +26,7 @@ If you prefix a command with the `@` this will silence any warning/output from t
 
 !!! example
 
-    ```csharp
+    ```razor
     // Generate warning if robe is out of reach
     lifttype 'robe'
 
@@ -48,13 +48,13 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Attack Target"
 
-        ```vim
+        ```razor
         attack '0x21B4'
         ```
 
     === "Attack Variable"
 
-        ```vim
+        ```razor
         attack 'attackdummy'
         ```
 ## cast
@@ -67,7 +67,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Cast specific spell"
 
-        ```vim
+        ```razor
         cast 'greater heal'
         wft
         target 'self'
@@ -86,14 +86,14 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Turn off CUO music"
 
-        ```vim
+        ```razor
         overhead 'Turn off the music!'
         classicuo 'enablemusic' false
         ```
 
     === "Adjust music volume to 50%"
 
-        ```vim
+        ```razor
         overhead 'Turning music to 50%'
         classicuo 'musicvolume' 50
         ```
@@ -108,7 +108,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Clear on sysmsg message"
 
-        ```vim
+        ```razor
         if insysmsg 'cannot reach'
             cleardragdrop
         endif
@@ -124,13 +124,13 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Undress both hands"
 
-        ```vim
+        ```razor
         clearhands 'both'
         ```
 
     === "Undress left hand"
 
-        ```vim
+        ```razor
         clearhands 'left'
         ```
 
@@ -156,25 +156,25 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Simple cooldown"
 
-        ```vim
+        ```razor
         cooldown 'Refresh' 20
         ```
 
     === "Cooldown with custom hued text"
 
-        ```vim
+        ```razor
         cooldown 'Refresh' 20 234
         ```
 
     === "Cooldown with icon"
 
-        ```vim
+        ```razor
         cooldown 'Refresh' 15 0 'Agility'
         ```
 
     === "Cooldown a custom sound (flute)"
 
-        ```vim
+        ```razor
         cooldown 'Health Check' 20 0 0 61
         ```
 
@@ -190,13 +190,13 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Cooldown with custom colors"
 
-        ```vim
+        ```razor
         cooldown 'Stay 1' 20 0 0 0 false 'Firebrick' 'Peru'
         ```
 
     === "Reset existing cooldown"
 
-        ```vim        
+        ```razor        
         cooldown 'Refresh' 20
 
         wait 10 seconds
@@ -214,23 +214,23 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Double-click a specific item id"
 
-        ```vim
+        ```razor
         dclick '0x34AB'
         ```
 
     === "Double-click a variable"
 
-        ```vim
+        ```razor
         dclick 'myvariable'
         ```
 
     === "Double-click any item in your hands"
-        ```vim
+        ```razor
         dclick 'hands'
         ```
     
     === "Double-click item in right hand"
-        ```vim
+        ```razor
         dclick 'right'
         ```
 
@@ -252,7 +252,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Use any item"
 
-        ```vim
+        ```razor
         dclicktype 'dagger'
         waitfortarget
         targettype 'robe'
@@ -260,7 +260,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "..with range check"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         dclicktype 'dagger' true
         waitfortarget
         targettype 'robe' true
@@ -268,7 +268,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "..with backpack only"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         dclicktype 'dagger' backpack
         waitfortarget
         targettype 'robe' backpack
@@ -276,7 +276,7 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "..with backpack and hue only"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         dclicktype 'dagger' backpack 45
         waitfortarget
         targettype 'robe' backpack
@@ -292,19 +292,19 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Use existing dress list"
 
-        ```vim
+        ```razor
         dress 'My Sunday Best'
         ```
     
     === "Using a serial"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         dress '0x345234'
         ```
 
     === "Using a variable"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         setvar 'hat'
         dress 'hat'
         ```
@@ -325,14 +325,14 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Lift item, drop on your chest/torso"
 
-        ```vim
+        ```razor
         lift '0x400D54A7'
         drop 'self' InnerTorso
         ```
 
     === "Lift item, drop on ground at location"
 
-        ```vim
+        ```razor
         lift '0x400D54A7'
         drop 'ground' 5926 1148 0
         ```
@@ -349,7 +349,7 @@ Example:
 
     === "Drop Relative Location"
 
-        ```vim
+        ```razor
         lift '0x400EED2A'
         wait 1000
         droprelloc 1 1
@@ -365,7 +365,7 @@ Example:
 
     === "Find a dog"
 
-        ```vim
+        ```razor
         if findtype '217' as 'a_dog'
             getlabel 'a_dog' 'dog_label'
 
@@ -378,7 +378,7 @@ Example:
 
     === "Find a silver kryss"
 
-        ```vim        
+        ```razor        
         setvar 'silver_bag'
 
         if findtype '0x140' as 'kryss'
@@ -403,7 +403,7 @@ Example:
 
     === "Hotkey"
 
-        ```vim
+        ```razor
         skill 'detect hidden'
         waitfortarget
         hotkey 'target self'
@@ -424,7 +424,7 @@ Example:
 
     === "Example"
 
-        ```vim
+        ```razor
         cast 'energy bolt'
         if hp < 10
             interrupt
@@ -439,7 +439,7 @@ Example:
 
     === "Specific layer"
 
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         cast 'energy bolt'
         if hp < 10
             interrupt 'pants'
@@ -465,7 +465,7 @@ Example:
 
     === "Lift item and drop to the ground"
 
-        ```vim
+        ```razor
         lift '0x400EED2A'
         wait 1000
         droprelloc 1 1 0
@@ -481,7 +481,7 @@ Example:
 
     === "Lift by name"
 
-        ```vim
+        ```razor
         lifttype 'robe'
         wait 1000
         droprelloc 1 1
@@ -489,7 +489,7 @@ Example:
 
     === "Lift by item id"
 
-        ```vim
+        ```razor
         lifttype '0x1FCD'
         wait 1000
         droprelloc 1 1
@@ -497,7 +497,7 @@ Example:
 
     === "Lift by name, max 5"
 
-        ```vim
+        ```razor
         lifttype 'fish steak%s%' 5
         wait 1000
         droprelloc 1 1
@@ -505,7 +505,7 @@ Example:
 
     === "Lift by name, max 5, specific hue"
 
-        ```vim
+        ```razor
         lifttype 'fish steak%s%' 5 45
         wait 1000
         droprelloc 1 1
@@ -524,7 +524,7 @@ Example:
 
     === "Description"
 
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         overhead 'playings bucsden'
         wait 500
         music 11
@@ -542,13 +542,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Use agility potion"
 
-        ```vim
+        ```razor
         potion 'agility'
         ```
 
     === "Use heal potion"
 
-        ```vim
+        ```razor
         potion 'heal'
         ```
 
@@ -562,13 +562,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Rename using serial"
 
-        ```vim
+        ```razor
         rename '0x453' 'Fluffy'
         ```
 
     === "Rename using variables"
 
-        ```vim
+        ```razor
         setvar 'mypet'
 
         rename 'mypet' 'Fluffy'
@@ -576,7 +576,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Rename using last target"
 
-        ```vim
+        ```razor
         rename 'lasttarget' 'Fluffy'
         ```
 
@@ -590,7 +590,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Random Message Check"
 
-        ```vim
+        ```razor
         clearsysmsg
 
         random 10
@@ -615,7 +615,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Execute script"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         if hp = 40
             script 'healcure'
         endif
@@ -623,7 +623,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Execute script in category"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         if mana = 40
             script 'magery\meditation'
         endif
@@ -639,13 +639,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Set stun"
 
-        ```vim
+        ```razor
         setability 'stun'
         ```
 
     === "Turn off stun"
 
-        ```vim
+        ```razor
         setability 'stun' off
         ```
 
@@ -662,7 +662,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Set variable and use it"
 
-        ```vim
+        ```razor
         setvar 'dummy'
 
         cast 'magic arrow'
@@ -672,7 +672,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Set variable with serial"
 
-        ```vim
+        ```razor
         setvar 'spellbook' '0x40000D'
 
         dress 'spellbook'        
@@ -680,7 +680,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
     
     === "Set temp variable with serial"
 
-        ```vim
+        ```razor
         setvar! 'tempvar' '0x40000D'
 
         dclick 'tempvar'       
@@ -699,7 +699,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Use meditation"
 
-        ```vim
+        ```razor
         while mana < maxmana
             say 'mediation!'
             skill 'meditation'
@@ -717,7 +717,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Description"
 
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         overhead 'daemon sound'
         wait 500
         sound '0x166'
@@ -736,7 +736,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Set variable, use it, unset"
 
-        ```vim
+        ```razor
         setvar 'dummy'
 
         cast 'magic arrow'
@@ -748,7 +748,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
     
     === "Set temp variable with serial, unset"
 
-        ```vim
+        ```razor
         setvar! 'tempvar' '0x40000D'
 
         dclick 'tempvar'       
@@ -766,19 +766,19 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Invoke Honor"
 
-        ```vim
+        ```razor
         virtue 'honor'
         ```
 
     === "Invoke Sacrifice"
 
-        ```vim
+        ```razor
         virtue 'sacrifice'
         ```
 
     === "Invoke Valor"
 
-        ```vim
+        ```razor
         virtue 'valor'
         ```
 
@@ -792,7 +792,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Walk around"
 
-        ```vim
+        ```razor
         walk 'North'
         walk 'Up'
         walk 'West'
@@ -823,7 +823,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Wait 5 seconds"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         while stam < 100    
             wait 5000
         endwhile
@@ -831,7 +831,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Wait 2 seconds (with shorthand)"
 
-        ```vim hl_lines="2 6"
+        ```razor hl_lines="2 6"
         while stam < 100    
             wait 2 sec
         endwhile
@@ -843,7 +843,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Wait 3 minutes (with shorthand)"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         say 'AFK for 3 minutes'
         wait 3 minutes
         say 'Back!'
@@ -862,31 +862,31 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Full naked"
 
-        ```vim
+        ```razor
         undress
         ```
 
     === "Specfic items in dress list"
 
-        ```vim
+        ```razor
         undress 'My Sunday Best'
         ```
 
     === "Remove your shirt and pants"
 
-        ```vim
+        ```razor
         undress 'Shirt'
         undress 'Pants'
         ```
     === "Using a serial"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         undress '0x345234'
         ```
 
     === "Using a variable"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         setvar 'hat'
         undress 'hat'
         ```
@@ -903,13 +903,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Execute organizer agent 1"
 
-        ```vim
+        ```razor
         organizer 1
         ```
 
     === "Set a hotbag on organizer agent 4"
 
-        ```vim
+        ```razor
         organizer 4 'set'
         ```
 
@@ -923,7 +923,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Use Restock Agent 1"
 
-        ```vim
+        ```razor
         if count garlic < 4
             restock 1
         endif
@@ -931,7 +931,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Set a hotbag on Restock Agent 4"
 
-        ```vim
+        ```razor
         restock 4 'set'
         ```
 
@@ -951,7 +951,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Turn off scavenger"
 
-        ```vim
+        ```razor
         scavenger 'off'
         ```
 
@@ -965,7 +965,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Set Agent Hotbag"
 
-        ```vim
+        ```razor
         sell
         ```
 
@@ -979,19 +979,19 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Use top item"
 
-        ```vim
+        ```razor
         useonce
         ```
 
     === "Add to list"
 
-        ```vim
+        ```razor
         useonce 'add'
         ```
 
     === "Add to container"
 
-        ```vim
+        ```razor
         useonce 'addcontainer'
         ```
 
@@ -1007,7 +1007,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Gump Response"
 
-        ```vim
+        ```razor
         gumpresponse 4
         ```
 
@@ -1021,13 +1021,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Close last gump"
 
-        ```vim
+        ```razor
         gumpclose
         ```
 
     === "Close gump with id"
 
-        ```vim
+        ```razor
         dclick '0x4000174B'
         waitforgump 2341449854        
         gumpclose 2341449854
@@ -1048,13 +1048,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Open Paperdoll"
 
-        ```vim
+        ```razor
         menu 0 0
         ```
 
     === "Open Backpack"
 
-        ```vim
+        ```razor
         menu 0 1
         ```
 
@@ -1071,7 +1071,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Description"
 
-        ```vim
+        ```razor
         menuresponse 3 4
         ```
 
@@ -1085,7 +1085,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Rename a recall rune"
 
-        ```vim
+        ```razor
         dclicktype 'rune'
         waitforprompt
         promptresponse 'to home'
@@ -1108,25 +1108,25 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Wait for any gump"
 
-        ```vim
+        ```razor
         waitforgump 'any' 
         ```
 
     === "Wait for any gump for 10 seconds"
 
-        ```vim
+        ```razor
         waitforgump 'any' 10000
         ```
 
     === "Wait for specific gump"
 
-        ```vim
+        ```razor
         waitforgump 4
         ```
 
     === "Wait for specific gump for 5 seconds"
 
-        ```vim
+        ```razor
         waitforgump 34252 5000
         ```
 
@@ -1150,19 +1150,19 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Wait for any menu"
 
-        ```vim
+        ```razor
         waitformenu
         ```
 
     === "Wait for any menu for 5 seconds"
 
-        ```vim
+        ```razor
         waitformenu 'any' 5000
         ```
 
     === "Wait for specific menu"
 
-        ```vim
+        ```razor
         waitformenu 4
         ```
 
@@ -1183,7 +1183,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Renaming recalling rune"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         dclicktype 'rune'
         waitforprompt
         promptresponse 'to home'
@@ -1191,7 +1191,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Rename recalling rune with wait"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         dclicktype 'rune'
         waitforprompt 'any' 5000
         promptresponse 'to home'
@@ -1212,7 +1212,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "General"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         clearignore
 
         if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
@@ -1235,7 +1235,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Ignore by serial"
 
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         clearignore
 
         ignore '0x123A'
@@ -1243,7 +1243,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Ignore by variable"
 
-        ```vim hl_lines="7"
+        ```razor hl_lines="7"
         clearignore
 
         if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
@@ -1266,13 +1266,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Unignore by serial"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         unignore '0x123A'
         ```
 
     === "Unignore by variable"
 
-        ```vim hl_lines="11"
+        ```razor hl_lines="11"
         clearignore
 
         if findtype 3572 backpack as 'wand' or findtype 3570 backpack as 'wand'
@@ -1301,7 +1301,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "General"
 
-        ```vim
+        ```razor
         if not listexists 'sample'
             createlist 'sample'
         end if
@@ -1322,7 +1322,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Remove first item in list"
 
-        ```vim
+        ```razor
         createlist 'list'
         pushlist 'list' 'hello'
         pushlist 'list' 'bye'
@@ -1340,7 +1340,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Add item to list"
 
-        ```vim
+        ```razor
         createlist 'list'
         pushlist 'list' 'hello'
         pushlist 'list' 'bye'        
@@ -1348,7 +1348,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Add item to front of list"
 
-        ```vim
+        ```razor
         createlist 'list'
         pushlist 'list' 'hello'
         pushlist 'list' 'bye' 'front'
@@ -1364,7 +1364,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "General"
 
-        ```vim
+        ```razor
         removelist 'list_name'        
         ```
 # Messaging Commands
@@ -1379,7 +1379,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "General"
 
-        ```vim
+        ```razor
         alliance 'Allies assemble!'
         ```
 
@@ -1393,7 +1393,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "General"
 
-        ```vim
+        ```razor
         sysmsg 'hello'
         sysmsg 'bye'
 
@@ -1421,13 +1421,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Emote"
 
-        ```vim
+        ```razor
         emote 'smiles'
         ```
 
     === "Emote with hue"
 
-        ```vim
+        ```razor
         emote 'smiles in another color' 454
         ```
 
@@ -1441,7 +1441,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Guild message"
 
-        ```vim
+        ```razor
         guild 'Hello fellow guildmates!'
         ```
 
@@ -1455,7 +1455,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Overhead message"
 
-        ```vim
+        ```razor
         if stam = 100
             overhead 'ready to go!'
         endif
@@ -1471,13 +1471,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Say message"
 
-        ```vim
+        ```razor
         say 'Hello world!'
         ```
 
     === "Say message with hue"
 
-        ```vim
+        ```razor
         say 'Hello world!' 454
         ```
 
@@ -1491,7 +1491,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Description"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         if stam = 100
             sysmsg 'ready to go!'
         endif
@@ -1507,14 +1507,14 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Wait for system message"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         waitforsysmsg 'ready to go'
         overhead 'Ready!'
         ```
 
     === "Wait for system message for 5 seconds"
 
-        ```vim hl_lines="1"
+        ```razor hl_lines="1"
         waitforsysmsg 'ready to go' 5000
         overhead 'Done waiting'
         ```
@@ -1529,13 +1529,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Whisper message"
 
-        ```vim
+        ```razor
         whisper 'Hello world!'
         ```
 
     === "Whisper message with hue"
 
-        ```vim
+        ```razor
         whisper 'Hello world!' 454
         ```
 
@@ -1549,13 +1549,13 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Yell message"
 
-        ```vim
+        ```razor
         yell 'Hello world!'
         ```
 
     === "Yell message with hue"
 
-        ```vim
+        ```razor
         yell 'Hello world!' 454
         ```
 
@@ -1571,7 +1571,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Clear on sysmsg message"
 
-        ```vim
+        ```razor
         if insysmsg 'cannot find'
             clearall
         endifF
@@ -1587,7 +1587,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Cast on last target"
 
-        ```vim
+        ```razor
         cast 'magic arrow'
         waitfortarget
         lasttarget
@@ -1603,7 +1603,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Set last target and cast"
 
-        ```vim
+        ```razor
         overhead 'set last target'
         setlasttarget
         overhead 'set!'
@@ -1638,7 +1638,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Specific target"
 
-        ```vim
+        ```razor
         cast 'lightning'
         waitfortarget
         target '0xBB3'
@@ -1668,7 +1668,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Target closest red"
 
-        ```vim
+        ```razor
         cast 'lightning'
         waitfortarget
         target closest 'red'
@@ -1676,7 +1676,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Target closest gray or red monster"
 
-        ```vim
+        ```razor
         cast 'lightning'
         waitfortarget
         target closest 'gray,red' monster
@@ -1684,7 +1684,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Target random mobile"
 
-        ```vim
+        ```razor
         cast 'lightning'
         waitfortarget
         target random
@@ -1692,7 +1692,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Target random red monster"
 
-        ```vim
+        ```razor
         cast 'lightning'
         waitfortarget
         target random 'red' monster
@@ -1700,19 +1700,19 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Next humanoid target"
 
-        ```vim        
+        ```razor        
         target next humanoid
         ```    
 
     === "Cancel current target"
 
-        ```vim        
+        ```razor        
         target cancel
         ```
     
     === "Clear target queue"
 
-        ```vim        
+        ```razor        
         target clear
         ```
 
@@ -1726,7 +1726,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Target 1 X, 1 Y from player location"
 
-        ```vim
+        ```razor
         cast 'fire field'
         waitfortarget
         targetrelloc 1 1
@@ -1740,9 +1740,9 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 !!! example
 
-     === "Specific location"
-
-        ```vim
+    === "Specific location"
+     
+        ```razor
         cast 'fire field'
         waitfortarget
         targetloc 5923 1145 0
@@ -1766,7 +1766,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Target by name (any range)"
 
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         dclicktype 'dagger'
         waitfortarget
         targettype 'robe'
@@ -1774,7 +1774,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Target by type (any range)"
 
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         dclick '0x4005ECAF'
         waitfortarget
         targettype '0x1F03'
@@ -1782,7 +1782,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Target by type using serial (in range)" 
 
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         dclick '0x4005ECAF'
         waitfortarget
         targettype '0x1F03' true
@@ -1790,7 +1790,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
     
     === "Target by type using name (in range)" 
 
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         dclick 'dagger'
         waitfortarget
         targettype 'robe' true
@@ -1798,7 +1798,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Target by name (in backpack)" 
            
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         dclicktype 'dagger' backpack
         waitfortarget
         targettype 'robe' backpack
@@ -1806,7 +1806,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
     
     === "Target by name with hue (in backpack)" 
            
-        ```vim hl_lines="3"
+        ```razor hl_lines="3"
         dclicktype 'dagger' backpack
         waitfortarget
         targettype 'robe' backpack 45
@@ -1822,7 +1822,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Cast and wait"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         cast 'energy bolt'
         waitfortarget
         hotkey 'Target Closest Enemy'
@@ -1830,7 +1830,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Using 'wft' shorthand on last target"
 
-        ```vim hl_lines="2"
+        ```razor hl_lines="2"
         cast 'energy bolt'
         wft
         target 'last'
@@ -1848,9 +1848,9 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Create Timer"
 
-        ```vim        
+        ```razor        
         if not timerexists 'sample'
-            create removetimer 'sample'
+            createtimer 'sample'
         endif           
         ```
 
@@ -1864,7 +1864,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Delete Timer"
 
-        ```vim        
+        ```razor        
         if timerexists 'sample'
             removetimer 'sample'
         endif           
@@ -1880,7 +1880,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Set Timer"
 
-        ```vim
+        ```razor
         // Create a new timer
         if not timerexists 'sample'
             createtimer 'sample'

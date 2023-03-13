@@ -1,0 +1,65 @@
+"""
+    pygments.lexers.razor
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Lexers for languages related to the Razor UO assistant scripting language.
+
+    :copyright: Copyright 2006-2022 by the Pygments team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
+"""
+
+import re
+from bisect import bisect
+
+from pygments.lexer import RegexLexer, bygroups, default, include, this, using
+from pygments.lexers.python import PythonLexer
+from pygments.token import Comment, Keyword, Name, Number, Operator, \
+    Punctuation, String, Text, Whitespace
+
+__all__ = ['RazorLexer']
+
+class RazorLexer(RegexLexer):
+    """
+    Lexer for Razor script files.
+
+    .. versionadded:: 2.14.0
+    """
+    name = 'RazorL'
+    aliases = ['razor']
+    filenames = ['*.razor']
+    mimetypes = ['text/x-razor']
+    flags = re.MULTILINE
+
+    _python = r'py(?:t(?:h(?:o(?:n)?)?)?)?'
+
+    tokens = {
+        'root': [
+            # Single-line comments
+            (r'(#|\/\/).*$\n?', Comment.Single),
+
+            # Strings
+            (r'(\"[^\"]*\")|(\'[^\']*\')', String),
+
+            # Hex values
+            (r'0x[0-9a-fA-F]+', Number.Hex),
+
+            # Numbers
+            (r'\b\d+\b', Number),
+
+            # Keywords
+            (r'\b(if|elseif|else|endif|while|endwhile|for|foreach|endfor|break|continue|not|and|or|stop|replay|loop|as|in)\b', Keyword),
+
+            # Command words
+            (r'\b(attack|cast|dress|undress|dressconfig|target|targettype|targetloc|targetrelloc|dress|drop|waitfortarget|wft|dclick|dclicktype|dclickvar|usetype|useobject|droprelloc|lift|lifttype|waitforgump|gumpresponse|gumpclose|menu|menuresponse|waitformenu|promptresponse|waitforprompt|hotkey|say|msg|overhead|sysmsg|wait|pause|waitforstat|setability|setlasttarget|lasttarget|setvar|unsetvar|skill|useskill|walk|script|useonce|organizer|organize|org|restock|scav|scavenger|potion|clearsysmsg|clearjournal|whisper|yell|guild|alliance|emote|waitforsysmsg|wfsysmsg|clearall|virtue|interrupt|sound|music|classicuo|cuo|rename|getlabel|ignore|unignore|clearignore|cooldown|settimer|removetimer|createtimer|poplist|pushlist|removelist|createlist|clearlist)\b', Name.Builtin),
+
+            # Layer words
+            (r'\b(RightHand|LeftHand|Shoes|Pants|Shirt|Head|Gloves|Ring|Talisman|Neck|Hair|Waist|InnerTorso|Bracelet|FacialHair|MiddleTorso|Earrings|Arms|Cloak|Backpack|OuterTorso|OuterLegs|InnerLegs|backpack|true|false|criminal|enemy|friend|friendly|grey|gray|innocent|murderer|red|blue|nonfriendly|cancel|clear|minutes|minute|min|seconds|second|sec)\b', Name.Decorator),
+
+            # Expression words
+            (r'\b(queued|position|insysmsg|insysmessage|findtype|findbuff|finddebuff|stam|maxstam|hp|maxhp|maxhits|hits|mana|maxmana|str|dex|int|poisoned|hidden|mounted|rhandempty|lhandempty|skill|count|counter|weight|dead|closest|close|rand|random|next|prev|previous|human|humanoid|monster|varexist|varexist|followers|maxfollowers|maxweight|targetexists|diffmana|diffstam|diffhits|diffhp|diffweight|blessed|invul|invuln|warmode|name|paralyzed|itemcount|poplist|atlist|listexists|list|inlist|timer|timerexists)\b', Name.Function),
+
+            # Default
+            (r'.', Text),
+        ]
+    }
+    

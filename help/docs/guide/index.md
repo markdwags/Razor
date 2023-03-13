@@ -4,6 +4,10 @@ The **Razor Scripting Engine** is a _"command based scripting language"_ designe
 
 To learn more about this version of Razor, please visit the [home page](https://www.razorce.com).
 
+# Quick Start
+
+Check out the various [Commands](commands.md), [Expressions](expressions.md), and [Keywords](keywords.md) that are available along with working examples.
+
 # Design
 
 This scripting engine attempts to maintain and improve existing Razor functionality, offer quality of life improvements over the existing macro system, and provide an easily approachable syntax that is accessible regardless of skill level.
@@ -18,7 +22,7 @@ For example, instead of having to do the following with a Razor macro:
 
 You can simply type:
 
-```vim
+```razor
 dclicktype 'dagger'
 ```
 
@@ -28,7 +32,7 @@ While updates to Razor have made it easier to edit and share macros, one of the 
 
 For example, even a basic macro that casts blade spirit, waits for the target and casts a relative location based on your position can be difficult to read to the untrained eye.
 
-```vim
+```razor
 Assistant.Macros.MacroCastSpellAction|33
 Assistant.Macros.WaitForTargetAction|30
 Assistant.Macros.TargetRelLocAction|3|1
@@ -36,7 +40,7 @@ Assistant.Macros.TargetRelLocAction|3|1
 
 With a Razor script, it becomes:
 
-```vim
+```razor
 cast 'blade spirits'
 waitfortarget
 targetrelloc 3 1
@@ -44,7 +48,7 @@ targetrelloc 3 1
 
 Another example using a script that uses detect hidden, waits for target, targets self, waits .40 seconds, checks for a system message, says something and targets the closest mobile.
 
-```vim
+```razor
 Assistant.Macros.UseSkillAction|14
 Assistant.Macros.WaitForTargetAction|30
 Assistant.Macros.HotKeyAction|1059|
@@ -59,7 +63,7 @@ Assistant.Macros.EndIfAction
 
 With a Razor script, it becomes:
 
-```vim
+```razor
 skill 'detecthidden'
 waitfortarget
 target 'self'
