@@ -1291,6 +1291,24 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 # List Commands
 
+## clearlist
+
+**Syntax**: `clearlist ('list name')`
+
+**Description**: This command will clear a list but doesn't remove it.
+
+!!! example
+
+    === "General"
+
+        ```razor
+        if list 'mylist' > 0
+            clearlist 'mylist'
+        endif
+
+        pushlist 'sample' 'hello'
+        ```
+
 ## createlist
 
 **Syntax**: `createlist ('list name')`
@@ -1299,14 +1317,42 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 !!! example
 
-    === "General"
+    === "Simple"
 
         ```razor
         if not listexists 'sample'
             createlist 'sample'
-        end if
+        endif
 
         pushlist 'sample' 'hello'
+        ```
+
+    === "Iterating Lists (foreach)"
+
+        ```razor        
+        if not listexists 'words'
+            createlist 'words'
+        endif
+
+        pushlist 'words' 'loot'
+        pushlist 'words' 'taming'
+        pushlist 'words' 'felucca'
+        pushlist 'words' 'trammel'
+        pushlist 'words' 'pk'
+        pushlist 'words' 'pvp'
+        pushlist 'words' 'britannia'
+        pushlist 'words' 'dungeon'
+        pushlist 'words' 'crafting'
+        pushlist 'words' 'gm'
+        pushlist 'words' 'mobs'
+        pushlist 'words' 'spawn'
+        pushlist 'words' 'vendor'
+
+        # Start at loot, and keep saying each item in the list the end.
+        foreach 'word' in 'words'
+            # Show the current item in the list above your head
+            overhead 'word'
+        endfor
         ```
 
 ## poplist
@@ -1365,7 +1411,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
     === "General"
 
         ```razor
-        removelist 'list_name'        
+        removelist 'listname'        
         ```
 # Messaging Commands
 
@@ -1574,7 +1620,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
         ```razor
         if insysmsg 'cannot find'
             clearall
-        endifF
+        endif
         ```
 
 ## lasttarget

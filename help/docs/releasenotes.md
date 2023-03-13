@@ -10,13 +10,16 @@ This version includes more updates to the scripting engine, including the abilit
 * Added [list commands](guide/commands.md#list-commands) and [list expressions](guide/expressions.md#list-expressions)
 * Added [timer commands](guide/commands.md#timer-commands) and [timer expressions](guide/expressions.md#timer-expressions)
 * Added the `foreach` loop to interact with lists
+* Option to disable 25ms delay on script line execution
 * Updated script variables to be part of the same system that sets variables using the `as` operator
-* Fixed missing syntax highlight for `maxweight`
+* Fixed missing syntax highlight for `maxweight`, `clearhands`, `cleardragdrop`, `sell`
 * Running a script will show the name in the system message
 * Fixed the `ignore` and `unignore` commands
 * Fixed the `varexists` expression
 * Added the `unsetvar` command
 * Updated the `interrupt` command to let you pass a specific layer
+* Option to disable highlighting on the script UI
+* Better error handling on script syntax issues
 
 ## 1.8.61.0 (12/07/2022)
 
