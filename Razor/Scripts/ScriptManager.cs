@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -86,6 +87,8 @@ namespace Assistant.Scripts
         }
 
         public static RazorScript SelectedScript { get; set; }
+
+        private static Stopwatch Stopwatch { get; } = new Stopwatch();
         
         private class ScriptTimer : Timer
         {
@@ -137,7 +140,10 @@ namespace Assistant.Scripts
                         if (ScriptManager.Running == false)
                         {
                             if (!Config.GetBool("ScriptDisablePlayFinish"))
+                            {
+                                Stopwatch.Start();
                                 World.Player?.SendMessage(LocString.ScriptPlaying, _queuedScriptName);
+                            }
 
                             Assistant.Engine.MainWindow.LockScriptUI(true);
                             ScriptRunning = true;
@@ -148,7 +154,13 @@ namespace Assistant.Scripts
                         if (ScriptManager.Running)
                         {
                             if (!Config.GetBool("ScriptDisablePlayFinish"))
-                                World.Player?.SendMessage(LocString.ScriptFinished, _queuedScriptName);
+                            {
+                                Stopwatch.Stop();
+                                TimeSpan elapsed = Stopwatch.Elapsed;
+                                Stopwatch.Reset();
+                                
+                                World.Player?.SendMessage(LocString.ScriptFinished, _queuedScriptName, elapsed.TotalMilliseconds);
+                            }
 
                             Assistant.Engine.MainWindow.LockScriptUI(false);
                             ScriptRunning = false;
