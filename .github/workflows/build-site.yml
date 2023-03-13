@@ -42,6 +42,7 @@ jobs:
         run: |
 
           echo "PYGMENTS_DIR=$(python -c 'import pygments; print(pygments.__path__[0])')"
+          PYGMENTS_DIR=$(python -c 'import pygments; print(pygments.__path__[0])')
 
           # Replace with Razor files
           rm $PYGMENTS_DIR/pygments/lexers/_mapping.py
