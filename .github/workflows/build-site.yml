@@ -38,18 +38,19 @@ jobs:
           pip install mkdocs-material                    
           pip install mkdocs-git-revision-date-localized-plugin
       
-      - name: Replace files in Pygments package directory
+      - name: Install and modify Pygments
         run: |
 
-          echo "PYGMENTS_DIR=$(python -c 'import pygments; print(pygments.__path__[0])')"
-          PYGMENTS_DIR=$(python -c 'import pygments; print(pygments.__path__[0])')
-
-          # Replace with Razor files
-          rm $PYGMENTS_DIR/pygments/lexers/_mapping.py
-          cp pygments.mapping.razor $PYGMENTS_DIR/pygments/lexers/_mapping.py
+          git clone https://github.com/pygments/pygments.git
           
-          cp pygments.lexers.razor $PYGMENTS_DIR/pygments/lexers/razor.py          
-          cp pygments.styles.razor $PYGMENTS_DIR/pygments/styles/razor.py
+          # Replace with Razor files
+          rm ./pygments/pygments/lexers/_mapping.py
+          cp pygments.mapping.razor ./pygments/pygments/lexers/_mapping.py
+          
+          cp pygments.lexers.razor ./pygments/pygments/lexers/razor.py          
+          cp pygments.styles.razor ./pygments/pygments/styles/razor.py
+
+          pip install -e ./pygments/          
 
       # Runs a single command using the runners shell
       - name: Build site
