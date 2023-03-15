@@ -5,11 +5,3 @@
   --md-code-hl-string-color: #B5F109;
   --md-code-hl-number-color: #AE81FF;
 }
-
-.highlighttable .code {
-  font-size: 18px !important;
-}
-
-.highlighttable .linenos {
-  font-size: 0.64rem !important;
-}
