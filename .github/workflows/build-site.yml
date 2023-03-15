@@ -37,6 +37,9 @@ jobs:
           pip install mkdocs
           pip install mkdocs-material                    
           pip install mkdocs-git-revision-date-localized-plugin
+          pip install pillow
+          pip install cairosvg 
+          apt-get install libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
       
       - name: Install and modify Pygments
         run: |

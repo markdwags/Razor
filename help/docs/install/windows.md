@@ -1,3 +1,8 @@
+---
+title: Windows Install
+description: A quick guide on how to get Razor up and running on Windows
+---
+
 !!! warning "Client Support"
     It's **highly recommended** that you use the [ClassicUO](https://www.classicuo.eu/) client with this version of Razor, however it should work with the original 5.x and 7.x clients though support for any bugs may be limited.
 

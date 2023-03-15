@@ -3,6 +3,7 @@
 
 LEXERS = {    
     'BashLexer': ('pygments.lexers.shell', 'Bash', ('bash', 'sh', 'ksh', 'zsh', 'shell'), ('*.sh', '*.ksh', '*.bash', '*.ebuild', '*.eclass', '*.exheres-0', '*.exlib', '*.zsh', '.bashrc', 'bashrc', '.bash_*', 'bash_*', 'zshrc', '.zshrc', '.kshrc', 'kshrc', 'PKGBUILD'), ('application/x-sh', 'application/x-shellscript', 'text/x-shellscript')),
+    'JsonLexer': ('pygments.lexers.data', 'JSON', ('json', 'json-object'), ('*.json', 'Pipfile.lock'), ('application/json', 'application/json-object')),
     'RazorLexer': ('pygments.lexers.razor', 'RazorL', ('razor',), ('*.razor'), ('text/x-razor',)),        
     'CSharpLexer': ('pygments.lexers.dotnet', 'C#', ('csharp', 'c#', 'cs'), ('*.cs',), ('text/x-csharp',)),
     'XmlLexer': ('pygments.lexers.html', 'XML', ('xml',), ('*.xml', '*.xsl', '*.rss', '*.xslt', '*.xsd', '*.wsdl', '*.wsf'), ('text/xml', 'application/xml', 'image/svg+xml', 'application/rss+xml', 'application/atom+xml')),

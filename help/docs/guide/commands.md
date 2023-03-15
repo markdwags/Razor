@@ -1,3 +1,8 @@
+---
+title: Script Commands
+description: A list of all script commands for Razor, complete with descriptions and examples
+---
+
 # Command Overview
 
 The commands issued in the scripting engine are similar to commands you might enter into a command prompt or shell.  Each line has a starting command and a set of parameters.  Some of those parameters are required, some are optional.
@@ -180,11 +185,11 @@ Without the `@` symbol, if a robe isn't available, you would get an warning mess
 
     === "Cooldown remains when expired"
 
-        ```csharp
-        // default cooldown, 20 seconds, remains after it expires
+        ```razor
+        # default cooldown, 20 seconds, remains after it expires
         cooldown 'Health Check' 20 0 0 0 true
 
-        // default cooldown, 25 seconds, 235 hue, icon 30012, no sound, remains after it expires
+        # default cooldown, 25 seconds, 235 hue, icon 30012, no sound, remains after it expires
         cooldown 'Health Check' 20 235 30012 0 true
         ```
 
@@ -1692,7 +1697,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "General list"
 
-        ```csharp
+        ```razor
         cast 'lightning'
         waitfortarget
 
@@ -1703,7 +1708,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
     === "Priority list"
 
-        ```csharp
+        ```razor
         cast 'lightning'
         waitfortarget
 

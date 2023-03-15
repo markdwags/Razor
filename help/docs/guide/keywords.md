@@ -1,3 +1,8 @@
+---
+title: Script Keywords
+description: A list of all script keywords for Razor, complete with descriptions and examples
+---
+
 # Keywords Overview
 
 ## and

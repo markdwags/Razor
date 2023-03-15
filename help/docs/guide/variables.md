@@ -1,3 +1,8 @@
+---
+title: Script Variables
+description: A list of all script variables for Razor with descriptions
+---
+
 # Variables Overview
 
 Variables (also referred to as aliases) are commonly used values designed to be referenced in any of your scripts.

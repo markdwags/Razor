@@ -1,6 +1,10 @@
+---
+description: A comprehensive guide to the UO Razor scripting engine, including descriptions & examples for all commands, expressions, keywords
+---
+
 # Introduction
 
-The **Razor Scripting Engine** is a _"command based scripting language"_ designed to make it easier to read, create, edit and share Razor scripts.
+The **Razor Scripting Engine** is a _"command based scripting language"_ designed to make it easier to read, create, edit and share UO Razor scripts.
 
 To learn more about this version of Razor, please visit the [home page](https://www.razorce.com).
 

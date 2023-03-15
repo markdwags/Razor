@@ -1,3 +1,8 @@
+---
+title: Linux Install
+description: A quick guide on how to get Razor up and running on Linux
+---
+
 # Overview
 
 To run Razor with [ClassicUO](https://www.classicuo.eu/) on Linux, you will need to install [Mono](https://www.mono-project.com/)

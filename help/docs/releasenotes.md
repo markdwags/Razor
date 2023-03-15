@@ -1,3 +1,7 @@
+---
+description: Stay up-to-date with the latest Razor release notes
+---
+
 # Release Notes
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.

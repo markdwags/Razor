@@ -97,12 +97,14 @@ markdown_extensions:
       alternate_style: true
   - attr_list
   - pymdownx.details
+  - meta
 
 plugins:
   - search
   - git-revision-date-localized
+  - social
 
-extra:
+extra:  
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/markdwags/Razor

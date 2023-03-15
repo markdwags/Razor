@@ -19,3 +19,4 @@ packages/
 CSharpGuidelines.Layer.DotSettings
 /help/site
 /help/pygments
+.cache

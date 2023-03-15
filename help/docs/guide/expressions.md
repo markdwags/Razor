@@ -1,3 +1,8 @@
+---
+title: Script Expressions
+description: A list of all script expressions for Razor, complete with descriptions and examples
+---
+
 # Statements & Loops
 
 As found in the Razor macro system, you can use `if`, `for`, `foreach`, and `while` when writing a script to add some basic logic and flows.

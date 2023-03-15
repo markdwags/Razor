@@ -1,3 +1,7 @@
+---
+description: A comprehensive guide to all the features found in Razor
+---
+
 # Help with Razor
 
 This guide is broken down based on the different tabs found in Razor.
