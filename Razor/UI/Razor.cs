@@ -536,7 +536,8 @@ namespace Assistant
             
             defaultScriptDelay.SafeAction(s => { s.Checked = Config.GetBool("DefaultScriptDelay"); });
             enableHighlight.SafeAction(s => { s.Checked = Config.GetBool("EnableHighlight"); });
-
+            disableScriptStopwatch.SafeAction(s => { s.Checked = Config.GetBool("DisableScriptStopwatch"); });
+            
             Engine.MainWindow.Size = new Size(Config.GetInt("WindowSizeX"), Config.GetInt("WindowSizeY"));
 
             // Disable SmartCPU in case it was enabled before the feature was removed
@@ -8169,6 +8170,11 @@ namespace Assistant
         private void enableHighlight_CheckedChanged(object sender, EventArgs e)
         {
             Config.SetProperty("EnableHighlight", enableHighlight.Checked);
+        }
+
+        private void disableScriptStopwatch_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("DisableScriptStopwatch", disableScriptStopwatch.Checked);
         }
     }
 }

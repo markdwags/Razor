@@ -592,6 +592,7 @@ namespace Assistant
         PauseScript,
         ResumeScriptMessage,
         PauseScriptMessage,
+        ScriptFinishedStopwatch,
         __End
     }
 

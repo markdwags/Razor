@@ -141,7 +141,11 @@ namespace Assistant.Scripts
                         {
                             if (!Config.GetBool("ScriptDisablePlayFinish"))
                             {
-                                Stopwatch.Start();
+                                if (!Config.GetBool("DisableScriptStopwatch"))
+                                {
+                                    Stopwatch.Start();    
+                                }
+                                
                                 World.Player?.SendMessage(LocString.ScriptPlaying, _queuedScriptName);
                             }
 
@@ -155,11 +159,19 @@ namespace Assistant.Scripts
                         {
                             if (!Config.GetBool("ScriptDisablePlayFinish"))
                             {
-                                Stopwatch.Stop();
-                                TimeSpan elapsed = Stopwatch.Elapsed;
-                                Stopwatch.Reset();
+                                if (!Config.GetBool("DisableScriptStopwatch"))
+                                {
+                                    Stopwatch.Stop();
+                                    TimeSpan elapsed = Stopwatch.Elapsed;
+                                    Stopwatch.Reset();
                                 
-                                World.Player?.SendMessage(LocString.ScriptFinished, _queuedScriptName, elapsed.TotalMilliseconds);
+                                    World.Player?.SendMessage(LocString.ScriptFinishedStopwatch, _queuedScriptName, elapsed.TotalMilliseconds);    
+                                }
+                                else
+                                {
+                                    World.Player?.SendMessage(LocString.ScriptFinished, _queuedScriptName);
+                                }
+                                
                             }
 
                             Assistant.Engine.MainWindow.LockScriptUI(false);

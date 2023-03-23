@@ -336,6 +336,7 @@ namespace Assistant
             
             AddProperty("DefaultScriptDelay", true);
             AddProperty("EnableHighlight", false);
+            AddProperty("DisableScriptStopwatch", false);
 
             Counter.Default();
             Filter.DisableAll();
