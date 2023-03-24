@@ -6,7 +6,7 @@ description: Stay up-to-date with the latest Razor release notes
 
 Below is a list of the latest releases notes going back to the first release of this version of Razor.
 
-## 1.9.X.0 (Dev Preview)
+## 1.9.77.0
 
 This version includes more updates to the scripting engine, including the ability to create cooldowns that will display as a gump. This version also introduces lists and timers to the scripting engine. Be sure to review the latest scripting docs for details.
 

@@ -13,9 +13,9 @@ description: Download Razor, a free tool designed to help with simple tasks whil
 
 Use the links below to download the **latest** version of Razor. To learn more about each version, view the [release notes](releasenotes.md). You can also download previous versions on [Github](https://github.com/markdwags/Razor/releases).
 
-[Download Razor 1.8.61.0 (x64)](https://github.com/markdwags/Razor/releases/download/v1.8.61.0/Razor-x64-v1.8.61.0.zip){ .md-button .md-button--primary }
+[Download Razor 1.9.77.0 (x64)](https://github.com/markdwags/Razor/releases/download/v1.9.77.00/Razor-x64-v1.9.77.0.zip){ .md-button .md-button--primary }
 
-[Download Razor 1.8.61.0 (x86)](https://github.com/markdwags/Razor/releases/download/v1.8.61.0/Razor-x86-v1.8.61.0.zip){ .md-button }
+[Download Razor 1.9.77.0 (x86)](https://github.com/markdwags/Razor/releases/download/v1.9.77.0/Razor-x86-v1.9.77.0.zip){ .md-button }
 
 ## Developer Preview
 
