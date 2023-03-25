@@ -15,7 +15,7 @@ Use the links below to download the **latest** version of Razor. To learn more a
 
 [Download Razor 1.9.77.0 (x64)](https://github.com/markdwags/Razor/releases/download/v1.9.77.0/Razor-x64-1.9.77.0.zip){ .md-button .md-button--primary }
 
-[Download Razor 1.9.77.0 (x86)](https://github.com/markdwags/Razor/releases/download/v1.9.77.0/Razor-x86-v1.9.77.0.zip){ .md-button }
+[Download Razor 1.9.77.0 (x86)](https://github.com/markdwags/Razor/releases/download/v1.9.77.0/Razor-x86-1.9.77.0.zip){ .md-button }
 
 ## Developer Preview
 
