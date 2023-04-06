@@ -1666,7 +1666,7 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
         ```razor
         // find a dog
-        if findtype '217' as 'dog
+        if findtype '217' as 'dog'
             setlasttarget 'dog'
             cast 'lightning'
             wft
