@@ -8,9 +8,10 @@ Below is a list of the latest releases notes going back to the first release of 
 
 ## 1.10.X (Dev Version)
 
-You can always find the latest dev preview [here](https://github.com/markdwags/Razor/releases/tag/Razor-dev-preview).
+* You can always find the latest dev preview [here](https://github.com/markdwags/Razor/releases/tag/Razor-dev-preview).
+* Fixed issue with `setvar` not giving you a target cursor if you stopped the script before selecting a target.
 
-* Changed `setlasttarget` to require you provide a serial or variable as parameter. See [docs](guide/commands.md#list-commands).
+* Changed `setlasttarget` to require you provide a serial or variable as parameter. See [docs](guide/commands.md#setlasttarget).
 
 ## 1.9.77.0 (03/23/2023)
 

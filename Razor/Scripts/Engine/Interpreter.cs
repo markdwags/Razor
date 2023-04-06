@@ -1511,6 +1511,17 @@ namespace Assistant.Scripts.Engine
             _activeScript = null;
             _currentScope = _scope;
             _executionState = ExecutionState.RUNNING;
+            
+            if (_timeoutCallback != null)
+            {
+                if (_timeoutCallback())
+                {
+                    ClearTimeout();
+                }
+
+                _timeoutCallback = null;
+            }
+            
             OnStop?.Invoke();
         }
         
