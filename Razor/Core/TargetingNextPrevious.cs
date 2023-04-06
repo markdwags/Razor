@@ -149,7 +149,7 @@ namespace Assistant
                 targets = targets.OrderBy(m => m.Name).ToList();
             }
 
-            Mobile mobile = null, old = World.FindMobile(m_LastTarget?.Serial ?? Serial.Zero);
+            Mobile mobile = null, old = World.FindMobile(_lastTarget?.Serial ?? Serial.Zero);
             var target = new TargetInfo();
 
             // Loop through 3 times and break out if you can't get a target for some reason
@@ -193,32 +193,32 @@ namespace Assistant
                 return;
             }
 
-            m_LastGroundTarg = m_LastTarget = target;
+            _lastGroundTarget = _lastTarget = target;
 
             if (IsSmartTargetingEnabled())
             {
                 if (Config.GetBool("OnlyNextPrevBeneficial") && isFriend ||
                     Config.GetBool("FriendlyBeneficialOnly") && isFriendly)
                 {
-                    m_LastBeneTarg = target;
+                    _lastBeneTarget = target;
                 }
                 else if (Config.GetBool("OnlyNextPrevBeneficial") && !isFriend ||
                          Config.GetBool("NonFriendlyHarmfulOnly") && isNonFriendly)
                 {
-                    m_LastHarmTarg = target;
+                    _lastHarmTarget = target;
                 }
                 else
                 {
-                    m_LastBeneTarg = m_LastHarmTarg = target;
+                    _lastBeneTarget = _lastHarmTarget = target;
                 }
             }
             else
             {
-                m_LastBeneTarg = m_LastHarmTarg = target;
+                _lastBeneTarget = _lastHarmTarget = target;
             }
 
-            if (m_HasTarget)
-                target.Flags = m_CurFlags;
+            if (_hasTarget)
+                target.Flags = _curFlags;
             else
                 target.Type = 0;
 
@@ -231,7 +231,7 @@ namespace Assistant
             if (!isFriend || Config.GetBool("HighlightFriend"))
             {
                 Client.Instance.SendToClient(new ChangeCombatant(mobile));
-                m_LastCombatant = mobile.Serial;
+                _lastCombatant = mobile.Serial;
             }
 
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);

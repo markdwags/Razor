@@ -45,8 +45,6 @@ namespace Assistant.Scripts
 
         public static DateTime LastWalk { get; set; }
 
-        public static bool SetLastTargetActive { get; set; }
-
         public static bool SetVariableActive { get; set; }
         
         public static bool TargetFound { get; set; }
@@ -404,8 +402,7 @@ namespace Assistant.Scripts
             StopScript();
             
             EnableHighlight = false;
-
-            SetLastTargetActive = false;
+            
             SetVariableActive = false;
 
             if (_queuedScript != null)
@@ -443,8 +440,7 @@ namespace Assistant.Scripts
                 MacroManager.Stop();
 
             StopScript(); // be sure nothing is running
-
-            SetLastTargetActive = false;
+            
             SetVariableActive = false;
 
             if (_queuedScript != null)

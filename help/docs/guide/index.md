@@ -4,7 +4,7 @@ description: A comprehensive guide to the UO Razor scripting engine, including d
 
 # Introduction
 
-The **Razor Scripting Engine** is a _"command based scripting language"_ designed to make it easier to read, create, edit and share UO Razor scripts.
+The **UO Razor Scripting Engine** is a _"command based scripting language"_ designed to make it easier to read, create, edit and share UO Razor scripts.
 
 To learn more about this version of Razor, please visit the [home page](https://www.razorce.com).
 
@@ -30,7 +30,7 @@ You can simply type:
 dclicktype 'dagger'
 ```
 
-# Scripts vs. Macros
+# Razor Scripts vs. Razor Macros
 
 While updates to Razor have made it easier to edit and share macros, one of the core issues is that they weren't designed to be read and edited by users directly, instead the serialized format they're saved in expects you to use the macro editor in Razor.
 
@@ -65,7 +65,7 @@ Assistant.Macros.HotKeyAction|2003|
 Assistant.Macros.EndIfAction
 ```
 
-With a Razor script, it becomes:
+With a UO Razor script, it becomes:
 
 ```razor
 skill 'detecthidden'
@@ -90,7 +90,7 @@ As you can see, while maintaining the same functionality of macros, a Razor scri
 
 # Script Editor
 
-Razor scripts can be written using any text editor. The script editor built into Razor offers syntax highlighting and auto-completion.
+UO Razor scripts can be written using any text editor. The script editor built into Razor offers syntax highlighting and auto-completion.
 
 !!! tip "Window Size"
     You can resize the Razor window to make the script editor larger. You can also adjust the size of the script list to give you additional room.

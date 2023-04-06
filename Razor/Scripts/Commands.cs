@@ -589,7 +589,6 @@ namespace Assistant.Scripts
 
         private static bool Virtue(string command, Variable[] vars, bool quiet, bool force)
         {
-
             if (vars.Length == 0 || !Virtues.Contains(vars[0].AsString()))
             {
                 throw new RunTimeError("Usage: virtue ('honor'/'sacrifice'/'valor')");
@@ -623,21 +622,35 @@ namespace Assistant.Scripts
 
         private static bool SetLastTarget(string command, Variable[] vars, bool quiet, bool force)
         {
-            if (!ScriptManager.SetLastTargetActive)
+            if (vars.Length == 0)
             {
-                Targeting.TargetSetLastTarget();
-                ScriptManager.SetLastTargetActive = true;
+                throw new RunTimeError("Usage: setlasttarget ('serial')");
+            }
+            
+            Serial serial = vars[0].AsSerial();
 
-                return false;
+            if (serial != Serial.Zero)
+            {
+                Mobile mobile = World.FindMobile(serial);
+
+                if (mobile != null)
+                {
+                    Targeting.SetLastTarget(mobile);
+                    return true;
+                }
+                    
+                Item item = World.FindItem(serial);
+
+                if (item != null)
+                {
+                    Targeting.SetLastTarget(item);
+                    return true;
+                }
+
+                Targeting.SetLastTarget(serial);
             }
 
-            if (Targeting.LTWasSet)
-            {
-                ScriptManager.SetLastTargetActive = false;
-                return true;
-            }
-
-            return false;
+            return true;
         }
         
         private enum SetVarState

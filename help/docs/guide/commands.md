@@ -1646,21 +1646,32 @@ Types: `heal, cure, refresh, nightsight, ns, explosion, strength, str, agility`
 
 ## setlasttarget
 
-**Syntax**: `setlasttarget`
+**Syntax**: `setlasttarget ('serial')`
 
-**Description**: This command will pause the script until you select a target to be set as Last Target.
+**Description**: This command will set the last target to the serial you pass as a parameter.
+
+!!! tip
+    You can use `hotkey 'Set Last Target'` if you prefer getting a cursor and targetting a specific object.
 
 !!! example
 
-    === "Set last target and cast"
+    === "Set last target on variable"
 
         ```razor
-        overhead 'set last target'
-        setlasttarget
-        overhead 'set!'
-        cast 'magic arrow'
-        waitfortarget
-        target 'last'
+        setvar 'dog' 0x239
+        setlasttarget 'dog'
+        ```
+
+    === "..with findtype"
+
+        ```razor
+        // find a dog
+        if findtype '217' as 'dog
+            setlasttarget 'dog'
+            cast 'lightning'
+            wft
+            target 'dog'
+        endif
         ```
 
 ## target

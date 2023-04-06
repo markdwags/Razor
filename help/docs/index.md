@@ -11,7 +11,7 @@ For more information about this version of Razor, read the [history](./history.m
 # Help & Support
 
 * For information about how to use Razor, please review the [help guide](./help/).
-* For information about Razor scripting, please review the [scripting guide](./guide/).
+* For information about UO Razor scripts, please review the [scripting guide](./guide/).
 
 If you're unable to find a solution using the information here or you'd like to submit a feature request or bug report, use the following resources.
 
