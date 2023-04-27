@@ -42,6 +42,7 @@ namespace Assistant.HotKeys
             HotKey.Add(HKCategory.Misc, LocString.LastObj, new HotKeyCallback(LastObj));
             HotKey.Add(HKCategory.Misc, LocString.AllNames, new HotKeyCallback(AllNames));
             HotKey.Add(HKCategory.Misc, LocString.AllCorpses, new HotKeyCallback(AllCorpses));
+            HotKey.Add(HKCategory.Misc, LocString.OpenAllCorpses, new HotKeyCallback(OpenAllCorpses));
             HotKey.Add(HKCategory.Misc, LocString.AllMobiles, new HotKeyCallback(AllMobiles));
             HotKey.Add(HKCategory.Misc, LocString.Dismount, new HotKeyCallback(Dismount));
 
@@ -242,6 +243,19 @@ namespace Assistant.HotKeys
             {
                 if (i.IsCorpse)
                     Client.Instance.SendToServer(new SingleClick(i));
+            }
+        }
+
+        private static void OpenAllCorpses()
+        {
+            foreach (Item i in World.Items.Values)
+            {
+                if (i.IsCorpse &&
+                    Utility.InRange(i.Position, World.Player.Position, Config.GetInt("CorpseRange")) &&
+                    World.Player != null && World.Player.Visible)
+                {
+                    PlayerData.DoubleClick(i);
+                }
             }
         }
 
