@@ -338,6 +338,9 @@ namespace Assistant
             AddProperty("EnableHighlight", false);
             AddProperty("DisableScriptStopwatch", false);
 
+            AddProperty("CooldownHeight", 28);
+            AddProperty("CooldownWidth", 110);
+
             Counter.Default();
             Filter.DisableAll();
             DressList.ClearAll();

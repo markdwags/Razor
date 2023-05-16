@@ -81,15 +81,15 @@ namespace Assistant.Gumps.Internal
                     AddImage(80, currentY, cooldown.Value.Icon);
                 }
 
-                AddProgressBar(110, currentY, 110, 28, timeLeft, cooldown.Value.Seconds, Color.Black, backColor, foreColor);
-                AddLabelCropped(114, currentY, 100, 28, labelHue, $"{cooldown.Key} ({timeLeft}s)");
+                AddProgressBar(110, currentY, Config.GetInt("CooldownWidth"), Config.GetInt("CooldownHeight"), timeLeft, cooldown.Value.Seconds, Color.Black, backColor, foreColor);
+                AddLabelCropped(114, currentY, Config.GetInt("CooldownWidth") - 10, Config.GetInt("CooldownHeight"), labelHue, $"{cooldown.Key} ({timeLeft}s)");
 
                 if (timeLeft == 0)
                 {
                     AddImage(224, currentY + 4, 9009);
                 }
 
-                currentY += 30;
+                currentY += 2 + Config.GetInt("CooldownHeight");
             }
         }
 
