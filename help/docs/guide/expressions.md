@@ -837,12 +837,27 @@ Description: Used to get the current skill level for a given skill.
 !!! tip "Supported skill names"
     Razor used to rely on a static list of names but now reads from your client's skills.mul file for the names of the skill.
 
+!!! tip "Real vs Shown (or Value)"
+    By default, Razor will compare against the shown skill value that includes other factors such as your stats. If you'd like to compare to the real skill value, use the `!` in front of `skill`.  See the example below.
+
 !!! example
 
-    === "General"
+    === "Compare Shown Skill"
 
         ```razor
         if skill 'magery' < 62.5
+            cast 'invisibility'
+            waitfortarget
+            target 'self'
+        endif
+        ```
+    
+    === "Compare Real Skill"
+
+        ```razor
+        // Note the ! at the end of the skill expression command
+        // This tells Razor to look at the real value, not the shown value
+        if skill! 'magery' < 62.5
             cast 'invisibility'
             waitfortarget
             target 'self'

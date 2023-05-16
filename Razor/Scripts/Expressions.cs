@@ -473,7 +473,7 @@ namespace Assistant.Scripts
 
             if (Skills.SkillsByName.TryGetValue(vars[0].AsString(), out var skill))
             {
-                return World.Player.Skills[skill.Index].Value;
+                return force ? World.Player.Skills[skill.Index].Base : World.Player.Skills[skill.Index].Value;
             }
 
             CommandHelper.SendWarning(expression, $"Skill '{vars[0].AsString()}' not found", quiet);
