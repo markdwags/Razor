@@ -1148,7 +1148,7 @@ namespace Assistant.Scripts
         {
             if (vars.Length < 1)
             {
-                throw new RunTimeError("Usage: lift (serial) [amount]");
+                throw new RunTimeError("Usage: lift (serial) [amount] [timeout]");
             }
 
             Serial serial = vars[0].AsSerial();
@@ -1165,6 +1165,13 @@ namespace Assistant.Scripts
                 amount = Utility.ToUInt16(vars[1].AsString(), 1);
             }
 
+            long timeout = 30000;
+            
+            if (vars.Length == 3)
+            {
+                timeout = Utility.ToLong(vars[2].AsString(), 30000);
+            }
+
             if (_lastLiftId > 0)
             {
                 if (DragDropManager.LastIDLifted == _lastLiftId)
@@ -1174,7 +1181,7 @@ namespace Assistant.Scripts
                     return true;
                 }
 
-                Interpreter.Timeout(30000, () =>
+                Interpreter.Timeout(timeout, () =>
                 {
                     _lastLiftId = 0;
                     return true;

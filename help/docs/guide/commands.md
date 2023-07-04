@@ -459,9 +459,9 @@ Example:
 
 ## lift
 
-**Syntax**: `lift ('serial') ['amount']`
+**Syntax**: `lift ('serial') ['amount'] ['timeout']`
 
-**Description**: This command will lift a specific item and amount. If no amount is provided, `1` is defaulted.
+**Description**: This command will lift a specific item and amount. If no amount is provided, `1` is set as default. If no timeout is provided, `30000` (30 seconds) is set as default
 
 !!! tip "dress command"
     If you're looking to lift an item to wear, consider using the `dress` command instead.
@@ -473,6 +473,13 @@ Example:
         ```razor
         lift '0x400EED2A'
         wait 1000
+        droprelloc 1 1 0
+        ```
+
+    === "Lift item, timeout in 5 seconds if unable"
+        
+        ```razor       
+        lift '0x400EED2A' 1 5000
         droprelloc 1 1 0
         ```
 
