@@ -29,11 +29,6 @@ namespace Assistant.Filters
         {
         }
 
-        public override byte[] PacketIDs
-        {
-            get { return new byte[] {0x4E, 0x4F}; }
-        }
-
         public override LocString Name
         {
             get { return LocString.LightFilter; }
@@ -41,6 +36,7 @@ namespace Assistant.Filters
 
         public override void OnFilter(PacketReader p, PacketHandlerEventArgs args)
         {
+            /*
             if (Client.Instance.AllowBit(FeatureBit.LightFilter))
             {
                 args.Block = true;
@@ -50,8 +46,16 @@ namespace Assistant.Filters
                     World.Player.GlobalLightLevel = 0;
                 }
             }
+            */
         }
 
+        public override byte[] PacketIDs
+        {
+            get { return new byte[] { /* 0x4E, 0x4F */ }; }
+        }
+
+        /*
+        
         public override void OnEnable()
         {
             base.OnEnable();
@@ -79,5 +83,6 @@ namespace Assistant.Filters
                 Client.Instance.SendToClient(new PersonalLightLevel(World.Player));
             }
         }
+        */
     }
 }
