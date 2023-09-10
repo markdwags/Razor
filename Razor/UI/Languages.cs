@@ -593,6 +593,7 @@ namespace Assistant
         ResumeScriptMessage,
         PauseScriptMessage,
         ScriptFinishedStopwatch,
+        OpenAllCorpses,
         __End
     }
 
