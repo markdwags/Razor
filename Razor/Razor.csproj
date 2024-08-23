@@ -1,14 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B24E4FB1-4936-4544-9E88-F3FF9B04FDBA}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFramework>net8.0-windows</TargetFramework>
+	<OutputPath>bin\$(Configuration)</OutputPath>
     <ApplicationIcon>UI\App.ico</ApplicationIcon>
-    <AssemblyName>Razor</AssemblyName>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -17,11 +11,6 @@
     <RootNamespace>Assistant</RootNamespace>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <StartupObject>Assistant.Engine</StartupObject>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <PublishUrl>E:\Programming\razor-markdwags\Build\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -36,44 +25,8 @@
     <ApplicationVersion>1.5.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\bin\Win32\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <FileAlignment>4096</FileAlignment>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\bin\Win32\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <FileAlignment>4096</FileAlignment>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup />
   <PropertyGroup>
     <ApplicationManifest>Razor.manifest</ApplicationManifest>
   </PropertyGroup>
@@ -90,503 +43,29 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <FileAlignment>4096</FileAlignment>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <FileAlignment>4096</FileAlignment>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <FileAlignment>4096</FileAlignment>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <FileAlignment>4096</FileAlignment>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cuoapi, Version=1.3.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\cuoapi.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System">
+    <Reference Update="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data">
+    <Reference Update="System.Data">
       <Name>System.Data</Name>
     </Reference>
-    <Reference Include="System.Drawing">
+    <Reference Update="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
-    <Reference Include="System.Windows.Forms">
-      <Name>System.Windows.Forms</Name>
-    </Reference>
-    <Reference Include="System.Xml">
+    <Reference Update="System.Xml">
       <Name>System.XML</Name>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agents\BuyAgent.cs" />
-    <Compile Include="Agents\IgnoreAgent.cs" />
-    <Compile Include="Agents\OrganizerAgent.cs" />
-    <Compile Include="Agents\RestockAgent.cs" />
-    <Compile Include="Agents\SearchExemptionAgent.cs" />
-    <Compile Include="Agents\SellAgent.cs" />
-    <Compile Include="Agents\UseOnceAgent.cs" />
-    <Compile Include="Boat\BoatWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Boat\BoatWindow.Designer.cs">
-      <DependentUpon>BoatWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Client\ClassicUO.cs" />
-    <Compile Include="Client\OSI.cs" />
-    <Compile Include="Core\ActionQueue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Agents\Agents.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\BuffDebuffManager.cs" />
-    <Compile Include="Core\BodCapture.cs" />
-    <Compile Include="Core\ClassicUOManager.cs" />
-    <Compile Include="Core\CooldownManager.cs" />
-    <Compile Include="Core\Dress.cs" />
-    <Compile Include="Core\EncodedSpeech.cs" />
-    <Compile Include="Core\DamageTracker.cs" />
-    <Compile Include="Core\StaffToolsManager.cs" />
-    <Compile Include="Core\MessageManager.cs" />
-    <Compile Include="Core\Overrides.cs" />
-    <Compile Include="Core\SystemMessages.cs" />
-    <Compile Include="Core\TextFilterManager.cs" />
-    <Compile Include="Gumps\Gump.cs" />
-    <Compile Include="Gumps\GumpButtonType.cs" />
-    <Compile Include="Gumps\GumpCollection.cs" />
-    <Compile Include="Gumps\GumpElement.cs" />
-    <Compile Include="Gumps\GumpPage.cs" />
-    <Compile Include="Gumps\GumpType.cs" />
-    <Compile Include="Core\OverheadManager.cs" />
-    <Compile Include="Core\WaypointManager.cs" />
-    <Compile Include="Filters\SoundMusicManager.cs" />
-    <Compile Include="Filters\TargetFilterManager.cs" />
-    <Compile Include="Core\FriendsManager.cs" />
-    <Compile Include="Core\MessageInBottleCapture.cs" />
-    <Compile Include="Core\ContainerLabels.cs" />
-    <Compile Include="Core\GoldPerHourTimer.cs" />
-    <Compile Include="Core\GateTimer.cs" />
-    <Compile Include="Core\SkillTimer.cs" />
-    <Compile Include="Core\BandageTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Commands.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Counters.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\DressList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\TargetingClosest.cs" />
-    <Compile Include="Core\TargetingNextPrevious.cs" />
-    <Compile Include="Filters\Death.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\Filter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\Light.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\MessageFilter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\MobileFilter.cs" />
-    <Compile Include="Filters\SoundFilters.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\StaffItems.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\VetRewardGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\WallStaticFilter.cs" />
-    <Compile Include="Filters\Weather.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Geometry.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\Internal\BuffGump.cs" />
-    <Compile Include="Gumps\Internal\CooldownGump.cs" />
-    <Compile Include="Gumps\Internal\DamageTrackerListGump.cs" />
-    <Compile Include="Gumps\Internal\InputDialogGump.cs" />
-    <Compile Include="Gumps\Internal\MobileInfoGump.cs" />
-    <Compile Include="Gumps\Internal\ItemInfoGump.cs" />
-    <Compile Include="Gumps\Internal\DamageTrackerGump.cs" />
-    <Compile Include="Gumps\Internal\HotKeyGump.cs" />
-    <Compile Include="Gumps\Internal\BoatControlGump.cs" />
-    <Compile Include="Gumps\Internal\SystemMessagesGump.cs" />
-    <Compile Include="Gumps\Internal\AgentsGump.cs" />
-    <Compile Include="Gumps\Internal\TestMessageGump.cs" />
-    <Compile Include="HotKeys\Counters.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="HotKeys\HotKeys.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="HotKeys\Misc.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="HotKeys\SkillHotKeys.cs" />
-    <Compile Include="HotKeys\SpecialMoves.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="HotKeys\Undress.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Item.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\ItemID.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Agents\ScavengerAgent.cs" />
-    <Compile Include="Network\PacketWriter.cs" />
-    <Compile Include="Scripts\AgentCommands.cs" />
-    <Compile Include="Scripts\Engine\Interpreter.cs" />
-    <Compile Include="Scripts\Engine\Lexer.cs" />
-    <Compile Include="Macros\MacroVariables.cs" />
-    <Compile Include="Macros\Actions.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Macros\Macro.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Macros\MacroManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Main.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Map.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Scripts\Aliases.cs" />
-    <Compile Include="Scripts\Commands.cs" />
-    <Compile Include="Scripts\Engine\TextParser.cs" />
-    <Compile Include="Scripts\Expressions.cs" />
-    <Compile Include="Scripts\Helpers\CommandHelper.cs" />
-    <Compile Include="Scripts\RazorScript.cs" />
-    <Compile Include="Scripts\ScriptVariables.cs" />
-    <Compile Include="Scripts\ScriptManager.cs" />
-    <Compile Include="Map\MapWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Map\Region.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Map\UOMapControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Map\UOMapRuneButton.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\MemHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Mobile.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\MsgQueue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Platform.cs" />
-    <Compile Include="Client\Client.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Network\Handlers.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Network\Packet.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Network\PacketHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Network\Packets.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\ObjectPropertyList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\PasswordMemory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Ping.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Player.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Network\PacketTable.cs" />
-    <Compile Include="Client\UOAssist.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Core\ScreenCapture.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Serial.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Spells.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\StealthSteps.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Targeting.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Timer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\TargetingRandom.cs" />
-    <Compile Include="Scripts\TargetCommands.cs" />
-    <Compile Include="Scripts\SpeechCommands.cs" />
-    <Compile Include="UI\AddCounter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UI\ArtViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\ArtViewer.Designer.cs">
-      <DependentUpon>ArtViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\BuffDebuffOptions.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\BuffDebuffOptions.Designer.cs">
-      <DependentUpon>BuffDebuffOptions.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Config.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UI\Ext.cs" />
-    <Compile Include="UI\SoundEntry.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\HueEntry.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\InputDropdown.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\InputBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Languages.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UI\MacroInsertDoWhile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\MacroInsertWhile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\MacroInsertIf.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\MacroInsertWait.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\MessageDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ContainerLabels.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ContainerLabels.Designer.cs">
-      <DependentUpon>ContainerLabels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Razor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Razor.Designer.cs">
-      <DependentUpon>Razor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\SplashScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\WelcomeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Core\UOEntity.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Utility.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\World.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\ZLib.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UltimaSDK\AnimationEdit.cs" />
-    <Compile Include="UltimaSDK\Animations.cs" />
-    <Compile Include="UltimaSDK\Animdata.cs" />
-    <Compile Include="UltimaSDK\Art.cs" />
-    <Compile Include="UltimaSDK\ASCIIFont.cs" />
-    <Compile Include="UltimaSDK\CalibrationInfo.cs" />
-    <Compile Include="UltimaSDK\Client.cs" />
-    <Compile Include="UltimaSDK\ClientHandles.cs" />
-    <Compile Include="UltimaSDK\FileIndex.cs" />
-    <Compile Include="UltimaSDK\Files.cs" />
-    <Compile Include="UltimaSDK\Gumps.cs" />
-    <Compile Include="UltimaSDK\Hues.cs" />
-    <Compile Include="UltimaSDK\Light.cs" />
-    <Compile Include="UltimaSDK\LocationPointer.cs" />
-    <Compile Include="UltimaSDK\Map.cs" />
-    <Compile Include="UltimaSDK\MultiMap.cs" />
-    <Compile Include="UltimaSDK\Multis.cs" />
-    <Compile Include="UltimaSDK\NativeMethods.cs" />
-    <Compile Include="UltimaSDK\ProcessStream.cs" />
-    <Compile Include="UltimaSDK\RadarCol.cs" />
-    <Compile Include="UltimaSDK\SkillGroups.cs" />
-    <Compile Include="UltimaSDK\Skills.cs" />
-    <Compile Include="UltimaSDK\Sound.cs" />
-    <Compile Include="UltimaSDK\SpeechList.cs" />
-    <Compile Include="UltimaSDK\StringEntry.cs" />
-    <Compile Include="UltimaSDK\StringList.cs" />
-    <Compile Include="UltimaSDK\Textures.cs" />
-    <Compile Include="UltimaSDK\TileData.cs" />
-    <Compile Include="UltimaSDK\TileList.cs" />
-    <Compile Include="UltimaSDK\TileMatrix.cs" />
-    <Compile Include="UltimaSDK\TileMatrixPatch.cs" />
-    <Compile Include="UltimaSDK\UnicodeFont.cs" />
-    <Compile Include="UltimaSDK\Verdata.cs" />
-    <Compile Include="UltimaSDK\WindowProcessStream.cs" />
-    <EmbeddedResource Include="Boat\BoatWindow.resx">
-      <DependentUpon>BoatWindow.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Macros\Actions.resx">
-      <DependentUpon>Actions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Map\MapWindow.resx">
-      <DependentUpon>MapWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Map\UOMapControl.resx">
-      <DependentUpon>UOMapControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\AddCounter.resx">
-      <DependentUpon>AddCounter.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Update="Macros\Actions.cs" />
+    <Compile Update="Map\UOMapControl.cs" />
+    <Compile Update="UI\ArtViewer.cs" />
     <EmbeddedResource Include="UI\App.ico" />
-    <EmbeddedResource Include="UI\BuffDebuffOptions.resx">
-      <DependentUpon>BuffDebuffOptions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\SoundEntry.resx">
-      <DependentUpon>SoundEntry.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\HueEntry.resx">
-      <DependentUpon>HueEntry.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\InputDropdown.resx">
-      <DependentUpon>InputDropdown.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\InputBox.resx">
-      <DependentUpon>InputBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\MacroInsertDoWhile.resx">
-      <DependentUpon>MacroInsertDoWhile.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\MacroInsertWhile.resx">
-      <DependentUpon>MacroInsertWhile.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\MacroInsertIf.resx">
-      <DependentUpon>MacroInsertIf.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\MacroInsertWait.resx">
-      <DependentUpon>MacroInsertWait.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\MessageDialog.resx">
-      <DependentUpon>MessageDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ContainerLabels.resx">
-      <DependentUpon>ContainerLabels.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Razor.resx">
-      <DependentUpon>Razor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\SplashScreen.resx">
-      <DependentUpon>SplashScreen.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\WelcomeForm.resx">
-      <DependentUpon>WelcomeForm.cs</DependentUpon>
-    </EmbeddedResource>
     <Content Include="Boat\Images\anchor-left.png" />
     <Content Include="Boat\Images\anchor-right.png" />
     <Content Include="Boat\Images\boateast.png" />
@@ -609,38 +88,23 @@
     <Content Include="UI\UOPS.ico" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
+    <ProjectReference Include="..\FastColoredTextBox\FastColoredTextBox.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Razor.manifest" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FastColoredTextBox\FastColoredTextBox.csproj">
-      <Project>{6DD14A85-CCFC-4774-BD26-0F5772512319}</Project>
-      <Name>FastColoredTextBox</Name>
-    </ProjectReference>
+    <Compile Remove="Network\Loader.cs" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="cuoapi">
+      <HintPath>cuoapi.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>xcopy /S /Q /Y "$(SolutionDir)etc\*" "$(SolutionDir)bin\Win32\$(Configuration)\"
-xcopy /S /Q /Y "$(SolutionDir)etc\*" "$(SolutionDir)bin\x64\$(Configuration)\"</PostBuildEvent>
+    <PostBuildEvent>
+		xcopy /S /Q /Y "$(SolutionDir)etc\*" "$(MSBuildProjectDirectory)\$(OutputPath)\$(TargetFramework)"
+	</PostBuildEvent>
   </PropertyGroup>
 </Project>
