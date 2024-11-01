@@ -31,7 +31,6 @@
 #endregion
 using System;
 using System.Buffers.Binary;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -50,15 +49,6 @@ namespace Ultima
         public int Position { get; private set; }
         public long Length { get; }
         public int Remaining => (int)(Length - Position);
-
-        public IntPtr StartAddress => (IntPtr)Unsafe.AsPointer(ref GetPinnableReference());
-        public IntPtr PositionAddress
-        {
-            get
-            {
-                return (IntPtr)((byte*)Unsafe.AsPointer(ref GetPinnableReference()) + Position);
-            }
-        }
 
         public byte this[int index] => _data[0];
 
