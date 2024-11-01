@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Assistant;
 
 namespace Ultima
 {
@@ -54,10 +55,23 @@ namespace Ultima
         public StringList(string language, string path)
         {
             Language = language;
+            
             LoadEntry(path);
         }
 
         private void LoadEntry(string path)
+        {
+            if (Engine.ClientVersion.Major >= 7 && Engine.ClientVersion.Build >= 105)
+            {
+                LoadNewEntryFormat(path);
+            }
+            else
+            {
+                LoadOldEntryFormat(path);
+            }
+        }
+
+        private void LoadOldEntryFormat(string path)
         {
             if (path == null)
             {
@@ -91,6 +105,48 @@ namespace Ultima
                     Entries.Add(se);
 
                     m_StringTable[number] = text;
+                    m_EntryTable[number] = se;
+                }
+            }
+        }
+        
+        // Based on the implementation from Karasho @ ClassicUO
+        private void LoadNewEntryFormat(string path)
+        {
+            if (path == null)
+            {
+                Entries = new List<StringEntry>(0);
+                return;
+            }
+
+            Entries = new List<StringEntry>();
+            m_StringTable = new Dictionary<int, string>();
+            m_EntryTable = new Dictionary<int, StringEntry>();
+
+            using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                int bytesRead;
+                var totalRead = 0;
+                var buf = new byte[fileStream.Length];
+                while ((bytesRead = fileStream.Read(buf, totalRead, Math.Min(4096, buf.Length - totalRead))) > 0)
+                    totalRead += bytesRead;
+
+                var output = buf[3] == 0x8E ? BwtDecompress.Decompress(buf) : buf;
+
+                var reader = new StackDataReader(output);
+                m_Header1 = reader.ReadInt32LE();
+                m_Header2 = reader.ReadInt16LE();
+
+                while (reader.Remaining > 0)
+                {
+                    var number = reader.ReadInt32LE();
+                    var flag = reader.ReadUInt8();
+                    var length = reader.ReadInt16LE();
+                    var text = string.Intern(reader.ReadUTF8(length));
+
+                    m_StringTable[number] = text;
+                    StringEntry se = new StringEntry(number, text, flag);
+                    Entries.Add(se);
                     m_EntryTable[number] = se;
                 }
             }
