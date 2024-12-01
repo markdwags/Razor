@@ -1214,7 +1214,7 @@ void FlushSendData()
 					InGame = true;
 					break;
 				}
-				else if ( *buff == 0x00 && (*((DWORD*)&buff[1])) == 0xEDEDEDED && len >= 1+4+4+1+30+30 && len <= left )
+				else if ( (*buff == 0x00 || *buff == 0xF8) && (*((DWORD*)&buff[1])) == 0xEDEDEDED && len >= 1+4+4+1+30+30 && len <= left )
 				{
 					// char creation
 					if ( pShared->AllowNegotiate && ServerNegotiated )
