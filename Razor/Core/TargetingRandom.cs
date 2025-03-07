@@ -1,6 +1,6 @@
 ﻿#region license
 // Razor: An Ultima Online Assistant
-// Copyright (c) 2022 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (c) 2025 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,11 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
-
-using System.Collections.Generic;
-using Assistant.Core;
-using Assistant.Filters;
-using Assistant.Scripts;
 
 namespace Assistant
 {
@@ -197,142 +192,6 @@ namespace Assistant
         public static void TargetRandAnyone()
         {
             RandomTarget();
-        }
-
-        public static void RandomTarget(params int[] noto)
-        {
-            if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
-                return;
-
-            var list = new List<Mobile>();
-            foreach (var m in World.MobilesInRange(12))
-                if ((!FriendsManager.IsFriend(m.Serial) || noto.Length > 0 && noto[0] == 0) &&
-                    !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
-                    !TargetFilterManager.IsFilteredTarget(m.Serial) &&
-                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
-                {
-                    for (var i = 0; i < noto.Length; i++)
-                        if (noto[i] == m.Notoriety)
-                        {
-                            list.Add(m);
-                            break;
-                        }
-
-                    if (noto.Length == 0)
-                        list.Add(m);
-                }
-
-            if (list.Count > 0)
-            {
-                SetLastTargetTo(list[Utility.Random(list.Count)]);
-                ScriptManager.TargetFound = true;
-            }
-            else
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-            }
-        }
-
-        public static void RandomHumanoidTarget(params int[] noto)
-        {
-            if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
-                return;
-
-            var list = new List<Mobile>();
-            foreach (var m in World.MobilesInRange(12))
-            {
-                if (m.Body != 0x0190 && m.Body != 0x0191 && m.Body != 0x025D && m.Body != 0x025E)
-                    continue;
-
-                if ((!FriendsManager.IsFriend(m.Serial) || noto.Length > 0 && noto[0] == 0) &&
-                    !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
-                    !TargetFilterManager.IsFilteredTarget(m.Serial) &&
-                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
-                {
-                    for (var i = 0; i < noto.Length; i++)
-                        if (noto[i] == m.Notoriety)
-                        {
-                            list.Add(m);
-                            break;
-                        }
-
-                    if (noto.Length == 0)
-                        list.Add(m);
-                }
-            }
-
-            if (list.Count > 0)
-            {
-                SetLastTargetTo(list[Utility.Random(list.Count)]);
-                ScriptManager.TargetFound = true;
-            }
-            else
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-            }
-        }
-
-        public static void RandomMonsterTarget(params int[] noto)
-        {
-            if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
-                return;
-
-            var list = new List<Mobile>();
-            foreach (var m in World.MobilesInRange(12))
-            {
-                if (!m.IsMonster)
-                    continue;
-
-                if ((!FriendsManager.IsFriend(m.Serial) || noto.Length > 0 && noto[0] == 0) &&
-                    !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
-                    !TargetFilterManager.IsFilteredTarget(m.Serial) &&
-                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
-                {
-                    for (var i = 0; i < noto.Length; i++)
-                        if (noto[i] == m.Notoriety)
-                        {
-                            list.Add(m);
-                            break;
-                        }
-
-                    if (noto.Length == 0)
-                        list.Add(m);
-                }
-            }
-
-            if (list.Count > 0)
-            {
-                SetLastTargetTo(list[Utility.Random(list.Count)]);
-                ScriptManager.TargetFound = true;
-            }
-            else
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-            }
-        }
-
-        public static void RandomFriendTarget()
-        {
-            if (!Client.Instance.AllowBit(FeatureBit.RandomTargets))
-                return;
-
-            var list = new List<Mobile>();
-            foreach (var m in World.MobilesInRange(12))
-                if (FriendsManager.IsFriend(m.Serial) &&
-                    !m.Blessed && !m.IsGhost && m.Serial != World.Player.Serial &&
-                    !TargetFilterManager.IsFilteredTarget(m.Serial) &&
-                    Utility.InRange(World.Player.Position, m.Position, Config.GetInt("LTRange")))
-                    list.Add(m);
-
-            if (list.Count > 0)
-            {
-                SetLastTargetTo(list[Utility.Random(list.Count)]);
-                ScriptManager.TargetFound = true;
-            }
-            else
-            {
-                World.Player.SendMessage(MsgLevel.Warning, LocString.TargNoOne);
-            }
         }
     }
 }

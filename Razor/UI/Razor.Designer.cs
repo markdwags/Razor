@@ -560,6 +560,11 @@ namespace Assistant
             this.btnAddWaypoint = new System.Windows.Forms.Button();
             this.waypointList = new System.Windows.Forms.ListBox();
             this.subBuffsDebuffs = new System.Windows.Forms.TabPage();
+            this.cooldownGumpBox = new System.Windows.Forms.GroupBox();
+            this.cooldownHeight = new System.Windows.Forms.TextBox();
+            this.lblCooldownHeight = new System.Windows.Forms.Label();
+            this.cooldownWidth = new System.Windows.Forms.TextBox();
+            this.lblCooldownWidth = new System.Windows.Forms.Label();
             this.buffBarGroupBox = new System.Windows.Forms.GroupBox();
             this.showBuffDebuffTimeType = new System.Windows.Forms.ComboBox();
             this.lblShowBuffTime = new System.Windows.Forms.Label();
@@ -804,7 +809,9 @@ namespace Assistant
             this.itemTile = new System.Windows.Forms.Button();
             this.itemAdd = new System.Windows.Forms.Button();
             this.itemTree = new System.Windows.Forms.TreeView();
+            this.artViewer = new Assistant.UI.ArtViewer();
             this.advancedStaffDoors = new System.Windows.Forms.TabPage();
+            this.doorViewer = new Assistant.UI.ArtViewer();
             this.doorTree = new System.Windows.Forms.TreeView();
             this.doorSouthCW = new System.Windows.Forms.Button();
             this.doorSouthCCW = new System.Windows.Forms.Button();
@@ -825,13 +832,7 @@ namespace Assistant
             this.linkMain = new System.Windows.Forms.LinkLabel();
             this.label21 = new System.Windows.Forms.Label();
             this.aboutVer = new System.Windows.Forms.Label();
-            this.cooldownGumpBox = new System.Windows.Forms.GroupBox();
-            this.cooldownHeight = new System.Windows.Forms.TextBox();
-            this.lblCooldownHeight = new System.Windows.Forms.Label();
-            this.cooldownWidth = new System.Windows.Forms.TextBox();
-            this.lblCooldownWidth = new System.Windows.Forms.Label();
-            this.artViewer = new Assistant.UI.ArtViewer();
-            this.doorViewer = new Assistant.UI.ArtViewer();
+            this.chkSmartClosestRandom = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.subGeneralTab.SuspendLayout();
@@ -857,6 +858,7 @@ namespace Assistant
             this.subOverheadTab.SuspendLayout();
             this.subWaypoints.SuspendLayout();
             this.subBuffsDebuffs.SuspendLayout();
+            this.cooldownGumpBox.SuspendLayout();
             this.buffBarGroupBox.SuspendLayout();
             this.dressTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -903,7 +905,6 @@ namespace Assistant
             ((System.ComponentModel.ISupportInitialize)(this.itemTileCount)).BeginInit();
             this.advancedStaffDoors.SuspendLayout();
             this.aboutTab.SuspendLayout();
-            this.cooldownGumpBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_NotifyIcon
@@ -1176,9 +1177,9 @@ namespace Assistant
             // moreOptTab
             // 
             this.moreOptTab.Controls.Add(this.optionsTabCtrl);
-            this.moreOptTab.Location = new System.Drawing.Point(4, 24);
+            this.moreOptTab.Location = new System.Drawing.Point(4, 44);
             this.moreOptTab.Name = "moreOptTab";
-            this.moreOptTab.Size = new System.Drawing.Size(519, 342);
+            this.moreOptTab.Size = new System.Drawing.Size(519, 322);
             this.moreOptTab.TabIndex = 5;
             this.moreOptTab.Text = "Options";
             // 
@@ -1193,7 +1194,7 @@ namespace Assistant
             this.optionsTabCtrl.Location = new System.Drawing.Point(6, 3);
             this.optionsTabCtrl.Name = "optionsTabCtrl";
             this.optionsTabCtrl.SelectedIndex = 0;
-            this.optionsTabCtrl.Size = new System.Drawing.Size(510, 334);
+            this.optionsTabCtrl.Size = new System.Drawing.Size(510, 314);
             this.optionsTabCtrl.TabIndex = 93;
             // 
             // subOptionsSpeechTab
@@ -1235,7 +1236,7 @@ namespace Assistant
             this.subOptionsSpeechTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsSpeechTab.Name = "subOptionsSpeechTab";
             this.subOptionsSpeechTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsSpeechTab.Size = new System.Drawing.Size(502, 306);
+            this.subOptionsSpeechTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsSpeechTab.TabIndex = 0;
             this.subOptionsSpeechTab.Text = "Speech & Messages  ";
             // 
@@ -1571,15 +1572,16 @@ namespace Assistant
             this.subOptionsTargetTab.Controls.Add(this.label6);
             this.subOptionsTargetTab.Controls.Add(this.queueTargets);
             this.subOptionsTargetTab.Controls.Add(this.lblTargetFormat);
-            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsTargetTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsTargetTab.Name = "subOptionsTargetTab";
             this.subOptionsTargetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 308);
+            this.subOptionsTargetTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsTargetTab.TabIndex = 1;
             this.subOptionsTargetTab.Text = "Targeting & Queues  ";
             // 
             // groupSmartTarget
             // 
+            this.groupSmartTarget.Controls.Add(this.chkSmartClosestRandom);
             this.groupSmartTarget.Controls.Add(this.nextPrevAbcOrder);
             this.groupSmartTarget.Controls.Add(this.nonFriendlyHarmfulOnly);
             this.groupSmartTarget.Controls.Add(this.friendBeneficialOnly);
@@ -1587,7 +1589,7 @@ namespace Assistant
             this.groupSmartTarget.Controls.Add(this.smartLT);
             this.groupSmartTarget.Location = new System.Drawing.Point(243, 11);
             this.groupSmartTarget.Name = "groupSmartTarget";
-            this.groupSmartTarget.Size = new System.Drawing.Size(253, 153);
+            this.groupSmartTarget.Size = new System.Drawing.Size(253, 171);
             this.groupSmartTarget.TabIndex = 138;
             this.groupSmartTarget.TabStop = false;
             this.groupSmartTarget.Text = "Smart Targeting:";
@@ -1837,9 +1839,9 @@ namespace Assistant
             this.subOptionsMiscTab.Controls.Add(this.label4);
             this.subOptionsMiscTab.Controls.Add(this.openCorpses);
             this.subOptionsMiscTab.Controls.Add(this.blockDis);
-            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 22);
+            this.subOptionsMiscTab.Location = new System.Drawing.Point(4, 24);
             this.subOptionsMiscTab.Name = "subOptionsMiscTab";
-            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 308);
+            this.subOptionsMiscTab.Size = new System.Drawing.Size(502, 286);
             this.subOptionsMiscTab.TabIndex = 2;
             this.subOptionsMiscTab.Text = "Additional Options  ";
             // 
@@ -3117,11 +3119,58 @@ namespace Assistant
             this.subBuffsDebuffs.Controls.Add(this.buffBarGroupBox);
             this.subBuffsDebuffs.Controls.Add(this.buffDebuffOptions);
             this.subBuffsDebuffs.Controls.Add(this.showBuffDebuffOverhead);
-            this.subBuffsDebuffs.Location = new System.Drawing.Point(4, 24);
+            this.subBuffsDebuffs.Location = new System.Drawing.Point(4, 22);
             this.subBuffsDebuffs.Name = "subBuffsDebuffs";
-            this.subBuffsDebuffs.Size = new System.Drawing.Size(502, 286);
+            this.subBuffsDebuffs.Size = new System.Drawing.Size(502, 288);
             this.subBuffsDebuffs.TabIndex = 5;
             this.subBuffsDebuffs.Text = "Buffs / Cooldowns";
+            // 
+            // cooldownGumpBox
+            // 
+            this.cooldownGumpBox.Controls.Add(this.cooldownHeight);
+            this.cooldownGumpBox.Controls.Add(this.lblCooldownHeight);
+            this.cooldownGumpBox.Controls.Add(this.cooldownWidth);
+            this.cooldownGumpBox.Controls.Add(this.lblCooldownWidth);
+            this.cooldownGumpBox.Location = new System.Drawing.Point(14, 124);
+            this.cooldownGumpBox.Name = "cooldownGumpBox";
+            this.cooldownGumpBox.Size = new System.Drawing.Size(232, 151);
+            this.cooldownGumpBox.TabIndex = 133;
+            this.cooldownGumpBox.TabStop = false;
+            this.cooldownGumpBox.Text = "Cooldowns:";
+            // 
+            // cooldownHeight
+            // 
+            this.cooldownHeight.Location = new System.Drawing.Point(75, 26);
+            this.cooldownHeight.Name = "cooldownHeight";
+            this.cooldownHeight.Size = new System.Drawing.Size(36, 23);
+            this.cooldownHeight.TabIndex = 12;
+            this.cooldownHeight.TextChanged += new System.EventHandler(this.cooldownHeight_TextChanged);
+            // 
+            // lblCooldownHeight
+            // 
+            this.lblCooldownHeight.AutoSize = true;
+            this.lblCooldownHeight.Location = new System.Drawing.Point(9, 29);
+            this.lblCooldownHeight.Name = "lblCooldownHeight";
+            this.lblCooldownHeight.Size = new System.Drawing.Size(64, 15);
+            this.lblCooldownHeight.TabIndex = 11;
+            this.lblCooldownHeight.Text = "Bar height:";
+            // 
+            // cooldownWidth
+            // 
+            this.cooldownWidth.Location = new System.Drawing.Point(75, 54);
+            this.cooldownWidth.Name = "cooldownWidth";
+            this.cooldownWidth.Size = new System.Drawing.Size(36, 23);
+            this.cooldownWidth.TabIndex = 10;
+            this.cooldownWidth.TextChanged += new System.EventHandler(this.cooldownWidth_TextChanged);
+            // 
+            // lblCooldownWidth
+            // 
+            this.lblCooldownWidth.AutoSize = true;
+            this.lblCooldownWidth.Location = new System.Drawing.Point(9, 57);
+            this.lblCooldownWidth.Name = "lblCooldownWidth";
+            this.lblCooldownWidth.Size = new System.Drawing.Size(60, 15);
+            this.lblCooldownWidth.TabIndex = 9;
+            this.lblCooldownWidth.Text = "Bar width:";
             // 
             // buffBarGroupBox
             // 
@@ -3285,9 +3334,9 @@ namespace Assistant
             // 
             this.dressTab.Controls.Add(this.groupBox6);
             this.dressTab.Controls.Add(this.groupBox5);
-            this.dressTab.Location = new System.Drawing.Point(4, 24);
+            this.dressTab.Location = new System.Drawing.Point(4, 44);
             this.dressTab.Name = "dressTab";
-            this.dressTab.Size = new System.Drawing.Size(519, 342);
+            this.dressTab.Size = new System.Drawing.Size(519, 322);
             this.dressTab.TabIndex = 3;
             this.dressTab.Text = "Arm/Dress";
             // 
@@ -3306,7 +3355,7 @@ namespace Assistant
             this.groupBox6.Controls.Add(this.dressNow);
             this.groupBox6.Location = new System.Drawing.Point(201, 3);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(311, 329);
+            this.groupBox6.Size = new System.Drawing.Size(311, 309);
             this.groupBox6.TabIndex = 7;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Arm/Dress Items";
@@ -3381,7 +3430,7 @@ namespace Assistant
             this.dressItems.ItemHeight = 15;
             this.dressItems.Location = new System.Drawing.Point(6, 18);
             this.dressItems.Name = "dressItems";
-            this.dressItems.Size = new System.Drawing.Size(197, 305);
+            this.dressItems.Size = new System.Drawing.Size(197, 285);
             this.dressItems.TabIndex = 6;
             this.dressItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dressItems_KeyDown);
             this.dressItems.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dressItems_MouseDown);
@@ -3406,7 +3455,7 @@ namespace Assistant
             this.groupBox5.Controls.Add(this.undressConflicts);
             this.groupBox5.Location = new System.Drawing.Point(8, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(187, 329);
+            this.groupBox5.Size = new System.Drawing.Size(187, 309);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Arm/Dress Selection";
@@ -3414,7 +3463,7 @@ namespace Assistant
             // removeDress
             // 
             this.removeDress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.removeDress.Location = new System.Drawing.Point(121, 274);
+            this.removeDress.Location = new System.Drawing.Point(121, 254);
             this.removeDress.Name = "removeDress";
             this.removeDress.Size = new System.Drawing.Size(60, 25);
             this.removeDress.TabIndex = 5;
@@ -3424,7 +3473,7 @@ namespace Assistant
             // addDress
             // 
             this.addDress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.addDress.Location = new System.Drawing.Point(6, 274);
+            this.addDress.Location = new System.Drawing.Point(6, 254);
             this.addDress.Name = "addDress";
             this.addDress.Size = new System.Drawing.Size(60, 25);
             this.addDress.TabIndex = 4;
@@ -3440,14 +3489,14 @@ namespace Assistant
             this.dressList.ItemHeight = 15;
             this.dressList.Location = new System.Drawing.Point(6, 18);
             this.dressList.Name = "dressList";
-            this.dressList.Size = new System.Drawing.Size(175, 250);
+            this.dressList.Size = new System.Drawing.Size(175, 230);
             this.dressList.TabIndex = 3;
             this.dressList.SelectedIndexChanged += new System.EventHandler(this.dressList_SelectedIndexChanged);
             // 
             // undressConflicts
             // 
             this.undressConflicts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.undressConflicts.Location = new System.Drawing.Point(6, 305);
+            this.undressConflicts.Location = new System.Drawing.Point(6, 285);
             this.undressConflicts.Name = "undressConflicts";
             this.undressConflicts.Size = new System.Drawing.Size(137, 18);
             this.undressConflicts.TabIndex = 6;
@@ -3468,9 +3517,9 @@ namespace Assistant
             this.skillsTab.Controls.Add(this.setlocks);
             this.skillsTab.Controls.Add(this.resetDelta);
             this.skillsTab.Controls.Add(this.skillList);
-            this.skillsTab.Location = new System.Drawing.Point(4, 24);
+            this.skillsTab.Location = new System.Drawing.Point(4, 44);
             this.skillsTab.Name = "skillsTab";
-            this.skillsTab.Size = new System.Drawing.Size(519, 342);
+            this.skillsTab.Size = new System.Drawing.Size(519, 322);
             this.skillsTab.TabIndex = 2;
             this.skillsTab.Text = "Skills";
             // 
@@ -3543,7 +3592,7 @@ namespace Assistant
             // 
             this.baseTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.baseTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.baseTotal.Location = new System.Drawing.Point(428, 310);
+            this.baseTotal.Location = new System.Drawing.Point(428, 290);
             this.baseTotal.Name = "baseTotal";
             this.baseTotal.ReadOnly = true;
             this.baseTotal.Size = new System.Drawing.Size(84, 23);
@@ -3553,7 +3602,7 @@ namespace Assistant
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(356, 309);
+            this.label1.Location = new System.Drawing.Point(356, 289);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 23);
             this.label1.TabIndex = 6;
@@ -3610,7 +3659,7 @@ namespace Assistant
             this.skillList.HideSelection = false;
             this.skillList.Location = new System.Drawing.Point(8, 5);
             this.skillList.Name = "skillList";
-            this.skillList.Size = new System.Drawing.Size(342, 327);
+            this.skillList.Size = new System.Drawing.Size(342, 307);
             this.skillList.TabIndex = 1;
             this.skillList.UseCompatibleStateImageBehavior = false;
             this.skillList.View = System.Windows.Forms.View.Details;
@@ -3658,9 +3707,9 @@ namespace Assistant
             this.agentsTab.Controls.Add(this.agentB1);
             this.agentsTab.Controls.Add(this.agentB2);
             this.agentsTab.Controls.Add(this.agentB3);
-            this.agentsTab.Location = new System.Drawing.Point(4, 24);
+            this.agentsTab.Location = new System.Drawing.Point(4, 44);
             this.agentsTab.Name = "agentsTab";
-            this.agentsTab.Size = new System.Drawing.Size(519, 342);
+            this.agentsTab.Size = new System.Drawing.Size(519, 322);
             this.agentsTab.TabIndex = 6;
             this.agentsTab.Text = "Agents";
             // 
@@ -3708,7 +3757,7 @@ namespace Assistant
             this.agentGroup.Controls.Add(this.agentSubList);
             this.agentGroup.Location = new System.Drawing.Point(144, 3);
             this.agentGroup.Name = "agentGroup";
-            this.agentGroup.Size = new System.Drawing.Size(368, 329);
+            this.agentGroup.Size = new System.Drawing.Size(368, 309);
             this.agentGroup.TabIndex = 1;
             this.agentGroup.TabStop = false;
             // 
@@ -3722,7 +3771,7 @@ namespace Assistant
             this.agentSubList.ItemHeight = 15;
             this.agentSubList.Location = new System.Drawing.Point(6, 22);
             this.agentSubList.Name = "agentSubList";
-            this.agentSubList.Size = new System.Drawing.Size(356, 301);
+            this.agentSubList.Size = new System.Drawing.Size(356, 281);
             this.agentSubList.TabIndex = 0;
             this.agentSubList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.agentSubList_MouseDown);
             // 
@@ -3762,9 +3811,9 @@ namespace Assistant
             // 
             this.filtersTab.BackColor = System.Drawing.SystemColors.Control;
             this.filtersTab.Controls.Add(this.filterTabs);
-            this.filtersTab.Location = new System.Drawing.Point(4, 24);
+            this.filtersTab.Location = new System.Drawing.Point(4, 44);
             this.filtersTab.Name = "filtersTab";
-            this.filtersTab.Size = new System.Drawing.Size(519, 342);
+            this.filtersTab.Size = new System.Drawing.Size(519, 322);
             this.filtersTab.TabIndex = 15;
             this.filtersTab.Text = "Filters";
             // 
@@ -3780,7 +3829,7 @@ namespace Assistant
             this.filterTabs.Location = new System.Drawing.Point(6, 3);
             this.filterTabs.Name = "filterTabs";
             this.filterTabs.SelectedIndex = 0;
-            this.filterTabs.Size = new System.Drawing.Size(506, 333);
+            this.filterTabs.Size = new System.Drawing.Size(506, 313);
             this.filterTabs.TabIndex = 1;
             this.filterTabs.SelectedIndexChanged += new System.EventHandler(this.filterTabs_IndexChanged);
             // 
@@ -3799,7 +3848,7 @@ namespace Assistant
             this.subFilterTab.Location = new System.Drawing.Point(4, 24);
             this.subFilterTab.Name = "subFilterTab";
             this.subFilterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.subFilterTab.Size = new System.Drawing.Size(498, 305);
+            this.subFilterTab.Size = new System.Drawing.Size(498, 285);
             this.subFilterTab.TabIndex = 0;
             this.subFilterTab.Text = "General";
             // 
@@ -3907,7 +3956,7 @@ namespace Assistant
             this.filters.IntegralHeight = false;
             this.filters.Location = new System.Drawing.Point(6, 6);
             this.filters.Name = "filters";
-            this.filters.Size = new System.Drawing.Size(197, 261);
+            this.filters.Size = new System.Drawing.Size(197, 241);
             this.filters.TabIndex = 114;
             this.filters.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.OnFilterCheck);
             // 
@@ -4263,9 +4312,9 @@ namespace Assistant
             this.hotkeysTab.Controls.Add(this.hotkeyTree);
             this.hotkeysTab.Controls.Add(this.dohotkey);
             this.hotkeysTab.Controls.Add(this.groupBox8);
-            this.hotkeysTab.Location = new System.Drawing.Point(4, 24);
+            this.hotkeysTab.Location = new System.Drawing.Point(4, 44);
             this.hotkeysTab.Name = "hotkeysTab";
-            this.hotkeysTab.Size = new System.Drawing.Size(519, 342);
+            this.hotkeysTab.Size = new System.Drawing.Size(519, 322);
             this.hotkeysTab.TabIndex = 4;
             this.hotkeysTab.Text = "Hot Keys";
             // 
@@ -4306,7 +4355,7 @@ namespace Assistant
             this.hotkeyTree.HideSelection = false;
             this.hotkeyTree.Location = new System.Drawing.Point(8, 37);
             this.hotkeyTree.Name = "hotkeyTree";
-            this.hotkeyTree.Size = new System.Drawing.Size(323, 295);
+            this.hotkeyTree.Size = new System.Drawing.Size(323, 275);
             this.hotkeyTree.Sorted = true;
             this.hotkeyTree.TabIndex = 6;
             this.hotkeyTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.hotkeyTree_AfterSelect);
@@ -4880,7 +4929,7 @@ namespace Assistant
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scriptDocMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptDocMap.ForeColor = System.Drawing.Color.Maroon;
-            this.scriptDocMap.Location = new System.Drawing.Point(176, -4);
+            this.scriptDocMap.Location = new System.Drawing.Point(170, -4);
             this.scriptDocMap.Name = "scriptDocMap";
             this.scriptDocMap.Size = new System.Drawing.Size(120, 266);
             this.scriptDocMap.TabIndex = 22;
@@ -4902,7 +4951,7 @@ namespace Assistant
         '\"',
         '\'',
         '\''};
-            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(25, 15);
+            this.scriptEditor.AutoScrollMinSize = new System.Drawing.Size(2, 15);
             this.scriptEditor.BackBrush = null;
             this.scriptEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
             this.scriptEditor.CaretColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
@@ -4924,7 +4973,7 @@ namespace Assistant
             this.scriptEditor.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.scriptEditor.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("scriptEditor.ServiceColors")));
             this.scriptEditor.ShowCaretWhenInactive = false;
-            this.scriptEditor.Size = new System.Drawing.Size(174, 262);
+            this.scriptEditor.Size = new System.Drawing.Size(168, 262);
             this.scriptEditor.TabIndex = 21;
             this.scriptEditor.Zoom = 100;
             this.scriptEditor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scriptEditor_KeyDown);
@@ -5929,6 +5978,22 @@ namespace Assistant
             this.itemTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.itemTree_AfterSelect);
             this.itemTree.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.itemTree_MouseDoubleClick);
             // 
+            // artViewer
+            // 
+            this.artViewer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.artViewer.Animate = false;
+            this.artViewer.Art = Assistant.UI.Art.Items;
+            this.artViewer.ArtIndex = 0;
+            this.artViewer.Hue = 0;
+            this.artViewer.Location = new System.Drawing.Point(302, 6);
+            this.artViewer.Name = "artViewer";
+            this.artViewer.ResizeTallItems = false;
+            this.artViewer.RoomView = true;
+            this.artViewer.ShowHexID = true;
+            this.artViewer.ShowID = true;
+            this.artViewer.Size = new System.Drawing.Size(190, 178);
+            this.artViewer.TabIndex = 0;
+            // 
             // advancedStaffDoors
             // 
             this.advancedStaffDoors.BackColor = System.Drawing.SystemColors.Control;
@@ -5947,6 +6012,24 @@ namespace Assistant
             this.advancedStaffDoors.Size = new System.Drawing.Size(498, 287);
             this.advancedStaffDoors.TabIndex = 2;
             this.advancedStaffDoors.Text = "Doors";
+            // 
+            // doorViewer
+            // 
+            this.doorViewer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorViewer.Animate = false;
+            this.doorViewer.Art = Assistant.UI.Art.Items;
+            this.doorViewer.ArtIndex = 0;
+            this.doorViewer.Hue = 0;
+            this.doorViewer.Location = new System.Drawing.Point(177, 165);
+            this.doorViewer.MaximumSize = new System.Drawing.Size(318, 318);
+            this.doorViewer.Name = "doorViewer";
+            this.doorViewer.ResizeTallItems = false;
+            this.doorViewer.RoomView = true;
+            this.doorViewer.ShowHexID = true;
+            this.doorViewer.ShowID = true;
+            this.doorViewer.Size = new System.Drawing.Size(318, 119);
+            this.doorViewer.TabIndex = 33;
             // 
             // doorTree
             // 
@@ -6187,86 +6270,15 @@ namespace Assistant
             this.aboutVer.Text = "Razor v{0}";
             this.aboutVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // cooldownGumpBox
+            // chkSmartClosestRandom
             // 
-            this.cooldownGumpBox.Controls.Add(this.cooldownHeight);
-            this.cooldownGumpBox.Controls.Add(this.lblCooldownHeight);
-            this.cooldownGumpBox.Controls.Add(this.cooldownWidth);
-            this.cooldownGumpBox.Controls.Add(this.lblCooldownWidth);
-            this.cooldownGumpBox.Location = new System.Drawing.Point(14, 124);
-            this.cooldownGumpBox.Name = "cooldownGumpBox";
-            this.cooldownGumpBox.Size = new System.Drawing.Size(232, 151);
-            this.cooldownGumpBox.TabIndex = 133;
-            this.cooldownGumpBox.TabStop = false;
-            this.cooldownGumpBox.Text = "Cooldowns:";
-            // 
-            // cooldownHeight
-            // 
-            this.cooldownHeight.Location = new System.Drawing.Point(75, 26);
-            this.cooldownHeight.Name = "cooldownHeight";
-            this.cooldownHeight.Size = new System.Drawing.Size(36, 23);
-            this.cooldownHeight.TabIndex = 12;
-            this.cooldownHeight.TextChanged += new System.EventHandler(this.cooldownHeight_TextChanged);
-            // 
-            // lblCooldownHeight
-            // 
-            this.lblCooldownHeight.AutoSize = true;
-            this.lblCooldownHeight.Location = new System.Drawing.Point(9, 29);
-            this.lblCooldownHeight.Name = "lblCooldownHeight";
-            this.lblCooldownHeight.Size = new System.Drawing.Size(64, 15);
-            this.lblCooldownHeight.TabIndex = 11;
-            this.lblCooldownHeight.Text = "Bar height:";
-            // 
-            // cooldownWidth
-            // 
-            this.cooldownWidth.Location = new System.Drawing.Point(75, 54);
-            this.cooldownWidth.Name = "cooldownWidth";
-            this.cooldownWidth.Size = new System.Drawing.Size(36, 23);
-            this.cooldownWidth.TabIndex = 10;
-            this.cooldownWidth.TextChanged += new System.EventHandler(this.cooldownWidth_TextChanged);
-            // 
-            // lblCooldownWidth
-            // 
-            this.lblCooldownWidth.AutoSize = true;
-            this.lblCooldownWidth.Location = new System.Drawing.Point(9, 57);
-            this.lblCooldownWidth.Name = "lblCooldownWidth";
-            this.lblCooldownWidth.Size = new System.Drawing.Size(60, 15);
-            this.lblCooldownWidth.TabIndex = 9;
-            this.lblCooldownWidth.Text = "Bar width:";
-            // 
-            // artViewer
-            // 
-            this.artViewer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.artViewer.Animate = false;
-            this.artViewer.Art = Assistant.UI.Art.Items;
-            this.artViewer.ArtIndex = 0;
-            this.artViewer.Hue = 0;
-            this.artViewer.Location = new System.Drawing.Point(302, 6);
-            this.artViewer.Name = "artViewer";
-            this.artViewer.ResizeTallItems = false;
-            this.artViewer.RoomView = true;
-            this.artViewer.ShowHexID = true;
-            this.artViewer.ShowID = true;
-            this.artViewer.Size = new System.Drawing.Size(190, 178);
-            this.artViewer.TabIndex = 0;
-            // 
-            // doorViewer
-            // 
-            this.doorViewer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.doorViewer.Animate = false;
-            this.doorViewer.Art = Assistant.UI.Art.Items;
-            this.doorViewer.ArtIndex = 0;
-            this.doorViewer.Hue = 0;
-            this.doorViewer.Location = new System.Drawing.Point(177, 165);
-            this.doorViewer.MaximumSize = new System.Drawing.Size(318, 318);
-            this.doorViewer.Name = "doorViewer";
-            this.doorViewer.ResizeTallItems = false;
-            this.doorViewer.RoomView = true;
-            this.doorViewer.ShowHexID = true;
-            this.doorViewer.ShowID = true;
-            this.doorViewer.Size = new System.Drawing.Size(318, 119);
-            this.doorViewer.TabIndex = 33;
+            this.chkSmartClosestRandom.Location = new System.Drawing.Point(6, 148);
+            this.chkSmartClosestRandom.Name = "chkSmartClosestRandom";
+            this.chkSmartClosestRandom.Size = new System.Drawing.Size(232, 19);
+            this.chkSmartClosestRandom.TabIndex = 143;
+            this.chkSmartClosestRandom.Text = "Smart Closest/Random Targeting";
+            this.chkSmartClosestRandom.UseVisualStyleBackColor = true;
+            this.chkSmartClosestRandom.CheckedChanged += new System.EventHandler(this.chkSmartClosestRandom_CheckedChanged);
             // 
             // MainForm
             // 
@@ -6325,6 +6337,8 @@ namespace Assistant
             this.subWaypoints.PerformLayout();
             this.subBuffsDebuffs.ResumeLayout(false);
             this.subBuffsDebuffs.PerformLayout();
+            this.cooldownGumpBox.ResumeLayout(false);
+            this.cooldownGumpBox.PerformLayout();
             this.buffBarGroupBox.ResumeLayout(false);
             this.buffBarGroupBox.PerformLayout();
             this.dressTab.ResumeLayout(false);
@@ -6391,8 +6405,6 @@ namespace Assistant
             this.advancedStaffDoors.ResumeLayout(false);
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
-            this.cooldownGumpBox.ResumeLayout(false);
-            this.cooldownGumpBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -6593,5 +6605,6 @@ namespace Assistant
         private Label lblCooldownHeight;
         private TextBox cooldownWidth;
         private Label lblCooldownWidth;
+        private CheckBox chkSmartClosestRandom;
     }
 }

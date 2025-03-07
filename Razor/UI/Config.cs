@@ -1,6 +1,6 @@
 #region license
 // Razor: An Ultima Online Assistant
-// Copyright (c) 2022 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (c) 2025 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -340,6 +340,9 @@ namespace Assistant
 
             AddProperty("CooldownHeight", 28);
             AddProperty("CooldownWidth", 110);
+            
+            // Smart Closest/Random Targeting
+            AddProperty("SmartClosestRandom", false);
 
             Counter.Default();
             Filter.DisableAll();

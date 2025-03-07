@@ -178,6 +178,7 @@ MainForm::filterRazorMessages=Filter repeating Razor messages
 MainForm::filterOverheadMessages=Filter repeating overhead messages
 MainForm::overrideSpellFormat=Override spell format
 MainForm::buyAgentIgnoreGold=Buy Agents ignore player gold
+MainForm::chkSmartClosestRandom=Smart Closest/Random Targeting
 
 HueEntry::Text=Select a Hue
 HueEntry::cancel=Cancel

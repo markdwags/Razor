@@ -220,6 +220,7 @@
     <Compile Include="Core\MessageManager.cs" />
     <Compile Include="Core\Overrides.cs" />
     <Compile Include="Core\SystemMessages.cs" />
+    <Compile Include="Core\TargetingProximity.cs" />
     <Compile Include="Core\TextFilterManager.cs" />
     <Compile Include="Gumps\Gump.cs" />
     <Compile Include="Gumps\GumpButtonType.cs" />

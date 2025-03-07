@@ -540,6 +540,8 @@ namespace Assistant
 
             cooldownWidth.SafeAction(s => { s.Text = Config.GetInt("CooldownWidth").ToString(); });
             cooldownHeight.SafeAction(s => { s.Text = Config.GetInt("CooldownHeight").ToString(); });
+            
+            chkSmartClosestRandom.SafeAction(s => { s.Checked = Config.GetBool("SmartClosestRandom"); });
 
             Engine.MainWindow.Size = new Size(Config.GetInt("WindowSizeX"), Config.GetInt("WindowSizeY"));
 
@@ -3468,7 +3470,7 @@ namespace Assistant
         private void OnMacroKeyMoveUp()
         {
             Macro m = GetMacroSel();
-            ;
+            
             if (m == null)
                 return;
 
@@ -8202,6 +8204,11 @@ namespace Assistant
             }
 
             Config.SetProperty("CooldownWidth", width);
+        }
+
+        private void chkSmartClosestRandom_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.SetProperty("SmartClosestRandom", chkSmartClosestRandom.Checked);
         }
     }
 }

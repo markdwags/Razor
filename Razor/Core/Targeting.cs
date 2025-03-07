@@ -1,6 +1,6 @@
 #region license
 // Razor: An Ultima Online Assistant
-// Copyright (c) 2022 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
+// Copyright (c) 2025 Razor Development Community on GitHub <https://github.com/markdwags/Razor>
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -638,54 +638,63 @@ namespace Assistant
             }
         }
 
+        public static bool LastTargetWasSet => _lastTargetWasSet;
 
-        public static bool LastTargetWasSet
+        public static void SetLastTargetTo(Mobile m, byte flagType = 0)
         {
-            get { return _lastTargetWasSet; }
-        }
-
-
-        public static void SetLastTargetTo(Mobile m)
-        {
-            SetLastTargetTo(m, 0);
-        }
-
-        public static void SetLastTargetTo(Mobile m, byte flagType)
-        {
-            TargetInfo targ = new TargetInfo();
-            _lastGroundTarget = _lastTarget = targ;
+            TargetInfo target = new TargetInfo();
+            _lastGroundTarget = _lastTarget = target;
 
             if ((_hasTarget && _curFlags == 1) || flagType == 1)
-                _lastHarmTarget = targ;
+            {
+                _lastHarmTarget = target;
+            }
             else if ((_hasTarget && _curFlags == 2) || flagType == 2)
-                _lastBeneTarget = targ;
+            {
+                _lastBeneTarget = target;
+            }
             else if (flagType == 0)
-                _lastHarmTarget = _lastBeneTarget = targ;
+            {
+                _lastHarmTarget = _lastBeneTarget = target;
+            }
 
-            targ.Type = 0;
+            target.Type = 0;
+            
             if (_hasTarget)
-                targ.Flags = _curFlags;
+            {
+                target.Flags = _curFlags;
+            }
             else
-                targ.Flags = flagType;
+            {
+                target.Flags = flagType;
+            }
 
-            targ.Gfx = m.Body;
-            targ.Serial = m.Serial;
-            targ.X = m.Position.X;
-            targ.Y = m.Position.Y;
-            targ.Z = m.Position.Z;
+            target.Gfx = m.Body;
+            target.Serial = m.Serial;
+            target.X = m.Position.X;
+            target.Y = m.Position.Y;
+            target.Z = m.Position.Z;
 
             Client.Instance.SendToClient(new ChangeCombatant(m));
             _lastCombatant = m.Serial;
             World.Player.SendMessage(MsgLevel.Force, LocString.NewTargSet);
 
-            OverheadTargetMessage(targ);
+            OverheadTargetMessage(target);
 
-            bool wasSmart = Config.GetBool("SmartLastTarget");
+            bool wasSmart = IsSmartTargetingEnabled();
+            
             if (wasSmart)
+            {
                 Config.SetProperty("SmartLastTarget", false);
+            }
+
             LastTarget();
+            
             if (wasSmart)
+            {
                 Config.SetProperty("SmartLastTarget", true);
+            }
+
             LastTargetChanged();
         }
 
