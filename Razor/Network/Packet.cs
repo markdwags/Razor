@@ -18,6 +18,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Assistant
@@ -789,6 +790,7 @@ namespace Assistant
         private int m_Pos;
         private int m_Length;
         private bool m_Dyn;
+        private GCHandle m_Handle;
 
         public PacketReader(byte* buff, int len, bool dyn)
         {
@@ -796,15 +798,22 @@ namespace Assistant
             m_Length = len;
             m_Pos = 0;
             m_Dyn = dyn;
+            GC.SuppressFinalize(this);
         }
 
         public PacketReader(byte[] buff, bool dyn)
         {
-            fixed (byte* p = buff)
-                m_Data = p;
+            m_Handle = GCHandle.Alloc(buff, GCHandleType.Pinned);
+            m_Data = (byte*)m_Handle.AddrOfPinnedObject();
             m_Length = buff.Length;
             m_Pos = 0;
             m_Dyn = dyn;
+        }
+
+        ~PacketReader()
+        {
+            if (m_Handle.IsAllocated)
+                m_Handle.Free();
         }
 
         public void MoveToData()
