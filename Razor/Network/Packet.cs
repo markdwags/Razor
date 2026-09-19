@@ -18,6 +18,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Assistant
@@ -786,12 +787,16 @@ namespace Assistant
     public unsafe sealed class PacketReader
     {
         private byte* m_Data;
+        private GCHandle m_Pin; // allocated only by the byte[] constructor
         private int m_Pos;
         private int m_Length;
         private bool m_Dyn;
 
         public PacketReader(byte* buff, int len, bool dyn)
         {
+            // Nothing to release for a caller-owned pointer; keep the per-packet hot
+            // path off the finalizer queue.
+            GC.SuppressFinalize(this);
             m_Data = buff;
             m_Length = len;
             m_Pos = 0;
@@ -800,11 +805,23 @@ namespace Assistant
 
         public PacketReader(byte[] buff, bool dyn)
         {
-            fixed (byte* p = buff)
-                m_Data = p;
+            // `fixed` pins only for the statement it wraps, so a pointer taken there
+            // must not outlive it. This reader does - and nothing else references the
+            // array (it is a local in GetCompressedReader) - so the GC is free to move
+            // or collect it while the compressed-gump handler is still reading: garbage
+            // reads, or an AccessViolation that no catch can handle. Pin it for the
+            // reader's lifetime instead.
+            m_Pin = GCHandle.Alloc(buff, GCHandleType.Pinned);
+            m_Data = (byte*)m_Pin.AddrOfPinnedObject();
             m_Length = buff.Length;
             m_Pos = 0;
             m_Dyn = dyn;
+        }
+
+        ~PacketReader()
+        {
+            if (m_Pin.IsAllocated)
+                m_Pin.Free();
         }
 
         public void MoveToData()
