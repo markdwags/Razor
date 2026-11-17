@@ -36,7 +36,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
 
     - name: Restore Razor
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration /p:RestorePackagesConfig=true
       env:
         Configuration: ${{ matrix.configuration }}
 
