@@ -1,5 +1,7 @@
 name: Build Site
 
+# Pull requests only build the site; pushes to main also deploy it.
+
 on:
   push:
     branches:
@@ -14,36 +16,39 @@ on:
     - 'help/**'
     - '**/build-site.yml'
 
+concurrency:
+  group: site-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./help
-    strategy:
-      matrix:
-        python-version: ["3.12"]
-    
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v7
         with:
-          python-version: ${{ matrix.python-version }}
-          
+          fetch-depth: 0 # git-revision-date-localized needs history for page dates
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: help/requirements.txt
+
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install mkdocs
-          pip install mkdocs-material                    
-          pip install mkdocs-git-revision-date-localized-plugin
-          pip install pillow
-          pip install cairosvg 
           sudo apt-get install -y libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
-      
+          pip install -r requirements.txt
+
       - name: Install and modify Pygments
         run: |
-
           git clone --depth 1 --branch 2.21.0 https://github.com/pygments/pygments.git
 
           # Register the Razor lexer alongside the built-in ones
@@ -53,34 +58,42 @@ jobs:
           cp pygments.lexers.razor ./pygments/pygments/lexers/razor.py
           cp pygments.styles.razor ./pygments/pygments/styles/razor.py
 
-          pip install -e ./pygments/          
+          pip install -e ./pygments/
 
-      # Runs a single command using the runners shell
+      - name: Cache social cards
+        uses: actions/cache@v6
+        with:
+          path: help/.cache
+          key: social-${{ hashFiles('help/docs/**', 'help/mkdocs.yml', 'help/overrides/**') }}
+          restore-keys: social-
+
       - name: Build site
         run: mkdocs build
 
       - name: Generate robots.txt
+        if: github.event_name == 'push'
         run: |
           cat > ./site/robots.txt <<EOF
           User-agent: *
           Allow: /
 
           Sitemap: https://www.razorce.com/sitemap.xml
-          EOF          
+          EOF
 
-      # Setup AWS
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        if: github.event_name == 'push'
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: us-east-1
 
       - name: Deploy static site to S3 bucket
+        if: github.event_name == 'push'
         run: aws s3 sync ./site s3://www.razorce.com
 
-      # Invalidate the distributons
       - name: Create CloudFront Invalidation
+        if: github.event_name == 'push'
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_A }} --paths "/*" 
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_B }} --paths "/*" 
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_A }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_B }} --paths "/*"
