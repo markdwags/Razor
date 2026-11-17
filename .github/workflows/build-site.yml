@@ -22,7 +22,7 @@ jobs:
         working-directory: ./help
     strategy:
       matrix:
-        python-version: [3.10.9]
+        python-version: ["3.12"]
     
     steps:
       - uses: actions/checkout@v3
