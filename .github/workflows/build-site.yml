@@ -44,13 +44,13 @@ jobs:
       - name: Install and modify Pygments
         run: |
 
-          git clone https://github.com/pygments/pygments.git
-          
-          # Replace with Razor files
-          rm ./pygments/pygments/lexers/_mapping.py
-          cp pygments.mapping.razor ./pygments/pygments/lexers/_mapping.py
-          
-          cp pygments.lexers.razor ./pygments/pygments/lexers/razor.py          
+          git clone --depth 1 --branch 2.21.0 https://github.com/pygments/pygments.git
+
+          # Register the Razor lexer alongside the built-in ones
+          sed -i "/^LEXERS = {/a\    'RazorLexer': ('pygments.lexers.razor', 'RazorL', ('razor',), ('*.razor',), ('text/x-razor',))," ./pygments/pygments/lexers/_mapping.py
+          grep -q "'RazorLexer'" ./pygments/pygments/lexers/_mapping.py
+
+          cp pygments.lexers.razor ./pygments/pygments/lexers/razor.py
           cp pygments.styles.razor ./pygments/pygments/styles/razor.py
 
           pip install -e ./pygments/          
