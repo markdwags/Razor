@@ -19,6 +19,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Assistant
 {
@@ -48,6 +49,7 @@ namespace Assistant
         private int m_CustomHash = 0;
         private List<OPLEntry> m_CustomContent = new List<OPLEntry>();
 
+        private static Regex m_RegEx = new Regex(@"~(\d+)[_\w]+~", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant);
 
         private UOEntity m_Owner = null;
 
@@ -375,7 +377,7 @@ namespace Assistant
                     }
                 }
             }
-
+            
             foreach (OPLEntry ent in m_CustomContent)
             {
                 try
@@ -417,7 +419,217 @@ namespace Assistant
 
             return p;
         }
-    }
+
+        public Dictionary<string, string> ExportProperties()
+        {
+            var values = new Dictionary<string, string>();
+            for (int i = 0; i < m_Content.Count; i++)
+            {
+                OPLEntry ent = m_Content[i];
+                if (ent == null) continue;
+
+                var response = ConvertContentToKeyValuePair(ent.Number, ent.Args);
+                if (response.key == null) continue;
+
+                response.key = response.key?.Trim();
+                response.value = response.value?.Trim();
+
+                // Assume the first returned value is the "name"
+                if (i == 0)
+                {
+                    values.Add("$name", response.key);
+
+                    // Handle special case. Ex: {amount} {name}
+                    if (!string.IsNullOrWhiteSpace(response.value) && int.TryParse(response.value, out _))
+                    {
+                        var parsedName = UnfoldArgClilocNumbers(ent.Args);
+                        values.Add("$amount", response.value);
+                    }
+
+                    continue;
+                }
+
+                // Special case: Containers are being passed in.
+                if (response.key?.Contains("stones") == true) continue;
+
+                // Clean up the property value
+                response.key = response.key.Trim(':', ' ');
+
+                // Move the % to the property if it exists
+                if (response.value?.EndsWith("%") == true)
+                {
+                    response.value = response.value.TrimEnd('%');
+                    response.key += " %";
+                }
+
+                // If a duplicate would be created, include the cliloc number instead
+                var key = values.TryGetValue(response.key, out var existing)
+                    ? $"{response.key} ({ent.Number}" // Hope this never happens ... but worth at least getting it out
+                    : response.key;
+
+                values.Add(key, response.value);
+            }
+
+            return values;
+        }
+
+        private string UnfoldArgClilocNumbers(string args)
+        {
+            if (string.IsNullOrWhiteSpace(args)) return null;
+
+            // Replace all Cliloc numbers that are passed in.
+            // Ex: Exceptional #{resource_cliloc} #{armor_cliloc} -- Exceptional {barbed} {leather tunic}
+
+            var builder = new StringBuilder();
+            var isNumericRun = false;
+            var isCharRun = false;
+            int startIndex = 0;
+            for (var i = 0; i < args.Length; i++)
+            {
+                var c = args[i];
+
+                if (isNumericRun)
+                {
+                    if (char.IsNumber(c)) continue;
+
+                    // Look up value
+                    var intValue = int.Parse(args.Substring(startIndex + 1, i - startIndex));
+                    var clilocValue = Language.GetClilocUnformatted(intValue);
+
+                    // Copy value
+                    builder.Append(clilocValue);
+                    builder.Append(c);
+
+                    isCharRun = isNumericRun = false;
+
+                    continue;
+                }
+
+                if (isCharRun)
+                {
+                    // Multiple args are separated by '\t'. Break into a new run.
+                    if (c != '\t') continue;
+
+                    // Copy value
+                    builder.Append(args.Substring(startIndex, i - startIndex));
+                    builder.Append(c);
+
+                    isCharRun = isNumericRun = false;
+
+                    continue;
+                }
+
+                // A '#' indicates it's a Cliloc number
+                isNumericRun = c == '#';
+                isCharRun = !isNumericRun;
+                startIndex = i;
+            }
+
+            // Flush final pass
+            if (isNumericRun)
+            {
+                var intValue = int.Parse(args.Substring(startIndex + 1));
+                var clilocValue = Language.GetClilocUnformatted(intValue);
+
+                builder.Append(clilocValue);
+            }
+            else if (isCharRun)
+            {
+                builder.Append(args.Substring(startIndex));
+            }
+
+            return builder.ToString();
+        }
+
+        private (string key, string value) ConvertContentToKeyValuePair(int initialClilocNumber, string args)
+        {
+            var unformattedClilocValue = Language.GetClilocUnformatted(initialClilocNumber);
+            if (string.IsNullOrWhiteSpace(unformattedClilocValue)) return (null, null); // Unknown value
+
+            // Ex: {Axe Of The Heavens}, {Mage Armor}
+            // If there are no variables, return the whole value
+            if (string.IsNullOrWhiteSpace(args)) return (unformattedClilocValue, null);
+
+            var matches = m_RegEx.Matches(unformattedClilocValue);
+            if (matches.Count == 0) return (unformattedClilocValue, null); // Weird case, we have Args but nowhere to put them.
+
+            // Unfold
+            args = UnfoldArgClilocNumbers(args);
+
+            // Physical resist: {number}
+            // Crafted by {string}
+            if (matches.Count == 1) return (unformattedClilocValue.Replace(matches[0].Value, ""), args);
+
+            var multipleArgs = args.Split('\t');
+            var formattedClilocValue = unformattedClilocValue;
+            for (int i = 0; i < matches.Count; i++)
+            {
+                // {skill} +{number} -- Number removed
+                // {number} {resource} -- Number removed
+                // Exceptional #{resource_cliloc} #{armor_cliloc} -- Exceptional {barbed} {leather tunic} -- Nothing removed
+
+                // Rip out numeric args and replace the rest with their values
+                // var replacementValue = int.TryParse(multipleArgs[i], out _) ? "" : multipleArgs[i];
+                formattedClilocValue = formattedClilocValue.Replace(matches[i].Value, multipleArgs[i]); // AKA "PropertyValue"
+            }
+
+            (var flippingIndex, var firstValueNumeric) = ParseFormattedClilocValue(formattedClilocValue);
+
+            // Extract property/value strings
+            string value = null;
+            string property = null;
+            if (firstValueNumeric)
+            {
+                value = formattedClilocValue.Substring(0, flippingIndex);
+                property = formattedClilocValue.Substring(flippingIndex);
+            }
+            else
+            {
+                value = formattedClilocValue.Substring(flippingIndex);
+                property = formattedClilocValue.Substring(0, flippingIndex);
+            }
+
+            return (property, value);
+        }
+
+        private (int flippingIndex, bool firstValueNumeric) ParseFormattedClilocValue(string value)
+        {
+            /* Example cases
+                 {amount} {name} - value / label
+                 {skill} +{value} - label / value
+                 {property}: {value}
+                 {property} {value_1} / {value_2}
+            */
+
+            bool isNumericRun = false;
+            bool isCharRun = false;
+            int i = 0;
+
+            for (i = 0; i < value.Length; i++)
+            {
+                var c = value[i];
+                var isNumber = char.IsNumber(c);
+
+                if (isNumericRun)
+                {
+                    if (isNumber) continue;
+                    break;
+                }
+
+                if (isCharRun)
+                {
+                    if (!isNumber) continue;
+                    break;
+                }
+
+                // Figure out which comes first
+                isNumericRun = isNumber;
+                isCharRun = !isNumericRun;
+            }
+
+            return (i, isNumericRun);
+        }
+ }
 
     public class OPLInfo : Packet
     {

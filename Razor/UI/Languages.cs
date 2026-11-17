@@ -890,6 +890,19 @@ namespace Assistant
                 return string.Empty;
         }
 
+        public static string GetClilocUnformatted(int num)
+        {
+            if (m_CliLoc == null)
+                return String.Empty;
+
+            StringEntry se = m_CliLoc.GetEntry(num);
+
+            if (se != null)
+                return se.Text;
+            else
+                return string.Empty;
+        }
+
         public static string ClilocFormat(int num, string argstr)
         {
             if (m_CliLoc == null)
