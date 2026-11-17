@@ -1,0 +1,113 @@
+name: Build Razor
+
+# Shared build used by the PR check, the dev preview and manual releases.
+# The version is Major.Minor from Razor/Properties/AssemblyInfo.cs plus the
+# build number passed in, e.g. 1.10.89.0.
+
+on:
+  workflow_call:
+    inputs:
+      build-number:
+        description: Third part of the version (Major.Minor.<build-number>.0)
+        type: string
+        default: "0"
+      package:
+        description: "none, dev (Razor-dev-*-preview.zip) or release (Razor-*-<version>.zip)"
+        type: string
+        default: none
+    outputs:
+      version:
+        description: Version stamped into Razor.exe
+        value: ${{ jobs.build.outputs.version }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-2022
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v3
+
+    - name: Set version
+      id: version
+      shell: pwsh
+      env:
+        BUILD_NUMBER: ${{ inputs.build-number }}
+      run: |
+        if ($env:BUILD_NUMBER -notmatch '^\d+$' -or [int]$env:BUILD_NUMBER -gt 65534) {
+          throw "Invalid build number '$env:BUILD_NUMBER'"
+        }
+        $file = 'Razor/Properties/AssemblyInfo.cs'
+        $text = Get-Content $file -Raw
+        if ($text -notmatch 'AssemblyVersion\("(\d+)\.(\d+)\.') {
+          throw "Could not read Major.Minor from $file"
+        }
+        $version = "$($Matches[1]).$($Matches[2]).$env:BUILD_NUMBER.0"
+        $text = $text -replace '(Assembly(File|Informational)?Version)\("[^"]*"\)', "`$1(""$version"")"
+        Set-Content $file $text -NoNewline
+        Select-String -Path $file -Pattern 'Assembly\w*Version\(' | ForEach-Object { $_.Line }
+        "version=$version" >> $env:GITHUB_OUTPUT
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v6
+      with:
+        path: packages
+        key: nuget-${{ hashFiles('**/packages.config') }}
+
+    - name: Restore
+      run: msbuild Razor.sln /t:Restore /p:Configuration=Release /p:RestorePackagesConfig=true /v:minimal
+
+    - name: Build (x86)
+      run: msbuild Razor.sln /t:Build /m /p:Configuration=Release /p:Platform="Any CPU" /v:minimal
+
+    - name: Build (x64)
+      run: msbuild Razor.sln /t:Build /m /p:Configuration=Release /p:Platform=x64 /v:minimal
+
+    - name: Verify version
+      shell: pwsh
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        foreach ($exe in 'bin/Win32/Release/Razor.exe', 'bin/x64/Release/Razor.exe') {
+          $path = (Resolve-Path $exe).Path
+          $assembly = [Reflection.AssemblyName]::GetAssemblyName($path).Version.ToString()
+          $fileVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo($path).FileVersion
+          "$exe  assembly=$assembly  file=$fileVersion"
+          if ($assembly -ne $env:VERSION -or $fileVersion -ne $env:VERSION) {
+            throw "$exe does not match expected version $env:VERSION"
+          }
+        }
+
+    - name: Package
+      if: inputs.package != 'none'
+      shell: pwsh
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+        PACKAGE: ${{ inputs.package }}
+      run: |
+        $dist = New-Item -ItemType Directory -Force dist
+        foreach ($arch in @{ x86 = 'Win32'; x64 = 'x64' }.GetEnumerator()) {
+          $name = if ($env:PACKAGE -eq 'release') { "Razor-$($arch.Key)-$env:VERSION.zip" } else { "Razor-dev-$($arch.Key)-preview.zip" }
+          Push-Location "bin/$($arch.Value)/Release"
+          7z a -tzip (Join-Path $dist $name) '*' | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw "7z failed for $name" }
+          Pop-Location
+        }
+        Get-ChildItem dist | Format-Table Name, Length
+
+    - name: Upload packages
+      if: inputs.package != 'none'
+      uses: actions/upload-artifact@v7
+      with:
+        name: razor-${{ inputs.package }}
+        path: dist/*.zip
+        if-no-files-found: error
+        retention-days: 7

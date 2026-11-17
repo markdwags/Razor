@@ -6,43 +6,17 @@ on:
       - main
     paths-ignore:
       - 'help/**'
-      - '**/build-site.yml'     
+      - '**/build-site.yml'
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-
   build:
-
-    strategy:
-      matrix:
-        configuration: [Release]
-
-    runs-on: windows-2022
-
-    env:
-      Solution_Name: Razor.sln       
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    
-    - name: Install .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
-
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.1
-
-    - name: Restore Razor
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration /p:RestorePackagesConfig=true
-      env:
-        Configuration: ${{ matrix.configuration }}
-
-    - name: Build Razor
-      run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
-
-
+    uses: ./.github/workflows/build-razor.yml
+    with:
+      package: none

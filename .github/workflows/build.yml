@@ -1,4 +1,10 @@
-name: Build Dev Preview
+name: Build & Release
+
+# push to main      -> builds Major.Minor.<run_number>.0 and replaces the "Razor Dev Preview" pre-release
+# Run workflow      -> builds Major.Minor.<run_number>.0 and creates a draft release tagged v<version>
+#
+# Both share this workflow's run number, so dev previews and releases use one version sequence.
+# Bump Major.Minor in Razor/Properties/AssemblyInfo.cs when starting a new minor version.
 
 on:
   push:
@@ -7,80 +13,85 @@ on:
     paths-ignore:
       - 'help/**'
       - '**/build-site.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: build-main
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
-
   build:
+    uses: ./.github/workflows/build-razor.yml
+    with:
+      build-number: ${{ github.run_number }}
+      package: ${{ github.event_name == 'workflow_dispatch' && 'release' || 'dev' }}
 
-    strategy:
-      matrix:
-        configuration: [Release]
-
-    runs-on: windows-2022
-
+  dev-preview:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
-      Solution_Name: Razor.sln       
-
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      VERSION: ${{ needs.build.outputs.version }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - name: Download packages
+      uses: actions/download-artifact@v8
       with:
-        fetch-depth: 0
-    
-    - name: Install .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
+        name: razor-dev
+        path: dist
 
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.1
-
-    - name: Restore Razor
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration /p:RestorePackagesConfig=true
-      env:
-        Configuration: ${{ matrix.configuration }}
-        
-    - name: Set AssemblyInfo
-      uses: dannevesdantas/set-version-assemblyinfo@v.1.0.0
-      with:                     
-        version: '1.10.${{ github.run_number }}.0'
-
-    - name: Build Razor (x86)
-      run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration /p:Platform="Any CPU"
-      env:
-        Configuration: ${{ matrix.configuration }}
-
-    - name: Build Razor (x64)
-      run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration /p:Platform=x64
-      env:
-        Configuration: ${{ matrix.configuration }}
-
-    - name: Archive Razor x86 build artifacts      
+    - name: Replace dev preview release
       run: |
-        cd bin/Win32/Release/
-        7z a -tzip "Razor-dev-x86-preview.zip" "*"
+        gh release delete Razor-dev-preview --cleanup-tag --yes || true
+        gh release create Razor-dev-preview dist/*.zip \
+          --prerelease \
+          --target "$GITHUB_SHA" \
+          --title "Razor Dev Preview" \
+          --notes "This is built automatically after each commit to main, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk.
 
-    - name: Archive Razor x64 build artifacts      
+        Version ${VERSION}, built from ${GITHUB_SHA}."
+
+  release:
+    needs: build
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      TAG: v${{ needs.build.outputs.version }}
+    steps:
+    - name: Check branch
+      if: github.ref != 'refs/heads/main'
       run: |
-        cd bin/x64/Release/
-        7z a -tzip "Razor-dev-x64-preview.zip" "*"
+        echo "::error::Releases can only be created from main (this run is on ${GITHUB_REF})."
+        exit 1
 
-    - name: Delete Dev Release
-      uses: dev-drprasad/delete-tag-and-release@v0.2.1
+    - name: Check tag is unused
+      run: |
+        if gh release view "$TAG" > /dev/null 2>&1; then
+          echo "::error::A release named $TAG already exists."
+          exit 1
+        fi
+
+    - name: Download packages
+      uses: actions/download-artifact@v8
       with:
-        delete_release: true
-        tag_name: Razor-dev-preview
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: razor-release
+        path: dist
 
-    - name: Create Dev Release
-      uses: ncipollo/release-action@v1
-      with:
-        name: "Razor Dev Preview"
-        body: "This is built automatically after each commit to main, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk."
-        artifacts: "bin/Win32/Release/Razor-dev-x86-preview.zip,bin/x64/Release/Razor-dev-x64-preview.zip"          
-        prerelease: true
-        tag: Razor-dev-preview
-        token: ${{ secrets.GITHUB_TOKEN }}
-
+    - name: Create draft release
+      run: |
+        gh release create "$TAG" dist/*.zip \
+          --draft \
+          --generate-notes \
+          --target "$GITHUB_SHA" \
+          --title "Razor $TAG"
+        echo "Draft release $TAG created. Edit the notes and publish it from the Releases page." >> "$GITHUB_STEP_SUMMARY"
