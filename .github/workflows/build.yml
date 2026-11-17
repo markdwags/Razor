@@ -3,7 +3,7 @@ name: Build Dev Preview
 on:
   push:
     branches:
-      - master
+      - main
     paths-ignore:
       - 'help/**'
       - '**/build-site.yml'
@@ -78,7 +78,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: "Razor Dev Preview"
-        body: "This is built automatically after each commit to master, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk."
+        body: "This is built automatically after each commit to main, so it may contain bugs and/or unfinished features but is generally considered stable. Use at your own risk."
         artifacts: "bin/Win32/Release/Razor-dev-x86-preview.zip,bin/x64/Release/Razor-dev-x64-preview.zip"          
         prerelease: true
         tag: Razor-dev-preview

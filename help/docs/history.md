@@ -29,4 +29,4 @@ With that said, I find it more appropriate to simply call this version the **Raz
 
 Thank you to everyone across the whole UO freeshard community who has contributed to this version of Razor in some way.
 
-If you'd like contribute, see the [CONTRIBUTING](https://github.com/markdwags/Razor/blob/master/CONTRIBUTING.md) file for more information.
+If you'd like contribute, see the [CONTRIBUTING](https://github.com/markdwags/Razor/blob/main/CONTRIBUTING.md) file for more information.

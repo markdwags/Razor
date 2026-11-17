@@ -25,4 +25,4 @@ If you're unable to find a solution using the information here or you'd like to 
 !!! info
     All work is released under the GPLv3 license. This project does not distribute any copyrighted game assets. In order to run this application you'll need to legally obtain a copy of the Ultima Online Classic Client.
 
-See the [LICENSE](https://github.com/markdwags/Razor/blob/master/LICENSE.md) file for details.
+See the [LICENSE](https://github.com/markdwags/Razor/blob/main/LICENSE.md) file for details.

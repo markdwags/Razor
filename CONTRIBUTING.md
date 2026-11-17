@@ -16,7 +16,7 @@ Please note we have a [code of conduct](CODE_OF_CONDUCT.md), please follow it in
 
 ### Pull Request Process
 
-1. Fork the repo and create your own branch from master
+1. Fork the repo and create your own branch from main
 2. Make your code changes. If you plan on adding multiple changes, please create commits for each change instead of one commit with all the changes.
 3. Create a pull request based on your branch
 

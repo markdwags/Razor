@@ -3,13 +3,13 @@ name: Build Site
 on:
   push:
     branches:
-      - master
+      - main
     paths:
     - 'help/**'
     - '**/build-site.yml'
   pull_request:
     branches:
-      - master
+      - main
     paths:
     - 'help/**'
     - '**/build-site.yml'
